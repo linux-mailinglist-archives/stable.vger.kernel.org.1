@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9626180D92C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6881C80D9E8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C75FD1C215D2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127471F21B26
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB4D51C38;
-	Mon, 11 Dec 2023 18:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C1A524C1;
+	Mon, 11 Dec 2023 18:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+VuI2tb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziWxnfEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8C851C2D;
-	Mon, 11 Dec 2023 18:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AFEC433C7;
-	Mon, 11 Dec 2023 18:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9438E51C44;
+	Mon, 11 Dec 2023 18:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8FCC433C7;
+	Mon, 11 Dec 2023 18:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320692;
-	bh=SQRBGoDlY4Vh1pBkYilD01QpOtHTuGZZ9RR9okf52G4=;
+	s=korg; t=1702321040;
+	bh=nvIeguGOej8Lwq88cVmhmBRDWNnzmcoLmuNQruFxQGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+VuI2tbx3CI3CbWb0o5SY8OOW+YtnusG6RmKmu2aWD6HzzIItO5aQ8fKXKlM5046
-	 IW3moCxVmck9LqTWPIfeIHbsNs4CHztb0zp2/HxiwQqqg+sgQrlfo7T1B5LPq9TmPs
-	 s9sOuQ+4xWZag6R1apUarzNsEo3Rbpo+2wwZDYQ0=
+	b=ziWxnfEm6gi6+MQjjSKN4N+rGr+ptZu/9v1hyX4v0cAOOaBxB4sdDP1QeTFJy5TZ8
+	 tKT9g64XYCwXi95AurlMqqubVAQff207NxpMrAQmFlj/UcHBkTmx2W5X/40GXV4HXQ
+	 mP6N5LXbqZEtY7igtV3tUZKDxoL2impnup8wkdjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/194] drm/amdgpu: Update ras eeprom support for smu v13_0_0 and v13_0_10
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 087/141] tracing: Fix incomplete locking when disabling buffered events
 Date: Mon, 11 Dec 2023 19:22:26 +0100
-Message-ID: <20231211182043.606951026@linuxfoundation.org>
+Message-ID: <20231211182030.343861357@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +52,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Candice Li <candice.li@amd.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit bc22f8ec464af9e14263c3ed6a1c2be86618c804 ]
+commit 7fed14f7ac9cf5e38c693836fe4a874720141845 upstream.
 
-Enable RAS EEPROM support for smu v13_0_0 and v13_0_10.
+The following warning appears when using buffered events:
 
-Signed-off-by: Candice Li <candice.li@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  203.556451] WARNING: CPU: 53 PID: 10220 at kernel/trace/ring_buffer.c:3912 ring_buffer_discard_commit+0x2eb/0x420
+[...]
+[  203.670690] CPU: 53 PID: 10220 Comm: stress-ng-sysin Tainted: G            E      6.7.0-rc2-default #4 56e6d0fcf5581e6e51eaaecbdaec2a2338c80f3a
+[  203.670704] Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
+[  203.670709] RIP: 0010:ring_buffer_discard_commit+0x2eb/0x420
+[  203.735721] Code: 4c 8b 4a 50 48 8b 42 48 49 39 c1 0f 84 b3 00 00 00 49 83 e8 01 75 b1 48 8b 42 10 f0 ff 40 08 0f 0b e9 fc fe ff ff f0 ff 47 08 <0f> 0b e9 77 fd ff ff 48 8b 42 10 f0 ff 40 08 0f 0b e9 f5 fe ff ff
+[  203.735734] RSP: 0018:ffffb4ae4f7b7d80 EFLAGS: 00010202
+[  203.735745] RAX: 0000000000000000 RBX: ffffb4ae4f7b7de0 RCX: ffff8ac10662c000
+[  203.735754] RDX: ffff8ac0c750be00 RSI: ffff8ac10662c000 RDI: ffff8ac0c004d400
+[  203.781832] RBP: ffff8ac0c039cea0 R08: 0000000000000000 R09: 0000000000000000
+[  203.781839] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  203.781842] R13: ffff8ac10662c000 R14: ffff8ac0c004d400 R15: ffff8ac10662c008
+[  203.781846] FS:  00007f4cd8a67740(0000) GS:ffff8ad798880000(0000) knlGS:0000000000000000
+[  203.781851] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  203.781855] CR2: 0000559766a74028 CR3: 00000001804c4000 CR4: 00000000001506f0
+[  203.781862] Call Trace:
+[  203.781870]  <TASK>
+[  203.851949]  trace_event_buffer_commit+0x1ea/0x250
+[  203.851967]  trace_event_raw_event_sys_enter+0x83/0xe0
+[  203.851983]  syscall_trace_enter.isra.0+0x182/0x1a0
+[  203.851990]  do_syscall_64+0x3a/0xe0
+[  203.852075]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  203.852090] RIP: 0033:0x7f4cd870fa77
+[  203.982920] Code: 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 b8 89 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 43 0e 00 f7 d8 64 89 01 48
+[  203.982932] RSP: 002b:00007fff99717dd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000089
+[  203.982942] RAX: ffffffffffffffda RBX: 0000558ea1d7b6f0 RCX: 00007f4cd870fa77
+[  203.982948] RDX: 0000000000000000 RSI: 00007fff99717de0 RDI: 0000558ea1d7b6f0
+[  203.982957] RBP: 00007fff99717de0 R08: 00007fff997180e0 R09: 00007fff997180e0
+[  203.982962] R10: 00007fff997180e0 R11: 0000000000000246 R12: 00007fff99717f40
+[  204.049239] R13: 00007fff99718590 R14: 0000558e9f2127a8 R15: 00007fff997180b0
+[  204.049256]  </TASK>
+
+For instance, it can be triggered by running these two commands in
+parallel:
+
+ $ while true; do
+    echo hist:key=id.syscall:val=hitcount > \
+      /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger;
+  done
+ $ stress-ng --sysinfo $(nproc)
+
+The warning indicates that the current ring_buffer_per_cpu is not in the
+committing state. It happens because the active ring_buffer_event
+doesn't actually come from the ring_buffer_per_cpu but is allocated from
+trace_buffered_event.
+
+The bug is in function trace_buffered_event_disable() where the
+following normally happens:
+
+* The code invokes disable_trace_buffered_event() via
+  smp_call_function_many() and follows it by synchronize_rcu(). This
+  increments the per-CPU variable trace_buffered_event_cnt on each
+  target CPU and grants trace_buffered_event_disable() the exclusive
+  access to the per-CPU variable trace_buffered_event.
+
+* Maintenance is performed on trace_buffered_event, all per-CPU event
+  buffers get freed.
+
+* The code invokes enable_trace_buffered_event() via
+  smp_call_function_many(). This decrements trace_buffered_event_cnt and
+  releases the access to trace_buffered_event.
+
+A problem is that smp_call_function_many() runs a given function on all
+target CPUs except on the current one. The following can then occur:
+
+* Task X executing trace_buffered_event_disable() runs on CPU 0.
+
+* The control reaches synchronize_rcu() and the task gets rescheduled on
+  another CPU 1.
+
+* The RCU synchronization finishes. At this point,
+  trace_buffered_event_disable() has the exclusive access to all
+  trace_buffered_event variables except trace_buffered_event[CPU0]
+  because trace_buffered_event_cnt[CPU0] is never incremented and if the
+  buffer is currently unused, remains set to 0.
+
+* A different task Y is scheduled on CPU 0 and hits a trace event. The
+  code in trace_event_buffer_lock_reserve() sees that
+  trace_buffered_event_cnt[CPU0] is set to 0 and decides the use the
+  buffer provided by trace_buffered_event[CPU0].
+
+* Task X continues its execution in trace_buffered_event_disable(). The
+  code incorrectly frees the event buffer pointed by
+  trace_buffered_event[CPU0] and resets the variable to NULL.
+
+* Task Y writes event data to the now freed buffer and later detects the
+  created inconsistency.
+
+The issue is observable since commit dea499781a11 ("tracing: Fix warning
+in trace_buffered_event_disable()") which moved the call of
+trace_buffered_event_disable() in __ftrace_event_enable_disable()
+earlier, prior to invoking call->class->reg(.. TRACE_REG_UNREGISTER ..).
+The underlying problem in trace_buffered_event_disable() is however
+present since the original implementation in commit 0fc1b09ff1ff
+("tracing: Use temp buffer when filtering events").
+
+Fix the problem by replacing the two smp_call_function_many() calls with
+on_each_cpu_mask() which invokes a given callback on all CPUs.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-2-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Fixes: dea499781a11 ("tracing: Fix warning in trace_buffered_event_disable()")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ kernel/trace/trace.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index 84c241b9a2a13..7dc39154822c5 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -90,6 +90,16 @@
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2702,11 +2702,9 @@ void trace_buffered_event_disable(void)
+ 	if (--trace_buffered_event_ref)
+ 		return;
  
- static bool __is_ras_eeprom_supported(struct amdgpu_device *adev)
- {
-+	if (adev->asic_type == CHIP_IP_DISCOVERY) {
-+		switch (adev->ip_versions[MP1_HWIP][0]) {
-+		case IP_VERSION(13, 0, 0):
-+		case IP_VERSION(13, 0, 10):
-+			return true;
-+		default:
-+			return false;
-+		}
-+	}
-+
- 	return  adev->asic_type == CHIP_VEGA20 ||
- 		adev->asic_type == CHIP_ARCTURUS ||
- 		adev->asic_type == CHIP_SIENNA_CICHLID ||
--- 
-2.42.0
-
+-	preempt_disable();
+ 	/* For each CPU, set the buffer as used. */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       disable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, disable_trace_buffered_event,
++			 NULL, true);
+ 
+ 	/* Wait for all current users to finish */
+ 	synchronize_rcu();
+@@ -2721,11 +2719,9 @@ void trace_buffered_event_disable(void)
+ 	 */
+ 	smp_wmb();
+ 
+-	preempt_disable();
+ 	/* Do the work on each cpu */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       enable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
++			 true);
+ }
+ 
+ static struct trace_buffer *temp_buffer;
 
 
 
