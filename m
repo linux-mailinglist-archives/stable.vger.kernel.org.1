@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-5549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC18A80D554
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C810C80D8A8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B78B1C20F35
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57861B21675
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08C84F213;
-	Mon, 11 Dec 2023 18:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C45051C33;
+	Mon, 11 Dec 2023 18:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai9MGJ6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S6R9EnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949025101A;
-	Mon, 11 Dec 2023 18:22:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AA4C433C8;
-	Mon, 11 Dec 2023 18:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD1C5102A;
+	Mon, 11 Dec 2023 18:47:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD10C433C7;
+	Mon, 11 Dec 2023 18:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318962;
-	bh=JEpqpOlTgzvQBYhjIBhWsuI71qDakNYaD+TZUamwVYs=;
+	s=korg; t=1702320463;
+	bh=q0BSCiMJI4yziYsWPKcmOj/qtE4xuYpJisJqZ3W9Zts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ai9MGJ6GEgW/xnejblHW5n1SsX+ZP/V5b5ecPbT4EUDiOaHnKh0TSxP0PdpDMJmMv
-	 jJJOJvPkNamRhBO+xwoseiWgjMY2LUvxcItTa2DHpoQh6MBdfi2tPuk5k+ZZAz/r+h
-	 Ea4MZz8ySfuGGMFypI1RdKhAsz29p3qdMGIzrlHQ=
+	b=1S6R9EnZ6dKyeJ8zgFUibJ/gj20KC9Iqggy6tBenMa05G1q9rj07z2cyxKQJ5kgXv
+	 au/f7Tm7XaF0ProblqSR/HriP2Zet4HP0hOJlvf68i7g+0jSsFgoDoPRsDGsivlA9z
+	 B+H7geojYR6lr/nB2+EL8RKYfINLvU7WN1okrB10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 09/25] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
+Subject: [PATCH 6.1 070/194] RDMA/rtrs-srv: Do not unconditionally enable irq
 Date: Mon, 11 Dec 2023 19:21:00 +0100
-Message-ID: <20231211182009.043362952@linuxfoundation.org>
+Message-ID: <20231211182039.613777483@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,40 +56,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
+[ Upstream commit 3ee7ecd712048ade6482bea4b2f3dcaf039c0348 ]
 
-When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
-should free phwi_ctxt->be_wrbq before returning an error code to prevent
-potential memleak.
+When IO is completed, rtrs can be called in softirq context,
+unconditionally enabling irq could cause panic.
 
-Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+To be on safe side, use spin_lock_irqsave and spin_unlock_irqrestore
+instread.
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-2-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/be2iscsi/be_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
-index a1fd8a7fa48c3..ddaf2b57d9349 100644
---- a/drivers/scsi/be2iscsi/be_main.c
-+++ b/drivers/scsi/be2iscsi/be_main.c
-@@ -2687,6 +2687,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
- 		kfree(pwrb_context->pwrb_handle_base);
- 		kfree(pwrb_context->pwrb_handle_basestd);
- 	}
-+	kfree(phwi_ctxt->be_wrbq);
- 	return -ENOMEM;
- }
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 22d7ba05e9fe8..e26488ee36eac 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -63,8 +63,9 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
+ {
+ 	enum rtrs_srv_state old_state;
+ 	bool changed = false;
++	unsigned long flags;
  
+-	spin_lock_irq(&srv_path->state_lock);
++	spin_lock_irqsave(&srv_path->state_lock, flags);
+ 	old_state = srv_path->state;
+ 	switch (new_state) {
+ 	case RTRS_SRV_CONNECTED:
+@@ -85,7 +86,7 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
+ 	}
+ 	if (changed)
+ 		srv_path->state = new_state;
+-	spin_unlock_irq(&srv_path->state_lock);
++	spin_unlock_irqrestore(&srv_path->state_lock, flags);
+ 
+ 	return changed;
+ }
 -- 
 2.42.0
 
