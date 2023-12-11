@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE7380D9E3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F304780D829
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91711B21A36
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB8EC2810DE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5955B52F68;
-	Mon, 11 Dec 2023 18:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD9B51038;
+	Mon, 11 Dec 2023 18:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeoaNvt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkDR41ey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE6AE548;
-	Mon, 11 Dec 2023 18:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E134C433C7;
-	Mon, 11 Dec 2023 18:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C014FC06;
+	Mon, 11 Dec 2023 18:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F63C433C8;
+	Mon, 11 Dec 2023 18:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321031;
-	bh=7yw2LaJ9EXFgaI3uv/SYSJgfzUvMl6hM5PkGl4ircoA=;
+	s=korg; t=1702320193;
+	bh=AgKmNADJgK4mdLfe1Pnpx6vpwfSVIr8d+Ii96MC7LWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZeoaNvt3piPoqr4NVOLLc6CgIiNuGCo6W6SbejvvxqQ89q6RVsSXC2XMA3GunekKr
-	 5v8dRZwIPae+d5OT1agSX/vJSjeNs0KNDg5UVVV9154rjPpyHuPequQ3zI2ueCfmzt
-	 Xlymc7ZRVCCY1wOqjpwhIzeZ2jUdcOt3vDRgfzDk=
+	b=bkDR41ey03osWkzyHo7AhT8rICrwNc0+QbF+zKYHOtzSJwBKhvn9gAHVVqIST9WEY
+	 39kXxSDo0ojnDT8s6F7RE2nKocgxejcB8c+rjtCGkACax1xCamQtqz5vEn0Ut1v5RU
+	 WkiWyNLDGN+USfP08OnsB4ggWnbQw3QDv3LjiYVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Vaneet Narang <v.narang@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 084/141] checkstack: fix printed address
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 39/67] tracing: Fix a possible race when disabling buffered events
 Date: Mon, 11 Dec 2023 19:22:23 +0100
-Message-ID: <20231211182030.202469259@linuxfoundation.org>
+Message-ID: <20231211182016.739931885@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit ee34db3f271cea4d4252048617919c2caafe698b upstream.
+commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
 
-All addresses printed by checkstack have an extra incorrect 0 appended at
-the end.
+Function trace_buffered_event_disable() is responsible for freeing pages
+backing buffered events and this process can run concurrently with
+trace_event_buffer_lock_reserve().
 
-This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
-display $dre as different entity"): since then the address is taken from
-the line which contains the function name, instead of the line which
-contains stack consumption. E.g. on s390:
+The following race is currently possible:
 
-0000000000100a30 <do_one_initcall>:
-...
-  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
+* Function trace_buffered_event_disable() is called on CPU 0. It
+  increments trace_buffered_event_cnt on each CPU and waits via
+  synchronize_rcu() for each user of trace_buffered_event to complete.
 
-So the used regex which matches spaces and hexadecimal numbers to extract
-an address now matches a different substring. Subsequently replacing spaces
-with 0 appends a zero at the and, instead of replacing leading spaces.
+* After synchronize_rcu() is finished, function
+  trace_buffered_event_disable() has the exclusive access to
+  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
+  and all pointers trace_buffered_event are still valid.
 
-Fix this by using the proper regex, and simplify the code a bit.
+* At this point, on a different CPU 1, the execution reaches
+  trace_event_buffer_lock_reserve(). The function calls
+  preempt_disable_notrace() and only now enters an RCU read-side
+  critical section. The function proceeds and reads a still valid
+  pointer from trace_buffered_event[CPU1] into the local variable
+  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
+  which happens later.
 
-Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
-Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Maninder Singh <maninder1.s@samsung.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Vaneet Narang <v.narang@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+* Function trace_buffered_event_disable() continues. It frees
+  trace_buffered_event[CPU1] and decrements
+  trace_buffered_event_cnt[CPU1] back to 0.
+
+* Function trace_event_buffer_lock_reserve() continues. It reads and
+  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
+  believe that it can use the "entry" that it already obtained but the
+  pointer is now invalid and any access results in a use-after-free.
+
+Fix the problem by making a second synchronize_rcu() call after all
+trace_buffered_event values are set to NULL. This waits on all potential
+users in trace_event_buffer_lock_reserve() that still read a previous
+pointer from trace_buffered_event.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/checkstack.pl |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ kernel/trace/trace.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/scripts/checkstack.pl
-+++ b/scripts/checkstack.pl
-@@ -142,15 +142,11 @@ $total_size = 0;
- while (my $line = <STDIN>) {
- 	if ($line =~ m/$funcre/) {
- 		$func = $1;
--		next if $line !~ m/^($xs*)/;
-+		next if $line !~ m/^($x*)/;
- 		if ($total_size > $min_stack) {
- 			push @stack, "$intro$total_size\n";
- 		}
--
--		$addr = $1;
--		$addr =~ s/ /0/g;
--		$addr = "0x$addr";
--
-+		$addr = "0x$1";
- 		$intro = "$addr $func [$file]:";
- 		my $padlen = 56 - length($intro);
- 		while ($padlen > 0) {
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2501,13 +2501,17 @@ void trace_buffered_event_disable(void)
+ 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
+ 		per_cpu(trace_buffered_event, cpu) = NULL;
+ 	}
++
+ 	/*
+-	 * Make sure trace_buffered_event is NULL before clearing
+-	 * trace_buffered_event_cnt.
++	 * Wait for all CPUs that potentially started checking if they can use
++	 * their event buffer only after the previous synchronize_rcu() call and
++	 * they still read a valid pointer from trace_buffered_event. It must be
++	 * ensured they don't see cleared trace_buffered_event_cnt else they
++	 * could wrongly decide to use the pointed-to buffer which is now freed.
+ 	 */
+-	smp_wmb();
++	synchronize_rcu();
+ 
+-	/* Do the work on each cpu */
++	/* For each CPU, relinquish the buffer */
+ 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
+ 			 true);
+ }
 
 
 
