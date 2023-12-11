@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB61180D7A4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F1180D91A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 853521F21A62
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DD8728198D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FD851036;
-	Mon, 11 Dec 2023 18:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AE051C35;
+	Mon, 11 Dec 2023 18:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qawTu5oK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMnzs9nI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70520DDE;
-	Mon, 11 Dec 2023 18:38:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C987FC433C7;
-	Mon, 11 Dec 2023 18:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDABA5102A;
+	Mon, 11 Dec 2023 18:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BCDC433CA;
+	Mon, 11 Dec 2023 18:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319933;
-	bh=IHkF08vwwQCkrZcras5NJhIdeBTSIITgPYBgHqR8Dow=;
+	s=korg; t=1702320665;
+	bh=ts8NW0hSV4qsxYg/kiDiFGtfm9smYcVRHy8FJOHa5kY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qawTu5oKWfQOLJLPL93+QcH5o1/uUcME2E/pQmOSfqVbbpxfaiZmvvHxDxEyNlDJo
-	 V+p0c0UURfc6M0HE0nnsgjlhVxe3jfBgWFRPEe9RUiU1MwQPJzBNMMer1rQ7iDmYi2
-	 WcQHQlfZvArXHuAAWPRpFZiMPRkBLUDcNWuWSAsE=
+	b=VMnzs9nIbZRSh0Sc2+RnWeqXnOCuN0wToR0jKu+3mRpbXHgOuqnGUCTJ1fal92XqG
+	 7SNFS/uOT9cTdlciN3JDR+ZicO86fB98tPK5gwD/JDq/oGtUoJ64vUMYz+o18OXXxQ
+	 qYEt/iFO39TDZzEapHrDozd43E/UJbgfbWHtZhzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 42/97] tracing: Fix a warning when allocating buffered events fails
-Date: Mon, 11 Dec 2023 19:21:45 +0100
-Message-ID: <20231211182021.533290417@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 116/194] tracing: Disable snapshot buffer when stopping instance tracers
+Date: Mon, 11 Dec 2023 19:21:46 +0100
+Message-ID: <20231211182041.701304723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,88 +55,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
+commit b538bf7d0ec11ca49f536dfda742a5f6db90a798 upstream.
 
-Function trace_buffered_event_disable() produces an unexpected warning
-when the previous call to trace_buffered_event_enable() fails to
-allocate pages for buffered events.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). When stopping a tracer in an
+instance would not disable the snapshot buffer. This could have some
+unintended consequences if the irqsoff tracer is enabled.
 
-The situation can occur as follows:
+Consolidate the tracing_start/stop() with tracing_start/stop_tr() so that
+all instances behave the same. The tracing_start/stop() functions will
+just call their respective tracing_start/stop_tr() with the global_array
+passed in.
 
-* The counter trace_buffered_event_ref is at 0.
+Link: https://lkml.kernel.org/r/20231205220011.041220035@goodmis.org
 
-* The soft mode gets enabled for some event and
-  trace_buffered_event_enable() is called. The function increments
-  trace_buffered_event_ref to 1 and starts allocating event pages.
-
-* The allocation fails for some page and trace_buffered_event_disable()
-  is called for cleanup.
-
-* Function trace_buffered_event_disable() decrements
-  trace_buffered_event_ref back to 0, recognizes that it was the last
-  use of buffered events and frees all allocated pages.
-
-* The control goes back to trace_buffered_event_enable() which returns.
-  The caller of trace_buffered_event_enable() has no information that
-  the function actually failed.
-
-* Some time later, the soft mode is disabled for the same event.
-  Function trace_buffered_event_disable() is called. It warns on
-  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
-
-Buffered events are just an optimization and can handle failures. Make
-trace_buffered_event_enable() exit on the first failure and left any
-cleanup later to when trace_buffered_event_disable() is called.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
-
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ kernel/trace/trace.c |  110 +++++++++++++++------------------------------------
+ 1 file changed, 34 insertions(+), 76 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 89a8bb8e24df2..bcf48ee4f20d7 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -2687,8 +2687,11 @@ void trace_buffered_event_enable(void)
- 	for_each_tracing_cpu(cpu) {
- 		page = alloc_pages_node(cpu_to_node(cpu),
- 					GFP_KERNEL | __GFP_NORETRY, 0);
--		if (!page)
--			goto failed;
-+		/* This is just an optimization and can handle failures */
-+		if (!page) {
-+			pr_err("Failed to allocate event buffer\n");
-+			break;
-+		}
- 
- 		event = page_address(page);
- 		memset(event, 0, sizeof(*event));
-@@ -2702,10 +2705,6 @@ void trace_buffered_event_enable(void)
- 			WARN_ON_ONCE(1);
- 		preempt_enable();
- 	}
--
--	return;
-- failed:
--	trace_buffered_event_disable();
+@@ -2297,13 +2297,7 @@ int is_tracing_stopped(void)
+ 	return global_trace.stop_count;
  }
  
- static void enable_trace_buffered_event(void *data)
--- 
-2.42.0
-
+-/**
+- * tracing_start - quick start of the tracer
+- *
+- * If tracing is enabled but was stopped by tracing_stop,
+- * this will start the tracer back up.
+- */
+-void tracing_start(void)
++static void tracing_start_tr(struct trace_array *tr)
+ {
+ 	struct trace_buffer *buffer;
+ 	unsigned long flags;
+@@ -2311,119 +2305,83 @@ void tracing_start(void)
+ 	if (tracing_disabled)
+ 		return;
+ 
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (--global_trace.stop_count) {
+-		if (global_trace.stop_count < 0) {
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (--tr->stop_count) {
++		if (WARN_ON_ONCE(tr->stop_count < 0)) {
+ 			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			global_trace.stop_count = 0;
++			tr->stop_count = 0;
+ 		}
+ 		goto out;
+ 	}
+ 
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
+ 
+-	buffer = global_trace.array_buffer.buffer;
++	buffer = tr->array_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
+-}
+-
+-static void tracing_start_tr(struct trace_array *tr)
+-{
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	if (tracing_disabled)
+-		return;
+-
+-	/* If global, we need to also start the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_start();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-
+-	if (--tr->stop_count) {
+-		if (tr->stop_count < 0) {
+-			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			tr->stop_count = 0;
+-		}
+-		goto out;
+-	}
+-
+-	buffer = tr->array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_enable(buffer);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+ 	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+ /**
+- * tracing_stop - quick stop of the tracer
++ * tracing_start - quick start of the tracer
+  *
+- * Light weight way to stop tracing. Use in conjunction with
+- * tracing_start.
++ * If tracing is enabled but was stopped by tracing_stop,
++ * this will start the tracer back up.
+  */
+-void tracing_stop(void)
++void tracing_start(void)
++
++{
++	return tracing_start_tr(&global_trace);
++}
++
++static void tracing_stop_tr(struct trace_array *tr)
+ {
+ 	struct trace_buffer *buffer;
+ 	unsigned long flags;
+ 
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (global_trace.stop_count++)
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (tr->stop_count++)
+ 		goto out;
+ 
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
+ 
+-	buffer = global_trace.array_buffer.buffer;
++	buffer = tr->array_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
++	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+-static void tracing_stop_tr(struct trace_array *tr)
++/**
++ * tracing_stop - quick stop of the tracer
++ *
++ * Light weight way to stop tracing. Use in conjunction with
++ * tracing_start.
++ */
++void tracing_stop(void)
+ {
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	/* If global, we need to also stop the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_stop();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-	if (tr->stop_count++)
+-		goto out;
+-
+-	buffer = tr->array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
++	return tracing_stop_tr(&global_trace);
+ }
+ 
+ static int trace_save_cmdline(struct task_struct *tsk)
 
 
 
