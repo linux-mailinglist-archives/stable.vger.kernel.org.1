@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-5759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFAE80D692
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E8680D536
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2801F21B26
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A815C281A97
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADE551C4F;
-	Mon, 11 Dec 2023 18:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411A35101A;
+	Mon, 11 Dec 2023 18:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6gZQxBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/WijZVS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4080C8C8;
-	Mon, 11 Dec 2023 18:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773A7C433C8;
-	Mon, 11 Dec 2023 18:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED494F212;
+	Mon, 11 Dec 2023 18:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D292C433C7;
+	Mon, 11 Dec 2023 18:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319589;
-	bh=wdUK1F1Y98+0NefYV6GW0/E3j2jO3PAvtMjSAyx7IBM=;
+	s=korg; t=1702318899;
+	bh=kddJvnqmUPItprMWOl2CdvK21v6iQwv8pdqLt5Zu9Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6gZQxBIGMKcdzGTFjRBLlSxCPqfsNmvVX6X3mYgwoZOpuN43YTnbyhMd5aXd/eDE
-	 2eUXwMBiW3e84CP3Vq7JfyWzPFA2xk+KwXXj9i0jvi/hhPX5q0F4uaCIdTmc3BJGmt
-	 zLdBV22NDS7iagLWdaaiO1bA8773nw2t+bHos880=
+	b=c/WijZVSQy6rrV9O8MIVR5xT6311KCTnRsWNxLPE994ipRj7Dr0vA4B7libDXj6vc
+	 xvJI/8JBiz1xnwGYwET44MXk9+vRyljDrF8UmD1fb+pJ81TNweG5/gcToA+5EFU174
+	 xv+njHjgQxPVQ3+mHn9LWmt0uzdtOlVvs2zivCOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grant Grundler <grundler@chromium.org>,
-	ChunHao Lin <hau@realtek.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 161/244] r8169: fix rtl8125b PAUSE frames blasting when suspended
+	YuanShang <YuanShang.Mao@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 03/25] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
 Date: Mon, 11 Dec 2023 19:20:54 +0100
-Message-ID: <20231211182053.074982172@linuxfoundation.org>
+Message-ID: <20231211182008.795665246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +52,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: YuanShang <YuanShang.Mao@amd.com>
 
-commit 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 upstream.
+[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
 
-When FIFO reaches near full state, device will issue pause frame.
-If pause slot is enabled(set to 1), in this time, device will issue
-pause frame only once. But if pause slot is disabled(set to 0), device
-will keep sending pause frames until FIFO reaches near empty state.
+The variable "chunk_ptr" should be a pointer pointing
+to a struct drm_amdgpu_cs_chunk instead of to a pointer
+of that.
 
-When pause slot is disabled, if there is no one to handle receive
-packets, device FIFO will reach near full state and keep sending
-pause frames. That will impact entire local area network.
-
-This issue can be reproduced in Chromebox (not Chromebook) in
-developer mode running a test image (and v5.10 kernel):
-1) ping -f $CHROMEBOX (from workstation on same local network)
-2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
-3) ping $ROUTER (wait until ping fails from workstation)
-
-Takes about ~20-30 seconds after step 2 for the local network to
-stop working.
-
-Fix this issue by enabling pause slot to only send pause frame once
-when FIFO reaches near full state.
-
-Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-Reported-by: Grant Grundler <grundler@chromium.org>
-Tested-by: Grant Grundler <grundler@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -196,6 +196,7 @@ enum rtl_registers {
- 					/* No threshold before first PCI xfer */
- #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
- #define	RX_EARLY_OFF			(1 << 11)
-+#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
- #define	RXCFG_DMA_SHIFT			8
- 					/* Unlimited maximum PCI burst. */
- #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
-@@ -2306,9 +2307,13 @@ static void rtl_init_rxcfg(struct rtl816
- 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
- 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
- 		break;
--	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+	case RTL_GIGA_MAC_VER_61:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
- 		break;
-+	case RTL_GIGA_MAC_VER_63:
-+		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
-+			RX_PAUSE_SLOT_ON);
-+		break;
- 	default:
- 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
- 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 7bad519aaae08..d24ef103471b9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -113,7 +113,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, void *data)
+ 	}
+ 
+ 	for (i = 0; i < p->nchunks; i++) {
+-		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
++		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
+ 		struct drm_amdgpu_cs_chunk user_chunk;
+ 		uint32_t __user *cdata;
+ 
+-- 
+2.42.0
+
 
 
 
