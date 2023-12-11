@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847E880D601
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D51280D85A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39FB41F21A2B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EFD91C21607
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4137C51C2D;
-	Mon, 11 Dec 2023 18:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F064E51038;
+	Mon, 11 Dec 2023 18:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgRHVGAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cuk998u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27B41740;
-	Mon, 11 Dec 2023 18:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBB9C433C8;
-	Mon, 11 Dec 2023 18:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD666FC06;
+	Mon, 11 Dec 2023 18:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F10C433C7;
+	Mon, 11 Dec 2023 18:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319420;
-	bh=QgGDbkc3twquDtVXjG7JFw6d64MENH3ZHQ9StQBclvI=;
+	s=korg; t=1702320296;
+	bh=WAroYLBmB69/bsjbIR1oZ/Vt0HKyE7fHuhZxiCarldA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgRHVGAoQ+gR+Lv4GP30lNkDrWDeyur8LMCtiU0uRenvI5BgNfmbCmy9JFlrj43kH
-	 tHMqviyrKg067Bod/3KssEy66FDOayCaeAYQik4NnlZKZUlJ/LJPWbfeybL81OAG8t
-	 xSSwZGSjhHfj3il8RIWebL5KJgKERLODhp5uHU3E=
+	b=2cuk998uEAaUiXMla6CyMiCSQiSYT6d0E6WYTlXJbZ1my4JPPZ1B4z4NR+4yUSV6I
+	 AOVfPPxSdiSpFArvHYe2tlU0EfG64MtlAtNne/21WjVMOFJWrasiaT5h8SuhKQOS0m
+	 v5/G9+w2fv08xBLhJ2svLqzFOQfgAJcnwLaWV5lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/244] ARM: dts: bcm2711-rpi-400: Fix delete-node of led_act
+Subject: [PATCH 6.1 001/194] vdpa/mlx5: preserve CVQ vringh index
 Date: Mon, 11 Dec 2023 19:19:51 +0100
-Message-ID: <20231211182050.164948606@linuxfoundation.org>
+Message-ID: <20231211182036.667748912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +53,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-[ Upstream commit dc761f11af2e39119d3a7942e3d10615f3d900e7 ]
+[ Upstream commit 480b3e73720f6b5d76bef2387b1f9d19ed67573b ]
 
-The LED ACT which is included from bcm2711-rpi-4-b doesn't exists
-on the Raspberry Pi 400. So the bcm2711-rpi-400.dts tries to
-use the delete-node directive in order to remove the complete
-node. Unfortunately the usage get broken in commit 1156e3a78bcc
-("ARM: dts: bcm283x: Move ACT LED into separate dtsi")
-and now ACT and PWR LED using the same GPIO and this prevent
-probing of led-gpios on Raspberry Pi 400:
+mlx5_vdpa does not preserve userland's view of vring base for the control
+queue in the following sequence:
 
-    leds-gpio: probe of leds failed with error -16
+ioctl VHOST_SET_VRING_BASE
+ioctl VHOST_VDPA_SET_STATUS VIRTIO_CONFIG_S_DRIVER_OK
+  mlx5_vdpa_set_status()
+    setup_cvq_vring()
+      vringh_init_iotlb()
+        vringh_init_kern()
+          vrh->last_avail_idx = 0;
+ioctl VHOST_GET_VRING_BASE
 
-So fix the delete-node directive.
+To fix, restore the value of cvq->vring.last_avail_idx after calling
+vringh_init_iotlb.
 
-Fixes: 1156e3a78bcc ("ARM: dts: bcm283x: Move ACT LED into separate dtsi")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231118124252.14838-3-wahrenst@gmx.net
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 5262912ef3cf ("vdpa/mlx5: Add support for control VQ and MAC setting")
+
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <1699014387-194368-1-git-send-email-steven.sistare@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts b/arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts
-index 1ab8184302db4..5a2869a18bd55 100644
---- a/arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts
-+++ b/arch/arm/boot/dts/broadcom/bcm2711-rpi-400.dts
-@@ -36,9 +36,7 @@
- 	gpios = <&gpio 42 GPIO_ACTIVE_HIGH>;
- };
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index bf99654371b35..2b7e796c48897 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -2508,13 +2508,18 @@ static int setup_cvq_vring(struct mlx5_vdpa_dev *mvdev)
+ 	struct mlx5_control_vq *cvq = &mvdev->cvq;
+ 	int err = 0;
  
--&leds {
--	/delete-node/ led_act;
--};
-+/delete-node/ &led_act;
+-	if (mvdev->actual_features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ))
++	if (mvdev->actual_features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)) {
++		u16 idx = cvq->vring.last_avail_idx;
++
+ 		err = vringh_init_iotlb(&cvq->vring, mvdev->actual_features,
+ 					MLX5_CVQ_MAX_ENT, false,
+ 					(struct vring_desc *)(uintptr_t)cvq->desc_addr,
+ 					(struct vring_avail *)(uintptr_t)cvq->driver_addr,
+ 					(struct vring_used *)(uintptr_t)cvq->device_addr);
  
- &pm {
- 	/delete-property/ system-power-controller;
++		if (!err)
++			cvq->vring.last_avail_idx = cvq->vring.last_used_idx = idx;
++	}
+ 	return err;
+ }
+ 
 -- 
 2.42.0
 
