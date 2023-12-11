@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1CF380D836
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F33180D7F8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81C61B213FC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE08B1F2190C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC83C51036;
-	Mon, 11 Dec 2023 18:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73103524C8;
+	Mon, 11 Dec 2023 18:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A+AgsBQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YFFn5iA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9AFC06;
-	Mon, 11 Dec 2023 18:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34B2C433C7;
-	Mon, 11 Dec 2023 18:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E5EFBE1;
+	Mon, 11 Dec 2023 18:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4D9C433C7;
+	Mon, 11 Dec 2023 18:41:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320223;
-	bh=jJZeM5LfWh//0DCH0f4Hg2SnnAJN9TT0h0AdkB2jZec=;
+	s=korg; t=1702320088;
+	bh=IwmTUxTWWReX6Xh2eQ7RcejRfEmO6wy4pb4rgIgX/m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0A+AgsBQtXMDgvQsbM7UA7qcEYujsxNq6nwjfXFiId3zm6ga6npcuDUtMW+XcS13q
-	 GgumWRih64+/1jVB5kE2A8nwlaE3pqQVSybh3W+E4oLdaoTQKnzkgi6YgNhxFMOeiI
-	 ZnpvfSSeebNv8kAaTgYvDaZbQ2jBUtcZmXWHr6oM=
+	b=1YFFn5iAk5eBEwYcvYcCp6T2U8MmqQoQK70Z9rV27YZ7KmO7d9IDgc0QOqFG5v7id
+	 DzRjAVp6SNTQ4wOgAV3cMmed7Bb6nE7jyFqNbstxllCiAQQZkX7IzKEq8IQU1oPe3v
+	 VpSFd58XGjzZgFCGKjcVR2Yx3N2H0LSreLgTvtrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5.4 49/67] parport: Add support for Brainboxes IX/UC/PX parallel cards
+	"Luke D. Jones" <luke@ljones.dev>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.10 90/97] platform/x86: asus-wmi: Document the dgpu_disable sysfs attribute
 Date: Mon, 11 Dec 2023 19:22:33 +0100
-Message-ID: <20231211182017.097319417@linuxfoundation.org>
+Message-ID: <20231211182023.686873717@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Luke D. Jones <luke@ljones.dev>
 
-commit 1a031f6edc460e9562098bdedc3918da07c30a6e upstream.
+commit 7e64c486e807c8edfbd3a0c8e44ad7a1896dbec8 upstream.
 
-Adds support for Intashield IX-500/IX-550, UC-146/UC-157, PX-146/PX-157,
-PX-203 and PX-475 (LPT port)
+The dgpu_disable attribute was not documented, this adds the
+required documentation.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB790389C130410BD864C8DCC9C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+Fixes: 98829e84dc67 ("asus-wmi: Add dgpu disable method")
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20220812222509.292692-2-luke@ljones.dev
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/parport_pc.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ Documentation/ABI/testing/sysfs-platform-asus-wmi |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2648,6 +2648,8 @@ enum parport_pc_pci_cards {
- 	netmos_9865,
- 	quatech_sppxp100,
- 	wch_ch382l,
-+	brainboxes_uc146,
-+	brainboxes_px203,
- };
- 
- 
-@@ -2711,6 +2713,8 @@ static struct parport_pc_pci {
- 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
- 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
- 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
-+	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_px203 */	{ 1, { { 0, -1 }, } },
- };
- 
- static const struct pci_device_id parport_pc_pci_tbl[] = {
-@@ -2802,6 +2806,23 @@ static const struct pci_device_id parpor
- 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
- 	/* WCH CH382L PCI-E single parallel port card */
- 	{ 0x1c00, 0x3050, 0x1c00, 0x3050, 0, 0, wch_ch382l },
-+	/* Brainboxes IX-500/550 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x402a,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
-+	/* Brainboxes UC-146/UC-157 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0be1,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0be2,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
-+	/* Brainboxes PX-146/PX-257 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x401c,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
-+	/* Brainboxes PX-203 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x4007,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px203 },
-+	/* Brainboxes PX-475 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x401f,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
- 	{ 0, } /* terminate list */
- };
- MODULE_DEVICE_TABLE(pci, parport_pc_pci_tbl);
+--- a/Documentation/ABI/testing/sysfs-platform-asus-wmi
++++ b/Documentation/ABI/testing/sysfs-platform-asus-wmi
+@@ -57,3 +57,12 @@ Description:
+ 			* 0 - default,
+ 			* 1 - overboost,
+ 			* 2 - silent
++
++What:		/sys/devices/platform/<platform>/dgpu_disable
++Date:		Aug 2022
++KernelVersion:	5.17
++Contact:	"Luke Jones" <luke@ljones.dev>
++Description:
++		Disable discrete GPU:
++			* 0 - Enable dGPU,
++			* 1 - Disable dGPU
 
 
 
