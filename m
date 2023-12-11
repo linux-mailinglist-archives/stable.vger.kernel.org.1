@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5043780D638
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8462380D8B5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 054B4282411
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9291F21A64
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A15FFC06;
-	Mon, 11 Dec 2023 18:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD71951C2D;
+	Mon, 11 Dec 2023 18:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBWSBrVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfQPt5wV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA1C2D0;
-	Mon, 11 Dec 2023 18:32:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A34C433C8;
-	Mon, 11 Dec 2023 18:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740855102A;
+	Mon, 11 Dec 2023 18:48:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E799EC433C9;
+	Mon, 11 Dec 2023 18:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319547;
-	bh=dLEs1T7oNvvxZz+6/nm+GWjOXqJZBtxfFfQAa8/UdR8=;
+	s=korg; t=1702320484;
+	bh=gBZseWC/6O89pYQ45W+x/Oe73vJlOa6kdyXZ7ulbFsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZBWSBrVDvpi+ALY1JTOEFOLJCrPzG8X4rXdby6cJx4BUjGhuU2/sQAKLZ79y0A+G0
-	 Y9H/fK0xKMfcOWz2c0xrwuGP0mCjUN3jW6va/MIEi3dQnZ0SeF9EuHFHBiGiPvBTve
-	 raxWypf+H5TaxSzQkei7NOTAY/puj3n5THOMPriA=
+	b=JfQPt5wVpXMRIT9cfPxvvColy81ICBlwfqZHyEvfZosjkLqxQ/sGC3EnSH0lDE1k4
+	 PiNvHn5HEcAyZHraeubBSxfU6ru04XY33SUr8M1HrqoP4nVB9XSkBFED6hEZGBtFIw
+	 6fQxjgVh6ZRcpYhd0Emjpv5TybRt1+8NiFTPXW5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 146/244] ring-buffer: Force absolute timestamp on discard of event
-Date: Mon, 11 Dec 2023 19:20:39 +0100
-Message-ID: <20231211182052.347360487@linuxfoundation.org>
+	Geetha sowjanya <gakula@marvell.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 050/194] octeontx2-af: Add missing mcs flr handler call
+Date: Mon, 11 Dec 2023 19:20:40 +0100
+Message-ID: <20231211182038.805722046@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Geetha sowjanya <gakula@marvell.com>
 
-commit b2dd797543cfa6580eac8408dd67fa02164d9e56 upstream.
+[ Upstream commit d431abd0a9aa27be379fb5f8304062071b0f5a7e ]
 
-There's a race where if an event is discarded from the ring buffer and an
-interrupt were to happen at that time and insert an event, the time stamp
-is still used from the discarded event as an offset. This can screw up the
-timings.
+If mcs resources are attached to PF/VF. These resources need
+to be freed on FLR. This patch add missing mcs flr call on PF FLR.
 
-If the event is going to be discarded, set the "before_stamp" to zero.
-When a new event comes in, it compares the "before_stamp" with the
-"write_stamp" and if they are not equal, it will insert an absolute
-timestamp. This will prevent the timings from getting out of sync due to
-the discarded event.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231206100244.5130f9b3@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 6f6be606e763f ("ring-buffer: Force before_stamp and write_stamp to be different on discard")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd69476e86fc ("octeontx2-af: cn10k: mcs: Install a default TCAM for normal traffic")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3030,23 +3030,20 @@ rb_try_to_discard(struct ring_buffer_per
- 			local_read(&bpage->write) & ~RB_WRITE_MASK;
- 		unsigned long event_length = rb_event_length(event);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 733add3a9dc6b..d88d86bf07b03 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -2622,6 +2622,9 @@ static void __rvu_flr_handler(struct rvu *rvu, u16 pcifunc)
+ 	 */
+ 	rvu_npc_free_mcam_entries(rvu, pcifunc, -1);
  
-+		/*
-+		 * For the before_stamp to be different than the write_stamp
-+		 * to make sure that the next event adds an absolute
-+		 * value and does not rely on the saved write stamp, which
-+		 * is now going to be bogus.
-+		 */
-+		rb_time_set(&cpu_buffer->before_stamp, 0);
++	if (rvu->mcs_blk_cnt)
++		rvu_mcs_flr_handler(rvu, pcifunc);
 +
- 		/* Something came in, can't discard */
- 		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
- 				       write_stamp, write_stamp - delta))
- 			return false;
+ 	mutex_unlock(&rvu->flr_lock);
+ }
  
- 		/*
--		 * It's possible that the event time delta is zero
--		 * (has the same time stamp as the previous event)
--		 * in which case write_stamp and before_stamp could
--		 * be the same. In such a case, force before_stamp
--		 * to be different than write_stamp. It doesn't
--		 * matter what it is, as long as its different.
--		 */
--		if (!delta)
--			rb_time_set(&cpu_buffer->before_stamp, 0);
--
--		/*
- 		 * If an event were to come in now, it would see that the
- 		 * write_stamp and the before_stamp are different, and assume
- 		 * that this event just added itself before updating
+-- 
+2.42.0
+
 
 
 
