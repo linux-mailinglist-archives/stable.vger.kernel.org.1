@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-5756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DE880D68F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2389380D89B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836AD1C21640
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0BA128195C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4F151C3F;
-	Mon, 11 Dec 2023 18:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0AB51C2C;
+	Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E29yFDCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6I3oBC1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098B551C39;
-	Mon, 11 Dec 2023 18:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A82C433C8;
-	Mon, 11 Dec 2023 18:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284A54437B;
+	Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51A1C433C8;
+	Mon, 11 Dec 2023 18:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319581;
-	bh=9n8tiKmxTdJdfgAWFSRcAYpgzmlnw1x3cLGgDMCp14k=;
+	s=korg; t=1702320436;
+	bh=2c+eamILThX6jo5Q/W08EZhislQk4bqCEJNPTTDbkE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E29yFDCrVCsXQILOnjrsU+ojsx+aCk4luBxereJmYFwgTEKITqT+QrbAhCPj83PPB
-	 SBHm46yAqyyCMyL6jmseN3N+AZMTsTTnNBflcuKOp+kcRJbyhqOqyJFNrBfJQ32ZWT
-	 ojfz+EhbKAoaAwwk6TwGtE/wAu8BnU4riUb4xFWY=
+	b=l6I3oBC1PvXxxKORXuX+0CSlVUpQPjHVHtv7J/72K4c8m05RgDa93dbfUEoP6eSUA
+	 +L9h4DZ/J6Pkv0dJQvmPsYcui5npIJ938RROvRNrGeSZic1dv21Dyob9BpBeHFQagO
+	 S2UZ4msgHs3XMKgFvWnVGDOkSi78owWk3CQRhRzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Lee Jones <lee@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 158/244] leds: trigger: netdev: fix RTNL handling to prevent potential deadlock
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 061/194] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
 Date: Mon, 11 Dec 2023 19:20:51 +0100
-Message-ID: <20231211182052.933257669@linuxfoundation.org>
+Message-ID: <20231211182039.230858080@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,183 +56,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit fe2b1226656afae56702d1d84c6900f6b67df297 upstream.
+[ Upstream commit e03781879a0d524ce3126678d50a80484a513c4b ]
 
-When working on LED support for r8169 I got the following lockdep
-warning. Easiest way to prevent this scenario seems to be to take
-the RTNL lock before the trigger_data lock in set_device_name().
+The "NET_DM" generic netlink family notifies drop locations over the
+"events" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.7.0-rc2-next-20231124+ #2 Not tainted
-------------------------------------------------------
-bash/383 is trying to acquire lock:
-ffff888103aa1c68 (&trigger_data->lock){+.+.}-{3:3}, at: netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
+Fix by adding a new field to the generic netlink multicast group
+structure that when set prevents non-root users or root without the
+'CAP_SYS_ADMIN' capability (in the user namespace owning the network
+namespace) from joining the group. Set this field for the "events"
+group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
+nature of the information that is shared over this group.
 
-but task is already holding lock:
-ffffffff8cddf808 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock+0x12/0x20
+Note that the capability check in this case will always be performed
+against the initial user namespace since the family is not netns aware
+and only operates in the initial network namespace.
 
-which lock already depends on the new lock.
+A new field is added to the structure rather than using the "flags"
+field because the existing field uses uAPI flags and it is inappropriate
+to add a new uAPI flag for an internal kernel check. In net-next we can
+rework the "flags" field to use internal flags and fold the new field
+into it. But for now, in order to reduce the amount of changes, add a
+new field.
 
-the existing dependency chain (in reverse order) is:
+Since the information can only be consumed by root, mark the control
+plane operations that start and stop the tracing as root-only using the
+'GENL_ADMIN_PERM' flag.
 
--> #1 (rtnl_mutex){+.+.}-{3:3}:
-       __mutex_lock+0x9b/0xb50
-       mutex_lock_nested+0x16/0x20
-       rtnl_lock+0x12/0x20
-       set_device_name+0xa9/0x120 [ledtrig_netdev]
-       netdev_trig_activate+0x1a1/0x230 [ledtrig_netdev]
-       led_trigger_set+0x172/0x2c0
-       led_trigger_write+0xf1/0x140
-       sysfs_kf_bin_write+0x5d/0x80
-       kernfs_fop_write_iter+0x15d/0x210
-       vfs_write+0x1f0/0x510
-       ksys_write+0x6c/0xf0
-       __x64_sys_write+0x14/0x20
-       do_syscall_64+0x3f/0xf0
-       entry_SYSCALL_64_after_hwframe+0x6c/0x74
+Tested using [1].
 
--> #0 (&trigger_data->lock){+.+.}-{3:3}:
-       __lock_acquire+0x1459/0x25a0
-       lock_acquire+0xc8/0x2d0
-       __mutex_lock+0x9b/0xb50
-       mutex_lock_nested+0x16/0x20
-       netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
-       call_netdevice_register_net_notifiers+0x5a/0x100
-       register_netdevice_notifier+0x85/0x120
-       netdev_trig_activate+0x1d4/0x230 [ledtrig_netdev]
-       led_trigger_set+0x172/0x2c0
-       led_trigger_write+0xf1/0x140
-       sysfs_kf_bin_write+0x5d/0x80
-       kernfs_fop_write_iter+0x15d/0x210
-       vfs_write+0x1f0/0x510
-       ksys_write+0x6c/0xf0
-       __x64_sys_write+0x14/0x20
-       do_syscall_64+0x3f/0xf0
-       entry_SYSCALL_64_after_hwframe+0x6c/0x74
+Before:
 
-other info that might help us debug this:
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
 
- Possible unsafe locking scenario:
+After:
 
-       CPU0                    CPU1
-       ----                    ----
-  lock(rtnl_mutex);
-                               lock(&trigger_data->lock);
-                               lock(rtnl_mutex);
-  lock(&trigger_data->lock);
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+ Failed to join "events" multicast group
 
- *** DEADLOCK ***
+[1]
+ $ cat dm.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
 
-8 locks held by bash/383:
- #0: ffff888103ff33f0 (sb_writers#3){.+.+}-{0:0}, at: ksys_write+0x6c/0xf0
- #1: ffff888103aa1e88 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x114/0x210
- #2: ffff8881036f1890 (kn->active#82){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x11d/0x210
- #3: ffff888108e2c358 (&led_cdev->led_access){+.+.}-{3:3}, at: led_trigger_write+0x30/0x140
- #4: ffffffff8cdd9e10 (triggers_list_lock){++++}-{3:3}, at: led_trigger_write+0x75/0x140
- #5: ffff888108e2c270 (&led_cdev->trigger_lock){++++}-{3:3}, at: led_trigger_write+0xe3/0x140
- #6: ffffffff8cdde3d0 (pernet_ops_rwsem){++++}-{3:3}, at: register_netdevice_notifier+0x1c/0x120
- #7: ffffffff8cddf808 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock+0x12/0x20
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int grp, err;
 
-stack backtrace:
-CPU: 0 PID: 383 Comm: bash Not tainted 6.7.0-rc2-next-20231124+ #2
-Hardware name: Default string Default string/Default string, BIOS ADLN.M6.SODIMM.ZB.CY.015 08/08/2023
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5c/0xd0
- dump_stack+0x10/0x20
- print_circular_bug+0x2dd/0x410
- check_noncircular+0x131/0x150
- __lock_acquire+0x1459/0x25a0
- lock_acquire+0xc8/0x2d0
- ? netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
- __mutex_lock+0x9b/0xb50
- ? netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
- ? __this_cpu_preempt_check+0x13/0x20
- ? netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
- ? __cancel_work_timer+0x11c/0x1b0
- ? __mutex_lock+0x123/0xb50
- mutex_lock_nested+0x16/0x20
- ? mutex_lock_nested+0x16/0x20
- netdev_trig_notify+0xec/0x190 [ledtrig_netdev]
- call_netdevice_register_net_notifiers+0x5a/0x100
- register_netdevice_notifier+0x85/0x120
- netdev_trig_activate+0x1d4/0x230 [ledtrig_netdev]
- led_trigger_set+0x172/0x2c0
- ? preempt_count_add+0x49/0xc0
- led_trigger_write+0xf1/0x140
- sysfs_kf_bin_write+0x5d/0x80
- kernfs_fop_write_iter+0x15d/0x210
- vfs_write+0x1f0/0x510
- ksys_write+0x6c/0xf0
- __x64_sys_write+0x14/0x20
- do_syscall_64+0x3f/0xf0
- entry_SYSCALL_64_after_hwframe+0x6c/0x74
-RIP: 0033:0x7f269055d034
-Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d 35 c3 0d 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 48 83 ec 28 48 89 54 24 18 48
-RSP: 002b:00007ffddb7ef748 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000007 RCX: 00007f269055d034
-RDX: 0000000000000007 RSI: 000055bf5f4af3c0 RDI: 0000000000000001
-RBP: 000055bf5f4af3c0 R08: 0000000000000073 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000007
-R13: 00007f26906325c0 R14: 00007f269062ff20 R15: 0000000000000000
- </TASK>
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
 
-Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/fb5c8294-2a10-4bf5-8f10-3d2b77d2757e@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/leds/trigger/ledtrig-netdev.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
 
-diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
-index e358e77e4b38..d76214fa9ad8 100644
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -226,6 +226,11 @@ static int set_device_name(struct led_netdev_data *trigger_data,
- 
- 	cancel_delayed_work_sync(&trigger_data->work);
- 
-+	/*
-+	 * Take RTNL lock before trigger_data lock to prevent potential
-+	 * deadlock with netdev notifier registration.
-+	 */
-+	rtnl_lock();
- 	mutex_lock(&trigger_data->lock);
- 
- 	if (trigger_data->net_dev) {
-@@ -245,16 +250,14 @@ static int set_device_name(struct led_netdev_data *trigger_data,
- 	trigger_data->carrier_link_up = false;
- 	trigger_data->link_speed = SPEED_UNKNOWN;
- 	trigger_data->duplex = DUPLEX_UNKNOWN;
--	if (trigger_data->net_dev != NULL) {
--		rtnl_lock();
-+	if (trigger_data->net_dev)
- 		get_device_state(trigger_data);
--		rtnl_unlock();
--	}
- 
- 	trigger_data->last_activity = 0;
- 
- 	set_baseline_state(trigger_data);
- 	mutex_unlock(&trigger_data->lock);
-+	rtnl_unlock();
- 
+ 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
+ 	if (grp < 0) {
+ 		fprintf(stderr,
+ 			"Failed to resolve \"events\" multicast group\n");
+ 		return grp;
+ 	}
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
+ 		return err;
+ 	}
+
  	return 0;
  }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
+
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/genetlink.h | 2 ++
+ net/core/drop_monitor.c | 4 +++-
+ net/netlink/genetlink.c | 3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/include/net/genetlink.h b/include/net/genetlink.h
+index 9f97f73615b69..b9e5a22ae3ff9 100644
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -12,10 +12,12 @@
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
+  * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
++ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
++	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index f084a4a6b7ab2..8e0a90b45df22 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -181,7 +181,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", },
++	{ .name = "events", .cap_sys_admin = 1 },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+@@ -1604,11 +1604,13 @@ static const struct genl_small_ops dropmon_ops[] = {
+ 		.cmd = NET_DM_CMD_START,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_STOP,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_CONFIG_GET,
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 3e16527beb914..505d3b910cc29 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1438,6 +1438,9 @@ static int genl_bind(struct net *net, int group)
+ 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
++		if (grp->cap_sys_admin &&
++		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
++			ret = -EPERM;
+ 
+ 		break;
+ 	}
 -- 
-2.43.0
+2.42.0
 
 
 
