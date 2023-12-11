@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-6303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D3B80D9F4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2572880D837
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 223D8B219A0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4DE22810DE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF36524C0;
-	Mon, 11 Dec 2023 18:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740D85102F;
+	Mon, 11 Dec 2023 18:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYMoNx2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIAItDeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A3B321B8;
-	Mon, 11 Dec 2023 18:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AD1C433C8;
-	Mon, 11 Dec 2023 18:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F4EFC06;
+	Mon, 11 Dec 2023 18:43:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFC7C433C7;
+	Mon, 11 Dec 2023 18:43:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321064;
-	bh=2gTKUZZT497uWHZL0yyeSkgjLpL3a58Sm2a0QFRHSEE=;
+	s=korg; t=1702320226;
+	bh=kYXl83PZqYb7vcKeFva8qfIn1SB+bwx/MRW6dmYDVEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYMoNx2+NsxBA0XliodXP9OjxHgFzjMEd/TZKJ+PrS7AuMlyZN+v8O0RS5oYRQYI6
-	 pOU11fF07so6HlZCYRcfscsNavtoyOA6pcq1JZWVBzrv7IGeZByTkWBALvJhgME8Bl
-	 rmfYsT7jF+3of6oN3IZbdEu/0e03bLNjQL3Gs4Lw=
+	b=uIAItDebQ9BLXKS+TJbXqolEOGVsDvgZD8S5u5fpJ4TDuDyOw58+yeyd1e7FUJVPl
+	 D8z507MODMeVsdjSDNaMyPtgeyIodB1+GU85/J/8YIZFf6WzrTfZ4HpQJH3ZZBo/fS
+	 CxQxBKUu7Fkz0tJdNZGXlUQg4k1MnCF6Id7h1GSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.15 095/141] arm64: dts: mediatek: mt8183: Fix unit address for scp reserved memory
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 50/67] usb: typec: class: fix typec_altmode_put_partner to put plugs
 Date: Mon, 11 Dec 2023 19:22:34 +0100
-Message-ID: <20231211182030.675166455@linuxfoundation.org>
+Message-ID: <20231211182017.141847875@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: RD Babiera <rdbabiera@google.com>
 
-commit 19cba9a6c071db57888dc6b2ec1d9bf8996ea681 upstream.
+commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e upstream.
 
-The reserved memory for scp had node name "scp_mem_region" and also
-without unit-address: change the name to "memory@(address)".
-This fixes a unit_address_vs_reg warning.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released evaluates against the
+released altmode's partner instead of the calling altmode itself, so change
+adev in typec_altmode_put_partner to properly refer to the altmode being
+released.
 
+typec_altmode_set_partner is not run for port altmodes, so also add a check
+in typec_altmode_release to prevent typec_altmode_put_partner() calls on
+port altmode release.
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
 Cc: stable@vger.kernel.org
-Fixes: 1652dbf7363a ("arm64: dts: mt8183: add scp node")
-Link: https://lore.kernel.org/r/20231025093816.44327-6-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231129192349.1773623-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-evb.dts    |    2 +-
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-@@ -30,7 +30,7 @@
- 		#address-cells = <2>;
- 		#size-cells = <2>;
- 		ranges;
--		scp_mem_reserved: scp_mem_region {
-+		scp_mem_reserved: memory@50000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x50000000 0 0x2900000>;
- 			no-map;
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -108,7 +108,7 @@
- 		#size-cells = <2>;
- 		ranges;
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -193,7 +193,7 @@ static void typec_altmode_put_partner(st
+ 	if (!partner)
+ 		return;
  
--		scp_mem_reserved: scp_mem_region {
-+		scp_mem_reserved: memory@50000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x50000000 0 0x2900000>;
- 			no-map;
+-	adev = &partner->adev;
++	adev = &altmode->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -465,7 +465,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
