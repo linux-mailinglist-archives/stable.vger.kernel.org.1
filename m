@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BBDA80D786
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C6980D8C1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F09C2B2129B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BCA2B21528
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CF953E0B;
-	Mon, 11 Dec 2023 18:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AACB51C2A;
+	Mon, 11 Dec 2023 18:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14LjZX9y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtKo+4Y8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E03A52F8D;
-	Mon, 11 Dec 2023 18:37:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB1DC433C7;
-	Mon, 11 Dec 2023 18:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F9D5102A;
+	Mon, 11 Dec 2023 18:48:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B2EC433C8;
+	Mon, 11 Dec 2023 18:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319862;
-	bh=gxZbcBPXuUyZl3yZFmlbz/UJ2j3EVo/oXBzCIXQdxQY=;
+	s=korg; t=1702320513;
+	bh=IuclpyUtpwEs5y3H1KadFzVzk38yMoSlEi16NdlUkLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14LjZX9ynRFDpDGhztvojUbZi7fD+QRQ/aXSs+ZR9QqKoCsquVbLenvB3hOLS8Tsq
-	 tO9rWFrHGHmb+RKkiaKMA77aTaOV3NR5WG1SVPXHisRGges6JvLUQK5ruFnhw50UoV
-	 0vb+7cjZgGGpZoIuzgJlIEIQTD6O/7ZcnOYrhogs=
+	b=gtKo+4Y8azkaPkoJYafce2cNeucDp8h6NJ4jP34bAsLIiW3X6q5EkGemMCey6qXVE
+	 6JodnEPvonSrWLlC531umIpLXrNI3o4JiE3bJrQitGuN2n/viWRm1YLcIkGC5FAIgA
+	 pdSY5/0/TstFoqfcSOiby4Oe+RIOJgySAM8H8DfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <linux@rempel-privat.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 16/97] platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code
+Subject: [PATCH 6.1 089/194] ARM: dts: imx6ul-pico: Describe the Ethernet PHY clock
 Date: Mon, 11 Dec 2023 19:21:19 +0100
-Message-ID: <20231211182020.501895087@linuxfoundation.org>
+Message-ID: <20231211182040.435302220@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,112 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit b52cbca22cbf6c9d2700c1e576d0ddcc670e49d5 ]
+[ Upstream commit d951f8f5f23a9417b7952f22b33784c73caa1ebb ]
 
-asus-nb-wmi calls i8042_install_filter() in some cases, but it never
-calls i8042_remove_filter(). This means that a dangling pointer to
-the filter function is left after rmmod leading to crashes.
+Since commit c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK
+specific PHY fixup")thet Ethernet PHY is no longer configured via code
+in board file.
 
-Fix this by moving the i8042-filter installation to the shared
-asus-wmi code and also remove it from the shared code on driver unbind.
+This caused Ethernet to stop working.
 
-Fixes: b5643539b825 ("platform/x86: asus-wmi: Filter buggy scan codes on ASUS Q500A")
-Cc: Oleksij Rempel <linux@rempel-privat.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231120154235.610808-2-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix this problem by describing the clocks and clock-names to the
+Ethernet PHY node so that the KSZ8081 chip can be clocked correctly.
+
+Fixes: c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific PHY fixup")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/Kconfig       |  2 +-
- drivers/platform/x86/asus-nb-wmi.c | 11 -----------
- drivers/platform/x86/asus-wmi.c    |  8 ++++++++
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ arch/arm/boot/dts/imx6ul-pico.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 84c5b922f245e..c14c145b88d80 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -243,6 +243,7 @@ config ASUS_WMI
- 	depends on RFKILL || RFKILL = n
- 	depends on HOTPLUG_PCI
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
-+	depends on SERIO_I8042 || SERIO_I8042 = n
- 	select INPUT_SPARSEKMAP
- 	select LEDS_CLASS
- 	select NEW_LEDS
-@@ -256,7 +257,6 @@ config ASUS_WMI
- config ASUS_NB_WMI
- 	tristate "Asus Notebook WMI Driver"
- 	depends on ASUS_WMI
--	depends on SERIO_I8042 || SERIO_I8042 = n
- 	help
- 	  This is a driver for newer Asus notebooks. It adds extra features
- 	  like wireless radio and bluetooth control, leds, hotkeys, backlight...
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index 7b8942fee76dd..49505939352ae 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -490,8 +490,6 @@ static const struct dmi_system_id asus_quirks[] = {
- 
- static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
- {
--	int ret;
--
- 	quirks = &quirk_asus_unknown;
- 	dmi_check_system(asus_quirks);
- 
-@@ -506,15 +504,6 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
- 
- 	if (tablet_mode_sw != -1)
- 		quirks->tablet_switch_mode = tablet_mode_sw;
--
--	if (quirks->i8042_filter) {
--		ret = i8042_install_filter(quirks->i8042_filter);
--		if (ret) {
--			pr_warn("Unable to install key filter\n");
--			return;
--		}
--		pr_info("Using i8042 filter function for receiving events\n");
--	}
- }
- 
- static const struct key_entry asus_nb_wmi_keymap[] = {
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index a1008af0741c6..695907c6503c0 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -2779,6 +2779,12 @@ static int asus_wmi_add(struct platform_device *pdev)
- 		goto fail_wmi_handler;
- 	}
- 
-+	if (asus->driver->quirks->i8042_filter) {
-+		err = i8042_install_filter(asus->driver->quirks->i8042_filter);
-+		if (err)
-+			pr_warn("Unable to install key filter - %d\n", err);
-+	}
-+
- 	asus_wmi_battery_init(asus);
- 
- 	asus_wmi_debugfs_init(asus);
-@@ -2810,6 +2816,8 @@ static int asus_wmi_remove(struct platform_device *device)
- 	struct asus_wmi *asus;
- 
- 	asus = platform_get_drvdata(device);
-+	if (asus->driver->quirks->i8042_filter)
-+		i8042_remove_filter(asus->driver->quirks->i8042_filter);
- 	wmi_remove_notify_handler(asus->driver->event_guid);
- 	asus_wmi_backlight_exit(asus);
- 	asus_wmi_input_exit(asus);
+diff --git a/arch/arm/boot/dts/imx6ul-pico.dtsi b/arch/arm/boot/dts/imx6ul-pico.dtsi
+index 357ffb2f5ad61..dd6790852b0d6 100644
+--- a/arch/arm/boot/dts/imx6ul-pico.dtsi
++++ b/arch/arm/boot/dts/imx6ul-pico.dtsi
+@@ -121,6 +121,8 @@
+ 			max-speed = <100>;
+ 			interrupt-parent = <&gpio5>;
+ 			interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++			clocks = <&clks IMX6UL_CLK_ENET_REF>;
++			clock-names = "rmii-ref";
+ 		};
+ 	};
+ };
 -- 
 2.42.0
 
