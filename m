@@ -1,56 +1,48 @@
-Return-Path: <stable+bounces-5766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AEF280D69A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC18A80D554
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050AD1F21B20
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B78B1C20F35
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEDA524A4;
-	Mon, 11 Dec 2023 18:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08C84F213;
+	Mon, 11 Dec 2023 18:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8XKPNBL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ai9MGJ6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FA451C5B;
-	Mon, 11 Dec 2023 18:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C06C433C9;
-	Mon, 11 Dec 2023 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949025101A;
+	Mon, 11 Dec 2023 18:22:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AA4C433C8;
+	Mon, 11 Dec 2023 18:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319608;
-	bh=Ntx15zgQkT/WWi8EF/UEGD+jkRyAPqMMGvpxVTYbSlU=;
+	s=korg; t=1702318962;
+	bh=JEpqpOlTgzvQBYhjIBhWsuI71qDakNYaD+TZUamwVYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8XKPNBLjTK1k1zkC1ooqLisdHwus8Y3bXRJ8iyY7CZvuaNT9diTb0Fpe5+8WAzVN
-	 bXJzfHr/GkShTUMRvsamC+VT41kkpp82or2yuAZK/HHvs65zqBRmQ3LzXMXnbVXYQb
-	 tKMoCQNcRwDyy5KFnVOxFwQtLLOwVg76jqF85ZlM=
+	b=Ai9MGJ6GEgW/xnejblHW5n1SsX+ZP/V5b5ecPbT4EUDiOaHnKh0TSxP0PdpDMJmMv
+	 jJJOJvPkNamRhBO+xwoseiWgjMY2LUvxcItTa2DHpoQh6MBdfi2tPuk5k+ZZAz/r+h
+	 Ea4MZz8ySfuGGMFypI1RdKhAsz29p3qdMGIzrlHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	kernel test robot <lkp@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 167/244] mm/memory_hotplug: add missing mem_hotplug_lock
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 09/25] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
 Date: Mon, 11 Dec 2023 19:21:00 +0100
-Message-ID: <20231211182053.371096092@linuxfoundation.org>
+Message-ID: <20231211182009.043362952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,216 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 001002e73712cdf6b8d9a103648cda3040ad7647 upstream.
+[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
 
->From Documentation/core-api/memory-hotplug.rst:
-When adding/removing/onlining/offlining memory or adding/removing
-heterogeneous/device memory, we should always hold the mem_hotplug_lock
-in write mode to serialise memory hotplug (e.g. access to global/zone
-variables).
+When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
+should free phwi_ctxt->be_wrbq before returning an error code to prevent
+potential memleak.
 
-mhp_(de)init_memmap_on_memory() functions can change zone stats and
-struct page content, but they are currently called w/o the
-mem_hotplug_lock.
-
-When memory block is being offlined and when kmemleak goes through each
-populated zone, the following theoretical race conditions could occur:
-CPU 0:					     | CPU 1:
-memory_offline()			     |
--> offline_pages()			     |
-	-> mem_hotplug_begin()		     |
-	   ...				     |
-	-> mem_hotplug_done()		     |
-					     | kmemleak_scan()
-					     | -> get_online_mems()
-					     |    ...
--> mhp_deinit_memmap_on_memory()	     |
-  [not protected by mem_hotplug_begin/done()]|
-  Marks memory section as offline,	     |   Retrieves zone_start_pfn
-  poisons vmemmap struct pages and updates   |   and struct page members.
-  the zone related data			     |
-   					     |    ...
-   					     | -> put_online_mems()
-
-Fix this by ensuring mem_hotplug_lock is taken before performing
-mhp_init_memmap_on_memory().  Also ensure that
-mhp_deinit_memmap_on_memory() holds the lock.
-
-online/offline_pages() are currently only called from
-memory_block_online/offline(), so it is safe to move the locking there.
-
-Link: https://lkml.kernel.org/r/20231120145354.308999-2-sumanthk@linux.ibm.com
-Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/memory.c |   18 +++++++++++++++---
- mm/memory_hotplug.c   |   13 ++++++-------
- 2 files changed, 21 insertions(+), 10 deletions(-)
+ drivers/scsi/be2iscsi/be_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -180,6 +180,9 @@ static inline unsigned long memblk_nr_po
- }
- #endif
- 
-+/*
-+ * Must acquire mem_hotplug_lock in write mode.
-+ */
- static int memory_block_online(struct memory_block *mem)
- {
- 	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
-@@ -204,10 +207,11 @@ static int memory_block_online(struct me
- 	if (mem->altmap)
- 		nr_vmemmap_pages = mem->altmap->free;
- 
-+	mem_hotplug_begin();
- 	if (nr_vmemmap_pages) {
- 		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
- 		if (ret)
--			return ret;
-+			goto out;
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index a1fd8a7fa48c3..ddaf2b57d9349 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -2687,6 +2687,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
+ 		kfree(pwrb_context->pwrb_handle_base);
+ 		kfree(pwrb_context->pwrb_handle_basestd);
  	}
- 
- 	ret = online_pages(start_pfn + nr_vmemmap_pages,
-@@ -215,7 +219,7 @@ static int memory_block_online(struct me
- 	if (ret) {
- 		if (nr_vmemmap_pages)
- 			mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
--		return ret;
-+		goto out;
- 	}
- 
- 	/*
-@@ -227,9 +231,14 @@ static int memory_block_online(struct me
- 					  nr_vmemmap_pages);
- 
- 	mem->zone = zone;
-+out:
-+	mem_hotplug_done();
- 	return ret;
++	kfree(phwi_ctxt->be_wrbq);
+ 	return -ENOMEM;
  }
  
-+/*
-+ * Must acquire mem_hotplug_lock in write mode.
-+ */
- static int memory_block_offline(struct memory_block *mem)
- {
- 	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
-@@ -247,6 +256,7 @@ static int memory_block_offline(struct m
- 	if (mem->altmap)
- 		nr_vmemmap_pages = mem->altmap->free;
- 
-+	mem_hotplug_begin();
- 	if (nr_vmemmap_pages)
- 		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
- 					  -nr_vmemmap_pages);
-@@ -258,13 +268,15 @@ static int memory_block_offline(struct m
- 		if (nr_vmemmap_pages)
- 			adjust_present_page_count(pfn_to_page(start_pfn),
- 						  mem->group, nr_vmemmap_pages);
--		return ret;
-+		goto out;
- 	}
- 
- 	if (nr_vmemmap_pages)
- 		mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
- 
- 	mem->zone = NULL;
-+out:
-+	mem_hotplug_done();
- 	return ret;
- }
- 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1129,6 +1129,9 @@ void mhp_deinit_memmap_on_memory(unsigne
- 	kasan_remove_zero_shadow(__va(PFN_PHYS(pfn)), PFN_PHYS(nr_pages));
- }
- 
-+/*
-+ * Must be called with mem_hotplug_lock in write mode.
-+ */
- int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
- 		       struct zone *zone, struct memory_group *group)
- {
-@@ -1149,7 +1152,6 @@ int __ref online_pages(unsigned long pfn
- 			 !IS_ALIGNED(pfn + nr_pages, PAGES_PER_SECTION)))
- 		return -EINVAL;
- 
--	mem_hotplug_begin();
- 
- 	/* associate pfn range with the zone */
- 	move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_ISOLATE);
-@@ -1208,7 +1210,6 @@ int __ref online_pages(unsigned long pfn
- 	writeback_set_ratelimit();
- 
- 	memory_notify(MEM_ONLINE, &arg);
--	mem_hotplug_done();
- 	return 0;
- 
- failed_addition:
-@@ -1217,7 +1218,6 @@ failed_addition:
- 		 (((unsigned long long) pfn + nr_pages) << PAGE_SHIFT) - 1);
- 	memory_notify(MEM_CANCEL_ONLINE, &arg);
- 	remove_pfn_range_from_zone(zone, pfn, nr_pages);
--	mem_hotplug_done();
- 	return ret;
- }
- 
-@@ -1863,6 +1863,9 @@ static int count_system_ram_pages_cb(uns
- 	return 0;
- }
- 
-+/*
-+ * Must be called with mem_hotplug_lock in write mode.
-+ */
- int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
- 			struct zone *zone, struct memory_group *group)
- {
-@@ -1885,8 +1888,6 @@ int __ref offline_pages(unsigned long st
- 			 !IS_ALIGNED(start_pfn + nr_pages, PAGES_PER_SECTION)))
- 		return -EINVAL;
- 
--	mem_hotplug_begin();
--
- 	/*
- 	 * Don't allow to offline memory blocks that contain holes.
- 	 * Consequently, memory blocks with holes can never get onlined
-@@ -2027,7 +2028,6 @@ int __ref offline_pages(unsigned long st
- 
- 	memory_notify(MEM_OFFLINE, &arg);
- 	remove_pfn_range_from_zone(zone, start_pfn, nr_pages);
--	mem_hotplug_done();
- 	return 0;
- 
- failed_removal_isolated:
-@@ -2042,7 +2042,6 @@ failed_removal:
- 		 (unsigned long long) start_pfn << PAGE_SHIFT,
- 		 ((unsigned long long) end_pfn << PAGE_SHIFT) - 1,
- 		 reason);
--	mem_hotplug_done();
- 	return ret;
- }
- 
+-- 
+2.42.0
+
 
 
 
