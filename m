@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885A380CA27
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:47:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7E780CA29
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 434F4281EF8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0997D1C21002
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1D83C064;
-	Mon, 11 Dec 2023 12:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B90F3BB5B;
+	Mon, 11 Dec 2023 12:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+tr51qY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tm8CpL5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA703BB5B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6A1C433C9;
-	Mon, 11 Dec 2023 12:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566043BB2B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:47:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0A8C433C7;
+	Mon, 11 Dec 2023 12:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702298868;
-	bh=2wmAZSYEmljE4z5tyGuM5VDED3bhG/Gfh+spKeh/UHE=;
+	s=korg; t=1702298870;
+	bh=rM943yes27s25iFuziZeCjFT05hM+mZIsDBYDybRocs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=q+tr51qYJGATT6u0/2BftezYZ1iXsqqy3oS6IGN2ThR7hjeScjg7wxz75QclOVvJV
-	 PagKxzzkHYTKy0CL5SpIzce3T+uUP28B3JHuecHbaPnsR6zWoYhuDH7WN35YsJqCgg
-	 D5wfQ8NIYGA5chLIsM+AovaEE4vpctJ8UIR1RDgE=
-Subject: FAILED: patch "[PATCH] smb: client: fix potential NULL deref in" failed to apply to 5.4-stable tree
+	b=Tm8CpL5i4ANfbLOUSCJnk4QnfXYetyY/g9VRk3i5mkZ/uS2ARBFWghZeG0MjcjZs/
+	 8ewpuhMI29ybE7XFMX+RCte2BOEfzWI5Kev+2JJCq2MbT2Z4PGzeuxAEpOFB88usR6
+	 x8aYAP1WfIQjRXz3ghhMDFyX1+suq2cHvlAx4hZs=
+Subject: FAILED: patch "[PATCH] smb: client: fix potential NULL deref in" failed to apply to 4.19-stable tree
 To: pc@manguebit.com,rtm@csail.mit.edu,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Dec 2023 13:47:40 +0100
-Message-ID: <2023121140-headed-subheader-5a54@gregkh>
+Date: Mon, 11 Dec 2023 13:47:41 +0100
+Message-ID: <2023121141-decoy-kennel-84d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 92414333eb375ed64f4ae92d34d579e826936480
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121140-headed-subheader-5a54@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121141-decoy-kennel-84d0@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 92414333eb37 ("smb: client: fix potential NULL deref in parse_dfs_referrals()")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
