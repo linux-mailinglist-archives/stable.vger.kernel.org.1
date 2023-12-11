@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CF980D55E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD1480D8CA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 277281F21A93
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8145281B22
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F235101E;
-	Mon, 11 Dec 2023 18:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4AA51C2D;
+	Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tV0sO0Jp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaLBqZm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248334F212;
-	Mon, 11 Dec 2023 18:24:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABBFC433C7;
-	Mon, 11 Dec 2023 18:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B19A5102A;
+	Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4248C433C7;
+	Mon, 11 Dec 2023 18:48:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319042;
-	bh=kZfM/yjIgSFxuvoqdEGGid1StoZ2mbJg5ZAWxX0q4fA=;
+	s=korg; t=1702320537;
+	bh=L8PqZ3d27QGyH5D4hDFF4lUjLefey8wK1mVSwwbgQM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tV0sO0Jpbzp1zWmHjlBRIBPjYPEI9kbneia4O5rxngF7piw9GZG0v43bxwxW9JxTj
-	 9RM7VcQl2hNrXdxZi2ZvIIV3DaCDtE0AMoKKl/6/4bjUlwEpeK4LtCZVnlxh82rq0v
-	 FaLf8RFYGtIxvDt7wwFi1U0RMBKq9KnMfBIpv9sk=
+	b=xaLBqZm+MVQhfffPwKwq02xPDMc3OW6rBJnY8ZdhdbTFunmnvtfDrQNv8Oi0qW/yp
+	 QNIUoyEbAW2D6gevWJBJZY6U1Q/iwul622QqIvUHOoJmbJg6d01w/rXKsgBZ9cRPn2
+	 4yRplN159qEeCVp8So2Z4JB7eSlt4Gj9/WW62kOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Reichinger <thomas.reichinger@sohard.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/55] arcnet: restoring support for multiple Sohard Arcnet cards
+Subject: [PATCH 6.1 097/194] md: dont leave MD_RECOVERY_FROZEN in error path of md_set_readonly()
 Date: Mon, 11 Dec 2023 19:21:27 +0100
-Message-ID: <20231211182012.867162570@linuxfoundation.org>
+Message-ID: <20231211182040.784484555@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,218 +54,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Reichinger <thomas.reichinger@sohard.de>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 6b17a597fc2f13aaaa0a2780eb7edb9ae7ac9aea ]
+[ Upstream commit c9f7cb5b2bc968adcdc686c197ed108f47fd8eb0 ]
 
-Probe of Sohard Arcnet cards fails,
-if 2 or more cards are installed in a system.
-See kernel log:
-[    2.759203] arcnet: arcnet loaded
-[    2.763648] arcnet:com20020: COM20020 chipset support (by David Woodhouse et al.)
-[    2.770585] arcnet:com20020_pci: COM20020 PCI support
-[    2.772295] com20020 0000:02:00.0: enabling device (0000 -> 0003)
-[    2.772354] (unnamed net_device) (uninitialized): PLX-PCI Controls
-...
-[    3.071301] com20020 0000:02:00.0 arc0-0 (uninitialized): PCI COM20020: station FFh found at F080h, IRQ 101.
-[    3.071305] com20020 0000:02:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
-[    3.071534] com20020 0000:07:00.0: enabling device (0000 -> 0003)
-[    3.071581] (unnamed net_device) (uninitialized): PLX-PCI Controls
-...
-[    3.369501] com20020 0000:07:00.0: Led pci:green:tx:0-0 renamed to pci:green:tx:0-0_1 due to name collision
-[    3.369535] com20020 0000:07:00.0: Led pci:red:recon:0-0 renamed to pci:red:recon:0-0_1 due to name collision
-[    3.370586] com20020 0000:07:00.0 arc0-0 (uninitialized): PCI COM20020: station E1h found at C000h, IRQ 35.
-[    3.370589] com20020 0000:07:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
-[    3.370608] com20020: probe of 0000:07:00.0 failed with error -5
+If md_set_readonly() failed, the array could still be read-write, however
+'MD_RECOVERY_FROZEN' could still be set, which leave the array in an
+abnormal state that sync or recovery can't continue anymore.
+Hence make sure the flag is cleared after md_set_readonly() returns.
 
-commit 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
-changes the device name of all COM20020 based PCI cards,
-even if only some cards support this:
-	snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
-
-The error happens because all Sohard Arcnet cards would be called arc0-0,
-since the Sohard Arcnet cards don't have a PLX rotary coder.
-I.e. EAE Arcnet cards have a PLX rotary coder,
-which sets the first decimal, ensuring unique devices names.
-
-This patch adds two new card feature flags to indicate
-which cards support LEDs and the PLX rotary coder.
-For EAE based cards the names still depend on the PLX rotary coder
-(untested, since missing EAE hardware).
-For Sohard based cards, this patch will result in devices
-being called arc0, arc1, ... (tested).
-
-Signed-off-by: Thomas Reichinger <thomas.reichinger@sohard.de>
-Fixes: 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
-Link: https://lore.kernel.org/r/20231130113503.6812-1-thomas.reichinger@sohard.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 88724bfa68be ("md: wait for pending superblock updates before switching to read-only")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231205094215.1824240-3-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arcdevice.h    |  2 +
- drivers/net/arcnet/com20020-pci.c | 89 ++++++++++++++++---------------
- 2 files changed, 48 insertions(+), 43 deletions(-)
+ drivers/md/md.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/arcnet/arcdevice.h b/drivers/net/arcnet/arcdevice.h
-index 1ad5e4a03d23e..c72ad5e2ac5f0 100644
---- a/drivers/net/arcnet/arcdevice.h
-+++ b/drivers/net/arcnet/arcdevice.h
-@@ -191,6 +191,8 @@ do {									\
- #define ARC_IS_5MBIT    1   /* card default speed is 5MBit */
- #define ARC_CAN_10MBIT  2   /* card uses COM20022, supporting 10MBit,
- 				 but default is 2.5MBit. */
-+#define ARC_HAS_LED     4   /* card has software controlled LEDs */
-+#define ARC_HAS_ROTARY  8   /* card has rotary encoder */
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 246af78c05dd1..0c2801d770901 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -6314,6 +6314,9 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
+ 	int err = 0;
+ 	int did_freeze = 0;
  
- /* information needed to define an encapsulation driver */
- struct ArcProto {
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 28dccbc0e8d8f..9d9e4200064f9 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -213,12 +213,13 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 		if (!strncmp(ci->name, "EAE PLX-PCI FB2", 15))
- 			lp->backplane = 1;
++	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++		return -EBUSY;
++
+ 	if (!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery)) {
+ 		did_freeze = 1;
+ 		set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+@@ -6326,8 +6329,6 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
+ 		 * which will now never happen */
+ 		wake_up_process(mddev->sync_thread->tsk);
  
--		/* Get the dev_id from the PLX rotary coder */
--		if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
--			dev_id_mask = 0x3;
--		dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
--
--		snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
-+		if (ci->flags & ARC_HAS_ROTARY) {
-+			/* Get the dev_id from the PLX rotary coder */
-+			if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
-+				dev_id_mask = 0x3;
-+			dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
-+			snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
+-	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
+-		return -EBUSY;
+ 	mddev_unlock(mddev);
+ 	wait_event(resync_wait, !test_bit(MD_RECOVERY_RUNNING,
+ 					  &mddev->recovery));
+@@ -6340,29 +6341,30 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
+ 	    mddev->sync_thread ||
+ 	    test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
+ 		pr_warn("md: %s still in use.\n",mdname(mddev));
+-		if (did_freeze) {
+-			clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+-			set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
+-			md_wakeup_thread(mddev->thread);
+-		}
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
++
+ 	if (mddev->pers) {
+ 		__md_stop_writes(mddev);
+ 
+-		err  = -ENXIO;
+-		if (mddev->ro == MD_RDONLY)
++		if (mddev->ro == MD_RDONLY) {
++			err  = -ENXIO;
+ 			goto out;
 +		}
- 
- 		if (arcnet_inb(ioaddr, COM20020_REG_R_STATUS) == 0xFF) {
- 			pr_err("IO address %Xh is empty!\n", ioaddr);
-@@ -230,6 +231,10 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			goto err_free_arcdev;
- 		}
- 
-+		ret = com20020_found(dev, IRQF_SHARED);
-+		if (ret)
-+			goto err_free_arcdev;
 +
- 		card = devm_kzalloc(&pdev->dev, sizeof(struct com20020_dev),
- 				    GFP_KERNEL);
- 		if (!card) {
-@@ -239,41 +244,39 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 
- 		card->index = i;
- 		card->pci_priv = priv;
--		card->tx_led.brightness_set = led_tx_set;
--		card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
--						GFP_KERNEL, "arc%d-%d-tx",
--						dev->dev_id, i);
--		card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--						"pci:green:tx:%d-%d",
--						dev->dev_id, i);
--
--		card->tx_led.dev = &dev->dev;
--		card->recon_led.brightness_set = led_recon_set;
--		card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
--						GFP_KERNEL, "arc%d-%d-recon",
--						dev->dev_id, i);
--		card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--						"pci:red:recon:%d-%d",
--						dev->dev_id, i);
--		card->recon_led.dev = &dev->dev;
--		card->dev = dev;
--
--		ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
--		if (ret)
--			goto err_free_arcdev;
- 
--		ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
--		if (ret)
--			goto err_free_arcdev;
--
--		dev_set_drvdata(&dev->dev, card);
--
--		ret = com20020_found(dev, IRQF_SHARED);
--		if (ret)
--			goto err_free_arcdev;
--
--		devm_arcnet_led_init(dev, dev->dev_id, i);
-+		if (ci->flags & ARC_HAS_LED) {
-+			card->tx_led.brightness_set = led_tx_set;
-+			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
-+							GFP_KERNEL, "arc%d-%d-tx",
-+							dev->dev_id, i);
-+			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-+							"pci:green:tx:%d-%d",
-+							dev->dev_id, i);
+ 		mddev->ro = MD_RDONLY;
+ 		set_disk_ro(mddev->gendisk, 1);
++	}
 +
-+			card->tx_led.dev = &dev->dev;
-+			card->recon_led.brightness_set = led_recon_set;
-+			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
-+							GFP_KERNEL, "arc%d-%d-recon",
-+							dev->dev_id, i);
-+			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-+							"pci:red:recon:%d-%d",
-+							dev->dev_id, i);
-+			card->recon_led.dev = &dev->dev;
++out:
++	if ((mddev->pers && !err) || did_freeze) {
+ 		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
+ 		md_wakeup_thread(mddev->thread);
+ 		sysfs_notify_dirent_safe(mddev->sysfs_state);
+-		err = 0;
+ 	}
+-out:
 +
-+			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
-+			if (ret)
-+				goto err_free_arcdev;
-+
-+			ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
-+			if (ret)
-+				goto err_free_arcdev;
-+
-+			dev_set_drvdata(&dev->dev, card);
-+			devm_arcnet_led_init(dev, dev->dev_id, i);
-+		}
- 
-+		card->dev = dev;
- 		list_add(&card->list, &priv->list_dev);
- 		continue;
- 
-@@ -329,7 +332,7 @@ static struct com20020_pci_card_info card_info_5mbit = {
- };
- 
- static struct com20020_pci_card_info card_info_sohard = {
--	.name = "PLX-PCI",
-+	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
- 	/* SOHARD needs PCI base addr 4 */
- 	.chan_map_tbl = {
-@@ -364,7 +367,7 @@ static struct com20020_pci_card_info card_info_eae_arc1 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static struct com20020_pci_card_info card_info_eae_ma1 = {
-@@ -396,7 +399,7 @@ static struct com20020_pci_card_info card_info_eae_ma1 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static struct com20020_pci_card_info card_info_eae_fb2 = {
-@@ -421,7 +424,7 @@ static struct com20020_pci_card_info card_info_eae_fb2 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static const struct pci_device_id com20020pci_id_table[] = {
+ 	mutex_unlock(&mddev->open_mutex);
+ 	return err;
+ }
 -- 
 2.42.0
 
