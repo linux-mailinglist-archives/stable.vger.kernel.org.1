@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B256480D8AE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A6C80D54C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D702281AF9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2D8B2819E1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBF251C2B;
-	Mon, 11 Dec 2023 18:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B7D5101D;
+	Mon, 11 Dec 2023 18:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OA6Y89y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2SG7c94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45555102A;
-	Mon, 11 Dec 2023 18:47:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5E1C433C7;
-	Mon, 11 Dec 2023 18:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE8F4F212;
+	Mon, 11 Dec 2023 18:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6C0C433C7;
+	Mon, 11 Dec 2023 18:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320473;
-	bh=jnQ2J7AQgssEzVkT3yus6SHmP1Uf4zmxRHmp/t56gao=;
+	s=korg; t=1702318946;
+	bh=Oi323L95JDZP0gFhhwBwNhYT4IT12SU0Cm8kUgRTwek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OA6Y89y+RefcszDc2Oa5G0cqHE9CxtKppdzqkmXDlf4xwlnwGect2nP56e11GhbD/
-	 7rlUU9EQGBmQkMnk2j58T/d3roCiOQPu8wr+J2lnNLKry6+4rv1oKe9UrIpVUdk17S
-	 VtYKZp5iQmEb7pR/2Ac1tOif7pHZt6pzZ7YWejUs=
+	b=t2SG7c94e5OpBtXewuPJQaH21lcD7ia9f3WqZzer/rtEHLY2EVIgCtA02BSbSf4nI
+	 BSKOovPjp0F5WJ+w22KRtNpFTPaFy1DEyJjZ8a7ORy8juA9kazosepRkBtBuoAl36T
+	 tQ3jwYj3untnDz3+3A3uvzENkcX7YIP+JKG/8/3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Santosh Kumar Pradhan <santosh.pradhan@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/194] RDMA/rtrs-srv: Destroy path files after making sure no IOs in-flight
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.14 13/25] tracing: Fix incomplete locking when disabling buffered events
 Date: Mon, 11 Dec 2023 19:21:04 +0100
-Message-ID: <20231211182039.797838738@linuxfoundation.org>
+Message-ID: <20231211182009.180257185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +52,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit c4d32e77fc1006f99eeb78417efc3d81a384072a ]
+commit 7fed14f7ac9cf5e38c693836fe4a874720141845 upstream.
 
-Destroying path files may lead to the freeing of rdma_stats. This creates
-the following race.
+The following warning appears when using buffered events:
 
-An IO is in-flight, or has just passed the session state check in
-process_read/process_write. The close_work gets triggered and the function
-rtrs_srv_close_work() starts and does destroy path which frees the
-rdma_stats. After this the function process_read/process_write resumes and
-tries to update the stats through the function rtrs_srv_update_rdma_stats
+[  203.556451] WARNING: CPU: 53 PID: 10220 at kernel/trace/ring_buffer.c:3912 ring_buffer_discard_commit+0x2eb/0x420
+[...]
+[  203.670690] CPU: 53 PID: 10220 Comm: stress-ng-sysin Tainted: G            E      6.7.0-rc2-default #4 56e6d0fcf5581e6e51eaaecbdaec2a2338c80f3a
+[  203.670704] Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
+[  203.670709] RIP: 0010:ring_buffer_discard_commit+0x2eb/0x420
+[  203.735721] Code: 4c 8b 4a 50 48 8b 42 48 49 39 c1 0f 84 b3 00 00 00 49 83 e8 01 75 b1 48 8b 42 10 f0 ff 40 08 0f 0b e9 fc fe ff ff f0 ff 47 08 <0f> 0b e9 77 fd ff ff 48 8b 42 10 f0 ff 40 08 0f 0b e9 f5 fe ff ff
+[  203.735734] RSP: 0018:ffffb4ae4f7b7d80 EFLAGS: 00010202
+[  203.735745] RAX: 0000000000000000 RBX: ffffb4ae4f7b7de0 RCX: ffff8ac10662c000
+[  203.735754] RDX: ffff8ac0c750be00 RSI: ffff8ac10662c000 RDI: ffff8ac0c004d400
+[  203.781832] RBP: ffff8ac0c039cea0 R08: 0000000000000000 R09: 0000000000000000
+[  203.781839] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  203.781842] R13: ffff8ac10662c000 R14: ffff8ac0c004d400 R15: ffff8ac10662c008
+[  203.781846] FS:  00007f4cd8a67740(0000) GS:ffff8ad798880000(0000) knlGS:0000000000000000
+[  203.781851] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  203.781855] CR2: 0000559766a74028 CR3: 00000001804c4000 CR4: 00000000001506f0
+[  203.781862] Call Trace:
+[  203.781870]  <TASK>
+[  203.851949]  trace_event_buffer_commit+0x1ea/0x250
+[  203.851967]  trace_event_raw_event_sys_enter+0x83/0xe0
+[  203.851983]  syscall_trace_enter.isra.0+0x182/0x1a0
+[  203.851990]  do_syscall_64+0x3a/0xe0
+[  203.852075]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  203.852090] RIP: 0033:0x7f4cd870fa77
+[  203.982920] Code: 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 b8 89 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 43 0e 00 f7 d8 64 89 01 48
+[  203.982932] RSP: 002b:00007fff99717dd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000089
+[  203.982942] RAX: ffffffffffffffda RBX: 0000558ea1d7b6f0 RCX: 00007f4cd870fa77
+[  203.982948] RDX: 0000000000000000 RSI: 00007fff99717de0 RDI: 0000558ea1d7b6f0
+[  203.982957] RBP: 00007fff99717de0 R08: 00007fff997180e0 R09: 00007fff997180e0
+[  203.982962] R10: 00007fff997180e0 R11: 0000000000000246 R12: 00007fff99717f40
+[  204.049239] R13: 00007fff99718590 R14: 0000558e9f2127a8 R15: 00007fff997180b0
+[  204.049256]  </TASK>
 
-This commit solves the problem by moving the destroy path function to a
-later point. This point makes sure any inflights are completed. This is
-done by qp drain, and waiting for all in-flights through ops_id.
+For instance, it can be triggered by running these two commands in
+parallel:
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Santosh Kumar Pradhan <santosh.pradhan@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-6-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ $ while true; do
+    echo hist:key=id.syscall:val=hitcount > \
+      /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger;
+  done
+ $ stress-ng --sysinfo $(nproc)
+
+The warning indicates that the current ring_buffer_per_cpu is not in the
+committing state. It happens because the active ring_buffer_event
+doesn't actually come from the ring_buffer_per_cpu but is allocated from
+trace_buffered_event.
+
+The bug is in function trace_buffered_event_disable() where the
+following normally happens:
+
+* The code invokes disable_trace_buffered_event() via
+  smp_call_function_many() and follows it by synchronize_rcu(). This
+  increments the per-CPU variable trace_buffered_event_cnt on each
+  target CPU and grants trace_buffered_event_disable() the exclusive
+  access to the per-CPU variable trace_buffered_event.
+
+* Maintenance is performed on trace_buffered_event, all per-CPU event
+  buffers get freed.
+
+* The code invokes enable_trace_buffered_event() via
+  smp_call_function_many(). This decrements trace_buffered_event_cnt and
+  releases the access to trace_buffered_event.
+
+A problem is that smp_call_function_many() runs a given function on all
+target CPUs except on the current one. The following can then occur:
+
+* Task X executing trace_buffered_event_disable() runs on CPU 0.
+
+* The control reaches synchronize_rcu() and the task gets rescheduled on
+  another CPU 1.
+
+* The RCU synchronization finishes. At this point,
+  trace_buffered_event_disable() has the exclusive access to all
+  trace_buffered_event variables except trace_buffered_event[CPU0]
+  because trace_buffered_event_cnt[CPU0] is never incremented and if the
+  buffer is currently unused, remains set to 0.
+
+* A different task Y is scheduled on CPU 0 and hits a trace event. The
+  code in trace_event_buffer_lock_reserve() sees that
+  trace_buffered_event_cnt[CPU0] is set to 0 and decides the use the
+  buffer provided by trace_buffered_event[CPU0].
+
+* Task X continues its execution in trace_buffered_event_disable(). The
+  code incorrectly frees the event buffer pointed by
+  trace_buffered_event[CPU0] and resets the variable to NULL.
+
+* Task Y writes event data to the now freed buffer and later detects the
+  created inconsistency.
+
+The issue is observable since commit dea499781a11 ("tracing: Fix warning
+in trace_buffered_event_disable()") which moved the call of
+trace_buffered_event_disable() in __ftrace_event_enable_disable()
+earlier, prior to invoking call->class->reg(.. TRACE_REG_UNREGISTER ..).
+The underlying problem in trace_buffered_event_disable() is however
+present since the original implementation in commit 0fc1b09ff1ff
+("tracing: Use temp buffer when filtering events").
+
+Fix the problem by replacing the two smp_call_function_many() calls with
+on_each_cpu_mask() which invokes a given callback on all CPUs.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-2-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Fixes: dea499781a11 ("tracing: Fix warning in trace_buffered_event_disable()")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 091db0853a6fb..e978ee4bb73ae 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1537,7 +1537,6 @@ static void rtrs_srv_close_work(struct work_struct *work)
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2254,11 +2254,9 @@ void trace_buffered_event_disable(void)
+ 	if (--trace_buffered_event_ref)
+ 		return;
  
- 	srv_path = container_of(work, typeof(*srv_path), close_work);
+-	preempt_disable();
+ 	/* For each CPU, set the buffer as used. */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       disable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, disable_trace_buffered_event,
++			 NULL, true);
  
--	rtrs_srv_destroy_path_files(srv_path);
- 	rtrs_srv_stop_hb(srv_path);
+ 	/* Wait for all current users to finish */
+ 	synchronize_sched();
+@@ -2273,11 +2271,9 @@ void trace_buffered_event_disable(void)
+ 	 */
+ 	smp_wmb();
  
- 	for (i = 0; i < srv_path->s.con_num; i++) {
-@@ -1557,6 +1556,8 @@ static void rtrs_srv_close_work(struct work_struct *work)
- 	/* Wait for all completion */
- 	wait_for_completion(&srv_path->complete_done);
+-	preempt_disable();
+ 	/* Do the work on each cpu */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       enable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
++			 true);
+ }
  
-+	rtrs_srv_destroy_path_files(srv_path);
-+
- 	/* Notify upper layer if we are the last path */
- 	rtrs_srv_path_down(srv_path);
- 
--- 
-2.42.0
-
+ static struct ring_buffer *temp_buffer;
 
 
 
