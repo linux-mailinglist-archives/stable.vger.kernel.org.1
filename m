@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC63380D913
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 909B780D846
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF6F280FBF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486791F21AD7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CC151C35;
-	Mon, 11 Dec 2023 18:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8C35102F;
+	Mon, 11 Dec 2023 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaNpBPN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbj1Vm83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E575102A;
-	Mon, 11 Dec 2023 18:50:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF24C433C7;
-	Mon, 11 Dec 2023 18:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32467FC06;
+	Mon, 11 Dec 2023 18:44:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DF6C433C8;
+	Mon, 11 Dec 2023 18:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320649;
-	bh=nyoCfCXj0wHu91lOzSIfB/cExWZqbn8aMUvgSxBNJsI=;
+	s=korg; t=1702320259;
+	bh=my0+aonaHYI2MTpcAhaP3/NM8wpgE4KqOgCU9RcehLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaNpBPN8gqA2NzoKlbjIvEZLlN67DaauKBIG6rIs/Ug1+GE9WjISrUJXh85A1d82e
-	 jRuVPOApKTynvB7k5ZU9EzxIePDKq9gUF2uE8KwAMkwHUXRNSOQdNZnGXaC+8GyBPC
-	 4bzstAqS6o651pVx3lt7vSrIsVJe+zN1E76uf/I8=
+	b=Dbj1Vm83EqSuFUioR7f2RxE7BAYvRDfKfwl7LtPtIeFceHpkIcF41XmltGO4A0X/i
+	 /8O7BD7yTIIIbp8fesFsOUa0EW4U+Ik1loGrcpEOj8hoiAvvxIbupTNVcJ0nghgKeD
+	 H6wmQGt+uli0gIrgu5Py/afwTE6zO8qRR7nSpLPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Jann Horn <jannh@google.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/194] hwtracing: hisi_ptt: Add dummy callback pmu::read()
+Subject: [PATCH 5.4 24/67] netfilter: xt_owner: Fix for unsafe access of sk->sk_socket
 Date: Mon, 11 Dec 2023 19:22:08 +0100
-Message-ID: <20231211182042.760627226@linuxfoundation.org>
+Message-ID: <20231211182016.107262740@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +54,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 55e0a2fb0cb5ab7c9c99c1ad4d3e6954de8b73a0 ]
+[ Upstream commit 7ae836a3d630e146b732fe8ef7d86b243748751f ]
 
-When start trace with perf option "-C $cpu" and immediately stop it
-with SIGTERM or others, the perf core will invoke pmu::read() while
-the driver doesn't implement it. Add a dummy pmu::read() to avoid
-any issues.
+A concurrently running sock_orphan() may NULL the sk_socket pointer in
+between check and deref. Follow other users (like nft_meta.c for
+instance) and acquire sk_callback_lock before dereferencing sk_socket.
 
-Fixes: ff0de066b463 ("hwtracing: hisi_ptt: Add trace function support for HiSilicon PCIe Tune and Trace device")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231010084731.30450-6-yangyicong@huawei.com
+Fixes: 0265ab44bacc ("[NETFILTER]: merge ipt_owner/ip6t_owner in xt_owner")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/ptt/hisi_ptt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/xt_owner.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
-index 4140efd664097..016220ba0addd 100644
---- a/drivers/hwtracing/ptt/hisi_ptt.c
-+++ b/drivers/hwtracing/ptt/hisi_ptt.c
-@@ -837,6 +837,10 @@ static void hisi_ptt_pmu_del(struct perf_event *event, int flags)
- 	hisi_ptt_pmu_stop(event, PERF_EF_UPDATE);
+diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
+index e85ce69924aee..50332888c8d23 100644
+--- a/net/netfilter/xt_owner.c
++++ b/net/netfilter/xt_owner.c
+@@ -76,18 +76,23 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 		 */
+ 		return false;
+ 
+-	filp = sk->sk_socket->file;
+-	if (filp == NULL)
++	read_lock_bh(&sk->sk_callback_lock);
++	filp = sk->sk_socket ? sk->sk_socket->file : NULL;
++	if (filp == NULL) {
++		read_unlock_bh(&sk->sk_callback_lock);
+ 		return ((info->match ^ info->invert) &
+ 		       (XT_OWNER_UID | XT_OWNER_GID)) == 0;
++	}
+ 
+ 	if (info->match & XT_OWNER_UID) {
+ 		kuid_t uid_min = make_kuid(net->user_ns, info->uid_min);
+ 		kuid_t uid_max = make_kuid(net->user_ns, info->uid_max);
+ 		if ((uid_gte(filp->f_cred->fsuid, uid_min) &&
+ 		     uid_lte(filp->f_cred->fsuid, uid_max)) ^
+-		    !(info->invert & XT_OWNER_UID))
++		    !(info->invert & XT_OWNER_UID)) {
++			read_unlock_bh(&sk->sk_callback_lock);
+ 			return false;
++		}
+ 	}
+ 
+ 	if (info->match & XT_OWNER_GID) {
+@@ -112,10 +117,13 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 			}
+ 		}
+ 
+-		if (match ^ !(info->invert & XT_OWNER_GID))
++		if (match ^ !(info->invert & XT_OWNER_GID)) {
++			read_unlock_bh(&sk->sk_callback_lock);
+ 			return false;
++		}
+ 	}
+ 
++	read_unlock_bh(&sk->sk_callback_lock);
+ 	return true;
  }
  
-+static void hisi_ptt_pmu_read(struct perf_event *event)
-+{
-+}
-+
- static void hisi_ptt_remove_cpuhp_instance(void *hotplug_node)
- {
- 	cpuhp_state_remove_instance_nocalls(hisi_ptt_pmu_online, hotplug_node);
-@@ -880,6 +884,7 @@ static int hisi_ptt_register_pmu(struct hisi_ptt *hisi_ptt)
- 		.stop		= hisi_ptt_pmu_stop,
- 		.add		= hisi_ptt_pmu_add,
- 		.del		= hisi_ptt_pmu_del,
-+		.read		= hisi_ptt_pmu_read,
- 	};
- 
- 	reg = readl(hisi_ptt->iobase + HISI_PTT_LOCATION);
 -- 
 2.42.0
 
