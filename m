@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6267580D845
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFBF80D779
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DD4D28131C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ACC21F21B81
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39FF51036;
-	Mon, 11 Dec 2023 18:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0305380E;
+	Mon, 11 Dec 2023 18:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0JqCpLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHORUTjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60672FC06;
-	Mon, 11 Dec 2023 18:44:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D719EC433C8;
-	Mon, 11 Dec 2023 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3E251C53;
+	Mon, 11 Dec 2023 18:37:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA11C433C8;
+	Mon, 11 Dec 2023 18:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320256;
-	bh=ldaimszbesWT1MZFZhEk7npNjUt4KEJ5+1djyUIrFIc=;
+	s=korg; t=1702319836;
+	bh=1RhTyGqILMV7GCy5vMHgQiqrsVfRlnnTEOYMOKYv1ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0JqCpLmNZoDDmjhxPhf5AheE+8pOexJ3YSM3a3N7IOz6B5VeK+Eg69TkmwKiP5lW
-	 V7XGYbsho8VSSPoMzHQvYJ9vxqGgIsGQ2DY5oRXZj/JazXe8D/iL7YtkC+EDXBv0Ke
-	 k89H6WqzxdosQ+/WRKqmzF99Xut0MdH9erz9k/h8=
+	b=FHORUTjoCAfcPVQj8DZrM9SawK4ehrjnCQxcq//jV+UHle71qafNiTY/HeY3pPjFf
+	 ZzvaUXHPRDzzJfxO7wQUBHbsHC1/OhWnW+HjwNeWXL/6ZS4uEQoPvreKawaA5vxEv3
+	 F4uXDUaQ46m9XqKRlQi0K25VUtE0L433dTQpV9pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anson Huang <Anson.Huang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 33/67] ARM: dts: imx: make gpt node name generic
+Subject: [PATCH 6.6 244/244] drm/amdgpu: Restrict extended wait to PSP v13.0.6
 Date: Mon, 11 Dec 2023 19:22:17 +0100
-Message-ID: <20231211182016.492811768@linuxfoundation.org>
+Message-ID: <20231211182056.970422299@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,129 +55,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anson Huang <Anson.Huang@nxp.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 7c48b086965873c0aa93d99773cf64c033b76b2f ]
+[ Upstream commit 6fce23a4d8c5f93bf80b7f122449fbb97f1e40dd ]
 
-Node name should be generic, use "timer" instead of "gpt" for gpt node.
+Only PSPv13.0.6 SOCs take a longer time to reach steady state. Other
+PSPv13 based SOCs don't need extended wait. Also, reduce PSPv13.0.6 wait
+time.
 
-Signed-off-by: Anson Huang <Anson.Huang@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Stable-dep-of: 397caf68e2d3 ("ARM: dts: imx7: Declare timers compatible with fsl,imx6dl-gpt")
+Cc: stable@vger.kernel.org
+Fixes: fc5988907156 ("drm/amdgpu: update retry times for psp vmbx wait")
+Fixes: d8c1925ba8cd ("drm/amdgpu: update retry times for psp BL wait")
+Link: https://lore.kernel.org/amd-gfx/34dd4c66-f7bf-44aa-af8f-c82889dd652c@amd.com/
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx6qdl.dtsi | 2 +-
- arch/arm/boot/dts/imx6sl.dtsi  | 2 +-
- arch/arm/boot/dts/imx6sx.dtsi  | 2 +-
- arch/arm/boot/dts/imx6ul.dtsi  | 4 ++--
- arch/arm/boot/dts/imx7s.dtsi   | 8 ++++----
- 5 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/psp_v13_0.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
-index 861392ff70861..0150b2d5c534f 100644
---- a/arch/arm/boot/dts/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl.dtsi
-@@ -578,7 +578,7 @@
- 				status = "disabled";
- 			};
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+index 8e4372f24f850..fe1995ed13be7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+@@ -60,7 +60,7 @@ MODULE_FIRMWARE("amdgpu/psp_14_0_0_ta.bin");
+ #define GFX_CMD_USB_PD_USE_LFB 0x480
  
--			gpt: gpt@2098000 {
-+			gpt: timer@2098000 {
- 				compatible = "fsl,imx6q-gpt", "fsl,imx31-gpt";
- 				reg = <0x02098000 0x4000>;
- 				interrupts = <0 55 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/imx6sl.dtsi b/arch/arm/boot/dts/imx6sl.dtsi
-index 3cf1da06e7f04..fbbae0004e627 100644
---- a/arch/arm/boot/dts/imx6sl.dtsi
-+++ b/arch/arm/boot/dts/imx6sl.dtsi
-@@ -386,7 +386,7 @@
- 				clock-names = "ipg", "per";
- 			};
+ /* Retry times for vmbx ready wait */
+-#define PSP_VMBX_POLLING_LIMIT 20000
++#define PSP_VMBX_POLLING_LIMIT 3000
  
--			gpt: gpt@2098000 {
-+			gpt: timer@2098000 {
- 				compatible = "fsl,imx6sl-gpt";
- 				reg = <0x02098000 0x4000>;
- 				interrupts = <0 55 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/imx6sx.dtsi b/arch/arm/boot/dts/imx6sx.dtsi
-index 3dc1e97e145cd..1afeae14560ad 100644
---- a/arch/arm/boot/dts/imx6sx.dtsi
-+++ b/arch/arm/boot/dts/imx6sx.dtsi
-@@ -475,7 +475,7 @@
- 				status = "disabled";
- 			};
+ /* VBIOS gfl defines */
+ #define MBOX_READY_MASK 0x80000000
+@@ -161,14 +161,18 @@ static int psp_v13_0_wait_for_vmbx_ready(struct psp_context *psp)
+ static int psp_v13_0_wait_for_bootloader(struct psp_context *psp)
+ {
+ 	struct amdgpu_device *adev = psp->adev;
+-	int retry_loop, ret;
++	int retry_loop, retry_cnt, ret;
  
--			gpt: gpt@2098000 {
-+			gpt: timer@2098000 {
- 				compatible = "fsl,imx6sx-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x02098000 0x4000>;
- 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/imx6ul.dtsi b/arch/arm/boot/dts/imx6ul.dtsi
-index 5b677b66162ac..7037d2a45e60f 100644
---- a/arch/arm/boot/dts/imx6ul.dtsi
-+++ b/arch/arm/boot/dts/imx6ul.dtsi
-@@ -433,7 +433,7 @@
- 				status = "disabled";
- 			};
- 
--			gpt1: gpt@2098000 {
-+			gpt1: timer@2098000 {
- 				compatible = "fsl,imx6ul-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x02098000 0x4000>;
- 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-@@ -707,7 +707,7 @@
- 				reg = <0x020e4000 0x4000>;
- 			};
- 
--			gpt2: gpt@20e8000 {
-+			gpt2: timer@20e8000 {
- 				compatible = "fsl,imx6ul-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x020e8000 0x4000>;
- 				interrupts = <GIC_SPI 109 IRQ_TYPE_LEVEL_HIGH>;
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 791530124fb0a..f774759af1aa3 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -446,7 +446,7 @@
- 				fsl,input-sel = <&iomuxc>;
- 			};
- 
--			gpt1: gpt@302d0000 {
-+			gpt1: timer@302d0000 {
- 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x302d0000 0x10000>;
- 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
-@@ -455,7 +455,7 @@
- 				clock-names = "ipg", "per";
- 			};
- 
--			gpt2: gpt@302e0000 {
-+			gpt2: timer@302e0000 {
- 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x302e0000 0x10000>;
- 				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
-@@ -465,7 +465,7 @@
- 				status = "disabled";
- 			};
- 
--			gpt3: gpt@302f0000 {
-+			gpt3: timer@302f0000 {
- 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x302f0000 0x10000>;
- 				interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
-@@ -475,7 +475,7 @@
- 				status = "disabled";
- 			};
- 
--			gpt4: gpt@30300000 {
-+			gpt4: timer@30300000 {
- 				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
- 				reg = <0x30300000 0x10000>;
- 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
++	retry_cnt =
++		(adev->ip_versions[MP0_HWIP][0] == IP_VERSION(13, 0, 6)) ?
++			PSP_VMBX_POLLING_LIMIT :
++			10;
+ 	/* Wait for bootloader to signify that it is ready having bit 31 of
+ 	 * C2PMSG_35 set to 1. All other bits are expected to be cleared.
+ 	 * If there is an error in processing command, bits[7:0] will be set.
+ 	 * This is applicable for PSP v13.0.6 and newer.
+ 	 */
+-	for (retry_loop = 0; retry_loop < PSP_VMBX_POLLING_LIMIT; retry_loop++) {
++	for (retry_loop = 0; retry_loop < retry_cnt; retry_loop++) {
+ 		ret = psp_wait_for(
+ 			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_35),
+ 			0x80000000, 0xffffffff, false);
 -- 
 2.42.0
 
