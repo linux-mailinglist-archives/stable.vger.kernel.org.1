@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0964580D862
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265E380D605
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390D51C215EC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BFD1F21ABE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A6551036;
-	Mon, 11 Dec 2023 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4088720DDE;
+	Mon, 11 Dec 2023 18:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwHWWiae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kogRbk5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404E84437B;
-	Mon, 11 Dec 2023 18:45:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB88AC433C8;
-	Mon, 11 Dec 2023 18:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014D4FBE1;
+	Mon, 11 Dec 2023 18:30:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 276CEC433C8;
+	Mon, 11 Dec 2023 18:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320315;
-	bh=Re6AR5A0lHSg3beVyGd9zylSjw2pFbrFEX+qTO9VOhI=;
+	s=korg; t=1702319431;
+	bh=0/jLz83pW3yu0HDvVX4/hphlmy2eja5++YeJW7wB0yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwHWWiaewxeawpxl2OcK+Z69zIjiVr2oEPN2NV+y/K1sWyUp/IQ0dLawApwQnUacC
-	 xSf12MSXdgnZWR9RuVc5R9lQpzXEVNyGSQVYhzQJESOc1EMG20VCLymIDv/PYm++9A
-	 OHNJ0LGgyHmBpWSDxr0xqomHHPrvpUMkiCXUqo5k=
+	b=kogRbk5Yot/IDs+UcWMLttMbXhu6LZSob3hkQ5kVmjEzWRHABFPrSu+0/bPtAHcLf
+	 paEknST21DptozToJw1W+Xif3fn/iX7Yvmxlp5bT5Sw73jch44mLVDcopmc4sFcwuY
+	 bNMpX2Zgkn6bXIE+YC+egmtvUbqZa6QNdG5+Xexo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Aleksa Savic <savicaleksa83@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jonas Malaco <jonas@protocubo.io>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/194] netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
+Subject: [PATCH 6.6 101/244] hwmon: (nzxt-kraken2) Fix error handling path in kraken2_probe()
 Date: Mon, 11 Dec 2023 19:19:54 +0100
-Message-ID: <20231211182036.813703889@linuxfoundation.org>
+Message-ID: <20231211182050.310008697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,106 +55,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 28628fa952fefc7f2072ce6e8016968cc452b1ba ]
+[ Upstream commit 35fe2ad259a3bfca15ab78c8ffb5278cb6149c89 ]
 
-Linkui Xiao reported that there's a race condition when ipset swap and destroy is
-called, which can lead to crash in add/del/test element operations. Swap then
-destroy are usual operations to replace a set with another one in a production
-system. The issue can in some cases be reproduced with the script:
+There is no point in calling hid_hw_stop() if hid_hw_start() has failed.
+There is no point in calling hid_hw_close() if hid_hw_open() has failed.
 
-ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
-ipset add hash_ip1 172.20.0.0/16
-ipset add hash_ip1 192.168.0.0/16
-iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
-while [ 1 ]
-do
-	# ... Ongoing traffic...
-        ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
-        ipset add hash_ip2 172.20.0.0/16
-        ipset swap hash_ip1 hash_ip2
-        ipset destroy hash_ip2
-        sleep 0.05
-done
+Update the error handling path accordingly.
 
-In the race case the possible order of the operations are
-
-	CPU0			CPU1
-	ip_set_test
-				ipset swap hash_ip1 hash_ip2
-				ipset destroy hash_ip2
-	hash_net_kadt
-
-Swap replaces hash_ip1 with hash_ip2 and then destroy removes hash_ip2 which
-is the original hash_ip1. ip_set_test was called on hash_ip1 and because destroy
-removed it, hash_net_kadt crashes.
-
-The fix is to force ip_set_swap() to wait for all readers to finish accessing the
-old set pointers by calling synchronize_rcu().
-
-The first version of the patch was written by Linkui Xiao <xiaolinkui@kylinos.cn>.
-
-v2: synchronize_rcu() is moved into ip_set_swap() in order not to burden
-    ip_set_destroy() unnecessarily when all sets are destroyed.
-v3: Florian Westphal pointed out that all netfilter hooks run with rcu_read_lock() held
-    and em_ipset.c wraps the entire ip_set_test() in rcu read lock/unlock pair.
-    So there's no need to extend the rcu read locked area in ipset itself.
-
-Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
-Reported by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 82e3430dfa8c ("hwmon: add driver for NZXT Kraken X42/X52/X62/X72")
+Reported-by: Aleksa Savic <savicaleksa83@gmail.com>
+Closes: https://lore.kernel.org/all/121470f0-6c1f-418a-844c-7ec2e8a54b8e@gmail.com/
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jonas Malaco <jonas@protocubo.io>
+Link: https://lore.kernel.org/r/a768e69851a07a1f4e29f270f4e2559063f07343.1701617030.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/hwmon/nzxt-kraken2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 20eede37d5228..d47dfdcb899b0 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -61,6 +61,8 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
- 	ip_set_dereference((inst)->ip_set_list)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
-+#define ip_set_dereference_nfnl(p)	\
-+	rcu_dereference_check(p, lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET))
+diff --git a/drivers/hwmon/nzxt-kraken2.c b/drivers/hwmon/nzxt-kraken2.c
+index 428c77b5fce5a..7caf387eb1449 100644
+--- a/drivers/hwmon/nzxt-kraken2.c
++++ b/drivers/hwmon/nzxt-kraken2.c
+@@ -161,13 +161,13 @@ static int kraken2_probe(struct hid_device *hdev,
+ 	ret = hid_hw_start(hdev, HID_CONNECT_HIDRAW);
+ 	if (ret) {
+ 		hid_err(hdev, "hid hw start failed with %d\n", ret);
+-		goto fail_and_stop;
++		return ret;
+ 	}
  
- /* The set types are implemented in modules and registered set types
-  * can be found in ip_set_type_list. Adding/deleting types is
-@@ -708,15 +710,10 @@ __ip_set_put_netlink(struct ip_set *set)
- static struct ip_set *
- ip_set_rcu_get(struct net *net, ip_set_id_t index)
- {
--	struct ip_set *set;
- 	struct ip_set_net *inst = ip_set_pernet(net);
+ 	ret = hid_hw_open(hdev);
+ 	if (ret) {
+ 		hid_err(hdev, "hid hw open failed with %d\n", ret);
+-		goto fail_and_close;
++		goto fail_and_stop;
+ 	}
  
--	rcu_read_lock();
--	/* ip_set_list itself needs to be protected */
--	set = rcu_dereference(inst->ip_set_list)[index];
--	rcu_read_unlock();
--
--	return set;
-+	/* ip_set_list and the set pointer need to be protected */
-+	return ip_set_dereference_nfnl(inst->ip_set_list)[index];
- }
- 
- static inline void
-@@ -1399,6 +1396,9 @@ static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
- 	ip_set(inst, to_id) = from;
- 	write_unlock_bh(&ip_set_ref_lock);
- 
-+	/* Make sure all readers of the old set pointers are completed. */
-+	synchronize_rcu();
-+
- 	return 0;
- }
- 
+ 	priv->hwmon_dev = hwmon_device_register_with_info(&hdev->dev, "kraken2",
 -- 
 2.42.0
 
