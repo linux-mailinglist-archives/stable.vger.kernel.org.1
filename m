@@ -1,114 +1,160 @@
-Return-Path: <stable+bounces-5501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD0380CEA1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:47:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDD780CEAA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78710281B06
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:47:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2F63B20E81
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E789E495CE;
-	Mon, 11 Dec 2023 14:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0979F495E2;
+	Mon, 11 Dec 2023 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="KrrT7nAN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NISFLn7d"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="gsXMqkQA"
 X-Original-To: stable@vger.kernel.org
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D65DC2
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 06:47:29 -0800 (PST)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id CF90C5C03B5;
-	Mon, 11 Dec 2023 09:47:25 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Mon, 11 Dec 2023 09:47:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1702306045; x=1702392445; bh=aD
-	bCmLvi9t4wqPy0P3gYOPOM7ZNVoaRUqU5RYRCbjgs=; b=KrrT7nANfapS8cJ673
-	poWaqPTcR54B66eOYZ9fsEYUXzlGGTTYlasYRYR+5c/7KFoh50XfbMiD9wpoNkU1
-	BeBazc/2ZK88faUbb7/CE36Pil3ZTlFajGYxPC0jBvBopacfERfnGwknbuJTLkcz
-	CvJ6QfGD9a5HwNVKaEmlHGipFI0jL5p7I6JBtGLkYUJkPPQKf/gzlgqpTz2NvA87
-	q/zKzOfnH0gw2ANtxT27PIYbi5aPxlBt6VQa4cXE9xkURXvx5uyMitcrDwdyxAsn
-	J6ticE2oaEnxrTe9qNBgWMvCio4Uvd4EcQMZPtVozUl/XpW3PSrMrFQSRlQmua2a
-	KNwQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1702306045; x=1702392445; bh=aDbCmLvi9t4wq
-	Py0P3gYOPOM7ZNVoaRUqU5RYRCbjgs=; b=NISFLn7dytRS20DU/CFP9hfKaTHO2
-	GYdfNSckznnhXRTVMSSpuhPUPayiNvphojYacrXdMvEA4Kb20VXIXEVZHOiojByi
-	PeyN/s+tkD0hMUasLugM+BfBCT+IKgtQDqkV/K8n2H0sy0Tugsz4f6vTwfGaEBnx
-	YsHWZr+ENc7+1yCMNWyTr3pXjWwmArnk72mqAw/NqT7LLWN56D+jdA2rn6WAf2UL
-	jEL9hpnjz2oehW+5B7s3steTfqcaeaqiZbzCB7jHHLIC4N+15t9UFXCrzFrKMCHf
-	xcxRTvXbmqHfDc2SLBk2eRhQZx0lt3B2/3JuIYYMrObHBlMG/CUIx/ubQ==
-X-ME-Sender: <xms:_SB3ZREu9kvVMBeSrXzmoxTRPNc6FbD93KsRCXNW4qDOfLyaQl1ENQ>
-    <xme:_SB3ZWX_1gIIGhpR8UFJcYShFPwvjdMNQPqHpeOR1prVmvoaGDROuY3FQI2YONUYV
-    2VNTkH_u34qJg>
-X-ME-Received: <xmr:_SB3ZTLUe13RtamdYhVr9pfaalyBAy3TprAFGGQBjjWNz-TalfJjAvssEC4Kk36Hz96sWvaBiNdK7WX2zb2WPqR3rfLH53GcuA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelvddgjedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
-    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
-    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
-X-ME-Proxy: <xmx:_SB3ZXGxWU1673zbdChAnsGNFMgUHHf1kKiMeHdV6lPn2a8-PHX5RQ>
-    <xmx:_SB3ZXXXC1PyKnjS98jiTdu_TBzhr1LfrYQUjbc2OHcCaJHCumrS1Q>
-    <xmx:_SB3ZSN3YJajYOJq6BuYVZ6QdBlxLuRacopQPGsO2v1q0eO5w-NREQ>
-    <xmx:_SB3ZUh-DJvOrb_VULeFzW2DENdxdDmOE9-Wnk5E7ta8EiO_tgzisA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Dec 2023 09:47:25 -0500 (EST)
-Date: Mon, 11 Dec 2023 15:47:23 +0100
-From: Greg KH <greg@kroah.com>
-To: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.10] mmc: block: Be sure to wait while busy in CQE error
- recovery
-Message-ID: <2023121116-unvented-stipend-df75@gregkh>
-References: <2023120358-baking-anymore-b0c7@gregkh>
- <20231211144132.99257-1-adrian.hunter@intel.com>
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC2D0C3;
+	Mon, 11 Dec 2023 06:50:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=kEmVlye6CMrVPDyTmVFhOQ15lLv0MDG5hDAupVdWbcI=; b=gsXMqkQARmulOgWXmYNgBvmkpk
+	3QX7SSPv47Y/AVWozhPBPlR3/0omDCt9HHk4eqe6vmnzVKA7eVEaC4Koa0om8RkdVuOfFXTorn8uT
+	48s2HbOm9zme/QgYf6307hmA/tZ4eEF9MgEtFDUKBDlmtCuh2eu5hicPLqCCTdnl023w=;
+Received: from modemcable061.19-161-184.mc.videotron.ca ([184.161.19.61]:45548 helo=debian-acer)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rChbI-0002gh-29; Mon, 11 Dec 2023 09:49:40 -0500
+Date: Mon, 11 Dec 2023 09:49:38 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
+ ilpo.jarvinen@linux.intel.com, u.kleine-koenig@pengutronix.de,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ LinoSanfilippo@gmx.de, lukas@wunner.de, p.rosenberger@kunbus.com,
+ stable@vger.kernel.org
+Message-Id: <20231211094938.11c3322b80c2b827b46725c5@hugovil.com>
+In-Reply-To: <20231209125836.16294-2-l.sanfilippo@kunbus.com>
+References: <20231209125836.16294-1-l.sanfilippo@kunbus.com>
+	<20231209125836.16294-2-l.sanfilippo@kunbus.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231211144132.99257-1-adrian.hunter@intel.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 184.161.19.61
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+Subject: Re: [PATCH v5 1/7] serial: Do not hold the port lock when setting
+ rx-during-tx GPIO
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Mon, Dec 11, 2023 at 04:41:32PM +0200, Adrian Hunter wrote:
-> STOP command does not guarantee to wait while busy, but subsequent command
-> MMC_CMDQ_TASK_MGMT to discard the queue will fail if the card is busy, so
-> be sure to wait by employing mmc_poll_for_busy().
+On Sat,  9 Dec 2023 13:58:30 +0100
+Lino Sanfilippo <l.sanfilippo@kunbus.com> wrote:
+
+> Both the imx and stm32 driver set the rx-during-tx GPIO in rs485_config().
+> Since this function is called with the port lock held, this can be an
+> problem in case that setting the GPIO line can sleep (e.g. if a GPIO
+> expander is used which is connected via SPI or I2C).
 > 
-> Backport to 5.10: Add mmc_busy_cmd MMC_BUSY_IO
+> Avoid this issue by moving the GPIO setting outside of the port lock into
+> the serial core and thus making it a generic feature.
 > 
-> Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
+> Fixes: c54d48543689 ("serial: stm32: Add support for rs485 RX_DURING_TX output GPIO")
+> Fixes: ca530cfa968c ("serial: imx: Add support for RS485 RX_DURING_TX output GPIO")
+> Cc: Shawn Guo <shawnguo@kernel.org>
+> Cc: Sascha Hauer <s.hauer@pengutronix.de>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-> Reviewed-by: Avri Altman <avri.altman@wdc.com>
-> Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> Link: https://lore.kernel.org/r/20231103084720.6886-4-adrian.hunter@intel.com
-> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-> (cherry picked from commit c616696a902987352426fdaeec1b0b3240949e6b)
-> Tested-by: Adrian Hunter <adrian.hunter@intel.com>
-> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 > ---
->  drivers/mmc/core/core.c    | 2 ++
->  drivers/mmc/core/mmc_ops.c | 3 ++-
->  drivers/mmc/core/mmc_ops.h | 1 +
->  3 files changed, 5 insertions(+), 1 deletion(-)
+>  drivers/tty/serial/imx.c         |  4 ----
+>  drivers/tty/serial/serial_core.c | 12 ++++++++++++
+>  drivers/tty/serial/stm32-usart.c |  5 +----
+>  3 files changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+> index 708b9852a575..9cffeb23112b 100644
+> --- a/drivers/tty/serial/imx.c
+> +++ b/drivers/tty/serial/imx.c
+> @@ -1943,10 +1943,6 @@ static int imx_uart_rs485_config(struct uart_port *port, struct ktermios *termio
+>  	    rs485conf->flags & SER_RS485_RX_DURING_TX)
+>  		imx_uart_start_rx(port);
+>  
+> -	if (port->rs485_rx_during_tx_gpio)
+> -		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+> -					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+> -
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index f1348a509552..a0290a5fe8b3 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -1402,6 +1402,16 @@ static void uart_set_rs485_termination(struct uart_port *port,
+>  				 !!(rs485->flags & SER_RS485_TERMINATE_BUS));
+>  }
+>  
+> +static void uart_set_rs485_rx_during_tx(struct uart_port *port,
+> +					const struct serial_rs485 *rs485)
+> +{
+> +	if (!(rs485->flags & SER_RS485_ENABLED))
+> +		return;
+> +
+> +	gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+> +				 !!(rs485->flags & SER_RS485_RX_DURING_TX));
+> +}
+> +
+>  static int uart_rs485_config(struct uart_port *port)
+>  {
+>  	struct serial_rs485 *rs485 = &port->rs485;
+> @@ -1413,6 +1423,7 @@ static int uart_rs485_config(struct uart_port *port)
+>  
+>  	uart_sanitize_serial_rs485(port, rs485);
+>  	uart_set_rs485_termination(port, rs485);
+> +	uart_set_rs485_rx_during_tx(port, rs485);
+>  
+>  	uart_port_lock_irqsave(port, &flags);
+>  	ret = port->rs485_config(port, NULL, rs485);
+> @@ -1457,6 +1468,7 @@ static int uart_set_rs485_config(struct tty_struct *tty, struct uart_port *port,
+>  		return ret;
+>  	uart_sanitize_serial_rs485(port, &rs485);
+>  	uart_set_rs485_termination(port, &rs485);
+> +	uart_set_rs485_rx_during_tx(port, &rs485);
+>  
+>  	uart_port_lock_irqsave(port, &flags);
+>  	ret = port->rs485_config(port, &tty->termios, &rs485);
+> diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+> index 3048620315d6..ec9a72a5bea9 100644
+> --- a/drivers/tty/serial/stm32-usart.c
+> +++ b/drivers/tty/serial/stm32-usart.c
+> @@ -226,10 +226,7 @@ static int stm32_usart_config_rs485(struct uart_port *port, struct ktermios *ter
+>  
+>  	stm32_usart_clr_bits(port, ofs->cr1, BIT(cfg->uart_enable_bit));
+>  
+> -	if (port->rs485_rx_during_tx_gpio)
+> -		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+> -					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+> -	else
+> +	if (!port->rs485_rx_during_tx_gpio)
+>  		rs485conf->flags |= SER_RS485_RX_DURING_TX;
+>  
+>  	if (rs485conf->flags & SER_RS485_ENABLED) {
+> -- 
+> 2.42.0
+> 
 
-Now queued up, thanks.
+Reviewed-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-greg k-h
+Hugo
 
