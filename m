@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-5983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A5480D82A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F04F580D929
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D330C280D21
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9D01C216CB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DBC5102F;
-	Mon, 11 Dec 2023 18:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649A151C38;
+	Mon, 11 Dec 2023 18:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdPK4bTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CX+2W2Ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3557AFC06;
-	Mon, 11 Dec 2023 18:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE347C433C8;
-	Mon, 11 Dec 2023 18:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C975102A;
+	Mon, 11 Dec 2023 18:51:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCE9C433C8;
+	Mon, 11 Dec 2023 18:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320196;
-	bh=IEmsFLawdV1RUUcD2cLNkPOO/EREVPZzvjiRGF4UsJ4=;
+	s=korg; t=1702320687;
+	bh=K9HOyhRquWQ+m1N97Plnux6MEwTz/bMkjiZkZv0Zp5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdPK4bTNxE1miOE6iHVgPgDi0CQW/PGkLNVBMYp+KqscJTXbIE1uOJ0p6/pwxSG3T
-	 +hfKiVjjaO1Xube+dYZnOnGsWyTQY84/ZDqnhmMWQ36EltgNlFZOU6Z3IlL4Zi19ze
-	 O2nZFLet/UAm5LyZwYfjGf+DofGWtI3NRaNZ4E7k=
+	b=CX+2W2Adrb71F9foC611YykVfy4KpiLylNyUrVxPAepq+tWl+ejkC80PBaUTuvPIy
+	 uUEaIOja1RvKVa+0rPOKmS0bvFcig6qslWAi/yrLwK48ohvXFwdAhuwl7/ifT16T3t
+	 b8JTCXFZHmIBsEnPvR8PtImZ0JPKPuEfHlGKF13E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@kernel.org,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 40/67] packet: Move reference count in packet_sock to atomic_long_t
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 154/194] drm/amd/amdgpu: Fix warnings in amdgpu/amdgpu_display.c
 Date: Mon, 11 Dec 2023 19:22:24 +0100
-Message-ID: <20231211182016.771772776@linuxfoundation.org>
+Message-ID: <20231211182043.532247269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,116 +52,185 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit db3fadacaf0c817b222090290d06ca2a338422d0 upstream.
+[ Upstream commit 93125cb704919f572c01e02ef64923caff1c3164 ]
 
-In some potential instances the reference count on struct packet_sock
-could be saturated and cause overflows which gets the kernel a bit
-confused. To prevent this, move to a 64-bit atomic reference count on
-64-bit architectures to prevent the possibility of this type to overflow.
+Fixes the below checkpatch.pl warnings:
 
-Because we can not handle saturation, using refcount_t is not possible
-in this place. Maybe someday in the future if it changes it could be
-used. Also, instead of using plain atomic64_t, use atomic_long_t instead.
-32-bit machines tend to be memory-limited (i.e. anything that increases
-a reference uses so much memory that you can't actually get to 2**32
-references). 32-bit architectures also tend to have serious problems
-with 64-bit atomics. Hence, atomic_long_t is the more natural solution.
+WARNING: Block comments use * on subsequent lines
+WARNING: Block comments use a trailing */ on a separate line
+WARNING: suspect code indent for conditional statements (8, 12)
+WARNING: braces {} are not necessary for single statement blocks
 
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Co-developed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231201131021.19999-1-daniel@iogearbox.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: c6df7f313794 ("drm/amdgpu: correct the amdgpu runtime dereference usage count")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |   16 ++++++++--------
- net/packet/internal.h  |    2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 42 ++++++++++++---------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4240,7 +4240,7 @@ static void packet_mm_open(struct vm_are
- 	struct sock *sk = sock->sk;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+index 2fced451f0aea..ee528ed639568 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -90,7 +90,7 @@ static void amdgpu_display_flip_work_func(struct work_struct *__work)
  
- 	if (sk)
--		atomic_inc(&pkt_sk(sk)->mapped);
-+		atomic_long_inc(&pkt_sk(sk)->mapped);
- }
+ 	struct drm_crtc *crtc = &amdgpu_crtc->base;
+ 	unsigned long flags;
+-	unsigned i;
++	unsigned int i;
+ 	int vpos, hpos;
  
- static void packet_mm_close(struct vm_area_struct *vma)
-@@ -4250,7 +4250,7 @@ static void packet_mm_close(struct vm_ar
- 	struct sock *sk = sock->sk;
+ 	for (i = 0; i < work->shared_count; ++i)
+@@ -167,7 +167,7 @@ int amdgpu_display_crtc_page_flip_target(struct drm_crtc *crtc,
+ 	u64 tiling_flags;
+ 	int i, r;
  
- 	if (sk)
--		atomic_dec(&pkt_sk(sk)->mapped);
-+		atomic_long_dec(&pkt_sk(sk)->mapped);
- }
+-	work = kzalloc(sizeof *work, GFP_KERNEL);
++	work = kzalloc(sizeof(*work), GFP_KERNEL);
+ 	if (work == NULL)
+ 		return -ENOMEM;
  
- static const struct vm_operations_struct packet_mmap_ops = {
-@@ -4345,7 +4345,7 @@ static int packet_set_ring(struct sock *
+@@ -298,13 +298,15 @@ int amdgpu_display_crtc_set_config(struct drm_mode_set *set,
  
- 	err = -EBUSY;
- 	if (!closing) {
--		if (atomic_read(&po->mapped))
-+		if (atomic_long_read(&po->mapped))
- 			goto out;
- 		if (packet_read_pending(rb))
- 			goto out;
-@@ -4448,7 +4448,7 @@ static int packet_set_ring(struct sock *
- 
- 	err = -EBUSY;
- 	mutex_lock(&po->pg_vec_lock);
--	if (closing || atomic_read(&po->mapped) == 0) {
-+	if (closing || atomic_long_read(&po->mapped) == 0) {
- 		err = 0;
- 		spin_lock_bh(&rb_queue->lock);
- 		swap(rb->pg_vec, pg_vec);
-@@ -4466,9 +4466,9 @@ static int packet_set_ring(struct sock *
- 		po->prot_hook.func = (po->rx_ring.pg_vec) ?
- 						tpacket_rcv : packet_rcv;
- 		skb_queue_purge(rb_queue);
--		if (atomic_read(&po->mapped))
--			pr_err("packet_mmap: vma is busy: %d\n",
--			       atomic_read(&po->mapped));
-+		if (atomic_long_read(&po->mapped))
-+			pr_err("packet_mmap: vma is busy: %ld\n",
-+			       atomic_long_read(&po->mapped));
+ 	adev = drm_to_adev(dev);
+ 	/* if we have active crtcs and we don't have a power ref,
+-	   take the current one */
++	 * take the current one
++	 */
+ 	if (active && !adev->have_disp_power_ref) {
+ 		adev->have_disp_power_ref = true;
+ 		return ret;
  	}
- 	mutex_unlock(&po->pg_vec_lock);
+ 	/* if we have no active crtcs, then drop the power ref
+-	   we got before */
++	 * we got before
++	 */
+ 	if (!active && adev->have_disp_power_ref) {
+ 		pm_runtime_put_autosuspend(dev->dev);
+ 		adev->have_disp_power_ref = false;
+@@ -473,11 +475,10 @@ bool amdgpu_display_ddc_probe(struct amdgpu_connector *amdgpu_connector,
+ 	if (amdgpu_connector->router.ddc_valid)
+ 		amdgpu_i2c_router_select_ddc_port(amdgpu_connector);
  
-@@ -4546,7 +4546,7 @@ static int packet_mmap(struct file *file
+-	if (use_aux) {
++	if (use_aux)
+ 		ret = i2c_transfer(&amdgpu_connector->ddc_bus->aux.ddc, msgs, 2);
+-	} else {
++	else
+ 		ret = i2c_transfer(&amdgpu_connector->ddc_bus->adapter, msgs, 2);
+-	}
+ 
+ 	if (ret != 2)
+ 		/* Couldn't find an accessible DDC on this connector */
+@@ -486,10 +487,12 @@ bool amdgpu_display_ddc_probe(struct amdgpu_connector *amdgpu_connector,
+ 	 * EDID header starts with:
+ 	 * 0x00,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x00.
+ 	 * Only the first 6 bytes must be valid as
+-	 * drm_edid_block_valid() can fix the last 2 bytes */
++	 * drm_edid_block_valid() can fix the last 2 bytes
++	 */
+ 	if (drm_edid_header_is_valid(buf) < 6) {
+ 		/* Couldn't find an accessible EDID on this
+-		 * connector */
++		 * connector
++		 */
+ 		return false;
+ 	}
+ 	return true;
+@@ -1204,8 +1207,10 @@ amdgpu_display_user_framebuffer_create(struct drm_device *dev,
+ 
+ 	obj = drm_gem_object_lookup(file_priv, mode_cmd->handles[0]);
+ 	if (obj ==  NULL) {
+-		drm_dbg_kms(dev, "No GEM object associated to handle 0x%08X, "
+-			    "can't create framebuffer\n", mode_cmd->handles[0]);
++		drm_dbg_kms(dev,
++			    "No GEM object associated to handle 0x%08X, can't create framebuffer\n",
++			    mode_cmd->handles[0]);
++
+ 		return ERR_PTR(-ENOENT);
+ 	}
+ 
+@@ -1398,6 +1403,7 @@ bool amdgpu_display_crtc_scaling_mode_fixup(struct drm_crtc *crtc,
+ 	}
+ 	if (amdgpu_crtc->rmx_type != RMX_OFF) {
+ 		fixed20_12 a, b;
++
+ 		a.full = dfixed_const(src_v);
+ 		b.full = dfixed_const(dst_v);
+ 		amdgpu_crtc->vsc.full = dfixed_div(a, b);
+@@ -1417,7 +1423,7 @@ bool amdgpu_display_crtc_scaling_mode_fixup(struct drm_crtc *crtc,
+  *
+  * \param dev Device to query.
+  * \param pipe Crtc to query.
+- * \param flags Flags from caller (DRM_CALLED_FROM_VBLIRQ or 0).
++ * \param flags from caller (DRM_CALLED_FROM_VBLIRQ or 0).
+  *              For driver internal use only also supports these flags:
+  *
+  *              USE_REAL_VBLANKSTART to use the real start of vblank instead
+@@ -1493,8 +1499,8 @@ int amdgpu_display_get_crtc_scanoutpos(struct drm_device *dev,
+ 
+ 	/* Called from driver internal vblank counter query code? */
+ 	if (flags & GET_DISTANCE_TO_VBLANKSTART) {
+-	    /* Caller wants distance from real vbl_start in *hpos */
+-	    *hpos = *vpos - vbl_start;
++		/* Caller wants distance from real vbl_start in *hpos */
++		*hpos = *vpos - vbl_start;
+ 	}
+ 
+ 	/* Fudge vblank to start a few scanlines earlier to handle the
+@@ -1516,7 +1522,7 @@ int amdgpu_display_get_crtc_scanoutpos(struct drm_device *dev,
+ 
+ 	/* In vblank? */
+ 	if (in_vbl)
+-	    ret |= DRM_SCANOUTPOS_IN_VBLANK;
++		ret |= DRM_SCANOUTPOS_IN_VBLANK;
+ 
+ 	/* Called from driver internal vblank counter query code? */
+ 	if (flags & GET_DISTANCE_TO_VBLANKSTART) {
+@@ -1622,6 +1628,7 @@ int amdgpu_display_suspend_helper(struct amdgpu_device *adev)
+ 
+ 		if (amdgpu_crtc->cursor_bo && !adev->enable_virtual_display) {
+ 			struct amdgpu_bo *aobj = gem_to_amdgpu_bo(amdgpu_crtc->cursor_bo);
++
+ 			r = amdgpu_bo_reserve(aobj, true);
+ 			if (r == 0) {
+ 				amdgpu_bo_unpin(aobj);
+@@ -1629,9 +1636,9 @@ int amdgpu_display_suspend_helper(struct amdgpu_device *adev)
+ 			}
  		}
- 	}
  
--	atomic_inc(&po->mapped);
-+	atomic_long_inc(&po->mapped);
- 	vma->vm_ops = &packet_mmap_ops;
- 	err = 0;
+-		if (fb == NULL || fb->obj[0] == NULL) {
++		if (!fb || !fb->obj[0])
+ 			continue;
+-		}
++
+ 		robj = gem_to_amdgpu_bo(fb->obj[0]);
+ 		if (!amdgpu_display_robj_is_fb(adev, robj)) {
+ 			r = amdgpu_bo_reserve(robj, true);
+@@ -1658,6 +1665,7 @@ int amdgpu_display_resume_helper(struct amdgpu_device *adev)
  
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -125,7 +125,7 @@ struct packet_sock {
- 	__be16			num;
- 	struct packet_rollover	*rollover;
- 	struct packet_mclist	*mclist;
--	atomic_t		mapped;
-+	atomic_long_t		mapped;
- 	enum tpacket_versions	tp_version;
- 	unsigned int		tp_hdrlen;
- 	unsigned int		tp_reserve;
+ 		if (amdgpu_crtc->cursor_bo && !adev->enable_virtual_display) {
+ 			struct amdgpu_bo *aobj = gem_to_amdgpu_bo(amdgpu_crtc->cursor_bo);
++
+ 			r = amdgpu_bo_reserve(aobj, true);
+ 			if (r == 0) {
+ 				r = amdgpu_bo_pin(aobj, AMDGPU_GEM_DOMAIN_VRAM);
+-- 
+2.42.0
+
 
 
 
