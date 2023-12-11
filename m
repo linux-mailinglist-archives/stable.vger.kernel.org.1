@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C3380D790
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAE380D8F1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E121C21255
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1161F21AC3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AA653E15;
-	Mon, 11 Dec 2023 18:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12EC524B8;
+	Mon, 11 Dec 2023 18:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UTIv0QA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTBSonH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223B152F89;
-	Mon, 11 Dec 2023 18:37:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6FEC433C8;
-	Mon, 11 Dec 2023 18:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E327524B5;
+	Mon, 11 Dec 2023 18:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0630C433CD;
+	Mon, 11 Dec 2023 18:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319876;
-	bh=7r2CGCWYQJvNjMiZAYlpLSqfGar6oFwUjKtnO5RTmOw=;
+	s=korg; t=1702320583;
+	bh=hFEWt3dO6GMk809nwq4AeIEwVMLdwWgPeVCPmS+jz2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UTIv0QAdbqJeU9Ycxr1huoN9FiF7adQKdwW9ZvWLH5oGtZ4+qZXbCagK3sfujfqy
-	 htoearbCqQ43zcTAp7ZGVFd/WDNtVC4C57tToDsMqkgngEfrWpSAnoX4ziaR++ysxl
-	 RCQxSY1o6/orULQrZly/YMUjDOEFjsaNz/E3iv9g=
+	b=dTBSonH0ZhlnmJBmIOGFs1D0fdu7evrCeOpjMKV43oaHZB/JLIosxvWaZhyxNI37k
+	 n+Uh0r9iFtPB6IkdLgq4QGyeZAgb98SxV2S6xSz6MyUEqA6iNSQUATOOZEAlrocSm9
+	 FoTmCuCH3ZHz8WVmxCAiKqTWo9lBLyIeS+b/FClM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 03/97] netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
+Subject: [PATCH 6.1 076/194] RDMA/rtrs-clt: Remove the warnings for req in_use check
 Date: Mon, 11 Dec 2023 19:21:06 +0100
-Message-ID: <20231211182019.957772144@linuxfoundation.org>
+Message-ID: <20231211182039.891559970@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,106 +55,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 28628fa952fefc7f2072ce6e8016968cc452b1ba ]
+[ Upstream commit 0c8bb6eb70ca41031f663b4481aac9ac78b53bc6 ]
 
-Linkui Xiao reported that there's a race condition when ipset swap and destroy is
-called, which can lead to crash in add/del/test element operations. Swap then
-destroy are usual operations to replace a set with another one in a production
-system. The issue can in some cases be reproduced with the script:
+As we chain the WR during write request: memory registration,
+rdma write, local invalidate, if only the last WR fail to send due
+to send queue overrun, the server can send back the reply, while
+client mark the req->in_use to false in case of error in rtrs_clt_req
+when error out from rtrs_post_rdma_write_sg.
 
-ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
-ipset add hash_ip1 172.20.0.0/16
-ipset add hash_ip1 192.168.0.0/16
-iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
-while [ 1 ]
-do
-	# ... Ongoing traffic...
-        ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
-        ipset add hash_ip2 172.20.0.0/16
-        ipset swap hash_ip1 hash_ip2
-        ipset destroy hash_ip2
-        sleep 0.05
-done
-
-In the race case the possible order of the operations are
-
-	CPU0			CPU1
-	ip_set_test
-				ipset swap hash_ip1 hash_ip2
-				ipset destroy hash_ip2
-	hash_net_kadt
-
-Swap replaces hash_ip1 with hash_ip2 and then destroy removes hash_ip2 which
-is the original hash_ip1. ip_set_test was called on hash_ip1 and because destroy
-removed it, hash_net_kadt crashes.
-
-The fix is to force ip_set_swap() to wait for all readers to finish accessing the
-old set pointers by calling synchronize_rcu().
-
-The first version of the patch was written by Linkui Xiao <xiaolinkui@kylinos.cn>.
-
-v2: synchronize_rcu() is moved into ip_set_swap() in order not to burden
-    ip_set_destroy() unnecessarily when all sets are destroyed.
-v3: Florian Westphal pointed out that all netfilter hooks run with rcu_read_lock() held
-    and em_ipset.c wraps the entire ip_set_test() in rcu read lock/unlock pair.
-    So there's no need to extend the rcu read locked area in ipset itself.
-
-Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
-Reported by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-8-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 26613e3731d02..24f81826ed4a5 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -61,6 +61,8 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
- 	ip_set_dereference((inst)->ip_set_list)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
-+#define ip_set_dereference_nfnl(p)	\
-+	rcu_dereference_check(p, lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET))
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index c0781d4279cb2..cc07c91f9c549 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -382,7 +382,7 @@ static void complete_rdma_req(struct rtrs_clt_io_req *req, int errno,
+ 	struct rtrs_clt_path *clt_path;
+ 	int err;
  
- /* The set types are implemented in modules and registered set types
-  * can be found in ip_set_type_list. Adding/deleting types is
-@@ -708,15 +710,10 @@ __ip_set_put_netlink(struct ip_set *set)
- static struct ip_set *
- ip_set_rcu_get(struct net *net, ip_set_id_t index)
- {
--	struct ip_set *set;
- 	struct ip_set_net *inst = ip_set_pernet(net);
- 
--	rcu_read_lock();
--	/* ip_set_list itself needs to be protected */
--	set = rcu_dereference(inst->ip_set_list)[index];
--	rcu_read_unlock();
--
--	return set;
-+	/* ip_set_list and the set pointer need to be protected */
-+	return ip_set_dereference_nfnl(inst->ip_set_list)[index];
- }
- 
- static inline void
-@@ -1407,6 +1404,9 @@ static int ip_set_swap(struct net *net, struct sock *ctnl, struct sk_buff *skb,
- 	ip_set(inst, to_id) = from;
- 	write_unlock_bh(&ip_set_ref_lock);
- 
-+	/* Make sure all readers of the old set pointers are completed. */
-+	synchronize_rcu();
-+
- 	return 0;
- }
- 
+-	if (WARN_ON(!req->in_use))
++	if (!req->in_use)
+ 		return;
+ 	if (WARN_ON(!req->con))
+ 		return;
 -- 
 2.42.0
 
