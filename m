@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-5905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB23E80D7BC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F8F80D8D3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85549281D15
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88A371F21B86
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10710524D1;
-	Mon, 11 Dec 2023 18:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD4D51C2D;
+	Mon, 11 Dec 2023 18:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgXhKqMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TJd1Sdn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4FD20DDE;
-	Mon, 11 Dec 2023 18:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E77BC433C7;
-	Mon, 11 Dec 2023 18:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2E55102A;
+	Mon, 11 Dec 2023 18:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1402FC433C8;
+	Mon, 11 Dec 2023 18:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319981;
-	bh=w4qOdwL3vE9UILr8Zncn77vMS6ZQZE2qtHR7MWPau1A=;
+	s=korg; t=1702320553;
+	bh=hLzipm9a3OYejDEnw3bN+moiLmrMTRM9QNyvnppFxBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgXhKqMf6KVU/apIsxsxNk3r5vx6hUmqgHozpS4FCINDp0v9GP9o+GLYSbFNTbNVk
-	 49fILlW1+rrAlfkJv5fq4ovgeiaoTwRgSu7SvbNdpkKQ88jEq2mOv0NM65hNSUSk6/
-	 zUIxcOEveXO2kAQEp1ez+e5R3umNWdiVJILqd5qE=
+	b=2TJd1Sdn1b4i5/MU1czz39oTd5oBmgnenQUHepKl+C7HInEC1WcPL3YDafTzWqoTj
+	 ztCXqYUNB1iLavepBeyRxeCAJdyBkciePQz+Frp3kMvQbZX7OUXib+rzLKAX0bMSZ0
+	 cv4u9VxeI/EWyT5M1sH1QKchESJ6xwJLJjg+/k4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 30/97] ionic: Fix dim work handling in split interrupt mode
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Georg Gottleuber <ggo@tuxedocomputers.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 103/194] nvme-pci: Add sleep quirk for Kingston drives
 Date: Mon, 11 Dec 2023 19:21:33 +0100
-Message-ID: <20231211182021.062975719@linuxfoundation.org>
+Message-ID: <20231211182041.039145874@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,72 +54,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Georg Gottleuber <ggo@tuxedocomputers.com>
 
-[ Upstream commit 4115ba677c35f694b62298e55f0e04ce84eed469 ]
+commit 107b4e063d78c300b21e2d5291b1aa94c514ea5b upstream.
 
-Currently ionic_dim_work() is incorrect when in
-split interrupt mode. This is because the interrupt
-rate is only being changed for the Rx side even for
-dim running on Tx. Fix this by using the qcq from
-the container_of macro. Also, introduce some local
-variables for a bit of cleanup.
+Some Kingston NV1 and A2000 are wasting a lot of power on specific TUXEDO
+platforms in s2idle sleep if 'Simple Suspend' is used.
 
-Fixes: a6ff85e0a2d9 ("ionic: remove intr coalesce update from napi")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231204192234.21017-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch applies a new quirk 'Force No Simple Suspend' to achieve a
+low power sleep without 'Simple Suspend'.
+
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/nvme/host/nvme.h |    5 +++++
+ drivers/nvme/host/pci.c  |   16 +++++++++++++++-
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 098772601df8c..49c28134ac2cc 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -45,24 +45,24 @@ static void ionic_lif_queue_identify(struct ionic_lif *lif);
- static void ionic_dim_work(struct work_struct *work)
- {
- 	struct dim *dim = container_of(work, struct dim, work);
-+	struct ionic_intr_info *intr;
- 	struct dim_cq_moder cur_moder;
- 	struct ionic_qcq *qcq;
-+	struct ionic_lif *lif;
- 	u32 new_coal;
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -154,6 +154,11 @@ enum nvme_quirks {
+ 	 * No temperature thresholds for channels other than 0 (Composite).
+ 	 */
+ 	NVME_QUIRK_NO_SECONDARY_TEMP_THRESH	= (1 << 19),
++
++	/*
++	 * Disables simple suspend/resume path.
++	 */
++	NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND	= (1 << 20),
+ };
  
- 	cur_moder = net_dim_get_rx_moderation(dim->mode, dim->profile_ix);
- 	qcq = container_of(dim, struct ionic_qcq, dim);
--	new_coal = ionic_coal_usec_to_hw(qcq->q.lif->ionic, cur_moder.usec);
-+	lif = qcq->q.lif;
-+	new_coal = ionic_coal_usec_to_hw(lif->ionic, cur_moder.usec);
- 	new_coal = new_coal ? new_coal : 1;
- 
--	if (qcq->intr.dim_coal_hw != new_coal) {
--		unsigned int qi = qcq->cq.bound_q->index;
--		struct ionic_lif *lif = qcq->q.lif;
--
--		qcq->intr.dim_coal_hw = new_coal;
-+	intr = &qcq->intr;
-+	if (intr->dim_coal_hw != new_coal) {
-+		intr->dim_coal_hw = new_coal;
- 
- 		ionic_intr_coal_init(lif->ionic->idev.intr_ctrl,
--				     lif->rxqcqs[qi]->intr.index,
--				     qcq->intr.dim_coal_hw);
-+				     intr->index, intr->dim_coal_hw);
+ /*
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3093,6 +3093,18 @@ static unsigned long check_vendor_combin
+ 		if ((dmi_match(DMI_BOARD_VENDOR, "LENOVO")) &&
+ 		     dmi_match(DMI_BOARD_NAME, "LNVNB161216"))
+ 			return NVME_QUIRK_SIMPLE_SUSPEND;
++	} else if (pdev->vendor == 0x2646 && (pdev->device == 0x2263 ||
++		   pdev->device == 0x500f)) {
++		/*
++		 * Exclude some Kingston NV1 and A2000 devices from
++		 * NVME_QUIRK_SIMPLE_SUSPEND. Do a full suspend to save a
++		 * lot fo energy with s2idle sleep on some TUXEDO platforms.
++		 */
++		if (dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
++		    dmi_match(DMI_BOARD_NAME, "NS5x_7xAU") ||
++		    dmi_match(DMI_BOARD_NAME, "NS5x_7xPU") ||
++		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1"))
++			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
  	}
  
- 	dim->state = DIM_START_MEASURE;
--- 
-2.42.0
-
+ 	return 0;
+@@ -3133,7 +3145,9 @@ static struct nvme_dev *nvme_pci_alloc_d
+ 	dev->dev = get_device(&pdev->dev);
+ 
+ 	quirks |= check_vendor_combination_bug(pdev);
+-	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
++	if (!noacpi &&
++	    !(quirks & NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND) &&
++	    acpi_storage_d3(&pdev->dev)) {
+ 		/*
+ 		 * Some systems use a bios work around to ask for D3 on
+ 		 * platforms that support kernel managed suspend.
 
 
 
