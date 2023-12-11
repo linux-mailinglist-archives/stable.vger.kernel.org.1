@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C18680D998
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD05080D917
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCBFE281A48
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EBE281854
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1901851C47;
-	Mon, 11 Dec 2023 18:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183C751C37;
+	Mon, 11 Dec 2023 18:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E+HF4rqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8tBxe8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DB4321B8;
-	Mon, 11 Dec 2023 18:55:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AAA4C433C7;
-	Mon, 11 Dec 2023 18:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C1F5102A;
+	Mon, 11 Dec 2023 18:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44359C433C7;
+	Mon, 11 Dec 2023 18:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320915;
-	bh=5dFeOSxTOlnR2KaUo9fB/GuEi+haEUwOsUD0mHn03s8=;
+	s=korg; t=1702320657;
+	bh=gZT7XdqcupaebN3npWzq+6vKGykB+koMJJavOTUAThs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E+HF4rqMWbDBus8iCbNvEhHAThlqkqTY4HwtIfQ4A72WjnN7vS35tjE0VABUuZNVv
-	 j4n5Fl3Vi3F/kotRY8Q8kMpU3osn/+1s/+ssCwrRroKsjECMUCsRwq47kmqer0fj/z
-	 EoUqMIFKyEff4fKAtZ4JHfJIaJ0Vef0l/mxVKes0=
+	b=Z8tBxe8GKcUoPS9D+kNz6E7uU2QRmS/friEZ70syvSeIrbMw9r3RRyaqURjg2NBd6
+	 iRZJbxwdIr2w1WbcxYIyQi1FtjfDu9+CZvwLu/c9P1X35+JIF1rMzOYdeiJEBqwpFF
+	 dDtqRTRb7bb2BiNxTMhooCxFRcbr2qauIXkQsiYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 043/141] bpf: sockmap, updating the sg structure should also update curr
-Date: Mon, 11 Dec 2023 19:21:42 +0100
-Message-ID: <20231211182028.393835510@linuxfoundation.org>
+	Tim Van Patten <timvp@google.com>,
+	Mark Hasemeyer <markhas@chromium.org>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.1 113/194] cgroup_freezer: cgroup_freezing: Check if not frozen
+Date: Mon, 11 Dec 2023 19:21:43 +0100
+Message-ID: <20231211182041.547236219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,78 +53,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Tim Van Patten <timvp@google.com>
 
-[ Upstream commit bb9aefde5bbaf6c168c77ba635c155b4980c2287 ]
+commit cff5f49d433fcd0063c8be7dd08fa5bf190c6c37 upstream.
 
-Curr pointer should be updated when the sg structure is shifted.
+__thaw_task() was recently updated to warn if the task being thawed was
+part of a freezer cgroup that is still currently freezing:
 
-Fixes: 7246d8ed4dcce ("bpf: helper to pop data from messages")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-3-john.fastabend@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	void __thaw_task(struct task_struct *p)
+	{
+	...
+		if (WARN_ON_ONCE(freezing(p)))
+			goto unlock;
+
+This has exposed a bug in cgroup1 freezing where when CGROUP_FROZEN is
+asserted, the CGROUP_FREEZING bits are not also cleared at the same
+time. Meaning, when a cgroup is marked FROZEN it continues to be marked
+FREEZING as well. This causes the WARNING to trigger, because
+cgroup_freezing() thinks the cgroup is still freezing.
+
+There are two ways to fix this:
+
+1. Whenever FROZEN is set, clear FREEZING for the cgroup and all
+children cgroups.
+2. Update cgroup_freezing() to also verify that FROZEN is not set.
+
+This patch implements option (2), since it's smaller and more
+straightforward.
+
+Signed-off-by: Tim Van Patten <timvp@google.com>
+Tested-by: Mark Hasemeyer <markhas@chromium.org>
+Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ kernel/cgroup/legacy_freezer.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 76432aa3b717c..0f5faa876fd12 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2576,6 +2576,22 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 	return 0;
- }
+diff --git a/kernel/cgroup/legacy_freezer.c b/kernel/cgroup/legacy_freezer.c
+index 122dacb3a443..66d1708042a7 100644
+--- a/kernel/cgroup/legacy_freezer.c
++++ b/kernel/cgroup/legacy_freezer.c
+@@ -66,9 +66,15 @@ static struct freezer *parent_freezer(struct freezer *freezer)
+ bool cgroup_freezing(struct task_struct *task)
+ {
+ 	bool ret;
++	unsigned int state;
  
-+static void sk_msg_reset_curr(struct sk_msg *msg)
-+{
-+	u32 i = msg->sg.start;
-+	u32 len = 0;
-+
-+	do {
-+		len += sk_msg_elem(msg, i)->length;
-+		sk_msg_iter_var_next(i);
-+		if (len >= msg->sg.size)
-+			break;
-+	} while (i != msg->sg.end);
-+
-+	msg->sg.curr = i;
-+	msg->sg.copybreak = 0;
-+}
-+
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
- 	.func           = bpf_msg_cork_bytes,
- 	.gpl_only       = false,
-@@ -2695,6 +2711,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
- 		      msg->sg.end - shift;
- out:
-+	sk_msg_reset_curr(msg);
- 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
- 	msg->data_end = msg->data + bytes;
- 	return 0;
-@@ -2831,6 +2848,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		msg->sg.data[new] = rsge;
- 	}
+ 	rcu_read_lock();
+-	ret = task_freezer(task)->state & CGROUP_FREEZING;
++	/* Check if the cgroup is still FREEZING, but not FROZEN. The extra
++	 * !FROZEN check is required, because the FREEZING bit is not cleared
++	 * when the state FROZEN is reached.
++	 */
++	state = task_freezer(task)->state;
++	ret = (state & CGROUP_FREEZING) && !(state & CGROUP_FROZEN);
+ 	rcu_read_unlock();
  
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
-@@ -2999,6 +3017,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
- 	msg->sg.size -= (len - pop);
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
+ 	return ret;
 -- 
-2.42.0
+2.43.0
 
 
 
