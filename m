@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8779180D83B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8372980D93C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8B531C215DC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4ECE1C216B0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F188651036;
-	Mon, 11 Dec 2023 18:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA26051C44;
+	Mon, 11 Dec 2023 18:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRYISPAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3LTTMro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC47EFC06;
-	Mon, 11 Dec 2023 18:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35E7C433C7;
-	Mon, 11 Dec 2023 18:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071651C2D;
+	Mon, 11 Dec 2023 18:52:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22301C433C8;
+	Mon, 11 Dec 2023 18:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320234;
-	bh=xkViQvrCntSMLyQKpVQGfI4LE7qKyXoM0A2gynSyUKs=;
+	s=korg; t=1702320724;
+	bh=4NJYC4At217pyovCsvS9b/0ZLUu0tnrWrAoHM5Nvh0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRYISPANZGvp4tWXr/bkQjiOUfLGlsaaIxaghsUgh/dzcyvCX2v9Sm3rQQLrifxM1
-	 rywbaLg1DfUc0MUw+MF3y9pC5MG2JmTw84SsbZ+zeptsfmUt9VcGUG2/djR+DBYx2S
-	 TiYtgM8CBdCnlHQ227DEq3dtcBPfPd+uqxVfv8sY=
+	b=N3LTTMrohgB+1DeYux0bR10PGQbJW8SH2Fn8h+a3c4beYpu2SnwXfY6lSXbEglqsw
+	 AS4+xV66mk1osXfL2CeknoKBAUlTVrwkUx50G2JSrPyVrw5aQ2KLl9vOPNQHDwFh6K
+	 9rIABC5RvIERY3gnCGr5+QgZpZ/Qg5W3EO/7Bd8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 5.4 53/67] serial: 8250_omap: Add earlycon support for the AM654 UART controller
+Subject: [PATCH 6.1 167/194] serial: 8250_dw: Add ACPI ID for Granite Rapids-D UART
 Date: Mon, 11 Dec 2023 19:22:37 +0100
-Message-ID: <20231211182017.259349333@linuxfoundation.org>
+Message-ID: <20231211182044.097249918@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,36 +52,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 8e42c301ce64e0dcca547626eb486877d502d336 upstream.
+commit e92fad024929c79460403acf946bc9c09ce5c3a9 upstream.
 
-Currently there is no support for earlycon on the AM654 UART
-controller. This commit adds it.
+Granite Rapids-D has an additional UART that is enumerated via ACPI.
+Add ACPI ID for it.
 
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20231031131242.15516-1-rwahl@gmx.de
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20231205195524.2705965-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_early.c |    1 +
+ drivers/tty/serial/8250/8250_dw.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/8250/8250_early.c
-+++ b/drivers/tty/serial/8250/8250_early.c
-@@ -176,6 +176,7 @@ static int __init early_omap8250_setup(s
- OF_EARLYCON_DECLARE(omap8250, "ti,omap2-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap3-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap4-uart", early_omap8250_setup);
-+OF_EARLYCON_DECLARE(omap8250, "ti,am654-uart", early_omap8250_setup);
- 
- #endif
- 
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -795,6 +795,7 @@ static const struct acpi_device_id dw825
+ 	{ "INT33C5", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3434", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3435", (kernel_ulong_t)&dw8250_dw_apb },
++	{ "INTC10EE", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, dw8250_acpi_match);
 
 
 
