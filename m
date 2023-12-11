@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-6318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FE280DA08
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C0580D84B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71B8FB21B21
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24279B214DB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F71524B8;
-	Mon, 11 Dec 2023 18:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533305102F;
+	Mon, 11 Dec 2023 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzbR2VjJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va+cclt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CC051C47;
-	Mon, 11 Dec 2023 18:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D949C433CB;
-	Mon, 11 Dec 2023 18:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00401FC06;
+	Mon, 11 Dec 2023 18:44:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B6BC433C8;
+	Mon, 11 Dec 2023 18:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321105;
-	bh=CS/6qCBKofk9WTr7y5UID7Xfi9oCXNZQh59JhQMpLng=;
+	s=korg; t=1702320269;
+	bh=EzScYSSADSXnqhYpJoGdAg/1Aq3u1BF1pUkPHG41BPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzbR2VjJeKOBY5/O7zfjO1i2QSGJO2HH0Q8fNcygvb2sficQjMldbjhNHhXXbmSa0
-	 +H0L0pdy2i6pJQAFZdZbeTp1xvfir1mO+11DvnfvB5ho1C5Ey1ypkmdFabE1j2VGW0
-	 jd3NXDbvr7fq2zmB3lCsqmXHaERgQA8DPDgZZa7w=
+	b=Va+cclt6xD6y8Kd9cx+gBD+78Hm9CdixrjVRRZHP0imo6EvWewi/EcLsIf1yGy91V
+	 cNDY499fazRDSQy15OC5mdJE7RexwL7Ka5KsnrMA74UYkzPwn6C7IhbgCt5NGhAjVY
+	 /tVZh9mf24EIX0OWrYrjvOvy+IgZjixlQKafmfog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 112/141] arm64: dts: mediatek: align thermal zone node names with dtschema
+Subject: [PATCH 5.4 67/67] devcoredump: Send uevent once devcd is ready
 Date: Mon, 11 Dec 2023 19:22:51 +0100
-Message-ID: <20231211182031.415828035@linuxfoundation.org>
+Message-ID: <20231211182017.866516805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +52,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-[ Upstream commit 624f1806a7c3f8061641a1f3e7c0dfa73e82fb10 ]
+[ Upstream commit af54d778a03853801d681c98c0c2a6c316ef9ca7 ]
 
-Align the name of thermal zone node to dtschema to fix warnings like:
+dev_coredumpm() creates a devcoredump device and adds it
+to the core kernel framework which eventually end up
+sending uevent to the user space and later creates a
+symbolic link to the failed device. An application
+running in userspace may be interested in this symbolic
+link to get the name of the failed device.
 
-  arch/arm64/boot/dts/mediatek/mt8173-elm.dt.yaml:
-    thermal-zones: 'cpu_thermal' does not match any of the regexes: '^[a-zA-Z][a-zA-Z0-9\\-]{1,12}-thermal$', 'pinctrl-[0-9]+'
+In a issue scenario, once uevent sent to the user space
+it start reading '/sys/class/devcoredump/devcdX/failing_device'
+to get the actual name of the device which might not been
+created and it is in its path of creation.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20210820081616.83674-2-krzysztof.kozlowski@canonical.com
-Signed-off-by: Matthias Brugger <matthias.bgg@gmail.com>
-Stable-dep-of: 5a60d6343969 ("arm64: dts: mediatek: mt8183: Move thermal-zones to the root node")
+To fix this, suppress sending uevent till the failing device
+symbolic link gets created and send uevent once symbolic
+link is created successfully.
+
+Fixes: 833c95456a70 ("device coredump: add new device coredump class")
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1700232572-25823-1-git-send-email-quic_mojha@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi | 2 +-
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/devcoredump.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8173.dtsi b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-index d9e005ae5bb09..c71a5155702d2 100644
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -273,7 +273,7 @@ cpum_ck: oscillator2 {
- 	};
+diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
+index ab2fbb43ccdb5..e9398bcffab69 100644
+--- a/drivers/base/devcoredump.c
++++ b/drivers/base/devcoredump.c
+@@ -367,6 +367,7 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 	devcd->devcd_dev.class = &devcd_class;
  
- 	thermal-zones {
--		cpu_thermal: cpu_thermal {
-+		cpu_thermal: cpu-thermal {
- 			polling-delay-passive = <1000>; /* milliseconds */
- 			polling-delay = <1000>; /* milliseconds */
+ 	mutex_lock(&devcd->mutex);
++	dev_set_uevent_suppress(&devcd->devcd_dev, true);
+ 	if (device_add(&devcd->devcd_dev))
+ 		goto put_device;
  
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 81fde34ffd52a..ac05284cce867 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -767,7 +767,7 @@ thermal: thermal@1100b000 {
- 		};
+@@ -378,6 +379,8 @@ void dev_coredumpm(struct device *dev, struct module *owner,
+ 			      "devcoredump"))
+ 		/* nothing - symlink will be missing */;
  
- 		thermal_zones: thermal-zones {
--			cpu_thermal: cpu_thermal {
-+			cpu_thermal: cpu-thermal {
- 				polling-delay-passive = <100>;
- 				polling-delay = <500>;
- 				thermal-sensors = <&thermal 0>;
++	dev_set_uevent_suppress(&devcd->devcd_dev, false);
++	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
+ 	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
+ 	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
+ 	mutex_unlock(&devcd->mutex);
 -- 
 2.42.0
 
