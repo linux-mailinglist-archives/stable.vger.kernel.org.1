@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-5902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B5780D7BA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7DE80D70E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C99F0B20F5E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BEE61C20A0C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AE9524C9;
-	Mon, 11 Dec 2023 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B2154F9B;
+	Mon, 11 Dec 2023 18:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUZShROd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5izeg6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF5A20DDE;
-	Mon, 11 Dec 2023 18:39:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122CFC433C9;
-	Mon, 11 Dec 2023 18:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB6524BC;
+	Mon, 11 Dec 2023 18:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C414DC433CB;
+	Mon, 11 Dec 2023 18:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319973;
-	bh=BkJh7l2T3rw34ZE4mVkjF5T+lxk15lQ+GVTtWuvVUYk=;
+	s=korg; t=1702319687;
+	bh=EccqGt9ngvOByeP2yk3MKQyP7N89y7SKJRh5dBm4FNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUZShROdjlhowDI7VM5X3o2L7vf/9nT98Jr2B1o0reQ7xOThIqgaV8P+rar352w/c
-	 DTHuheEaX/Eeoy0ENOtJzch7jHDv8bvTwMkBGqv3XwFQ/YVyuac0C+IVHPFQ2Z6RXa
-	 Y4eSzux7fdrUM2lZ3L609RxINJCTqhTfr3csIjto=
+	b=N5izeg6NWQZVDmf27YmB0JOZrfipBqgEgd1FHnAuSYAC4N8kksuvY3pO8Fovycpzt
+	 dI7FDr4iR/3SJoyp0xNscnbH2L/mZfPF6EwgEuxQiwcqY+fqi3toCY30KmgcPKlfKi
+	 H6LJMeqIG8yXPRxSjVHz45aOWxsi4CBwcO9TwbBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	John Garry <john.g.garry@oracle.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 27/97] i40e: Fix unexpected MFS warning message
+Subject: [PATCH 6.6 197/244] perf vendor events arm64: AmpereOne: Add missing DefaultMetricgroupName fields
 Date: Mon, 11 Dec 2023 19:21:30 +0100
-Message-ID: <20231211182020.934923550@linuxfoundation.org>
+Message-ID: <20231211182054.781810722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit 7d9f22b3d3ef379ed05bd3f3e2de83dfa8da8258 ]
+[ Upstream commit 90fe70d4e23cb57253d2668a171d5695c332deb7 ]
 
-Commit 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set") added
-a warning message that reports unexpected size of port's MFS (max
-frame size) value. This message use for the port number local
-variable 'i' that is wrong.
-In i40e_probe() this 'i' variable is used only to iterate VSIs
-to find FDIR VSI:
+AmpereOne metrics were missing DefaultMetricgroupName from metrics with
+"Default" in group name resulting perf to segfault. Add the missing
+field to address the issue.
 
-<code>
-...
-/* if FDIR VSI was set up, start it now */
-        for (i = 0; i < pf->num_alloc_vsi; i++) {
-                if (pf->vsi[i] && pf->vsi[i]->type == I40E_VSI_FDIR) {
-                        i40e_vsi_open(pf->vsi[i]);
-                        break;
-                }
-        }
-...
-</code>
-
-So the warning message use for the port number index of FDIR VSI
-if this exists or pf->num_alloc_vsi if not.
-
-Fix the message by using 'pf->hw.port' for the port number.
-
-Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 59faeaf80d02 ("perf vendor events arm64: Fix for AmpereOne metrics")
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Link: https://lore.kernel.org/r/20231201021550.1109196-2-ilkka@os.amperecomputing.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 64e1f6f407b48..36e387ae967f7 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -15480,7 +15480,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	       I40E_PRTGL_SAH_MFS_MASK) >> I40E_PRTGL_SAH_MFS_SHIFT;
- 	if (val < MAX_FRAME_SIZE_DEFAULT)
- 		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
--			 i, val);
-+			 pf->hw.port, val);
- 
- 	/* Add a filter to drop all Flow control frames from any VSI from being
- 	 * transmitted. By doing so we stop a malicious VF from sending out
+diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
+index e2848a9d48487..afcdad58ef89c 100644
+--- a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
++++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
+@@ -231,6 +231,7 @@
+         "MetricName": "slots_lost_misspeculation_fraction",
+         "MetricExpr": "100 * ((OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots))",
+         "BriefDescription": "Fraction of slots lost due to misspeculation",
++        "DefaultMetricgroupName": "TopdownL1",
+         "MetricGroup": "Default;TopdownL1",
+         "ScaleUnit": "1percent of slots"
+     },
+@@ -238,6 +239,7 @@
+         "MetricName": "retired_fraction",
+         "MetricExpr": "100 * (OP_RETIRED / (CPU_CYCLES * #slots))",
+         "BriefDescription": "Fraction of slots retiring, useful work",
++        "DefaultMetricgroupName": "TopdownL1",
+         "MetricGroup": "Default;TopdownL1",
+ 	"ScaleUnit": "1percent of slots"
+     },
 -- 
 2.42.0
 
