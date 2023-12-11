@@ -1,128 +1,83 @@
-Return-Path: <stable+bounces-5518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D31280D3B1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:26:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BBF80D3C2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0681C215C9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 763CF1F219E9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D1C4E1BA;
-	Mon, 11 Dec 2023 17:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FB64E1B9;
+	Mon, 11 Dec 2023 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xjTugPex"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EkaIBMVT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A8FBD
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:26:40 -0800 (PST)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a00c200782dso633780266b.1
-        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:26:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702315599; x=1702920399; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z8dOU7vgCrWoj+Jdp90eY+meUzL5fXI8ikuHYzvel8Q=;
-        b=xjTugPexuaiydY/nBgm2Nj6iGiTRwVIab1DQIit9GHwoUMH/e9cRVOjiB4XIkyfnJ9
-         zNxh+NhugNOYyfQgGYSi1aC0Msznq0dJIaCiICpOOPEUndfWRI/DCkrtiW011PfI/Xyz
-         MWge1ORw1l2hRlIVYUfeKKW3QmZ7kDoiqvJNhE7zFpn9HMSRExp54zbpTujxMeb/vW6u
-         44dMeMF0ZQcTXteolPdnqgo3YJPJ/5q4fj5kQHoEalX5216BW/1+wAeLKJ6BSKAUPrnX
-         yT3MyZgDdG2DLKvorV6/p8VTyDfmOztOd1t5lDF/tC6ZPjmCE3AQum/e9Cd+IlCSA8Sw
-         7u+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702315599; x=1702920399;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z8dOU7vgCrWoj+Jdp90eY+meUzL5fXI8ikuHYzvel8Q=;
-        b=Zx8QeBFXeYNFC7WUE93yU1DUylfr0gyVXTTzaZrQUwbKv5PUVZkhq90vQKGoFeAFsG
-         Ofl7aszG2QKCwkP7xAiyz0iFXxqDg1J8BmScinwzjeD4T/2rXYA2hZQVO00/il5BhXWO
-         8vxIKq/u9p76kzFkbanbCCYV/OMHXGNZl6a3FIKDZjNhYQBwg8/xlFEqlj+Nx3beuYRQ
-         Yh9A3AUa2qQMWGs3vreff3OogZ3Ll0kZdSIahoAhnAuhOV3k+PjUJHKoVG65yn/Ro3j8
-         Q93pvshms2bRvisuYtZsrT1KI2uQVmiunURh2BUbUKMDyaYBvyUndKt0nWT3o5t60JM8
-         eQ8Q==
-X-Gm-Message-State: AOJu0YxITJ3oNOL2piTcHtHhOu1C+gl/ygkq+tTEdMkSVYN6pS+pkkv9
-	QUPtF5nkjNavrIRN4GAsPm3pNw==
-X-Google-Smtp-Source: AGHT+IEfw0tEWsYPUq1rUjK9r/SXMnRXPdUdO3qwcb1lgx/CQQoGx2F5+1XWcfj41LNcAiufmggqNA==
-X-Received: by 2002:a17:907:c2a:b0:a1c:695d:c936 with SMTP id ga42-20020a1709070c2a00b00a1c695dc936mr1648188ejc.73.1702315599451;
-        Mon, 11 Dec 2023 09:26:39 -0800 (PST)
-Received: from [192.168.36.128] (178235179179.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.179])
-        by smtp.gmail.com with ESMTPSA id vt4-20020a170907a60400b00a1e1a1dd318sm5140324ejc.137.2023.12.11.09.26.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Dec 2023 09:26:39 -0800 (PST)
-Message-ID: <9d8be91b-36f4-4f01-bced-73359f98a84d@linaro.org>
-Date: Mon, 11 Dec 2023 18:26:37 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4697492
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:28:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702315724; x=1733851724;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=NJDZz+IhrsDXxnzUXmyxOSSzHQ1L12ZBRNk/YIoAIZc=;
+  b=EkaIBMVTXxonWTh66eg+bqw2Ar4B3wJrllqDVPQbg8a1GHQlMMgLyZeB
+   VHWSwblPKVpr94RHQvp3opPyMEcOimSeUvUEF6giaZSYgCjDdLvimQ4je
+   c5iMf0Zs9iyFF2qc8nQ/hxZvzYPWBLk/cKPbdmxR+8r1IAyMEJxAFDsPx
+   9+bGX+xzx9EM6Dko9tNpZWarzsmxTb7zbr2bbS1fBVHQ4SJCCpmelHCA9
+   T1L8sUWpPpxR2g4d1yOOpmp9gMstU+uHhzT5NuOCO06nh2Il3Lf4S+BjO
+   jgnGJgpwYMZOLqiK1c1fDyyRfUaRQU6Bl5U9DXY6/4dwheAvTBy9Z3yT1
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="461159041"
+X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; 
+   d="scan'208";a="461159041"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 09:28:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="1020326693"
+X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; 
+   d="scan'208";a="1020326693"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 11 Dec 2023 09:28:42 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rCk5A-000IHm-0L;
+	Mon, 11 Dec 2023 17:28:40 +0000
+Date: Tue, 12 Dec 2023 01:28:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
+Message-ID: <ZXdGxI0OrIUKrbcS@be2c62907a9b>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ARM: dts: qcom-sdx55: Fix the base address of PCIe PHY
-Content-Language: en-US
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- andersson@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org
-References: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211132608.27861-3-johan+linaro@kernel.org>
 
-On 11.12.2023 18:24, Manivannan Sadhasivam wrote:
-> While convering the binding to new format, serdes address specified in the
-> old binding was used as the base address. This causes a boot hang as the
-> driver tries to access memory region outside of the specified address. Fix
-> it!
-> 
-> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Cc: stable@vger.kernel.org # 6.6
-> Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Hi,
 
-Konrad
+Thanks for your patch.
+
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
+Link: https://lore.kernel.org/stable/20231211132608.27861-3-johan%2Blinaro%40kernel.org
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
 
