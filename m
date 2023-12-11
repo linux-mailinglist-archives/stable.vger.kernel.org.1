@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0194E80D53D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB5480D8A4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40DE1C213F3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:21:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89C5281C83
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5D751C31;
-	Mon, 11 Dec 2023 18:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3F351C2B;
+	Mon, 11 Dec 2023 18:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osmdBiu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoxlDYqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5834551C2B;
-	Mon, 11 Dec 2023 18:21:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83121C433CA;
-	Mon, 11 Dec 2023 18:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB585103A;
+	Mon, 11 Dec 2023 18:47:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F0EC433C7;
+	Mon, 11 Dec 2023 18:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318907;
-	bh=qLbH2aCleRDa554YQyoz4d7PQ0yqpCg0bTjXxbQuqUQ=;
+	s=korg; t=1702320457;
+	bh=WhS0k2f7xQyUaQ0zp9jT7a4W9G8szWif5pPNEBCnzhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osmdBiu67zZn7MzeyxzEIA3vAtzs1yTL6CT1KHrzq2V+LtkEZy8i/Me4zmKWdJx5S
-	 3baeBAc8yYwTz+OBxR8Sb0g0iFvN3u8v6le7gXhofecplfKC12kCpTHWSWb5oYgwOb
-	 cSrNexiXqgsf9bCzU30CPioHUrgR9j5X805Lvt/U=
+	b=PoxlDYqT7XJFdP3t7oF0VgHpEg/J3TDAQGgVcqHbyT/1K5ZUXBMsIDxbkoixkPsB+
+	 Et5Fof7NBnar2xlYCvCoVvOS3pEpY9pVFpXNtuHS837CVAKBQ+yxm85AfYZ/jg+pzB
+	 Mxw7IO73np+WJmp5QITG6FDCjhOpMvENbmOBGUf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Alex Bee <knaerzche@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/25] RDMA/bnxt_re: Correct module description string
-Date: Mon, 11 Dec 2023 19:20:57 +0100
-Message-ID: <20231211182008.926090191@linuxfoundation.org>
+Subject: [PATCH 6.1 068/194] arm64: dts: rockchip: Expand reg size of vdec node for RK3399
+Date: Mon, 11 Dec 2023 19:20:58 +0100
+Message-ID: <20231211182039.527281774@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,40 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Alex Bee <knaerzche@gmail.com>
 
-[ Upstream commit 422b19f7f006e813ee0865aadce6a62b3c263c42 ]
+[ Upstream commit 35938c18291b5da7422b2fac6dac0af11aa8d0d7 ]
 
-The word "Driver" is repeated twice in the "modinfo bnxt_re"
-output description. Fix it.
+Expand the reg size for the vdec node to include cache/performance
+registers the rkvdec driver writes to. Also add missing clocks to the
+related power-domain.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1700555387-6277-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: cbd7214402ec ("arm64: dts: rockchip: Define the rockchip Video Decoder node on rk3399")
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20231105233630.3927502-10-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index 7d00b6a53ed8c..bd14f6daee52d 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -70,7 +70,7 @@ static char version[] =
- 		BNXT_RE_DESC " v" ROCE_DRV_MODULE_VERSION "\n";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+index 5f3caf01badeb..a7e6eccb14cc6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
+@@ -1062,7 +1062,9 @@
+ 			power-domain@RK3399_PD_VDU {
+ 				reg = <RK3399_PD_VDU>;
+ 				clocks = <&cru ACLK_VDU>,
+-					 <&cru HCLK_VDU>;
++					 <&cru HCLK_VDU>,
++					 <&cru SCLK_VDU_CA>,
++					 <&cru SCLK_VDU_CORE>;
+ 				pm_qos = <&qos_video_m1_r>,
+ 					 <&qos_video_m1_w>;
+ 				#power-domain-cells = <0>;
+@@ -1338,7 +1340,7 @@
  
- MODULE_AUTHOR("Eddie Wai <eddie.wai@broadcom.com>");
--MODULE_DESCRIPTION(BNXT_RE_DESC " Driver");
-+MODULE_DESCRIPTION(BNXT_RE_DESC);
- MODULE_LICENSE("Dual BSD/GPL");
- 
- /* globals */
+ 	vdec: video-codec@ff660000 {
+ 		compatible = "rockchip,rk3399-vdec";
+-		reg = <0x0 0xff660000 0x0 0x400>;
++		reg = <0x0 0xff660000 0x0 0x480>;
+ 		interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH 0>;
+ 		clocks = <&cru ACLK_VDU>, <&cru HCLK_VDU>,
+ 			 <&cru SCLK_VDU_CA>, <&cru SCLK_VDU_CORE>;
 -- 
 2.42.0
 
