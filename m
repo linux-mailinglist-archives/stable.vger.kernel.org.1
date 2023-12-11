@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-6070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C095480D899
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D780D68E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BD262817B6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601531C215CF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F32B51C2D;
-	Mon, 11 Dec 2023 18:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DA751C3B;
+	Mon, 11 Dec 2023 18:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCs4eeNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrG1OGGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAED51C2A;
-	Mon, 11 Dec 2023 18:47:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F21C433C8;
-	Mon, 11 Dec 2023 18:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A81DFBE0;
+	Mon, 11 Dec 2023 18:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D663EC433C8;
+	Mon, 11 Dec 2023 18:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320430;
-	bh=1tIPQQNuaRMc07dr9USJmfw9VwnQD//97Fszi9xHCAU=;
+	s=korg; t=1702319579;
+	bh=HeVcsTwKmIQT6fk95AxYAGpW88iMClirm1goAC5aAmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oCs4eeNW1gO4TgbuHfVtgLgcxzJ1qgB54QzTA1ZhEjUJQiCGDp78FJQWaHcYrB/If
-	 Eb8Vyza+FkfQVvSFW1sRA6Ew8ITat13ByqWXDPGCL3UQhKkiYvBfXXUCMtq5rmGAJi
-	 w3m+K0PZE1OAK5nGQiyLjQ+OEkt/nrgWWTdzGiZY=
+	b=FrG1OGGE9mvMf3VurgaUcc/sVPvIr75OWOXxkaduPgn2iw0xBjlZyVyOvVGs5OV1D
+	 +HSOvp4KBxz5n0CUO8DVAz3TFFyXSuv5Kn+iIW9f2/jpxnbK9lX0QA/vPp+AFfo7br
+	 c7648gz1ZJl4/kDKVLJMs1ml/Tje8KY9oWOo+nUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/194] bpf: sockmap, updating the sg structure should also update curr
-Date: Mon, 11 Dec 2023 19:20:49 +0100
-Message-ID: <20231211182039.161996805@linuxfoundation.org>
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 157/244] tracing: Fix a possible race when disabling buffered events
+Date: Mon, 11 Dec 2023 19:20:50 +0100
+Message-ID: <20231211182052.880395809@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit bb9aefde5bbaf6c168c77ba635c155b4980c2287 ]
+commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
 
-Curr pointer should be updated when the sg structure is shifted.
+Function trace_buffered_event_disable() is responsible for freeing pages
+backing buffered events and this process can run concurrently with
+trace_event_buffer_lock_reserve().
 
-Fixes: 7246d8ed4dcce ("bpf: helper to pop data from messages")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-3-john.fastabend@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The following race is currently possible:
+
+* Function trace_buffered_event_disable() is called on CPU 0. It
+  increments trace_buffered_event_cnt on each CPU and waits via
+  synchronize_rcu() for each user of trace_buffered_event to complete.
+
+* After synchronize_rcu() is finished, function
+  trace_buffered_event_disable() has the exclusive access to
+  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
+  and all pointers trace_buffered_event are still valid.
+
+* At this point, on a different CPU 1, the execution reaches
+  trace_event_buffer_lock_reserve(). The function calls
+  preempt_disable_notrace() and only now enters an RCU read-side
+  critical section. The function proceeds and reads a still valid
+  pointer from trace_buffered_event[CPU1] into the local variable
+  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
+  which happens later.
+
+* Function trace_buffered_event_disable() continues. It frees
+  trace_buffered_event[CPU1] and decrements
+  trace_buffered_event_cnt[CPU1] back to 0.
+
+* Function trace_event_buffer_lock_reserve() continues. It reads and
+  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
+  believe that it can use the "entry" that it already obtained but the
+  pointer is now invalid and any access results in a use-after-free.
+
+Fix the problem by making a second synchronize_rcu() call after all
+trace_buffered_event values are set to NULL. This waits on all potential
+users in trace_event_buffer_lock_reserve() that still read a previous
+pointer from trace_buffered_event.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ kernel/trace/trace.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index adc327f4af1e9..3a6110ea4009f 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2582,6 +2582,22 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 	return 0;
- }
- 
-+static void sk_msg_reset_curr(struct sk_msg *msg)
-+{
-+	u32 i = msg->sg.start;
-+	u32 len = 0;
-+
-+	do {
-+		len += sk_msg_elem(msg, i)->length;
-+		sk_msg_iter_var_next(i);
-+		if (len >= msg->sg.size)
-+			break;
-+	} while (i != msg->sg.end);
-+
-+	msg->sg.curr = i;
-+	msg->sg.copybreak = 0;
-+}
-+
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
- 	.func           = bpf_msg_cork_bytes,
- 	.gpl_only       = false,
-@@ -2701,6 +2717,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
- 		      msg->sg.end - shift;
- out:
-+	sk_msg_reset_curr(msg);
- 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
- 	msg->data_end = msg->data + bytes;
- 	return 0;
-@@ -2837,6 +2854,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		msg->sg.data[new] = rsge;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2790,13 +2790,17 @@ void trace_buffered_event_disable(void)
+ 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
+ 		per_cpu(trace_buffered_event, cpu) = NULL;
  	}
++
+ 	/*
+-	 * Make sure trace_buffered_event is NULL before clearing
+-	 * trace_buffered_event_cnt.
++	 * Wait for all CPUs that potentially started checking if they can use
++	 * their event buffer only after the previous synchronize_rcu() call and
++	 * they still read a valid pointer from trace_buffered_event. It must be
++	 * ensured they don't see cleared trace_buffered_event_cnt else they
++	 * could wrongly decide to use the pointed-to buffer which is now freed.
+ 	 */
+-	smp_wmb();
++	synchronize_rcu();
  
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
+-	/* Do the work on each cpu */
++	/* For each CPU, relinquish the buffer */
+ 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
+ 			 true);
  }
-@@ -3005,6 +3023,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
- 	msg->sg.size -= (len - pop);
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
--- 
-2.42.0
-
 
 
 
