@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-6014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4D280D851
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9D580DA2B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E1A1F21B0A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67616282197
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046C751038;
-	Mon, 11 Dec 2023 18:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E7F52F8D;
+	Mon, 11 Dec 2023 18:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pglvfCw9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZuOjxpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8621FC06;
-	Mon, 11 Dec 2023 18:44:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9B2C433C8;
-	Mon, 11 Dec 2023 18:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9B052F89;
+	Mon, 11 Dec 2023 18:59:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2B8C433C7;
+	Mon, 11 Dec 2023 18:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320280;
-	bh=2/yW5ZzSEXdEYTqrb/U3JrpXrAmpsVI5BZysU/m5x5U=;
+	s=korg; t=1702321165;
+	bh=1eYZa71ZcfeJx5Qby3NnDMw0L7J21J+Yg5RBTSo0xzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pglvfCw9CfoGcIiDJ8usSOTfGqM5axrWZ/L/LysxeKzy0bVImBjbxOtTuluyagF3T
-	 t3+pqQUVN8TJ6ib4OX6F2TSSV0z88hNAr53OEmMFX+pPBYB7R/q5U+Kp2pO4YUdjsh
-	 c9lY3d98j3vlE5mce4WMo+sB2m2Mxe1jtKAFgJKo=
+	b=pZuOjxpTOb5eZcPrmvFWKf0MlKrnzBEy7Uotjut21G+xIXXlqf27PXnApAC68nsRb
+	 G5OjSk/p1wxPPHWmiEKQolCgnNKHezamDLQGIV6y9n7Uqompcu2zeWkS1mDbj9o8bE
+	 oMoMqat1Ga6KkTC8w1aGgk/pdMt9tno3fZjR0wGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Grant Grundler <grundler@chromium.org>,
+	ChunHao Lin <hau@realtek.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 60/67] psample: Require CAP_NET_ADMIN when joining "packets" group
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 105/141] r8169: fix rtl8125b PAUSE frames blasting when suspended
 Date: Mon, 11 Dec 2023 19:22:44 +0100
-Message-ID: <20231211182017.562007675@linuxfoundation.org>
+Message-ID: <20231211182031.101677224@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,117 +56,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: ChunHao Lin <hau@realtek.com>
 
-commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 upstream.
+[ Upstream commit 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 ]
 
-The "psample" generic netlink family notifies sampled packets over the
-"packets" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+When FIFO reaches near full state, device will issue pause frame.
+If pause slot is enabled(set to 1), in this time, device will issue
+pause frame only once. But if pause slot is disabled(set to 0), device
+will keep sending pause frames until FIFO reaches near empty state.
 
-Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
-prevent non-root users or root without the 'CAP_NET_ADMIN' capability
-(in the user namespace owning the network namespace) from joining the
-group.
+When pause slot is disabled, if there is no one to handle receive
+packets, device FIFO will reach near full state and keep sending
+pause frames. That will impact entire local area network.
 
-Tested using [1].
+This issue can be reproduced in Chromebox (not Chromebook) in
+developer mode running a test image (and v5.10 kernel):
+1) ping -f $CHROMEBOX (from workstation on same local network)
+2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
+3) ping $ROUTER (wait until ping fails from workstation)
 
-Before:
+Takes about ~20-30 seconds after step 2 for the local network to
+stop working.
 
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
+Fix this issue by enabling pause slot to only send pause frame once
+when FIFO reaches near full state.
 
-After:
-
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
- Failed to join "packets" multicast group
-
-[1]
- $ cat psample.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
-
- int join_grp(struct nl_sock *sk, const char *grp_name)
- {
- 	int grp, err;
-
- 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
- 	if (grp < 0) {
- 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
- 			grp_name);
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
- 			grp_name);
- 		return err;
- 	}
-
- 	return 0;
- }
-
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int err;
-
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
-
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	err = join_grp(sk, "config");
- 	if (err)
- 		return err;
-
- 	err = join_grp(sk, "packets");
- 	if (err)
- 		return err;
-
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
-
-Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Reported-by: Grant Grundler <grundler@chromium.org>
+Tested-by: Grant Grundler <grundler@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: ChunHao Lin <hau@realtek.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/psample/psample.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/psample/psample.c
-+++ b/net/psample/psample.c
-@@ -28,7 +28,8 @@ enum psample_nl_multicast_groups {
- 
- static const struct genl_multicast_group psample_nl_mcgrps[] = {
- 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
--	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
-+	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
-+				      .flags = GENL_UNS_ADMIN_PERM },
- };
- 
- static struct genl_family psample_nl_family __ro_after_init;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index d2fbd169f25b9..c0a339ff43a6b 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -205,6 +205,7 @@ enum rtl_registers {
+ 					/* No threshold before first PCI xfer */
+ #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
+ #define	RX_EARLY_OFF			(1 << 11)
++#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
+ #define	RXCFG_DMA_SHIFT			8
+ 					/* Unlimited maximum PCI burst. */
+ #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
+@@ -2268,9 +2269,13 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
+ 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
+ 		break;
+-	case RTL_GIGA_MAC_VER_60 ... RTL_GIGA_MAC_VER_63:
++	case RTL_GIGA_MAC_VER_61:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+ 		break;
++	case RTL_GIGA_MAC_VER_63:
++		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
++			RX_PAUSE_SLOT_ON);
++		break;
+ 	default:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+ 		break;
+-- 
+2.42.0
+
 
 
 
