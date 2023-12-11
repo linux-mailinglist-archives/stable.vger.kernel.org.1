@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-6060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459FA80D889
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6662A80D616
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2CC728198A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97F911C21592
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAF251C2A;
-	Mon, 11 Dec 2023 18:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3BE20DDE;
+	Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cS3miZG9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCZMA7gj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AFCC8C8;
-	Mon, 11 Dec 2023 18:46:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD79C433C7;
-	Mon, 11 Dec 2023 18:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929F7FBE1;
+	Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1900CC433C8;
+	Mon, 11 Dec 2023 18:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320403;
-	bh=TFtCsJjfo1CzbgBhMMGHmPavZeVQXsgsOryyu3tpMOs=;
+	s=korg; t=1702319471;
+	bh=C7C5FOREJD0sQ01PTu1QMm9UkXbJkwNrr8omFM55U6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cS3miZG9oiwzSMQtRdYbKHn84zJvrtwaCJP9Z4EQ1iSVY9GhEyVtUgjkW4ai1rh+V
-	 8PIssLTPh+zh7pR5iX+E21nvMvk7na+1oD1WerWunYh6ge0JvWG152AdaYrZxy0Amm
-	 UZ/UbMfrCNjMOco1NKhTkxrJV9fiQjSKlDLsq5gw=
+	b=iCZMA7gjxYA+4ploLCBAwe0rdfAjOPUbpMjytI91ZcGpoSIdpWK9L4WJeXSFtZyHC
+	 8ghAG9fjUldfqTzRwQ+GaHt1aV7hvPhwndAsoI7OWZ1IYn4+7M+nXWR+aFkiNVARhL
+	 2RmSv7E7wK72MfZb71ynqDjqtIU0fBjGHJS/a4eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/194] ipv6: fix potential NULL deref in fib6_add()
-Date: Mon, 11 Dec 2023 19:20:10 +0100
-Message-ID: <20231211182037.506417469@linuxfoundation.org>
+Subject: [PATCH 6.6 118/244] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
+Date: Mon, 11 Dec 2023 19:20:11 +0100
+Message-ID: <20231211182051.092867378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,81 +54,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 75475bb51e78a3f54ad2f69380f2a1c985e85f2d ]
+[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
 
-If fib6_find_prefix() returns NULL, we should silently fallback
-using fib6_null_entry regardless of RT6_DEBUG value.
+When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
+should free phwi_ctxt->be_wrbq before returning an error code to prevent
+potential memleak.
 
-syzbot reported:
-
-WARNING: CPU: 0 PID: 5477 at net/ipv6/ip6_fib.c:1516 fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
-Modules linked in:
-CPU: 0 PID: 5477 Comm: syz-executor.0 Not tainted 6.7.0-rc2-syzkaller-00029-g9b6de136b5f0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
-Code: 00 48 8b 54 24 68 e8 42 22 00 00 48 85 c0 74 14 49 89 c6 e8 d5 d3 c2 f7 eb 5d e8 ce d3 c2 f7 e9 ca 00 00 00 e8 c4 d3 c2 f7 90 <0f> 0b 90 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 38 80 3c 01 00
-RSP: 0018:ffffc90005067740 EFLAGS: 00010293
-RAX: ffffffff89cba5bc RBX: ffffc90005067ab0 RCX: ffff88801a2e9dc0
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc90005067980 R08: ffffffff89cbca85 R09: 1ffff110040d4b85
-R10: dffffc0000000000 R11: ffffed10040d4b86 R12: 00000000ffffffff
-R13: 1ffff110051c3904 R14: ffff8880206a5c00 R15: ffff888028e1c820
-FS: 00007f763783c6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f763783bff8 CR3: 000000007f74d000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-__ip6_ins_rt net/ipv6/route.c:1303 [inline]
-ip6_route_add+0x88/0x120 net/ipv6/route.c:3847
-ipv6_route_ioctl+0x525/0x7b0 net/ipv6/route.c:4467
-inet6_ioctl+0x21a/0x270 net/ipv6/af_inet6.c:575
-sock_do_ioctl+0x152/0x460 net/socket.c:1220
-sock_ioctl+0x615/0x8c0 net/socket.c:1339
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl+0xf8/0x170 fs/ioctl.c:857
-do_syscall_x64 arch/x86/entry/common.c:51 [inline]
-do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
-
-Fixes: 7bbfe00e0252 ("ipv6: fix general protection fault in fib6_add()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Wei Wang <weiwan@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20231129160630.3509216-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/scsi/be2iscsi/be_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index eb6640f9a7921..1840735e9cb07 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1502,13 +1502,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 			if (!pn_leaf && !(pn->fn_flags & RTN_RTINFO)) {
- 				pn_leaf = fib6_find_prefix(info->nl_net, table,
- 							   pn);
--#if RT6_DEBUG >= 2
--				if (!pn_leaf) {
--					WARN_ON(!pn_leaf);
-+				if (!pn_leaf)
- 					pn_leaf =
- 					    info->nl_net->ipv6.fib6_null_entry;
--				}
--#endif
- 				fib6_info_hold(pn_leaf);
- 				rcu_assign_pointer(pn->leaf, pn_leaf);
- 			}
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index e48f14ad6dfd8..06acb5ff609ee 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -2710,6 +2710,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
+ 		kfree(pwrb_context->pwrb_handle_base);
+ 		kfree(pwrb_context->pwrb_handle_basestd);
+ 	}
++	kfree(phwi_ctxt->be_wrbq);
+ 	return -ENOMEM;
+ }
+ 
 -- 
 2.42.0
 
