@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7676C80D7A7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AD480D8F2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD92281F7E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F2751F21BEB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8179552F9D;
-	Mon, 11 Dec 2023 18:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DC8A524BB;
+	Mon, 11 Dec 2023 18:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUZYJVaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUhscs2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEACFC06;
-	Mon, 11 Dec 2023 18:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DE9C433C7;
-	Mon, 11 Dec 2023 18:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55135102A;
+	Mon, 11 Dec 2023 18:49:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8D6C433C7;
+	Mon, 11 Dec 2023 18:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319914;
-	bh=iZJ5JCGBn2YZOCIIKCgKeUhbuSELsm80SQkmd5dxowM=;
+	s=korg; t=1702320585;
+	bh=XgLLxZn9WbRYZzHpl3gyaLGLFD1C4dWydMn0bl+zeWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUZYJVaL9DclCJqi1vkLCA/SkHPq+LC+STxbLlfdzhBpZ6WBso2tIq9hVV8FUZPDX
-	 RHu7rvPEAsHd9FuSX0A8/lESN59QNbplQkQjNXYPqNO7ENCqygaiGSo2eHSuE5RIum
-	 iMzi/c/NeXTSLck/oJMUnZx6reJzEUdsiTmjMRPI=
+	b=aUhscs2Ar1s0a40UZf1ImXBuEJ2vomJI50TYnRzxauJDmUHBJYsz2DNzARK+sljOv
+	 x2i6c4kOUJUOR0iSrfXWxBjed4yZImANFdL5370mLbq00CfidhM7uo6c72qkZAF1dY
+	 DonFWOO1gtx62Oeiea6Xj7KV3C+JdOe91Tc/D5hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/97] bpf: sockmap, updating the sg structure should also update curr
+	Tim Bosse <flinn@timbos.se>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 108/194] ALSA: hda/realtek: add new Framework laptop to quirks
 Date: Mon, 11 Dec 2023 19:21:38 +0100
-Message-ID: <20231211182021.274162570@linuxfoundation.org>
+Message-ID: <20231211182041.284071787@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +52,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Tim Bosse <flinn@timbos.se>
 
-[ Upstream commit bb9aefde5bbaf6c168c77ba635c155b4980c2287 ]
+commit 33038efb64f7576bac635164021f5c984d4c755f upstream.
 
-Curr pointer should be updated when the sg structure is shifted.
+The Framework Laptop 13 (AMD Ryzen 7040Series) has an ALC295 with
+a disconnected or faulty headset mic presence detect similar to the
+previous models.  It works with the same quirk chain as
+309d7363ca3d9fcdb92ff2d958be14d7e8707f68.  This model has a VID:PID
+of f111:0006.
 
-Fixes: 7246d8ed4dcce ("bpf: helper to pop data from messages")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-3-john.fastabend@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tim Bosse <flinn@timbos.se>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231206142629.388615-1-flinn@timbos.se
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index ea8ab9c704832..6cfc8fb0562a2 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2595,6 +2595,22 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 	return 0;
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10031,6 +10031,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+ 	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
  
-+static void sk_msg_reset_curr(struct sk_msg *msg)
-+{
-+	u32 i = msg->sg.start;
-+	u32 len = 0;
-+
-+	do {
-+		len += sk_msg_elem(msg, i)->length;
-+		sk_msg_iter_var_next(i);
-+		if (len >= msg->sg.size)
-+			break;
-+	} while (i != msg->sg.end);
-+
-+	msg->sg.curr = i;
-+	msg->sg.copybreak = 0;
-+}
-+
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
- 	.func           = bpf_msg_cork_bytes,
- 	.gpl_only       = false,
-@@ -2714,6 +2730,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
- 		      msg->sg.end - shift;
- out:
-+	sk_msg_reset_curr(msg);
- 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
- 	msg->data_end = msg->data + bytes;
- 	return 0;
-@@ -2850,6 +2867,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		msg->sg.data[new] = rsge;
- 	}
- 
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
-@@ -3018,6 +3036,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
- 	msg->sg.size -= (len - pop);
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
--- 
-2.42.0
-
+ #if 0
+ 	/* Below is a quirk table taken from the old code.
 
 
 
