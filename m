@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-5826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD94580D750
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C66C80D585
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742F21F219BE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1724B20973
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9BA51C35;
-	Mon, 11 Dec 2023 18:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0F05101D;
+	Mon, 11 Dec 2023 18:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHXQ4eJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rcCmY71R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E3820DDE;
-	Mon, 11 Dec 2023 18:36:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA73C433CC;
-	Mon, 11 Dec 2023 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7C54F212;
+	Mon, 11 Dec 2023 18:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC2DC433C8;
+	Mon, 11 Dec 2023 18:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319767;
-	bh=7yyyWODgq1ERBqUuVDi8Dej8grb+5Vv1mzXDE26sRQg=;
+	s=korg; t=1702319132;
+	bh=Z35YUxHsu9c0ZV8nLrwNsOR7DqlUkPMe6uVCGuLibgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHXQ4eJgSyNWFaCvpl+9D/ropAwR9bm2WkGuR+VqXch4vGOQxqb6HjJuVlJrYl/2o
-	 fOI0ULs+YumhS3umsCUNvsCGG7ilv97goTca8eaqTXkigs4VChEYkxGcZfPEKuWOgC
-	 eRspBpstLk9cH34i3hWkjnBNpc684hAUqD7tcAe8=
+	b=rcCmY71RMb6uUr3Pbw8Vjd5C6LKGAtbTBQCSOcUO/V2NTdgN9Nc1nWd3VThsEtl4J
+	 QhPTYj9fpRiullatn73CYKUUNrqxnGT+UD91Q298iK/2xAO2GMFUfxcRA8Ll/Eb4zn
+	 N/y/RU/EGW7kQvUasxZsx/PzJKbyfOnn14H6Owm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 226/244] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 4.19 49/55] genetlink: add CAP_NET_ADMIN test for multicast bind
 Date: Mon, 11 Dec 2023 19:21:59 +0100
-Message-ID: <20231211182056.147858026@linuxfoundation.org>
+Message-ID: <20231211182014.071875524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +51,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
+This is a partial backport of upstream commit 4d54cc32112d ("mptcp:
+avoid lock_fast usage in accept path"). It is only a partial backport
+because the patch in the link below was erroneously squash-merged into
+upstream commit 4d54cc32112d ("mptcp: avoid lock_fast usage in accept
+path"). Below is the original patch description from Florian Westphal:
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+"
+genetlink sets NL_CFG_F_NONROOT_RECV for its netlink socket so anyone can
+subscribe to multicast messages.
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
+rtnetlink doesn't allow this unconditionally,  rtnetlink_bind() restricts
+bind requests to CAP_NET_ADMIN for a few groups.
 
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
+This allows to set GENL_UNS_ADMIN_PERM flag on genl mcast groups to
+mandate CAP_NET_ADMIN.
+
+This will be used by the upcoming mptcp netlink event facility which
+exposes the token (mptcp connection identifier) to userspace.
+"
+
+Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/trace/ftrace_entry.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/genetlink.h |    1 +
+ net/netlink/genetlink.c |   32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -62,7 +62,7 @@
- 	.endif
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -14,6 +14,7 @@
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
++	u8			flags;
+ };
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	PPC_STL	r8, GPR1(r1)
+ struct genl_ops;
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -961,11 +961,43 @@ static struct genl_family genl_ctrl __ro
+ 	.netnsok = true,
+ };
  
- 	.if \allregs == 1
-@@ -182,7 +182,7 @@ ftrace_no_trace:
- 	mflr	r3
- 	mtctr	r3
- 	REST_GPR(3, r1)
--	addi	r1, r1, SWITCH_FRAME_SIZE
-+	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	mtlr	r0
- 	bctr
- #endif
++static int genl_bind(struct net *net, int group)
++{
++	const struct genl_family *family;
++	unsigned int id;
++	int ret = 0;
++
++	genl_lock_all();
++
++	idr_for_each_entry(&genl_fam_idr, family, id) {
++		const struct genl_multicast_group *grp;
++		int i;
++
++		if (family->n_mcgrps == 0)
++			continue;
++
++		i = group - family->mcgrp_offset;
++		if (i < 0 || i >= family->n_mcgrps)
++			continue;
++
++		grp = &family->mcgrps[i];
++		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++			ret = -EPERM;
++
++		break;
++	}
++
++	genl_unlock_all();
++	return ret;
++}
++
+ static int __net_init genl_pernet_init(struct net *net)
+ {
+ 	struct netlink_kernel_cfg cfg = {
+ 		.input		= genl_rcv,
+ 		.flags		= NL_CFG_F_NONROOT_RECV,
++		.bind		= genl_bind,
+ 	};
+ 
+ 	/* we'll bump the group number right afterwards */
 
 
 
