@@ -1,103 +1,124 @@
-Return-Path: <stable+bounces-5262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5F080C2E1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:16:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62AFA80C322
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A44CF1F20FEF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 08:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8661C20984
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 08:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9232C20B30;
-	Mon, 11 Dec 2023 08:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FER41Ejm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF4220DC5;
+	Mon, 11 Dec 2023 08:28:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B300EE5
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 00:16:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702282589; x=1733818589;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ywo7wd+Xtw6xaZ7BQ+4PbxGvYxNCLgjkctluObVHMX8=;
-  b=FER41EjmHF9tUQV8DKuW9TUXmGgajRVd4wM3dPQOc7hckI3gOoBqYE3o
-   F+DiPNKm3kTlMmFBg+zGI/GtWzfEz7kTCQqhpu78q87ws8t4eSwzatXS7
-   E/lR+cSXK9J4ZtsyMyZ68bRe50hC+tSPop6qeSeLj6KaME3/n7ex3ds/j
-   1uS7z7FEdKouHNLc75gAtM4TjIJuI+i8NqPIRCXmU2g7yedB2fFGHglbL
-   dYzpwRqlbDOELNd3WqwbeSTfZnipefBZ1viD5CDS2xcaap+15Elu0pbzg
-   mXx3uKADP96cSlP0C4BP9fT0a74wjnt2FnNqHeZMyd0EtLk+SChzjP7aI
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="461088723"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="461088723"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 00:16:29 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="766285626"
-X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="766285626"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga007.jf.intel.com with SMTP; 11 Dec 2023 00:16:26 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Mon, 11 Dec 2023 10:16:25 +0200
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] drm: Don't unref the same fb many times by mistake due to deadlock handling
-Date: Mon, 11 Dec 2023 10:16:24 +0200
-Message-ID: <20231211081625.25704-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339F4E5;
+	Mon, 11 Dec 2023 00:28:43 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 1E6ED1C0050; Mon, 11 Dec 2023 09:28:41 +0100 (CET)
+Date: Mon, 11 Dec 2023 09:28:40 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Jan Kara <jack@suse.cz>,
+	Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	chrubis@suse.cz, linux-ext4@vger.kernel.org,
+	Ted Tso <tytso@mit.edu>
+Subject: Re: ext4 data corruption in 6.1 stable tree (was Re: [PATCH 5.15
+ 000/297] 5.15.140-rc1 review)
+Message-ID: <ZXbIONRdDQx+mDwI@duo.ucw.cz>
+References: <20231124172000.087816911@linuxfoundation.org>
+ <81a11ebe-ea47-4e21-b5eb-536b1a723168@linaro.org>
+ <20231127155557.xv5ljrdxcfcigjfa@quack3>
+ <CAEUSe7_PUdRgJpY36jZxy84CbNX5TTnynqU8derf0ZBSDtUOqw@mail.gmail.com>
+ <20231205122122.dfhhoaswsfscuhc3@quack3>
+ <4118ca20-fb7d-4e49-b08c-68fee0522d3d@roeck-us.net>
+ <2023120643-evade-legal-ee74@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="sxUy6yRUZNOMIQt4"
+Content-Disposition: inline
+In-Reply-To: <2023120643-evade-legal-ee74@gregkh>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+--sxUy6yRUZNOMIQt4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
+Hi!
 
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
+> > > So I've got back to this and the failure is a subtle interaction betw=
+een
+> > > iomap code and ext4 code. In particular that fact that commit 936e114=
+a245b6
+> > > ("iomap: update ki_pos a little later in iomap_dio_complete") is not =
+in
+> > > stable causes that file position is not updated after direct IO write=
+ and
+> > > thus we direct IO writes are ending in wrong locations effectively
+> > > corrupting data. The subtle detail is that before this commit if ->en=
+d_io
+> > > handler returns non-zero value (which the new ext4 ->end_io handler d=
+oes),
+> > > file pos doesn't get updated, after this commit it doesn't get update=
+d only
+> > > if the return value is < 0.
+> > >=20
+> > > The commit got merged in 6.5-rc1 so all stable kernels that have
+> > > 91562895f803 ("ext4: properly sync file size update after O_SYNC dire=
+ct
+> > > IO") before 6.5 are corrupting data - I've noticed at least 6.1 is st=
+ill
+> > > carrying the problematic commit. Greg, please take out the commit fro=
+m all
+> > > stable kernels before 6.5 as soon as possible, we'll figure out proper
+> > > backport once user data are not being corrupted anymore. Thanks!
+> > >=20
+> >=20
+> > Thanks a lot for the update.
+> >=20
+> > Turns out this is causing a regression in chromeos-6.1, and reverting t=
+he
+> > offending patch fixes the problem. I suspect anyone running v6.1.64+ may
+> > have a problem.
+>=20
+> Jan, thanks for the report, and Guenter, thanks for letting me know as
+> well.  I'll go queue up the fix now and push out new -rc releases.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- drivers/gpu/drm/drm_plane.c | 1 +
- 1 file changed, 1 insertion(+)
+Would someone have a brief summary here? I see 6.1.66 is out but I
+don't see any "Fixes: 91562895f803" tags.
 
-diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
-index 9e8e4c60983d..672c655c7a8e 100644
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1503,6 +1503,7 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
--- 
-2.41.0
+Plus, what is the severity of this? It is "data being corrupted when
+using O_SYNC|O_DIRECT" or does metadata somehow get corrupted, too?
 
+Thanks and best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--sxUy6yRUZNOMIQt4
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZXbIOAAKCRAw5/Bqldv6
+8vAxAKCOJ3K0As4al5/2B9XBlV2nphZEGACeNMdfkQaFtWLePBti91xTjEsPsio=
+=qZ/a
+-----END PGP SIGNATURE-----
+
+--sxUy6yRUZNOMIQt4--
 
