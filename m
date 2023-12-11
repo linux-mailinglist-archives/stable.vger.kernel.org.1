@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86A5480D89E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EFAE80D692
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5BD1F218FE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2801F21B26
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686E951C2B;
-	Mon, 11 Dec 2023 18:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADE551C4F;
+	Mon, 11 Dec 2023 18:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiGG4FPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6gZQxBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290944437B;
-	Mon, 11 Dec 2023 18:47:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C68C433C8;
-	Mon, 11 Dec 2023 18:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4080C8C8;
+	Mon, 11 Dec 2023 18:33:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773A7C433C8;
+	Mon, 11 Dec 2023 18:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320444;
-	bh=YYIWtuXxNzQNxT+uq0VL6ifwso9C5kmJSNayBK9nbko=;
+	s=korg; t=1702319589;
+	bh=wdUK1F1Y98+0NefYV6GW0/E3j2jO3PAvtMjSAyx7IBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiGG4FPi3WQgT3tjz2GWShwWB7F4SjbbBrpOCBtWeDfDrFq8OSsL2sEgU97F0Qwo+
-	 6Knm1ZWluwXHC0Wek9ykY88n8FEPAgp5Khj0WpHWSmrbSW4mblTu9C2NIwoseZFuPc
-	 cf3B0sLy2OI7lWh12So7eNall+KbisK+uwSAOV/E=
+	b=M6gZQxBIGMKcdzGTFjRBLlSxCPqfsNmvVX6X3mYgwoZOpuN43YTnbyhMd5aXd/eDE
+	 2eUXwMBiW3e84CP3Vq7JfyWzPFA2xk+KwXXj9i0jvi/hhPX5q0F4uaCIdTmc3BJGmt
+	 zLdBV22NDS7iagLWdaaiO1bA8773nw2t+bHos880=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/194] RDMA/hns: Fix unnecessary err return when using invalid congest control algorithm
+	Grant Grundler <grundler@chromium.org>,
+	ChunHao Lin <hau@realtek.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 161/244] r8169: fix rtl8125b PAUSE frames blasting when suspended
 Date: Mon, 11 Dec 2023 19:20:54 +0100
-Message-ID: <20231211182039.358780126@linuxfoundation.org>
+Message-ID: <20231211182053.074982172@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +55,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: ChunHao Lin <hau@realtek.com>
 
-[ Upstream commit efb9cbf66440482ceaa90493d648226ab7ec2ebf ]
+commit 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 upstream.
 
-Add a default congest control algorithm so that driver won't return
-an error when the configured algorithm is invalid.
+When FIFO reaches near full state, device will issue pause frame.
+If pause slot is enabled(set to 1), in this time, device will issue
+pause frame only once. But if pause slot is disabled(set to 0), device
+will keep sending pause frames until FIFO reaches near empty state.
 
-Fixes: f91696f2f053 ("RDMA/hns: Support congestion control type selection according to the FW")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231028093242.670325-1-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When pause slot is disabled, if there is no one to handle receive
+packets, device FIFO will reach near full state and keep sending
+pause frames. That will impact entire local area network.
+
+This issue can be reproduced in Chromebox (not Chromebook) in
+developer mode running a test image (and v5.10 kernel):
+1) ping -f $CHROMEBOX (from workstation on same local network)
+2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
+3) ping $ROUTER (wait until ping fails from workstation)
+
+Takes about ~20-30 seconds after step 2 for the local network to
+stop working.
+
+Fix this issue by enabling pause slot to only send pause frame once
+when FIFO reaches near full state.
+
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Reported-by: Grant Grundler <grundler@chromium.org>
+Tested-by: Grant Grundler <grundler@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 8a9d28f81149a..c2ee80546d120 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -4913,10 +4913,15 @@ static int check_cong_type(struct ib_qp *ibqp,
- 		cong_alg->wnd_mode_sel = WND_LIMIT;
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -196,6 +196,7 @@ enum rtl_registers {
+ 					/* No threshold before first PCI xfer */
+ #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
+ #define	RX_EARLY_OFF			(1 << 11)
++#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
+ #define	RXCFG_DMA_SHIFT			8
+ 					/* Unlimited maximum PCI burst. */
+ #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
+@@ -2306,9 +2307,13 @@ static void rtl_init_rxcfg(struct rtl816
+ 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
  		break;
- 	default:
--		ibdev_err(&hr_dev->ib_dev,
--			  "error type(%u) for congestion selection.\n",
--			  hr_dev->caps.cong_type);
--		return -EINVAL;
-+		ibdev_warn(&hr_dev->ib_dev,
-+			   "invalid type(%u) for congestion selection.\n",
-+			   hr_dev->caps.cong_type);
-+		hr_dev->caps.cong_type = CONG_TYPE_DCQCN;
-+		cong_alg->alg_sel = CONG_DCQCN;
-+		cong_alg->alg_sub_sel = UNSUPPORT_CONG_LEVEL;
-+		cong_alg->dip_vld = DIP_INVALID;
-+		cong_alg->wnd_mode_sel = WND_LIMIT;
+-	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++	case RTL_GIGA_MAC_VER_61:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+ 		break;
++	case RTL_GIGA_MAC_VER_63:
++		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
++			RX_PAUSE_SLOT_ON);
 +		break;
- 	}
- 
- 	return 0;
--- 
-2.42.0
-
+ 	default:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+ 		break;
 
 
 
