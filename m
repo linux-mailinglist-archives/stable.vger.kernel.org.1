@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2378E80D80C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BAB680D587
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C5F280DDA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4239A1F21A75
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE88051C59;
-	Mon, 11 Dec 2023 18:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D83A51020;
+	Mon, 11 Dec 2023 18:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Re2DL+KJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC3QhrT9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927FAFC06;
-	Mon, 11 Dec 2023 18:42:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA399C433C9;
-	Mon, 11 Dec 2023 18:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB334F212;
+	Mon, 11 Dec 2023 18:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C393DC433C8;
+	Mon, 11 Dec 2023 18:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320129;
-	bh=3MvU7fBs940NONXe2h2CtUt85PU3okxDWZKNnHKMTpU=;
+	s=korg; t=1702319138;
+	bh=9EtFcmjbE8g7dHKSj0ecxQp87kE3PeYzOABM1Fmgenw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Re2DL+KJvOBihrrPJ6IEsA48eoXldAVLnOb166ed1+DHccxMq2pk5IajNAoLAwv7l
-	 KrSfeBEZH/V2NAglpt7apjOj+tegGeFrz9Vgix5P4cVTQBKOpGKFLF7ZuDHP2hyxVi
-	 op8Dm59XvE5wrZVDimlehaNMQDiWtneKIOhEsPTw=
+	b=EC3QhrT9dv+BlQR4jMlkj82Qn0NS6sgFqvRVAAr45qca9THv6iLEm08nIDhiDoWS9
+	 cAQmInhYys/2JWF9XIr36CXTRmgcCuIAacaL+F7DCA0cQ0O0/CY8B8zIVGzYPNmdRR
+	 +AY3kbiVyoJ/wKpuHmjBvlz2TxA04lequImjVoB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/67] of: dynamic: Fix of_reconfig_get_state_change() return value documentation
-Date: Mon, 11 Dec 2023 19:22:00 +0100
-Message-ID: <20231211182015.786542546@linuxfoundation.org>
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 51/55] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
+Date: Mon, 11 Dec 2023 19:22:01 +0100
+Message-ID: <20231211182014.158462175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +55,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit d79972789d17499b6091ded2fc0c6763c501a5ba ]
+commit e03781879a0d524ce3126678d50a80484a513c4b upstream.
 
-The documented numeric return values do not match the actual returned
-values. Fix them by using the enum names instead of raw numbers.
+The "NET_DM" generic netlink family notifies drop locations over the
+"events" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-Fixes: b53a2340d0d3 ("of/reconfig: Add of_reconfig_get_state_change() of notifier helper.")
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://lore.kernel.org/r/20231123-fix-of_reconfig_get_state_change-docs-v1-1-f51892050ff9@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/of/dynamic.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Fix by adding a new field to the generic netlink multicast group
+structure that when set prevents non-root users or root without the
+'CAP_SYS_ADMIN' capability (in the user namespace owning the network
+namespace) from joining the group. Set this field for the "events"
+group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
+nature of the information that is shared over this group.
 
-diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
-index 92ee15be78d43..ae969630958cd 100644
---- a/drivers/of/dynamic.c
-+++ b/drivers/of/dynamic.c
-@@ -105,8 +105,9 @@ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
-  *
-  * Returns the new state of a device based on the notifier used.
-  *
-- * Return: 0 on device going from enabled to disabled, 1 on device
-- * going from disabled to enabled and -1 on no change.
-+ * Return: OF_RECONFIG_CHANGE_REMOVE on device going from enabled to
-+ * disabled, OF_RECONFIG_CHANGE_ADD on device going from disabled to
-+ * enabled and OF_RECONFIG_NO_CHANGE on no change.
-  */
- int of_reconfig_get_state_change(unsigned long action, struct of_reconfig_data *pr)
+Note that the capability check in this case will always be performed
+against the initial user namespace since the family is not netns aware
+and only operates in the initial network namespace.
+
+A new field is added to the structure rather than using the "flags"
+field because the existing field uses uAPI flags and it is inappropriate
+to add a new uAPI flag for an internal kernel check. In net-next we can
+rework the "flags" field to use internal flags and fold the new field
+into it. But for now, in order to reduce the amount of changes, add a
+new field.
+
+Since the information can only be consumed by root, mark the control
+plane operations that start and stop the tracing as root-only using the
+'GENL_ADMIN_PERM' flag.
+
+Tested using [1].
+
+Before:
+
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+
+After:
+
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+ Failed to join "events" multicast group
+
+[1]
+ $ cat dm.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
+
+ int main(int argc, char **argv)
  {
--- 
-2.42.0
+ 	struct nl_sock *sk;
+ 	int grp, err;
 
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
+ 	if (grp < 0) {
+ 		fprintf(stderr,
+ 			"Failed to resolve \"events\" multicast group\n");
+ 		return grp;
+ 	}
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
+ 		return err;
+ 	}
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
+
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ include/net/genetlink.h |    2 ++
+ net/core/drop_monitor.c |    4 +++-
+ net/netlink/genetlink.c |    3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -11,10 +11,12 @@
+ /**
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
++ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
++	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -122,7 +122,7 @@ out:
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", },
++	{ .name = "events", .cap_sys_admin = 1 },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+@@ -370,10 +370,12 @@ static const struct genl_ops dropmon_ops
+ 	{
+ 		.cmd = NET_DM_CMD_START,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_STOP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ };
+ 
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -984,6 +984,9 @@ static int genl_bind(struct net *net, in
+ 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
++		if (grp->cap_sys_admin &&
++		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
++			ret = -EPERM;
+ 
+ 		break;
+ 	}
 
 
 
