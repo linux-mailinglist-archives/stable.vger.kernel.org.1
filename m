@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-5976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B3A380D823
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AFC80D771
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3CE41C21553
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837DA1F21720
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDA751C3B;
-	Mon, 11 Dec 2023 18:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F51952F79;
+	Mon, 11 Dec 2023 18:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE+bXbYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co6KPXPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F6BFC06;
-	Mon, 11 Dec 2023 18:42:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BB4C433C8;
-	Mon, 11 Dec 2023 18:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECB2524B1;
+	Mon, 11 Dec 2023 18:36:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB30AC433C7;
+	Mon, 11 Dec 2023 18:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320177;
-	bh=g0NzX8155paULXE2y7WUN6AK4SxFUpdBVZOnfj8kuhA=;
+	s=korg; t=1702319815;
+	bh=yeWu/AXYAq4wqnavzoye7p/TwNGyHOYMopF+bW0CZZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TE+bXbYHCAbS8Wt2chpTHO6UHZDhJu+3BifcJmJRzg1tUfj4BCJmxehlBpVsQhTjX
-	 Xl1yrToS7snJau7UfrFd89Y7BxvYMamMx1DGXP+Qi892ocOR0BU2XO4B4BWWhYtpJ5
-	 M3idJmJDORhnJYFAUuxotQsvZpyxK9i8ygJlZssw=
+	b=co6KPXPJ/CwgmKg/EhsA1oO8oy/TGykSnW06pVTDK3Be9WOiwboh9+EK1QbbvHXKq
+	 jMp2+bbeUroLAe/EhzlRoTcd2k/E61m3l3+yfMoW/xfkmtwErSOklVNp5Ke2wxnOUy
+	 zNKdYqgteww20xycBBQHVx8TXY/kFtDMPddrNkh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yepeng Pan <yepeng.pan@cispa.de>,
-	Christian Rossow <rossow@cispa.de>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 25/67] tcp: do not accept ACK of bytes we never sent
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 236/244] MIPS: Loongson64: Handle more memory types passed from firmware
 Date: Mon, 11 Dec 2023 19:22:09 +0100
-Message-ID: <20231211182016.141855913@linuxfoundation.org>
+Message-ID: <20231211182056.611928003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,111 +52,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
+commit c7206e7bd214ebb3ca6fa474a4423662327d9beb upstream.
 
-This patch is based on a detailed report and ideas from Yepeng Pan
-and Christian Rossow.
+There are many types of revsered memory passed from firmware
+that should be reserved in memblock, and UMA memory passed
+from firmware that should be added to system memory for system
+to use.
 
-ACK seq validation is currently following RFC 5961 5.2 guidelines:
+Also for memblock there is no need to align those space into page,
+which actually cause problems.
 
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.  It needs to
-   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
-   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
-   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
-   ACK, drop the segment, and return".  The "ignored" above implies that
-   the processing of the incoming data segment continues, which means
-   the ACK value is treated as acceptable.  This mitigation makes the
-   ACK check more stringent since any ACK < SND.UNA wouldn't be
-   accepted, instead only ACKs that are in the range ((SND.UNA -
-   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
+Handle them properly to prevent memory corruption on some systems.
 
-This can be refined for new (and possibly spoofed) flows,
-by not accepting ACK for bytes that were never sent.
-
-This greatly improves TCP security at a little cost.
-
-I added a Fixes: tag to make sure this patch will reach stable trees,
-even if the 'blamed' patch was adhering to the RFC.
-
-tp->bytes_acked was added in linux-4.2
-
-Following packetdrill test (courtesy of Yepeng Pan) shows
-the issue at hand:
-
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-// ---------------- Handshake ------------------- //
-
-// when window scale is set to 14 the window size can be extended to
-// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
-// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
-// ,though this ack number acknowledges some data never
-// sent by the server.
-
-+0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
-
-// For the established connection, we send an ACK packet,
-// the ack packet uses ack number 1 - 1073725300 + 2^32,
-// where 2^32 is used to wrap around.
-// Note: we used 1073725300 instead of 1073725440 to avoid possible
-// edge cases.
-// 1 - 1073725300 + 2^32 = 3221241997
-
-// Oops, old kernels happily accept this packet.
-+0 < . 1:1001(1000) ack 3221241997 win 65535
-
-// After the kernel fix the following will be replaced by a challenge ACK,
-// and prior malicious frame would be dropped.
-+0 > . 1:1(0) ack 1001
-
-Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
-Reported-by: Christian Rossow <rossow@cispa.de>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/mach-loongson64/boot_param.h |    6 ++-
+ arch/mips/loongson64/init.c                        |   42 +++++++++++++--------
+ 2 files changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index fe5ef114beba5..982fe464156a4 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3657,8 +3657,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
- 	 */
- 	if (before(ack, prior_snd_una)) {
-+		u32 max_window;
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -14,7 +14,11 @@
+ #define ADAPTER_ROM		8
+ #define ACPI_TABLE		9
+ #define SMBIOS_TABLE		10
+-#define MAX_MEMORY_TYPE		11
++#define UMA_VIDEO_RAM		11
++#define VUMA_VIDEO_RAM		12
++#define MAX_MEMORY_TYPE		13
 +
-+		/* do not accept ACK for bytes we never sent. */
-+		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - tp->max_window)) {
-+		if (before(ack, prior_snd_una - max_window)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk, skb);
- 			return -1;
--- 
-2.42.0
-
++#define MEM_SIZE_IS_IN_BYTES	(1 << 31)
+ 
+ #define LOONGSON3_BOOT_MEM_MAP_MAX 128
+ struct efi_memory_map_loongson {
+--- a/arch/mips/loongson64/init.c
++++ b/arch/mips/loongson64/init.c
+@@ -49,8 +49,7 @@ void virtual_early_config(void)
+ void __init szmem(unsigned int node)
+ {
+ 	u32 i, mem_type;
+-	static unsigned long num_physpages;
+-	u64 node_id, node_psize, start_pfn, end_pfn, mem_start, mem_size;
++	phys_addr_t node_id, mem_start, mem_size;
+ 
+ 	/* Otherwise come from DTB */
+ 	if (loongson_sysconf.fw_interface != LOONGSON_LEFI)
+@@ -64,27 +63,38 @@ void __init szmem(unsigned int node)
+ 
+ 		mem_type = loongson_memmap->map[i].mem_type;
+ 		mem_size = loongson_memmap->map[i].mem_size;
+-		mem_start = loongson_memmap->map[i].mem_start;
++
++		/* Memory size comes in MB if MEM_SIZE_IS_IN_BYTES not set */
++		if (mem_size & MEM_SIZE_IS_IN_BYTES)
++			mem_size &= ~MEM_SIZE_IS_IN_BYTES;
++		else
++			mem_size = mem_size << 20;
++
++		mem_start = (node_id << 44) | loongson_memmap->map[i].mem_start;
+ 
+ 		switch (mem_type) {
+ 		case SYSTEM_RAM_LOW:
+ 		case SYSTEM_RAM_HIGH:
+-			start_pfn = ((node_id << 44) + mem_start) >> PAGE_SHIFT;
+-			node_psize = (mem_size << 20) >> PAGE_SHIFT;
+-			end_pfn  = start_pfn + node_psize;
+-			num_physpages += node_psize;
+-			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+-				(u32)node_id, mem_type, mem_start, mem_size);
+-			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
+-				start_pfn, end_pfn, num_physpages);
+-			memblock_add_node(PFN_PHYS(start_pfn),
+-					  PFN_PHYS(node_psize), node,
++		case UMA_VIDEO_RAM:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes usable\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
++			memblock_add_node(mem_start, mem_size, node,
+ 					  MEMBLOCK_NONE);
+ 			break;
+ 		case SYSTEM_RAM_RESERVED:
+-			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+-				(u32)node_id, mem_type, mem_start, mem_size);
+-			memblock_reserve(((node_id << 44) + mem_start), mem_size << 20);
++		case VIDEO_ROM:
++		case ADAPTER_ROM:
++		case ACPI_TABLE:
++		case SMBIOS_TABLE:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes reserved\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
++			memblock_reserve(mem_start, mem_size);
++			break;
++		/* We should not reserve VUMA_VIDEO_RAM as it overlaps with MMIO */
++		case VUMA_VIDEO_RAM:
++		default:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes unhandled\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
+ 			break;
+ 		}
+ 	}
 
 
 
