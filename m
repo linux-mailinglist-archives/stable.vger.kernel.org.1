@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFD480D7B4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D933680D73D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8476B20F05
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94ADD281E83
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A614F524B5;
-	Mon, 11 Dec 2023 18:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABA15467D;
+	Mon, 11 Dec 2023 18:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWWEQXsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yUzGDJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6027951C45;
-	Mon, 11 Dec 2023 18:39:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E06C433C8;
-	Mon, 11 Dec 2023 18:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8938251C44;
+	Mon, 11 Dec 2023 18:35:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2A1C433C8;
+	Mon, 11 Dec 2023 18:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319957;
-	bh=DaOIHFRKnAZCMviJZmHL1X03atqe/LspvoiCJ09Rzk4=;
+	s=korg; t=1702319748;
+	bh=/dv3jN3uwAosGFgYLBiwdIjR9C4xwyKjeghwYbIuqTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWWEQXsL1D7OxdcSWm7fRZICYleyEx0x0DEdG5AYdvTzqGe9reyCTTzDFJyYDvSHS
-	 ahckiSJkV8Ci34uBRoSzme23uNPq07mkt4lLwoUuEMrgnPzeZfk8Rl/wZErVUq11kj
-	 Vbh/13gmoP5L8hyLJaVpI7w1dcjHLhZubpRJUbgM=
+	b=1yUzGDJQ2kDgMRUnf1KUhBW79EUt4VpvhhI1U7uz77DQne/+pYKN6l+UEEZYi21VA
+	 aVkvi+IaCLUbbOHfoOVo4D9jGSg1iPtcHM3/jkM8QMWdBDR9YEfcfsTuXYIKtOSrPG
+	 CHW+IhPBffABvqg/t61lFd0u4twnWVehlBZYmHzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 50/97] nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
+	Daniel Mack <daniel@zonque.org>,
+	Maxim Popov <maxim.snafu@gmail.com>
+Subject: [PATCH 6.6 220/244] serial: sc16is7xx: address RX timeout interrupt errata
 Date: Mon, 11 Dec 2023 19:21:53 +0100
-Message-ID: <20231211182021.880672196@linuxfoundation.org>
+Message-ID: <20231211182055.854157432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,114 +52,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Daniel Mack <daniel@zonque.org>
 
-commit 675abf8df1353e0e3bde314993e0796c524cfbf0 upstream.
+commit 08ce9a1b72e38cf44c300a44ac5858533eb3c860 upstream.
 
-If nilfs2 reads a disk image with corrupted segment usage metadata, and
-its segment usage information is marked as an error for the segment at the
-write location, nilfs_sufile_set_segment_usage() can trigger WARN_ONs
-during log writing.
+This device has a silicon bug that makes it report a timeout interrupt
+but no data in the FIFO.
 
-Segments newly allocated for writing with nilfs_sufile_alloc() will not
-have this error flag set, but this unexpected situation will occur if the
-segment indexed by either nilfs->ns_segnum or nilfs->ns_nextnum (active
-segment) was marked in error.
+The datasheet states the following in the errata section 18.1.4:
 
-Fix this issue by inserting a sanity check to treat it as a file system
-corruption.
+  "If the host reads the receive FIFO at the same time as a
+  time-out interrupt condition happens, the host might read 0xCC
+  (time-out) in the Interrupt Indication Register (IIR), but bit 0
+  of the Line Status Register (LSR) is not set (means there is no
+  data in the receive FIFO)."
 
-Since error returns are not allowed during the execution phase where
-nilfs_sufile_set_segment_usage() is used, this inserts the sanity check
-into nilfs_sufile_mark_dirty() which pre-reads the buffer containing the
-segment usage record to be updated and sets it up in a dirty state for
-writing.
+The errata description seems to indicate it concerns only polled mode of
+operation when reading bit 0 of the LSR register. However, tests have
+shown and NXP has confirmed that the RXLVL register also yields 0 when
+the bug is triggered, and hence the IRQ driven implementation in this
+driver is equally affected.
 
-In addition, nilfs_sufile_set_segment_usage() is also called when
-canceling log writing and undoing segment usage update, so in order to
-avoid issuing the same kernel warning in that case, in case of
-cancellation, avoid checking the error flag in
-nilfs_sufile_set_segment_usage().
+This bug has hit us on production units and when it does, sc16is7xx_irq()
+would spin forever because sc16is7xx_port_irq() keeps seeing an
+interrupt in the IIR register that is not cleared because the driver
+does not call into sc16is7xx_handle_rx() unless the RXLVL register
+reports at least one byte in the FIFO.
 
-Link: https://lkml.kernel.org/r/20231205085947.4431-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=14e9f834f6ddecece094
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix this by always reading one byte from the FIFO when this condition
+is detected in order to clear the interrupt. This approach was
+confirmed to be correct by NXP through their support channels.
+
+Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231123072818.1394539-1-daniel@zonque.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sufile.c |   42 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -501,15 +501,38 @@ int nilfs_sufile_mark_dirty(struct inode
- 
- 	down_write(&NILFS_MDT(sufile)->mi_sem);
- 	ret = nilfs_sufile_get_segment_usage_block(sufile, segnum, 0, &bh);
--	if (!ret) {
--		mark_buffer_dirty(bh);
--		nilfs_mdt_mark_dirty(sufile);
--		kaddr = kmap_atomic(bh->b_page);
--		su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
-+	if (ret)
-+		goto out_sem;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -767,6 +767,18 @@ static bool sc16is7xx_port_irq(struct sc
+ 		case SC16IS7XX_IIR_RTOI_SRC:
+ 		case SC16IS7XX_IIR_XOFFI_SRC:
+ 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
 +
-+	kaddr = kmap_atomic(bh->b_page);
-+	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
-+	if (unlikely(nilfs_segment_usage_error(su))) {
-+		struct the_nilfs *nilfs = sufile->i_sb->s_fs_info;
-+
-+		kunmap_atomic(kaddr);
-+		brelse(bh);
-+		if (nilfs_segment_is_active(nilfs, segnum)) {
-+			nilfs_error(sufile->i_sb,
-+				    "active segment %llu is erroneous",
-+				    (unsigned long long)segnum);
-+		} else {
 +			/*
-+			 * Segments marked erroneous are never allocated by
-+			 * nilfs_sufile_alloc(); only active segments, ie,
-+			 * the segments indexed by ns_segnum or ns_nextnum,
-+			 * can be erroneous here.
++			 * There is a silicon bug that makes the chip report a
++			 * time-out interrupt but no data in the FIFO. This is
++			 * described in errata section 18.1.4.
++			 *
++			 * When this happens, read one byte from the FIFO to
++			 * clear the interrupt.
 +			 */
-+			WARN_ON_ONCE(1);
-+		}
-+		ret = -EIO;
-+	} else {
- 		nilfs_segment_usage_set_dirty(su);
- 		kunmap_atomic(kaddr);
-+		mark_buffer_dirty(bh);
-+		nilfs_mdt_mark_dirty(sufile);
- 		brelse(bh);
- 	}
-+out_sem:
- 	up_write(&NILFS_MDT(sufile)->mi_sem);
- 	return ret;
- }
-@@ -536,9 +559,14 @@ int nilfs_sufile_set_segment_usage(struc
- 
- 	kaddr = kmap_atomic(bh->b_page);
- 	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
--	WARN_ON(nilfs_segment_usage_error(su));
--	if (modtime)
-+	if (modtime) {
-+		/*
-+		 * Check segusage error and set su_lastmod only when updating
-+		 * this entry with a valid timestamp, not for cancellation.
-+		 */
-+		WARN_ON_ONCE(nilfs_segment_usage_error(su));
- 		su->su_lastmod = cpu_to_le64(modtime);
-+	}
- 	su->su_nblocks = cpu_to_le32(nblocks);
- 	kunmap_atomic(kaddr);
- 
++			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++				rxlen = 1;
++
+ 			if (rxlen)
+ 				sc16is7xx_handle_rx(port, rxlen, iir);
+ 			break;
 
 
 
