@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF5780D796
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC63780D553
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F109F1C2143D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6353281C1C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344BB53E28;
-	Mon, 11 Dec 2023 18:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E11B5101D;
+	Mon, 11 Dec 2023 18:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6FAVb3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04MA5dAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB7E524B8;
-	Mon, 11 Dec 2023 18:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0FAC433C7;
-	Mon, 11 Dec 2023 18:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37694F212;
+	Mon, 11 Dec 2023 18:22:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D1BC433C7;
+	Mon, 11 Dec 2023 18:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319889;
-	bh=UhaiI8a0ZPdDu7MmCKR6hGhLxQ/LyjJXd9PU7gaLIeo=;
+	s=korg; t=1702318959;
+	bh=MZ8qULQSCq1c/NcwaTopiWdLOg6s3XsjeJbXMWOOZI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6FAVb3PHBfkfn0PUzhgk8Q2xqg15YU7ebJjvAzJrVr+xhmOFGub259/FXERwTpTa
-	 FbmlWBzlobDsz5gJXN3wXbYybHQ62NrjUzPe21LCwg4ijkExA3Q1jiOoOv5Ee5pUUP
-	 YnUSX3CIKmKjAL7VZyHoTuY2+fj0+/t3N2B/YjhM=
+	b=04MA5dAlm48lcoHNYOUK0jun2Xjr137qSm+nkVkdhxy0bRC3Ly6RbwTR5O6VshSnt
+	 8HI20O7De9L/atU87RYRHXYFKwKmu5j2G0ZWTcBAhEz0Pzd7RgfAhp1fz3xQARb2gx
+	 pPayI3kJsu7U+qTPgbvDyty1F+dK628QymFv/0UQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/97] kconfig: fix memory leak from range properties
+	Daniel Mack <daniel@zonque.org>,
+	Maxim Popov <maxim.snafu@gmail.com>
+Subject: [PATCH 4.14 18/25] serial: sc16is7xx: address RX timeout interrupt errata
 Date: Mon, 11 Dec 2023 19:21:09 +0100
-Message-ID: <20231211182020.094524484@linuxfoundation.org>
+Message-ID: <20231211182009.350882675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,97 +52,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Daniel Mack <daniel@zonque.org>
 
-[ Upstream commit ae1eff0349f2e908fc083630e8441ea6dc434dc0 ]
+commit 08ce9a1b72e38cf44c300a44ac5858533eb3c860 upstream.
 
-Currently, sym_validate_range() duplicates the range string using
-xstrdup(), which is overwritten by a subsequent sym_calc_value() call.
-It results in a memory leak.
+This device has a silicon bug that makes it report a timeout interrupt
+but no data in the FIFO.
 
-Instead, only the pointer should be copied.
+The datasheet states the following in the errata section 18.1.4:
 
-Below is a test case, with a summary from Valgrind.
+  "If the host reads the receive FIFO at the same time as a
+  time-out interrupt condition happens, the host might read 0xCC
+  (time-out) in the Interrupt Indication Register (IIR), but bit 0
+  of the Line Status Register (LSR) is not set (means there is no
+  data in the receive FIFO)."
 
-[Test Kconfig]
+The errata description seems to indicate it concerns only polled mode of
+operation when reading bit 0 of the LSR register. However, tests have
+shown and NXP has confirmed that the RXLVL register also yields 0 when
+the bug is triggered, and hence the IRQ driven implementation in this
+driver is equally affected.
 
-  config FOO
-          int "foo"
-          range 10 20
+This bug has hit us on production units and when it does, sc16is7xx_irq()
+would spin forever because sc16is7xx_port_irq() keeps seeing an
+interrupt in the IIR register that is not cleared because the driver
+does not call into sc16is7xx_handle_rx() unless the RXLVL register
+reports at least one byte in the FIFO.
 
-[Test .config]
+Fix this by always reading one byte from the FIFO when this condition
+is detected in order to clear the interrupt. This approach was
+confirmed to be correct by NXP through their support channels.
 
-  CONFIG_FOO=0
+Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[Before]
-
-  LEAK SUMMARY:
-     definitely lost: 3 bytes in 1 blocks
-     indirectly lost: 0 bytes in 0 blocks
-       possibly lost: 0 bytes in 0 blocks
-     still reachable: 17,465 bytes in 21 blocks
-          suppressed: 0 bytes in 0 blocks
-
-[After]
-
-  LEAK SUMMARY:
-     definitely lost: 0 bytes in 0 blocks
-     indirectly lost: 0 bytes in 0 blocks
-       possibly lost: 0 bytes in 0 blocks
-     still reachable: 17,462 bytes in 20 blocks
-          suppressed: 0 bytes in 0 blocks
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231123072818.1394539-1-daniel@zonque.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/symbol.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
-index ffa3ec65cc907..a2056fa80de2b 100644
---- a/scripts/kconfig/symbol.c
-+++ b/scripts/kconfig/symbol.c
-@@ -123,9 +123,9 @@ static long long sym_get_range_val(struct symbol *sym, int base)
- static void sym_validate_range(struct symbol *sym)
- {
- 	struct property *prop;
-+	struct symbol *range_sym;
- 	int base;
- 	long long val, val2;
--	char str[64];
- 
- 	switch (sym->type) {
- 	case S_INT:
-@@ -141,17 +141,15 @@ static void sym_validate_range(struct symbol *sym)
- 	if (!prop)
- 		return;
- 	val = strtoll(sym->curr.val, NULL, base);
--	val2 = sym_get_range_val(prop->expr->left.sym, base);
-+	range_sym = prop->expr->left.sym;
-+	val2 = sym_get_range_val(range_sym, base);
- 	if (val >= val2) {
--		val2 = sym_get_range_val(prop->expr->right.sym, base);
-+		range_sym = prop->expr->right.sym;
-+		val2 = sym_get_range_val(range_sym, base);
- 		if (val <= val2)
- 			return;
- 	}
--	if (sym->type == S_INT)
--		sprintf(str, "%lld", val2);
--	else
--		sprintf(str, "0x%llx", val2);
--	sym->curr.val = xstrdup(str);
-+	sym->curr.val = range_sym->curr.val;
- }
- 
- static void sym_set_changed(struct symbol *sym)
--- 
-2.42.0
-
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -699,6 +699,18 @@ static bool sc16is7xx_port_irq(struct sc
+ 		case SC16IS7XX_IIR_RTOI_SRC:
+ 		case SC16IS7XX_IIR_XOFFI_SRC:
+ 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
++
++			/*
++			 * There is a silicon bug that makes the chip report a
++			 * time-out interrupt but no data in the FIFO. This is
++			 * described in errata section 18.1.4.
++			 *
++			 * When this happens, read one byte from the FIFO to
++			 * clear the interrupt.
++			 */
++			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++				rxlen = 1;
++
+ 			if (rxlen)
+ 				sc16is7xx_handle_rx(port, rxlen, iir);
+ 			break;
 
 
 
