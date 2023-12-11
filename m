@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-6166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1938D80D92B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2553C80D82B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48BCB1C216B5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04821F21760
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1257051C4A;
-	Mon, 11 Dec 2023 18:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAB851036;
+	Mon, 11 Dec 2023 18:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXNNsbqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtSJ+SlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C761C51C2D;
-	Mon, 11 Dec 2023 18:51:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F46FC433C7;
-	Mon, 11 Dec 2023 18:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7101FC06;
+	Mon, 11 Dec 2023 18:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE29C433C7;
+	Mon, 11 Dec 2023 18:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320689;
-	bh=x5J98ZRkj5tF1IhgCzuhMB3i0MYJL1IX3BS70UzTzd4=;
+	s=korg; t=1702320198;
+	bh=iag247i25e/DlP8GtbCYcH/fZRRdbCXB2kYBU+QonXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXNNsbqbTQPiX640TheSgtFy11CuT3RUDREGD1FNsNwC/mEpjhF4HJwQTsdCsIxm1
-	 AhmJmh4SQsLGpKWljRfsZD7SsO3gKYWEmKqcSXk+Ca3DHHIM8jKDtIvhuZ3kt58Oxb
-	 OMDJix7AnBm1h39zDKawgNSlFBGZAeVLNrGNUJUM=
+	b=gtSJ+SlRCebcwemM+yiqs0fzZgjQnDTfyiOnGzYCkjwYhAtGq+R9cjGA2qgNNDhT5
+	 +bNQt4997ajUk80lA5bx1U1yzYrwc+SKF9sIYwKqXeSg0RBU8mCCxE11y2iS3S4i94
+	 w+EBF5cUDd0cx2Pi5XPB9YYcCHa66Ybcl62mZT7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/194] drm/amdgpu: correct the amdgpu runtime dereference usage count
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.4 41/67] arm64: dts: mediatek: mt7622: fix memory node warning check
 Date: Mon, 11 Dec 2023 19:22:25 +0100
-Message-ID: <20231211182043.567280428@linuxfoundation.org>
+Message-ID: <20231211182016.806760186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +52,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-[ Upstream commit c6df7f313794c3ad41a49b9a7c95da369db607f3 ]
+commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
 
-Fix the amdgpu runpm dereference usage count.
+dtbs_check throws a warning at the memory node:
+Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+fix by adding the address into the node name.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
+ arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-index ee528ed639568..aabde6ebb190e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -304,14 +304,11 @@ int amdgpu_display_crtc_set_config(struct drm_mode_set *set,
- 		adev->have_disp_power_ref = true;
- 		return ret;
- 	}
--	/* if we have no active crtcs, then drop the power ref
--	 * we got before
-+	/* if we have no active crtcs, then go to
-+	 * drop the power ref we got before
- 	 */
--	if (!active && adev->have_disp_power_ref) {
--		pm_runtime_put_autosuspend(dev->dev);
-+	if (!active && adev->have_disp_power_ref)
- 		adev->have_disp_power_ref = false;
--	}
--
- out:
- 	/* drop the power reference we got coming in here */
- 	pm_runtime_put_autosuspend(dev->dev);
--- 
-2.42.0
-
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -69,7 +69,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x40000000>;
+ 	};
+ 
+--- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+@@ -55,7 +55,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x20000000>;
+ 	};
+ 
 
 
 
