@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F3F80D86E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2919980D61B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5918BB20F93
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6CBC1F21ACA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9814D51038;
-	Mon, 11 Dec 2023 18:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C485FC06;
+	Mon, 11 Dec 2023 18:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMPbzBTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOjLWN2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5481A4437B;
-	Mon, 11 Dec 2023 18:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A16C433C7;
-	Mon, 11 Dec 2023 18:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4F7C2D0;
+	Mon, 11 Dec 2023 18:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DBEC433C8;
+	Mon, 11 Dec 2023 18:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320339;
-	bh=7y50ZvyHmGZrVbjyAR0u8cR7gDh5zSAmWkCd02nP5pk=;
+	s=korg; t=1702319484;
+	bh=nfasymoxfCW6RrpChNUozkvwpcgxg+3wKy70VqxCZA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMPbzBTZ4NiLd815xd2p8Q6f/DexzQHmQteB/yexfliI/MaYikm4Tdlz/Gh+mSFhN
-	 i1UvZCebyyKt5sJK2/UV52V2QDqoq5bwvDAl85j/SKPlqDMrDMKIQ52r83C8vvVWoZ
-	 kfKbOpmr5lU2hRHSml3UdVUDUjh6Sm/Il1wEwnBs=
+	b=MOjLWN2rb3Jp7dj7zmXSltgpddNObdACoJvv7iSMAJe2fxi3t/K2AmxQ21F9RRFTX
+	 Uti91XNQLGGtXb9mV3I0WiiD7yGcQhncR/XpTmtC3sGJMZxzF1kamKMSkanJwXu+EB
+	 oOzWZGDDYdrJuwP8oZ6KNwt6RN2pHd1rWtDVRgD4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grant Grundler <grundler@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Hayes Wang <hayeswang@realtek.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/194] r8152: Add RTL8152_INACCESSIBLE checks to more loops
-Date: Mon, 11 Dec 2023 19:20:15 +0100
-Message-ID: <20231211182037.703114231@linuxfoundation.org>
+Subject: [PATCH 6.6 123/244] arm64: dts: imx8-apalis: set wifi regulator to always-on
+Date: Mon, 11 Dec 2023 19:20:16 +0100
+Message-ID: <20231211182051.334032122@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,74 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit 32a574c7e2685aa8138754d4d755f9246cc6bd48 ]
+[ Upstream commit 04179605ab604dba32571a05cd06423afc9eca19 ]
 
-Previous commits added checks for RTL8152_INACCESSIBLE in the loops in
-the driver. There are still a few more that keep tripping the driver
-up in error cases and make things take longer than they should. Add
-those in.
+Make sure that the wifi regulator is always on. The wifi driver itself
+puts the wifi module into suspend mode. If we cut the power the driver
+will crash when resuming from suspend.
 
-All the loops that are part of this commit existed in some form or
-another since the r8152 driver was first introduced, though
-RTL8152_INACCESSIBLE was known as RTL8152_UNPLUG before commit
-715f67f33af4 ("r8152: Rename RTL8152_UNPLUG to RTL8152_INACCESSIBLE")
-
-Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Fixes: ad0de4ceb706 ("arm64: dts: freescale: add initial apalis imx8 aka quadmax module support")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 76792269222ea..2cee9b2a21615 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -2857,6 +2857,8 @@ static void rtl8152_nic_reset(struct r8152 *tp)
- 		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CR, CR_RST);
+diff --git a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+index 9b1b522517f8e..0878a15acc1ba 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-apalis-v1.1.dtsi
+@@ -82,12 +82,9 @@
+ 		pinctrl-0 = <&pinctrl_wifi_pdn>;
+ 		gpio = <&lsio_gpio1 28 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
++		regulator-always-on;
+ 		regulator-name = "wifi_pwrdn_fake_regulator";
+ 		regulator-settling-time-us = <100>;
+-
+-		regulator-state-mem {
+-			regulator-off-in-suspend;
+-		};
+ 	};
  
- 		for (i = 0; i < 1000; i++) {
-+			if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+				break;
- 			if (!(ocp_read_byte(tp, MCU_TYPE_PLA, PLA_CR) & CR_RST))
- 				break;
- 			usleep_range(100, 400);
-@@ -3186,6 +3188,8 @@ static void rtl_disable(struct r8152 *tp)
- 	rxdy_gated_en(tp, true);
- 
- 	for (i = 0; i < 1000; i++) {
-+		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+			break;
- 		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
- 		if ((ocp_data & FIFO_EMPTY) == FIFO_EMPTY)
- 			break;
-@@ -3193,6 +3197,8 @@ static void rtl_disable(struct r8152 *tp)
- 	}
- 
- 	for (i = 0; i < 1000; i++) {
-+		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+			break;
- 		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_TCR0) & TCR0_TX_EMPTY)
- 			break;
- 		usleep_range(1000, 2000);
-@@ -5381,6 +5387,8 @@ static void wait_oob_link_list_ready(struct r8152 *tp)
- 	int i;
- 
- 	for (i = 0; i < 1000; i++) {
-+		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+			break;
- 		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
- 		if (ocp_data & LINK_LIST_READY)
- 			break;
+ 	reg_pcie_switch: regulator-pcie-switch {
 -- 
 2.42.0
 
