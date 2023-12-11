@@ -1,55 +1,46 @@
-Return-Path: <stable+bounces-6182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8009B80D940
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA0D80DA26
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16331C216D9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 286821C2174E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1F51C5C;
-	Mon, 11 Dec 2023 18:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42BB252F7F;
+	Mon, 11 Dec 2023 18:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0w12v+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWPw6BuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1A751C2D;
-	Mon, 11 Dec 2023 18:52:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2917C433C7;
-	Mon, 11 Dec 2023 18:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035DF321B8;
+	Mon, 11 Dec 2023 18:59:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFE7C433C7;
+	Mon, 11 Dec 2023 18:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320732;
-	bh=0VN7UGPCsYZQ3C8NrEP3UXLhcww3vSI68qQxl7ofWWc=;
+	s=korg; t=1702321151;
+	bh=H7MxcTR1rPdaLyZ8rq3u1jgzPqvGj7MY7BEfjQPuGww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0w12v+zmWlg8QWkjR+ESm5sqCg6XxE7T3ombflanTToGLRAt8obLNKd+Np7iUzCc
-	 P9HC9ipe7v16Q+UR52UucmeL+dMSQW7FHurzOCxK1uxIOhzq2rxLZZevqz6WuGODja
-	 iHu1xquLsFJj3VJqEI7jbK8+ss4ksM6KVgWfXmfA=
+	b=jWPw6BuSH1JNVf4nep0DUSE3Rf+v3I5hs901VFJkTYo6SsuwQd69ISKSqk4jZYiq6
+	 j/DEWwQMplH1qj9nSBwLu+/tjrSby0iInw8afqLoLVcuDdf5EFdC4Le+f7aT/Smtlr
+	 FT7WxS/zhRh1oWvqEG/5Jv1xILZHz6ALTMYykx+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Darrick Wong <darrick.wong@oracle.com>,
-	fstests@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 169/194] cifs: Fix non-availability of dedup breaking generic/304
+	Su Hui <suhui@nfschina.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 100/141] misc: mei: client.c: return negative error code in mei_cl_write
 Date: Mon, 11 Dec 2023 19:22:39 +0100
-Message-ID: <20231211182044.196808570@linuxfoundation.org>
+Message-ID: <20231211182030.902271829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 691a41d8da4b34fe72f09393505f55f28a8f34ec upstream.
+[ Upstream commit 8f06aee8089cf42fd99a20184501bd1347ce61b9 ]
 
-Deduplication isn't supported on cifs, but cifs doesn't reject it, instead
-treating it as extent duplication/cloning.  This can cause generic/304 to go
-silly and run for hours on end.
+mei_msg_hdr_init() return negative error code, rets should be
+'PTR_ERR(mei_hdr)' rather than '-PTR_ERR(mei_hdr)'.
 
-Fix cifs to indicate EOPNOTSUPP if REMAP_FILE_DEDUP is set in
-->remap_file_range().
-
-Note that it's unclear whether or not commit b073a08016a1 is meant to cause
-cifs to return an error if REMAP_FILE_DEDUP.
-
-Fixes: b073a08016a1 ("cifs: fix that return -EINVAL when do dedupe operation")
-Cc: stable@vger.kernel.org
-Suggested-by: Dave Chinner <david@fromorbit.com>
-cc: Xiaoli Feng <fengxiaoli0714@gmail.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Darrick Wong <darrick.wong@oracle.com>
-cc: fstests@vger.kernel.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/3876191.1701555260@warthog.procyon.org.uk/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 0cd7c01a60f8 ("mei: add support for mei extended header.")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231120095523.178385-1-suhui@nfschina.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/mei/client.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1203,7 +1203,9 @@ static loff_t cifs_remap_file_range(stru
- 	unsigned int xid;
- 	int rc;
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 96f4e59c32a54..9fc58e4032295 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -1975,7 +1975,7 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
  
--	if (remap_flags & ~(REMAP_FILE_DEDUP | REMAP_FILE_ADVISORY))
-+	if (remap_flags & REMAP_FILE_DEDUP)
-+		return -EOPNOTSUPP;
-+	if (remap_flags & ~REMAP_FILE_ADVISORY)
- 		return -EINVAL;
- 
- 	cifs_dbg(FYI, "clone range\n");
+ 	mei_hdr = mei_msg_hdr_init(cb);
+ 	if (IS_ERR(mei_hdr)) {
+-		rets = -PTR_ERR(mei_hdr);
++		rets = PTR_ERR(mei_hdr);
+ 		mei_hdr = NULL;
+ 		goto err;
+ 	}
+-- 
+2.42.0
+
 
 
 
