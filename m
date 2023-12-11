@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-6311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D1980D9FD
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74AF80D93B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA146B21A98
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C371C2168B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E4251C46;
-	Mon, 11 Dec 2023 18:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B6251C46;
+	Mon, 11 Dec 2023 18:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzuueHBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVyqAQam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D96E548;
-	Mon, 11 Dec 2023 18:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EBAC433C7;
-	Mon, 11 Dec 2023 18:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB84851C2D;
+	Mon, 11 Dec 2023 18:52:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60457C433C7;
+	Mon, 11 Dec 2023 18:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321086;
-	bh=X84ZF5T71LVyraLX8VOOH+b+ICJgIGXXLtYVOoaS3wM=;
+	s=korg; t=1702320721;
+	bh=pT9gGLXQPWU1SWhu30kNWiDJICkWzAlhwQUzb6HcaLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzuueHBIHLfoAI4TU3NvduYXZCtZE1TVCvkkwAXjVeJNjU5+Xcai5tdjqS3MiQhsJ
-	 OW24QUL2lMBr8jLCh+5rn+5OZovMtzGKbbPwDg/Bevb7O8Jj/eHSFd7w+TFckAyRXA
-	 fs5Lukl1uN6hQEvEVCO6Dsi0rNO6dLvb+AB0LVvE=
+	b=BVyqAQamscgQeIL7aAaChofZmhXtwN6HapnUxgYqEmodrV8SX6Y+nO1QFmrbLvlAf
+	 EwhkAJ6K5HDC0M8lXyKj3exxOpsBsDex4pAbIkzhZeGQqObl0qIKbqLLem4fQI25e8
+	 68fKGWLRHdLpVfh+6VNLPn8jNEVyiAQ+/Cu2Znlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/141] kallsyms: Make kallsyms_on_each_symbol generally available
+	Konstantin Aladyshev <aladyshev22@gmail.com>
+Subject: [PATCH 6.1 166/194] usb: gadget: f_hid: fix report descriptor allocation
 Date: Mon, 11 Dec 2023 19:22:36 +0100
-Message-ID: <20231211182030.765085672@linuxfoundation.org>
+Message-ID: <20231211182044.057571429@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,83 +51,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Konstantin Aladyshev <aladyshev22@gmail.com>
 
-[ Upstream commit d721def7392a7348ffb9f3583b264239cbd3702c ]
+commit 61890dc28f7d9e9aac8a9471302613824c22fae4 upstream.
 
-Making kallsyms_on_each_symbol generally available, so it can be
-used outside CONFIG_LIVEPATCH option in following changes.
+The commit 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs
+cdev") has introduced a bug that leads to hid device corruption after
+the replug operation.
+Reverse device managed memory allocation for the report descriptor
+to fix the issue.
 
-Rather than adding another ifdef option let's make the function
-generally available (when CONFIG_KALLSYMS option is defined).
+Tested:
+This change was tested on the AMD EthanolX CRB server with the BMC
+based on the OpenBMC distribution. The BMC provides KVM functionality
+via the USB gadget device:
+- before: KVM page refresh results in a broken USB device,
+- after: KVM page refresh works without any issues.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20220510122616.2652285-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konstantin Aladyshev <aladyshev22@gmail.com>
+Link: https://lore.kernel.org/r/20231206080744.253-2-aladyshev22@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kallsyms.h | 7 ++++++-
- kernel/kallsyms.c        | 2 --
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/function/f_hid.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index a1d6fc82d7f06..eae9f423bd648 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -74,11 +74,11 @@ static inline void *dereference_symbol_descriptor(void *ptr)
- 	return ptr;
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -88,6 +88,7 @@ static void hidg_release(struct device *
+ {
+ 	struct f_hidg *hidg = container_of(dev, struct f_hidg, dev);
+ 
++	kfree(hidg->report_desc);
+ 	kfree(hidg->set_report_buf);
+ 	kfree(hidg);
  }
- 
-+#ifdef CONFIG_KALLSYMS
- int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 				      unsigned long),
- 			    void *data);
- 
--#ifdef CONFIG_KALLSYMS
- /* Lookup the address for a symbol. Returns 0 if not found. */
- unsigned long kallsyms_lookup_name(const char *name);
- 
-@@ -172,6 +172,11 @@ static inline bool kallsyms_show_value(const struct cred *cred)
- 	return false;
- }
- 
-+static inline int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
-+					  unsigned long), void *data)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif /*CONFIG_KALLSYMS*/
- 
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index 0ba87982d017f..e0d9f77cf2d4b 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -204,7 +204,6 @@ unsigned long kallsyms_lookup_name(const char *name)
- 	return module_kallsyms_lookup_name(name);
- }
- 
--#ifdef CONFIG_LIVEPATCH
- /*
-  * Iterate over all symbols in vmlinux.  For symbols from modules use
-  * module_kallsyms_on_each_symbol instead.
-@@ -226,7 +225,6 @@ int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 	}
- 	return 0;
- }
--#endif /* CONFIG_LIVEPATCH */
- 
- static unsigned long get_symbol_pos(unsigned long addr,
- 				    unsigned long *symbolsize,
--- 
-2.42.0
-
+@@ -1287,9 +1288,9 @@ static struct usb_function *hidg_alloc(s
+ 	hidg->report_length = opts->report_length;
+ 	hidg->report_desc_length = opts->report_desc_length;
+ 	if (opts->report_desc) {
+-		hidg->report_desc = devm_kmemdup(&hidg->dev, opts->report_desc,
+-						 opts->report_desc_length,
+-						 GFP_KERNEL);
++		hidg->report_desc = kmemdup(opts->report_desc,
++					    opts->report_desc_length,
++					    GFP_KERNEL);
+ 		if (!hidg->report_desc) {
+ 			put_device(&hidg->dev);
+ 			--opts->refcnt;
 
 
 
