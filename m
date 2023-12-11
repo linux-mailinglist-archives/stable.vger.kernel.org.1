@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-6227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072CE80D97E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBDA80D786
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 382FF1C216D7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F09C2B2129B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8364451C59;
-	Mon, 11 Dec 2023 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2CF953E0B;
+	Mon, 11 Dec 2023 18:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R658kcLL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14LjZX9y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451F951C38;
-	Mon, 11 Dec 2023 18:54:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD55FC433C7;
-	Mon, 11 Dec 2023 18:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E03A52F8D;
+	Mon, 11 Dec 2023 18:37:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB1DC433C7;
+	Mon, 11 Dec 2023 18:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320856;
-	bh=4grfFzBz9hEHPtVkhWwHW/3ZkrJfY2IxyVQtqDJmXnE=;
+	s=korg; t=1702319862;
+	bh=gxZbcBPXuUyZl3yZFmlbz/UJ2j3EVo/oXBzCIXQdxQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R658kcLLjJ3/sNzRoIrVdHhN5Ct2AH+jCJRDFNnzuSFLXQEHK+BKTEF9WXwYNwDr+
-	 CHGpZ91+5MEmkP/i3lcfAoyBivOnIiZKQ663tCcHEftixlTN+a5d4f1UcvhrxXv9pf
-	 +PvSWIH7/r6Bp/n9nGT9dBmO7pRQzAyc9q099mPs=
+	b=14LjZX9ynRFDpDGhztvojUbZi7fD+QRQ/aXSs+ZR9QqKoCsquVbLenvB3hOLS8Tsq
+	 tO9rWFrHGHmb+RKkiaKMA77aTaOV3NR5WG1SVPXHisRGges6JvLUQK5ruFnhw50UoV
+	 0vb+7cjZgGGpZoIuzgJlIEIQTD6O/7ZcnOYrhogs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Oleksij Rempel <linux@rempel-privat.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/141] hv_netvsc: rndis_filter needs to select NLS
+Subject: [PATCH 5.10 16/97] platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code
 Date: Mon, 11 Dec 2023 19:21:19 +0100
-Message-ID: <20231211182027.406199782@linuxfoundation.org>
+Message-ID: <20231211182020.501895087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,48 +52,112 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
+[ Upstream commit b52cbca22cbf6c9d2700c1e576d0ddcc670e49d5 ]
 
-rndis_filter uses utf8s_to_utf16s() which is provided by setting
-NLS, so select NLS to fix the build error:
+asus-nb-wmi calls i8042_install_filter() in some cases, but it never
+calls i8042_remove_filter(). This means that a dangling pointer to
+the filter function is left after rmmod leading to crashes.
 
-ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
+Fix this by moving the i8042-filter installation to the shared
+asus-wmi code and also remove it from the shared code on driver unbind.
 
-Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b5643539b825 ("platform/x86: asus-wmi: Filter buggy scan codes on ASUS Q500A")
+Cc: Oleksij Rempel <linux@rempel-privat.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231120154235.610808-2-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/Kconfig       |  2 +-
+ drivers/platform/x86/asus-nb-wmi.c | 11 -----------
+ drivers/platform/x86/asus-wmi.c    |  8 ++++++++
+ 3 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
-index ca7bf7f897d36..c8cbd85adcf99 100644
---- a/drivers/net/hyperv/Kconfig
-+++ b/drivers/net/hyperv/Kconfig
-@@ -3,5 +3,6 @@ config HYPERV_NET
- 	tristate "Microsoft Hyper-V virtual network driver"
- 	depends on HYPERV
- 	select UCS2_STRING
-+	select NLS
+diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
+index 84c5b922f245e..c14c145b88d80 100644
+--- a/drivers/platform/x86/Kconfig
++++ b/drivers/platform/x86/Kconfig
+@@ -243,6 +243,7 @@ config ASUS_WMI
+ 	depends on RFKILL || RFKILL = n
+ 	depends on HOTPLUG_PCI
+ 	depends on ACPI_VIDEO || ACPI_VIDEO = n
++	depends on SERIO_I8042 || SERIO_I8042 = n
+ 	select INPUT_SPARSEKMAP
+ 	select LEDS_CLASS
+ 	select NEW_LEDS
+@@ -256,7 +257,6 @@ config ASUS_WMI
+ config ASUS_NB_WMI
+ 	tristate "Asus Notebook WMI Driver"
+ 	depends on ASUS_WMI
+-	depends on SERIO_I8042 || SERIO_I8042 = n
  	help
- 	  Select this option to enable the Hyper-V virtual network driver.
+ 	  This is a driver for newer Asus notebooks. It adds extra features
+ 	  like wireless radio and bluetooth control, leds, hotkeys, backlight...
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 7b8942fee76dd..49505939352ae 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -490,8 +490,6 @@ static const struct dmi_system_id asus_quirks[] = {
+ 
+ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
+ {
+-	int ret;
+-
+ 	quirks = &quirk_asus_unknown;
+ 	dmi_check_system(asus_quirks);
+ 
+@@ -506,15 +504,6 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
+ 
+ 	if (tablet_mode_sw != -1)
+ 		quirks->tablet_switch_mode = tablet_mode_sw;
+-
+-	if (quirks->i8042_filter) {
+-		ret = i8042_install_filter(quirks->i8042_filter);
+-		if (ret) {
+-			pr_warn("Unable to install key filter\n");
+-			return;
+-		}
+-		pr_info("Using i8042 filter function for receiving events\n");
+-	}
+ }
+ 
+ static const struct key_entry asus_nb_wmi_keymap[] = {
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index a1008af0741c6..695907c6503c0 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -2779,6 +2779,12 @@ static int asus_wmi_add(struct platform_device *pdev)
+ 		goto fail_wmi_handler;
+ 	}
+ 
++	if (asus->driver->quirks->i8042_filter) {
++		err = i8042_install_filter(asus->driver->quirks->i8042_filter);
++		if (err)
++			pr_warn("Unable to install key filter - %d\n", err);
++	}
++
+ 	asus_wmi_battery_init(asus);
+ 
+ 	asus_wmi_debugfs_init(asus);
+@@ -2810,6 +2816,8 @@ static int asus_wmi_remove(struct platform_device *device)
+ 	struct asus_wmi *asus;
+ 
+ 	asus = platform_get_drvdata(device);
++	if (asus->driver->quirks->i8042_filter)
++		i8042_remove_filter(asus->driver->quirks->i8042_filter);
+ 	wmi_remove_notify_handler(asus->driver->event_guid);
+ 	asus_wmi_backlight_exit(asus);
+ 	asus_wmi_input_exit(asus);
 -- 
 2.42.0
 
