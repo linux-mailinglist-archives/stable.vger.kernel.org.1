@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBAE580D83E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78BBC80D9FA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 414F5B214C5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9CD0B21B07
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E32551038;
-	Mon, 11 Dec 2023 18:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B684524B1;
+	Mon, 11 Dec 2023 18:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVzTg1Nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrMzdG2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D315FC06;
-	Mon, 11 Dec 2023 18:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F2AC433C8;
-	Mon, 11 Dec 2023 18:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B274E548;
+	Mon, 11 Dec 2023 18:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA1AC433C8;
+	Mon, 11 Dec 2023 18:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320237;
-	bh=F2/ifwJtaVh/JpVagxFfa1h+jDQgYyaBwJsuxoNTvbY=;
+	s=korg; t=1702321081;
+	bh=Ks/Q69Ai3wDYGbczuF83H5nvHnaMNsJiGqAg/Ry4x5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVzTg1NhVtaOYjLv+ogJNJrtQNi00xjxYkR52TMyG10TmFi5Pel6jTWU078d0oTNV
-	 s2NYj8jrsJfHe7kEoIISev/U7FFUIsxLkGtoegd8lk4+u/btS1DnpsFTmTmdBLnD42
-	 nRIhY7toe1w7XmgxX9cCuyOSHYPO165sNEv+uTUY=
+	b=rrMzdG2FA96nlr3rIzgVReG6kMZS6Vt0dYmORkJCgyiVs17uYJALbzCQWCwaemZFk
+	 d6gyEnzUw/p3njgiSnaC0aWgHDEu3wbXowTkvKWj0RsZGsYPjlaTXJpFIUJ6evevzf
+	 dOis4iWj430juhUz+EURgFZ4wy1489cS84gU+988=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 27/67] RDMA/bnxt_re: Correct module description string
+Subject: [PATCH 5.15 072/141] ARM: dts: imx28-xea: Pass the model property
 Date: Mon, 11 Dec 2023 19:22:11 +0100
-Message-ID: <20231211182016.215856927@linuxfoundation.org>
+Message-ID: <20231211182029.686324868@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,40 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 422b19f7f006e813ee0865aadce6a62b3c263c42 ]
+[ Upstream commit 63ef8fc9bcee6b73ca445a19a7ac6bd544723c9f ]
 
-The word "Driver" is repeated twice in the "modinfo bnxt_re"
-output description. Fix it.
+Per root-node.yaml, 'model' is a required property.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1700555387-6277-1-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Pass it to fix the following dt-schema warning:
+
+imx28-xea.dtb: /: 'model' is a required property
+	from schema $id: http://devicetree.org/schemas/root-node.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Fixes: 445ae16ac1c5 ("ARM: dts: imx28: Add DTS description of imx28 based XEA board")
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx28-xea.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/main.c b/drivers/infiniband/hw/bnxt_re/main.c
-index a40bc23196bf7..34d1c42646029 100644
---- a/drivers/infiniband/hw/bnxt_re/main.c
-+++ b/drivers/infiniband/hw/bnxt_re/main.c
-@@ -70,7 +70,7 @@ static char version[] =
- 		BNXT_RE_DESC "\n";
+diff --git a/arch/arm/boot/dts/imx28-xea.dts b/arch/arm/boot/dts/imx28-xea.dts
+index a400c108f66a2..6c5e6856648af 100644
+--- a/arch/arm/boot/dts/imx28-xea.dts
++++ b/arch/arm/boot/dts/imx28-xea.dts
+@@ -8,6 +8,7 @@
+ #include "imx28-lwe.dtsi"
  
- MODULE_AUTHOR("Eddie Wai <eddie.wai@broadcom.com>");
--MODULE_DESCRIPTION(BNXT_RE_DESC " Driver");
-+MODULE_DESCRIPTION(BNXT_RE_DESC);
- MODULE_LICENSE("Dual BSD/GPL");
+ / {
++	model = "Liebherr XEA board";
+ 	compatible = "lwn,imx28-xea", "fsl,imx28";
+ };
  
- /* globals */
 -- 
 2.42.0
 
