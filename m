@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-6209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4D680D967
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F11380D9FC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B09001C216FC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB821F21C14
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7164D51C44;
-	Mon, 11 Dec 2023 18:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C62151C5C;
+	Mon, 11 Dec 2023 18:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ji8elG09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19G+vveh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FF251C38;
-	Mon, 11 Dec 2023 18:53:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA443C433C8;
-	Mon, 11 Dec 2023 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B83F321B8;
+	Mon, 11 Dec 2023 18:58:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A4C433C8;
+	Mon, 11 Dec 2023 18:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320806;
-	bh=IZgKXJL3yZuBbw3/jRxfyuLdk37hfC13rp7EGB1IQ1c=;
+	s=korg; t=1702321089;
+	bh=TRP6M+HnC1osYzuU0GUng75RXD0M68GpOIE+Tq+MGhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ji8elG09dWX+qh9iChtYjTZW7mp91cNKQVIIBIReS8VAZ5f6Kn0V4UdZxnDoOHbpl
-	 u/fpg1ipanoapbc0oFl4GAuspcLah/nxc8/bzaJTVYuxyQzuj/NnrvZcFo0AIZRzpw
-	 24dPFd4p55bbmtsj3pCzE7m6cmtKgwHKc8AU8MH8=
+	b=19G+vvehsMTaQWg6i413w5v0swvHlmQtHwsXLhKyNc9fkQHS8cL9ZiiI+neUMTGis
+	 SlaMz7vXP60YmMAwmX/u1+3qGjvkp8fnPbN8Lo1y32vy7sBX+hY6UgOiUPOAmWRVkO
+	 fqaLVq0EeaUbBe5h0iN+fsh5Brtwv6swtvOn4lck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.1 175/194] serial: 8250: 8250_omap: Clear UART_HAS_RHR_IT_DIS bit
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 5.15 106/141] mm: fix oops when filemap_map_pmd() without prealloc_pte
 Date: Mon, 11 Dec 2023 19:22:45 +0100
-Message-ID: <20231211182044.476592351@linuxfoundation.org>
+Message-ID: <20231211182031.140194721@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +56,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Hugh Dickins <hughd@google.com>
 
-commit 8973ab7a2441b286218f4a5c4c33680e2f139996 upstream.
+commit 9aa1345d66b8132745ffb99b348b1492088da9e2 upstream.
 
-This fixes commit 439c7183e5b9 ("serial: 8250: 8250_omap: Disable RX
-interrupt after DMA enable") which unfortunately set the
-UART_HAS_RHR_IT_DIS bit in the UART_OMAP_IER2 register and never
-cleared it.
+syzbot reports oops in lockdep's __lock_acquire(), called from
+__pte_offset_map_lock() called from filemap_map_pages(); or when I run the
+repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+called from filemap_map_pages(), just before the __pte_offset_map_lock().
 
-Cc: stable@vger.kernel.org
-Fixes: 439c7183e5b9 ("serial: 8250: 8250_omap: Disable RX interrupt after DMA enable")
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20231031110909.11695-1-rwahl@gmx.de
+The problem is that filemap_map_pmd() has been assuming that when it finds
+pmd_none(), a page table has already been prepared in prealloc_pte; and
+indeed do_fault_around() has been careful to preallocate one there, when
+it finds pmd_none(): but what if *pmd became none in between?
+
+My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
+easy for *pmd to be cleared while servicing a page fault; but even before
+those, a huge *pmd might be zapped while a fault is serviced.
+
+The difference in symptomatic stack traces comes from the "memory model"
+in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+models that is strict, and will oops on the NULL prealloc_pte; in other
+models, it will construct a bogus value to be populated into *pmd, then
+__pte_offset_map_lock() oops when trying to access split ptlock pointer
+(or some other symptom in normal case of ptlock embedded not pointer).
+
+Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
+Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
+Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>,
+Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>    [5.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -825,7 +825,7 @@ static void __dma_rx_do_complete(struct
- 	if (priv->habit & UART_HAS_RHR_IT_DIS) {
- 		reg = serial_in(p, UART_OMAP_IER2);
- 		reg &= ~UART_OMAP_IER2_RHR_IT_DIS;
--		serial_out(p, UART_OMAP_IER2, UART_OMAP_IER2_RHR_IT_DIS);
-+		serial_out(p, UART_OMAP_IER2, reg);
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3209,7 +3209,7 @@ static bool filemap_map_pmd(struct vm_fa
+ 	    }
  	}
  
- 	dmaengine_tx_status(rxchan, cookie, &state);
-@@ -967,7 +967,7 @@ static int omap_8250_rx_dma(struct uart_
- 	if (priv->habit & UART_HAS_RHR_IT_DIS) {
- 		reg = serial_in(p, UART_OMAP_IER2);
- 		reg |= UART_OMAP_IER2_RHR_IT_DIS;
--		serial_out(p, UART_OMAP_IER2, UART_OMAP_IER2_RHR_IT_DIS);
-+		serial_out(p, UART_OMAP_IER2, reg);
- 	}
- 
- 	dma_async_issue_pending(dma->rxchan);
+-	if (pmd_none(*vmf->pmd)) {
++	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte) {
+ 		vmf->ptl = pmd_lock(mm, vmf->pmd);
+ 		if (likely(pmd_none(*vmf->pmd))) {
+ 			mm_inc_nr_ptes(mm);
 
 
 
