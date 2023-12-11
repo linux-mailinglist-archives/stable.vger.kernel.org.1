@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-6246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65F280D993
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C5380D9A3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9194828201C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C7C1C21510
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119F651C50;
-	Mon, 11 Dec 2023 18:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32C951C47;
+	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZn7rETp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Klinf3Kp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58AF321B8;
-	Mon, 11 Dec 2023 18:55:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7A3C433C9;
-	Mon, 11 Dec 2023 18:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFE321B8;
+	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C16C433C7;
+	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320907;
-	bh=2/jMo8Uz6PPb99etoqvP0FtPAiip3yy5prma95TSPHs=;
+	s=korg; t=1702320937;
+	bh=QG1t8f95iIAvTDvwDDPXkdBJHIWvfitY2tdoSTEU7FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZn7rETpB/mXXUYM28CpiTOb3fcuedAJ6RQk8cYHVs9Z/JBAM0Jo6GTctwDjD5rVB
-	 K6rMrJzP8KOk86mgblwaYmUSTC3jkbnHLKPOgmWNp+oKXwANc12s2CrKAAo2MxMLXJ
-	 9JY0VqI7YQZFhsueEs6eg2F4e527FEXTWfdQAki4=
+	b=Klinf3Kp1SJr8aVruCYEYsWn0apeXTzuEgSOgsi/pW8USvgXaj6/Qk1xFWJgZ6Nj7
+	 H6ajIcBg69cqBXvwcoGrjo/5F52aEpUnO2LdHQgP5wrPYW7mxWFhQ260+9AGN3XxaG
+	 lVy75Q2X8NrLWBrFZacUZ00kidxO+rcVZdTkckbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/141] i40e: Fix unexpected MFS warning message
-Date: Mon, 11 Dec 2023 19:21:31 +0100
-Message-ID: <20231211182027.938040171@linuxfoundation.org>
+Subject: [PATCH 5.15 033/141] net: bnxt: fix a potential use-after-free in bnxt_init_tc
+Date: Mon, 11 Dec 2023 19:21:32 +0100
+Message-ID: <20231211182027.988965946@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
 References: <20231211182026.503492284@linuxfoundation.org>
@@ -58,56 +60,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 7d9f22b3d3ef379ed05bd3f3e2de83dfa8da8258 ]
+[ Upstream commit d007caaaf052f82ca2340d4c7b32d04a3f5dbf3f ]
 
-Commit 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set") added
-a warning message that reports unexpected size of port's MFS (max
-frame size) value. This message use for the port number local
-variable 'i' that is wrong.
-In i40e_probe() this 'i' variable is used only to iterate VSIs
-to find FDIR VSI:
+When flow_indr_dev_register() fails, bnxt_init_tc will free
+bp->tc_info through kfree(). However, the caller function
+bnxt_init_one() will ignore this failure and call
+bnxt_shutdown_tc() on failure of bnxt_dl_register(), where
+a use-after-free happens. Fix this issue by setting
+bp->tc_info to NULL after kfree().
 
-<code>
-...
-/* if FDIR VSI was set up, start it now */
-        for (i = 0; i < pf->num_alloc_vsi; i++) {
-                if (pf->vsi[i] && pf->vsi[i]->type == I40E_VSI_FDIR) {
-                        i40e_vsi_open(pf->vsi[i]);
-                        break;
-                }
-        }
-...
-</code>
-
-So the warning message use for the port number index of FDIR VSI
-if this exists or pf->num_alloc_vsi if not.
-
-Fix the message by using 'pf->hw.port' for the port number.
-
-Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 627c89d00fb9 ("bnxt_en: flow_offload: offload tunnel decap rules via indirect callbacks")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://lore.kernel.org/r/20231204024004.8245-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 20e26aa5b81c8..cf085bd8d790f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -16132,7 +16132,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	       I40E_PRTGL_SAH_MFS_MASK) >> I40E_PRTGL_SAH_MFS_SHIFT;
- 	if (val < MAX_FRAME_SIZE_DEFAULT)
- 		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
--			 i, val);
-+			 pf->hw.port, val);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+index 1471b6130a2b9..b3473883eae6b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+@@ -2075,6 +2075,7 @@ int bnxt_init_tc(struct bnxt *bp)
+ 	rhashtable_destroy(&tc_info->flow_table);
+ free_tc_info:
+ 	kfree(tc_info);
++	bp->tc_info = NULL;
+ 	return rc;
+ }
  
- 	/* Add a filter to drop all Flow control frames from any VSI from being
- 	 * transmitted. By doing so we stop a malicious VF from sending out
 -- 
 2.42.0
 
