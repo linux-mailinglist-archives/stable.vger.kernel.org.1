@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E103980D848
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5E780D96B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E3C1F21AEB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9511C216F4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71C25102F;
-	Mon, 11 Dec 2023 18:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 788AA51C53;
+	Mon, 11 Dec 2023 18:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsrivVyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwzGLsu5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C83FC06;
-	Mon, 11 Dec 2023 18:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2566EC433C7;
-	Mon, 11 Dec 2023 18:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3805151C38;
+	Mon, 11 Dec 2023 18:53:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19AFC433C7;
+	Mon, 11 Dec 2023 18:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320264;
-	bh=yUCW42Cec3hFQtdfAWJ7LvqMkC8qsxVevIUAz0H/ziA=;
+	s=korg; t=1702320817;
+	bh=Yz8+XiRiywrSJ8ZAWhJjMUpfXqKkJ0WVSM5oWA1lc6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MsrivVyg+lzpt498JeOIn7aJYgcYFievRwjb+aaUoM6q9e6MZoZGZKiymQn5EE+Zr
-	 7grygfq3zL/vSIsi8/JYs1GHPGqbusKKSNoGBPoc5qq7RzdXh6vP83F9Z2ufnwgPst
-	 1A9bN2xFRee2ncq5WHCmLY4/eX2/127P0vvLetAQ=
+	b=zwzGLsu51Am5vDSwqsLkDnyXNGCcuzblvKlRkWZOpThHDCTZvoYSJbG39b/+vTJyZ
+	 bp3VYdIpcK6vwd7EJ3A0g3LRXH5Y72nzDgyCnhzLo3K/PowGx1sefcbPK4+t3pC71F
+	 /j82RSeXt3L45YVjvg9Cl15Ymog2n0w4JQ4F4u7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 65/67] smb: client: fix potential NULL deref in parse_dfs_referrals()
+	stable@kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 179/194] x86/CPU/AMD: Check vendor in the AMD microcode callback
 Date: Mon, 11 Dec 2023 19:22:49 +0100
-Message-ID: <20231211182017.778953860@linuxfoundation.org>
+Message-ID: <20231211182044.651221008@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 92414333eb375ed64f4ae92d34d579e826936480 ]
+commit 9b8493dc43044376716d789d07699f17d538a7c4 upstream.
 
-If server returned no data for FSCTL_DFS_GET_REFERRALS, @dfs_rsp will
-remain NULL and then parse_dfs_referrals() will dereference it.
+Commit in Fixes added an AMD-specific microcode callback. However, it
+didn't check the CPU vendor the kernel runs on explicitly.
 
-Fix this by returning -EIO when no output data is returned.
+The only reason the Zenbleed check in it didn't run on other x86 vendors
+hardware was pure coincidental luck:
 
-Besides, we can't fix it in SMB2_ioctl() as some FSCTLs are allowed to
-return no data as per MS-SMB2 2.2.32.
+  if (!cpu_has_amd_erratum(c, amd_zenbleed))
+	  return;
 
-Fixes: 9d49640a21bf ("CIFS: implement get_dfs_refer for SMB2+")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+gives true on other vendors because they don't have those families and
+models.
+
+However, with the removal of the cpu_has_amd_erratum() in
+
+  05f5f73936fa ("x86/CPU/AMD: Drop now unused CPU erratum checking function")
+
+that coincidental condition is gone, leading to the zenbleed check
+getting executed on other vendors too.
+
+Add the explicit vendor check for the whole callback as it should've
+been done in the first place.
+
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Cc: <stable@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231201184226.16749-1-bp@alien8.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/amd.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
-index ad9b207432e10..5fea15a5f3419 100644
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -2498,6 +2498,8 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
- 				(char **)&dfs_rsp, &dfs_rsp_size);
- 	} while (rc == -EAGAIN);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1291,6 +1291,9 @@ static void zenbleed_check_cpu(void *unu
  
-+	if (!rc && !dfs_rsp)
-+		rc = -EIO;
- 	if (rc) {
- 		if ((rc != -ENOENT) && (rc != -EOPNOTSUPP))
- 			cifs_tcon_dbg(VFS, "ioctl error in %s rc=%d\n", __func__, rc);
--- 
-2.42.0
-
+ void amd_check_microcode(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		return;
++
+ 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
+ }
+ 
 
 
 
