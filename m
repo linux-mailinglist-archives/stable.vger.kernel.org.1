@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-5731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E1B80D62B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3900380D87B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DE321F21AD6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90BB281465
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F646FC06;
-	Mon, 11 Dec 2023 18:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA2351038;
+	Mon, 11 Dec 2023 18:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRE9iTzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baFi1Z8C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C7C2D0;
-	Mon, 11 Dec 2023 18:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953C4C433C8;
-	Mon, 11 Dec 2023 18:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8E0C8C8;
+	Mon, 11 Dec 2023 18:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4606DC433C7;
+	Mon, 11 Dec 2023 18:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319513;
-	bh=l+9ktnMuonxyNxBSJo8dYoELkLkCwH6Li83ngewwnYI=;
+	s=korg; t=1702320373;
+	bh=FzVZGZ4MHHIOxeDU6VqAGvkJXPlSihxzuO/qPFC50QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRE9iTzjEzNKzKYem/eVfqp+wQvCgjkvo3s3wEzLfe2PzGczl1RHpHO4r5hSq95yr
-	 lvj6bakpIOA0Q7sOunaGLaFLt9yqk06fyXnJJn4OELEpAz9w/1rw6NO2GlrVar4oCt
-	 xjObwaygbkgnFrdvOfWzBZafc6w+iTBpr2WJLblg=
+	b=baFi1Z8C9Z/NwwfLYLPADG5kc+DNeoHKBIzezwyWDbwkNhBLTdYZarEt2km47iagr
+	 mRCPkIql6WxszUYGYglz/RVFs0eV/xaANx7OiW65VJjfHcY/OMgtsXAH5PUB3BbdxT
+	 xzNzt5zEu5fJxr8Dbv5+ujIb5c4UQSn2/gIDhwqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Malcolm Hart <malcolm@5harts.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 133/244] ASoC: amd: yc: Fix non-functional mic on ASUS E1504FA
-Date: Mon, 11 Dec 2023 19:20:26 +0100
-Message-ID: <20231211182051.758590722@linuxfoundation.org>
+	Ivan Vecera <ivecera@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/194] i40e: Fix unexpected MFS warning message
+Date: Mon, 11 Dec 2023 19:20:27 +0100
+Message-ID: <20231211182038.230234843@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Malcolm Hart <malcolm@5harts.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit b24e3590c94ab0aba6e455996b502a83baa5c31c upstream.
+[ Upstream commit 7d9f22b3d3ef379ed05bd3f3e2de83dfa8da8258 ]
 
-This patch adds ASUSTeK COMPUTER INC  "E1504FA" to the quirks file acp6x-mach.c
-to enable microphone array on ASUS Vivobook GO 15.
-I have this laptop and can confirm that the patch succeeds in enabling the
-microphone array.
+Commit 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set") added
+a warning message that reports unexpected size of port's MFS (max
+frame size) value. This message use for the port number local
+variable 'i' that is wrong.
+In i40e_probe() this 'i' variable is used only to iterate VSIs
+to find FDIR VSI:
 
-Signed-off-by: Malcolm Hart <malcolm@5harts.com>
-Cc: stable@vger.kernel.org
-Rule: add
-Link: https://lore.kernel.org/stable/875y1nt1bx.fsf%405harts.com
-Link: https://lore.kernel.org/r/871qcbszh0.fsf@5harts.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+<code>
+...
+/* if FDIR VSI was set up, start it now */
+        for (i = 0; i < pf->num_alloc_vsi; i++) {
+                if (pf->vsi[i] && pf->vsi[i]->type == I40E_VSI_FDIR) {
+                        i40e_vsi_open(pf->vsi[i]);
+                        break;
+                }
+        }
+...
+</code>
+
+So the warning message use for the port number index of FDIR VSI
+if this exists or pf->num_alloc_vsi if not.
+
+Fix the message by using 'pf->hw.port' for the port number.
+
+Fixes: 3a2c6ced90e1 ("i40e: Add a check to see if MFS is set")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -286,6 +286,13 @@ static const struct dmi_system_id yc_acp
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 B7ED"),
- 		}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 9f5824eb8808a..b4157ff370a31 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -16158,7 +16158,7 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	       I40E_PRTGL_SAH_MFS_MASK) >> I40E_PRTGL_SAH_MFS_SHIFT;
+ 	if (val < MAX_FRAME_SIZE_DEFAULT)
+ 		dev_warn(&pdev->dev, "MFS for port %x has been set below the default: %x\n",
+-			 i, val);
++			 pf->hw.port, val);
+ 
+ 	/* Add a filter to drop all Flow control frames from any VSI from being
+ 	 * transmitted. By doing so we stop a malicious VF from sending out
+-- 
+2.42.0
+
 
 
 
