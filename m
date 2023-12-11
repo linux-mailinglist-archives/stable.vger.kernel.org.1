@@ -1,99 +1,106 @@
-Return-Path: <stable+bounces-5880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D07080D7A8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE65580DA88
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 20:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DFD5282084
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0E31C216DD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D25537E0;
-	Mon, 11 Dec 2023 18:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E511524B2;
+	Mon, 11 Dec 2023 19:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7H2k82A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="japufGku"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA11B94
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 10:38:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702319913; x=1733855913;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=RocPjd2eNWkPQKnRxDp73Jz17fJtzA5sUjwjW0wxTCg=;
-  b=m7H2k82A5V42xWIXh+RXO8E4LicOUOs1O9aAnpf4Qf3uyTZfVeCn7S8j
-   eA91GeujH8U7JUZcVMFiRwfjP27FP1SnLVGHsi3jztLFWatlntfVHLMTy
-   3INFkqw6X3Dq8mZOaA/KYY7Fnb2bpIM6CBw068CnVQgKyAS/mvrNO0AU0
-   qv40Lw3zwvWPJhzxZrdF6E3++p0NFvtj7sgjVNc1pZW3h+H2HTIsoYOKq
-   QZvpKdn4smPms+xHV9bCwHlVYzAlwHbxROkeWJk6ETWp4qByqKFjwEYNw
-   SO/VbIVZc3rBWVYJI8CJFKK+5D24GhdK43BDb1qAqpRv9b6yL9mXcn9Iq
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="394441770"
-X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; 
-   d="scan'208";a="394441770"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 10:38:33 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10921"; a="916950879"
-X-IronPort-AV: E=Sophos;i="6.04,268,1695711600"; 
-   d="scan'208";a="916950879"
-Received: from kbalak2x-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.63.68])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 10:38:31 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, Ville =?utf-8?B?U3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, Lucas De Marchi
- <lucas.demarchi@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915: fix display ver 12-13 fault error handling
-In-Reply-To: <20231208160726.GB5757@mdroper-desk1.amr.corp.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20231208112008.2904497-1-jani.nikula@intel.com>
- <20231208160726.GB5757@mdroper-desk1.amr.corp.intel.com>
-Date: Mon, 11 Dec 2023 20:38:29 +0200
-Message-ID: <878r60y47u.fsf@intel.com>
+Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5F41BE;
+	Mon, 11 Dec 2023 11:04:35 -0800 (PST)
+Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-4258e0a0dc1so28697961cf.2;
+        Mon, 11 Dec 2023 11:04:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702321474; x=1702926274; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Owb5uItYn8kw7O33SQIVp7iH4r7RmA4K+7xsYCtDFM0=;
+        b=japufGkuh8z7FSQzrkHchaquwjde7uLTK+W3x8nLhn/wP+qDUAqjH90FY4O7dbVOJA
+         TP3PSHdq1eJ11pM7JLtNVdFHwaEPlQP0e0P8e444AZHOyoWRO1++dKZwmShlTpag+NFB
+         yVUwFyiUzsoZosUzihDkH69IgJqq4n0OJmUpv+tQzFoMS4EsYJtWOwz91U6HIpB9Ey94
+         qfsl1s7KcGR/Wd2ZbXryOFUD/RM4XEB1X3jrdKtPjCRj7Ozdzv27Z9r4U/dza11QebQd
+         73wt+/Z8+PUA+P2+YlC3oYVOQ5MMNYmgJLREoXSx1wNkJZqaxfrklSkp++nd7IQ6/5oT
+         ErPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702321474; x=1702926274;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Owb5uItYn8kw7O33SQIVp7iH4r7RmA4K+7xsYCtDFM0=;
+        b=m4IYsf6hxIqqXU7zWo5OHXmKgBNS1W8n8qUreTAO/cMYUsAjmTShgDEvM3soiTL7KY
+         2LsLQjujO+tTi9FvNfBFTPGEOytNJ2Qcad2vUjAPBF0qQHR48pZyQ+p2c8vHpXzh9t83
+         4v6L3Cs+kzO4wZMXUxX+ZIazmSlP+KaWNv3ZmdvDHGE/pt+4kqCK6Ab1WXFlG/awMUTX
+         0SKWrCexbMotCEg+07yyhdQKLcC0r4LfDcYNS2Tq4wEuJ+oAdeWeWZCW/1+nMmgyr/10
+         B/1vFQPy+uSGvSLMDwSPV8WcjLc9n/56YO7zPdnv7iheLwYRElWzd346pbVYZFCYOVRw
+         gqCQ==
+X-Gm-Message-State: AOJu0YwSHFwCF8KN3iRLHy4LZAMYPdO6h/mQe1UtD+h/RVzm/MqnUOCc
+	rP8SdmDv034bUkjojfuy5fc=
+X-Google-Smtp-Source: AGHT+IFIEGUvFHVgU2aCwUnLKbRC8jwfxPyiHXos7n9wRbHv8eqC3u49v9pRWLhJFb2vVFjgm8Jq5A==
+X-Received: by 2002:a0c:cd83:0:b0:67e:bc54:8df0 with SMTP id v3-20020a0ccd83000000b0067ebc548df0mr4599938qvm.127.1702321474058;
+        Mon, 11 Dec 2023 11:04:34 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id u8-20020a0cf888000000b0067acbd864e0sm3473069qvn.69.2023.12.11.11.04.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Dec 2023 11:04:33 -0800 (PST)
+Message-ID: <1fd0d7c1-70e2-4ee4-89c7-b1085bf078c7@gmail.com>
+Date: Mon, 11 Dec 2023 11:04:27 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/244] 6.6.7-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20231211182045.784881756@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 08 Dec 2023, Matt Roper <matthew.d.roper@intel.com> wrote:
-> On Fri, Dec 08, 2023 at 01:20:08PM +0200, Jani Nikula wrote:
->> Unless I'm completely misreading the bspec, there are no defined bits
->> for plane gtt fault errors in DE PIPE IIR for a display versions
->> 12-14. This would explain why DG2 in the linked bug is getting thousands
->> of fault errors.
->
-> I think you might be misreading the spec?  On TGL, bits 7-11 are listed
-> as plane1-4+cursor fault status, and bits 20-22 are listed as plane 5-7
-> fault status.  Bits 7-11 are tagged with a REMOVEDBY tag that eventually
-> drops them for MTL onward, and bits 20-22 are tagged with a REMOVEDBY
-> tag that drops them for RKL onward (which makes sense because those
-> extra planes stopped existing at that point).
->
-> Maybe the bspec's way of displaying things is what's causing the
-> confusion?  When you see
->
->         REMOVEDBY(xxxx)
->         [ Foo, Bar, Baz ]
->
-> The "Foo, Bar, Baz" platform list is the *remaining* list of platforms
-> after the removal is taken into account, not the platforms actually
-> being removed.  You can hover over the REMOVEDBY link to see the actual
-> platforms being removed and a link to the change record for that.
+On 12/11/23 10:18, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.7 release.
+> There are 244 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Yeah. It's not one of the more clear register specs out there. Sorry for
-the noise, and thanks for taking the time to explain this.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-BR,
-Jani.
-
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-Jani Nikula, Intel
+Florian
+
 
