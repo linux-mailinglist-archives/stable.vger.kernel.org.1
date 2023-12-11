@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-5977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F422E80D824
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444BA80D9DA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF291280C93
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E39BC1F218AD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40CE451C37;
-	Mon, 11 Dec 2023 18:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E382524C8;
+	Mon, 11 Dec 2023 18:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9UGY6hh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0171J4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A02FC06;
-	Mon, 11 Dec 2023 18:42:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76541C433C8;
-	Mon, 11 Dec 2023 18:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D3FE548;
+	Mon, 11 Dec 2023 18:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B416C433C8;
+	Mon, 11 Dec 2023 18:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320179;
-	bh=tglU0y1zVntAOMJO/e24JSOEuPA61Rhqo2FU66Zatqo=;
+	s=korg; t=1702321014;
+	bh=eoKRJOZlbCiDQeZ2naPXjEu8LkZ3bx6om3/mey7i83I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9UGY6hhOCe2gssPFYxtS22dttJNGSZBGP63yuXGq5eVT+lO6d7j7/8nzZLY56QmL
-	 hrLARs1wIw3BpxBz9+ArusOr0W2JPA7bhGy6aLgR9G8J++Jjrppg3fGZZqcnk7/yKu
-	 T9C4Zyx0dYOlCei9s9uSBvcykt/WcAhZb+jjfk78=
+	b=W0171J4iyMUrRzS5f0sZ9hbxThTJMAA3yvIw3QOD0qqa9qqAMkYphh/4e13I2W+WY
+	 gQbJ47CuYlSSzJldGzNdShazypHC0pg5/1m7+XNNxL1yMQ9pPLOsbM1AUD8N3mccUp
+	 zlOvOALL8x9F5N8BitJHMPJTW/4u6uwmmuYwC+Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Roland Hieber <rhi@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 34/67] ARM: dts: imx7: Declare timers compatible with fsl,imx6dl-gpt
+	Sarah Grant <s@srd.tw>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 079/141] ALSA: usb-audio: Add Pioneer DJM-450 mixer controls
 Date: Mon, 11 Dec 2023 19:22:18 +0100
-Message-ID: <20231211182016.526622556@linuxfoundation.org>
+Message-ID: <20231211182029.977938827@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,70 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Sarah Grant <s@srd.tw>
 
-[ Upstream commit 397caf68e2d36532054cb14ae8995537f27f8b61 ]
+commit bbb8e71965c3737bdc691afd803a34bfd61cfbeb upstream.
 
-The timer nodes declare compatibility with "fsl,imx6sx-gpt", which
-itself is compatible with "fsl,imx6dl-gpt". Switch the fallback
-compatible from "fsl,imx6sx-gpt" to "fsl,imx6dl-gpt".
+These values mirror those of the Pioneer DJM-250MK2 as the channel layout
+appears identical based on my observations. This duplication could be removed in
+later contributions if desired.
 
-Fixes: 949673450291 ("ARM: dts: add imx7d soc dtsi file")
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sarah Grant <s@srd.tw>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231201181654.5058-1-s@srd.tw
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/usb/mixer_quirks.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index f774759af1aa3..7ce541fcac767 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -447,7 +447,7 @@
- 			};
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2796,6 +2796,7 @@ static int snd_bbfpro_controls_create(st
+ #define SND_DJM_850_IDX		0x2
+ #define SND_DJM_900NXS2_IDX	0x3
+ #define SND_DJM_750MK2_IDX	0x4
++#define SND_DJM_450_IDX		0x5
  
- 			gpt1: timer@302d0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302d0000 0x10000>;
- 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT1_ROOT_CLK>,
-@@ -456,7 +456,7 @@
- 			};
  
- 			gpt2: timer@302e0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302e0000 0x10000>;
- 				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT2_ROOT_CLK>,
-@@ -466,7 +466,7 @@
- 			};
+ #define SND_DJM_CTL(_name, suffix, _default_value, _windex) { \
+@@ -2926,6 +2927,31 @@ static const struct snd_djm_ctl snd_djm_
+ };
  
- 			gpt3: timer@302f0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302f0000 0x10000>;
- 				interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT3_ROOT_CLK>,
-@@ -476,7 +476,7 @@
- 			};
  
- 			gpt4: timer@30300000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x30300000 0x10000>;
- 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT4_ROOT_CLK>,
--- 
-2.42.0
-
++// DJM-450
++static const u16 snd_djm_opts_450_cap1[] = {
++	0x0103, 0x0100, 0x0106, 0x0107, 0x0108, 0x0109, 0x010d, 0x010a };
++
++static const u16 snd_djm_opts_450_cap2[] = {
++	0x0203, 0x0200, 0x0206, 0x0207, 0x0208, 0x0209, 0x020d, 0x020a };
++
++static const u16 snd_djm_opts_450_cap3[] = {
++	0x030a, 0x0311, 0x0312, 0x0307, 0x0308, 0x0309, 0x030d };
++
++static const u16 snd_djm_opts_450_pb1[] = { 0x0100, 0x0101, 0x0104 };
++static const u16 snd_djm_opts_450_pb2[] = { 0x0200, 0x0201, 0x0204 };
++static const u16 snd_djm_opts_450_pb3[] = { 0x0300, 0x0301, 0x0304 };
++
++static const struct snd_djm_ctl snd_djm_ctls_450[] = {
++	SND_DJM_CTL("Capture Level", cap_level, 0, SND_DJM_WINDEX_CAPLVL),
++	SND_DJM_CTL("Ch1 Input",   450_cap1, 2, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch2 Input",   450_cap2, 2, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch3 Input",   450_cap3, 0, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch1 Output",   450_pb1, 0, SND_DJM_WINDEX_PB),
++	SND_DJM_CTL("Ch2 Output",   450_pb2, 1, SND_DJM_WINDEX_PB),
++	SND_DJM_CTL("Ch3 Output",   450_pb3, 2, SND_DJM_WINDEX_PB)
++};
++
++
+ // DJM-750
+ static const u16 snd_djm_opts_750_cap1[] = {
+ 	0x0101, 0x0103, 0x0106, 0x0107, 0x0108, 0x0109, 0x010a, 0x010f };
+@@ -3021,6 +3047,7 @@ static const struct snd_djm_device snd_d
+ 	[SND_DJM_850_IDX] = SND_DJM_DEVICE(850),
+ 	[SND_DJM_900NXS2_IDX] = SND_DJM_DEVICE(900nxs2),
+ 	[SND_DJM_750MK2_IDX] = SND_DJM_DEVICE(750mk2),
++	[SND_DJM_450_IDX] = SND_DJM_DEVICE(450),
+ };
+ 
+ 
+@@ -3263,6 +3290,9 @@ int snd_usb_mixer_apply_create_quirk(str
+ 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
+ 		err = snd_djm_controls_create(mixer, SND_DJM_250MK2_IDX);
+ 		break;
++	case USB_ID(0x2b73, 0x0013): /* Pioneer DJ DJM-450 */
++		err = snd_djm_controls_create(mixer, SND_DJM_450_IDX);
++		break;
+ 	case USB_ID(0x08e4, 0x017f): /* Pioneer DJ DJM-750 */
+ 		err = snd_djm_controls_create(mixer, SND_DJM_750_IDX);
+ 		break;
 
 
 
