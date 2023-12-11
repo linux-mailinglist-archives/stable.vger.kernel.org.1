@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089A980D8B7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 658AA80D640
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A56671F21B01
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2072728240D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F5951C3B;
-	Mon, 11 Dec 2023 18:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B824FFBE1;
+	Mon, 11 Dec 2023 18:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MybsCDjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQJJmF0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFC45102A;
-	Mon, 11 Dec 2023 18:48:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F00C433C7;
-	Mon, 11 Dec 2023 18:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73650C2D0;
+	Mon, 11 Dec 2023 18:32:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7CCC433C7;
+	Mon, 11 Dec 2023 18:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320489;
-	bh=H7HL4J3HZqtbxWnTZTKe89QEPgYHgbF2QNNXrTdEOKA=;
+	s=korg; t=1702319555;
+	bh=4rY+/M+3FlrgeMGFy0TVj67GM5XJd6BmSny/nVadHz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MybsCDjUSUXpJcqcF7jLjpBk5qGCbvBopM89WtoycxpCm+P+zrAenKILJ7I3i8Ts8
-	 H/gKrL1oh5uxk/OQWC3BnlnK6hJ5JHrf+GAE8MZz+jJ115aDkQP0sdpJuoqhI0sHaL
-	 KD4/u5ZeYZ5QCf+/66bglZq8yW1hxMK5XRow9PWk=
+	b=AQJJmF0THOk6x8SHeCg7aHMCGG53dET4Wr6g1TwsZKMtjx211UREo3/YVg/ef5XnJ
+	 FwDuDA6ghbSUAao2x6DUJ7E9XnIpPgovXgCWhy8zGKi+82qPoUFDe6Lx/zYTK6Q+fN
+	 dGg5tUNjntSP/SRYHBAUgD1MPJ6sNbf8zVZuxSx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawn.guo@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/194] dt-bindings: interrupt-controller: Allow #power-domain-cells
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 149/244] nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
 Date: Mon, 11 Dec 2023 19:20:42 +0100
-Message-ID: <20231211182038.879094552@linuxfoundation.org>
+Message-ID: <20231211182052.503975261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +53,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit c0a2755aced969e0125fd68ccd95269b28d8913a ]
+commit 675abf8df1353e0e3bde314993e0796c524cfbf0 upstream.
 
-MPM provides a single genpd. Allow #power-domain-cells = <0>.
+If nilfs2 reads a disk image with corrupted segment usage metadata, and
+its segment usage information is marked as an error for the segment at the
+write location, nilfs_sufile_set_segment_usage() can trigger WARN_ONs
+during log writing.
 
-Fixes: 54fc9851c0e0 ("dt-bindings: interrupt-controller: Add Qualcomm MPM support")
-Acked-by: Shawn Guo <shawn.guo@linaro.org>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231129-topic-mpmbindingspd-v2-1-acbe909ceee1@linaro.org
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Segments newly allocated for writing with nilfs_sufile_alloc() will not
+have this error flag set, but this unexpected situation will occur if the
+segment indexed by either nilfs->ns_segnum or nilfs->ns_nextnum (active
+segment) was marked in error.
+
+Fix this issue by inserting a sanity check to treat it as a file system
+corruption.
+
+Since error returns are not allowed during the execution phase where
+nilfs_sufile_set_segment_usage() is used, this inserts the sanity check
+into nilfs_sufile_mark_dirty() which pre-reads the buffer containing the
+segment usage record to be updated and sets it up in a dirty state for
+writing.
+
+In addition, nilfs_sufile_set_segment_usage() is also called when
+canceling log writing and undoing segment usage update, so in order to
+avoid issuing the same kernel warning in that case, in case of
+cancellation, avoid checking the error flag in
+nilfs_sufile_set_segment_usage().
+
+Link: https://lkml.kernel.org/r/20231205085947.4431-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14e9f834f6ddecece094
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../devicetree/bindings/interrupt-controller/qcom,mpm.yaml    | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nilfs2/sufile.c |   42 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/qcom,mpm.yaml b/Documentation/devicetree/bindings/interrupt-controller/qcom,mpm.yaml
-index 509d20c091af8..6a206111d4e0f 100644
---- a/Documentation/devicetree/bindings/interrupt-controller/qcom,mpm.yaml
-+++ b/Documentation/devicetree/bindings/interrupt-controller/qcom,mpm.yaml
-@@ -62,6 +62,9 @@ properties:
-         - description: MPM pin number
-         - description: GIC SPI number for the MPM pin
+--- a/fs/nilfs2/sufile.c
++++ b/fs/nilfs2/sufile.c
+@@ -501,15 +501,38 @@ int nilfs_sufile_mark_dirty(struct inode
  
-+  '#power-domain-cells':
-+    const: 0
+ 	down_write(&NILFS_MDT(sufile)->mi_sem);
+ 	ret = nilfs_sufile_get_segment_usage_block(sufile, segnum, 0, &bh);
+-	if (!ret) {
+-		mark_buffer_dirty(bh);
+-		nilfs_mdt_mark_dirty(sufile);
+-		kaddr = kmap_atomic(bh->b_page);
+-		su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (ret)
++		goto out_sem;
 +
- required:
-   - compatible
-   - reg
-@@ -93,4 +96,5 @@ examples:
-                            <86 183>,
-                            <90 260>,
-                            <91 260>;
-+        #power-domain-cells = <0>;
-     };
--- 
-2.42.0
-
++	kaddr = kmap_atomic(bh->b_page);
++	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (unlikely(nilfs_segment_usage_error(su))) {
++		struct the_nilfs *nilfs = sufile->i_sb->s_fs_info;
++
++		kunmap_atomic(kaddr);
++		brelse(bh);
++		if (nilfs_segment_is_active(nilfs, segnum)) {
++			nilfs_error(sufile->i_sb,
++				    "active segment %llu is erroneous",
++				    (unsigned long long)segnum);
++		} else {
++			/*
++			 * Segments marked erroneous are never allocated by
++			 * nilfs_sufile_alloc(); only active segments, ie,
++			 * the segments indexed by ns_segnum or ns_nextnum,
++			 * can be erroneous here.
++			 */
++			WARN_ON_ONCE(1);
++		}
++		ret = -EIO;
++	} else {
+ 		nilfs_segment_usage_set_dirty(su);
+ 		kunmap_atomic(kaddr);
++		mark_buffer_dirty(bh);
++		nilfs_mdt_mark_dirty(sufile);
+ 		brelse(bh);
+ 	}
++out_sem:
+ 	up_write(&NILFS_MDT(sufile)->mi_sem);
+ 	return ret;
+ }
+@@ -536,9 +559,14 @@ int nilfs_sufile_set_segment_usage(struc
+ 
+ 	kaddr = kmap_atomic(bh->b_page);
+ 	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
+-	WARN_ON(nilfs_segment_usage_error(su));
+-	if (modtime)
++	if (modtime) {
++		/*
++		 * Check segusage error and set su_lastmod only when updating
++		 * this entry with a valid timestamp, not for cancellation.
++		 */
++		WARN_ON_ONCE(nilfs_segment_usage_error(su));
+ 		su->su_lastmod = cpu_to_le64(modtime);
++	}
+ 	su->su_nblocks = cpu_to_le32(nblocks);
+ 	kunmap_atomic(kaddr);
+ 
 
 
 
