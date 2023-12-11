@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A5D80D542
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6E980D799
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33A2B1C21449
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46FD4B2129B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85975102E;
-	Mon, 11 Dec 2023 18:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E699553E2C;
+	Mon, 11 Dec 2023 18:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqW+BEF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhCcTiCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0524F213;
-	Mon, 11 Dec 2023 18:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A0BC433C9;
-	Mon, 11 Dec 2023 18:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07D4524B8;
+	Mon, 11 Dec 2023 18:38:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2521AC433C7;
+	Mon, 11 Dec 2023 18:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318921;
-	bh=TScLGhxLqQ1B+unqo42uXwXMBjeBy1ozoq0HOT8VOYU=;
+	s=korg; t=1702319892;
+	bh=E4LXevzt+sl2VTAf3dS477IVmgy2DVL0FkWEXBU4+Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqW+BEF+gWCLI0qeICDqXgvs4An4aCUNz3UpFk6RqILUF6ygnEt0+qL2fURVJ1y/i
-	 KYCMQ+fNA2J29E2w9wQYxpkprPagbQICxC334GQIxHzWRR9vMqMz7PufF1q+wp62HM
-	 ESYIfQAYGebeLF1hUHQYsHIwOzmzHuaE8S+UX/KU=
+	b=mhCcTiCSwj5R2u0z7Sm65dLxk6qIMCJIszbiNJ4fNjiXEh40m4JAyqdJCy16be8rd
+	 nmPwByQHbVRU7fjg/4TyuM3rHDhwfrvDNAXV8ZQ5f1iStLrzvzsG7yXOwbKwZkCio7
+	 Ry3oxP0nhumNkGv048wglS88bxYrS2vauAVElBKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.14 19/25] serial: 8250_omap: Add earlycon support for the AM654 UART controller
+	YuanShang <YuanShang.Mao@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 07/97] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
 Date: Mon, 11 Dec 2023 19:21:10 +0100
-Message-ID: <20231211182009.396825544@linuxfoundation.org>
+Message-ID: <20231211182020.142206002@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +52,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: YuanShang <YuanShang.Mao@amd.com>
 
-commit 8e42c301ce64e0dcca547626eb486877d502d336 upstream.
+[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
 
-Currently there is no support for earlycon on the AM654 UART
-controller. This commit adds it.
+The variable "chunk_ptr" should be a pointer pointing
+to a struct drm_amdgpu_cs_chunk instead of to a pointer
+of that.
 
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20231031131242.15516-1-rwahl@gmx.de
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_early.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_early.c
-+++ b/drivers/tty/serial/8250/8250_early.c
-@@ -179,6 +179,7 @@ static int __init early_omap8250_setup(s
- OF_EARLYCON_DECLARE(omap8250, "ti,omap2-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap3-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap4-uart", early_omap8250_setup);
-+OF_EARLYCON_DECLARE(omap8250, "ti,am654-uart", early_omap8250_setup);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 7f2adac82e3a6..addeda42339fa 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -143,7 +143,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, union drm_amdgpu_cs
+ 	}
  
- #endif
+ 	for (i = 0; i < p->nchunks; i++) {
+-		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
++		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
+ 		struct drm_amdgpu_cs_chunk user_chunk;
+ 		uint32_t __user *cdata;
  
+-- 
+2.42.0
+
 
 
 
