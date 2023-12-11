@@ -1,54 +1,47 @@
-Return-Path: <stable+bounces-5796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7DE80D70E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B89C80D562
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BEE61C20A0C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC85E2819C2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B2154F9B;
-	Mon, 11 Dec 2023 18:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9941451020;
+	Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5izeg6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZUWxqsI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAB6524BC;
-	Mon, 11 Dec 2023 18:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C414DC433CB;
-	Mon, 11 Dec 2023 18:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FF54F212;
+	Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8146C433C8;
+	Mon, 11 Dec 2023 18:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319687;
-	bh=EccqGt9ngvOByeP2yk3MKQyP7N89y7SKJRh5dBm4FNw=;
+	s=korg; t=1702319053;
+	bh=x51fZGKy8+QR6KrDbiS4MOrYNpDzsi7uU+dm79X4AUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N5izeg6NWQZVDmf27YmB0JOZrfipBqgEgd1FHnAuSYAC4N8kksuvY3pO8Fovycpzt
-	 dI7FDr4iR/3SJoyp0xNscnbH2L/mZfPF6EwgEuxQiwcqY+fqi3toCY30KmgcPKlfKi
-	 H6LJMeqIG8yXPRxSjVHz45aOWxsi4CBwcO9TwbBg=
+	b=HZUWxqsIsvkUSB7XnZkH0PUO8H/Bqfy1BlCVMgc5ehxMqleb2PnUEsO6trf18cwMm
+	 +zI0s/Cl6hF5cnqzjy/fRg3Wv53LHrK8r5bJDgKuchUSkCWhZe0eyOfymTF1nGj8uZ
+	 1ZObIpWYWtaCkgQUGiXXraNM5R02DmLx+EXwsjAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Leo Yan <leo.yan@linaro.org>,
-	Mike Leach <mike.leach@linaro.org>,
-	John Garry <john.g.garry@oracle.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Namhyung Kim <namhyung@kernel.org>,
+	Lukasz Pawelczyk <l.pawelczyk@samsung.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/244] perf vendor events arm64: AmpereOne: Add missing DefaultMetricgroupName fields
+Subject: [PATCH 4.19 20/55] netfilter: xt_owner: Add supplementary groups option
 Date: Mon, 11 Dec 2023 19:21:30 +0100
-Message-ID: <20231211182054.781810722@linuxfoundation.org>
+Message-ID: <20231211182012.975395610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +53,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Lukasz Pawelczyk <l.pawelczyk@samsung.com>
 
-[ Upstream commit 90fe70d4e23cb57253d2668a171d5695c332deb7 ]
+[ Upstream commit ea6cc2fd8a2b89ab6dcd096ba6dbc1ecbdf26564 ]
 
-AmpereOne metrics were missing DefaultMetricgroupName from metrics with
-"Default" in group name resulting perf to segfault. Add the missing
-field to address the issue.
+The XT_OWNER_SUPPL_GROUPS flag causes GIDs specified with XT_OWNER_GID
+to be also checked in the supplementary groups of a process.
 
-Fixes: 59faeaf80d02 ("perf vendor events arm64: Fix for AmpereOne metrics")
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20231201021550.1109196-2-ilkka@os.amperecomputing.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+f_cred->group_info cannot be modified during its lifetime and f_cred
+holds a reference to it so it's safe to use.
+
+Signed-off-by: Lukasz Pawelczyk <l.pawelczyk@samsung.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 7ae836a3d630 ("netfilter: xt_owner: Fix for unsafe access of sk->sk_socket")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json | 2 ++
- 1 file changed, 2 insertions(+)
+ include/uapi/linux/netfilter/xt_owner.h |  7 ++++---
+ net/netfilter/xt_owner.c                | 23 ++++++++++++++++++++---
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
-index e2848a9d48487..afcdad58ef89c 100644
---- a/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
-+++ b/tools/perf/pmu-events/arch/arm64/ampere/ampereone/metrics.json
-@@ -231,6 +231,7 @@
-         "MetricName": "slots_lost_misspeculation_fraction",
-         "MetricExpr": "100 * ((OP_SPEC - OP_RETIRED) / (CPU_CYCLES * #slots))",
-         "BriefDescription": "Fraction of slots lost due to misspeculation",
-+        "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
-         "ScaleUnit": "1percent of slots"
-     },
-@@ -238,6 +239,7 @@
-         "MetricName": "retired_fraction",
-         "MetricExpr": "100 * (OP_RETIRED / (CPU_CYCLES * #slots))",
-         "BriefDescription": "Fraction of slots retiring, useful work",
-+        "DefaultMetricgroupName": "TopdownL1",
-         "MetricGroup": "Default;TopdownL1",
- 	"ScaleUnit": "1percent of slots"
-     },
+diff --git a/include/uapi/linux/netfilter/xt_owner.h b/include/uapi/linux/netfilter/xt_owner.h
+index fa3ad84957d50..9e98c09eda327 100644
+--- a/include/uapi/linux/netfilter/xt_owner.h
++++ b/include/uapi/linux/netfilter/xt_owner.h
+@@ -5,9 +5,10 @@
+ #include <linux/types.h>
+ 
+ enum {
+-	XT_OWNER_UID    = 1 << 0,
+-	XT_OWNER_GID    = 1 << 1,
+-	XT_OWNER_SOCKET = 1 << 2,
++	XT_OWNER_UID          = 1 << 0,
++	XT_OWNER_GID          = 1 << 1,
++	XT_OWNER_SOCKET       = 1 << 2,
++	XT_OWNER_SUPPL_GROUPS = 1 << 3,
+ };
+ 
+ struct xt_owner_match_info {
+diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
+index 46686fb73784b..a8784502aca69 100644
+--- a/net/netfilter/xt_owner.c
++++ b/net/netfilter/xt_owner.c
+@@ -91,11 +91,28 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	}
+ 
+ 	if (info->match & XT_OWNER_GID) {
++		unsigned int i, match = false;
+ 		kgid_t gid_min = make_kgid(net->user_ns, info->gid_min);
+ 		kgid_t gid_max = make_kgid(net->user_ns, info->gid_max);
+-		if ((gid_gte(filp->f_cred->fsgid, gid_min) &&
+-		     gid_lte(filp->f_cred->fsgid, gid_max)) ^
+-		    !(info->invert & XT_OWNER_GID))
++		struct group_info *gi = filp->f_cred->group_info;
++
++		if (gid_gte(filp->f_cred->fsgid, gid_min) &&
++		    gid_lte(filp->f_cred->fsgid, gid_max))
++			match = true;
++
++		if (!match && (info->match & XT_OWNER_SUPPL_GROUPS) && gi) {
++			for (i = 0; i < gi->ngroups; ++i) {
++				kgid_t group = gi->gid[i];
++
++				if (gid_gte(group, gid_min) &&
++				    gid_lte(group, gid_max)) {
++					match = true;
++					break;
++				}
++			}
++		}
++
++		if (match ^ !(info->invert & XT_OWNER_GID))
+ 			return false;
+ 	}
+ 
 -- 
 2.42.0
 
