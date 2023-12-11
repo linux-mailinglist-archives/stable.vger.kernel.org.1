@@ -1,43 +1,46 @@
-Return-Path: <stable+bounces-6355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B310580DA3F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 20:00:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A152D80DA2D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4372AB208B6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:00:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2A551C21754
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80226524C0;
-	Mon, 11 Dec 2023 19:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF37524C3;
+	Mon, 11 Dec 2023 18:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vkUkEOC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okv5kfuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D97BE548;
-	Mon, 11 Dec 2023 19:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7310C433C8;
-	Mon, 11 Dec 2023 19:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B880321B8;
+	Mon, 11 Dec 2023 18:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015AFC433C9;
+	Mon, 11 Dec 2023 18:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321205;
-	bh=+g3Ye6y+PUYVlLKm8g2Lg/x1Y9iLGoXuT1IBP+g1qbM=;
+	s=korg; t=1702321173;
+	bh=TyuDYpkrpaOwaFgBNofnT2NBVqPjB/JRcKYJPJZtMpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vkUkEOC3s5oiAuAywNix4Fb/FLp5OBNHq1UMyGgTBWcOP0tLFHwO5EDDWgSh3nus4
-	 GvahllQMUVXzhuIBUQ+2OG7ZxHVJfCCDTibLDE+4wP3WGjgQawK/h5t/ezC1mgnaXk
-	 9DE1dbtQx1mLv99ge0eoZhNyW/DNAzpJJNVkOYRk=
+	b=okv5kfuE5DV83gO5PDAmEiJNepbmr5o9czVznowKuRzLIdR4Qeo7NnJilgh8b5QpM
+	 GtY3KjoI62G2KKcn9qNzNcTcUQ+px1jQ/uLYIRgADaUkoq3Vw/XPOgW0GpWPJBKSKb
+	 LZWfB12XsBhNm5yxBAV4umI+w1p2pLwV1toutS5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 136/141] MIPS: Loongson64: Enable DMA noncoherent support
-Date: Mon, 11 Dec 2023 19:23:15 +0100
-Message-ID: <20231211182032.502433104@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 137/141] Revert "btrfs: add dmesg output for first mount and last unmount of a filesystem"
+Date: Mon, 11 Dec 2023 19:23:16 +0100
+Message-ID: <20231211182032.553634388@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
 References: <20231211182026.503492284@linuxfoundation.org>
@@ -56,88 +59,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
+This reverts commit a480eb262b178e2baffa758b9cd5bde2d8470287 which is
+commit 2db313205f8b96eea467691917138d646bb50aef upstream.
 
-There are some Loongson64 systems come with broken coherent DMA
-support, firmware will set a bit in boot_param and pass nocoherentio
-in cmdline.
+As pointed out by many, the disk_super structure is NOT initialized
+before it is dereferenced in the function
+fs/btrfs/disk-io.c:open_ctree() that this commit adds, so something went
+wrong here.
 
-However nonconherent support was missed out when spin off Loongson-2EF
-form Loongson64, and that boot_param change never made itself into
-upstream.
+Revert it for now until it gets straightened out.
 
-Support DMA noncoherent properly to get those systems working.
-
-Cc: stable@vger.kernel.org
-Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/r/5b0eb360-3765-40e1-854a-9da6d97eb405@roeck-us.net
+Link: https://lore.kernel.org/r/20231209172836.GA2154579@dev-arch.thelio-3990X
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Cc: Anand Jain <anand.jain@oracle.com>
+Cc: Qu Wenruo <wqu@suse.com>
+Cc: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Kconfig                                  |    2 ++
- arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
- arch/mips/loongson64/env.c                         |   10 +++++++++-
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ fs/btrfs/disk-io.c |    1 -
+ fs/btrfs/super.c   |    5 +----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -480,6 +480,7 @@ config MACH_LOONGSON2EF
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3204,7 +3204,6 @@ int __cold open_ctree(struct super_block
+ 		goto fail_alloc;
+ 	}
  
- config MACH_LOONGSON64
- 	bool "Loongson 64-bit family of machines"
-+	select ARCH_DMA_DEFAULT_COHERENT
- 	select ARCH_SPARSEMEM_ENABLE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
-@@ -1379,6 +1380,7 @@ config CPU_LOONGSON64
- 	select CPU_SUPPORTS_MSA
- 	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
- 	select CPU_MIPSR2_IRQ_VI
-+	select DMA_NONCOHERENT
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
- 	select MIPS_ASID_BITS_VARIABLE
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -117,7 +117,8 @@ struct irq_source_routing_table {
- 	u64 pci_io_start_addr;
- 	u64 pci_io_end_addr;
- 	u64 pci_config_addr;
--	u32 dma_mask_bits;
-+	u16 dma_mask_bits;
-+	u16 dma_noncoherent;
- } __packed;
+-	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
+ 	/*
+ 	 * Verify the type first, if that or the checksum value are
+ 	 * corrupted, we'll find out
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -337,10 +337,7 @@ void __btrfs_panic(struct btrfs_fs_info
  
- struct interface_info {
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -13,6 +13,8 @@
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-  */
-+
-+#include <linux/dma-map-ops.h>
- #include <linux/export.h>
- #include <linux/pci_ids.h>
- #include <asm/bootinfo.h>
-@@ -147,8 +149,14 @@ void __init prom_lefi_init_env(void)
+ static void btrfs_put_super(struct super_block *sb)
+ {
+-	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
+-
+-	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
+-	close_ctree(fs_info);
++	close_ctree(btrfs_sb(sb));
+ }
  
- 	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
- 	if (loongson_sysconf.dma_mask_bits < 32 ||
--		loongson_sysconf.dma_mask_bits > 64)
-+			loongson_sysconf.dma_mask_bits > 64) {
- 		loongson_sysconf.dma_mask_bits = 32;
-+		dma_default_coherent = true;
-+	} else {
-+		dma_default_coherent = !eirq_source->dma_noncoherent;
-+	}
-+
-+	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
- 
- 	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
- 	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
+ enum {
 
 
 
