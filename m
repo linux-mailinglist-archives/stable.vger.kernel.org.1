@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BB980D842
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72BAB80D7C8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1229281046
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D28A282414
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550615102F;
-	Mon, 11 Dec 2023 18:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38BD1537F6;
+	Mon, 11 Dec 2023 18:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLyA4tht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvZEib/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DBCFC06;
-	Mon, 11 Dec 2023 18:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7A9C433C9;
-	Mon, 11 Dec 2023 18:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC96952F88;
+	Mon, 11 Dec 2023 18:40:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60341C433C8;
+	Mon, 11 Dec 2023 18:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320247;
-	bh=NyKr/Titnj9Zf5Y+XNCoXs44a4+vyBcx8n8/lYm0tUA=;
+	s=korg; t=1702320011;
+	bh=LKHXXCH8pDV7ZKBXm2yXgEPBgHHeSrZjkjciznn6cGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLyA4thtf+HNuTOp9fdipkC7UoLQUQdzMTm2jPrrco5LKAsb777JPYYBHgMWgV8YD
-	 n/S8ij70MnY5Wk6/WUtCFjiGt5TIUvcZDUXP2KEu/qT5e19vd0TmS6E76qXh35TZm2
-	 gSgYRaq3xSnWAjrc9dNFWyWwzlBQjPeIH48MVftA=
+	b=hvZEib/5kxKCDU62eH2bAumwZ3x6VcCNzOMrF2anOf1Tr41D0u1GkzoVsoBbs/CST
+	 22iMuH9ftW9h5Jhw8w/QJ3F64jQyMAxaI18WZ7m7jZ97xS3q8vhbJND4owi0kT8Eb2
+	 OFI8hUmnSiEKr985x0PbrqMXR5jZ5AurFZSK/vho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 30/67] tracing: Fix a warning when allocating buffered events fails
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 71/97] Revert "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
 Date: Mon, 11 Dec 2023 19:22:14 +0100
-Message-ID: <20231211182016.354099940@linuxfoundation.org>
+Message-ID: <20231211182022.830278521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,88 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
+commit 24be0b3c40594a14b65141ced486ae327398faf8 upstream.
 
-Function trace_buffered_event_disable() produces an unexpected warning
-when the previous call to trace_buffered_event_enable() fails to
-allocate pages for buffered events.
+This reverts commit 4baf1218150985ee3ab0a27220456a1f027ea0ac.
 
-The situation can occur as follows:
+Enabling runtime pm as default for all AMD xHC 1.1 controllers caused
+regression. An initial attempt to fix those was done in commit a5d6264b638e
+("xhci: Enable RPM on controllers that support low-power states") but new
+issues are still seen.
 
-* The counter trace_buffered_event_ref is at 0.
+Revert this to get those AMD xHC 1.1 systems working
 
-* The soft mode gets enabled for some event and
-  trace_buffered_event_enable() is called. The function increments
-  trace_buffered_event_ref to 1 and starts allocating event pages.
+This patch went to stable an needs to be reverted from there as well.
 
-* The allocation fails for some page and trace_buffered_event_disable()
-  is called for cleanup.
-
-* Function trace_buffered_event_disable() decrements
-  trace_buffered_event_ref back to 0, recognizes that it was the last
-  use of buffered events and frees all allocated pages.
-
-* The control goes back to trace_buffered_event_enable() which returns.
-  The caller of trace_buffered_event_enable() has no information that
-  the function actually failed.
-
-* Some time later, the soft mode is disabled for the same event.
-  Function trace_buffered_event_disable() is called. It warns on
-  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
-
-Buffered events are just an optimization and can handle failures. Make
-trace_buffered_event_enable() exit on the first failure and left any
-cleanup later to when trace_buffered_event_disable() is called.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
-
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+Link: https://lore.kernel.org/linux-usb/55c50bf5-bffb-454e-906e-4408c591cb63@molgen.mpg.de
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231205090548.1377667-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/usb/host/xhci-pci.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index a15dffe60722f..b8030f1e577bb 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2438,8 +2438,11 @@ void trace_buffered_event_enable(void)
- 	for_each_tracing_cpu(cpu) {
- 		page = alloc_pages_node(cpu_to_node(cpu),
- 					GFP_KERNEL | __GFP_NORETRY, 0);
--		if (!page)
--			goto failed;
-+		/* This is just an optimization and can handle failures */
-+		if (!page) {
-+			pr_err("Failed to allocate event buffer\n");
-+			break;
-+		}
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -345,8 +345,6 @@ static void xhci_pci_quirks(struct devic
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+-	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
+-		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
  
- 		event = page_address(page);
- 		memset(event, 0, sizeof(*event));
-@@ -2453,10 +2456,6 @@ void trace_buffered_event_enable(void)
- 			WARN_ON_ONCE(1);
- 		preempt_enable();
- 	}
--
--	return;
-- failed:
--	trace_buffered_event_disable();
- }
- 
- static void enable_trace_buffered_event(void *data)
--- 
-2.42.0
-
+ 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
 
 
 
