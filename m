@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3B080D9A5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB5F80D81A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B10D3B21269
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3B21F21A22
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3D651C50;
-	Mon, 11 Dec 2023 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9344951C3F;
+	Mon, 11 Dec 2023 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKSoOArW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atzQfMoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0D4321B8;
-	Mon, 11 Dec 2023 18:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5775C433C7;
-	Mon, 11 Dec 2023 18:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F05FC06;
+	Mon, 11 Dec 2023 18:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7DAC433C8;
+	Mon, 11 Dec 2023 18:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320940;
-	bh=u35j2L0ePWubg8mqnc8WP0Q9I1Vl0uJdY3mxqaC2RYw=;
+	s=korg; t=1702320163;
+	bh=aBCsEDmSxaEDScVRFOzssWiLDHNnydC/dEKBzAZH/kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKSoOArWmNlbgb1QF7Yv1Cq3EGS0NdbK6RiWJ1iYUdrXbUu7VYcQxt3brwFfjGwec
-	 20KlT6GBrdphqcZ7KuDhtH0+2d8SlHuyar1Wih3+prfStgP5YF7XXWTX9guZz7n7UV
-	 LquQm3ta+5WJWnPfHPiw7DJqFslbRneQSRlm8IqQ=
+	b=atzQfMoQT4NCuq67IfV02jxgJ4FB06Xa/TpsYPkwqFjX4qU8RdtZ06zEa+fatqmWZ
+	 PkpHBByVH9ceOU3QVyDlgmJZ/Y7qc8GT5AiBYKgCj5adOlqCjHkCXrf9Lb5iuDUTXL
+	 fxaVs30Z0jW1bg4ILxPtL/412Mc1AtNrwFvGORQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	YuanShang <YuanShang.Mao@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 051/141] arm64: dts: rockchip: Expand reg size of vdec node for RK3399
+Subject: [PATCH 5.4 06/67] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
 Date: Mon, 11 Dec 2023 19:21:50 +0100
-Message-ID: <20231211182028.736277105@linuxfoundation.org>
+Message-ID: <20231211182015.345490792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +52,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: YuanShang <YuanShang.Mao@amd.com>
 
-[ Upstream commit 35938c18291b5da7422b2fac6dac0af11aa8d0d7 ]
+[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
 
-Expand the reg size for the vdec node to include cache/performance
-registers the rkvdec driver writes to. Also add missing clocks to the
-related power-domain.
+The variable "chunk_ptr" should be a pointer pointing
+to a struct drm_amdgpu_cs_chunk instead of to a pointer
+of that.
 
-Fixes: cbd7214402ec ("arm64: dts: rockchip: Define the rockchip Video Decoder node on rk3399")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20231105233630.3927502-10-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index 4255e2d7a72fc..9e33f0e6ed504 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -993,7 +993,9 @@
- 			power-domain@RK3399_PD_VDU {
- 				reg = <RK3399_PD_VDU>;
- 				clocks = <&cru ACLK_VDU>,
--					 <&cru HCLK_VDU>;
-+					 <&cru HCLK_VDU>,
-+					 <&cru SCLK_VDU_CA>,
-+					 <&cru SCLK_VDU_CORE>;
- 				pm_qos = <&qos_video_m1_r>,
- 					 <&qos_video_m1_w>;
- 				#power-domain-cells = <0>;
-@@ -1260,7 +1262,7 @@
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 1a83055211762..f9c725a8991b7 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -141,7 +141,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, union drm_amdgpu_cs
+ 	}
  
- 	vdec: video-codec@ff660000 {
- 		compatible = "rockchip,rk3399-vdec";
--		reg = <0x0 0xff660000 0x0 0x400>;
-+		reg = <0x0 0xff660000 0x0 0x480>;
- 		interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru ACLK_VDU>, <&cru HCLK_VDU>,
- 			 <&cru SCLK_VDU_CA>, <&cru SCLK_VDU_CORE>;
+ 	for (i = 0; i < p->nchunks; i++) {
+-		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
++		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
+ 		struct drm_amdgpu_cs_chunk user_chunk;
+ 		uint32_t __user *cdata;
+ 
 -- 
 2.42.0
 
