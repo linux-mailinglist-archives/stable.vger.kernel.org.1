@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD1480D8CA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597DF80D6F1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8145281B22
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 143A7282519
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4AA51C2D;
-	Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B970751C54;
+	Mon, 11 Dec 2023 18:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaLBqZm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+efys7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B19A5102A;
-	Mon, 11 Dec 2023 18:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4248C433C7;
-	Mon, 11 Dec 2023 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B3AFBE0;
+	Mon, 11 Dec 2023 18:34:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAE1C433CC;
+	Mon, 11 Dec 2023 18:34:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320537;
-	bh=L8PqZ3d27QGyH5D4hDFF4lUjLefey8wK1mVSwwbgQM8=;
+	s=korg; t=1702319679;
+	bh=LhMD8eeS8TWSGObLHV3Gswfmd9kXx72MlyIYNKFMVNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xaLBqZm+MVQhfffPwKwq02xPDMc3OW6rBJnY8ZdhdbTFunmnvtfDrQNv8Oi0qW/yp
-	 QNIUoyEbAW2D6gevWJBJZY6U1Q/iwul622QqIvUHOoJmbJg6d01w/rXKsgBZ9cRPn2
-	 4yRplN159qEeCVp8So2Z4JB7eSlt4Gj9/WW62kOU=
+	b=S+efys7GFuv5X3OvVD+Ia3ELMXukKXKaGInIsZ8MdllV1xFgVaBS29d02aTpoe5nJ
+	 +z2+iAlaEtC8UTaUsnqp3oijXyniOSO1BYoRbTE4/bJMRpHsCJ6R85ZslaQY5lJs7f
+	 BZLn0HmC7gQN1My3yVLWB1KbKJ1+p+JCD5rh9dGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Song Liu <song@kernel.org>,
+	Junhao He <hejunhao3@huawei.com>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/194] md: dont leave MD_RECOVERY_FROZEN in error path of md_set_readonly()
+Subject: [PATCH 6.6 194/244] coresight: ultrasoc-smb: Fix uninitialized before use buf_hw_base
 Date: Mon, 11 Dec 2023 19:21:27 +0100
-Message-ID: <20231211182040.784484555@linuxfoundation.org>
+Message-ID: <20231211182054.631990164@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,92 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit c9f7cb5b2bc968adcdc686c197ed108f47fd8eb0 ]
+[ Upstream commit 862c135bde8bc185e8aae2110374175e6a1b6ed5 ]
 
-If md_set_readonly() failed, the array could still be read-write, however
-'MD_RECOVERY_FROZEN' could still be set, which leave the array in an
-abnormal state that sync or recovery can't continue anymore.
-Hence make sure the flag is cleared after md_set_readonly() returns.
+In smb_reset_buffer, the sdb->buf_hw_base variable is uninitialized
+before use, which initializes it in smb_init_data_buffer. And the SMB
+regiester are set in smb_config_inport.
+So move the call after smb_config_inport.
 
-Fixes: 88724bfa68be ("md: wait for pending superblock updates before switching to read-only")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231205094215.1824240-3-yukuai1@huaweicloud.com
+Fixes: 06f5c2926aaa ("drivers/coresight: Add UltraSoc System Memory Buffer driver")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231114133346.30489-4-hejunhao3@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/hwtracing/coresight/ultrasoc-smb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 246af78c05dd1..0c2801d770901 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6314,6 +6314,9 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 	int err = 0;
- 	int did_freeze = 0;
+diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.c b/drivers/hwtracing/coresight/ultrasoc-smb.c
+index 2f2aba90a5148..6e32d31a95fe0 100644
+--- a/drivers/hwtracing/coresight/ultrasoc-smb.c
++++ b/drivers/hwtracing/coresight/ultrasoc-smb.c
+@@ -477,7 +477,6 @@ static int smb_init_data_buffer(struct platform_device *pdev,
+ static void smb_init_hw(struct smb_drv_data *drvdata)
+ {
+ 	smb_disable_hw(drvdata);
+-	smb_reset_buffer(drvdata);
  
-+	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		return -EBUSY;
-+
- 	if (!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery)) {
- 		did_freeze = 1;
- 		set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
-@@ -6326,8 +6329,6 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 		 * which will now never happen */
- 		wake_up_process(mddev->sync_thread->tsk);
+ 	writel(SMB_LB_CFG_LO_DEFAULT, drvdata->base + SMB_LB_CFG_LO_REG);
+ 	writel(SMB_LB_CFG_HI_DEFAULT, drvdata->base + SMB_LB_CFG_HI_REG);
+@@ -587,6 +586,7 @@ static int smb_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
  
--	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
--		return -EBUSY;
- 	mddev_unlock(mddev);
- 	wait_event(resync_wait, !test_bit(MD_RECOVERY_RUNNING,
- 					  &mddev->recovery));
-@@ -6340,29 +6341,30 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 	    mddev->sync_thread ||
- 	    test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 		pr_warn("md: %s still in use.\n",mdname(mddev));
--		if (did_freeze) {
--			clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
--			set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
--			md_wakeup_thread(mddev->thread);
--		}
- 		err = -EBUSY;
- 		goto out;
- 	}
-+
- 	if (mddev->pers) {
- 		__md_stop_writes(mddev);
- 
--		err  = -ENXIO;
--		if (mddev->ro == MD_RDONLY)
-+		if (mddev->ro == MD_RDONLY) {
-+			err  = -ENXIO;
- 			goto out;
-+		}
-+
- 		mddev->ro = MD_RDONLY;
- 		set_disk_ro(mddev->gendisk, 1);
-+	}
-+
-+out:
-+	if ((mddev->pers && !err) || did_freeze) {
- 		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
- 		md_wakeup_thread(mddev->thread);
- 		sysfs_notify_dirent_safe(mddev->sysfs_state);
--		err = 0;
- 	}
--out:
-+
- 	mutex_unlock(&mddev->open_mutex);
- 	return err;
- }
++	smb_reset_buffer(drvdata);
+ 	platform_set_drvdata(pdev, drvdata);
+ 	spin_lock_init(&drvdata->spinlock);
+ 	drvdata->pid = -1;
 -- 
 2.42.0
 
