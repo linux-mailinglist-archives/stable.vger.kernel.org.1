@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-5928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CC980D7E3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BD480D82C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BFC51F211E2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00481F21A5F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA20A51C35;
-	Mon, 11 Dec 2023 18:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8074E1D2;
+	Mon, 11 Dec 2023 18:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO6NWUma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oau88lXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6520DFC06;
-	Mon, 11 Dec 2023 18:40:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3ABC433C8;
-	Mon, 11 Dec 2023 18:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F33FFC06;
+	Mon, 11 Dec 2023 18:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1BFC433C8;
+	Mon, 11 Dec 2023 18:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320044;
-	bh=L4FnMn1QSf9lVRaeHHiF1aXTitz+EMgUW1fI/sdzQpw=;
+	s=korg; t=1702320201;
+	bh=FFJe0HatFvN/jlgqDgIvYv8V1JBBAHbo2k6VmDPfhAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rO6NWUma4Ex+JAd8aYtf9GTpGpITHZoeX77eATlKpgHwAZrpIuFJywQS3R250WeOt
-	 OEJhL5JRh1wef0WTAzSd32IOXLmg0Auib0kdW8YHPGwyqhoQwr6vkp/ktEPGsg6bEe
-	 PsNYLDxcmEHZUxnwzWKBbrRV0TPmOW25M/MlOsJA=
+	b=oau88lXXA79QlYUg4ihgqZpNhrEJ2SVlh79T98jxNONhYYK9JhKxo5DPpAPjUjTwz
+	 3mYZtIXKnqZFH/aLFdwTaxDisnpI7tzF/yY5brkOi7P7wMBQY8B3VcVfGWrr7Loven
+	 uOz5njSVc0O4hjUHjT0YiS82I370hgCcPn772UxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 5.10 82/97] io_uring/af_unix: disable sending io_uring over sockets
-Date: Mon, 11 Dec 2023 19:22:25 +0100
-Message-ID: <20231211182023.320090340@linuxfoundation.org>
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.4 42/67] arm64: dts: mediatek: mt8173-evb: Fix regulator-fixed node names
+Date: Mon, 11 Dec 2023 19:22:26 +0100
+Message-ID: <20231211182016.837766743@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,133 +51,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 705318a99a138c29a512a72c3e0043b3cd7f55f4 upstream.
+commit 24165c5dad7ba7c7624d05575a5e0cc851396c71 upstream.
 
-File reference cycles have caused lots of problems for io_uring
-in the past, and it still doesn't work exactly right and races with
-unix_stream_read_generic(). The safest fix would be to completely
-disallow sending io_uring files via sockets via SCM_RIGHT, so there
-are no possible cycles invloving registered files and thus rendering
-SCM accounting on the io_uring side unnecessary.
+Fix a unit_address_vs_reg warning for the USB VBUS fixed regulators
+by renaming the regulator nodes from regulator@{0,1} to regulator-usb-p0
+and regulator-usb-p1.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
-Reported-and-suggested-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/c716c88321939156909cfa1bd8b0faaf1c804103.1701868795.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Fixes: c0891284a74a ("arm64: dts: mediatek: add USB3 DRD driver")
+Link: https://lore.kernel.org/r/20231025093816.44327-8-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   55 ----------------------------------------------------
- net/core/scm.c      |    6 +++++
- 2 files changed, 6 insertions(+), 55 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -8452,49 +8452,6 @@ out_free:
- 	return ret;
- }
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -43,7 +43,7 @@
+ 		id-gpio = <&pio 16 GPIO_ACTIVE_HIGH>;
+ 	};
  
--static int io_sqe_file_register(struct io_ring_ctx *ctx, struct file *file,
--				int index)
--{
--#if defined(CONFIG_UNIX)
--	struct sock *sock = ctx->ring_sock->sk;
--	struct sk_buff_head *head = &sock->sk_receive_queue;
--	struct sk_buff *skb;
--
--	/*
--	 * See if we can merge this file into an existing skb SCM_RIGHTS
--	 * file set. If there's no room, fall back to allocating a new skb
--	 * and filling it in.
--	 */
--	spin_lock_irq(&head->lock);
--	skb = skb_peek(head);
--	if (skb) {
--		struct scm_fp_list *fpl = UNIXCB(skb).fp;
--
--		if (fpl->count < SCM_MAX_FD) {
--			__skb_unlink(skb, head);
--			spin_unlock_irq(&head->lock);
--			fpl->fp[fpl->count] = get_file(file);
--			unix_inflight(fpl->user, fpl->fp[fpl->count]);
--			fpl->count++;
--			spin_lock_irq(&head->lock);
--			__skb_queue_head(head, skb);
--		} else {
--			skb = NULL;
--		}
--	}
--	spin_unlock_irq(&head->lock);
--
--	if (skb) {
--		fput(file);
--		return 0;
--	}
--
--	return __io_sqe_files_scm(ctx, 1, index);
--#else
--	return 0;
--#endif
--}
--
- static int io_queue_rsrc_removal(struct io_rsrc_data *data, unsigned idx,
- 				 struct io_rsrc_node *node, void *rsrc)
- {
-@@ -8552,12 +8509,6 @@ static int io_install_fixed_file(struct
+-	usb_p1_vbus: regulator@0 {
++	usb_p1_vbus: regulator-usb-p1 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "usb_vbus";
+ 		regulator-min-microvolt = <5000000>;
+@@ -52,7 +52,7 @@
+ 		enable-active-high;
+ 	};
  
- 	*io_get_tag_slot(ctx->file_data, slot_index) = 0;
- 	io_fixed_file_set(file_slot, file);
--	ret = io_sqe_file_register(ctx, file, slot_index);
--	if (ret) {
--		file_slot->file_ptr = 0;
--		goto err;
--	}
--
- 	ret = 0;
- err:
- 	if (needs_switch)
-@@ -8671,12 +8622,6 @@ static int __io_sqe_files_update(struct
- 			}
- 			*io_get_tag_slot(data, i) = tag;
- 			io_fixed_file_set(file_slot, file);
--			err = io_sqe_file_register(ctx, file, i);
--			if (err) {
--				file_slot->file_ptr = 0;
--				fput(file);
--				break;
--			}
- 		}
- 	}
- 
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -26,6 +26,7 @@
- #include <linux/nsproxy.h>
- #include <linux/slab.h>
- #include <linux/errqueue.h>
-+#include <linux/io_uring.h>
- 
- #include <linux/uaccess.h>
- 
-@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *c
- 
- 		if (fd < 0 || !(file = fget_raw(fd)))
- 			return -EBADF;
-+		/* don't allow io_uring files */
-+		if (io_uring_get_socket(file)) {
-+			fput(file);
-+			return -EINVAL;
-+		}
- 		*fpp++ = file;
- 		fpl->count++;
- 	}
+-	usb_p0_vbus: regulator@1 {
++	usb_p0_vbus: regulator-usb-p0 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vbus";
+ 		regulator-min-microvolt = <5000000>;
 
 
 
