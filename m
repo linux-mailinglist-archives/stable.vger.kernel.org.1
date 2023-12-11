@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409A780D884
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0116E80D6AB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E120E1F218D6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EC261F21B6C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5940F51C2A;
-	Mon, 11 Dec 2023 18:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322AF52F6B;
+	Mon, 11 Dec 2023 18:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXgPvvus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP7ObWdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159BC4437B;
-	Mon, 11 Dec 2023 18:46:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BA9C433C7;
-	Mon, 11 Dec 2023 18:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB3A524B8;
+	Mon, 11 Dec 2023 18:33:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A52C433CC;
+	Mon, 11 Dec 2023 18:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320389;
-	bh=CQ++Ivd3TpuO4SdvnkAJpNuAD1ArSRje/2K8NsnEVuo=;
+	s=korg; t=1702319613;
+	bh=/8BbZvHZiewqeIVT0qkPwpCtS7ftnP7KQ1G9Y0gzMus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXgPvvuskmK2XbIqTGI4TumzsBTz97ZSerjgZFRqFyc+JmNUCq9rXCg4WClEn9Qxa
-	 DXy/chv9N5KcOg4fUYs84aYdGmNFxBWGZ+GrUG5QVGHE6R8CtrRKq9s9R4qvGanMd+
-	 HP/GNcZrVbh/yuzY53JkK+EI10wmAyKkC7VVIJ3w=
+	b=PP7ObWdTQi7/UMBy7Gju83xMPU+8viieNYVxVKWwRXK0/LvBLEZvJaQT+/coQYTLk
+	 ed8z1PV4OZZkflUZJMXPvZePCrBJCPftPkj7M4pgesuZdJg/6T1//McATYZ72TO5+S
+	 pnSXrs7KB1iL+CbMP/lWIvGmJ7NmN7O3J8F59b10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/194] ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()
+	Aleksandrs Vinarskis <alex.vinarskis@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 140/244] ALSA: hda/realtek: fix speakers on XPS 9530 (2023)
 Date: Mon, 11 Dec 2023 19:20:33 +0100
-Message-ID: <20231211182038.491842817@linuxfoundation.org>
+Message-ID: <20231211182052.059907729@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,63 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
 
-[ Upstream commit 80d875cfc9d3711a029f234ef7d680db79e8fa4b ]
+commit cd14dedf15be432066e63783c63d650f2800cd48 upstream.
 
-In ipgre_xmit(), skb_pull() may fail even if pskb_inet_may_pull() returns
-true. For example, applications can use PF_PACKET to create a malformed
-packet with no IP header. This type of packet causes a problem such as
-uninit-value access.
+XPS 9530 has 2 tweeters and 2 subwoofers powered by CS35L41 amplifier, SPI
+connected. For subwoofers to work, it requires both to enable amplifier
+support, and to enable output to subwoofers via 0x17 quirk (similalry to
+XPS 9510/9520).
 
-This patch ensures that skb_pull() can pull the required size by checking
-the skb with pskb_network_may_pull() before skb_pull().
-
-Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Link: https://lore.kernel.org/r/20231202161441.221135-1-syoshida@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aleksandrs Vinarskis <alex.vinarskis@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231203233006.100558-1-alex.vinarskis@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_gre.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index 5b8242265617d..d67d026d7f975 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -634,15 +634,18 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
- 	}
- 
- 	if (dev->header_ops) {
-+		int pull_len = tunnel->hlen + sizeof(struct iphdr);
-+
- 		if (skb_cow_head(skb, 0))
- 			goto free_skb;
- 
- 		tnl_params = (const struct iphdr *)skb->data;
- 
--		/* Pull skb since ip_tunnel_xmit() needs skb->data pointing
--		 * to gre header.
--		 */
--		skb_pull(skb, tunnel->hlen + sizeof(struct iphdr));
-+		if (!pskb_network_may_pull(skb, pull_len))
-+			goto free_skb;
-+
-+		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
-+		skb_pull(skb, pull_len);
- 		skb_reset_mac_header(skb);
- 
- 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
--- 
-2.42.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9615,6 +9615,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0b1a, "Dell Precision 5570", ALC289_FIXUP_DUAL_SPK),
+ 	SND_PCI_QUIRK(0x1028, 0x0b37, "Dell Inspiron 16 Plus 7620 2-in-1", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
++	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1028, 0x0c03, "Dell Precision 5340", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0c19, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
+ 	SND_PCI_QUIRK(0x1028, 0x0c1a, "Dell Precision 3340", ALC236_FIXUP_DELL_DUAL_CODECS),
 
 
 
