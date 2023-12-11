@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-5807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2587480D72F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6291F80D8E8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 519421C214AC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A11F21B8C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4001D53E24;
-	Mon, 11 Dec 2023 18:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9469251C35;
+	Mon, 11 Dec 2023 18:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs4Clf1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ZXiqYJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED86352F8E;
-	Mon, 11 Dec 2023 18:35:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70180C433CA;
-	Mon, 11 Dec 2023 18:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5B5102A;
+	Mon, 11 Dec 2023 18:49:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB23C433C9;
+	Mon, 11 Dec 2023 18:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319714;
-	bh=auAvBpS2tTNEueOpySwOx8SR5n3luSX35AF8Oy4w2oI=;
+	s=korg; t=1702320566;
+	bh=CBwq/L8/T1wptKzJuFPxhGXrhgXQtUBWVhMhb+JRjzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs4Clf1neEV2n3kWnPXCuah5U6ynUqHxIFK6yulxL2aDj4xHk8EZS0XknwLlQ7Rb3
-	 g2gKq95mhVd07IV3qQ43/IymBZwmMPSxw7o6wr95Qx5PrKN7uZgOKIqwOIHLTysPjg
-	 /GGWNm6KGUdJ/8aCmpNY+ibGyNA4+41xuMpA+UDY=
+	b=h7ZXiqYJChC90vuiWm05E5gEacwbp15rsTB40ZsmLsHrLz8clCN4TToREkbWLBRAQ
+	 3BnOwAv/nabX7qgNoaiswiYRtHMAwDp0KMV1EYLDlr+Zs5h5DDEz++Uxk5c1EykuMT
+	 YdHc6GLJRrSHOwhjOSA4lFNVpaupMxnsMwDHa874=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Wunderlich <frank-w@public-files.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 177/244] arm64: dts: mt7986: define 3W max power to both SFP on BPI-R3
+	urbinek@gmail.com,
+	Armin Wolf <W_Armin@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/194] hwmon: (acpi_power_meter) Fix 4.29 MW bug
 Date: Mon, 11 Dec 2023 19:21:10 +0100
-Message-ID: <20231211182053.873792534@linuxfoundation.org>
+Message-ID: <20231211182040.048013997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +54,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Wunderlich <frank-w@public-files.de>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit 6413cbc17f89b3a160f3a6f3fad1232b1678fe40 upstream.
+[ Upstream commit 1fefca6c57fb928d2131ff365270cbf863d89c88 ]
 
-All SFP power supplies are connected to the system VDD33 which is 3v3/8A.
-Set 3A per SFP slot to allow SFPs work which need more power than the
-default 1W.
+The ACPI specification says:
 
-Cc: stable@vger.kernel.org
-Fixes: 8e01fb15b815 ("arm64: dts: mt7986: add Bananapi R3")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20231025170832.78727-3-linux@fw-web.de
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"If an error occurs while obtaining the meter reading or if the value
+is not available then an Integer with all bits set is returned"
+
+Since the "integer" is 32 bits in case of the ACPI power meter,
+userspace will get a power reading of 2^32 * 1000 miliwatts (~4.29 MW)
+in case of such an error. This was discovered due to a lm_sensors
+bugreport (https://github.com/lm-sensors/lm-sensors/issues/460).
+Fix this by returning -ENODATA instead.
+
+Tested-by: <urbinek@gmail.com>
+Fixes: de584afa5e18 ("hwmon driver for ACPI 4.0 power meters")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231124182747.13956-1-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/acpi_power_meter.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-index af4a4309bda4..f9702284607a 100644
---- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
-@@ -126,6 +126,7 @@ sfp1: sfp-1 {
- 		compatible = "sff,sfp";
- 		i2c-bus = <&i2c_sfp1>;
- 		los-gpios = <&pio 46 GPIO_ACTIVE_HIGH>;
-+		maximum-power-milliwatt = <3000>;
- 		mod-def0-gpios = <&pio 49 GPIO_ACTIVE_LOW>;
- 		tx-disable-gpios = <&pio 20 GPIO_ACTIVE_HIGH>;
- 		tx-fault-gpios = <&pio 7 GPIO_ACTIVE_HIGH>;
-@@ -137,6 +138,7 @@ sfp2: sfp-2 {
- 		i2c-bus = <&i2c_sfp2>;
- 		los-gpios = <&pio 31 GPIO_ACTIVE_HIGH>;
- 		mod-def0-gpios = <&pio 47 GPIO_ACTIVE_LOW>;
-+		maximum-power-milliwatt = <3000>;
- 		tx-disable-gpios = <&pio 15 GPIO_ACTIVE_HIGH>;
- 		tx-fault-gpios = <&pio 48 GPIO_ACTIVE_HIGH>;
- 	};
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index 0962c12eba5a0..2147afb725581 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -31,6 +31,7 @@
+ #define POWER_METER_CAN_NOTIFY	(1 << 3)
+ #define POWER_METER_IS_BATTERY	(1 << 8)
+ #define UNKNOWN_HYSTERESIS	0xFFFFFFFF
++#define UNKNOWN_POWER		0xFFFFFFFF
+ 
+ #define METER_NOTIFY_CONFIG	0x80
+ #define METER_NOTIFY_TRIP	0x81
+@@ -348,6 +349,9 @@ static ssize_t show_power(struct device *dev,
+ 	update_meter(resource);
+ 	mutex_unlock(&resource->lock);
+ 
++	if (resource->power == UNKNOWN_POWER)
++		return -ENODATA;
++
+ 	return sprintf(buf, "%llu\n", resource->power * 1000);
+ }
+ 
 -- 
-2.43.0
+2.42.0
 
 
 
