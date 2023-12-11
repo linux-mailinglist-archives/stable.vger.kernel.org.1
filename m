@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6036E80D76D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8670C80D590
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917CD1C21465
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8DEC1C21468
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B9852F68;
-	Mon, 11 Dec 2023 18:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128F55101E;
+	Mon, 11 Dec 2023 18:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4hcrV9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eA1FbKL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AE9524CF;
-	Mon, 11 Dec 2023 18:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB447C433C7;
-	Mon, 11 Dec 2023 18:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA32E4E1B8;
+	Mon, 11 Dec 2023 18:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A48C433C7;
+	Mon, 11 Dec 2023 18:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319804;
-	bh=zhuC1pni1C4PVAXPneV4m+yjxw1jejEkEa9h8KrmMG4=;
+	s=korg; t=1702319162;
+	bh=ZBsUJIZ306CV2vaatuNjX/W3SJz2RwIg6A8M9yfOdnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4hcrV9R6gihrCZod0+mfPHgzA9Vb/uHkkICHi0T/U6UPiFLKl1Oht8uO/GCSigwo
-	 Njh6Ey/vTBecFEDJ/HY2t0VvlRFK0QevLijqdN5RZF2vHigiUsQK2+5yzJ/ULEXLmj
-	 qY7woRxd3HcxbRZ+e6WfquMztyRvYPXvr1emq9lc=
+	b=eA1FbKL61eYuEa+qrPzttBOFMftxz5EbLkVhwXTAd5uWqDQtupNwaqdbkTvA8qCWP
+	 HI0WH6nXNNTvEoqieIfwBm1yTEjO7K89TbC59ToT3f5yqU7g32FYGEp9gGr8fk5P1i
+	 olBOoLKUN7glHbajf2ekHj8bhx2FQOyquQ9GskYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 209/244] kprobes: consistent rcu api usage for kretprobe holder
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 32/55] nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
 Date: Mon, 11 Dec 2023 19:21:42 +0100
-Message-ID: <20231211182055.338016589@linuxfoundation.org>
+Message-ID: <20231211182013.418991238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,91 +53,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit d839a656d0f3caca9f96e9bf912fd394ac6a11bc upstream.
+commit 675abf8df1353e0e3bde314993e0796c524cfbf0 upstream.
 
-It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
-RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
-The thought behind this patch is to make use of the RCU API where possible
-when accessing this pointer so that the needed barriers are always in place
-and to self-document the code.
+If nilfs2 reads a disk image with corrupted segment usage metadata, and
+its segment usage information is marked as an error for the segment at the
+write location, nilfs_sufile_set_segment_usage() can trigger WARN_ONs
+during log writing.
 
-The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
-done to the "rp" pointer are changed to make use of the RCU macro for
-assignment. For the single read, the implementation of get_kretprobe()
-is simplified by making use of an RCU macro which accomplishes the same,
-but note that the log warning text will be more generic.
+Segments newly allocated for writing with nilfs_sufile_alloc() will not
+have this error flag set, but this unexpected situation will occur if the
+segment indexed by either nilfs->ns_segnum or nilfs->ns_nextnum (active
+segment) was marked in error.
 
-I did find that there is a difference in assembly generated between the
-usage of the RCU macros vs without. For example, on arm64, when using
-rcu_assign_pointer(), the corresponding store instruction is a
-store-release (STLR) which has an implicit barrier. When normal assignment
-is done, a regular store (STR) is found. In the macro case, this seems to
-be a result of rcu_assign_pointer() using smp_store_release() when the
-value to write is not NULL.
+Fix this issue by inserting a sanity check to treat it as a file system
+corruption.
 
-Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
+Since error returns are not allowed during the execution phase where
+nilfs_sufile_set_segment_usage() is used, this inserts the sanity check
+into nilfs_sufile_mark_dirty() which pre-reads the buffer containing the
+segment usage record to be updated and sets it up in a dirty state for
+writing.
 
-Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
-Cc: stable@vger.kernel.org
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+In addition, nilfs_sufile_set_segment_usage() is also called when
+canceling log writing and undoing segment usage update, so in order to
+avoid issuing the same kernel warning in that case, in case of
+cancellation, avoid checking the error flag in
+nilfs_sufile_set_segment_usage().
+
+Link: https://lkml.kernel.org/r/20231205085947.4431-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14e9f834f6ddecece094
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/kprobes.h |    7 ++-----
- kernel/kprobes.c        |    4 ++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ fs/nilfs2/sufile.c |   42 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
 
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -140,7 +140,7 @@ static inline bool kprobe_ftrace(struct
-  *
-  */
- struct kretprobe_holder {
--	struct kretprobe	*rp;
-+	struct kretprobe __rcu *rp;
- 	refcount_t		ref;
- };
+--- a/fs/nilfs2/sufile.c
++++ b/fs/nilfs2/sufile.c
+@@ -504,15 +504,38 @@ int nilfs_sufile_mark_dirty(struct inode
  
-@@ -248,10 +248,7 @@ unsigned long kretprobe_trampoline_handl
- 
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return READ_ONCE(ri->rph->rp);
-+	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
- }
- 
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2253,7 +2253,7 @@ int register_kretprobe(struct kretprobe
- 	if (!rp->rph)
- 		return -ENOMEM;
- 
--	rp->rph->rp = rp;
-+	rcu_assign_pointer(rp->rph->rp, rp);
- 	for (i = 0; i < rp->maxactive; i++) {
- 		inst = kzalloc(struct_size(inst, data, rp->data_size), GFP_KERNEL);
- 		if (inst == NULL) {
-@@ -2313,7 +2313,7 @@ void unregister_kretprobes(struct kretpr
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- 		rethook_free(rps[i]->rh);
- #else
--		rps[i]->rph->rp = NULL;
-+		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- #endif
+ 	down_write(&NILFS_MDT(sufile)->mi_sem);
+ 	ret = nilfs_sufile_get_segment_usage_block(sufile, segnum, 0, &bh);
+-	if (!ret) {
+-		mark_buffer_dirty(bh);
+-		nilfs_mdt_mark_dirty(sufile);
+-		kaddr = kmap_atomic(bh->b_page);
+-		su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (ret)
++		goto out_sem;
++
++	kaddr = kmap_atomic(bh->b_page);
++	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (unlikely(nilfs_segment_usage_error(su))) {
++		struct the_nilfs *nilfs = sufile->i_sb->s_fs_info;
++
++		kunmap_atomic(kaddr);
++		brelse(bh);
++		if (nilfs_segment_is_active(nilfs, segnum)) {
++			nilfs_error(sufile->i_sb,
++				    "active segment %llu is erroneous",
++				    (unsigned long long)segnum);
++		} else {
++			/*
++			 * Segments marked erroneous are never allocated by
++			 * nilfs_sufile_alloc(); only active segments, ie,
++			 * the segments indexed by ns_segnum or ns_nextnum,
++			 * can be erroneous here.
++			 */
++			WARN_ON_ONCE(1);
++		}
++		ret = -EIO;
++	} else {
+ 		nilfs_segment_usage_set_dirty(su);
+ 		kunmap_atomic(kaddr);
++		mark_buffer_dirty(bh);
++		nilfs_mdt_mark_dirty(sufile);
+ 		brelse(bh);
  	}
- 	mutex_unlock(&kprobe_mutex);
++out_sem:
+ 	up_write(&NILFS_MDT(sufile)->mi_sem);
+ 	return ret;
+ }
+@@ -539,9 +562,14 @@ int nilfs_sufile_set_segment_usage(struc
+ 
+ 	kaddr = kmap_atomic(bh->b_page);
+ 	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
+-	WARN_ON(nilfs_segment_usage_error(su));
+-	if (modtime)
++	if (modtime) {
++		/*
++		 * Check segusage error and set su_lastmod only when updating
++		 * this entry with a valid timestamp, not for cancellation.
++		 */
++		WARN_ON_ONCE(nilfs_segment_usage_error(su));
+ 		su->su_lastmod = cpu_to_le64(modtime);
++	}
+ 	su->su_nblocks = cpu_to_le32(nblocks);
+ 	kunmap_atomic(kaddr);
+ 
 
 
 
