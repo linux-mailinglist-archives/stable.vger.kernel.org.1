@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-5808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDBE80D730
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 348DE80D556
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:23:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF841C210E7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63E731C213F4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB0953E29;
-	Mon, 11 Dec 2023 18:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9285101B;
+	Mon, 11 Dec 2023 18:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpUXLyW8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWUUfwul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1EF53E02;
-	Mon, 11 Dec 2023 18:35:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384D4C433C8;
-	Mon, 11 Dec 2023 18:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F9C4F212;
+	Mon, 11 Dec 2023 18:23:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BA8C433C7;
+	Mon, 11 Dec 2023 18:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319717;
-	bh=WhJNlXQz9AGMma3kmAwhWwYzbrGNj7L8kqKLuq0Rnvc=;
+	s=korg; t=1702319019;
+	bh=rMN7QoxVwmNgMZwloy8rcbgGUXhXNLlav5jGEz3CR68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpUXLyW83rR4wlgQdcPtSUqJK5+dR9Sg4UpfI4V8YVWovdb4LeWcBnWKIMlAM7Lcg
-	 AHBUWGbmVgmHdJKfWmxqVPVA9mEs5/mxVlpDWeA3CGUon/mXrJjFrbTL0UbkaSflCb
-	 mHSmBIf15Vl9JMqVtv65kJCkbe8CFNGFWnQxKmU8=
+	b=jWUUfwulafkY+B07+CeqLxuKlMjKk5Hx+2e0/1mSRT+2mfSPsQdDeGRFzx2cHu5vx
+	 CBt1idl6yWKZq4eKCeD5P+Lu5NeQno7JihDVNsZIQa0vQ/jnPGCCLVAgxjdmi30GZw
+	 9rRp6s/rJfs40ul8E+hWfcAtwmHIfRgXsdUVaQRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Frank Wunderlich <frank-w@public-files.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 178/244] arm64: dts: mt7986: fix emmc hs400 mode without uboot initialization
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 01/55] spi: imx: add a device specific prepare_message callback
 Date: Mon, 11 Dec 2023 19:21:11 +0100
-Message-ID: <20231211182053.922506721@linuxfoundation.org>
+Message-ID: <20231211182012.314171089@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,55 +51,166 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 8dfe51c3f6ef31502fca3e2da8cd250ebbe4b8f2 upstream.
+[ Upstream commit e697271c4e2987b333148e16a2eb8b5b924fd40a ]
 
-Eric reports errors on emmc with hs400 mode when booting linux on bpi-r3
-without uboot [1]. Booting with uboot does not show this because clocks
-seem to be initialized by uboot.
+This is just preparatory work which allows to move some initialisation
+that currently is done in the per transfer hook .config to an earlier
+point in time in the next few patches. There is no change in behaviour
+introduced by this patch.
 
-Fix this by adding assigned-clocks and assigned-clock-parents like it's
-done in uboot [2].
-
-[1] https://forum.banana-pi.org/t/bpi-r3-kernel-fails-setting-emmc-clock-to-416m-depends-on-u-boot/15170
-[2] https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/mt7986.dtsi#L287
-
-Cc: stable@vger.kernel.org
-Fixes: 513b49d19b34 ("arm64: dts: mt7986: add mmc related device nodes")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20231025170832.78727-2-linux@fw-web.de
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/spi/spi-imx.c | 40 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-index 24eda00e320d..77ddd9e44ed2 100644
---- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
-@@ -374,6 +374,10 @@ mmc0: mmc@11230000 {
- 			reg = <0 0x11230000 0 0x1000>,
- 			      <0 0x11c20000 0 0x1000>;
- 			interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
-+			assigned-clocks = <&topckgen CLK_TOP_EMMC_416M_SEL>,
-+					  <&topckgen CLK_TOP_EMMC_250M_SEL>;
-+			assigned-clock-parents = <&apmixedsys CLK_APMIXED_MPLL>,
-+						 <&topckgen CLK_TOP_NET1PLL_D5_D2>;
- 			clocks = <&topckgen CLK_TOP_EMMC_416M_SEL>,
- 				 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
- 				 <&infracfg CLK_INFRA_MSDC_CK>,
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 1ad4b69292ad8..eb27f47578eb9 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -59,6 +59,7 @@ struct spi_imx_data;
+ 
+ struct spi_imx_devtype_data {
+ 	void (*intctrl)(struct spi_imx_data *, int);
++	int (*prepare_message)(struct spi_imx_data *, struct spi_message *);
+ 	int (*config)(struct spi_device *);
+ 	void (*trigger)(struct spi_imx_data *);
+ 	int (*rx_available)(struct spi_imx_data *);
+@@ -502,6 +503,12 @@ static void mx51_ecspi_disable(struct spi_imx_data *spi_imx)
+ 	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ }
+ 
++static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
++				      struct spi_message *msg)
++{
++	return 0;
++}
++
+ static int mx51_ecspi_config(struct spi_device *spi)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -672,6 +679,12 @@ static void mx31_trigger(struct spi_imx_data *spi_imx)
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ }
+ 
++static int mx31_prepare_message(struct spi_imx_data *spi_imx,
++				struct spi_message *msg)
++{
++	return 0;
++}
++
+ static int mx31_config(struct spi_device *spi)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -768,6 +781,12 @@ static void mx21_trigger(struct spi_imx_data *spi_imx)
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ }
+ 
++static int mx21_prepare_message(struct spi_imx_data *spi_imx,
++				struct spi_message *msg)
++{
++	return 0;
++}
++
+ static int mx21_config(struct spi_device *spi)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -837,6 +856,12 @@ static void mx1_trigger(struct spi_imx_data *spi_imx)
+ 	writel(reg, spi_imx->base + MXC_CSPICTRL);
+ }
+ 
++static int mx1_prepare_message(struct spi_imx_data *spi_imx,
++			       struct spi_message *msg)
++{
++	return 0;
++}
++
+ static int mx1_config(struct spi_device *spi)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+@@ -871,6 +896,7 @@ static void mx1_reset(struct spi_imx_data *spi_imx)
+ 
+ static struct spi_imx_devtype_data imx1_cspi_devtype_data = {
+ 	.intctrl = mx1_intctrl,
++	.prepare_message = mx1_prepare_message,
+ 	.config = mx1_config,
+ 	.trigger = mx1_trigger,
+ 	.rx_available = mx1_rx_available,
+@@ -884,6 +910,7 @@ static struct spi_imx_devtype_data imx1_cspi_devtype_data = {
+ 
+ static struct spi_imx_devtype_data imx21_cspi_devtype_data = {
+ 	.intctrl = mx21_intctrl,
++	.prepare_message = mx21_prepare_message,
+ 	.config = mx21_config,
+ 	.trigger = mx21_trigger,
+ 	.rx_available = mx21_rx_available,
+@@ -898,6 +925,7 @@ static struct spi_imx_devtype_data imx21_cspi_devtype_data = {
+ static struct spi_imx_devtype_data imx27_cspi_devtype_data = {
+ 	/* i.mx27 cspi shares the functions with i.mx21 one */
+ 	.intctrl = mx21_intctrl,
++	.prepare_message = mx21_prepare_message,
+ 	.config = mx21_config,
+ 	.trigger = mx21_trigger,
+ 	.rx_available = mx21_rx_available,
+@@ -911,6 +939,7 @@ static struct spi_imx_devtype_data imx27_cspi_devtype_data = {
+ 
+ static struct spi_imx_devtype_data imx31_cspi_devtype_data = {
+ 	.intctrl = mx31_intctrl,
++	.prepare_message = mx31_prepare_message,
+ 	.config = mx31_config,
+ 	.trigger = mx31_trigger,
+ 	.rx_available = mx31_rx_available,
+@@ -925,6 +954,7 @@ static struct spi_imx_devtype_data imx31_cspi_devtype_data = {
+ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 	/* i.mx35 and later cspi shares the functions with i.mx31 one */
+ 	.intctrl = mx31_intctrl,
++	.prepare_message = mx31_prepare_message,
+ 	.config = mx31_config,
+ 	.trigger = mx31_trigger,
+ 	.rx_available = mx31_rx_available,
+@@ -938,6 +968,7 @@ static struct spi_imx_devtype_data imx35_cspi_devtype_data = {
+ 
+ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.intctrl = mx51_ecspi_intctrl,
++	.prepare_message = mx51_ecspi_prepare_message,
+ 	.config = mx51_ecspi_config,
+ 	.trigger = mx51_ecspi_trigger,
+ 	.rx_available = mx51_ecspi_rx_available,
+@@ -952,6 +983,7 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 
+ static struct spi_imx_devtype_data imx53_ecspi_devtype_data = {
+ 	.intctrl = mx51_ecspi_intctrl,
++	.prepare_message = mx51_ecspi_prepare_message,
+ 	.config = mx51_ecspi_config,
+ 	.trigger = mx51_ecspi_trigger,
+ 	.rx_available = mx51_ecspi_rx_available,
+@@ -1486,7 +1518,13 @@ spi_imx_prepare_message(struct spi_master *master, struct spi_message *msg)
+ 		return ret;
+ 	}
+ 
+-	return 0;
++	ret = spi_imx->devtype_data->prepare_message(spi_imx, msg);
++	if (ret) {
++		clk_disable(spi_imx->clk_ipg);
++		clk_disable(spi_imx->clk_per);
++	}
++
++	return ret;
+ }
+ 
+ static int
 -- 
-2.43.0
+2.42.0
 
 
 
