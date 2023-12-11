@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-5347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C13780CAC4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:21:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9004980CAD9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02B1C1F2160F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:21:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3026AB20E9C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB033E465;
-	Mon, 11 Dec 2023 13:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402EC3E467;
+	Mon, 11 Dec 2023 13:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jY0wlhI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6D2zZ4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706553D96A
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 13:21:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711C9C433C7;
-	Mon, 11 Dec 2023 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0377A3D97E
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 13:23:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780C7C433C8;
+	Mon, 11 Dec 2023 13:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702300889;
-	bh=ouz5H8/ogB3hwmNQH/kIZ1Cv9NzNLzeF7rBWobpYydk=;
+	s=korg; t=1702301012;
+	bh=sEaPyIiF/BDNHqPMg6sc0uPH+wDkOZ4nCiFT263O+C4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jY0wlhI/Po8zrzGSxJ2aLYGsh9KDsj9+jwwgQo1JRSu07FTvahJcGhy8dEVgciRZq
-	 Jy8QQgK34UgoTsqGCysJrkxnu89ESchbnGnzxSHkdytu3YrH3lB4X2NXpjcnj1fhqN
-	 RK650cBsw4cFuhIwiO50ILa/5Mcl5lGGxcxoFcPI=
-Date: Mon, 11 Dec 2023 14:21:27 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 4.14 4.19 5.4] nilfs2: fix missing error check for
- sb_set_blocksize call
-Message-ID: <2023121112-kitty-scarily-b463@gregkh>
-References: <CAKFNMokAa1hUUL95wxCZRXzLMuOPiQ6Cu0yOrcdbKvW=zT1z0g@mail.gmail.com>
- <20231210072648.3054-1-konishi.ryusuke@gmail.com>
+	b=J6D2zZ4m6kKtS2oRwnbxiWYGus2at+4uV0orj5KU/LO5hL59gF83enesmA2502U7L
+	 J3LNcQQnQ+V+bNccTq0ysCdL71bA6ii9dTLhEISwQ9vEV83DTMNJ1AwW+8fMiHqtpa
+	 o9vUFb6lRsCdNPTkd1UNNUZr8+Bcx+owyj9rLegw=
+Date: Mon, 11 Dec 2023 14:23:22 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: asml.silence@gmail.com, jannh@google.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] io_uring/af_unix: disable sending
+ io_uring over sockets" failed to apply to 5.4-stable tree
+Message-ID: <2023121115-neglector-geography-671c@gregkh>
+References: <2023120913-cornea-query-b9bf@gregkh>
+ <21079c31-f48a-4616-a976-c4421113f5fd@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,71 +46,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231210072648.3054-1-konishi.ryusuke@gmail.com>
+In-Reply-To: <21079c31-f48a-4616-a976-c4421113f5fd@kernel.dk>
 
-On Sun, Dec 10, 2023 at 04:26:48PM +0900, Ryusuke Konishi wrote:
-> commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+On Sat, Dec 09, 2023 at 09:52:01AM -0700, Jens Axboe wrote:
+> On 12/9/23 5:03 AM, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 5.4-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 705318a99a138c29a512a72c3e0043b3cd7f55f4
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120913-cornea-query-b9bf@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 > 
-> When mounting a filesystem image with a block size larger than the page
-> size, nilfs2 repeatedly outputs long error messages with stack traces to
-> the kernel log, such as the following:
-> 
->  getblk(): invalid block size 8192 requested
->  logical block size: 512
->  ...
->  Call Trace:
->   dump_stack_lvl+0x92/0xd4
->   dump_stack+0xd/0x10
->   bdev_getblk+0x33a/0x354
->   __breadahead+0x11/0x80
->   nilfs_search_super_root+0xe2/0x704 [nilfs2]
->   load_nilfs+0x72/0x504 [nilfs2]
->   nilfs_mount+0x30f/0x518 [nilfs2]
->   legacy_get_tree+0x1b/0x40
->   vfs_get_tree+0x18/0xc4
->   path_mount+0x786/0xa88
->   __ia32_sys_mount+0x147/0x1a8
->   __do_fast_syscall_32+0x56/0xc8
->   do_fast_syscall_32+0x29/0x58
->   do_SYSENTER_32+0x15/0x18
->   entry_SYSENTER_32+0x98/0xf1
->  ...
-> 
-> This overloads the system logger.  And to make matters worse, it sometimes
-> crashes the kernel with a memory access violation.
-> 
-> This is because the return value of the sb_set_blocksize() call, which
-> should be checked for errors, is not checked.
-> 
-> The latter issue is due to out-of-buffer memory being accessed based on a
-> large block size that caused sb_set_blocksize() to fail for buffers read
-> with the initial minimum block size that remained unupdated in the
-> super_block structure.
-> 
-> Since nilfs2 mkfs tool does not accept block sizes larger than the system
-> page size, this has been overlooked.  However, it is possible to create
-> this situation by intentionally modifying the tool or by passing a
-> filesystem image created on a system with a large page size to a system
-> with a smaller page size and mounting it.
-> 
-> Fix this issue by inserting the expected error handling for the call to
-> sb_set_blocksize().
-> 
-> Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> Please apply this patch to the stable trees indicated by the subject line
-> prefix, instead of the patch I asked you to drop earlier.
-> 
-> In this patch, "nilfs_err()" is replaced with its equivalent since it
-> doesn't yet exist in these kernels.  With this tweak, this patch is
-> applicable from v4.8 to v5.8.  Also this patch has been tested against
-> these three stable trees.
+> Here's one for 5.4-stable.
 
-Now replaced with this version, thanks for catching this!
+All now queued up, thanks.
 
 greg k-h
 
