@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E0880D631
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90AC680D85F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5811F21A90
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CA39280ED6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3F6FC06;
-	Mon, 11 Dec 2023 18:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A964351038;
+	Mon, 11 Dec 2023 18:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcmliQ6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upVp+RyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A34C2D0;
-	Mon, 11 Dec 2023 18:32:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0061C433C7;
-	Mon, 11 Dec 2023 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FE24437B;
+	Mon, 11 Dec 2023 18:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6A1C433C7;
+	Mon, 11 Dec 2023 18:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319530;
-	bh=oGhPEqe4rHZZ6jzmPe1kPB3Pv2L2gXq4KjVMcorGP70=;
+	s=korg; t=1702320307;
+	bh=DxCGKioTLS7FUpWAkyhYNKt0XUo26bi2Do2/cJPTFxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcmliQ6fCLxT9f/Et8AGpYX316FXKeLwdzyRx27koNkdFhaKaT8Y7shuI0jdektBn
-	 xvG2tmJ4UGg4846jr8k2+eJPN8nuhHupZZ7MPIK8hegHg5kI9beQA7aUGGEmIWicB1
-	 Si3yxbLUabQYRna5X/iNXBK0+bXxduitiTvAxIZY=
+	b=upVp+RyJHuvvTQrCtA+wNVbyKyDp1gASg+T49RDXXBE6dS308CMSX2grZr8EFEpz5
+	 HDM20Y5CuvS+cCy4GOscJZ5MPj3oQMha9dJXew7zTSG8K/YFq2xXmjFS1qJvYA0rU4
+	 gFzgLHl0ZIZ5/1Ko6hNXrGGu4aNatkBFHJ6jGg/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/244] RDMA/irdma: Fix support for 64k pages
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 013/194] x86/entry: Do not allow external 0x80 interrupts
 Date: Mon, 11 Dec 2023 19:20:03 +0100
-Message-ID: <20231211182050.716233930@linuxfoundation.org>
+Message-ID: <20231211182037.197124870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +54,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 03769f72d66edab82484449ed594cb6b00ae0223 ]
+[ upstream commit 55617fb991df535f953589586468612351575704 ]
 
-Virtual QP and CQ require a 4K HW page size but the driver passes
-PAGE_SIZE to ib_umem_find_best_pgsz() instead.
+The INT 0x80 instruction is used for 32-bit x86 Linux syscalls. The
+kernel expects to receive a software interrupt as a result of the INT
+0x80 instruction. However, an external interrupt on the same vector
+also triggers the same codepath.
 
-Fix this by using the appropriate 4k value in the bitmap passed to
-ib_umem_find_best_pgsz().
+An external interrupt on vector 0x80 will currently be interpreted as a
+32-bit system call, and assuming that it was a user context.
 
-Fixes: 693a5386eff0 ("RDMA/irdma: Split mr alloc and free into new functions")
-Link: https://lore.kernel.org/r/20231129202143.1434-4-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Panic on external interrupts on the vector.
+
+To distinguish software interrupts from external ones, the kernel checks
+the APIC ISR bit relevant to the 0x80 vector. For software interrupts,
+this bit will be 0.
+
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/entry/common.c |   37 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index c7cb328b90f9d..2f1bedd3a5201 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2903,7 +2903,7 @@ static struct irdma_mr *irdma_alloc_iwmr(struct ib_umem *region,
- 	iwmr->type = reg_type;
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -25,6 +25,7 @@
+ #include <xen/events.h>
+ #endif
  
- 	pgsz_bitmap = (reg_type == IRDMA_MEMREG_TYPE_MEM) ?
--		iwdev->rf->sc_dev.hw_attrs.page_size_cap : PAGE_SIZE;
-+		iwdev->rf->sc_dev.hw_attrs.page_size_cap : SZ_4K;
++#include <asm/apic.h>
+ #include <asm/desc.h>
+ #include <asm/traps.h>
+ #include <asm/vdso.h>
+@@ -120,6 +121,25 @@ static __always_inline void do_syscall_3
+ }
  
- 	iwmr->page_size = ib_umem_find_best_pgsz(region, pgsz_bitmap, virt);
- 	if (unlikely(!iwmr->page_size)) {
--- 
-2.42.0
-
+ #ifdef CONFIG_IA32_EMULATION
++static __always_inline bool int80_is_external(void)
++{
++	const unsigned int offs = (0x80 / 32) * 0x10;
++	const u32 bit = BIT(0x80 % 32);
++
++	/* The local APIC on XENPV guests is fake */
++	if (cpu_feature_enabled(X86_FEATURE_XENPV))
++		return false;
++
++	/*
++	 * If vector 0x80 is set in the APIC ISR then this is an external
++	 * interrupt. Either from broken hardware or injected by a VMM.
++	 *
++	 * Note: In guest mode this is only valid for secure guests where
++	 * the secure module fully controls the vAPIC exposed to the guest.
++	 */
++	return apic_read(APIC_ISR + offs) & bit;
++}
++
+ /**
+  * int80_emulation - 32-bit legacy syscall entry
+  *
+@@ -143,12 +163,27 @@ DEFINE_IDTENTRY_RAW(int80_emulation)
+ {
+ 	int nr;
+ 
+-	/* Establish kernel context. */
++	/* Kernel does not use INT $0x80! */
++	if (unlikely(!user_mode(regs))) {
++		irqentry_enter(regs);
++		instrumentation_begin();
++		panic("Unexpected external interrupt 0x80\n");
++	}
++
++	/*
++	 * Establish kernel context for instrumentation, including for
++	 * int80_is_external() below which calls into the APIC driver.
++	 * Identical for soft and external interrupts.
++	 */
+ 	enter_from_user_mode(regs);
+ 
+ 	instrumentation_begin();
+ 	add_random_kstack_offset();
+ 
++	/* Validate that this is a soft interrupt to the extent possible */
++	if (unlikely(int80_is_external()))
++		panic("Unexpected external interrupt 0x80\n");
++
+ 	/*
+ 	 * The low level idtentry code pushed -1 into regs::orig_ax
+ 	 * and regs::ax contains the syscall number.
 
 
 
