@@ -1,46 +1,51 @@
-Return-Path: <stable+bounces-6152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F7480D914
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F237480D58F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B7921C21669
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEED328170C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870C251C37;
-	Mon, 11 Dec 2023 18:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534B251020;
+	Mon, 11 Dec 2023 18:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSZ+PhfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmintPy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D575102A;
-	Mon, 11 Dec 2023 18:50:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DAFC433C7;
-	Mon, 11 Dec 2023 18:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179F54F212;
+	Mon, 11 Dec 2023 18:26:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E30C433C7;
+	Mon, 11 Dec 2023 18:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320652;
-	bh=KgbcT2893yHJCTDwrXtjJN9FjH04v3Uma/fHv6ZkwYg=;
+	s=korg; t=1702319159;
+	bh=JN6/GT0BuNZgyODgn/NXjBZw2wvQyF/0tlAHd9mwtv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSZ+PhfKwvmqb24gquR5j5HEXzkTnBtKrYqj4novurW9ig3mwJiKI5u7Jxxu4s7A7
-	 7BBMbOQRjLr96wrx8Lrzoxjh6za9+9xUk4pZzOYV8dfxcu/yccHojxig3ZIDVoIR2t
-	 +QHe/4UbyTtWk42ewbYw3Gy+b+sJIgG9hYPiR9Yc=
+	b=qmintPy/XlsXde5jAyYtRJzV+/N5Y6Zy58T2NOPdlWqcaH84SEadkWobAuIoMzx3T
+	 2HCv+Ar7/LGp58tVqU7E2buAQVhqMvHUuYJitmqCcaDzSGWj62g45UiLCTUnR22xMa
+	 aKUz/+48m2ylxBwz1CVTiJ6mKNiMfbp64kI633kI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 111/194] nilfs2: fix missing error check for sb_set_blocksize call
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	stable@kernel.org,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 31/55] packet: Move reference count in packet_sock to atomic_long_t
 Date: Mon, 11 Dec 2023 19:21:41 +0100
-Message-ID: <20231211182041.444078290@linuxfoundation.org>
+Message-ID: <20231211182013.377951509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +57,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+commit db3fadacaf0c817b222090290d06ca2a338422d0 upstream.
 
-When mounting a filesystem image with a block size larger than the page
-size, nilfs2 repeatedly outputs long error messages with stack traces to
-the kernel log, such as the following:
+In some potential instances the reference count on struct packet_sock
+could be saturated and cause overflows which gets the kernel a bit
+confused. To prevent this, move to a 64-bit atomic reference count on
+64-bit architectures to prevent the possibility of this type to overflow.
 
- getblk(): invalid block size 8192 requested
- logical block size: 512
- ...
- Call Trace:
-  dump_stack_lvl+0x92/0xd4
-  dump_stack+0xd/0x10
-  bdev_getblk+0x33a/0x354
-  __breadahead+0x11/0x80
-  nilfs_search_super_root+0xe2/0x704 [nilfs2]
-  load_nilfs+0x72/0x504 [nilfs2]
-  nilfs_mount+0x30f/0x518 [nilfs2]
-  legacy_get_tree+0x1b/0x40
-  vfs_get_tree+0x18/0xc4
-  path_mount+0x786/0xa88
-  __ia32_sys_mount+0x147/0x1a8
-  __do_fast_syscall_32+0x56/0xc8
-  do_fast_syscall_32+0x29/0x58
-  do_SYSENTER_32+0x15/0x18
-  entry_SYSENTER_32+0x98/0xf1
- ...
+Because we can not handle saturation, using refcount_t is not possible
+in this place. Maybe someday in the future if it changes it could be
+used. Also, instead of using plain atomic64_t, use atomic_long_t instead.
+32-bit machines tend to be memory-limited (i.e. anything that increases
+a reference uses so much memory that you can't actually get to 2**32
+references). 32-bit architectures also tend to have serious problems
+with 64-bit atomics. Hence, atomic_long_t is the more natural solution.
 
-This overloads the system logger.  And to make matters worse, it sometimes
-crashes the kernel with a memory access violation.
-
-This is because the return value of the sb_set_blocksize() call, which
-should be checked for errors, is not checked.
-
-The latter issue is due to out-of-buffer memory being accessed based on a
-large block size that caused sb_set_blocksize() to fail for buffers read
-with the initial minimum block size that remained unupdated in the
-super_block structure.
-
-Since nilfs2 mkfs tool does not accept block sizes larger than the system
-page size, this has been overlooked.  However, it is possible to create
-this situation by intentionally modifying the tool or by passing a
-filesystem image created on a system with a large page size to a system
-with a smaller page size and mounting it.
-
-Fix this issue by inserting the expected error handling for the call to
-sb_set_blocksize().
-
-Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Co-developed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231201131021.19999-1-daniel@iogearbox.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/the_nilfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |   16 ++++++++--------
+ net/packet/internal.h  |    2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -716,7 +716,11 @@ int init_nilfs(struct the_nilfs *nilfs,
- 			goto failed_sbh;
- 		}
- 		nilfs_release_super_block(nilfs);
--		sb_set_blocksize(sb, blocksize);
-+		if (!sb_set_blocksize(sb, blocksize)) {
-+			nilfs_err(sb, "bad blocksize %d", blocksize);
-+			err = -EINVAL;
-+			goto out;
-+		}
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -4214,7 +4214,7 @@ static void packet_mm_open(struct vm_are
+ 	struct sock *sk = sock->sk;
  
- 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
- 		if (err)
+ 	if (sk)
+-		atomic_inc(&pkt_sk(sk)->mapped);
++		atomic_long_inc(&pkt_sk(sk)->mapped);
+ }
+ 
+ static void packet_mm_close(struct vm_area_struct *vma)
+@@ -4224,7 +4224,7 @@ static void packet_mm_close(struct vm_ar
+ 	struct sock *sk = sock->sk;
+ 
+ 	if (sk)
+-		atomic_dec(&pkt_sk(sk)->mapped);
++		atomic_long_dec(&pkt_sk(sk)->mapped);
+ }
+ 
+ static const struct vm_operations_struct packet_mmap_ops = {
+@@ -4319,7 +4319,7 @@ static int packet_set_ring(struct sock *
+ 
+ 	err = -EBUSY;
+ 	if (!closing) {
+-		if (atomic_read(&po->mapped))
++		if (atomic_long_read(&po->mapped))
+ 			goto out;
+ 		if (packet_read_pending(rb))
+ 			goto out;
+@@ -4422,7 +4422,7 @@ static int packet_set_ring(struct sock *
+ 
+ 	err = -EBUSY;
+ 	mutex_lock(&po->pg_vec_lock);
+-	if (closing || atomic_read(&po->mapped) == 0) {
++	if (closing || atomic_long_read(&po->mapped) == 0) {
+ 		err = 0;
+ 		spin_lock_bh(&rb_queue->lock);
+ 		swap(rb->pg_vec, pg_vec);
+@@ -4440,9 +4440,9 @@ static int packet_set_ring(struct sock *
+ 		po->prot_hook.func = (po->rx_ring.pg_vec) ?
+ 						tpacket_rcv : packet_rcv;
+ 		skb_queue_purge(rb_queue);
+-		if (atomic_read(&po->mapped))
+-			pr_err("packet_mmap: vma is busy: %d\n",
+-			       atomic_read(&po->mapped));
++		if (atomic_long_read(&po->mapped))
++			pr_err("packet_mmap: vma is busy: %ld\n",
++			       atomic_long_read(&po->mapped));
+ 	}
+ 	mutex_unlock(&po->pg_vec_lock);
+ 
+@@ -4520,7 +4520,7 @@ static int packet_mmap(struct file *file
+ 		}
+ 	}
+ 
+-	atomic_inc(&po->mapped);
++	atomic_long_inc(&po->mapped);
+ 	vma->vm_ops = &packet_mmap_ops;
+ 	err = 0;
+ 
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -125,7 +125,7 @@ struct packet_sock {
+ 	__be16			num;
+ 	struct packet_rollover	*rollover;
+ 	struct packet_mclist	*mclist;
+-	atomic_t		mapped;
++	atomic_long_t		mapped;
+ 	enum tpacket_versions	tp_version;
+ 	unsigned int		tp_hdrlen;
+ 	unsigned int		tp_reserve;
 
 
 
