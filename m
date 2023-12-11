@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-6174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FACF80D937
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B435580D7F5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 023351F21B3D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5151F21343
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA4751C46;
-	Mon, 11 Dec 2023 18:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC76524C6;
+	Mon, 11 Dec 2023 18:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8aNOlCN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6fXpxrc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7D351C2D;
-	Mon, 11 Dec 2023 18:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F41C433C7;
-	Mon, 11 Dec 2023 18:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60668FBE1;
+	Mon, 11 Dec 2023 18:41:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB9A6C433C7;
+	Mon, 11 Dec 2023 18:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320710;
-	bh=foMup+bY4E6hFoJEnsjMGPMzcRpW/H7OHHsZXQQgIGA=;
+	s=korg; t=1702320085;
+	bh=MzgEMdtWY900N4YhL/wzHlRoVGzboO1KinrsNpdKGNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8aNOlCN4EVSGrQ5IXuBrK+X+ScxhYSGGA8iVhe2X1cYcV0b/DtRIzBJMlef3UM/7
-	 mlptBIgFA/gPMqLkqPdObTAYa56sfFzBejhm7iVEQsaCutSkDR6jmlbfTEKPId5LCz
-	 K3UQRbvwIC+6lTIcYM7eG5aIDltXjtB8dmU92e4Y=
+	b=N6fXpxrcGIejHcD4vNMlTm1Z7qbfkOMUqZqnjd+Ts5Op4J1zFngJPtRusbwhzBMKh
+	 t87LabtaxlsNWZo4khTyw3S8C0fN9gpm5UKc/mnR60dUqlVX4iGRAY91TuRvhOWyHF
+	 U8weCffmMAshlVh9EaWkJoWxqj3L3dK6Afc3Mq+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <Alexander.Deucher@amd.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/194] drm/amdgpu: Return from switch early for EEPROM I2C address
+	Namhyung Kim <namhyung@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 5.10 89/97] tools headers UAPI: Sync linux/perf_event.h with the kernel sources
 Date: Mon, 11 Dec 2023 19:22:32 +0100
-Message-ID: <20231211182043.870961002@linuxfoundation.org>
+Message-ID: <20231211182023.649839611@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,75 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 8782007b5f5795f118c5167f46d8c8142abcc92f ]
+commit 65ba872a6971c11ceb342c3330f059289c0e6bdb upstream.
 
-As soon as control->i2c_address is set, return; remove the "break;" from the
-switch--it is unnecessary. This mimics what happens when for some cases in the
-switch, we call helper functions with "return <helper function>".
+To pick the trivial change in:
 
-Remove final function "return true;" to indicate that the switch is final and
-terminal, and that there should be no code after the switch.
+  119a784c81270eb8 ("perf/core: Add a new read format to get a number of lost samples")
 
-Cc: Candice Li <candice.li@amd.com>
-Cc: Kent Russell <kent.russell@amd.com>
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Reviewed-by: Alex Deucher <Alexander.Deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220819003644.508916-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ tools/include/uapi/linux/perf_event.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index b908d575b5a98..40cd9d8c4e870 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -181,14 +181,14 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 	switch (adev->asic_type) {
- 	case CHIP_VEGA20:
- 		control->i2c_address = EEPROM_I2C_MADDR_0;
--		break;
-+		return true;
+--- a/tools/include/uapi/linux/perf_event.h
++++ b/tools/include/uapi/linux/perf_event.h
+@@ -279,6 +279,7 @@ enum {
+  *	  { u64		time_enabled; } && PERF_FORMAT_TOTAL_TIME_ENABLED
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		id;           } && PERF_FORMAT_ID
++ *	  { u64		lost;         } && PERF_FORMAT_LOST
+  *	} && !PERF_FORMAT_GROUP
+  *
+  *	{ u64		nr;
+@@ -286,6 +287,7 @@ enum {
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		value;
+  *	    { u64	id;           } && PERF_FORMAT_ID
++ *	    { u64	lost;         } && PERF_FORMAT_LOST
+  *	  }		cntr[nr];
+  *	} && PERF_FORMAT_GROUP
+  * };
+@@ -295,8 +297,9 @@ enum perf_event_read_format {
+ 	PERF_FORMAT_TOTAL_TIME_RUNNING		= 1U << 1,
+ 	PERF_FORMAT_ID				= 1U << 2,
+ 	PERF_FORMAT_GROUP			= 1U << 3,
++	PERF_FORMAT_LOST			= 1U << 4,
  
- 	case CHIP_ARCTURUS:
- 		return __get_eeprom_i2c_addr_arct(adev, control);
+-	PERF_FORMAT_MAX = 1U << 4,		/* non-ABI */
++	PERF_FORMAT_MAX = 1U << 5,		/* non-ABI */
+ };
  
- 	case CHIP_SIENNA_CICHLID:
- 		control->i2c_address = EEPROM_I2C_MADDR_0;
--		break;
-+		return true;
- 
- 	case CHIP_ALDEBARAN:
- 		if (strnstr(atom_ctx->vbios_version, "D673",
-@@ -196,7 +196,7 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 			control->i2c_address = EEPROM_I2C_MADDR_4;
- 		else
- 			control->i2c_address = EEPROM_I2C_MADDR_0;
--		break;
-+		return true;
- 
- 	case CHIP_IP_DISCOVERY:
- 		return __get_eeprom_i2c_addr_ip_discovery(adev, control);
-@@ -204,8 +204,6 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 	default:
- 		return false;
- 	}
--
--	return true;
- }
- 
- static void
--- 
-2.42.0
-
+ #define PERF_ATTR_SIZE_VER0	64	/* sizeof first published struct */
 
 
 
