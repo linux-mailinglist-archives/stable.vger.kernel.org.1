@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471CF80CA43
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:51:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2CB580CA46
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67DCC1C20CAC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:51:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BC35B20E2C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD153C06F;
-	Mon, 11 Dec 2023 12:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897F53C064;
+	Mon, 11 Dec 2023 12:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqf/1aY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0QwzPn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833753BB2B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:51:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0028DC433C7;
-	Mon, 11 Dec 2023 12:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC053BB2B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:51:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5045C433C8;
+	Mon, 11 Dec 2023 12:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702299074;
-	bh=dF4iH6HwORPeoa2tNk68DdGI06ejYWqHWXtXLrEXWJ8=;
+	s=korg; t=1702299079;
+	bh=ShJXSvfCtWzeL0bapRICs4h+dKJA5A55hZVuUlxPYCo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zqf/1aY9IkhjBME+47OvjuiN2AJQayj+rqj4pZvYZgquRoZ0oQbqWNCumykuXjglo
-	 Dbj9S8nK4KK55l5bg4JYFVjvA1ZrKJqerdoxJPJ6oP+NhmAs9zKuo8p6iegEUA9VHh
-	 tKUmMbllryX2MVHY+Wsjd+mzQeu0W+XPk+ZEht7U=
-Subject: FAILED: patch "[PATCH] cifs: Fix flushing, invalidation and file size with FICLONE" failed to apply to 5.15-stable tree
+	b=v0QwzPn1OTz54DG28T2SIjHg6lNDezws0dgcMr6Tx/k6dCy1zbQn9TzDHNEf0Gzmu
+	 THt4fdJpGKWVc9wHW/3d9rZt8WTz14Fi/yt5SrBmZGmslcw2yZJZwFgVYGfKVL6lKo
+	 CoU8afv+ufhkhptchLZsE61GAVSveRWtoc3x2sEs=
+Subject: FAILED: patch "[PATCH] cifs: Fix flushing, invalidation and file size with FICLONE" failed to apply to 5.10-stable tree
 To: dhowells@redhat.com,hch@lst.de,jlayton@kernel.org,nspmangalore@gmail.com,pc@manguebit.com,rohiths.msft@gmail.com,stfrench@microsoft.com,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Dec 2023 13:51:11 +0100
-Message-ID: <2023121111-spoiling-caddie-94be@gregkh>
+Date: Mon, 11 Dec 2023 13:51:14 +0100
+Message-ID: <2023121113-waltz-shifter-df2b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x c54fc3a4f375663f2361a9cbb2955fb4ef912879
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121111-spoiling-caddie-94be@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121113-waltz-shifter-df2b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
