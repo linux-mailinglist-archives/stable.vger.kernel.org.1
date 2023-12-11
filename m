@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8F780D7AD
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B180D819
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47A991F21A97
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0FE1F21343
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503BA51C3F;
-	Mon, 11 Dec 2023 18:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3889351C35;
+	Mon, 11 Dec 2023 18:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2/BDue7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NksNrDDJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044D720DDE;
-	Mon, 11 Dec 2023 18:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C84BC433C7;
-	Mon, 11 Dec 2023 18:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF115FC06;
+	Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59686C433C8;
+	Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319943;
-	bh=rVIwLlrQISsvbm2RoV5lCkG3X+FjWUJMHJ/vK7Q+mSI=;
+	s=korg; t=1702320157;
+	bh=ho9Xo0zP5WPr+m49TGFjD6JaAOYDuzesMOuw3biousc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2/BDue7Q/OTyUqXlt1ScE9qwaqKgozVzVJK9nmYGJbifzOXyG5Ie1hr850Vw8Hx0
-	 awT3/1rj0/rm/AMxXEVFkRpbeR6JNnJPpWdPsEwTk3I0j+wYEzY/Y6A8Z4fD6j2Eey
-	 dld7luVyf7xJexWeQ8koiibSV5gEA4oDNQBQvNPM=
+	b=NksNrDDJ5+W+aSw79NRJuXeraNox8OI262JJ9UPbBVj0gqw/teu1HFN9h4h1r5yUD
+	 1Q7ysj6ukj27RAyr4Ftumci/VuiwUdmkkLTRpIlj6e5IAQ/a584p2mvR5DvQJiPbkc
+	 bmjNpRw/P2QejlwIgk4U0OOOZoYQ92VaATHJLaFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Roland Hieber <rhi@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Alex Pakhunov <alexey.pakhunov@spacex.com>,
+	Vincent Wong <vincent.wong2@spacex.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 45/97] ARM: dts: imx7: Declare timers compatible with fsl,imx6dl-gpt
+Subject: [PATCH 5.4 04/67] tg3: Increment tx_dropped in tg3_tso_bug()
 Date: Mon, 11 Dec 2023 19:21:48 +0100
-Message-ID: <20231211182021.648152552@linuxfoundation.org>
+Message-ID: <20231211182015.264396745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +55,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Alex Pakhunov <alexey.pakhunov@spacex.com>
 
-[ Upstream commit 397caf68e2d36532054cb14ae8995537f27f8b61 ]
+[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
 
-The timer nodes declare compatibility with "fsl,imx6sx-gpt", which
-itself is compatible with "fsl,imx6dl-gpt". Switch the fallback
-compatible from "fsl,imx6sx-gpt" to "fsl,imx6dl-gpt".
+tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
+The number of discarded frames should be incremented accordingly.
 
-Fixes: 949673450291 ("ARM: dts: add imx7d soc dtsi file")
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
+Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 854c380cccea4..03bde2fb9bb11 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -437,7 +437,7 @@
- 			};
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index fb2543b6cec10..4cfb0d0ee80cc 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -7896,8 +7896,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
  
- 			gpt1: timer@302d0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302d0000 0x10000>;
- 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT1_ROOT_CLK>,
-@@ -446,7 +446,7 @@
- 			};
+ 	segs = skb_gso_segment(skb, tp->dev->features &
+ 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
+-	if (IS_ERR(segs) || !segs)
++	if (IS_ERR(segs) || !segs) {
++		tnapi->tx_dropped++;
+ 		goto tg3_tso_bug_end;
++	}
  
- 			gpt2: timer@302e0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302e0000 0x10000>;
- 				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT2_ROOT_CLK>,
-@@ -456,7 +456,7 @@
- 			};
- 
- 			gpt3: timer@302f0000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x302f0000 0x10000>;
- 				interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT3_ROOT_CLK>,
-@@ -466,7 +466,7 @@
- 			};
- 
- 			gpt4: timer@30300000 {
--				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
-+				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
- 				reg = <0x30300000 0x10000>;
- 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_GPT4_ROOT_CLK>,
+ 	do {
+ 		nskb = segs;
 -- 
 2.42.0
 
