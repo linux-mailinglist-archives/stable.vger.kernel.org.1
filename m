@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3397C80D8AC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E4A80D6ED
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0D49281AF9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 826E1B21409
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5232751C2C;
-	Mon, 11 Dec 2023 18:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C31251C2E;
+	Mon, 11 Dec 2023 18:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RP/VRBni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtYqEZ0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF275102A;
-	Mon, 11 Dec 2023 18:47:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E28C433C7;
-	Mon, 11 Dec 2023 18:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0AEFBE0;
+	Mon, 11 Dec 2023 18:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B680C433C7;
+	Mon, 11 Dec 2023 18:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320470;
-	bh=X1OS0npo3Ut+s4GEXcM4Mv23y6cqfpP1vTTKHfmb9Cs=;
+	s=korg; t=1702319662;
+	bh=yS0l554uQ0ZhX+muyA0lLqzpN7bOfIK5IHpVxOsCqdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RP/VRBniaKFO7BWMoPFIAHhavLWF8ulDhKt33jUw5blS/W6G89vPABp/63/RTTozj
-	 0FKutXcK5w8Ss09AgPamKPTiLa0eWBfNEZJxzd30dAk3YRB22kaeHrXSiShn3x2KXZ
-	 +yaZzI9Zmha+MiSgTpiJu7xFV/oZ1FbS+DOe7UGU=
+	b=LtYqEZ0Ka8JfX14wfU8pRGgi4XkvVOyLX8ZlgQbyU3IqoUbQUqi3UD/c8AI4fbg9o
+	 wOaklEUbG1w0NBbkPKe8qxcPM//nmaHyiBmFZBmubSpxNvzKq+hdp7yaQW4k1XVYo2
+	 KGzwuEftJ/0L/RBdV/9hRUMR9E4r4do0uGO5+Vpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/194] RDMA/rtrs-srv: Free srv_mr iu only when always_invalidate is true
-Date: Mon, 11 Dec 2023 19:21:03 +0100
-Message-ID: <20231211182039.752208179@linuxfoundation.org>
+	David Jeffery <djeffery@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.6 171/244] md/raid6: use valid sector values to determine if an I/O should wait on the reshape
+Date: Mon, 11 Dec 2023 19:21:04 +0100
+Message-ID: <20231211182053.576662361@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: David Jeffery <djeffery@redhat.com>
 
-[ Upstream commit 3a71cd6ca0ce33d1af019ecf1d7167406fa54400 ]
+commit c467e97f079f0019870c314996fae952cc768e82 upstream.
 
-Since srv_mr->iu is allocated and used only when always_invalidate is
-true, free it only when always_invalidate is true.
+During a reshape or a RAID6 array such as expanding by adding an additional
+disk, I/Os to the region of the array which have not yet been reshaped can
+stall indefinitely. This is from errors in the stripe_ahead_of_reshape
+function causing md to think the I/O is to a region in the actively
+undergoing the reshape.
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-5-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+stripe_ahead_of_reshape fails to account for the q disk having a sector
+value of 0. By not excluding the q disk from the for loop, raid6 will always
+generate a min_sector value of 0, causing a return value which stalls.
+
+The function's max_sector calculation also uses min() when it should use
+max(), causing the max_sector value to always be 0. During a backwards
+rebuild this can cause the opposite problem where it allows I/O to advance
+when it should wait.
+
+Fixing these errors will allow safe I/O to advance in a timely manner and
+delay only I/O which is unsafe due to stripes in the middle of undergoing
+the reshape.
+
+Fixes: 486f60558607 ("md/raid5: Check all disks in a stripe_head for reshape progress")
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: David Jeffery <djeffery@redhat.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231128181233.6187-1-djeffery@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/raid5.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 6710887b1a13f..091db0853a6fb 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -549,7 +549,10 @@ static void unmap_cont_bufs(struct rtrs_srv_path *srv_path)
- 		struct rtrs_srv_mr *srv_mr;
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5892,11 +5892,11 @@ static bool stripe_ahead_of_reshape(stru
+ 	int dd_idx;
  
- 		srv_mr = &srv_path->mrs[i];
--		rtrs_iu_free(srv_mr->iu, srv_path->s.dev->ib_dev, 1);
-+
-+		if (always_invalidate)
-+			rtrs_iu_free(srv_mr->iu, srv_path->s.dev->ib_dev, 1);
-+
- 		ib_dereg_mr(srv_mr->mr);
- 		ib_dma_unmap_sg(srv_path->s.dev->ib_dev, srv_mr->sgt.sgl,
- 				srv_mr->sgt.nents, DMA_BIDIRECTIONAL);
--- 
-2.42.0
-
+ 	for (dd_idx = 0; dd_idx < sh->disks; dd_idx++) {
+-		if (dd_idx == sh->pd_idx)
++		if (dd_idx == sh->pd_idx || dd_idx == sh->qd_idx)
+ 			continue;
+ 
+ 		min_sector = min(min_sector, sh->dev[dd_idx].sector);
+-		max_sector = min(max_sector, sh->dev[dd_idx].sector);
++		max_sector = max(max_sector, sh->dev[dd_idx].sector);
+ 	}
+ 
+ 	spin_lock_irq(&conf->device_lock);
 
 
 
