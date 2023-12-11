@@ -1,52 +1,49 @@
-Return-Path: <stable+bounces-5767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C217080D6AA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E19980D8A9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F39F21C2160D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3ED1C21629
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5CA52F6A;
-	Mon, 11 Dec 2023 18:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B8351C2B;
+	Mon, 11 Dec 2023 18:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbyPbSzv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPVXaHtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D3A524D7;
-	Mon, 11 Dec 2023 18:33:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33FCC433C9;
-	Mon, 11 Dec 2023 18:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714145102A;
+	Mon, 11 Dec 2023 18:47:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8D7C433C7;
+	Mon, 11 Dec 2023 18:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319611;
-	bh=cTF2GC+9aIFqD+6nB1EdY1Y6Qv+aPoLR8EYrpXfENq0=;
+	s=korg; t=1702320468;
+	bh=MqMnIWL3lmg5YDKzr/7izU68XQQ39xFWqVkWOzEJ7OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GbyPbSzvz5975Se0ft76Hu7bM36LyjtPQ6ZUt56B2/oI66pHjQv1i0IllBJwnZSvA
-	 +5dfZ+Kwh+n3QaiAkiZ2YL6GAMK4DrQkLoXlnqSaHMsj6kIu2fdn8uPUUqi4OdkCnH
-	 ZYnWIG1Un2psubJv8Lr7UE/yIR9zkK/1ARwDdZr0=
+	b=hPVXaHtS+klt3XP1SexI5dRLSK7E8QBFhHVuFAKU//FQMc9vePT+ZaLLGCFRzuFcb
+	 Aic4ED6vjOIpy9lZgOiIgGG72017iTDPqyaikjorlUqWwUvCk4lVgPj7XB6sklg0DA
+	 TBLzVZ93qshbN+xkbIcRTFPxKKLuHjCDozVMG1RE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugh Dickins <hughd@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.6 168/244] mm: fix oops when filemap_map_pmd() without prealloc_pte
-Date: Mon, 11 Dec 2023 19:21:01 +0100
-Message-ID: <20231211182053.417228446@linuxfoundation.org>
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/194] RDMA/rtrs-srv: Check return values while processing info request
+Date: Mon, 11 Dec 2023 19:21:02 +0100
+Message-ID: <20231211182039.711988785@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,67 +53,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugh Dickins <hughd@google.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-commit 9aa1345d66b8132745ffb99b348b1492088da9e2 upstream.
+[ Upstream commit ed1e52aefa16f15dc2f04054a3baf11726a7460e ]
 
-syzbot reports oops in lockdep's __lock_acquire(), called from
-__pte_offset_map_lock() called from filemap_map_pages(); or when I run the
-repro, the oops comes in pmd_install(), called from filemap_map_pmd()
-called from filemap_map_pages(), just before the __pte_offset_map_lock().
+While processing info request, it could so happen that the srv_path goes
+to CLOSING state, cause of any of the error events from RDMA. That state
+change should be picked up while trying to change the state in
+process_info_req, by checking the return value. In case the state change
+call in process_info_req fails, we fail the processing.
 
-The problem is that filemap_map_pmd() has been assuming that when it finds
-pmd_none(), a page table has already been prepared in prealloc_pte; and
-indeed do_fault_around() has been careful to preallocate one there, when
-it finds pmd_none(): but what if *pmd became none in between?
+We should also check the return value for rtrs_srv_path_up, since it
+sends a link event to the client above, and the client can fail for any
+reason.
 
-My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
-easy for *pmd to be cleared while servicing a page fault; but even before
-those, a huge *pmd might be zapped while a fault is serviced.
-
-The difference in symptomatic stack traces comes from the "memory model"
-in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
-models that is strict, and will oops on the NULL prealloc_pte; in other
-models, it will construct a bogus value to be populated into *pmd, then
-__pte_offset_map_lock() oops when trying to access split ptlock pointer
-(or some other symptom in normal case of ptlock embedded not pointer).
-
-Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
-Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
-Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>,
-Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>    [5.12+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-4-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3422,7 +3422,7 @@ static bool filemap_map_pmd(struct vm_fa
- 		}
- 	}
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index e26488ee36eac..6710887b1a13f 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -715,20 +715,23 @@ static void rtrs_srv_info_rsp_done(struct ib_cq *cq, struct ib_wc *wc)
+ 	WARN_ON(wc->opcode != IB_WC_SEND);
+ }
  
--	if (pmd_none(*vmf->pmd))
-+	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
- 		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
+-static void rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
++static int rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
+ {
+ 	struct rtrs_srv_sess *srv = srv_path->srv;
+ 	struct rtrs_srv_ctx *ctx = srv->ctx;
+-	int up;
++	int up, ret = 0;
  
- 	return false;
+ 	mutex_lock(&srv->paths_ev_mutex);
+ 	up = ++srv->paths_up;
+ 	if (up == 1)
+-		ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
++		ret = ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
+ 	mutex_unlock(&srv->paths_ev_mutex);
+ 
+ 	/* Mark session as established */
+-	srv_path->established = true;
++	if (!ret)
++		srv_path->established = true;
++
++	return ret;
+ }
+ 
+ static void rtrs_srv_path_down(struct rtrs_srv_path *srv_path)
+@@ -857,7 +860,12 @@ static int process_info_req(struct rtrs_srv_con *con,
+ 		goto iu_free;
+ 	kobject_get(&srv_path->kobj);
+ 	get_device(&srv_path->srv->dev);
+-	rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
++	err = rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
++	if (!err) {
++		rtrs_err(s, "rtrs_srv_change_state(), err: %d\n", err);
++		goto iu_free;
++	}
++
+ 	rtrs_srv_start_hb(srv_path);
+ 
+ 	/*
+@@ -866,7 +874,11 @@ static int process_info_req(struct rtrs_srv_con *con,
+ 	 * all connections are successfully established.  Thus, simply notify
+ 	 * listener with a proper event if we are the first path.
+ 	 */
+-	rtrs_srv_path_up(srv_path);
++	err = rtrs_srv_path_up(srv_path);
++	if (err) {
++		rtrs_err(s, "rtrs_srv_path_up(), err: %d\n", err);
++		goto iu_free;
++	}
+ 
+ 	ib_dma_sync_single_for_device(srv_path->s.dev->ib_dev,
+ 				      tx_iu->dma_addr,
+-- 
+2.42.0
+
 
 
 
