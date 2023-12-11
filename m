@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-5729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1363880D627
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B51B80D878
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 451901C2158B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAB2F1F217D5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CD45103D;
-	Mon, 11 Dec 2023 18:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E63651038;
+	Mon, 11 Dec 2023 18:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgDbfZw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZ/gkvYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8854174A;
-	Mon, 11 Dec 2023 18:31:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160C1C433C7;
-	Mon, 11 Dec 2023 18:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCA94437B;
+	Mon, 11 Dec 2023 18:46:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2AAC433C7;
+	Mon, 11 Dec 2023 18:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319508;
-	bh=nspoN+6z6S/5FksqQGy0v/F7oAGb4ZdLbUp50OcOe7c=;
+	s=korg; t=1702320365;
+	bh=abgO5QTWfp5JTB0gI+0oq8zpOdYOkSkam6fWFpSYAdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgDbfZw5unDWvBcmM5OSp/tYvqYf4x7vkQOXDng50sS1XZlbwtMKWfKxtmDJezmB7
-	 LnHgn4JYxBoHOEZZO201DICfFp9UbwKZMQYebruWoPo+YLeUog0Cw4SwOui1usblan
-	 FrCybXOriLZ1VMdLOcvthuNGcjTAOwL7OMjNu/dg=
+	b=pZ/gkvYymmTQQ5cHJxT24l4heKMQRcPiO8bQpq+NqMPf/Svd56HIbQtBopS4JH3ch
+	 xi/i9Go94KnxqjuGvxh0Wfdvyj4FcQXppFyGMk+oej1/04gS+ql3Hu3Ig5NsVS0zzk
+	 4uSh1teY1I1qJVUKEiVUb26XQmrOVcG3opq0hYDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jianheng Zhang <Jianheng.Zhang@synopsys.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/244] scripts/gdb: fix lx-device-list-bus and lx-device-list-class
+Subject: [PATCH 6.1 034/194] net: stmmac: fix FPE events losing
 Date: Mon, 11 Dec 2023 19:20:24 +0100
-Message-ID: <20231211182051.685078200@linuxfoundation.org>
+Message-ID: <20231211182038.087688775@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,101 +54,245 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Jianheng Zhang <Jianheng.Zhang@synopsys.com>
 
-[ Upstream commit 801a2b1b49f4dcf06703130922806e9c639c2ca8 ]
+[ Upstream commit 37e4b8df27bc68340f3fc80dbb27e3549c7f881c ]
 
-After the conversion to bus_to_subsys() and class_to_subsys(), the gdb
-scripts listing the system buses and classes respectively was broken, fix
-those by returning the subsys_priv pointer and have the various caller
-de-reference either the 'bus' or 'class' structure members accordingly.
+The status bits of register MAC_FPE_CTRL_STS are clear on read. Using
+32-bit read for MAC_FPE_CTRL_STS in dwmac5_fpe_configure() and
+dwmac5_fpe_send_mpacket() clear the status bits. Then the stmmac interrupt
+handler missing FPE event status and leads to FPE handshaking failure and
+retries.
+To avoid clear status bits of MAC_FPE_CTRL_STS in dwmac5_fpe_configure()
+and dwmac5_fpe_send_mpacket(), add fpe_csr to stmmac_fpe_cfg structure to
+cache the control bits of MAC_FPE_CTRL_STS and to avoid reading
+MAC_FPE_CTRL_STS in those methods.
 
-Link: https://lkml.kernel.org/r/20231130043317.174188-1-florian.fainelli@broadcom.com
-Fixes: 7b884b7f24b4 ("driver core: class.c: convert to only use class_to_subsys")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5a5586112b92 ("net: stmmac: support FPE link partner hand-shaking procedure")
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Jianheng Zhang <Jianheng.Zhang@synopsys.com>
+Link: https://lore.kernel.org/r/CY5PR12MB637225A7CF529D5BE0FBE59CBF81A@CY5PR12MB6372.namprd12.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/device.py | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac5.c  | 45 ++++++++-----------
+ drivers/net/ethernet/stmicro/stmmac/dwmac5.h  |  4 +-
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |  3 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |  4 +-
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c |  8 +++-
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   |  1 +
+ include/linux/stmmac.h                        |  1 +
+ 7 files changed, 36 insertions(+), 30 deletions(-)
 
-diff --git a/scripts/gdb/linux/device.py b/scripts/gdb/linux/device.py
-index 16376c5cfec64..0eabc5f4f8ca2 100644
---- a/scripts/gdb/linux/device.py
-+++ b/scripts/gdb/linux/device.py
-@@ -36,26 +36,26 @@ def for_each_bus():
-     for kobj in kset_for_each_object(gdb.parse_and_eval('bus_kset')):
-         subsys = container_of(kobj, kset_type.get_type().pointer(), 'kobj')
-         subsys_priv = container_of(subsys, subsys_private_type.get_type().pointer(), 'subsys')
--        yield subsys_priv['bus']
-+        yield subsys_priv
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
+index e95d35f1e5a0c..8fd167501fa0e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
+@@ -710,28 +710,22 @@ void dwmac5_est_irq_status(void __iomem *ioaddr, struct net_device *dev,
+ 	}
+ }
  
+-void dwmac5_fpe_configure(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
++void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
++			  u32 num_txq, u32 num_rxq,
+ 			  bool enable)
+ {
+ 	u32 value;
  
- def for_each_class():
-     for kobj in kset_for_each_object(gdb.parse_and_eval('class_kset')):
-         subsys = container_of(kobj, kset_type.get_type().pointer(), 'kobj')
-         subsys_priv = container_of(subsys, subsys_private_type.get_type().pointer(), 'subsys')
--        yield subsys_priv['class']
-+        yield subsys_priv
+-	if (!enable) {
+-		value = readl(ioaddr + MAC_FPE_CTRL_STS);
+-
+-		value &= ~EFPE;
+-
+-		writel(value, ioaddr + MAC_FPE_CTRL_STS);
+-		return;
++	if (enable) {
++		cfg->fpe_csr = EFPE;
++		value = readl(ioaddr + GMAC_RXQ_CTRL1);
++		value &= ~GMAC_RXQCTRL_FPRQ;
++		value |= (num_rxq - 1) << GMAC_RXQCTRL_FPRQ_SHIFT;
++		writel(value, ioaddr + GMAC_RXQ_CTRL1);
++	} else {
++		cfg->fpe_csr = 0;
+ 	}
+-
+-	value = readl(ioaddr + GMAC_RXQ_CTRL1);
+-	value &= ~GMAC_RXQCTRL_FPRQ;
+-	value |= (num_rxq - 1) << GMAC_RXQCTRL_FPRQ_SHIFT;
+-	writel(value, ioaddr + GMAC_RXQ_CTRL1);
+-
+-	value = readl(ioaddr + MAC_FPE_CTRL_STS);
+-	value |= EFPE;
+-	writel(value, ioaddr + MAC_FPE_CTRL_STS);
++	writel(cfg->fpe_csr, ioaddr + MAC_FPE_CTRL_STS);
+ }
  
+ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
+@@ -741,6 +735,9 @@ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
  
- def get_bus_by_name(name):
-     for item in for_each_bus():
--        if item['name'].string() == name:
-+        if item['bus']['name'].string() == name:
-             return item
-     raise gdb.GdbError("Can't find bus type {!r}".format(name))
+ 	status = FPE_EVENT_UNKNOWN;
  
++	/* Reads from the MAC_FPE_CTRL_STS register should only be performed
++	 * here, since the status flags of MAC_FPE_CTRL_STS are "clear on read"
++	 */
+ 	value = readl(ioaddr + MAC_FPE_CTRL_STS);
  
- def get_class_by_name(name):
-     for item in for_each_class():
--        if item['name'].string() == name:
-+        if item['class']['name'].string() == name:
-             return item
-     raise gdb.GdbError("Can't find device class {!r}".format(name))
+ 	if (value & TRSP) {
+@@ -766,19 +763,15 @@ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
+ 	return status;
+ }
  
-@@ -70,13 +70,13 @@ def klist_for_each(klist):
+-void dwmac5_fpe_send_mpacket(void __iomem *ioaddr, enum stmmac_mpacket_type type)
++void dwmac5_fpe_send_mpacket(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
++			     enum stmmac_mpacket_type type)
+ {
+-	u32 value;
++	u32 value = cfg->fpe_csr;
  
+-	value = readl(ioaddr + MAC_FPE_CTRL_STS);
+-
+-	if (type == MPACKET_VERIFY) {
+-		value &= ~SRSP;
++	if (type == MPACKET_VERIFY)
+ 		value |= SVER;
+-	} else {
+-		value &= ~SVER;
++	else if (type == MPACKET_RESPONSE)
+ 		value |= SRSP;
+-	}
  
- def bus_for_each_device(bus):
--    for kn in klist_for_each(bus['p']['klist_devices']):
-+    for kn in klist_for_each(bus['klist_devices']):
-         dp = container_of(kn, device_private_type.get_type().pointer(), 'knode_bus')
-         yield dp['device']
+ 	writel(value, ioaddr + MAC_FPE_CTRL_STS);
+ }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.h b/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
+index 53c138d0ff480..34e620790eb37 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
+@@ -153,9 +153,11 @@ int dwmac5_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
+ 			 unsigned int ptp_rate);
+ void dwmac5_est_irq_status(void __iomem *ioaddr, struct net_device *dev,
+ 			   struct stmmac_extra_stats *x, u32 txqcnt);
+-void dwmac5_fpe_configure(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
++void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
++			  u32 num_txq, u32 num_rxq,
+ 			  bool enable);
+ void dwmac5_fpe_send_mpacket(void __iomem *ioaddr,
++			     struct stmmac_fpe_cfg *cfg,
+ 			     enum stmmac_mpacket_type type);
+ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev);
  
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index f30e08a106cbe..c2181c277291b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -1441,7 +1441,8 @@ static int dwxgmac3_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
+ 	return 0;
+ }
  
- def class_for_each_device(cls):
--    for kn in klist_for_each(cls['p']['klist_devices']):
-+    for kn in klist_for_each(cls['klist_devices']):
-         dp = container_of(kn, device_private_type.get_type().pointer(), 'knode_class')
-         yield dp['device']
+-static void dwxgmac3_fpe_configure(void __iomem *ioaddr, u32 num_txq,
++static void dwxgmac3_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
++				   u32 num_txq,
+ 				   u32 num_rxq, bool enable)
+ {
+ 	u32 value;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+index 592b4067f9b8f..b2b9cf04bc726 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
++++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
+@@ -392,9 +392,11 @@ struct stmmac_ops {
+ 			     unsigned int ptp_rate);
+ 	void (*est_irq_status)(void __iomem *ioaddr, struct net_device *dev,
+ 			       struct stmmac_extra_stats *x, u32 txqcnt);
+-	void (*fpe_configure)(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
++	void (*fpe_configure)(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
++			      u32 num_txq, u32 num_rxq,
+ 			      bool enable);
+ 	void (*fpe_send_mpacket)(void __iomem *ioaddr,
++				 struct stmmac_fpe_cfg *cfg,
+ 				 enum stmmac_mpacket_type type);
+ 	int (*fpe_irq_status)(void __iomem *ioaddr, struct net_device *dev);
+ };
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 9f76c2f7d513b..69aac8ed84f67 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -957,7 +957,8 @@ static void stmmac_fpe_link_state_handle(struct stmmac_priv *priv, bool is_up)
+ 	bool *hs_enable = &fpe_cfg->hs_enable;
  
-@@ -103,7 +103,7 @@ class LxDeviceListBus(gdb.Command):
-     def invoke(self, arg, from_tty):
-         if not arg:
-             for bus in for_each_bus():
--                gdb.write('bus {}:\t{}\n'.format(bus['name'].string(), bus))
-+                gdb.write('bus {}:\t{}\n'.format(bus['bus']['name'].string(), bus))
-                 for dev in bus_for_each_device(bus):
-                     _show_device(dev, level=1)
-         else:
-@@ -123,7 +123,7 @@ class LxDeviceListClass(gdb.Command):
-     def invoke(self, arg, from_tty):
-         if not arg:
-             for cls in for_each_class():
--                gdb.write("class {}:\t{}\n".format(cls['name'].string(), cls))
-+                gdb.write("class {}:\t{}\n".format(cls['class']['name'].string(), cls))
-                 for dev in class_for_each_device(cls):
-                     _show_device(dev, level=1)
-         else:
+ 	if (is_up && *hs_enable) {
+-		stmmac_fpe_send_mpacket(priv, priv->ioaddr, MPACKET_VERIFY);
++		stmmac_fpe_send_mpacket(priv, priv->ioaddr, fpe_cfg,
++					MPACKET_VERIFY);
+ 	} else {
+ 		*lo_state = FPE_STATE_OFF;
+ 		*lp_state = FPE_STATE_OFF;
+@@ -5704,6 +5705,7 @@ static void stmmac_fpe_event_status(struct stmmac_priv *priv, int status)
+ 		/* If user has requested FPE enable, quickly response */
+ 		if (*hs_enable)
+ 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
++						fpe_cfg,
+ 						MPACKET_RESPONSE);
+ 	}
+ 
+@@ -7028,6 +7030,7 @@ static void stmmac_fpe_lp_task(struct work_struct *work)
+ 		if (*lo_state == FPE_STATE_ENTERING_ON &&
+ 		    *lp_state == FPE_STATE_ENTERING_ON) {
+ 			stmmac_fpe_configure(priv, priv->ioaddr,
++					     fpe_cfg,
+ 					     priv->plat->tx_queues_to_use,
+ 					     priv->plat->rx_queues_to_use,
+ 					     *enable);
+@@ -7046,6 +7049,7 @@ static void stmmac_fpe_lp_task(struct work_struct *work)
+ 			netdev_info(priv->dev, SEND_VERIFY_MPAKCET_FMT,
+ 				    *lo_state, *lp_state);
+ 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
++						fpe_cfg,
+ 						MPACKET_VERIFY);
+ 		}
+ 		/* Sleep then retry */
+@@ -7060,6 +7064,7 @@ void stmmac_fpe_handshake(struct stmmac_priv *priv, bool enable)
+ 	if (priv->plat->fpe_cfg->hs_enable != enable) {
+ 		if (enable) {
+ 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
++						priv->plat->fpe_cfg,
+ 						MPACKET_VERIFY);
+ 		} else {
+ 			priv->plat->fpe_cfg->lo_fpe_state = FPE_STATE_OFF;
+@@ -7472,6 +7477,7 @@ int stmmac_suspend(struct device *dev)
+ 	if (priv->dma_cap.fpesel) {
+ 		/* Disable FPE */
+ 		stmmac_fpe_configure(priv, priv->ioaddr,
++				     priv->plat->fpe_cfg,
+ 				     priv->plat->tx_queues_to_use,
+ 				     priv->plat->rx_queues_to_use, false);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 773e415cc2de6..390c900832cd2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -1073,6 +1073,7 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
+ 
+ 	priv->plat->fpe_cfg->enable = false;
+ 	stmmac_fpe_configure(priv, priv->ioaddr,
++			     priv->plat->fpe_cfg,
+ 			     priv->plat->tx_queues_to_use,
+ 			     priv->plat->rx_queues_to_use,
+ 			     false);
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index d82ff9fa1a6e8..9f4a4f70270df 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -172,6 +172,7 @@ struct stmmac_fpe_cfg {
+ 	bool hs_enable;				/* FPE handshake enable */
+ 	enum stmmac_fpe_state lp_fpe_state;	/* Link Partner FPE state */
+ 	enum stmmac_fpe_state lo_fpe_state;	/* Local station FPE state */
++	u32 fpe_csr;				/* MAC_FPE_CTRL_STS reg cache */
+ };
+ 
+ struct stmmac_safety_feature_cfg {
 -- 
 2.42.0
 
