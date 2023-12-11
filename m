@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-5570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7F880D56F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ABF80D6E4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A391F21634
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBA251C219B5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9610851020;
-	Mon, 11 Dec 2023 18:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2494951C2A;
+	Mon, 11 Dec 2023 18:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1+zfoQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueJGaAuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A044F212;
-	Mon, 11 Dec 2023 18:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C344DC433C7;
-	Mon, 11 Dec 2023 18:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D825AFBE1;
+	Mon, 11 Dec 2023 18:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF9FC433CC;
+	Mon, 11 Dec 2023 18:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319075;
-	bh=6j18Z38UQwfgOoV54NTPO6ig/ByL9W4/3o49fZEW5S0=;
+	s=korg; t=1702319651;
+	bh=f4k8oNYr1BOX6BlZ2iDFPlmtZGDeDSvOT91ngqnDsp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1+zfoQbdkzohPnAEcbVC5R25XuTuzBGTvn39rVv9en5uuOx9kjiy+GHUHCPVY+TR
-	 +MBqrNfgnOCbmjnn+y60dpO4/G+odTT7fuSxsuzsuXNvoGhbxC1Y3etXzkOi/aP2Mu
-	 mz6i1cyzHBES1K974pVilAQW7kyI0R7Ct3zRTRZk=
+	b=ueJGaAuyYgGUqh/1ls1d4mM/Q3H4BV7fys/dPB3XU/c3GcfX6MDlRvXGXiLc5+lic
+	 YhBy4JCxm2uTG7KEc3K28GXjuwnK0ePAd5gZNhosh15MJ/LDLteDqkNCVak3eUDDTp
+	 Jgez92G+Lj9FLKafL/TnUDkeo/EG+jWOgRRfAdls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/55] netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 185/244] arm64: dts: mediatek: mt8183: Move thermal-zones to the root node
 Date: Mon, 11 Dec 2023 19:21:18 +0100
-Message-ID: <20231211182012.528035596@linuxfoundation.org>
+Message-ID: <20231211182054.234290128@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,109 +51,282 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 28628fa952fefc7f2072ce6e8016968cc452b1ba ]
+commit 5a60d63439694590cd5ab1f998fc917ff7ba1c1d upstream.
 
-Linkui Xiao reported that there's a race condition when ipset swap and destroy is
-called, which can lead to crash in add/del/test element operations. Swap then
-destroy are usual operations to replace a set with another one in a production
-system. The issue can in some cases be reproduced with the script:
+The thermal zones are not a soc bus device: move it to the root
+node to solve simple_bus_reg warnings.
 
-ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
-ipset add hash_ip1 172.20.0.0/16
-ipset add hash_ip1 192.168.0.0/16
-iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
-while [ 1 ]
-do
-	# ... Ongoing traffic...
-        ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
-        ipset add hash_ip2 172.20.0.0/16
-        ipset swap hash_ip1 hash_ip2
-        ipset destroy hash_ip2
-        sleep 0.05
-done
-
-In the race case the possible order of the operations are
-
-	CPU0			CPU1
-	ip_set_test
-				ipset swap hash_ip1 hash_ip2
-				ipset destroy hash_ip2
-	hash_net_kadt
-
-Swap replaces hash_ip1 with hash_ip2 and then destroy removes hash_ip2 which
-is the original hash_ip1. ip_set_test was called on hash_ip1 and because destroy
-removed it, hash_net_kadt crashes.
-
-The fix is to force ip_set_swap() to wait for all readers to finish accessing the
-old set pointers by calling synchronize_rcu().
-
-The first version of the patch was written by Linkui Xiao <xiaolinkui@kylinos.cn>.
-
-v2: synchronize_rcu() is moved into ip_set_swap() in order not to burden
-    ip_set_destroy() unnecessarily when all sets are destroyed.
-v3: Florian Westphal pointed out that all netfilter hooks run with rcu_read_lock() held
-    and em_ipset.c wraps the entire ip_set_test() in rcu read lock/unlock pair.
-    So there's no need to extend the rcu read locked area in ipset itself.
-
-Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
-Reported by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b325ce39785b ("arm64: dts: mt8183: add thermal zone node")
+Link: https://lore.kernel.org/r/20231025093816.44327-9-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi |  242 +++++++++++++++----------------
+ 1 file changed, 121 insertions(+), 121 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 31756d1bf83e7..031bb83aed70a 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -64,6 +64,8 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
- 	ip_set_dereference((inst)->ip_set_list)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
-+#define ip_set_dereference_nfnl(p)	\
-+	rcu_dereference_check(p, lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET))
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1210,127 +1210,6 @@
+ 			nvmem-cell-names = "calibration-data";
+ 		};
  
- /* The set types are implemented in modules and registered set types
-  * can be found in ip_set_type_list. Adding/deleting types is
-@@ -552,15 +554,10 @@ __ip_set_put_netlink(struct ip_set *set)
- static inline struct ip_set *
- ip_set_rcu_get(struct net *net, ip_set_id_t index)
- {
--	struct ip_set *set;
- 	struct ip_set_net *inst = ip_set_pernet(net);
- 
--	rcu_read_lock();
--	/* ip_set_list itself needs to be protected */
--	set = rcu_dereference(inst->ip_set_list)[index];
--	rcu_read_unlock();
+-		thermal_zones: thermal-zones {
+-			cpu_thermal: cpu-thermal {
+-				polling-delay-passive = <100>;
+-				polling-delay = <500>;
+-				thermal-sensors = <&thermal 0>;
+-				sustainable-power = <5000>;
 -
--	return set;
-+	/* ip_set_list and the set pointer need to be protected */
-+	return ip_set_dereference_nfnl(inst->ip_set_list)[index];
- }
- 
- int
-@@ -1227,6 +1224,9 @@ static int ip_set_swap(struct net *net, struct sock *ctnl, struct sk_buff *skb,
- 	ip_set(inst, to_id) = from;
- 	write_unlock_bh(&ip_set_ref_lock);
- 
-+	/* Make sure all readers of the old set pointers are completed. */
-+	synchronize_rcu();
+-				trips {
+-					threshold: trip-point0 {
+-						temperature = <68000>;
+-						hysteresis = <2000>;
+-						type = "passive";
+-					};
+-
+-					target: trip-point1 {
+-						temperature = <80000>;
+-						hysteresis = <2000>;
+-						type = "passive";
+-					};
+-
+-					cpu_crit: cpu-crit {
+-						temperature = <115000>;
+-						hysteresis = <2000>;
+-						type = "critical";
+-					};
+-				};
+-
+-				cooling-maps {
+-					map0 {
+-						trip = <&target>;
+-						cooling-device = <&cpu0
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu1
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu2
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu3
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>;
+-						contribution = <3072>;
+-					};
+-					map1 {
+-						trip = <&target>;
+-						cooling-device = <&cpu4
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu5
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu6
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu7
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>;
+-						contribution = <1024>;
+-					};
+-				};
+-			};
+-
+-			/* The tzts1 ~ tzts6 don't need to polling */
+-			/* The tzts1 ~ tzts6 don't need to thermal throttle */
+-
+-			tzts1: tzts1 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 1>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts2: tzts2 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 2>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts3: tzts3 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 3>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts4: tzts4 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 4>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts5: tzts5 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 5>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tztsABB: tztsABB {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 6>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-		};
+-
+ 		pwm0: pwm@1100e000 {
+ 			compatible = "mediatek,mt8183-disp-pwm";
+ 			reg = <0 0x1100e000 0 0x1000>;
+@@ -2105,4 +1984,125 @@
+ 			power-domains = <&spm MT8183_POWER_DOMAIN_CAM>;
+ 		};
+ 	};
 +
- 	return 0;
- }
- 
--- 
-2.42.0
-
++	thermal_zones: thermal-zones {
++		cpu_thermal: cpu-thermal {
++			polling-delay-passive = <100>;
++			polling-delay = <500>;
++			thermal-sensors = <&thermal 0>;
++			sustainable-power = <5000>;
++
++			trips {
++				threshold: trip-point0 {
++					temperature = <68000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				target: trip-point1 {
++					temperature = <80000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				cpu_crit: cpu-crit {
++					temperature = <115000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
++			};
++
++			cooling-maps {
++				map0 {
++					trip = <&target>;
++					cooling-device = <&cpu0
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu1
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu2
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu3
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>;
++					contribution = <3072>;
++				};
++				map1 {
++					trip = <&target>;
++					cooling-device = <&cpu4
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu5
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu6
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu7
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>;
++					contribution = <1024>;
++				};
++			};
++		};
++
++		/* The tzts1 ~ tzts6 don't need to polling */
++		/* The tzts1 ~ tzts6 don't need to thermal throttle */
++
++		tzts1: tzts1 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 1>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts2: tzts2 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 2>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts3: tzts3 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 3>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts4: tzts4 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 4>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts5: tzts5 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 5>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tztsABB: tztsABB {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 6>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++	};
+ };
 
 
 
