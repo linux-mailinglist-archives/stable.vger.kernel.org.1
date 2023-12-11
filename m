@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BDB80D559
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:23:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8690F80D6EA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3FCF1C21408
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:23:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 411F728226E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F415101B;
-	Mon, 11 Dec 2023 18:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DD351C3D;
+	Mon, 11 Dec 2023 18:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUm424lJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzAMH8pf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A87F4F212;
-	Mon, 11 Dec 2023 18:23:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7619DC433C7;
-	Mon, 11 Dec 2023 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9681FBE0;
+	Mon, 11 Dec 2023 18:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE86C433CA;
+	Mon, 11 Dec 2023 18:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319027;
-	bh=Cg1QkWfAIJuZtjICB3tch3wKB+PpaHDkeEO3uZ0Cm4k=;
+	s=korg; t=1702319665;
+	bh=RKN8yHQDSTuyJrlzsqraM/ulndCsCP1zkezaQojMiRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUm424lJrkKnmMsO7tUjLFswPl5DMpW4dY/G0GGRufaPJ8BPvV4fNOHZ1Pa5Eygrt
-	 sTDHwRIAqj37d4DpGJWZwgtav+NBUN3qKcp087Ff2f4all5P4k7JBRQwWCwc3SRdm+
-	 g8MAVZJDaEWTXggKoAydcPOJCVRN0vMEis0G89jM=
+	b=ZzAMH8pfFUQapFXN7de3vbMb2e2ccfxjj15VN86oa+rzSoMf9RscCBSCpfYcHvT5J
+	 SjC98C6Ef/TIc+pUz29K1P4c+6FWPls0HwRoQDvUWUsFN9YUHeH9Q+FNea/oWs9cKQ
+	 uJRLalpX+NE8QkKFTV7bZ4SzyScqcncHjLO7bLOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YuanShang <YuanShang.Mao@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 12/55] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
+Subject: [PATCH 6.6 189/244] coresight: etm4x: Remove bogous __exit annotation for some functions
 Date: Mon, 11 Dec 2023 19:21:22 +0100
-Message-ID: <20231211182012.670952917@linuxfoundation.org>
+Message-ID: <20231211182054.424388539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,38 +55,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YuanShang <YuanShang.Mao@amd.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
+[ Upstream commit 348ddab81f7b0983d9fb158df910254f08d3f887 ]
 
-The variable "chunk_ptr" should be a pointer pointing
-to a struct drm_amdgpu_cs_chunk instead of to a pointer
-of that.
+etm4_platform_driver (which lives in ".data" contains a reference to
+etm4_remove_platform_dev(). So the latter must not be marked with __exit
+which results in the function being discarded for a build with
+CONFIG_CORESIGHT_SOURCE_ETM4X=y which in turn makes the remove pointer
+contain invalid data.
 
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+etm4x_amba_driver referencing etm4_remove_amba() has the same issue.
+
+Drop the __exit annotations for the two affected functions and a third
+one that is called by the other two.
+
+For reasons I don't understand this isn't catched by building with
+CONFIG_DEBUG_SECTION_MISMATCH=y.
+
+Fixes: c23bc382ef0e ("coresight: etm4x: Refactor probing routine")
+Fixes: 5214b563588e ("coresight: etm4x: Add support for sysreg only devices")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: James Clark <james.clark@arm.com>
+Link: https://lore.kernel.org/all/20230929081540.yija47lsj35xtj4v@pengutronix.de/
+Link: https://lore.kernel.org/r/20230929081637.2377335-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 70e446c2acf82..94b06c918e80d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -147,7 +147,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, union drm_amdgpu_cs
- 	}
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 77b0271ce6eb9..34aee59dd1473 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2224,7 +2224,7 @@ static void clear_etmdrvdata(void *info)
+ 	per_cpu(delayed_probe, cpu) = NULL;
+ }
  
- 	for (i = 0; i < p->nchunks; i++) {
--		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
-+		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
- 		struct drm_amdgpu_cs_chunk user_chunk;
- 		uint32_t __user *cdata;
+-static void __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
++static void etm4_remove_dev(struct etmv4_drvdata *drvdata)
+ {
+ 	bool had_delayed_probe;
+ 	/*
+@@ -2253,7 +2253,7 @@ static void __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
+ 	}
+ }
+ 
+-static void __exit etm4_remove_amba(struct amba_device *adev)
++static void etm4_remove_amba(struct amba_device *adev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(&adev->dev);
+ 
+@@ -2261,7 +2261,7 @@ static void __exit etm4_remove_amba(struct amba_device *adev)
+ 		etm4_remove_dev(drvdata);
+ }
+ 
+-static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
++static int etm4_remove_platform_dev(struct platform_device *pdev)
+ {
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
  
 -- 
 2.42.0
