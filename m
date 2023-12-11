@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-6338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D955380DA29
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAD380D84E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16F701C216FE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386701F21B0D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510B452F79;
-	Mon, 11 Dec 2023 18:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD725102F;
+	Mon, 11 Dec 2023 18:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWl98WNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiBmW86W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6DD321B8;
-	Mon, 11 Dec 2023 18:59:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B550C433C8;
-	Mon, 11 Dec 2023 18:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401A0FC06;
+	Mon, 11 Dec 2023 18:44:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3D7C433C8;
+	Mon, 11 Dec 2023 18:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321159;
-	bh=oeOB8+czq7pyAAC01KkbHEyG+G0jp6xINnSxP9+s1As=;
+	s=korg; t=1702320275;
+	bh=bOSwlyvi0jlQXhN6JT13bAngwarbnZpI8v1XejfIZxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWl98WNPgBfqajLcV1C26D/8iqBVOQS5FXJBcgeebczCYmYWgJJ2Ewb5D/YeJrp6g
-	 2OAkoLI9gILTwDAKctfvL3JoqkwhXrLA230MuNj2ZlmoBxuv2qcAplauwBLfDXfCMD
-	 eoPJUDSxhqzQC+cU/tTJGWk8ygAMCD3XNID3ldnw=
+	b=yiBmW86WrSXrz24iVlOUaZmu6YG5UCwl4smgvW6kKUhInJ2zFl+W/gZjLa4C1PogZ
+	 suF5CpnopiGVRTGl7FiUAGksSFb86EuqNBaRBGLtMLLEKNQMx7tSK1b5JXMcQQ3h86
+	 izqhk74B/2l2J0hgg7f87ajGwHB8h/6dY6FLK6D8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	mhiramat@kernel.org,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 103/141] tracing: Set actual size after ring buffer resize
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sean Tranchetti <stranche@codeaurora.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 5.4 58/67] netlink: dont call ->netlink_bind with table lock held
 Date: Mon, 11 Dec 2023 19:22:42 +0100
-Message-ID: <20231211182031.021559744@linuxfoundation.org>
+Message-ID: <20231211182017.460154714@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,75 +59,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 6d98a0f2ac3c021d21be66fa34e992137cd25bcb ]
+From: Florian Westphal <fw@strlen.de>
 
-Currently we can resize trace ringbuffer by writing a value into file
-'buffer_size_kb', then by reading the file, we get the value that is
-usually what we wrote. However, this value may be not actual size of
-trace ring buffer because of the round up when doing resize in kernel,
-and the actual size would be more useful.
+commit f2764bd4f6a8dffaec3e220728385d9756b3c2cb upstream.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230705002705.576633-1-zhengyejian1@huawei.com
+When I added support to allow generic netlink multicast groups to be
+restricted to subscribers with CAP_NET_ADMIN I was unaware that a
+genl_bind implementation already existed in the past.
 
-Cc: <mhiramat@kernel.org>
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: d78ab792705c ("tracing: Stop current tracer when resizing buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It was reverted due to ABBA deadlock:
+
+1. ->netlink_bind gets called with the table lock held.
+2. genetlink bind callback is invoked, it grabs the genl lock.
+
+But when a new genl subsystem is (un)registered, these two locks are
+taken in reverse order.
+
+One solution would be to revert again and add a comment in genl
+referring 1e82a62fec613, "genetlink: remove genl_bind").
+
+This would need a second change in mptcp to not expose the raw token
+value anymore, e.g.  by hashing the token with a secret key so userspace
+can still associate subflow events with the correct mptcp connection.
+
+However, Paolo Abeni reminded me to double-check why the netlink table is
+locked in the first place.
+
+I can't find one.  netlink_bind() is already called without this lock
+when userspace joins a group via NETLINK_ADD_MEMBERSHIP setsockopt.
+Same holds for the netlink_unbind operation.
+
+Digging through the history, commit f773608026ee1
+("netlink: access nlk groups safely in netlink bind and getname")
+expanded the lock scope.
+
+commit 3a20773beeeeade ("net: netlink: cap max groups which will be considered in netlink_bind()")
+... removed the nlk->ngroups access that the lock scope
+extension was all about.
+
+Reduce the lock scope again and always call ->netlink_bind without
+the table lock.
+
+The Fixes tag should be vs. the patch mentioned in the link below,
+but that one got squash-merged into the patch that came earlier in the
+series.
+
+Fixes: 4d54cc32112d8d ("mptcp: avoid lock_fast usage in accept path")
+Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/T/#u
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Sean Tranchetti <stranche@codeaurora.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ net/netlink/af_netlink.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index dc35f9150af7a..049daa6a9ad42 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6190,6 +6190,15 @@ static void set_buffer_entries(struct array_buffer *buf, unsigned long val)
- 		per_cpu_ptr(buf->data, cpu)->entries = val;
- }
- 
-+static void update_buffer_entries(struct array_buffer *buf, int cpu)
-+{
-+	if (cpu == RING_BUFFER_ALL_CPUS) {
-+		set_buffer_entries(buf, ring_buffer_size(buf->buffer, 0));
-+	} else {
-+		per_cpu_ptr(buf->data, cpu)->entries = ring_buffer_size(buf->buffer, cpu);
-+	}
-+}
-+
- #ifdef CONFIG_TRACER_MAX_TRACE
- /* resize @tr's buffer to the size of @size_tr's entries */
- static int resize_buffer_duplicate_size(struct array_buffer *trace_buf,
-@@ -6267,18 +6276,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 		return ret;
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1020,7 +1020,6 @@ static int netlink_bind(struct socket *s
+ 			return -EINVAL;
  	}
  
--	if (cpu == RING_BUFFER_ALL_CPUS)
--		set_buffer_entries(&tr->max_buffer, size);
--	else
--		per_cpu_ptr(tr->max_buffer.data, cpu)->entries = size;
-+	update_buffer_entries(&tr->max_buffer, cpu);
+-	netlink_lock_table();
+ 	if (nlk->netlink_bind && groups) {
+ 		int group;
  
-  out:
- #endif /* CONFIG_TRACER_MAX_TRACE */
+@@ -1032,13 +1031,14 @@ static int netlink_bind(struct socket *s
+ 			if (!err)
+ 				continue;
+ 			netlink_undo_bind(group, groups, sk);
+-			goto unlock;
++			return err;
+ 		}
+ 	}
  
--	if (cpu == RING_BUFFER_ALL_CPUS)
--		set_buffer_entries(&tr->array_buffer, size);
--	else
--		per_cpu_ptr(tr->array_buffer.data, cpu)->entries = size;
-+	update_buffer_entries(&tr->array_buffer, cpu);
- 
- 	return ret;
- }
--- 
-2.42.0
-
+ 	/* No need for barriers here as we return to user-space without
+ 	 * using any of the bound attributes.
+ 	 */
++	netlink_lock_table();
+ 	if (!bound) {
+ 		err = nladdr->nl_pid ?
+ 			netlink_insert(sk, nladdr->nl_pid) :
 
 
 
