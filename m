@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0F1280D7A5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F6080D76F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90D93B214F2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F7C91F2193C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E766251C2B;
-	Mon, 11 Dec 2023 18:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50672537ED;
+	Mon, 11 Dec 2023 18:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZ+LAtjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpsFs8fG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43FF4437B;
-	Mon, 11 Dec 2023 18:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F1DDC433C7;
-	Mon, 11 Dec 2023 18:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073E651C5D;
+	Mon, 11 Dec 2023 18:36:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE13C433C8;
+	Mon, 11 Dec 2023 18:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319930;
-	bh=qTxExh2lWElDI88pJUeeU8G9+Z5fS0m3A8xX0qtN+rI=;
+	s=korg; t=1702319809;
+	bh=dW2svO/4LmZwEz+DVL0NcVKKmwLK7lesM8cSVRqbAmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZ+LAtjOUS5ct43f6/EXr8oEE0QejI7z4Do1J7d0gW9DcpVhlS2X991buAubUfsre
-	 tR9UGxBeQHDWRU2hGL1mPFq7pwRKeuJ9859YqM1FXJWRwZjMC3Y0jYn0HUS8k28gnC
-	 54LaCBqGJKMoXcWXK1VElf1T/cSiiS6EhSeBntEk=
+	b=mpsFs8fGQv77UWKaBvgye+IkomKAG8WHxe/uXRiiP7J7T8fyvnmTY2yez3YdfsX+I
+	 VltN7VK31HqiLgEXjf8jaAYaXYmGBnYnNJhjiZt41b/6viH0wldg7AGqKDmYKLYHAF
+	 md+RfjyKc0cxo0Vf2yAe6QhLv+i0FVULOLDuNIvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 41/97] ASoC: wm_adsp: fix memleak in wm_adsp_buffer_populate
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>
+Subject: [PATCH 6.6 211/244] nvmem: Do not expect fixed layouts to grab a layout driver
 Date: Mon, 11 Dec 2023 19:21:44 +0100
-Message-ID: <20231211182021.493912015@linuxfoundation.org>
+Message-ID: <20231211182055.422333372@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +51,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 29046a78a3c0a1f8fa0427f164caa222f003cf5b ]
+commit b7c1e53751cb3990153084f31c41f25fde3b629c upstream.
 
-When wm_adsp_buffer_read() fails, we should free buf->regions.
-Otherwise, the callers of wm_adsp_buffer_populate() will
-directly free buf on failure, which makes buf->regions a leaked
-memory.
+Two series lived in parallel for some time, which led to this situation:
+- The nvmem-layout container is used for dynamic layouts
+- We now expect fixed layouts to also use the nvmem-layout container but
+this does not require any additional driver, the support is built-in the
+nvmem core.
 
-Fixes: a792af69b08f ("ASoC: wm_adsp: Refactor compress stream initialisation")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231204074158.12026-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Ensure we don't refuse to probe for wrong reasons.
+
+Fixes: 27f699e578b1 ("nvmem: core: add support for fixed cells *layout*")
+Cc: stable@vger.kernel.org
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Rafał Miłecki <rafal@milecki.pl>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20231124193814.360552-1-miquel.raynal@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm_adsp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/nvmem/core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index 10189f44af28f..ef7936fce7a23 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -3763,12 +3763,12 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].base_offset,
- 					  &region->base_addr);
- 		if (ret < 0)
--			return ret;
-+			goto err;
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index bf42b7e826db..608b352a7d91 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -796,6 +796,12 @@ static struct nvmem_layout *nvmem_layout_get(struct nvmem_device *nvmem)
+ 	if (!layout_np)
+ 		return NULL;
  
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].size_offset,
- 					  &offset);
- 		if (ret < 0)
--			return ret;
-+			goto err;
- 
- 		region->cumulative_size = offset;
- 
-@@ -3779,6 +3779,10 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 	}
- 
- 	return 0;
++	/* Fixed layouts don't have a matching driver */
++	if (of_device_is_compatible(layout_np, "fixed-layout")) {
++		of_node_put(layout_np);
++		return NULL;
++	}
 +
-+err:
-+	kfree(buf->regions);
-+	return ret;
- }
- 
- static void wm_adsp_buffer_clear(struct wm_adsp_compr_buf *buf)
+ 	/*
+ 	 * In case the nvmem device was built-in while the layout was built as a
+ 	 * module, we shall manually request the layout driver loading otherwise
 -- 
-2.42.0
+2.43.0
 
 
 
