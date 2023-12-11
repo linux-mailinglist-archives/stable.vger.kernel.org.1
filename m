@@ -1,44 +1,47 @@
-Return-Path: <stable+bounces-5669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E80180D5E4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:29:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44AE280D60E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A9502823DE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:29:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A55961F21A2F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FA05102B;
-	Mon, 11 Dec 2023 18:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4E420DDE;
+	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJBQyXTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmrmweRE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F26A5101A;
-	Mon, 11 Dec 2023 18:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02890C433C7;
-	Mon, 11 Dec 2023 18:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44C7EEB8;
+	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1A7C433C8;
+	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319348;
-	bh=n0fOCiAskv/Y13yPCXVakOJ4PbV1AWLEAauiqCYQ6w0=;
+	s=korg; t=1702319455;
+	bh=vbNJJAvd7r5VKRKrfgcUTiISHwfWiCqlQXLFjhrzEzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJBQyXTE5onjT2LPuOsN7HkXklGSj0BCxg6Fob679qwAHkSvsJeT5r20nfT2P1bQ4
-	 sb97vIz99Lm3ugU5SFXGJAXsX5MuUmlNJLGhPSVF+ckR9qUcfy+D7A9faiftyNcTLk
-	 ZsWjfMN4gCB/1GQ+JtmiV5GrTsqqVogb+QOcKcjE=
+	b=HmrmweREoNa3ph/He1Eds5H+MWa69fc/Dh91VuU2XHhz+mm490ebGZ/oVQjCmWb8o
+	 TVnDE25gPiPYHskKeSVLgOy1y2I+6fhB/WonJAJvIImqArqlT7CKBDR+JCVJ1kYWgY
+	 h4EoPWYvMuXRpbMsUOZIHYWTnHgRgWbKNFW3WqlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/244] bpf: sockmap, updating the sg structure should also update curr
-Date: Mon, 11 Dec 2023 19:19:23 +0100
-Message-ID: <20231211182048.945821010@linuxfoundation.org>
+Subject: [PATCH 6.6 071/244] psample: Require CAP_NET_ADMIN when joining "packets" group
+Date: Mon, 11 Dec 2023 19:19:24 +0100
+Message-ID: <20231211182048.986448070@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
 References: <20231211182045.784881756@linuxfoundation.org>
@@ -57,72 +60,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit bb9aefde5bbaf6c168c77ba635c155b4980c2287 ]
+[ Upstream commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 ]
 
-Curr pointer should be updated when the sg structure is shifted.
+The "psample" generic netlink family notifies sampled packets over the
+"packets" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-Fixes: 7246d8ed4dcce ("bpf: helper to pop data from messages")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-3-john.fastabend@gmail.com
+Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
+prevent non-root users or root without the 'CAP_NET_ADMIN' capability
+(in the user namespace owning the network namespace) from joining the
+group.
+
+Tested using [1].
+
+Before:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+
+After:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+ Failed to join "packets" multicast group
+
+[1]
+ $ cat psample.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
+
+ int join_grp(struct nl_sock *sk, const char *grp_name)
+ {
+ 	int grp, err;
+
+ 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
+ 	if (grp < 0) {
+ 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
+ 			grp_name);
+ 		return grp;
+ 	}
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
+ 			grp_name);
+ 		return err;
+ 	}
+
+ 	return 0;
+ }
+
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int err;
+
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	err = join_grp(sk, "config");
+ 	if (err)
+ 		return err;
+
+ 	err = join_grp(sk, "packets");
+ 	if (err)
+ 		return err;
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+
+Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ net/psample/psample.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index b149a165c405c..90fe3e7543833 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -2591,6 +2591,22 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
- 	return 0;
- }
+diff --git a/net/psample/psample.c b/net/psample/psample.c
+index 81a794e36f535..c34e902855dbe 100644
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
  
-+static void sk_msg_reset_curr(struct sk_msg *msg)
-+{
-+	u32 i = msg->sg.start;
-+	u32 len = 0;
-+
-+	do {
-+		len += sk_msg_elem(msg, i)->length;
-+		sk_msg_iter_var_next(i);
-+		if (len >= msg->sg.size)
-+			break;
-+	} while (i != msg->sg.end);
-+
-+	msg->sg.curr = i;
-+	msg->sg.copybreak = 0;
-+}
-+
- static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
- 	.func           = bpf_msg_cork_bytes,
- 	.gpl_only       = false,
-@@ -2710,6 +2726,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
- 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
- 		      msg->sg.end - shift;
- out:
-+	sk_msg_reset_curr(msg);
- 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
- 	msg->data_end = msg->data + bytes;
- 	return 0;
-@@ -2846,6 +2863,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
- 		msg->sg.data[new] = rsge;
- 	}
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+-	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
++	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
++				      .flags = GENL_UNS_ADMIN_PERM },
+ };
  
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
-@@ -3014,6 +3032,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
- 
- 	sk_mem_uncharge(msg->sk, len - pop);
- 	msg->sg.size -= (len - pop);
-+	sk_msg_reset_curr(msg);
- 	sk_msg_compute_data_pointers(msg);
- 	return 0;
- }
+ static struct genl_family psample_nl_family __ro_after_init;
 -- 
 2.42.0
 
