@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CA180D8F6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5308B80D57B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DAF91F219A5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FF08281A8D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B084351C50;
-	Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C1F5101B;
+	Mon, 11 Dec 2023 18:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNICGej9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuqAC9JG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13F51C47;
-	Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B93C433C7;
-	Mon, 11 Dec 2023 18:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F194F212;
+	Mon, 11 Dec 2023 18:25:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D66C433C7;
+	Mon, 11 Dec 2023 18:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320596;
-	bh=k+9iwD+a5wserVFzfnOTq63xFjHxm1oghdq/gBaMRjs=;
+	s=korg; t=1702319105;
+	bh=g/UhTLddqyVyLBPSuJvRrAo4g2C+1BDDGCEhZVUUkOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNICGej9xa4en1nTtI1huA71FyYr7UI+0r4VOuvYgkipOYHyMuVvAK8lWUOkA0B+L
-	 +CMsT7ChZDJRYToGZNo+R8dZGgot7d0Hrf24wW7Sl2Bh2tMb60CUJj8cm2ql5Soa2v
-	 VEWixyfaJHowpWvfzzJ8RMeC6uTjqJJhZkfHgIQ8=
+	b=vuqAC9JG+Dr0oPB3+Zl6Ei5Vtt/0EqrGSWQCxnD+kQQaESHlfYaZcpIwpPkd6nRvR
+	 DLD1cTJtOxx9jkR1ijMJsf5iymLMruWBDNxm63v/QV9Xhae/9WZB/YoJ6mj3mEleDN
+	 CygkeXiqTGYa7fIJhpGptVzh67b7syYsHRKgMudI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grant Grundler <grundler@chromium.org>,
-	ChunHao Lin <hau@realtek.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 120/194] r8169: fix rtl8125b PAUSE frames blasting when suspended
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 4.19 40/55] parport: Add support for Brainboxes IX/UC/PX parallel cards
 Date: Mon, 11 Dec 2023 19:21:50 +0100
-Message-ID: <20231211182041.871043021@linuxfoundation.org>
+Message-ID: <20231211182013.731413589@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,74 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 upstream.
+commit 1a031f6edc460e9562098bdedc3918da07c30a6e upstream.
 
-When FIFO reaches near full state, device will issue pause frame.
-If pause slot is enabled(set to 1), in this time, device will issue
-pause frame only once. But if pause slot is disabled(set to 0), device
-will keep sending pause frames until FIFO reaches near empty state.
+Adds support for Intashield IX-500/IX-550, UC-146/UC-157, PX-146/PX-157,
+PX-203 and PX-475 (LPT port)
 
-When pause slot is disabled, if there is no one to handle receive
-packets, device FIFO will reach near full state and keep sending
-pause frames. That will impact entire local area network.
-
-This issue can be reproduced in Chromebox (not Chromebook) in
-developer mode running a test image (and v5.10 kernel):
-1) ping -f $CHROMEBOX (from workstation on same local network)
-2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
-3) ping $ROUTER (wait until ping fails from workstation)
-
-Takes about ~20-30 seconds after step 2 for the local network to
-stop working.
-
-Fix this issue by enabling pause slot to only send pause frame once
-when FIFO reaches near full state.
-
-Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-Reported-by: Grant Grundler <grundler@chromium.org>
-Tested-by: Grant Grundler <grundler@chromium.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB790389C130410BD864C8DCC9C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/parport/parport_pc.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -193,6 +193,7 @@ enum rtl_registers {
- 					/* No threshold before first PCI xfer */
- #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
- #define	RX_EARLY_OFF			(1 << 11)
-+#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
- #define	RXCFG_DMA_SHIFT			8
- 					/* Unlimited maximum PCI burst. */
- #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
-@@ -2237,9 +2238,13 @@ static void rtl_init_rxcfg(struct rtl816
- 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
- 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
- 		break;
--	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+	case RTL_GIGA_MAC_VER_61:
- 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
- 		break;
-+	case RTL_GIGA_MAC_VER_63:
-+		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
-+			RX_PAUSE_SLOT_ON);
-+		break;
- 	default:
- 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
- 		break;
+--- a/drivers/parport/parport_pc.c
++++ b/drivers/parport/parport_pc.c
+@@ -2647,6 +2647,8 @@ enum parport_pc_pci_cards {
+ 	netmos_9865,
+ 	quatech_sppxp100,
+ 	wch_ch382l,
++	brainboxes_uc146,
++	brainboxes_px203,
+ };
+ 
+ 
+@@ -2710,6 +2712,8 @@ static struct parport_pc_pci {
+ 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
+ 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
+ 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
++	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
++	/* brainboxes_px203 */	{ 1, { { 0, -1 }, } },
+ };
+ 
+ static const struct pci_device_id parport_pc_pci_tbl[] = {
+@@ -2801,6 +2805,23 @@ static const struct pci_device_id parpor
+ 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
+ 	/* WCH CH382L PCI-E single parallel port card */
+ 	{ 0x1c00, 0x3050, 0x1c00, 0x3050, 0, 0, wch_ch382l },
++	/* Brainboxes IX-500/550 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402a,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
++	/* Brainboxes UC-146/UC-157 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0be1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0be2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
++	/* Brainboxes PX-146/PX-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x401c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
++	/* Brainboxes PX-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x4007,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px203 },
++	/* Brainboxes PX-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x401f,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci, parport_pc_pci_tbl);
 
 
 
