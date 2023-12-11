@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-6185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC29580D944
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC6980D778
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29BBE1C216B9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25E25B211B7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE64251C46;
-	Mon, 11 Dec 2023 18:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0193153807;
+	Mon, 11 Dec 2023 18:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX+t3fOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6c1PihG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7927651C37;
-	Mon, 11 Dec 2023 18:52:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F295CC433C8;
-	Mon, 11 Dec 2023 18:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4551C53;
+	Mon, 11 Dec 2023 18:37:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22205C433C9;
+	Mon, 11 Dec 2023 18:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320741;
-	bh=bWX/HUoxtTJ4ANCku19NTNJ+4sX86vOZkTxH+ZaMekw=;
+	s=korg; t=1702319831;
+	bh=+z3Zflr3hkOuymA9vBtcu5skzPc/W7sIGYa+WceYtjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EX+t3fOQlg0OtJczAzKqHRe+A9dnlxEyYeAJv64OXNMs6c856D0bB5ufXsZo2WOrh
-	 7ZkqyyD4LkhxJQAudhFpTky9JdRl1AfdjEo8x4reb6tuxYJFHeraWYTn9nrN15j7HD
-	 7iVLR5iMHWCKG/ql5G8zTquK3hyPAvM0HKUkVykM=
+	b=D6c1PihGjopPqaOUDehb/NZvWtsDdOg3jKZz0AW4zEOscjpHlisNssJsEleL9DofN
+	 VwREelXxlAvFSH21zS7ijhuwXpNgyBNkuGvXtKd5ULywf0/Gg5wGWeYB/RqIlpz6Pt
+	 muCD7ErGf9X9KpnHdLxwQPESAy1v7ytuWbYtv1mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/194] tracing: Stop current tracer when resizing buffer
+Subject: [PATCH 6.6 242/244] drm/amdgpu: Fix refclk reporting for SMU v13.0.6
 Date: Mon, 11 Dec 2023 19:22:15 +0100
-Message-ID: <20231211182043.089150597@linuxfoundation.org>
+Message-ID: <20231211182056.871611043@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,75 +54,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit d78ab792705c7be1b91243b2544d1a79406a2ad7 ]
+[ Upstream commit 6b7d211740da2c3a7656be8cbb36f32e6d9c6cbd ]
 
-When the ring buffer is being resized, it can cause side effects to the
-running tracer. For instance, there's a race with irqsoff tracer that
-swaps individual per cpu buffers between the main buffer and the snapshot
-buffer. The resize operation modifies the main buffer and then the
-snapshot buffer. If a swap happens in between those two operations it will
-break the tracer.
+SMU v13.0.6 SOCs have 100MHz reference clock.
 
-Simply stop the running tracer before resizing the buffers and enable it
-again when finished.
-
-Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 6fce23a4d8c5 ("drm/amdgpu: Restrict extended wait to PSP v13.0.6")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 048728807f265..d2db4d6f0f2fd 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6268,9 +6268,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 	if (!tr->array_buffer.buffer)
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index f5be40d7ba367..28094cd7d9c21 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -325,7 +325,8 @@ static u32 soc15_get_xclk(struct amdgpu_device *adev)
+ 	u32 reference_clock = adev->clock.spll.reference_freq;
  
-+	/* Do not allow tracing while resizng ring buffer */
-+	tracing_stop_tr(tr);
-+
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
- 	if (ret < 0)
--		return ret;
-+		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	if (!tr->current_trace->use_max_tr)
-@@ -6298,7 +6301,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 			WARN_ON(1);
- 			tracing_disabled = 1;
- 		}
--		return ret;
-+		goto out_start;
- 	}
- 
- 	update_buffer_entries(&tr->max_buffer, cpu);
-@@ -6307,7 +6310,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
- 	update_buffer_entries(&tr->array_buffer, cpu);
--
-+ out_start:
-+	tracing_start_tr(tr);
- 	return ret;
- }
- 
+ 	if (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 0) ||
+-	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 1))
++	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 1) ||
++	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 6))
+ 		return 10000;
+ 	if (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(10, 0, 0) ||
+ 	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(10, 0, 1))
 -- 
 2.42.0
 
