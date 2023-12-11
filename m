@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C1780D866
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3518F80D634
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8AE2814E4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595191C21556
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CD651038;
-	Mon, 11 Dec 2023 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2674CFC06;
+	Mon, 11 Dec 2023 18:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To2IOaKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n42WuCE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2774437B;
-	Mon, 11 Dec 2023 18:45:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C689DC433C7;
-	Mon, 11 Dec 2023 18:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEC0C2D0;
+	Mon, 11 Dec 2023 18:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6119DC433C7;
+	Mon, 11 Dec 2023 18:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320323;
-	bh=1TP5ReTpYjYxsFYXiDrMY+TO5LH/WPbKdvFAwyxCJKY=;
+	s=korg; t=1702319541;
+	bh=S9eAJkm0jjF4O8LvJAzSIQ0bj0FzxJkx02XaQ7G0xUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=To2IOaKVnP3a1WB95fnaFQNWuGT9Rof9PSlLfNqNKOcAwM5k9WO7giAyEya08Fz02
-	 j5CCFSPnYbEi8bGFTfBqY3vvheI28bXTEQLt/xli5X+XYcas8QJbUrT1X1N1Vof631
-	 +fITZzP2khKziKL7LDBYf4z/ixM7Mo1lFvRlaELc=
+	b=n42WuCE9EhfewX8IFz1g3ANn1DQfb16/vaj1GPLmh3pNmI/tLGrmRI1+FMNoTCLx6
+	 /Wrb7QUZgm4SEHo+ZrWr0PQ4RdVvLcDXnZZACZnhrVQRT55j1XKRNBhfaqE9uG0YSq
+	 LLpgmSqBpAFvzFW66FldxelYq+qk1aSawpUVKfko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sibi Sankar <quic_sibis@quicinc.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/194] tg3: Increment tx_dropped in tg3_tso_bug()
+Subject: [PATCH 6.6 104/244] firmware: arm_scmi: Fix frequency truncation by promoting multiplier type
 Date: Mon, 11 Dec 2023 19:19:57 +0100
-Message-ID: <20231211182036.934795320@linuxfoundation.org>
+Message-ID: <20231211182050.427373320@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+[ Upstream commit 8e3c98d9187e09274fc000a7d1a77b070a42d259 ]
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+Fix the possible frequency truncation for all values equal to or greater
+4GHz on 64bit machines by updating the multiplier 'mult_factor' to
+'unsigned long' type. It is also possible that the multiplier itself can
+be greater than or equal to 2^32. So we need to also fix the equation
+computing the value of the multiplier.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a9e3fbfaa0ff ("firmware: arm_scmi: add initial support for performance protocol")
+Reported-by: Sibi Sankar <quic_sibis@quicinc.com>
+Closes: https://lore.kernel.org/all/20231129065748.19871-3-quic_sibis@quicinc.com/
+Cc: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20231130204343.503076-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/perf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 830f542a7c6d2..f60a16de565ed 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7879,8 +7879,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
- 
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
-+	}
- 
- 	skb_list_walk_safe(segs, seg, next) {
- 		skb_mark_not_on_list(seg);
+diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
+index 6677caefb36bc..7aa9b4ff48d61 100644
+--- a/drivers/firmware/arm_scmi/perf.c
++++ b/drivers/firmware/arm_scmi/perf.c
+@@ -152,7 +152,7 @@ struct perf_dom_info {
+ 	u32 opp_count;
+ 	u32 sustained_freq_khz;
+ 	u32 sustained_perf_level;
+-	u32 mult_factor;
++	unsigned long mult_factor;
+ 	struct scmi_perf_domain_info info;
+ 	struct scmi_opp opp[MAX_OPPS];
+ 	struct scmi_fc_info *fc_info;
+@@ -273,8 +273,8 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
+ 			dom_info->mult_factor =	1000;
+ 		else
+ 			dom_info->mult_factor =
+-					(dom_info->sustained_freq_khz * 1000) /
+-					dom_info->sustained_perf_level;
++					(dom_info->sustained_freq_khz * 1000UL)
++					/ dom_info->sustained_perf_level;
+ 		strscpy(dom_info->info.name, attr->name,
+ 			SCMI_SHORT_NAME_MAX_SIZE);
+ 	}
 -- 
 2.42.0
 
