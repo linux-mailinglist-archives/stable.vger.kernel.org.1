@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2E080D576
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3A280D733
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31A01F21A6C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A6451C212D5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CF45101E;
-	Mon, 11 Dec 2023 18:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FD853E30;
+	Mon, 11 Dec 2023 18:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifzEIWGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/SDh+3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA53D4F212;
-	Mon, 11 Dec 2023 18:24:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB69C433C8;
-	Mon, 11 Dec 2023 18:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460B052F8A;
+	Mon, 11 Dec 2023 18:35:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81060C433C9;
+	Mon, 11 Dec 2023 18:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319091;
-	bh=rTuhw0Dgt+Ujuvu6+NZovBlv71QQEXWsOKYnRm2m3k8=;
+	s=korg; t=1702319725;
+	bh=v97y6UFmnBO/2W8j9WUufniuOLMPTCwCGitg1Ux+jXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifzEIWGegrmFs1aHR3IpCIR3g3L8staGWDi6fQD7h0wmdYJyidWyLHZ1SRRw9jaFT
-	 xEToSWZj5YFXJxDbDi3CeGIvIpAt2hadgcCCcd2lXvKr+wgVXm4DK6pN/qAgy7MAME
-	 1mQDTM0J5+gAGTjD/5jJO6tDjI/v3DLq/uFIDlmk=
+	b=c/SDh+3Z72UJ1SaOsK2ZKhr8ESf+QeFf97ydPlodmTrAnDT3HMghzlLj6+DX1Pl2X
+	 sr3Jp3YAlUHN5OrDqZlWeMX+DpDGrMXB6wFjo+cRAi7FHleMpamveNLranO0dOTO7+
+	 7syJkp/c/hpJmSutlPcJfDhrPlI7NZZndVRjH93c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 35/55] tracing: Fix a possible race when disabling buffered events
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 212/244] serial: 8250_dw: Add ACPI ID for Granite Rapids-D UART
 Date: Mon, 11 Dec 2023 19:21:45 +0100
-Message-ID: <20231211182013.544759763@linuxfoundation.org>
+Message-ID: <20231211182055.471917483@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +52,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
+commit e92fad024929c79460403acf946bc9c09ce5c3a9 upstream.
 
-Function trace_buffered_event_disable() is responsible for freeing pages
-backing buffered events and this process can run concurrently with
-trace_event_buffer_lock_reserve().
+Granite Rapids-D has an additional UART that is enumerated via ACPI.
+Add ACPI ID for it.
 
-The following race is currently possible:
-
-* Function trace_buffered_event_disable() is called on CPU 0. It
-  increments trace_buffered_event_cnt on each CPU and waits via
-  synchronize_rcu() for each user of trace_buffered_event to complete.
-
-* After synchronize_rcu() is finished, function
-  trace_buffered_event_disable() has the exclusive access to
-  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
-  and all pointers trace_buffered_event are still valid.
-
-* At this point, on a different CPU 1, the execution reaches
-  trace_event_buffer_lock_reserve(). The function calls
-  preempt_disable_notrace() and only now enters an RCU read-side
-  critical section. The function proceeds and reads a still valid
-  pointer from trace_buffered_event[CPU1] into the local variable
-  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
-  which happens later.
-
-* Function trace_buffered_event_disable() continues. It frees
-  trace_buffered_event[CPU1] and decrements
-  trace_buffered_event_cnt[CPU1] back to 0.
-
-* Function trace_event_buffer_lock_reserve() continues. It reads and
-  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
-  believe that it can use the "entry" that it already obtained but the
-  pointer is now invalid and any access results in a use-after-free.
-
-Fix the problem by making a second synchronize_rcu() call after all
-trace_buffered_event values are set to NULL. This waits on all potential
-users in trace_event_buffer_lock_reserve() that still read a previous
-pointer from trace_buffered_event.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
-
-Cc: stable@vger.kernel.org
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20231205195524.2705965-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2272,13 +2272,17 @@ void trace_buffered_event_disable(void)
- 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
- 		per_cpu(trace_buffered_event, cpu) = NULL;
- 	}
-+
- 	/*
--	 * Make sure trace_buffered_event is NULL before clearing
--	 * trace_buffered_event_cnt.
-+	 * Wait for all CPUs that potentially started checking if they can use
-+	 * their event buffer only after the previous synchronize_rcu() call and
-+	 * they still read a valid pointer from trace_buffered_event. It must be
-+	 * ensured they don't see cleared trace_buffered_event_cnt else they
-+	 * could wrongly decide to use the pointed-to buffer which is now freed.
- 	 */
--	smp_wmb();
-+	synchronize_rcu();
- 
--	/* Do the work on each cpu */
-+	/* For each CPU, relinquish the buffer */
- 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
- 			 true);
- }
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -798,6 +798,7 @@ static const struct acpi_device_id dw825
+ 	{ "INT33C5", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3434", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3435", (kernel_ulong_t)&dw8250_dw_apb },
++	{ "INTC10EE", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, dw8250_acpi_match);
 
 
 
