@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B89C80D562
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2EF80D8CF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC85E2819C2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D771F21A21
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9941451020;
-	Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA16C51C2C;
+	Mon, 11 Dec 2023 18:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZUWxqsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQajK6Gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FF54F212;
-	Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8146C433C8;
-	Mon, 11 Dec 2023 18:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958755102A;
+	Mon, 11 Dec 2023 18:49:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F52CC433C9;
+	Mon, 11 Dec 2023 18:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319053;
-	bh=x51fZGKy8+QR6KrDbiS4MOrYNpDzsi7uU+dm79X4AUY=;
+	s=korg; t=1702320545;
+	bh=hre3BnKEXX7UNdBZ9BSr8BAKc1nXG0ys+LJ2/aw9CfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZUWxqsIsvkUSB7XnZkH0PUO8H/Bqfy1BlCVMgc5ehxMqleb2PnUEsO6trf18cwMm
-	 +zI0s/Cl6hF5cnqzjy/fRg3Wv53LHrK8r5bJDgKuchUSkCWhZe0eyOfymTF1nGj8uZ
-	 1ZObIpWYWtaCkgQUGiXXraNM5R02DmLx+EXwsjAQ=
+	b=ZQajK6Gx+GYcl2msW8havVrEuxqKgTpyeq3kpGmVJAwFfGwlsmnF9YSlEQaLUXs9Y
+	 0KZ4sbgimhWT8o3T7nhrUM09scnid0oyWhw6nNzr80eEPthP34cowBi7vpjM9+sRFu
+	 yuhtVSsLzPWwMVPX1mLpPBiaG8NRYn1dAJCC4LxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Pawelczyk <l.pawelczyk@samsung.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/55] netfilter: xt_owner: Add supplementary groups option
+	JP Kobryn <inwardvessel@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.1 100/194] kprobes: consistent rcu api usage for kretprobe holder
 Date: Mon, 11 Dec 2023 19:21:30 +0100
-Message-ID: <20231211182012.975395610@linuxfoundation.org>
+Message-ID: <20231211182040.905902024@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,86 +52,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Pawelczyk <l.pawelczyk@samsung.com>
+From: JP Kobryn <inwardvessel@gmail.com>
 
-[ Upstream commit ea6cc2fd8a2b89ab6dcd096ba6dbc1ecbdf26564 ]
+commit d839a656d0f3caca9f96e9bf912fd394ac6a11bc upstream.
 
-The XT_OWNER_SUPPL_GROUPS flag causes GIDs specified with XT_OWNER_GID
-to be also checked in the supplementary groups of a process.
+It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
+RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
+The thought behind this patch is to make use of the RCU API where possible
+when accessing this pointer so that the needed barriers are always in place
+and to self-document the code.
 
-f_cred->group_info cannot be modified during its lifetime and f_cred
-holds a reference to it so it's safe to use.
+The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
+done to the "rp" pointer are changed to make use of the RCU macro for
+assignment. For the single read, the implementation of get_kretprobe()
+is simplified by making use of an RCU macro which accomplishes the same,
+but note that the log warning text will be more generic.
 
-Signed-off-by: Lukasz Pawelczyk <l.pawelczyk@samsung.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 7ae836a3d630 ("netfilter: xt_owner: Fix for unsafe access of sk->sk_socket")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+I did find that there is a difference in assembly generated between the
+usage of the RCU macros vs without. For example, on arm64, when using
+rcu_assign_pointer(), the corresponding store instruction is a
+store-release (STLR) which has an implicit barrier. When normal assignment
+is done, a regular store (STR) is found. In the macro case, this seems to
+be a result of rcu_assign_pointer() using smp_store_release() when the
+value to write is not NULL.
+
+Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
+
+Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
+Cc: stable@vger.kernel.org
+Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/netfilter/xt_owner.h |  7 ++++---
- net/netfilter/xt_owner.c                | 23 ++++++++++++++++++++---
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ include/linux/kprobes.h |    7 ++-----
+ kernel/kprobes.c        |    4 ++--
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/include/uapi/linux/netfilter/xt_owner.h b/include/uapi/linux/netfilter/xt_owner.h
-index fa3ad84957d50..9e98c09eda327 100644
---- a/include/uapi/linux/netfilter/xt_owner.h
-+++ b/include/uapi/linux/netfilter/xt_owner.h
-@@ -5,9 +5,10 @@
- #include <linux/types.h>
- 
- enum {
--	XT_OWNER_UID    = 1 << 0,
--	XT_OWNER_GID    = 1 << 1,
--	XT_OWNER_SOCKET = 1 << 2,
-+	XT_OWNER_UID          = 1 << 0,
-+	XT_OWNER_GID          = 1 << 1,
-+	XT_OWNER_SOCKET       = 1 << 2,
-+	XT_OWNER_SUPPL_GROUPS = 1 << 3,
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -140,7 +140,7 @@ static inline bool kprobe_ftrace(struct
+  *
+  */
+ struct kretprobe_holder {
+-	struct kretprobe	*rp;
++	struct kretprobe __rcu *rp;
+ 	refcount_t		ref;
  };
  
- struct xt_owner_match_info {
-diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
-index 46686fb73784b..a8784502aca69 100644
---- a/net/netfilter/xt_owner.c
-+++ b/net/netfilter/xt_owner.c
-@@ -91,11 +91,28 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	}
+@@ -248,10 +248,7 @@ unsigned long kretprobe_trampoline_handl
  
- 	if (info->match & XT_OWNER_GID) {
-+		unsigned int i, match = false;
- 		kgid_t gid_min = make_kgid(net->user_ns, info->gid_min);
- 		kgid_t gid_max = make_kgid(net->user_ns, info->gid_max);
--		if ((gid_gte(filp->f_cred->fsgid, gid_min) &&
--		     gid_lte(filp->f_cred->fsgid, gid_max)) ^
--		    !(info->invert & XT_OWNER_GID))
-+		struct group_info *gi = filp->f_cred->group_info;
-+
-+		if (gid_gte(filp->f_cred->fsgid, gid_min) &&
-+		    gid_lte(filp->f_cred->fsgid, gid_max))
-+			match = true;
-+
-+		if (!match && (info->match & XT_OWNER_SUPPL_GROUPS) && gi) {
-+			for (i = 0; i < gi->ngroups; ++i) {
-+				kgid_t group = gi->gid[i];
-+
-+				if (gid_gte(group, gid_min) &&
-+				    gid_lte(group, gid_max)) {
-+					match = true;
-+					break;
-+				}
-+			}
-+		}
-+
-+		if (match ^ !(info->invert & XT_OWNER_GID))
- 			return false;
- 	}
+ static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
+ {
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
+-		"Kretprobe is accessed from instance under preemptive context");
+-
+-	return READ_ONCE(ri->rph->rp);
++	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
+ }
  
--- 
-2.42.0
-
+ static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -2253,7 +2253,7 @@ int register_kretprobe(struct kretprobe
+ 	if (!rp->rph)
+ 		return -ENOMEM;
+ 
+-	rp->rph->rp = rp;
++	rcu_assign_pointer(rp->rph->rp, rp);
+ 	for (i = 0; i < rp->maxactive; i++) {
+ 		inst = kzalloc(sizeof(struct kretprobe_instance) +
+ 			       rp->data_size, GFP_KERNEL);
+@@ -2314,7 +2314,7 @@ void unregister_kretprobes(struct kretpr
+ #ifdef CONFIG_KRETPROBE_ON_RETHOOK
+ 		rethook_free(rps[i]->rh);
+ #else
+-		rps[i]->rph->rp = NULL;
++		rcu_assign_pointer(rps[i]->rph->rp, NULL);
+ #endif
+ 	}
+ 	mutex_unlock(&kprobe_mutex);
 
 
 
