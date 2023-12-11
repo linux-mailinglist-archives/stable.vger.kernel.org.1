@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-6282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C0F580D9D7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1AE80D843
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585F42817BB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB076B21401
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E19524CD;
-	Mon, 11 Dec 2023 18:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450EB51036;
+	Mon, 11 Dec 2023 18:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnT7ktNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fk1rB6Hd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C80E548;
-	Mon, 11 Dec 2023 18:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244B6C433CA;
-	Mon, 11 Dec 2023 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F423AFC06;
+	Mon, 11 Dec 2023 18:44:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751DEC433C9;
+	Mon, 11 Dec 2023 18:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321006;
-	bh=C2DZoFI4IFogLdyYDiZObNY5phOb8zSTU7CAJR3TJ/U=;
+	s=korg; t=1702320250;
+	bh=TH4Ke3XStTzmVcG14UUFYZBTkELF1VOtZj68YeuV3kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnT7ktNWopSXf8OUweKq7EU664/mhPA1FtpsP1H/ck2KbDO4xhoVCgT20U06p+/of
-	 UF+nN0TNW8PL36WJstU+XfOoo36ki092QazT/YKsIRP3Q69T+RjXcQNbNj+ODMz4Oo
-	 zg/8ay76JAgTDuInYzvPpr+O83D28sJjhiJcwqHM=
+	b=fk1rB6HdS00lI84Xgkc31D+5WKtNV4q7ZiTxUKXyvmEor/gkM7Hjn42uo/xvrpyds
+	 TAXkAd/yor7gF4ZEiC9wWV08yELvkoic0fO5t/G4nLUTkWUrsx56ZPAiVpn6VZXugi
+	 orj4c0D0yHc0s0llgAgAKammjTtjA+FDu12PfG2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 5.15 076/141] kprobes: consistent rcu api usage for kretprobe holder
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 31/67] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
 Date: Mon, 11 Dec 2023 19:22:15 +0100
-Message-ID: <20231211182029.869706890@linuxfoundation.org>
+Message-ID: <20231211182016.401584767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit d839a656d0f3caca9f96e9bf912fd394ac6a11bc upstream.
+[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
 
-It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
-RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
-The thought behind this patch is to make use of the RCU API where possible
-when accessing this pointer so that the needed barriers are always in place
-and to self-document the code.
+When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
+should free phwi_ctxt->be_wrbq before returning an error code to prevent
+potential memleak.
 
-The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
-done to the "rp" pointer are changed to make use of the RCU macro for
-assignment. For the single read, the implementation of get_kretprobe()
-is simplified by making use of an RCU macro which accomplishes the same,
-but note that the log warning text will be more generic.
-
-I did find that there is a difference in assembly generated between the
-usage of the RCU macros vs without. For example, on arm64, when using
-rcu_assign_pointer(), the corresponding store instruction is a
-store-release (STLR) which has an implicit barrier. When normal assignment
-is done, a regular store (STR) is found. In the macro case, this seems to
-be a result of rcu_assign_pointer() using smp_store_release() when the
-value to write is not NULL.
-
-Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
-
-Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
-Cc: stable@vger.kernel.org
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kprobes.h |    7 ++-----
- kernel/kprobes.c        |    4 ++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/scsi/be2iscsi/be_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -139,7 +139,7 @@ static inline int kprobe_ftrace(struct k
-  *
-  */
- struct kretprobe_holder {
--	struct kretprobe	*rp;
-+	struct kretprobe __rcu *rp;
- 	refcount_t		ref;
- };
- 
-@@ -224,10 +224,7 @@ unsigned long kretprobe_trampoline_handl
- 
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return READ_ONCE(ri->rph->rp);
-+	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index 53b33f146f825..d34c881c3f8ae 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -2694,6 +2694,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
+ 		kfree(pwrb_context->pwrb_handle_base);
+ 		kfree(pwrb_context->pwrb_handle_basestd);
+ 	}
++	kfree(phwi_ctxt->be_wrbq);
+ 	return -ENOMEM;
  }
  
- #else /* CONFIG_KRETPROBES */
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2044,7 +2044,7 @@ int register_kretprobe(struct kretprobe
- 	if (!rp->rph)
- 		return -ENOMEM;
- 
--	rp->rph->rp = rp;
-+	rcu_assign_pointer(rp->rph->rp, rp);
- 	for (i = 0; i < rp->maxactive; i++) {
- 		inst = kzalloc(sizeof(struct kretprobe_instance) +
- 			       rp->data_size, GFP_KERNEL);
-@@ -2101,7 +2101,7 @@ void unregister_kretprobes(struct kretpr
- 	for (i = 0; i < num; i++) {
- 		if (__unregister_kprobe_top(&rps[i]->kp) < 0)
- 			rps[i]->kp.addr = NULL;
--		rps[i]->rph->rp = NULL;
-+		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- 	}
- 	mutex_unlock(&kprobe_mutex);
- 
+-- 
+2.42.0
+
 
 
 
