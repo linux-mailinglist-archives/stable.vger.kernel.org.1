@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-5635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C184C80D5BE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:27:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026E580D5C1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D83A2823A0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:27:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33C711C21508
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBBA5102B;
-	Mon, 11 Dec 2023 18:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAF251029;
+	Mon, 11 Dec 2023 18:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHXQT6cQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVpYolKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08335101A;
-	Mon, 11 Dec 2023 18:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4458EC433C8;
-	Mon, 11 Dec 2023 18:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBAD5101A;
+	Mon, 11 Dec 2023 18:27:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE4FC433C8;
+	Mon, 11 Dec 2023 18:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319254;
-	bh=e9CVArW8oRLdkhCqpbxClyVN8QO4ie5LUD2PfcfiFUA=;
+	s=korg; t=1702319262;
+	bh=AGj+Gd7LHlQYsCymTbeYEso6INu+xMte9WQCNYpA+ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xHXQT6cQk4ZrcUdFJLBQAu3EsPn4lXBrkVC48R68s8eiDhZVXaTnMuRvWl2UGQXGR
-	 GB4VoWyjAUNirnMN3Wu69ciDDp+eDgLYIGVz2mov49tUN1+G9WhbEj3jKVD1iPvOoi
-	 kIgLBxppE7SgG2WbHm4wQ+l/K95vPeDguuwmUEh0=
+	b=FVpYolKMy20BJHrnrCYVsRXXAbKrIRlIKh+8zKxDx2qUYbTCllJ1UugRQE0UNHJUa
+	 xy4NMo5lLsub21nOwKy9EegBl8LvCKvF0R64q9VQdqP5jkDnxR6mgLpEyZROPA4Xw8
+	 s8Y43Zbm2aliUYcKSvtZ7RbtMy8Z1KdI52OUzu3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/244] tg3: Increment tx_dropped in tg3_tso_bug()
-Date: Mon, 11 Dec 2023 19:18:23 +0100
-Message-ID: <20231211182046.245888619@linuxfoundation.org>
+Subject: [PATCH 6.6 011/244] modpost: fix section mismatch message for RELA
+Date: Mon, 11 Dec 2023 19:18:24 +0100
+Message-ID: <20231211182046.284296795@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
 References: <20231211182045.784881756@linuxfoundation.org>
@@ -59,39 +57,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+[ Upstream commit 1c4a7587d1bbee0fd53b63af60e4244a62775f57 ]
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+The section mismatch check prints a bogus symbol name on some
+architectures.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[test code]
+
+  #include <linux/init.h>
+
+  int __initdata foo;
+  int get_foo(void) { return foo; }
+
+If you compile it with GCC for riscv or loongarch, modpost will show an
+incorrect symbol name:
+
+  WARNING: modpost: vmlinux: section mismatch in reference: get_foo+0x8 (section: .text) -> done (section: .init.data)
+
+To get the correct symbol address, the st_value must be added.
+
+This issue has never been noticed since commit 93684d3b8062 ("kbuild:
+include symbol names in section mismatch warnings") presumably because
+st_value becomes zero on most architectures when the referenced symbol
+is looked up. It is not true for riscv or loongarch, at least.
+
+With this fix, modpost will show the correct symbol name:
+
+  WARNING: modpost: vmlinux: section mismatch in reference: get_foo+0x8 (section: .text) -> foo (section: .init.data)
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/mod/modpost.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 5c18ad10efc3e..b7acd994a393b 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7874,8 +7874,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index b3dee80497cb2..ac4ef3e206bbd 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1496,13 +1496,15 @@ static void section_rela(struct module *mod, struct elf_info *elf,
+ 		return;
  
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
-+	}
+ 	for (rela = start; rela < stop; rela++) {
++		Elf_Sym *tsym;
+ 		Elf_Addr taddr, r_offset;
+ 		unsigned int r_type, r_sym;
  
- 	skb_list_walk_safe(segs, seg, next) {
- 		skb_mark_not_on_list(seg);
+ 		r_offset = TO_NATIVE(rela->r_offset);
+ 		get_rel_type_and_sym(elf, rela->r_info, &r_type, &r_sym);
+ 
+-		taddr = TO_NATIVE(rela->r_addend);
++		tsym = elf->symtab_start + r_sym;
++		taddr = tsym->st_value + TO_NATIVE(rela->r_addend);
+ 
+ 		switch (elf->hdr->e_machine) {
+ 		case EM_RISCV:
+@@ -1517,7 +1519,7 @@ static void section_rela(struct module *mod, struct elf_info *elf,
+ 			break;
+ 		}
+ 
+-		check_section_mismatch(mod, elf, elf->symtab_start + r_sym,
++		check_section_mismatch(mod, elf, tsym,
+ 				       fsecndx, fromsec, r_offset, taddr);
+ 	}
+ }
 -- 
 2.42.0
 
