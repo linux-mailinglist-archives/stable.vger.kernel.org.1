@@ -1,52 +1,60 @@
-Return-Path: <stable+bounces-5405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ACB480CBD5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:55:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B4280CBD9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 378631F211DC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB71281B7E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F21847A45;
-	Mon, 11 Dec 2023 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E91B4779E;
+	Mon, 11 Dec 2023 13:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZouzXaL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kovH1jU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0221B4776B;
-	Mon, 11 Dec 2023 13:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA26C433C7;
-	Mon, 11 Dec 2023 13:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CC74776B;
+	Mon, 11 Dec 2023 13:55:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB7AEC433CC;
+	Mon, 11 Dec 2023 13:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702302904;
-	bh=3DSGwtvqJ6ypr8hGpbQO6/gzZQ9JGzJSEGoPdr3cbgA=;
+	s=k20201202; t=1702302908;
+	bh=TgY6k7bjIZPz0mYLHVFe2rv2l0ZLAUu5HFTSEhZTUtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZouzXaLwUyiwVUpDuCTK8lABEIDlbzpfGEfYPfwMZw2iUdWRjdW7zVBMFhJZWR5j
-	 9oEcd2q1v20yjFUuMP+jwUpsTVFW1a/9upruAZLhcgE25g4cdR09DKrbmwJfapChvu
-	 0DGiRv3ZovO7cxLKZxTupfikrgBIfB5dfwlHUzhIYK0m7E5qwpvJ73CtmQce42ey5T
-	 IVNqnrz43p6Rm8Qi5QN65J1XFtGfP4Pp8nHvX/Em0AwNg+fQWW/zJYvN/zAX4UQI1/
-	 ExXwyuYB+4BcseIUjrpBSINpOGAZZ+iIlv44VdjesSYF6PTrHRlJUxAoMKkou9PcPM
-	 EldnFDHZ+oJCw==
+	b=kovH1jU+sajkA1egTKaF1AsIXy+knp+UmFdSNHfD6GBzv5pb5tIZHA8GK10HWKtgX
+	 Y78bHBouYKlR3G1OdFjOOK6CF5NYZoZvqZh+BatLUKY18mwX9Hwh8CTmUjfHp8db5i
+	 B/UznHDITvJXSeqeVOVFJ0pyFjtJBSEOEofWmZLyO3nHwiyi75ZnYdtz2zKpnuoRjp
+	 LQEax7tIo4nfI1n5irOy46Zt3AYuPNDmqwJ+2J2qu5KpPCQF6n5buYKdHrX9fSQbc2
+	 KOmejwybuWQJzYa7h5wPynsTIhoJ9lpHYY68T8JWhRnuBq8V8Bo84D8QzJ2dJLbhMT
+	 dxz/8iarWIkuw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	u.kleine-koenig@pengutronix.de,
-	patches@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 03/29] ASoC: wm8974: Correct boost mixer inputs
-Date: Mon, 11 Dec 2023 08:53:47 -0500
-Message-ID: <20231211135457.381397-3-sashal@kernel.org>
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	frattaroli.nicolas@gmail.com,
+	jonas@kwiboo.se,
+	m.tretter@pengutronix.de,
+	jensenhuang@friendlyarm.com,
+	inindev@gmail.com,
+	aholmes@omnom.net,
+	jbx6244@gmail.com,
+	s.hauer@pengutronix.de,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 04/29] arm64: dts: rockchip: fix rk356x pcie msg interrupt name
+Date: Mon, 11 Dec 2023 08:53:48 -0500
+Message-ID: <20231211135457.381397-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231211135457.381397-1-sashal@kernel.org>
 References: <20231211135457.381397-1-sashal@kernel.org>
@@ -61,47 +69,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.66
 Content-Transfer-Encoding: 8bit
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
+[ Upstream commit 3cee9c635f27d1003d46f624d816f3455698b625 ]
 
-Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
-the input PGA path, as can been seen from Figure 8 Input Boost Stage in
-the datasheet. Update the naming of things in the driver to match this
-and update the routing to also reflect this.
+The expected name by the binding at this position is "msg" and the SoC's
+manual also calls the interrupt in question "msg", so fix the rk356x dtsi
+to use the correct name.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20231114153834.934978-1-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8974.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
-index 010a394c705c1..1becbf2c6ffad 100644
---- a/sound/soc/codecs/wm8974.c
-+++ b/sound/soc/codecs/wm8974.c
-@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
- 
- /* Boost mixer */
- static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
--SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
-+SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
- };
- 
- /* Input PGA */
-@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
- 
- 	/* Boost Mixer */
- 	{"ADC", NULL, "Boost Mixer"},
--	{"Boost Mixer", "Aux Switch", "Aux Input"},
--	{"Boost Mixer", NULL, "Input PGA"},
-+	{"Boost Mixer", NULL, "Aux Input"},
-+	{"Boost Mixer", "PGA Switch", "Input PGA"},
- 	{"Boost Mixer", NULL, "MICP"},
- 
- 	/* Input PGA */
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+index 234b5bbda1204..f4d6dbbbddcd4 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -958,7 +958,7 @@ pcie2x1: pcie@fe260000 {
+ 			     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+-		interrupt-names = "sys", "pmc", "msi", "legacy", "err";
++		interrupt-names = "sys", "pmc", "msg", "legacy", "err";
+ 		bus-range = <0x0 0xf>;
+ 		clocks = <&cru ACLK_PCIE20_MST>, <&cru ACLK_PCIE20_SLV>,
+ 			 <&cru ACLK_PCIE20_DBI>, <&cru PCLK_PCIE20>,
 -- 
 2.42.0
 
