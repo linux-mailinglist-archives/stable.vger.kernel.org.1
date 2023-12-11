@@ -1,46 +1,53 @@
-Return-Path: <stable+bounces-6139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D5080D902
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC3580D584
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B8401F21AE8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB941C21236
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF4651C51;
-	Mon, 11 Dec 2023 18:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44C25101E;
+	Mon, 11 Dec 2023 18:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrI2/wSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T54fjr4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB135102A;
-	Mon, 11 Dec 2023 18:50:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E12C433C9;
-	Mon, 11 Dec 2023 18:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830844F212;
+	Mon, 11 Dec 2023 18:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABACDC433C9;
+	Mon, 11 Dec 2023 18:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320617;
-	bh=s+raaW27Q3BFFuSILH/OiAkGg/ch64RzT9ELa77QiJ4=;
+	s=korg; t=1702319130;
+	bh=CZjr4B5J1HKMR2RpsiaPa1rQb7UgdgNLYGwDGwI9Ua4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrI2/wStdZdmRmQMPnySNF7R4X9UMZBw3lrJB1PmHrGPKNeKPMvKdWWo88tGxSQwT
-	 iGa4F3eIdhAkEwiLxmStycaq/jm28VN1G3bopsNC+Myzt2qxQUHvMTQHwpGpgXUbuI
-	 78pASE74gTXjaopSgtQSTkEP8yHq55RErqw2cJQA=
+	b=T54fjr4felVZ2X6FH/JQgnwSrJ220f4V0Ozw5y4AwpDNv/ezYLLQiu7btlDrtJK3n
+	 FF3/6g8olzyVCKfBzbOFGtduguzfgw7NWQkPgZwTWxMNsCDH11Ch85BH44W4guB07s
+	 ezDfWTLlAO34cpRJJJukpS0g5vWB+G1m3kL8bdjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 127/194] arm64: dts: mediatek: mt7622: fix memory node warning check
-Date: Mon, 11 Dec 2023 19:21:57 +0100
-Message-ID: <20231211182042.200365457@linuxfoundation.org>
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sean Tranchetti <stranche@codeaurora.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 4.19 48/55] netlink: dont call ->netlink_bind with table lock held
+Date: Mon, 11 Dec 2023 19:21:58 +0100
+Message-ID: <20231211182014.029735340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +59,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
+From: Florian Westphal <fw@strlen.de>
 
-dtbs_check throws a warning at the memory node:
-Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+commit f2764bd4f6a8dffaec3e220728385d9756b3c2cb upstream.
 
-fix by adding the address into the node name.
+When I added support to allow generic netlink multicast groups to be
+restricted to subscribers with CAP_NET_ADMIN I was unaware that a
+genl_bind implementation already existed in the past.
 
-Cc: stable@vger.kernel.org
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+It was reverted due to ABBA deadlock:
+
+1. ->netlink_bind gets called with the table lock held.
+2. genetlink bind callback is invoked, it grabs the genl lock.
+
+But when a new genl subsystem is (un)registered, these two locks are
+taken in reverse order.
+
+One solution would be to revert again and add a comment in genl
+referring 1e82a62fec613, "genetlink: remove genl_bind").
+
+This would need a second change in mptcp to not expose the raw token
+value anymore, e.g.  by hashing the token with a secret key so userspace
+can still associate subflow events with the correct mptcp connection.
+
+However, Paolo Abeni reminded me to double-check why the netlink table is
+locked in the first place.
+
+I can't find one.  netlink_bind() is already called without this lock
+when userspace joins a group via NETLINK_ADD_MEMBERSHIP setsockopt.
+Same holds for the netlink_unbind operation.
+
+Digging through the history, commit f773608026ee1
+("netlink: access nlk groups safely in netlink bind and getname")
+expanded the lock scope.
+
+commit 3a20773beeeeade ("net: netlink: cap max groups which will be considered in netlink_bind()")
+... removed the nlk->ngroups access that the lock scope
+extension was all about.
+
+Reduce the lock scope again and always call ->netlink_bind without
+the table lock.
+
+The Fixes tag should be vs. the patch mentioned in the link below,
+but that one got squash-merged into the patch that came earlier in the
+series.
+
+Fixes: 4d54cc32112d8d ("mptcp: avoid lock_fast usage in accept path")
+Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/T/#u
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Sean Tranchetti <stranche@codeaurora.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netlink/af_netlink.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -72,7 +72,7 @@
- 		};
- 	};
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -1030,7 +1030,6 @@ static int netlink_bind(struct socket *s
+ 			return -EINVAL;
+ 	}
  
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x40000000>;
- 	};
+-	netlink_lock_table();
+ 	if (nlk->netlink_bind && groups) {
+ 		int group;
  
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -54,7 +54,7 @@
- 		};
- 	};
+@@ -1042,13 +1041,14 @@ static int netlink_bind(struct socket *s
+ 			if (!err)
+ 				continue;
+ 			netlink_undo_bind(group, groups, sk);
+-			goto unlock;
++			return err;
+ 		}
+ 	}
  
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x20000000>;
- 	};
- 
+ 	/* No need for barriers here as we return to user-space without
+ 	 * using any of the bound attributes.
+ 	 */
++	netlink_lock_table();
+ 	if (!bound) {
+ 		err = nladdr->nl_pid ?
+ 			netlink_insert(sk, nladdr->nl_pid) :
 
 
 
