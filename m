@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-5741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3518F80D634
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D487D80D868
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595191C21556
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BE62B21328
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2674CFC06;
-	Mon, 11 Dec 2023 18:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E0F5102F;
+	Mon, 11 Dec 2023 18:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n42WuCE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcAmmVLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEC0C2D0;
-	Mon, 11 Dec 2023 18:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6119DC433C7;
-	Mon, 11 Dec 2023 18:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E104437B;
+	Mon, 11 Dec 2023 18:45:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCEAC433C7;
+	Mon, 11 Dec 2023 18:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319541;
-	bh=S9eAJkm0jjF4O8LvJAzSIQ0bj0FzxJkx02XaQ7G0xUo=;
+	s=korg; t=1702320325;
+	bh=fCCEV/SEkGw9WAOjXVISIV3b/Ud3Vwluf6zg4HldePI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n42WuCE9EhfewX8IFz1g3ANn1DQfb16/vaj1GPLmh3pNmI/tLGrmRI1+FMNoTCLx6
-	 /Wrb7QUZgm4SEHo+ZrWr0PQ4RdVvLcDXnZZACZnhrVQRT55j1XKRNBhfaqE9uG0YSq
-	 LLpgmSqBpAFvzFW66FldxelYq+qk1aSawpUVKfko=
+	b=wcAmmVLlAG9dASc9yHbGeqDJDGQ4r7lGegALLufk1GkoO5TzY0HIhyJ/yyeIgeenJ
+	 rPMpbFeVgpnf78/Ai078XwyOV7lMwz2oe3OeD82QNg9kdDqu2gf31r7cPKj1CREWMm
+	 LiRjgR22m/O2fUjE7NIZyA9lqFLX3UguTmQJlaEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/244] firmware: arm_scmi: Fix frequency truncation by promoting multiplier type
-Date: Mon, 11 Dec 2023 19:19:57 +0100
-Message-ID: <20231211182050.427373320@linuxfoundation.org>
+Subject: [PATCH 6.1 008/194] kconfig: fix memory leak from range properties
+Date: Mon, 11 Dec 2023 19:19:58 +0100
+Message-ID: <20231211182036.983497809@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +52,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 8e3c98d9187e09274fc000a7d1a77b070a42d259 ]
+[ Upstream commit ae1eff0349f2e908fc083630e8441ea6dc434dc0 ]
 
-Fix the possible frequency truncation for all values equal to or greater
-4GHz on 64bit machines by updating the multiplier 'mult_factor' to
-'unsigned long' type. It is also possible that the multiplier itself can
-be greater than or equal to 2^32. So we need to also fix the equation
-computing the value of the multiplier.
+Currently, sym_validate_range() duplicates the range string using
+xstrdup(), which is overwritten by a subsequent sym_calc_value() call.
+It results in a memory leak.
 
-Fixes: a9e3fbfaa0ff ("firmware: arm_scmi: add initial support for performance protocol")
-Reported-by: Sibi Sankar <quic_sibis@quicinc.com>
-Closes: https://lore.kernel.org/all/20231129065748.19871-3-quic_sibis@quicinc.com/
-Cc: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20231130204343.503076-1-sudeep.holla@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Instead, only the pointer should be copied.
+
+Below is a test case, with a summary from Valgrind.
+
+[Test Kconfig]
+
+  config FOO
+          int "foo"
+          range 10 20
+
+[Test .config]
+
+  CONFIG_FOO=0
+
+[Before]
+
+  LEAK SUMMARY:
+     definitely lost: 3 bytes in 1 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,465 bytes in 21 blocks
+          suppressed: 0 bytes in 0 blocks
+
+[After]
+
+  LEAK SUMMARY:
+     definitely lost: 0 bytes in 0 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,462 bytes in 20 blocks
+          suppressed: 0 bytes in 0 blocks
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/kconfig/symbol.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 6677caefb36bc..7aa9b4ff48d61 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -152,7 +152,7 @@ struct perf_dom_info {
- 	u32 opp_count;
- 	u32 sustained_freq_khz;
- 	u32 sustained_perf_level;
--	u32 mult_factor;
-+	unsigned long mult_factor;
- 	struct scmi_perf_domain_info info;
- 	struct scmi_opp opp[MAX_OPPS];
- 	struct scmi_fc_info *fc_info;
-@@ -273,8 +273,8 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
- 			dom_info->mult_factor =	1000;
- 		else
- 			dom_info->mult_factor =
--					(dom_info->sustained_freq_khz * 1000) /
--					dom_info->sustained_perf_level;
-+					(dom_info->sustained_freq_khz * 1000UL)
-+					/ dom_info->sustained_perf_level;
- 		strscpy(dom_info->info.name, attr->name,
- 			SCMI_SHORT_NAME_MAX_SIZE);
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index 0572330bf8a78..a76925b46ce63 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -122,9 +122,9 @@ static long long sym_get_range_val(struct symbol *sym, int base)
+ static void sym_validate_range(struct symbol *sym)
+ {
+ 	struct property *prop;
++	struct symbol *range_sym;
+ 	int base;
+ 	long long val, val2;
+-	char str[64];
+ 
+ 	switch (sym->type) {
+ 	case S_INT:
+@@ -140,17 +140,15 @@ static void sym_validate_range(struct symbol *sym)
+ 	if (!prop)
+ 		return;
+ 	val = strtoll(sym->curr.val, NULL, base);
+-	val2 = sym_get_range_val(prop->expr->left.sym, base);
++	range_sym = prop->expr->left.sym;
++	val2 = sym_get_range_val(range_sym, base);
+ 	if (val >= val2) {
+-		val2 = sym_get_range_val(prop->expr->right.sym, base);
++		range_sym = prop->expr->right.sym;
++		val2 = sym_get_range_val(range_sym, base);
+ 		if (val <= val2)
+ 			return;
  	}
+-	if (sym->type == S_INT)
+-		sprintf(str, "%lld", val2);
+-	else
+-		sprintf(str, "0x%llx", val2);
+-	sym->curr.val = xstrdup(str);
++	sym->curr.val = range_sym->curr.val;
+ }
+ 
+ static void sym_set_changed(struct symbol *sym)
 -- 
 2.42.0
 
