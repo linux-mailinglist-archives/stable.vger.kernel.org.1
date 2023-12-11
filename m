@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC0A80D61E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4D080D871
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00891C215AE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F9CC1C21491
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FADFBE1;
-	Mon, 11 Dec 2023 18:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4855103A;
+	Mon, 11 Dec 2023 18:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdqUZAkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWfD0CDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921B4C2D0;
-	Mon, 11 Dec 2023 18:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B95BC433C8;
-	Mon, 11 Dec 2023 18:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662604437B;
+	Mon, 11 Dec 2023 18:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E060EC433C8;
+	Mon, 11 Dec 2023 18:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319492;
-	bh=ITPstsTMTqOvtuffJC41EepfA0Y1uUuKneECR7fMKaY=;
+	s=korg; t=1702320347;
+	bh=+iRPvjKyb6Ae9pfQdSTIQFW0PokqsRqYGt0geBCuL0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdqUZAkGnH6z0UFlRWkGTgEkX8pbBFtHHxVDY0ir/czJCPkvYcMSb5wFo7WTe0V/B
-	 Lx7V1b1A7txV14DzpHU3NSMa87b+P4aIFtm0/lBmbYiFgQPQMFEMz14F0elw2USi9+
-	 mX02AS9xj2vi5/XFTLbU8DGLLuU/QfzA8fwTwR0w=
+	b=aWfD0CDSEBMvZUD5sguU1vJngd9IDHdZ1UPa76U8t74Wr9WfbOu+F2qgAXcA7Slhz
+	 niePNfU1RPa5sU/pAwhDKnsVbkOihfK6ZeotZO16F6qRehShdtllU8lIezItvZObcb
+	 /8oIUydWbwZJGmBetr2YNh97ZQ0OsNWyM2xg25Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Grant Grundler <grundler@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Hayes Wang <hayeswang@realtek.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/244] ARM: dts: imx28-xea: Pass the model property
+Subject: [PATCH 6.1 028/194] r8152: Add RTL8152_INACCESSIBLE to r8153_aldps_en()
 Date: Mon, 11 Dec 2023 19:20:18 +0100
-Message-ID: <20231211182051.422386417@linuxfoundation.org>
+Message-ID: <20231211182037.831931901@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +55,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 63ef8fc9bcee6b73ca445a19a7ac6bd544723c9f ]
+[ Upstream commit 79321a793945fdbff2f405f84712d0ab81bed287 ]
 
-Per root-node.yaml, 'model' is a required property.
+Delay loops in r8152 should break out if RTL8152_INACCESSIBLE is set
+so that they don't delay too long if the device becomes
+inaccessible. Add the break to the loop in r8153_aldps_en().
 
-Pass it to fix the following dt-schema warning:
-
-imx28-xea.dtb: /: 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Fixes: 445ae16ac1c5 ("ARM: dts: imx28: Add DTS description of imx28 based XEA board")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 4214cc550bf9 ("r8152: check if disabling ALDPS is finished")
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/mxs/imx28-xea.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/r8152.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-index a400c108f66a2..6c5e6856648af 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28-xea.dts
-@@ -8,6 +8,7 @@
- #include "imx28-lwe.dtsi"
- 
- / {
-+	model = "Liebherr XEA board";
- 	compatible = "lwn,imx28-xea", "fsl,imx28";
- };
- 
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index b8ad038dd36bf..4d833781294a4 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -5685,6 +5685,8 @@ static void r8153_aldps_en(struct r8152 *tp, bool enable)
+ 		data &= ~EN_ALDPS;
+ 		ocp_reg_write(tp, OCP_POWER_CFG, data);
+ 		for (i = 0; i < 20; i++) {
++			if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++				return;
+ 			usleep_range(1000, 2000);
+ 			if (ocp_read_word(tp, MCU_TYPE_PLA, 0xe000) & 0x0100)
+ 				break;
 -- 
 2.42.0
 
