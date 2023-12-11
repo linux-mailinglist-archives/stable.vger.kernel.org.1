@@ -1,49 +1,52 @@
-Return-Path: <stable+bounces-5898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D7080D7B5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D71980D806
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787861F21A7D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6DB51F2107C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD70524B9;
-	Mon, 11 Dec 2023 18:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BFD51C33;
+	Mon, 11 Dec 2023 18:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKe9rDs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN1+tcA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FEE20DDE;
-	Mon, 11 Dec 2023 18:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F349C433C7;
-	Mon, 11 Dec 2023 18:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0731D696;
+	Mon, 11 Dec 2023 18:41:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F6CC433C7;
+	Mon, 11 Dec 2023 18:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319962;
-	bh=ENKtNXp9U52vRXKDYkYamOaZRnk+D3/AAhXJ5QBvJbI=;
+	s=korg; t=1702320115;
+	bh=T86tbj5s9xUJcLdssQN7h6/NX0YSeU7p2ZotsVPV1X4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKe9rDs3Cf1aXT0Ceq3v9ldCdl7N1KLQc2FL3hFIv0WrcpfTvFA3YL2TxaR9pC5RG
-	 auaRKfgVorcYRLbU59zsQPN7HCR0u+zywNg2OtVWBDIJ01Wqlud30o+MrOxE7Vs1h7
-	 s1q142QKkw6bafjhfx2KcZMkgzuOr6Psc8BlYu2U=
+	b=qN1+tcA+0LP9sqh2GvR1QJPnoaw99XVJK8beBHxN27x1J2nHGC4mhapCMRr8Yfb02
+	 ukYYSvASN4XBo9qpiQAX87tC0OfsMmen19Z+JmXz+lHrjLU0NgEbb6jTI5X9TDqlco
+	 8cvGnzOkQeWu5hs3ZYzvGJp5GbFyiNBeS6ndaCzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 52/97] tracing: Always update snapshot buffer size
+	Diana Craciun <diana.craciun@oss.nxp.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 11/67] of/irq: make of_msi_map_get_device_domain() bus agnostic
 Date: Mon, 11 Dec 2023 19:21:55 +0100
-Message-ID: <20231211182021.974309771@linuxfoundation.org>
+Message-ID: <20231211182015.571003692@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,88 +58,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Diana Craciun <diana.craciun@oss.nxp.com>
 
-commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
+[ Upstream commit 6f881aba01109a01a43e4f135673c19190f61133 ]
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). The update of the ring buffer
-size would check if the instance was the top level and if so, it would
-also update the snapshot buffer as it needs to be the same as the main
-buffer.
+of_msi_map_get_device_domain() is PCI specific but it need not be and
+can be easily changed to be bus agnostic in order to be used by other
+busses by adding an IRQ domain bus token as an input parameter.
 
-Now that lower level instances also has a snapshot buffer, they too need
-to update their snapshot buffer sizes when the main buffer is changed,
-otherwise the following can be triggered:
-
- # cd /sys/kernel/tracing
- # echo 1500 > buffer_size_kb
- # mkdir instances/foo
- # echo irqsoff > instances/foo/current_tracer
- # echo 1000 > instances/foo/buffer_size_kb
-
-Produces:
-
- WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
-
-Which is:
-
-	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
-
-	if (ret == -EBUSY) {
-		[..]
-	}
-
-	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
-
-That's because ring_buffer_swap_cpu() has:
-
-	int ret = -EINVAL;
-
-	[..]
-
-	/* At least make sure the two buffers are somewhat the same */
-	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
-		goto out;
-
-	[..]
- out:
-	return ret;
- }
-
-Instead, update all instances' snapshot buffer sizes when their main
-buffer size is updated.
-
-Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Diana Craciun <diana.craciun@oss.nxp.com>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>   # pci/msi.c
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20200619082013.13661-10-lorenzo.pieralisi@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: d79972789d17 ("of: dynamic: Fix of_reconfig_get_state_change() return value documentation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/of/irq.c       | 8 +++++---
+ drivers/pci/msi.c      | 2 +-
+ include/linux/of_irq.h | 5 +++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5943,8 +5943,7 @@ static int __tracing_resize_ring_buffer(
- 		return ret;
+diff --git a/drivers/of/irq.c b/drivers/of/irq.c
+index d632bc5b3a2de..1005e4f349ef6 100644
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -613,18 +613,20 @@ u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in)
+  * of_msi_map_get_device_domain - Use msi-map to find the relevant MSI domain
+  * @dev: device for which the mapping is to be done.
+  * @rid: Requester ID for the device.
++ * @bus_token: Bus token
+  *
+  * Walk up the device hierarchy looking for devices with a "msi-map"
+  * property.
+  *
+  * Returns: the MSI domain for this device (or NULL on failure)
+  */
+-struct irq_domain *of_msi_map_get_device_domain(struct device *dev, u32 rid)
++struct irq_domain *of_msi_map_get_device_domain(struct device *dev, u32 id,
++						u32 bus_token)
+ {
+ 	struct device_node *np = NULL;
  
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
--	    !tr->current_trace->use_max_tr)
-+	if (!tr->current_trace->use_max_tr)
- 		goto out;
+-	__of_msi_map_rid(dev, &np, rid);
+-	return irq_find_matching_host(np, DOMAIN_BUS_PCI_MSI);
++	__of_msi_map_rid(dev, &np, id);
++	return irq_find_matching_host(np, bus_token);
+ }
  
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+ /**
+diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
+index cc863cdd5cc74..392d2ecf7dc89 100644
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -1624,7 +1624,7 @@ struct irq_domain *pci_msi_get_device_domain(struct pci_dev *pdev)
+ 	u32 rid = pci_dev_id(pdev);
+ 
+ 	pci_for_each_dma_alias(pdev, get_msi_id_cb, &rid);
+-	dom = of_msi_map_get_device_domain(&pdev->dev, rid);
++	dom = of_msi_map_get_device_domain(&pdev->dev, rid, DOMAIN_BUS_PCI_MSI);
+ 	if (!dom)
+ 		dom = iort_get_device_domain(&pdev->dev, rid,
+ 					     DOMAIN_BUS_PCI_MSI);
+diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
+index 1214cabb22479..7142a37227584 100644
+--- a/include/linux/of_irq.h
++++ b/include/linux/of_irq.h
+@@ -52,7 +52,8 @@ extern struct irq_domain *of_msi_get_domain(struct device *dev,
+ 					    struct device_node *np,
+ 					    enum irq_domain_bus_token token);
+ extern struct irq_domain *of_msi_map_get_device_domain(struct device *dev,
+-						       u32 rid);
++							u32 id,
++							u32 bus_token);
+ extern void of_msi_configure(struct device *dev, struct device_node *np);
+ u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in);
+ #else
+@@ -85,7 +86,7 @@ static inline struct irq_domain *of_msi_get_domain(struct device *dev,
+ 	return NULL;
+ }
+ static inline struct irq_domain *of_msi_map_get_device_domain(struct device *dev,
+-							      u32 rid)
++						u32 id, u32 bus_token)
+ {
+ 	return NULL;
+ }
+-- 
+2.42.0
+
 
 
 
