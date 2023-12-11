@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-6324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908F580DA1C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A490980D957
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31E5EB219F1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D669D1C216DC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A605524C7;
-	Mon, 11 Dec 2023 18:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C167051C47;
+	Mon, 11 Dec 2023 18:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnEPt7LE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egkCO4av"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEA1524B2;
-	Mon, 11 Dec 2023 18:58:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FE3C433C7;
-	Mon, 11 Dec 2023 18:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E4A51C2D;
+	Mon, 11 Dec 2023 18:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B73DC433C9;
+	Mon, 11 Dec 2023 18:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321121;
-	bh=s2ERUNFJi/wwzrSbwaYQQVaAG9P7caUDEc62JmPL9jc=;
+	s=korg; t=1702320776;
+	bh=VqXSvnAkUnLdJeHvJpUP25C2/P+8Ok/z9yn2mgwoiww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnEPt7LE0Qn1nvI63u3r8A224Tz6VMMNbtDiH/KTdDfn0KHiHbaCzRAD8Ty9K4BG5
-	 nBCI93yz2b3zfpK3uy2wHF9p0iGn3T9qrMSQGBPfh/pqpgqROzcipTi2bev2dzwNLA
-	 mIMpl3cTlQXzdoccV7vLU8Eejtwy3DVzJdrQ2LJw=
+	b=egkCO4avJ3CqylULYurX2V7vBsI217EuHnmpRYFTLVWKePLUjMeIn/tpNWaPtvTBR
+	 WA1+XGV5jfmS5A/vHiQZxUL5OY5gmK+yg9sD8xPvwwtSqOkNOK0JTH8/UczgHm1TOq
+	 5zNIGIVETWIKDaR1Ea8FsgivT5P8u0sxbvkECuoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 117/141] perf: Fix perf_event_validate_size()
-Date: Mon, 11 Dec 2023 19:22:56 +0100
-Message-ID: <20231211182031.629038990@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 187/194] MIPS: Loongson64: Handle more memory types passed from firmware
+Date: Mon, 11 Dec 2023 19:22:57 +0100
+Message-ID: <20231211182045.034087927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,140 +52,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 382c27f4ed28f803b1f1473ac2d8db0afc795a1b ]
+commit c7206e7bd214ebb3ca6fa474a4423662327d9beb upstream.
 
-Budimir noted that perf_event_validate_size() only checks the size of
-the newly added event, even though the sizes of all existing events
-can also change due to not all events having the same read_format.
+There are many types of revsered memory passed from firmware
+that should be reserved in memblock, and UMA memory passed
+from firmware that should be added to system memory for system
+to use.
 
-When we attach the new event, perf_group_attach(), we do re-compute
-the size for all events.
+Also for memblock there is no need to align those space into page,
+which actually cause problems.
 
-Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Handle them properly to prevent memory corruption on some systems.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 61 +++++++++++++++++++++++++++-----------------
- 1 file changed, 38 insertions(+), 23 deletions(-)
+ arch/mips/include/asm/mach-loongson64/boot_param.h |    6 ++-
+ arch/mips/loongson64/init.c                        |   42 +++++++++++++--------
+ 2 files changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index c25dc417d79fc..521d64b355ef2 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1899,31 +1899,34 @@ static inline void perf_event__state_init(struct perf_event *event)
- 					      PERF_EVENT_STATE_INACTIVE;
- }
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -14,7 +14,11 @@
+ #define ADAPTER_ROM		8
+ #define ACPI_TABLE		9
+ #define SMBIOS_TABLE		10
+-#define MAX_MEMORY_TYPE		11
++#define UMA_VIDEO_RAM		11
++#define VUMA_VIDEO_RAM		12
++#define MAX_MEMORY_TYPE		13
++
++#define MEM_SIZE_IS_IN_BYTES	(1 << 31)
  
--static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
-+static int __perf_event_read_size(u64 read_format, int nr_siblings)
+ #define LOONGSON3_BOOT_MEM_MAP_MAX 128
+ struct efi_memory_map_loongson {
+--- a/arch/mips/loongson64/init.c
++++ b/arch/mips/loongson64/init.c
+@@ -49,8 +49,7 @@ void virtual_early_config(void)
+ void __init szmem(unsigned int node)
  {
- 	int entry = sizeof(u64); /* value */
- 	int size = 0;
- 	int nr = 1;
+ 	u32 i, mem_type;
+-	static unsigned long num_physpages;
+-	u64 node_id, node_psize, start_pfn, end_pfn, mem_start, mem_size;
++	phys_addr_t node_id, mem_start, mem_size;
  
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
- 		size += sizeof(u64);
+ 	/* Otherwise come from DTB */
+ 	if (loongson_sysconf.fw_interface != LOONGSON_LEFI)
+@@ -64,27 +63,38 @@ void __init szmem(unsigned int node)
  
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
- 		size += sizeof(u64);
+ 		mem_type = loongson_memmap->map[i].mem_type;
+ 		mem_size = loongson_memmap->map[i].mem_size;
+-		mem_start = loongson_memmap->map[i].mem_start;
++
++		/* Memory size comes in MB if MEM_SIZE_IS_IN_BYTES not set */
++		if (mem_size & MEM_SIZE_IS_IN_BYTES)
++			mem_size &= ~MEM_SIZE_IS_IN_BYTES;
++		else
++			mem_size = mem_size << 20;
++
++		mem_start = (node_id << 44) | loongson_memmap->map[i].mem_start;
  
--	if (event->attr.read_format & PERF_FORMAT_ID)
-+	if (read_format & PERF_FORMAT_ID)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_LOST)
-+	if (read_format & PERF_FORMAT_LOST)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_GROUP) {
-+	if (read_format & PERF_FORMAT_GROUP) {
- 		nr += nr_siblings;
- 		size += sizeof(u64);
+ 		switch (mem_type) {
+ 		case SYSTEM_RAM_LOW:
+ 		case SYSTEM_RAM_HIGH:
+-			start_pfn = ((node_id << 44) + mem_start) >> PAGE_SHIFT;
+-			node_psize = (mem_size << 20) >> PAGE_SHIFT;
+-			end_pfn  = start_pfn + node_psize;
+-			num_physpages += node_psize;
+-			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+-				(u32)node_id, mem_type, mem_start, mem_size);
+-			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
+-				start_pfn, end_pfn, num_physpages);
+-			memblock_add_node(PFN_PHYS(start_pfn),
+-					  PFN_PHYS(node_psize), node,
++		case UMA_VIDEO_RAM:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes usable\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
++			memblock_add_node(mem_start, mem_size, node,
+ 					  MEMBLOCK_NONE);
+ 			break;
+ 		case SYSTEM_RAM_RESERVED:
+-			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
+-				(u32)node_id, mem_type, mem_start, mem_size);
+-			memblock_reserve(((node_id << 44) + mem_start), mem_size << 20);
++		case VIDEO_ROM:
++		case ADAPTER_ROM:
++		case ACPI_TABLE:
++		case SMBIOS_TABLE:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes reserved\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
++			memblock_reserve(mem_start, mem_size);
++			break;
++		/* We should not reserve VUMA_VIDEO_RAM as it overlaps with MMIO */
++		case VUMA_VIDEO_RAM:
++		default:
++			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes unhandled\n",
++				(u32)node_id, mem_type, &mem_start, &mem_size);
+ 			break;
+ 		}
  	}
- 
--	size += entry * nr;
--	event->read_size = size;
-+	/*
-+	 * Since perf_event_validate_size() limits this to 16k and inhibits
-+	 * adding more siblings, this will never overflow.
-+	 */
-+	return size + nr * entry;
- }
- 
- static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-@@ -1973,8 +1976,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-  */
- static void perf_event__header_size(struct perf_event *event)
- {
--	__perf_event_read_size(event,
--			       event->group_leader->nr_siblings);
-+	event->read_size =
-+		__perf_event_read_size(event->attr.read_format,
-+				       event->group_leader->nr_siblings);
- 	__perf_event_header_size(event, event->attr.sample_type);
- }
- 
-@@ -2005,24 +2009,35 @@ static void perf_event__id_header_size(struct perf_event *event)
- 	event->id_header_size = size;
- }
- 
-+/*
-+ * Check that adding an event to the group does not result in anybody
-+ * overflowing the 64k event limit imposed by the output buffer.
-+ *
-+ * Specifically, check that the read_size for the event does not exceed 16k,
-+ * read_size being the one term that grows with groups size. Since read_size
-+ * depends on per-event read_format, also (re)check the existing events.
-+ *
-+ * This leaves 48k for the constant size fields and things like callchains,
-+ * branch stacks and register sets.
-+ */
- static bool perf_event_validate_size(struct perf_event *event)
- {
--	/*
--	 * The values computed here will be over-written when we actually
--	 * attach the event.
--	 */
--	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
--	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
--	perf_event__id_header_size(event);
-+	struct perf_event *sibling, *group_leader = event->group_leader;
- 
--	/*
--	 * Sum the lot; should not exceed the 64k limit we have on records.
--	 * Conservative limit to allow for callchains and other variable fields.
--	 */
--	if (event->read_size + event->header_size +
--	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
-+	if (__perf_event_read_size(event->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
- 		return false;
- 
-+	if (__perf_event_read_size(group_leader->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
-+		return false;
-+
-+	for_each_sibling_event(sibling, group_leader) {
-+		if (__perf_event_read_size(sibling->attr.read_format,
-+					   group_leader->nr_siblings + 1) > 16*1024)
-+			return false;
-+	}
-+
- 	return true;
- }
- 
--- 
-2.42.0
-
 
 
 
