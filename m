@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6662A80D616
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FD480D88C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97F911C21592
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412E22816F0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3BE20DDE;
-	Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBCA51038;
+	Mon, 11 Dec 2023 18:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iCZMA7gj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiS0wlOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929F7FBE1;
-	Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1900CC433C8;
-	Mon, 11 Dec 2023 18:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FDC8C8;
+	Mon, 11 Dec 2023 18:46:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54401C433C7;
+	Mon, 11 Dec 2023 18:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319471;
-	bh=C7C5FOREJD0sQ01PTu1QMm9UkXbJkwNrr8omFM55U6c=;
+	s=korg; t=1702320406;
+	bh=3N89mJs7hqFsoZFYPkPiXoRXqXiEwki2QrUOMldq9vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iCZMA7gjxYA+4ploLCBAwe0rdfAjOPUbpMjytI91ZcGpoSIdpWK9L4WJeXSFtZyHC
-	 8ghAG9fjUldfqTzRwQ+GaHt1aV7hvPhwndAsoI7OWZ1IYn4+7M+nXWR+aFkiNVARhL
-	 2RmSv7E7wK72MfZb71ynqDjqtIU0fBjGHJS/a4eg=
+	b=NiS0wlOyI298obPegVUMN6/NtwAVKSxuhaNUW5rEsVhD9RHAvW+rcst6Wbae8HuVA
+	 bNC0WmWnhcZ4zROsux6mWypOWqvLC9c2kRUuSx3qaG/CNaulhH9aQowJ8I9DAVS0Bt
+	 igdfX745F23MDqnv3T8vaPv1oY/JNpILpiTI4cyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/244] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
+Subject: [PATCH 6.1 021/194] octeontx2-pf: Add missing mutex lock in otx2_get_pauseparam
 Date: Mon, 11 Dec 2023 19:20:11 +0100
-Message-ID: <20231211182051.092867378@linuxfoundation.org>
+Message-ID: <20231211182037.545366182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,40 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
+[ Upstream commit 9572c949385aa2ef10368287c439bcb7935137c8 ]
 
-When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
-should free phwi_ctxt->be_wrbq before returning an error code to prevent
-potential memleak.
+All the mailbox messages sent to AF needs to be guarded
+by mutex lock. Add the missing lock in otx2_get_pauseparam
+function.
 
-Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/be2iscsi/be_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
-index e48f14ad6dfd8..06acb5ff609ee 100644
---- a/drivers/scsi/be2iscsi/be_main.c
-+++ b/drivers/scsi/be2iscsi/be_main.c
-@@ -2710,6 +2710,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
- 		kfree(pwrb_context->pwrb_handle_base);
- 		kfree(pwrb_context->pwrb_handle_basestd);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index aaf1af2a402ec..af779ae40d3c2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -323,9 +323,12 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (is_otx2_lbkvf(pfvf->pdev))
+ 		return;
+ 
++	mutex_lock(&pfvf->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_cgx_cfg_pause_frm(&pfvf->mbox);
+-	if (!req)
++	if (!req) {
++		mutex_unlock(&pfvf->mbox.lock);
+ 		return;
++	}
+ 
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+@@ -333,6 +336,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
  	}
-+	kfree(phwi_ctxt->be_wrbq);
- 	return -ENOMEM;
++	mutex_unlock(&pfvf->mbox.lock);
  }
  
+ static int otx2_set_pauseparam(struct net_device *netdev,
 -- 
 2.42.0
 
