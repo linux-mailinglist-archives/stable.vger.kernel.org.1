@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-6288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7559080D9E0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C9A880D826
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 156A1B20E01
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02EC91F213BC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37755524D9;
-	Mon, 11 Dec 2023 18:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDB751C2C;
+	Mon, 11 Dec 2023 18:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rupMDrg5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhiJNYxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DC0E548;
-	Mon, 11 Dec 2023 18:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6869EC433C9;
-	Mon, 11 Dec 2023 18:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E336FC06;
+	Mon, 11 Dec 2023 18:43:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BDDC433C7;
+	Mon, 11 Dec 2023 18:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321023;
-	bh=680zqvatG+07b8rk5/l2DDjQ+fYCfxzkl9rOX+sagg8=;
+	s=korg; t=1702320188;
+	bh=7oNWssxWgzdnSIOnry5Zdnwoe38sBYNtP1j3/gPRvUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rupMDrg59yFdJjFOqZY57q99jAKhkXGtWsl2SlLfxfJfghit7WLTTkdXAu6pMIzzK
-	 yQLaN+241JCikvtdkglL6x761ObrV9ZloDGyev3nAEOAB+uMkTn1/zBfordWhhyvdn
-	 MQdtSKumPq78/+gPXCz2n2yoD5weOE+mIci/RNMU=
+	b=EhiJNYxitVR6HqaiCWYVZ8vA4V8/VPWntKpfFhZoFbwCrc3LeiwIXlfY2ogiw2LEi
+	 wqSe/3tFf+zpMXebuwTpHvkWumggINeXAUs79PDLWmf8UjL4YATd8gvzv9oqy6giJw
+	 Hv0kTMgFPOwhDx4Xt8R4XGWDGBVvZyeM+Kc5151s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 082/141] nilfs2: fix missing error check for sb_set_blocksize call
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 37/67] tracing: Always update snapshot buffer size
 Date: Mon, 11 Dec 2023 19:22:21 +0100
-Message-ID: <20231211182030.110300726@linuxfoundation.org>
+Message-ID: <20231211182016.651343317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
 
-When mounting a filesystem image with a block size larger than the page
-size, nilfs2 repeatedly outputs long error messages with stack traces to
-the kernel log, such as the following:
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
- getblk(): invalid block size 8192 requested
- logical block size: 512
- ...
- Call Trace:
-  dump_stack_lvl+0x92/0xd4
-  dump_stack+0xd/0x10
-  bdev_getblk+0x33a/0x354
-  __breadahead+0x11/0x80
-  nilfs_search_super_root+0xe2/0x704 [nilfs2]
-  load_nilfs+0x72/0x504 [nilfs2]
-  nilfs_mount+0x30f/0x518 [nilfs2]
-  legacy_get_tree+0x1b/0x40
-  vfs_get_tree+0x18/0xc4
-  path_mount+0x786/0xa88
-  __ia32_sys_mount+0x147/0x1a8
-  __do_fast_syscall_32+0x56/0xc8
-  do_fast_syscall_32+0x29/0x58
-  do_SYSENTER_32+0x15/0x18
-  entry_SYSENTER_32+0x98/0xf1
- ...
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
 
-This overloads the system logger.  And to make matters worse, it sometimes
-crashes the kernel with a memory access violation.
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
 
-This is because the return value of the sb_set_blocksize() call, which
-should be checked for errors, is not checked.
+Produces:
 
-The latter issue is due to out-of-buffer memory being accessed based on a
-large block size that caused sb_set_blocksize() to fail for buffers read
-with the initial minimum block size that remained unupdated in the
-super_block structure.
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
 
-Since nilfs2 mkfs tool does not accept block sizes larger than the system
-page size, this has been overlooked.  However, it is possible to create
-this situation by intentionally modifying the tool or by passing a
-filesystem image created on a system with a large page size to a system
-with a smaller page size and mounting it.
+Which is:
 
-Fix this issue by inserting the expected error handling for the call to
-sb_set_blocksize().
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
 
-Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+	if (ret == -EBUSY) {
+		[..]
+	}
+
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+
+That's because ring_buffer_swap_cpu() has:
+
+	int ret = -EINVAL;
+
+	[..]
+
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
+
+	[..]
+ out:
+	return ret;
+ }
+
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/the_nilfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -717,7 +717,11 @@ int init_nilfs(struct the_nilfs *nilfs,
- 			goto failed_sbh;
- 		}
- 		nilfs_release_super_block(nilfs);
--		sb_set_blocksize(sb, blocksize);
-+		if (!sb_set_blocksize(sb, blocksize)) {
-+			nilfs_err(sb, "bad blocksize %d", blocksize);
-+			err = -EINVAL;
-+			goto out;
-+		}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5597,8 +5597,7 @@ static int __tracing_resize_ring_buffer(
+ 		return ret;
  
- 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
- 		if (err)
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
+ 
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
