@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9406180D77E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD0680D8EC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 501A228187C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B7F31F21A21
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C8F53801;
-	Mon, 11 Dec 2023 18:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A40F51C58;
+	Mon, 11 Dec 2023 18:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVUhsGeG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4Sl1RoC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E776151C5D;
-	Mon, 11 Dec 2023 18:37:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4AEC433C9;
-	Mon, 11 Dec 2023 18:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E6E5102A;
+	Mon, 11 Dec 2023 18:49:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43CC433C7;
+	Mon, 11 Dec 2023 18:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319847;
-	bh=WkchvXqGehoh48nGNHjgdSvx78IJ2msGLOck9OxZtbo=;
+	s=korg; t=1702320577;
+	bh=Km8Q0f3ugCEF4HE2A0wR8ogjDsqIhO1dXghbiUGNJxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVUhsGeGdjdZReLBwWi5iOMcDa+naRO5F5gb8JhD3S6fASO/p5BXuA5GKrvRFQlMT
-	 5857do2kOU3tPmxF42t5jQyVACgiNMvpo5ynyygCCgXetP1KTvQyoySnpTf5luygPa
-	 VxoGV3gmSGvsvaE8ryghylWfiUUHunhQJwvHXUGU=
+	b=V4Sl1RoCRsy4XBQ6ojVxCaup1u3Pu23/GRffI5m/naDls5ocjIIltX6QsSOcZmX8T
+	 S3W8BYy6DPKHIIAfFlexdD/OWkTeiNuvC7B613F6YD1C2HUm+nMiMonS2x8va9w2+h
+	 gAxF1Ml+pdFCzvLmtU1zi0NDfHCWuNuDpgzSRwKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Mike Marciniszyn <mike.marciniszyn@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 11/97] asus-wmi: Add dgpu disable method
+Subject: [PATCH 6.1 084/194] RDMA/core: Fix umem iterator when PAGE_SIZE is greater then HCA pgsz
 Date: Mon, 11 Dec 2023 19:21:14 +0100
-Message-ID: <20231211182020.303342402@linuxfoundation.org>
+Message-ID: <20231211182040.225975662@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,192 +54,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Mike Marciniszyn <mike.marciniszyn@intel.com>
 
-[ Upstream commit 98829e84dc67630efb7de675f0a70066620468a3 ]
+[ Upstream commit 4fbc3a52cd4d14de3793f4b2c721d7306ea84cf9 ]
 
-In Windows the ASUS Armory Crate program can enable or disable the
-dGPU via a WMI call. This functions much the same as various Linux
-methods in software where the dGPU is removed from the device tree.
+64k pages introduce the situation in this diagram when the HCA 4k page
+size is being used:
 
-However the WMI call saves the state of dGPU (enabled or not) and
-this then changes the dGPU visibility in Linux with no way for
-Linux users to re-enable it. We expose the WMI method so users can
-see and change the dGPU ACPI state.
+ +-------------------------------------------+ <--- 64k aligned VA
+ |                                           |
+ |              HCA 4k page                  |
+ |                                           |
+ +-------------------------------------------+
+ |                   o                       |
+ |                                           |
+ |                   o                       |
+ |                                           |
+ |                   o                       |
+ +-------------------------------------------+
+ |                                           |
+ |              HCA 4k page                  |
+ |                                           |
+ +-------------------------------------------+ <--- Live HCA page
+ |OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO| <--- offset
+ |                                           | <--- VA
+ |                MR data                    |
+ +-------------------------------------------+
+ |                                           |
+ |              HCA 4k page                  |
+ |                                           |
+ +-------------------------------------------+
+ |                   o                       |
+ |                                           |
+ |                   o                       |
+ |                                           |
+ |                   o                       |
+ +-------------------------------------------+
+ |                                           |
+ |              HCA 4k page                  |
+ |                                           |
+ +-------------------------------------------+
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20210807023656.25020-3-luke@ljones.dev
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
+The VA addresses are coming from rdma-core in this diagram can be
+arbitrary, but for 64k pages, the VA may be offset by some number of HCA
+4k pages and followed by some number of HCA 4k pages.
+
+The current iterator doesn't account for either the preceding 4k pages or
+the following 4k pages.
+
+Fix the issue by extending the ib_block_iter to contain the number of DMA
+pages like comment [1] says and by using __sg_advance to start the
+iterator at the first live HCA page.
+
+The changes are contained in a parallel set of iterator start and next
+functions that are umem aware and specific to umem since there is one user
+of the rdma_for_each_block() without umem.
+
+These two fixes prevents the extra pages before and after the user MR
+data.
+
+Fix the preceding pages by using the __sq_advance field to start at the
+first 4k page containing MR data.
+
+Fix the following pages by saving the number of pgsz blocks in the
+iterator state and downcounting on each next.
+
+This fix allows for the elimination of the small page crutch noted in the
+Fixes.
+
+Fixes: 10c75ccb54e4 ("RDMA/umem: Prevent small pages from being returned by ib_umem_find_best_pgsz()")
+Link: https://lore.kernel.org/r/20231129202143.1434-2-shiraz.saleem@intel.com
+Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c            | 98 ++++++++++++++++++++++
- include/linux/platform_data/x86/asus-wmi.h |  3 +
- 2 files changed, 101 insertions(+)
+ drivers/infiniband/core/umem.c | 6 ------
+ include/rdma/ib_umem.h         | 9 ++++++++-
+ include/rdma/ib_verbs.h        | 1 +
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index ca3b97b7a6ad8..93b4c61130837 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -207,6 +207,9 @@ struct asus_wmi {
- 	u8 fan_boost_mode_mask;
- 	u8 fan_boost_mode;
- 
-+	bool dgpu_disable_available;
-+	bool dgpu_disable;
-+
- 	bool throttle_thermal_policy_available;
- 	u8 throttle_thermal_policy_mode;
- 
-@@ -421,6 +424,93 @@ static void lid_flip_tablet_mode_get_state(struct asus_wmi *asus)
+diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
+index 957634eceba8f..8ce569bf7525e 100644
+--- a/drivers/infiniband/core/umem.c
++++ b/drivers/infiniband/core/umem.c
+@@ -96,12 +96,6 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+ 		return page_size;
  	}
+ 
+-	/* rdma_for_each_block() has a bug if the page size is smaller than the
+-	 * page size used to build the umem. For now prevent smaller page sizes
+-	 * from being returned.
+-	 */
+-	pgsz_bitmap &= GENMASK(BITS_PER_LONG - 1, PAGE_SHIFT);
+-
+ 	/* The best result is the smallest page size that results in the minimum
+ 	 * number of required pages. Compute the largest page size that could
+ 	 * work based on VA address bits that don't change.
+diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
+index 92a673cd9b4fd..77b83ea62dd69 100644
+--- a/include/rdma/ib_umem.h
++++ b/include/rdma/ib_umem.h
+@@ -78,6 +78,13 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
+ {
+ 	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
+ 				umem->sgt_append.sgt.nents, pgsz);
++	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
++	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
++}
++
++static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
++{
++	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
  }
  
-+/* dGPU ********************************************************************/
-+static int dgpu_disable_check_present(struct asus_wmi *asus)
-+{
-+	u32 result;
-+	int err;
-+
-+	asus->dgpu_disable_available = false;
-+
-+	err = asus_wmi_get_devstate(asus, ASUS_WMI_DEVID_DGPU, &result);
-+	if (err) {
-+		if (err == -ENODEV)
-+			return 0;
-+		return err;
-+	}
-+
-+	if (result & ASUS_WMI_DSTS_PRESENCE_BIT) {
-+		asus->dgpu_disable_available = true;
-+		asus->dgpu_disable = result & ASUS_WMI_DSTS_STATUS_BIT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int dgpu_disable_write(struct asus_wmi *asus)
-+{
-+	u32 retval;
-+	u8 value;
-+	int err;
-+
-+	/* Don't rely on type conversion */
-+	value = asus->dgpu_disable ? 1 : 0;
-+
-+	err = asus_wmi_set_devstate(ASUS_WMI_DEVID_DGPU, value, &retval);
-+	if (err) {
-+		pr_warn("Failed to set dgpu disable: %d\n", err);
-+		return err;
-+	}
-+
-+	if (retval > 1 || retval < 0) {
-+		pr_warn("Failed to set dgpu disable (retval): 0x%x\n", retval);
-+		return -EIO;
-+	}
-+
-+	sysfs_notify(&asus->platform_device->dev.kobj, NULL, "dgpu_disable");
-+
-+	return 0;
-+}
-+
-+static ssize_t dgpu_disable_show(struct device *dev,
-+				   struct device_attribute *attr, char *buf)
-+{
-+	struct asus_wmi *asus = dev_get_drvdata(dev);
-+	u8 mode = asus->dgpu_disable;
-+
-+	return sysfs_emit(buf, "%d\n", mode);
-+}
-+
-+/*
-+ * A user may be required to store the value twice, typcial store first, then
-+ * rescan PCI bus to activate power, then store a second time to save correctly.
-+ * The reason for this is that an extra code path in the ACPI is enabled when
-+ * the device and bus are powered.
-+ */
-+static ssize_t dgpu_disable_store(struct device *dev,
-+				    struct device_attribute *attr,
-+				    const char *buf, size_t count)
-+{
-+	bool disable;
-+	int result;
-+
-+	struct asus_wmi *asus = dev_get_drvdata(dev);
-+
-+	result = kstrtobool(buf, &disable);
-+	if (result)
-+		return result;
-+
-+	asus->dgpu_disable = disable;
-+
-+	result = dgpu_disable_write(asus);
-+	if (result)
-+		return result;
-+
-+	return count;
-+}
-+
-+static DEVICE_ATTR_RW(dgpu_disable);
-+
- /* Battery ********************************************************************/
+ /**
+@@ -93,7 +100,7 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
+  */
+ #define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
+ 	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
+-	     __rdma_block_iter_next(biter);)
++	     __rdma_umem_block_iter_next(biter);)
  
- /* The battery maximum charging percentage */
-@@ -2319,6 +2409,7 @@ static struct attribute *platform_attributes[] = {
- 	&dev_attr_camera.attr,
- 	&dev_attr_cardr.attr,
- 	&dev_attr_touchpad.attr,
-+	&dev_attr_dgpu_disable.attr,
- 	&dev_attr_lid_resume.attr,
- 	&dev_attr_als_enable.attr,
- 	&dev_attr_fan_boost_mode.attr,
-@@ -2344,6 +2435,8 @@ static umode_t asus_sysfs_is_visible(struct kobject *kobj,
- 		devid = ASUS_WMI_DEVID_LID_RESUME;
- 	else if (attr == &dev_attr_als_enable.attr)
- 		devid = ASUS_WMI_DEVID_ALS_ENABLE;
-+	else if (attr == &dev_attr_dgpu_disable.attr)
-+		ok = asus->dgpu_disable_available;
- 	else if (attr == &dev_attr_fan_boost_mode.attr)
- 		ok = asus->fan_boost_mode_available;
- 	else if (attr == &dev_attr_throttle_thermal_policy.attr)
-@@ -2603,6 +2696,10 @@ static int asus_wmi_add(struct platform_device *pdev)
- 	if (err)
- 		goto fail_platform;
+ #ifdef CONFIG_INFINIBAND_USER_MEM
  
-+	err = dgpu_disable_check_present(asus);
-+	if (err)
-+		goto fail_dgpu_disable;
-+
- 	err = fan_boost_mode_check_present(asus);
- 	if (err)
- 		goto fail_fan_boost_mode;
-@@ -2699,6 +2796,7 @@ static int asus_wmi_add(struct platform_device *pdev)
- fail_sysfs:
- fail_throttle_thermal_policy:
- fail_fan_boost_mode:
-+fail_dgpu_disable:
- fail_platform:
- 	kfree(asus);
- 	return err;
-diff --git a/include/linux/platform_data/x86/asus-wmi.h b/include/linux/platform_data/x86/asus-wmi.h
-index 2f274cf528050..7d8d3e9c45d62 100644
---- a/include/linux/platform_data/x86/asus-wmi.h
-+++ b/include/linux/platform_data/x86/asus-wmi.h
-@@ -89,6 +89,9 @@
- /* Keyboard dock */
- #define ASUS_WMI_DEVID_KBD_DOCK		0x00120063
- 
-+/* dgpu on/off */
-+#define ASUS_WMI_DEVID_DGPU		0x00090020
-+
- /* DSTS masks */
- #define ASUS_WMI_DSTS_STATUS_BIT	0x00000001
- #define ASUS_WMI_DSTS_UNKNOWN_BIT	0x00000002
+diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
+index 975d6e9efbcb4..5582509003264 100644
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -2835,6 +2835,7 @@ struct ib_block_iter {
+ 	/* internal states */
+ 	struct scatterlist *__sg;	/* sg holding the current aligned block */
+ 	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
++	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
+ 	unsigned int __sg_nents;	/* number of SG entries */
+ 	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
+ 	unsigned int __pg_bit;		/* alignment of current block */
 -- 
 2.42.0
 
