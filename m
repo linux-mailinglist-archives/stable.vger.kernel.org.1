@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BE5F80D5F8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CBF80D603
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D9F51C2155D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 689CB1F21AA8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CDD5102F;
-	Mon, 11 Dec 2023 18:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F63F51036;
+	Mon, 11 Dec 2023 18:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAnriJbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxna11Nx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8A65101A;
-	Mon, 11 Dec 2023 18:30:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADDBC433C8;
-	Mon, 11 Dec 2023 18:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E3D1D696;
+	Mon, 11 Dec 2023 18:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FC5C433C8;
+	Mon, 11 Dec 2023 18:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319400;
-	bh=u/QrsSg+cXLAGuUZgZz2Bn/h5JgKsjb7SnljGX1SdmQ=;
+	s=korg; t=1702319428;
+	bh=kPUEaDe5V8WgZEcLdPVm6E4ua3cZKtQ4DpXJ6Rp99NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAnriJbG5QSnyeml8mRkto9+Kzf+BNtoKF28Ij9rooOJqeqBjoby2I8dnkmUnZj3m
-	 bfbMBrdF3+ioCtZz8ms8W46qkKcqD0I0VQTICgG5uE1NpBcTcd4MP0V1TTswWAyExC
-	 Kz6Ycgun1k7mgBZjYmWuvO8XJzN/ofHoliYeszmg=
+	b=oxna11NxiafTGfxoChe25/fm53ADljJKtKC8hz6aQMIvwXYrKDL9qn7DEKsh91yve
+	 /eHzHC2f17EhtsT/vOJvJDgbT5lGLP+178aQdoon+2QWphcrFxRh947bE/RYEIAL8q
+	 ButTdoSsuHMG1HKPsgABWbKjqjNHBvUhDLFOSz3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/244] net: dsa: microchip: provide a list of valid protocols for xmit handler
-Date: Mon, 11 Dec 2023 19:19:26 +0100
-Message-ID: <20231211182049.069064984@linuxfoundation.org>
+Subject: [PATCH 6.6 074/244] net/smc: fix missing byte order conversion in CLC handshake
+Date: Mon, 11 Dec 2023 19:19:27 +0100
+Message-ID: <20231211182049.109254919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
 References: <20231211182045.784881756@linuxfoundation.org>
@@ -59,61 +60,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit 1499b89289bf272fd83cb296c82fb5519d0fe93f ]
+[ Upstream commit c5a10397d4571bcfd4bd7ca211ee47bcb6792ec3 ]
 
-Provide a list of valid protocols for which the driver will provide
-it's deferred xmit handler.
+The byte order conversions of ISM GID and DMB token are missing in
+process of CLC accept and confirm. So fix it.
 
-When using DSA_TAG_PROTO_KSZ8795 protocol, it does not provide a
-"connect" method, therefor ksz_connect() is not allocating ksz_tagger_data.
-
-This avoids the following null pointer dereference:
- ksz_connect_tag_protocol from dsa_register_switch+0x9ac/0xee0
- dsa_register_switch from ksz_switch_register+0x65c/0x828
- ksz_switch_register from ksz_spi_probe+0x11c/0x168
- ksz_spi_probe from spi_probe+0x84/0xa8
- spi_probe from really_probe+0xc8/0x2d8
-
-Fixes: ab32f56a4100 ("net: dsa: microchip: ptp: add packet transmission timestamping")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20231206071655.1626479-1-sean@geanix.com
+Fixes: 3d9725a6a133 ("net/smc: common routine for CLC accept and confirm")
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Tony Lu <tonylu@linux.alibaba.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://lore.kernel.org/r/1701882157-87956-1-git-send-email-guwen@linux.alibaba.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/microchip/ksz_common.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ net/smc/af_smc.c  | 4 ++--
+ net/smc/smc_clc.c | 9 ++++-----
+ net/smc/smc_clc.h | 4 ++--
+ 3 files changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 42db7679c3606..286e20f340e5c 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -2624,10 +2624,18 @@ static int ksz_connect_tag_protocol(struct dsa_switch *ds,
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 741339ac94833..ef5b5d498ef3e 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -723,7 +723,7 @@ static void smcd_conn_save_peer_info(struct smc_sock *smc,
+ 	int bufsize = smc_uncompress_bufsize(clc->d0.dmbe_size);
+ 
+ 	smc->conn.peer_rmbe_idx = clc->d0.dmbe_idx;
+-	smc->conn.peer_token = clc->d0.token;
++	smc->conn.peer_token = ntohll(clc->d0.token);
+ 	/* msg header takes up space in the buffer */
+ 	smc->conn.peer_rmbe_size = bufsize - sizeof(struct smcd_cdc_msg);
+ 	atomic_set(&smc->conn.peer_rmbe_space, smc->conn.peer_rmbe_size);
+@@ -1415,7 +1415,7 @@ static int smc_connect_ism(struct smc_sock *smc,
+ 		if (rc)
+ 			return rc;
+ 	}
+-	ini->ism_peer_gid[ini->ism_selected] = aclc->d0.gid;
++	ini->ism_peer_gid[ini->ism_selected] = ntohll(aclc->d0.gid);
+ 
+ 	/* there is only one lgr role for SMC-D; use server lock */
+ 	mutex_lock(&smc_server_lgr_pending);
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 8deb46c28f1d5..72f4d81a3f41f 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -1004,6 +1004,7 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
  {
- 	struct ksz_tagger_data *tagger_data;
+ 	struct smc_connection *conn = &smc->conn;
+ 	struct smc_clc_first_contact_ext_v2x fce;
++	struct smcd_dev *smcd = conn->lgr->smcd;
+ 	struct smc_clc_msg_accept_confirm *clc;
+ 	struct smc_clc_fce_gid_ext gle;
+ 	struct smc_clc_msg_trail trl;
+@@ -1021,17 +1022,15 @@ static int smc_clc_send_confirm_accept(struct smc_sock *smc,
+ 		memcpy(clc->hdr.eyecatcher, SMCD_EYECATCHER,
+ 		       sizeof(SMCD_EYECATCHER));
+ 		clc->hdr.typev1 = SMC_TYPE_D;
+-		clc->d0.gid =
+-			conn->lgr->smcd->ops->get_local_gid(conn->lgr->smcd);
+-		clc->d0.token = conn->rmb_desc->token;
++		clc->d0.gid = htonll(smcd->ops->get_local_gid(smcd));
++		clc->d0.token = htonll(conn->rmb_desc->token);
+ 		clc->d0.dmbe_size = conn->rmbe_size_comp;
+ 		clc->d0.dmbe_idx = 0;
+ 		memcpy(&clc->d0.linkid, conn->lgr->id, SMC_LGR_ID_SIZE);
+ 		if (version == SMC_V1) {
+ 			clc->hdr.length = htons(SMCD_CLC_ACCEPT_CONFIRM_LEN);
+ 		} else {
+-			clc_v2->d1.chid =
+-				htons(smc_ism_get_chid(conn->lgr->smcd));
++			clc_v2->d1.chid = htons(smc_ism_get_chid(smcd));
+ 			if (eid && eid[0])
+ 				memcpy(clc_v2->d1.eid, eid, SMC_MAX_EID_LEN);
+ 			len = SMCD_CLC_ACCEPT_CONFIRM_LEN_V2;
+diff --git a/net/smc/smc_clc.h b/net/smc/smc_clc.h
+index c5c8e7db775a7..08155a96a02a1 100644
+--- a/net/smc/smc_clc.h
++++ b/net/smc/smc_clc.h
+@@ -204,8 +204,8 @@ struct smcr_clc_msg_accept_confirm {	/* SMCR accept/confirm */
+ } __packed;
  
--	tagger_data = ksz_tagger_data(ds);
--	tagger_data->xmit_work_fn = ksz_port_deferred_xmit;
--
--	return 0;
-+	switch (proto) {
-+	case DSA_TAG_PROTO_KSZ8795:
-+		return 0;
-+	case DSA_TAG_PROTO_KSZ9893:
-+	case DSA_TAG_PROTO_KSZ9477:
-+	case DSA_TAG_PROTO_LAN937X:
-+		tagger_data = ksz_tagger_data(ds);
-+		tagger_data->xmit_work_fn = ksz_port_deferred_xmit;
-+		return 0;
-+	default:
-+		return -EPROTONOSUPPORT;
-+	}
- }
- 
- static int ksz_port_vlan_filtering(struct dsa_switch *ds, int port,
+ struct smcd_clc_msg_accept_confirm_common {	/* SMCD accept/confirm */
+-	u64 gid;		/* Sender GID */
+-	u64 token;		/* DMB token */
++	__be64 gid;		/* Sender GID */
++	__be64 token;		/* DMB token */
+ 	u8 dmbe_idx;		/* DMBE index */
+ #if defined(__BIG_ENDIAN_BITFIELD)
+ 	u8 dmbe_size : 4,	/* buf size (compressed) */
 -- 
 2.42.0
 
