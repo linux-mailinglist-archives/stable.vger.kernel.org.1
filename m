@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CB180D698
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFE380D882
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832751F21B01
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 961781F21186
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D875C8C8;
-	Mon, 11 Dec 2023 18:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C64151C2E;
+	Mon, 11 Dec 2023 18:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgiPJdcc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/dMEiDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284775102F;
-	Mon, 11 Dec 2023 18:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30AEC433C7;
-	Mon, 11 Dec 2023 18:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4AA4437B;
+	Mon, 11 Dec 2023 18:46:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D7BC433C8;
+	Mon, 11 Dec 2023 18:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319603;
-	bh=YVQ4BdS8u6HHffWG2pHxO/S9vdv31JRt4jR4mIVy7yA=;
+	s=korg; t=1702320386;
+	bh=m+4kv/uDgGFCsjGA9XpAtSBwliljge3kJUYL/L5OqkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgiPJdccAc/zeG7unK0pcBNWknVjn6PNgIa7wWLJUCb/aPLr2SBCicq3dH+rDB4Ky
-	 k/vwyR/EcvuR5MrVd8hBBG2gppiS3Tg0KuKB3kMrMP5kBE9GitAKrr+0ZSZB9L1t++
-	 nTlwfBxMqyfGQGIDzjq9/GVLG99NM9h9zTmNoBZU=
+	b=G/dMEiDDcZkkDYIK8sp5XouZxfrYKkNMSGXn3o9WvlonJbcCFMujnjRtULEw/m6lf
+	 ssHnx3FlHpxEwURPdXhe5S0DhdT6wzsNIG1p5lvfJFR7fW5Se3dhEc7+Cju3Lv15ze
+	 nBrmPOmA3JOzJ0Rj5TD1YoNbL4xAKI0bulpBdmSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pascal=20No=C3=ABl?= <pascal@pascalcompiles.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 139/244] ALSA: hda/realtek: Apply quirk for ASUS UM3504DA
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 042/194] ionic: Fix dim work handling in split interrupt mode
 Date: Mon, 11 Dec 2023 19:20:32 +0100
-Message-ID: <20231211182052.019422127@linuxfoundation.org>
+Message-ID: <20231211182038.459698529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +53,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pascal Noël <pascal@pascalcompiles.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-commit c5c325bb5849868d76969d3fe014515f5e99eabc upstream.
+[ Upstream commit 4115ba677c35f694b62298e55f0e04ce84eed469 ]
 
-The ASUS UM3504DA uses a Realtek HDA codec and two CS35L41 amplifiers via I2C.
-Apply existing quirk to model.
+Currently ionic_dim_work() is incorrect when in
+split interrupt mode. This is because the interrupt
+rate is only being changed for the Rx side even for
+dim running on Tx. Fix this by using the qcq from
+the container_of macro. Also, introduce some local
+variables for a bit of cleanup.
 
-Signed-off-by: Pascal Noël <pascal@pascalcompiles.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231202013744.12369-1-pascal@pascalcompiles.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6ff85e0a2d9 ("ionic: remove intr coalesce update from napi")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231204192234.21017-3-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9873,6 +9873,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally RC71L_RC71L", ALC294_FIXUP_ASUS_ALLY),
- 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x18d3, "ASUS UM3504DA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x18f1, "Asus FX505DT", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x194e, "ASUS UX563FD", ALC294_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1970, "ASUS UX550VE", ALC289_FIXUP_ASUS_GA401),
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index a89ab455af67d..f7634884c7508 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -46,24 +46,24 @@ static void ionic_lif_queue_identify(struct ionic_lif *lif);
+ static void ionic_dim_work(struct work_struct *work)
+ {
+ 	struct dim *dim = container_of(work, struct dim, work);
++	struct ionic_intr_info *intr;
+ 	struct dim_cq_moder cur_moder;
+ 	struct ionic_qcq *qcq;
++	struct ionic_lif *lif;
+ 	u32 new_coal;
+ 
+ 	cur_moder = net_dim_get_rx_moderation(dim->mode, dim->profile_ix);
+ 	qcq = container_of(dim, struct ionic_qcq, dim);
+-	new_coal = ionic_coal_usec_to_hw(qcq->q.lif->ionic, cur_moder.usec);
++	lif = qcq->q.lif;
++	new_coal = ionic_coal_usec_to_hw(lif->ionic, cur_moder.usec);
+ 	new_coal = new_coal ? new_coal : 1;
+ 
+-	if (qcq->intr.dim_coal_hw != new_coal) {
+-		unsigned int qi = qcq->cq.bound_q->index;
+-		struct ionic_lif *lif = qcq->q.lif;
+-
+-		qcq->intr.dim_coal_hw = new_coal;
++	intr = &qcq->intr;
++	if (intr->dim_coal_hw != new_coal) {
++		intr->dim_coal_hw = new_coal;
+ 
+ 		ionic_intr_coal_init(lif->ionic->idev.intr_ctrl,
+-				     lif->rxqcqs[qi]->intr.index,
+-				     qcq->intr.dim_coal_hw);
++				     intr->index, intr->dim_coal_hw);
+ 	}
+ 
+ 	dim->state = DIM_START_MEASURE;
+-- 
+2.42.0
+
 
 
 
