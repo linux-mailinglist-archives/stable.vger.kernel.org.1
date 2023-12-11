@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-6173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE2480D934
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EE480D834
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE7D01C2169E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE927B20E2A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4851C3B;
-	Mon, 11 Dec 2023 18:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D0651036;
+	Mon, 11 Dec 2023 18:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+6p1CUO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVH93VIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F44F51C2D;
-	Mon, 11 Dec 2023 18:51:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8E7C433C7;
-	Mon, 11 Dec 2023 18:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C54FC06;
+	Mon, 11 Dec 2023 18:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E8AC433C8;
+	Mon, 11 Dec 2023 18:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320708;
-	bh=bhjIyzy3dpeqO0KQall741RG4N5YCzW61Fm3dnicsR8=;
+	s=korg; t=1702320217;
+	bh=2iugVfyFU3ZM2OOoL8pUtBgic80On9vg9iSEv+Wyl1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+6p1CUOLemEPVRyOPZR0pk0CGPAq9sNTJZFGPzysmUsCuZrHTzUzDgE4s8eo180O
-	 F/WN8+h30+HEXTony35A4Unj+/4BAZaAJdhpFiDZWXkKHyhveZGzf0M6R1/h17I7G7
-	 JnjtJbZ5bw6XHYk3k4QqIbiD/5/qFdWjkSc3sn0I=
+	b=VVH93VIt/r+Y79WE+dgOQ7rL+NOnPA6ED1fIj7V7sOaiQMtnlS4EtV/SDxc9wA93q
+	 IYTDlf/z9WKplfbs4pKV8wsq/c+qVL6MoR4JJ4QXz298e7rWqtlFX2XzqxLme/6Qse
+	 vwRVX59Y/vWQWjKSN1TPRidIHyIsK3I0Zd6Hr4xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <Alexander.Deucher@amd.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Wenchao Chen <wenchao.chen@unisoc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/194] drm/amdgpu: Remove second moot switch to set EEPROM I2C address
+Subject: [PATCH 5.4 47/67] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
 Date: Mon, 11 Dec 2023 19:22:31 +0100
-Message-ID: <20231211182043.836829858@linuxfoundation.org>
+Message-ID: <20231211182017.032899031@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,53 +53,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Wenchao Chen <wenchao.chen@unisoc.com>
 
-[ Upstream commit 1bb745d7596d2b368fd9afb90473f3581495e39d ]
+[ Upstream commit 477865af60b2117ceaa1d558e03559108c15c78c ]
 
-Remove second switch since it already has its own function and case in the
-first switch. This also avoids requalifying the EEPROM I2C address for VEGA20,
-SIENNA CICHLID, and ALDEBARAN, as those have been set by the first switch and
-shouldn't match SMU v13.0.x.
+With cat regulator_summary, we found that vqmmc was not shutting
+down after the card was pulled.
 
-Cc: Candice Li <candice.li@amd.com>
-Cc: Kent Russell <kent.russell@amd.com>
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Fixes: 158225294683 ("drm/amdgpu: Add EEPROM I2C address for smu v13_0_0")
-Fixes: c9bdc6c3cf39 ("drm/amdgpu: Add EEPROM I2C address support for ip discovery")
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Reviewed-by: Alex Deucher <Alexander.Deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
+cat /sys/kernel/debug/regulator/regulator_summary
+1.before fix
+1)Insert SD card
+ vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2)Pull out the SD card
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2.after fix
+1)Insert SD cardt
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2)Pull out the SD card
+ vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
+
+Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/mmc/host/sdhci-sprd.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index 2d9f3f4cd79e9..b908d575b5a98 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -205,15 +205,6 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 		return false;
- 	}
- 
--	switch (adev->ip_versions[MP1_HWIP][0]) {
--	case IP_VERSION(13, 0, 0):
--		control->i2c_address = EEPROM_I2C_MADDR_4;
--		break;
--
--	default:
--		break;
--	}
--
- 	return true;
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 1b1dad9d9a604..b624589e62a0e 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -381,12 +381,33 @@ static unsigned int sdhci_sprd_get_ro(struct sdhci_host *host)
+ 	return 0;
  }
  
++static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
++				 unsigned short vdd)
++{
++	struct mmc_host *mmc = host->mmc;
++
++	switch (mode) {
++	case MMC_POWER_OFF:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
++
++		mmc_regulator_disable_vqmmc(mmc);
++		break;
++	case MMC_POWER_ON:
++		mmc_regulator_enable_vqmmc(mmc);
++		break;
++	case MMC_POWER_UP:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
++		break;
++	}
++}
++
+ static struct sdhci_ops sdhci_sprd_ops = {
+ 	.read_l = sdhci_sprd_readl,
+ 	.write_l = sdhci_sprd_writel,
+ 	.write_w = sdhci_sprd_writew,
+ 	.write_b = sdhci_sprd_writeb,
+ 	.set_clock = sdhci_sprd_set_clock,
++	.set_power = sdhci_sprd_set_power,
+ 	.get_max_clock = sdhci_sprd_get_max_clock,
+ 	.get_min_clock = sdhci_sprd_get_min_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
+@@ -630,6 +651,10 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+ 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
+ 			 SDHCI_SUPPORT_DDR50);
+ 
++	ret = mmc_regulator_get_supply(host->mmc);
++	if (ret)
++		goto pm_runtime_disable;
++
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
+ 		goto pm_runtime_disable;
 -- 
 2.42.0
 
