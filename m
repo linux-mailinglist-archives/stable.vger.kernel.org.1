@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-6270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B6880D9B5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:56:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A8980D7E6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2EB1C216A4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:56:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DB642812CD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADFD524BB;
-	Mon, 11 Dec 2023 18:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A02951C42;
+	Mon, 11 Dec 2023 18:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbDYa1eJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfcU6wG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0867C524B8;
-	Mon, 11 Dec 2023 18:56:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80486C433C7;
-	Mon, 11 Dec 2023 18:56:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364F9FC06;
+	Mon, 11 Dec 2023 18:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF758C433C8;
+	Mon, 11 Dec 2023 18:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320972;
-	bh=7c58Wem5h9/YuGidsiMsEJOgJlX2saxGP+Ny68OGtbQ=;
+	s=korg; t=1702320052;
+	bh=lQymMPfl0jdWKjNT8UXcZdofEtNSSkjjubVU3ShXm8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbDYa1eJrb+KP8torbKfFMVX8nhzJtn//Iyt1zMppDYsXNvPMFYl8GmaU3udwK4Wv
-	 49qBOpjdBwVPqNbbWHPCXl7EJbTZ9tMRhXZCrtz+wFX0JW0eXmNTR7dDqiuIW0LlII
-	 gTuXjyw3iURRRJyG9lTbYFoAJ+wf5dpUHlcuI4DI=
+	b=LfcU6wG2JP76tYQcmM+MZ0qKiw2DkM0Erc/Acii0MCxK5/KNW1rfrPgC4qkcUOak4
+	 A0czcduRD5grJsp9gtZzFG3bHu8y+Gpii+hDlBsGesROmEqsAuMzs7vDPyUtgSy+1H
+	 ZRAd/rKx3Qj3rAiV+4wjwA8CE5mVkKIm/DqDlQQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/141] ASoC: wm_adsp: fix memleak in wm_adsp_buffer_populate
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.10 58/97] arm64: dts: mediatek: mt8173-evb: Fix regulator-fixed node names
 Date: Mon, 11 Dec 2023 19:22:01 +0100
-Message-ID: <20231211182029.236655370@linuxfoundation.org>
+Message-ID: <20231211182022.218801073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,62 +51,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 29046a78a3c0a1f8fa0427f164caa222f003cf5b ]
+commit 24165c5dad7ba7c7624d05575a5e0cc851396c71 upstream.
 
-When wm_adsp_buffer_read() fails, we should free buf->regions.
-Otherwise, the callers of wm_adsp_buffer_populate() will
-directly free buf on failure, which makes buf->regions a leaked
-memory.
+Fix a unit_address_vs_reg warning for the USB VBUS fixed regulators
+by renaming the regulator nodes from regulator@{0,1} to regulator-usb-p0
+and regulator-usb-p1.
 
-Fixes: a792af69b08f ("ASoC: wm_adsp: Refactor compress stream initialisation")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231204074158.12026-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c0891284a74a ("arm64: dts: mediatek: add USB3 DRD driver")
+Link: https://lore.kernel.org/r/20231025093816.44327-8-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm_adsp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173-evb.dts |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index 08fc1a025b1a9..df86cf4f4caed 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -3766,12 +3766,12 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].base_offset,
- 					  &region->base_addr);
- 		if (ret < 0)
--			return ret;
-+			goto err;
+--- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
+@@ -43,7 +43,7 @@
+ 		id-gpio = <&pio 16 GPIO_ACTIVE_HIGH>;
+ 	};
  
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].size_offset,
- 					  &offset);
- 		if (ret < 0)
--			return ret;
-+			goto err;
+-	usb_p1_vbus: regulator@0 {
++	usb_p1_vbus: regulator-usb-p1 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "usb_vbus";
+ 		regulator-min-microvolt = <5000000>;
+@@ -52,7 +52,7 @@
+ 		enable-active-high;
+ 	};
  
- 		region->cumulative_size = offset;
- 
-@@ -3782,6 +3782,10 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 	}
- 
- 	return 0;
-+
-+err:
-+	kfree(buf->regions);
-+	return ret;
- }
- 
- static void wm_adsp_buffer_clear(struct wm_adsp_compr_buf *buf)
--- 
-2.42.0
-
+-	usb_p0_vbus: regulator@1 {
++	usb_p0_vbus: regulator-usb-p0 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vbus";
+ 		regulator-min-microvolt = <5000000>;
 
 
 
