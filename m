@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A8180D7F2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ED680D74C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41A261F2167B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ECF82824B9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B24524BC;
-	Mon, 11 Dec 2023 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C693E54BE1;
+	Mon, 11 Dec 2023 18:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fetjdHej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfwZc6TP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B36FBE1;
-	Mon, 11 Dec 2023 18:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC12C433C7;
-	Mon, 11 Dec 2023 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B239537E3;
+	Mon, 11 Dec 2023 18:36:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAD0C433C8;
+	Mon, 11 Dec 2023 18:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320077;
-	bh=8Qfot6uudY+/1L5JKqB8JCVgYgr5Bdbd4LS/mt78EXo=;
+	s=korg; t=1702319764;
+	bh=254I5tzdEY3fkwQTigYRpt3hBzirTI0xoStIELeWHts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fetjdHej1KGWnCb33uc7HJgj6Hr4yyLSO5V1UmbuFqtQVkWVbeeBKV65YAiVFwlHb
-	 7x6ypv2TsAdzJ6cr6oWXh+VMDFYyUnGigJE9O+c/+0nmjDrQNK7L8C3nLrBffoAzxR
-	 oMdy/c9zI6rAMPst+u1RZkCy4rEYT5OoZK2Hzuyg=
+	b=KfwZc6TPy8Rog0azNS9FUzD4Bnsr79wh52V16rzlOJ5PqCOClnEDSXIFbk5vPMSir
+	 QBWTy+jakJYJT2U5C7r81mTnc+XHJASTE6xFzOXSNpRQDAsbj3m2NYC+MBqF9tw9QC
+	 95EVzetwjxqxT+oXBihRYyB9PmkZWJjFsZAujXZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 55/97] tracing: Fix a possible race when disabling buffered events
+	stable@kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.6 225/244] x86/CPU/AMD: Check vendor in the AMD microcode callback
 Date: Mon, 11 Dec 2023 19:21:58 +0100
-Message-ID: <20231211182022.096555507@linuxfoundation.org>
+Message-ID: <20231211182056.101338336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
+commit 9b8493dc43044376716d789d07699f17d538a7c4 upstream.
 
-Function trace_buffered_event_disable() is responsible for freeing pages
-backing buffered events and this process can run concurrently with
-trace_event_buffer_lock_reserve().
+Commit in Fixes added an AMD-specific microcode callback. However, it
+didn't check the CPU vendor the kernel runs on explicitly.
 
-The following race is currently possible:
+The only reason the Zenbleed check in it didn't run on other x86 vendors
+hardware was pure coincidental luck:
 
-* Function trace_buffered_event_disable() is called on CPU 0. It
-  increments trace_buffered_event_cnt on each CPU and waits via
-  synchronize_rcu() for each user of trace_buffered_event to complete.
+  if (!cpu_has_amd_erratum(c, amd_zenbleed))
+	  return;
 
-* After synchronize_rcu() is finished, function
-  trace_buffered_event_disable() has the exclusive access to
-  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
-  and all pointers trace_buffered_event are still valid.
+gives true on other vendors because they don't have those families and
+models.
 
-* At this point, on a different CPU 1, the execution reaches
-  trace_event_buffer_lock_reserve(). The function calls
-  preempt_disable_notrace() and only now enters an RCU read-side
-  critical section. The function proceeds and reads a still valid
-  pointer from trace_buffered_event[CPU1] into the local variable
-  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
-  which happens later.
+However, with the removal of the cpu_has_amd_erratum() in
 
-* Function trace_buffered_event_disable() continues. It frees
-  trace_buffered_event[CPU1] and decrements
-  trace_buffered_event_cnt[CPU1] back to 0.
+  05f5f73936fa ("x86/CPU/AMD: Drop now unused CPU erratum checking function")
 
-* Function trace_event_buffer_lock_reserve() continues. It reads and
-  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
-  believe that it can use the "entry" that it already obtained but the
-  pointer is now invalid and any access results in a use-after-free.
+that coincidental condition is gone, leading to the zenbleed check
+getting executed on other vendors too.
 
-Fix the problem by making a second synchronize_rcu() call after all
-trace_buffered_event values are set to NULL. This waits on all potential
-users in trace_event_buffer_lock_reserve() that still read a previous
-pointer from trace_buffered_event.
+Add the explicit vendor check for the whole callback as it should've
+been done in the first place.
 
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
-
-Cc: stable@vger.kernel.org
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Cc: <stable@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231201184226.16749-1-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2708,13 +2708,17 @@ void trace_buffered_event_disable(void)
- 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
- 		per_cpu(trace_buffered_event, cpu) = NULL;
- 	}
-+
- 	/*
--	 * Make sure trace_buffered_event is NULL before clearing
--	 * trace_buffered_event_cnt.
-+	 * Wait for all CPUs that potentially started checking if they can use
-+	 * their event buffer only after the previous synchronize_rcu() call and
-+	 * they still read a valid pointer from trace_buffered_event. It must be
-+	 * ensured they don't see cleared trace_buffered_event_cnt else they
-+	 * could wrongly decide to use the pointed-to buffer which is now freed.
- 	 */
--	smp_wmb();
-+	synchronize_rcu();
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1315,6 +1315,9 @@ static void zenbleed_check_cpu(void *unu
  
--	/* Do the work on each cpu */
-+	/* For each CPU, relinquish the buffer */
- 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
- 			 true);
+ void amd_check_microcode(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		return;
++
+ 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
  }
+ 
 
 
 
