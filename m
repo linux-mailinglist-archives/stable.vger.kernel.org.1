@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-6112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2EF80D8CF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7615E80D7B9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83D771F21A21
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219711F210CE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA16C51C2C;
-	Mon, 11 Dec 2023 18:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E692524CE;
+	Mon, 11 Dec 2023 18:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQajK6Gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLUdF2bp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958755102A;
-	Mon, 11 Dec 2023 18:49:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F52CC433C9;
-	Mon, 11 Dec 2023 18:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482FA524BC;
+	Mon, 11 Dec 2023 18:39:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A2DC433C8;
+	Mon, 11 Dec 2023 18:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320545;
-	bh=hre3BnKEXX7UNdBZ9BSr8BAKc1nXG0ys+LJ2/aw9CfQ=;
+	s=korg; t=1702319976;
+	bh=1sz6tEuegC8Zr+D/0rjDSHb5ViNUlPMmlL3vFmDFsYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQajK6Gx+GYcl2msW8havVrEuxqKgTpyeq3kpGmVJAwFfGwlsmnF9YSlEQaLUXs9Y
-	 0KZ4sbgimhWT8o3T7nhrUM09scnid0oyWhw6nNzr80eEPthP34cowBi7vpjM9+sRFu
-	 yuhtVSsLzPWwMVPX1mLpPBiaG8NRYn1dAJCC4LxY=
+	b=xLUdF2bpNrZ+6c9OsQggplOU3wW0JE1BKLnB8T7a3C+cdmB2xHXF4mR0kcSIUNBzO
+	 Jz0O0NyL92zcKgcnE/L6u+q3RH1IvkVpTvXEc0vg39C0rZJkzewY9ewTI+UzwsowXl
+	 UE5yiNC0HLQywTL+U5Rh0l77uhHQsSKFa/VR9nFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 100/194] kprobes: consistent rcu api usage for kretprobe holder
-Date: Mon, 11 Dec 2023 19:21:30 +0100
-Message-ID: <20231211182040.905902024@linuxfoundation.org>
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 28/97] net: bnxt: fix a potential use-after-free in bnxt_init_tc
+Date: Mon, 11 Dec 2023 19:21:31 +0100
+Message-ID: <20231211182020.984884342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +56,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JP Kobryn <inwardvessel@gmail.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit d839a656d0f3caca9f96e9bf912fd394ac6a11bc upstream.
+[ Upstream commit d007caaaf052f82ca2340d4c7b32d04a3f5dbf3f ]
 
-It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
-RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
-The thought behind this patch is to make use of the RCU API where possible
-when accessing this pointer so that the needed barriers are always in place
-and to self-document the code.
+When flow_indr_dev_register() fails, bnxt_init_tc will free
+bp->tc_info through kfree(). However, the caller function
+bnxt_init_one() will ignore this failure and call
+bnxt_shutdown_tc() on failure of bnxt_dl_register(), where
+a use-after-free happens. Fix this issue by setting
+bp->tc_info to NULL after kfree().
 
-The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
-done to the "rp" pointer are changed to make use of the RCU macro for
-assignment. For the single read, the implementation of get_kretprobe()
-is simplified by making use of an RCU macro which accomplishes the same,
-but note that the log warning text will be more generic.
-
-I did find that there is a difference in assembly generated between the
-usage of the RCU macros vs without. For example, on arm64, when using
-rcu_assign_pointer(), the corresponding store instruction is a
-store-release (STLR) which has an implicit barrier. When normal assignment
-is done, a regular store (STR) is found. In the macro case, this seems to
-be a result of rcu_assign_pointer() using smp_store_release() when the
-value to write is not NULL.
-
-Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
-
-Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
-Cc: stable@vger.kernel.org
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 627c89d00fb9 ("bnxt_en: flow_offload: offload tunnel decap rules via indirect callbacks")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://lore.kernel.org/r/20231204024004.8245-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kprobes.h |    7 ++-----
- kernel/kprobes.c        |    4 ++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -140,7 +140,7 @@ static inline bool kprobe_ftrace(struct
-  *
-  */
- struct kretprobe_holder {
--	struct kretprobe	*rp;
-+	struct kretprobe __rcu *rp;
- 	refcount_t		ref;
- };
- 
-@@ -248,10 +248,7 @@ unsigned long kretprobe_trampoline_handl
- 
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return READ_ONCE(ri->rph->rp);
-+	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+index 3e9b1f59e381d..775d0b7521ca0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
+@@ -2061,6 +2061,7 @@ int bnxt_init_tc(struct bnxt *bp)
+ 	rhashtable_destroy(&tc_info->flow_table);
+ free_tc_info:
+ 	kfree(tc_info);
++	bp->tc_info = NULL;
+ 	return rc;
  }
  
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2253,7 +2253,7 @@ int register_kretprobe(struct kretprobe
- 	if (!rp->rph)
- 		return -ENOMEM;
- 
--	rp->rph->rp = rp;
-+	rcu_assign_pointer(rp->rph->rp, rp);
- 	for (i = 0; i < rp->maxactive; i++) {
- 		inst = kzalloc(sizeof(struct kretprobe_instance) +
- 			       rp->data_size, GFP_KERNEL);
-@@ -2314,7 +2314,7 @@ void unregister_kretprobes(struct kretpr
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- 		rethook_free(rps[i]->rh);
- #else
--		rps[i]->rph->rp = NULL;
-+		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- #endif
- 	}
- 	mutex_unlock(&kprobe_mutex);
+-- 
+2.42.0
+
 
 
 
