@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-5528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA45280D538
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:21:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA05680D8A1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 869981F21A0E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:21:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 135C7B21565
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BB551020;
-	Mon, 11 Dec 2023 18:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F30451C2D;
+	Mon, 11 Dec 2023 18:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPTfgd01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5M2gDx5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C924F212;
-	Mon, 11 Dec 2023 18:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3583C433C7;
-	Mon, 11 Dec 2023 18:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5C55102A;
+	Mon, 11 Dec 2023 18:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 867B9C433C7;
+	Mon, 11 Dec 2023 18:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318905;
-	bh=rjpwKRqdrSzQE0u9wPMWhgk1Bg5lJUsr4kx1WU88bM8=;
+	s=korg; t=1702320451;
+	bh=DUgZjC+AlwRHpSbHLw2BXIV27g4RjOJOVtLwA2c7FfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPTfgd01Kqk5WD394SZ3Vkyn00qlINDZq96XsVR6xTR6kgRaaHf3OecPWJJbnL4Ej
-	 lATsFRQzgLLeDOaDeu5jua5j4BZIVwIhmPI1EIlmnVwPOILc85K7vND0KcEEYzWP1l
-	 ozmIMgVEJ3l8S5FPjPBYDaKq4+RdfdavG7YcO0oA=
+	b=j5M2gDx5MyCpMG491oSI+lUaN1D3l/vSw+q8Zvm04u7Sbx4XZFaNAMRtsto121Dk2
+	 SRjAUTPFPnjKrU9ifLKpFH8s8XAeTGkFt3ChNMKAQMbhqnvSTMC1TANnBNF5/V6Slg
+	 7TUjSfOnk6bw4FIUCJ7ydOBZaT55UZ5k9B4ai2Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yepeng Pan <yepeng.pan@cispa.de>,
-	Christian Rossow <rossow@cispa.de>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mustafa Ismail <mustafa.ismail@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 05/25] tcp: do not accept ACK of bytes we never sent
+Subject: [PATCH 6.1 066/194] RDMA/irdma: Add wait for suspend on SQD
 Date: Mon, 11 Dec 2023 19:20:56 +0100
-Message-ID: <20231211182008.875797521@linuxfoundation.org>
+Message-ID: <20231211182039.437220049@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,108 +54,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
+[ Upstream commit bd6da690c27d75cae432c09162d054b34fa2156f ]
 
-This patch is based on a detailed report and ideas from Yepeng Pan
-and Christian Rossow.
+Currently, there is no wait for the QP suspend to complete on a modify
+to SQD state. Add a wait, after the modify to SQD state, for the Suspend
+Complete AE. While we are at it, update the suspend timeout value in
+irdma_prep_tc_change to use IRDMA_EVENT_TIMEOUT_MS too.
 
-ACK seq validation is currently following RFC 5961 5.2 guidelines:
-
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.  It needs to
-   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
-   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
-   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
-   ACK, drop the segment, and return".  The "ignored" above implies that
-   the processing of the incoming data segment continues, which means
-   the ACK value is treated as acceptable.  This mitigation makes the
-   ACK check more stringent since any ACK < SND.UNA wouldn't be
-   accepted, instead only ACKs that are in the range ((SND.UNA -
-   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
-
-This can be refined for new (and possibly spoofed) flows,
-by not accepting ACK for bytes that were never sent.
-
-This greatly improves TCP security at a little cost.
-
-I added a Fixes: tag to make sure this patch will reach stable trees,
-even if the 'blamed' patch was adhering to the RFC.
-
-tp->bytes_acked was added in linux-4.2
-
-Following packetdrill test (courtesy of Yepeng Pan) shows
-the issue at hand:
-
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-// ---------------- Handshake ------------------- //
-
-// when window scale is set to 14 the window size can be extended to
-// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
-// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
-// ,though this ack number acknowledges some data never
-// sent by the server.
-
-+0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
-
-// For the established connection, we send an ACK packet,
-// the ack packet uses ack number 1 - 1073725300 + 2^32,
-// where 2^32 is used to wrap around.
-// Note: we used 1073725300 instead of 1073725440 to avoid possible
-// edge cases.
-// 1 - 1073725300 + 2^32 = 3221241997
-
-// Oops, old kernels happily accept this packet.
-+0 < . 1:1001(1000) ack 3221241997 win 65535
-
-// After the kernel fix the following will be replaced by a challenge ACK,
-// and prior malicious frame would be dropped.
-+0 > . 1:1(0) ack 1001
-
-Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
-Reported-by: Christian Rossow <rossow@cispa.de>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Link: https://lore.kernel.org/r/20231114170246.238-3-shiraz.saleem@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/hw.c    |  6 +++++-
+ drivers/infiniband/hw/irdma/main.c  |  2 +-
+ drivers/infiniband/hw/irdma/main.h  |  2 +-
+ drivers/infiniband/hw/irdma/verbs.c | 21 +++++++++++++++++++++
+ drivers/infiniband/hw/irdma/verbs.h |  1 +
+ 5 files changed, 29 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index e65daf71a52d7..a83b2457ad5fe 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3643,8 +3643,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
- 	 */
- 	if (before(ack, prior_snd_una)) {
-+		u32 max_window;
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index c07ce85d243f1..027584febb8ca 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -322,7 +322,11 @@ static void irdma_process_aeq(struct irdma_pci_f *rf)
+ 			break;
+ 		case IRDMA_AE_QP_SUSPEND_COMPLETE:
+ 			if (iwqp->iwdev->vsi.tc_change_pending) {
+-				atomic_dec(&iwqp->sc_qp.vsi->qp_suspend_reqs);
++				if (!atomic_dec_return(&qp->vsi->qp_suspend_reqs))
++					wake_up(&iwqp->iwdev->suspend_wq);
++			}
++			if (iwqp->suspend_pending) {
++				iwqp->suspend_pending = false;
+ 				wake_up(&iwqp->iwdev->suspend_wq);
+ 			}
+ 			break;
+diff --git a/drivers/infiniband/hw/irdma/main.c b/drivers/infiniband/hw/irdma/main.c
+index 514453777e07d..be1030d1adfaf 100644
+--- a/drivers/infiniband/hw/irdma/main.c
++++ b/drivers/infiniband/hw/irdma/main.c
+@@ -48,7 +48,7 @@ static void irdma_prep_tc_change(struct irdma_device *iwdev)
+ 	/* Wait for all qp's to suspend */
+ 	wait_event_timeout(iwdev->suspend_wq,
+ 			   !atomic_read(&iwdev->vsi.qp_suspend_reqs),
+-			   IRDMA_EVENT_TIMEOUT);
++			   msecs_to_jiffies(IRDMA_EVENT_TIMEOUT_MS));
+ 	irdma_ws_reset(&iwdev->vsi);
+ }
+ 
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index 9cbe64311f985..6a6b14d8fca45 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -78,7 +78,7 @@ extern struct auxiliary_driver i40iw_auxiliary_drv;
+ 
+ #define MAX_DPC_ITERATIONS	128
+ 
+-#define IRDMA_EVENT_TIMEOUT		50000
++#define IRDMA_EVENT_TIMEOUT_MS		5000
+ #define IRDMA_VCHNL_EVENT_TIMEOUT	100000
+ #define IRDMA_RST_TIMEOUT_HZ		4
+ 
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 02015927fd046..447e1bcc82a32 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -1098,6 +1098,21 @@ static int irdma_query_pkey(struct ib_device *ibdev, u32 port, u16 index,
+ 	return 0;
+ }
+ 
++static int irdma_wait_for_suspend(struct irdma_qp *iwqp)
++{
++	if (!wait_event_timeout(iwqp->iwdev->suspend_wq,
++				!iwqp->suspend_pending,
++				msecs_to_jiffies(IRDMA_EVENT_TIMEOUT_MS))) {
++		iwqp->suspend_pending = false;
++		ibdev_warn(&iwqp->iwdev->ibdev,
++			   "modify_qp timed out waiting for suspend. qp_id = %d, last_ae = 0x%x\n",
++			   iwqp->ibqp.qp_num, iwqp->last_aeq);
++		return -EBUSY;
++	}
 +
-+		/* do not accept ACK for bytes we never sent. */
-+		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - tp->max_window)) {
-+		if (before(ack, prior_snd_una - max_window)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk, skb);
- 			return -1;
++	return 0;
++}
++
+ /**
+  * irdma_modify_qp_roce - modify qp request
+  * @ibqp: qp's pointer for modify
+@@ -1359,6 +1374,7 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 
+ 			info.next_iwarp_state = IRDMA_QP_STATE_SQD;
+ 			issue_modify_qp = 1;
++			iwqp->suspend_pending = true;
+ 			break;
+ 		case IB_QPS_SQE:
+ 		case IB_QPS_ERR:
+@@ -1399,6 +1415,11 @@ int irdma_modify_qp_roce(struct ib_qp *ibqp, struct ib_qp_attr *attr,
+ 			ctx_info->rem_endpoint_idx = udp_info->arp_idx;
+ 			if (irdma_hw_modify_qp(iwdev, iwqp, &info, true))
+ 				return -EINVAL;
++			if (info.next_iwarp_state == IRDMA_QP_STATE_SQD) {
++				ret = irdma_wait_for_suspend(iwqp);
++				if (ret)
++					return ret;
++			}
+ 			spin_lock_irqsave(&iwqp->lock, flags);
+ 			if (iwqp->iwarp_state == info.curr_iwarp_state) {
+ 				iwqp->iwarp_state = info.next_iwarp_state;
+diff --git a/drivers/infiniband/hw/irdma/verbs.h b/drivers/infiniband/hw/irdma/verbs.h
+index a536e9fa85ebf..9f9e273bbff3e 100644
+--- a/drivers/infiniband/hw/irdma/verbs.h
++++ b/drivers/infiniband/hw/irdma/verbs.h
+@@ -193,6 +193,7 @@ struct irdma_qp {
+ 	u8 flush_issued : 1;
+ 	u8 sig_all : 1;
+ 	u8 pau_mode : 1;
++	u8 suspend_pending : 1;
+ 	u8 rsvd : 1;
+ 	u8 iwarp_state;
+ 	u16 term_sq_flush_code;
 -- 
 2.42.0
 
