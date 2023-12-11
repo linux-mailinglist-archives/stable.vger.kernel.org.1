@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-5454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B6880CC72
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:01:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BEE80CC74
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C027281A56
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57DE1F20FE8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13AC482D8;
-	Mon, 11 Dec 2023 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFF2482D0;
+	Mon, 11 Dec 2023 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K35gFXkR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u8Jgf2/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718DF482C5;
-	Mon, 11 Dec 2023 14:01:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974A8C433C7;
-	Mon, 11 Dec 2023 14:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E17482C5;
+	Mon, 11 Dec 2023 14:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E86BFC433C7;
+	Mon, 11 Dec 2023 14:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702303291;
-	bh=RLA7oWMorsPqX/x9BSrub3FtuTxtjuikzdjzJpn39fs=;
+	s=k20201202; t=1702303296;
+	bh=NWkzHG+K3m4lF693Vqo99ninvDgUxvdob817lE/wkuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K35gFXkRVaTBsjpchZ1gGdRWJTk8pNaLWV9QHmtyxvPXMuZBRdfHMRYOFA5HxCXdE
-	 cUxkqya2VFQ440/ypE7ywThhPCNcH5DIBsBHJxj3ryaPuxUtrbB8kpS+vTYTQFCfjQ
-	 g81Nc8XYJiBDeJXPr1Wxr2rrpRP5Tzr6NeLVBs2pBD18R4SeZ610EUbtbeXu5OzGMe
-	 iQrf8X8tCK3tQm8S++IZ8LGW42JPRp0J02GaZhg0WFWkQ5zTvgBGv4Z7vFsPKSghic
-	 zgbQN6Yup4W/BYd2biJhDhPCqBTD9gBZewrhINM/HnILxU9QTtWaE2K/k5ln9bbzgm
-	 YZvlC2zGJBRQg==
+	b=u8Jgf2/EpuXMOK9MeSlLFKrvuHaFFdcsOockCbay3A0OY2H+iiYXjtRfSurZuYKOz
+	 WRTMHjrPw1W26QVmOEbxBkyX0wpGPXUO1jIOoOlhPBqFVe9VInEfzr5A28tC4WfsUK
+	 zgKqm31cf3UkyiAK8hmK835DTiBtq5/hAaxMKikdooOBsbnICwzhBlRBp8jpM8DQ+X
+	 p3VUFR+Whn4nqNzHko36E6jQ4LDtaHLEmFelmD7OAppJeygHAOZqfVunc5H6BePzj3
+	 ik7x0violXs08DxQnB+Y6wimIlV+L7PzXI2JH/tqECzsnTTdMNDoHyrNopsUxuMMj5
+	 QLx7OLP3inEtw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Lin <CTLIN0@nuvoton.com>,
-	kernel test robot <lkp@intel.com>,
+Cc: Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
+	cezary.rojewski@intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	liam.r.girdwood@linux.intel.com,
+	peter.ujfalusi@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	emanuele.ghidoli@toradex.com,
-	u.kleine-koenig@pengutronix.de,
+	kuninori.morimoto.gx@renesas.com,
+	suhui@nfschina.com,
+	zhangyiqun@phytium.com.cn,
+	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 03/16] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
-Date: Mon, 11 Dec 2023 09:00:27 -0500
-Message-ID: <20231211140116.391986-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 04/16] ASoC: Intel: Skylake: mem leak in skl register function
+Date: Mon, 11 Dec 2023 09:00:28 -0500
+Message-ID: <20231211140116.391986-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231211140116.391986-1-sashal@kernel.org>
 References: <20231211140116.391986-1-sashal@kernel.org>
@@ -57,77 +65,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.203
 Content-Transfer-Encoding: 8bit
 
-From: David Lin <CTLIN0@nuvoton.com>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
+[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
 
-This issue is reproduced when W=1 build in compiler gcc-12.
-The following are sparse warnings:
+skl_platform_register() uses krealloc. When krealloc is fail,
+then previous memory is not freed. The leak is also when soc
+component registration failed.
 
-sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
-sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
-sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
-Signed-off-by: David Lin <CTLIN0@nuvoton.com>
-Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8822.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
-index d831959d8ff73..4ce15cd9ed020 100644
---- a/sound/soc/codecs/nau8822.c
-+++ b/sound/soc/codecs/nau8822.c
-@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
- 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
- 	int i, reg;
- 	u16 reg_val, *val;
-+	__be16 tmp;
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index c7e76111f68b7..935c871abdaa6 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -1477,6 +1477,7 @@ int skl_platform_register(struct device *dev)
+ 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
+ 				sizeof(skl_platform_dai), GFP_KERNEL);
+ 		if (!dais) {
++			kfree(skl->dais);
+ 			ret = -ENOMEM;
+ 			goto err;
+ 		}
+@@ -1489,8 +1490,10 @@ int skl_platform_register(struct device *dev)
  
- 	val = (u16 *)ucontrol->value.bytes.data;
- 	reg = NAU8822_REG_EQ1;
-@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
- 		/* conversion of 16-bit integers between native CPU format
- 		 * and big endian format
- 		 */
--		reg_val = cpu_to_be16(reg_val);
--		memcpy(val + i, &reg_val, sizeof(reg_val));
-+		tmp = cpu_to_be16(reg_val);
-+		memcpy(val + i, &tmp, sizeof(tmp));
- 	}
- 
- 	return 0;
-@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
- 	void *data;
- 	u16 *val, value;
- 	int i, reg, ret;
-+	__be16 *tmp;
- 
- 	data = kmemdup(ucontrol->value.bytes.data,
- 		params->max, GFP_KERNEL | GFP_DMA);
-@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
- 		/* conversion of 16-bit integers between native CPU format
- 		 * and big endian format
- 		 */
--		value = be16_to_cpu(*(val + i));
-+		tmp = (__be16 *)(val + i);
-+		value = be16_to_cpup(tmp);
- 		ret = snd_soc_component_write(component, reg + i, value);
- 		if (ret) {
- 			dev_err(component->dev,
+ 	ret = devm_snd_soc_register_component(dev, &skl_component,
+ 					 skl->dais, num_dais);
+-	if (ret)
++	if (ret) {
++		kfree(skl->dais);
+ 		dev_err(dev, "soc component registration failed %d\n", ret);
++	}
+ err:
+ 	return ret;
+ }
 -- 
 2.42.0
 
