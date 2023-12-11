@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-5823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7C1B80D741
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC8980D900
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 924D72820E7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A73A9281EE5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D66652F97;
-	Mon, 11 Dec 2023 18:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D48C751C44;
+	Mon, 11 Dec 2023 18:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v39gUvLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YCVGSk8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F40C51036;
-	Mon, 11 Dec 2023 18:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78D7C433C8;
-	Mon, 11 Dec 2023 18:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C505102A;
+	Mon, 11 Dec 2023 18:50:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F57C433C7;
+	Mon, 11 Dec 2023 18:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319759;
-	bh=8UYbqowY6Qw8rkWp4WXYmNZW7h+mKI14VSEqZLudWxs=;
+	s=korg; t=1702320612;
+	bh=/n2cot85qd07o5WP8O1H2rTucFw2h1KknEF34yk6jOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v39gUvLDcTe/dCoC6Jri5XQLCWUuTVkVpxEVye4S3e/C9YHB/ZqPFGk2axe9qAU4W
-	 gie6IUA/wWKtlukzz5jDms9YAcAAMTkauPz7ImvQf0xAbkzdCKriZ6QmZyhC068xia
-	 M1eQJxj0n6gJpzSOqeqWolPpkDYOqQNh23GGRua8=
+	b=YCVGSk8F4IsnOUVte+u/Ya+PW8LCEauZih4sRBHHxFZ59t69d7afUaGjpoWhUuX+/
+	 rR/NFKYjXqfwuyvzwbmPF0xCPblO0DYctJ1hSrbqvGTDaNss7UIAxZN1hp2WCtRrFm
+	 MsBXuQgdXHJYTAy38eeOoeIUUy1O0CExC6kCrEQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 223/244] serial: 8250_omap: Add earlycon support for the AM654 UART controller
+	David Jeffery <djeffery@redhat.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.1 126/194] md/raid6: use valid sector values to determine if an I/O should wait on the reshape
 Date: Mon, 11 Dec 2023 19:21:56 +0100
-Message-ID: <20231211182056.003083515@linuxfoundation.org>
+Message-ID: <20231211182042.157472190@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,35 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: David Jeffery <djeffery@redhat.com>
 
-commit 8e42c301ce64e0dcca547626eb486877d502d336 upstream.
+commit c467e97f079f0019870c314996fae952cc768e82 upstream.
 
-Currently there is no support for earlycon on the AM654 UART
-controller. This commit adds it.
+During a reshape or a RAID6 array such as expanding by adding an additional
+disk, I/Os to the region of the array which have not yet been reshaped can
+stall indefinitely. This is from errors in the stripe_ahead_of_reshape
+function causing md to think the I/O is to a region in the actively
+undergoing the reshape.
 
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20231031131242.15516-1-rwahl@gmx.de
-Cc: stable <stable@kernel.org>
+stripe_ahead_of_reshape fails to account for the q disk having a sector
+value of 0. By not excluding the q disk from the for loop, raid6 will always
+generate a min_sector value of 0, causing a return value which stalls.
+
+The function's max_sector calculation also uses min() when it should use
+max(), causing the max_sector value to always be 0. During a backwards
+rebuild this can cause the opposite problem where it allows I/O to advance
+when it should wait.
+
+Fixing these errors will allow safe I/O to advance in a timely manner and
+delay only I/O which is unsafe due to stripes in the middle of undergoing
+the reshape.
+
+Fixes: 486f60558607 ("md/raid5: Check all disks in a stripe_head for reshape progress")
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: David Jeffery <djeffery@redhat.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231128181233.6187-1-djeffery@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_early.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/raid5.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_early.c
-+++ b/drivers/tty/serial/8250/8250_early.c
-@@ -189,5 +189,6 @@ static int __init early_omap8250_setup(s
- OF_EARLYCON_DECLARE(omap8250, "ti,omap2-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap3-uart", early_omap8250_setup);
- OF_EARLYCON_DECLARE(omap8250, "ti,omap4-uart", early_omap8250_setup);
-+OF_EARLYCON_DECLARE(omap8250, "ti,am654-uart", early_omap8250_setup);
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5905,11 +5905,11 @@ static bool stripe_ahead_of_reshape(stru
+ 	int dd_idx;
  
- #endif
+ 	for (dd_idx = 0; dd_idx < sh->disks; dd_idx++) {
+-		if (dd_idx == sh->pd_idx)
++		if (dd_idx == sh->pd_idx || dd_idx == sh->qd_idx)
+ 			continue;
+ 
+ 		min_sector = min(min_sector, sh->dev[dd_idx].sector);
+-		max_sector = min(max_sector, sh->dev[dd_idx].sector);
++		max_sector = max(max_sector, sh->dev[dd_idx].sector);
+ 	}
+ 
+ 	spin_lock_irq(&conf->device_lock);
 
 
 
