@@ -1,46 +1,51 @@
-Return-Path: <stable+bounces-5589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E871280D583
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D579380D80A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 930B31F21A30
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F1B280D12
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A655101D;
-	Mon, 11 Dec 2023 18:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D40A51C3E;
+	Mon, 11 Dec 2023 18:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqssIgX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDXHt19R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E54F212;
-	Mon, 11 Dec 2023 18:25:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49C5C433C8;
-	Mon, 11 Dec 2023 18:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD24FC06;
+	Mon, 11 Dec 2023 18:42:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C9AC433C8;
+	Mon, 11 Dec 2023 18:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319127;
-	bh=hky5CJNCwuTP802x2q39ngLq5U6p4bxuxS2B6Iuo82A=;
+	s=korg; t=1702320120;
+	bh=CuvhuqL1aJ7h162lUqS6wsuwMKlUnLkTh/K7vzIY1wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqssIgX2B1wOTjSqUbz1aPl5VAy+oVs58dp22Mg+7IZAiaeNlucFKvQRVTMmYFRXL
-	 NDz/rTlO7Pm0gAXEfBY943qBEC3rYTcK/K3/RLFkPu/5ffwY9w9hDeiX69WA62uG6b
-	 +XVTAfrqqgsFMogsRNvjXjb/cSyfWog4nwGN52rc=
+	b=lDXHt19RGSnsB9Ful1i5hzsKh6JgcFgSL6aP+bh94qM/52rxDf+1DIR5Di1g+PhZA
+	 BiaC3cIsbBLHygS0BGRF2VWH12IMIQC3swD2/XBjxY0h23XkFCOhDS1C/vZxmqYSAn
+	 yFo2Oxfs7LQEYlWDBTNg2OjatGrrqn98IzI/c/JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 47/55] nilfs2: fix missing error check for sb_set_blocksize call
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	devicetree@vger.kernel.org,
+	Lee Jones <lee.jones@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 13/67] of: base: Fix some formatting issues and provide missing descriptions
 Date: Mon, 11 Dec 2023 19:21:57 +0100
-Message-ID: <20231211182013.988723609@linuxfoundation.org>
+Message-ID: <20231211182015.661069620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +57,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Lee Jones <lee.jones@linaro.org>
 
-commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+[ Upstream commit 3637d49e11219512920aca8b8ccd0994be33fa8b ]
 
-When mounting a filesystem image with a block size larger than the page
-size, nilfs2 repeatedly outputs long error messages with stack traces to
-the kernel log, such as the following:
+Fixes the following W=1 kernel build warning(s):
 
- getblk(): invalid block size 8192 requested
- logical block size: 512
- ...
- Call Trace:
-  dump_stack_lvl+0x92/0xd4
-  dump_stack+0xd/0x10
-  bdev_getblk+0x33a/0x354
-  __breadahead+0x11/0x80
-  nilfs_search_super_root+0xe2/0x704 [nilfs2]
-  load_nilfs+0x72/0x504 [nilfs2]
-  nilfs_mount+0x30f/0x518 [nilfs2]
-  legacy_get_tree+0x1b/0x40
-  vfs_get_tree+0x18/0xc4
-  path_mount+0x786/0xa88
-  __ia32_sys_mount+0x147/0x1a8
-  __do_fast_syscall_32+0x56/0xc8
-  do_fast_syscall_32+0x29/0x58
-  do_SYSENTER_32+0x15/0x18
-  entry_SYSENTER_32+0x98/0xf1
- ...
+ drivers/of/base.c:315: warning: Function parameter or member 'cpun' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'prop_name' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'cpu' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'thread' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: expecting prototype for property holds the physical id of the(). Prototype was for __of_find_n_match_cpu_property() instead
+ drivers/of/base.c:1139: warning: Function parameter or member 'match' not described in 'of_find_matching_node_and_match'
+ drivers/of/base.c:1779: warning: Function parameter or member 'np' not described in '__of_add_property'
+ drivers/of/base.c:1779: warning: Function parameter or member 'prop' not described in '__of_add_property'
+ drivers/of/base.c:1800: warning: Function parameter or member 'np' not described in 'of_add_property'
+ drivers/of/base.c:1800: warning: Function parameter or member 'prop' not described in 'of_add_property'
+ drivers/of/base.c:1849: warning: Function parameter or member 'np' not described in 'of_remove_property'
+ drivers/of/base.c:1849: warning: Function parameter or member 'prop' not described in 'of_remove_property'
+ drivers/of/base.c:2137: warning: Function parameter or member 'dn' not described in 'of_console_check'
+ drivers/of/base.c:2137: warning: Function parameter or member 'name' not described in 'of_console_check'
+ drivers/of/base.c:2137: warning: Function parameter or member 'index' not described in 'of_console_check'
 
-This overloads the system logger.  And to make matters worse, it sometimes
-crashes the kernel with a memory access violation.
-
-This is because the return value of the sb_set_blocksize() call, which
-should be checked for errors, is not checked.
-
-The latter issue is due to out-of-buffer memory being accessed based on a
-large block size that caused sb_set_blocksize() to fail for buffers read
-with the initial minimum block size that remained unupdated in the
-super_block structure.
-
-Since nilfs2 mkfs tool does not accept block sizes larger than the system
-page size, this has been overlooked.  However, it is possible to create
-this situation by intentionally modifying the tool or by passing a
-filesystem image created on a system with a large page size to a system
-with a smaller page size and mounting it.
-
-Fix this issue by inserting the expected error handling for the call to
-sb_set_blocksize().
-
-Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20210318104036.3175910-5-lee.jones@linaro.org
+Stable-dep-of: d79972789d17 ("of: dynamic: Fix of_reconfig_get_state_change() return value documentation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/of/base.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -688,7 +688,11 @@ int init_nilfs(struct the_nilfs *nilfs,
- 			goto failed_sbh;
- 		}
- 		nilfs_release_super_block(nilfs);
--		sb_set_blocksize(sb, blocksize);
-+		if (!sb_set_blocksize(sb, blocksize)) {
-+			nilfs_msg(sb, KERN_ERR, "bad blocksize %d", blocksize);
-+			err = -EINVAL;
-+			goto out;
-+		}
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 5c97366628b13..4032814133fe6 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -367,7 +367,7 @@ bool __weak arch_match_cpu_phys_id(int cpu, u64 phys_id)
+ 	return (u32)phys_id == cpu;
+ }
  
- 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
- 		if (err)
+-/**
++/*
+  * Checks if the given "prop_name" property holds the physical id of the
+  * core/thread corresponding to the logical cpu 'cpu'. If 'thread' is not
+  * NULL, local thread number within the core is returned in it.
+@@ -1190,7 +1190,7 @@ EXPORT_SYMBOL(of_match_node);
+  *			will; typically, you pass what the previous call
+  *			returned. of_node_put() will be called on it
+  *	@matches:	array of of device match structures to search in
+- *	@match		Updated to point at the matches entry which matched
++ *	@match:		Updated to point at the matches entry which matched
+  *
+  *	Returns a node pointer with refcount incremented, use
+  *	of_node_put() on it when done.
+@@ -1853,6 +1853,8 @@ EXPORT_SYMBOL(of_count_phandle_with_args);
+ 
+ /**
+  * __of_add_property - Add a property to a node without lock operations
++ * @np:		Caller's Device Node
++ * @prob:	Property to add
+  */
+ int __of_add_property(struct device_node *np, struct property *prop)
+ {
+@@ -1874,6 +1876,8 @@ int __of_add_property(struct device_node *np, struct property *prop)
+ 
+ /**
+  * of_add_property - Add a property to a node
++ * @np:		Caller's Device Node
++ * @prob:	Property to add
+  */
+ int of_add_property(struct device_node *np, struct property *prop)
+ {
+@@ -1918,6 +1922,8 @@ int __of_remove_property(struct device_node *np, struct property *prop)
+ 
+ /**
+  * of_remove_property - Remove a property from a node.
++ * @np:		Caller's Device Node
++ * @prob:	Property to remove
+  *
+  * Note that we don't actually remove it, since we have given out
+  * who-knows-how-many pointers to the data using get-property.
+@@ -2203,9 +2209,9 @@ EXPORT_SYMBOL_GPL(of_alias_get_highest_id);
+ 
+ /**
+  * of_console_check() - Test and setup console for DT setup
+- * @dn - Pointer to device node
+- * @name - Name to use for preferred console without index. ex. "ttyS"
+- * @index - Index to use for preferred console.
++ * @dn: Pointer to device node
++ * @name: Name to use for preferred console without index. ex. "ttyS"
++ * @index: Index to use for preferred console.
+  *
+  * Check if the given device node matches the stdout-path property in the
+  * /chosen node. If it does then register it as the preferred console and return
+-- 
+2.42.0
+
 
 
 
