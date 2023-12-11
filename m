@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8180D894
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825B980D687
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21BFA1F218C4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C65F282457
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8677C51C3E;
-	Mon, 11 Dec 2023 18:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67705102A;
+	Mon, 11 Dec 2023 18:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQGZgJ+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFygRZe6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFDFC8C8;
-	Mon, 11 Dec 2023 18:47:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11F5C433C8;
-	Mon, 11 Dec 2023 18:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D395380F;
+	Mon, 11 Dec 2023 18:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1865DC433BD;
+	Mon, 11 Dec 2023 18:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320420;
-	bh=5MLRa4IMNl9eyyvrh/amxUN2rLQvax+lL7BeAK7Ok2o=;
+	s=korg; t=1702319563;
+	bh=yW1qp/bUmAjM28kQHNqbyts1ZUE/Lvbn8VFpLtTLuaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQGZgJ+EnasUW3B9OiUEDax42QA29Q2KS/pvB3l6xSDrk93OJk4W2vXw05wvrMK4I
-	 k8/u6CXeC9shr4rrcCODu6y+0bzVaqRRl2Ja3vEnqAeBHHRQnjztPEg8fl1pN+fydQ
-	 zo1yoI5BEnMgKXNE5VtH0CHQ30Gzz7oxqFg4HEJ0=
+	b=YFygRZe6+fRZBEHuksBtAa54LFe35gbHS5i45BPOdK4BvPR1rJzxe2XU/ivA/t5aR
+	 QvjcXdQWCMcUOALoDU2LqSW14lgvam1e5XCUo9c+veKSIfepal7QvzdAXkom8djOZp
+	 EaqG5jY9HueD7jXtEBZk0wIdloZeAWSBQ5A3Ayvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/194] netfilter: nf_tables: bail out on mismatching dynset and set expressions
+	Heiko Carstens <hca@linux.ibm.com>,
+	Maninder Singh <maninder1.s@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Vaneet Narang <v.narang@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 152/244] checkstack: fix printed address
 Date: Mon, 11 Dec 2023 19:20:45 +0100
-Message-ID: <20231211182039.010726284@linuxfoundation.org>
+Message-ID: <20231211182052.640063890@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +55,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 3701cd390fd731ee7ae8b8006246c8db82c72bea ]
+commit ee34db3f271cea4d4252048617919c2caafe698b upstream.
 
-If dynset expressions provided by userspace is larger than the declared
-set expressions, then bail out.
+All addresses printed by checkstack have an extra incorrect 0 appended at
+the end.
 
-Fixes: 48b0ae046ee9 ("netfilter: nftables: netlink support for several set element expressions")
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
+display $dre as different entity"): since then the address is taken from
+the line which contains the function name, instead of the line which
+contains stack consumption. E.g. on s390:
+
+0000000000100a30 <do_one_initcall>:
+...
+  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
+
+So the used regex which matches spaces and hexadecimal numbers to extract
+an address now matches a different substring. Subsequently replacing spaces
+with 0 appends a zero at the and, instead of replacing leading spaces.
+
+Fix this by using the proper regex, and simplify the code a bit.
+
+Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
+Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Maninder Singh <maninder1.s@samsung.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Vaneet Narang <v.narang@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_dynset.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ scripts/checkstack.pl |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index cf9a1ae87d9b1..a470e5f612843 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -279,10 +279,15 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
- 			priv->expr_array[i] = dynset_expr;
- 			priv->num_exprs++;
- 
--			if (set->num_exprs &&
--			    dynset_expr->ops != set->exprs[i]->ops) {
--				err = -EOPNOTSUPP;
--				goto err_expr_free;
-+			if (set->num_exprs) {
-+				if (i >= set->num_exprs) {
-+					err = -EINVAL;
-+					goto err_expr_free;
-+				}
-+				if (dynset_expr->ops != set->exprs[i]->ops) {
-+					err = -EOPNOTSUPP;
-+					goto err_expr_free;
-+				}
- 			}
- 			i++;
+--- a/scripts/checkstack.pl
++++ b/scripts/checkstack.pl
+@@ -139,15 +139,11 @@ $total_size = 0;
+ while (my $line = <STDIN>) {
+ 	if ($line =~ m/$funcre/) {
+ 		$func = $1;
+-		next if $line !~ m/^($xs*)/;
++		next if $line !~ m/^($x*)/;
+ 		if ($total_size > $min_stack) {
+ 			push @stack, "$intro$total_size\n";
  		}
--- 
-2.42.0
-
+-
+-		$addr = $1;
+-		$addr =~ s/ /0/g;
+-		$addr = "0x$addr";
+-
++		$addr = "0x$1";
+ 		$intro = "$addr $func [$file]:";
+ 		my $padlen = 56 - length($intro);
+ 		while ($padlen > 0) {
 
 
 
