@@ -1,45 +1,56 @@
-Return-Path: <stable+bounces-6212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED7980D96A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E9580D857
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF931C216D1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EEA1F21B49
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3635D51C50;
-	Mon, 11 Dec 2023 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA44251C2C;
+	Mon, 11 Dec 2023 18:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGDGvqat"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymwyXaNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7551C38;
-	Mon, 11 Dec 2023 18:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EBBC433C8;
-	Mon, 11 Dec 2023 18:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A47FC06;
+	Mon, 11 Dec 2023 18:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D16C433C7;
+	Mon, 11 Dec 2023 18:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320814;
-	bh=ILv7/WMTSy9FjuUoZK9dB2miNXSWjdhovwJh/HJS35E=;
+	s=korg; t=1702320291;
+	bh=8NECBHC/NruzAN2opWrThISKMIQQIgP9v7YVxDd1O4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGDGvqatzt1cO/1sB7Yp6IxTZe+mCm1ARAVf8xxRGA/Z0P+TI8bPNU7LIuavgeM6n
-	 /+jLBwT+aV0kuvjHAPcJjbxOUtYQZAMXXzvsOu0ygSNt0igxtvAYzhIQzhq/IFO4kt
-	 TpcWocgNaIz/9590/tcsAFYQJglTyG4ki1AQ1AWs=
+	b=ymwyXaNT1qHiPcN97uLc/6Fwlh+/U9WoJAJy/GP7qYitPys8yERkTRPp+G4M3z59l
+	 b7lgzIwztXLM7mPMqn4qmf0pLkIKqMhaVBmUizJzp7mgLVAqXg5oX0/Y8H6D6qCpWA
+	 UULgKl7d2c+tLXpWCIylscIYLfHp2P81axzEZY/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>
-Subject: [PATCH 6.1 178/194] devcoredump: Send uevent once devcd is ready
+	Dave Chinner <david@fromorbit.com>,
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Darrick Wong <darrick.wong@oracle.com>,
+	fstests@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 64/67] cifs: Fix non-availability of dedup breaking generic/304
 Date: Mon, 11 Dec 2023 19:22:48 +0100
-Message-ID: <20231211182044.604697574@linuxfoundation.org>
+Message-ID: <20231211182017.746054096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: David Howells <dhowells@redhat.com>
 
-commit af54d778a03853801d681c98c0c2a6c316ef9ca7 upstream.
+[ Upstream commit 691a41d8da4b34fe72f09393505f55f28a8f34ec ]
 
-dev_coredumpm() creates a devcoredump device and adds it
-to the core kernel framework which eventually end up
-sending uevent to the user space and later creates a
-symbolic link to the failed device. An application
-running in userspace may be interested in this symbolic
-link to get the name of the failed device.
+Deduplication isn't supported on cifs, but cifs doesn't reject it, instead
+treating it as extent duplication/cloning.  This can cause generic/304 to go
+silly and run for hours on end.
 
-In a issue scenario, once uevent sent to the user space
-it start reading '/sys/class/devcoredump/devcdX/failing_device'
-to get the actual name of the device which might not been
-created and it is in its path of creation.
+Fix cifs to indicate EOPNOTSUPP if REMAP_FILE_DEDUP is set in
+->remap_file_range().
 
-To fix this, suppress sending uevent till the failing device
-symbolic link gets created and send uevent once symbolic
-link is created successfully.
+Note that it's unclear whether or not commit b073a08016a1 is meant to cause
+cifs to return an error if REMAP_FILE_DEDUP.
 
-Fixes: 833c95456a70 ("device coredump: add new device coredump class")
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Fixes: b073a08016a1 ("cifs: fix that return -EINVAL when do dedupe operation")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1700232572-25823-1-git-send-email-quic_mojha@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Dave Chinner <david@fromorbit.com>
+cc: Xiaoli Feng <fengxiaoli0714@gmail.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Darrick Wong <darrick.wong@oracle.com>
+cc: fstests@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/3876191.1701555260@warthog.procyon.org.uk/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devcoredump.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/cifs/cifsfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -363,6 +363,7 @@ void dev_coredumpm(struct device *dev, s
- 	devcd->devcd_dev.class = &devcd_class;
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index 917441e3018ad..12f632287d161 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -1079,7 +1079,9 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
+ 	unsigned int xid;
+ 	int rc;
  
- 	mutex_lock(&devcd->mutex);
-+	dev_set_uevent_suppress(&devcd->devcd_dev, true);
- 	if (device_add(&devcd->devcd_dev))
- 		goto put_device;
+-	if (remap_flags & ~(REMAP_FILE_DEDUP | REMAP_FILE_ADVISORY))
++	if (remap_flags & REMAP_FILE_DEDUP)
++		return -EOPNOTSUPP;
++	if (remap_flags & ~REMAP_FILE_ADVISORY)
+ 		return -EINVAL;
  
-@@ -377,6 +378,8 @@ void dev_coredumpm(struct device *dev, s
- 		              "devcoredump"))
- 		dev_warn(dev, "devcoredump create_link failed\n");
- 
-+	dev_set_uevent_suppress(&devcd->devcd_dev, false);
-+	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
- 	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
- 	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
- 	mutex_unlock(&devcd->mutex);
+ 	cifs_dbg(FYI, "clone range\n");
+-- 
+2.42.0
+
 
 
 
