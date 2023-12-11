@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB11880D758
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A814D80D7EE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BF15B21093
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64132280A6C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E502051C47;
-	Mon, 11 Dec 2023 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330FC524AD;
+	Mon, 11 Dec 2023 18:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nVDkJCz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5PTLbh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D04DFBE1;
-	Mon, 11 Dec 2023 18:36:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4764C433C9;
-	Mon, 11 Dec 2023 18:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E317DFBE1;
+	Mon, 11 Dec 2023 18:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A79DC433C7;
+	Mon, 11 Dec 2023 18:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319782;
-	bh=Pv1oRapgnscCrOxrvGu9JMi3Zvk68XoXAo2Z71WbKEQ=;
+	s=korg; t=1702320065;
+	bh=eV/hNBn9C+GgU5SJMR1Pz19HNmuEFdB3+d57aIVjVv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nVDkJCz+vr1HSGule5f463fq1AlGhduuGmwrFWHJHtOE9h+tBRdo3LnXWVW8cJLbo
-	 +ncP/teAcAsRslIJBeQq+xfrqGuU7C8eJfr/0SLcsbYK6at2wbLmCMoFvJF9SxM0W2
-	 cr8OoX88VkJgce0Z2H7hSOJ8IeenLGkDqhx255Dc=
+	b=J5PTLbh8eMpKoPxi9A6hJ4Mej0JITIbg8FMfv5XOdt1WAPpnOKfSO2A3LGaONFB7T
+	 121bQVmM6aLBSObGqwY4rApFFXNdJ0Z1reQMKgXThUCtlnTfcPDVtVB1EifSqMbXCP
+	 jar3EIOwyrTjhqEFcw1UUCDBlrfO1V6f65VWPk8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH 6.6 231/244] KVM: s390/mm: Properly reset no-dat
+	Su Hui <suhui@nfschina.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 61/97] misc: mei: client.c: fix problem of return -EOVERFLOW in mei_cl_write
 Date: Mon, 11 Dec 2023 19:22:04 +0100
-Message-ID: <20231211182056.385868110@linuxfoundation.org>
+Message-ID: <20231211182022.364143377@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 27072b8e18a73ffeffb1c140939023915a35134b upstream.
+[ Upstream commit ee6236027218f8531916f1c5caa5dc330379f287 ]
 
-When the CMMA state needs to be reset, the no-dat bit also needs to be
-reset. Failure to do so could cause issues in the guest, since the
-guest expects the bit to be cleared after a reset.
+Clang static analyzer complains that value stored to 'rets' is never
+read.Let 'buf_len = -EOVERFLOW' to make sure we can return '-EOVERFLOW'.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
-Message-ID: <20231109123624.37314-1-imbrenda@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: 8c8d964ce90f ("mei: move hbuf_depth from the mei device to the hw modules")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231120095523.178385-2-suhui@nfschina.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgtable.c |    2 +-
+ drivers/misc/mei/client.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -756,7 +756,7 @@ void ptep_zap_unused(struct mm_struct *m
- 		pte_clear(mm, addr, ptep);
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 1c9ced7383b63..aa87542f116c2 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -1993,7 +1993,7 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
+ 
+ 	hbuf_slots = mei_hbuf_empty_slots(dev);
+ 	if (hbuf_slots < 0) {
+-		rets = -EOVERFLOW;
++		buf_len = -EOVERFLOW;
+ 		goto out;
  	}
- 	if (reset)
--		pgste_val(pgste) &= ~_PGSTE_GPS_USAGE_MASK;
-+		pgste_val(pgste) &= ~(_PGSTE_GPS_USAGE_MASK | _PGSTE_GPS_NODAT);
- 	pgste_set_unlock(ptep, pgste);
- 	preempt_enable();
- }
+ 
+-- 
+2.42.0
+
 
 
 
