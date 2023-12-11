@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-5714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F162C80D615
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459FA80D889
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3A91C214E5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2CC728198A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0304174A;
-	Mon, 11 Dec 2023 18:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAF251C2A;
+	Mon, 11 Dec 2023 18:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aC9IRDSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cS3miZG9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF9CFBE1;
-	Mon, 11 Dec 2023 18:31:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D12C433C8;
-	Mon, 11 Dec 2023 18:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AFCC8C8;
+	Mon, 11 Dec 2023 18:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD79C433C7;
+	Mon, 11 Dec 2023 18:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319468;
-	bh=28fT1pQ+mLXfts5ZOllyFIALHGAM7Dbf21e/Z6Zzyrg=;
+	s=korg; t=1702320403;
+	bh=TFtCsJjfo1CzbgBhMMGHmPavZeVQXsgsOryyu3tpMOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aC9IRDSo4pb5LM87BMq592jx1QDEvSsr3ItTDwxTeC+BnekguYoQv8Xm5isHvotLm
-	 iRCKRnnXv9nf9EK/YIPksaU1rKR/CAGt8u02MsXKUUGgy5GiDQPxa+d3R+ihK4hG5S
-	 lrLudd35WvTiBm/vo0UJqEVkDso/F+sv3NhdW0IE=
+	b=cS3miZG9oiwzSMQtRdYbKHn84zJvrtwaCJP9Z4EQ1iSVY9GhEyVtUgjkW4ai1rh+V
+	 8PIssLTPh+zh7pR5iX+E21nvMvk7na+1oD1WerWunYh6ge0JvWG152AdaYrZxy0Amm
+	 UZ/UbMfrCNjMOco1NKhTkxrJV9fiQjSKlDLsq5gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/244] tracing: Fix a warning when allocating buffered events fails
+Subject: [PATCH 6.1 020/194] ipv6: fix potential NULL deref in fib6_add()
 Date: Mon, 11 Dec 2023 19:20:10 +0100
-Message-ID: <20231211182051.052232107@linuxfoundation.org>
+Message-ID: <20231211182037.506417469@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +56,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
+[ Upstream commit 75475bb51e78a3f54ad2f69380f2a1c985e85f2d ]
 
-Function trace_buffered_event_disable() produces an unexpected warning
-when the previous call to trace_buffered_event_enable() fails to
-allocate pages for buffered events.
+If fib6_find_prefix() returns NULL, we should silently fallback
+using fib6_null_entry regardless of RT6_DEBUG value.
 
-The situation can occur as follows:
+syzbot reported:
 
-* The counter trace_buffered_event_ref is at 0.
+WARNING: CPU: 0 PID: 5477 at net/ipv6/ip6_fib.c:1516 fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
+Modules linked in:
+CPU: 0 PID: 5477 Comm: syz-executor.0 Not tainted 6.7.0-rc2-syzkaller-00029-g9b6de136b5f0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
+Code: 00 48 8b 54 24 68 e8 42 22 00 00 48 85 c0 74 14 49 89 c6 e8 d5 d3 c2 f7 eb 5d e8 ce d3 c2 f7 e9 ca 00 00 00 e8 c4 d3 c2 f7 90 <0f> 0b 90 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 38 80 3c 01 00
+RSP: 0018:ffffc90005067740 EFLAGS: 00010293
+RAX: ffffffff89cba5bc RBX: ffffc90005067ab0 RCX: ffff88801a2e9dc0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc90005067980 R08: ffffffff89cbca85 R09: 1ffff110040d4b85
+R10: dffffc0000000000 R11: ffffed10040d4b86 R12: 00000000ffffffff
+R13: 1ffff110051c3904 R14: ffff8880206a5c00 R15: ffff888028e1c820
+FS: 00007f763783c6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f763783bff8 CR3: 000000007f74d000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+__ip6_ins_rt net/ipv6/route.c:1303 [inline]
+ip6_route_add+0x88/0x120 net/ipv6/route.c:3847
+ipv6_route_ioctl+0x525/0x7b0 net/ipv6/route.c:4467
+inet6_ioctl+0x21a/0x270 net/ipv6/af_inet6.c:575
+sock_do_ioctl+0x152/0x460 net/socket.c:1220
+sock_ioctl+0x615/0x8c0 net/socket.c:1339
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl+0xf8/0x170 fs/ioctl.c:857
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
 
-* The soft mode gets enabled for some event and
-  trace_buffered_event_enable() is called. The function increments
-  trace_buffered_event_ref to 1 and starts allocating event pages.
-
-* The allocation fails for some page and trace_buffered_event_disable()
-  is called for cleanup.
-
-* Function trace_buffered_event_disable() decrements
-  trace_buffered_event_ref back to 0, recognizes that it was the last
-  use of buffered events and frees all allocated pages.
-
-* The control goes back to trace_buffered_event_enable() which returns.
-  The caller of trace_buffered_event_enable() has no information that
-  the function actually failed.
-
-* Some time later, the soft mode is disabled for the same event.
-  Function trace_buffered_event_disable() is called. It warns on
-  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
-
-Buffered events are just an optimization and can handle failures. Make
-trace_buffered_event_enable() exit on the first failure and left any
-cleanup later to when trace_buffered_event_disable() is called.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
-
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 7bbfe00e0252 ("ipv6: fix general protection fault in fib6_add()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Wei Wang <weiwan@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20231129160630.3509216-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/ipv6/ip6_fib.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index a40d6baf101f0..689d063dd2062 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2769,8 +2769,11 @@ void trace_buffered_event_enable(void)
- 	for_each_tracing_cpu(cpu) {
- 		page = alloc_pages_node(cpu_to_node(cpu),
- 					GFP_KERNEL | __GFP_NORETRY, 0);
--		if (!page)
--			goto failed;
-+		/* This is just an optimization and can handle failures */
-+		if (!page) {
-+			pr_err("Failed to allocate event buffer\n");
-+			break;
-+		}
- 
- 		event = page_address(page);
- 		memset(event, 0, sizeof(*event));
-@@ -2784,10 +2787,6 @@ void trace_buffered_event_enable(void)
- 			WARN_ON_ONCE(1);
- 		preempt_enable();
- 	}
--
--	return;
-- failed:
--	trace_buffered_event_disable();
- }
- 
- static void enable_trace_buffered_event(void *data)
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index eb6640f9a7921..1840735e9cb07 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1502,13 +1502,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 			if (!pn_leaf && !(pn->fn_flags & RTN_RTINFO)) {
+ 				pn_leaf = fib6_find_prefix(info->nl_net, table,
+ 							   pn);
+-#if RT6_DEBUG >= 2
+-				if (!pn_leaf) {
+-					WARN_ON(!pn_leaf);
++				if (!pn_leaf)
+ 					pn_leaf =
+ 					    info->nl_net->ipv6.fib6_null_entry;
+-				}
+-#endif
+ 				fib6_info_hold(pn_leaf);
+ 				rcu_assign_pointer(pn->leaf, pn_leaf);
+ 			}
 -- 
 2.42.0
 
