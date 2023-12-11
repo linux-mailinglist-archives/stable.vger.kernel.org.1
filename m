@@ -1,43 +1,46 @@
-Return-Path: <stable+bounces-5249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF64680C178
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:44:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB480C17B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991F0280D2C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:44:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60CC1C20934
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7901F606;
-	Mon, 11 Dec 2023 06:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F871F60A;
+	Mon, 11 Dec 2023 06:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgDZsZ8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIWYsJhF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF43B1D69A
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 06:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF22DC433C7;
-	Mon, 11 Dec 2023 06:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE2A1D69A;
+	Mon, 11 Dec 2023 06:46:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3723C433C8;
+	Mon, 11 Dec 2023 06:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702277045;
-	bh=9/0EURPl9PI/VDT8Zn5VHboBP2idCB/whBgSZHxC6mM=;
+	s=korg; t=1702277175;
+	bh=kHnEszmD14gAE0yGcIoS2wtHuhi2+yTazSYkElaFc64=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OgDZsZ8zVp+H94QFD02w/pAT4s3aSivtpiNmUI7ORZfyJBt6m1J2dt9pj5olNOEzF
-	 SjdYjncFkUq+uTjmYApyOvxj5LPsH++UnoGQaCM5AOjGE+ix4Tr81i5Pl2X/ItHQDc
-	 7NyEPFk41xLttwLVOxaovaMym4nfRUfrBYWhtNEA=
-Date: Mon, 11 Dec 2023 07:44:01 +0100
+	b=oIWYsJhFRtc3rznu98ThG9D4IUodSsPJLVR05l1lNjoBnXFiodm4CLeNRzFwUTd6t
+	 pSLWnN6uSyY7t8k0yNeggaTa4Klfnl35h/XVn4gjU4kbh4kZONSs1PzdEZgLv0ifQz
+	 QH6hzW703/HeTf/GCZV9+Ue56WAhKglL3s5cI4gw=
+Date: Mon, 11 Dec 2023 07:46:12 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Helge Deller <deller@gmx.de>
-Cc: lkft@linaro.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] parisc: Fix asm operand number out of
- range build error in" failed to apply to 6.1-stable tree
-Message-ID: <2023121129-preoccupy-hypnotize-a2ea@gregkh>
-References: <2023120949-waged-entail-7b6b@gregkh>
- <c5d9b509-3c37-419b-a325-971d9b2c7c56@gmx.de>
+To: Simon Kaegi <simon.kaegi@gmail.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	Bobby Eshleman <bobby.eshleman@bytedance.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>, jpiotrowski@linux.microsoft.com
+Subject: Re: [REGRESSION] vsocket timeout with kata containers agent 3.2.0
+ and kernel 6.1.63
+Message-ID: <2023121156-giblet-thumb-037f@gregkh>
+References: <CACW2H-4FpZAizkp+U1aS94V_ODn8NUd1ta27BAz_zh0wo63_rQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,27 +49,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c5d9b509-3c37-419b-a325-971d9b2c7c56@gmx.de>
+In-Reply-To: <CACW2H-4FpZAizkp+U1aS94V_ODn8NUd1ta27BAz_zh0wo63_rQ@mail.gmail.com>
 
-On Sun, Dec 10, 2023 at 05:43:53PM +0100, Helge Deller wrote:
-> On 12/9/23 13:33, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
+On Sun, Dec 10, 2023 at 11:05:37PM -0500, Simon Kaegi wrote:
+> #regzbot introduced v6.1.62..v6.1.63
+> #regzbot introduced: baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
 > 
-> Right, it does not apply, and does NOT need to be backported.
+> We hit this regression when updating our guest vm kernel from 6.1.62 to
+> 6.1.63 -- bisecting, this problem was introduced
+> in baddcc2c71572968cdaeee1c4ab3dc0ad90fa765 -- virtio/vsock: replace
+> virtio_vsock_pkt with sk_buff --
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.63&id=baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
+> 
+> We're getting a timeout when trying to connect to the vsocket in the
+> guest VM when launching a kata containers 3.2.0 agent. We haven't done
+> much more to understand the problem at this point.
+> 
+> We can reproduce 100% of the time but don't currently have a simple
+> reproducer as the problem was found in our build service which uses
+> kata-containers (with cloud-hypervisor).
+> 
+> We have not checked the mainline as we currently are tied to 6.1.x.
 
-Are you sure?
+What is "tieing" you to the old 6.1.y tree?
 
-I ask because:
-
-> > Fixes: fe76a1349f23 ("parisc: Use natural CPU alignment for bug_table")
-> > Cc: stable@vger.kernel.org   # v6.0+
-
-Both of those lines imply that yes, it should be backported.  Are they
-incorrect?
+Also, can you try 6.1.66?  Numerous fixes have gone into there as well.
 
 thanks,
 
