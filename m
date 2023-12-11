@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CB280D6DD
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D99F80D977
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C771C218FC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09924B216E4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFD2537E2;
-	Mon, 11 Dec 2023 18:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5896B51C58;
+	Mon, 11 Dec 2023 18:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk/xw2M2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAD5QsVT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8DFC06;
-	Mon, 11 Dec 2023 18:33:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8177C433C7;
-	Mon, 11 Dec 2023 18:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B151C38;
+	Mon, 11 Dec 2023 18:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94336C433C8;
+	Mon, 11 Dec 2023 18:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319638;
-	bh=5PnVgIhtpX6qEq47F1gohtk55as6KO8WVBZYDNNT3FM=;
+	s=korg; t=1702320835;
+	bh=v4c1uX7ldHyr5WWyEN24tqdaIL3D3j0ncOLK4nNvseA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk/xw2M2OYeFYcBhH0SeM9WWda7jr6ETILg4PZbl62vpOKpt70/lEo7Yv2+dnQYjX
-	 VQaC7+eZjx58iNEL1CuGDNOgaxHMNm/5/mA4cZ4hDzOC/g7eryCmKXzxD/xMezJRYn
-	 FmYQJhf5xxJ+2p/KnT7Hw/q1W5BpanSqVqfrPZfg=
+	b=yAD5QsVTPJHIU1wr87xXG/Y1s4jKwVeXAhHXZhKnE12/3xpDcxmj++69rh455ePlb
+	 z5/5OjDFp9Klrm8YR2aGJf7fH0ie7hOfNRvWGZjEyLvN0TU5eJWM1y+Il4i2qQjAPM
+	 iX5p8tMe8otDjV+otOCVNsMpJo6CZ78/8QK/EOvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 180/244] arm64: dts: mediatek: mt8183-kukui-jacuzzi: fix dsi unnecessary cells properties
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 014/141] of: dynamic: Fix of_reconfig_get_state_change() return value documentation
 Date: Mon, 11 Dec 2023 19:21:13 +0100
-Message-ID: <20231211182054.017160375@linuxfoundation.org>
+Message-ID: <20231211182027.114934000@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 74543b303a9abfe4fa253d1fa215281baa05ff3a upstream.
+[ Upstream commit d79972789d17499b6091ded2fc0c6763c501a5ba ]
 
-dtbs_check throws a warning at the dsi node:
-Warning (avoid_unnecessary_addr_size): /soc/dsi@14014000: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
+The documented numeric return values do not match the actual returned
+values. Fix them by using the enum names instead of raw numbers.
 
-Other DTS have a panel child node with a reg, so the parent dtsi
-must have the address-cells and size-cells, however this specific DT
-has the panel removed, but not the cells, hence the warning above.
-
-If panel is deleted then the cells must also be deleted since they are
-tied together, as the child node in this DT does not have a reg.
-
-Cc: stable@vger.kernel.org
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230814071053.5459-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b53a2340d0d3 ("of/reconfig: Add of_reconfig_get_state_change() of notifier helper.")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20231123-fix-of_reconfig_get_state_change-docs-v1-1-f51892050ff9@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/of/dynamic.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -91,6 +91,8 @@
- 
- &dsi0 {
- 	status = "okay";
-+	/delete-property/#size-cells;
-+	/delete-property/#address-cells;
- 	/delete-node/panel@0;
- 	ports {
- 		port {
+diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+index 0dfbfae15d6a0..ffb7b0446afde 100644
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -104,8 +104,9 @@ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
+  *
+  * Returns the new state of a device based on the notifier used.
+  *
+- * Return: 0 on device going from enabled to disabled, 1 on device
+- * going from disabled to enabled and -1 on no change.
++ * Return: OF_RECONFIG_CHANGE_REMOVE on device going from enabled to
++ * disabled, OF_RECONFIG_CHANGE_ADD on device going from disabled to
++ * enabled and OF_RECONFIG_NO_CHANGE on no change.
+  */
+ int of_reconfig_get_state_change(unsigned long action, struct of_reconfig_data *pr)
+ {
+-- 
+2.42.0
+
 
 
 
