@@ -1,86 +1,239 @@
-Return-Path: <stable+bounces-5281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485B380C619
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 11:11:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E7780C62E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 11:14:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 422EAB20F1A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0601F2107F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46159224D3;
-	Mon, 11 Dec 2023 10:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BDD22EE3;
+	Mon, 11 Dec 2023 10:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R/d66fRv"
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="i1WiFIiq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC4F22321;
-	Mon, 11 Dec 2023 10:10:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65093C433C7;
-	Mon, 11 Dec 2023 10:10:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702289443;
-	bh=xegFE43EsxyDEc3X4/P6wFMt65swkGo0cmYpTfXFMNs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R/d66fRvTIHZc+1tPtr4CYU+RquwqoOlqN2HfoxjeD6nhSx7Tr7hAznWzqWfOPFcP
-	 +VuZz1oSq9AmKmlRe0ZPBOfq/se1RO2d7wKCOmsqjHO5x4hLNXuitHBXfhJYsNdduA
-	 6v5lfqbLkyCb31oVZr7l936XUXZFQPYlBPDvexlsHpOTzeKtsQLxnF4Kkrk4MAG59x
-	 u90ynnHr5nQDPeqo9bKNGmReO9cYIL4W9vJLGlPu55BmQA9b9RtCqtrSfA2L2sKG1i
-	 7di11AS03a/4c7oIoqgbtr3+0B6RsQkgo98fRmItwkJTUgFvt7NlGV8u1366zKLZqr
-	 sjfDAjQv4J0SA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rCdG5-0005bi-0v;
-	Mon, 11 Dec 2023 11:11:29 +0100
-Date: Mon, 11 Dec 2023 11:11:29 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Rob Clark <robdclark@gmail.com>
-Cc: iommu@lists.linux-foundation.org, freedreno@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org, Robin Murphy <robin.murphy@arm.com>,
-	Rob Clark <robdclark@chromium.org>, stable@vger.kernel.org,
-	Will Deacon <will@kernel.org>, Joerg Roedel <joro@8bytes.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	"moderated list:ARM SMMU DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	"open list:IOMMU SUBSYSTEM" <iommu@lists.linux.dev>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iommu/arm-smmu-qcom: Add missing GMU entry to match
- table
-Message-ID: <ZXbgUeuf0-dYBOYV@hovoldconsulting.com>
-References: <20231210180655.75542-1-robdclark@gmail.com>
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E2D4AB;
+	Mon, 11 Dec 2023 02:14:06 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0D8391C000B;
+	Mon, 11 Dec 2023 10:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1702289644;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/o70oBtKb5Wyazm8QmMIsorrOqXJhESQkmX0r/S8Af4=;
+	b=i1WiFIiq/y7viUcRW6JERDRaLQt1UT5USMBxIeZ4O94cyU1sjE3wSvmyJDpZYp59pvw2wN
+	0ySx/AqLbRaMXIVIGVtLTF//HI9cjKyrnSm8fGxYtsVurfYnLQ3gvqJ7usIIWUvjU3l2k3
+	KWLIOAJAdy7bT7Jlx7knphrzovwQdL7LXdL+GaGSNQL/10zSwkbyB/cX9l65bCxO7AeRar
+	zMyYoS5g/Z0+MLy7fkUFLvi6kq3XUnCdHgMsGaub/SPDbBnsj3r7MMGnSNyB4gNuKWqItm
+	tft3M6UZmvdC7Es+lEE/lRdD5ZyPyckL1juMuCULaSQlawUlT6qEPhVKOHSpqw==
+Message-ID: <1ca05280-a03c-66c0-cd67-87c58c8f3929@gtucker.io>
+Date: Mon, 11 Dec 2023 11:14:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231210180655.75542-1-robdclark@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: stable/LTS test report from KernelCI (2023-12-08)
+Content-Language: en-GB
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Gustavo Padovan <gustavo.padovan@collabora.com>
+Cc: stable@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Shreeya Patel <shreeya.patel@collabora.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+References: <738c6c87-527e-a1c2-671f-eed6a1dbaef3@collabora.com>
+ <2023120846-taste-saga-c4a9@gregkh>
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <2023120846-taste-saga-c4a9@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: gtucker@gtucker.io
 
-On Sun, Dec 10, 2023 at 10:06:53AM -0800, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
+On 08/12/2023 16:58, Greg KH wrote:
+> On Fri, Dec 08, 2023 at 12:29:35PM -0300, Gustavo Padovan wrote:
+>> Hello,
+>>
+>> As discussed with Greg at LPC, we are starting an iterative process to
+>> deliver meaningful stable test reports from KernelCI. As Greg pointed out,
+>> he doesn't look at the current reports sent automatically from KernelCI.
+>> Those are not clean enough to help the stable release process, so we
+>> discussed starting over again.
+>>
+>> This reporting process is a learning exercise, growing over time. We are
+>> starting small with data we can verify manually (at first) to make sure we
+>> are not introducing noise or reporting flakes and false-positives. The
+>> feedback loop will teach us how to filter the results and report with
+>> incremental automation of the steps.
+>>
+>> Today we are starting with build and boot tests (for the hardware platforms
+>> in KernelCI with sustained availability over time). Then, at every iteration
+>> we try to improve it, increasing the coverage and data visualization.
+>> Feedback is really important. Eventually, we will also have this report
+>> implemented in the upcoming KernelCI Web Dashboard.
+>>
+>> This work is a contribution from Collabora(on behalf of its clients) to
+>> improve the Kernel Integration as whole. Moving forward, Shreeya Patel, from
+>> the Collabora team will be taking on the responsibilities of delivering
+>> these reports.
+>>
+>> Without further ado, here's our first report:
+>>
+>>
+>> ## stable-rc HEADs:
+>>
+>> Date: 2023-12-08
+>> 6.1: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=45deeed0dade29f16e1949365688ea591c20cf2c
+>> 5:15: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=e5a5d1af708eced93db167ad55998166e9d893e1
+>> 5.10: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=ce575ec88a51a60900cd0995928711df8258820a
+>> 5:4: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/log/?h=f47279cbca2ca9f2bbe1178634053024fd9faff3
+>>
+>> * 6.6 stable-rc was not added in KernelCI yet, but we plan to add it next
+>> week.
+>>
+>>
+>> ## Build failures:
+>>
+>> No build failures seen for the stable-rc/queue commit heads for
+>> 6.1/5.15/5.10/5.4  \o/
+>>
+>>
+>> ## Boot failures:
+>>
+>> No **new** boot failures seen for the stable-rc/queue commit heads for
+>> 6.1/5.15/5.10/5.4  \o/
+>>
+>> (for the time being we are leaving existing failures behind)
+>>
+>>
+>> ## Considerations
+>>
+>> All this data is available in the legacy KernelCI Web Dashboard -
+>> https://linux.kernelci.org/ - but not easily filtered there. The data in
+>> this report was checked manually. As we evolve this report, we want to add
+>> traceability of the information, making it really easy for anyone to dig
+>> deeper for more info, logs, etc.
+>>
+>> The report covers  the hardware platforms in KernelCI with sustained
+>> availability over time - we will detail this further in future reports.
+>>
+>> We opted to make the report really simple as you can see above. It is just
+>> an initial spark. From here your feedback will drive the process. So really
+>> really tell us what you want to see next. We want FEEDBACK!
 > 
-> In some cases the firmware expects cbndx 1 to be assigned to the GMU,
-> so we also want the default domain for the GMU to be an identy domain.
-> This way it does not get a context bank assigned.  Without this, both
-> of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
-> allocating and configuring a context bank.  So GMU ends up attached to
-> both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
-> and surprises the firmware if the GPU later triggers a translation
-> fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
-> getting wedged and the GPU stuck without memory access.
+> Looks great!
 > 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> A few notes, it can be a bit more verbose if you want :)
+> 
+> One email per -rc release (i.e. one per branch) is fine, and that way if
+> you add a:
+> 	Tested-by: kernelci-bot <email goes here>
+> or something like that, to the email, my systems will pick it up and it
+> will get added to the final commit message.
+> 
+> But other than that, hey, I'll take the above, it's better than what was
+> there before!
+> 
+> How about if something breaks, what will it look like?  That's where it
+> gets more "interesting" :)
 
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Brings back some memories, 5.10.20-rc2 :)
+
+  https://lore.kernel.org/stable/32a6c609-642c-71cf-0a84-d5e8ccd104b1@collabora.com/
+
+I see some people are working in my footsteps now, it'll be
+interesting to see if they reach the same conclusions about how
+to automate these emails and track regressions.  I guess it's
+hard to convince others that the solutions we now know we need to
+put in place are going to solve this, so everyone has to do the
+journey themselves.  Maybe that's part of upstream development,
+not always removing duplication of efforts.
+
+
+Here's some feedback in general:
+
+* Showing what is passing is mostly noise
+
+As Greg pointed out, what's important is the things that are
+broken (so new regressions).  For stable, I think we also
+established that it was good to keep a record of all the things
+that were tested and passed, but it's not too relevant when
+gating releases.  See the other manual emails sent by Shuah,
+Guenter and some Linaro folks for example.
+
+* Replying to the stable review
+
+This email is a detached thread, I know it's a draft and just a
+way to discuss things, but obviously a real report would need to
+be sent as a reply to the patch review thread using stable-rc.
+
+On a related topic, it was once mentioned that since stable
+releases occur once a week and they are used as the basis for
+many distros and products, it would make sense to have
+long-running tests after the release has been declared.  So we
+could have say, 48h of testing with extended coverage from LTP,
+fstests, benchmarks etc.  That would be a reply to the email with
+the release tag, not the patch review.
+
+For the record, a few years ago, KernelCI used to reply to the
+review threads on the list.  Unfortunately this broke at some
+point, mostly because the legacy system is too bloated and hard
+to maintain, and now it's waiting to be enabled again with the
+new API.  Here's one example, 4.4-202 in 2019 a bit before it
+stopped:
+
+  https://lore.kernel.org/stable/5dce97f3.1c69fb81.6633c.685c@mx.google.com/
+
+* Automation
+
+And also obviously, doing this by hand isn't really practical.
+It's OK for a maintainer looking just at a small amount of
+results, but for KernelCI it would take maybe 2h per stable
+release candidate for a dedicated person to look at all the
+regressions etc.  So discussing the format and type of content is
+more relevant at this stage I think, while the automated data
+harvesting part gets implemented in the background.  And of
+course, we need the new API in production for this to be actually
+enabled - so still a few months away from now.
+
+I've mentioned before the concept of finding "2nd derivatives" in
+the rest results, basically the first delta gives you all the
+regressions and then you do a delta of the regressions to find
+the new ones.  Maintainer trees would be typically comparing
+against mainline or say, the -rc2 tag where they based their
+branch.  In the case of stable, it would be between the stable-rc
+branch being tested and the base stable branch with the last
+tagged release.
+
+
+But hey, I'm not a stable maintainer :) This is merely a summary
+of what I recall from the past few years of discussions and what
+I believe to be the current consensus on what people wanted to do
+next.
+
+One last thing, I see there's a change in KernelCI now to
+actually stop sending the current (suboptimal) automated reports
+to the stable mailing list:
+
+  https://github.com/kernelci/kernelci-jenkins/pull/136
+
+Is this actually what people here want?  I would argue that we
+need the new reports first before deliberately stopping the old
+ones.  Maybe I missed something, it just felt a bit arbitrary.
+Some folks might actually be reading these emails, if we wanted
+to stop them we probably should first send a warning about when
+they'll stop etc.  Anyway, I'll go back under my rock for now :)
+
+Cheers,
+Guillaume
+
 
