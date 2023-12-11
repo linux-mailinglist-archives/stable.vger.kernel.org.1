@@ -1,188 +1,114 @@
-Return-Path: <stable+bounces-5520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEBEC80D3C6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 601FD80D431
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AA061F21A33
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D221F21A34
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9744E1BE;
-	Mon, 11 Dec 2023 17:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0684E633;
+	Mon, 11 Dec 2023 17:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beims.me header.i=@beims.me header.b="OTy/ybro";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aW7GQS63"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xMk5Kx40"
 X-Original-To: stable@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64BA2BD;
-	Mon, 11 Dec 2023 09:29:41 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id AF1DF5C0479;
-	Mon, 11 Dec 2023 12:29:40 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute3.internal (MEProxy); Mon, 11 Dec 2023 12:29:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-	1702315780; x=1702402180; bh=2y/zHAmItwL8OLyqtKwhwW8HQM0dfoFeDOX
-	CuDtL5jY=; b=OTy/ybrowVGxYNSZ70/OkClauC+SwRDhCo8BO4hk+NyNTIrx/XN
-	a4cJrAGjP77eoBbANUDFWJeuNJJh1RBstFJPeZnhn/jistJnLzYRR2phXvciHCdP
-	NDSj+w/xzAiPgD8z8bnuxNJTdNFt4BfEzVx3j8grxyREit31bs+oK2WjcBThviMo
-	bPa5ZrJLnTmtHrCUC0nk3lD1a5DgwSIL5YniAtKwdPNcr8TBGbrofcPFZWidQqQ9
-	0o9geG3C7DQbO3iiNHvtYEcPhxSuGBvXU6uiVhC7k6/MTuJFYbchkTuRtAsOYvTZ
-	zXMBqio4Y4bK1aF4yy+7PVTa87iCmni8tCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1702315780; x=1702402180; bh=2y/zHAmItwL8OLyqtKwhwW8HQM0dfoFeDOX
-	CuDtL5jY=; b=aW7GQS63pqc7e/4BtbcB22dDq97GhrFPOrjWKm8kkeQQ8Dsjb9Z
-	dDv54llNtBaH8+Y6hepyWtJplOmYWI6NpdTUf1HtOx3lDfwJBvKLH3zVakMiX2R5
-	wzoVLZ4bhLrRh9pyvwubUE0MAqp6/BYVaw7abRIHaSvsDA5fqqmia17OUomjO97m
-	sPxU7ERZgTopnJq2MWDQDmYrntW5FXFh0KmhssyjsPE0lNIHQYmTjbMh1CUwGMqx
-	Mwe8Uq/R7F79lQj86O1m13PVNrUiq+KoA+XFxMCIFxT3XgqI682BghGbFZvRNTwg
-	Yr3s4G5SZWjISNw8tFapABzPOEvT6GvcHdw==
-X-ME-Sender: <xms:BEd3ZUMQTPZ2da4hDrVlkxvxQFPyw2Dge-P5hZsGneUGa0GBRLZsFA>
-    <xme:BEd3Za86uZSJQVJJZ0EC_54-JfUwzP116nVeL5lMMEkVRd72Axon2xeQTTC1K2QFf
-    Zusi-OfrANu5jjFDXo>
-X-ME-Received: <xmr:BEd3ZbSOS5D8wmxQALbCwHvjZtL_sAnWiDD7tsNhgj1ng0nxqJCY0lPqNfWP3G5v5vg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudelvddguddtgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecunecujfgurhepkfffgggfuffvvehfhfgjtgfgse
-    htjeertddtvdejnecuhfhrohhmpeftrghfrggvlhcuuegvihhmshcuoehrrghfrggvlhes
-    sggvihhmshdrmhgvqeenucggtffrrghtthgvrhhnpeejieejvdelgeduveejgeeltdevie
-    efteejleeiieejgeeihfelleehtdegudeiieenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpehrrghfrggvlhessggvihhmshdrmhgv
-X-ME-Proxy: <xmx:BEd3ZcvmND0bEMb1C4YAq47zEc1SibJ4GyCYhO_DrfzT4HoyJvdWlw>
-    <xmx:BEd3ZcdqSKALFBAAyvvLvZahTdFS8pxK1LGofwQBuudXC3pl4iBCrw>
-    <xmx:BEd3ZQ3dHtG3FK8-SYkxS08MK435LNxImOBqekxXPVq12y00Apqm7Q>
-    <xmx:BEd3ZUQMOkvygvf1pKi6qk7E8IxYOqD4ZIRamIgjxHUJrgMq7_rtCQ>
-Feedback-ID: idc214666:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 11 Dec 2023 12:29:38 -0500 (EST)
-Message-ID: <1c7f8394-f81d-42d5-948b-b1855ad013d5@beims.me>
-Date: Mon, 11 Dec 2023 14:29:37 -0300
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700C1EA
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:39:38 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-db3fa47c2f7so4961927276.0
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:39:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702316377; x=1702921177; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jm/U5iX89/NkKIBpHMc6e7m4WD1ivJqJGvRe8VbK7nY=;
+        b=xMk5Kx40uxnogy9AW7ZGbyel1segDScwJiW1q/8+184jID9Hc+mGeFtmnwtQ1IpDQz
+         SYMeM/SdNzq99X/NS5fiqnSNzlPmTiOBnRFr+5oxsAhYf0KDA3+C07qcUQYZVF+r3tva
+         EmhGlI7m8AqvI/C+gjP0wOVkLwWID8pJvqIaleVOUApl0zU//TRSkmH9L0NnJpehbblD
+         4skez4shaR3btqb0eaTCUlaeKrMKB0klyYKtTlSA3NRhN7iozRnw41Iydt50YZUNZG/z
+         Ycyf639054gAT8I4DG65lehK/OnZyjcjiUYeLgrnN1Rn0N6wq14k9zKAR8fXKNzRY32R
+         1Kvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702316377; x=1702921177;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jm/U5iX89/NkKIBpHMc6e7m4WD1ivJqJGvRe8VbK7nY=;
+        b=KIrF5KROHFfsg86TWTAplEdaJu21B9rrkQqFwPspsYsuYQmnQz0b2iGsmVz22KTuzY
+         0gBHtC0dMyabX2W7BtITC148q9+uRIFzo24/tap1T1ETqUqtzSEDFcNO/siUWzRm8m0Z
+         89s0ZkKuQ3SWmiolA6FwTmEDZLcVlr9mF8r9sDTI5a8xAPiBrxBOHoOQrqkYTXu133SZ
+         oOEMXvVLOawvZVrhJe59e7sxbyEe5ZrFHymhMqtaqD8T99syWR0qD3db2dF17ZG3q5Bw
+         7kjXQll1rPTjWiuBdWxcDt3DfzY7+7eUxB7SG5dFerpMP8Oro83f7VANo0ETq0OhPNoo
+         vUhw==
+X-Gm-Message-State: AOJu0YxAHPZgxYTTtQ7MWRflbHa7U9Sli8Z+MUicsu9BdBvuaiLXIdg7
+	c3Z+c+3G/PcAGGJ+/Y7q83Y4KUrPTb3wA5ry9U1B663x6fY91l6X2rH/Tw==
+X-Google-Smtp-Source: AGHT+IFP/Y5PRlU1eXMLK1DEPHD4ZlTXHmj1o1ZRYUX5WxIJwcx84DGmQIVNKNxHrRJGzAv/k5G2es+ZoybkpQPW+kc=
+X-Received: by 2002:a05:6902:1a44:b0:db9:8c22:a455 with SMTP id
+ cy4-20020a0569021a4400b00db98c22a455mr3582817ybb.11.1702316377187; Mon, 11
+ Dec 2023 09:39:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
-Content-Language: pt-BR
-To: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org, kvalo@kernel.org,
- francesco@dolcini.it, tsung-hsien.hsieh@nxp.com, stable@vger.kernel.org
-References: <20231208234127.2251-1-yu-hao.lin@nxp.com>
-From: Rafael Beims <rafael@beims.me>
-In-Reply-To: <20231208234127.2251-1-yu-hao.lin@nxp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
+In-Reply-To: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Mon, 11 Dec 2023 19:39:25 +0200
+Message-ID: <CAA8EJppQNnLhH2XNg1qSTuY9uvChLU2rWy3Ep97yq8yLgwAJYg@mail.gmail.com>
+Subject: Re: [PATCH] ARM: dts: qcom-sdx55: Fix the base address of PCIe PHY
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: andersson@kernel.org, konrad.dybcio@linaro.org, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 08/12/2023 20:41, David Lin wrote:
-> AP BSSID configuration is missing at AP start.
-> Without this fix, FW returns STA interface MAC address after first init.
-> When hostapd restarts, it gets MAC address from netdev before driver
-> sets STA MAC to netdev again. Now MAC address between hostapd and net
-> interface are different causes STA cannot connect to AP.
-> After that MAC address of uap0 mlan0 become the same. And issue
-> disappears after following hostapd restart (another issue is AP/STA MAC
-> address become the same).
-> This patch fixes the issue cleanly.
+On Mon, 11 Dec 2023 at 19:24, Manivannan Sadhasivam
+<manivannan.sadhasivam@linaro.org> wrote:
 >
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
-> Cc: stable@vger.kernel.org
+> While convering the binding to new format, serdes address specified in the
+> old binding was used as the base address. This causes a boot hang as the
+> driver tries to access memory region outside of the specified address. Fix
+> it!
 >
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: stable@vger.kernel.org # 6.6
+> Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
 > ---
+>  arch/arm/boot/dts/qcom/qcom-sdx55.dtsi | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> v2:
->     - v1 was a not finished patch that was send to the LKML by mistake
-> ---
->   drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
->   drivers/net/wireless/marvell/mwifiex/fw.h       | 1 +
->   drivers/net/wireless/marvell/mwifiex/ioctl.h    | 1 +
->   drivers/net/wireless/marvell/mwifiex/uap_cmd.c  | 8 ++++++++
->   4 files changed, 12 insertions(+)
+> diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+> index 2aa5089a8513..a88f186fcf03 100644
+> --- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+> +++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+> @@ -436,9 +436,9 @@ pcie_ep: pcie-ep@1c00000 {
+>                         status = "disabled";
+>                 };
 >
-> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> index 7a15ea8072e6..3604abcbcff9 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> @@ -2047,6 +2047,8 @@ static int mwifiex_cfg80211_start_ap(struct wiphy *wiphy,
->   
->   	mwifiex_set_sys_config_invalid_data(bss_cfg);
->   
-> +	memcpy(bss_cfg->mac_addr, priv->curr_addr, ETH_ALEN);
-> +
->   	if (params->beacon_interval)
->   		bss_cfg->beacon_period = params->beacon_interval;
->   	if (params->dtim_period)
-> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> index 8e6db904e5b2..62f3c9a52a1d 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-> @@ -165,6 +165,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
->   #define TLV_TYPE_STA_MAC_ADDR       (PROPRIETARY_TLV_BASE_ID + 32)
->   #define TLV_TYPE_BSSID              (PROPRIETARY_TLV_BASE_ID + 35)
->   #define TLV_TYPE_CHANNELBANDLIST    (PROPRIETARY_TLV_BASE_ID + 42)
-> +#define TLV_TYPE_UAP_MAC_ADDRESS    (PROPRIETARY_TLV_BASE_ID + 43)
->   #define TLV_TYPE_UAP_BEACON_PERIOD  (PROPRIETARY_TLV_BASE_ID + 44)
->   #define TLV_TYPE_UAP_DTIM_PERIOD    (PROPRIETARY_TLV_BASE_ID + 45)
->   #define TLV_TYPE_UAP_BCAST_SSID     (PROPRIETARY_TLV_BASE_ID + 48)
-> diff --git a/drivers/net/wireless/marvell/mwifiex/ioctl.h b/drivers/net/wireless/marvell/mwifiex/ioctl.h
-> index 091e7ca79376..e8825f302de8 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
-> @@ -107,6 +107,7 @@ struct mwifiex_uap_bss_param {
->   	u8 qos_info;
->   	u8 power_constraint;
->   	struct mwifiex_types_wmm_info wmm_info;
-> +	u8 mac_addr[ETH_ALEN];
->   };
->   
->   enum {
-> diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> index e78a201cd150..491e36611909 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> @@ -468,6 +468,7 @@ void mwifiex_config_uap_11d(struct mwifiex_private *priv,
->   static int
->   mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
->   {
-> +	struct host_cmd_tlv_mac_addr *mac_tlv;
->   	struct host_cmd_tlv_dtim_period *dtim_period;
->   	struct host_cmd_tlv_beacon_period *beacon_period;
->   	struct host_cmd_tlv_ssid *ssid;
-> @@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
->   	int i;
->   	u16 cmd_size = *param_size;
->   
-> +	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
-> +	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
-> +	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
-> +	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
-> +	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
-> +	tlv += sizeof(struct host_cmd_tlv_mac_addr);
-> +
->   	if (bss_cfg->ssid.ssid_len) {
->   		ssid = (struct host_cmd_tlv_ssid *)tlv;
->   		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
+> -               pcie_phy: phy@1c07000 {
+> +               pcie_phy: phy@1c06000 {
+>                         compatible = "qcom,sdx55-qmp-pcie-phy";
+> -                       reg = <0x01c07000 0x2000>;
+> +                       reg = <0x01c06000 0x2000>;
+>                         #address-cells = <1>;
+>                         #size-cells = <1>;
+>                         ranges;
+> --
+> 2.25.1
 >
-> base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
 
 
-Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP / 
-SD8997 SD
-
-
-Rafael
-
+-- 
+With best wishes
+Dmitry
 
