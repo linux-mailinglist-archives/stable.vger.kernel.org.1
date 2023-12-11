@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58E9E80D56D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D8280D780
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA8A1C214D8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E9A1C215C7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2042951029;
-	Mon, 11 Dec 2023 18:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8930A5381A;
+	Mon, 11 Dec 2023 18:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnPdfixB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwV+gfYH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14D74F213;
-	Mon, 11 Dec 2023 18:24:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC6BC433C8;
-	Mon, 11 Dec 2023 18:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DDC52F8D;
+	Mon, 11 Dec 2023 18:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A77C433C8;
+	Mon, 11 Dec 2023 18:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319069;
-	bh=5tuNGEUGwKMsG8l4WxgV6/kqCSjNP35Xd1Lp6ZAIgKM=;
+	s=korg; t=1702319854;
+	bh=d4Lvv56iLZdiIowy/Z7kCwUlcqMXD6zDmo7bfNxy1HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnPdfixBROG9f8R5ieAKbV74X+CL1DWdvjiuTNBZ6iuwI79i10AyudUBbB4hmQDN9
-	 mMmN3tUgqjIt4ROYZLzltZwPOd7f10h8/2tqqV2D4zuV0dbczfK13uuQBrdKJYHXax
-	 InwaE33tB07D2wVRm7kfCgx6KZPmJz4kzHqU4GqA=
+	b=BwV+gfYHrQ52/MVmgagzDrrdRW239M2ChwNLfFDQNQIoNu+v1UEWgcj9wrkzFtMMr
+	 luHTga7UYlKYRDj8tBil1hj7b828mAFue8QUimnEt9CdsloH8wiEzVBtMgvjCQd7Rh
+	 WL20MwviXh/qvc13JkAPMGFQo60lUg5Oa9dEa0w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Omar Sandoval <osandov@fb.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/55] block: introduce multi-page bvec helpers
+Subject: [PATCH 5.10 13/97] platform/x86: asus-wmi: Add support for ROG X13 tablet mode
 Date: Mon, 11 Dec 2023 19:21:16 +0100
-Message-ID: <20231211182012.465741504@linuxfoundation.org>
+Message-ID: <20231211182020.384536228@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,119 +53,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 3d75ca0adef4280650c6690a0c4702a74a6f3c95 ]
+[ Upstream commit e397c3c460bf3849384f2f55516d1887617cfca9 ]
 
-This patch introduces helpers of 'mp_bvec_iter_*' for multi-page bvec
-support.
+Add quirk for ASUS ROG X13 Flow 2-in-1 to enable tablet mode with
+lid flip (all screen rotations).
 
-The introduced helpers treate one bvec as real multi-page segment,
-which may include more than one pages.
-
-The existed helpers of bvec_iter_* are interfaces for supporting current
-bvec iterator which is thought as single-page by drivers, fs, dm and
-etc. These introduced helpers will build single-page bvec in flight, so
-this way won't break current bio/bvec users, which needn't any change.
-
-Follows some multi-page bvec background:
-
-- bvecs stored in bio->bi_io_vec is always multi-page style
-
-- bvec(struct bio_vec) represents one physically contiguous I/O
-  buffer, now the buffer may include more than one page after
-  multi-page bvec is supported, and all these pages represented
-  by one bvec is physically contiguous. Before multi-page bvec
-  support, at most one page is included in one bvec, we call it
-  single-page bvec.
-
-- .bv_page of the bvec points to the 1st page in the multi-page bvec
-
-- .bv_offset of the bvec is the offset of the buffer in the bvec
-
-The effect on the current drivers/filesystem/dm/bcache/...:
-
-- almost everyone supposes that one bvec only includes one single
-  page, so we keep the sp interface not changed, for example,
-  bio_for_each_segment() still returns single-page bvec
-
-- bio_for_each_segment_all() will return single-page bvec too
-
-- during iterating, iterator variable(struct bvec_iter) is always
-  updated in multi-page bvec style, and bvec_iter_advance() is kept
-  not changed
-
-- returned(copied) single-page bvec is built in flight by bvec
-  helpers from the stored multi-page bvec
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20220813092753.6635-2-luke@ljones.dev
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bvec.h | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c         | 15 +++++++++
+ drivers/platform/x86/asus-wmi.c            | 37 ++++++++++++++++++++++
+ drivers/platform/x86/asus-wmi.h            |  1 +
+ include/linux/platform_data/x86/asus-wmi.h |  1 +
+ 4 files changed, 54 insertions(+)
 
-diff --git a/include/linux/bvec.h b/include/linux/bvec.h
-index bc1f16e9f3f4d..cd43c03e31129 100644
---- a/include/linux/bvec.h
-+++ b/include/linux/bvec.h
-@@ -23,6 +23,7 @@
- #include <linux/kernel.h>
- #include <linux/bug.h>
- #include <linux/errno.h>
-+#include <linux/mm.h>
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index f723af0106a1f..2857678efa2eb 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -123,6 +123,11 @@ static struct quirk_entry quirk_asus_use_lid_flip_devid = {
+ 	.tablet_switch_mode = asus_wmi_lid_flip_devid,
+ };
  
- /*
-  * was unsigned short, but we might as well be ready for > 64kB I/O pages
-@@ -52,16 +53,39 @@ struct bvec_iter {
-  */
- #define __bvec_iter_bvec(bvec, iter)	(&(bvec)[(iter).bi_idx])
++static struct quirk_entry quirk_asus_tablet_mode = {
++	.wmi_backlight_set_devstate = true,
++	.tablet_switch_mode = asus_wmi_lid_flip_rog_devid,
++};
++
+ static int dmi_matched(const struct dmi_system_id *dmi)
+ {
+ 	pr_info("Identified laptop model '%s'\n", dmi->ident);
+@@ -471,6 +476,15 @@ static const struct dmi_system_id asus_quirks[] = {
+ 		},
+ 		.driver_data = &quirk_asus_use_lid_flip_devid,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "ASUS ROG FLOW X13",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "GV301Q"),
++		},
++		.driver_data = &quirk_asus_tablet_mode,
++	},
+ 	{},
+ };
  
--#define bvec_iter_page(bvec, iter)				\
-+/* multi-page (mp_bvec) helpers */
-+#define mp_bvec_iter_page(bvec, iter)				\
- 	(__bvec_iter_bvec((bvec), (iter))->bv_page)
+@@ -581,6 +595,7 @@ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, 0xC5, { KEY_KBDILLUMDOWN } },
+ 	{ KE_IGNORE, 0xC6, },  /* Ambient Light Sensor notification */
+ 	{ KE_KEY, 0xFA, { KEY_PROG2 } },           /* Lid flip action */
++	{ KE_KEY, 0xBD, { KEY_PROG2 } },           /* Lid flip action on ROG xflow laptops */
+ 	{ KE_END, 0},
+ };
  
--#define bvec_iter_len(bvec, iter)				\
-+#define mp_bvec_iter_len(bvec, iter)				\
- 	min((iter).bi_size,					\
- 	    __bvec_iter_bvec((bvec), (iter))->bv_len - (iter).bi_bvec_done)
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 80a442a392cb2..31f5e4df43910 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -64,6 +64,7 @@ MODULE_LICENSE("GPL");
+ #define NOTIFY_KBD_FBM			0x99
+ #define NOTIFY_KBD_TTP			0xae
+ #define NOTIFY_LID_FLIP			0xfa
++#define NOTIFY_LID_FLIP_ROG		0xbd
  
--#define bvec_iter_offset(bvec, iter)				\
-+#define mp_bvec_iter_offset(bvec, iter)				\
- 	(__bvec_iter_bvec((bvec), (iter))->bv_offset + (iter).bi_bvec_done)
+ #define ASUS_WMI_FNLOCK_BIOS_DISABLED	BIT(0)
  
-+#define mp_bvec_iter_page_idx(bvec, iter)			\
-+	(mp_bvec_iter_offset((bvec), (iter)) / PAGE_SIZE)
+@@ -397,6 +398,19 @@ static int asus_wmi_input_init(struct asus_wmi *asus)
+ 			dev_err(dev, "Error checking for lid-flip: %d\n", result);
+ 		}
+ 		break;
++	case asus_wmi_lid_flip_rog_devid:
++		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP_ROG);
++		if (result < 0)
++			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
++		if (result >= 0) {
++			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
++			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
++		} else if (result == -ENODEV) {
++			dev_err(dev, "This device has lid-flip-rog quirk but got ENODEV checking it. This is a bug.");
++		} else {
++			dev_err(dev, "Error checking for lid-flip: %d\n", result);
++		}
++		break;
+ 	}
+ 
+ 	err = input_register_device(asus->inputdev);
+@@ -431,6 +445,17 @@ static void lid_flip_tablet_mode_get_state(struct asus_wmi *asus)
+ 	}
+ }
+ 
++static void lid_flip_rog_tablet_mode_get_state(struct asus_wmi *asus)
++{
++	int result;
 +
-+#define mp_bvec_iter_bvec(bvec, iter)				\
-+((struct bio_vec) {						\
-+	.bv_page	= mp_bvec_iter_page((bvec), (iter)),	\
-+	.bv_len		= mp_bvec_iter_len((bvec), (iter)),	\
-+	.bv_offset	= mp_bvec_iter_offset((bvec), (iter)),	\
-+})
++	result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP_ROG);
++	if (result >= 0) {
++		input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
++		input_sync(asus->inputdev);
++	}
++}
 +
-+/* For building single-page bvec in flight */
-+ #define bvec_iter_offset(bvec, iter)				\
-+	(mp_bvec_iter_offset((bvec), (iter)) % PAGE_SIZE)
+ /* dGPU ********************************************************************/
+ static int dgpu_disable_check_present(struct asus_wmi *asus)
+ {
+@@ -2261,6 +2286,12 @@ static void asus_wmi_handle_event_code(int code, struct asus_wmi *asus)
+ 		return;
+ 	}
+ 
++	if (asus->driver->quirks->tablet_switch_mode == asus_wmi_lid_flip_rog_devid &&
++	    code == NOTIFY_LID_FLIP_ROG) {
++		lid_flip_rog_tablet_mode_get_state(asus);
++		return;
++	}
 +
-+#define bvec_iter_len(bvec, iter)				\
-+	min_t(unsigned, mp_bvec_iter_len((bvec), (iter)),		\
-+	      PAGE_SIZE - bvec_iter_offset((bvec), (iter)))
-+
-+#define bvec_iter_page(bvec, iter)				\
-+	nth_page(mp_bvec_iter_page((bvec), (iter)),		\
-+		 mp_bvec_iter_page_idx((bvec), (iter)))
-+
- #define bvec_iter_bvec(bvec, iter)				\
- ((struct bio_vec) {						\
- 	.bv_page	= bvec_iter_page((bvec), (iter)),	\
+ 	if (asus->fan_boost_mode_available && code == NOTIFY_KBD_FBM) {
+ 		fan_boost_mode_switch_next(asus);
+ 		return;
+@@ -2868,6 +2899,9 @@ static int asus_hotk_resume(struct device *device)
+ 	case asus_wmi_lid_flip_devid:
+ 		lid_flip_tablet_mode_get_state(asus);
+ 		break;
++	case asus_wmi_lid_flip_rog_devid:
++		lid_flip_rog_tablet_mode_get_state(asus);
++		break;
+ 	}
+ 
+ 	return 0;
+@@ -2916,6 +2950,9 @@ static int asus_hotk_restore(struct device *device)
+ 	case asus_wmi_lid_flip_devid:
+ 		lid_flip_tablet_mode_get_state(asus);
+ 		break;
++	case asus_wmi_lid_flip_rog_devid:
++		lid_flip_rog_tablet_mode_get_state(asus);
++		break;
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/platform/x86/asus-wmi.h b/drivers/platform/x86/asus-wmi.h
+index f0302a51c5196..b817a312f2e1a 100644
+--- a/drivers/platform/x86/asus-wmi.h
++++ b/drivers/platform/x86/asus-wmi.h
+@@ -29,6 +29,7 @@ enum asus_wmi_tablet_switch_mode {
+ 	asus_wmi_no_tablet_switch,
+ 	asus_wmi_kbd_dock_devid,
+ 	asus_wmi_lid_flip_devid,
++	asus_wmi_lid_flip_rog_devid,
+ };
+ 
+ struct quirk_entry {
+diff --git a/include/linux/platform_data/x86/asus-wmi.h b/include/linux/platform_data/x86/asus-wmi.h
+index 7d8d3e9c45d62..60cad2aac5c1c 100644
+--- a/include/linux/platform_data/x86/asus-wmi.h
++++ b/include/linux/platform_data/x86/asus-wmi.h
+@@ -63,6 +63,7 @@
+ /* Misc */
+ #define ASUS_WMI_DEVID_CAMERA		0x00060013
+ #define ASUS_WMI_DEVID_LID_FLIP		0x00060062
++#define ASUS_WMI_DEVID_LID_FLIP_ROG	0x00060077
+ 
+ /* Storage */
+ #define ASUS_WMI_DEVID_CARDREADER	0x00080013
 -- 
 2.42.0
 
