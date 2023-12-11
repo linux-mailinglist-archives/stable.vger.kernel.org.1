@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FD480D88C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3702980D617
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412E22816F0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E632C2820E9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBCA51038;
-	Mon, 11 Dec 2023 18:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75334FBE0;
+	Mon, 11 Dec 2023 18:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NiS0wlOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5TVULot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FDC8C8;
-	Mon, 11 Dec 2023 18:46:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54401C433C7;
-	Mon, 11 Dec 2023 18:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC85FBE1;
+	Mon, 11 Dec 2023 18:31:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A82C433C7;
+	Mon, 11 Dec 2023 18:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320406;
-	bh=3N89mJs7hqFsoZFYPkPiXoRXqXiEwki2QrUOMldq9vQ=;
+	s=korg; t=1702319474;
+	bh=75UYJQIGRXmJtrUf7d+nqvraSoBs5yW78KJ0uS/m+wE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NiS0wlOyI298obPegVUMN6/NtwAVKSxuhaNUW5rEsVhD9RHAvW+rcst6Wbae8HuVA
-	 bNC0WmWnhcZ4zROsux6mWypOWqvLC9c2kRUuSx3qaG/CNaulhH9aQowJ8I9DAVS0Bt
-	 igdfX745F23MDqnv3T8vaPv1oY/JNpILpiTI4cyc=
+	b=B5TVULotKq9mrzrP/zPafKN95jZYcaPZBDdynV0XcnZ2y/2BqypQkB+T+C3I5sTQt
+	 NrYPJ62kT8BiucveKH6GtM2YAAwspaZQlpGCqAyc+VD65Nm+wKgF4ai2wW6f3HQw+5
+	 lHxfmx9uKPqBx9UVT6yvG2rU2jEZ/55znEwTw6YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/194] octeontx2-pf: Add missing mutex lock in otx2_get_pauseparam
-Date: Mon, 11 Dec 2023 19:20:11 +0100
-Message-ID: <20231211182037.545366182@linuxfoundation.org>
+Subject: [PATCH 6.6 119/244] arm64: dts: imx8-ss-lsio: Add PWM interrupts
+Date: Mon, 11 Dec 2023 19:20:12 +0100
+Message-ID: <20231211182051.145316201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 9572c949385aa2ef10368287c439bcb7935137c8 ]
+[ Upstream commit 6c32f75d67a8c1ea94295234db7c11a29c189e6f ]
 
-All the mailbox messages sent to AF needs to be guarded
-by mutex lock. Add the missing lock in otx2_get_pauseparam
-function.
+The PWM interrupt is mandatory per imx-pwm.yaml.
 
-Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Add them.
+
+This also fixes the followig schema warning:
+
+imx8qm-apalis-v1.1-ixora-v1.2.dtb: pwm@5d000000: 'oneOf' conditional failed, one must be fixed:
+	'interrupts' is a required property
+	'interrupts-extended' is a required property
+	from schema $id: http://devicetree.org/schemas/pwm/imx-pwm.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: d863a2f4f475 ("arm64: dts: freescale: imx8-ss-lsio: Fix #pwm-cells")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index aaf1af2a402ec..af779ae40d3c2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -323,9 +323,12 @@ static void otx2_get_pauseparam(struct net_device *netdev,
- 	if (is_otx2_lbkvf(pfvf->pdev))
- 		return;
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
+index ea8c93757521b..7b8bbf5e6a867 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
+@@ -37,6 +37,7 @@ lsio_subsys: bus@5d000000 {
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+ 		#pwm-cells = <2>;
++		interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
  
-+	mutex_lock(&pfvf->mbox.lock);
- 	req = otx2_mbox_alloc_msg_cgx_cfg_pause_frm(&pfvf->mbox);
--	if (!req)
-+	if (!req) {
-+		mutex_unlock(&pfvf->mbox.lock);
- 		return;
-+	}
+@@ -49,6 +50,7 @@ lsio_subsys: bus@5d000000 {
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_1 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+ 		#pwm-cells = <2>;
++		interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
  
- 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
- 		rsp = (struct cgx_pause_frm_cfg *)
-@@ -333,6 +336,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
- 		pause->rx_pause = rsp->rx_pause;
- 		pause->tx_pause = rsp->tx_pause;
- 	}
-+	mutex_unlock(&pfvf->mbox.lock);
- }
+@@ -61,6 +63,7 @@ lsio_subsys: bus@5d000000 {
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_2 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+ 		#pwm-cells = <2>;
++		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
  
- static int otx2_set_pauseparam(struct net_device *netdev,
+@@ -73,6 +76,7 @@ lsio_subsys: bus@5d000000 {
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_3 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+ 		#pwm-cells = <2>;
++		interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
+ 
 -- 
 2.42.0
 
