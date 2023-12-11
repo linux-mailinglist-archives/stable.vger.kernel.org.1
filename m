@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B04A80D5F7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 825F780D5F9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38648282361
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:29:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B33DA1C21572
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A005102A;
-	Mon, 11 Dec 2023 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E9251036;
+	Mon, 11 Dec 2023 18:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTA9WkVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YhecB/T7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5425101A;
-	Mon, 11 Dec 2023 18:29:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15024C433C8;
-	Mon, 11 Dec 2023 18:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7F551034;
+	Mon, 11 Dec 2023 18:30:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E984C433C7;
+	Mon, 11 Dec 2023 18:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319397;
-	bh=p76U/kDY3HBkKUJJKZ4LLvOYatRUZ384OdpP/F6Z1Fg=;
+	s=korg; t=1702319402;
+	bh=171GxMAfcgMIZZNtxu3X552Mj8pdprLNMXs9Ep8mAa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTA9WkVG11TVGxssSZ+NVBO6xUWL8OtjRKxfJhUIXTdOlovme65YMgAvT1BSkXWZW
-	 GZ0aUHTu7MEaivohJ0PzVvVCqxf28oPISpjqJB/AqEMRyvVaDF0ekAvsDRnS1DmRYe
-	 owgdt2EC9W2Zp2DAAcVkb9G3Q5ryxRqQC9vO9U7o=
+	b=YhecB/T7Cg7KQi8sM+4otY13fi4oifIGZLw9qifv/x60Ol8ojY7n1GIT6Fhfpa62w
+	 zTRejOzThfo3b+ZxHYAiNcldyos4EM4nccbhnuo0M6gf6IM/ZnTfYwgIoRxt86u7Js
+	 qQR2rhYUE69SARr0/07BG7E53GxAMZ+B+NQz/JaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jack Wang <jinpu.wang@ionos.com>,
 	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Santosh Kumar Pradhan <santosh.pradhan@ionos.com>,
 	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/244] RDMA/rtrs-srv: Destroy path files after making sure no IOs in-flight
-Date: Mon, 11 Dec 2023 19:19:43 +0100
-Message-ID: <20231211182049.821836186@linuxfoundation.org>
+Subject: [PATCH 6.6 091/244] RDMA/rtrs-clt: Fix the max_send_wr setting
+Date: Mon, 11 Dec 2023 19:19:44 +0100
+Message-ID: <20231211182049.871115880@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
 References: <20231211182045.784881756@linuxfoundation.org>
@@ -59,55 +59,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit c4d32e77fc1006f99eeb78417efc3d81a384072a ]
+[ Upstream commit 6d09f6f7d7584e099633282ea915988914f86529 ]
 
-Destroying path files may lead to the freeing of rdma_stats. This creates
-the following race.
+For each write request, we need Request, Response Memory Registration,
+Local Invalidate.
 
-An IO is in-flight, or has just passed the session state check in
-process_read/process_write. The close_work gets triggered and the function
-rtrs_srv_close_work() starts and does destroy path which frees the
-rdma_stats. After this the function process_read/process_write resumes and
-tries to update the stats through the function rtrs_srv_update_rdma_stats
-
-This commit solves the problem by moving the destroy path function to a
-later point. This point makes sure any inflights are completed. This is
-done by qp drain, and waiting for all in-flights through ops_id.
-
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Santosh Kumar Pradhan <santosh.pradhan@ionos.com>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@ionos.com>
 Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-6-haris.iqbal@ionos.com
+Link: https://lore.kernel.org/r/20231120154146.920486-7-haris.iqbal@ionos.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 925b71481c628..1d33efb8fb03b 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1532,7 +1532,6 @@ static void rtrs_srv_close_work(struct work_struct *work)
- 
- 	srv_path = container_of(work, typeof(*srv_path), close_work);
- 
--	rtrs_srv_destroy_path_files(srv_path);
- 	rtrs_srv_stop_hb(srv_path);
- 
- 	for (i = 0; i < srv_path->s.con_num; i++) {
-@@ -1552,6 +1551,8 @@ static void rtrs_srv_close_work(struct work_struct *work)
- 	/* Wait for all completion */
- 	wait_for_completion(&srv_path->complete_done);
- 
-+	rtrs_srv_destroy_path_files(srv_path);
-+
- 	/* Notify upper layer if we are the last path */
- 	rtrs_srv_path_down(srv_path);
- 
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index dc482d1872fb8..b020b97dbe679 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1694,7 +1694,7 @@ static int create_con_cq_qp(struct rtrs_clt_con *con)
+ 		clt_path->s.dev_ref++;
+ 		max_send_wr = min_t(int, wr_limit,
+ 			      /* QD * (REQ + RSP + FR REGS or INVS) + drain */
+-			      clt_path->queue_depth * 3 + 1);
++			      clt_path->queue_depth * 4 + 1);
+ 		max_recv_wr = min_t(int, wr_limit,
+ 			      clt_path->queue_depth * 3 + 1);
+ 		max_send_sge = 2;
 -- 
 2.42.0
 
