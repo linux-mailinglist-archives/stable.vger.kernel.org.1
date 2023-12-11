@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-5778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9F180D6DF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AACF80D56B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC4441F21833
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510611F21A39
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFCB537E6;
-	Mon, 11 Dec 2023 18:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22E451031;
+	Mon, 11 Dec 2023 18:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9FLP/NM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmhP+m7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F256FC06;
-	Mon, 11 Dec 2023 18:34:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DC7C433C7;
-	Mon, 11 Dec 2023 18:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80CB74F212;
+	Mon, 11 Dec 2023 18:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE81C433C7;
+	Mon, 11 Dec 2023 18:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319641;
-	bh=fJ/LZws10QQ3EQLl6SpyPqdvdqmuG6hWIQVGvQ9AEns=;
+	s=korg; t=1702319064;
+	bh=rOwahBytvhF6b6xp+jJePUI54CTDjetNxKJLZ+G7ksY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9FLP/NMP8K8VOzgr8hVbBDMKhQLfvDNPNOhtCyUaT9zE7UAHBI7tMDtQJFigthv3
-	 Za54Nka7j2GKF4aeer9Ezu35f3pE7mHLkbTf11MwLxJv0tUukiEeG5rfo0soKzaviQ
-	 2NW0dl9AssjZ2vLCKjPg6O/+0hSdNsO3PXm6yXzQ=
+	b=FmhP+m7F6+GU48u0bvO9i3vigBjKsop4VAiEo2veUp+gQY8PYjb/FYAJHygzOA5EX
+	 /Ul38gPYP5gCYOBJ/amM23foXvVyMKUVoC5rtrU4FIFfBrAEY+0rehFOmYW2p0bmle
+	 zgKjMLZuZUqBa08OxKnW3zmySWQZHOjI4tbhISP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 181/244] arm64: dts: mediatek: cherry: Fix interrupt cells for MT6360 on I2C7
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 04/55] spi: imx: mx51-ecspi: Move some initialisation to prepare_message hook.
 Date: Mon, 11 Dec 2023 19:21:14 +0100
-Message-ID: <20231211182054.055802059@linuxfoundation.org>
+Message-ID: <20231211182012.406582122@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +51,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 5943b8f7449df9881b273db07bdde1e7120dccf0 upstream.
+[ Upstream commit 00b80ac9355397455adec24c9ee76f1b0225cd27 ]
 
-Change interrupt cells to 2 to suppress interrupts_property warning.
+The relevant difference between prepare_message and config is that the
+former is run before the CS signal is asserted. So the polarity of the
+CLK line must be configured in prepare_message as an edge generated by
+config might already result in a latch of the MOSI line.
 
-Cc: stable@vger.kernel.org
-Fixes: 0de0fe950f1b ("arm64: dts: mediatek: cherry: Enable MT6360 sub-pmic on I2C7")
-Link: https://lore.kernel.org/r/20231127132026.165027-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-imx.c | 67 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 27 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8195-cherry.dtsi
-@@ -362,7 +362,7 @@
- 	pinctrl-0 = <&i2c7_pins>;
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 139127e27a147..0078cb365d8c2 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -498,14 +498,9 @@ static void mx51_ecspi_disable(struct spi_imx_data *spi_imx)
+ static int mx51_ecspi_prepare_message(struct spi_imx_data *spi_imx,
+ 				      struct spi_message *msg)
+ {
+-	return 0;
+-}
+-
+-static int mx51_ecspi_config(struct spi_device *spi)
+-{
+-	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
++	struct spi_device *spi = msg->spi;
+ 	u32 ctrl = MX51_ECSPI_CTRL_ENABLE;
+-	u32 clk = spi_imx->speed_hz, delay, reg;
++	u32 testreg;
+ 	u32 cfg = readl(spi_imx->base + MX51_ECSPI_CONFIG);
  
- 	pmic@34 {
--		#interrupt-cells = <1>;
-+		#interrupt-cells = <2>;
- 		compatible = "mediatek,mt6360";
- 		reg = <0x34>;
- 		interrupt-controller;
+ 	/* set Master or Slave mode */
+@@ -520,19 +515,21 @@ static int mx51_ecspi_config(struct spi_device *spi)
+ 	if (spi->mode & SPI_READY)
+ 		ctrl |= MX51_ECSPI_CTRL_DRCTL(spi_imx->spi_drctl);
+ 
+-	/* set clock speed */
+-	ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->speed_hz, &clk);
+-	spi_imx->spi_bus_clk = clk;
+-
+ 	/* set chip select to use */
+ 	ctrl |= MX51_ECSPI_CTRL_CS(spi->chip_select);
+ 
+-	if (spi_imx->slave_mode && is_imx53_ecspi(spi_imx))
+-		ctrl |= (spi_imx->slave_burst * 8 - 1)
+-			<< MX51_ECSPI_CTRL_BL_OFFSET;
++	/*
++	 * The ctrl register must be written first, with the EN bit set other
++	 * registers must not be written to.
++	 */
++	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
++
++	testreg = readl(spi_imx->base + MX51_ECSPI_TESTREG);
++	if (spi->mode & SPI_LOOP)
++		testreg |= MX51_ECSPI_TESTREG_LBC;
+ 	else
+-		ctrl |= (spi_imx->bits_per_word - 1)
+-			<< MX51_ECSPI_CTRL_BL_OFFSET;
++		testreg &= ~MX51_ECSPI_TESTREG_LBC;
++	writel(testreg, spi_imx->base + MX51_ECSPI_TESTREG);
+ 
+ 	/*
+ 	 * eCSPI burst completion by Chip Select signal in Slave mode
+@@ -556,25 +553,42 @@ static int mx51_ecspi_config(struct spi_device *spi)
+ 		cfg &= ~MX51_ECSPI_CONFIG_SCLKPOL(spi->chip_select);
+ 		cfg &= ~MX51_ECSPI_CONFIG_SCLKCTL(spi->chip_select);
+ 	}
++
+ 	if (spi->mode & SPI_CS_HIGH)
+ 		cfg |= MX51_ECSPI_CONFIG_SSBPOL(spi->chip_select);
+ 	else
+ 		cfg &= ~MX51_ECSPI_CONFIG_SSBPOL(spi->chip_select);
+ 
+-	if (spi_imx->usedma)
+-		ctrl |= MX51_ECSPI_CTRL_SMC;
++	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
+ 
+-	/* CTRL register always go first to bring out controller from reset */
+-	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
++	return 0;
++}
+ 
+-	reg = readl(spi_imx->base + MX51_ECSPI_TESTREG);
+-	if (spi->mode & SPI_LOOP)
+-		reg |= MX51_ECSPI_TESTREG_LBC;
++static int mx51_ecspi_config(struct spi_device *spi)
++{
++	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
++	u32 ctrl = readl(spi_imx->base + MX51_ECSPI_CTRL);
++	u32 clk = spi_imx->speed_hz, delay;
++
++	/* Clear BL field and set the right value */
++	ctrl &= ~MX51_ECSPI_CTRL_BL_MASK;
++	if (spi_imx->slave_mode && is_imx53_ecspi(spi_imx))
++		ctrl |= (spi_imx->slave_burst * 8 - 1)
++			<< MX51_ECSPI_CTRL_BL_OFFSET;
+ 	else
+-		reg &= ~MX51_ECSPI_TESTREG_LBC;
+-	writel(reg, spi_imx->base + MX51_ECSPI_TESTREG);
++		ctrl |= (spi_imx->bits_per_word - 1)
++			<< MX51_ECSPI_CTRL_BL_OFFSET;
+ 
+-	writel(cfg, spi_imx->base + MX51_ECSPI_CONFIG);
++	/* set clock speed */
++	ctrl &= ~(0xf << MX51_ECSPI_CTRL_POSTDIV_OFFSET |
++		  0xf << MX51_ECSPI_CTRL_PREDIV_OFFSET);
++	ctrl |= mx51_ecspi_clkdiv(spi_imx, spi_imx->speed_hz, &clk);
++	spi_imx->spi_bus_clk = clk;
++
++	if (spi_imx->usedma)
++		ctrl |= MX51_ECSPI_CTRL_SMC;
++
++	writel(ctrl, spi_imx->base + MX51_ECSPI_CTRL);
+ 
+ 	/*
+ 	 * Wait until the changes in the configuration register CONFIGREG
+@@ -602,7 +616,6 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
+ 	 * Configure the DMA register: setup the watermark
+ 	 * and enable DMA request.
+ 	 */
+-
+ 	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
+ 		MX51_ECSPI_DMA_TX_WML(spi_imx->wml) |
+ 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+-- 
+2.42.0
+
 
 
 
