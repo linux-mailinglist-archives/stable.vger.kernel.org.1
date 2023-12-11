@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-5785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2651D80D6E6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4786980D785
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0E4D282215
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8521F217DD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EB651C35;
-	Mon, 11 Dec 2023 18:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6732953E0F;
+	Mon, 11 Dec 2023 18:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ0oW3QH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwd2dXZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6DEFBE0;
-	Mon, 11 Dec 2023 18:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FAEC433C8;
-	Mon, 11 Dec 2023 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CBA51C53;
+	Mon, 11 Dec 2023 18:37:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C577C433C9;
+	Mon, 11 Dec 2023 18:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319657;
-	bh=U+EbMyU8OupsoElxnNQKzTqeUXwXD0+DeuXFA/qLFeY=;
+	s=korg; t=1702319865;
+	bh=cZE452f8YPHdbVsA+b1uc/h5DbUGuVzHmCdJDexVwh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQ0oW3QHeCAK1mfq0nck1FNT21LhHXaLoQR0xnYaJHkeK+R9NT5lKktJYGvPOKUXS
-	 /5B8QN5wYmbN9CrT4x1qlXFnkkAbXowRz2D7WJOtUZtZgxSf0/QzpZ8WzVwvcxsu4f
-	 1HEgCue8CnHhmZdcFVStq+V7mvFD6+ztWew1pKeI=
+	b=Nwd2dXZBJ/Kx7vpDivH+Cr6uifbJvhM4q5Mphx6LOgB+ksyVYRlT6Bpt9vVzFyi37
+	 KEa4pn7vpkmL31i99WMPlC6KReisDZOTw1vh5T6aJ9LqyBiXQScgyLNbWLck6mOY07
+	 lNyTn12uOcvz4Orvj9FEZSZq8t6Ywy5MpRle4TIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>
-Subject: [PATCH 6.6 187/244] arm64: dts: mediatek: mt8186: fix clock names for power domains
+	Rob Herring <robh+dt@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	devicetree@vger.kernel.org,
+	Lee Jones <lee.jones@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 17/97] of: base: Fix some formatting issues and provide missing descriptions
 Date: Mon, 11 Dec 2023 19:21:20 +0100
-Message-ID: <20231211182054.327099293@linuxfoundation.org>
+Message-ID: <20231211182020.542156072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,150 +57,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Lee Jones <lee.jones@linaro.org>
 
-commit 9adf7580f6d498a5839e02fa1d1535e934364602 upstream.
+[ Upstream commit 3637d49e11219512920aca8b8ccd0994be33fa8b ]
 
-Clocks for each power domain are split into big categories: pd clocks
-and subsys clocks.
-According to the binding, all clocks which have a dash '-' in their name
-are treated as subsys clocks, and must be placed at the end of the list.
-The other clocks which are pd clocks must come first.
-Fixed the naming and the placing of all clocks in the power domains.
-For the avoidance of doubt, prefixed all subsys clocks with the 'subsys'
-prefix. The binding does not enforce strict clock names, the driver
-uses them in bulk, only making a difference for pd clocks vs subsys clocks.
+Fixes the following W=1 kernel build warning(s):
 
-The above problem appears to be trivial, however, it leads to incorrect
-power up and power down sequence of the power domains, because some
-clocks will be mistakenly taken for subsys clocks and viceversa.
-One consequence is the fact that if the DIS power domain goes power down
-and power back up during the boot process, when it comes back up, there
-are still transactions left on the bus which makes the display inoperable.
+ drivers/of/base.c:315: warning: Function parameter or member 'cpun' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'prop_name' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'cpu' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: Function parameter or member 'thread' not described in '__of_find_n_match_cpu_property'
+ drivers/of/base.c:315: warning: expecting prototype for property holds the physical id of the(). Prototype was for __of_find_n_match_cpu_property() instead
+ drivers/of/base.c:1139: warning: Function parameter or member 'match' not described in 'of_find_matching_node_and_match'
+ drivers/of/base.c:1779: warning: Function parameter or member 'np' not described in '__of_add_property'
+ drivers/of/base.c:1779: warning: Function parameter or member 'prop' not described in '__of_add_property'
+ drivers/of/base.c:1800: warning: Function parameter or member 'np' not described in 'of_add_property'
+ drivers/of/base.c:1800: warning: Function parameter or member 'prop' not described in 'of_add_property'
+ drivers/of/base.c:1849: warning: Function parameter or member 'np' not described in 'of_remove_property'
+ drivers/of/base.c:1849: warning: Function parameter or member 'prop' not described in 'of_remove_property'
+ drivers/of/base.c:2137: warning: Function parameter or member 'dn' not described in 'of_console_check'
+ drivers/of/base.c:2137: warning: Function parameter or member 'name' not described in 'of_console_check'
+ drivers/of/base.c:2137: warning: Function parameter or member 'index' not described in 'of_console_check'
 
-Some of the clocks for the DIS power domain were wrongly using '_' instead
-of '-', which again made these clocks being treated as pd clocks instead of
-subsys clocks.
-
-Cc: stable@vger.kernel.org
-Fixes: d9e43c1e7a38 ("arm64: dts: mt8186: Add power domains controller")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20231005103041.352478-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Frank Rowand <frowand.list@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: devicetree@vger.kernel.org
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20210318104036.3175910-5-lee.jones@linaro.org
+Stable-dep-of: d79972789d17 ("of: dynamic: Fix of_reconfig_get_state_change() return value documentation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi | 42 +++++++++++++++---------
- 1 file changed, 27 insertions(+), 15 deletions(-)
+ drivers/of/base.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-index f4c4f61c779d..df0c04f2ba1d 100644
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -924,7 +924,8 @@ power-domain@MT8186_POWER_DOMAIN_CSIRX_TOP {
- 					reg = <MT8186_POWER_DOMAIN_CSIRX_TOP>;
- 					clocks = <&topckgen CLK_TOP_SENINF>,
- 						 <&topckgen CLK_TOP_SENINF1>;
--					clock-names = "csirx_top0", "csirx_top1";
-+					clock-names = "subsys-csirx-top0",
-+						      "subsys-csirx-top1";
- 					#power-domain-cells = <0>;
- 				};
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index a44a0e7ba2510..fa45a681267cd 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -305,7 +305,7 @@ bool __weak arch_match_cpu_phys_id(int cpu, u64 phys_id)
+ 	return (u32)phys_id == cpu;
+ }
  
-@@ -942,7 +943,8 @@ power-domain@MT8186_POWER_DOMAIN_ADSP_AO {
- 					reg = <MT8186_POWER_DOMAIN_ADSP_AO>;
- 					clocks = <&topckgen CLK_TOP_AUDIODSP>,
- 						 <&topckgen CLK_TOP_ADSP_BUS>;
--					clock-names = "audioadsp", "adsp_bus";
-+					clock-names = "audioadsp",
-+						      "subsys-adsp-bus";
- 					#address-cells = <1>;
- 					#size-cells = <0>;
- 					#power-domain-cells = <1>;
-@@ -975,8 +977,11 @@ power-domain@MT8186_POWER_DOMAIN_DIS {
- 						 <&mmsys CLK_MM_SMI_COMMON>,
- 						 <&mmsys CLK_MM_SMI_GALS>,
- 						 <&mmsys CLK_MM_SMI_IOMMU>;
--					clock-names = "disp", "mdp", "smi_infra", "smi_common",
--						     "smi_gals", "smi_iommu";
-+					clock-names = "disp", "mdp",
-+						      "subsys-smi-infra",
-+						      "subsys-smi-common",
-+						      "subsys-smi-gals",
-+						      "subsys-smi-iommu";
- 					mediatek,infracfg = <&infracfg_ao>;
- 					#address-cells = <1>;
- 					#size-cells = <0>;
-@@ -993,15 +998,17 @@ power-domain@MT8186_POWER_DOMAIN_VDEC {
+-/**
++/*
+  * Checks if the given "prop_name" property holds the physical id of the
+  * core/thread corresponding to the logical cpu 'cpu'. If 'thread' is not
+  * NULL, local thread number within the core is returned in it.
+@@ -1128,7 +1128,7 @@ EXPORT_SYMBOL(of_match_node);
+  *			will; typically, you pass what the previous call
+  *			returned. of_node_put() will be called on it
+  *	@matches:	array of of device match structures to search in
+- *	@match		Updated to point at the matches entry which matched
++ *	@match:		Updated to point at the matches entry which matched
+  *
+  *	Returns a node pointer with refcount incremented, use
+  *	of_node_put() on it when done.
+@@ -1779,6 +1779,8 @@ EXPORT_SYMBOL(of_count_phandle_with_args);
  
- 					power-domain@MT8186_POWER_DOMAIN_CAM {
- 						reg = <MT8186_POWER_DOMAIN_CAM>;
--						clocks = <&topckgen CLK_TOP_CAM>,
--							 <&topckgen CLK_TOP_SENINF>,
-+						clocks = <&topckgen CLK_TOP_SENINF>,
- 							 <&topckgen CLK_TOP_SENINF1>,
- 							 <&topckgen CLK_TOP_SENINF2>,
- 							 <&topckgen CLK_TOP_SENINF3>,
-+							 <&camsys CLK_CAM2MM_GALS>,
- 							 <&topckgen CLK_TOP_CAMTM>,
--							 <&camsys CLK_CAM2MM_GALS>;
--						clock-names = "cam-top", "cam0", "cam1", "cam2",
--							     "cam3", "cam-tm", "gals";
-+							 <&topckgen CLK_TOP_CAM>;
-+						clock-names = "cam0", "cam1", "cam2",
-+							      "cam3", "gals",
-+							      "subsys-cam-tm",
-+							      "subsys-cam-top";
- 						mediatek,infracfg = <&infracfg_ao>;
- 						#address-cells = <1>;
- 						#size-cells = <0>;
-@@ -1020,9 +1027,9 @@ power-domain@MT8186_POWER_DOMAIN_CAM_RAWA {
+ /**
+  * __of_add_property - Add a property to a node without lock operations
++ * @np:		Caller's Device Node
++ * @prob:	Property to add
+  */
+ int __of_add_property(struct device_node *np, struct property *prop)
+ {
+@@ -1800,6 +1802,8 @@ int __of_add_property(struct device_node *np, struct property *prop)
  
- 					power-domain@MT8186_POWER_DOMAIN_IMG {
- 						reg = <MT8186_POWER_DOMAIN_IMG>;
--						clocks = <&topckgen CLK_TOP_IMG1>,
--							 <&imgsys1 CLK_IMG1_GALS_IMG1>;
--						clock-names = "img-top", "gals";
-+						clocks = <&imgsys1 CLK_IMG1_GALS_IMG1>,
-+							 <&topckgen CLK_TOP_IMG1>;
-+						clock-names = "gals", "subsys-img-top";
- 						mediatek,infracfg = <&infracfg_ao>;
- 						#address-cells = <1>;
- 						#size-cells = <0>;
-@@ -1041,8 +1048,11 @@ power-domain@MT8186_POWER_DOMAIN_IPE {
- 							 <&ipesys CLK_IPE_LARB20>,
- 							 <&ipesys CLK_IPE_SMI_SUBCOM>,
- 							 <&ipesys CLK_IPE_GALS_IPE>;
--						clock-names = "ipe-top", "ipe-larb0", "ipe-larb1",
--							      "ipe-smi", "ipe-gals";
-+						clock-names = "subsys-ipe-top",
-+							      "subsys-ipe-larb0",
-+							      "subsys-ipe-larb1",
-+							      "subsys-ipe-smi",
-+							      "subsys-ipe-gals";
- 						mediatek,infracfg = <&infracfg_ao>;
- 						#power-domain-cells = <0>;
- 					};
-@@ -1061,7 +1071,9 @@ power-domain@MT8186_POWER_DOMAIN_WPE {
- 						clocks = <&topckgen CLK_TOP_WPE>,
- 							 <&wpesys CLK_WPE_SMI_LARB8_CK_EN>,
- 							 <&wpesys CLK_WPE_SMI_LARB8_PCLK_EN>;
--						clock-names = "wpe0", "larb-ck", "larb-pclk";
-+						clock-names = "wpe0",
-+							      "subsys-larb-ck",
-+							      "subsys-larb-pclk";
- 						mediatek,infracfg = <&infracfg_ao>;
- 						#power-domain-cells = <0>;
- 					};
+ /**
+  * of_add_property - Add a property to a node
++ * @np:		Caller's Device Node
++ * @prob:	Property to add
+  */
+ int of_add_property(struct device_node *np, struct property *prop)
+ {
+@@ -1844,6 +1848,8 @@ int __of_remove_property(struct device_node *np, struct property *prop)
+ 
+ /**
+  * of_remove_property - Remove a property from a node.
++ * @np:		Caller's Device Node
++ * @prob:	Property to remove
+  *
+  * Note that we don't actually remove it, since we have given out
+  * who-knows-how-many pointers to the data using get-property.
+@@ -2130,9 +2136,9 @@ EXPORT_SYMBOL_GPL(of_alias_get_highest_id);
+ 
+ /**
+  * of_console_check() - Test and setup console for DT setup
+- * @dn - Pointer to device node
+- * @name - Name to use for preferred console without index. ex. "ttyS"
+- * @index - Index to use for preferred console.
++ * @dn: Pointer to device node
++ * @name: Name to use for preferred console without index. ex. "ttyS"
++ * @index: Index to use for preferred console.
+  *
+  * Check if the given device node matches the stdout-path property in the
+  * /chosen node. If it does then register it as the preferred console and return
 -- 
-2.43.0
+2.42.0
 
 
 
