@@ -1,53 +1,45 @@
-Return-Path: <stable+bounces-6018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E9580D857
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E103980D848
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11EEA1F21B49
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E3C1F21AEB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA44251C2C;
-	Mon, 11 Dec 2023 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71C25102F;
+	Mon, 11 Dec 2023 18:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymwyXaNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MsrivVyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A47FC06;
-	Mon, 11 Dec 2023 18:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D16C433C7;
-	Mon, 11 Dec 2023 18:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C83FC06;
+	Mon, 11 Dec 2023 18:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2566EC433C7;
+	Mon, 11 Dec 2023 18:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320291;
-	bh=8NECBHC/NruzAN2opWrThISKMIQQIgP9v7YVxDd1O4A=;
+	s=korg; t=1702320264;
+	bh=yUCW42Cec3hFQtdfAWJ7LvqMkC8qsxVevIUAz0H/ziA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymwyXaNT1qHiPcN97uLc/6Fwlh+/U9WoJAJy/GP7qYitPys8yERkTRPp+G4M3z59l
-	 b7lgzIwztXLM7mPMqn4qmf0pLkIKqMhaVBmUizJzp7mgLVAqXg5oX0/Y8H6D6qCpWA
-	 UULgKl7d2c+tLXpWCIylscIYLfHp2P81axzEZY/U=
+	b=MsrivVyg+lzpt498JeOIn7aJYgcYFievRwjb+aaUoM6q9e6MZoZGZKiymQn5EE+Zr
+	 7grygfq3zL/vSIsi8/JYs1GHPGqbusKKSNoGBPoc5qq7RzdXh6vP83F9Z2ufnwgPst
+	 1A9bN2xFRee2ncq5WHCmLY4/eX2/127P0vvLetAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <david@fromorbit.com>,
-	Xiaoli Feng <fengxiaoli0714@gmail.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Darrick Wong <darrick.wong@oracle.com>,
-	fstests@vger.kernel.org,
-	linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 64/67] cifs: Fix non-availability of dedup breaking generic/304
-Date: Mon, 11 Dec 2023 19:22:48 +0100
-Message-ID: <20231211182017.746054096@linuxfoundation.org>
+Subject: [PATCH 5.4 65/67] smb: client: fix potential NULL deref in parse_dfs_referrals()
+Date: Mon, 11 Dec 2023 19:22:49 +0100
+Message-ID: <20231211182017.778953860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
 References: <20231211182015.049134368@linuxfoundation.org>
@@ -66,54 +58,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 691a41d8da4b34fe72f09393505f55f28a8f34ec ]
+[ Upstream commit 92414333eb375ed64f4ae92d34d579e826936480 ]
 
-Deduplication isn't supported on cifs, but cifs doesn't reject it, instead
-treating it as extent duplication/cloning.  This can cause generic/304 to go
-silly and run for hours on end.
+If server returned no data for FSCTL_DFS_GET_REFERRALS, @dfs_rsp will
+remain NULL and then parse_dfs_referrals() will dereference it.
 
-Fix cifs to indicate EOPNOTSUPP if REMAP_FILE_DEDUP is set in
-->remap_file_range().
+Fix this by returning -EIO when no output data is returned.
 
-Note that it's unclear whether or not commit b073a08016a1 is meant to cause
-cifs to return an error if REMAP_FILE_DEDUP.
+Besides, we can't fix it in SMB2_ioctl() as some FSCTLs are allowed to
+return no data as per MS-SMB2 2.2.32.
 
-Fixes: b073a08016a1 ("cifs: fix that return -EINVAL when do dedupe operation")
+Fixes: 9d49640a21bf ("CIFS: implement get_dfs_refer for SMB2+")
 Cc: stable@vger.kernel.org
-Suggested-by: Dave Chinner <david@fromorbit.com>
-cc: Xiaoli Feng <fengxiaoli0714@gmail.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Darrick Wong <darrick.wong@oracle.com>
-cc: fstests@vger.kernel.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/3876191.1701555260@warthog.procyon.org.uk/
-Signed-off-by: David Howells <dhowells@redhat.com>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifsfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/cifs/smb2ops.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
-index 917441e3018ad..12f632287d161 100644
---- a/fs/cifs/cifsfs.c
-+++ b/fs/cifs/cifsfs.c
-@@ -1079,7 +1079,9 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 	unsigned int xid;
- 	int rc;
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index ad9b207432e10..5fea15a5f3419 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -2498,6 +2498,8 @@ smb2_get_dfs_refer(const unsigned int xid, struct cifs_ses *ses,
+ 				(char **)&dfs_rsp, &dfs_rsp_size);
+ 	} while (rc == -EAGAIN);
  
--	if (remap_flags & ~(REMAP_FILE_DEDUP | REMAP_FILE_ADVISORY))
-+	if (remap_flags & REMAP_FILE_DEDUP)
-+		return -EOPNOTSUPP;
-+	if (remap_flags & ~REMAP_FILE_ADVISORY)
- 		return -EINVAL;
- 
- 	cifs_dbg(FYI, "clone range\n");
++	if (!rc && !dfs_rsp)
++		rc = -EIO;
+ 	if (rc) {
+ 		if ((rc != -ENOENT) && (rc != -EOPNOTSUPP))
+ 			cifs_tcon_dbg(VFS, "ioctl error in %s rc=%d\n", __func__, rc);
 -- 
 2.42.0
 
