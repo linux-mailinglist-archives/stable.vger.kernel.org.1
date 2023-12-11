@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-5709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44AE280D60E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6878080D5EE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A55961F21A2F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECDAEB20F5D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4E420DDE;
-	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B455102D;
+	Mon, 11 Dec 2023 18:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmrmweRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0RKgg6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44C7EEB8;
-	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1A7C433C8;
-	Mon, 11 Dec 2023 18:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15535101A;
+	Mon, 11 Dec 2023 18:29:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78445C433C7;
+	Mon, 11 Dec 2023 18:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319455;
-	bh=vbNJJAvd7r5VKRKrfgcUTiISHwfWiCqlQXLFjhrzEzk=;
+	s=korg; t=1702319369;
+	bh=3Vvg53m1X72rtW0tKqM4UNyXmGJigwVlwoM1pHWVAmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmrmweREoNa3ph/He1Eds5H+MWa69fc/Dh91VuU2XHhz+mm490ebGZ/oVQjCmWb8o
-	 TVnDE25gPiPYHskKeSVLgOy1y2I+6fhB/WonJAJvIImqArqlT7CKBDR+JCVJ1kYWgY
-	 h4EoPWYvMuXRpbMsUOZIHYWTnHgRgWbKNFW3WqlY=
+	b=E0RKgg6VJ26d92eQDTspy//y6FHe0vrVKdbkfx7PtMBZp0a/3KIvMBBbIoSfC1UpI
+	 XjYvhWogK+ikxmhCFfzCteaIP9sCwRpjrmg+xRBkOQ/YEjfETjmRxWKDVTwk0teZ6x
+	 g8AlevHSrl7UsHq2GaguB9P/HpexKP24sxGyoEZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,9 +39,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/244] psample: Require CAP_NET_ADMIN when joining "packets" group
-Date: Mon, 11 Dec 2023 19:19:24 +0100
-Message-ID: <20231211182048.986448070@linuxfoundation.org>
+Subject: [PATCH 6.6 072/244] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
+Date: Mon, 11 Dec 2023 19:19:25 +0100
+Message-ID: <20231211182049.018720238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
 References: <20231211182045.784881756@linuxfoundation.org>
@@ -62,62 +62,58 @@ Content-Transfer-Encoding: 8bit
 
 From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 ]
+[ Upstream commit e03781879a0d524ce3126678d50a80484a513c4b ]
 
-The "psample" generic netlink family notifies sampled packets over the
-"packets" multicast group. This is problematic since by default generic
+The "NET_DM" generic netlink family notifies drop locations over the
+"events" multicast group. This is problematic since by default generic
 netlink allows non-root users to listen to these notifications.
 
-Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
-prevent non-root users or root without the 'CAP_NET_ADMIN' capability
-(in the user namespace owning the network namespace) from joining the
-group.
+Fix by adding a new field to the generic netlink multicast group
+structure that when set prevents non-root users or root without the
+'CAP_SYS_ADMIN' capability (in the user namespace owning the network
+namespace) from joining the group. Set this field for the "events"
+group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
+nature of the information that is shared over this group.
+
+Note that the capability check in this case will always be performed
+against the initial user namespace since the family is not netns aware
+and only operates in the initial network namespace.
+
+A new field is added to the structure rather than using the "flags"
+field because the existing field uses uAPI flags and it is inappropriate
+to add a new uAPI flag for an internal kernel check. In net-next we can
+rework the "flags" field to use internal flags and fold the new field
+into it. But for now, in order to reduce the amount of changes, add a
+new field.
+
+Since the information can only be consumed by root, mark the control
+plane operations that start and stop the tracing as root-only using the
+'GENL_ADMIN_PERM' flag.
 
 Tested using [1].
 
 Before:
 
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
 
 After:
 
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
- Failed to join "packets" multicast group
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+ Failed to join "events" multicast group
 
 [1]
- $ cat psample.c
+ $ cat dm.c
  #include <stdio.h>
  #include <netlink/genl/ctrl.h>
  #include <netlink/genl/genl.h>
  #include <netlink/socket.h>
 
- int join_grp(struct nl_sock *sk, const char *grp_name)
- {
- 	int grp, err;
-
- 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
- 	if (grp < 0) {
- 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
- 			grp_name);
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
- 			grp_name);
- 		return err;
- 	}
-
- 	return 0;
- }
-
  int main(int argc, char **argv)
  {
  	struct nl_sock *sk;
- 	int err;
+ 	int grp, err;
 
  	sk = nl_socket_alloc();
  	if (!sk) {
@@ -131,44 +127,95 @@ After:
  		return err;
  	}
 
- 	err = join_grp(sk, "config");
- 	if (err)
- 		return err;
+ 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
+ 	if (grp < 0) {
+ 		fprintf(stderr,
+ 			"Failed to resolve \"events\" multicast group\n");
+ 		return grp;
+ 	}
 
- 	err = join_grp(sk, "packets");
- 	if (err)
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
  		return err;
+ 	}
 
  	return 0;
  }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
 
-Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
 Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/psample/psample.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/genetlink.h | 2 ++
+ net/core/drop_monitor.c | 4 +++-
+ net/netlink/genetlink.c | 3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/psample/psample.c b/net/psample/psample.c
-index 81a794e36f535..c34e902855dbe 100644
---- a/net/psample/psample.c
-+++ b/net/psample/psample.c
-@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
- 
- static const struct genl_multicast_group psample_nl_mcgrps[] = {
- 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
--	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
-+	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
-+				      .flags = GENL_UNS_ADMIN_PERM },
+diff --git a/include/net/genetlink.h b/include/net/genetlink.h
+index e18a4c0d69eed..c53244f204370 100644
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -12,10 +12,12 @@
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
+  * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
++ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
++	u8			cap_sys_admin:1;
  };
  
- static struct genl_family psample_nl_family __ro_after_init;
+ struct genl_split_ops;
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index aff31cd944c29..b240d9aae4a64 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -183,7 +183,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", },
++	{ .name = "events", .cap_sys_admin = 1 },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+@@ -1619,11 +1619,13 @@ static const struct genl_small_ops dropmon_ops[] = {
+ 		.cmd = NET_DM_CMD_START,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_STOP,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_CONFIG_GET,
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 8315d31b53db4..d41c4a936ad0c 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1690,6 +1690,9 @@ static int genl_bind(struct net *net, int group)
+ 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
++		if (grp->cap_sys_admin &&
++		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
++			ret = -EPERM;
+ 
+ 		break;
+ 	}
 -- 
 2.42.0
 
