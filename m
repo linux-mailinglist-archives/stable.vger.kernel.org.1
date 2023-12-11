@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-5382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C35980CB95
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:53:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2146880CB97
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315821F21133
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:53:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20B4F1C2125B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7415647796;
-	Mon, 11 Dec 2023 13:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2695047781;
+	Mon, 11 Dec 2023 13:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/BvRMdQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c9luBA6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB7F4778D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62264778D;
+	Mon, 11 Dec 2023 13:53:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75862C433BC;
 	Mon, 11 Dec 2023 13:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4FFC433CB;
-	Mon, 11 Dec 2023 13:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702302792;
-	bh=fgN+YDhf8a3nw9oZAz0gxAwY5i58ycVwFHLHFzYEZ08=;
+	s=k20201202; t=1702302793;
+	bh=cSjCRuaEu0aciV2Neor5DGxILYppFwLd1VulrtznRu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/BvRMdQGYC5PfS0rnUOwYUwTyB7sDIZb5maRSgVqrgh641oRv7/cD9PvocLZaDCG
-	 q30N/HFb8X1dnEWwr4vmXeKZYvktWr4JLXnR4M0avgSPVCdwEWHUZYj7+QSquMHs4M
-	 2n61fsO/mT1QFmdrCAcB11eoQaMTskzqgB6qFlwRPpSyecQjTbpyD2gcv0rCrgvueI
-	 9ryggNRM2HwazYAfV0hTBBRUb1f+kB7iXQH/XG9ub76Vn8UW4tR3CFvVKZN7EqpnuF
-	 C8J05/mr6uBkTE2iz2TJc/Juu8RugvsfhmSnG9eEQvFRKr8u2ix97E9pt9IjQ8wsCK
-	 uU7SVz/sTFwHQ==
+	b=c9luBA6mt5DC4Mrsw+mwd3LsZ5Tl7ry95f1RY13scLQPTa6IL/N2YS3lYbsLoYkK+
+	 Iq8IngzxGM53rGsO4N7gCC2WXKZrsVRDyl0hZ4qaDe5zyQZvayeiYJ7yjC/OJh23wL
+	 8zByoHeSvpi/gAQnhcSYSxtpfv2UVtf5fpXMN9RWa0tDVqe34tOrPIjR5YcCMihJ/v
+	 OPWO2pV0fEydE0OFOTptblg6M30a4mmeD+7evJ0r/nwVAe/mGvDNrVGyhJUysAvUoP
+	 ruqWQWwycJgs0iLq3fVd4MIYJ9lfR10JRyOCegH6KeHGiOuc5jQbVN9kaH3O+LA8n9
+	 5OCnnXCn1jUMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Thinh Tran <thinhtr@linux.vnet.ibm.com>,
-	Venkata Sai Duggi <venkata.sai.duggi@ibm.com>,
-	David Christensen <drc@linux.vnet.ibm.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: David Rau <David.Rau.opensource@dm.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	pavan.chebbi@broadcom.com,
-	mchan@broadcom.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 27/47] net/tg3: fix race condition in tg3_reset_task()
-Date: Mon, 11 Dec 2023 08:50:28 -0500
-Message-ID: <20231211135147.380223-27-sashal@kernel.org>
+	support.opensource@diasemi.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 28/47] ASoC: da7219: Support low DC impedance headset
+Date: Mon, 11 Dec 2023 08:50:29 -0500
+Message-ID: <20231211135147.380223-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231211135147.380223-1-sashal@kernel.org>
 References: <20231211135147.380223-1-sashal@kernel.org>
@@ -64,92 +60,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.5
 Content-Transfer-Encoding: 8bit
 
-From: Thinh Tran <thinhtr@linux.vnet.ibm.com>
+From: David Rau <David.Rau.opensource@dm.renesas.com>
 
-[ Upstream commit 16b55b1f2269962fb6b5154b8bf43f37c9a96637 ]
+[ Upstream commit 5f44de697383fcc9a9a1a78f99e09d1838704b90 ]
 
-When an EEH error is encountered by a PCI adapter, the EEH driver
-modifies the PCI channel's state as shown below:
+Change the default MIC detection impedance threshold to 200ohm
+to support low mic DC impedance headset.
 
-   enum {
-      /* I/O channel is in normal state */
-      pci_channel_io_normal = (__force pci_channel_state_t) 1,
-
-      /* I/O to channel is blocked */
-      pci_channel_io_frozen = (__force pci_channel_state_t) 2,
-
-      /* PCI card is dead */
-      pci_channel_io_perm_failure = (__force pci_channel_state_t) 3,
-   };
-
-If the same EEH error then causes the tg3 driver's transmit timeout
-logic to execute, the tg3_tx_timeout() function schedules a reset
-task via tg3_reset_task_schedule(), which may cause a race condition
-between the tg3 and EEH driver as both attempt to recover the HW via
-a reset action.
-
-EEH driver gets error event
---> eeh_set_channel_state()
-    and set device to one of
-    error state above           scheduler: tg3_reset_task() get
-                                returned error from tg3_init_hw()
-                             --> dev_close() shuts down the interface
-tg3_io_slot_reset() and
-tg3_io_resume() fail to
-reset/resume the device
-
-To resolve this issue, we avoid the race condition by checking the PCI
-channel state in the tg3_reset_task() function and skip the tg3 driver
-initiated reset when the PCI channel is not in the normal state.  (The
-driver has no access to tg3 device registers at this point and cannot
-even complete the reset task successfully without external assistance.)
-We'll leave the reset procedure to be managed by the EEH driver which
-calls the tg3_io_error_detected(), tg3_io_slot_reset() and
-tg3_io_resume() functions as appropriate.
-
-Adding the same checking in tg3_dump_state() to avoid dumping all
-device registers when the PCI channel is not in the normal state.
-
-Signed-off-by: Thinh Tran <thinhtr@linux.vnet.ibm.com>
-Tested-by: Venkata Sai Duggi <venkata.sai.duggi@ibm.com>
-Reviewed-by: David Christensen <drc@linux.vnet.ibm.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231201001911.656-1-thinhtr@linux.vnet.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
+Link: https://lore.kernel.org/r/20231201042933.26392-1-David.Rau.opensource@dm.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/soc/codecs/da7219-aad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 22b00912f7ac8..95d476ec14f5e 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -6439,6 +6439,14 @@ static void tg3_dump_state(struct tg3 *tp)
- 	int i;
- 	u32 *regs;
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index 3bbe850916493..8537c96307a97 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -696,7 +696,7 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		aad_pdata->mic_det_thr =
+ 			da7219_aad_fw_mic_det_thr(dev, fw_val32);
+ 	else
+-		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_500_OHMS;
++		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_200_OHMS;
  
-+	/* If it is a PCI error, all registers will be 0xffff,
-+	 * we don't dump them out, just report the error and return
-+	 */
-+	if (tp->pdev->error_state != pci_channel_io_normal) {
-+		netdev_err(tp->dev, "PCI channel ERROR!\n");
-+		return;
-+	}
-+
- 	regs = kzalloc(TG3_REG_BLK_SIZE, GFP_ATOMIC);
- 	if (!regs)
- 		return;
-@@ -11170,7 +11178,8 @@ static void tg3_reset_task(struct work_struct *work)
- 	rtnl_lock();
- 	tg3_full_lock(tp, 0);
- 
--	if (tp->pcierr_recovery || !netif_running(tp->dev)) {
-+	if (tp->pcierr_recovery || !netif_running(tp->dev) ||
-+	    tp->pdev->error_state != pci_channel_io_normal) {
- 		tg3_flag_clear(tp, RESET_TASK_PENDING);
- 		tg3_full_unlock(tp);
- 		rtnl_unlock();
+ 	if (fwnode_property_read_u32(aad_np, "dlg,jack-ins-deb", &fw_val32) >= 0)
+ 		aad_pdata->jack_ins_deb =
 -- 
 2.42.0
 
