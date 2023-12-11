@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-5545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC4B980D54E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE4C80D98E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761C2281A09
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC29281ED4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A645101D;
-	Mon, 11 Dec 2023 18:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2531F51C46;
+	Mon, 11 Dec 2023 18:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr3bPmrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RT4MVcwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B544F212;
-	Mon, 11 Dec 2023 18:22:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4871DC433C8;
-	Mon, 11 Dec 2023 18:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8657321B8;
+	Mon, 11 Dec 2023 18:54:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8C3C433C7;
+	Mon, 11 Dec 2023 18:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318951;
-	bh=MSs6MYhgkPpq2egah56wkhHiFin/NNaKtvvqopigzBg=;
+	s=korg; t=1702320896;
+	bh=oyJLw5zaHieYPoKbPVBfgK4joVF2pmB8YtIcu9o/k8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yr3bPmrpxy/9/e5/XHrtd/Btd2w1fKIHQHtFnQyjpiz4b8PuSTsRPaU0b/2itjPVo
-	 LGKE0x9D8SEaLNaazgqYkVH8uD1ZhqC/d10WpAggpWYEyMhx/UJezFOuBHzg0jXi3x
-	 eYT4q5qWmd6vEi4ABlGOVjJn6oW7ckvL6rgnJUTw=
+	b=RT4MVcwV1vaMbCkil7lwH4Yer5vdERB6oyddFF/oQ8PmN2egacFx0+aJkC5bf909L
+	 3eIOkkcNXBo2LKtUj978z8bKatjx7CuaSRtM1oLwwOgh+uwLXxTIFpVzyvx8GsG9wk
+	 rRyOwMlfdrGmKa9Gks87+kc9jrrLf4AU11R5jdns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@kernel.org,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 15/25] packet: Move reference count in packet_sock to atomic_long_t
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 007/141] kconfig: fix memory leak from range properties
 Date: Mon, 11 Dec 2023 19:21:06 +0100
-Message-ID: <20231211182009.239323457@linuxfoundation.org>
+Message-ID: <20231211182026.810937021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,114 +52,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit db3fadacaf0c817b222090290d06ca2a338422d0 upstream.
+[ Upstream commit ae1eff0349f2e908fc083630e8441ea6dc434dc0 ]
 
-In some potential instances the reference count on struct packet_sock
-could be saturated and cause overflows which gets the kernel a bit
-confused. To prevent this, move to a 64-bit atomic reference count on
-64-bit architectures to prevent the possibility of this type to overflow.
+Currently, sym_validate_range() duplicates the range string using
+xstrdup(), which is overwritten by a subsequent sym_calc_value() call.
+It results in a memory leak.
 
-Because we can not handle saturation, using refcount_t is not possible
-in this place. Maybe someday in the future if it changes it could be
-used. Also, instead of using plain atomic64_t, use atomic_long_t instead.
-32-bit machines tend to be memory-limited (i.e. anything that increases
-a reference uses so much memory that you can't actually get to 2**32
-references). 32-bit architectures also tend to have serious problems
-with 64-bit atomics. Hence, atomic_long_t is the more natural solution.
+Instead, only the pointer should be copied.
 
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Co-developed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231201131021.19999-1-daniel@iogearbox.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Below is a test case, with a summary from Valgrind.
+
+[Test Kconfig]
+
+  config FOO
+          int "foo"
+          range 10 20
+
+[Test .config]
+
+  CONFIG_FOO=0
+
+[Before]
+
+  LEAK SUMMARY:
+     definitely lost: 3 bytes in 1 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,465 bytes in 21 blocks
+          suppressed: 0 bytes in 0 blocks
+
+[After]
+
+  LEAK SUMMARY:
+     definitely lost: 0 bytes in 0 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,462 bytes in 20 blocks
+          suppressed: 0 bytes in 0 blocks
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |   16 ++++++++--------
- net/packet/internal.h  |    2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ scripts/kconfig/symbol.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4252,7 +4252,7 @@ static void packet_mm_open(struct vm_are
- 	struct sock *sk = sock->sk;
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index 5844d636d38f4..7f8013dcef002 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -122,9 +122,9 @@ static long long sym_get_range_val(struct symbol *sym, int base)
+ static void sym_validate_range(struct symbol *sym)
+ {
+ 	struct property *prop;
++	struct symbol *range_sym;
+ 	int base;
+ 	long long val, val2;
+-	char str[64];
  
- 	if (sk)
--		atomic_inc(&pkt_sk(sk)->mapped);
-+		atomic_long_inc(&pkt_sk(sk)->mapped);
+ 	switch (sym->type) {
+ 	case S_INT:
+@@ -140,17 +140,15 @@ static void sym_validate_range(struct symbol *sym)
+ 	if (!prop)
+ 		return;
+ 	val = strtoll(sym->curr.val, NULL, base);
+-	val2 = sym_get_range_val(prop->expr->left.sym, base);
++	range_sym = prop->expr->left.sym;
++	val2 = sym_get_range_val(range_sym, base);
+ 	if (val >= val2) {
+-		val2 = sym_get_range_val(prop->expr->right.sym, base);
++		range_sym = prop->expr->right.sym;
++		val2 = sym_get_range_val(range_sym, base);
+ 		if (val <= val2)
+ 			return;
+ 	}
+-	if (sym->type == S_INT)
+-		sprintf(str, "%lld", val2);
+-	else
+-		sprintf(str, "0x%llx", val2);
+-	sym->curr.val = xstrdup(str);
++	sym->curr.val = range_sym->curr.val;
  }
  
- static void packet_mm_close(struct vm_area_struct *vma)
-@@ -4262,7 +4262,7 @@ static void packet_mm_close(struct vm_ar
- 	struct sock *sk = sock->sk;
- 
- 	if (sk)
--		atomic_dec(&pkt_sk(sk)->mapped);
-+		atomic_long_dec(&pkt_sk(sk)->mapped);
- }
- 
- static const struct vm_operations_struct packet_mmap_ops = {
-@@ -4357,7 +4357,7 @@ static int packet_set_ring(struct sock *
- 
- 	err = -EBUSY;
- 	if (!closing) {
--		if (atomic_read(&po->mapped))
-+		if (atomic_long_read(&po->mapped))
- 			goto out;
- 		if (packet_read_pending(rb))
- 			goto out;
-@@ -4460,7 +4460,7 @@ static int packet_set_ring(struct sock *
- 
- 	err = -EBUSY;
- 	mutex_lock(&po->pg_vec_lock);
--	if (closing || atomic_read(&po->mapped) == 0) {
-+	if (closing || atomic_long_read(&po->mapped) == 0) {
- 		err = 0;
- 		spin_lock_bh(&rb_queue->lock);
- 		swap(rb->pg_vec, pg_vec);
-@@ -4478,9 +4478,9 @@ static int packet_set_ring(struct sock *
- 		po->prot_hook.func = (po->rx_ring.pg_vec) ?
- 						tpacket_rcv : packet_rcv;
- 		skb_queue_purge(rb_queue);
--		if (atomic_read(&po->mapped))
--			pr_err("packet_mmap: vma is busy: %d\n",
--			       atomic_read(&po->mapped));
-+		if (atomic_long_read(&po->mapped))
-+			pr_err("packet_mmap: vma is busy: %ld\n",
-+			       atomic_long_read(&po->mapped));
- 	}
- 	mutex_unlock(&po->pg_vec_lock);
- 
-@@ -4558,7 +4558,7 @@ static int packet_mmap(struct file *file
- 		}
- 	}
- 
--	atomic_inc(&po->mapped);
-+	atomic_long_inc(&po->mapped);
- 	vma->vm_ops = &packet_mmap_ops;
- 	err = 0;
- 
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -125,7 +125,7 @@ struct packet_sock {
- 	__be16			num;
- 	struct packet_rollover	*rollover;
- 	struct packet_mclist	*mclist;
--	atomic_t		mapped;
-+	atomic_long_t		mapped;
- 	enum tpacket_versions	tp_version;
- 	unsigned int		tp_hdrlen;
- 	unsigned int		tp_reserve;
+ static void sym_set_changed(struct symbol *sym)
+-- 
+2.42.0
+
 
 
 
