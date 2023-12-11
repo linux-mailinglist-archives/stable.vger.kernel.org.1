@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-6295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD0B80D9E9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 005C680D930
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0EBE1C216DF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32BBB1C21699
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24898524AE;
-	Mon, 11 Dec 2023 18:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBDF51C46;
+	Mon, 11 Dec 2023 18:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZtqItSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzaadiVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E6F321B8;
-	Mon, 11 Dec 2023 18:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C320C433C9;
-	Mon, 11 Dec 2023 18:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CA351C35;
+	Mon, 11 Dec 2023 18:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA6C433C8;
+	Mon, 11 Dec 2023 18:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321042;
-	bh=g1zxso3uAYml1Hmhih82lbqRPqJgzWumkm1tPlncGC4=;
+	s=korg; t=1702320697;
+	bh=dmXzMoEg545uc4yn6guq/0veCqpSrJywYl+keSZc25k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZtqItSBvur9U8h/3Bhdz5ijbd63M7A8mstdzjF/ci57tyPQemwyLJNGG7wsD3kds
-	 Kr3jiDmQktC3QOGX8PPjMalqH9GhVED9nJvM6XcHUCUQVPapaiw5O0YJjX3r8g57kB
-	 ZDFCFNstwJ7D1OmyQscmJWv11g+lEylsR2pVxtU0=
+	b=dzaadiVGqYVw3GZhpxiJXunFMoJrXEb1nihBgFr1pBourfmhwZSixC66scHleEPtU
+	 EbNTqzPsKn6dHbIjb3u0KnssO4RhdLC8hpvp58GPS/O3lHsfJIdGJ8kzR1uO6NghsU
+	 hRG+X6UGcHMpAJkK4HHu6YL7RDzqAY25d/ueE/Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 088/141] tracing: Fix a possible race when disabling buffered events
-Date: Mon, 11 Dec 2023 19:22:27 +0100
-Message-ID: <20231211182030.381680799@linuxfoundation.org>
+	Candice Li <candice.li@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <Alexander.Deucher@amd.com>,
+	Luben Tuikov <luben.tuikov@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 158/194] drm/amdgpu: Remove redundant I2C EEPROM address
+Date: Mon, 11 Dec 2023 19:22:28 +0100
+Message-ID: <20231211182043.704328904@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +56,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Luben Tuikov <luben.tuikov@amd.com>
 
-commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
+[ Upstream commit da858deab88eb561f2196bc99b6dbd2320e56456 ]
 
-Function trace_buffered_event_disable() is responsible for freeing pages
-backing buffered events and this process can run concurrently with
-trace_event_buffer_lock_reserve().
+Remove redundant EEPROM_I2C_MADDR_54H address, since we already have it
+represented (ARCTURUS), and since we don't include the I2C device type
+identifier in EEPROM memory addresses, i.e. that high up in the device
+abstraction--we only use EEPROM memory addresses, as memory is continuously
+represented by EEPROM device(s) on the I2C bus.
 
-The following race is currently possible:
+Add a comment describing what these memory addresses are, how they come
+about and how they're usually extracted from the device address byte.
 
-* Function trace_buffered_event_disable() is called on CPU 0. It
-  increments trace_buffered_event_cnt on each CPU and waits via
-  synchronize_rcu() for each user of trace_buffered_event to complete.
-
-* After synchronize_rcu() is finished, function
-  trace_buffered_event_disable() has the exclusive access to
-  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
-  and all pointers trace_buffered_event are still valid.
-
-* At this point, on a different CPU 1, the execution reaches
-  trace_event_buffer_lock_reserve(). The function calls
-  preempt_disable_notrace() and only now enters an RCU read-side
-  critical section. The function proceeds and reads a still valid
-  pointer from trace_buffered_event[CPU1] into the local variable
-  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
-  which happens later.
-
-* Function trace_buffered_event_disable() continues. It frees
-  trace_buffered_event[CPU1] and decrements
-  trace_buffered_event_cnt[CPU1] back to 0.
-
-* Function trace_event_buffer_lock_reserve() continues. It reads and
-  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
-  believe that it can use the "entry" that it already obtained but the
-  pointer is now invalid and any access results in a use-after-free.
-
-Fix the problem by making a second synchronize_rcu() call after all
-trace_buffered_event values are set to NULL. This waits on all potential
-users in trace_event_buffer_lock_reserve() that still read a previous
-pointer from trace_buffered_event.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
-
-Cc: stable@vger.kernel.org
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Candice Li <candice.li@amd.com>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Alex Deucher <Alexander.Deucher@amd.com>
+Fixes: c9bdc6c3cf39df ("drm/amdgpu: Add EEPROM I2C address support for ip discovery")
+Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
+Reviewed-by: Alex Deucher <Alexander.Deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c    |  2 ++
+ .../gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c    | 24 ++++++++++++++++---
+ 2 files changed, 23 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2713,13 +2713,17 @@ void trace_buffered_event_disable(void)
- 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
- 		per_cpu(trace_buffered_event, cpu) = NULL;
- 	}
-+
- 	/*
--	 * Make sure trace_buffered_event is NULL before clearing
--	 * trace_buffered_event_cnt.
-+	 * Wait for all CPUs that potentially started checking if they can use
-+	 * their event buffer only after the previous synchronize_rcu() call and
-+	 * they still read a valid pointer from trace_buffered_event. It must be
-+	 * ensured they don't see cleared trace_buffered_event_cnt else they
-+	 * could wrongly decide to use the pointed-to buffer which is now freed.
- 	 */
--	smp_wmb();
-+	synchronize_rcu();
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
+index 4d9eb0137f8c4..d6c4293829aab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_eeprom.c
+@@ -79,6 +79,8 @@
+  * That is, for an I2C EEPROM driver everything is controlled by
+  * the "eeprom_addr".
+  *
++ * See also top of amdgpu_ras_eeprom.c.
++ *
+  * P.S. If you need to write, lock and read the Identification Page,
+  * (M24M02-DR device only, which we do not use), change the "7" to
+  * "0xF" in the macro below, and let the client set bit 20 to 1 in
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index 7268ae65c140c..1bb92a64f24af 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -33,12 +33,30 @@
  
--	/* Do the work on each cpu */
-+	/* For each CPU, relinquish the buffer */
- 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
- 			 true);
- }
+ #include "amdgpu_reset.h"
+ 
++/* These are memory addresses as would be seen by one or more EEPROM
++ * chips strung on the I2C bus, usually by manipulating pins 1-3 of a
++ * set of EEPROM devices. They form a continuous memory space.
++ *
++ * The I2C device address includes the device type identifier, 1010b,
++ * which is a reserved value and indicates that this is an I2C EEPROM
++ * device. It also includes the top 3 bits of the 19 bit EEPROM memory
++ * address, namely bits 18, 17, and 16. This makes up the 7 bit
++ * address sent on the I2C bus with bit 0 being the direction bit,
++ * which is not represented here, and sent by the hardware directly.
++ *
++ * For instance,
++ *   50h = 1010000b => device type identifier 1010b, bits 18:16 = 000b, address 0.
++ *   54h = 1010100b => --"--, bits 18:16 = 100b, address 40000h.
++ *   56h = 1010110b => --"--, bits 18:16 = 110b, address 60000h.
++ * Depending on the size of the I2C EEPROM device(s), bits 18:16 may
++ * address memory in a device or a device on the I2C bus, depending on
++ * the status of pins 1-3. See top of amdgpu_eeprom.c.
++ */
+ #define EEPROM_I2C_MADDR_VEGA20         0x0
+ #define EEPROM_I2C_MADDR_ARCTURUS       0x40000
+ #define EEPROM_I2C_MADDR_ARCTURUS_D342  0x0
+ #define EEPROM_I2C_MADDR_SIENNA_CICHLID 0x0
+ #define EEPROM_I2C_MADDR_ALDEBARAN      0x0
+-#define EEPROM_I2C_MADDR_54H            (0x54UL << 16)
+ 
+ /*
+  * The 2 macros bellow represent the actual size in bytes that
+@@ -130,7 +148,7 @@ static bool __get_eeprom_i2c_addr_ip_discovery(struct amdgpu_device *adev,
+ 	switch (adev->ip_versions[MP1_HWIP][0]) {
+ 	case IP_VERSION(13, 0, 0):
+ 	case IP_VERSION(13, 0, 10):
+-		control->i2c_address = EEPROM_I2C_MADDR_54H;
++		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS;
+ 		return true;
+ 	default:
+ 		return false;
+@@ -185,7 +203,7 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
+ 
+ 	switch (adev->ip_versions[MP1_HWIP][0]) {
+ 	case IP_VERSION(13, 0, 0):
+-		control->i2c_address = EEPROM_I2C_MADDR_54H;
++		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS;
+ 		break;
+ 
+ 	default:
+-- 
+2.42.0
+
 
 
 
