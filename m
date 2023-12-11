@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4577B80D63F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8428F80D8B6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECEC1F21ADB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 402F3281A52
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1626C20DDE;
-	Mon, 11 Dec 2023 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBE051C33;
+	Mon, 11 Dec 2023 18:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxOc+SHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/WijGvG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C466EC2D0;
-	Mon, 11 Dec 2023 18:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE7DC433C8;
-	Mon, 11 Dec 2023 18:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1852A5102A;
+	Mon, 11 Dec 2023 18:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955D5C433C7;
+	Mon, 11 Dec 2023 18:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319552;
-	bh=sdqFyzVy70nAGR1pqZuMDXjPHY43dT7plk7EOeU+wAw=;
+	s=korg; t=1702320486;
+	bh=SX7A9+fiU3SDbtePgcePnK1H/J1C+BAfJor2vJQNBLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jxOc+SHYjgTHwexbUTLMuo0Vm5bZTMoBqg6m65xC5jeIzxpkLaNuPXJAOl0tD8vv5
-	 1vhoW6nMGavMqgYbLR9YW+AePi8eVlC+r2MN43wll+uVCTTNGzBVU+8nXbZwOsS7x1
-	 PjzZI4S9/1bpIbMHVpQJo3aZ8T3FGZMJowLcV5Ck=
+	b=k/WijGvGFkR2wUAwWHwQywPA5yXJeayyknWDKxCvK/nWBTKML9cOdBwYdsMl3BMvO
+	 6z46SZ/L+t6NXHcQDvTmic/2/kSXc+8S3sPh/QNAtEUK5LsFovkUoK7QOR+fa/W7Ap
+	 qc3oASPXLJ9u77+fkFyEKBpDMHgl6MTR/gf8Ow0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 148/244] nilfs2: fix missing error check for sb_set_blocksize call
+	Rahul Bhansali <rbhansali@marvell.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 051/194] octeontx2-af: Update Tx link register range
 Date: Mon, 11 Dec 2023 19:20:41 +0100
-Message-ID: <20231211182052.453248486@linuxfoundation.org>
+Message-ID: <20231211182038.845836221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +55,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Rahul Bhansali <rbhansali@marvell.com>
 
-commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+[ Upstream commit 7336fc196748f82646b630d5a2e9d283e200b988 ]
 
-When mounting a filesystem image with a block size larger than the page
-size, nilfs2 repeatedly outputs long error messages with stack traces to
-the kernel log, such as the following:
+On new silicons the TX channels for transmit level has increased.
+This patch fixes the respective register offset range to
+configure the newly added channels.
 
- getblk(): invalid block size 8192 requested
- logical block size: 512
- ...
- Call Trace:
-  dump_stack_lvl+0x92/0xd4
-  dump_stack+0xd/0x10
-  bdev_getblk+0x33a/0x354
-  __breadahead+0x11/0x80
-  nilfs_search_super_root+0xe2/0x704 [nilfs2]
-  load_nilfs+0x72/0x504 [nilfs2]
-  nilfs_mount+0x30f/0x518 [nilfs2]
-  legacy_get_tree+0x1b/0x40
-  vfs_get_tree+0x18/0xc4
-  path_mount+0x786/0xa88
-  __ia32_sys_mount+0x147/0x1a8
-  __do_fast_syscall_32+0x56/0xc8
-  do_fast_syscall_32+0x29/0x58
-  do_SYSENTER_32+0x15/0x18
-  entry_SYSENTER_32+0x98/0xf1
- ...
-
-This overloads the system logger.  And to make matters worse, it sometimes
-crashes the kernel with a memory access violation.
-
-This is because the return value of the sb_set_blocksize() call, which
-should be checked for errors, is not checked.
-
-The latter issue is due to out-of-buffer memory being accessed based on a
-large block size that caused sb_set_blocksize() to fail for buffers read
-with the initial minimum block size that remained unupdated in the
-super_block structure.
-
-Since nilfs2 mkfs tool does not accept block sizes larger than the system
-page size, this has been overlooked.  However, it is possible to create
-this situation by intentionally modifying the tool or by passing a
-filesystem image created on a system with a large page size to a system
-with a smaller page size and mounting it.
-
-Fix this issue by inserting the expected error handling for the call to
-sb_set_blocksize().
-
-Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b279bbb3314e ("octeontx2-af: NIX Tx scheduler queue config support")
+Signed-off-by: Rahul Bhansali <rbhansali@marvell.com>
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -716,7 +716,11 @@ int init_nilfs(struct the_nilfs *nilfs,
- 			goto failed_sbh;
- 		}
- 		nilfs_release_super_block(nilfs);
--		sb_set_blocksize(sb, blocksize);
-+		if (!sb_set_blocksize(sb, blocksize)) {
-+			nilfs_err(sb, "bad blocksize %d", blocksize);
-+			err = -EINVAL;
-+			goto out;
-+		}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.c
+index b3150f0532919..d46ac29adb966 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.c
+@@ -31,8 +31,8 @@ static struct hw_reg_map txsch_reg_map[NIX_TXSCH_LVL_CNT] = {
+ 	{NIX_TXSCH_LVL_TL4, 3, 0xFFFF, {{0x0B00, 0x0B08}, {0x0B10, 0x0B18},
+ 			      {0x1200, 0x12E0} } },
+ 	{NIX_TXSCH_LVL_TL3, 4, 0xFFFF, {{0x1000, 0x10E0}, {0x1600, 0x1608},
+-			      {0x1610, 0x1618}, {0x1700, 0x17B0} } },
+-	{NIX_TXSCH_LVL_TL2, 2, 0xFFFF, {{0x0E00, 0x0EE0}, {0x1700, 0x17B0} } },
++			      {0x1610, 0x1618}, {0x1700, 0x17C8} } },
++	{NIX_TXSCH_LVL_TL2, 2, 0xFFFF, {{0x0E00, 0x0EE0}, {0x1700, 0x17C8} } },
+ 	{NIX_TXSCH_LVL_TL1, 1, 0xFFFF, {{0x0C00, 0x0D98} } },
+ };
  
- 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
- 		if (err)
+-- 
+2.42.0
+
 
 
 
