@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-6281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717D980D9D4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC29580D944
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28425281FC6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29BBE1C216B9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31196524AF;
-	Mon, 11 Dec 2023 18:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE64251C46;
+	Mon, 11 Dec 2023 18:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IV10e+QT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EX+t3fOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD73CE548;
-	Mon, 11 Dec 2023 18:56:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61355C433C8;
-	Mon, 11 Dec 2023 18:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7927651C37;
+	Mon, 11 Dec 2023 18:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F295CC433C8;
+	Mon, 11 Dec 2023 18:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321003;
-	bh=f5lD9SLgkNErgUMQmKqGF5kxkhYxBAKDy/eELllGP8g=;
+	s=korg; t=1702320741;
+	bh=bWX/HUoxtTJ4ANCku19NTNJ+4sX86vOZkTxH+ZaMekw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IV10e+QTdu+V8SRABF6mKVWh163OR06iPzk6PXMlz3vxZigG4is8pN2NmHw5ggsip
-	 oNy+EeXgVQid2EpeFWaacGn3elk7tPzTGpgFQkDO7gyIgSsJNOYIR1J6RsDuOA6ru0
-	 b02vNiDnOU5hbr6vpdBto9uawsqTeR/idQT+ZVWk=
+	b=EX+t3fOQlg0OtJczAzKqHRe+A9dnlxEyYeAJv64OXNMs6c856D0bB5ufXsZo2WOrh
+	 7ZkqyyD4LkhxJQAudhFpTky9JdRl1AfdjEo8x4reb6tuxYJFHeraWYTn9nrN15j7HD
+	 7iVLR5iMHWCKG/ql5G8zTquK3hyPAvM0HKUkVykM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Xiao Ni <xni@redhat.com>,
-	Song Liu <song@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/141] md: dont leave MD_RECOVERY_FROZEN in error path of md_set_readonly()
-Date: Mon, 11 Dec 2023 19:22:14 +0100
-Message-ID: <20231211182029.822505172@linuxfoundation.org>
+Subject: [PATCH 6.1 145/194] tracing: Stop current tracer when resizing buffer
+Date: Mon, 11 Dec 2023 19:22:15 +0100
+Message-ID: <20231211182043.089150597@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,92 +56,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c9f7cb5b2bc968adcdc686c197ed108f47fd8eb0 ]
+[ Upstream commit d78ab792705c7be1b91243b2544d1a79406a2ad7 ]
 
-If md_set_readonly() failed, the array could still be read-write, however
-'MD_RECOVERY_FROZEN' could still be set, which leave the array in an
-abnormal state that sync or recovery can't continue anymore.
-Hence make sure the flag is cleared after md_set_readonly() returns.
+When the ring buffer is being resized, it can cause side effects to the
+running tracer. For instance, there's a race with irqsoff tracer that
+swaps individual per cpu buffers between the main buffer and the snapshot
+buffer. The resize operation modifies the main buffer and then the
+snapshot buffer. If a swap happens in between those two operations it will
+break the tracer.
 
-Fixes: 88724bfa68be ("md: wait for pending superblock updates before switching to read-only")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Xiao Ni <xni@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231205094215.1824240-3-yukuai1@huaweicloud.com
+Simply stop the running tracer before resizing the buffers and enable it
+again when finished.
+
+Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ kernel/trace/trace.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 2d04073174782..aae9ec78c0e8c 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -6311,6 +6311,9 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 	int err = 0;
- 	int did_freeze = 0;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 048728807f265..d2db4d6f0f2fd 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6268,9 +6268,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ 	if (!tr->array_buffer.buffer)
+ 		return 0;
  
-+	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		return -EBUSY;
++	/* Do not allow tracing while resizng ring buffer */
++	tracing_stop_tr(tr);
 +
- 	if (!test_bit(MD_RECOVERY_FROZEN, &mddev->recovery)) {
- 		did_freeze = 1;
- 		set_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
-@@ -6323,8 +6326,6 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 		 * which will now never happen */
- 		wake_up_process(mddev->sync_thread->tsk);
+ 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
+ 	if (ret < 0)
+-		return ret;
++		goto out_start;
  
--	if (mddev->external && test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
--		return -EBUSY;
- 	mddev_unlock(mddev);
- 	wait_event(resync_wait, !test_bit(MD_RECOVERY_RUNNING,
- 					  &mddev->recovery));
-@@ -6337,29 +6338,30 @@ static int md_set_readonly(struct mddev *mddev, struct block_device *bdev)
- 	    mddev->sync_thread ||
- 	    test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 		pr_warn("md: %s still in use.\n",mdname(mddev));
--		if (did_freeze) {
--			clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
--			set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
--			md_wakeup_thread(mddev->thread);
--		}
- 		err = -EBUSY;
- 		goto out;
+ #ifdef CONFIG_TRACER_MAX_TRACE
+ 	if (!tr->current_trace->use_max_tr)
+@@ -6298,7 +6301,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ 			WARN_ON(1);
+ 			tracing_disabled = 1;
+ 		}
+-		return ret;
++		goto out_start;
  	}
-+
- 	if (mddev->pers) {
- 		__md_stop_writes(mddev);
  
--		err  = -ENXIO;
--		if (mddev->ro == MD_RDONLY)
-+		if (mddev->ro == MD_RDONLY) {
-+			err  = -ENXIO;
- 			goto out;
-+		}
-+
- 		mddev->ro = MD_RDONLY;
- 		set_disk_ro(mddev->gendisk, 1);
-+	}
-+
-+out:
-+	if ((mddev->pers && !err) || did_freeze) {
- 		clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 		set_bit(MD_RECOVERY_NEEDED, &mddev->recovery);
- 		md_wakeup_thread(mddev->thread);
- 		sysfs_notify_dirent_safe(mddev->sysfs_state);
--		err = 0;
- 	}
--out:
-+
- 	mutex_unlock(&mddev->open_mutex);
- 	return err;
+ 	update_buffer_entries(&tr->max_buffer, cpu);
+@@ -6307,7 +6310,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ #endif /* CONFIG_TRACER_MAX_TRACE */
+ 
+ 	update_buffer_entries(&tr->array_buffer, cpu);
+-
++ out_start:
++	tracing_start_tr(tr);
+ 	return ret;
  }
+ 
 -- 
 2.42.0
 
