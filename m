@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A8480D97C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7F880D56F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11401F21BBE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49A391F21634
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110F551C58;
-	Mon, 11 Dec 2023 18:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9610851020;
+	Mon, 11 Dec 2023 18:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU5/g6i2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1+zfoQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ECD51C38;
-	Mon, 11 Dec 2023 18:54:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41758C433C7;
-	Mon, 11 Dec 2023 18:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A044F212;
+	Mon, 11 Dec 2023 18:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C344DC433C7;
+	Mon, 11 Dec 2023 18:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320850;
-	bh=UtNHiPbTfWPI0GGkqAhV8OMP57SeatUtQj23S06HIns=;
+	s=korg; t=1702319075;
+	bh=6j18Z38UQwfgOoV54NTPO6ig/ByL9W4/3o49fZEW5S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GU5/g6i2zkC74O+LM0bv9SUN3XV1tLAaDS5ChsvGycXAv7m0KUYn9oywto4WlB5RN
-	 X5ys/dbN0tYpBliimiiIbpXtrKXrUg5tGTmYoOSYSrcxlU1L8StzxpEKRIxMgHzn0d
-	 dK0Zn5kZisn0BhSfVkhqqDfvdHNFV1hOQMgsFWik=
+	b=G1+zfoQbdkzohPnAEcbVC5R25XuTuzBGTvn39rVv9en5uuOx9kjiy+GHUHCPVY+TR
+	 +MBqrNfgnOCbmjnn+y60dpO4/G+odTT7fuSxsuzsuXNvoGhbxC1Y3etXzkOi/aP2Mu
+	 mz6i1cyzHBES1K974pVilAQW7kyI0R7Ct3zRTRZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/141] octeontx2-af: Check return value of nix_get_nixlf before using nixlf
+Subject: [PATCH 4.19 08/55] netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
 Date: Mon, 11 Dec 2023 19:21:18 +0100
-Message-ID: <20231211182027.356366410@linuxfoundation.org>
+Message-ID: <20231211182012.528035596@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-[ Upstream commit 830139e7b6911266a84a77e1f18abf758995cc89 ]
+[ Upstream commit 28628fa952fefc7f2072ce6e8016968cc452b1ba ]
 
-If a NIXLF is not attached to a PF/VF device then
-nix_get_nixlf function fails and returns proper error
-code. But npc_get_default_entry_action does not check it
-and uses garbage value in subsequent calls. Fix this
-by cheking the return value of nix_get_nixlf.
+Linkui Xiao reported that there's a race condition when ipset swap and destroy is
+called, which can lead to crash in add/del/test element operations. Swap then
+destroy are usual operations to replace a set with another one in a production
+system. The issue can in some cases be reproduced with the script:
 
-Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
+ipset add hash_ip1 172.20.0.0/16
+ipset add hash_ip1 192.168.0.0/16
+iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
+while [ 1 ]
+do
+	# ... Ongoing traffic...
+        ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
+        ipset add hash_ip2 172.20.0.0/16
+        ipset swap hash_ip1 hash_ip2
+        ipset destroy hash_ip2
+        sleep 0.05
+done
+
+In the race case the possible order of the operations are
+
+	CPU0			CPU1
+	ip_set_test
+				ipset swap hash_ip1 hash_ip2
+				ipset destroy hash_ip2
+	hash_net_kadt
+
+Swap replaces hash_ip1 with hash_ip2 and then destroy removes hash_ip2 which
+is the original hash_ip1. ip_set_test was called on hash_ip1 and because destroy
+removed it, hash_net_kadt crashes.
+
+The fix is to force ip_set_swap() to wait for all readers to finish accessing the
+old set pointers by calling synchronize_rcu().
+
+The first version of the patch was written by Linkui Xiao <xiaolinkui@kylinos.cn>.
+
+v2: synchronize_rcu() is moved into ip_set_swap() in order not to burden
+    ip_set_destroy() unnecessarily when all sets are destroyed.
+v3: Florian Westphal pointed out that all netfilter hooks run with rcu_read_lock() held
+    and em_ipset.c wraps the entire ip_set_test() in rcu read lock/unlock pair.
+    So there's no need to extend the rcu read locked area in ipset itself.
+
+Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
+Reported by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/ipset/ip_set_core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index d1249da7a18fb..a3fd20d26b942 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -388,7 +388,13 @@ static u64 npc_get_default_entry_action(struct rvu *rvu, struct npc_mcam *mcam,
- 	int bank, nixlf, index;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 31756d1bf83e7..031bb83aed70a 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -64,6 +64,8 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+ 	ip_set_dereference((inst)->ip_set_list)[id]
+ #define ip_set_ref_netlink(inst,id)	\
+ 	rcu_dereference_raw((inst)->ip_set_list)[id]
++#define ip_set_dereference_nfnl(p)	\
++	rcu_dereference_check(p, lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET))
  
- 	/* get ucast entry rule entry index */
--	nix_get_nixlf(rvu, pf_func, &nixlf, NULL);
-+	if (nix_get_nixlf(rvu, pf_func, &nixlf, NULL)) {
-+		dev_err(rvu->dev, "%s: nixlf not attached to pcifunc:0x%x\n",
-+			__func__, pf_func);
-+		/* Action 0 is drop */
-+		return 0;
-+	}
+ /* The set types are implemented in modules and registered set types
+  * can be found in ip_set_type_list. Adding/deleting types is
+@@ -552,15 +554,10 @@ __ip_set_put_netlink(struct ip_set *set)
+ static inline struct ip_set *
+ ip_set_rcu_get(struct net *net, ip_set_id_t index)
+ {
+-	struct ip_set *set;
+ 	struct ip_set_net *inst = ip_set_pernet(net);
+ 
+-	rcu_read_lock();
+-	/* ip_set_list itself needs to be protected */
+-	set = rcu_dereference(inst->ip_set_list)[index];
+-	rcu_read_unlock();
+-
+-	return set;
++	/* ip_set_list and the set pointer need to be protected */
++	return ip_set_dereference_nfnl(inst->ip_set_list)[index];
+ }
+ 
+ int
+@@ -1227,6 +1224,9 @@ static int ip_set_swap(struct net *net, struct sock *ctnl, struct sk_buff *skb,
+ 	ip_set(inst, to_id) = from;
+ 	write_unlock_bh(&ip_set_ref_lock);
+ 
++	/* Make sure all readers of the old set pointers are completed. */
++	synchronize_rcu();
 +
- 	index = npc_get_nixlf_mcam_index(mcam, pf_func, nixlf,
- 					 NIXLF_UCAST_ENTRY);
- 	bank = npc_get_bank(mcam, index);
+ 	return 0;
+ }
+ 
 -- 
 2.42.0
 
