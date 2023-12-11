@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBD880D7E1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BF880D927
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C172280EC1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2A011F21AF4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F7651036;
-	Mon, 11 Dec 2023 18:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C934E51C5E;
+	Mon, 11 Dec 2023 18:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uq9XbCR8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1U5GOH1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FBBFC06;
-	Mon, 11 Dec 2023 18:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49044C433C7;
-	Mon, 11 Dec 2023 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835F65102A;
+	Mon, 11 Dec 2023 18:51:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AB0C433C8;
+	Mon, 11 Dec 2023 18:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320038;
-	bh=hNR1HtgSSCOHPBq8JX2D0oGJkHITlsdkbPaW4kic6Po=;
+	s=korg; t=1702320684;
+	bh=n8KWG4ToQwMdY5zPQwM4iRBXobbHpfA2awrwaGZKHVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uq9XbCR8TCOGfd8CNAYEQG1S9RLXC69oWGbFZD0Wieng4fVT9cjTVVRL64QqpLlTT
-	 2VdkAhXeThvUHvT+GBtK4DaVUn1gEPICKdaY4bkhb+CgNtnnSr5/PST02200iZL98Y
-	 WarUitjpIWQooTqnuh+DKNTgY9favfcDL1KYv/dg=
+	b=1U5GOH1uoQkbteMEKVmcdS8kxyEgBpdeBG+HvwzmDpcbbAblJ+j1Z9Qxk0JuuMTjI
+	 D9iaswh7vBRPXFF+4Rf7c1U4QDR7DN76vKVaXKikq7Z3Euvl7r9dS12vq4dZhLjhGY
+	 sHgLEyYvooSlEvZMEGbu+Zc6O/jqBuZTV/lM+S/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 80/97] MIPS: Loongson64: Reserve vgabios memory on boot
+	Tim Huang <Tim.Huang@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/194] drm/amdgpu: fix memory overflow in the IB test
 Date: Mon, 11 Dec 2023 19:22:23 +0100
-Message-ID: <20231211182023.227695028@linuxfoundation.org>
+Message-ID: <20231211182043.481747623@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +53,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 8f7aa77a463f47c9e00592d02747a9fcf2271543 upstream.
+[ Upstream commit 6b0b7789a7a5f3e69185449f891beea58e563f9b ]
 
-vgabios is passed from firmware to kernel on Loongson64 systems.
-Sane firmware will keep this pointer in reserved memory space
-passed from the firmware but insane firmware keeps it in low
-memory before kernel entry that is not reserved.
+Fix a memory overflow issue in the gfx IB test
+for some ASICs. At least 20 bytes are needed for
+the IB test packet.
 
-Previously kernel won't try to allocate memory from low memory
-before kernel entry on boot, but after converting to memblock
-it will do that.
+v2: correct code indentation errors. (Christian)
 
-Fix by resversing those memory on early boot.
-
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/loongson64/init.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c  | 4 ++--
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/mips/loongson64/init.c
-+++ b/arch/mips/loongson64/init.c
-@@ -140,6 +140,11 @@ static __init void reserve_pio_range(voi
- 			}
- 		}
- 	}
-+
-+	/* Reserve vgabios if it comes from firmware */
-+	if (loongson_sysconf.vgabios_addr)
-+		memblock_reserve(virt_to_phys((void *)loongson_sysconf.vgabios_addr),
-+				SZ_256K);
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 23e7e5126eae6..66a6f7a37ebcf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -397,7 +397,7 @@ static int gfx_v11_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
+ 		adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 		cpu_ptr = &adev->wb.wb[index];
  
- void __init arch_init_irq(void)
+-		r = amdgpu_ib_get(adev, NULL, 16, AMDGPU_IB_POOL_DIRECT, &ib);
++		r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 		if (r) {
+ 			DRM_ERROR("amdgpu: failed to get ib (%ld).\n", r);
+ 			goto err1;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+index 7f0b18b0d4c48..71ef25425c7f6 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -883,8 +883,8 @@ static int gfx_v8_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
+ 	gpu_addr = adev->wb.gpu_addr + (index * 4);
+ 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 	memset(&ib, 0, sizeof(ib));
+-	r = amdgpu_ib_get(adev, NULL, 16,
+-					AMDGPU_IB_POOL_DIRECT, &ib);
++
++	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 	if (r)
+ 		goto err1;
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index fe371022e5104..84ca601f7d5f3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1034,8 +1034,8 @@ static int gfx_v9_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
+ 	gpu_addr = adev->wb.gpu_addr + (index * 4);
+ 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 	memset(&ib, 0, sizeof(ib));
+-	r = amdgpu_ib_get(adev, NULL, 16,
+-					AMDGPU_IB_POOL_DIRECT, &ib);
++
++	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 	if (r)
+ 		goto err1;
+ 
+-- 
+2.42.0
+
 
 
 
