@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-6051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2410E80D87D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E779380D6DC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D20B828185A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53CD2B213B1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5675A51038;
-	Mon, 11 Dec 2023 18:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335C152F98;
+	Mon, 11 Dec 2023 18:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x9JVcUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcY0XWHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15713C8C8;
-	Mon, 11 Dec 2023 18:46:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EADDC433C7;
-	Mon, 11 Dec 2023 18:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D75FC06;
+	Mon, 11 Dec 2023 18:33:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6924FC433CB;
+	Mon, 11 Dec 2023 18:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320378;
-	bh=e1SVf7fLveMGTgddg556JNZjGnk/wXDgLRAxn3JFbp4=;
+	s=korg; t=1702319629;
+	bh=pNhvH8vJMgJulFZJZ67BbfdzSeXbNRzdv14WaYFt6LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1x9JVcUD12TirRoVF9CL3ot+qZle1RLh5QwJw/H9YXDvThJi/mJGXgvi376IdFs6P
-	 BzGzZzpMm8b2raxlW/45aAscy3SmxhWmKQt320Sej5QeUQzsEHYVlacctB8UNo9eFG
-	 zfH5nR/FEwv6+6k/TPonPUyZQD4elRtvpE8xPoDk=
+	b=VcY0XWHc76XSY8LEGA245aY7AG+uWRE40NOwbl/O6uG+hXnbLtW49TdmpZpn+nKxH
+	 bXgxW2U+cJsW+SDa0e3g6dP7HiDbyiBdJQ4rwcWlW2y58/gR2boP3sLwld1BYiErzC
+	 yjtWpPYJmO9sMSP/KxsWw80mZGFMR5yN7zmCWbvQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/194] net: bnxt: fix a potential use-after-free in bnxt_init_tc
+	Jann Horn <jannh@google.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 136/244] io_uring: fix mutex_unlock with unreferenced ctx
 Date: Mon, 11 Dec 2023 19:20:29 +0100
-Message-ID: <20231211182038.323502788@linuxfoundation.org>
+Message-ID: <20231211182051.884896098@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,48 +53,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit d007caaaf052f82ca2340d4c7b32d04a3f5dbf3f ]
+commit f7b32e785042d2357c5abc23ca6db1b92c91a070 upstream.
 
-When flow_indr_dev_register() fails, bnxt_init_tc will free
-bp->tc_info through kfree(). However, the caller function
-bnxt_init_one() will ignore this failure and call
-bnxt_shutdown_tc() on failure of bnxt_dl_register(), where
-a use-after-free happens. Fix this issue by setting
-bp->tc_info to NULL after kfree().
+Callers of mutex_unlock() have to make sure that the mutex stays alive
+for the whole duration of the function call. For io_uring that means
+that the following pattern is not valid unless we ensure that the
+context outlives the mutex_unlock() call.
 
-Fixes: 627c89d00fb9 ("bnxt_en: flow_offload: offload tunnel decap rules via indirect callbacks")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://lore.kernel.org/r/20231204024004.8245-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+mutex_lock(&ctx->uring_lock);
+req_put(req); // typically via io_req_task_submit()
+mutex_unlock(&ctx->uring_lock);
+
+Most contexts are fine: io-wq pins requests, syscalls hold the file,
+task works are taking ctx references and so on. However, the task work
+fallback path doesn't follow the rule.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 04fc6c802d ("io_uring: save ctx put/get for task_work submit")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/io-uring/CAG48ez3xSoYb+45f1RLtktROJrpiDQ1otNvdR+YLQf7m+Krj5Q@mail.gmail.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/io_uring.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index d8afcf8d6b30e..4d6663ff84722 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -2075,6 +2075,7 @@ int bnxt_init_tc(struct bnxt *bp)
- 	rhashtable_destroy(&tc_info->flow_table);
- free_tc_info:
- 	kfree(tc_info);
-+	bp->tc_info = NULL;
- 	return rc;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -269,6 +269,7 @@ static __cold void io_fallback_req_func(
+ 	struct io_kiocb *req, *tmp;
+ 	struct io_tw_state ts = { .locked = true, };
+ 
++	percpu_ref_get(&ctx->refs);
+ 	mutex_lock(&ctx->uring_lock);
+ 	llist_for_each_entry_safe(req, tmp, node, io_task_work.node)
+ 		req->io_task_work.func(req, &ts);
+@@ -276,6 +277,7 @@ static __cold void io_fallback_req_func(
+ 		return;
+ 	io_submit_flush_completions(ctx);
+ 	mutex_unlock(&ctx->uring_lock);
++	percpu_ref_put(&ctx->refs);
  }
  
--- 
-2.42.0
-
+ static int io_alloc_hash_table(struct io_hash_table *table, unsigned bits)
+@@ -3138,12 +3140,7 @@ static __cold void io_ring_exit_work(str
+ 	init_completion(&exit.completion);
+ 	init_task_work(&exit.task_work, io_tctx_exit_cb);
+ 	exit.ctx = ctx;
+-	/*
+-	 * Some may use context even when all refs and requests have been put,
+-	 * and they are free to do so while still holding uring_lock or
+-	 * completion_lock, see io_req_task_submit(). Apart from other work,
+-	 * this lock/unlock section also waits them to finish.
+-	 */
++
+ 	mutex_lock(&ctx->uring_lock);
+ 	while (!list_empty(&ctx->tctx_list)) {
+ 		WARN_ON_ONCE(time_after(jiffies, timeout));
 
 
 
