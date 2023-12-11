@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-5980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9A880D826
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2EA80D7DE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02EC91F213BC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0763B1C209EE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDB751C2C;
-	Mon, 11 Dec 2023 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5506F537E3;
+	Mon, 11 Dec 2023 18:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhiJNYxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTtMgGBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E336FC06;
-	Mon, 11 Dec 2023 18:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BDDC433C7;
-	Mon, 11 Dec 2023 18:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE9751C2C;
+	Mon, 11 Dec 2023 18:40:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEED8C433C7;
+	Mon, 11 Dec 2023 18:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320188;
-	bh=7oNWssxWgzdnSIOnry5Zdnwoe38sBYNtP1j3/gPRvUs=;
+	s=korg; t=1702320033;
+	bh=FmvTT5O3XQ2Cx7brdjOwWckzRKQTObHtuf7LQjc49lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EhiJNYxitVR6HqaiCWYVZ8vA4V8/VPWntKpfFhZoFbwCrc3LeiwIXlfY2ogiw2LEi
-	 wqSe/3tFf+zpMXebuwTpHvkWumggINeXAUs79PDLWmf8UjL4YATd8gvzv9oqy6giJw
-	 Hv0kTMgFPOwhDx4Xt8R4XGWDGBVvZyeM+Kc5151s=
+	b=RTtMgGBVAK4otYhS+nxKSWCJZ55jOcEtlxiV42DsAYE9Aqs+E//o4PvzKlKAz0qT6
+	 lqboOTB5qX7WkNTwNJfQAtsG5zm8UzyJD+YKqizdOSq5r5zK98ysZPa1TOer2vEAA9
+	 Gyu+3RbEpjCF2Y5H3iOVmN7vMMQozAQvtEo2AVmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 37/67] tracing: Always update snapshot buffer size
+	stable@kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 78/97] x86/CPU/AMD: Check vendor in the AMD microcode callback
 Date: Mon, 11 Dec 2023 19:22:21 +0100
-Message-ID: <20231211182016.651343317@linuxfoundation.org>
+Message-ID: <20231211182023.138726783@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,88 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
+commit 9b8493dc43044376716d789d07699f17d538a7c4 upstream.
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). The update of the ring buffer
-size would check if the instance was the top level and if so, it would
-also update the snapshot buffer as it needs to be the same as the main
-buffer.
+Commit in Fixes added an AMD-specific microcode callback. However, it
+didn't check the CPU vendor the kernel runs on explicitly.
 
-Now that lower level instances also has a snapshot buffer, they too need
-to update their snapshot buffer sizes when the main buffer is changed,
-otherwise the following can be triggered:
+The only reason the Zenbleed check in it didn't run on other x86 vendors
+hardware was pure coincidental luck:
 
- # cd /sys/kernel/tracing
- # echo 1500 > buffer_size_kb
- # mkdir instances/foo
- # echo irqsoff > instances/foo/current_tracer
- # echo 1000 > instances/foo/buffer_size_kb
+  if (!cpu_has_amd_erratum(c, amd_zenbleed))
+	  return;
 
-Produces:
+gives true on other vendors because they don't have those families and
+models.
 
- WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+However, with the removal of the cpu_has_amd_erratum() in
 
-Which is:
+  05f5f73936fa ("x86/CPU/AMD: Drop now unused CPU erratum checking function")
 
-	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+that coincidental condition is gone, leading to the zenbleed check
+getting executed on other vendors too.
 
-	if (ret == -EBUSY) {
-		[..]
-	}
+Add the explicit vendor check for the whole callback as it should've
+been done in the first place.
 
-	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
-
-That's because ring_buffer_swap_cpu() has:
-
-	int ret = -EINVAL;
-
-	[..]
-
-	/* At least make sure the two buffers are somewhat the same */
-	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
-		goto out;
-
-	[..]
- out:
-	return ret;
- }
-
-Instead, update all instances' snapshot buffer sizes when their main
-buffer size is updated.
-
-Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Cc: <stable@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231201184226.16749-1-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5597,8 +5597,7 @@ static int __tracing_resize_ring_buffer(
- 		return ret;
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1328,6 +1328,9 @@ static void zenbleed_check_cpu(void *unu
  
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
--	    !tr->current_trace->use_max_tr)
-+	if (!tr->current_trace->use_max_tr)
- 		goto out;
+ void amd_check_microcode(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		return;
++
+ 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
+ }
  
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
