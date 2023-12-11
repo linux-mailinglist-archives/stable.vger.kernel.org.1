@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F7280D6DB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DC480D798
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971881C218B7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8F831C213FE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D892452F9E;
-	Mon, 11 Dec 2023 18:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA9453E32;
+	Mon, 11 Dec 2023 18:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Kptb2X9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF3l74Nd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0EFC06;
-	Mon, 11 Dec 2023 18:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A41C433C7;
-	Mon, 11 Dec 2023 18:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC1B524B8;
+	Mon, 11 Dec 2023 18:38:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983B7C433C8;
+	Mon, 11 Dec 2023 18:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319635;
-	bh=AKzVPYlgxOeDP/r2pcuSh1S3Mtbg97pt6JnWdjdMpAM=;
+	s=korg; t=1702319898;
+	bh=9C9sz2jVQn08iHUHok58yxXBgHedW1EUldK92+/NDuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Kptb2X9PVWSJpQuiICgaQXtt91+GHtJkLoUL88i1GOMDNpIoWfwugkfo6EWuB7Gb
-	 MGU/OawwxfCJI9m4aiuZAL18wV54BYPM0ynNTLojeGSo/18Ed8VTr4t/roky9q+jJP
-	 ru+V8Sknjzluu3VMN0vwQzr+Z2MlO6NDtiY6wPC0=
+	b=AF3l74Ndy3860w3EBFQnRh0PuuHADEV8uetC+jAP+9uWH6UvS1VFrbkd3p6NJHUmt
+	 0VEloAukTt5bnS4tNNs8HG2R33GqITHWdsO3ZKZQfhw31bkRIYSe6jNQIdyhF3CNgu
+	 EE6ekx22AtQwLHnMLHhpZJyGW+9emr1dadBcp7js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 179/244] arm64: dts: mediatek: mt7622: fix memory node warning check
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 09/97] platform/x86: asus-nb-wmi: Allow configuring SW_TABLET_MODE method with a module option
 Date: Mon, 11 Dec 2023 19:21:12 +0100
-Message-ID: <20231211182053.968899384@linuxfoundation.org>
+Message-ID: <20231211182020.221870967@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
+[ Upstream commit 6be70ccdd989e40af151ce52db5b2d93e97fc9fb ]
 
-dtbs_check throws a warning at the memory node:
-Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+Unfortunately we have been unable to find a reliable way to detect if
+and how SW_TABLET_MODE reporting is supported, so we are relying on
+DMI quirks for this.
 
-fix by adding the address into the node name.
+Add a module-option to specify the SW_TABLET_MODE method so that this can
+be easily tested without needing to rebuild the kernel.
 
-Cc: stable@vger.kernel.org
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BugLink: https://gitlab.freedesktop.org/libinput/libinput/-/issues/639
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20210812145513.39117-1-hdegoede@redhat.com
+Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -73,7 +73,7 @@
- 		};
- 	};
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index f47b6f30599de..b7eacf54f2862 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -41,6 +41,10 @@ static int wapf = -1;
+ module_param(wapf, uint, 0444);
+ MODULE_PARM_DESC(wapf, "WAPF value");
  
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x40000000>;
- 	};
++static int tablet_mode_sw = -1;
++module_param(tablet_mode_sw, uint, 0444);
++MODULE_PARM_DESC(tablet_mode_sw, "Tablet mode detect: -1:auto 0:disable 1:kbd-dock 2:lid-flip");
++
+ static struct quirk_entry *quirks;
  
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -55,7 +55,7 @@
- 		};
- 	};
+ static bool asus_q500a_i8042_filter(unsigned char data, unsigned char str,
+@@ -477,6 +481,21 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
+ 	else
+ 		wapf = quirks->wapf;
  
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x20000000>;
- 	};
- 
++	switch (tablet_mode_sw) {
++	case 0:
++		quirks->use_kbd_dock_devid = false;
++		quirks->use_lid_flip_devid = false;
++		break;
++	case 1:
++		quirks->use_kbd_dock_devid = true;
++		quirks->use_lid_flip_devid = false;
++		break;
++	case 2:
++		quirks->use_kbd_dock_devid = false;
++		quirks->use_lid_flip_devid = true;
++		break;
++	}
++
+ 	if (quirks->i8042_filter) {
+ 		ret = i8042_install_filter(quirks->i8042_filter);
+ 		if (ret) {
+-- 
+2.42.0
+
 
 
 
