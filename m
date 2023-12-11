@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F3F80D76A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B8B180D9CE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12C061C20FAB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1056DB21994
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F395C524D3;
-	Mon, 11 Dec 2023 18:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28FD524BA;
+	Mon, 11 Dec 2023 18:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTUDTIWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2c/2eye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A1FFBE1;
-	Mon, 11 Dec 2023 18:36:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE550C433C8;
-	Mon, 11 Dec 2023 18:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC0A51C44;
+	Mon, 11 Dec 2023 18:56:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AFAC433C8;
+	Mon, 11 Dec 2023 18:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319796;
-	bh=iBnSiHaPK0kQzYz1Oqgiay8I4ygWnWuqZyn6ktNb3Z4=;
+	s=korg; t=1702320989;
+	bh=1Wh5fkCrjKepni9oQNFmRKAhpXFGlHWvoAaxbzY/jO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTUDTIWggyIp8Y3fS3fcvdLFbBpkXPflomKomn/K0jucjOdqAP+SjWLo2ZbfK8tS4
-	 +q7QNKVGGTVFlDE8ClEdIDVr0+u3DmcBwa6c5RFP+LIVxT4bJSIwAf06bKO9p6Pj7c
-	 LBbOfJhF2vXxwRwoL91anKUmU+sukLJbUGTednLE=
+	b=h2c/2eyeYVMLGLfTrx2l/QopS77E7lHwcf6kiOscF4ORCVlpKqGHVQuRooMq/lxdF
+	 67jRSv5RiJDHEJCOtiNB3o2bgsfxdFUojki9PiORIRVxarZeQBuIUwtgh+Ns2p+PH9
+	 v/CYnk0h4VsDm3C3vubPfclLRIlik3sgCVO442Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Bo Gan <bo.gan@broadcom.com>,
-	Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>,
-	Ingo Molnar <mingo@kernel.org>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/244] x86/sev: Fix kernel crash due to late update to read-only ghcb_version
+Subject: [PATCH 5.15 040/141] netfilter: nf_tables: validate family when identifying table via handle
 Date: Mon, 11 Dec 2023 19:21:39 +0100
-Message-ID: <20231211182055.193449907@linuxfoundation.org>
+Message-ID: <20231211182028.274371146@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 27d25348d42161837be08fc63b04a2559d2e781c ]
+[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
 
-A write-access violation page fault kernel crash was observed while running
-cpuhotplug LTP testcases on SEV-ES enabled systems. The crash was
-observed during hotplug, after the CPU was offlined and the process
-was migrated to different CPU. setup_ghcb() is called again which
-tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
-is a read_only variable which is initialised during booting.
+Validate table family when looking up for it via NFTA_TABLE_HANDLE.
 
-Trying to write it results in a pagefault:
-
-  BUG: unable to handle page fault for address: ffffffffba556e70
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0003) - permissions violation
-  [ ...]
-  Call Trace:
-   <TASK>
-   ? __die_body.cold+0x1a/0x1f
-   ? __die+0x2a/0x35
-   ? page_fault_oops+0x10c/0x270
-   ? setup_ghcb+0x71/0x100
-   ? __x86_return_thunk+0x5/0x6
-   ? search_exception_tables+0x60/0x70
-   ? __x86_return_thunk+0x5/0x6
-   ? fixup_exception+0x27/0x320
-   ? kernelmode_fixup_or_oops+0xa2/0x120
-   ? __bad_area_nosemaphore+0x16a/0x1b0
-   ? kernel_exc_vmm_communication+0x60/0xb0
-   ? bad_area_nosemaphore+0x16/0x20
-   ? do_kern_addr_fault+0x7a/0x90
-   ? exc_page_fault+0xbd/0x160
-   ? asm_exc_page_fault+0x27/0x30
-   ? setup_ghcb+0x71/0x100
-   ? setup_ghcb+0xe/0x100
-   cpu_init_exception_handling+0x1b9/0x1f0
-
-The fix is to call sev_es_negotiate_protocol() only in the BSP boot phase,
-and it only needs to be done once in any case.
-
-[ mingo: Refined the changelog. ]
-
-Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/1701254429-18250-1-git-send-email-kashwindayan@vmware.com
+Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/sev.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 6395bfd87b68b..d87c6ff1f5136 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1234,10 +1234,6 @@ void setup_ghcb(void)
- 	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		return;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index bf0bd44f2fb3a..20c2b4f5e8938 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -753,7 +753,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
  
--	/* First make sure the hypervisor talks a supported protocol. */
--	if (!sev_es_negotiate_protocol())
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--
- 	/*
- 	 * Check whether the runtime #VC exception handler is active. It uses
- 	 * the per-CPU GHCB page which is set up by sev_es_init_vc_handling().
-@@ -1254,6 +1250,13 @@ void setup_ghcb(void)
- 		return;
- 	}
+ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 						   const struct nlattr *nla,
+-						   u8 genmask, u32 nlpid)
++						   int family, u8 genmask, u32 nlpid)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct nft_table *table;
+@@ -761,6 +761,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 	nft_net = nft_pernet(net);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
++		    table->family == family &&
+ 		    nft_active_genmask(table, genmask)) {
+ 			if (nft_table_has_owner(table) &&
+ 			    nlpid && table->nlpid != nlpid)
+@@ -1458,7 +1459,7 @@ static int nf_tables_deltable(struct sk_buff *skb, const struct nfnl_info *info,
  
-+	/*
-+	 * Make sure the hypervisor talks a supported protocol.
-+	 * This gets called only in the BSP boot phase.
-+	 */
-+	if (!sev_es_negotiate_protocol())
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+
- 	/*
- 	 * Clear the boot_ghcb. The first exception comes in before the bss
- 	 * section is cleared.
+ 	if (nla[NFTA_TABLE_HANDLE]) {
+ 		attr = nla[NFTA_TABLE_HANDLE];
+-		table = nft_table_lookup_byhandle(net, attr, genmask,
++		table = nft_table_lookup_byhandle(net, attr, family, genmask,
+ 						  NETLINK_CB(skb).portid);
+ 	} else {
+ 		attr = nla[NFTA_TABLE_NAME];
 -- 
 2.42.0
 
