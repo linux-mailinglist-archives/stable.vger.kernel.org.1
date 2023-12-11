@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF2580D8D7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9A880D72E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15DBE1F21B8A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069FA1F218C8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B89351C37;
-	Mon, 11 Dec 2023 18:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7165E53E1C;
+	Mon, 11 Dec 2023 18:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7FVA1p2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pyKs3iz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149085103A;
-	Mon, 11 Dec 2023 18:49:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB30C433C7;
-	Mon, 11 Dec 2023 18:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3193B52F8E;
+	Mon, 11 Dec 2023 18:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C7AC433C9;
+	Mon, 11 Dec 2023 18:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320561;
-	bh=HX/WtPygJxqdxTZsL6/J2gODpq8CHdAM38n8zzuFkFA=;
+	s=korg; t=1702319712;
+	bh=TbfbVwN3mYH8NqqRrmdCxgGUCMC6Qe3+AfEE5+3FwyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7FVA1p2CC9y4an4Qn5aEjiueqftit4XE2l5H6fEdxEoBbsksDrpwOmfMqAOaVd5v
-	 UXdU+FB5Hz3VDhIm/U2H3MhE/MQSXgttVu+8rFICT6MaqAH4jx0cBR1xcuu4uvcpcc
-	 Xz5M3vpdUHU1pyF+UGnSa9c3fJZkbxbuRkxhKduw=
+	b=pyKs3iz7pUCAFUF8xaI0bi1RslHhtM7nU02f1LiT+qGMQsuNxS/rvlh4Kh4SR6W4N
+	 /OOxGnF7/bKwnZtzjomqSt8Ja/NHtUquA1q0K3U4Hu3qqLwQjGVvW/AHI7JHk1t2QQ
+	 yAfhbPAuSIG96P0EWZoNVzty0hEcbsSL+1fNjIns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shifeng Li <lishifeng1992@126.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/194] RDMA/irdma: Fix UAF in irdma_sc_ccq_get_cqe_info()
+	Daniel Golle <daniel@makrotopia.org>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 176/244] arm64: dts: mt7986: change cooling trips
 Date: Mon, 11 Dec 2023 19:21:09 +0100
-Message-ID: <20231211182040.016362506@linuxfoundation.org>
+Message-ID: <20231211182053.826188969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +53,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shifeng Li <lishifeng1992@126.com>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-[ Upstream commit 2b78832f50c4d711e161b166d7d8790968051546 ]
+commit 1fcda8ceb014aafd56f10b33e0077c93b5dd45d1 upstream.
 
-When removing the irdma driver or unplugging its aux device, the ccq
-queue is released before destorying the cqp_cmpl_wq queue.
-But in the window, there may still be completion events for wqes. That
-will cause a UAF in irdma_sc_ccq_get_cqe_info().
+Add Critical and hot trips for emergency system shutdown and limiting
+system load.
 
-[34693.333191] BUG: KASAN: use-after-free in irdma_sc_ccq_get_cqe_info+0x82f/0x8c0 [irdma]
-[34693.333194] Read of size 8 at addr ffff889097f80818 by task kworker/u67:1/26327
-[34693.333194]
-[34693.333199] CPU: 9 PID: 26327 Comm: kworker/u67:1 Kdump: loaded Tainted: G           O     --------- -t - 4.18.0 #1
-[34693.333200] Hardware name: SANGFOR Inspur/NULL, BIOS 4.1.13 08/01/2016
-[34693.333211] Workqueue: cqp_cmpl_wq cqp_compl_worker [irdma]
-[34693.333213] Call Trace:
-[34693.333220]  dump_stack+0x71/0xab
-[34693.333226]  print_address_description+0x6b/0x290
-[34693.333238]  ? irdma_sc_ccq_get_cqe_info+0x82f/0x8c0 [irdma]
-[34693.333240]  kasan_report+0x14a/0x2b0
-[34693.333251]  irdma_sc_ccq_get_cqe_info+0x82f/0x8c0 [irdma]
-[34693.333264]  ? irdma_free_cqp_request+0x151/0x1e0 [irdma]
-[34693.333274]  irdma_cqp_ce_handler+0x1fb/0x3b0 [irdma]
-[34693.333285]  ? irdma_ctrl_init_hw+0x2c20/0x2c20 [irdma]
-[34693.333290]  ? __schedule+0x836/0x1570
-[34693.333293]  ? strscpy+0x83/0x180
-[34693.333296]  process_one_work+0x56a/0x11f0
-[34693.333298]  worker_thread+0x8f/0xf40
-[34693.333301]  ? __kthread_parkme+0x78/0xf0
-[34693.333303]  ? rescuer_thread+0xc50/0xc50
-[34693.333305]  kthread+0x2a0/0x390
-[34693.333308]  ? kthread_destroy_worker+0x90/0x90
-[34693.333310]  ret_from_fork+0x1f/0x40
+Change passive trip to active to make sure fan is activated on the
+lowest trip.
 
-Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
-Signed-off-by: Shifeng Li <lishifeng1992@126.com>
-Link: https://lore.kernel.org/r/20231121101236.581694-1-lishifeng1992@126.com
-Acked-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1f5be05132f3 ("arm64: dts: mt7986: add thermal-zones")
+Fixes: c26f779a2295 ("arm64: dts: mt7986: add pwm-fan and cooling-maps to BPI-R3 dts")
+Suggested-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231025170832.78727-4-linux@fw-web.de
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/hw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts |   10 +++----
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi                |   20 ++++++++++++---
+ 2 files changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
-index 8aa507e87df37..9399d82560c92 100644
---- a/drivers/infiniband/hw/irdma/hw.c
-+++ b/drivers/infiniband/hw/irdma/hw.c
-@@ -578,9 +578,6 @@ static void irdma_destroy_cqp(struct irdma_pci_f *rf)
- 	struct irdma_cqp *cqp = &rf->cqp;
- 	int status = 0;
+--- a/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7986a-bananapi-bpi-r3.dts
+@@ -150,16 +150,16 @@
+ 			trip = <&cpu_trip_active_high>;
+ 		};
  
--	if (rf->cqp_cmpl_wq)
--		destroy_workqueue(rf->cqp_cmpl_wq);
--
- 	status = irdma_sc_cqp_destroy(dev->cqp);
- 	if (status)
- 		ibdev_dbg(to_ibdev(dev), "ERR: Destroy CQP failed %d\n", status);
-@@ -745,6 +742,9 @@ static void irdma_destroy_ccq(struct irdma_pci_f *rf)
- 	struct irdma_ccq *ccq = &rf->ccq;
- 	int status = 0;
+-		cpu-active-low {
++		cpu-active-med {
+ 			/* active: set fan to cooling level 1 */
+ 			cooling-device = <&fan 1 1>;
+-			trip = <&cpu_trip_active_low>;
++			trip = <&cpu_trip_active_med>;
+ 		};
  
-+	if (rf->cqp_cmpl_wq)
-+		destroy_workqueue(rf->cqp_cmpl_wq);
+-		cpu-passive {
+-			/* passive: set fan to cooling level 0 */
++		cpu-active-low {
++			/* active: set fan to cooling level 0 */
+ 			cooling-device = <&fan 0 0>;
+-			trip = <&cpu_trip_passive>;
++			trip = <&cpu_trip_active_low>;
+ 		};
+ 	};
+ };
+--- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+@@ -610,22 +610,34 @@
+ 			thermal-sensors = <&thermal 0>;
+ 
+ 			trips {
++				cpu_trip_crit: crit {
++					temperature = <125000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
 +
- 	if (!rf->reset)
- 		status = irdma_sc_ccq_destroy(dev->ccq, 0, true);
- 	if (status)
--- 
-2.42.0
-
++				cpu_trip_hot: hot {
++					temperature = <120000>;
++					hysteresis = <2000>;
++					type = "hot";
++				};
++
+ 				cpu_trip_active_high: active-high {
+ 					temperature = <115000>;
+ 					hysteresis = <2000>;
+ 					type = "active";
+ 				};
+ 
+-				cpu_trip_active_low: active-low {
++				cpu_trip_active_med: active-med {
+ 					temperature = <85000>;
+ 					hysteresis = <2000>;
+ 					type = "active";
+ 				};
+ 
+-				cpu_trip_passive: passive {
+-					temperature = <40000>;
++				cpu_trip_active_low: active-low {
++					temperature = <60000>;
+ 					hysteresis = <2000>;
+-					type = "passive";
++					type = "active";
+ 				};
+ 			};
+ 		};
 
 
 
