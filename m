@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-5732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6352F80D62C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB0980D85B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BBA82823CA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579E7281424
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A718C8C8;
-	Mon, 11 Dec 2023 18:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECDF5102F;
+	Mon, 11 Dec 2023 18:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8PTp0lW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljW3V8pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0510FFBE0;
-	Mon, 11 Dec 2023 18:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4110DC433C7;
-	Mon, 11 Dec 2023 18:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CDCFC06;
+	Mon, 11 Dec 2023 18:44:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D975CC433C7;
+	Mon, 11 Dec 2023 18:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319516;
-	bh=VGEvdebaD+KULnMknEJseH+T9aZumm9TiTCnEbs9pHc=;
+	s=korg; t=1702320299;
+	bh=BENXmjO2N8ichrAopCJ+VleRkRQF3LcfdvKFoGiDWmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8PTp0lWwVfYZWjlq0AC8v/vjv7hRbBr6zsfkv1eHpqtMxYjzuHvYqONekXnlXKt2
-	 KIsoOmvz3dPXuvhUr2ZTk5lWXuOjzohYSd/vWve/W7+u/A3eJLT0caj3yATea3WN3j
-	 hL/a7D9zG5zMVmoa6xhUiPltus86pivGAnnwIPOg=
+	b=ljW3V8pdOp266R1iakcCyqU45BagYkQiQUcIvHMynIM6Nu86ZoFCzlZITk1CGvjXi
+	 R+UcYbZuXht+EEqLf9mm7+QsPepJArIjRjR7SqAWW1eKB2fxCZOqlS85+A0+sqpBK0
+	 CekVcQPSMk4YOEbs6flZz9t06Y9a5DmazMT79KVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/244] ASoC: wm_adsp: fix memleak in wm_adsp_buffer_populate
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 010/194] x86: Introduce ia32_enabled()
 Date: Mon, 11 Dec 2023 19:20:00 +0100
-Message-ID: <20231211182050.562922714@linuxfoundation.org>
+Message-ID: <20231211182037.065164611@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,62 +52,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Nikolay Borisov <nik.borisov@suse.com>
 
-[ Upstream commit 29046a78a3c0a1f8fa0427f164caa222f003cf5b ]
+[ upstream commit 1da5c9bc119d3a749b519596b93f9b2667e93c4a ]
 
-When wm_adsp_buffer_read() fails, we should free buf->regions.
-Otherwise, the callers of wm_adsp_buffer_populate() will
-directly free buf on failure, which makes buf->regions a leaked
-memory.
+IA32 support on 64bit kernels depends on whether CONFIG_IA32_EMULATION
+is selected or not. As it is a compile time option it doesn't
+provide the flexibility to have distributions set their own policy for
+IA32 support and give the user the flexibility to override it.
 
-Fixes: a792af69b08f ("ASoC: wm_adsp: Refactor compress stream initialisation")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231204074158.12026-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a first step introduce ia32_enabled() which abstracts whether IA32
+compat is turned on or off. Upcoming patches will implement
+the ability to set IA32 compat state at boot time.
+
+Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20230623111409.3047467-2-nik.borisov@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm_adsp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/entry/common.c     |    4 ++++
+ arch/x86/include/asm/ia32.h |   16 +++++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index d1b9238d391e8..cb654f1b09f10 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -1451,12 +1451,12 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].base_offset,
- 					  &region->base_addr);
- 		if (ret < 0)
--			return ret;
-+			goto err;
- 
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].size_offset,
- 					  &offset);
- 		if (ret < 0)
--			return ret;
-+			goto err;
- 
- 		region->cumulative_size = offset;
- 
-@@ -1467,6 +1467,10 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 	}
- 
- 	return 0;
-+
-+err:
-+	kfree(buf->regions);
-+	return ret;
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -96,6 +96,10 @@ static __always_inline int syscall_32_en
+ 	return (int)regs->orig_ax;
  }
  
- static void wm_adsp_buffer_clear(struct wm_adsp_compr_buf *buf)
--- 
-2.42.0
-
++#ifdef CONFIG_IA32_EMULATION
++bool __ia32_enabled __ro_after_init = true;
++#endif
++
+ /*
+  * Invoke a 32-bit syscall.  Called with IRQs on in CONTEXT_KERNEL.
+  */
+--- a/arch/x86/include/asm/ia32.h
++++ b/arch/x86/include/asm/ia32.h
+@@ -68,6 +68,20 @@ extern void ia32_pick_mmap_layout(struct
+ 
+ #endif
+ 
+-#endif /* CONFIG_IA32_EMULATION */
++extern bool __ia32_enabled;
++
++static inline bool ia32_enabled(void)
++{
++	return __ia32_enabled;
++}
++
++#else /* !CONFIG_IA32_EMULATION */
++
++static inline bool ia32_enabled(void)
++{
++	return IS_ENABLED(CONFIG_X86_32);
++}
++
++#endif
+ 
+ #endif /* _ASM_X86_IA32_H */
 
 
 
