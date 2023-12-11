@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-6142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61F580D908
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB90180D751
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82EB31F21B11
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BB2281F35
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A7B524AD;
-	Mon, 11 Dec 2023 18:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAD651036;
+	Mon, 11 Dec 2023 18:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+e60upV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXxqsUqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89235102A;
-	Mon, 11 Dec 2023 18:50:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E660C433C8;
-	Mon, 11 Dec 2023 18:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F55FBE1;
+	Mon, 11 Dec 2023 18:36:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C666FC433C8;
+	Mon, 11 Dec 2023 18:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320625;
-	bh=RAsx1MYKagDxB2huMEhFKqEShRSgLtHi0e3bgF7bVoM=;
+	s=korg; t=1702319770;
+	bh=0cwpbNrrTjo4cWHlb49Upk1TeXh0jMuZk6F3YPUYfE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+e60upVIzbOHFWv0orxHAziZuDb2CjB6A8VPuxIXXVPuWerfbr2e/BmHxy8+dJ3i
-	 q4VQV20ufM4QfDvpB+e3L0MJU118Mj0CT+3h7Pss6FCeiCIz2Af33HP+DxNmWBfGC4
-	 NQl4z9GJixWGb2aVMe0vBkZoW0qndY31pdC/N5no=
+	b=YXxqsUqDKzBXZOUi0MpG3ndHb8SrfKHL+q3dVW7pO2v+UJQD2229R5od9E3fNasSk
+	 Yq8YNlw4bK182w2GYtamcY+5lzXZBdXVNHM/Byo4ur/FAWXTgUkoYFwkZtN+z7JdQq
+	 O8hf+PrLUZKjuHKMocGYc0OykGjNM2JJ3xZv71gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 130/194] arm64: dts: mediatek: mt8173-evb: Fix regulator-fixed node names
+	Roy Luo <royluo@google.com>
+Subject: [PATCH 6.6 227/244] USB: gadget: core: adjust uevent timing on gadget unbind
 Date: Mon, 11 Dec 2023 19:22:00 +0100
-Message-ID: <20231211182042.324989694@linuxfoundation.org>
+Message-ID: <20231211182056.198649420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +51,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Roy Luo <royluo@google.com>
 
-commit 24165c5dad7ba7c7624d05575a5e0cc851396c71 upstream.
+commit 73ea73affe8622bdf292de898da869d441da6a9d upstream.
 
-Fix a unit_address_vs_reg warning for the USB VBUS fixed regulators
-by renaming the regulator nodes from regulator@{0,1} to regulator-usb-p0
-and regulator-usb-p1.
+The KOBJ_CHANGE uevent is sent before gadget unbind is actually
+executed, resulting in inaccurate uevent emitted at incorrect timing
+(the uevent would have USB_UDC_DRIVER variable set while it would
+soon be removed).
+Move the KOBJ_CHANGE uevent to the end of the unbind function so that
+uevent is sent only after the change has been made.
 
+Fixes: 2ccea03a8f7e ("usb: gadget: introduce UDC Class")
 Cc: stable@vger.kernel.org
-Fixes: c0891284a74a ("arm64: dts: mediatek: add USB3 DRD driver")
-Link: https://lore.kernel.org/r/20231025093816.44327-8-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Roy Luo <royluo@google.com>
+Link: https://lore.kernel.org/r/20231128221756.2591158-1-royluo@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173-evb.dts |    4 ++--
+ drivers/usb/gadget/udc/core.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8173-evb.dts
-@@ -43,7 +43,7 @@
- 		id-gpio = <&pio 16 GPIO_ACTIVE_HIGH>;
- 	};
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1635,8 +1635,6 @@ static void gadget_unbind_driver(struct
  
--	usb_p1_vbus: regulator@0 {
-+	usb_p1_vbus: regulator-usb-p1 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "usb_vbus";
- 		regulator-min-microvolt = <5000000>;
-@@ -52,7 +52,7 @@
- 		enable-active-high;
- 	};
+ 	dev_dbg(&udc->dev, "unbinding gadget driver [%s]\n", driver->function);
  
--	usb_p0_vbus: regulator@1 {
-+	usb_p0_vbus: regulator-usb-p0 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vbus";
- 		regulator-min-microvolt = <5000000>;
+-	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+-
+ 	udc->allow_connect = false;
+ 	cancel_work_sync(&udc->vbus_work);
+ 	mutex_lock(&udc->connect_lock);
+@@ -1656,6 +1654,8 @@ static void gadget_unbind_driver(struct
+ 	driver->is_bound = false;
+ 	udc->driver = NULL;
+ 	mutex_unlock(&udc_lock);
++
++	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ }
+ 
+ /* ------------------------------------------------------------------------- */
 
 
 
