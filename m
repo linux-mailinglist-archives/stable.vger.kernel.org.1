@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-5354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1937480CB14
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A25480CB43
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 452B41C20F6F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594E71C20F1E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4F03F8C6;
-	Mon, 11 Dec 2023 13:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8952A3FE2E;
+	Mon, 11 Dec 2023 13:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GUy3h1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWISpyq8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD9B3D97E
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 13:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDD2C433C7;
-	Mon, 11 Dec 2023 13:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3611F60B;
+	Mon, 11 Dec 2023 13:41:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE03EC433C9;
+	Mon, 11 Dec 2023 13:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702301570;
-	bh=cQqYpa80niUcboA2ZrEzklpe1Sx5Et0MGoy0wZuuNSs=;
+	s=korg; t=1702302061;
+	bh=nxM3m0fd/Qts426VUxaIvUcMjAL8BjhTWiFbn8gjtHE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1GUy3h1SVa4boO4sywrzw7I1ei6zGRjKKC3SFj8To5CDi8N5BBaRD/84CiwmyJPwK
-	 jSXavIEr6ozRgbbUsim/MtX1aeMnjq2AzbEQG96Ik+W6yGguUf6kzPA8izGAw1zMdE
-	 +fjIsvBU1XX3XAWTgzWcPAzCxDzE3vucMtQN5bHI=
-Date: Mon, 11 Dec 2023 14:32:39 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: stable@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-	pabeni@redhat.com, edumazet@google.com, nhorman@tuxdriver.com,
-	yotam.gi@gmail.com, sashal@kernel.org, fw@strlen.de,
-	jacob.e.keller@intel.com, jiri@nvidia.com
-Subject: Re: [PATCH 4.14 0/4] Generic netlink multicast fixes
-Message-ID: <2023121132-retrial-dazzling-dab5@gregkh>
-References: <20231211124301.822961-1-idosch@nvidia.com>
+	b=EWISpyq8wNowbv0aYVcvdj3yFg7Rf4k6p1s8hhxK6NY7eiVikxtLg/N67DRry/c6+
+	 xCDto1x/dyxRE0i4mxYN1Kyh9Y2z8AtYz4/CsyfjqJ2ltyisaobLefFGXmNNWm7j3/
+	 U4r3banV4ANXrkdOJVgt7wqtT/0L9dgO0G01A4n0=
+Date: Mon, 11 Dec 2023 14:40:58 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	broonie@kernel.org, alsa-devel@alsa-project.org, perex@perex.cz,
+	tiwai@suse.com, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, srinivas.kandagatla@linaro.org
+Subject: Re: [PATCH stable-6.6 0/2] ASoC: qcom: sc8280xp: Limit speaker
+ digital volumes
+Message-ID: <2023121154-mule-utter-98cf@gregkh>
+References: <20231211132608.27861-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,36 +48,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231211124301.822961-1-idosch@nvidia.com>
+In-Reply-To: <20231211132608.27861-1-johan+linaro@kernel.org>
 
-On Mon, Dec 11, 2023 at 02:42:57PM +0200, Ido Schimmel wrote:
-> Restrict two generic netlink multicast groups - in the "psample" and
-> "NET_DM" families - to be root-only with the appropriate capabilities.
+On Mon, Dec 11, 2023 at 02:26:06PM +0100, Johan Hovold wrote:
+> This is a backport of the following series:
 > 
-> Patch #1 is a dependency of patch #2 which is needed by the actual fixes
-> in patches #3 and #4.
+> 	https://lore.kernel.org/lkml/20231204124736.132185-1-srinivas.kandagatla@linaro.org/
 > 
-> Florian Westphal (1):
->   netlink: don't call ->netlink_bind with table lock held
+> which did not build on 6.6 due a rename of the asoc_rtd_to_cpu()
+> interface.
 > 
-> Ido Schimmel (3):
->   genetlink: add CAP_NET_ADMIN test for multicast bind
->   psample: Require 'CAP_NET_ADMIN' when joining "packets" group
->   drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
+> Johan
 > 
->  include/net/genetlink.h  |  3 +++
->  net/core/drop_monitor.c  |  4 +++-
->  net/netlink/af_netlink.c |  4 ++--
->  net/netlink/genetlink.c  | 35 +++++++++++++++++++++++++++++++++++
->  net/psample/psample.c    |  3 ++-
->  5 files changed, 45 insertions(+), 4 deletions(-)
+> 
+> Srinivas Kandagatla (2):
+>   ASoC: ops: add correct range check for limiting volume
+>   ASoC: qcom: sc8280xp: Limit speaker digital volumes
+> 
+>  sound/soc/qcom/sc8280xp.c | 17 +++++++++++++++++
+>  sound/soc/soc-ops.c       |  2 +-
+>  2 files changed, 18 insertions(+), 1 deletion(-)
 > 
 > -- 
-> 2.40.1
+> 2.41.0
 > 
 > 
 
-All backports now queued up, thanks!
+Now queued up, thanks.
 
 greg k-h
 
