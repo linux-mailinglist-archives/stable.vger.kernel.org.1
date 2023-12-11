@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-6117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EA580D8D6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEAFA80D732
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E4A01F218F6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F94282747
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D49B51C2D;
-	Mon, 11 Dec 2023 18:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BBA53E2E;
+	Mon, 11 Dec 2023 18:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiOePv4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeMpakeK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5531E5102A;
-	Mon, 11 Dec 2023 18:49:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4F8C433CA;
-	Mon, 11 Dec 2023 18:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8437352F8E;
+	Mon, 11 Dec 2023 18:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD49C433C8;
+	Mon, 11 Dec 2023 18:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320558;
-	bh=neeZJKKaO7tR5ozd+188NUy7RRC+1rY8Vs+Dy7f47uQ=;
+	s=korg; t=1702319723;
+	bh=RyM+L1e6NJCGdPE7ZNkO1e+HrPNcOFgoTLS1bSQTVk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiOePv4FXGsnrV3yhKCkaiZT9WOOZL5qDGsVScMnzXPOMm4UusZXia3u718ZT+ZDQ
-	 s4y6enX/XQMQFBHmItceOoxwNpQFS3X3zqR3Z/VFHo/7pH/8tPdiBf0MS0wjhZRXvE
-	 Aojjk/I+xpi6FoqkB6BPtPpMJ6tjFJyYLR3/UM9Q=
+	b=yeMpakeKcdoAg+t81tDyVC8qabtmGiIjx7Zt/pD9wnetZUgaEJoVvAkWlmcgc86G4
+	 jZEgepRunz3ynl8II+RW+aGHLTImsmptYsUw0rIeydzuVGzYxFrpjnzg52+VAQRbwu
+	 DF5O2/yx207NXMDuRCcruAmzbX8XCg+LwZGHUAOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarah Grant <s@srd.tw>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 105/194] ALSA: usb-audio: Add Pioneer DJM-450 mixer controls
-Date: Mon, 11 Dec 2023 19:21:35 +0100
-Message-ID: <20231211182041.135149631@linuxfoundation.org>
+	Hsin-Yi Wang <hsinyi@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 203/244] arm64: dts: mt8183: kukui: Fix underscores in node names
+Date: Mon, 11 Dec 2023 19:21:36 +0100
+Message-ID: <20231211182055.045350217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +53,437 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarah Grant <s@srd.tw>
+From: Hsin-Yi Wang <hsinyi@chromium.org>
 
-commit bbb8e71965c3737bdc691afd803a34bfd61cfbeb upstream.
+[ Upstream commit 8980c30141d3986beab815d85762b9c67196ed72 ]
 
-These values mirror those of the Pioneer DJM-250MK2 as the channel layout
-appears identical based on my observations. This duplication could be removed in
-later contributions if desired.
+Replace underscores with hyphens in pinctrl node names both for consistency
+and to adhere to the bindings.
 
-Signed-off-by: Sarah Grant <s@srd.tw>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231201181654.5058-1-s@srd.tw
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
+Fixes: 1652dbf7363a ("arm64: dts: mt8183: add scp node")
+Fixes: 27eaf34df364 ("arm64: dts: mt8183: config dsi node")
+Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231026191343.3345279-2-hsinyi@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_quirks.c |   30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    |  6 +-
+ .../arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 94 +++++++++----------
+ 2 files changed, 50 insertions(+), 50 deletions(-)
 
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -2978,6 +2978,7 @@ static int snd_bbfpro_controls_create(st
- #define SND_DJM_850_IDX		0x2
- #define SND_DJM_900NXS2_IDX	0x3
- #define SND_DJM_750MK2_IDX	0x4
-+#define SND_DJM_450_IDX		0x5
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+index 649477af2f413..820260348de9b 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+@@ -443,20 +443,20 @@ pins2 {
+ 	};
  
+ 	touchscreen_pins: touchscreen-pins {
+-		touch_int_odl {
++		touch-int-odl {
+ 			pinmux = <PINMUX_GPIO155__FUNC_GPIO155>;
+ 			input-enable;
+ 			bias-pull-up;
+ 		};
  
- #define SND_DJM_CTL(_name, suffix, _default_value, _windex) { \
-@@ -3108,6 +3109,31 @@ static const struct snd_djm_ctl snd_djm_
- };
+-		touch_rst_l {
++		touch-rst-l {
+ 			pinmux = <PINMUX_GPIO156__FUNC_GPIO156>;
+ 			output-high;
+ 		};
+ 	};
  
+ 	trackpad_pins: trackpad-pins {
+-		trackpad_int {
++		trackpad-int {
+ 			pinmux = <PINMUX_GPIO7__FUNC_GPIO7>;
+ 			input-enable;
+ 			bias-disable; /* pulled externally */
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index 9a6bfa5882e31..6f333f5cbeb98 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -432,7 +432,7 @@ &mt6358_vsram_gpu_reg {
  
-+// DJM-450
-+static const u16 snd_djm_opts_450_cap1[] = {
-+	0x0103, 0x0100, 0x0106, 0x0107, 0x0108, 0x0109, 0x010d, 0x010a };
-+
-+static const u16 snd_djm_opts_450_cap2[] = {
-+	0x0203, 0x0200, 0x0206, 0x0207, 0x0208, 0x0209, 0x020d, 0x020a };
-+
-+static const u16 snd_djm_opts_450_cap3[] = {
-+	0x030a, 0x0311, 0x0312, 0x0307, 0x0308, 0x0309, 0x030d };
-+
-+static const u16 snd_djm_opts_450_pb1[] = { 0x0100, 0x0101, 0x0104 };
-+static const u16 snd_djm_opts_450_pb2[] = { 0x0200, 0x0201, 0x0204 };
-+static const u16 snd_djm_opts_450_pb3[] = { 0x0300, 0x0301, 0x0304 };
-+
-+static const struct snd_djm_ctl snd_djm_ctls_450[] = {
-+	SND_DJM_CTL("Capture Level", cap_level, 0, SND_DJM_WINDEX_CAPLVL),
-+	SND_DJM_CTL("Ch1 Input",   450_cap1, 2, SND_DJM_WINDEX_CAP),
-+	SND_DJM_CTL("Ch2 Input",   450_cap2, 2, SND_DJM_WINDEX_CAP),
-+	SND_DJM_CTL("Ch3 Input",   450_cap3, 0, SND_DJM_WINDEX_CAP),
-+	SND_DJM_CTL("Ch1 Output",   450_pb1, 0, SND_DJM_WINDEX_PB),
-+	SND_DJM_CTL("Ch2 Output",   450_pb2, 1, SND_DJM_WINDEX_PB),
-+	SND_DJM_CTL("Ch3 Output",   450_pb3, 2, SND_DJM_WINDEX_PB)
-+};
-+
-+
- // DJM-750
- static const u16 snd_djm_opts_750_cap1[] = {
- 	0x0101, 0x0103, 0x0106, 0x0107, 0x0108, 0x0109, 0x010a, 0x010f };
-@@ -3203,6 +3229,7 @@ static const struct snd_djm_device snd_d
- 	[SND_DJM_850_IDX] = SND_DJM_DEVICE(850),
- 	[SND_DJM_900NXS2_IDX] = SND_DJM_DEVICE(900nxs2),
- 	[SND_DJM_750MK2_IDX] = SND_DJM_DEVICE(750mk2),
-+	[SND_DJM_450_IDX] = SND_DJM_DEVICE(450),
- };
+ &pio {
+ 	aud_pins_default: audiopins {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO97__FUNC_I2S2_MCK>,
+ 				<PINMUX_GPIO98__FUNC_I2S2_BCK>,
+ 				<PINMUX_GPIO101__FUNC_I2S2_LRCK>,
+@@ -454,7 +454,7 @@ pins_bus {
+ 	};
  
+ 	aud_pins_tdm_out_on: audiotdmouton {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO169__FUNC_TDM_BCK_2ND>,
+ 				<PINMUX_GPIO170__FUNC_TDM_LRCK_2ND>,
+ 				<PINMUX_GPIO171__FUNC_TDM_DATA0_2ND>,
+@@ -466,7 +466,7 @@ pins_bus {
+ 	};
  
-@@ -3449,6 +3476,9 @@ int snd_usb_mixer_apply_create_quirk(str
- 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
- 		err = snd_djm_controls_create(mixer, SND_DJM_250MK2_IDX);
- 		break;
-+	case USB_ID(0x2b73, 0x0013): /* Pioneer DJ DJM-450 */
-+		err = snd_djm_controls_create(mixer, SND_DJM_450_IDX);
-+		break;
- 	case USB_ID(0x08e4, 0x017f): /* Pioneer DJ DJM-750 */
- 		err = snd_djm_controls_create(mixer, SND_DJM_750_IDX);
- 		break;
+ 	aud_pins_tdm_out_off: audiotdmoutoff {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO169__FUNC_GPIO169>,
+ 				<PINMUX_GPIO170__FUNC_GPIO170>,
+ 				<PINMUX_GPIO171__FUNC_GPIO171>,
+@@ -480,13 +480,13 @@ pins_bus {
+ 	};
+ 
+ 	bt_pins: bt-pins {
+-		pins_bt_en {
++		pins-bt-en {
+ 			pinmux = <PINMUX_GPIO120__FUNC_GPIO120>;
+ 			output-low;
+ 		};
+ 	};
+ 
+-	ec_ap_int_odl: ec_ap_int_odl {
++	ec_ap_int_odl: ec-ap-int-odl {
+ 		pins1 {
+ 			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
+ 			input-enable;
+@@ -494,7 +494,7 @@ pins1 {
+ 		};
+ 	};
+ 
+-	h1_int_od_l: h1_int_od_l {
++	h1_int_od_l: h1-int-od-l {
+ 		pins1 {
+ 			pinmux = <PINMUX_GPIO153__FUNC_GPIO153>;
+ 			input-enable;
+@@ -502,7 +502,7 @@ pins1 {
+ 	};
+ 
+ 	i2c0_pins: i2c0 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
+ 				 <PINMUX_GPIO83__FUNC_SCL0>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -511,7 +511,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c1_pins: i2c1 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
+ 				 <PINMUX_GPIO84__FUNC_SCL1>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -520,7 +520,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c2_pins: i2c2 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO103__FUNC_SCL2>,
+ 				 <PINMUX_GPIO104__FUNC_SDA2>;
+ 			bias-disable;
+@@ -529,7 +529,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c3_pins: i2c3 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO50__FUNC_SCL3>,
+ 				 <PINMUX_GPIO51__FUNC_SDA3>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -538,7 +538,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c4_pins: i2c4 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO105__FUNC_SCL4>,
+ 				 <PINMUX_GPIO106__FUNC_SDA4>;
+ 			bias-disable;
+@@ -547,7 +547,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c5_pins: i2c5 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO48__FUNC_SCL5>,
+ 				 <PINMUX_GPIO49__FUNC_SDA5>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -556,7 +556,7 @@ pins_bus {
+ 	};
+ 
+ 	i2c6_pins: i2c6 {
+-		pins_bus {
++		pins-bus {
+ 			pinmux = <PINMUX_GPIO11__FUNC_SCL6>,
+ 				 <PINMUX_GPIO12__FUNC_SDA6>;
+ 			bias-disable;
+@@ -564,7 +564,7 @@ pins_bus {
+ 	};
+ 
+ 	mmc0_pins_default: mmc0-pins-default {
+-		pins_cmd_dat {
++		pins-cmd-dat {
+ 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
+ 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
+ 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
+@@ -579,13 +579,13 @@ pins_cmd_dat {
+ 			mediatek,pull-up-adv = <01>;
+ 		};
+ 
+-		pins_clk {
++		pins-clk {
+ 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
+ 			drive-strength = <MTK_DRIVE_14mA>;
+ 			mediatek,pull-down-adv = <10>;
+ 		};
+ 
+-		pins_rst {
++		pins-rst {
+ 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
+ 			drive-strength = <MTK_DRIVE_14mA>;
+ 			mediatek,pull-down-adv = <01>;
+@@ -593,7 +593,7 @@ pins_rst {
+ 	};
+ 
+ 	mmc0_pins_uhs: mmc0-pins-uhs {
+-		pins_cmd_dat {
++		pins-cmd-dat {
+ 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
+ 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
+ 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
+@@ -608,19 +608,19 @@ pins_cmd_dat {
+ 			mediatek,pull-up-adv = <01>;
+ 		};
+ 
+-		pins_clk {
++		pins-clk {
+ 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
+ 			drive-strength = <MTK_DRIVE_14mA>;
+ 			mediatek,pull-down-adv = <10>;
+ 		};
+ 
+-		pins_ds {
++		pins-ds {
+ 			pinmux = <PINMUX_GPIO131__FUNC_MSDC0_DSL>;
+ 			drive-strength = <MTK_DRIVE_14mA>;
+ 			mediatek,pull-down-adv = <10>;
+ 		};
+ 
+-		pins_rst {
++		pins-rst {
+ 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
+ 			drive-strength = <MTK_DRIVE_14mA>;
+ 			mediatek,pull-up-adv = <01>;
+@@ -628,7 +628,7 @@ pins_rst {
+ 	};
+ 
+ 	mmc1_pins_default: mmc1-pins-default {
+-		pins_cmd_dat {
++		pins-cmd-dat {
+ 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
+ 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
+ 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
+@@ -638,7 +638,7 @@ pins_cmd_dat {
+ 			mediatek,pull-up-adv = <10>;
+ 		};
+ 
+-		pins_clk {
++		pins-clk {
+ 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
+ 			input-enable;
+ 			mediatek,pull-down-adv = <10>;
+@@ -646,7 +646,7 @@ pins_clk {
+ 	};
+ 
+ 	mmc1_pins_uhs: mmc1-pins-uhs {
+-		pins_cmd_dat {
++		pins-cmd-dat {
+ 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
+ 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
+ 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
+@@ -657,7 +657,7 @@ pins_cmd_dat {
+ 			mediatek,pull-up-adv = <10>;
+ 		};
+ 
+-		pins_clk {
++		pins-clk {
+ 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
+ 			drive-strength = <MTK_DRIVE_8mA>;
+ 			mediatek,pull-down-adv = <10>;
+@@ -665,15 +665,15 @@ pins_clk {
+ 		};
+ 	};
+ 
+-	panel_pins_default: panel_pins_default {
+-		panel_reset {
++	panel_pins_default: panel-pins-default {
++		panel-reset {
+ 			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
+ 			output-low;
+ 			bias-pull-up;
+ 		};
+ 	};
+ 
+-	pwm0_pin_default: pwm0_pin_default {
++	pwm0_pin_default: pwm0-pin-default {
+ 		pins1 {
+ 			pinmux = <PINMUX_GPIO176__FUNC_GPIO176>;
+ 			output-high;
+@@ -685,14 +685,14 @@ pins2 {
+ 	};
+ 
+ 	scp_pins: scp {
+-		pins_scp_uart {
++		pins-scp-uart {
+ 			pinmux = <PINMUX_GPIO110__FUNC_TP_URXD1_AO>,
+ 				 <PINMUX_GPIO112__FUNC_TP_UTXD1_AO>;
+ 		};
+ 	};
+ 
+ 	spi0_pins: spi0 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO85__FUNC_SPI0_MI>,
+ 				 <PINMUX_GPIO86__FUNC_GPIO86>,
+ 				 <PINMUX_GPIO87__FUNC_SPI0_MO>,
+@@ -702,7 +702,7 @@ pins_spi {
+ 	};
+ 
+ 	spi1_pins: spi1 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO161__FUNC_SPI1_A_MI>,
+ 				 <PINMUX_GPIO162__FUNC_SPI1_A_CSB>,
+ 				 <PINMUX_GPIO163__FUNC_SPI1_A_MO>,
+@@ -712,20 +712,20 @@ pins_spi {
+ 	};
+ 
+ 	spi2_pins: spi2 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO0__FUNC_SPI2_CSB>,
+ 				 <PINMUX_GPIO1__FUNC_SPI2_MO>,
+ 				 <PINMUX_GPIO2__FUNC_SPI2_CLK>;
+ 			bias-disable;
+ 		};
+-		pins_spi_mi {
++		pins-spi-mi {
+ 			pinmux = <PINMUX_GPIO94__FUNC_SPI2_MI>;
+ 			mediatek,pull-down-adv = <00>;
+ 		};
+ 	};
+ 
+ 	spi3_pins: spi3 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO21__FUNC_SPI3_MI>,
+ 				 <PINMUX_GPIO22__FUNC_SPI3_CSB>,
+ 				 <PINMUX_GPIO23__FUNC_SPI3_MO>,
+@@ -735,7 +735,7 @@ pins_spi {
+ 	};
+ 
+ 	spi4_pins: spi4 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO17__FUNC_SPI4_MI>,
+ 				 <PINMUX_GPIO18__FUNC_SPI4_CSB>,
+ 				 <PINMUX_GPIO19__FUNC_SPI4_MO>,
+@@ -745,7 +745,7 @@ pins_spi {
+ 	};
+ 
+ 	spi5_pins: spi5 {
+-		pins_spi {
++		pins-spi {
+ 			pinmux = <PINMUX_GPIO13__FUNC_SPI5_MI>,
+ 				 <PINMUX_GPIO14__FUNC_SPI5_CSB>,
+ 				 <PINMUX_GPIO15__FUNC_SPI5_MO>,
+@@ -755,63 +755,63 @@ pins_spi {
+ 	};
+ 
+ 	uart0_pins_default: uart0-pins-default {
+-		pins_rx {
++		pins-rx {
+ 			pinmux = <PINMUX_GPIO95__FUNC_URXD0>;
+ 			input-enable;
+ 			bias-pull-up;
+ 		};
+-		pins_tx {
++		pins-tx {
+ 			pinmux = <PINMUX_GPIO96__FUNC_UTXD0>;
+ 		};
+ 	};
+ 
+ 	uart1_pins_default: uart1-pins-default {
+-		pins_rx {
++		pins-rx {
+ 			pinmux = <PINMUX_GPIO121__FUNC_URXD1>;
+ 			input-enable;
+ 			bias-pull-up;
+ 		};
+-		pins_tx {
++		pins-tx {
+ 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
+ 		};
+-		pins_rts {
++		pins-rts {
+ 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
+ 			output-enable;
+ 		};
+-		pins_cts {
++		pins-cts {
+ 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
+ 			input-enable;
+ 		};
+ 	};
+ 
+ 	uart1_pins_sleep: uart1-pins-sleep {
+-		pins_rx {
++		pins-rx {
+ 			pinmux = <PINMUX_GPIO121__FUNC_GPIO121>;
+ 			input-enable;
+ 			bias-pull-up;
+ 		};
+-		pins_tx {
++		pins-tx {
+ 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
+ 		};
+-		pins_rts {
++		pins-rts {
+ 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
+ 			output-enable;
+ 		};
+-		pins_cts {
++		pins-cts {
+ 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
+ 			input-enable;
+ 		};
+ 	};
+ 
+ 	wifi_pins_pwrseq: wifi-pins-pwrseq {
+-		pins_wifi_enable {
++		pins-wifi-enable {
+ 			pinmux = <PINMUX_GPIO119__FUNC_GPIO119>;
+ 			output-low;
+ 		};
+ 	};
+ 
+ 	wifi_pins_wakeup: wifi-pins-wakeup {
+-		pins_wifi_wakeup {
++		pins-wifi-wakeup {
+ 			pinmux = <PINMUX_GPIO113__FUNC_GPIO113>;
+ 			input-enable;
+ 		};
+-- 
+2.42.0
+
 
 
 
