@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EB180D73A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CA180D8F6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8140281E87
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DAF91F219A5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7255466F;
-	Mon, 11 Dec 2023 18:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B084351C50;
+	Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcVKHhJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNICGej9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3A151C44;
-	Mon, 11 Dec 2023 18:35:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DABC433C8;
-	Mon, 11 Dec 2023 18:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A13F51C47;
+	Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B93C433C7;
+	Mon, 11 Dec 2023 18:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319740;
-	bh=vlCvCJhf/WMqkFMk0veq9HJdr72l2PJVk2IfyDk/31A=;
+	s=korg; t=1702320596;
+	bh=k+9iwD+a5wserVFzfnOTq63xFjHxm1oghdq/gBaMRjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wcVKHhJYacRwWdJ8FbOx8C9cKG9qOz6BVsP3Dgw3RxNm0ZL0RkRH8m4YIXb6V+pJQ
-	 kf8qyuGD25tRIEzo+uMI789/+ww62Yef5TlJcJPWJyK3uLgmsQ5o56ZGdtcFMqpIYT
-	 jPMOJNMxhHPditx37NdrS7YD+QhDXAZzTJxdLhSY=
+	b=uNICGej9xa4en1nTtI1huA71FyYr7UI+0r4VOuvYgkipOYHyMuVvAK8lWUOkA0B+L
+	 +CMsT7ChZDJRYToGZNo+R8dZGgot7d0Hrf24wW7Sl2Bh2tMb60CUJj8cm2ql5Soa2v
+	 VEWixyfaJHowpWvfzzJ8RMeC6uTjqJJhZkfHgIQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 217/244] smb: client: fix potential NULL deref in parse_dfs_referrals()
+	Grant Grundler <grundler@chromium.org>,
+	ChunHao Lin <hau@realtek.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 120/194] r8169: fix rtl8125b PAUSE frames blasting when suspended
 Date: Mon, 11 Dec 2023 19:21:50 +0100
-Message-ID: <20231211182055.711924453@linuxfoundation.org>
+Message-ID: <20231211182041.871043021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +55,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: ChunHao Lin <hau@realtek.com>
 
-commit 92414333eb375ed64f4ae92d34d579e826936480 upstream.
+commit 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 upstream.
 
-If server returned no data for FSCTL_DFS_GET_REFERRALS, @dfs_rsp will
-remain NULL and then parse_dfs_referrals() will dereference it.
+When FIFO reaches near full state, device will issue pause frame.
+If pause slot is enabled(set to 1), in this time, device will issue
+pause frame only once. But if pause slot is disabled(set to 0), device
+will keep sending pause frames until FIFO reaches near empty state.
 
-Fix this by returning -EIO when no output data is returned.
+When pause slot is disabled, if there is no one to handle receive
+packets, device FIFO will reach near full state and keep sending
+pause frames. That will impact entire local area network.
 
-Besides, we can't fix it in SMB2_ioctl() as some FSCTLs are allowed to
-return no data as per MS-SMB2 2.2.32.
+This issue can be reproduced in Chromebox (not Chromebook) in
+developer mode running a test image (and v5.10 kernel):
+1) ping -f $CHROMEBOX (from workstation on same local network)
+2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
+3) ping $ROUTER (wait until ping fails from workstation)
 
-Fixes: 9d49640a21bf ("CIFS: implement get_dfs_refer for SMB2+")
+Takes about ~20-30 seconds after step 2 for the local network to
+stop working.
+
+Fix this issue by enabling pause slot to only send pause frame once
+when FIFO reaches near full state.
+
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Reported-by: Grant Grundler <grundler@chromium.org>
+Tested-by: Grant Grundler <grundler@chromium.org>
 Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -2834,6 +2834,8 @@ smb2_get_dfs_refer(const unsigned int xi
- 		usleep_range(512, 2048);
- 	} while (++retry_count < 5);
- 
-+	if (!rc && !dfs_rsp)
-+		rc = -EIO;
- 	if (rc) {
- 		if (!is_retryable_error(rc) && rc != -ENOENT && rc != -EOPNOTSUPP)
- 			cifs_tcon_dbg(VFS, "%s: ioctl error: rc=%d\n", __func__, rc);
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -193,6 +193,7 @@ enum rtl_registers {
+ 					/* No threshold before first PCI xfer */
+ #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
+ #define	RX_EARLY_OFF			(1 << 11)
++#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
+ #define	RXCFG_DMA_SHIFT			8
+ 					/* Unlimited maximum PCI burst. */
+ #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
+@@ -2237,9 +2238,13 @@ static void rtl_init_rxcfg(struct rtl816
+ 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
+ 		break;
+-	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++	case RTL_GIGA_MAC_VER_61:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+ 		break;
++	case RTL_GIGA_MAC_VER_63:
++		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
++			RX_PAUSE_SLOT_ON);
++		break;
+ 	default:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+ 		break;
 
 
 
