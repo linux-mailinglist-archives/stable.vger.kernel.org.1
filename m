@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B157F80D81B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50ABC80D7AE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4087CB20E29
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81ACE1C216C9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E804951C3B;
-	Mon, 11 Dec 2023 18:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0215251C46;
+	Mon, 11 Dec 2023 18:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0k1rver"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXeVWRty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39A2FC06;
-	Mon, 11 Dec 2023 18:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C3FC433C9;
-	Mon, 11 Dec 2023 18:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B7851C3E;
+	Mon, 11 Dec 2023 18:39:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A713C433C8;
+	Mon, 11 Dec 2023 18:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320160;
-	bh=QMP4f1A3peggEif7Ui+WXwuVDGNDfm9Bj5cofEIQME0=;
+	s=korg; t=1702319946;
+	bh=mjREjfuY2F51oEo0495QwIFzwZb1OCKBzMchyN4P7KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N0k1rverZ6nBLPhhyLIL7JljG+X+9Ro0Mik1axMACf/dfJ3wHa9Rh5fziRp2M8sHk
-	 q3nyeHYBfE2A3rnUDpU0SM4AfkJhA+PDeuVdBfICqqhj1E6v+eXpPi7ZGCqS/XQezt
-	 ormWMKapQ+yUgyFcdqJfRa/3GOhBM1RGnw2+QinI=
+	b=gXeVWRtyQq1kEhUUXR/hhSe2x4t2+PW3elCMKze3otmZ0T3fGrs+PQtwtGgvGGgp1
+	 LycK/9ECa25hDQWqcxl8+Zsfy1u/eP00HsqGUXph1tI0EXMX9UtaRV6Lonsg8UVlMv
+	 PQmEAEMiyAy45AAYmnuJx3w94MNOUNizHixkonVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/67] kconfig: fix memory leak from range properties
+Subject: [PATCH 5.10 46/97] riscv: fix misaligned access handling of C.SWSP and C.SDSP
 Date: Mon, 11 Dec 2023 19:21:49 +0100
-Message-ID: <20231211182015.313612081@linuxfoundation.org>
+Message-ID: <20231211182021.684380764@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,96 +51,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Clément Léger <cleger@rivosinc.com>
 
-[ Upstream commit ae1eff0349f2e908fc083630e8441ea6dc434dc0 ]
+[ Upstream commit 22e0eb04837a63af111fae35a92f7577676b9bc8 ]
 
-Currently, sym_validate_range() duplicates the range string using
-xstrdup(), which is overwritten by a subsequent sym_calc_value() call.
-It results in a memory leak.
+This is a backport of a fix that was done in OpenSBI: ec0559eb315b
+("lib: sbi_misaligned_ldst: Fix handling of C.SWSP and C.SDSP").
 
-Instead, only the pointer should be copied.
+Unlike C.LWSP/C.LDSP, these encodings can be used with the zero
+register, so checking that the rs2 field is non-zero is unnecessary.
 
-Below is a test case, with a summary from Valgrind.
+Additionally, the previous check was incorrect since it was checking
+the immediate field of the instruction instead of the rs2 field.
 
-[Test Kconfig]
-
-  config FOO
-          int "foo"
-          range 10 20
-
-[Test .config]
-
-  CONFIG_FOO=0
-
-[Before]
-
-  LEAK SUMMARY:
-     definitely lost: 3 bytes in 1 blocks
-     indirectly lost: 0 bytes in 0 blocks
-       possibly lost: 0 bytes in 0 blocks
-     still reachable: 17,465 bytes in 21 blocks
-          suppressed: 0 bytes in 0 blocks
-
-[After]
-
-  LEAK SUMMARY:
-     definitely lost: 0 bytes in 0 blocks
-     indirectly lost: 0 bytes in 0 blocks
-       possibly lost: 0 bytes in 0 blocks
-     still reachable: 17,462 bytes in 20 blocks
-          suppressed: 0 bytes in 0 blocks
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Link: https://lore.kernel.org/r/20231103090223.702340-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/symbol.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/riscv/kernel/traps_misaligned.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
-index f56eec5ea4c7f..342fefe5dba40 100644
---- a/scripts/kconfig/symbol.c
-+++ b/scripts/kconfig/symbol.c
-@@ -117,9 +117,9 @@ static long long sym_get_range_val(struct symbol *sym, int base)
- static void sym_validate_range(struct symbol *sym)
- {
- 	struct property *prop;
-+	struct symbol *range_sym;
- 	int base;
- 	long long val, val2;
--	char str[64];
- 
- 	switch (sym->type) {
- 	case S_INT:
-@@ -135,17 +135,15 @@ static void sym_validate_range(struct symbol *sym)
- 	if (!prop)
- 		return;
- 	val = strtoll(sym->curr.val, NULL, base);
--	val2 = sym_get_range_val(prop->expr->left.sym, base);
-+	range_sym = prop->expr->left.sym;
-+	val2 = sym_get_range_val(range_sym, base);
- 	if (val >= val2) {
--		val2 = sym_get_range_val(prop->expr->right.sym, base);
-+		range_sym = prop->expr->right.sym;
-+		val2 = sym_get_range_val(range_sym, base);
- 		if (val <= val2)
- 			return;
- 	}
--	if (sym->type == S_INT)
--		sprintf(str, "%lld", val2);
--	else
--		sprintf(str, "0x%llx", val2);
--	sym->curr.val = xstrdup(str);
-+	sym->curr.val = range_sym->curr.val;
- }
- 
- static void sym_set_changed(struct symbol *sym)
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 46c4dafe3ba0e..b246c3dc69930 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -344,16 +344,14 @@ int handle_misaligned_store(struct pt_regs *regs)
+ 	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
+ 		len = 8;
+ 		val.data_ulong = GET_RS2S(insn, regs);
+-	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP) {
+ 		len = 8;
+ 		val.data_ulong = GET_RS2C(insn, regs);
+ #endif
+ 	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
+ 		len = 4;
+ 		val.data_ulong = GET_RS2S(insn, regs);
+-	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP &&
+-		   ((insn >> SH_RD) & 0x1f)) {
++	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP) {
+ 		len = 4;
+ 		val.data_ulong = GET_RS2C(insn, regs);
+ 	} else {
 -- 
 2.42.0
 
