@@ -1,46 +1,56 @@
-Return-Path: <stable+bounces-5996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0003680D83A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C28780D7FB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4FA1F21AD7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542681C21428
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA13A5102F;
-	Mon, 11 Dec 2023 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E7D52F64;
+	Mon, 11 Dec 2023 18:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+cENA8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uifyJQS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CB6FC06;
-	Mon, 11 Dec 2023 18:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEC8C433C7;
-	Mon, 11 Dec 2023 18:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5771D696;
+	Mon, 11 Dec 2023 18:41:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B91DC433C7;
+	Mon, 11 Dec 2023 18:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320231;
-	bh=sXWqPgoJaNLvxAf2r9L93lBGoDmCPoZFppXug2ZQu8o=;
+	s=korg; t=1702320096;
+	bh=sbd5i/nTjnELi4z/6kzEQfoDA5HmfqxmI02it/pprsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+cENA8K6BKDa4tOejoFTJ/+NKqJd32ZJaOCYBtj7ov+nLNZiW9HdUtAsLMhOK5Kk
-	 PlSpp8tq26o7zkqajZZrbJi2mXMGmmAFvtealKi70+17blIJejPQfXUbACgdtygJnR
-	 v2pVnT0kBQDUOv4s9fJcvDJWqsNM3Ty+uyVRY250=
+	b=uifyJQS840Rsfu9pd4+ta+fSPf4Jy13QiYklNwZ59bUJpgp3fJTovWZex3x/1iZIG
+	 TugNcv5LIXnBmWAsT5lhz1u4u52/R2llkZ+2vIkhUN6QCPIUOzKv2l0JpVa1vWJBUj
+	 Tee6LB6zYxtcqoOMSwZdYo1U4Ai780V0ISr87qDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Mack <daniel@zonque.org>,
-	Maxim Popov <maxim.snafu@gmail.com>
-Subject: [PATCH 5.4 52/67] serial: sc16is7xx: address RX timeout interrupt errata
+	Dave Chinner <david@fromorbit.com>,
+	Xiaoli Feng <fengxiaoli0714@gmail.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Darrick Wong <darrick.wong@oracle.com>,
+	fstests@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 93/97] cifs: Fix non-availability of dedup breaking generic/304
 Date: Mon, 11 Dec 2023 19:22:36 +0100
-Message-ID: <20231211182017.210752333@linuxfoundation.org>
+Message-ID: <20231211182023.825980782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,73 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Mack <daniel@zonque.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 08ce9a1b72e38cf44c300a44ac5858533eb3c860 upstream.
+[ Upstream commit 691a41d8da4b34fe72f09393505f55f28a8f34ec ]
 
-This device has a silicon bug that makes it report a timeout interrupt
-but no data in the FIFO.
+Deduplication isn't supported on cifs, but cifs doesn't reject it, instead
+treating it as extent duplication/cloning.  This can cause generic/304 to go
+silly and run for hours on end.
 
-The datasheet states the following in the errata section 18.1.4:
+Fix cifs to indicate EOPNOTSUPP if REMAP_FILE_DEDUP is set in
+->remap_file_range().
 
-  "If the host reads the receive FIFO at the same time as a
-  time-out interrupt condition happens, the host might read 0xCC
-  (time-out) in the Interrupt Indication Register (IIR), but bit 0
-  of the Line Status Register (LSR) is not set (means there is no
-  data in the receive FIFO)."
+Note that it's unclear whether or not commit b073a08016a1 is meant to cause
+cifs to return an error if REMAP_FILE_DEDUP.
 
-The errata description seems to indicate it concerns only polled mode of
-operation when reading bit 0 of the LSR register. However, tests have
-shown and NXP has confirmed that the RXLVL register also yields 0 when
-the bug is triggered, and hence the IRQ driven implementation in this
-driver is equally affected.
-
-This bug has hit us on production units and when it does, sc16is7xx_irq()
-would spin forever because sc16is7xx_port_irq() keeps seeing an
-interrupt in the IIR register that is not cleared because the driver
-does not call into sc16is7xx_handle_rx() unless the RXLVL register
-reports at least one byte in the FIFO.
-
-Fix this by always reading one byte from the FIFO when this condition
-is detected in order to clear the interrupt. This approach was
-confirmed to be correct by NXP through their support channels.
-
-Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-
-Signed-off-by: Daniel Mack <daniel@zonque.org>
-Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+Fixes: b073a08016a1 ("cifs: fix that return -EINVAL when do dedupe operation")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231123072818.1394539-1-daniel@zonque.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Dave Chinner <david@fromorbit.com>
+cc: Xiaoli Feng <fengxiaoli0714@gmail.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Darrick Wong <darrick.wong@oracle.com>
+cc: fstests@vger.kernel.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/3876191.1701555260@warthog.procyon.org.uk/
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/cifs/cifsfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -694,6 +694,18 @@ static bool sc16is7xx_port_irq(struct sc
- 		case SC16IS7XX_IIR_RTOI_SRC:
- 		case SC16IS7XX_IIR_XOFFI_SRC:
- 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+
-+			/*
-+			 * There is a silicon bug that makes the chip report a
-+			 * time-out interrupt but no data in the FIFO. This is
-+			 * described in errata section 18.1.4.
-+			 *
-+			 * When this happens, read one byte from the FIFO to
-+			 * clear the interrupt.
-+			 */
-+			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+				rxlen = 1;
-+
- 			if (rxlen)
- 				sc16is7xx_handle_rx(port, rxlen, iir);
- 			break;
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index b87d6792b14ad..16155529e449f 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -1093,7 +1093,9 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
+ 	unsigned int xid;
+ 	int rc;
+ 
+-	if (remap_flags & ~(REMAP_FILE_DEDUP | REMAP_FILE_ADVISORY))
++	if (remap_flags & REMAP_FILE_DEDUP)
++		return -EOPNOTSUPP;
++	if (remap_flags & ~REMAP_FILE_ADVISORY)
+ 		return -EINVAL;
+ 
+ 	cifs_dbg(FYI, "clone range\n");
+-- 
+2.42.0
+
 
 
 
