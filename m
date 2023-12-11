@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F8F80D8D3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5284680D71D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88A371F21B86
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F15FB1F21920
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD4D51C2D;
-	Mon, 11 Dec 2023 18:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A184D53815;
+	Mon, 11 Dec 2023 18:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TJd1Sdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAmPkCm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2E55102A;
-	Mon, 11 Dec 2023 18:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1402FC433C8;
-	Mon, 11 Dec 2023 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6010352F8A;
+	Mon, 11 Dec 2023 18:34:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6698C433C7;
+	Mon, 11 Dec 2023 18:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320553;
-	bh=hLzipm9a3OYejDEnw3bN+moiLmrMTRM9QNyvnppFxBE=;
+	s=korg; t=1702319698;
+	bh=7frsDhZ7ezF9JIrn3xAjZkI9JdlES4rP8oQoO3gpgNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TJd1Sdn1b4i5/MU1czz39oTd5oBmgnenQUHepKl+C7HInEC1WcPL3YDafTzWqoTj
-	 ztCXqYUNB1iLavepBeyRxeCAJdyBkciePQz+Frp3kMvQbZX7OUXib+rzLKAX0bMSZ0
-	 cv4u9VxeI/EWyT5M1sH1QKchESJ6xwJLJjg+/k4o=
+	b=bAmPkCm+LEapMzM0MN9rRCIe70CEc59or18uA7h2BvynQlYneOliDRhyGy7UF0/Ba
+	 u79ZepDTAhlLDeMWH7S8dpsNO49ok/uj5Jizljsz6xJk4SvepIYFcxXAkSab99PhJq
+	 +Lk7vnmOxuTfNQqhAlH790aA003X+ql3IPM/paQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Georg Gottleuber <ggo@tuxedocomputers.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 103/194] nvme-pci: Add sleep quirk for Kingston drives
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 200/244] parisc: Reduce size of the bug_table on 64-bit kernel by half
 Date: Mon, 11 Dec 2023 19:21:33 +0100
-Message-ID: <20231211182041.039145874@linuxfoundation.org>
+Message-ID: <20231211182054.915407488@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,77 +52,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Georg Gottleuber <ggo@tuxedocomputers.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 107b4e063d78c300b21e2d5291b1aa94c514ea5b upstream.
+[ Upstream commit 43266838515d30dc0c45d5c7e6e7edacee6cce92 ]
 
-Some Kingston NV1 and A2000 are wasting a lot of power on specific TUXEDO
-platforms in s2idle sleep if 'Simple Suspend' is used.
+Enable GENERIC_BUG_RELATIVE_POINTERS which will store 32-bit relative
+offsets to the bug address and the source file name instead of 64-bit
+absolute addresses. This effectively reduces the size of the
+bug_table[] array by half on 64-bit kernels.
 
-This patch applies a new quirk 'Force No Simple Suspend' to achieve a
-low power sleep without 'Simple Suspend'.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Signed-off-by: Georg Gottleuber <ggo@tuxedocomputers.com>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: 487635756198 ("parisc: Fix asm operand number out of range build error in bug table")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h |    5 +++++
- drivers/nvme/host/pci.c  |   16 +++++++++++++++-
- 2 files changed, 20 insertions(+), 1 deletion(-)
+ arch/parisc/Kconfig           |  7 +++++--
+ arch/parisc/include/asm/bug.h | 34 +++++++++++++++++-----------------
+ 2 files changed, 22 insertions(+), 19 deletions(-)
 
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -154,6 +154,11 @@ enum nvme_quirks {
- 	 * No temperature thresholds for channels other than 0 (Composite).
- 	 */
- 	NVME_QUIRK_NO_SECONDARY_TEMP_THRESH	= (1 << 19),
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 68cbe666510a3..8c45b98dfe0e4 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -113,9 +113,12 @@ config ARCH_HAS_ILOG2_U64
+ 	default n
+ 
+ config GENERIC_BUG
+-	bool
+-	default y
++	def_bool y
+ 	depends on BUG
++	select GENERIC_BUG_RELATIVE_POINTERS if 64BIT
 +
-+	/*
-+	 * Disables simple suspend/resume path.
-+	 */
-+	NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND	= (1 << 20),
- };
++config GENERIC_BUG_RELATIVE_POINTERS
++	bool
  
- /*
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3093,6 +3093,18 @@ static unsigned long check_vendor_combin
- 		if ((dmi_match(DMI_BOARD_VENDOR, "LENOVO")) &&
- 		     dmi_match(DMI_BOARD_NAME, "LNVNB161216"))
- 			return NVME_QUIRK_SIMPLE_SUSPEND;
-+	} else if (pdev->vendor == 0x2646 && (pdev->device == 0x2263 ||
-+		   pdev->device == 0x500f)) {
-+		/*
-+		 * Exclude some Kingston NV1 and A2000 devices from
-+		 * NVME_QUIRK_SIMPLE_SUSPEND. Do a full suspend to save a
-+		 * lot fo energy with s2idle sleep on some TUXEDO platforms.
-+		 */
-+		if (dmi_match(DMI_BOARD_NAME, "NS5X_NS7XAU") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5x_7xAU") ||
-+		    dmi_match(DMI_BOARD_NAME, "NS5x_7xPU") ||
-+		    dmi_match(DMI_BOARD_NAME, "PH4PRX1_PH6PRX1"))
-+			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
- 	}
+ config GENERIC_HWEIGHT
+ 	bool
+diff --git a/arch/parisc/include/asm/bug.h b/arch/parisc/include/asm/bug.h
+index b9cad0bb4461b..1641ff9a8b83e 100644
+--- a/arch/parisc/include/asm/bug.h
++++ b/arch/parisc/include/asm/bug.h
+@@ -17,26 +17,27 @@
+ #define	PARISC_BUG_BREAK_ASM	"break 0x1f, 0x1fff"
+ #define	PARISC_BUG_BREAK_INSN	0x03ffe01f  /* PARISC_BUG_BREAK_ASM */
  
- 	return 0;
-@@ -3133,7 +3145,9 @@ static struct nvme_dev *nvme_pci_alloc_d
- 	dev->dev = get_device(&pdev->dev);
+-#if defined(CONFIG_64BIT)
+-#define ASM_WORD_INSN		".dword\t"
++#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
++# define __BUG_REL(val) ".word " __stringify(val) " - ."
+ #else
+-#define ASM_WORD_INSN		".word\t"
++# define __BUG_REL(val) ".word " __stringify(val)
+ #endif
  
- 	quirks |= check_vendor_combination_bug(pdev);
--	if (!noacpi && acpi_storage_d3(&pdev->dev)) {
-+	if (!noacpi &&
-+	    !(quirks & NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND) &&
-+	    acpi_storage_d3(&pdev->dev)) {
- 		/*
- 		 * Some systems use a bios work around to ask for D3 on
- 		 * platforms that support kernel managed suspend.
++
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ #define BUG()								\
+ 	do {								\
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+-			     "\t.align %4\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
++			     "\t.align 4\n"				\
++			     "2:\t" __BUG_REL(1b) "\n"			\
++			     "\t" __BUG_REL(%c0)  "\n"			\
+ 			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*%4-2*2\n"			\
++			     "\t.blockz %3-2*4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+-			     "i" (0), "i" (sizeof(struct bug_entry)),	\
+-			     "i" (sizeof(long)) );			\
++			     "i" (0), "i" (sizeof(struct bug_entry)) );	\
+ 		unreachable();						\
+ 	} while(0)
+ 
+@@ -54,15 +55,15 @@
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+-			     "\t.align %4\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
++			     "\t.align 4\n"				\
++			     "2:\t" __BUG_REL(1b) "\n"			\
++			     "\t" __BUG_REL(%c0)  "\n"			\
+ 			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*%4-2*2\n"			\
++			     "\t.blockz %3-2*4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+ 			     "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)),		\
+-			     "i" (sizeof(long)) );			\
++			     "i" (sizeof(struct bug_entry)) );		\
+ 	} while(0)
+ #else
+ #define __WARN_FLAGS(flags)						\
+@@ -71,13 +72,12 @@
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+ 			     "\t.align %2\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b\n"		\
++			     "2:\t" __BUG_REL(1b) "\n"			\
+ 			     "\t.short %0\n"				\
+-			     "\t.blockz %1-%2-2\n"			\
++			     "\t.blockz %1-4-2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)),		\
+-			     "i" (sizeof(long)) );			\
++			     "i" (sizeof(struct bug_entry)) );		\
+ 	} while(0)
+ #endif
+ 
+-- 
+2.42.0
+
 
 
 
