@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F5AD80D90D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5910280D813
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6197C1C2160C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704411C21557
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 612E751C2D;
-	Mon, 11 Dec 2023 18:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F6351C44;
+	Mon, 11 Dec 2023 18:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo4v/JQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOUkshMG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D655102A;
-	Mon, 11 Dec 2023 18:50:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4C1C433C7;
-	Mon, 11 Dec 2023 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF8DFC06;
+	Mon, 11 Dec 2023 18:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4222CC433C8;
+	Mon, 11 Dec 2023 18:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320639;
-	bh=mwg2usYcSWLqz8TbgE9dAxDWJkN/ruUtk1W06wUpSWQ=;
+	s=korg; t=1702320146;
+	bh=CHptDNJnT72ytpcfiuHdI+rFq6jV+PoM82h/UCNsaR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uo4v/JQibac6UvEpCS3keSYy5Y2YY9e5rRIQw3WftX5mJT25PP4P/emmtkS8prwvF
-	 J5VPPn4gl5j/zGO2Gy0uTkDXmvhYLaZLi0CccXi0x2yx4lUVfO5T9shHDEAzz2721i
-	 k1ZbgpZpqqdIa6EvvxHB9GPjBaM3Ma2GxeVkpKYw=
+	b=tOUkshMG1pQ+p5RHStIa2CEIzfoxpcaDZ0+MfekdrG0gTTdhm2iabedXv/uGNrRhx
+	 ScE4kx54ychZqdj8K1zlBb/K6BTiIf88p8zlp98+m5RJjUqSElQ9BNGVMUlLKHgD/M
+	 Wm5IZZsLsAbPKQWh2dLNE4og0yN/yB6jBXR1pT/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Todd Kjos <tkjos@google.com>,
+	Thomas Reichinger <thomas.reichinger@sohard.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/194] binder: fix memory leaks of spam and pending work
+Subject: [PATCH 5.4 21/67] arcnet: restoring support for multiple Sohard Arcnet cards
 Date: Mon, 11 Dec 2023 19:22:05 +0100
-Message-ID: <20231211182042.630305137@linuxfoundation.org>
+Message-ID: <20231211182015.997982038@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +53,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Thomas Reichinger <thomas.reichinger@sohard.de>
 
-commit 1aa3aaf8953c84bad398adf6c3cabc9d6685bf7d upstream
+[ Upstream commit 6b17a597fc2f13aaaa0a2780eb7edb9ae7ac9aea ]
 
-A transaction complete work is allocated and queued for each
-transaction. Under certain conditions the work->type might be marked as
-BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
-potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
-the target is currently frozen.
+Probe of Sohard Arcnet cards fails,
+if 2 or more cards are installed in a system.
+See kernel log:
+[    2.759203] arcnet: arcnet loaded
+[    2.763648] arcnet:com20020: COM20020 chipset support (by David Woodhouse et al.)
+[    2.770585] arcnet:com20020_pci: COM20020 PCI support
+[    2.772295] com20020 0000:02:00.0: enabling device (0000 -> 0003)
+[    2.772354] (unnamed net_device) (uninitialized): PLX-PCI Controls
+...
+[    3.071301] com20020 0000:02:00.0 arc0-0 (uninitialized): PCI COM20020: station FFh found at F080h, IRQ 101.
+[    3.071305] com20020 0000:02:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
+[    3.071534] com20020 0000:07:00.0: enabling device (0000 -> 0003)
+[    3.071581] (unnamed net_device) (uninitialized): PLX-PCI Controls
+...
+[    3.369501] com20020 0000:07:00.0: Led pci:green:tx:0-0 renamed to pci:green:tx:0-0_1 due to name collision
+[    3.369535] com20020 0000:07:00.0: Led pci:red:recon:0-0 renamed to pci:red:recon:0-0_1 due to name collision
+[    3.370586] com20020 0000:07:00.0 arc0-0 (uninitialized): PCI COM20020: station E1h found at C000h, IRQ 35.
+[    3.370589] com20020 0000:07:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
+[    3.370608] com20020: probe of 0000:07:00.0 failed with error -5
 
-However, these work types are not being handled in binder_release_work()
-so they will leak during a cleanup. This was reported by syzkaller with
-the following kmemleak dump:
+commit 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
+changes the device name of all COM20020 based PCI cards,
+even if only some cards support this:
+	snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
 
-BUG: memory leak
-unreferenced object 0xffff88810e2d6de0 (size 32):
-  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
-  hex dump (first 32 bytes):
-    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
-    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
-    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
-    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
-    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
-    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
-    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
-    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
-    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
-    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
-    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
-    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The error happens because all Sohard Arcnet cards would be called arc0-0,
+since the Sohard Arcnet cards don't have a PLX rotary coder.
+I.e. EAE Arcnet cards have a PLX rotary coder,
+which sets the first decimal, ensuring unique devices names.
 
-Fix the leaks by kfreeing these work types in binder_release_work() and
-handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
+This patch adds two new card feature flags to indicate
+which cards support LEDs and the PLX rotary coder.
+For EAE based cards the names still depend on the PLX rotary coder
+(untested, since missing EAE hardware).
+For Sohard based cards, this patch will result in devices
+being called arc0, arc1, ... (tested).
 
-Cc: stable@vger.kernel.org
-Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
-Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230922175138.230331-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: backport to v6.1 by dropping BINDER_WORK_TRANSACTION_PENDING
- as commit 0567461a7a6e is not present. Remove fixes tag accordingly.]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Thomas Reichinger <thomas.reichinger@sohard.de>
+Fixes: 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
+Link: https://lore.kernel.org/r/20231130113503.6812-1-thomas.reichinger@sohard.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/arcnet/arcdevice.h    |  2 +
+ drivers/net/arcnet/com20020-pci.c | 89 ++++++++++++++++---------------
+ 2 files changed, 48 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index e4a6da81cd4b3..9cc3a2b1b4fc1 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4788,6 +4788,7 @@ static void binder_release_work(struct binder_proc *proc,
- 				"undelivered TRANSACTION_ERROR: %u\n",
- 				e->cmd);
- 		} break;
-+		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
- 		case BINDER_WORK_TRANSACTION_COMPLETE: {
- 			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
- 				"undelivered TRANSACTION_COMPLETE\n");
+diff --git a/drivers/net/arcnet/arcdevice.h b/drivers/net/arcnet/arcdevice.h
+index 7178f5349fa8f..7b783ee918346 100644
+--- a/drivers/net/arcnet/arcdevice.h
++++ b/drivers/net/arcnet/arcdevice.h
+@@ -186,6 +186,8 @@ do {									\
+ #define ARC_IS_5MBIT    1   /* card default speed is 5MBit */
+ #define ARC_CAN_10MBIT  2   /* card uses COM20022, supporting 10MBit,
+ 				 but default is 2.5MBit. */
++#define ARC_HAS_LED     4   /* card has software controlled LEDs */
++#define ARC_HAS_ROTARY  8   /* card has rotary encoder */
+ 
+ /* information needed to define an encapsulation driver */
+ struct ArcProto {
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index 28dccbc0e8d8f..9d9e4200064f9 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -213,12 +213,13 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 		if (!strncmp(ci->name, "EAE PLX-PCI FB2", 15))
+ 			lp->backplane = 1;
+ 
+-		/* Get the dev_id from the PLX rotary coder */
+-		if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
+-			dev_id_mask = 0x3;
+-		dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
+-
+-		snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
++		if (ci->flags & ARC_HAS_ROTARY) {
++			/* Get the dev_id from the PLX rotary coder */
++			if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
++				dev_id_mask = 0x3;
++			dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
++			snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
++		}
+ 
+ 		if (arcnet_inb(ioaddr, COM20020_REG_R_STATUS) == 0xFF) {
+ 			pr_err("IO address %Xh is empty!\n", ioaddr);
+@@ -230,6 +231,10 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 			goto err_free_arcdev;
+ 		}
+ 
++		ret = com20020_found(dev, IRQF_SHARED);
++		if (ret)
++			goto err_free_arcdev;
++
+ 		card = devm_kzalloc(&pdev->dev, sizeof(struct com20020_dev),
+ 				    GFP_KERNEL);
+ 		if (!card) {
+@@ -239,41 +244,39 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 
+ 		card->index = i;
+ 		card->pci_priv = priv;
+-		card->tx_led.brightness_set = led_tx_set;
+-		card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
+-						GFP_KERNEL, "arc%d-%d-tx",
+-						dev->dev_id, i);
+-		card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+-						"pci:green:tx:%d-%d",
+-						dev->dev_id, i);
+-
+-		card->tx_led.dev = &dev->dev;
+-		card->recon_led.brightness_set = led_recon_set;
+-		card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
+-						GFP_KERNEL, "arc%d-%d-recon",
+-						dev->dev_id, i);
+-		card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+-						"pci:red:recon:%d-%d",
+-						dev->dev_id, i);
+-		card->recon_led.dev = &dev->dev;
+-		card->dev = dev;
+-
+-		ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
+-		if (ret)
+-			goto err_free_arcdev;
+ 
+-		ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
+-		if (ret)
+-			goto err_free_arcdev;
+-
+-		dev_set_drvdata(&dev->dev, card);
+-
+-		ret = com20020_found(dev, IRQF_SHARED);
+-		if (ret)
+-			goto err_free_arcdev;
+-
+-		devm_arcnet_led_init(dev, dev->dev_id, i);
++		if (ci->flags & ARC_HAS_LED) {
++			card->tx_led.brightness_set = led_tx_set;
++			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
++							GFP_KERNEL, "arc%d-%d-tx",
++							dev->dev_id, i);
++			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
++							"pci:green:tx:%d-%d",
++							dev->dev_id, i);
++
++			card->tx_led.dev = &dev->dev;
++			card->recon_led.brightness_set = led_recon_set;
++			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
++							GFP_KERNEL, "arc%d-%d-recon",
++							dev->dev_id, i);
++			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
++							"pci:red:recon:%d-%d",
++							dev->dev_id, i);
++			card->recon_led.dev = &dev->dev;
++
++			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
++			if (ret)
++				goto err_free_arcdev;
++
++			ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
++			if (ret)
++				goto err_free_arcdev;
++
++			dev_set_drvdata(&dev->dev, card);
++			devm_arcnet_led_init(dev, dev->dev_id, i);
++		}
+ 
++		card->dev = dev;
+ 		list_add(&card->list, &priv->list_dev);
+ 		continue;
+ 
+@@ -329,7 +332,7 @@ static struct com20020_pci_card_info card_info_5mbit = {
+ };
+ 
+ static struct com20020_pci_card_info card_info_sohard = {
+-	.name = "PLX-PCI",
++	.name = "SOHARD SH ARC-PCI",
+ 	.devcount = 1,
+ 	/* SOHARD needs PCI base addr 4 */
+ 	.chan_map_tbl = {
+@@ -364,7 +367,7 @@ static struct com20020_pci_card_info card_info_eae_arc1 = {
+ 		},
+ 	},
+ 	.rotary = 0x0,
+-	.flags = ARC_CAN_10MBIT,
++	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
+ };
+ 
+ static struct com20020_pci_card_info card_info_eae_ma1 = {
+@@ -396,7 +399,7 @@ static struct com20020_pci_card_info card_info_eae_ma1 = {
+ 		},
+ 	},
+ 	.rotary = 0x0,
+-	.flags = ARC_CAN_10MBIT,
++	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
+ };
+ 
+ static struct com20020_pci_card_info card_info_eae_fb2 = {
+@@ -421,7 +424,7 @@ static struct com20020_pci_card_info card_info_eae_fb2 = {
+ 		},
+ 	},
+ 	.rotary = 0x0,
+-	.flags = ARC_CAN_10MBIT,
++	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
+ };
+ 
+ static const struct pci_device_id com20020pci_id_table[] = {
 -- 
 2.42.0
 
