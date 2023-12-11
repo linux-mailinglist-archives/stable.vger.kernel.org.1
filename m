@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-6064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6C880D88F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64B080D86B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A644B2818FF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A771C214B9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3351751038;
-	Mon, 11 Dec 2023 18:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC0A51C2A;
+	Mon, 11 Dec 2023 18:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVbXO+B+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHnanOoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5132C8C8;
-	Mon, 11 Dec 2023 18:46:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68307C433C7;
-	Mon, 11 Dec 2023 18:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5F85102A;
+	Mon, 11 Dec 2023 18:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879E6C433C7;
+	Mon, 11 Dec 2023 18:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320414;
-	bh=S4bcVzmGpTEN/Io8H/Vif07bjr3hZM5oe6fczCssxMk=;
+	s=korg; t=1702320333;
+	bh=7Ehwh8n63rgryYrSUawFh9A+w4pKLR17qylUZCaBLJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVbXO+B+QRSnJ8JykILqlEHa1t6g9ypQrTz8UFqCbL+HZlOYI5T/mCn8DmuhiFD8p
-	 RJVMkvA+Mczf17Y44+7/tuDuKUMqBQ9XB7/VZBHKLOOCrFNpYYn0sT/0M5efSVxWwq
-	 JOh0sSdSJGUgTMw0zp4957J5oTaaCQL4hE/wCOFU=
+	b=lHnanOoo3a0Vz8iXbhFYpcNpJm1SR/KOarR2xz0uioviNGhKbKh4mLnU6ktY5d/hX
+	 V+T+Ct8IYejQF1ELh4BBotdiaTEEqtMqSDiafKg634nwpPXRnmgp32SZe5qSVC2WI1
+	 5doJWr2jwmY3b8wtiA9KBuDNqrvOgT8U+at4t+5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 014/194] x86/tdx: Allow 32-bit emulation by default
-Date: Mon, 11 Dec 2023 19:20:04 +0100
-Message-ID: <20231211182037.246622303@linuxfoundation.org>
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 015/194] dt: dt-extract-compatibles: Handle cfile arguments in generator function
+Date: Mon, 11 Dec 2023 19:20:05 +0100
+Message-ID: <20231211182037.285859524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
 References: <20231211182036.606660304@linuxfoundation.org>
@@ -52,59 +51,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ upstream commit f4116bfc44621882556bbf70f5284fbf429a5cf6 ]
+[ Upstream commit eb2139fc0da63b89a2ad565ecd8133a37e8b7c4f ]
 
-32-bit emulation was disabled on TDX to prevent a possible attack by
-a VMM injecting an interrupt on vector 0x80.
+Move the handling of the cfile arguments to a separate generator
+function to avoid redundancy.
 
-Now that int80_emulation() has a check for external interrupts the
-limitation can be lifted.
-
-To distinguish software interrupts from external ones, int80_emulation()
-checks the APIC ISR bit relevant to the 0x80 vector. For
-software interrupts, this bit will be 0.
-
-On TDX, the VAPIC state (including ISR) is protected and cannot be
-manipulated by the VMM. The ISR bit is set by the microcode flow during
-the handling of posted interrupts.
-
-[ dhansen: more changelog tweaks ]
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20230828211424.2964562-2-nfraprado@collabora.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: 8f51593cdcab ("dt: dt-extract-compatibles: Don't follow symlinks when walking tree")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdx.c |    9 ---------
- 1 file changed, 9 deletions(-)
+ scripts/dtc/dt-extract-compatibles | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -830,14 +830,5 @@ void __init tdx_early_init(void)
- 	x86_platform.guest.enc_cache_flush_required  = tdx_cache_flush_required;
- 	x86_platform.guest.enc_tlb_flush_required    = tdx_tlb_flush_required;
+diff --git a/scripts/dtc/dt-extract-compatibles b/scripts/dtc/dt-extract-compatibles
+index a1119762ed086..05c47e3d8c00e 100755
+--- a/scripts/dtc/dt-extract-compatibles
++++ b/scripts/dtc/dt-extract-compatibles
+@@ -49,6 +49,14 @@ def print_compat(filename, compatibles):
+ 	else:
+ 		print(*compatibles, sep='\n')
  
--	/*
--	 * The VMM is capable of injecting interrupt 0x80 and triggering the
--	 * compatibility syscall path.
--	 *
--	 * By default, the 32-bit emulation is disabled in order to ensure
--	 * the safety of the VM.
--	 */
--	ia32_disable();
--
- 	pr_info("Guest detected\n");
- }
++def files_to_parse(path_args):
++	for f in path_args:
++		if os.path.isdir(f):
++			for filename in glob.iglob(f + "/**/*.c", recursive=True):
++				yield filename
++		else:
++			yield f
++
+ show_filename = False
+ 
+ if __name__ == "__main__":
+@@ -59,11 +67,6 @@ if __name__ == "__main__":
+ 
+ 	show_filename = args.with_filename
+ 
+-	for f in args.cfile:
+-		if os.path.isdir(f):
+-			for filename in glob.iglob(f + "/**/*.c", recursive=True):
+-				compat_list = parse_compatibles(filename)
+-				print_compat(filename, compat_list)
+-		else:
+-			compat_list = parse_compatibles(f)
+-			print_compat(f, compat_list)
++	for f in files_to_parse(args.cfile):
++		compat_list = parse_compatibles(f)
++		print_compat(f, compat_list)
+-- 
+2.42.0
+
 
 
 
