@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E054B80D79B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC66C80D560
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DE6D1F219B1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 317A3B20E31
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ADF51C44;
-	Mon, 11 Dec 2023 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ABD5101B;
+	Mon, 11 Dec 2023 18:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjaGcCyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTHG/Bzv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24790FC06;
-	Mon, 11 Dec 2023 18:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7ECC433C7;
-	Mon, 11 Dec 2023 18:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61F14F212;
+	Mon, 11 Dec 2023 18:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CACDC433C7;
+	Mon, 11 Dec 2023 18:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319906;
-	bh=BlvVO5cHSXQGBAQcGG+DGrO6On0lkAgMXUb+GIC2oGg=;
+	s=korg; t=1702319044;
+	bh=4YhG+oOOoS5URxtcMOQn5Q9srTGpyFxfKd08z9b63WY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjaGcCynHVTxk5D8oYWknPvuDfKBF59FN2ayVHgxepWeX5JWASHCVt404vQ0/F0+u
-	 Rsr+5/rk1Jijvtf0gzt99FibM5UDTTGByaMnqrW0z38IM+c+wnHpzn+HMTUVCn+kK3
-	 RuHPHI25TyEbG/EcNWD41E4T5vEt7ja5XwXWPbOw=
+	b=mTHG/BzvkprS44lAPunk/DjnR31MybzQDfT825/uDBiEiaIpdoS4MAjTUR2HtcThn
+	 CiR/S02DUy16dNU4mpo4O3xZ1DFGnJ30ryFfRM96S5fBuDZapqtUZoWJPC/B3IZHVw
+	 jI4dN/cM1KYYeeP0mTft+uW3+xSv8J/X0dc4WNpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khalil Blaiech <kblaiech@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Suman Ghosh <sumang@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 24/97] mlxbf-bootctl: correctly identify secure boot with development keys
-Date: Mon, 11 Dec 2023 19:21:27 +0100
-Message-ID: <20231211182020.801508007@linuxfoundation.org>
+Subject: [PATCH 4.19 18/55] ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()
+Date: Mon, 11 Dec 2023 19:21:28 +0100
+Message-ID: <20231211182012.904867943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,122 +53,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit d4eef75279f5e9d594f5785502038c763ce42268 ]
+[ Upstream commit 80d875cfc9d3711a029f234ef7d680db79e8fa4b ]
 
-The secure boot state of the BlueField SoC is represented by two bits:
-                0 = production state
-                1 = secure boot enabled
-                2 = non-secure (secure boot disabled)
-                3 = RMA state
-There is also a single bit to indicate whether production keys or
-development keys are being used when secure boot is enabled.
-This single bit (specified by MLXBF_BOOTCTL_SB_DEV_MASK) only has
-meaning if secure boot state equals 1 (secure boot enabled).
+In ipgre_xmit(), skb_pull() may fail even if pskb_inet_may_pull() returns
+true. For example, applications can use PF_PACKET to create a malformed
+packet with no IP header. This type of packet causes a problem such as
+uninit-value access.
 
-The secure boot states are as follows:
-- “GA secured” is when secure boot is enabled with official production keys.
-- “Secured (development)” is when secure boot is enabled with development keys.
+This patch ensures that skb_pull() can pull the required size by checking
+the skb with pskb_network_may_pull() before skb_pull().
 
-Without this fix “GA Secured” is displayed on development cards which is
-misleading. This patch updates the logic in "lifecycle_state_show()" to
-handle the case where the SoC is configured for secure boot and is using
-development keys.
-
-Fixes: 79e29cb8fbc5c ("platform/mellanox: Add bootctl driver for Mellanox BlueField Soc")
-Reviewed-by: Khalil Blaiech <kblaiech@nvidia.com>
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Link: https://lore.kernel.org/r/20231130183515.17214-1-davthompson@nvidia.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Link: https://lore.kernel.org/r/20231202161441.221135-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-bootctl.c | 39 +++++++++++++++--------
- 1 file changed, 26 insertions(+), 13 deletions(-)
+ net/ipv4/ip_gre.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-bootctl.c b/drivers/platform/mellanox/mlxbf-bootctl.c
-index 5d21c6adf1ab6..9911d4f854696 100644
---- a/drivers/platform/mellanox/mlxbf-bootctl.c
-+++ b/drivers/platform/mellanox/mlxbf-bootctl.c
-@@ -17,6 +17,7 @@
- 
- #define MLXBF_BOOTCTL_SB_SECURE_MASK		0x03
- #define MLXBF_BOOTCTL_SB_TEST_MASK		0x0c
-+#define MLXBF_BOOTCTL_SB_DEV_MASK		BIT(4)
- 
- #define MLXBF_SB_KEY_NUM			4
- 
-@@ -37,11 +38,18 @@ static struct mlxbf_bootctl_name boot_names[] = {
- 	{ MLXBF_BOOTCTL_NONE, "none" },
- };
- 
-+enum {
-+	MLXBF_BOOTCTL_SB_LIFECYCLE_PRODUCTION = 0,
-+	MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE = 1,
-+	MLXBF_BOOTCTL_SB_LIFECYCLE_GA_NON_SECURE = 2,
-+	MLXBF_BOOTCTL_SB_LIFECYCLE_RMA = 3
-+};
-+
- static const char * const mlxbf_bootctl_lifecycle_states[] = {
--	[0] = "Production",
--	[1] = "GA Secured",
--	[2] = "GA Non-Secured",
--	[3] = "RMA",
-+	[MLXBF_BOOTCTL_SB_LIFECYCLE_PRODUCTION] = "Production",
-+	[MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE] = "GA Secured",
-+	[MLXBF_BOOTCTL_SB_LIFECYCLE_GA_NON_SECURE] = "GA Non-Secured",
-+	[MLXBF_BOOTCTL_SB_LIFECYCLE_RMA] = "RMA",
- };
- 
- /* ARM SMC call which is atomic and no need for lock. */
-@@ -165,25 +173,30 @@ static ssize_t second_reset_action_store(struct device *dev,
- static ssize_t lifecycle_state_show(struct device *dev,
- 				    struct device_attribute *attr, char *buf)
- {
-+	int status_bits;
-+	int use_dev_key;
-+	int test_state;
- 	int lc_state;
- 
--	lc_state = mlxbf_bootctl_smc(MLXBF_BOOTCTL_GET_TBB_FUSE_STATUS,
--				     MLXBF_BOOTCTL_FUSE_STATUS_LIFECYCLE);
--	if (lc_state < 0)
--		return lc_state;
-+	status_bits = mlxbf_bootctl_smc(MLXBF_BOOTCTL_GET_TBB_FUSE_STATUS,
-+					MLXBF_BOOTCTL_FUSE_STATUS_LIFECYCLE);
-+	if (status_bits < 0)
-+		return status_bits;
- 
--	lc_state &=
--		MLXBF_BOOTCTL_SB_TEST_MASK | MLXBF_BOOTCTL_SB_SECURE_MASK;
-+	use_dev_key = status_bits & MLXBF_BOOTCTL_SB_DEV_MASK;
-+	test_state = status_bits & MLXBF_BOOTCTL_SB_TEST_MASK;
-+	lc_state = status_bits & MLXBF_BOOTCTL_SB_SECURE_MASK;
- 
- 	/*
- 	 * If the test bits are set, we specify that the current state may be
- 	 * due to using the test bits.
- 	 */
--	if (lc_state & MLXBF_BOOTCTL_SB_TEST_MASK) {
--		lc_state &= MLXBF_BOOTCTL_SB_SECURE_MASK;
--
-+	if (test_state) {
- 		return sprintf(buf, "%s(test)\n",
- 			       mlxbf_bootctl_lifecycle_states[lc_state]);
-+	} else if (use_dev_key &&
-+		   (lc_state == MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE)) {
-+		return sprintf(buf, "Secured (development)\n");
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index e16373640f4c2..38c8db78cda19 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -683,15 +683,18 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
  	}
  
- 	return sprintf(buf, "%s\n", mlxbf_bootctl_lifecycle_states[lc_state]);
+ 	if (dev->header_ops) {
++		int pull_len = tunnel->hlen + sizeof(struct iphdr);
++
+ 		if (skb_cow_head(skb, 0))
+ 			goto free_skb;
+ 
+ 		tnl_params = (const struct iphdr *)skb->data;
+ 
+-		/* Pull skb since ip_tunnel_xmit() needs skb->data pointing
+-		 * to gre header.
+-		 */
+-		skb_pull(skb, tunnel->hlen + sizeof(struct iphdr));
++		if (!pskb_network_may_pull(skb, pull_len))
++			goto free_skb;
++
++		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
++		skb_pull(skb, pull_len);
+ 		skb_reset_mac_header(skb);
+ 
+ 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
 -- 
 2.42.0
 
