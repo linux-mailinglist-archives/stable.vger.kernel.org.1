@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-5758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9968480D691
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77A580D89D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB0D81C21547
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DAA71F218FE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F2A51C47;
-	Mon, 11 Dec 2023 18:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C284C51C33;
+	Mon, 11 Dec 2023 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhMSRXfd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9KkzyuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44916C8C8;
-	Mon, 11 Dec 2023 18:33:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC92DC433C7;
-	Mon, 11 Dec 2023 18:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8C24437B;
+	Mon, 11 Dec 2023 18:47:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043A9C433C7;
+	Mon, 11 Dec 2023 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319587;
-	bh=jQ5klFC1N14Yl218qZ03ECHodtWZNQkBIIBTkd70xCE=;
+	s=korg; t=1702320441;
+	bh=6TGL62GCt9PaGJyHeCkd4Yr/y0X2UUS+XdsxXyYxfk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhMSRXfd0cgbrHpPru312wUUfD95cXbBRtUqBFrlJvzxD8Es/SEYdTzk3If6GTQAa
-	 3dHrGfsNV79baJMx7uo3TrPyT92acvzcZaU6VM169ErZAxK77lw9EaJ2/3q+ehhGo4
-	 2m7qzAczwu+E4YieEX4Fx2b6ZPzWMFiMsuRNGhFg=
+	b=B9KkzyuLPnD+cQR10ptu3uN42lVimBf0y3qEVIScOqPmQ/VxdqwMWCdyPBb5v2Exh
+	 FRO6XAopYCwkMv/AL+AqLjMhZJVpa9of8lQ8bJH6lC8UlCe7psyZAuB7EUQrVfnVLa
+	 UiXsS0knsAcp5jNcp2Lu9CEObHT5li+R9rm6GfDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	stable@kernel.org,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 160/244] packet: Move reference count in packet_sock to atomic_long_t
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jerome Forissier <jerome.forissier@linaro.org>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 063/194] tee: optee: Fix supplicant based device enumeration
 Date: Mon, 11 Dec 2023 19:20:53 +0100
-Message-ID: <20231211182053.026701701@linuxfoundation.org>
+Message-ID: <20231211182039.308927505@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,114 +56,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-commit db3fadacaf0c817b222090290d06ca2a338422d0 upstream.
+[ Upstream commit 7269cba53d906cf257c139d3b3a53ad272176bca ]
 
-In some potential instances the reference count on struct packet_sock
-could be saturated and cause overflows which gets the kernel a bit
-confused. To prevent this, move to a 64-bit atomic reference count on
-64-bit architectures to prevent the possibility of this type to overflow.
+Currently supplicant dependent optee device enumeration only registers
+devices whenever tee-supplicant is invoked for the first time. But it
+forgets to remove devices when tee-supplicant daemon stops running and
+closes its context gracefully. This leads to following error for fTPM
+driver during reboot/shutdown:
 
-Because we can not handle saturation, using refcount_t is not possible
-in this place. Maybe someday in the future if it changes it could be
-used. Also, instead of using plain atomic64_t, use atomic_long_t instead.
-32-bit machines tend to be memory-limited (i.e. anything that increases
-a reference uses so much memory that you can't actually get to 2**32
-references). 32-bit architectures also tend to have serious problems
-with 64-bit atomics. Hence, atomic_long_t is the more natural solution.
+[   73.466791] tpm tpm0: ftpm_tee_tpm_op_send: SUBMIT_COMMAND invoke error: 0xffff3024
 
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Co-developed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231201131021.19999-1-daniel@iogearbox.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by adding an attribute for supplicant dependent devices so that
+the user-space service can detect and detach supplicant devices before
+closing the supplicant:
+
+$ for dev in /sys/bus/tee/devices/*; do if [[ -f "$dev/need_supplicant" && -f "$dev/driver/unbind" ]]; \
+      then echo $(basename "$dev") > $dev/driver/unbind; fi done
+
+Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
+Closes: https://github.com/OP-TEE/optee_os/issues/6094
+Fixes: 5f178bb71e3a ("optee: enable support for multi-stage bus enumeration")
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Acked-by: Jerome Forissier <jerome.forissier@linaro.org>
+[jw: fixed up Date documentation]
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c |   16 ++++++++--------
- net/packet/internal.h  |    2 +-
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ .../ABI/testing/sysfs-bus-optee-devices         |  9 +++++++++
+ drivers/tee/optee/device.c                      | 17 +++++++++++++++--
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -4300,7 +4300,7 @@ static void packet_mm_open(struct vm_are
- 	struct sock *sk = sock->sk;
- 
- 	if (sk)
--		atomic_inc(&pkt_sk(sk)->mapped);
-+		atomic_long_inc(&pkt_sk(sk)->mapped);
+diff --git a/Documentation/ABI/testing/sysfs-bus-optee-devices b/Documentation/ABI/testing/sysfs-bus-optee-devices
+index 0f58701367b66..af31e5a22d89f 100644
+--- a/Documentation/ABI/testing/sysfs-bus-optee-devices
++++ b/Documentation/ABI/testing/sysfs-bus-optee-devices
+@@ -6,3 +6,12 @@ Description:
+ 		OP-TEE bus provides reference to registered drivers under this directory. The <uuid>
+ 		matches Trusted Application (TA) driver and corresponding TA in secure OS. Drivers
+ 		are free to create needed API under optee-ta-<uuid> directory.
++
++What:		/sys/bus/tee/devices/optee-ta-<uuid>/need_supplicant
++Date:		November 2023
++KernelVersion:	6.7
++Contact:	op-tee@lists.trustedfirmware.org
++Description:
++		Allows to distinguish whether an OP-TEE based TA/device requires user-space
++		tee-supplicant to function properly or not. This attribute will be present for
++		devices which depend on tee-supplicant to be running.
+diff --git a/drivers/tee/optee/device.c b/drivers/tee/optee/device.c
+index 64f0e047c23d2..4b10921276942 100644
+--- a/drivers/tee/optee/device.c
++++ b/drivers/tee/optee/device.c
+@@ -60,7 +60,16 @@ static void optee_release_device(struct device *dev)
+ 	kfree(optee_device);
  }
  
- static void packet_mm_close(struct vm_area_struct *vma)
-@@ -4310,7 +4310,7 @@ static void packet_mm_close(struct vm_ar
- 	struct sock *sk = sock->sk;
+-static int optee_register_device(const uuid_t *device_uuid)
++static ssize_t need_supplicant_show(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	return 0;
++}
++
++static DEVICE_ATTR_RO(need_supplicant);
++
++static int optee_register_device(const uuid_t *device_uuid, u32 func)
+ {
+ 	struct tee_client_device *optee_device = NULL;
+ 	int rc;
+@@ -83,6 +92,10 @@ static int optee_register_device(const uuid_t *device_uuid)
+ 		put_device(&optee_device->dev);
+ 	}
  
- 	if (sk)
--		atomic_dec(&pkt_sk(sk)->mapped);
-+		atomic_long_dec(&pkt_sk(sk)->mapped);
++	if (func == PTA_CMD_GET_DEVICES_SUPP)
++		device_create_file(&optee_device->dev,
++				   &dev_attr_need_supplicant);
++
+ 	return rc;
  }
  
- static const struct vm_operations_struct packet_mmap_ops = {
-@@ -4405,7 +4405,7 @@ static int packet_set_ring(struct sock *
+@@ -142,7 +155,7 @@ static int __optee_enumerate_devices(u32 func)
+ 	num_devices = shm_size / sizeof(uuid_t);
  
- 	err = -EBUSY;
- 	if (!closing) {
--		if (atomic_read(&po->mapped))
-+		if (atomic_long_read(&po->mapped))
- 			goto out;
- 		if (packet_read_pending(rb))
- 			goto out;
-@@ -4508,7 +4508,7 @@ static int packet_set_ring(struct sock *
- 
- 	err = -EBUSY;
- 	mutex_lock(&po->pg_vec_lock);
--	if (closing || atomic_read(&po->mapped) == 0) {
-+	if (closing || atomic_long_read(&po->mapped) == 0) {
- 		err = 0;
- 		spin_lock_bh(&rb_queue->lock);
- 		swap(rb->pg_vec, pg_vec);
-@@ -4526,9 +4526,9 @@ static int packet_set_ring(struct sock *
- 		po->prot_hook.func = (po->rx_ring.pg_vec) ?
- 						tpacket_rcv : packet_rcv;
- 		skb_queue_purge(rb_queue);
--		if (atomic_read(&po->mapped))
--			pr_err("packet_mmap: vma is busy: %d\n",
--			       atomic_read(&po->mapped));
-+		if (atomic_long_read(&po->mapped))
-+			pr_err("packet_mmap: vma is busy: %ld\n",
-+			       atomic_long_read(&po->mapped));
+ 	for (idx = 0; idx < num_devices; idx++) {
+-		rc = optee_register_device(&device_uuid[idx]);
++		rc = optee_register_device(&device_uuid[idx], func);
+ 		if (rc)
+ 			goto out_shm;
  	}
- 	mutex_unlock(&po->pg_vec_lock);
- 
-@@ -4606,7 +4606,7 @@ static int packet_mmap(struct file *file
- 		}
- 	}
- 
--	atomic_inc(&po->mapped);
-+	atomic_long_inc(&po->mapped);
- 	vma->vm_ops = &packet_mmap_ops;
- 	err = 0;
- 
---- a/net/packet/internal.h
-+++ b/net/packet/internal.h
-@@ -122,7 +122,7 @@ struct packet_sock {
- 	__be16			num;
- 	struct packet_rollover	*rollover;
- 	struct packet_mclist	*mclist;
--	atomic_t		mapped;
-+	atomic_long_t		mapped;
- 	enum tpacket_versions	tp_version;
- 	unsigned int		tp_hdrlen;
- 	unsigned int		tp_reserve;
+-- 
+2.42.0
+
 
 
 
