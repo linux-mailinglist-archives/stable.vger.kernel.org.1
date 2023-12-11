@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D6C80CA48
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:51:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 634C880CA49
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D42422810A7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:51:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B5C82812FA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E403C066;
-	Mon, 11 Dec 2023 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A59D3C064;
+	Mon, 11 Dec 2023 12:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNbZdxPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLNlauNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A963BB2B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:51:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EAAC433C7;
-	Mon, 11 Dec 2023 12:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC23F3BB2B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511B9C433C7;
+	Mon, 11 Dec 2023 12:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702299087;
-	bh=Nwdd3WrCeAjFbE1HjTFvXsOJk+qZrDDP53aZAbyLvrY=;
+	s=korg; t=1702299141;
+	bh=CiL2lLjTKYEod8VRdcd/uzKDUNXIKczmPi8h10DASgg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TNbZdxPVuPOPuF5kciw3TFonojGz0iRIJC0ZJqeqUUDYLS+dymZTXJdTnREaZXxWZ
-	 oRaLBm0ZkERnhUwoKBNaOiZ8ftL6OxccTWlCtyFJMMMZHADhFG5RQfzKQXL50QqXev
-	 mbXzr+iInEOokmk6qST9tijPldvQ6ZhPRgMPxkx4=
-Subject: FAILED: patch "[PATCH] cifs: Fix flushing, invalidation and file size with FICLONE" failed to apply to 4.14-stable tree
-To: dhowells@redhat.com,hch@lst.de,jlayton@kernel.org,nspmangalore@gmail.com,pc@manguebit.com,rohiths.msft@gmail.com,stfrench@microsoft.com,willy@infradead.org
+	b=WLNlauNMNd6Lucyt42hxXCUp9KE2+/U79CybYHc51UfOkgeA3eZp+Bdt98hAwomgL
+	 gW75qxmx6DVnWQN/IIPUZtT41qxjDE29V2sEtU8/B457ob+5CCfsVTzKuScx8/EuGs
+	 RrtXMA1RU4fw2GvL4dCegngv5DSZY3GOrxtzc1p4=
+Subject: FAILED: patch "[PATCH] MIPS: Loongson64: Reserve vgabios memory on boot" failed to apply to 5.4-stable tree
+To: jiaxun.yang@flygoat.com,tsbogend@alpha.franken.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Dec 2023 13:51:21 +0100
-Message-ID: <2023121121-muzzle-vocalist-071f@gregkh>
+Date: Mon, 11 Dec 2023 13:52:19 +0100
+Message-ID: <2023121118-elitism-slimness-966d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,28 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x c54fc3a4f375663f2361a9cbb2955fb4ef912879
+git cherry-pick -x 8f7aa77a463f47c9e00592d02747a9fcf2271543
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121121-muzzle-vocalist-071f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121118-elitism-slimness-966d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-c54fc3a4f375 ("cifs: Fix flushing, invalidation and file size with FICLONE")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-abdb1742a312 ("cifs: get rid of mount options string parsing")
-9fd29a5bae6e ("cifs: use fs_context for automounts")
-5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
-332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
+8f7aa77a463f ("MIPS: Loongson64: Reserve vgabios memory on boot")
+cf8194e46c1e ("MIPS: Loongson64: Give chance to build under !CONFIG_NUMA and !CONFIG_SMP")
+73826d604bbf ("MIPS: Loongson64: Clean up numa.c")
+1062fc45d1e9 ("MIPS: Loongson64: Select SMP in Kconfig to avoid build error")
+70b838292bef ("MIPS: Update default config file for Loongson-3")
+39c1485c8baa ("MIPS: KVM: Add kvm guest support for Loongson-3")
+24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
+f8523d0e8361 ("MIPS: Loongson: Rename CPU device-tree binding")
+143463fd33fe ("MIPS: Loongson: Enable devicetree based probing for 8250 ports in defconfig")
+a44de7497f91 ("MIPS: Loongson: Build ATI Radeon GPU driver as module")
+68fbb9721ea7 ("MIPS: Loongson: Add DMA support for LS7A")
+2c3cc858a687 ("MIPS: Loongson64: Switch the order of RS780E and LS7A")
+8c88cc53ffa6 ("MIPS: Loongson: Get host bridge information")
+fcecdcd388ea ("MIPS: Loongson64: Load built-in dtbs")
+87fcfa7b7fe6 ("MIPS: Loongson64: Add generic dts")
+bfe9a2999629 ("dt-bindings: mips: Add loongson boards")
+1e07c876ab75 ("MIPS: Loongson: Do not initialise statics to 0")
+75cac781dca4 ("MIPS: Loongson{2ef, 32, 64} convert to generic fw cmdline")
+6fbde6b492df ("MIPS: Loongson64: Move files to the top-level directory")
+1bdb7b76705a ("MIPS: Loongson64: Cleanup unused code")
 
 thanks,
 
@@ -74,178 +88,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c54fc3a4f375663f2361a9cbb2955fb4ef912879 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Fri, 1 Dec 2023 00:22:01 +0000
-Subject: [PATCH] cifs: Fix flushing, invalidation and file size with FICLONE
+From 8f7aa77a463f47c9e00592d02747a9fcf2271543 Mon Sep 17 00:00:00 2001
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Date: Tue, 7 Nov 2023 11:15:18 +0000
+Subject: [PATCH] MIPS: Loongson64: Reserve vgabios memory on boot
 
-Fix a number of issues in the cifs filesystem implementation of the FICLONE
-ioctl in cifs_remap_file_range().  This is analogous to the previously
-fixed bug in cifs_file_copychunk_range() and can share the helper
-functions.
+vgabios is passed from firmware to kernel on Loongson64 systems.
+Sane firmware will keep this pointer in reserved memory space
+passed from the firmware but insane firmware keeps it in low
+memory before kernel entry that is not reserved.
 
-Firstly, the invalidation of the destination range is handled incorrectly:
-We shouldn't just invalidate the whole file as dirty data in the file may
-get lost and we can't just call truncate_inode_pages_range() to invalidate
-the destination range as that will erase parts of a partial folio at each
-end whilst invalidating and discarding all the folios in the middle.  We
-need to force all the folios covering the range to be reloaded, but we
-mustn't lose dirty data in them that's not in the destination range.
+Previously kernel won't try to allocate memory from low memory
+before kernel entry on boot, but after converting to memblock
+it will do that.
 
-Further, we shouldn't simply round out the range to PAGE_SIZE at each end
-as cifs should move to support multipage folios.
+Fix by resversing those memory on early boot.
 
-Secondly, there's an issue whereby a write may have extended the file
-locally, but not have been written back yet.  This can leaves the local
-idea of the EOF at a later point than the server's EOF.  If a clone request
-is issued, this will fail on the server with STATUS_INVALID_VIEW_SIZE
-(which gets translated to -EIO locally) if the clone source extends past
-the server's EOF.
-
-Fix this by:
-
- (0) Flush the source region (already done).  The flush does nothing and
-     the EOF isn't moved if the source region has no dirty data.
-
- (1) Move the EOF to the end of the source region if it isn't already at
-     least at this point.  If we can't do this, for instance if the server
-     doesn't support it, just flush the entire source file.
-
- (2) Find the folio (if present) at each end of the range, flushing it and
-     increasing the region-to-be-invalidated to cover those in their
-     entirety.
-
- (3) Fully discard all the folios covering the range as we want them to be
-     reloaded.
-
- (4) Then perform the extent duplication.
-
-Thirdly, set i_size after doing the duplicate_extents operation as this
-value may be used by various things internally.  stat() hides the issue
-because setting ->time to 0 causes cifs_getatr() to revalidate the
-attributes.
-
-These were causing the cifs/001 xfstest to fail.
-
-Fixes: 04b38d601239 ("vfs: pull btrfs clone API to vfs layer")
-Signed-off-by: David Howells <dhowells@redhat.com>
 Cc: stable@vger.kernel.org
-cc: Christoph Hellwig <hch@lst.de>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a94e4f24ec83 ("MIPS: init: Drop boot_mem_map")
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-index 8097a9b3e98c..c5fc0a35bb19 100644
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1268,9 +1268,12 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- {
- 	struct inode *src_inode = file_inode(src_file);
- 	struct inode *target_inode = file_inode(dst_file);
-+	struct cifsInodeInfo *src_cifsi = CIFS_I(src_inode);
-+	struct cifsInodeInfo *target_cifsi = CIFS_I(target_inode);
- 	struct cifsFileInfo *smb_file_src = src_file->private_data;
--	struct cifsFileInfo *smb_file_target;
--	struct cifs_tcon *target_tcon;
-+	struct cifsFileInfo *smb_file_target = dst_file->private_data;
-+	struct cifs_tcon *target_tcon, *src_tcon;
-+	unsigned long long destend, fstart, fend, new_size;
- 	unsigned int xid;
- 	int rc;
- 
-@@ -1281,13 +1284,13 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 
- 	xid = get_xid();
- 
--	if (!src_file->private_data || !dst_file->private_data) {
-+	if (!smb_file_src || !smb_file_target) {
- 		rc = -EBADF;
- 		cifs_dbg(VFS, "missing cifsFileInfo on copy range src file\n");
- 		goto out;
+diff --git a/arch/mips/loongson64/init.c b/arch/mips/loongson64/init.c
+index ee8de1735b7c..d62262f93069 100644
+--- a/arch/mips/loongson64/init.c
++++ b/arch/mips/loongson64/init.c
+@@ -88,6 +88,11 @@ void __init szmem(unsigned int node)
+ 			break;
+ 		}
  	}
++
++	/* Reserve vgabios if it comes from firmware */
++	if (loongson_sysconf.vgabios_addr)
++		memblock_reserve(virt_to_phys((void *)loongson_sysconf.vgabios_addr),
++				SZ_256K);
+ }
  
--	smb_file_target = dst_file->private_data;
-+	src_tcon = tlink_tcon(smb_file_src->tlink);
- 	target_tcon = tlink_tcon(smb_file_target->tlink);
- 
- 	/*
-@@ -1300,20 +1303,63 @@ static loff_t cifs_remap_file_range(struct file *src_file, loff_t off,
- 	if (len == 0)
- 		len = src_inode->i_size - off;
- 
--	cifs_dbg(FYI, "about to flush pages\n");
--	/* should we flush first and last page first */
--	truncate_inode_pages_range(&target_inode->i_data, destoff,
--				   PAGE_ALIGN(destoff + len)-1);
-+	cifs_dbg(FYI, "clone range\n");
- 
--	if (target_tcon->ses->server->ops->duplicate_extents)
-+	/* Flush the source buffer */
-+	rc = filemap_write_and_wait_range(src_inode->i_mapping, off,
-+					  off + len - 1);
-+	if (rc)
-+		goto unlock;
-+
-+	/* The server-side copy will fail if the source crosses the EOF marker.
-+	 * Advance the EOF marker after the flush above to the end of the range
-+	 * if it's short of that.
-+	 */
-+	if (src_cifsi->netfs.remote_i_size < off + len) {
-+		rc = cifs_precopy_set_eof(src_inode, src_cifsi, src_tcon, xid, off + len);
-+		if (rc < 0)
-+			goto unlock;
-+	}
-+
-+	new_size = destoff + len;
-+	destend = destoff + len - 1;
-+
-+	/* Flush the folios at either end of the destination range to prevent
-+	 * accidental loss of dirty data outside of the range.
-+	 */
-+	fstart = destoff;
-+	fend = destend;
-+
-+	rc = cifs_flush_folio(target_inode, destoff, &fstart, &fend, true);
-+	if (rc)
-+		goto unlock;
-+	rc = cifs_flush_folio(target_inode, destend, &fstart, &fend, false);
-+	if (rc)
-+		goto unlock;
-+
-+	/* Discard all the folios that overlap the destination region. */
-+	cifs_dbg(FYI, "about to discard pages %llx-%llx\n", fstart, fend);
-+	truncate_inode_pages_range(&target_inode->i_data, fstart, fend);
-+
-+	fscache_invalidate(cifs_inode_cookie(target_inode), NULL,
-+			   i_size_read(target_inode), 0);
-+
-+	rc = -EOPNOTSUPP;
-+	if (target_tcon->ses->server->ops->duplicate_extents) {
- 		rc = target_tcon->ses->server->ops->duplicate_extents(xid,
- 			smb_file_src, smb_file_target, off, len, destoff);
--	else
--		rc = -EOPNOTSUPP;
-+		if (rc == 0 && new_size > i_size_read(target_inode)) {
-+			truncate_setsize(target_inode, new_size);
-+			netfs_resize_file(&target_cifsi->netfs, new_size);
-+			fscache_resize_cookie(cifs_inode_cookie(target_inode),
-+					      new_size);
-+		}
-+	}
- 
- 	/* force revalidate of size and timestamps of target file now
- 	   that target is updated on the server */
- 	CIFS_I(target_inode)->time = 0;
-+unlock:
- 	/* although unlocking in the reverse order from locking is not
- 	   strictly necessary here it is a little cleaner to be consistent */
- 	unlock_two_nondirectories(src_inode, target_inode);
+ #ifndef CONFIG_NUMA
 
 
