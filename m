@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-5834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D19580D768
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A6E80D90E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF6F1C2154D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6A0A1C21670
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20035524C9;
-	Mon, 11 Dec 2023 18:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B39051C38;
+	Mon, 11 Dec 2023 18:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvZ4esd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mT/ANmLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09DCFBE1;
-	Mon, 11 Dec 2023 18:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C011C433C7;
-	Mon, 11 Dec 2023 18:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D625102A;
+	Mon, 11 Dec 2023 18:50:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E2CC433C7;
+	Mon, 11 Dec 2023 18:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319790;
-	bh=GEgjwz7Iljh3R9lCjpWtOutxQ6vlK2z+cr6Xgt5jDb8=;
+	s=korg; t=1702320641;
+	bh=TJ0kbHIo38RCTR6wUtjWZtsMd4dU+edX+Us3aq3066Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvZ4esd76vcknMnHVXr9xmEekC7H79XDZOS074ucK+yL/5SKzT9BIqMDyj28O4bY0
-	 84dQD8zkiHJxWU8mSWUF7/dAZF5LTHrrJ5mvG42EXWSzpG8/1CTiMhPuBeKStLR4Y5
-	 i3wLhO38tua7hPbyoBn8XTsWjzG69Ko3HiX9kMJY=
+	b=mT/ANmLJcprGAevLxS/5d64rH/viSzTB9Y6rXeq5RTYj/yTrFqgtnq5+dqqZBLBbT
+	 LUyiDlUnu3cMgZAcSIIPt2NzZhocavsoVxRUrir7PBHEOf6Wds1NSiRbhsgo4n7iDP
+	 MuH5TbYKRR7/4dnthaMFvggJo+VB9dnn1WtgEXyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.6 233/244] perf list: Fix JSON segfault by setting the used skip_duplicate_pmus callback
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/194] coresight: etm4x: Make etm4_remove_dev() return void
 Date: Mon, 11 Dec 2023 19:22:06 +0100
-Message-ID: <20231211182056.484594136@linuxfoundation.org>
+Message-ID: <20231211182042.669741427@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,59 +52,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit b1693747487442984050eb0f462b83a3a8307525 upstream.
+[ Upstream commit c5f231f1a7e18d28e02b282d33541d31358360e4 ]
 
-Json output didn't set the skip_duplicate_pmus callback yielding a
-segfault.
+etm4_remove_dev() returned zero unconditionally. Make it return void
+instead, which makes it clear in the callers that there is no error to
+handle. Simplify etm4_remove_platform_dev() accordingly.
 
-Fixes: cd4e1efbbc40 ("perf pmus: Skip duplicate PMUs and don't print list suffix by default")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231129213428.2227448-2-irogers@google.com
-[namhyung: updated subject line according to Arnaldo]
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20230518201629.260672-1-u.kleine-koenig@pengutronix.de
+Stable-dep-of: 348ddab81f7b ("coresight: etm4x: Remove bogous __exit annotation for some functions")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-list.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hwtracing/coresight/coresight-etm4x-core.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/perf/builtin-list.c b/tools/perf/builtin-list.c
-index a343823c8ddf..61c2c96cc070 100644
---- a/tools/perf/builtin-list.c
-+++ b/tools/perf/builtin-list.c
-@@ -434,6 +434,11 @@ static void json_print_metric(void *ps __maybe_unused, const char *group,
- 	strbuf_release(&buf);
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index 1cf7478da6ee8..fd52fd64c6b13 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -2072,7 +2072,7 @@ static void clear_etmdrvdata(void *info)
+ 	etmdrvdata[cpu] = NULL;
  }
  
-+static bool json_skip_duplicate_pmus(void *ps __maybe_unused)
-+{
-+	return false;
-+}
-+
- static bool default_skip_duplicate_pmus(void *ps)
+-static int __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
++static void __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
  {
- 	struct print_state *print_state = ps;
-@@ -503,6 +508,7 @@ int cmd_list(int argc, const char **argv)
- 			.print_end = json_print_end,
- 			.print_event = json_print_event,
- 			.print_metric = json_print_metric,
-+			.skip_duplicate_pmus = json_skip_duplicate_pmus,
- 		};
- 		ps = &json_ps;
- 	} else {
+ 	etm_perf_symlink(drvdata->csdev, false);
+ 	/*
+@@ -2094,7 +2094,6 @@ static int __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
+ 	cscfg_unregister_csdev(drvdata->csdev);
+ 	coresight_unregister(drvdata->csdev);
+ 
+-	return 0;
+ }
+ 
+ static void __exit etm4_remove_amba(struct amba_device *adev)
+@@ -2107,13 +2106,12 @@ static void __exit etm4_remove_amba(struct amba_device *adev)
+ 
+ static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
+ {
+-	int ret = 0;
+ 	struct etmv4_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
+ 
+ 	if (drvdata)
+-		ret = etm4_remove_dev(drvdata);
++		etm4_remove_dev(drvdata);
+ 	pm_runtime_disable(&pdev->dev);
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct amba_id etm4_ids[] = {
 -- 
-2.43.0
+2.42.0
 
 
 
