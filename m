@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-6232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1852B80D984
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA680D791
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6456281FD8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C7D1F21B51
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B5F51C58;
-	Mon, 11 Dec 2023 18:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BA653819;
+	Mon, 11 Dec 2023 18:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rqho1KWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT8BYwGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E3751C38;
-	Mon, 11 Dec 2023 18:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 670A5C433C9;
-	Mon, 11 Dec 2023 18:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA55552F89;
+	Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA9DC433C7;
+	Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320869;
-	bh=BeLeUJBbL4m5XL1h9nw2nh2txPndRpWtMrJcz/F+7+U=;
+	s=korg; t=1702319878;
+	bh=x2Xc6u7/BoXKd8//YqHVvpyg/CTNRLNtSJe0Yw561B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rqho1KWFSSn0Rx2XE4LYEQST2J48RC+lpDEOMuV5gTwHiAq1C2X6VBxWB3LUd/zCZ
-	 faLrAHa23sN9h0MoXS1Gfv/ERTeiXalfcyh+YPAZOICkqB65PegT6VaiV7hkjLQcOl
-	 TXgrhdiwY56Qb57NzdXdEYDqZGBRYUXfCRmHmpas=
+	b=wT8BYwGulI8bmP4gx43pJJa8vBE+cjHYf6S5VMSZx0l4bNp4AhQ5D4u/LOOARtzBe
+	 BRpkyqaQlNukalmLBnbrUhMbuezr78vnFnVZdchNHII7m2bB+W3DoDfVCdsHrvupsw
+	 dvlPfcHxnyqyasGbl3Gf6X8aDp6cwRhEC6wBLExw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grant Grundler <grundler@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Hayes Wang <hayeswang@realtek.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/141] r8152: Add RTL8152_INACCESSIBLE to r8153_aldps_en()
+Subject: [PATCH 5.10 21/97] ipv6: fix potential NULL deref in fib6_add()
 Date: Mon, 11 Dec 2023 19:21:24 +0100
-Message-ID: <20231211182027.630628815@linuxfoundation.org>
+Message-ID: <20231211182020.682861957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +56,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 79321a793945fdbff2f405f84712d0ab81bed287 ]
+[ Upstream commit 75475bb51e78a3f54ad2f69380f2a1c985e85f2d ]
 
-Delay loops in r8152 should break out if RTL8152_INACCESSIBLE is set
-so that they don't delay too long if the device becomes
-inaccessible. Add the break to the loop in r8153_aldps_en().
+If fib6_find_prefix() returns NULL, we should silently fallback
+using fib6_null_entry regardless of RT6_DEBUG value.
 
-Fixes: 4214cc550bf9 ("r8152: check if disabling ALDPS is finished")
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+syzbot reported:
+
+WARNING: CPU: 0 PID: 5477 at net/ipv6/ip6_fib.c:1516 fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
+Modules linked in:
+CPU: 0 PID: 5477 Comm: syz-executor.0 Not tainted 6.7.0-rc2-syzkaller-00029-g9b6de136b5f0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
+Code: 00 48 8b 54 24 68 e8 42 22 00 00 48 85 c0 74 14 49 89 c6 e8 d5 d3 c2 f7 eb 5d e8 ce d3 c2 f7 e9 ca 00 00 00 e8 c4 d3 c2 f7 90 <0f> 0b 90 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 38 80 3c 01 00
+RSP: 0018:ffffc90005067740 EFLAGS: 00010293
+RAX: ffffffff89cba5bc RBX: ffffc90005067ab0 RCX: ffff88801a2e9dc0
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+RBP: ffffc90005067980 R08: ffffffff89cbca85 R09: 1ffff110040d4b85
+R10: dffffc0000000000 R11: ffffed10040d4b86 R12: 00000000ffffffff
+R13: 1ffff110051c3904 R14: ffff8880206a5c00 R15: ffff888028e1c820
+FS: 00007f763783c6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f763783bff8 CR3: 000000007f74d000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+__ip6_ins_rt net/ipv6/route.c:1303 [inline]
+ip6_route_add+0x88/0x120 net/ipv6/route.c:3847
+ipv6_route_ioctl+0x525/0x7b0 net/ipv6/route.c:4467
+inet6_ioctl+0x21a/0x270 net/ipv6/af_inet6.c:575
+sock_do_ioctl+0x152/0x460 net/socket.c:1220
+sock_ioctl+0x615/0x8c0 net/socket.c:1339
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl+0xf8/0x170 fs/ioctl.c:857
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+
+Fixes: 7bbfe00e0252 ("ipv6: fix general protection fault in fib6_add()")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Wei Wang <weiwan@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20231129160630.3509216-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/ip6_fib.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index da3a2a5584a58..54779caf18f9b 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5678,6 +5678,8 @@ static void r8153_aldps_en(struct r8152 *tp, bool enable)
- 		data &= ~EN_ALDPS;
- 		ocp_reg_write(tp, OCP_POWER_CFG, data);
- 		for (i = 0; i < 20; i++) {
-+			if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+				return;
- 			usleep_range(1000, 2000);
- 			if (ocp_read_word(tp, MCU_TYPE_PLA, 0xe000) & 0x0100)
- 				break;
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index c783b91231321..608205c632c8c 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -1499,13 +1499,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
+ 			if (!pn_leaf && !(pn->fn_flags & RTN_RTINFO)) {
+ 				pn_leaf = fib6_find_prefix(info->nl_net, table,
+ 							   pn);
+-#if RT6_DEBUG >= 2
+-				if (!pn_leaf) {
+-					WARN_ON(!pn_leaf);
++				if (!pn_leaf)
+ 					pn_leaf =
+ 					    info->nl_net->ipv6.fib6_null_entry;
+-				}
+-#endif
+ 				fib6_info_hold(pn_leaf);
+ 				rcu_assign_pointer(pn->leaf, pn_leaf);
+ 			}
 -- 
 2.42.0
 
