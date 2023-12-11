@@ -1,114 +1,129 @@
-Return-Path: <stable+bounces-5278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB2B80C516
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:46:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD84A80C536
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D62601F21062
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:46:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8820E1F2158C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F4C219E2;
-	Mon, 11 Dec 2023 09:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC24219FF;
+	Mon, 11 Dec 2023 09:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="dsQdO2PS"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="HFADTEwm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [IPv6:2a01:4f8:c0c:51f3::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B281184
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 01:46:18 -0800 (PST)
-Message-ID: <fbd66e83-4aa4-4d48-972a-e41d4ec905f9@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1702287977;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h1TrzbYPmec8JqrZLeyZnZz49EXwc6BfMWv7EoVGelY=;
-	b=dsQdO2PS86HqTO9ehhNuV+bDsisX27E6XXT6hm2oASsokgQ2dtcbFnS97Fns8AETD+oEMq
-	PzJzE9Y8qKPZMdeRm2cVH93pF51ynoQn+pt9jUUdSK21umCgRNyxng+lX71fKHepOzkMg6
-	ZLHNetSCU9F//6DjlaevioU6a63ludDf/O985eN8jN7v/EYE+7gwXvoWWniYXuQ48MhLxW
-	jHqsZdOQKx5rfr8PWYPRF0R832+BL/z0nCmPOuSSvcW0p3cYIAdT5zkaCFHJT5gznt2T7E
-	JGIZ/wgSt+V7hEShwsSWl7CaPC583VpgpR1PCTqRASykrkoJu3ZCpr03misaIw==
-Date: Mon, 11 Dec 2023 16:46:13 +0700
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430D7B7;
+	Mon, 11 Dec 2023 01:49:52 -0800 (PST)
+X-UUID: 9e13a96c980a11eeba30773df0976c77-20231211
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ciXZzyC9ZU0ljtsNsTEjkWMSYDk1eZJ4CxmA2ikjg9c=;
+	b=HFADTEwmhWcvhCZOtKH/6rFkvcAwURQcWAR/uND12QK6E4qYtdCgcrYn3i3w77g/n9edvAj0MQFSaYXGtrRuaSCO8TYFAbGftJb6L1depnJk3JR6ujyMeW7XtBfWHuf0y9mFfVOddY6YWk6Bw5xNJyfIufH2M10UviOqx7LJVYI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:a46590e4-426f-4861-9795-5f5cf8d49f22,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:5d391d7,CLOUDID:18170f61-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+	NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 9e13a96c980a11eeba30773df0976c77-20231211
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
+	(envelope-from <jianjun.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 2090974650; Mon, 11 Dec 2023 17:49:46 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 11 Dec 2023 17:49:45 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 11 Dec 2023 17:49:44 +0800
+From: Jianjun Wang <jianjun.wang@mediatek.com>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>, Rob Herring
+	<robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>
+CC: Ryder Lee <ryder.lee@mediatek.com>, Jianjun Wang
+	<jianjun.wang@mediatek.com>, <linux-pci@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <qizhong.cheng@mediatek.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v4] PCI: mediatek: Clear interrupt status before dispatching handler
+Date: Mon, 11 Dec 2023 17:49:23 +0800
+Message-ID: <20231211094923.31967-1-jianjun.wang@mediatek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Regression] 6.1.66, 6.6.5 - wifi: cfg80211: fix CQM for
- non-range use
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, leo@leolam.fr
-Cc: Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
-References: <e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org>
- <2023121139-scrunch-smilingly-54f4@gregkh>
- <aee3e5a0-94b5-4c19-88e4-bb6a8d1fafe3@manjaro.org>
- <2023121127-obstinate-constable-e04f@gregkh>
- <2023121128-unlighted-bagful-f6f1@gregkh>
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
- <philm@manjaro.org>
-In-Reply-To: <2023121128-unlighted-bagful-f6f1@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+Content-Type: text/plain
+X-MTK: N
 
-On 11.12.23 16:40, Greg Kroah-Hartman wrote:
-> On Mon, Dec 11, 2023 at 10:39:26AM +0100, Greg Kroah-Hartman wrote:
->> On Mon, Dec 11, 2023 at 04:26:26PM +0700, Philip Müller wrote:
->>> On 11.12.23 16:25, Greg Kroah-Hartman wrote:
->>>> On Mon, Dec 11, 2023 at 04:02:11PM +0700, Philip Müller wrote:
->>>>> Hi Johannes, hi Greg,
->>>>>
->>>>> Any tree that back-ported 7e7efdda6adb wifi: cfg80211: fix CQM for non-range
->>>>> use that does not contain 076fc8775daf wifi: cfg80211: remove wdev mutex
->>>>> (which does not apply cleanly to 6.6.y or 6.6.1) will be affected.
->>>>>
->>>>> You can find a downstream bug report at Arch Linux:
->>>>>
->>>>> https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/17
->>>>>
->>>>> So we should either revert 7e7efdda6adb or backport the needed to those
->>>>> kernel series. 6.7.y is reported to work with 6.7.0-rc4.
->>>>
->>>> Yeah, this looks bad, I'll go just revert this for now and push out a
->>>> new release with the fix as lots of people are hitting it.
->>>>
->>>> thanks,
->>>>
->>>> greg k-h
->>>
->>>
->>> Hi Greg,
->>>
->>> there is actually a fix for it:
->>>
->>> https://www.spinics.net/lists/stable/msg703040.html
->>
->> That "fix" was not cc:ed to any of the wifi developers and would need a
->> lot of review before I feel comfortable accepting it, as I said in the
->> response to that message.
->>
->> Also, please point to lore.kernel.org lists, it's much easier to handle
->> as we don't have any control over any other archive web site.
-> 
-> Also, have you tested that proposed fix?
-> 
-> thanks,
-> 
-> greg k-h
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-Not yet. Currently build kernels on my end to see if it fixes the 
-regression. A revert of the patch is confirmed to work also by users who 
-have the issue. I can check with mine, when I've released a kernel with 
-Léo Lam's fix.
+We found a failure when used iperf tool for wifi performance testing,
+there are some MSIs received while clearing the interrupt status,
+these MSIs cannot be serviced.
 
+The interrupt status can be cleared even the MSI status still remaining,
+as an edge-triggered interrupts, its interrupt status should be cleared
+before dispatching to the handler of device.
+
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable@vger.kernel.org
+---
+v4:
+ - Found that this patch has not been merged, resending it as v4.
+
+v3:
+ - Add Fix tag.
+
+v2:
+ - Update the subject line.
+ - Improve the commit log and code comments.
+---
+ drivers/pci/controller/pcie-mediatek.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 66a8f73296fc..3fb7f08de061 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -617,12 +617,17 @@ static void mtk_pcie_intr_handler(struct irq_desc *desc)
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
+ 
++			/*
++			 * The interrupt status can be cleared even the MSI
++			 * status still remaining, hence as an edge-triggered
++			 * interrupts, its interrupt status should be cleared
++			 * before dispatching handler.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM)
+ 					generic_handle_domain_irq(port->inner_domain, bit);
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
+ 	}
+ 
 -- 
-Best, Philip
+2.18.0
 
 
