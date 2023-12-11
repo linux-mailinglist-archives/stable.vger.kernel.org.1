@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 727AB80D606
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6BD80D864
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3EB2823D4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A6C1F21B3C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C3EFBE0;
-	Mon, 11 Dec 2023 18:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1795103A;
+	Mon, 11 Dec 2023 18:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiFZ4KTL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v09rJPEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5855FEEB8;
-	Mon, 11 Dec 2023 18:30:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFD3C433C8;
-	Mon, 11 Dec 2023 18:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51CE4437B;
+	Mon, 11 Dec 2023 18:45:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A42CC433C7;
+	Mon, 11 Dec 2023 18:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319434;
-	bh=mcDp1oTI91lJUHMy9Mo/OglR/LOxLKR6vwzEDCbcRPc=;
+	s=korg; t=1702320317;
+	bh=LMe7R7mjFG0unsOaoug4galSgbemyKhQhGs29b0lhHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FiFZ4KTLpqh8KJO1QccXq/yhwxqoKaSATk/HomvsY6TCO5/s66+BEjBMKpW9MzqzB
-	 Cjxkqn8Hg1naRGTEs1FaUaXZ4XhpWXZp0UL78rqvh7nZZGy3twCdb5brcNKhbK98iP
-	 7lZv/03AEwJbUE6O16EjVBRzdIUAywI1HNYKNHjM=
+	b=v09rJPEB7/tAsFi6FCDLkXpXYujw4TN8doqSF+CEuGayD7DYuxvxp29+cSxJi73Ac
+	 V9ex2Yu+3vPJdm7Hy61ARz8JOWT8Pg3CgcvIbP6aRUaBHegcuOt7xU5mAZvbTm4ARL
+	 +HOlZbVChwBS2o4cVJRzc+j3CRMfxLzOyPtHFrRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	syzbot+1f2eb3e8cd123ffce499@syzkaller.appspotmail.com,
+	Eric Biggers <ebiggers@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Nick Terrell <terrelln@fb.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/244] firmware: arm_scmi: Extend perf protocol ops to get number of domains
+Subject: [PATCH 6.1 005/194] zstd: Fix array-index-out-of-bounds UBSAN warning
 Date: Mon, 11 Dec 2023 19:19:55 +0100
-Message-ID: <20231211182050.361350527@linuxfoundation.org>
+Message-ID: <20231211182036.853545606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +55,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Nick Terrell <terrelln@fb.com>
 
-[ Upstream commit e9090e70e618cd62ab7bf2914511e5eea31a2535 ]
+[ Upstream commit 77618db346455129424fadbbaec596a09feaf3bb ]
 
-Similar to other protocol ops, it's useful for an scmi module driver to get
-the number of supported performance domains, hence let's make this
-available by adding a new perf protocol callback. Note that, a user is
-being added from subsequent changes.
+Zstd used an array of length 1 to mean a flexible array for C89
+compatibility. Switch to a C99 flexible array to fix the UBSAN warning.
 
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Link: https://lore.kernel.org/r/20230825112633.236607-2-ulf.hansson@linaro.org
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Stable-dep-of: 8e3c98d9187e ("firmware: arm_scmi: Fix frequency truncation by promoting multiplier type")
+Tested locally by booting the kernel and writing to and reading from a
+BtrFS filesystem with zstd compression enabled. I was unable to reproduce
+the issue before the fix, however it is a trivial change.
+
+Link: https://lkml.kernel.org/r/20231012213428.1390905-1-nickrterrell@gmail.com
+Reported-by: syzbot+1f2eb3e8cd123ffce499@syzkaller.appspotmail.com
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Reported-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Nick Terrell <terrelln@fb.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 8 ++++++++
- include/linux/scmi_protocol.h    | 2 ++
- 2 files changed, 10 insertions(+)
+ lib/zstd/common/fse_decompress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 30dedd6ebfde6..da901c65388a6 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -423,6 +423,13 @@ scmi_perf_describe_levels_get(const struct scmi_protocol_handle *ph,
- 	return ret;
- }
+diff --git a/lib/zstd/common/fse_decompress.c b/lib/zstd/common/fse_decompress.c
+index 2c8bbe3e4c148..f37b7aec088ec 100644
+--- a/lib/zstd/common/fse_decompress.c
++++ b/lib/zstd/common/fse_decompress.c
+@@ -312,7 +312,7 @@ size_t FSE_decompress_wksp(void* dst, size_t dstCapacity, const void* cSrc, size
  
-+static int scmi_perf_num_domains_get(const struct scmi_protocol_handle *ph)
-+{
-+	struct scmi_perf_info *pi = ph->get_priv(ph);
-+
-+	return pi->num_domains;
-+}
-+
- static int scmi_perf_msg_limits_set(const struct scmi_protocol_handle *ph,
- 				    u32 domain, u32 max_perf, u32 min_perf)
- {
-@@ -948,6 +955,7 @@ scmi_power_scale_get(const struct scmi_protocol_handle *ph)
- }
+ typedef struct {
+     short ncount[FSE_MAX_SYMBOL_VALUE + 1];
+-    FSE_DTable dtable[1]; /* Dynamically sized */
++    FSE_DTable dtable[]; /* Dynamically sized */
+ } FSE_DecompressWksp;
  
- static const struct scmi_perf_proto_ops perf_proto_ops = {
-+	.num_domains_get = scmi_perf_num_domains_get,
- 	.limits_set = scmi_perf_limits_set,
- 	.limits_get = scmi_perf_limits_get,
- 	.level_set = scmi_perf_level_set,
-diff --git a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
-index e6fe4f73ffe62..71b39cbbdace0 100644
---- a/include/linux/scmi_protocol.h
-+++ b/include/linux/scmi_protocol.h
-@@ -101,6 +101,7 @@ struct scmi_clk_proto_ops {
-  * struct scmi_perf_proto_ops - represents the various operations provided
-  *	by SCMI Performance Protocol
-  *
-+ * @num_domains_get: gets the number of supported performance domains
-  * @limits_set: sets limits on the performance level of a domain
-  * @limits_get: gets limits on the performance level of a domain
-  * @level_set: sets the performance level of a domain
-@@ -120,6 +121,7 @@ struct scmi_clk_proto_ops {
-  *	or in some other (abstract) scale
-  */
- struct scmi_perf_proto_ops {
-+	int (*num_domains_get)(const struct scmi_protocol_handle *ph);
- 	int (*limits_set)(const struct scmi_protocol_handle *ph, u32 domain,
- 			  u32 max_perf, u32 min_perf);
- 	int (*limits_get)(const struct scmi_protocol_handle *ph, u32 domain,
+ 
 -- 
 2.42.0
 
