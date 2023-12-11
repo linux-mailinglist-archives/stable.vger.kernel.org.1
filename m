@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F8C80D888
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F162C80D615
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B851F21707
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3A91C214E5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42715103A;
-	Mon, 11 Dec 2023 18:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0304174A;
+	Mon, 11 Dec 2023 18:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9B9jCoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aC9IRDSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72560C8C8;
-	Mon, 11 Dec 2023 18:46:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A0AC433C7;
-	Mon, 11 Dec 2023 18:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF9CFBE1;
+	Mon, 11 Dec 2023 18:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D12C433C8;
+	Mon, 11 Dec 2023 18:31:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320400;
-	bh=pwjrzfn4amgmtgX/Y26dA8G3M4SBsqz5mkKCo3Sd6ys=;
+	s=korg; t=1702319468;
+	bh=28fT1pQ+mLXfts5ZOllyFIALHGAM7Dbf21e/Z6Zzyrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9B9jCoSZAIa0xO2legk75LGXr4oRB40GNYmvGtcMoZwDUWqE4DlmByAqwFwPBQ3U
-	 kS50TBLVsGdquhcUYRI27leCK4cFvNXKMCHYoP68zRrgUCEQDxtkck43i4GseLXOyJ
-	 MgcFBqjOM5kD9GkSavVHMXBK1Pr4VyuStWY/sDqc=
+	b=aC9IRDSo4pb5LM87BMq592jx1QDEvSsr3ItTDwxTeC+BnekguYoQv8Xm5isHvotLm
+	 iRCKRnnXv9nf9EK/YIPksaU1rKR/CAGt8u02MsXKUUGgy5GiDQPxa+d3R+ihK4hG5S
+	 lrLudd35WvTiBm/vo0UJqEVkDso/F+sv3NhdW0IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexis Belmonte <alexbelm48@gmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/194] platform/x86: wmi: Skip blocks with zero instances
-Date: Mon, 11 Dec 2023 19:20:09 +0100
-Message-ID: <20231211182037.466319133@linuxfoundation.org>
+Subject: [PATCH 6.6 117/244] tracing: Fix a warning when allocating buffered events fails
+Date: Mon, 11 Dec 2023 19:20:10 +0100
+Message-ID: <20231211182051.052232107@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +51,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit cbf54f37600e874d82886aa3b2f471778cae01ce ]
+[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
 
-Some machines like the HP Omen 17 ck2000nf contain WMI blocks
-with zero instances, so any WMI driver which tries to handle the
-associated WMI device will fail.
-Skip such WMI blocks to avoid confusing any WMI drivers.
+Function trace_buffered_event_disable() produces an unexpected warning
+when the previous call to trace_buffered_event_enable() fails to
+allocate pages for buffered events.
 
-Reported-by: Alexis Belmonte <alexbelm48@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218188
-Fixes: bff431e49ff5 ("ACPI: WMI: Add ACPI-WMI mapping driver")
-Tested-by: Alexis Belmonte <alexbelm48@gmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231129181654.5800-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The situation can occur as follows:
+
+* The counter trace_buffered_event_ref is at 0.
+
+* The soft mode gets enabled for some event and
+  trace_buffered_event_enable() is called. The function increments
+  trace_buffered_event_ref to 1 and starts allocating event pages.
+
+* The allocation fails for some page and trace_buffered_event_disable()
+  is called for cleanup.
+
+* Function trace_buffered_event_disable() decrements
+  trace_buffered_event_ref back to 0, recognizes that it was the last
+  use of buffered events and frees all allocated pages.
+
+* The control goes back to trace_buffered_event_enable() which returns.
+  The caller of trace_buffered_event_enable() has no information that
+  the function actually failed.
+
+* Some time later, the soft mode is disabled for the same event.
+  Function trace_buffered_event_disable() is called. It warns on
+  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
+
+Buffered events are just an optimization and can handle failures. Make
+trace_buffered_event_enable() exit on the first failure and left any
+cleanup later to when trace_buffered_event_disable() is called.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
+
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/trace/trace.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 2b79377cc21e2..b3f3e23a64eee 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -1227,6 +1227,11 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
- 		if (debug_dump_wdg)
- 			wmi_dump_wdg(&gblock[i]);
- 
-+		if (!gblock[i].instance_count) {
-+			dev_info(wmi_bus_dev, FW_INFO "%pUL has zero instances\n", &gblock[i].guid);
-+			continue;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index a40d6baf101f0..689d063dd2062 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2769,8 +2769,11 @@ void trace_buffered_event_enable(void)
+ 	for_each_tracing_cpu(cpu) {
+ 		page = alloc_pages_node(cpu_to_node(cpu),
+ 					GFP_KERNEL | __GFP_NORETRY, 0);
+-		if (!page)
+-			goto failed;
++		/* This is just an optimization and can handle failures */
++		if (!page) {
++			pr_err("Failed to allocate event buffer\n");
++			break;
 +		}
-+
- 		if (guid_already_parsed_for_legacy(device, &gblock[i].guid))
- 			continue;
  
+ 		event = page_address(page);
+ 		memset(event, 0, sizeof(*event));
+@@ -2784,10 +2787,6 @@ void trace_buffered_event_enable(void)
+ 			WARN_ON_ONCE(1);
+ 		preempt_enable();
+ 	}
+-
+-	return;
+- failed:
+-	trace_buffered_event_disable();
+ }
+ 
+ static void enable_trace_buffered_event(void *data)
 -- 
 2.42.0
 
