@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7604480D604
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E4780D863
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310842823A6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 914F4B20F93
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826F051034;
-	Mon, 11 Dec 2023 18:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE8451038;
+	Mon, 11 Dec 2023 18:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSUNg6NV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjxteI2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62A7FBE1;
-	Mon, 11 Dec 2023 18:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF63EC433C8;
-	Mon, 11 Dec 2023 18:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6AB4437B;
+	Mon, 11 Dec 2023 18:45:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E605C433C7;
+	Mon, 11 Dec 2023 18:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319426;
-	bh=YhnsODmt1MSG6rqOqdzwu3gMInhth8cHiGYT7qqweLo=;
+	s=korg; t=1702320312;
+	bh=7LwUb8dXn0ML+QUzRmxrfV9/8lx/DhNPc7vSoLoE83I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSUNg6NV2i8UY1PVJ3Bu1e+KcXlI35MsNxt9si9YY+pDhlKRLpEtdbEheRlSXh9W+
-	 8IVh8Syg4yT/6QK/JCYfz8ld6nf8u3fhq4GWyrduyZ/7fBPlMWHV5DJhJ5x5G+urdG
-	 YrRJuxxNCchz3RyrKnrAOJKpnH1u+Wfr3N/z76qs=
+	b=SjxteI2Umrh3frYk0GgKOUGGmaJ/zNsBk7ZV4Iqwne2sh5oFgLYpsY0U9dtbVUDt/
+	 v3VWJEsDFybRvO/18hmqZTIg3kXGteYQqQekTFVIaeig3pMuMKRDMfgZbsZyNiJznO
+	 cAz5hdAYS+btBSavkCCI44qs8YFF8pEOoFiUNtw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Jan Bottorff <janb@os.amperecomputing.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/244] ASoC: codecs: lpass-tx-macro: set active_decimator correct default value
+Subject: [PATCH 6.1 003/194] i2c: designware: Fix corrupted memory seen in the ISR
 Date: Mon, 11 Dec 2023 19:19:53 +0100
-Message-ID: <20231211182050.269226816@linuxfoundation.org>
+Message-ID: <20231211182036.762843715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +55,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Jan Bottorff <janb@os.amperecomputing.com>
 
-[ Upstream commit a2f35ed1d237c459100adb0c39bb811d7f170977 ]
+[ Upstream commit f726eaa787e9f9bc858c902d18a09af6bcbfcdaf ]
 
-The -1 value for active_decimator[dai_id] is considered as "not set",
-but at probe the table is initialized a 0, this prevents enabling the
-DEC0 Mixer since it will be considered as already set.
+When running on a many core ARM64 server, errors were
+happening in the ISR that looked like corrupted memory. These
+corruptions would fix themselves if small delays were inserted
+in the ISR. Errors reported by the driver included "i2c_designware
+APMC0D0F:00: i2c_dw_xfer_msg: invalid target address" and
+"i2c_designware APMC0D0F:00:controller timed out" during
+in-band IPMI SSIF stress tests.
 
-Initialize the table entries as -1 to fix tx_macro_tx_mixer_put().
+The problem was determined to be memory writes in the driver were not
+becoming visible to all cores when execution rapidly shifted between
+cores, like when a register write immediately triggers an ISR.
+Processors with weak memory ordering, like ARM64, make no
+guarantees about the order normal memory writes become globally
+visible, unless barrier instructions are used to control ordering.
 
-Fixes: 1c6a7f5250ce ("ASoC: codecs: tx-macro: fix active_decimator array")
-Fixes: c1057a08af43 ("ASoC: codecs: tx-macro: fix kcontrol put")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231116-topic-sm8x50-upstream-tx-macro-fix-active-decimator-set-v1-1-6edf402f4b6f@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To solve this, regmap accessor functions configured by this driver
+were changed to use non-relaxed forms of the low-level register
+access functions, which include a barrier on platforms that require
+it. This assures memory writes before a controller register access are
+visible to all cores. The community concluded defaulting to correct
+operation outweighed defaulting to the small performance gains from
+using relaxed access functions. Being a low speed device added weight to
+this choice of default register access behavior.
+
+Signed-off-by: Jan Bottorff <janb@os.amperecomputing.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/lpass-tx-macro.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/i2c/busses/i2c-designware-common.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
-index 3e33418898e82..ebddfa74ce0a0 100644
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -2021,6 +2021,11 @@ static int tx_macro_probe(struct platform_device *pdev)
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index 6fdb25a5f8016..ad98c85ec2e7a 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -63,7 +63,7 @@ static int dw_reg_read(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
  
- 	tx->dev = dev;
+-	*val = readl_relaxed(dev->base + reg);
++	*val = readl(dev->base + reg);
  
-+	/* Set active_decimator default value */
-+	tx->active_decimator[TX_MACRO_AIF1_CAP] = -1;
-+	tx->active_decimator[TX_MACRO_AIF2_CAP] = -1;
-+	tx->active_decimator[TX_MACRO_AIF3_CAP] = -1;
-+
- 	/* set MCLK and NPL rates */
- 	clk_set_rate(tx->mclk, MCLK_FREQ);
- 	clk_set_rate(tx->npl, MCLK_FREQ);
+ 	return 0;
+ }
+@@ -72,7 +72,7 @@ static int dw_reg_write(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writel_relaxed(val, dev->base + reg);
++	writel(val, dev->base + reg);
+ 
+ 	return 0;
+ }
+@@ -81,7 +81,7 @@ static int dw_reg_read_swab(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	*val = swab32(readl_relaxed(dev->base + reg));
++	*val = swab32(readl(dev->base + reg));
+ 
+ 	return 0;
+ }
+@@ -90,7 +90,7 @@ static int dw_reg_write_swab(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writel_relaxed(swab32(val), dev->base + reg);
++	writel(swab32(val), dev->base + reg);
+ 
+ 	return 0;
+ }
+@@ -99,8 +99,8 @@ static int dw_reg_read_word(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	*val = readw_relaxed(dev->base + reg) |
+-		(readw_relaxed(dev->base + reg + 2) << 16);
++	*val = readw(dev->base + reg) |
++		(readw(dev->base + reg + 2) << 16);
+ 
+ 	return 0;
+ }
+@@ -109,8 +109,8 @@ static int dw_reg_write_word(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writew_relaxed(val, dev->base + reg);
+-	writew_relaxed(val >> 16, dev->base + reg + 2);
++	writew(val, dev->base + reg);
++	writew(val >> 16, dev->base + reg + 2);
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
