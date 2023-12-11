@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-6252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BB480D99B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5554A80D919
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 517371F21C0C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006B61F21579
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DEC751C50;
-	Mon, 11 Dec 2023 18:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE6C51C37;
+	Mon, 11 Dec 2023 18:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqhl2Hhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOhQByt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF08321B8;
-	Mon, 11 Dec 2023 18:55:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85521C433C7;
-	Mon, 11 Dec 2023 18:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2005102A;
+	Mon, 11 Dec 2023 18:51:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C98C433C7;
+	Mon, 11 Dec 2023 18:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320923;
-	bh=dQOs61cV23sIcwJAN5dqqG6Xt/0XNTMBXjXm1hJGpNQ=;
+	s=korg; t=1702320662;
+	bh=pqy500BnAcQF8G57WhQO5xZ39Xl+8h/O0C8CHfSCt2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqhl2Hhc/l01t/rhch+Bfd18tOauzLEkAhR/Zg7/Cn+ih+PvHStFQ5yxK8GZr3RJH
-	 GXqp0OzXJvUnFH00VcgKY/Jr9xTdcnBugRF52IiK1Gr+gLxMjpKKzStGgS6IHDJ5z7
-	 St0Bd3AqAQHvG4VelhZiTBoHALp2sFjl0M1tKH+M=
+	b=yOhQByt92xNf605cjN593y/Dn19k7/qbMcBTD9tl2F73vyVpnyF8wPXxNSR4Sd6A/
+	 UQdlpLOUFppu14XyrfJojh5a7HWAi4YX4etxdGHWr8LRMhI7whIVhsNVzgUbTFjmeE
+	 XltKAyDS/vUivS8mlkxj479weIM03/3/rLfmYO3o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/141] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 115/194] tracing: Always update snapshot buffer size
 Date: Mon, 11 Dec 2023 19:21:45 +0100
-Message-ID: <20231211182028.513712501@linuxfoundation.org>
+Message-ID: <20231211182041.647696065@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,169 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit e03781879a0d524ce3126678d50a80484a513c4b ]
+commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
 
-The "NET_DM" generic netlink family notifies drop locations over the
-"events" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
-Fix by adding a new field to the generic netlink multicast group
-structure that when set prevents non-root users or root without the
-'CAP_SYS_ADMIN' capability (in the user namespace owning the network
-namespace) from joining the group. Set this field for the "events"
-group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
-nature of the information that is shared over this group.
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
 
-Note that the capability check in this case will always be performed
-against the initial user namespace since the family is not netns aware
-and only operates in the initial network namespace.
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
 
-A new field is added to the structure rather than using the "flags"
-field because the existing field uses uAPI flags and it is inappropriate
-to add a new uAPI flag for an internal kernel check. In net-next we can
-rework the "flags" field to use internal flags and fold the new field
-into it. But for now, in order to reduce the amount of changes, add a
-new field.
+Produces:
 
-Since the information can only be consumed by root, mark the control
-plane operations that start and stop the tracing as root-only using the
-'GENL_ADMIN_PERM' flag.
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
 
-Tested using [1].
+Which is:
 
-Before:
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
+	if (ret == -EBUSY) {
+		[..]
+	}
 
-After:
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
- Failed to join "events" multicast group
+That's because ring_buffer_swap_cpu() has:
 
-[1]
- $ cat dm.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
+	int ret = -EINVAL;
 
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int grp, err;
+	[..]
 
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
 
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
- 	if (grp < 0) {
- 		fprintf(stderr,
- 			"Failed to resolve \"events\" multicast group\n");
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
- 		return err;
- 	}
-
- 	return 0;
+	[..]
+ out:
+	return ret;
  }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
 
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/genetlink.h | 2 ++
- net/core/drop_monitor.c | 4 +++-
- net/netlink/genetlink.c | 3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/net/genetlink.h b/include/net/genetlink.h
-index 56a50e1c51b97..8043594a7f84a 100644
---- a/include/net/genetlink.h
-+++ b/include/net/genetlink.h
-@@ -12,10 +12,12 @@
-  * struct genl_multicast_group - generic netlink multicast group
-  * @name: name of the multicast group, names are per-family
-  * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
-+ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
-  */
- struct genl_multicast_group {
- 	char			name[GENL_NAMSIZ];
- 	u8			flags;
-+	u8			cap_sys_admin:1;
- };
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6306,8 +6306,7 @@ static int __tracing_resize_ring_buffer(
+ 		return ret;
  
- struct genl_ops;
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 22015ebc1dd56..937d74aeef547 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -184,7 +184,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
- }
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
  
- static const struct genl_multicast_group dropmon_mcgrps[] = {
--	{ .name = "events", },
-+	{ .name = "events", .cap_sys_admin = 1 },
- };
- 
- static void send_dm_alert(struct work_struct *work)
-@@ -1618,11 +1618,13 @@ static const struct genl_small_ops dropmon_ops[] = {
- 		.cmd = NET_DM_CMD_START,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_STOP,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_CONFIG_GET,
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 57010927e20a8..69b3a6b82f680 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1379,6 +1379,9 @@ static int genl_bind(struct net *net, int group)
- 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
-+		if (grp->cap_sys_admin &&
-+		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
-+			ret = -EPERM;
- 
- 		break;
- 	}
--- 
-2.42.0
-
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
