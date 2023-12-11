@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDF480D61C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B6680D867
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ACCE1F21AA8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F9562814F7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CAB20DDE;
-	Mon, 11 Dec 2023 18:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452B5103A;
+	Mon, 11 Dec 2023 18:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqOnYYys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rp8G1nuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59067C2D0;
-	Mon, 11 Dec 2023 18:31:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D56C433C7;
-	Mon, 11 Dec 2023 18:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D2D4437B;
+	Mon, 11 Dec 2023 18:45:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4A7C433C9;
+	Mon, 11 Dec 2023 18:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319487;
-	bh=hOnh1VbBRUGttmA7reYgIbPSBGi7IyJDrkCzOZbIErE=;
+	s=korg; t=1702320328;
+	bh=PiV6efLiI6JKJJpoJN8Y3Zvl8pwsadPb5IhEF+LRoLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqOnYYys66jPG7+6BvqgQW7xEqjD9yBKVHVcYObndVOiI1K6GcIQyJl+/YSSj7Tl+
-	 mdW7P/DcuXOGkIB9F6rCRVTtapt7OKXQMM98oA5Svb+akEzsM9cAX+ZPjSAduS3kdd
-	 bXcViKnUKPJBt9WTB2/t8v3G0LKBT8WDJ9ifs3Tg=
+	b=rp8G1nufoox0csLLpbPbMy37/aYuoFZ2x+KS+UkCWUjsL46OO9youQaVGLCPzgi6h
+	 agXsSCddvI5XWaKGx/CG9gmrnljeYEyuB99e/6mD1t4F7pE5HxnBASwosB5MuDlRcu
+	 +qxu12U5cFI2hDC/l05xeL02R3oxydrkEblCEgzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sibi Sankar <quic_sibis@quicinc.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	YuanShang <YuanShang.Mao@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/244] firmware: arm_scmi: Fix possible frequency truncation when using level indexing mode
+Subject: [PATCH 6.1 009/194] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
 Date: Mon, 11 Dec 2023 19:19:59 +0100
-Message-ID: <20231211182050.516617150@linuxfoundation.org>
+Message-ID: <20231211182037.024897346@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +52,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: YuanShang <YuanShang.Mao@amd.com>
 
-[ Upstream commit 77f5032e94f244ba08db51e17ca8f37bd7ff9acb ]
+[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
 
-The multiplier is already promoted to unsigned long, however the
-frequency calculations done when using level indexing mode doesn't
-use the multiplier computed. It instead hardcodes the multiplier
-value of 1000 at all the usage sites.
+The variable "chunk_ptr" should be a pointer pointing
+to a struct drm_amdgpu_cs_chunk instead of to a pointer
+of that.
 
-Clean that up by assigning the multiplier value of 1000 when using
-the perf level indexing mode and update the frequency calculations to
-use the multiplier instead. It should fix the possible frequency
-truncation for all the values greater than or equal to 4GHz on 64-bit
-machines.
-
-Fixes: 31c7c1397a33 ("firmware: arm_scmi: Add v3.2 perf level indexing mode support")
-Reported-by: Sibi Sankar <quic_sibis@quicinc.com>
-Closes: https://lore.kernel.org/all/20231129065748.19871-3-quic_sibis@quicinc.com/
-Cc: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20231130204343.503076-2-sudeep.holla@arm.com
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index 596316e6e1ba3..e887fd1690434 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -268,7 +268,8 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
- 		dom_info->sustained_perf_level =
- 					le32_to_cpu(attr->sustained_perf_level);
- 		if (!dom_info->sustained_freq_khz ||
--		    !dom_info->sustained_perf_level)
-+		    !dom_info->sustained_perf_level ||
-+		    dom_info->level_indexing_mode)
- 			/* CPUFreq converts to kHz, hence default 1000 */
- 			dom_info->mult_factor =	1000;
- 		else
-@@ -813,7 +814,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
- 		if (!dom->level_indexing_mode)
- 			freq = dom->opp[idx].perf * dom->mult_factor;
- 		else
--			freq = dom->opp[idx].indicative_freq * 1000;
-+			freq = dom->opp[idx].indicative_freq * dom->mult_factor;
- 
- 		ret = dev_pm_opp_add(dev, freq, 0);
- 		if (ret) {
-@@ -862,7 +863,8 @@ static int scmi_dvfs_freq_set(const struct scmi_protocol_handle *ph, u32 domain,
- 	} else {
- 		struct scmi_opp *opp;
- 
--		opp = LOOKUP_BY_FREQ(dom->opps_by_freq, freq / 1000);
-+		opp = LOOKUP_BY_FREQ(dom->opps_by_freq,
-+				     freq / dom->mult_factor);
- 		if (!opp)
- 			return -EIO;
- 
-@@ -896,7 +898,7 @@ static int scmi_dvfs_freq_get(const struct scmi_protocol_handle *ph, u32 domain,
- 		if (!opp)
- 			return -EIO;
- 
--		*freq = opp->indicative_freq * 1000;
-+		*freq = opp->indicative_freq * dom->mult_factor;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index ced4e7e8f98b5..133e4e03c143c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -201,7 +201,7 @@ static int amdgpu_cs_pass1(struct amdgpu_cs_parser *p,
  	}
  
- 	return ret;
-@@ -919,7 +921,7 @@ static int scmi_dvfs_est_power_get(const struct scmi_protocol_handle *ph,
- 		if (!dom->level_indexing_mode)
- 			opp_freq = opp->perf * dom->mult_factor;
- 		else
--			opp_freq = opp->indicative_freq * 1000;
-+			opp_freq = opp->indicative_freq * dom->mult_factor;
+ 	for (i = 0; i < p->nchunks; i++) {
+-		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
++		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
+ 		struct drm_amdgpu_cs_chunk user_chunk;
+ 		uint32_t __user *cdata;
  
- 		if (opp_freq < *freq)
- 			continue;
 -- 
 2.42.0
 
