@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-6301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6519380D9F1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CF380D836
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C1D21F21B85
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81C61B213FC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE18524AB;
-	Mon, 11 Dec 2023 18:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC83C51036;
+	Mon, 11 Dec 2023 18:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZyAmtqa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A+AgsBQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6AC321B8;
-	Mon, 11 Dec 2023 18:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FE0C433C7;
-	Mon, 11 Dec 2023 18:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9AFC06;
+	Mon, 11 Dec 2023 18:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34B2C433C7;
+	Mon, 11 Dec 2023 18:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321059;
-	bh=v6ZJQl9B3f7WtrBJmnw4GL0JoW2ys2FvweA6/RTWO1A=;
+	s=korg; t=1702320223;
+	bh=jJZeM5LfWh//0DCH0f4Hg2SnnAJN9TT0h0AdkB2jZec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZyAmtqa5/BjB8PqWKwWSv+MqQwYhwvy3p5kTuDq8hUu6SJSGsZGPU7hGmAck/+T1o
-	 a8MjxqZjpWFr3JmYUx3i3m8fsolV4PQcRYdY4g4aLYqwdS2YKrdGD7V6+0+Vc4KeAz
-	 5xawexzSWE3eXy9C/zqjkGV2eBjTE0FAuvbCnAv0=
+	b=0A+AgsBQtXMDgvQsbM7UA7qcEYujsxNq6nwjfXFiId3zm6ga6npcuDUtMW+XcS13q
+	 GgumWRih64+/1jVB5kE2A8nwlaE3pqQVSybh3W+E4oLdaoTQKnzkgi6YgNhxFMOeiI
+	 ZnpvfSSeebNv8kAaTgYvDaZbQ2jBUtcZmXWHr6oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.15 093/141] arm64: dts: mediatek: mt8183-kukui-jacuzzi: fix dsi unnecessary cells properties
-Date: Mon, 11 Dec 2023 19:22:32 +0100
-Message-ID: <20231211182030.592803767@linuxfoundation.org>
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 5.4 49/67] parport: Add support for Brainboxes IX/UC/PX parallel cards
+Date: Mon, 11 Dec 2023 19:22:33 +0100
+Message-ID: <20231211182017.097319417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 74543b303a9abfe4fa253d1fa215281baa05ff3a upstream.
+commit 1a031f6edc460e9562098bdedc3918da07c30a6e upstream.
 
-dtbs_check throws a warning at the dsi node:
-Warning (avoid_unnecessary_addr_size): /soc/dsi@14014000: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
-
-Other DTS have a panel child node with a reg, so the parent dtsi
-must have the address-cells and size-cells, however this specific DT
-has the panel removed, but not the cells, hence the warning above.
-
-If panel is deleted then the cells must also be deleted since they are
-tied together, as the child node in this DT does not have a reg.
+Adds support for Intashield IX-500/IX-550, UC-146/UC-157, PX-146/PX-157,
+PX-203 and PX-475 (LPT port)
 
 Cc: stable@vger.kernel.org
-Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230814071053.5459-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB790389C130410BD864C8DCC9C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/parport/parport_pc.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -102,6 +102,8 @@
+--- a/drivers/parport/parport_pc.c
++++ b/drivers/parport/parport_pc.c
+@@ -2648,6 +2648,8 @@ enum parport_pc_pci_cards {
+ 	netmos_9865,
+ 	quatech_sppxp100,
+ 	wch_ch382l,
++	brainboxes_uc146,
++	brainboxes_px203,
+ };
  
- &dsi0 {
- 	status = "okay";
-+	/delete-property/#size-cells;
-+	/delete-property/#address-cells;
- 	/delete-node/panel@0;
- 	ports {
- 		port {
+ 
+@@ -2711,6 +2713,8 @@ static struct parport_pc_pci {
+ 	/* netmos_9865 */               { 1, { { 0, -1 }, } },
+ 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
+ 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
++	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
++	/* brainboxes_px203 */	{ 1, { { 0, -1 }, } },
+ };
+ 
+ static const struct pci_device_id parport_pc_pci_tbl[] = {
+@@ -2802,6 +2806,23 @@ static const struct pci_device_id parpor
+ 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
+ 	/* WCH CH382L PCI-E single parallel port card */
+ 	{ 0x1c00, 0x3050, 0x1c00, 0x3050, 0, 0, wch_ch382l },
++	/* Brainboxes IX-500/550 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402a,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
++	/* Brainboxes UC-146/UC-157 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0be1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0be2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
++	/* Brainboxes PX-146/PX-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x401c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
++	/* Brainboxes PX-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x4007,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px203 },
++	/* Brainboxes PX-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x401f,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci, parport_pc_pci_tbl);
 
 
 
