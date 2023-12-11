@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-6253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B72CF80D99D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5E080D578
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72A20282024
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF1322820FB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130BE51C46;
-	Mon, 11 Dec 2023 18:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755A251020;
+	Mon, 11 Dec 2023 18:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMzxFxTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7lTXQ21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4944321B8;
-	Mon, 11 Dec 2023 18:55:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC02C433CB;
-	Mon, 11 Dec 2023 18:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AEA4F212;
+	Mon, 11 Dec 2023 18:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD77C433C8;
+	Mon, 11 Dec 2023 18:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320926;
-	bh=lJowAujO62qOOQWL3FoZBj0AgbcJVwIVtS4H1i7+RAk=;
+	s=korg; t=1702319097;
+	bh=9TTg8Ds3ZKh0ZgcHG7bAuqa7VHJLmHDMUHxK5dFHYBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMzxFxTrzr8M02IjXYF9ea7jEHH7jE5umdHQGl195ejB7PddSVyNK03K4cnEfLdwt
-	 K3ObfKb1vG2x4O4hrTHjjWkXImQs1ulFk2Y+T+46bsBsEiLZ139yFOrJVH8O5N8M5k
-	 vj3iMAPooNcgZHLAlBiq9+3kALnTWeA6ZcibW8CE=
+	b=W7lTXQ21/h43uz5pPD8EXKUkO25nYb47kGr9wdqqN86qmmCZ7y8RTyhdnRcnr0bhj
+	 XbLQuoKQU1vk+xqAL8M3rnM4sCsfomvqHNS5KjwWZTOGZJwGgz4nmRV9s02S4HODse
+	 MylTFhZZy9BcYLpejcark54cipWHWtIZ0IJ86RXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Sumit Garg <sumit.garg@linaro.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Jerome Forissier <jerome.forissier@linaro.org>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/141] tee: optee: Fix supplicant based device enumeration
-Date: Mon, 11 Dec 2023 19:21:46 +0100
-Message-ID: <20231211182028.566905190@linuxfoundation.org>
+Subject: [PATCH 4.19 37/55] perf: Fix perf_event_validate_size()
+Date: Mon, 11 Dec 2023 19:21:47 +0100
+Message-ID: <20231211182013.629846724@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,102 +53,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Garg <sumit.garg@linaro.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 7269cba53d906cf257c139d3b3a53ad272176bca ]
+[ Upstream commit 382c27f4ed28f803b1f1473ac2d8db0afc795a1b ]
 
-Currently supplicant dependent optee device enumeration only registers
-devices whenever tee-supplicant is invoked for the first time. But it
-forgets to remove devices when tee-supplicant daemon stops running and
-closes its context gracefully. This leads to following error for fTPM
-driver during reboot/shutdown:
+Budimir noted that perf_event_validate_size() only checks the size of
+the newly added event, even though the sizes of all existing events
+can also change due to not all events having the same read_format.
 
-[   73.466791] tpm tpm0: ftpm_tee_tpm_op_send: SUBMIT_COMMAND invoke error: 0xffff3024
+When we attach the new event, perf_group_attach(), we do re-compute
+the size for all events.
 
-Fix this by adding an attribute for supplicant dependent devices so that
-the user-space service can detect and detach supplicant devices before
-closing the supplicant:
-
-$ for dev in /sys/bus/tee/devices/*; do if [[ -f "$dev/need_supplicant" && -f "$dev/driver/unbind" ]]; \
-      then echo $(basename "$dev") > $dev/driver/unbind; fi done
-
-Reported-by: Jan Kiszka <jan.kiszka@siemens.com>
-Closes: https://github.com/OP-TEE/optee_os/issues/6094
-Fixes: 5f178bb71e3a ("optee: enable support for multi-stage bus enumeration")
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Acked-by: Jerome Forissier <jerome.forissier@linaro.org>
-[jw: fixed up Date documentation]
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/testing/sysfs-bus-optee-devices         |  9 +++++++++
- drivers/tee/optee/device.c                      | 17 +++++++++++++++--
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ kernel/events/core.c | 61 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-optee-devices b/Documentation/ABI/testing/sysfs-bus-optee-devices
-index 0f58701367b66..af31e5a22d89f 100644
---- a/Documentation/ABI/testing/sysfs-bus-optee-devices
-+++ b/Documentation/ABI/testing/sysfs-bus-optee-devices
-@@ -6,3 +6,12 @@ Description:
- 		OP-TEE bus provides reference to registered drivers under this directory. The <uuid>
- 		matches Trusted Application (TA) driver and corresponding TA in secure OS. Drivers
- 		are free to create needed API under optee-ta-<uuid> directory.
-+
-+What:		/sys/bus/tee/devices/optee-ta-<uuid>/need_supplicant
-+Date:		November 2023
-+KernelVersion:	6.7
-+Contact:	op-tee@lists.trustedfirmware.org
-+Description:
-+		Allows to distinguish whether an OP-TEE based TA/device requires user-space
-+		tee-supplicant to function properly or not. This attribute will be present for
-+		devices which depend on tee-supplicant to be running.
-diff --git a/drivers/tee/optee/device.c b/drivers/tee/optee/device.c
-index a74d82e230e36..8957065ea7307 100644
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -60,7 +60,16 @@ static void optee_release_device(struct device *dev)
- 	kfree(optee_device);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index acc6403fc87be..4182e265176dc 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1710,31 +1710,34 @@ static inline void perf_event__state_init(struct perf_event *event)
+ 					      PERF_EVENT_STATE_INACTIVE;
  }
  
--static int optee_register_device(const uuid_t *device_uuid)
-+static ssize_t need_supplicant_show(struct device *dev,
-+				    struct device_attribute *attr,
-+				    char *buf)
-+{
-+	return 0;
-+}
-+
-+static DEVICE_ATTR_RO(need_supplicant);
-+
-+static int optee_register_device(const uuid_t *device_uuid, u32 func)
+-static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
++static int __perf_event_read_size(u64 read_format, int nr_siblings)
  {
- 	struct tee_client_device *optee_device = NULL;
- 	int rc;
-@@ -83,6 +92,10 @@ static int optee_register_device(const uuid_t *device_uuid)
- 		put_device(&optee_device->dev);
+ 	int entry = sizeof(u64); /* value */
+ 	int size = 0;
+ 	int nr = 1;
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_ID)
++	if (read_format & PERF_FORMAT_ID)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_LOST)
++	if (read_format & PERF_FORMAT_LOST)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_GROUP) {
++	if (read_format & PERF_FORMAT_GROUP) {
+ 		nr += nr_siblings;
+ 		size += sizeof(u64);
  	}
  
-+	if (func == PTA_CMD_GET_DEVICES_SUPP)
-+		device_create_file(&optee_device->dev,
-+				   &dev_attr_need_supplicant);
-+
- 	return rc;
+-	size += entry * nr;
+-	event->read_size = size;
++	/*
++	 * Since perf_event_validate_size() limits this to 16k and inhibits
++	 * adding more siblings, this will never overflow.
++	 */
++	return size + nr * entry;
  }
  
-@@ -143,7 +156,7 @@ static int __optee_enumerate_devices(u32 func)
- 	num_devices = shm_size / sizeof(uuid_t);
+ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+@@ -1775,8 +1778,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+  */
+ static void perf_event__header_size(struct perf_event *event)
+ {
+-	__perf_event_read_size(event,
+-			       event->group_leader->nr_siblings);
++	event->read_size =
++		__perf_event_read_size(event->attr.read_format,
++				       event->group_leader->nr_siblings);
+ 	__perf_event_header_size(event, event->attr.sample_type);
+ }
  
- 	for (idx = 0; idx < num_devices; idx++) {
--		rc = optee_register_device(&device_uuid[idx]);
-+		rc = optee_register_device(&device_uuid[idx], func);
- 		if (rc)
- 			goto out_shm;
- 	}
+@@ -1807,24 +1811,35 @@ static void perf_event__id_header_size(struct perf_event *event)
+ 	event->id_header_size = size;
+ }
+ 
++/*
++ * Check that adding an event to the group does not result in anybody
++ * overflowing the 64k event limit imposed by the output buffer.
++ *
++ * Specifically, check that the read_size for the event does not exceed 16k,
++ * read_size being the one term that grows with groups size. Since read_size
++ * depends on per-event read_format, also (re)check the existing events.
++ *
++ * This leaves 48k for the constant size fields and things like callchains,
++ * branch stacks and register sets.
++ */
+ static bool perf_event_validate_size(struct perf_event *event)
+ {
+-	/*
+-	 * The values computed here will be over-written when we actually
+-	 * attach the event.
+-	 */
+-	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
+-	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
+-	perf_event__id_header_size(event);
++	struct perf_event *sibling, *group_leader = event->group_leader;
+ 
+-	/*
+-	 * Sum the lot; should not exceed the 64k limit we have on records.
+-	 * Conservative limit to allow for callchains and other variable fields.
+-	 */
+-	if (event->read_size + event->header_size +
+-	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
++	if (__perf_event_read_size(event->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
+ 		return false;
+ 
++	if (__perf_event_read_size(group_leader->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
++		return false;
++
++	for_each_sibling_event(sibling, group_leader) {
++		if (__perf_event_read_size(sibling->attr.read_format,
++					   group_leader->nr_siblings + 1) > 16*1024)
++			return false;
++	}
++
+ 	return true;
+ }
+ 
 -- 
 2.42.0
 
