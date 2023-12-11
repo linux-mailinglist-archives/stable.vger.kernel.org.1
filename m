@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDFEF80D8EB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CB280D6DD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7A61C2165B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5C771C218FC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 754BB51C50;
-	Mon, 11 Dec 2023 18:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFD2537E2;
+	Mon, 11 Dec 2023 18:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GATrUaTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk/xw2M2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253FE5102A;
-	Mon, 11 Dec 2023 18:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F1B6C433C7;
-	Mon, 11 Dec 2023 18:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8DFC06;
+	Mon, 11 Dec 2023 18:33:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8177C433C7;
+	Mon, 11 Dec 2023 18:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320575;
-	bh=ntD3qtw6fiV8T5aQBq0B8lIZAwG2azMEYn3qcd4Lh3s=;
+	s=korg; t=1702319638;
+	bh=5PnVgIhtpX6qEq47F1gohtk55as6KO8WVBZYDNNT3FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GATrUaTptz6KmiES+5LOvz58q2QWLQY3ve0fEZZFF69jlCbztJvzPzd5zKIr/aPDY
-	 tvNu/5Xp87p6kKnPhOsxQDyulKShx6PFaQL5V7cnNdU77DwkdLY8kZns6sKFmWziBh
-	 9i8GiU6J/XAAhTo8CJFS/5adAonLSJVlc5gbh920=
+	b=Dk/xw2M2OYeFYcBhH0SeM9WWda7jr6ETILg4PZbl62vpOKpt70/lEo7Yv2+dnQYjX
+	 VQaC7+eZjx58iNEL1CuGDNOgaxHMNm/5/mA4cZ4hDzOC/g7eryCmKXzxD/xMezJRYn
+	 FmYQJhf5xxJ+2p/KnT7Hw/q1W5BpanSqVqfrPZfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/194] ASoC: wm_adsp: fix memleak in wm_adsp_buffer_populate
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 180/244] arm64: dts: mediatek: mt8183-kukui-jacuzzi: fix dsi unnecessary cells properties
 Date: Mon, 11 Dec 2023 19:21:13 +0100
-Message-ID: <20231211182040.174296683@linuxfoundation.org>
+Message-ID: <20231211182054.017160375@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,62 +52,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-[ Upstream commit 29046a78a3c0a1f8fa0427f164caa222f003cf5b ]
+commit 74543b303a9abfe4fa253d1fa215281baa05ff3a upstream.
 
-When wm_adsp_buffer_read() fails, we should free buf->regions.
-Otherwise, the callers of wm_adsp_buffer_populate() will
-directly free buf on failure, which makes buf->regions a leaked
-memory.
+dtbs_check throws a warning at the dsi node:
+Warning (avoid_unnecessary_addr_size): /soc/dsi@14014000: unnecessary #address-cells/#size-cells without "ranges" or child "reg" property
 
-Fixes: a792af69b08f ("ASoC: wm_adsp: Refactor compress stream initialisation")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231204074158.12026-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Other DTS have a panel child node with a reg, so the parent dtsi
+must have the address-cells and size-cells, however this specific DT
+has the panel removed, but not the cells, hence the warning above.
+
+If panel is deleted then the cells must also be deleted since they are
+tied together, as the child node in this DT does not have a reg.
+
+Cc: stable@vger.kernel.org
+Fixes: cabc71b08eb5 ("arm64: dts: mt8183: Add kukui-jacuzzi-damu board")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230814071053.5459-1-eugen.hristev@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wm_adsp.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index 8a2e9771bb50e..2cfca78f0401f 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -1401,12 +1401,12 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].base_offset,
- 					  &region->base_addr);
- 		if (ret < 0)
--			return ret;
-+			goto err;
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
+@@ -91,6 +91,8 @@
  
- 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].size_offset,
- 					  &offset);
- 		if (ret < 0)
--			return ret;
-+			goto err;
- 
- 		region->cumulative_size = offset;
- 
-@@ -1417,6 +1417,10 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
- 	}
- 
- 	return 0;
-+
-+err:
-+	kfree(buf->regions);
-+	return ret;
- }
- 
- static void wm_adsp_buffer_clear(struct wm_adsp_compr_buf *buf)
--- 
-2.42.0
-
+ &dsi0 {
+ 	status = "okay";
++	/delete-property/#size-cells;
++	/delete-property/#address-cells;
+ 	/delete-node/panel@0;
+ 	ports {
+ 		port {
 
 
 
