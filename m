@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-5869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC89F80D794
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0008380D72C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841601F21A20
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C6392826CB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8018553E24;
-	Mon, 11 Dec 2023 18:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D4253819;
+	Mon, 11 Dec 2023 18:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYJ3waM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBXCWE1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A425524B8;
-	Mon, 11 Dec 2023 18:38:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38AFC433C7;
-	Mon, 11 Dec 2023 18:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B152F8E;
+	Mon, 11 Dec 2023 18:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C48C433C9;
+	Mon, 11 Dec 2023 18:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319887;
-	bh=bbafMDrehDOo46AyuM8aXjOg9eEh6SozEBRbHFKfrWA=;
+	s=korg; t=1702319709;
+	bh=Ke0kyGUzUReOuwLUfV/h0UI1vTlaGoz/Pqwy0oTlcig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bYJ3waM7Oe55qgdS6Oxiq+2UwVD73CPHCc+IfPufps1tunnjeXfxApfmGvLxYKrTf
-	 yGTssqxrcEYCGqgpgas/C73sOvU4D90sO7vAovsElo2vz6vz7KIC9BVrupWLw+YM3c
-	 GTTJ6dXL6AdX2oehw+9mnGK1r4W5NLSJqJn95QeQ=
+	b=HBXCWE1TFZKvSG1EQalyK1aLmqrgWGIpy4l+qEElzBIMsc5zhymUBXpu82TY/0Mzr
+	 l2NIz6iqOU4Sy+35aVUHZxRNj6ejQxmi97OMpl9eLlbIDg5hLq7dfwH0rQ3/3Y/Pya
+	 o4r3ObmH3qkXr5zKYIoaes7W+lV97w9qyWXAweaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 05/97] tg3: Increment tx_dropped in tg3_tso_bug()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 175/244] drm/i915: Skip some timing checks on BXT/GLK DSI transcoders
 Date: Mon, 11 Dec 2023 19:21:08 +0100
-Message-ID: <20231211182020.048289838@linuxfoundation.org>
+Message-ID: <20231211182053.777710521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +50,263 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+commit 20c2dbff342aec13bf93c2f6c951da198916a455 upstream.
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+Apparently some BXT/GLK systems have DSI panels whose timings
+don't agree with the normal cpu transcoder hblank>=32 limitation.
+This is perhaps fine as there are no specific hblank/etc. limits
+listed for the BXT/GLK DSI transcoders.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move those checks out from the global intel_mode_valid() into
+into connector specific .mode_valid() hooks, skipping BXT/GLK
+DSI connectors. We'll leave the basic [hv]display/[hv]total
+checks in intel_mode_valid() as those seem like sensible upper
+limits regardless of the transcoder used.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9720
+Fixes: 8f4b1068e7fc ("drm/i915: Check some transcoder timing minimum limits")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231127145028.4899-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit e0ef2daa8ca8ce4dbc2fd0959e383b753a87fd7d)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c       |    7 +++++++
+ drivers/gpu/drm/i915/display/intel_crt.c     |    5 +++++
+ drivers/gpu/drm/i915/display/intel_display.c |   10 ++++++++++
+ drivers/gpu/drm/i915/display/intel_display.h |    3 +++
+ drivers/gpu/drm/i915/display/intel_dp.c      |    4 ++++
+ drivers/gpu/drm/i915/display/intel_dp_mst.c  |    4 ++++
+ drivers/gpu/drm/i915/display/intel_dvo.c     |    6 ++++++
+ drivers/gpu/drm/i915/display/intel_hdmi.c    |    4 ++++
+ drivers/gpu/drm/i915/display/intel_lvds.c    |    5 +++++
+ drivers/gpu/drm/i915/display/intel_sdvo.c    |    8 +++++++-
+ drivers/gpu/drm/i915/display/intel_tv.c      |    8 +++++++-
+ drivers/gpu/drm/i915/display/vlv_dsi.c       |   18 +++++++++++++++++-
+ 12 files changed, 79 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index a2c6c204fe9d4..b010f28b0abf4 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7890,8 +7890,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -1440,6 +1440,13 @@ static void gen11_dsi_post_disable(struc
+ static enum drm_mode_status gen11_dsi_mode_valid(struct drm_connector *connector,
+ 						 struct drm_display_mode *mode)
+ {
++	struct drm_i915_private *i915 = to_i915(connector->dev);
++	enum drm_mode_status status;
++
++	status = intel_cpu_transcoder_mode_valid(i915, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	/* FIXME: DSC? */
+ 	return intel_dsi_mode_valid(connector, mode);
+ }
+--- a/drivers/gpu/drm/i915/display/intel_crt.c
++++ b/drivers/gpu/drm/i915/display/intel_crt.c
+@@ -348,8 +348,13 @@ intel_crt_mode_valid(struct drm_connecto
+ 	struct drm_device *dev = connector->dev;
+ 	struct drm_i915_private *dev_priv = to_i915(dev);
+ 	int max_dotclk = dev_priv->max_dotclk_freq;
++	enum drm_mode_status status;
+ 	int max_clock;
  
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
++	status = intel_cpu_transcoder_mode_valid(dev_priv, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+ 		return MODE_NO_DBLESCAN;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -7660,6 +7660,16 @@ enum drm_mode_status intel_mode_valid(st
+ 	    mode->vtotal > vtotal_max)
+ 		return MODE_V_ILLEGAL;
+ 
++	return MODE_OK;
++}
++
++enum drm_mode_status intel_cpu_transcoder_mode_valid(struct drm_i915_private *dev_priv,
++						     const struct drm_display_mode *mode)
++{
++	/*
++	 * Additional transcoder timing limits,
++	 * excluding BXT/GLK DSI transcoders.
++	 */
+ 	if (DISPLAY_VER(dev_priv) >= 5) {
+ 		if (mode->hdisplay < 64 ||
+ 		    mode->htotal - mode->hdisplay < 32)
+--- a/drivers/gpu/drm/i915/display/intel_display.h
++++ b/drivers/gpu/drm/i915/display/intel_display.h
+@@ -405,6 +405,9 @@ enum drm_mode_status
+ intel_mode_valid_max_plane_size(struct drm_i915_private *dev_priv,
+ 				const struct drm_display_mode *mode,
+ 				bool bigjoiner);
++enum drm_mode_status
++intel_cpu_transcoder_mode_valid(struct drm_i915_private *i915,
++				const struct drm_display_mode *mode);
+ enum phy intel_port_to_phy(struct drm_i915_private *i915, enum port port);
+ bool is_trans_port_sync_mode(const struct intel_crtc_state *state);
+ bool is_trans_port_sync_master(const struct intel_crtc_state *state);
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1127,6 +1127,10 @@ intel_dp_mode_valid(struct drm_connector
+ 	enum drm_mode_status status;
+ 	bool dsc = false, bigjoiner = false;
+ 
++	status = intel_cpu_transcoder_mode_valid(dev_priv, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	if (mode->flags & DRM_MODE_FLAG_DBLCLK)
+ 		return MODE_H_ILLEGAL;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -921,6 +921,10 @@ intel_dp_mst_mode_valid_ctx(struct drm_c
+ 		return 0;
+ 	}
+ 
++	*status = intel_cpu_transcoder_mode_valid(dev_priv, mode);
++	if (*status != MODE_OK)
++		return 0;
++
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN) {
+ 		*status = MODE_NO_DBLESCAN;
+ 		return 0;
+--- a/drivers/gpu/drm/i915/display/intel_dvo.c
++++ b/drivers/gpu/drm/i915/display/intel_dvo.c
+@@ -217,11 +217,17 @@ intel_dvo_mode_valid(struct drm_connecto
+ 		     struct drm_display_mode *mode)
+ {
+ 	struct intel_connector *connector = to_intel_connector(_connector);
++	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+ 	struct intel_dvo *intel_dvo = intel_attached_dvo(connector);
+ 	const struct drm_display_mode *fixed_mode =
+ 		intel_panel_fixed_mode(connector, mode);
+ 	int max_dotclk = to_i915(connector->base.dev)->max_dotclk_freq;
+ 	int target_clock = mode->clock;
++	enum drm_mode_status status;
++
++	status = intel_cpu_transcoder_mode_valid(i915, mode);
++	if (status != MODE_OK)
++		return status;
+ 
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+ 		return MODE_NO_DBLESCAN;
+--- a/drivers/gpu/drm/i915/display/intel_hdmi.c
++++ b/drivers/gpu/drm/i915/display/intel_hdmi.c
+@@ -1986,6 +1986,10 @@ intel_hdmi_mode_valid(struct drm_connect
+ 	bool ycbcr_420_only;
+ 	enum intel_output_format sink_format;
+ 
++	status = intel_cpu_transcoder_mode_valid(dev_priv, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	if ((mode->flags & DRM_MODE_FLAG_3D_MASK) == DRM_MODE_FLAG_3D_FRAME_PACKING)
+ 		clock *= 2;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_lvds.c
++++ b/drivers/gpu/drm/i915/display/intel_lvds.c
+@@ -389,11 +389,16 @@ intel_lvds_mode_valid(struct drm_connect
+ 		      struct drm_display_mode *mode)
+ {
+ 	struct intel_connector *connector = to_intel_connector(_connector);
++	struct drm_i915_private *i915 = to_i915(connector->base.dev);
+ 	const struct drm_display_mode *fixed_mode =
+ 		intel_panel_fixed_mode(connector, mode);
+ 	int max_pixclk = to_i915(connector->base.dev)->max_dotclk_freq;
+ 	enum drm_mode_status status;
+ 
++	status = intel_cpu_transcoder_mode_valid(i915, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+ 		return MODE_NO_DBLESCAN;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_sdvo.c
++++ b/drivers/gpu/drm/i915/display/intel_sdvo.c
+@@ -1906,13 +1906,19 @@ static enum drm_mode_status
+ intel_sdvo_mode_valid(struct drm_connector *connector,
+ 		      struct drm_display_mode *mode)
+ {
++	struct drm_i915_private *i915 = to_i915(connector->dev);
+ 	struct intel_sdvo *intel_sdvo = intel_attached_sdvo(to_intel_connector(connector));
+ 	struct intel_sdvo_connector *intel_sdvo_connector =
+ 		to_intel_sdvo_connector(connector);
+-	int max_dotclk = to_i915(connector->dev)->max_dotclk_freq;
+ 	bool has_hdmi_sink = intel_has_hdmi_sink(intel_sdvo_connector, connector->state);
++	int max_dotclk = i915->max_dotclk_freq;
++	enum drm_mode_status status;
+ 	int clock = mode->clock;
+ 
++	status = intel_cpu_transcoder_mode_valid(i915, mode);
++	if (status != MODE_OK)
++		return status;
++
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+ 		return MODE_NO_DBLESCAN;
+ 
+--- a/drivers/gpu/drm/i915/display/intel_tv.c
++++ b/drivers/gpu/drm/i915/display/intel_tv.c
+@@ -958,8 +958,14 @@ static enum drm_mode_status
+ intel_tv_mode_valid(struct drm_connector *connector,
+ 		    struct drm_display_mode *mode)
+ {
++	struct drm_i915_private *i915 = to_i915(connector->dev);
+ 	const struct tv_mode *tv_mode = intel_tv_mode_find(connector->state);
+-	int max_dotclk = to_i915(connector->dev)->max_dotclk_freq;
++	int max_dotclk = i915->max_dotclk_freq;
++	enum drm_mode_status status;
++
++	status = intel_cpu_transcoder_mode_valid(i915, mode);
++	if (status != MODE_OK)
++		return status;
+ 
+ 	if (mode->flags & DRM_MODE_FLAG_DBLSCAN)
+ 		return MODE_NO_DBLESCAN;
+--- a/drivers/gpu/drm/i915/display/vlv_dsi.c
++++ b/drivers/gpu/drm/i915/display/vlv_dsi.c
+@@ -1540,9 +1540,25 @@ static const struct drm_encoder_funcs in
+ 	.destroy = intel_dsi_encoder_destroy,
+ };
+ 
++static enum drm_mode_status vlv_dsi_mode_valid(struct drm_connector *connector,
++					       struct drm_display_mode *mode)
++{
++	struct drm_i915_private *i915 = to_i915(connector->dev);
++
++	if (IS_VALLEYVIEW(i915) || IS_CHERRYVIEW(i915)) {
++		enum drm_mode_status status;
++
++		status = intel_cpu_transcoder_mode_valid(i915, mode);
++		if (status != MODE_OK)
++			return status;
 +	}
++
++	return intel_dsi_mode_valid(connector, mode);
++}
++
+ static const struct drm_connector_helper_funcs intel_dsi_connector_helper_funcs = {
+ 	.get_modes = intel_dsi_get_modes,
+-	.mode_valid = intel_dsi_mode_valid,
++	.mode_valid = vlv_dsi_mode_valid,
+ 	.atomic_check = intel_digital_connector_atomic_check,
+ };
  
- 	skb_list_walk_safe(segs, seg, next) {
- 		skb_mark_not_on_list(seg);
--- 
-2.42.0
-
 
 
 
