@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E4A80D6ED
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B256480D8AE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 826E1B21409
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D702281AF9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C31251C2E;
-	Mon, 11 Dec 2023 18:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBF251C2B;
+	Mon, 11 Dec 2023 18:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtYqEZ0K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OA6Y89y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0AEFBE0;
-	Mon, 11 Dec 2023 18:34:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B680C433C7;
-	Mon, 11 Dec 2023 18:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45555102A;
+	Mon, 11 Dec 2023 18:47:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5E1C433C7;
+	Mon, 11 Dec 2023 18:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319662;
-	bh=yS0l554uQ0ZhX+muyA0lLqzpN7bOfIK5IHpVxOsCqdA=;
+	s=korg; t=1702320473;
+	bh=jnQ2J7AQgssEzVkT3yus6SHmP1Uf4zmxRHmp/t56gao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LtYqEZ0Ka8JfX14wfU8pRGgi4XkvVOyLX8ZlgQbyU3IqoUbQUqi3UD/c8AI4fbg9o
-	 wOaklEUbG1w0NBbkPKe8qxcPM//nmaHyiBmFZBmubSpxNvzKq+hdp7yaQW4k1XVYo2
-	 KGzwuEftJ/0L/RBdV/9hRUMR9E4r4do0uGO5+Vpw=
+	b=OA6Y89y+RefcszDc2Oa5G0cqHE9CxtKppdzqkmXDlf4xwlnwGect2nP56e11GhbD/
+	 7rlUU9EQGBmQkMnk2j58T/d3roCiOQPu8wr+J2lnNLKry6+4rv1oKe9UrIpVUdk17S
+	 VtYKZp5iQmEb7pR/2Ac1tOif7pHZt6pzZ7YWejUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jeffery <djeffery@redhat.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.6 171/244] md/raid6: use valid sector values to determine if an I/O should wait on the reshape
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Santosh Kumar Pradhan <santosh.pradhan@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/194] RDMA/rtrs-srv: Destroy path files after making sure no IOs in-flight
 Date: Mon, 11 Dec 2023 19:21:04 +0100
-Message-ID: <20231211182053.576662361@linuxfoundation.org>
+Message-ID: <20231211182039.797838738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-commit c467e97f079f0019870c314996fae952cc768e82 upstream.
+[ Upstream commit c4d32e77fc1006f99eeb78417efc3d81a384072a ]
 
-During a reshape or a RAID6 array such as expanding by adding an additional
-disk, I/Os to the region of the array which have not yet been reshaped can
-stall indefinitely. This is from errors in the stripe_ahead_of_reshape
-function causing md to think the I/O is to a region in the actively
-undergoing the reshape.
+Destroying path files may lead to the freeing of rdma_stats. This creates
+the following race.
 
-stripe_ahead_of_reshape fails to account for the q disk having a sector
-value of 0. By not excluding the q disk from the for loop, raid6 will always
-generate a min_sector value of 0, causing a return value which stalls.
+An IO is in-flight, or has just passed the session state check in
+process_read/process_write. The close_work gets triggered and the function
+rtrs_srv_close_work() starts and does destroy path which frees the
+rdma_stats. After this the function process_read/process_write resumes and
+tries to update the stats through the function rtrs_srv_update_rdma_stats
 
-The function's max_sector calculation also uses min() when it should use
-max(), causing the max_sector value to always be 0. During a backwards
-rebuild this can cause the opposite problem where it allows I/O to advance
-when it should wait.
+This commit solves the problem by moving the destroy path function to a
+later point. This point makes sure any inflights are completed. This is
+done by qp drain, and waiting for all in-flights through ops_id.
 
-Fixing these errors will allow safe I/O to advance in a timely manner and
-delay only I/O which is unsafe due to stripes in the middle of undergoing
-the reshape.
-
-Fixes: 486f60558607 ("md/raid5: Check all disks in a stripe_head for reshape progress")
-Cc: stable@vger.kernel.org # v6.0+
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231128181233.6187-1-djeffery@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Santosh Kumar Pradhan <santosh.pradhan@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-6-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5892,11 +5892,11 @@ static bool stripe_ahead_of_reshape(stru
- 	int dd_idx;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 091db0853a6fb..e978ee4bb73ae 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1537,7 +1537,6 @@ static void rtrs_srv_close_work(struct work_struct *work)
  
- 	for (dd_idx = 0; dd_idx < sh->disks; dd_idx++) {
--		if (dd_idx == sh->pd_idx)
-+		if (dd_idx == sh->pd_idx || dd_idx == sh->qd_idx)
- 			continue;
+ 	srv_path = container_of(work, typeof(*srv_path), close_work);
  
- 		min_sector = min(min_sector, sh->dev[dd_idx].sector);
--		max_sector = min(max_sector, sh->dev[dd_idx].sector);
-+		max_sector = max(max_sector, sh->dev[dd_idx].sector);
- 	}
+-	rtrs_srv_destroy_path_files(srv_path);
+ 	rtrs_srv_stop_hb(srv_path);
  
- 	spin_lock_irq(&conf->device_lock);
+ 	for (i = 0; i < srv_path->s.con_num; i++) {
+@@ -1557,6 +1556,8 @@ static void rtrs_srv_close_work(struct work_struct *work)
+ 	/* Wait for all completion */
+ 	wait_for_completion(&srv_path->complete_done);
+ 
++	rtrs_srv_destroy_path_files(srv_path);
++
+ 	/* Notify upper layer if we are the last path */
+ 	rtrs_srv_path_down(srv_path);
+ 
+-- 
+2.42.0
+
 
 
 
