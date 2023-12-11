@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-6082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C810C80D8A8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15EB80D96E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57861B21675
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671881F21BAB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C45051C33;
-	Mon, 11 Dec 2023 18:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFCE51C47;
+	Mon, 11 Dec 2023 18:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1S6R9EnZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZFNgJPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD1C5102A;
-	Mon, 11 Dec 2023 18:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD10C433C7;
-	Mon, 11 Dec 2023 18:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8243351C38;
+	Mon, 11 Dec 2023 18:53:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06850C433C9;
+	Mon, 11 Dec 2023 18:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320463;
-	bh=q0BSCiMJI4yziYsWPKcmOj/qtE4xuYpJisJqZ3W9Zts=;
+	s=korg; t=1702320822;
+	bh=i0hI9IXX2B1qxSMn5q9Jf2I/dpIRAquwrh7TIIinxmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1S6R9EnZ6dKyeJ8zgFUibJ/gj20KC9Iqggy6tBenMa05G1q9rj07z2cyxKQJ5kgXv
-	 au/f7Tm7XaF0ProblqSR/HriP2Zet4HP0hOJlvf68i7g+0jSsFgoDoPRsDGsivlA9z
-	 B+H7geojYR6lr/nB2+EL8RKYfINLvU7WN1okrB10=
+	b=zZFNgJPwHsHlT1h8wBBdKDb0/k+nhfehl/JA38lA4dooH1fkBLjGLPhKzjllfRICu
+	 kNhl622viMkSJQZ49OUIfhq1zdDCVmPoqr6wHjyF5g9FvJutWoFadNA8945Gsw2+kX
+	 Zt0/1N8Z5ZaVW0G9qOlzXE9bPC/QdGTsL9CaN5Og=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Steve Sistare <steven.sistare@oracle.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/194] RDMA/rtrs-srv: Do not unconditionally enable irq
+Subject: [PATCH 5.15 001/141] vdpa/mlx5: preserve CVQ vringh index
 Date: Mon, 11 Dec 2023 19:21:00 +0100
-Message-ID: <20231211182039.613777483@linuxfoundation.org>
+Message-ID: <20231211182026.564750482@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +53,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Steve Sistare <steven.sistare@oracle.com>
 
-[ Upstream commit 3ee7ecd712048ade6482bea4b2f3dcaf039c0348 ]
+[ Upstream commit 480b3e73720f6b5d76bef2387b1f9d19ed67573b ]
 
-When IO is completed, rtrs can be called in softirq context,
-unconditionally enabling irq could cause panic.
+mlx5_vdpa does not preserve userland's view of vring base for the control
+queue in the following sequence:
 
-To be on safe side, use spin_lock_irqsave and spin_unlock_irqrestore
-instread.
+ioctl VHOST_SET_VRING_BASE
+ioctl VHOST_VDPA_SET_STATUS VIRTIO_CONFIG_S_DRIVER_OK
+  mlx5_vdpa_set_status()
+    setup_cvq_vring()
+      vringh_init_iotlb()
+        vringh_init_kern()
+          vrh->last_avail_idx = 0;
+ioctl VHOST_GET_VRING_BASE
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-2-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+To fix, restore the value of cvq->vring.last_avail_idx after calling
+vringh_init_iotlb.
+
+Fixes: 5262912ef3cf ("vdpa/mlx5: Add support for control VQ and MAC setting")
+
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <1699014387-194368-1-git-send-email-steven.sistare@oracle.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 22d7ba05e9fe8..e26488ee36eac 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -63,8 +63,9 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
- {
- 	enum rtrs_srv_state old_state;
- 	bool changed = false;
-+	unsigned long flags;
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index e748c00789f04..46c72e6d3a29b 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -2178,13 +2178,18 @@ static int setup_cvq_vring(struct mlx5_vdpa_dev *mvdev)
+ 	struct mlx5_control_vq *cvq = &mvdev->cvq;
+ 	int err = 0;
  
--	spin_lock_irq(&srv_path->state_lock);
-+	spin_lock_irqsave(&srv_path->state_lock, flags);
- 	old_state = srv_path->state;
- 	switch (new_state) {
- 	case RTRS_SRV_CONNECTED:
-@@ -85,7 +86,7 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
- 	}
- 	if (changed)
- 		srv_path->state = new_state;
--	spin_unlock_irq(&srv_path->state_lock);
-+	spin_unlock_irqrestore(&srv_path->state_lock, flags);
+-	if (mvdev->actual_features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ))
++	if (mvdev->actual_features & BIT_ULL(VIRTIO_NET_F_CTRL_VQ)) {
++		u16 idx = cvq->vring.last_avail_idx;
++
+ 		err = vringh_init_iotlb(&cvq->vring, mvdev->actual_features,
+ 					MLX5_CVQ_MAX_ENT, false,
+ 					(struct vring_desc *)(uintptr_t)cvq->desc_addr,
+ 					(struct vring_avail *)(uintptr_t)cvq->driver_addr,
+ 					(struct vring_used *)(uintptr_t)cvq->device_addr);
  
- 	return changed;
++		if (!err)
++			cvq->vring.last_avail_idx = cvq->vring.last_used_idx = idx;
++	}
+ 	return err;
  }
+ 
 -- 
 2.42.0
 
