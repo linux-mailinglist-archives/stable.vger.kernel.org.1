@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BDC80D71B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3014480D54D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ADA9281F9B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DAF31C20956
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414C2537EA;
-	Mon, 11 Dec 2023 18:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565095101B;
+	Mon, 11 Dec 2023 18:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLDlZxEi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OklGgJmk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F044252F89;
-	Mon, 11 Dec 2023 18:34:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7293CC433C9;
-	Mon, 11 Dec 2023 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166E54F212;
+	Mon, 11 Dec 2023 18:22:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2A5C433C8;
+	Mon, 11 Dec 2023 18:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319692;
-	bh=5LsfLEoMswwG0I7TSMnzTF02KDV/6BIB//cYPpFpNO4=;
+	s=korg; t=1702318948;
+	bh=LcZ7ElU+jzDAK0pWyo4as5QuSZgNEMKg8gciaEI60WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLDlZxEiRvaxKLhYQ5dWbFtTYv2B+GacncMvByVJmdO6aYz8YSuiNy3AVzPQjoYb6
-	 CmdvWae5salvDWMMIiYF86UhsC+8/zImYBF0MTaDSAyklVERq+6894smQhVipC4njF
-	 J45YDpJIWGgOkoo7ueJPGBvcUxZ1oToI+Fu1ynQQ=
+	b=OklGgJmkOg3DbpjGJfm00bwVznWxNRYigMjK4qPX4H9O8rG2UxezIuwPAj2QSvfL9
+	 gA9DhDeqgzBEuiB1ZEo2DPUHzOmgDfCYDKzV2sIuftCzPLi9oQuvCyieUAY6X00Xfx
+	 ntbdhYsL0EoBZlRCKQLk6oJc1XgsfxwgqwBTVToY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alyssa Ross <hi@alyssa.is>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.6 172/244] drm/atomic-helpers: Invoke end_fb_access while owning plane state
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.14 14/25] tracing: Fix a possible race when disabling buffered events
 Date: Mon, 11 Dec 2023 19:21:05 +0100
-Message-ID: <20231211182053.626264623@linuxfoundation.org>
+Message-ID: <20231211182009.208750688@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,231 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit e0f04e41e8eedd4e5a1275f2318df7e1841855f2 upstream.
+commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
 
-Invoke drm_plane_helper_funcs.end_fb_access before
-drm_atomic_helper_commit_hw_done(). The latter function hands over
-ownership of the plane state to the following commit, which might
-free it. Releasing resources in end_fb_access then operates on undefined
-state. This bug has been observed with non-blocking commits when they
-are being queued up quickly.
+Function trace_buffered_event_disable() is responsible for freeing pages
+backing buffered events and this process can run concurrently with
+trace_event_buffer_lock_reserve().
 
-Here is an example stack trace from the bug report. The plane state has
-been free'd already, so the pages for drm_gem_fb_vunmap() are gone.
+The following race is currently possible:
 
-Unable to handle kernel paging request at virtual address 0000000100000049
-[...]
- drm_gem_fb_vunmap+0x18/0x74
- drm_gem_end_shadow_fb_access+0x1c/0x2c
- drm_atomic_helper_cleanup_planes+0x58/0xd8
- drm_atomic_helper_commit_tail+0x90/0xa0
- commit_tail+0x15c/0x188
- commit_work+0x14/0x20
+* Function trace_buffered_event_disable() is called on CPU 0. It
+  increments trace_buffered_event_cnt on each CPU and waits via
+  synchronize_rcu() for each user of trace_buffered_event to complete.
 
-Fix this by running end_fb_access immediately after updating all planes
-in drm_atomic_helper_commit_planes(). The existing clean-up helper
-drm_atomic_helper_cleanup_planes() now only handles cleanup_fb.
+* After synchronize_rcu() is finished, function
+  trace_buffered_event_disable() has the exclusive access to
+  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
+  and all pointers trace_buffered_event are still valid.
 
-For aborted commits, roll back from drm_atomic_helper_prepare_planes()
-in the new helper drm_atomic_helper_unprepare_planes(). This case is
-different from regular cleanup, as we have to release the new state;
-regular cleanup releases the old state. The new helper also invokes
-cleanup_fb for all planes.
+* At this point, on a different CPU 1, the execution reaches
+  trace_event_buffer_lock_reserve(). The function calls
+  preempt_disable_notrace() and only now enters an RCU read-side
+  critical section. The function proceeds and reads a still valid
+  pointer from trace_buffered_event[CPU1] into the local variable
+  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
+  which happens later.
 
-The changes mostly involve DRM's atomic helpers. Only two drivers, i915
-and nouveau, implement their own commit function. Update them to invoke
-drm_atomic_helper_unprepare_planes(). Drivers with custom commit_tail
-function do not require changes.
+* Function trace_buffered_event_disable() continues. It frees
+  trace_buffered_event[CPU1] and decrements
+  trace_buffered_event_cnt[CPU1] back to 0.
 
-v4:
-	* fix documentation (kernel test robot)
-v3:
-	* add drm_atomic_helper_unprepare_planes() for rolling back
-	* use correct state for end_fb_access
-v2:
-	* fix test in drm_atomic_helper_cleanup_planes()
+* Function trace_event_buffer_lock_reserve() continues. It reads and
+  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
+  believe that it can use the "entry" that it already obtained but the
+  pointer is now invalid and any access results in a use-after-free.
 
-Reported-by: Alyssa Ross <hi@alyssa.is>
-Closes: https://lore.kernel.org/dri-devel/87leazm0ya.fsf@alyssa.is/
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Fixes: 94d879eaf7fb ("drm/atomic-helper: Add {begin,end}_fb_access to plane helpers")
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Reviewed-by: Alyssa Ross <hi@alyssa.is>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v6.2+
-Link: https://patchwork.freedesktop.org/patch/msgid/20231204083247.22006-1-tzimmermann@suse.de
+Fix the problem by making a second synchronize_rcu() call after all
+trace_buffered_event values are set to NULL. This waits on all potential
+users in trace_event_buffer_lock_reserve() that still read a previous
+pointer from trace_buffered_event.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c          |   78 ++++++++++++++++++---------
- drivers/gpu/drm/i915/display/intel_display.c |    2 
- drivers/gpu/drm/nouveau/dispnv50/disp.c      |    2 
- include/drm/drm_atomic_helper.h              |    2 
- 4 files changed, 56 insertions(+), 28 deletions(-)
+ kernel/trace/trace.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -2012,7 +2012,7 @@ int drm_atomic_helper_commit(struct drm_
- 			return ret;
- 
- 		drm_atomic_helper_async_commit(dev, state);
--		drm_atomic_helper_cleanup_planes(dev, state);
-+		drm_atomic_helper_unprepare_planes(dev, state);
- 
- 		return 0;
- 	}
-@@ -2072,7 +2072,7 @@ int drm_atomic_helper_commit(struct drm_
- 	return 0;
- 
- err:
--	drm_atomic_helper_cleanup_planes(dev, state);
-+	drm_atomic_helper_unprepare_planes(dev, state);
- 	return ret;
- }
- EXPORT_SYMBOL(drm_atomic_helper_commit);
-@@ -2650,6 +2650,39 @@ fail_prepare_fb:
- }
- EXPORT_SYMBOL(drm_atomic_helper_prepare_planes);
- 
-+/**
-+ * drm_atomic_helper_unprepare_planes - release plane resources on aborts
-+ * @dev: DRM device
-+ * @state: atomic state object with old state structures
-+ *
-+ * This function cleans up plane state, specifically framebuffers, from the
-+ * atomic state. It undoes the effects of drm_atomic_helper_prepare_planes()
-+ * when aborting an atomic commit. For cleaning up after a successful commit
-+ * use drm_atomic_helper_cleanup_planes().
-+ */
-+void drm_atomic_helper_unprepare_planes(struct drm_device *dev,
-+					struct drm_atomic_state *state)
-+{
-+	struct drm_plane *plane;
-+	struct drm_plane_state *new_plane_state;
-+	int i;
-+
-+	for_each_new_plane_in_state(state, plane, new_plane_state, i) {
-+		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
-+
-+		if (funcs->end_fb_access)
-+			funcs->end_fb_access(plane, new_plane_state);
-+	}
-+
-+	for_each_new_plane_in_state(state, plane, new_plane_state, i) {
-+		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
-+
-+		if (funcs->cleanup_fb)
-+			funcs->cleanup_fb(plane, new_plane_state);
-+	}
-+}
-+EXPORT_SYMBOL(drm_atomic_helper_unprepare_planes);
-+
- static bool plane_crtc_active(const struct drm_plane_state *state)
- {
- 	return state->crtc && state->crtc->state->active;
-@@ -2784,6 +2817,17 @@ void drm_atomic_helper_commit_planes(str
- 
- 		funcs->atomic_flush(crtc, old_state);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2265,13 +2265,17 @@ void trace_buffered_event_disable(void)
+ 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
+ 		per_cpu(trace_buffered_event, cpu) = NULL;
  	}
 +
-+	/*
-+	 * Signal end of framebuffer access here before hw_done. After hw_done,
-+	 * a later commit might have already released the plane state.
-+	 */
-+	for_each_old_plane_in_state(old_state, plane, old_plane_state, i) {
-+		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
-+
-+		if (funcs->end_fb_access)
-+			funcs->end_fb_access(plane, old_plane_state);
-+	}
+ 	/*
+-	 * Make sure trace_buffered_event is NULL before clearing
+-	 * trace_buffered_event_cnt.
++	 * Wait for all CPUs that potentially started checking if they can use
++	 * their event buffer only after the previous synchronize_rcu() call and
++	 * they still read a valid pointer from trace_buffered_event. It must be
++	 * ensured they don't see cleared trace_buffered_event_cnt else they
++	 * could wrongly decide to use the pointed-to buffer which is now freed.
+ 	 */
+-	smp_wmb();
++	synchronize_rcu();
+ 
+-	/* Do the work on each cpu */
++	/* For each CPU, relinquish the buffer */
+ 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
+ 			 true);
  }
- EXPORT_SYMBOL(drm_atomic_helper_commit_planes);
- 
-@@ -2911,40 +2955,22 @@ EXPORT_SYMBOL(drm_atomic_helper_disable_
-  * configuration. Hence the old configuration must be perserved in @old_state to
-  * be able to call this function.
-  *
-- * This function must also be called on the new state when the atomic update
-- * fails at any point after calling drm_atomic_helper_prepare_planes().
-+ * This function may not be called on the new state when the atomic update
-+ * fails at any point after calling drm_atomic_helper_prepare_planes(). Use
-+ * drm_atomic_helper_unprepare_planes() in this case.
-  */
- void drm_atomic_helper_cleanup_planes(struct drm_device *dev,
- 				      struct drm_atomic_state *old_state)
- {
- 	struct drm_plane *plane;
--	struct drm_plane_state *old_plane_state, *new_plane_state;
-+	struct drm_plane_state *old_plane_state;
- 	int i;
- 
--	for_each_oldnew_plane_in_state(old_state, plane, old_plane_state, new_plane_state, i) {
-+	for_each_old_plane_in_state(old_state, plane, old_plane_state, i) {
- 		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
- 
--		if (funcs->end_fb_access)
--			funcs->end_fb_access(plane, new_plane_state);
--	}
--
--	for_each_oldnew_plane_in_state(old_state, plane, old_plane_state, new_plane_state, i) {
--		const struct drm_plane_helper_funcs *funcs;
--		struct drm_plane_state *plane_state;
--
--		/*
--		 * This might be called before swapping when commit is aborted,
--		 * in which case we have to cleanup the new state.
--		 */
--		if (old_plane_state == plane->state)
--			plane_state = new_plane_state;
--		else
--			plane_state = old_plane_state;
--
--		funcs = plane->helper_private;
--
- 		if (funcs->cleanup_fb)
--			funcs->cleanup_fb(plane, plane_state);
-+			funcs->cleanup_fb(plane, old_plane_state);
- 	}
- }
- EXPORT_SYMBOL(drm_atomic_helper_cleanup_planes);
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -7279,7 +7279,7 @@ int intel_atomic_commit(struct drm_devic
- 		for_each_new_intel_crtc_in_state(state, crtc, new_crtc_state, i)
- 			intel_color_cleanup_commit(new_crtc_state);
- 
--		drm_atomic_helper_cleanup_planes(dev, &state->base);
-+		drm_atomic_helper_unprepare_planes(dev, &state->base);
- 		intel_runtime_pm_put(&dev_priv->runtime_pm, state->wakeref);
- 		return ret;
- 	}
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -2310,7 +2310,7 @@ nv50_disp_atomic_commit(struct drm_devic
- 
- err_cleanup:
- 	if (ret)
--		drm_atomic_helper_cleanup_planes(dev, state);
-+		drm_atomic_helper_unprepare_planes(dev, state);
- done:
- 	pm_runtime_put_autosuspend(dev->dev);
- 	return ret;
---- a/include/drm/drm_atomic_helper.h
-+++ b/include/drm/drm_atomic_helper.h
-@@ -97,6 +97,8 @@ void drm_atomic_helper_commit_modeset_en
- 
- int drm_atomic_helper_prepare_planes(struct drm_device *dev,
- 				     struct drm_atomic_state *state);
-+void drm_atomic_helper_unprepare_planes(struct drm_device *dev,
-+					struct drm_atomic_state *state);
- 
- #define DRM_PLANE_COMMIT_ACTIVE_ONLY			BIT(0)
- #define DRM_PLANE_COMMIT_NO_DISABLE_AFTER_MODESET	BIT(1)
 
 
 
