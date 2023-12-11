@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-5539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6C9680D548
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBAB80D8ED
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34152819F8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83FC61F21B11
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456085101D;
-	Mon, 11 Dec 2023 18:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 266C551C5A;
+	Mon, 11 Dec 2023 18:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm2xiRJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gm00eMV/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032CA4F212;
-	Mon, 11 Dec 2023 18:22:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCAAC433C7;
-	Mon, 11 Dec 2023 18:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB585102A;
+	Mon, 11 Dec 2023 18:49:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F6FC433C7;
+	Mon, 11 Dec 2023 18:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318934;
-	bh=5n+JDqThgLyAMP+TWTe/OaiuoIwtmaO0eV6imKSJ4RY=;
+	s=korg; t=1702320580;
+	bh=LqJyPARUB5vi+WEeVVfo6prJzZEWCKTWDvbiBpFuqYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gm2xiRJk76VeH1pUaLp58DaHQUokKYOkBVdJ09tpNiAz4CvDtdm5GGQYcK1KrcZAK
-	 ox3J9bMzeyF7IfLZJRkoWE7hkvgSIZmF8boDh8fg8CQCOUpjlLfyYGHdTd/hR/SR0w
-	 J+u3QknH0htkbneoxo4yyzHnxb8xHx72dOhyIVwE=
+	b=Gm00eMV/bHRmX9KZzpAdUQDM3xgq+VBAoLmODMKY8ihOQq+vrbKcnMcFPCjH6UY/W
+	 UXGJSc1vm39u9ykl4ykQkk2TzvHlN2ldfLAuU60X0u5xBkLkBY4Xa6i0k8glfqQA1t
+	 GfQn/yLJnYwNodJgsAqg/YKzL7fL8hFWaN7egQZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 24/25] psample: Require CAP_NET_ADMIN when joining "packets" group
+	"Ismail, Mustafa" <mustafa.ismail@intel.com>,
+	Shifeng Li <lishifeng@sangfor.com.cn>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/194] RDMA/irdma: Avoid free the non-cqp_request scratch
 Date: Mon, 11 Dec 2023 19:21:15 +0100
-Message-ID: <20231211182009.571091871@linuxfoundation.org>
+Message-ID: <20231211182040.271004235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,117 +55,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Shifeng Li <lishifeng@sangfor.com.cn>
 
-commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 upstream.
+[ Upstream commit e3e82fcb79eeb3f1a88a89f676831773caff514a ]
 
-The "psample" generic netlink family notifies sampled packets over the
-"packets" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+When creating ceq_0 during probing irdma, cqp.sc_cqp will be sent as a
+cqp_request to cqp->sc_cqp.sq_ring. If the request is pending when
+removing the irdma driver or unplugging its aux device, cqp.sc_cqp will be
+dereferenced as wrong struct in irdma_free_pending_cqp_request().
 
-Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
-prevent non-root users or root without the 'CAP_NET_ADMIN' capability
-(in the user namespace owning the network namespace) from joining the
-group.
+  PID: 3669   TASK: ffff88aef892c000  CPU: 28  COMMAND: "kworker/28:0"
+   #0 [fffffe0000549e38] crash_nmi_callback at ffffffff810e3a34
+   #1 [fffffe0000549e40] nmi_handle at ffffffff810788b2
+   #2 [fffffe0000549ea0] default_do_nmi at ffffffff8107938f
+   #3 [fffffe0000549eb8] do_nmi at ffffffff81079582
+   #4 [fffffe0000549ef0] end_repeat_nmi at ffffffff82e016b4
+      [exception RIP: native_queued_spin_lock_slowpath+1291]
+      RIP: ffffffff8127e72b  RSP: ffff88aa841ef778  RFLAGS: 00000046
+      RAX: 0000000000000000  RBX: ffff88b01f849700  RCX: ffffffff8127e47e
+      RDX: 0000000000000000  RSI: 0000000000000004  RDI: ffffffff83857ec0
+      RBP: ffff88afe3e4efc8   R8: ffffed15fc7c9dfa   R9: ffffed15fc7c9dfa
+      R10: 0000000000000001  R11: ffffed15fc7c9df9  R12: 0000000000740000
+      R13: ffff88b01f849708  R14: 0000000000000003  R15: ffffed1603f092e1
+      ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0000
+  -- <NMI exception stack> --
+   #5 [ffff88aa841ef778] native_queued_spin_lock_slowpath at ffffffff8127e72b
+   #6 [ffff88aa841ef7b0] _raw_spin_lock_irqsave at ffffffff82c22aa4
+   #7 [ffff88aa841ef7c8] __wake_up_common_lock at ffffffff81257363
+   #8 [ffff88aa841ef888] irdma_free_pending_cqp_request at ffffffffa0ba12cc [irdma]
+   #9 [ffff88aa841ef958] irdma_cleanup_pending_cqp_op at ffffffffa0ba1469 [irdma]
+   #10 [ffff88aa841ef9c0] irdma_ctrl_deinit_hw at ffffffffa0b2989f [irdma]
+   #11 [ffff88aa841efa28] irdma_remove at ffffffffa0b252df [irdma]
+   #12 [ffff88aa841efae8] auxiliary_bus_remove at ffffffff8219afdb
+   #13 [ffff88aa841efb00] device_release_driver_internal at ffffffff821882e6
+   #14 [ffff88aa841efb38] bus_remove_device at ffffffff82184278
+   #15 [ffff88aa841efb88] device_del at ffffffff82179d23
+   #16 [ffff88aa841efc48] ice_unplug_aux_dev at ffffffffa0eb1c14 [ice]
+   #17 [ffff88aa841efc68] ice_service_task at ffffffffa0d88201 [ice]
+   #18 [ffff88aa841efde8] process_one_work at ffffffff811c589a
+   #19 [ffff88aa841efe60] worker_thread at ffffffff811c71ff
+   #20 [ffff88aa841eff10] kthread at ffffffff811d87a0
+   #21 [ffff88aa841eff50] ret_from_fork at ffffffff82e0022f
 
-Tested using [1].
-
-Before:
-
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
-
-After:
-
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
- Failed to join "packets" multicast group
-
-[1]
- $ cat psample.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
-
- int join_grp(struct nl_sock *sk, const char *grp_name)
- {
- 	int grp, err;
-
- 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
- 	if (grp < 0) {
- 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
- 			grp_name);
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
- 			grp_name);
- 		return err;
- 	}
-
- 	return 0;
- }
-
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int err;
-
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
-
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	err = join_grp(sk, "config");
- 	if (err)
- 		return err;
-
- 	err = join_grp(sk, "packets");
- 	if (err)
- 		return err;
-
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
-
-Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
+Link: https://lore.kernel.org/r/20231130081415.891006-1-lishifeng@sangfor.com.cn
+Suggested-by: "Ismail, Mustafa" <mustafa.ismail@intel.com>
+Signed-off-by: Shifeng Li <lishifeng@sangfor.com.cn>
+Reviewed-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/psample/psample.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/hw.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/psample/psample.c
-+++ b/net/psample/psample.c
-@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index 9399d82560c92..311a1138e838d 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -1170,7 +1170,6 @@ static int irdma_create_ceq(struct irdma_pci_f *rf, struct irdma_ceq *iwceq,
+ 	int status;
+ 	struct irdma_ceq_init_info info = {};
+ 	struct irdma_sc_dev *dev = &rf->sc_dev;
+-	u64 scratch;
+ 	u32 ceq_size;
  
- static const struct genl_multicast_group psample_nl_mcgrps[] = {
- 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
--	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
-+	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
-+				      .flags = GENL_UNS_ADMIN_PERM },
- };
+ 	info.ceq_id = ceq_id;
+@@ -1191,14 +1190,13 @@ static int irdma_create_ceq(struct irdma_pci_f *rf, struct irdma_ceq *iwceq,
+ 	iwceq->sc_ceq.ceq_id = ceq_id;
+ 	info.dev = dev;
+ 	info.vsi = vsi;
+-	scratch = (uintptr_t)&rf->cqp.sc_cqp;
+ 	status = irdma_sc_ceq_init(&iwceq->sc_ceq, &info);
+ 	if (!status) {
+ 		if (dev->ceq_valid)
+ 			status = irdma_cqp_ceq_cmd(&rf->sc_dev, &iwceq->sc_ceq,
+ 						   IRDMA_OP_CEQ_CREATE);
+ 		else
+-			status = irdma_sc_cceq_create(&iwceq->sc_ceq, scratch);
++			status = irdma_sc_cceq_create(&iwceq->sc_ceq, 0);
+ 	}
  
- static struct genl_family psample_nl_family __ro_after_init;
+ 	if (status) {
+-- 
+2.42.0
+
 
 
 
