@@ -1,53 +1,46 @@
-Return-Path: <stable+bounces-6012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAD380D84E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A6480D95B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386701F21B0D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BECEA1F21BA2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD725102F;
-	Mon, 11 Dec 2023 18:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B93451C46;
+	Mon, 11 Dec 2023 18:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiBmW86W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8be0Xjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401A0FC06;
-	Mon, 11 Dec 2023 18:44:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3D7C433C8;
-	Mon, 11 Dec 2023 18:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF56B51C37;
+	Mon, 11 Dec 2023 18:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B4FC433C7;
+	Mon, 11 Dec 2023 18:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320275;
-	bh=bOSwlyvi0jlQXhN6JT13bAngwarbnZpI8v1XejfIZxM=;
+	s=korg; t=1702320784;
+	bh=mdsKM6orqHoEPid1ddNmo5zAIL7hiorcTJzFNAoidgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiBmW86WrSXrz24iVlOUaZmu6YG5UCwl4smgvW6kKUhInJ2zFl+W/gZjLa4C1PogZ
-	 suF5CpnopiGVRTGl7FiUAGksSFb86EuqNBaRBGLtMLLEKNQMx7tSK1b5JXMcQQ3h86
-	 izqhk74B/2l2J0hgg7f87ajGwHB8h/6dY6FLK6D8=
+	b=y8be0XjkXlG2vqak64ZFU4sd4nlmT9jz7NPtFkD7b7ZVmNCu+pZqbm2nYSeRqptgm
+	 q5iy09kBXHpm+2+aPsHhC7JC9Zx2nCQEEg5P/+/k/aodMBd/ZuObovbQDl/jafvJqW
+	 cs7CsLta4ZrQ10Bxxm6yav5812U/1uXTkMY3zKxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sean Tranchetti <stranche@codeaurora.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH 5.4 58/67] netlink: dont call ->netlink_bind with table lock held
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 172/194] usb: typec: class: fix typec_altmode_put_partner to put plugs
 Date: Mon, 11 Dec 2023 19:22:42 +0100
-Message-ID: <20231211182017.460154714@linuxfoundation.org>
+Message-ID: <20231211182044.340904268@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: RD Babiera <rdbabiera@google.com>
 
-From: Florian Westphal <fw@strlen.de>
+commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e upstream.
 
-commit f2764bd4f6a8dffaec3e220728385d9756b3c2cb upstream.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released evaluates against the
+released altmode's partner instead of the calling altmode itself, so change
+adev in typec_altmode_put_partner to properly refer to the altmode being
+released.
 
-When I added support to allow generic netlink multicast groups to be
-restricted to subscribers with CAP_NET_ADMIN I was unaware that a
-genl_bind implementation already existed in the past.
+typec_altmode_set_partner is not run for port altmodes, so also add a check
+in typec_altmode_release to prevent typec_altmode_put_partner() calls on
+port altmode release.
 
-It was reverted due to ABBA deadlock:
-
-1. ->netlink_bind gets called with the table lock held.
-2. genetlink bind callback is invoked, it grabs the genl lock.
-
-But when a new genl subsystem is (un)registered, these two locks are
-taken in reverse order.
-
-One solution would be to revert again and add a comment in genl
-referring 1e82a62fec613, "genetlink: remove genl_bind").
-
-This would need a second change in mptcp to not expose the raw token
-value anymore, e.g.  by hashing the token with a secret key so userspace
-can still associate subflow events with the correct mptcp connection.
-
-However, Paolo Abeni reminded me to double-check why the netlink table is
-locked in the first place.
-
-I can't find one.  netlink_bind() is already called without this lock
-when userspace joins a group via NETLINK_ADD_MEMBERSHIP setsockopt.
-Same holds for the netlink_unbind operation.
-
-Digging through the history, commit f773608026ee1
-("netlink: access nlk groups safely in netlink bind and getname")
-expanded the lock scope.
-
-commit 3a20773beeeeade ("net: netlink: cap max groups which will be considered in netlink_bind()")
-... removed the nlk->ngroups access that the lock scope
-extension was all about.
-
-Reduce the lock scope again and always call ->netlink_bind without
-the table lock.
-
-The Fixes tag should be vs. the patch mentioned in the link below,
-but that one got squash-merged into the patch that came earlier in the
-series.
-
-Fixes: 4d54cc32112d8d ("mptcp: avoid lock_fast usage in accept path")
-Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/T/#u
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Sean Tranchetti <stranche@codeaurora.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231129192349.1773623-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1020,7 +1020,6 @@ static int netlink_bind(struct socket *s
- 			return -EINVAL;
- 	}
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(st
+ 	if (!partner)
+ 		return;
  
--	netlink_lock_table();
- 	if (nlk->netlink_bind && groups) {
- 		int group;
+-	adev = &partner->adev;
++	adev = &altmode->adev;
  
-@@ -1032,13 +1031,14 @@ static int netlink_bind(struct socket *s
- 			if (!err)
- 				continue;
- 			netlink_undo_bind(group, groups, sk);
--			goto unlock;
-+			return err;
- 		}
- 	}
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -497,7 +497,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
- 	/* No need for barriers here as we return to user-space without
- 	 * using any of the bound attributes.
- 	 */
-+	netlink_lock_table();
- 	if (!bound) {
- 		err = nladdr->nl_pid ?
- 			netlink_insert(sk, nladdr->nl_pid) :
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
