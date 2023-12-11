@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E7B80D7AB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7D680D918
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39CFC282488
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D34A1C2165C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF6653E35;
-	Mon, 11 Dec 2023 18:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C6051C35;
+	Mon, 11 Dec 2023 18:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bzy1Z9W5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYlrcn6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEECC51C2B;
-	Mon, 11 Dec 2023 18:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61242C433C8;
-	Mon, 11 Dec 2023 18:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610A25102A;
+	Mon, 11 Dec 2023 18:51:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93B7C433C8;
+	Mon, 11 Dec 2023 18:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319927;
-	bh=Uf7tSV1CWer6F00OcpSAtDFi4de8VIZx/hq7dnppC/s=;
+	s=korg; t=1702320660;
+	bh=ymttR9TWg7i2YVRRGsaXtSVsZiG/sCn++qF+sV61rQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bzy1Z9W5xRTLvIK+Y3IRyFo4CrcUGkbxg18S53ITZL2CzPWOAtssDobuVvp1RtE81
-	 QRR7WAZ2OOiSvKmbIj/EgtCGr3xqXHDPLJQu9URF9r5EMeggFp+Gyv4V0hqaLKTB37
-	 nB67PYrjNEKu69UwFk9FCo77pPi60BzAgURZJn38=
+	b=nYlrcn6iSSROiuxPi6yuQ2tiN06kduaoxFh1BDzTPNvt+ZawPuBfALZNV5Sr7L3CQ
+	 3jXk2AH8TQ0CeBfcKvwzypQ7O6rLFHolPCcu9wyslAjG62fgGAUShDceJAdazSorog
+	 yG9kiOM5USmW1A0U2szM5xZlTRlLk+PuDAY+cal0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	urbinek@gmail.com,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 40/97] hwmon: (acpi_power_meter) Fix 4.29 MW bug
-Date: Mon, 11 Dec 2023 19:21:43 +0100
-Message-ID: <20231211182021.451335265@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Maninder Singh <maninder1.s@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Vaneet Narang <v.narang@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 114/194] checkstack: fix printed address
+Date: Mon, 11 Dec 2023 19:21:44 +0100
+Message-ID: <20231211182041.593040227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +55,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1fefca6c57fb928d2131ff365270cbf863d89c88 ]
+commit ee34db3f271cea4d4252048617919c2caafe698b upstream.
 
-The ACPI specification says:
+All addresses printed by checkstack have an extra incorrect 0 appended at
+the end.
 
-"If an error occurs while obtaining the meter reading or if the value
-is not available then an Integer with all bits set is returned"
+This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
+display $dre as different entity"): since then the address is taken from
+the line which contains the function name, instead of the line which
+contains stack consumption. E.g. on s390:
 
-Since the "integer" is 32 bits in case of the ACPI power meter,
-userspace will get a power reading of 2^32 * 1000 miliwatts (~4.29 MW)
-in case of such an error. This was discovered due to a lm_sensors
-bugreport (https://github.com/lm-sensors/lm-sensors/issues/460).
-Fix this by returning -ENODATA instead.
+0000000000100a30 <do_one_initcall>:
+...
+  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
 
-Tested-by: <urbinek@gmail.com>
-Fixes: de584afa5e18 ("hwmon driver for ACPI 4.0 power meters")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231124182747.13956-1-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So the used regex which matches spaces and hexadecimal numbers to extract
+an address now matches a different substring. Subsequently replacing spaces
+with 0 appends a zero at the and, instead of replacing leading spaces.
+
+Fix this by using the proper regex, and simplify the code a bit.
+
+Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
+Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Maninder Singh <maninder1.s@samsung.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Vaneet Narang <v.narang@samsung.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/acpi_power_meter.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/checkstack.pl |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index a270b975e90bb..5794d44538e9c 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -32,6 +32,7 @@ ACPI_MODULE_NAME(ACPI_POWER_METER_NAME);
- #define POWER_METER_CAN_NOTIFY	(1 << 3)
- #define POWER_METER_IS_BATTERY	(1 << 8)
- #define UNKNOWN_HYSTERESIS	0xFFFFFFFF
-+#define UNKNOWN_POWER		0xFFFFFFFF
- 
- #define METER_NOTIFY_CONFIG	0x80
- #define METER_NOTIFY_TRIP	0x81
-@@ -343,6 +344,9 @@ static ssize_t show_power(struct device *dev,
- 	update_meter(resource);
- 	mutex_unlock(&resource->lock);
- 
-+	if (resource->power == UNKNOWN_POWER)
-+		return -ENODATA;
-+
- 	return sprintf(buf, "%llu\n", resource->power * 1000);
- }
- 
--- 
-2.42.0
-
+--- a/scripts/checkstack.pl
++++ b/scripts/checkstack.pl
+@@ -146,15 +146,11 @@ $total_size = 0;
+ while (my $line = <STDIN>) {
+ 	if ($line =~ m/$funcre/) {
+ 		$func = $1;
+-		next if $line !~ m/^($xs*)/;
++		next if $line !~ m/^($x*)/;
+ 		if ($total_size > $min_stack) {
+ 			push @stack, "$intro$total_size\n";
+ 		}
+-
+-		$addr = $1;
+-		$addr =~ s/ /0/g;
+-		$addr = "0x$addr";
+-
++		$addr = "0x$1";
+ 		$intro = "$addr $func [$file]:";
+ 		my $padlen = 56 - length($intro);
+ 		while ($padlen > 0) {
 
 
 
