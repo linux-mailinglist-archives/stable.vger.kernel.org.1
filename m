@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-6248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917B780D997
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F7480D914
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7A41F21C0F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B7921C21669
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D9451C50;
-	Mon, 11 Dec 2023 18:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870C251C37;
+	Mon, 11 Dec 2023 18:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJWJMm6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSZ+PhfK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B5D321B8;
-	Mon, 11 Dec 2023 18:55:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB542C433C9;
-	Mon, 11 Dec 2023 18:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D575102A;
+	Mon, 11 Dec 2023 18:50:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DAFC433C7;
+	Mon, 11 Dec 2023 18:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320913;
-	bh=RkMo2ZwONLv+iWdupGQhQqFsZSB9+5G1ewBqxgVIorc=;
+	s=korg; t=1702320652;
+	bh=KgbcT2893yHJCTDwrXtjJN9FjH04v3Uma/fHv6ZkwYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJWJMm6A5owT/fJbSddng1Ldd+bj3Jt6f6EgDQeSdrlbGdj5uY/1QGRC9mNE/NY5h
-	 Hi8cmCVsT0sm0/+OVGzSFoWhAqZCfC9euFq0sV6uBwfP73a+9dXcUq5MhiOBQSztzD
-	 QTjOrvvM5dQxPItpgplcgw4cM4xtY6qbJGk9or18=
+	b=vSZ+PhfKwvmqb24gquR5j5HEXzkTnBtKrYqj4novurW9ig3mwJiKI5u7Jxxu4s7A7
+	 7BBMbOQRjLr96wrx8Lrzoxjh6za9+9xUk4pZzOYV8dfxcu/yccHojxig3ZIDVoIR2t
+	 +QHe/4UbyTtWk42ewbYw3Gy+b+sJIgG9hYPiR9Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yepeng Pan <yepeng.pan@cispa.de>,
-	Christian Rossow <rossow@cispa.de>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/141] tcp: do not accept ACK of bytes we never sent
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 111/194] nilfs2: fix missing error check for sb_set_blocksize call
 Date: Mon, 11 Dec 2023 19:21:41 +0100
-Message-ID: <20231211182028.363941947@linuxfoundation.org>
+Message-ID: <20231211182041.444078290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,111 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
+commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
 
-This patch is based on a detailed report and ideas from Yepeng Pan
-and Christian Rossow.
+When mounting a filesystem image with a block size larger than the page
+size, nilfs2 repeatedly outputs long error messages with stack traces to
+the kernel log, such as the following:
 
-ACK seq validation is currently following RFC 5961 5.2 guidelines:
+ getblk(): invalid block size 8192 requested
+ logical block size: 512
+ ...
+ Call Trace:
+  dump_stack_lvl+0x92/0xd4
+  dump_stack+0xd/0x10
+  bdev_getblk+0x33a/0x354
+  __breadahead+0x11/0x80
+  nilfs_search_super_root+0xe2/0x704 [nilfs2]
+  load_nilfs+0x72/0x504 [nilfs2]
+  nilfs_mount+0x30f/0x518 [nilfs2]
+  legacy_get_tree+0x1b/0x40
+  vfs_get_tree+0x18/0xc4
+  path_mount+0x786/0xa88
+  __ia32_sys_mount+0x147/0x1a8
+  __do_fast_syscall_32+0x56/0xc8
+  do_fast_syscall_32+0x29/0x58
+  do_SYSENTER_32+0x15/0x18
+  entry_SYSENTER_32+0x98/0xf1
+ ...
 
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.  It needs to
-   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
-   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
-   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
-   ACK, drop the segment, and return".  The "ignored" above implies that
-   the processing of the incoming data segment continues, which means
-   the ACK value is treated as acceptable.  This mitigation makes the
-   ACK check more stringent since any ACK < SND.UNA wouldn't be
-   accepted, instead only ACKs that are in the range ((SND.UNA -
-   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
+This overloads the system logger.  And to make matters worse, it sometimes
+crashes the kernel with a memory access violation.
 
-This can be refined for new (and possibly spoofed) flows,
-by not accepting ACK for bytes that were never sent.
+This is because the return value of the sb_set_blocksize() call, which
+should be checked for errors, is not checked.
 
-This greatly improves TCP security at a little cost.
+The latter issue is due to out-of-buffer memory being accessed based on a
+large block size that caused sb_set_blocksize() to fail for buffers read
+with the initial minimum block size that remained unupdated in the
+super_block structure.
 
-I added a Fixes: tag to make sure this patch will reach stable trees,
-even if the 'blamed' patch was adhering to the RFC.
+Since nilfs2 mkfs tool does not accept block sizes larger than the system
+page size, this has been overlooked.  However, it is possible to create
+this situation by intentionally modifying the tool or by passing a
+filesystem image created on a system with a large page size to a system
+with a smaller page size and mounting it.
 
-tp->bytes_acked was added in linux-4.2
+Fix this issue by inserting the expected error handling for the call to
+sb_set_blocksize().
 
-Following packetdrill test (courtesy of Yepeng Pan) shows
-the issue at hand:
-
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-// ---------------- Handshake ------------------- //
-
-// when window scale is set to 14 the window size can be extended to
-// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
-// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
-// ,though this ack number acknowledges some data never
-// sent by the server.
-
-+0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
-
-// For the established connection, we send an ACK packet,
-// the ack packet uses ack number 1 - 1073725300 + 2^32,
-// where 2^32 is used to wrap around.
-// Note: we used 1073725300 instead of 1073725440 to avoid possible
-// edge cases.
-// 1 - 1073725300 + 2^32 = 3221241997
-
-// Oops, old kernels happily accept this packet.
-+0 < . 1:1001(1000) ack 3221241997 win 65535
-
-// After the kernel fix the following will be replaced by a challenge ACK,
-// and prior malicious frame would be dropped.
-+0 > . 1:1(0) ack 1001
-
-Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
-Reported-by: Christian Rossow <rossow@cispa.de>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
+ fs/nilfs2/the_nilfs.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index a3453b4ac339c..e51b5d887c24b 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3796,8 +3796,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
- 	 */
- 	if (before(ack, prior_snd_una)) {
-+		u32 max_window;
-+
-+		/* do not accept ACK for bytes we never sent. */
-+		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - tp->max_window)) {
-+		if (before(ack, prior_snd_una - max_window)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk, skb);
- 			return -1;
--- 
-2.42.0
-
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -716,7 +716,11 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 			goto failed_sbh;
+ 		}
+ 		nilfs_release_super_block(nilfs);
+-		sb_set_blocksize(sb, blocksize);
++		if (!sb_set_blocksize(sb, blocksize)) {
++			nilfs_err(sb, "bad blocksize %d", blocksize);
++			err = -EINVAL;
++			goto out;
++		}
+ 
+ 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
+ 		if (err)
 
 
 
