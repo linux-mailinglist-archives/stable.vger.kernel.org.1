@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-6106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C51A80D8C7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D9580D792
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC1E5281D29
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09E921F21BDD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D85851C2A;
-	Mon, 11 Dec 2023 18:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C80253E1B;
+	Mon, 11 Dec 2023 18:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj+jiD8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqOyRu6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FDE55102A;
-	Mon, 11 Dec 2023 18:48:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A26BC433C7;
-	Mon, 11 Dec 2023 18:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87B9524B8;
+	Mon, 11 Dec 2023 18:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBCBC433C7;
+	Mon, 11 Dec 2023 18:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320529;
-	bh=d5cElWyXa1A/pHF7PhaBQfKwwX1RJXeFLM87SWqfcLA=;
+	s=korg; t=1702319881;
+	bh=acGawn4Mg7rBtqN6aWiMeNXQrZ6GReNvsjlWFXSyiSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mj+jiD8e3vGOLe5mDyDBw9QthxH7t2dEIrJs6itpNRQyHSXf9RDAq3+3VdRxj9cD5
-	 sVVo/4H1WZqr3E/RSDFlb2UWOXNEYJbPaWTuKYe799pVHeZoLOpp+k46X8OUYA/uyZ
-	 cPUDf1Uk8BK7Y1CotJSpzOH6j4n1WamkxbTThB2c=
+	b=CqOyRu6tuvWzu7mDnX+EONmVXHduG8NNxLZs28PiDDuIHns6lHHCyhTlYE7eyuOEG
+	 WQ409XinjiHdAM0RO608Voj/OX3hTFib4b0m8S73SZn72BgtxBImRy8SpYgz7cXs9z
+	 czFBhRizTwXm5dTGIZzDcgmA8zz9soBalSJt9xrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/194] riscv: fix misaligned access handling of C.SWSP and C.SDSP
+Subject: [PATCH 5.10 22/97] octeontx2-pf: Add missing mutex lock in otx2_get_pauseparam
 Date: Mon, 11 Dec 2023 19:21:25 +0100
-Message-ID: <20231211182040.696832204@linuxfoundation.org>
+Message-ID: <20231211182020.722637816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +52,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 22e0eb04837a63af111fae35a92f7577676b9bc8 ]
+[ Upstream commit 9572c949385aa2ef10368287c439bcb7935137c8 ]
 
-This is a backport of a fix that was done in OpenSBI: ec0559eb315b
-("lib: sbi_misaligned_ldst: Fix handling of C.SWSP and C.SDSP").
+All the mailbox messages sent to AF needs to be guarded
+by mutex lock. Add the missing lock in otx2_get_pauseparam
+function.
 
-Unlike C.LWSP/C.LDSP, these encodings can be used with the zero
-register, so checking that the rs2 field is non-zero is unnecessary.
-
-Additionally, the previous check was incorrect since it was checking
-the immediate field of the instruction instead of the rs2 field.
-
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Link: https://lore.kernel.org/r/20231103090223.702340-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 378f5b1514435..5348d842c7453 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -342,16 +342,14 @@ int handle_misaligned_store(struct pt_regs *regs)
- 	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
- 		len = 8;
- 		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP) {
- 		len = 8;
- 		val.data_ulong = GET_RS2C(insn, regs);
- #endif
- 	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
- 		len = 4;
- 		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP) {
- 		len = 4;
- 		val.data_ulong = GET_RS2C(insn, regs);
- 	} else {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index c6d408de06050..fc4ca8246df24 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -254,9 +254,12 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (is_otx2_lbkvf(pfvf->pdev))
+ 		return;
+ 
++	mutex_lock(&pfvf->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_cgx_cfg_pause_frm(&pfvf->mbox);
+-	if (!req)
++	if (!req) {
++		mutex_unlock(&pfvf->mbox.lock);
+ 		return;
++	}
+ 
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+@@ -264,6 +267,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
+ 	}
++	mutex_unlock(&pfvf->mbox.lock);
+ }
+ 
+ static int otx2_set_pauseparam(struct net_device *netdev,
 -- 
 2.42.0
 
