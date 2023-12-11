@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E6680D885
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C6080D612
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7E21F218EA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C951F21A98
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C119E5103A;
-	Mon, 11 Dec 2023 18:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488AA5102F;
+	Mon, 11 Dec 2023 18:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJMM+CE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMPAkOKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C71C8C8;
-	Mon, 11 Dec 2023 18:46:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAD2C433C7;
-	Mon, 11 Dec 2023 18:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094771D696;
+	Mon, 11 Dec 2023 18:31:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32969C433C7;
+	Mon, 11 Dec 2023 18:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320392;
-	bh=gTvSsQnLF3WUdOGZytcXsOKFCFyuI4Our9Nt/meLQqw=;
+	s=korg; t=1702319463;
+	bh=j4sCLRIBk+F0+LQqGtsnw6W5j9aOLehuA5QHwcsC338=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJMM+CE/HRdh9v5z4osj+IzGTS2FuMhHb32gBKzJ56kvjcRd6vMsYTAJzB2KtSCCO
-	 6Lt6tLwIM3QIJ8FggFHYx/hG0kLxr+MJ/tc4DkUznjPQmlf++HJQd/TAmrZA/4uIIa
-	 NUMSBz/Q5VmMwUV/kpinhqHinK+JPP/uKJLt0f78=
+	b=uMPAkOKGsgwC3b6J++NgqWbTE8VvndXLpEcwmRnXPmCBA8uWhx/ZloWgmVMxX4nRr
+	 fNqRS65JcLZolyA49zMr1GxIDrOdG1V6n+826xmpAMPOmfoWOxuyxe00fozotDqI3M
+	 lQGCo2Y3DWoWbPWFrCZivn5UnHq/kb+lIDbHhtLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <linux@rempel-privat.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/194] platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code
-Date: Mon, 11 Dec 2023 19:20:07 +0100
-Message-ID: <20231211182037.375773951@linuxfoundation.org>
+Subject: [PATCH 6.6 115/244] io_uring/kbuf: Fix an NULL vs IS_ERR() bug in io_alloc_pbuf_ring()
+Date: Mon, 11 Dec 2023 19:20:08 +0100
+Message-ID: <20231211182050.968292262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,112 +51,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b52cbca22cbf6c9d2700c1e576d0ddcc670e49d5 ]
+[ Upstream commit e53f7b54b1fdecae897f25002ff0cff04faab228 ]
 
-asus-nb-wmi calls i8042_install_filter() in some cases, but it never
-calls i8042_remove_filter(). This means that a dangling pointer to
-the filter function is left after rmmod leading to crashes.
+The io_mem_alloc() function returns error pointers, not NULL.  Update
+the check accordingly.
 
-Fix this by moving the i8042-filter installation to the shared
-asus-wmi code and also remove it from the shared code on driver unbind.
-
-Fixes: b5643539b825 ("platform/x86: asus-wmi: Filter buggy scan codes on ASUS Q500A")
-Cc: Oleksij Rempel <linux@rempel-privat.de>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231120154235.610808-2-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: b10b73c102a2 ("io_uring/kbuf: recycle freed mapped buffer ring entries")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/5ed268d3-a997-4f64-bd71-47faa92101ab@moroto.mountain
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/Kconfig       |  2 +-
- drivers/platform/x86/asus-nb-wmi.c | 11 -----------
- drivers/platform/x86/asus-wmi.c    |  8 ++++++++
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ io_uring/kbuf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/Kconfig b/drivers/platform/x86/Kconfig
-index 1396a839dd8a4..d5acef3202dad 100644
---- a/drivers/platform/x86/Kconfig
-+++ b/drivers/platform/x86/Kconfig
-@@ -271,6 +271,7 @@ config ASUS_WMI
- 	depends on RFKILL || RFKILL = n
- 	depends on HOTPLUG_PCI
- 	depends on ACPI_VIDEO || ACPI_VIDEO = n
-+	depends on SERIO_I8042 || SERIO_I8042 = n
- 	select INPUT_SPARSEKMAP
- 	select LEDS_CLASS
- 	select NEW_LEDS
-@@ -287,7 +288,6 @@ config ASUS_WMI
- config ASUS_NB_WMI
- 	tristate "Asus Notebook WMI Driver"
- 	depends on ASUS_WMI
--	depends on SERIO_I8042 || SERIO_I8042 = n
- 	help
- 	  This is a driver for newer Asus notebooks. It adds extra features
- 	  like wireless radio and bluetooth control, leds, hotkeys, backlight...
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index df1db54d4e183..af3da303e2b15 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -501,8 +501,6 @@ static const struct dmi_system_id asus_quirks[] = {
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 012f622036049..12eec4778c5b1 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -623,8 +623,8 @@ static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
+ 	ibf = io_lookup_buf_free_entry(ctx, ring_size);
+ 	if (!ibf) {
+ 		ptr = io_mem_alloc(ring_size);
+-		if (!ptr)
+-			return -ENOMEM;
++		if (IS_ERR(ptr))
++			return PTR_ERR(ptr);
  
- static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
- {
--	int ret;
--
- 	quirks = &quirk_asus_unknown;
- 	dmi_check_system(asus_quirks);
- 
-@@ -517,15 +515,6 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
- 
- 	if (tablet_mode_sw != -1)
- 		quirks->tablet_switch_mode = tablet_mode_sw;
--
--	if (quirks->i8042_filter) {
--		ret = i8042_install_filter(quirks->i8042_filter);
--		if (ret) {
--			pr_warn("Unable to install key filter\n");
--			return;
--		}
--		pr_info("Using i8042 filter function for receiving events\n");
--	}
- }
- 
- static const struct key_entry asus_nb_wmi_keymap[] = {
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 49dd55b8e8faf..296150eaef929 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -3839,6 +3839,12 @@ static int asus_wmi_add(struct platform_device *pdev)
- 		goto fail_wmi_handler;
- 	}
- 
-+	if (asus->driver->quirks->i8042_filter) {
-+		err = i8042_install_filter(asus->driver->quirks->i8042_filter);
-+		if (err)
-+			pr_warn("Unable to install key filter - %d\n", err);
-+	}
-+
- 	asus_wmi_battery_init(asus);
- 
- 	asus_wmi_debugfs_init(asus);
-@@ -3873,6 +3879,8 @@ static int asus_wmi_remove(struct platform_device *device)
- 	struct asus_wmi *asus;
- 
- 	asus = platform_get_drvdata(device);
-+	if (asus->driver->quirks->i8042_filter)
-+		i8042_remove_filter(asus->driver->quirks->i8042_filter);
- 	wmi_remove_notify_handler(asus->driver->event_guid);
- 	asus_wmi_backlight_exit(asus);
- 	asus_wmi_input_exit(asus);
+ 		/* Allocate and store deferred free entry */
+ 		ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
 -- 
 2.42.0
 
