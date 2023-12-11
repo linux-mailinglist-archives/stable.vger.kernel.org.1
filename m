@@ -1,50 +1,55 @@
-Return-Path: <stable+bounces-5939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B8480D7F1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB13080D769
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26391C212A0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9A8A1C213CC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3896524BA;
-	Mon, 11 Dec 2023 18:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3131524D0;
+	Mon, 11 Dec 2023 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deruj+OW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hCcFHG+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B53FBE1;
-	Mon, 11 Dec 2023 18:41:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06727C433C7;
-	Mon, 11 Dec 2023 18:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A07FBE1;
+	Mon, 11 Dec 2023 18:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2457C433C8;
+	Mon, 11 Dec 2023 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320074;
-	bh=jnsUAuPr/EUgf04L19JUFtOz4VpRm0uSp/v7Bi4rLZE=;
+	s=korg; t=1702319793;
+	bh=3Q1qSJG6tZO+o5B7q46I66UC6RXGudBbUOy4o4pQWFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=deruj+OW85EkulAwYRECjHaGzEsItHj7T4cn62VuUIxjI5vftRSlmosMfeodsztLC
-	 gEV6L5G+7+wWCCVcMe+xOD14lstdnN9M5PH34HXJLPROTI7MH/cF55UhzJibIPpuqd
-	 4AbmyA9fhf9AGALeVaUIilT1P4OEABhb/drq6p4M=
+	b=hCcFHG+fydbaUKBtf1/mYnizwyf0hgC2actoM5U/OCbla5sLkus67+H4t62tWzA9i
+	 9Gpxe8TwNzQl++Ep+vUwva8nmS+1jQpIq4CfNDZ6S1wUTdIEVcEH5iKjPQctvrM8o/
+	 wSBg0WDer7/VhwUoyZ4l6QU82sCp8wyMy4HPg8fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 64/97] tracing: Stop current tracer when resizing buffer
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	John Garry <john.g.garry@oracle.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Subject: [PATCH 6.6 234/244] perf metrics: Avoid segv if default metricgroup isnt set
 Date: Mon, 11 Dec 2023 19:22:07 +0100
-Message-ID: <20231211182022.501116437@linuxfoundation.org>
+Message-ID: <20231211182056.532304701@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,77 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit d78ab792705c7be1b91243b2544d1a79406a2ad7 ]
+commit e2b005d6ec0e738df584190e21d2c7ada37266a0 upstream.
 
-When the ring buffer is being resized, it can cause side effects to the
-running tracer. For instance, there's a race with irqsoff tracer that
-swaps individual per cpu buffers between the main buffer and the snapshot
-buffer. The resize operation modifies the main buffer and then the
-snapshot buffer. If a swap happens in between those two operations it will
-break the tracer.
+A metric is default by having "Default" within its groups. The default
+metricgroup name needn't be set and this can result in segv in
+default_metricgroup_cmp and perf_stat__print_shadow_stats_metricgroup
+that assume it has a value when there is a Default metric group. To
+avoid the segv initialize the value to "".
 
-Simply stop the running tracer before resizing the buffers and enable it
-again when finished.
-
-Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
-
+Fixes: 1c0e47956a8e ("perf metrics: Sort the Default metricgroup")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-and-tested-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: John Garry <john.g.garry@oracle.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Link: https://lore.kernel.org/r/20231204182330.654255-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/perf/util/metricgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 2c9769e1f7652..4e0411b19ef96 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5905,9 +5905,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 	if (!tr->array_buffer.buffer)
- 		return 0;
+diff --git a/tools/perf/util/metricgroup.c b/tools/perf/util/metricgroup.c
+index 0484736d9fe4..ca3e0404f187 100644
+--- a/tools/perf/util/metricgroup.c
++++ b/tools/perf/util/metricgroup.c
+@@ -225,7 +225,7 @@ static struct metric *metric__new(const struct pmu_metric *pm,
  
-+	/* Do not allow tracing while resizng ring buffer */
-+	tracing_stop_tr(tr);
-+
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
- 	if (ret < 0)
--		return ret;
-+		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	if (!tr->current_trace->use_max_tr)
-@@ -5935,7 +5938,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 			WARN_ON(1);
- 			tracing_disabled = 1;
- 		}
--		return ret;
-+		goto out_start;
- 	}
- 
- 	update_buffer_entries(&tr->max_buffer, cpu);
-@@ -5944,7 +5947,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
- 	update_buffer_entries(&tr->array_buffer, cpu);
--
-+ out_start:
-+	tracing_start_tr(tr);
- 	return ret;
- }
- 
+ 	m->pmu = pm->pmu ?: "cpu";
+ 	m->metric_name = pm->metric_name;
+-	m->default_metricgroup_name = pm->default_metricgroup_name;
++	m->default_metricgroup_name = pm->default_metricgroup_name ?: "";
+ 	m->modifier = NULL;
+ 	if (modifier) {
+ 		m->modifier = strdup(modifier);
 -- 
-2.42.0
+2.43.0
 
 
 
