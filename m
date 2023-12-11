@@ -1,139 +1,239 @@
-Return-Path: <stable+bounces-5231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D46E80BF7C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 03:55:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9C880BF83
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 04:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67ED61C20904
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 02:55:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D021C2085C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 03:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0FF154A7;
-	Mon, 11 Dec 2023 02:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84C815AC7;
+	Mon, 11 Dec 2023 03:02:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIZxHfi6"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hRRQjfzV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACE76135
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 02:55:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24736C433C7;
-	Mon, 11 Dec 2023 02:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702263338;
-	bh=C2aPfMyVyAzp1i0rvsdsCFSs578pSI82EdoRg50S6WY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIZxHfi6OjLgIO/07IWcgJsL17xUvwdTl+//ZZEZGWIqKsRza1370Nfptyiu7manQ
-	 nnzAU5YLD6nebCfaLuI6Wm6lvO/V6FGWGqxnElhkNmuaYzzevH/GmJe2Fv1Hf1Knds
-	 47nXg3g7SzAMhAdNMIWWO0gXsYpwZkzOZ+iFVR9sqaIIZmz8RgQzCCgEmHODfV5z05
-	 eNmfIaDyG3vYdo5mYyRjbarZJnCirke1K1ooYKd6wueqYOif2JWor8LtT/RzzkKbQj
-	 AFsM4+JAgc0zEN2cURj4ckBgAIXdrNVq77FDkg8eaIzuzbEJ+EX2Aqa3S3XkNQNciE
-	 cJnhoDsCcjhZw==
-From: mhiramat@kernel.org
-To: stable@vger.kernel.org
-Cc: JP Kobryn <inwardvessel@gmail.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH 6.6.y v2] kprobes: consistent rcu api usage for kretprobe holder
-Date: Mon, 11 Dec 2023 11:55:26 +0900
-Message-Id: <20231211025526.31294-1-mhiramat@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023120316-seduce-vehicular-9e78@gregkh>
-References: <2023120316-seduce-vehicular-9e78@gregkh>
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E83CE
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 19:02:34 -0800 (PST)
+Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3ba04b9b103so745472b6e.0
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 19:02:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702263753; x=1702868553; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xtrWps6EyGoZs6MI0cpPB/M/h/8Q2PQH7M2YwHR/gZg=;
+        b=hRRQjfzVLpdlaDyTaO3D3GRbyu6ocWmjPfiAqHpxTN/KqLC4xSGh99/yp5zZDWaTl/
+         /BK3dclkTIbV9cBXuFJ/TJQ+GYQGR6HCX/Bo9WqwVnfSRit+X/O90DdgAE05xee9Iz6S
+         RnA2EjRaVXZ3SqWzs+POA3sK+ngMoLONrHIu2ihydoMuRKM/RYEVDg5wkQV+2KpaFi/X
+         GjtTdChFEaAXySEzoN4Dc4ERpOVKNuTRYkQT9QHJ4oNbcBEqUAe8AX1lrUc00P7DDeMI
+         WgCMpuKBus3UTqYeEG+PXP83+C/8PJ9E+V98tHfftHnskgNyGEKY0IwDWjpDoyCGqEUw
+         WJxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702263753; x=1702868553;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xtrWps6EyGoZs6MI0cpPB/M/h/8Q2PQH7M2YwHR/gZg=;
+        b=GV4rZjvQCvf9NHnWS/7ZxJh0yQS9gqwRFU5/1Kb47Jh83L5zkNMIuCXpcAV8GkKu0p
+         VyaVEaNFfK6Z0E6LPh3PrqT022NwxApZmnt4AGi+f4xqKMEjSIJcPtS6A30M2uz3AzS9
+         ziIJRIf/9yXkLZhoPwDy26NaLvPRjORhZ1hFGwL925nsHEo4M/Egv72aXxuCO7ulhpcq
+         AVQXKgG05aUNB5b0BZSu8nar8uujAgQUjD+IZJJoANeS+mvncbU4x62YRzMvrtJrY5KS
+         g6rr1nzOG0zsE/iVBvm1QjR19RqBKSG7L7Tytcfv9rUFsNlhVcPi9/WQ/4CyYcdnWeok
+         GbFA==
+X-Gm-Message-State: AOJu0YwRmdwj0z3uUYI5Ua+A7UA0bM7K6/3ZOiWNb0c/7ntGCgNs+ooB
+	1NQ7LVY/qDL4WnzorsFQM4BFJnT/UbB1fB9EZ46Rsg==
+X-Google-Smtp-Source: AGHT+IGOGgHXHpvKerdor9Z+oGxBYy2Fcu1lewtv37KlPIY3v5EKmQVuADxvvl1mEu+1ZjWUUnZLcQ==
+X-Received: by 2002:a05:6808:6541:b0:3ba:e7c:7b90 with SMTP id fn1-20020a056808654100b003ba0e7c7b90mr697914oib.63.1702263752765;
+        Sun, 10 Dec 2023 19:02:32 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id b17-20020a056a000cd100b0068ffb8da107sm5079370pfv.212.2023.12.10.19.02.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Dec 2023 19:02:32 -0800 (PST)
+Message-ID: <65767bc8.050a0220.4e6c7.dee5@mx.google.com>
+Date: Sun, 10 Dec 2023 19:02:32 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.15
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.142-111-gec7ac8d402eb1
+Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.142-111-gec7ac8d402eb1)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-From: JP Kobryn <inwardvessel@gmail.com>
+stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
+15.142-111-gec7ac8d402eb1)
 
-It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
-RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
-The thought behind this patch is to make use of the RCU API where possible
-when accessing this pointer so that the needed barriers are always in place
-and to self-document the code.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.142-111-gec7ac8d402eb1/
 
-The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
-done to the "rp" pointer are changed to make use of the RCU macro for
-assignment. For the single read, the implementation of get_kretprobe()
-is simplified by making use of an RCU macro which accomplishes the same,
-but note that the log warning text will be more generic.
+Tree: stable-rc
+Branch: queue/5.15
+Git Describe: v5.15.142-111-gec7ac8d402eb1
+Git Commit: ec7ac8d402eb18ec99f59a94dba42ddaed0782e9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-I did find that there is a difference in assembly generated between the
-usage of the RCU macros vs without. For example, on arm64, when using
-rcu_assign_pointer(), the corresponding store instruction is a
-store-release (STLR) which has an implicit barrier. When normal assignment
-is done, a regular store (STR) is found. In the macro case, this seems to
-be a result of rcu_assign_pointer() using smp_store_release() when the
-value to write is not NULL.
+Warnings Detected:
 
-Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
+arc:
 
-Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
-Cc: stable@vger.kernel.org
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-(cherry picked from commit d839a656d0f3caca9f96e9bf912fd394ac6a11bc)
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
 ---
- include/linux/kprobes.h | 7 ++-----
- kernel/kprobes.c        | 4 ++--
- 2 files changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 85a64cb95d75..0fce4951a554 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -140,7 +140,7 @@ static inline bool kprobe_ftrace(struct kprobe *p)
-  *
-  */
- struct kretprobe_holder {
--	struct kretprobe	*rp;
-+	struct kretprobe __rcu *rp;
- 	refcount_t		ref;
- };
- 
-@@ -250,10 +250,7 @@ unsigned long kretprobe_trampoline_handler(struct pt_regs *regs,
- 
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return READ_ONCE(ri->rph->rp);
-+	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
- }
- 
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 0c6185aefaef..b486504766fb 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2253,7 +2253,7 @@ int register_kretprobe(struct kretprobe *rp)
- 	if (!rp->rph)
- 		return -ENOMEM;
- 
--	rp->rph->rp = rp;
-+	rcu_assign_pointer(rp->rph->rp, rp);
- 	for (i = 0; i < rp->maxactive; i++) {
- 		inst = kzalloc(struct_size(inst, data, rp->data_size), GFP_KERNEL);
- 		if (inst == NULL) {
-@@ -2313,7 +2313,7 @@ void unregister_kretprobes(struct kretprobe **rps, int num)
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- 		rethook_free(rps[i]->rh);
- #else
--		rps[i]->rph->rp = NULL;
-+		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- #endif
- 	}
- 	mutex_unlock(&kprobe_mutex);
--- 
-2.34.1
-
+For more info write to <info@kernelci.org>
 
