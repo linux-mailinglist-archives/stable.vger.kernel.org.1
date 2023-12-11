@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-6063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B0C80D88E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC08980D618
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468AE1F21493
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76FCF281A3D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED3F51C2D;
-	Mon, 11 Dec 2023 18:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEFB4174A;
+	Mon, 11 Dec 2023 18:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1b6D/3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ilG1Dy2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28883C8C8;
-	Mon, 11 Dec 2023 18:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49DDC433C7;
-	Mon, 11 Dec 2023 18:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3756FBE1;
+	Mon, 11 Dec 2023 18:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF9CC433C8;
+	Mon, 11 Dec 2023 18:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320412;
-	bh=gjQ9SRA/BJOS0dw+B7og3FsNoscXrY9/B4kRHdgMw40=;
+	s=korg; t=1702319476;
+	bh=QfOy2hEJW37/GccZgSR9EeLKhetkFn9UDRzXhZx+Uoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1b6D/3jX3E8NtunjoFvQ7rcSpd3MWDKZsp9G0bewn6pUEyjZO8dbasxhf0NjRL10
-	 p6Qa0GG//ZSFZMlJft+PjvgSsWeFLH1mcs88H0/4qsQXwDOz3WXla7Bl9VSZqdfKT2
-	 yzKfDTf+cxXl+znn3C+TcPs7Zw+A+0tHkJMrEps8=
+	b=0ilG1Dy2tegTe4ROQ1bt/EFY/+8CAEmIGTFpmG4TwTmNVRA7cA3mkRTx/TvSCYPjN
+	 DN7cI0zOZbls5E033lv9GU77Wsz79GWHpC2zKDb5rBDf37OK5rfFdFrryA9yEBFym9
+	 qlBF0bFM0zv9bljL5a/Zx4P7p0slTF+zr9QHa1lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/194] hv_netvsc: rndis_filter needs to select NLS
+Subject: [PATCH 6.6 120/244] arm64: dts: freescale: imx8-ss-lsio: Fix #pwm-cells
 Date: Mon, 11 Dec 2023 19:20:13 +0100
-Message-ID: <20231211182037.625917691@linuxfoundation.org>
+Message-ID: <20231211182051.191871443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,48 +52,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
+[ Upstream commit d863a2f4f47560d71447650822857fc3d2aea715 ]
 
-rndis_filter uses utf8s_to_utf16s() which is provided by setting
-NLS, so select NLS to fix the build error:
+i.MX8QM/QXP supports inverted PWM output, thus #pwm-cells needs to be set
+to 3.
 
-ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
-
-Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 23fa99b205ea ("arm64: dts: freescale: imx8-ss-lsio: add support for lsio_pwm0-3")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
-index ca7bf7f897d36..c8cbd85adcf99 100644
---- a/drivers/net/hyperv/Kconfig
-+++ b/drivers/net/hyperv/Kconfig
-@@ -3,5 +3,6 @@ config HYPERV_NET
- 	tristate "Microsoft Hyper-V virtual network driver"
- 	depends on HYPERV
- 	select UCS2_STRING
-+	select NLS
- 	help
- 	  Select this option to enable the Hyper-V virtual network driver.
+diff --git a/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi b/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
+index 7b8bbf5e6a867..133f2b1ce1d2e 100644
+--- a/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8-ss-lsio.dtsi
+@@ -36,7 +36,7 @@ lsio_subsys: bus@5d000000 {
+ 			 <&pwm0_lpcg 1>;
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_0 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+-		#pwm-cells = <2>;
++		#pwm-cells = <3>;
+ 		interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
+@@ -49,7 +49,7 @@ lsio_subsys: bus@5d000000 {
+ 			 <&pwm1_lpcg 1>;
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_1 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+-		#pwm-cells = <2>;
++		#pwm-cells = <3>;
+ 		interrupts = <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
+@@ -62,7 +62,7 @@ lsio_subsys: bus@5d000000 {
+ 			 <&pwm2_lpcg 1>;
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_2 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+-		#pwm-cells = <2>;
++		#pwm-cells = <3>;
+ 		interrupts = <GIC_SPI 96 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
+@@ -75,7 +75,7 @@ lsio_subsys: bus@5d000000 {
+ 			 <&pwm3_lpcg 1>;
+ 		assigned-clocks = <&clk IMX_SC_R_PWM_3 IMX_SC_PM_CLK_PER>;
+ 		assigned-clock-rates = <24000000>;
+-		#pwm-cells = <2>;
++		#pwm-cells = <3>;
+ 		interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>;
+ 		status = "disabled";
+ 	};
 -- 
 2.42.0
 
