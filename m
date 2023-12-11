@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-6259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B9B980D9A6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E454080D7B2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A9CF1F21B5A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 989EC1F21BE7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02B751C59;
-	Mon, 11 Dec 2023 18:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3BE524AE;
+	Mon, 11 Dec 2023 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae2+nYeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfTL4woK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA1A321B8;
-	Mon, 11 Dec 2023 18:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD07C433C8;
-	Mon, 11 Dec 2023 18:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A730E20DDE;
+	Mon, 11 Dec 2023 18:39:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28AB0C433C7;
+	Mon, 11 Dec 2023 18:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320943;
-	bh=atb5uj0vTYDtG9SbNj1KNXu75px5xP3uUEaBcq7m/hw=;
+	s=korg; t=1702319954;
+	bh=Bgzc6KsMaJ/XdabxSPW/bwSxd2JkK+rBhojPZxJSAKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ae2+nYeBTjyCSj/4hnHcDQoFRLjDCMWaxzkl/RBpoVgKcBczo4viFqpVXqP3a5trT
-	 7HG4a4N6oNK3TrPPFSGOaTLcZ/48Hmra9HyN2hYor/Cfr4I3bjoQz+TVLqIQT1JEbE
-	 VVS5MoaF3S+w65vBJlb0rk749hmgSi7H9FGbQ1mg=
+	b=yfTL4woKuuEOxvdqncEmIcn8XZjpvrUPf4yJrgGACO7C4rgODbe+RCK1BoiUFxIO7
+	 0snMSbqEFP2acCt4vo9O1cpGVF/McaFkx3F07AY9Pr1CWGPeR1FslngHm2QNY7/niR
+	 aJvvpy6tmWDuQ1Nt+jXk+3HOTZmWqbYQ8FInTpOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/141] RDMA/rtrs-srv: Do not unconditionally enable irq
-Date: Mon, 11 Dec 2023 19:21:51 +0100
-Message-ID: <20231211182028.789485845@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 49/97] nilfs2: fix missing error check for sb_set_blocksize call
+Date: Mon, 11 Dec 2023 19:21:52 +0100
+Message-ID: <20231211182021.830432175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,59 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 3ee7ecd712048ade6482bea4b2f3dcaf039c0348 ]
+commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
 
-When IO is completed, rtrs can be called in softirq context,
-unconditionally enabling irq could cause panic.
+When mounting a filesystem image with a block size larger than the page
+size, nilfs2 repeatedly outputs long error messages with stack traces to
+the kernel log, such as the following:
 
-To be on safe side, use spin_lock_irqsave and spin_unlock_irqrestore
-instread.
+ getblk(): invalid block size 8192 requested
+ logical block size: 512
+ ...
+ Call Trace:
+  dump_stack_lvl+0x92/0xd4
+  dump_stack+0xd/0x10
+  bdev_getblk+0x33a/0x354
+  __breadahead+0x11/0x80
+  nilfs_search_super_root+0xe2/0x704 [nilfs2]
+  load_nilfs+0x72/0x504 [nilfs2]
+  nilfs_mount+0x30f/0x518 [nilfs2]
+  legacy_get_tree+0x1b/0x40
+  vfs_get_tree+0x18/0xc4
+  path_mount+0x786/0xa88
+  __ia32_sys_mount+0x147/0x1a8
+  __do_fast_syscall_32+0x56/0xc8
+  do_fast_syscall_32+0x29/0x58
+  do_SYSENTER_32+0x15/0x18
+  entry_SYSENTER_32+0x98/0xf1
+ ...
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Florian-Ewald Mueller <florian-ewald.mueller@ionos.com>
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-2-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This overloads the system logger.  And to make matters worse, it sometimes
+crashes the kernel with a memory access violation.
+
+This is because the return value of the sb_set_blocksize() call, which
+should be checked for errors, is not checked.
+
+The latter issue is due to out-of-buffer memory being accessed based on a
+large block size that caused sb_set_blocksize() to fail for buffers read
+with the initial minimum block size that remained unupdated in the
+super_block structure.
+
+Since nilfs2 mkfs tool does not accept block sizes larger than the system
+page size, this has been overlooked.  However, it is possible to create
+this situation by intentionally modifying the tool or by passing a
+filesystem image created on a system with a large page size to a system
+with a smaller page size and mounting it.
+
+Fix this issue by inserting the expected error handling for the call to
+sb_set_blocksize().
+
+Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/nilfs2/the_nilfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 733116554e0bc..9f7f694036f72 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -72,8 +72,9 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
- {
- 	enum rtrs_srv_state old_state;
- 	bool changed = false;
-+	unsigned long flags;
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -717,7 +717,11 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 			goto failed_sbh;
+ 		}
+ 		nilfs_release_super_block(nilfs);
+-		sb_set_blocksize(sb, blocksize);
++		if (!sb_set_blocksize(sb, blocksize)) {
++			nilfs_err(sb, "bad blocksize %d", blocksize);
++			err = -EINVAL;
++			goto out;
++		}
  
--	spin_lock_irq(&srv_path->state_lock);
-+	spin_lock_irqsave(&srv_path->state_lock, flags);
- 	old_state = srv_path->state;
- 	switch (new_state) {
- 	case RTRS_SRV_CONNECTED:
-@@ -94,7 +95,7 @@ static bool rtrs_srv_change_state(struct rtrs_srv_path *srv_path,
- 	}
- 	if (changed)
- 		srv_path->state = new_state;
--	spin_unlock_irq(&srv_path->state_lock);
-+	spin_unlock_irqrestore(&srv_path->state_lock, flags);
- 
- 	return changed;
- }
--- 
-2.42.0
-
+ 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
+ 		if (err)
 
 
 
