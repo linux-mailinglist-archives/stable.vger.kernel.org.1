@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-5434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2D780CC3D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:59:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85DA880CC3E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:59:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87664280D7A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6D751C21127
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D1847A76;
-	Mon, 11 Dec 2023 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904DC47A7B;
+	Mon, 11 Dec 2023 13:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEjzYADx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FxVR/uId"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04AE6358A9;
-	Mon, 11 Dec 2023 13:59:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CFDC433C7;
-	Mon, 11 Dec 2023 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50387358A9;
+	Mon, 11 Dec 2023 13:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7149C433C8;
+	Mon, 11 Dec 2023 13:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702303166;
-	bh=qevDLRP32SAMdYjSN/Ie2iVDY7FiTH9LcdyLcgeiTDA=;
+	s=k20201202; t=1702303173;
+	bh=H98tvhOx/bU4tKs3xaR56fCqzCINz8rPG31ud7K4XQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mEjzYADxbsLAQo99lGtKicN+gxsaT8HW04Uxj+gS27Jij9fvf7g1aU4e3tZALT5EH
-	 9AMhPtTwIrnE7uc2GgvFPvBJTcaqPiGkcjaF+vkldn4ln1WR5X68MrHSU36VEvPwOu
-	 ihQWLIhYGtYraHdlEZCw52fz38iJwdeHcvC8JIE9lHV4vPXTW7DUdp5ybq19d5EYdu
-	 z3aTKywaroYVtDYHSm3K/26xWtsdl11Lbke/N5zgMBle/eibv7HQNnYGKGyEr8HtwQ
-	 L1RpYvo187Ehe05V1tyzid/HvF2uay9KnwqoWHSlJov/flkV+N1VOUhE/y5OCx/eyY
-	 tNu+n6qetjldA==
+	b=FxVR/uId5BwtXEtQajNdOOiKGpmhgHsOXQ2DYydVPRHksEE/GxJycwkZfPARuOT78
+	 ab5UPyAQEyJ7k3zrW7v8CGGLbTWqSA4x8Tbgz9C9U+9hHG5ySn4Pb1OL84/o45q3x8
+	 C3aSfXrSVjX8J1VIvB4OL4YttvwWEHVbuYU243m//eEBGsGGakXF5nGuvZ+7g2sVxN
+	 iGuN1Q1mV+3AHsFob8Uofg+hmVnyaWzCl1kmYxGGY5QWOPJdYh1wD1F7Mo1+WfZhhA
+	 X3y0bVPBf+B9I/PNCGYEHIuKA7EAX15Hl8irJsYlfMkLIJJtVpbbEOIO2oMmtgWGtH
+	 FN1LnKcmp6mNw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+Cc: David Lin <CTLIN0@nuvoton.com>,
+	kernel test robot <lkp@intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	pierre-louis.bossart@linux.intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
+	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	kuninori.morimoto.gx@renesas.com,
-	zhangyiqun@phytium.com.cn,
-	suhui@nfschina.com,
-	alsa-devel@alsa-project.org,
+	emanuele.ghidoli@toradex.com,
+	francesco.dolcini@toradex.com,
+	u.kleine-koenig@pengutronix.de,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 02/19] ASoC: Intel: Skylake: Fix mem leak in few functions
-Date: Mon, 11 Dec 2023 08:57:36 -0500
-Message-ID: <20231211135908.385694-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 03/19] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
+Date: Mon, 11 Dec 2023 08:57:37 -0500
+Message-ID: <20231211135908.385694-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231211135908.385694-1-sashal@kernel.org>
 References: <20231211135908.385694-1-sashal@kernel.org>
@@ -65,60 +58,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.142
 Content-Transfer-Encoding: 8bit
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: David Lin <CTLIN0@nuvoton.com>
 
-[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
+[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
 
-The resources should be freed when function return error.
+This issue is reproduced when W=1 build in compiler gcc-12.
+The following are sparse warnings:
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
+sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
+sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
+sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
+Signed-off-by: David Lin <CTLIN0@nuvoton.com>
+Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
- sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ sound/soc/codecs/nau8822.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index db41bd7170650..0d08b0269a662 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -251,8 +251,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
- 	snd_pcm_set_sync(substream);
+diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
+index b436e532993d1..6ffd0f5e3a609 100644
+--- a/sound/soc/codecs/nau8822.c
++++ b/sound/soc/codecs/nau8822.c
+@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
+ 	int i, reg;
+ 	u16 reg_val, *val;
++	__be16 tmp;
  
- 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
--	if (!mconfig)
-+	if (!mconfig) {
-+		kfree(dma_params);
- 		return -EINVAL;
-+	}
+ 	val = (u16 *)ucontrol->value.bytes.data;
+ 	reg = NAU8822_REG_EQ1;
+@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		reg_val = cpu_to_be16(reg_val);
+-		memcpy(val + i, &reg_val, sizeof(reg_val));
++		tmp = cpu_to_be16(reg_val);
++		memcpy(val + i, &tmp, sizeof(tmp));
+ 	}
  
- 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
+ 	return 0;
+@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 	void *data;
+ 	u16 *val, value;
+ 	int i, reg, ret;
++	__be16 *tmp;
  
-diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
-index 7a425271b08b1..fd9624ad5f72b 100644
---- a/sound/soc/intel/skylake/skl-sst-ipc.c
-+++ b/sound/soc/intel/skylake/skl-sst-ipc.c
-@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
- 
- 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
- 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
--	if (!buf)
-+	if (!buf) {
-+		kfree(reply.data);
- 		return -ENOMEM;
-+	}
- 	*payload = buf;
- 	*bytes = reply.size;
- 
+ 	data = kmemdup(ucontrol->value.bytes.data,
+ 		params->max, GFP_KERNEL | GFP_DMA);
+@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		value = be16_to_cpu(*(val + i));
++		tmp = (__be16 *)(val + i);
++		value = be16_to_cpup(tmp);
+ 		ret = snd_soc_component_write(component, reg + i, value);
+ 		if (ret) {
+ 			dev_err(component->dev,
 -- 
 2.42.0
 
