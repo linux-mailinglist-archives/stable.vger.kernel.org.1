@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2383980D877
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC48E80D610
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0005281760
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A8C1C2159C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4C15103A;
-	Mon, 11 Dec 2023 18:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E1A20DDE;
+	Mon, 11 Dec 2023 18:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBhzjIOP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9YMXKfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC1F4437B;
-	Mon, 11 Dec 2023 18:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995F8C433C8;
-	Mon, 11 Dec 2023 18:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8BBEEB8;
+	Mon, 11 Dec 2023 18:31:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87373C433C8;
+	Mon, 11 Dec 2023 18:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320362;
-	bh=hi20+JEWc9ZDhVOgpNSHeuUop+7QkFPMRCkSInLBHwo=;
+	s=korg; t=1702319460;
+	bh=SqWo7Uap2ygveIExh+8xv+YP8J/atHs8EHoKVILrb6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HBhzjIOP5zOuUwt3Qmp8zYiM8j4+QWGRSoRP0ZeCi24MK0jeFWQ8s+XJ/25uSIOAD
-	 qteryltEkiyN0JlOcG9qGgYJs168CEulp4Dlx9DmJFsU6tXrLr7Cr+NzxfUnLBQR9+
-	 Kv6wevnl4dIp7FA1/KCnx0hpRxNHwJLrIlghWzJc=
+	b=d9YMXKfXChm0Tq3kbCdNdg7Lza3muWkT+dlPNqoIIOym927p6yivqkOSKhJK+G8By
+	 wV33WdKJuz2AQHslM3247yHLMPzKYHrngTn873h9umh1buWXZbyuqJqGpGX/L9BrHK
+	 hH/9QGqpIwpayncNuOSjOlZsodRX2MS9liv4oWPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Rob Herring <robh@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/194] dt: dt-extract-compatibles: Dont follow symlinks when walking tree
-Date: Mon, 11 Dec 2023 19:20:06 +0100
-Message-ID: <20231211182037.335081830@linuxfoundation.org>
+Subject: [PATCH 6.6 114/244] ARM: dts: imx6ul-pico: Describe the Ethernet PHY clock
+Date: Mon, 11 Dec 2023 19:20:07 +0100
+Message-ID: <20231211182050.916346526@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,77 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 8f51593cdcab82fb23ef2e1a0010b2e6f99aae02 ]
+[ Upstream commit d951f8f5f23a9417b7952f22b33784c73caa1ebb ]
 
-The iglob function, which we use to find C source files in the kernel
-tree, always follows symbolic links. This can cause unintentional
-recursions whenever a symbolic link points to a parent directory. A
-common scenario is building the kernel with the output set to a
-directory inside the kernel tree, which will contain such a symlink.
+Since commit c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK
+specific PHY fixup")thet Ethernet PHY is no longer configured via code
+in board file.
 
-Instead of using the iglob function, use os.walk to traverse the
-directory tree, which by default doesn't follow symbolic links. fnmatch
-is then used to match the glob on the filename, as well as ignore hidden
-files (which were ignored by default with iglob).
+This caused Ethernet to stop working.
 
-This approach runs just as fast as using iglob.
+Fix this problem by describing the clocks and clock-names to the
+Ethernet PHY node so that the KSZ8081 chip can be clocked correctly.
 
-Fixes: b6acf8073517 ("dt: Add a check for undocumented compatible strings in kernel")
-Reported-by: Aishwarya TCV <aishwarya.tcv@arm.com>
-Closes: https://lore.kernel.org/all/e90cb52f-d55b-d3ba-3933-6cc7b43fcfbc@arm.com
-Signed-off-by: "Nícolas F. R. A. Prado" <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20231107225624.9811-1-nfraprado@collabora.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Fixes: c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific PHY fixup")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/dtc/dt-extract-compatibles | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/scripts/dtc/dt-extract-compatibles b/scripts/dtc/dt-extract-compatibles
-index 05c47e3d8c00e..9686a1cf85498 100755
---- a/scripts/dtc/dt-extract-compatibles
-+++ b/scripts/dtc/dt-extract-compatibles
-@@ -1,8 +1,8 @@
- #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0-only
- 
-+import fnmatch
- import os
--import glob
- import re
- import argparse
- 
-@@ -49,10 +49,20 @@ def print_compat(filename, compatibles):
- 	else:
- 		print(*compatibles, sep='\n')
- 
-+def glob_without_symlinks(root, glob):
-+	for path, dirs, files in os.walk(root):
-+		# Ignore hidden directories
-+		for d in dirs:
-+			if fnmatch.fnmatch(d, ".*"):
-+				dirs.remove(d)
-+		for f in files:
-+			if fnmatch.fnmatch(f, glob):
-+				yield os.path.join(path, f)
-+
- def files_to_parse(path_args):
- 	for f in path_args:
- 		if os.path.isdir(f):
--			for filename in glob.iglob(f + "/**/*.c", recursive=True):
-+			for filename in glob_without_symlinks(f, "*.c"):
- 				yield filename
- 		else:
- 			yield f
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi
+index 4ffe99ed55ca2..07dcecbe485dc 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-pico.dtsi
+@@ -121,6 +121,8 @@
+ 			max-speed = <100>;
+ 			interrupt-parent = <&gpio5>;
+ 			interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++			clocks = <&clks IMX6UL_CLK_ENET_REF>;
++			clock-names = "rmii-ref";
+ 		};
+ 	};
+ };
 -- 
 2.42.0
 
