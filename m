@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0BD80D7A2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56ADA80D76C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE7D1C20B17
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11EE6281902
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 957FE5102A;
-	Mon, 11 Dec 2023 18:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E8C52F64;
+	Mon, 11 Dec 2023 18:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPt1lSeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmqUzyf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE9851C2B;
-	Mon, 11 Dec 2023 18:38:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9077C433C7;
-	Mon, 11 Dec 2023 18:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F58524CF;
+	Mon, 11 Dec 2023 18:36:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39758C433C8;
+	Mon, 11 Dec 2023 18:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319922;
-	bh=Vrd1wYGF3OnyJ4KONLwQUw7vPRZv8CSQ49y7gjBR4TI=;
+	s=korg; t=1702319801;
+	bh=A2F75RPdA263ci+medXTeV1/SuAGIgp56gh+DUNqzGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPt1lSeYDrrbvWhkw5KQB0h58x44BGhpAZdQMSEEK7iv3Utaao715c2VQapgOMWNM
-	 Tp3shmLQEXg2XoYK+DfWAfLKSPQ2rBmeyTbis3wJ4hcbl/3lVA6f3QZMnwr9H/Ft0e
-	 HUqB43nY+Sk3vb+w1Id27J527bqiLj38qS4nmk7U=
+	b=bmqUzyf2l/U6kvly9xlsb3wKfE4DrqfhNINgT06PG7pUxjXo+HKUfR4ZjzEm+KQ1G
+	 +Nuq3SU5JhOSZVi4YfPbAjXcmG04PACq5ZuOrHNz95xM9ThAfvYwWqdKPFFSXOG0SN
+	 c/YR2KMS4uaw/cn46+xiVNxAyV27FDqtZDlT0dBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 38/97] RDMA/rtrs-clt: Remove the warnings for req in_use check
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 208/244] ASoC: ops: add correct range check for limiting volume
 Date: Mon, 11 Dec 2023 19:21:41 +0100
-Message-ID: <20231211182021.371987607@linuxfoundation.org>
+Message-ID: <20231211182055.294227820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 0c8bb6eb70ca41031f663b4481aac9ac78b53bc6 ]
+commit fb9ad24485087e0f00d84bee7a5914640b2b9024 upstream.
 
-As we chain the WR during write request: memory registration,
-rdma write, local invalidate, if only the last WR fail to send due
-to send queue overrun, the server can send back the reply, while
-client mark the req->in_use to false in case of error in rtrs_clt_req
-when error out from rtrs_post_rdma_write_sg.
+Volume can have ranges that start with negative values, ex: -84dB to
++40dB. Apply correct range check in snd_soc_limit_volume before setting
+the platform_max. Without this patch, for example setting a 0dB limit on
+a volume range of -84dB to +40dB would fail.
 
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Reviewed-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-8-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231204124736.132185-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 2 +-
+ sound/soc/soc-ops.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 1a5805260778b..e8b2b58cc9bc6 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -387,7 +387,7 @@ static void complete_rdma_req(struct rtrs_clt_io_req *req, int errno,
- 	struct rtrs_clt_sess *sess;
- 	int err;
- 
--	if (WARN_ON(!req->in_use))
-+	if (!req->in_use)
- 		return;
- 	if (WARN_ON(!req->con))
- 		return;
--- 
-2.42.0
-
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -661,7 +661,7 @@ int snd_soc_limit_volume(struct snd_soc_
+ 	kctl = snd_soc_card_get_kcontrol(card, name);
+ 	if (kctl) {
+ 		struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+-		if (max <= mc->max) {
++		if (max <= mc->max - mc->min) {
+ 			mc->platform_max = max;
+ 			ret = 0;
+ 		}
 
 
 
