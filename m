@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241AD80D56C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A4780D8BC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55ADD1C214A7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33BF21C21634
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495015101E;
-	Mon, 11 Dec 2023 18:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709ED51C2C;
+	Mon, 11 Dec 2023 18:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7IORsU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rw+u6nAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069184F212;
-	Mon, 11 Dec 2023 18:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80A80C433C7;
-	Mon, 11 Dec 2023 18:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324B55102A;
+	Mon, 11 Dec 2023 18:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD45EC433C7;
+	Mon, 11 Dec 2023 18:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319066;
-	bh=FMyzI7x4DGZhDTNnvRl//7LqgH4YHz6+H+WeF0j4/SU=;
+	s=korg; t=1702320504;
+	bh=+mPh52frdH7E2kMl1bH7P7FesASZJJw3hi/kAcHDXzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7IORsU7vorVrZ3RZj+W8DxnvIj8q7P8p7mK8vVstiwT0sA6kJXJ/t8JLdUKgGUtT
-	 hioazMwLMmDnboCaTupOJ7abdTJ+fNxb91EkH8V7JuAcR9MruVgb53jkDhBdRGoMf9
-	 gEEEH9ZVdse+4Fzfqe4oF5gLYGSS2Ruv3Ln3Mi94=
+	b=rw+u6nAsbWY5S3VM0mcpSxKgIRVD9+Gl43UH5P7rUQRj9Me03jNvbIw+FtW4Cg73U
+	 WOOG/fCRO9z+F9ctdRbNqMz0iAoIwQzw2bU6Efxqj02ITMziosLh+XAQF67kso1TX+
+	 dqJIIQwUJs7+wIOfUlq4NR1LU83QPUrts8h86LEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Evgeny Novikov <novikov@ispras.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 05/55] media: davinci: vpif_capture: fix potential double free
-Date: Mon, 11 Dec 2023 19:21:15 +0100
-Message-ID: <20231211182012.436414667@linuxfoundation.org>
+Subject: [PATCH 6.1 086/194] drm/bridge: tc358768: select CONFIG_VIDEOMODE_HELPERS
+Date: Mon, 11 Dec 2023 19:21:16 +0100
+Message-ID: <20231211182040.308728446@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeny Novikov <novikov@ispras.ru>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 602649eadaa0c977e362e641f51ec306bc1d365d ]
+[ Upstream commit 26513300978f7285c3e776c144f27ef71be61f57 ]
 
-In case of errors vpif_probe_complete() releases memory for vpif_obj.sd
-and unregisters the V4L2 device. But then this is done again by
-vpif_probe() itself. The patch removes the cleaning from
-vpif_probe_complete().
+A dependency on this feature was recently introduced:
 
-Found by Linux Driver Verification project (linuxtesting.org).
+x86_64-linux-ld: vmlinux.o: in function `tc358768_bridge_pre_enable':
+tc358768.c:(.text+0xbe3dae): undefined reference to `drm_display_mode_to_videomode'
 
-Signed-off-by: Evgeny Novikov <novikov@ispras.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Make sure this is always enabled.
+
+Fixes: e5fb21678136 ("drm/bridge: tc358768: Use struct videomode")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231204072814.968816-1-arnd@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231204072814.968816-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/davinci/vpif_capture.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/bridge/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/davinci/vpif_capture.c b/drivers/media/platform/davinci/vpif_capture.c
-index a96f53ce80886..cf1d11e6dd8c4 100644
---- a/drivers/media/platform/davinci/vpif_capture.c
-+++ b/drivers/media/platform/davinci/vpif_capture.c
-@@ -1489,8 +1489,6 @@ static int vpif_probe_complete(void)
- 		/* Unregister video device */
- 		video_unregister_device(&ch->video_dev);
- 	}
--	kfree(vpif_obj.sd);
--	v4l2_device_unregister(&vpif_obj.v4l2_dev);
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 57946d80b02db..12baf9ba03c96 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -309,6 +309,7 @@ config DRM_TOSHIBA_TC358768
+ 	select REGMAP_I2C
+ 	select DRM_PANEL
+ 	select DRM_MIPI_DSI
++	select VIDEOMODE_HELPERS
+ 	help
+ 	  Toshiba TC358768AXBG/TC358778XBG DSI bridge chip driver.
  
- 	return err;
- }
 -- 
 2.42.0
 
