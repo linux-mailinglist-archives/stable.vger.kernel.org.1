@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1699280CA32
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:49:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D87580CA33
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:49:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 469911C20F74
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:49:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DCEF1C211D6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9CA3C064;
-	Mon, 11 Dec 2023 12:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3F93C06D;
+	Mon, 11 Dec 2023 12:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unCBZlGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnxmXYFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730213BB2B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:49:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BE2C433C8;
-	Mon, 11 Dec 2023 12:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4BE3BB2B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:49:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08EFBC433C8;
+	Mon, 11 Dec 2023 12:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702298984;
-	bh=CRPIXwqwh1eL2CRPKBdS+k6Wlwd1TxGV4HJNaCwEg5Y=;
+	s=korg; t=1702298987;
+	bh=HiJcEoUMl53Xn/CLy6KlPR/gVsLdjuPGO3BC4FZGlTs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=unCBZlGAPo/agrd55Hjrts0LhDTPb4U/xiuJ8jXlJ7p9da9VZp3sfOswMfoJqS7EI
-	 Yri7mOyCgjsE2kn0JIQyOjJdUrcbEM11oucfXk4JEjOa6drvNyJK0WLw05LQDZ1TfT
-	 2ZRyRb7twV9OTMZDGqGqT4WvjroMAAzFyzK7CZck=
-Subject: FAILED: patch "[PATCH] devcoredump: Send uevent once devcd is ready" failed to apply to 5.15-stable tree
+	b=EnxmXYFEfJZiyAvubptCBpqaRs05tjv43/aXngjoCsVMQxEm72/yWHghvfelSAd5z
+	 wR+N1PVmnfZdkJx/2wg4ZvVM3Q2nF2d/l2eCdvxRfDj8GUdkIFrr1wpqRosAurXPDo
+	 EkUj+w2px7omaoaj9hDQoFlLGLBJFG8iPpkdDbRo=
+Subject: FAILED: patch "[PATCH] devcoredump: Send uevent once devcd is ready" failed to apply to 5.10-stable tree
 To: quic_mojha@quicinc.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Dec 2023 13:49:41 +0100
-Message-ID: <2023121141-doormat-extortion-0954@gregkh>
+Date: Mon, 11 Dec 2023 13:49:42 +0100
+Message-ID: <2023121142-undoing-ludicrous-99d9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x af54d778a03853801d681c98c0c2a6c316ef9ca7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121141-doormat-extortion-0954@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121142-undoing-ludicrous-99d9@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
