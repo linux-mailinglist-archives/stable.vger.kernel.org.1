@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7711880D87A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E1B80D62B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A601F21707
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DE321F21AD6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5E51C2B;
-	Mon, 11 Dec 2023 18:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F646FC06;
+	Mon, 11 Dec 2023 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI/PgUUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRE9iTzj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057125102A;
-	Mon, 11 Dec 2023 18:46:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80553C433C7;
-	Mon, 11 Dec 2023 18:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2C7C2D0;
+	Mon, 11 Dec 2023 18:31:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953C4C433C8;
+	Mon, 11 Dec 2023 18:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320370;
-	bh=byrQwR36zx/IXLVqAL9TpA//f6ngbtaJK5aceqni7ck=;
+	s=korg; t=1702319513;
+	bh=l+9ktnMuonxyNxBSJo8dYoELkLkCwH6Li83ngewwnYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cI/PgUUfWLUZtu1MRst36UQi8WAYNllif8bpF8OyW73sVtZmg1VSR+Lua3ZmoWfKU
-	 7Ckz9pbh6JgAgomSkNzt8I1nL1Mk7rcymRqZOmLxp9kQaC2Hyi+5MuFRvXMcegWxIj
-	 xQVGgzWPqekpT59D3aoy7AqKcc90Ssz0H4bl6pLg=
+	b=hRE9iTzjEzNKzKYem/eVfqp+wQvCgjkvo3s3wEzLfe2PzGczl1RHpHO4r5hSq95yr
+	 lvj6bakpIOA0Q7sOunaGLaFLt9yqk06fyXnJJn4OELEpAz9w/1rw6NO2GlrVar4oCt
+	 xjObwaygbkgnFrdvOfWzBZafc6w+iTBpr2WJLblg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Geethasowjanya Akula <gakula@marvell.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/194] octeontx2-af: fix a use-after-free in rvu_npa_register_reporters
+	Malcolm Hart <malcolm@5harts.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 133/244] ASoC: amd: yc: Fix non-functional mic on ASUS E1504FA
 Date: Mon, 11 Dec 2023 19:20:26 +0100
-Message-ID: <20231211182038.183484922@linuxfoundation.org>
+Message-ID: <20231211182051.758590722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +52,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Malcolm Hart <malcolm@5harts.com>
 
-[ Upstream commit 3c91c909f13f0c32b0d54d75c3f798479b1a84f5 ]
+commit b24e3590c94ab0aba6e455996b502a83baa5c31c upstream.
 
-The rvu_dl will be freed in rvu_npa_health_reporters_destroy(rvu_dl)
-after the create_workqueue fails, and after that free, the rvu_dl will
-be translate back through rvu_npa_health_reporters_create,
-rvu_health_reporters_create, and rvu_register_dl. Finally it goes to the
-err_dl_health label, being freed again in
-rvu_health_reporters_destroy(rvu) by rvu_npa_health_reporters_destroy.
-In the second calls of rvu_npa_health_reporters_destroy, however,
-it uses rvu_dl->rvu_npa_health_reporter, which is already freed at
-the end of rvu_npa_health_reporters_destroy in the first call.
+This patch adds ASUSTeK COMPUTER INC  "E1504FA" to the quirks file acp6x-mach.c
+to enable microphone array on ASUS Vivobook GO 15.
+I have this laptop and can confirm that the patch succeeds in enabling the
+microphone array.
 
-So this patch prevents the first destroy by instantly returning -ENONMEN
-when create_workqueue fails. In addition, since the failure of
-create_workqueue is the only entrence of label err, it has been
-integrated into the error-handling path of create_workqueue.
-
-Fixes: f1168d1e207c ("octeontx2-af: Add devlink health reporters for NPA")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Geethasowjanya Akula <gakula@marvell.com>
-Link: https://lore.kernel.org/r/20231202095902.3264863-1-alexious@zju.edu.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Malcolm Hart <malcolm@5harts.com>
+Cc: stable@vger.kernel.org
+Rule: add
+Link: https://lore.kernel.org/stable/875y1nt1bx.fsf%405harts.com
+Link: https://lore.kernel.org/r/871qcbszh0.fsf@5harts.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index dc7bd2ce78f7d..d609512998992 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -1285,7 +1285,7 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
- 
- 	rvu_dl->devlink_wq = create_workqueue("rvu_devlink_wq");
- 	if (!rvu_dl->devlink_wq)
--		goto err;
-+		return -ENOMEM;
- 
- 	INIT_WORK(&rvu_reporters->intr_work, rvu_npa_intr_work);
- 	INIT_WORK(&rvu_reporters->err_work, rvu_npa_err_work);
-@@ -1293,9 +1293,6 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
- 	INIT_WORK(&rvu_reporters->ras_work, rvu_npa_ras_work);
- 
- 	return 0;
--err:
--	rvu_npa_health_reporters_destroy(rvu_dl);
--	return -ENOMEM;
- }
- 
- static int rvu_npa_health_reporters_create(struct rvu_devlink *rvu_dl)
--- 
-2.42.0
-
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -286,6 +286,13 @@ static const struct dmi_system_id yc_acp
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
++		}
++	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 B7ED"),
+ 		}
 
 
 
