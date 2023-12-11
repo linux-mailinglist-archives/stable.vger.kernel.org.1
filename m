@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-5953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC21680D805
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 476BB80D8FE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EF341F20FEB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 041A8281F5F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8A451C2E;
-	Mon, 11 Dec 2023 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D38524B8;
+	Mon, 11 Dec 2023 18:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRjNmCyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBpoDVDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79E51D696;
-	Mon, 11 Dec 2023 18:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB5C433C7;
-	Mon, 11 Dec 2023 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902E351C38;
+	Mon, 11 Dec 2023 18:50:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F1AC433C8;
+	Mon, 11 Dec 2023 18:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320112;
-	bh=qofyb2HQFnTqX/Fj5m3KJI9QxJ4SwKsQ8miayq51oxQ=;
+	s=korg; t=1702320607;
+	bh=b3hJSuTy0XeDCn0FP+SFyqlI65o/65Qvi8uaHgSYmVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRjNmCyCx/MgWxQsj0m8yiUx/CYqgRUYGSpbHvYMl2v/XczrCLS9sDL4sVyZS2OhK
-	 5V7xR0xqlwLGPE+m13Ch1UT67MV2dJsMbFXQklE/W3RQPjHz0Kk8NdZcqUCINkqLPF
-	 vqSUswXfmpLBCqLUHpCGnEC2goa+vuRevChFa97A=
+	b=IBpoDVDjsqdqMUJzboyBw5s3F+ZQoCF9yA4mYGW+I9acMdRNKXA01UgTa/nNAZ49E
+	 LE2W9l7kzxsXWUpBIfSZFt2heAr6YfrGpMr3ZmuyG7CK8sQmy7mXZKc8Qc8+k01u44
+	 KZgHe92UTGepjYqcLkxIEK+dQz2M3LXVeMFbFjXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/67] of/iommu: Make of_map_rid() PCI agnostic
+	Hugh Dickins <hughd@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.1 124/194] mm: fix oops when filemap_map_pmd() without prealloc_pte
 Date: Mon, 11 Dec 2023 19:21:54 +0100
-Message-ID: <20231211182015.523558653@linuxfoundation.org>
+Message-ID: <20231211182042.057534389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,207 +56,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+From: Hugh Dickins <hughd@google.com>
 
-[ Upstream commit 746a71d02b5d15817fcb13c956ba999a87773952 ]
+commit 9aa1345d66b8132745ffb99b348b1492088da9e2 upstream.
 
-There is nothing PCI specific (other than the RID - requester ID)
-in the of_map_rid() implementation, so the same function can be
-reused for input/output IDs mapping for other busses just as well.
+syzbot reports oops in lockdep's __lock_acquire(), called from
+__pte_offset_map_lock() called from filemap_map_pages(); or when I run the
+repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+called from filemap_map_pages(), just before the __pte_offset_map_lock().
 
-Rename the RID instances/names to a generic "id" tag.
+The problem is that filemap_map_pmd() has been assuming that when it finds
+pmd_none(), a page table has already been prepared in prealloc_pte; and
+indeed do_fault_around() has been careful to preallocate one there, when
+it finds pmd_none(): but what if *pmd became none in between?
 
-No functionality change intended.
+My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
+easy for *pmd to be cleared while servicing a page fault; but even before
+those, a huge *pmd might be zapped while a fault is serviced.
 
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Acked-by: Joerg Roedel <jroedel@suse.de>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200619082013.13661-7-lorenzo.pieralisi@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Stable-dep-of: d79972789d17 ("of: dynamic: Fix of_reconfig_get_state_change() return value documentation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The difference in symptomatic stack traces comes from the "memory model"
+in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+models that is strict, and will oops on the NULL prealloc_pte; in other
+models, it will construct a bogus value to be populated into *pmd, then
+__pte_offset_map_lock() oops when trying to access split ptlock pointer
+(or some other symptom in normal case of ptlock embedded not pointer).
+
+Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
+Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
+Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>,
+Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>    [5.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/of_iommu.c |  4 ++--
- drivers/of/base.c        | 42 ++++++++++++++++++++--------------------
- drivers/of/irq.c         |  2 +-
- include/linux/of.h       |  4 ++--
- 4 files changed, 26 insertions(+), 26 deletions(-)
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 614a93aa5305a..656939ed842e7 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -121,7 +121,7 @@ static int of_pci_iommu_init(struct pci_dev *pdev, u16 alias, void *data)
- 	struct of_phandle_args iommu_spec = { .args_count = 1 };
- 	int err;
- 
--	err = of_map_rid(info->np, alias, "iommu-map", "iommu-map-mask",
-+	err = of_map_id(info->np, alias, "iommu-map", "iommu-map-mask",
- 			 &iommu_spec.np, iommu_spec.args);
- 	if (err)
- 		return err == -ENODEV ? NO_IOMMU : err;
-@@ -137,7 +137,7 @@ static int of_fsl_mc_iommu_init(struct fsl_mc_device *mc_dev,
- 	struct of_phandle_args iommu_spec = { .args_count = 1 };
- 	int err;
- 
--	err = of_map_rid(master_np, mc_dev->icid, "iommu-map",
-+	err = of_map_id(master_np, mc_dev->icid, "iommu-map",
- 			 "iommu-map-mask", &iommu_spec.np,
- 			 iommu_spec.args);
- 	if (err)
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 3f13b982e8b53..5c97366628b13 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2280,15 +2280,15 @@ int of_find_last_cache_level(unsigned int cpu)
- }
- 
- /**
-- * of_map_rid - Translate a requester ID through a downstream mapping.
-+ * of_map_id - Translate an ID through a downstream mapping.
-  * @np: root complex device node.
-- * @rid: device requester ID to map.
-+ * @id: device ID to map.
-  * @map_name: property name of the map to use.
-  * @map_mask_name: optional property name of the mask to use.
-  * @target: optional pointer to a target device node.
-  * @id_out: optional pointer to receive the translated ID.
-  *
-- * Given a device requester ID, look up the appropriate implementation-defined
-+ * Given a device ID, look up the appropriate implementation-defined
-  * platform ID and/or the target device which receives transactions on that
-  * ID, as per the "iommu-map" and "msi-map" bindings. Either of @target or
-  * @id_out may be NULL if only the other is required. If @target points to
-@@ -2298,11 +2298,11 @@ int of_find_last_cache_level(unsigned int cpu)
-  *
-  * Return: 0 on success or a standard error code on failure.
-  */
--int of_map_rid(struct device_node *np, u32 rid,
-+int of_map_id(struct device_node *np, u32 id,
- 	       const char *map_name, const char *map_mask_name,
- 	       struct device_node **target, u32 *id_out)
- {
--	u32 map_mask, masked_rid;
-+	u32 map_mask, masked_id;
- 	int map_len;
- 	const __be32 *map = NULL;
- 
-@@ -2314,7 +2314,7 @@ int of_map_rid(struct device_node *np, u32 rid,
- 		if (target)
- 			return -ENODEV;
- 		/* Otherwise, no map implies no translation */
--		*id_out = rid;
-+		*id_out = id;
- 		return 0;
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3319,7 +3319,7 @@ static bool filemap_map_pmd(struct vm_fa
+ 		}
  	}
  
-@@ -2334,22 +2334,22 @@ int of_map_rid(struct device_node *np, u32 rid,
- 	if (map_mask_name)
- 		of_property_read_u32(np, map_mask_name, &map_mask);
+-	if (pmd_none(*vmf->pmd))
++	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
+ 		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
  
--	masked_rid = map_mask & rid;
-+	masked_id = map_mask & id;
- 	for ( ; map_len > 0; map_len -= 4 * sizeof(*map), map += 4) {
- 		struct device_node *phandle_node;
--		u32 rid_base = be32_to_cpup(map + 0);
-+		u32 id_base = be32_to_cpup(map + 0);
- 		u32 phandle = be32_to_cpup(map + 1);
- 		u32 out_base = be32_to_cpup(map + 2);
--		u32 rid_len = be32_to_cpup(map + 3);
-+		u32 id_len = be32_to_cpup(map + 3);
- 
--		if (rid_base & ~map_mask) {
--			pr_err("%pOF: Invalid %s translation - %s-mask (0x%x) ignores rid-base (0x%x)\n",
-+		if (id_base & ~map_mask) {
-+			pr_err("%pOF: Invalid %s translation - %s-mask (0x%x) ignores id-base (0x%x)\n",
- 				np, map_name, map_name,
--				map_mask, rid_base);
-+				map_mask, id_base);
- 			return -EFAULT;
- 		}
- 
--		if (masked_rid < rid_base || masked_rid >= rid_base + rid_len)
-+		if (masked_id < id_base || masked_id >= id_base + id_len)
- 			continue;
- 
- 		phandle_node = of_find_node_by_phandle(phandle);
-@@ -2367,20 +2367,20 @@ int of_map_rid(struct device_node *np, u32 rid,
- 		}
- 
- 		if (id_out)
--			*id_out = masked_rid - rid_base + out_base;
-+			*id_out = masked_id - id_base + out_base;
- 
--		pr_debug("%pOF: %s, using mask %08x, rid-base: %08x, out-base: %08x, length: %08x, rid: %08x -> %08x\n",
--			np, map_name, map_mask, rid_base, out_base,
--			rid_len, rid, masked_rid - rid_base + out_base);
-+		pr_debug("%pOF: %s, using mask %08x, id-base: %08x, out-base: %08x, length: %08x, id: %08x -> %08x\n",
-+			np, map_name, map_mask, id_base, out_base,
-+			id_len, id, masked_id - id_base + out_base);
- 		return 0;
- 	}
- 
--	pr_info("%pOF: no %s translation for rid 0x%x on %pOF\n", np, map_name,
--		rid, target && *target ? *target : NULL);
-+	pr_info("%pOF: no %s translation for id 0x%x on %pOF\n", np, map_name,
-+		id, target && *target ? *target : NULL);
- 
- 	/* Bypasses translation */
- 	if (id_out)
--		*id_out = rid;
-+		*id_out = id;
- 	return 0;
- }
--EXPORT_SYMBOL_GPL(of_map_rid);
-+EXPORT_SYMBOL_GPL(of_map_id);
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index a296eaf52a5b2..d632bc5b3a2de 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -587,7 +587,7 @@ static u32 __of_msi_map_rid(struct device *dev, struct device_node **np,
- 	 * "msi-map" property.
- 	 */
- 	for (parent_dev = dev; parent_dev; parent_dev = parent_dev->parent)
--		if (!of_map_rid(parent_dev->of_node, rid_in, "msi-map",
-+		if (!of_map_id(parent_dev->of_node, rid_in, "msi-map",
- 				"msi-map-mask", np, &rid_out))
- 			break;
- 	return rid_out;
-diff --git a/include/linux/of.h b/include/linux/of.h
-index e29b341598e99..e070c5ed62a09 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -554,7 +554,7 @@ bool of_console_check(struct device_node *dn, char *name, int index);
- 
- extern int of_cpu_node_to_id(struct device_node *np);
- 
--int of_map_rid(struct device_node *np, u32 rid,
-+int of_map_id(struct device_node *np, u32 id,
- 	       const char *map_name, const char *map_mask_name,
- 	       struct device_node **target, u32 *id_out);
- 
-@@ -978,7 +978,7 @@ static inline int of_cpu_node_to_id(struct device_node *np)
- 	return -ENODEV;
- }
- 
--static inline int of_map_rid(struct device_node *np, u32 rid,
-+static inline int of_map_id(struct device_node *np, u32 id,
- 			     const char *map_name, const char *map_mask_name,
- 			     struct device_node **target, u32 *id_out)
- {
--- 
-2.42.0
-
+ 	/* See comment in handle_pte_fault() */
 
 
 
