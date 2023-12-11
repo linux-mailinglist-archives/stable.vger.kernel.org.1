@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D723A80D830
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742EC80D7EA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9252728103E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B2531F211C8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B1D5102A;
-	Mon, 11 Dec 2023 18:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF6451C46;
+	Mon, 11 Dec 2023 18:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxjADe63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKVrjjOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF276FC06;
-	Mon, 11 Dec 2023 18:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 640B4C433C8;
-	Mon, 11 Dec 2023 18:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08383FBE1;
+	Mon, 11 Dec 2023 18:40:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE09C433C8;
+	Mon, 11 Dec 2023 18:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320209;
-	bh=49J2tsIWhAPbGW/JxgUw+j8lgjLPmJ8yGVkSb21n9Ac=;
+	s=korg; t=1702320054;
+	bh=m1TjUP3Zw3xWJP0Nf4Vw0h+6alkaYBWCXIEzSX0IddE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxjADe63IxVLkrpGPEBVjMGSKB0mbE1HBtEoO7Maqao7dBjBd/Zp8Y9FUq7FeJz7Z
-	 3ZRJ4i6GWRR3nj0Kvkjx7zRoGhcvJYUmYysSG0w9vKQizvapjTRBsC8JTRaPhFiK+Z
-	 dkEhT7d4Ldbmise3MRAXRjijAKhuUJ1LZ748bdVs=
+	b=oKVrjjOCAchz0lVBhB3E9ye9+GKfMrGDstVpPa+cy7ll/HxXnajoQWZ7X2F75RUXe
+	 uO0HP6mSeID+9+eWUk/fsStA6ohc4+Q1x7m3t6i4++0Gh2Apz7mhClPAl37J0QT41l
+	 vyUXQc94P/21BQdSML8vI8sMLVmE6KZqMUpC/TVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/67] perf: Fix perf_event_validate_size()
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 85/97] psample: Require CAP_NET_ADMIN when joining "packets" group
 Date: Mon, 11 Dec 2023 19:22:28 +0100
-Message-ID: <20231211182016.910086708@linuxfoundation.org>
+Message-ID: <20231211182023.458608529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,140 +55,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 382c27f4ed28f803b1f1473ac2d8db0afc795a1b ]
+commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 upstream.
 
-Budimir noted that perf_event_validate_size() only checks the size of
-the newly added event, even though the sizes of all existing events
-can also change due to not all events having the same read_format.
+The "psample" generic netlink family notifies sampled packets over the
+"packets" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-When we attach the new event, perf_group_attach(), we do re-compute
-the size for all events.
+Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
+prevent non-root users or root without the 'CAP_NET_ADMIN' capability
+(in the user namespace owning the network namespace) from joining the
+group.
 
-Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/events/core.c | 61 +++++++++++++++++++++++++++-----------------
- 1 file changed, 38 insertions(+), 23 deletions(-)
+Tested using [1].
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index f5d5e0cdb223b..fcc8e3823198f 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1711,31 +1711,34 @@ static inline void perf_event__state_init(struct perf_event *event)
- 					      PERF_EVENT_STATE_INACTIVE;
- }
- 
--static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
-+static int __perf_event_read_size(u64 read_format, int nr_siblings)
+Before:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+
+After:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+ Failed to join "packets" multicast group
+
+[1]
+ $ cat psample.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
+
+ int join_grp(struct nl_sock *sk, const char *grp_name)
  {
- 	int entry = sizeof(u64); /* value */
- 	int size = 0;
- 	int nr = 1;
- 
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
- 		size += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
- 		size += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_ID)
-+	if (read_format & PERF_FORMAT_ID)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_LOST)
-+	if (read_format & PERF_FORMAT_LOST)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_GROUP) {
-+	if (read_format & PERF_FORMAT_GROUP) {
- 		nr += nr_siblings;
- 		size += sizeof(u64);
+ 	int grp, err;
+
+ 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
+ 	if (grp < 0) {
+ 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
+ 			grp_name);
+ 		return grp;
  	}
- 
--	size += entry * nr;
--	event->read_size = size;
-+	/*
-+	 * Since perf_event_validate_size() limits this to 16k and inhibits
-+	 * adding more siblings, this will never overflow.
-+	 */
-+	return size + nr * entry;
- }
- 
- static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-@@ -1776,8 +1779,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-  */
- static void perf_event__header_size(struct perf_event *event)
- {
--	__perf_event_read_size(event,
--			       event->group_leader->nr_siblings);
-+	event->read_size =
-+		__perf_event_read_size(event->attr.read_format,
-+				       event->group_leader->nr_siblings);
- 	__perf_event_header_size(event, event->attr.sample_type);
- }
- 
-@@ -1808,24 +1812,35 @@ static void perf_event__id_header_size(struct perf_event *event)
- 	event->id_header_size = size;
- }
- 
-+/*
-+ * Check that adding an event to the group does not result in anybody
-+ * overflowing the 64k event limit imposed by the output buffer.
-+ *
-+ * Specifically, check that the read_size for the event does not exceed 16k,
-+ * read_size being the one term that grows with groups size. Since read_size
-+ * depends on per-event read_format, also (re)check the existing events.
-+ *
-+ * This leaves 48k for the constant size fields and things like callchains,
-+ * branch stacks and register sets.
-+ */
- static bool perf_event_validate_size(struct perf_event *event)
- {
--	/*
--	 * The values computed here will be over-written when we actually
--	 * attach the event.
--	 */
--	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
--	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
--	perf_event__id_header_size(event);
-+	struct perf_event *sibling, *group_leader = event->group_leader;
- 
--	/*
--	 * Sum the lot; should not exceed the 64k limit we have on records.
--	 * Conservative limit to allow for callchains and other variable fields.
--	 */
--	if (event->read_size + event->header_size +
--	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
-+	if (__perf_event_read_size(event->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
- 		return false;
- 
-+	if (__perf_event_read_size(group_leader->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
-+		return false;
-+
-+	for_each_sibling_event(sibling, group_leader) {
-+		if (__perf_event_read_size(sibling->attr.read_format,
-+					   group_leader->nr_siblings + 1) > 16*1024)
-+			return false;
-+	}
-+
- 	return true;
- }
- 
--- 
-2.42.0
 
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
+ 			grp_name);
+ 		return err;
+ 	}
+
+ 	return 0;
+ }
+
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int err;
+
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	err = join_grp(sk, "config");
+ 	if (err)
+ 		return err;
+
+ 	err = join_grp(sk, "packets");
+ 	if (err)
+ 		return err;
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+
+Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ net/psample/psample.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -30,7 +30,8 @@ enum psample_nl_multicast_groups {
+ 
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+-	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
++	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
++				      .flags = GENL_UNS_ADMIN_PERM },
+ };
+ 
+ static struct genl_family psample_nl_family __ro_after_init;
 
 
 
