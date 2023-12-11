@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-6238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6200F80D98A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C0D80D9D0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DAB7281FFB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96183B21891
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6580751C59;
-	Mon, 11 Dec 2023 18:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8A5524BF;
+	Mon, 11 Dec 2023 18:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bxYFnvv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8iQ7UwZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239E651C38;
-	Mon, 11 Dec 2023 18:54:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B31DC433C8;
-	Mon, 11 Dec 2023 18:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D09B51C44;
+	Mon, 11 Dec 2023 18:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984AAC433C7;
+	Mon, 11 Dec 2023 18:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320886;
-	bh=Ww8afnFuJveYYAw8wfHKC/LixNJGptBQFB3ctuH4My0=;
+	s=korg; t=1702320992;
+	bh=RJF5J3DrQKjKSryWB6jYFjRMD4ZZDkLeAqGe0RqN7/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxYFnvv8wswLrKer1qEVSjzvilUDJGgRzkpr84lbqex1mQ4OVwKNMcydXP0c/8cKj
-	 Oor+hDRA+OkRc1OdVbs/MWFZ6VFHApa25DjgiblzvlTQH0ppt3iOI2TKFGFSdbwMVf
-	 gbhfWnpFohzDIhBrVZ/KWuhCDgW3vhAkwl0MomTg=
+	b=g8iQ7UwZK/P760egVdbHNWDSGwFNirzZqRlNj/GzZL0YS2gOSmgU1D7+kf93gI3bd
+	 AqeNEuhiKyxu3RwMWTW377zicabule6D86boANQa7ALsRTS+h99cSyQUXTdkNCLeQd
+	 I8ZGWCFFjQAAeFVkroJDoavbkScIpNhmPo76yFNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jianheng Zhang <Jianheng.Zhang@synopsys.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geethasowjanya Akula <gakula@marvell.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/141] net: stmmac: fix FPE events losing
-Date: Mon, 11 Dec 2023 19:21:29 +0100
-Message-ID: <20231211182027.838417357@linuxfoundation.org>
+Subject: [PATCH 5.15 031/141] octeontx2-af: fix a use-after-free in rvu_npa_register_reporters
+Date: Mon, 11 Dec 2023 19:21:30 +0100
+Message-ID: <20231211182027.889577010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
 References: <20231211182026.503492284@linuxfoundation.org>
@@ -58,241 +58,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jianheng Zhang <Jianheng.Zhang@synopsys.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 37e4b8df27bc68340f3fc80dbb27e3549c7f881c ]
+[ Upstream commit 3c91c909f13f0c32b0d54d75c3f798479b1a84f5 ]
 
-The status bits of register MAC_FPE_CTRL_STS are clear on read. Using
-32-bit read for MAC_FPE_CTRL_STS in dwmac5_fpe_configure() and
-dwmac5_fpe_send_mpacket() clear the status bits. Then the stmmac interrupt
-handler missing FPE event status and leads to FPE handshaking failure and
-retries.
-To avoid clear status bits of MAC_FPE_CTRL_STS in dwmac5_fpe_configure()
-and dwmac5_fpe_send_mpacket(), add fpe_csr to stmmac_fpe_cfg structure to
-cache the control bits of MAC_FPE_CTRL_STS and to avoid reading
-MAC_FPE_CTRL_STS in those methods.
+The rvu_dl will be freed in rvu_npa_health_reporters_destroy(rvu_dl)
+after the create_workqueue fails, and after that free, the rvu_dl will
+be translate back through rvu_npa_health_reporters_create,
+rvu_health_reporters_create, and rvu_register_dl. Finally it goes to the
+err_dl_health label, being freed again in
+rvu_health_reporters_destroy(rvu) by rvu_npa_health_reporters_destroy.
+In the second calls of rvu_npa_health_reporters_destroy, however,
+it uses rvu_dl->rvu_npa_health_reporter, which is already freed at
+the end of rvu_npa_health_reporters_destroy in the first call.
 
-Fixes: 5a5586112b92 ("net: stmmac: support FPE link partner hand-shaking procedure")
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Jianheng Zhang <Jianheng.Zhang@synopsys.com>
-Link: https://lore.kernel.org/r/CY5PR12MB637225A7CF529D5BE0FBE59CBF81A@CY5PR12MB6372.namprd12.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+So this patch prevents the first destroy by instantly returning -ENONMEN
+when create_workqueue fails. In addition, since the failure of
+create_workqueue is the only entrence of label err, it has been
+integrated into the error-handling path of create_workqueue.
+
+Fixes: f1168d1e207c ("octeontx2-af: Add devlink health reporters for NPA")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Geethasowjanya Akula <gakula@marvell.com>
+Link: https://lore.kernel.org/r/20231202095902.3264863-1-alexious@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac5.c  | 45 ++++++++-----------
- drivers/net/ethernet/stmicro/stmmac/dwmac5.h  |  4 +-
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   |  3 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |  4 +-
- .../net/ethernet/stmicro/stmmac/stmmac_main.c |  8 +++-
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   |  1 +
- include/linux/stmmac.h                        |  1 +
- 7 files changed, 36 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-index e95d35f1e5a0c..8fd167501fa0e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.c
-@@ -710,28 +710,22 @@ void dwmac5_est_irq_status(void __iomem *ioaddr, struct net_device *dev,
- 	}
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index 274d3abe30eb4..ba7ff776760d3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -1284,7 +1284,7 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
  
--void dwmac5_fpe_configure(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
-+void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
-+			  u32 num_txq, u32 num_rxq,
- 			  bool enable)
- {
- 	u32 value;
+ 	rvu_dl->devlink_wq = create_workqueue("rvu_devlink_wq");
+ 	if (!rvu_dl->devlink_wq)
+-		goto err;
++		return -ENOMEM;
  
--	if (!enable) {
--		value = readl(ioaddr + MAC_FPE_CTRL_STS);
--
--		value &= ~EFPE;
--
--		writel(value, ioaddr + MAC_FPE_CTRL_STS);
--		return;
-+	if (enable) {
-+		cfg->fpe_csr = EFPE;
-+		value = readl(ioaddr + GMAC_RXQ_CTRL1);
-+		value &= ~GMAC_RXQCTRL_FPRQ;
-+		value |= (num_rxq - 1) << GMAC_RXQCTRL_FPRQ_SHIFT;
-+		writel(value, ioaddr + GMAC_RXQ_CTRL1);
-+	} else {
-+		cfg->fpe_csr = 0;
- 	}
--
--	value = readl(ioaddr + GMAC_RXQ_CTRL1);
--	value &= ~GMAC_RXQCTRL_FPRQ;
--	value |= (num_rxq - 1) << GMAC_RXQCTRL_FPRQ_SHIFT;
--	writel(value, ioaddr + GMAC_RXQ_CTRL1);
--
--	value = readl(ioaddr + MAC_FPE_CTRL_STS);
--	value |= EFPE;
--	writel(value, ioaddr + MAC_FPE_CTRL_STS);
-+	writel(cfg->fpe_csr, ioaddr + MAC_FPE_CTRL_STS);
- }
+ 	INIT_WORK(&rvu_reporters->intr_work, rvu_npa_intr_work);
+ 	INIT_WORK(&rvu_reporters->err_work, rvu_npa_err_work);
+@@ -1292,9 +1292,6 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
+ 	INIT_WORK(&rvu_reporters->ras_work, rvu_npa_ras_work);
  
- int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
-@@ -741,6 +735,9 @@ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
- 
- 	status = FPE_EVENT_UNKNOWN;
- 
-+	/* Reads from the MAC_FPE_CTRL_STS register should only be performed
-+	 * here, since the status flags of MAC_FPE_CTRL_STS are "clear on read"
-+	 */
- 	value = readl(ioaddr + MAC_FPE_CTRL_STS);
- 
- 	if (value & TRSP) {
-@@ -766,19 +763,15 @@ int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev)
- 	return status;
- }
- 
--void dwmac5_fpe_send_mpacket(void __iomem *ioaddr, enum stmmac_mpacket_type type)
-+void dwmac5_fpe_send_mpacket(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
-+			     enum stmmac_mpacket_type type)
- {
--	u32 value;
-+	u32 value = cfg->fpe_csr;
- 
--	value = readl(ioaddr + MAC_FPE_CTRL_STS);
--
--	if (type == MPACKET_VERIFY) {
--		value &= ~SRSP;
-+	if (type == MPACKET_VERIFY)
- 		value |= SVER;
--	} else {
--		value &= ~SVER;
-+	else if (type == MPACKET_RESPONSE)
- 		value |= SRSP;
--	}
- 
- 	writel(value, ioaddr + MAC_FPE_CTRL_STS);
- }
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac5.h b/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
-index 53c138d0ff480..34e620790eb37 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac5.h
-@@ -153,9 +153,11 @@ int dwmac5_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
- 			 unsigned int ptp_rate);
- void dwmac5_est_irq_status(void __iomem *ioaddr, struct net_device *dev,
- 			   struct stmmac_extra_stats *x, u32 txqcnt);
--void dwmac5_fpe_configure(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
-+void dwmac5_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
-+			  u32 num_txq, u32 num_rxq,
- 			  bool enable);
- void dwmac5_fpe_send_mpacket(void __iomem *ioaddr,
-+			     struct stmmac_fpe_cfg *cfg,
- 			     enum stmmac_mpacket_type type);
- int dwmac5_fpe_irq_status(void __iomem *ioaddr, struct net_device *dev);
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 54aa0fbd1bf63..3568bf3ccfbe7 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -1440,7 +1440,8 @@ static int dwxgmac3_est_configure(void __iomem *ioaddr, struct stmmac_est *cfg,
  	return 0;
+-err:
+-	rvu_npa_health_reporters_destroy(rvu_dl);
+-	return -ENOMEM;
  }
  
--static void dwxgmac3_fpe_configure(void __iomem *ioaddr, u32 num_txq,
-+static void dwxgmac3_fpe_configure(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
-+				   u32 num_txq,
- 				   u32 num_rxq, bool enable)
- {
- 	u32 value;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index fe2660d5694d7..cc229ccd5d81d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -395,9 +395,11 @@ struct stmmac_ops {
- 			     unsigned int ptp_rate);
- 	void (*est_irq_status)(void __iomem *ioaddr, struct net_device *dev,
- 			       struct stmmac_extra_stats *x, u32 txqcnt);
--	void (*fpe_configure)(void __iomem *ioaddr, u32 num_txq, u32 num_rxq,
-+	void (*fpe_configure)(void __iomem *ioaddr, struct stmmac_fpe_cfg *cfg,
-+			      u32 num_txq, u32 num_rxq,
- 			      bool enable);
- 	void (*fpe_send_mpacket)(void __iomem *ioaddr,
-+				 struct stmmac_fpe_cfg *cfg,
- 				 enum stmmac_mpacket_type type);
- 	int (*fpe_irq_status)(void __iomem *ioaddr, struct net_device *dev);
- };
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2b4c30a5ffcd9..7042abc6979a9 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1054,7 +1054,8 @@ static void stmmac_fpe_link_state_handle(struct stmmac_priv *priv, bool is_up)
- 	bool *hs_enable = &fpe_cfg->hs_enable;
- 
- 	if (is_up && *hs_enable) {
--		stmmac_fpe_send_mpacket(priv, priv->ioaddr, MPACKET_VERIFY);
-+		stmmac_fpe_send_mpacket(priv, priv->ioaddr, fpe_cfg,
-+					MPACKET_VERIFY);
- 	} else {
- 		*lo_state = FPE_STATE_OFF;
- 		*lp_state = FPE_STATE_OFF;
-@@ -5621,6 +5622,7 @@ static void stmmac_fpe_event_status(struct stmmac_priv *priv, int status)
- 		/* If user has requested FPE enable, quickly response */
- 		if (*hs_enable)
- 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
-+						fpe_cfg,
- 						MPACKET_RESPONSE);
- 	}
- 
-@@ -6958,6 +6960,7 @@ static void stmmac_fpe_lp_task(struct work_struct *work)
- 		if (*lo_state == FPE_STATE_ENTERING_ON &&
- 		    *lp_state == FPE_STATE_ENTERING_ON) {
- 			stmmac_fpe_configure(priv, priv->ioaddr,
-+					     fpe_cfg,
- 					     priv->plat->tx_queues_to_use,
- 					     priv->plat->rx_queues_to_use,
- 					     *enable);
-@@ -6976,6 +6979,7 @@ static void stmmac_fpe_lp_task(struct work_struct *work)
- 			netdev_info(priv->dev, SEND_VERIFY_MPAKCET_FMT,
- 				    *lo_state, *lp_state);
- 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
-+						fpe_cfg,
- 						MPACKET_VERIFY);
- 		}
- 		/* Sleep then retry */
-@@ -6990,6 +6994,7 @@ void stmmac_fpe_handshake(struct stmmac_priv *priv, bool enable)
- 	if (priv->plat->fpe_cfg->hs_enable != enable) {
- 		if (enable) {
- 			stmmac_fpe_send_mpacket(priv, priv->ioaddr,
-+						priv->plat->fpe_cfg,
- 						MPACKET_VERIFY);
- 		} else {
- 			priv->plat->fpe_cfg->lo_fpe_state = FPE_STATE_OFF;
-@@ -7399,6 +7404,7 @@ int stmmac_suspend(struct device *dev)
- 	if (priv->dma_cap.fpesel) {
- 		/* Disable FPE */
- 		stmmac_fpe_configure(priv, priv->ioaddr,
-+				     priv->plat->fpe_cfg,
- 				     priv->plat->tx_queues_to_use,
- 				     priv->plat->rx_queues_to_use, false);
- 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index d0a2b289f4603..08cffc0558743 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -952,6 +952,7 @@ static int tc_setup_taprio(struct stmmac_priv *priv,
- 
- 	priv->plat->fpe_cfg->enable = false;
- 	stmmac_fpe_configure(priv, priv->ioaddr,
-+			     priv->plat->fpe_cfg,
- 			     priv->plat->tx_queues_to_use,
- 			     priv->plat->rx_queues_to_use,
- 			     false);
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 24bc3f7967c3b..a266e11525220 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -172,6 +172,7 @@ struct stmmac_fpe_cfg {
- 	bool hs_enable;				/* FPE handshake enable */
- 	enum stmmac_fpe_state lp_fpe_state;	/* Link Partner FPE state */
- 	enum stmmac_fpe_state lo_fpe_state;	/* Local station FPE state */
-+	u32 fpe_csr;				/* MAC_FPE_CTRL_STS reg cache */
- };
- 
- struct stmmac_safety_feature_cfg {
+ static int rvu_npa_health_reporters_create(struct rvu_devlink *rvu_dl)
 -- 
 2.42.0
 
