@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D2080D6F0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEA0A80D55D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6D41C21607
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A68FC1F21A28
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8A451C51;
-	Mon, 11 Dec 2023 18:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922D551020;
+	Mon, 11 Dec 2023 18:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKvIMiRG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfVbcYA3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF05FBE0;
-	Mon, 11 Dec 2023 18:34:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4629AC433C7;
-	Mon, 11 Dec 2023 18:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C324F212;
+	Mon, 11 Dec 2023 18:23:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C14C433C8;
+	Mon, 11 Dec 2023 18:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319676;
-	bh=IKwGU2l78zLUo79iKglwBDrX4DAaADDNgt6QjdnHrpE=;
+	s=korg; t=1702319039;
+	bh=Efhso+U0JQaYxSYYf3YbmRWuf+jsLSX4K0+4m8XpMFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKvIMiRGjaph0BCFGtVdZhtraeHMcfZHzONs0RKGTLz3yuGiUX5oinzOlVMpRMc+O
-	 8zVuIjRMBlJeJ3h388VhA4J1aUoGQasO6amrWcGp4fdVE0M8r91+Q5dCxqx3IgNtvz
-	 bPSA+Hp+U5jwjdwjezjfgxNNXcFBkR6SBBTiZeHE=
+	b=UfVbcYA3tPQSQO1b19eGQfHTtV1JwoKKR3DV9AGiIhx0O1WK0y+tsbnQVziupu8M5
+	 AVqNuaU0w7Yy9zU+Jd8gF5cmhxOBUV0D7X89iTL1js70uksDNF/qtFrvC1IDxPau/l
+	 541xd8XJRhMXALkidUMAzTTij15OgyAAKHE7nAoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Tong Zhang <ztong0001@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/244] coresight: ultrasoc-smb: Config SMB buffer before register sink
+Subject: [PATCH 4.19 16/55] net: arcnet: com20020 fix error handling
 Date: Mon, 11 Dec 2023 19:21:26 +0100
-Message-ID: <20231211182054.599426720@linuxfoundation.org>
+Message-ID: <20231211182012.818564839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +53,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Tong Zhang <ztong0001@gmail.com>
 
-[ Upstream commit 830a7f54db102c889a3fe1c0a225f369ac05f07f ]
+[ Upstream commit 6577b9a551aedb86bca6d4438c28386361845108 ]
 
-The SMB dirver register the enable/disable sysfs interface in function
-smb_register_sink(), however the buffer depends on the following
-configuration to work well. So it'll be possible for user to access an
-unreset one.
+There are two issues when handling error case in com20020pci_probe()
 
-Move the config buffer operation to before register_sink().
-Ignore the return value, if smb_config_inport() fails. That will
-cause the hardwares disable trace path to fail, should not affect
-SMB driver remove. So we make smb_remove() return success,
+1. priv might be not initialized yet when calling com20020pci_remove()
+from com20020pci_probe(), since the priv is set at the very last but it
+can jump to error handling in the middle and priv remains NULL.
+2. memory leak - the net device is allocated in alloc_arcdev but not
+properly released if error happens in the middle of the big for loop
 
-Fixes: 06f5c2926aaa ("drivers/coresight: Add UltraSoc System Memory Buffer driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231114133346.30489-3-hejunhao3@huawei.com
+[    1.529110] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[    1.531447] RIP: 0010:com20020pci_remove+0x15/0x60 [com20020_pci]
+[    1.536805] Call Trace:
+[    1.536939]  com20020pci_probe+0x3f2/0x48c [com20020_pci]
+[    1.537226]  local_pci_probe+0x48/0x80
+[    1.539918]  com20020pci_init+0x3f/0x1000 [com20020_pci]
+
+Signed-off-by: Tong Zhang <ztong0001@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/ultrasoc-smb.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ drivers/net/arcnet/com20020-pci.c | 34 +++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.c b/drivers/hwtracing/coresight/ultrasoc-smb.c
-index 0a0fe9fcc57f9..2f2aba90a5148 100644
---- a/drivers/hwtracing/coresight/ultrasoc-smb.c
-+++ b/drivers/hwtracing/coresight/ultrasoc-smb.c
-@@ -583,37 +583,32 @@ static int smb_probe(struct platform_device *pdev)
- 		return ret;
- 	}
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index b4f8798d8c509..28dccbc0e8d8f 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -127,6 +127,8 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 	int i, ioaddr, ret;
+ 	struct resource *r;
  
-+	ret = smb_config_inport(dev, true);
-+	if (ret)
-+		return ret;
++	ret = 0;
 +
-+	platform_set_drvdata(pdev, drvdata);
- 	spin_lock_init(&drvdata->spinlock);
- 	drvdata->pid = -1;
+ 	if (pci_enable_device(pdev))
+ 		return -EIO;
  
- 	ret = smb_register_sink(pdev, drvdata);
- 	if (ret) {
-+		smb_config_inport(&pdev->dev, false);
- 		dev_err(dev, "Failed to register SMB sink\n");
- 		return ret;
- 	}
+@@ -142,6 +144,8 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 	priv->ci = ci;
+ 	mm = &ci->misc_map;
  
--	ret = smb_config_inport(dev, true);
--	if (ret) {
--		smb_unregister_sink(drvdata);
--		return ret;
++	pci_set_drvdata(pdev, priv);
++
+ 	INIT_LIST_HEAD(&priv->list_dev);
+ 
+ 	if (mm->size) {
+@@ -164,7 +168,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 		dev = alloc_arcdev(device);
+ 		if (!dev) {
+ 			ret = -ENOMEM;
+-			goto out_port;
++			break;
+ 		}
+ 		dev->dev_port = i;
+ 
+@@ -181,7 +185,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 			pr_err("IO region %xh-%xh already allocated\n",
+ 			       ioaddr, ioaddr + cm->size - 1);
+ 			ret = -EBUSY;
+-			goto out_port;
++			goto err_free_arcdev;
+ 		}
+ 
+ 		/* Dummy access after Reset
+@@ -219,18 +223,18 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 		if (arcnet_inb(ioaddr, COM20020_REG_R_STATUS) == 0xFF) {
+ 			pr_err("IO address %Xh is empty!\n", ioaddr);
+ 			ret = -EIO;
+-			goto out_port;
++			goto err_free_arcdev;
+ 		}
+ 		if (com20020_check(dev)) {
+ 			ret = -EIO;
+-			goto out_port;
++			goto err_free_arcdev;
+ 		}
+ 
+ 		card = devm_kzalloc(&pdev->dev, sizeof(struct com20020_dev),
+ 				    GFP_KERNEL);
+ 		if (!card) {
+ 			ret = -ENOMEM;
+-			goto out_port;
++			goto err_free_arcdev;
+ 		}
+ 
+ 		card->index = i;
+@@ -256,29 +260,29 @@ static int com20020pci_probe(struct pci_dev *pdev,
+ 
+ 		ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
+ 		if (ret)
+-			goto out_port;
++			goto err_free_arcdev;
+ 
+ 		ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
+ 		if (ret)
+-			goto out_port;
++			goto err_free_arcdev;
+ 
+ 		dev_set_drvdata(&dev->dev, card);
+ 
+ 		ret = com20020_found(dev, IRQF_SHARED);
+ 		if (ret)
+-			goto out_port;
++			goto err_free_arcdev;
+ 
+ 		devm_arcnet_led_init(dev, dev->dev_id, i);
+ 
+ 		list_add(&card->list, &priv->list_dev);
 -	}
--
--	platform_set_drvdata(pdev, drvdata);
--
- 	return 0;
- }
++		continue;
  
- static int smb_remove(struct platform_device *pdev)
- {
- 	struct smb_drv_data *drvdata = platform_get_drvdata(pdev);
--	int ret;
+-	pci_set_drvdata(pdev, priv);
 -
--	ret = smb_config_inport(&pdev->dev, false);
--	if (ret)
--		return ret;
- 
- 	smb_unregister_sink(drvdata);
- 
-+	smb_config_inport(&pdev->dev, false);
-+
- 	return 0;
+-	return 0;
+-
+-out_port:
+-	com20020pci_remove(pdev);
++err_free_arcdev:
++		free_arcdev(dev);
++		break;
++	}
++	if (ret)
++		com20020pci_remove(pdev);
+ 	return ret;
  }
  
 -- 
