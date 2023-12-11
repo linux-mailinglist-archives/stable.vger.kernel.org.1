@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-5564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A458080D564
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A50F280D71C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0B9281BA7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACB1E1C212BD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F4D5101D;
-	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6B953811;
+	Mon, 11 Dec 2023 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4yEzs8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQmKotFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A24F212;
-	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39898C433C8;
-	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9746252F89;
+	Mon, 11 Dec 2023 18:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECC4C433C9;
+	Mon, 11 Dec 2023 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319058;
-	bh=zKMvuAUqEVymUHReL4yxVKut6ZJOds/vvpxrSsioDb0=;
+	s=korg; t=1702319695;
+	bh=FiZapAyIec0ZSbQR+7B81YD3EuUa2TVbFjkm0nQzD1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4yEzs8LhRlekA6Ln8AAk0vulwj3A6J2ynPi0ToT+HExx1pVkb5PfqXOT0pRYfO0U
-	 DaMWHf43dN6S00sfO/llbq+luKjK/i7S1YApRZpsPsilXL59fo9Yzi/0tXeDi12IxW
-	 EEJLtc1b9w/AIv2Kqy6iSOQP2nnJ2aGpnuQP5+9I=
+	b=hQmKotFhY2d1gEGgXtS90wxLttIQuU3LqxuB4p88txI+XDRusjRFR+m6547KiALwC
+	 ya6eJNeVjAKMNoZgvpPJ1ZMIxTIAKySIQKRCsnQhNfMAkOvzBR0ppmY/+oFQhRu+iz
+	 kMMwpKkrf4zB8QTmNN4b6eXA1ReXRgG+ixJCWteo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yepeng Pan <yepeng.pan@cispa.de>,
-	Christian Rossow <rossow@cispa.de>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 22/55] tcp: do not accept ACK of bytes we never sent
+Subject: [PATCH 6.6 199/244] LoongArch: BPF: Dont sign extend function return value
 Date: Mon, 11 Dec 2023 19:21:32 +0100
-Message-ID: <20231211182013.033093862@linuxfoundation.org>
+Message-ID: <20231211182054.871155861@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,108 +53,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
+[ Upstream commit 5d47ec2e6f4c64e30e392cfe9532df98c9beb106 ]
 
-This patch is based on a detailed report and ideas from Yepeng Pan
-and Christian Rossow.
+The `cls_redirect` test triggers a kernel panic like:
 
-ACK seq validation is currently following RFC 5961 5.2 guidelines:
+  # ./test_progs -t cls_redirect
+  Can't find bpf_testmod.ko kernel module: -2
+  WARNING! Selftests relying on bpf_testmod.ko will be skipped.
+  [   30.938489] CPU 3 Unable to handle kernel paging request at virtual address fffffffffd814de0, era == ffff800002009fb8, ra == ffff800002009f9c
+  [   30.939331] Oops[#1]:
+  [   30.939513] CPU: 3 PID: 1260 Comm: test_progs Not tainted 6.7.0-rc2-loong-devel-g2f56bb0d2327 #35 a896aca3f4164f09cc346f89f2e09832e07be5f6
+  [   30.939732] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 2/2/2022
+  [   30.939901] pc ffff800002009fb8 ra ffff800002009f9c tp 9000000104da4000 sp 9000000104da7ab0
+  [   30.940038] a0 fffffffffd814de0 a1 9000000104da7a68 a2 0000000000000000 a3 9000000104da7c10
+  [   30.940183] a4 9000000104da7c14 a5 0000000000000002 a6 0000000000000021 a7 00005555904d7f90
+  [   30.940321] t0 0000000000000110 t1 0000000000000000 t2 fffffffffd814de0 t3 0004c4b400000000
+  [   30.940456] t4 ffffffffffffffff t5 00000000c3f63600 t6 0000000000000000 t7 0000000000000000
+  [   30.940590] t8 000000000006d803 u0 0000000000000020 s9 9000000104da7b10 s0 900000010504c200
+  [   30.940727] s1 fffffffffd814de0 s2 900000010504c200 s3 9000000104da7c10 s4 9000000104da7ad0
+  [   30.940866] s5 0000000000000000 s6 90000000030e65bc s7 9000000104da7b44 s8 90000000044f6fc0
+  [   30.941015]    ra: ffff800002009f9c bpf_prog_846803e5ae81417f_cls_redirect+0xa0/0x590
+  [   30.941535]   ERA: ffff800002009fb8 bpf_prog_846803e5ae81417f_cls_redirect+0xbc/0x590
+  [   30.941696]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
+  [   30.942224]  PRMD: 00000004 (PPLV0 +PIE -PWE)
+  [   30.942330]  EUEN: 00000003 (+FPE +SXE -ASXE -BTE)
+  [   30.942453]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
+  [   30.942612] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
+  [   30.942764]  BADV: fffffffffd814de0
+  [   30.942854]  PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
+  [   30.942974] Modules linked in:
+  [   30.943078] Process test_progs (pid: 1260, threadinfo=00000000ce303226, task=000000007d10bb76)
+  [   30.943306] Stack : 900000010a064000 90000000044f6fc0 9000000104da7b48 0000000000000000
+  [   30.943495]         0000000000000000 9000000104da7c14 9000000104da7c10 900000010504c200
+  [   30.943626]         0000000000000001 ffff80001b88c000 9000000104da7b70 90000000030e6668
+  [   30.943785]         0000000000000000 9000000104da7b58 ffff80001b88c048 9000000003d05000
+  [   30.943936]         900000000303ac88 0000000000000000 0000000000000000 9000000104da7b70
+  [   30.944091]         0000000000000000 0000000000000001 0000000731eeab00 0000000000000000
+  [   30.944245]         ffff80001b88c000 0000000000000000 0000000000000000 54b99959429f83b8
+  [   30.944402]         ffff80001b88c000 90000000044f6fc0 9000000101d70000 ffff80001b88c000
+  [   30.944538]         000000000000005a 900000010504c200 900000010a064000 900000010a067000
+  [   30.944697]         9000000104da7d88 0000000000000000 9000000003d05000 90000000030e794c
+  [   30.944852]         ...
+  [   30.944924] Call Trace:
+  [   30.945120] [<ffff800002009fb8>] bpf_prog_846803e5ae81417f_cls_redirect+0xbc/0x590
+  [   30.945650] [<90000000030e6668>] bpf_test_run+0x1ec/0x2f8
+  [   30.945958] [<90000000030e794c>] bpf_prog_test_run_skb+0x31c/0x684
+  [   30.946065] [<90000000026d4f68>] __sys_bpf+0x678/0x2724
+  [   30.946159] [<90000000026d7288>] sys_bpf+0x20/0x2c
+  [   30.946253] [<90000000032dd224>] do_syscall+0x7c/0x94
+  [   30.946343] [<9000000002541c5c>] handle_syscall+0xbc/0x158
+  [   30.946492]
+  [   30.946549] Code: 0015030e  5c0009c0  5001d000 <28c00304> 02c00484  29c00304  00150009  2a42d2e4  0280200d
+  [   30.946793]
+  [   30.946971] ---[ end trace 0000000000000000 ]---
+  [   32.093225] Kernel panic - not syncing: Fatal exception in interrupt
+  [   32.093526] Kernel relocated by 0x2320000
+  [   32.093630]  .text @ 0x9000000002520000
+  [   32.093725]  .data @ 0x9000000003400000
+  [   32.093792]  .bss  @ 0x9000000004413200
+  [   34.971998] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.  It needs to
-   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
-   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
-   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
-   ACK, drop the segment, and return".  The "ignored" above implies that
-   the processing of the incoming data segment continues, which means
-   the ACK value is treated as acceptable.  This mitigation makes the
-   ACK check more stringent since any ACK < SND.UNA wouldn't be
-   accepted, instead only ACKs that are in the range ((SND.UNA -
-   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
+This is because we signed-extend function return values. When subprog
+mode is enabled, we have:
 
-This can be refined for new (and possibly spoofed) flows,
-by not accepting ACK for bytes that were never sent.
+  cls_redirect()
+    -> get_global_metrics() returns pcpu ptr 0xfffffefffc00b480
 
-This greatly improves TCP security at a little cost.
+The pointer returned is later signed-extended to 0xfffffffffc00b480 at
+`BPF_JMP | BPF_EXIT`. During BPF prog run, this triggers unhandled page
+fault and a kernel panic.
 
-I added a Fixes: tag to make sure this patch will reach stable trees,
-even if the 'blamed' patch was adhering to the RFC.
+Drop the unnecessary signed-extension on return values like other
+architectures do.
 
-tp->bytes_acked was added in linux-4.2
+With this change, we have:
 
-Following packetdrill test (courtesy of Yepeng Pan) shows
-the issue at hand:
+  # ./test_progs -t cls_redirect
+  Can't find bpf_testmod.ko kernel module: -2
+  WARNING! Selftests relying on bpf_testmod.ko will be skipped.
+  #51/1    cls_redirect/cls_redirect_inlined:OK
+  #51/2    cls_redirect/IPv4 TCP accept unknown (no hops, flags: SYN):OK
+  #51/3    cls_redirect/IPv6 TCP accept unknown (no hops, flags: SYN):OK
+  #51/4    cls_redirect/IPv4 TCP accept unknown (no hops, flags: ACK):OK
+  #51/5    cls_redirect/IPv6 TCP accept unknown (no hops, flags: ACK):OK
+  #51/6    cls_redirect/IPv4 TCP forward unknown (one hop, flags: ACK):OK
+  #51/7    cls_redirect/IPv6 TCP forward unknown (one hop, flags: ACK):OK
+  #51/8    cls_redirect/IPv4 TCP accept known (one hop, flags: ACK):OK
+  #51/9    cls_redirect/IPv6 TCP accept known (one hop, flags: ACK):OK
+  #51/10   cls_redirect/IPv4 UDP accept unknown (no hops, flags: none):OK
+  #51/11   cls_redirect/IPv6 UDP accept unknown (no hops, flags: none):OK
+  #51/12   cls_redirect/IPv4 UDP forward unknown (one hop, flags: none):OK
+  #51/13   cls_redirect/IPv6 UDP forward unknown (one hop, flags: none):OK
+  #51/14   cls_redirect/IPv4 UDP accept known (one hop, flags: none):OK
+  #51/15   cls_redirect/IPv6 UDP accept known (one hop, flags: none):OK
+  #51/16   cls_redirect/cls_redirect_subprogs:OK
+  #51/17   cls_redirect/IPv4 TCP accept unknown (no hops, flags: SYN):OK
+  #51/18   cls_redirect/IPv6 TCP accept unknown (no hops, flags: SYN):OK
+  #51/19   cls_redirect/IPv4 TCP accept unknown (no hops, flags: ACK):OK
+  #51/20   cls_redirect/IPv6 TCP accept unknown (no hops, flags: ACK):OK
+  #51/21   cls_redirect/IPv4 TCP forward unknown (one hop, flags: ACK):OK
+  #51/22   cls_redirect/IPv6 TCP forward unknown (one hop, flags: ACK):OK
+  #51/23   cls_redirect/IPv4 TCP accept known (one hop, flags: ACK):OK
+  #51/24   cls_redirect/IPv6 TCP accept known (one hop, flags: ACK):OK
+  #51/25   cls_redirect/IPv4 UDP accept unknown (no hops, flags: none):OK
+  #51/26   cls_redirect/IPv6 UDP accept unknown (no hops, flags: none):OK
+  #51/27   cls_redirect/IPv4 UDP forward unknown (one hop, flags: none):OK
+  #51/28   cls_redirect/IPv6 UDP forward unknown (one hop, flags: none):OK
+  #51/29   cls_redirect/IPv4 UDP accept known (one hop, flags: none):OK
+  #51/30   cls_redirect/IPv6 UDP accept known (one hop, flags: none):OK
+  #51/31   cls_redirect/cls_redirect_dynptr:OK
+  #51/32   cls_redirect/IPv4 TCP accept unknown (no hops, flags: SYN):OK
+  #51/33   cls_redirect/IPv6 TCP accept unknown (no hops, flags: SYN):OK
+  #51/34   cls_redirect/IPv4 TCP accept unknown (no hops, flags: ACK):OK
+  #51/35   cls_redirect/IPv6 TCP accept unknown (no hops, flags: ACK):OK
+  #51/36   cls_redirect/IPv4 TCP forward unknown (one hop, flags: ACK):OK
+  #51/37   cls_redirect/IPv6 TCP forward unknown (one hop, flags: ACK):OK
+  #51/38   cls_redirect/IPv4 TCP accept known (one hop, flags: ACK):OK
+  #51/39   cls_redirect/IPv6 TCP accept known (one hop, flags: ACK):OK
+  #51/40   cls_redirect/IPv4 UDP accept unknown (no hops, flags: none):OK
+  #51/41   cls_redirect/IPv6 UDP accept unknown (no hops, flags: none):OK
+  #51/42   cls_redirect/IPv4 UDP forward unknown (one hop, flags: none):OK
+  #51/43   cls_redirect/IPv6 UDP forward unknown (one hop, flags: none):OK
+  #51/44   cls_redirect/IPv4 UDP accept known (one hop, flags: none):OK
+  #51/45   cls_redirect/IPv6 UDP accept known (one hop, flags: none):OK
+  #51      cls_redirect:OK
+  Summary: 1/45 PASSED, 0 SKIPPED, 0 FAILED
 
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-// ---------------- Handshake ------------------- //
-
-// when window scale is set to 14 the window size can be extended to
-// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
-// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
-// ,though this ack number acknowledges some data never
-// sent by the server.
-
-+0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
-
-// For the established connection, we send an ACK packet,
-// the ack packet uses ack number 1 - 1073725300 + 2^32,
-// where 2^32 is used to wrap around.
-// Note: we used 1073725300 instead of 1073725440 to avoid possible
-// edge cases.
-// 1 - 1073725300 + 2^32 = 3221241997
-
-// Oops, old kernels happily accept this packet.
-+0 < . 1:1001(1000) ack 3221241997 win 65535
-
-// After the kernel fix the following will be replaced by a challenge ACK,
-// and prior malicious frame would be dropped.
-+0 > . 1:1(0) ack 1001
-
-Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
-Reported-by: Christian Rossow <rossow@cispa.de>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/loongarch/net/bpf_jit.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 0052a6194cc1a..407ad07dc5985 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3640,8 +3640,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
- 	 */
- 	if (before(ack, prior_snd_una)) {
-+		u32 max_window;
-+
-+		/* do not accept ACK for bytes we never sent. */
-+		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - tp->max_window)) {
-+		if (before(ack, prior_snd_una - max_window)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk, skb);
- 			return -1;
+diff --git a/arch/loongarch/net/bpf_jit.c b/arch/loongarch/net/bpf_jit.c
+index 5d02bc6acec2e..00915fb3cb82c 100644
+--- a/arch/loongarch/net/bpf_jit.c
++++ b/arch/loongarch/net/bpf_jit.c
+@@ -855,8 +855,6 @@ static int build_insn(const struct bpf_insn *insn, struct jit_ctx *ctx, bool ext
+ 
+ 	/* function return */
+ 	case BPF_JMP | BPF_EXIT:
+-		emit_sext_32(ctx, regmap[BPF_REG_0], true);
+-
+ 		if (i == ctx->prog->len - 1)
+ 			break;
+ 
 -- 
 2.42.0
 
