@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C074A80D62F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BBB80D85E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A1A1C215B9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C94571F21B25
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281ACFC06;
-	Mon, 11 Dec 2023 18:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1344851036;
+	Mon, 11 Dec 2023 18:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hy8sACGl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbq5FjZl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C704FC2D0;
-	Mon, 11 Dec 2023 18:32:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8FFC433C8;
-	Mon, 11 Dec 2023 18:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C065F4E1D2;
+	Mon, 11 Dec 2023 18:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43977C433C9;
+	Mon, 11 Dec 2023 18:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319524;
-	bh=CtAsJmgrd75+vMwxALmv0scVlfdF1z8e/cHEvjczECM=;
+	s=korg; t=1702320304;
+	bh=h04VtMvhF/BKyyKDHfNLDt6XcEv6CUhPMJ/GXgqewZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hy8sACGlTxl+L8Zlv4jHbcWAE4rZ9oljA3at9QIIBe2ejGm9MhVHfNXW5jaLwYPK1
-	 fjPVo8/2hrYJ5AgsoCaP10rpCo6IeAUh9Wkuthn1HSgw8cl/aMmYqFLXeBP73R8KlE
-	 d0br7SesteBG7CVV2OcgMzoTwIXIVSoDruw1lbT0=
+	b=hbq5FjZlGGb/UpJBN3o4A+lWG6ieRFNlXaoPKCD6WJ4fgj9G8V4yUmeUFMPsgAN8w
+	 Lm6Zsuvfo7P/ycGbeift5F3n6zOQQDarmqB6x7kSpdz4jmdpOeK0ekwldsCDc8o7B5
+	 6LG4No8acLC4wtq3vXnTAjs6SuRb3V5uTtWSIZJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/244] RDMA/core: Fix umem iterator when PAGE_SIZE is greater then HCA pgsz
-Date: Mon, 11 Dec 2023 19:20:01 +0100
-Message-ID: <20231211182050.613646508@linuxfoundation.org>
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 012/194] x86/entry: Convert INT 0x80 emulation to IDTENTRY
+Date: Mon, 11 Dec 2023 19:20:02 +0100
+Message-ID: <20231211182037.153799495@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,150 +55,263 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 4fbc3a52cd4d14de3793f4b2c721d7306ea84cf9 ]
+[ upstream commit be5341eb0d43b1e754799498bd2e8756cc167a41 ]
 
-64k pages introduce the situation in this diagram when the HCA 4k page
-size is being used:
+There is no real reason to have a separate ASM entry point implementation
+for the legacy INT 0x80 syscall emulation on 64-bit.
 
- +-------------------------------------------+ <--- 64k aligned VA
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+ <--- Live HCA page
- |OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO| <--- offset
- |                                           | <--- VA
- |                MR data                    |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
+IDTENTRY provides all the functionality needed with the only difference
+that it does not:
 
-The VA addresses are coming from rdma-core in this diagram can be
-arbitrary, but for 64k pages, the VA may be offset by some number of HCA
-4k pages and followed by some number of HCA 4k pages.
+  - save the syscall number (AX) into pt_regs::orig_ax
+  - set pt_regs::ax to -ENOSYS
 
-The current iterator doesn't account for either the preceding 4k pages or
-the following 4k pages.
+Both can be done safely in the C code of an IDTENTRY before invoking any of
+the syscall related functions which depend on this convention.
 
-Fix the issue by extending the ib_block_iter to contain the number of DMA
-pages like comment [1] says and by using __sg_advance to start the
-iterator at the first live HCA page.
+Aside of ASM code reduction this prepares for detecting and handling a
+local APIC injected vector 0x80.
 
-The changes are contained in a parallel set of iterator start and next
-functions that are umem aware and specific to umem since there is one user
-of the rdma_for_each_block() without umem.
-
-These two fixes prevents the extra pages before and after the user MR
-data.
-
-Fix the preceding pages by using the __sq_advance field to start at the
-first 4k page containing MR data.
-
-Fix the following pages by saving the number of pgsz blocks in the
-iterator state and downcounting on each next.
-
-This fix allows for the elimination of the small page crutch noted in the
-Fixes.
-
-Fixes: 10c75ccb54e4 ("RDMA/umem: Prevent small pages from being returned by ib_umem_find_best_pgsz()")
-Link: https://lore.kernel.org/r/20231129202143.1434-2-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ kirill.shutemov: More verbose comments ]
+Suggested-by: Linus Torvalds <torvalds@linuxfoundation.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem.c | 6 ------
- include/rdma/ib_umem.h         | 9 ++++++++-
- include/rdma/ib_verbs.h        | 1 +
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/entry/common.c          |   58 ++++++++++++++++++++++++++++-
+ arch/x86/entry/entry_64_compat.S |   77 ---------------------------------------
+ arch/x86/include/asm/idtentry.h  |    4 ++
+ arch/x86/include/asm/proto.h     |    4 --
+ arch/x86/kernel/idt.c            |    2 -
+ arch/x86/xen/enlighten_pv.c      |    2 -
+ arch/x86/xen/xen-asm.S           |    2 -
+ 7 files changed, 64 insertions(+), 85 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index f9ab671c8eda5..07c571c7b6999 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -96,12 +96,6 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 		return page_size;
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -119,7 +119,62 @@ static __always_inline void do_syscall_3
  	}
- 
--	/* rdma_for_each_block() has a bug if the page size is smaller than the
--	 * page size used to build the umem. For now prevent smaller page sizes
--	 * from being returned.
--	 */
--	pgsz_bitmap &= GENMASK(BITS_PER_LONG - 1, PAGE_SHIFT);
--
- 	/* The best result is the smallest page size that results in the minimum
- 	 * number of required pages. Compute the largest page size that could
- 	 * work based on VA address bits that don't change.
-diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
-index 95896472a82bf..565a850445414 100644
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -77,6 +77,13 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
- {
- 	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
- 				umem->sgt_append.sgt.nents, pgsz);
-+	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
-+	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
-+}
-+
-+static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
-+{
-+	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
  }
  
- /**
-@@ -92,7 +99,7 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
-  */
- #define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
- 	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
--	     __rdma_block_iter_next(biter);)
-+	     __rdma_umem_block_iter_next(biter);)
+-/* Handles int $0x80 */
++#ifdef CONFIG_IA32_EMULATION
++/**
++ * int80_emulation - 32-bit legacy syscall entry
++ *
++ * This entry point can be used by 32-bit and 64-bit programs to perform
++ * 32-bit system calls.  Instances of INT $0x80 can be found inline in
++ * various programs and libraries.  It is also used by the vDSO's
++ * __kernel_vsyscall fallback for hardware that doesn't support a faster
++ * entry method.  Restarted 32-bit system calls also fall back to INT
++ * $0x80 regardless of what instruction was originally used to do the
++ * system call.
++ *
++ * This is considered a slow path.  It is not used by most libc
++ * implementations on modern hardware except during process startup.
++ *
++ * The arguments for the INT $0x80 based syscall are on stack in the
++ * pt_regs structure:
++ *   eax:				system call number
++ *   ebx, ecx, edx, esi, edi, ebp:	arg1 - arg 6
++ */
++DEFINE_IDTENTRY_RAW(int80_emulation)
++{
++	int nr;
++
++	/* Establish kernel context. */
++	enter_from_user_mode(regs);
++
++	instrumentation_begin();
++	add_random_kstack_offset();
++
++	/*
++	 * The low level idtentry code pushed -1 into regs::orig_ax
++	 * and regs::ax contains the syscall number.
++	 *
++	 * User tracing code (ptrace or signal handlers) might assume
++	 * that the regs::orig_ax contains a 32-bit number on invoking
++	 * a 32-bit syscall.
++	 *
++	 * Establish the syscall convention by saving the 32bit truncated
++	 * syscall number in regs::orig_ax and by invalidating regs::ax.
++	 */
++	regs->orig_ax = regs->ax & GENMASK(31, 0);
++	regs->ax = -ENOSYS;
++
++	nr = syscall_32_enter(regs);
++
++	local_irq_enable();
++	nr = syscall_enter_from_user_mode_work(regs, nr);
++	do_syscall_32_irqs_on(regs, nr);
++
++	instrumentation_end();
++	syscall_exit_to_user_mode(regs);
++}
++#else /* CONFIG_IA32_EMULATION */
++
++/* Handles int $0x80 on a 32bit kernel */
+ __visible noinstr void do_int80_syscall_32(struct pt_regs *regs)
+ {
+ 	int nr = syscall_32_enter(regs);
+@@ -138,6 +193,7 @@ __visible noinstr void do_int80_syscall_
+ 	instrumentation_end();
+ 	syscall_exit_to_user_mode(regs);
+ }
++#endif /* !CONFIG_IA32_EMULATION */
  
- #ifdef CONFIG_INFINIBAND_USER_MEM
+ static noinstr bool __do_fast_syscall_32(struct pt_regs *regs)
+ {
+--- a/arch/x86/entry/entry_64_compat.S
++++ b/arch/x86/entry/entry_64_compat.S
+@@ -277,80 +277,3 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_end
+ 	ANNOTATE_NOENDBR
+ 	int3
+ SYM_CODE_END(entry_SYSCALL_compat)
+-
+-/*
+- * 32-bit legacy system call entry.
+- *
+- * 32-bit x86 Linux system calls traditionally used the INT $0x80
+- * instruction.  INT $0x80 lands here.
+- *
+- * This entry point can be used by 32-bit and 64-bit programs to perform
+- * 32-bit system calls.  Instances of INT $0x80 can be found inline in
+- * various programs and libraries.  It is also used by the vDSO's
+- * __kernel_vsyscall fallback for hardware that doesn't support a faster
+- * entry method.  Restarted 32-bit system calls also fall back to INT
+- * $0x80 regardless of what instruction was originally used to do the
+- * system call.
+- *
+- * This is considered a slow path.  It is not used by most libc
+- * implementations on modern hardware except during process startup.
+- *
+- * Arguments:
+- * eax  system call number
+- * ebx  arg1
+- * ecx  arg2
+- * edx  arg3
+- * esi  arg4
+- * edi  arg5
+- * ebp  arg6
+- */
+-SYM_CODE_START(entry_INT80_compat)
+-	UNWIND_HINT_ENTRY
+-	ENDBR
+-	/*
+-	 * Interrupts are off on entry.
+-	 */
+-	ASM_CLAC			/* Do this early to minimize exposure */
+-	ALTERNATIVE "swapgs", "", X86_FEATURE_XENPV
+-
+-	/*
+-	 * User tracing code (ptrace or signal handlers) might assume that
+-	 * the saved RAX contains a 32-bit number when we're invoking a 32-bit
+-	 * syscall.  Just in case the high bits are nonzero, zero-extend
+-	 * the syscall number.  (This could almost certainly be deleted
+-	 * with no ill effects.)
+-	 */
+-	movl	%eax, %eax
+-
+-	/* switch to thread stack expects orig_ax and rdi to be pushed */
+-	pushq	%rax			/* pt_regs->orig_ax */
+-
+-	/* Need to switch before accessing the thread stack. */
+-	SWITCH_TO_KERNEL_CR3 scratch_reg=%rax
+-
+-	/* In the Xen PV case we already run on the thread stack. */
+-	ALTERNATIVE "", "jmp .Lint80_keep_stack", X86_FEATURE_XENPV
+-
+-	movq	%rsp, %rax
+-	movq	PER_CPU_VAR(cpu_current_top_of_stack), %rsp
+-
+-	pushq	5*8(%rax)		/* regs->ss */
+-	pushq	4*8(%rax)		/* regs->rsp */
+-	pushq	3*8(%rax)		/* regs->eflags */
+-	pushq	2*8(%rax)		/* regs->cs */
+-	pushq	1*8(%rax)		/* regs->ip */
+-	pushq	0*8(%rax)		/* regs->orig_ax */
+-.Lint80_keep_stack:
+-
+-	PUSH_AND_CLEAR_REGS rax=$-ENOSYS
+-	UNWIND_HINT_REGS
+-
+-	cld
+-
+-	IBRS_ENTER
+-	UNTRAIN_RET
+-
+-	movq	%rsp, %rdi
+-	call	do_int80_syscall_32
+-	jmp	swapgs_restore_regs_and_return_to_usermode
+-SYM_CODE_END(entry_INT80_compat)
+--- a/arch/x86/include/asm/idtentry.h
++++ b/arch/x86/include/asm/idtentry.h
+@@ -569,6 +569,10 @@ DECLARE_IDTENTRY_RAW(X86_TRAP_UD,		exc_i
+ DECLARE_IDTENTRY_RAW(X86_TRAP_BP,		exc_int3);
+ DECLARE_IDTENTRY_RAW_ERRORCODE(X86_TRAP_PF,	exc_page_fault);
  
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 533ab92684d81..62f9d126a71ad 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -2846,6 +2846,7 @@ struct ib_block_iter {
- 	/* internal states */
- 	struct scatterlist *__sg;	/* sg holding the current aligned block */
- 	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
-+	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
- 	unsigned int __sg_nents;	/* number of SG entries */
- 	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
- 	unsigned int __pg_bit;		/* alignment of current block */
--- 
-2.42.0
-
++#if defined(CONFIG_IA32_EMULATION)
++DECLARE_IDTENTRY_RAW(IA32_SYSCALL_VECTOR,	int80_emulation);
++#endif
++
+ #ifdef CONFIG_X86_MCE
+ #ifdef CONFIG_X86_64
+ DECLARE_IDTENTRY_MCE(X86_TRAP_MC,	exc_machine_check);
+--- a/arch/x86/include/asm/proto.h
++++ b/arch/x86/include/asm/proto.h
+@@ -32,10 +32,6 @@ void entry_SYSCALL_compat(void);
+ void entry_SYSCALL_compat_safe_stack(void);
+ void entry_SYSRETL_compat_unsafe_stack(void);
+ void entry_SYSRETL_compat_end(void);
+-void entry_INT80_compat(void);
+-#ifdef CONFIG_XEN_PV
+-void xen_entry_INT80_compat(void);
+-#endif
+ #endif
+ 
+ void x86_configure_nx(void);
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -117,7 +117,7 @@ static const __initconst struct idt_data
+ 
+ 	SYSG(X86_TRAP_OF,		asm_exc_overflow),
+ #if defined(CONFIG_IA32_EMULATION)
+-	SYSG(IA32_SYSCALL_VECTOR,	entry_INT80_compat),
++	SYSG(IA32_SYSCALL_VECTOR,	asm_int80_emulation),
+ #elif defined(CONFIG_X86_32)
+ 	SYSG(IA32_SYSCALL_VECTOR,	entry_INT80_32),
+ #endif
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -623,7 +623,7 @@ static struct trap_array_entry trap_arra
+ 	TRAP_ENTRY(exc_int3,				false ),
+ 	TRAP_ENTRY(exc_overflow,			false ),
+ #ifdef CONFIG_IA32_EMULATION
+-	{ entry_INT80_compat,          xen_entry_INT80_compat,          false },
++	TRAP_ENTRY(int80_emulation,			false ),
+ #endif
+ 	TRAP_ENTRY(exc_page_fault,			false ),
+ 	TRAP_ENTRY(exc_divide_error,			false ),
+--- a/arch/x86/xen/xen-asm.S
++++ b/arch/x86/xen/xen-asm.S
+@@ -156,7 +156,7 @@ xen_pv_trap asm_xenpv_exc_machine_check
+ #endif /* CONFIG_X86_MCE */
+ xen_pv_trap asm_exc_simd_coprocessor_error
+ #ifdef CONFIG_IA32_EMULATION
+-xen_pv_trap entry_INT80_compat
++xen_pv_trap asm_int80_emulation
+ #endif
+ xen_pv_trap asm_exc_xen_unknown_trap
+ xen_pv_trap asm_exc_xen_hypervisor_callback
 
 
 
