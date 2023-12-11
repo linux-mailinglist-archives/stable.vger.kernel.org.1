@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3CE80D57E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87EA580D8D6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B95FB1C214B4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E4A01F218F6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2951029;
-	Mon, 11 Dec 2023 18:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D49B51C2D;
+	Mon, 11 Dec 2023 18:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZmVjJ2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiOePv4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B092C4F212;
-	Mon, 11 Dec 2023 18:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D5DC433C8;
-	Mon, 11 Dec 2023 18:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5531E5102A;
+	Mon, 11 Dec 2023 18:49:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4F8C433CA;
+	Mon, 11 Dec 2023 18:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319113;
-	bh=4lKra4jQp5ko7EPXD/Q931Jf3RMYx5uUsaKPKzhbeWo=;
+	s=korg; t=1702320558;
+	bh=neeZJKKaO7tR5ozd+188NUy7RRC+1rY8Vs+Dy7f47uQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZmVjJ2yOON3cLP9NPwBVj9SiyFsrveZE5QC2Z2I0PGOSkrzt+w0Ok70f7ChD4hug
-	 jzzyBcuc/qZ4hjWTrEb3h/VK4s9a9CrrS4RRJV2CKckLoHfmzjfXs+6HriFesAo1FE
-	 13g95RrvfvmsXlhChtO3EpNIFPcxcVG5M3AX4Hvo=
+	b=ZiOePv4FXGsnrV3yhKCkaiZT9WOOZL5qDGsVScMnzXPOMm4UusZXia3u718ZT+ZDQ
+	 s4y6enX/XQMQFBHmItceOoxwNpQFS3X3zqR3Z/VFHo/7pH/8tPdiBf0MS0wjhZRXvE
+	 Aojjk/I+xpi6FoqkB6BPtPpMJ6tjFJyYLR3/UM9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 25/55] tracing: Fix a warning when allocating buffered events fails
+	Sarah Grant <s@srd.tw>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 105/194] ALSA: usb-audio: Add Pioneer DJM-450 mixer controls
 Date: Mon, 11 Dec 2023 19:21:35 +0100
-Message-ID: <20231211182013.134512535@linuxfoundation.org>
+Message-ID: <20231211182041.135149631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,88 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Sarah Grant <s@srd.tw>
 
-[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
+commit bbb8e71965c3737bdc691afd803a34bfd61cfbeb upstream.
 
-Function trace_buffered_event_disable() produces an unexpected warning
-when the previous call to trace_buffered_event_enable() fails to
-allocate pages for buffered events.
+These values mirror those of the Pioneer DJM-250MK2 as the channel layout
+appears identical based on my observations. This duplication could be removed in
+later contributions if desired.
 
-The situation can occur as follows:
-
-* The counter trace_buffered_event_ref is at 0.
-
-* The soft mode gets enabled for some event and
-  trace_buffered_event_enable() is called. The function increments
-  trace_buffered_event_ref to 1 and starts allocating event pages.
-
-* The allocation fails for some page and trace_buffered_event_disable()
-  is called for cleanup.
-
-* Function trace_buffered_event_disable() decrements
-  trace_buffered_event_ref back to 0, recognizes that it was the last
-  use of buffered events and frees all allocated pages.
-
-* The control goes back to trace_buffered_event_enable() which returns.
-  The caller of trace_buffered_event_enable() has no information that
-  the function actually failed.
-
-* Some time later, the soft mode is disabled for the same event.
-  Function trace_buffered_event_disable() is called. It warns on
-  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
-
-Buffered events are just an optimization and can handle failures. Make
-trace_buffered_event_enable() exit on the first failure and left any
-cleanup later to when trace_buffered_event_disable() is called.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
-
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sarah Grant <s@srd.tw>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231201181654.5058-1-s@srd.tw
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ sound/usb/mixer_quirks.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index f44c8f1fd3ec5..a6d84349bcc48 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2209,8 +2209,11 @@ void trace_buffered_event_enable(void)
- 	for_each_tracing_cpu(cpu) {
- 		page = alloc_pages_node(cpu_to_node(cpu),
- 					GFP_KERNEL | __GFP_NORETRY, 0);
--		if (!page)
--			goto failed;
-+		/* This is just an optimization and can handle failures */
-+		if (!page) {
-+			pr_err("Failed to allocate event buffer\n");
-+			break;
-+		}
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2978,6 +2978,7 @@ static int snd_bbfpro_controls_create(st
+ #define SND_DJM_850_IDX		0x2
+ #define SND_DJM_900NXS2_IDX	0x3
+ #define SND_DJM_750MK2_IDX	0x4
++#define SND_DJM_450_IDX		0x5
  
- 		event = page_address(page);
- 		memset(event, 0, sizeof(*event));
-@@ -2224,10 +2227,6 @@ void trace_buffered_event_enable(void)
- 			WARN_ON_ONCE(1);
- 		preempt_enable();
- 	}
--
--	return;
-- failed:
--	trace_buffered_event_disable();
- }
  
- static void enable_trace_buffered_event(void *data)
--- 
-2.42.0
-
+ #define SND_DJM_CTL(_name, suffix, _default_value, _windex) { \
+@@ -3108,6 +3109,31 @@ static const struct snd_djm_ctl snd_djm_
+ };
+ 
+ 
++// DJM-450
++static const u16 snd_djm_opts_450_cap1[] = {
++	0x0103, 0x0100, 0x0106, 0x0107, 0x0108, 0x0109, 0x010d, 0x010a };
++
++static const u16 snd_djm_opts_450_cap2[] = {
++	0x0203, 0x0200, 0x0206, 0x0207, 0x0208, 0x0209, 0x020d, 0x020a };
++
++static const u16 snd_djm_opts_450_cap3[] = {
++	0x030a, 0x0311, 0x0312, 0x0307, 0x0308, 0x0309, 0x030d };
++
++static const u16 snd_djm_opts_450_pb1[] = { 0x0100, 0x0101, 0x0104 };
++static const u16 snd_djm_opts_450_pb2[] = { 0x0200, 0x0201, 0x0204 };
++static const u16 snd_djm_opts_450_pb3[] = { 0x0300, 0x0301, 0x0304 };
++
++static const struct snd_djm_ctl snd_djm_ctls_450[] = {
++	SND_DJM_CTL("Capture Level", cap_level, 0, SND_DJM_WINDEX_CAPLVL),
++	SND_DJM_CTL("Ch1 Input",   450_cap1, 2, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch2 Input",   450_cap2, 2, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch3 Input",   450_cap3, 0, SND_DJM_WINDEX_CAP),
++	SND_DJM_CTL("Ch1 Output",   450_pb1, 0, SND_DJM_WINDEX_PB),
++	SND_DJM_CTL("Ch2 Output",   450_pb2, 1, SND_DJM_WINDEX_PB),
++	SND_DJM_CTL("Ch3 Output",   450_pb3, 2, SND_DJM_WINDEX_PB)
++};
++
++
+ // DJM-750
+ static const u16 snd_djm_opts_750_cap1[] = {
+ 	0x0101, 0x0103, 0x0106, 0x0107, 0x0108, 0x0109, 0x010a, 0x010f };
+@@ -3203,6 +3229,7 @@ static const struct snd_djm_device snd_d
+ 	[SND_DJM_850_IDX] = SND_DJM_DEVICE(850),
+ 	[SND_DJM_900NXS2_IDX] = SND_DJM_DEVICE(900nxs2),
+ 	[SND_DJM_750MK2_IDX] = SND_DJM_DEVICE(750mk2),
++	[SND_DJM_450_IDX] = SND_DJM_DEVICE(450),
+ };
+ 
+ 
+@@ -3449,6 +3476,9 @@ int snd_usb_mixer_apply_create_quirk(str
+ 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
+ 		err = snd_djm_controls_create(mixer, SND_DJM_250MK2_IDX);
+ 		break;
++	case USB_ID(0x2b73, 0x0013): /* Pioneer DJ DJM-450 */
++		err = snd_djm_controls_create(mixer, SND_DJM_450_IDX);
++		break;
+ 	case USB_ID(0x08e4, 0x017f): /* Pioneer DJ DJM-750 */
+ 		err = snd_djm_controls_create(mixer, SND_DJM_750_IDX);
+ 		break;
 
 
 
