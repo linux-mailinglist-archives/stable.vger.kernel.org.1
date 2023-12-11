@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD3780D8E9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDBE80D730
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:37:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54B4B1F21B87
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF841C210E7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0981351C45;
-	Mon, 11 Dec 2023 18:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB0953E29;
+	Mon, 11 Dec 2023 18:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jgm8SCZ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpUXLyW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00335102A;
-	Mon, 11 Dec 2023 18:49:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B5FC433C8;
-	Mon, 11 Dec 2023 18:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1EF53E02;
+	Mon, 11 Dec 2023 18:35:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384D4C433C8;
+	Mon, 11 Dec 2023 18:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320569;
-	bh=I/JkLiPUPxvIMEryG+S71Gu8X9e78S0Q89VsCBDfHe0=;
+	s=korg; t=1702319717;
+	bh=WhJNlXQz9AGMma3kmAwhWwYzbrGNj7L8kqKLuq0Rnvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jgm8SCZ8XYyyH2Cnum1GptXq+OH6cAlCvKlzMiZCQw1Lhzm7PCKCbtjZH93oCQcfv
-	 pMSUE55TLM6F/a7MQb+FDjfqK1NK5zkQ/TSdvv4cz4LJXgwrmjcfM/Rms1AvqL3fMF
-	 gqWPWVTtoitqWFbbav3r59sLHQ5itXIhvNCRXeXg=
+	b=zpUXLyW83rR4wlgQdcPtSUqJK5+dR9Sg4UpfI4V8YVWovdb4LeWcBnWKIMlAM7Lcg
+	 AHBUWGbmVgmHdJKfWmxqVPVA9mEs5/mxVlpDWeA3CGUon/mXrJjFrbTL0UbkaSflCb
+	 mHSmBIf15Vl9JMqVtv65kJCkbe8CFNGFWnQxKmU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/194] ASoC: codecs: lpass-tx-macro: set active_decimator correct default value
+	Eric Woudstra <ericwouds@gmail.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 178/244] arm64: dts: mt7986: fix emmc hs400 mode without uboot initialization
 Date: Mon, 11 Dec 2023 19:21:11 +0100
-Message-ID: <20231211182040.096167349@linuxfoundation.org>
+Message-ID: <20231211182053.922506721@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Eric Woudstra <ericwouds@gmail.com>
 
-[ Upstream commit a2f35ed1d237c459100adb0c39bb811d7f170977 ]
+commit 8dfe51c3f6ef31502fca3e2da8cd250ebbe4b8f2 upstream.
 
-The -1 value for active_decimator[dai_id] is considered as "not set",
-but at probe the table is initialized a 0, this prevents enabling the
-DEC0 Mixer since it will be considered as already set.
+Eric reports errors on emmc with hs400 mode when booting linux on bpi-r3
+without uboot [1]. Booting with uboot does not show this because clocks
+seem to be initialized by uboot.
 
-Initialize the table entries as -1 to fix tx_macro_tx_mixer_put().
+Fix this by adding assigned-clocks and assigned-clock-parents like it's
+done in uboot [2].
 
-Fixes: 1c6a7f5250ce ("ASoC: codecs: tx-macro: fix active_decimator array")
-Fixes: c1057a08af43 ("ASoC: codecs: tx-macro: fix kcontrol put")
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231116-topic-sm8x50-upstream-tx-macro-fix-active-decimator-set-v1-1-6edf402f4b6f@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://forum.banana-pi.org/t/bpi-r3-kernel-fails-setting-emmc-clock-to-416m-depends-on-u-boot/15170
+[2] https://github.com/u-boot/u-boot/blob/master/arch/arm/dts/mt7986.dtsi#L287
+
+Cc: stable@vger.kernel.org
+Fixes: 513b49d19b34 ("arm64: dts: mt7986: add mmc related device nodes")
+Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231025170832.78727-2-linux@fw-web.de
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-tx-macro.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt7986a.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
-index 9f59518005a5f..840bbe991cd3a 100644
---- a/sound/soc/codecs/lpass-tx-macro.c
-+++ b/sound/soc/codecs/lpass-tx-macro.c
-@@ -1871,6 +1871,11 @@ static int tx_macro_probe(struct platform_device *pdev)
- 
- 	tx->dev = dev;
- 
-+	/* Set active_decimator default value */
-+	tx->active_decimator[TX_MACRO_AIF1_CAP] = -1;
-+	tx->active_decimator[TX_MACRO_AIF2_CAP] = -1;
-+	tx->active_decimator[TX_MACRO_AIF3_CAP] = -1;
-+
- 	/* set MCLK and NPL rates */
- 	clk_set_rate(tx->mclk, MCLK_FREQ);
- 	clk_set_rate(tx->npl, MCLK_FREQ);
+diff --git a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+index 24eda00e320d..77ddd9e44ed2 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7986a.dtsi
+@@ -374,6 +374,10 @@ mmc0: mmc@11230000 {
+ 			reg = <0 0x11230000 0 0x1000>,
+ 			      <0 0x11c20000 0 0x1000>;
+ 			interrupts = <GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH>;
++			assigned-clocks = <&topckgen CLK_TOP_EMMC_416M_SEL>,
++					  <&topckgen CLK_TOP_EMMC_250M_SEL>;
++			assigned-clock-parents = <&apmixedsys CLK_APMIXED_MPLL>,
++						 <&topckgen CLK_TOP_NET1PLL_D5_D2>;
+ 			clocks = <&topckgen CLK_TOP_EMMC_416M_SEL>,
+ 				 <&infracfg CLK_INFRA_MSDC_HCK_CK>,
+ 				 <&infracfg CLK_INFRA_MSDC_CK>,
 -- 
-2.42.0
+2.43.0
 
 
 
