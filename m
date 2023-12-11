@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-5897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC5480D7B3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58F580D740
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2B11F21AAC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617B6281FB8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDFF524BA;
-	Mon, 11 Dec 2023 18:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4C952F84;
+	Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y00WxA0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkeSh9uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D68051C45;
-	Mon, 11 Dec 2023 18:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A66C433C7;
-	Mon, 11 Dec 2023 18:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EDF52F72;
+	Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C12C433CB;
+	Mon, 11 Dec 2023 18:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319959;
-	bh=O8MERLGyZYZ5xxgxV4CnN1W0jqsblGr2rMWYoiDMvPc=;
+	s=korg; t=1702319756;
+	bh=8emQgtLLFpahAm3MzJYenwFV+xPzAlif6M9QykqcHUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y00WxA0i53G/0T+yNQh1+l0/j4AmyOnqu3uyqo3PLAKS2G0qrn8wRe9aC+rS7VQnU
-	 HXHGi+E53ieUAZhNTQIz3WWo3vgA3qgal9tLrdBHMIZ2N6uvFythnBXZOrfY8fYhg4
-	 i0DVx3uuGSyGFwLqyHTTTm5OtS5kUDi0qGs+p0tw=
+	b=BkeSh9uuLpZ4quJ5hkIsG+5IBaLXDq2OrIFa24wQvV9x4XNjHHko7GfljnHQFQxVa
+	 U8Rlqkf+NbkWf9K7BEPfaHnUedQfNjmY9ukniGG5JJkui/HLECDoS5m/nTxqeEw8ga
+	 zsvO8zy5OtPXjtgya1PQgWqZaPZW46bHrWyiykpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Vaneet Narang <v.narang@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 51/97] checkstack: fix printed address
-Date: Mon, 11 Dec 2023 19:21:54 +0100
-Message-ID: <20231211182021.922148704@linuxfoundation.org>
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.6 222/244] serial: 8250: 8250_omap: Do not start RX DMA on THRI interrupt
+Date: Mon, 11 Dec 2023 19:21:55 +0100
+Message-ID: <20231211182055.949325881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit ee34db3f271cea4d4252048617919c2caafe698b upstream.
+commit c6bb057418876cdfdd29a6f7b8cef54539ee8811 upstream.
 
-All addresses printed by checkstack have an extra incorrect 0 appended at
-the end.
+Starting RX DMA on THRI interrupt is too early because TX may not have
+finished yet.
 
-This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
-display $dre as different entity"): since then the address is taken from
-the line which contains the function name, instead of the line which
-contains stack consumption. E.g. on s390:
+This change is inspired by commit 90b8596ac460 ("serial: 8250: Prevent
+starting up DMA Rx on THRI interrupt") and fixes DMA issues I had with
+an AM62 SoC that is using the 8250 OMAP variant.
 
-0000000000100a30 <do_one_initcall>:
-...
-  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
-
-So the used regex which matches spaces and hexadecimal numbers to extract
-an address now matches a different substring. Subsequently replacing spaces
-with 0 appends a zero at the and, instead of replacing leading spaces.
-
-Fix this by using the proper regex, and simplify the code a bit.
-
-Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
-Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Maninder Singh <maninder1.s@samsung.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Vaneet Narang <v.narang@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: c26389f998a8 ("serial: 8250: 8250_omap: Add DMA support for UARTs on K3 SoCs")
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/r/20231101171431.16495-1-rwahl@gmx.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/checkstack.pl |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/scripts/checkstack.pl
-+++ b/scripts/checkstack.pl
-@@ -142,15 +142,11 @@ $total_size = 0;
- while (my $line = <STDIN>) {
- 	if ($line =~ m/$funcre/) {
- 		$func = $1;
--		next if $line !~ m/^($xs*)/;
-+		next if $line !~ m/^($x*)/;
- 		if ($total_size > $min_stack) {
- 			push @stack, "$intro$total_size\n";
- 		}
--
--		$addr = $1;
--		$addr =~ s/ /0/g;
--		$addr = "0x$addr";
--
-+		$addr = "0x$1";
- 		$intro = "$addr $func [$file]:";
- 		my $padlen = 56 - length($intro);
- 		while ($padlen > 0) {
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1282,10 +1282,12 @@ static int omap_8250_dma_handle_irq(stru
+ 
+ 	status = serial_port_in(port, UART_LSR);
+ 
+-	if (priv->habit & UART_HAS_EFR2)
+-		am654_8250_handle_rx_dma(up, iir, status);
+-	else
+-		status = omap_8250_handle_rx_dma(up, iir, status);
++	if ((iir & 0x3f) != UART_IIR_THRI) {
++		if (priv->habit & UART_HAS_EFR2)
++			am654_8250_handle_rx_dma(up, iir, status);
++		else
++			status = omap_8250_handle_rx_dma(up, iir, status);
++	}
+ 
+ 	serial8250_modem_status(up);
+ 	if (status & UART_LSR_THRE && up->dma->tx_err) {
 
 
 
