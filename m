@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-6171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6A180D935
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA5880D7EB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1DC8B216C2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F3C1C212A0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7403451C37;
-	Mon, 11 Dec 2023 18:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC6751C4E;
+	Mon, 11 Dec 2023 18:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmmYy8nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpH3q7JL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341EF5102A;
-	Mon, 11 Dec 2023 18:51:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF5DC433C8;
-	Mon, 11 Dec 2023 18:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D11CAFBE1;
+	Mon, 11 Dec 2023 18:40:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D312C433C8;
+	Mon, 11 Dec 2023 18:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320703;
-	bh=fWg4wigGuNZQKg3uq8D3fzpAYJR4vqXdgqcoEctc6ls=;
+	s=korg; t=1702320057;
+	bh=pHu54w7UQGI/ob/c9/uNWqSniK+LOnGi9+m6KyRK5kY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmmYy8nfL4B1hhNLrJkRSocEy1K4CfcdNXc8e+s7wbnebba3V7qJv+EylxAzsWoz9
-	 fGcntI9Pq/QR/VWyMATjJHH+86VVetSU6X3AEieeRKHtNYw9FZLJWuiBa6TJXqTI8W
-	 6ULBI2WIf7xYWI5A58IkvScHTgSmGrQT/sHKnCEY=
+	b=RpH3q7JLbYqa2aG1eUe1j8ud+IseAxQBwsSHk8y930c9iZLQaRu86K0pSwglZbhTk
+	 Ti0+qnBGnXDK4n4mw66vUT9GuEQOh8mygqh1N9f+9rlfinuvrJeJNPYr6uDU+6umey
+	 U2FT/MP701AfVIi7RdFTIQaaMSrJMlaMyESipQvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <Alexander.Deucher@amd.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Kent Russell <kent.russell@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/194] drm/amdgpu: Decouple RAS EEPROM addresses from chips
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 86/97] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
 Date: Mon, 11 Dec 2023 19:22:29 +0100
-Message-ID: <20231211182043.738182769@linuxfoundation.org>
+Message-ID: <20231211182023.515010408@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,109 +55,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 3b8164f8084ff7888ed24970efa230ff5d36eda8 ]
+commit e03781879a0d524ce3126678d50a80484a513c4b upstream.
 
-Abstract RAS I2C EEPROM addresses from chip names, and set their macro
-definition names to the address they set, not the chip they attach
-to. Since most chips either use I2C EEPROM address 0 or 40000h for the RAS
-table start offset, this leaves us with only two macro definitions as
-opposed to five, and removes the redundancy of four.
+The "NET_DM" generic netlink family notifies drop locations over the
+"events" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-Cc: Candice Li <candice.li@amd.com>
-Cc: Tao Zhou <tao.zhou1@amd.com>
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Reviewed-by: Kent Russell <kent.russell@amd.com>
-Reviewed-by: Alex Deucher <Alexander.Deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- .../gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c    | 23 +++++++++----------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+Fix by adding a new field to the generic netlink multicast group
+structure that when set prevents non-root users or root without the
+'CAP_SYS_ADMIN' capability (in the user namespace owning the network
+namespace) from joining the group. Set this field for the "events"
+group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
+nature of the information that is shared over this group.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index 1bb92a64f24af..f63bd31e199c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -51,12 +51,11 @@
-  * Depending on the size of the I2C EEPROM device(s), bits 18:16 may
-  * address memory in a device or a device on the I2C bus, depending on
-  * the status of pins 1-3. See top of amdgpu_eeprom.c.
-+ *
-+ * The RAS table lives either at address 0 or address 40000h of EEPROM.
-  */
--#define EEPROM_I2C_MADDR_VEGA20         0x0
--#define EEPROM_I2C_MADDR_ARCTURUS       0x40000
--#define EEPROM_I2C_MADDR_ARCTURUS_D342  0x0
--#define EEPROM_I2C_MADDR_SIENNA_CICHLID 0x0
--#define EEPROM_I2C_MADDR_ALDEBARAN      0x0
-+#define EEPROM_I2C_MADDR_0      0x0
-+#define EEPROM_I2C_MADDR_4      0x40000
- 
- /*
-  * The 2 macros bellow represent the actual size in bytes that
-@@ -135,9 +134,9 @@ static bool __get_eeprom_i2c_addr_arct(struct amdgpu_device *adev,
- 	if (strnstr(atom_ctx->vbios_version,
- 	            "D342",
- 		    sizeof(atom_ctx->vbios_version)))
--		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS_D342;
-+		control->i2c_address = EEPROM_I2C_MADDR_0;
- 	else
--		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS;
-+		control->i2c_address = EEPROM_I2C_MADDR_4;
- 
- 	return true;
+Note that the capability check in this case will always be performed
+against the initial user namespace since the family is not netns aware
+and only operates in the initial network namespace.
+
+A new field is added to the structure rather than using the "flags"
+field because the existing field uses uAPI flags and it is inappropriate
+to add a new uAPI flag for an internal kernel check. In net-next we can
+rework the "flags" field to use internal flags and fold the new field
+into it. But for now, in order to reduce the amount of changes, add a
+new field.
+
+Since the information can only be consumed by root, mark the control
+plane operations that start and stop the tracing as root-only using the
+'GENL_ADMIN_PERM' flag.
+
+Tested using [1].
+
+Before:
+
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+
+After:
+
+ # capsh -- -c ./dm_repo
+ # capsh --drop=cap_sys_admin -- -c ./dm_repo
+ Failed to join "events" multicast group
+
+[1]
+ $ cat dm.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
+
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int grp, err;
+
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
+ 	if (grp < 0) {
+ 		fprintf(stderr,
+ 			"Failed to resolve \"events\" multicast group\n");
+ 		return grp;
+ 	}
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
+ 		return err;
+ 	}
+
+ 	return 0;
  }
-@@ -148,7 +147,7 @@ static bool __get_eeprom_i2c_addr_ip_discovery(struct amdgpu_device *adev,
- 	switch (adev->ip_versions[MP1_HWIP][0]) {
- 	case IP_VERSION(13, 0, 0):
- 	case IP_VERSION(13, 0, 10):
--		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS;
-+		control->i2c_address = EEPROM_I2C_MADDR_4;
- 		return true;
- 	default:
- 		return false;
-@@ -180,18 +179,18 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 
- 	switch (adev->asic_type) {
- 	case CHIP_VEGA20:
--		control->i2c_address = EEPROM_I2C_MADDR_VEGA20;
-+		control->i2c_address = EEPROM_I2C_MADDR_0;
- 		break;
- 
- 	case CHIP_ARCTURUS:
- 		return __get_eeprom_i2c_addr_arct(adev, control);
- 
- 	case CHIP_SIENNA_CICHLID:
--		control->i2c_address = EEPROM_I2C_MADDR_SIENNA_CICHLID;
-+		control->i2c_address = EEPROM_I2C_MADDR_0;
- 		break;
- 
- 	case CHIP_ALDEBARAN:
--		control->i2c_address = EEPROM_I2C_MADDR_ALDEBARAN;
-+		control->i2c_address = EEPROM_I2C_MADDR_0;
- 		break;
- 
- 	case CHIP_IP_DISCOVERY:
-@@ -203,7 +202,7 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 
- 	switch (adev->ip_versions[MP1_HWIP][0]) {
- 	case IP_VERSION(13, 0, 0):
--		control->i2c_address = EEPROM_I2C_MADDR_ARCTURUS;
-+		control->i2c_address = EEPROM_I2C_MADDR_4;
- 		break;
- 
- 	default:
--- 
-2.42.0
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
 
+Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ include/net/genetlink.h |    2 ++
+ net/core/drop_monitor.c |    4 +++-
+ net/netlink/genetlink.c |    3 +++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -11,10 +11,12 @@
+ /**
+  * struct genl_multicast_group - generic netlink multicast group
+  * @name: name of the multicast group, names are per-family
++ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
+ 	u8			flags;
++	u8			cap_sys_admin:1;
+ };
+ 
+ struct genl_ops;
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -183,7 +183,7 @@ out:
+ }
+ 
+ static const struct genl_multicast_group dropmon_mcgrps[] = {
+-	{ .name = "events", },
++	{ .name = "events", .cap_sys_admin = 1 },
+ };
+ 
+ static void send_dm_alert(struct work_struct *work)
+@@ -1616,11 +1616,13 @@ static const struct genl_small_ops dropm
+ 		.cmd = NET_DM_CMD_START,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_STOP,
+ 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
+ 		.doit = net_dm_cmd_trace,
++		.flags = GENL_ADMIN_PERM,
+ 	},
+ 	{
+ 		.cmd = NET_DM_CMD_CONFIG_GET,
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1387,6 +1387,9 @@ static int genl_bind(struct net *net, in
+ 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
+ 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			ret = -EPERM;
++		if (grp->cap_sys_admin &&
++		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
++			ret = -EPERM;
+ 
+ 		break;
+ 	}
 
 
 
