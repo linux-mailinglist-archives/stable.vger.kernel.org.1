@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCB280D7CA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F34080D946
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6068282496
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AFCC1F21B6F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9D0537FC;
-	Mon, 11 Dec 2023 18:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76AA251C3B;
+	Mon, 11 Dec 2023 18:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ST8OA4vM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2db1py2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4108F52F88;
-	Mon, 11 Dec 2023 18:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC614C433C7;
-	Mon, 11 Dec 2023 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3561951C2D;
+	Mon, 11 Dec 2023 18:52:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE668C433C7;
+	Mon, 11 Dec 2023 18:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320017;
-	bh=dtMaDyiC9WycpVjvi4oaHgRkr156SsaKaeb7WJQ0gVQ=;
+	s=korg; t=1702320744;
+	bh=Gyx/WvZzF/M81o3qRD5XzzigMbt+XBTmJaV+8WrT7yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ST8OA4vMTmgsd86MPUohXpT9hfPMQjKWWab86EHle4klFkuvJhMcSqQZpKD2EydWs
-	 5hoi4Ot/hTBta1jObgm/8kJRc5cpEpZh+KK/PmwV2FpfqjJGpTU3969IO0H/uCkfkY
-	 RldBEtp1S38lJH3Qb1COeuqxQnMiZ6m80lGuX208=
+	b=Z2db1py2ZybayCCkflRXKJ7jjO6PHQQune9Ld8hIYQXE9SeHOZQZRbzXXcUXW2HZg
+	 m5k8QJDBs9GiyUdbxbZ4M/wAxtxTxN2E8OjO0+8zDHGyqWG1G3B7Msi9V258VTVPPj
+	 RveekYrPUDIFd0QUvSHmTICXbFcinU3WANQfBOlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 73/97] ARM: PL011: Fix DMA support
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/194] parisc: Reduce size of the bug_table on 64-bit kernel by half
 Date: Mon, 11 Dec 2023 19:22:16 +0100
-Message-ID: <20231211182022.930219074@linuxfoundation.org>
+Message-ID: <20231211182043.142178626@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,340 +52,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Helge Deller <deller@gmx.de>
 
-commit 58ac1b3799799069d53f5bf95c093f2fe8dd3cc5 upstream.
+[ Upstream commit 43266838515d30dc0c45d5c7e6e7edacee6cce92 ]
 
-Since there is no guarantee that the memory returned by
-dma_alloc_coherent() is associated with a 'struct page', using the
-architecture specific phys_to_page() is wrong, but using
-virt_to_page() would be as well.
+Enable GENERIC_BUG_RELATIVE_POINTERS which will store 32-bit relative
+offsets to the bug address and the source file name instead of 64-bit
+absolute addresses. This effectively reduces the size of the
+bug_table[] array by half on 64-bit kernels.
 
-Stop using sg lists altogether and just use the *_single() functions
-instead. This also simplifies the code a bit since the scatterlists in
-this driver always have only one entry anyway.
-
-https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
-    Use consistent names for dma buffers
-
-gc: Add a commit log from the initial thread:
-https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
-    Use consistent names for dma buffers
-
-Fixes: cb06ff102e2d7 ("ARM: PL011: Add support for Rx DMA buffer polling.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20231122171503.235649-1-gregory.clement@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: 487635756198 ("parisc: Fix asm operand number out of range build error in bug table")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |  112 +++++++++++++++++++---------------------
- 1 file changed, 54 insertions(+), 58 deletions(-)
+ arch/parisc/Kconfig           |  7 +++++--
+ arch/parisc/include/asm/bug.h | 34 +++++++++++++++++-----------------
+ 2 files changed, 22 insertions(+), 19 deletions(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -222,17 +222,18 @@ static struct vendor_data vendor_zte = {
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 67c26e81e2150..345d5e021484c 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -105,9 +105,12 @@ config ARCH_HAS_ILOG2_U64
+ 	default n
  
- /* Deals with DMA transactions */
+ config GENERIC_BUG
+-	bool
+-	default y
++	def_bool y
+ 	depends on BUG
++	select GENERIC_BUG_RELATIVE_POINTERS if 64BIT
++
++config GENERIC_BUG_RELATIVE_POINTERS
++	bool
  
--struct pl011_sgbuf {
--	struct scatterlist sg;
--	char *buf;
-+struct pl011_dmabuf {
-+	dma_addr_t		dma;
-+	size_t			len;
-+	char			*buf;
- };
+ config GENERIC_HWEIGHT
+ 	bool
+diff --git a/arch/parisc/include/asm/bug.h b/arch/parisc/include/asm/bug.h
+index b9cad0bb4461b..1641ff9a8b83e 100644
+--- a/arch/parisc/include/asm/bug.h
++++ b/arch/parisc/include/asm/bug.h
+@@ -17,26 +17,27 @@
+ #define	PARISC_BUG_BREAK_ASM	"break 0x1f, 0x1fff"
+ #define	PARISC_BUG_BREAK_INSN	0x03ffe01f  /* PARISC_BUG_BREAK_ASM */
  
- struct pl011_dmarx_data {
- 	struct dma_chan		*chan;
- 	struct completion	complete;
- 	bool			use_buf_b;
--	struct pl011_sgbuf	sgbuf_a;
--	struct pl011_sgbuf	sgbuf_b;
-+	struct pl011_dmabuf	dbuf_a;
-+	struct pl011_dmabuf	dbuf_b;
- 	dma_cookie_t		cookie;
- 	bool			running;
- 	struct timer_list	timer;
-@@ -245,7 +246,8 @@ struct pl011_dmarx_data {
+-#if defined(CONFIG_64BIT)
+-#define ASM_WORD_INSN		".dword\t"
++#ifdef CONFIG_GENERIC_BUG_RELATIVE_POINTERS
++# define __BUG_REL(val) ".word " __stringify(val) " - ."
+ #else
+-#define ASM_WORD_INSN		".word\t"
++# define __BUG_REL(val) ".word " __stringify(val)
+ #endif
  
- struct pl011_dmatx_data {
- 	struct dma_chan		*chan;
--	struct scatterlist	sg;
-+	dma_addr_t		dma;
-+	size_t			len;
- 	char			*buf;
- 	bool			queued;
- };
-@@ -366,32 +368,24 @@ static int pl011_fifo_to_tty(struct uart
++
+ #ifdef CONFIG_DEBUG_BUGVERBOSE
+ #define BUG()								\
+ 	do {								\
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+-			     "\t.align %4\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
++			     "\t.align 4\n"				\
++			     "2:\t" __BUG_REL(1b) "\n"			\
++			     "\t" __BUG_REL(%c0)  "\n"			\
+ 			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*%4-2*2\n"			\
++			     "\t.blockz %3-2*4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+-			     "i" (0), "i" (sizeof(struct bug_entry)),	\
+-			     "i" (sizeof(long)) );			\
++			     "i" (0), "i" (sizeof(struct bug_entry)) );	\
+ 		unreachable();						\
+ 	} while(0)
  
- #define PL011_DMA_BUFFER_SIZE PAGE_SIZE
+@@ -54,15 +55,15 @@
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+-			     "\t.align %4\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
++			     "\t.align 4\n"				\
++			     "2:\t" __BUG_REL(1b) "\n"			\
++			     "\t" __BUG_REL(%c0)  "\n"			\
+ 			     "\t.short %1, %2\n"			\
+-			     "\t.blockz %3-2*%4-2*2\n"			\
++			     "\t.blockz %3-2*4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+ 			     "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)),		\
+-			     "i" (sizeof(long)) );			\
++			     "i" (sizeof(struct bug_entry)) );		\
+ 	} while(0)
+ #else
+ #define __WARN_FLAGS(flags)						\
+@@ -71,13 +72,12 @@
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+ 			     "\t.pushsection __bug_table,\"a\"\n"	\
+ 			     "\t.align %2\n"				\
+-			     "2:\t" ASM_WORD_INSN "1b\n"		\
++			     "2:\t" __BUG_REL(1b) "\n"			\
+ 			     "\t.short %0\n"				\
+-			     "\t.blockz %1-%2-2\n"			\
++			     "\t.blockz %1-4-2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)),		\
+-			     "i" (sizeof(long)) );			\
++			     "i" (sizeof(struct bug_entry)) );		\
+ 	} while(0)
+ #endif
  
--static int pl011_sgbuf_init(struct dma_chan *chan, struct pl011_sgbuf *sg,
-+static int pl011_dmabuf_init(struct dma_chan *chan, struct pl011_dmabuf *db,
- 	enum dma_data_direction dir)
- {
--	dma_addr_t dma_addr;
--
--	sg->buf = dma_alloc_coherent(chan->device->dev,
--		PL011_DMA_BUFFER_SIZE, &dma_addr, GFP_KERNEL);
--	if (!sg->buf)
-+	db->buf = dma_alloc_coherent(chan->device->dev, PL011_DMA_BUFFER_SIZE,
-+				     &db->dma, GFP_KERNEL);
-+	if (!db->buf)
- 		return -ENOMEM;
--
--	sg_init_table(&sg->sg, 1);
--	sg_set_page(&sg->sg, phys_to_page(dma_addr),
--		PL011_DMA_BUFFER_SIZE, offset_in_page(dma_addr));
--	sg_dma_address(&sg->sg) = dma_addr;
--	sg_dma_len(&sg->sg) = PL011_DMA_BUFFER_SIZE;
-+	db->len = PL011_DMA_BUFFER_SIZE;
- 
- 	return 0;
- }
- 
--static void pl011_sgbuf_free(struct dma_chan *chan, struct pl011_sgbuf *sg,
-+static void pl011_dmabuf_free(struct dma_chan *chan, struct pl011_dmabuf *db,
- 	enum dma_data_direction dir)
- {
--	if (sg->buf) {
-+	if (db->buf) {
- 		dma_free_coherent(chan->device->dev,
--			PL011_DMA_BUFFER_SIZE, sg->buf,
--			sg_dma_address(&sg->sg));
-+				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
- 	}
- }
- 
-@@ -552,8 +546,8 @@ static void pl011_dma_tx_callback(void *
- 
- 	spin_lock_irqsave(&uap->port.lock, flags);
- 	if (uap->dmatx.queued)
--		dma_unmap_sg(dmatx->chan->device->dev, &dmatx->sg, 1,
--			     DMA_TO_DEVICE);
-+		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
-+				dmatx->len, DMA_TO_DEVICE);
- 
- 	dmacr = uap->dmacr;
- 	uap->dmacr = dmacr & ~UART011_TXDMAE;
-@@ -639,18 +633,19 @@ static int pl011_dma_tx_refill(struct ua
- 			memcpy(&dmatx->buf[first], &xmit->buf[0], second);
- 	}
- 
--	dmatx->sg.length = count;
--
--	if (dma_map_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE) != 1) {
-+	dmatx->len = count;
-+	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
-+				    DMA_TO_DEVICE);
-+	if (dmatx->dma == DMA_MAPPING_ERROR) {
- 		uap->dmatx.queued = false;
- 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
- 		return -EBUSY;
- 	}
- 
--	desc = dmaengine_prep_slave_sg(chan, &dmatx->sg, 1, DMA_MEM_TO_DEV,
-+	desc = dmaengine_prep_slave_single(chan, dmatx->dma, dmatx->len, DMA_MEM_TO_DEV,
- 					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc) {
--		dma_unmap_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_single(dma_dev->dev, dmatx->dma, dmatx->len, DMA_TO_DEVICE);
- 		uap->dmatx.queued = false;
- 		/*
- 		 * If DMA cannot be used right now, we complete this
-@@ -814,8 +809,8 @@ __acquires(&uap->port.lock)
- 	dmaengine_terminate_async(uap->dmatx.chan);
- 
- 	if (uap->dmatx.queued) {
--		dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
--			     DMA_TO_DEVICE);
-+		dma_unmap_single(uap->dmatx.chan->device->dev, uap->dmatx.dma,
-+				 uap->dmatx.len, DMA_TO_DEVICE);
- 		uap->dmatx.queued = false;
- 		uap->dmacr &= ~UART011_TXDMAE;
- 		pl011_write(uap->dmacr, uap, REG_DMACR);
-@@ -829,15 +824,15 @@ static int pl011_dma_rx_trigger_dma(stru
- 	struct dma_chan *rxchan = uap->dmarx.chan;
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_async_tx_descriptor *desc;
--	struct pl011_sgbuf *sgbuf;
-+	struct pl011_dmabuf *dbuf;
- 
- 	if (!rxchan)
- 		return -EIO;
- 
- 	/* Start the RX DMA job */
--	sgbuf = uap->dmarx.use_buf_b ?
--		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
--	desc = dmaengine_prep_slave_sg(rxchan, &sgbuf->sg, 1,
-+	dbuf = uap->dmarx.use_buf_b ?
-+		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
-+	desc = dmaengine_prep_slave_single(rxchan, dbuf->dma, dbuf->len,
- 					DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	/*
-@@ -877,8 +872,8 @@ static void pl011_dma_rx_chars(struct ua
- 			       bool readfifo)
- {
- 	struct tty_port *port = &uap->port.state->port;
--	struct pl011_sgbuf *sgbuf = use_buf_b ?
--		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
-+	struct pl011_dmabuf *dbuf = use_buf_b ?
-+		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
- 	int dma_count = 0;
- 	u32 fifotaken = 0; /* only used for vdbg() */
- 
-@@ -887,7 +882,7 @@ static void pl011_dma_rx_chars(struct ua
- 
- 	if (uap->dmarx.poll_rate) {
- 		/* The data can be taken by polling */
--		dmataken = sgbuf->sg.length - dmarx->last_residue;
-+		dmataken = dbuf->len - dmarx->last_residue;
- 		/* Recalculate the pending size */
- 		if (pending >= dmataken)
- 			pending -= dmataken;
-@@ -901,7 +896,7 @@ static void pl011_dma_rx_chars(struct ua
- 		 * Note that tty_insert_flip_buf() tries to take as many chars
- 		 * as it can.
- 		 */
--		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
-+		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
- 				pending);
- 
- 		uap->port.icount.rx += dma_count;
-@@ -912,7 +907,7 @@ static void pl011_dma_rx_chars(struct ua
- 
- 	/* Reset the last_residue for Rx DMA poll */
- 	if (uap->dmarx.poll_rate)
--		dmarx->last_residue = sgbuf->sg.length;
-+		dmarx->last_residue = dbuf->len;
- 
- 	/*
- 	 * Only continue with trying to read the FIFO if all DMA chars have
-@@ -949,8 +944,8 @@ static void pl011_dma_rx_irq(struct uart
- {
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_chan *rxchan = dmarx->chan;
--	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
--		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
-+	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
-+		&dmarx->dbuf_b : &dmarx->dbuf_a;
- 	size_t pending;
- 	struct dma_tx_state state;
- 	enum dma_status dmastat;
-@@ -972,7 +967,7 @@ static void pl011_dma_rx_irq(struct uart
- 	pl011_write(uap->dmacr, uap, REG_DMACR);
- 	uap->dmarx.running = false;
- 
--	pending = sgbuf->sg.length - state.residue;
-+	pending = dbuf->len - state.residue;
- 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
- 	/* Then we terminate the transfer - we now know our residue */
- 	dmaengine_terminate_all(rxchan);
-@@ -999,8 +994,8 @@ static void pl011_dma_rx_callback(void *
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_chan *rxchan = dmarx->chan;
- 	bool lastbuf = dmarx->use_buf_b;
--	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
--		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
-+	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
-+		&dmarx->dbuf_b : &dmarx->dbuf_a;
- 	size_t pending;
- 	struct dma_tx_state state;
- 	int ret;
-@@ -1018,7 +1013,7 @@ static void pl011_dma_rx_callback(void *
- 	 * the DMA irq handler. So we check the residue here.
- 	 */
- 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
--	pending = sgbuf->sg.length - state.residue;
-+	pending = dbuf->len - state.residue;
- 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
- 	/* Then we terminate the transfer - we now know our residue */
- 	dmaengine_terminate_all(rxchan);
-@@ -1070,16 +1065,16 @@ static void pl011_dma_rx_poll(struct tim
- 	unsigned long flags = 0;
- 	unsigned int dmataken = 0;
- 	unsigned int size = 0;
--	struct pl011_sgbuf *sgbuf;
-+	struct pl011_dmabuf *dbuf;
- 	int dma_count;
- 	struct dma_tx_state state;
- 
--	sgbuf = dmarx->use_buf_b ? &uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
-+	dbuf = dmarx->use_buf_b ? &uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
- 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
- 	if (likely(state.residue < dmarx->last_residue)) {
--		dmataken = sgbuf->sg.length - dmarx->last_residue;
-+		dmataken = dbuf->len - dmarx->last_residue;
- 		size = dmarx->last_residue - state.residue;
--		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
-+		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
- 				size);
- 		if (dma_count == size)
- 			dmarx->last_residue =  state.residue;
-@@ -1126,7 +1121,7 @@ static void pl011_dma_startup(struct uar
- 		return;
- 	}
- 
--	sg_init_one(&uap->dmatx.sg, uap->dmatx.buf, PL011_DMA_BUFFER_SIZE);
-+	uap->dmatx.len = PL011_DMA_BUFFER_SIZE;
- 
- 	/* The DMA buffer is now the FIFO the TTY subsystem can use */
- 	uap->port.fifosize = PL011_DMA_BUFFER_SIZE;
-@@ -1136,7 +1131,7 @@ static void pl011_dma_startup(struct uar
- 		goto skip_rx;
- 
- 	/* Allocate and map DMA RX buffers */
--	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
-+	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_a,
- 			       DMA_FROM_DEVICE);
- 	if (ret) {
- 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
-@@ -1144,12 +1139,12 @@ static void pl011_dma_startup(struct uar
- 		goto skip_rx;
- 	}
- 
--	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_b,
-+	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_b,
- 			       DMA_FROM_DEVICE);
- 	if (ret) {
- 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
- 			"RX buffer B", ret);
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a,
- 				 DMA_FROM_DEVICE);
- 		goto skip_rx;
- 	}
-@@ -1203,8 +1198,9 @@ static void pl011_dma_shutdown(struct ua
- 		/* In theory, this should already be done by pl011_dma_flush_buffer */
- 		dmaengine_terminate_all(uap->dmatx.chan);
- 		if (uap->dmatx.queued) {
--			dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
--				     DMA_TO_DEVICE);
-+			dma_unmap_single(uap->dmatx.chan->device->dev,
-+					 uap->dmatx.dma, uap->dmatx.len,
-+					 DMA_TO_DEVICE);
- 			uap->dmatx.queued = false;
- 		}
- 
-@@ -1215,8 +1211,8 @@ static void pl011_dma_shutdown(struct ua
- 	if (uap->using_rx_dma) {
- 		dmaengine_terminate_all(uap->dmarx.chan);
- 		/* Clean up the RX DMA */
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a, DMA_FROM_DEVICE);
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_b, DMA_FROM_DEVICE);
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a, DMA_FROM_DEVICE);
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_b, DMA_FROM_DEVICE);
- 		if (uap->dmarx.poll_rate)
- 			del_timer_sync(&uap->dmarx.timer);
- 		uap->using_rx_dma = false;
+-- 
+2.42.0
+
 
 
 
