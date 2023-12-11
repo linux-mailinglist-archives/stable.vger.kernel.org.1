@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7DC480D798
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E64880D561
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8F831C213FE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CECEE281982
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA9453E32;
-	Mon, 11 Dec 2023 18:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34355101B;
+	Mon, 11 Dec 2023 18:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF3l74Nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgqktxda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC1B524B8;
-	Mon, 11 Dec 2023 18:38:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983B7C433C8;
-	Mon, 11 Dec 2023 18:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D624F212;
+	Mon, 11 Dec 2023 18:24:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B35C433C7;
+	Mon, 11 Dec 2023 18:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319898;
-	bh=9C9sz2jVQn08iHUHok58yxXBgHedW1EUldK92+/NDuA=;
+	s=korg; t=1702319050;
+	bh=wszyAsbNLwP5GKixuEdhJfXEkNorm2l8bOfiKMk1BB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AF3l74Ndy3860w3EBFQnRh0PuuHADEV8uetC+jAP+9uWH6UvS1VFrbkd3p6NJHUmt
-	 0VEloAukTt5bnS4tNNs8HG2R33GqITHWdsO3ZKZQfhw31bkRIYSe6jNQIdyhF3CNgu
-	 EE6ekx22AtQwLHnMLHhpZJyGW+9emr1dadBcp7js=
+	b=lgqktxda8++CYyy+STZnHVVIXPadDo4+6wwv1wwx+cutu0Sxo1pCFv4op5iwA6U7d
+	 HnplmIICGKuWKEpxkShHzB8KBpS68iADDQLA1fJToFE+Hz+FrvRHN4b6rIcmeV6P5O
+	 gkgBYDMIaQhcbtxkG6WjC2u8jYSdnskMRMkacKY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
+	Robin Gong <yibin.gong@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/97] platform/x86: asus-nb-wmi: Allow configuring SW_TABLET_MODE method with a module option
+Subject: [PATCH 4.19 02/55] spi: imx: move wml setting to later than setup_transfer
 Date: Mon, 11 Dec 2023 19:21:12 +0100
-Message-ID: <20231211182020.221870967@linuxfoundation.org>
+Message-ID: <20231211182012.344555680@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +53,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Robin Gong <yibin.gong@nxp.com>
 
-[ Upstream commit 6be70ccdd989e40af151ce52db5b2d93e97fc9fb ]
+[ Upstream commit 987a2dfe3f0485a82d87106e7e1c43f35c1d3b09 ]
 
-Unfortunately we have been unable to find a reliable way to detect if
-and how SW_TABLET_MODE reporting is supported, so we are relying on
-DMI quirks for this.
+Current dynamic burst length is based on the whole transfer length,
+that's ok if there is only one sg, but is not right in case multi sgs
+in one transfer,because the tail data should be based on the last sg
+length instead of the whole transfer length. Move wml setting for DMA
+to the later place, thus, the next patch could get the right last sg
+length for wml setting. This patch is a preparation one, no any
+function change involved.
 
-Add a module-option to specify the SW_TABLET_MODE method so that this can
-be easily tested without needing to rebuild the kernel.
-
-BugLink: https://gitlab.freedesktop.org/libinput/libinput/-/issues/639
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20210812145513.39117-1-hdegoede@redhat.com
-Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
+Signed-off-by: Robin Gong <yibin.gong@nxp.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 00b80ac93553 ("spi: imx: mx51-ecspi: Move some initialisation to prepare_message hook.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-nb-wmi.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/spi/spi-imx.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
-index f47b6f30599de..b7eacf54f2862 100644
---- a/drivers/platform/x86/asus-nb-wmi.c
-+++ b/drivers/platform/x86/asus-nb-wmi.c
-@@ -41,6 +41,10 @@ static int wapf = -1;
- module_param(wapf, uint, 0444);
- MODULE_PARM_DESC(wapf, "WAPF value");
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index eb27f47578eb9..686251e05edfe 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -64,6 +64,7 @@ struct spi_imx_devtype_data {
+ 	void (*trigger)(struct spi_imx_data *);
+ 	int (*rx_available)(struct spi_imx_data *);
+ 	void (*reset)(struct spi_imx_data *);
++	void (*setup_wml)(struct spi_imx_data *);
+ 	void (*disable)(struct spi_imx_data *);
+ 	bool has_dmamode;
+ 	bool has_slavemode;
+@@ -601,6 +602,11 @@ static int mx51_ecspi_config(struct spi_device *spi)
+ 	else			/* SCLK is _very_ slow */
+ 		usleep_range(delay, delay + 10);
  
-+static int tablet_mode_sw = -1;
-+module_param(tablet_mode_sw, uint, 0444);
-+MODULE_PARM_DESC(tablet_mode_sw, "Tablet mode detect: -1:auto 0:disable 1:kbd-dock 2:lid-flip");
++	return 0;
++}
 +
- static struct quirk_entry *quirks;
++static void mx51_setup_wml(struct spi_imx_data *spi_imx)
++{
+ 	/*
+ 	 * Configure the DMA register: setup the watermark
+ 	 * and enable DMA request.
+@@ -611,8 +617,6 @@ static int mx51_ecspi_config(struct spi_device *spi)
+ 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
+ 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
+ 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
+-
+-	return 0;
+ }
  
- static bool asus_q500a_i8042_filter(unsigned char data, unsigned char str,
-@@ -477,6 +481,21 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
+ static int mx51_ecspi_rx_available(struct spi_imx_data *spi_imx)
+@@ -973,6 +977,7 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
+ 	.trigger = mx51_ecspi_trigger,
+ 	.rx_available = mx51_ecspi_rx_available,
+ 	.reset = mx51_ecspi_reset,
++	.setup_wml = mx51_setup_wml,
+ 	.fifo_size = 64,
+ 	.has_dmamode = true,
+ 	.dynamic_burst = true,
+@@ -1181,7 +1186,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
+ 				 struct spi_transfer *t)
+ {
+ 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
+-	int ret;
+ 
+ 	if (!t)
+ 		return 0;
+@@ -1222,12 +1226,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
  	else
- 		wapf = quirks->wapf;
+ 		spi_imx->usedma = 0;
  
-+	switch (tablet_mode_sw) {
-+	case 0:
-+		quirks->use_kbd_dock_devid = false;
-+		quirks->use_lid_flip_devid = false;
-+		break;
-+	case 1:
-+		quirks->use_kbd_dock_devid = true;
-+		quirks->use_lid_flip_devid = false;
-+		break;
-+	case 2:
-+		quirks->use_kbd_dock_devid = false;
-+		quirks->use_lid_flip_devid = true;
-+		break;
-+	}
+-	if (spi_imx->usedma) {
+-		ret = spi_imx_dma_configure(spi->master);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	if (is_imx53_ecspi(spi_imx) && spi_imx->slave_mode) {
+ 		spi_imx->rx = mx53_ecspi_rx_slave;
+ 		spi_imx->tx = mx53_ecspi_tx_slave;
+@@ -1332,6 +1330,13 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
+ 	unsigned long timeout;
+ 	struct spi_master *master = spi_imx->bitbang.master;
+ 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
++	int ret;
 +
- 	if (quirks->i8042_filter) {
- 		ret = i8042_install_filter(quirks->i8042_filter);
- 		if (ret) {
++	ret = spi_imx_dma_configure(master);
++	if (ret)
++		return ret;
++
++	spi_imx->devtype_data->setup_wml(spi_imx);
+ 
+ 	/*
+ 	 * The TX DMA setup starts the transfer, so make sure RX is configured
 -- 
 2.42.0
 
