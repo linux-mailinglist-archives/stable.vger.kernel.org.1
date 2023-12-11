@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-5604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 038B080D592
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:26:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF7080D766
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357841C2148D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:26:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0701C2128D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BFD51020;
-	Mon, 11 Dec 2023 18:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4D455C12;
+	Mon, 11 Dec 2023 18:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2K53iGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGQ14T6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4144F2D045;
-	Mon, 11 Dec 2023 18:26:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA75AC433C7;
-	Mon, 11 Dec 2023 18:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C737C54BF9;
+	Mon, 11 Dec 2023 18:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B762C433C7;
+	Mon, 11 Dec 2023 18:36:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319168;
-	bh=HBlaba8N9FC3XJdzPkIUk5ynndblb6X1/VP6mv555F8=;
+	s=korg; t=1702319787;
+	bh=sG3ynemljxaafH5g5jf1WTpAiRdB+Cnh4KRjm+vAcdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2K53iGJhc88mtApBKI9H3pmwW9unN7ms+F7yHvgo1f9HA2WXaC/FG5s+bwGTE+uq
-	 58v+ivPotB2VXl+OjeBucIa9BPVbQWt8S6gJQcaAkedj5F4LPDnUcjnjOjOcl9/SHC
-	 HP5ugfHNhxnWDNrGoTvu9S780Zxe5Bjy8AvE0STA=
+	b=zGQ14T6HUBkX3JtnSsdRBIKc1DaCJZoK+dofPo3HNQBLpQtB2ZwCR88aNKTBoX/Z0
+	 VRBhukSvuvRIHLr3a2EHblrXvhYPVfzWIcemoXDmS8E18xxS2x35Bon0I5dPlFAkT+
+	 U2EL90iY9kPo642I9UjzUTuH6RmV3PrrgSEDmbE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 55/55] devcoredump: Send uevent once devcd is ready
+	Peter Gonda <pgonda@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 232/244] KVM: SVM: Update EFER software model on CR0 trap for SEV-ES
 Date: Mon, 11 Dec 2023 19:22:05 +0100
-Message-ID: <20231211182014.330795034@linuxfoundation.org>
+Message-ID: <20231211182056.434438029@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,64 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit af54d778a03853801d681c98c0c2a6c316ef9ca7 ]
+commit 4cdf351d3630a640ab6a05721ef055b9df62277f upstream.
 
-dev_coredumpm() creates a devcoredump device and adds it
-to the core kernel framework which eventually end up
-sending uevent to the user space and later creates a
-symbolic link to the failed device. An application
-running in userspace may be interested in this symbolic
-link to get the name of the failed device.
+In general, activating long mode involves setting the EFER_LME bit in
+the EFER register and then enabling the X86_CR0_PG bit in the CR0
+register. At this point, the EFER_LMA bit will be set automatically by
+hardware.
 
-In a issue scenario, once uevent sent to the user space
-it start reading '/sys/class/devcoredump/devcdX/failing_device'
-to get the actual name of the device which might not been
-created and it is in its path of creation.
+In the case of SVM/SEV guests where writes to CR0 are intercepted, it's
+necessary for the host to set EFER_LMA on behalf of the guest since
+hardware does not see the actual CR0 write.
 
-To fix this, suppress sending uevent till the failing device
-symbolic link gets created and send uevent once symbolic
-link is created successfully.
+In the case of SEV-ES guests where writes to CR0 are trapped instead of
+intercepted, the hardware *does* see/record the write to CR0 before
+exiting and passing the value on to the host, so as part of enabling
+SEV-ES support commit f1c6366e3043 ("KVM: SVM: Add required changes to
+support intercepts under SEV-ES") dropped special handling of the
+EFER_LMA bit with the understanding that it would be set automatically.
 
-Fixes: 833c95456a70 ("device coredump: add new device coredump class")
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+However, since the guest never explicitly sets the EFER_LMA bit, the
+host never becomes aware that it has been set. This becomes problematic
+when userspace tries to get/set the EFER values via
+KVM_GET_SREGS/KVM_SET_SREGS, since the EFER contents tracked by the host
+will be missing the EFER_LMA bit, and when userspace attempts to pass
+the EFER value back via KVM_SET_SREGS it will fail a sanity check that
+asserts that EFER_LMA should always be set when X86_CR0_PG and EFER_LME
+are set.
+
+Fix this by always inferring the value of EFER_LMA based on X86_CR0_PG
+and EFER_LME, regardless of whether or not SEV-ES is enabled.
+
+Fixes: f1c6366e3043 ("KVM: SVM: Add required changes to support intercepts under SEV-ES")
+Reported-by: Peter Gonda <pgonda@google.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1700232572-25823-1-git-send-email-quic_mojha@quicinc.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20210507165947.2502412-2-seanjc@google.com>
+[A two year old patch that was revived after we noticed the failure in
+ KVM_SET_SREGS and a similar patch was posted by Michael Roth.  This is
+ Sean's patch, but with Michael's more complete commit message. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devcoredump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/svm/svm.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/devcoredump.c b/drivers/base/devcoredump.c
-index 1ba4af7f2f21f..b13574cdef69b 100644
---- a/drivers/base/devcoredump.c
-+++ b/drivers/base/devcoredump.c
-@@ -376,6 +376,7 @@ void dev_coredumpm(struct device *dev, struct module *owner,
- 	devcd->devcd_dev.class = &devcd_class;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1873,15 +1873,17 @@ void svm_set_cr0(struct kvm_vcpu *vcpu,
+ 	bool old_paging = is_paging(vcpu);
  
- 	mutex_lock(&devcd->mutex);
-+	dev_set_uevent_suppress(&devcd->devcd_dev, true);
- 	if (device_add(&devcd->devcd_dev))
- 		goto put_device;
+ #ifdef CONFIG_X86_64
+-	if (vcpu->arch.efer & EFER_LME && !vcpu->arch.guest_state_protected) {
++	if (vcpu->arch.efer & EFER_LME) {
+ 		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
+ 			vcpu->arch.efer |= EFER_LMA;
+-			svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
++			if (!vcpu->arch.guest_state_protected)
++				svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
+ 		}
  
-@@ -387,6 +388,8 @@ void dev_coredumpm(struct device *dev, struct module *owner,
- 			      "devcoredump"))
- 		/* nothing - symlink will be missing */;
- 
-+	dev_set_uevent_suppress(&devcd->devcd_dev, false);
-+	kobject_uevent(&devcd->devcd_dev.kobj, KOBJ_ADD);
- 	INIT_DELAYED_WORK(&devcd->del_wk, devcd_del);
- 	schedule_delayed_work(&devcd->del_wk, DEVCD_TIMEOUT);
- 	mutex_unlock(&devcd->mutex);
--- 
-2.42.0
-
+ 		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
+ 			vcpu->arch.efer &= ~EFER_LMA;
+-			svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
++			if (!vcpu->arch.guest_state_protected)
++				svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
+ 		}
+ 	}
+ #endif
 
 
 
