@@ -1,101 +1,118 @@
-Return-Path: <stable+bounces-5491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E1580CCC4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:03:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7309880CDFC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDFD2281ACA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44A71C20F78
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EC448799;
-	Mon, 11 Dec 2023 14:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530454C3C4;
+	Mon, 11 Dec 2023 14:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DKNyHxF5"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="iKo7/Ntw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9FxoBVTd";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kczBXqTM";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2DEYPgfo"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992AA482F3;
-	Mon, 11 Dec 2023 14:03:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1290DC433C8;
-	Mon, 11 Dec 2023 14:03:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702303402;
-	bh=55IWi7q/c+xuk9m4sVnI8Kz2vIQE5t0toHxv97SDJPA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKNyHxF5vxGsKeVNkXbvEBYlQ00ah88OIApFAJvyTD+qohhND8Y/A24OTNUxrkam6
-	 zkoaVG8F5RvTxpIY0sWrHp+qlenBlyhFPsRfAZJ2soOQ6rvuODdEFQh8H7CwAHzUPU
-	 UvAgGfwILKJDZx6xe6yIZdoFbeeOkegSqY+a07XsG+7cWDbesAkSXf2uXIYEcYWzuw
-	 xk+BgSa1VmFzetV6m8L26p66oXkQmy1a2UVDoeQfCjd4Fp6c/N2KGqFxZKcmedpFcD
-	 zHA75qwRDqpaIuxZKXeezt4NXsg0Lwj7DqLFsIw40d9FKmmFWp+9uyDZlnkvI9GMay
-	 CGieNieVSmG/A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Xiang Yang <xiangyang3@huawei.com>,
-	Inki Dae <inki.dae@samsung.com>,
-	Sasha Levin <sashal@kernel.org>,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	krzysztof.kozlowski@linaro.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 5/5] drm/exynos: fix a potential error pointer dereference
-Date: Mon, 11 Dec 2023 09:03:10 -0500
-Message-ID: <20231211140311.392827-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231211140311.392827-1-sashal@kernel.org>
-References: <20231211140311.392827-1-sashal@kernel.org>
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83CE5358C;
+	Mon, 11 Dec 2023 06:10:04 -0800 (PST)
+Received: from hawking.nue2.suse.org (unknown [10.168.4.11])
+	by smtp-out2.suse.de (Postfix) with ESMTP id EAE5F1FB98;
+	Mon, 11 Dec 2023 14:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1702303803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKxVyX+SKPCIYF4IJBe8/I2MyUGreeFRL0iWzGK5Q4w=;
+	b=iKo7/NtwiCsZCOfWLOJpz9mx4wKtKPFqRJjZkJ81RIcrB/n6hw2eM3fHOiUTgzmEGwSVti
+	5dA7MlJa2DBWySFuFTz/zo7MQH7ScbtW5L8vshDNjx8F/lcmAG2h7bONiklr1Ov2d1ODZK
+	qP46GWnTJ4Dfd+rCIWNFi4v4maIylfg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1702303803;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKxVyX+SKPCIYF4IJBe8/I2MyUGreeFRL0iWzGK5Q4w=;
+	b=9FxoBVTdPWBMOqL4QBpYrRECIw94ljwhBkz7MKZlSJclOdQwhNbH5SQxY2lianCA9p3WTT
+	j4wr3DY+1sMecoCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1702303802; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKxVyX+SKPCIYF4IJBe8/I2MyUGreeFRL0iWzGK5Q4w=;
+	b=kczBXqTM1vaAGqbVAA5pR0fxilW68PuB9MyIUuOZFBPu3ORPDu3swUUDxY+tovIYmSYBVH
+	x8YIwCc8VHNddMe6k1q4jlhG2RUZi4VVUzeMMrw/9YZsM3pOZG+sudOe38VltPEXoDSUs8
+	Iri+gBpJKvOuXvh5yEJx55bF20ulc2w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1702303802;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IKxVyX+SKPCIYF4IJBe8/I2MyUGreeFRL0iWzGK5Q4w=;
+	b=2DEYPgfostj5x0QebrIKAQA+QKl9Tr1auGjcjdU6c1ILBaWzXreF/Ba3kPMt3wSJfOGv8n
+	73qgFtSGg2OYdACg==
+Received: by hawking.nue2.suse.org (Postfix, from userid 17005)
+	id D94014A0379; Mon, 11 Dec 2023 15:10:02 +0100 (CET)
+From: Andreas Schwab <schwab@suse.de>
+To: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org,  jiajie.ho@starfivetech.com,
+  palmer@rivosinc.com,  conor.dooley@microchip.com,
+  linux-riscv@lists.infradead.org,  linux-kernel@vger.kernel.org
+Subject: Re: Backport riscv kconfig for v6.6
+In-Reply-To: <20231211145750.7bc2d378@namcao> (Nam Cao's message of "Mon, 11
+	Dec 2023 14:57:50 +0100")
+References: <20231211145750.7bc2d378@namcao>
+X-Yow: Hello.  I know the divorce rate among unmarried Catholic
+ Alaskan females!!
+Date: Mon, 11 Dec 2023 15:10:02 +0100
+Message-ID: <mvmwmtkq18l.fsf@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.332
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Level: 
+X-Spam-Score: -1.38
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -1.30
+X-Spamd-Result: default: False [-1.30 / 50.00];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-0.982];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_COUNT_ZERO(0.00)[0];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-0.01)[45.07%]
+X-Spam-Flag: NO
 
-From: Xiang Yang <xiangyang3@huawei.com>
+On Dez 11 2023, Nam Cao wrote:
 
-[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
+> Without this, it is not possible to configure the kernel with SPI drivers
+> for the Visionfive 2 board.
 
-Smatch reports the warning below:
-drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
-error: 'crtc' dereferencing possible ERR_PTR()
+Is it?  There is nothing that stops you from just enabling it.
 
-The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
-which can not be used directly. Fix this by checking the return value
-before using it.
-
-Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index 0109ff40b1db2..3d79a7af8c862 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -1722,6 +1722,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
- 		return ret;
- 
- 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
-+	if (IS_ERR(crtc))
-+		return PTR_ERR(crtc);
- 	crtc->pipe_clk = &hdata->phy_clk;
- 
- 	ret = hdmi_create_connector(encoder);
 -- 
-2.42.0
-
+Andreas Schwab, SUSE Labs, schwab@suse.de
+GPG Key fingerprint = 0196 BAD8 1CE9 1970 F4BE  1748 E4D4 88E3 0EEA B9D7
+"And now for something completely different."
 
