@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D0080D6EF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC17980D985
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4F82822A6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CA1282014
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5C951C4E;
-	Mon, 11 Dec 2023 18:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4971A51C47;
+	Mon, 11 Dec 2023 18:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xcxqs0ti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qIFGEK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D306FBE0;
-	Mon, 11 Dec 2023 18:34:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CC4C433C8;
-	Mon, 11 Dec 2023 18:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D351C38;
+	Mon, 11 Dec 2023 18:54:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D53AC433C8;
+	Mon, 11 Dec 2023 18:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319673;
-	bh=C+PA1gFGl0AQbSVM68Eh8KZHCOENjvVIkkyMYRap4o0=;
+	s=korg; t=1702320872;
+	bh=0ynLTNhOpesjmPzZ4x2eA4GF84pdq2vE7tUnFPvMILs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xcxqs0tiy8Y3oAemhZOr4w/eWUjIsbahWiQnq5goE/MVuWbGaM/t4Q8M6awoJiSoG
-	 FS7poRpDRuo1bh4xKB+OuZSzYZRhUy/vtp7B+fnxd33Q8H3/osTm94/1xgKAu8UnKh
-	 Aa48nApTawzNIPfrZvcdkmNn4pj/6klIN30TtGa4=
+	b=2qIFGEK47bJ+YLCu+R5LxB9cw6MbdUz5K/jYp8bAkNFLrHyuTIZesSwm5Bt+ZPZiA
+	 4pz3qSuYUSUTtM2HfgaOOl+/1LYM4AJ1zoCROYtjsUTZE+Gyr+XhJb1fiSS64+7RRN
+	 Ym8hwTCn9a4iXKc7MfC5a6gVPkc1ezFTx3UEsUX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Khalil Blaiech <kblaiech@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/244] coresight: ultrasoc-smb: Fix sleep while close preempt in enable_smb
+Subject: [PATCH 5.15 026/141] mlxbf-bootctl: correctly identify secure boot with development keys
 Date: Mon, 11 Dec 2023 19:21:25 +0100
-Message-ID: <20231211182054.561465461@linuxfoundation.org>
+Message-ID: <20231211182027.679893351@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,233 +52,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit b8411287aef4a994eff0c68f5597910c4194dfe3 ]
+[ Upstream commit d4eef75279f5e9d594f5785502038c763ce42268 ]
 
-When we to enable the SMB by perf, the perf sched will call perf_ctx_lock()
-to close system preempt in event_function_call(). But SMB::enable_smb() use
-mutex to lock the critical section, which may sleep.
+The secure boot state of the BlueField SoC is represented by two bits:
+                0 = production state
+                1 = secure boot enabled
+                2 = non-secure (secure boot disabled)
+                3 = RMA state
+There is also a single bit to indicate whether production keys or
+development keys are being used when secure boot is enabled.
+This single bit (specified by MLXBF_BOOTCTL_SB_DEV_MASK) only has
+meaning if secure boot state equals 1 (secure boot enabled).
 
- BUG: sleeping function called from invalid context at kernel/locking/mutex.c:580
- in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 153023, name: perf
- preempt_count: 2, expected: 0
- RCU nest depth: 0, expected: 0
- INFO: lockdep is turned off.
- irq event stamp: 0
- hardirqs last  enabled at (0): [<0000000000000000>] 0x0
- hardirqs last disabled at (0): [<ffffa2983f5c5f40>] copy_process+0xae8/0x2b48
- softirqs last  enabled at (0): [<ffffa2983f5c5f40>] copy_process+0xae8/0x2b48
- softirqs last disabled at (0): [<0000000000000000>] 0x0
- CPU: 2 PID: 153023 Comm: perf Kdump: loaded Tainted: G   W  O   6.5.0-rc4+ #1
+The secure boot states are as follows:
+- “GA secured” is when secure boot is enabled with official production keys.
+- “Secured (development)” is when secure boot is enabled with development keys.
 
- Call trace:
- ...
-  __mutex_lock+0xbc/0xa70
-  mutex_lock_nested+0x34/0x48
-  smb_update_buffer+0x58/0x360 [ultrasoc_smb]
-  etm_event_stop+0x204/0x2d8 [coresight]
-  etm_event_del+0x1c/0x30 [coresight]
-  event_sched_out+0x17c/0x3b8
-  group_sched_out.part.0+0x5c/0x208
-  __perf_event_disable+0x15c/0x210
-  event_function+0xe0/0x230
-  remote_function+0xb4/0xe8
-  generic_exec_single+0x160/0x268
-  smp_call_function_single+0x20c/0x2a0
-  event_function_call+0x20c/0x220
-  _perf_event_disable+0x5c/0x90
-  perf_event_for_each_child+0x58/0xc0
-  _perf_ioctl+0x34c/0x1250
-  perf_ioctl+0x64/0x98
- ...
+Without this fix “GA Secured” is displayed on development cards which is
+misleading. This patch updates the logic in "lifecycle_state_show()" to
+handle the case where the SoC is configured for secure boot and is using
+development keys.
 
-Use spinlock to replace mutex to control driver data access to one at a
-time. The function copy_to_user() may sleep, it cannot be in a spinlock
-context, so we can't simply replace it in smb_read(). But we can ensure
-that only one user gets the SMB device fd by smb_open(), so remove the
-locks from smb_read() and buffer synchronization is guaranteed by the user.
-
-Fixes: 06f5c2926aaa ("drivers/coresight: Add UltraSoc System Memory Buffer driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231114133346.30489-2-hejunhao3@huawei.com
+Fixes: 79e29cb8fbc5c ("platform/mellanox: Add bootctl driver for Mellanox BlueField Soc")
+Reviewed-by: Khalil Blaiech <kblaiech@nvidia.com>
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20231130183515.17214-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/ultrasoc-smb.c | 35 +++++++++-------------
- drivers/hwtracing/coresight/ultrasoc-smb.h |  6 ++--
- 2 files changed, 17 insertions(+), 24 deletions(-)
+ drivers/platform/mellanox/mlxbf-bootctl.c | 39 +++++++++++++++--------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.c b/drivers/hwtracing/coresight/ultrasoc-smb.c
-index e9a32a97fbee6..0a0fe9fcc57f9 100644
---- a/drivers/hwtracing/coresight/ultrasoc-smb.c
-+++ b/drivers/hwtracing/coresight/ultrasoc-smb.c
-@@ -99,7 +99,7 @@ static int smb_open(struct inode *inode, struct file *file)
- 					struct smb_drv_data, miscdev);
- 	int ret = 0;
+diff --git a/drivers/platform/mellanox/mlxbf-bootctl.c b/drivers/platform/mellanox/mlxbf-bootctl.c
+index 1c7a288b59a5c..6a171a4f9dc68 100644
+--- a/drivers/platform/mellanox/mlxbf-bootctl.c
++++ b/drivers/platform/mellanox/mlxbf-bootctl.c
+@@ -17,6 +17,7 @@
  
--	mutex_lock(&drvdata->mutex);
-+	spin_lock(&drvdata->spinlock);
+ #define MLXBF_BOOTCTL_SB_SECURE_MASK		0x03
+ #define MLXBF_BOOTCTL_SB_TEST_MASK		0x0c
++#define MLXBF_BOOTCTL_SB_DEV_MASK		BIT(4)
  
- 	if (drvdata->reading) {
- 		ret = -EBUSY;
-@@ -115,7 +115,7 @@ static int smb_open(struct inode *inode, struct file *file)
+ #define MLXBF_SB_KEY_NUM			4
  
- 	drvdata->reading = true;
- out:
--	mutex_unlock(&drvdata->mutex);
-+	spin_unlock(&drvdata->spinlock);
+@@ -37,11 +38,18 @@ static struct mlxbf_bootctl_name boot_names[] = {
+ 	{ MLXBF_BOOTCTL_NONE, "none" },
+ };
  
- 	return ret;
- }
-@@ -132,10 +132,8 @@ static ssize_t smb_read(struct file *file, char __user *data, size_t len,
- 	if (!len)
- 		return 0;
++enum {
++	MLXBF_BOOTCTL_SB_LIFECYCLE_PRODUCTION = 0,
++	MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE = 1,
++	MLXBF_BOOTCTL_SB_LIFECYCLE_GA_NON_SECURE = 2,
++	MLXBF_BOOTCTL_SB_LIFECYCLE_RMA = 3
++};
++
+ static const char * const mlxbf_bootctl_lifecycle_states[] = {
+-	[0] = "Production",
+-	[1] = "GA Secured",
+-	[2] = "GA Non-Secured",
+-	[3] = "RMA",
++	[MLXBF_BOOTCTL_SB_LIFECYCLE_PRODUCTION] = "Production",
++	[MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE] = "GA Secured",
++	[MLXBF_BOOTCTL_SB_LIFECYCLE_GA_NON_SECURE] = "GA Non-Secured",
++	[MLXBF_BOOTCTL_SB_LIFECYCLE_RMA] = "RMA",
+ };
  
--	mutex_lock(&drvdata->mutex);
+ /* ARM SMC call which is atomic and no need for lock. */
+@@ -165,25 +173,30 @@ static ssize_t second_reset_action_store(struct device *dev,
+ static ssize_t lifecycle_state_show(struct device *dev,
+ 				    struct device_attribute *attr, char *buf)
+ {
++	int status_bits;
++	int use_dev_key;
++	int test_state;
+ 	int lc_state;
+ 
+-	lc_state = mlxbf_bootctl_smc(MLXBF_BOOTCTL_GET_TBB_FUSE_STATUS,
+-				     MLXBF_BOOTCTL_FUSE_STATUS_LIFECYCLE);
+-	if (lc_state < 0)
+-		return lc_state;
++	status_bits = mlxbf_bootctl_smc(MLXBF_BOOTCTL_GET_TBB_FUSE_STATUS,
++					MLXBF_BOOTCTL_FUSE_STATUS_LIFECYCLE);
++	if (status_bits < 0)
++		return status_bits;
+ 
+-	lc_state &=
+-		MLXBF_BOOTCTL_SB_TEST_MASK | MLXBF_BOOTCTL_SB_SECURE_MASK;
++	use_dev_key = status_bits & MLXBF_BOOTCTL_SB_DEV_MASK;
++	test_state = status_bits & MLXBF_BOOTCTL_SB_TEST_MASK;
++	lc_state = status_bits & MLXBF_BOOTCTL_SB_SECURE_MASK;
+ 
+ 	/*
+ 	 * If the test bits are set, we specify that the current state may be
+ 	 * due to using the test bits.
+ 	 */
+-	if (lc_state & MLXBF_BOOTCTL_SB_TEST_MASK) {
+-		lc_state &= MLXBF_BOOTCTL_SB_SECURE_MASK;
 -
- 	if (!sdb->data_size)
--		goto out;
-+		return 0;
- 
- 	to_copy = min(sdb->data_size, len);
- 
-@@ -145,20 +143,15 @@ static ssize_t smb_read(struct file *file, char __user *data, size_t len,
- 
- 	if (copy_to_user(data, sdb->buf_base + sdb->buf_rdptr, to_copy)) {
- 		dev_dbg(dev, "Failed to copy data to user\n");
--		to_copy = -EFAULT;
--		goto out;
-+		return -EFAULT;
++	if (test_state) {
+ 		return sprintf(buf, "%s(test)\n",
+ 			       mlxbf_bootctl_lifecycle_states[lc_state]);
++	} else if (use_dev_key &&
++		   (lc_state == MLXBF_BOOTCTL_SB_LIFECYCLE_GA_SECURE)) {
++		return sprintf(buf, "Secured (development)\n");
  	}
  
- 	*ppos += to_copy;
--
- 	smb_update_read_ptr(drvdata, to_copy);
--
--	dev_dbg(dev, "%zu bytes copied\n", to_copy);
--out:
- 	if (!sdb->data_size)
- 		smb_reset_buffer(drvdata);
--	mutex_unlock(&drvdata->mutex);
- 
-+	dev_dbg(dev, "%zu bytes copied\n", to_copy);
- 	return to_copy;
- }
- 
-@@ -167,9 +160,9 @@ static int smb_release(struct inode *inode, struct file *file)
- 	struct smb_drv_data *drvdata = container_of(file->private_data,
- 					struct smb_drv_data, miscdev);
- 
--	mutex_lock(&drvdata->mutex);
-+	spin_lock(&drvdata->spinlock);
- 	drvdata->reading = false;
--	mutex_unlock(&drvdata->mutex);
-+	spin_unlock(&drvdata->spinlock);
- 
- 	return 0;
- }
-@@ -262,7 +255,7 @@ static int smb_enable(struct coresight_device *csdev, enum cs_mode mode,
- 	struct smb_drv_data *drvdata = dev_get_drvdata(csdev->dev.parent);
- 	int ret = 0;
- 
--	mutex_lock(&drvdata->mutex);
-+	spin_lock(&drvdata->spinlock);
- 
- 	/* Do nothing, the trace data is reading by other interface now */
- 	if (drvdata->reading) {
-@@ -294,7 +287,7 @@ static int smb_enable(struct coresight_device *csdev, enum cs_mode mode,
- 
- 	dev_dbg(&csdev->dev, "Ultrasoc SMB enabled\n");
- out:
--	mutex_unlock(&drvdata->mutex);
-+	spin_unlock(&drvdata->spinlock);
- 
- 	return ret;
- }
-@@ -304,7 +297,7 @@ static int smb_disable(struct coresight_device *csdev)
- 	struct smb_drv_data *drvdata = dev_get_drvdata(csdev->dev.parent);
- 	int ret = 0;
- 
--	mutex_lock(&drvdata->mutex);
-+	spin_lock(&drvdata->spinlock);
- 
- 	if (drvdata->reading) {
- 		ret = -EBUSY;
-@@ -327,7 +320,7 @@ static int smb_disable(struct coresight_device *csdev)
- 
- 	dev_dbg(&csdev->dev, "Ultrasoc SMB disabled\n");
- out:
--	mutex_unlock(&drvdata->mutex);
-+	spin_unlock(&drvdata->spinlock);
- 
- 	return ret;
- }
-@@ -408,7 +401,7 @@ static unsigned long smb_update_buffer(struct coresight_device *csdev,
- 	if (!buf)
- 		return 0;
- 
--	mutex_lock(&drvdata->mutex);
-+	spin_lock(&drvdata->spinlock);
- 
- 	/* Don't do anything if another tracer is using this sink. */
- 	if (atomic_read(&csdev->refcnt) != 1)
-@@ -432,7 +425,7 @@ static unsigned long smb_update_buffer(struct coresight_device *csdev,
- 	if (!buf->snapshot && lost)
- 		perf_aux_output_flag(handle, PERF_AUX_FLAG_TRUNCATED);
- out:
--	mutex_unlock(&drvdata->mutex);
-+	spin_unlock(&drvdata->spinlock);
- 
- 	return data_size;
- }
-@@ -590,7 +583,7 @@ static int smb_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	mutex_init(&drvdata->mutex);
-+	spin_lock_init(&drvdata->spinlock);
- 	drvdata->pid = -1;
- 
- 	ret = smb_register_sink(pdev, drvdata);
-diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.h b/drivers/hwtracing/coresight/ultrasoc-smb.h
-index d2e14e8d2c8a8..82a44c14a8829 100644
---- a/drivers/hwtracing/coresight/ultrasoc-smb.h
-+++ b/drivers/hwtracing/coresight/ultrasoc-smb.h
-@@ -8,7 +8,7 @@
- #define _ULTRASOC_SMB_H
- 
- #include <linux/miscdevice.h>
--#include <linux/mutex.h>
-+#include <linux/spinlock.h>
- 
- /* Offset of SMB global registers */
- #define SMB_GLB_CFG_REG		0x00
-@@ -105,7 +105,7 @@ struct smb_data_buffer {
-  * @csdev:	Component vitals needed by the framework.
-  * @sdb:	Data buffer for SMB.
-  * @miscdev:	Specifics to handle "/dev/xyz.smb" entry.
-- * @mutex:	Control data access to one at a time.
-+ * @spinlock:	Control data access to one at a time.
-  * @reading:	Synchronise user space access to SMB buffer.
-  * @pid:	Process ID of the process being monitored by the
-  *		session that is using this component.
-@@ -116,7 +116,7 @@ struct smb_drv_data {
- 	struct coresight_device	*csdev;
- 	struct smb_data_buffer sdb;
- 	struct miscdevice miscdev;
--	struct mutex mutex;
-+	spinlock_t spinlock;
- 	bool reading;
- 	pid_t pid;
- 	enum cs_mode mode;
+ 	return sprintf(buf, "%s\n", mlxbf_bootctl_lifecycle_states[lc_state]);
 -- 
 2.42.0
 
