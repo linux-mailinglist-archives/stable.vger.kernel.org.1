@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-5527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C4180D537
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF9D80D693
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A13001C212A9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:21:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C2EA1C215EA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F69F5101A;
-	Mon, 11 Dec 2023 18:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF59B51C52;
+	Mon, 11 Dec 2023 18:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYKZtRAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYE7oduP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3064F212;
-	Mon, 11 Dec 2023 18:21:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B73C433C7;
-	Mon, 11 Dec 2023 18:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2042C8C8;
+	Mon, 11 Dec 2023 18:33:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284B3C433C8;
+	Mon, 11 Dec 2023 18:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318902;
-	bh=kpILdxswu09TS/wkFkHFGtf2rKifFjRXou+k4v2EOp8=;
+	s=korg; t=1702319592;
+	bh=R7oO/8e/TcZn+nrjXjQ0O3Wr7+IbOJ/6XWY55WdDX0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYKZtRAAdyIR8v98TdtiZFWlEXOcSdRTgoeUEfN9WZDHrlKBQSMueTIwaLtSrHkgp
-	 P+ni0TJQr+VW1BZSk8w21ghE9zpIs0+dwo4X2R7Umvmg1yEuS8t2qc6wlDFM0yl8bB
-	 EqcwhFLHa2oMcUekYhR2pw5xVFX/s4C9Kuk2tXnQ=
+	b=lYE7oduPMOnCqjWePlh3phn0MgZg2Y5mvcKbzRIE9MgrP86wAESI/48OjBY0B6MaW
+	 siHQCK7kQD/1+Y2Bl6UTtC+J/zNoBs+SavbgPld4m2MLQa12LflG5FYsWa+wHGRW+D
+	 Xro3daOg7KtxmcX1IJZxkzljs4lbtjyaw7zcwna0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 04/25] net: hns: fix fake link up on xge port
+	Matthias Reichl <hias@horus.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 162/244] regmap: fix bogus error on regcache_sync success
 Date: Mon, 11 Dec 2023 19:20:55 +0100
-Message-ID: <20231211182008.843659462@linuxfoundation.org>
+Message-ID: <20231211182053.127702572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Matthias Reichl <hias@horus.com>
 
-[ Upstream commit f708aba40f9c1eeb9c7e93ed4863b5f85b09b288 ]
+commit fea88064445a59584460f7f67d102b6e5fc1ca1d upstream.
 
-If a xge port just connect with an optical module and no fiber,
-it may have a fake link up because there may be interference on
-the hardware. This patch adds an anti-shake to avoid the problem.
-And the time of anti-shake is base on tests.
+Since commit 0ec7731655de ("regmap: Ensure range selector registers
+are updated after cache sync") opening pcm512x based soundcards fail
+with EINVAL and dmesg shows sync cache and pm_runtime_get errors:
 
-Fixes: b917078c1c10 ("net: hns: Add ACPI support to check SFP present")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  228.794676] pcm512x 1-004c: Failed to sync cache: -22
+[  228.794740] pcm512x 1-004c: ASoC: error at snd_soc_pcm_component_pm_runtime_get on pcm512x.1-004c: -22
+
+This is caused by the cache check result leaking out into the
+regcache_sync return value.
+
+Fix this by making the check local-only, as the comment above the
+regcache_read call states a non-zero return value means there's
+nothing to do so the return value should not be altered.
+
+Fixes: 0ec7731655de ("regmap: Ensure range selector registers are updated after cache sync")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthias Reichl <hias@horus.com>
+Link: https://lore.kernel.org/r/20231203222216.96547-1-hias@horus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 29 +++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/base/regmap/regcache.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index 07e117deeb0f3..e5fbb5119f405 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -70,6 +70,27 @@ static enum mac_mode hns_get_enet_interface(const struct hns_mac_cb *mac_cb)
- 	}
- }
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -410,8 +410,7 @@ out:
+ 			rb_entry(node, struct regmap_range_node, node);
  
-+static u32 hns_mac_link_anti_shake(struct mac_driver *mac_ctrl_drv)
-+{
-+#define HNS_MAC_LINK_WAIT_TIME 5
-+#define HNS_MAC_LINK_WAIT_CNT 40
-+
-+	u32 link_status = 0;
-+	int i;
-+
-+	if (!mac_ctrl_drv->get_link_status)
-+		return link_status;
-+
-+	for (i = 0; i < HNS_MAC_LINK_WAIT_CNT; i++) {
-+		msleep(HNS_MAC_LINK_WAIT_TIME);
-+		mac_ctrl_drv->get_link_status(mac_ctrl_drv, &link_status);
-+		if (!link_status)
-+			break;
-+	}
-+
-+	return link_status;
-+}
-+
- void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- {
- 	struct mac_driver *mac_ctrl_drv;
-@@ -87,6 +108,14 @@ void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- 							       &sfp_prsnt);
- 		if (!ret)
- 			*link_status = *link_status && sfp_prsnt;
-+
-+		/* for FIBER port, it may have a fake link up.
-+		 * when the link status changes from down to up, we need to do
-+		 * anti-shake. the anti-shake time is base on tests.
-+		 * only FIBER port need to do this.
-+		 */
-+		if (*link_status && !mac_cb->link)
-+			*link_status = hns_mac_link_anti_shake(mac_ctrl_drv);
- 	}
+ 		/* If there's nothing in the cache there's nothing to sync */
+-		ret = regcache_read(map, this->selector_reg, &i);
+-		if (ret != 0)
++		if (regcache_read(map, this->selector_reg, &i) != 0)
+ 			continue;
  
- 	mac_cb->link = *link_status;
--- 
-2.42.0
-
+ 		ret = _regmap_write(map, this->selector_reg, i);
 
 
 
