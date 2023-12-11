@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1617D80D8EA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F7280D6DB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B54521F21B5B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 971881C218B7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD1751C47;
-	Mon, 11 Dec 2023 18:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D892452F9E;
+	Mon, 11 Dec 2023 18:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZti75Ni"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Kptb2X9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEB75102A;
-	Mon, 11 Dec 2023 18:49:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9793C433C7;
-	Mon, 11 Dec 2023 18:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C0EFC06;
+	Mon, 11 Dec 2023 18:33:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A41C433C7;
+	Mon, 11 Dec 2023 18:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320572;
-	bh=+0NJVlDLAON8str6Ptglw9Slb+h36jE7scMGeeTNKfY=;
+	s=korg; t=1702319635;
+	bh=AKzVPYlgxOeDP/r2pcuSh1S3Mtbg97pt6JnWdjdMpAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZti75NiuZaLVsdz/iaE2ucTbLQNHCjUJqJdjn5GVcdY1BZuXGhWigz2qTn+lKYR6
-	 2BYRNDpowa/A6Y4l2tC3jLEokE4CYjEo0WBiZu0EFoyX5vbCgvz5qJkbmPbzJ2kA6S
-	 7Aqm9Hijc6RitLmqMJFr7xbocKejGIUHT1ODiOew=
+	b=1Kptb2X9PVWSJpQuiICgaQXtt91+GHtJkLoUL88i1GOMDNpIoWfwugkfo6EWuB7Gb
+	 MGU/OawwxfCJI9m4aiuZAL18wV54BYPM0ynNTLojeGSo/18Ed8VTr4t/roky9q+jJP
+	 ru+V8Sknjzluu3VMN0vwQzr+Z2MlO6NDtiY6wPC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksa Savic <savicaleksa83@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jonas Malaco <jonas@protocubo.io>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/194] hwmon: (nzxt-kraken2) Fix error handling path in kraken2_probe()
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 179/244] arm64: dts: mediatek: mt7622: fix memory node warning check
 Date: Mon, 11 Dec 2023 19:21:12 +0100
-Message-ID: <20231211182040.133743451@linuxfoundation.org>
+Message-ID: <20231211182053.968899384@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,54 +52,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-[ Upstream commit 35fe2ad259a3bfca15ab78c8ffb5278cb6149c89 ]
+commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
 
-There is no point in calling hid_hw_stop() if hid_hw_start() has failed.
-There is no point in calling hid_hw_close() if hid_hw_open() has failed.
+dtbs_check throws a warning at the memory node:
+Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
 
-Update the error handling path accordingly.
+fix by adding the address into the node name.
 
-Fixes: 82e3430dfa8c ("hwmon: add driver for NZXT Kraken X42/X52/X62/X72")
-Reported-by: Aleksa Savic <savicaleksa83@gmail.com>
-Closes: https://lore.kernel.org/all/121470f0-6c1f-418a-844c-7ec2e8a54b8e@gmail.com/
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jonas Malaco <jonas@protocubo.io>
-Link: https://lore.kernel.org/r/a768e69851a07a1f4e29f270f4e2559063f07343.1701617030.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/nzxt-kraken2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
+ arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/nzxt-kraken2.c b/drivers/hwmon/nzxt-kraken2.c
-index 89f7ea4f42d47..badbcaf01f90b 100644
---- a/drivers/hwmon/nzxt-kraken2.c
-+++ b/drivers/hwmon/nzxt-kraken2.c
-@@ -161,13 +161,13 @@ static int kraken2_probe(struct hid_device *hdev,
- 	ret = hid_hw_start(hdev, HID_CONNECT_HIDRAW);
- 	if (ret) {
- 		hid_err(hdev, "hid hw start failed with %d\n", ret);
--		goto fail_and_stop;
-+		return ret;
- 	}
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -73,7 +73,7 @@
+ 		};
+ 	};
  
- 	ret = hid_hw_open(hdev);
- 	if (ret) {
- 		hid_err(hdev, "hid hw open failed with %d\n", ret);
--		goto fail_and_close;
-+		goto fail_and_stop;
- 	}
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x40000000>;
+ 	};
  
- 	priv->hwmon_dev = hwmon_device_register_with_info(&hdev->dev, "kraken2",
--- 
-2.42.0
-
+--- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+@@ -55,7 +55,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x20000000>;
+ 	};
+ 
 
 
 
