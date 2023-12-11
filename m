@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-6286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4885D80D9DB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C05280D825
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F1F281FC8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50BF21F21AE0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078B9524D1;
-	Mon, 11 Dec 2023 18:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008C55102A;
+	Mon, 11 Dec 2023 18:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3cj7LgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnyNlEpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C84524B3;
-	Mon, 11 Dec 2023 18:56:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D92C433C7;
-	Mon, 11 Dec 2023 18:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0924FC06;
+	Mon, 11 Dec 2023 18:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36039C433C7;
+	Mon, 11 Dec 2023 18:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321018;
-	bh=MlF2aBU5WEzaXkd4IEPiaZLWm8lyXS2LheiLSdcfPQw=;
+	s=korg; t=1702320182;
+	bh=E74r5v7lTQiDcvkw8SVetRh91pBwPiIeQ0ISBFeIOjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b3cj7LgO2tYN0X8qCgdDW7tHJ94Q7I1PBZG3+7IXYuolhsuFzYhY8jx2BJjlDzVnP
-	 cEo7N8zthFqd+cPwpHo/VXj6onbX1UhyPp8PYVdjIEcZKUXgIg6ST41I2G17cmJEYx
-	 biDUKZ5eoQ0pUQ1VM90yWEKUH2nLeeaRuQ5gCjKk=
+	b=bnyNlEpE00S0kx3BgtNOPH+pz4OMGAWZIrfA5yggrU9qt/KBfNAdsNDfnFWea4aRA
+	 cXyUte/6/ZJkGhh3hnU1XhIMVbIUBFbm4s0jd0hHo62R/NxZGqhrSEBDMkWDmloBvc
+	 uk7+cb+tghOcLzEA++amRREZ4+ImOgy6xPUKS4hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jason Zhang <jason.zhang@rock-chips.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 080/141] ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
+Subject: [PATCH 5.4 35/67] ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
 Date: Mon, 11 Dec 2023 19:22:19 +0100
-Message-ID: <20231211182030.029427448@linuxfoundation.org>
+Message-ID: <20231211182016.562822138@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -121,14 +121,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/core/pcm.c
 +++ b/sound/core/pcm.c
-@@ -251,6 +251,7 @@ static const char * const snd_pcm_state_
+@@ -251,6 +251,7 @@ static char *snd_pcm_state_names[] = {
  	STATE(DRAINING),
  	STATE(PAUSED),
  	STATE(SUSPENDED),
 +	STATE(DISCONNECTED),
  };
  
- static const char * const snd_pcm_access_names[] = {
+ static char *snd_pcm_access_names[] = {
 
 
 
