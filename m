@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-6257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C5380D9A3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7430F80D7BB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5C7C1C21510
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E46528171E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F32C951C47;
-	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C7A524BF;
+	Mon, 11 Dec 2023 18:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Klinf3Kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTDMt3Wx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FFE321B8;
-	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C16C433C7;
-	Mon, 11 Dec 2023 18:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE020DDE;
+	Mon, 11 Dec 2023 18:39:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871F8C433C8;
+	Mon, 11 Dec 2023 18:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320937;
-	bh=QG1t8f95iIAvTDvwDDPXkdBJHIWvfitY2tdoSTEU7FU=;
+	s=korg; t=1702319978;
+	bh=iTF/t5zm7sc+X+fFG6dgXWbJf+4EIkkWtYVI+bwWIaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Klinf3Kp1SJr8aVruCYEYsWn0apeXTzuEgSOgsi/pW8USvgXaj6/Qk1xFWJgZ6Nj7
-	 H6ajIcBg69cqBXvwcoGrjo/5F52aEpUnO2LdHQgP5wrPYW7mxWFhQ260+9AGN3XxaG
-	 lVy75Q2X8NrLWBrFZacUZ00kidxO+rcVZdTkckbY=
+	b=eTDMt3WxvIRrBgX5C5Zt9uT7llMtwBX2XvNv7WG7Xql5Z/4CMKuegQ4gum3brScRZ
+	 lGggM/jVKd/r8rBcpkaJSjZXu4QkTBQl7nKm9Xpjd+gHDVze7vmJNQ7Y7H7TyufGgl
+	 dUxacXsx8bRkv0eWhdhB2vzDNc00CscVe3lBKO/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
+	kernel test robot <lkp@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/141] net: bnxt: fix a potential use-after-free in bnxt_init_tc
+Subject: [PATCH 5.10 29/97] ionic: fix snprintf format length warning
 Date: Mon, 11 Dec 2023 19:21:32 +0100
-Message-ID: <20231211182027.988965946@linuxfoundation.org>
+Message-ID: <20231211182021.026014921@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,45 +56,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit d007caaaf052f82ca2340d4c7b32d04a3f5dbf3f ]
+[ Upstream commit 0ceb3860a67652f9d36dfdecfcd2cb3eb2f4537d ]
 
-When flow_indr_dev_register() fails, bnxt_init_tc will free
-bp->tc_info through kfree(). However, the caller function
-bnxt_init_one() will ignore this failure and call
-bnxt_shutdown_tc() on failure of bnxt_dl_register(), where
-a use-after-free happens. Fix this issue by setting
-bp->tc_info to NULL after kfree().
+Our friendly kernel test robot has reminded us that with a new
+check we have a warning about a potential string truncation.
+In this case it really doesn't hurt anything, but it is worth
+addressing especially since there really is no reason to reserve
+so many bytes for our queue names.  It seems that cutting the
+queue name buffer length in half stops the complaint.
 
-Fixes: 627c89d00fb9 ("bnxt_en: flow_offload: offload tunnel decap rules via indirect callbacks")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://lore.kernel.org/r/20231204024004.8245-1-dinghao.liu@zju.edu.cn
+Fixes: c06107cabea3 ("ionic: more ionic name tweaks")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311300201.lO8v7mKU-lkp@intel.com/
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231204192234.21017-2-shannon.nelson@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/pensando/ionic/ionic_dev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-index 1471b6130a2b9..b3473883eae6b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_tc.c
-@@ -2075,6 +2075,7 @@ int bnxt_init_tc(struct bnxt *bp)
- 	rhashtable_destroy(&tc_info->flow_table);
- free_tc_info:
- 	kfree(tc_info);
-+	bp->tc_info = NULL;
- 	return rc;
- }
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+index 6c243b17312c7..64d27e8e07725 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+@@ -191,7 +191,7 @@ struct ionic_desc_info {
+ 	void *cb_arg;
+ };
  
+-#define IONIC_QUEUE_NAME_MAX_SZ		32
++#define IONIC_QUEUE_NAME_MAX_SZ		16
+ 
+ struct ionic_queue {
+ 	struct device *dev;
 -- 
 2.42.0
 
