@@ -1,56 +1,49 @@
-Return-Path: <stable+bounces-5809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD6880D731
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7705B80D989
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1601F214F2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A816D1C2169F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F6B53E2D;
-	Mon, 11 Dec 2023 18:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B4251C50;
+	Mon, 11 Dec 2023 18:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fl+oDKM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aa813i70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8405453E02;
-	Mon, 11 Dec 2023 18:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF8AC433C7;
-	Mon, 11 Dec 2023 18:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE17D51C38;
+	Mon, 11 Dec 2023 18:54:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D90C433C8;
+	Mon, 11 Dec 2023 18:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319720;
-	bh=2KTOMBZYNZbNiNdlV4Fz5HFnqY1wpCZ/hCxOKyIJwB8=;
+	s=korg; t=1702320883;
+	bh=eoInFT9KqWix7ASw2aRdu4Yex4iF8abJM6kZQRXOSWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fl+oDKM7VB5/IjI/nuA4GboQsSD/i77khm7PWujpl4v5uVLFmLF+1j9/vASO+DA+0
-	 li4oYe1dSvf7MZ62WrFP95U4CKqePPuahckLyT2PeiEdexxfIwbjUmo8b/odg9DEWk
-	 MsV4+SXrT0uDtkwlmpt4F5wQ+N2lGZ/93CZ/zR7c=
+	b=Aa813i70YAJOsTLiZMcDADdnln1YdUBxC8PTL/W5Bd8jJSqlTXDhwfL/DRt2cZlpd
+	 bzOC3ch4b5pU5LvZFz5THp20xSYUR4ZMiXBIEUYWudDfK40x9YgMxzsW9eXHRc3ssP
+	 4dlQhLGIikvK8nywoR8ATEYWXtxnv/hFaU4J0bao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	kernel test robot <lkp@intel.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 169/244] mm/memory_hotplug: fix error handling in add_memory_resource()
+	Jan Bottorff <janb@os.amperecomputing.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/141] i2c: designware: Fix corrupted memory seen in the ISR
 Date: Mon, 11 Dec 2023 19:21:02 +0100
-Message-ID: <20231211182053.470141306@linuxfoundation.org>
+Message-ID: <20231211182026.640375623@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +55,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Jan Bottorff <janb@os.amperecomputing.com>
 
-commit f42ce5f087eb69e47294ababd2e7e6f88a82d308 upstream.
+[ Upstream commit f726eaa787e9f9bc858c902d18a09af6bcbfcdaf ]
 
-In add_memory_resource(), creation of memory block devices occurs after
-successful call to arch_add_memory().  However, creation of memory block
-devices could fail.  In that case, arch_remove_memory() is called to
-perform necessary cleanup.
+When running on a many core ARM64 server, errors were
+happening in the ISR that looked like corrupted memory. These
+corruptions would fix themselves if small delays were inserted
+in the ISR. Errors reported by the driver included "i2c_designware
+APMC0D0F:00: i2c_dw_xfer_msg: invalid target address" and
+"i2c_designware APMC0D0F:00:controller timed out" during
+in-band IPMI SSIF stress tests.
 
-Currently with or without altmap support, arch_remove_memory() is always
-passed with altmap set to NULL during error handling.  This leads to
-freeing of struct pages using free_pages(), eventhough the allocation
-might have been performed with altmap support via
-altmap_alloc_block_buf().
+The problem was determined to be memory writes in the driver were not
+becoming visible to all cores when execution rapidly shifted between
+cores, like when a register write immediately triggers an ISR.
+Processors with weak memory ordering, like ARM64, make no
+guarantees about the order normal memory writes become globally
+visible, unless barrier instructions are used to control ordering.
 
-Fix the error handling by passing altmap in arch_remove_memory(). This
-ensures the following:
-* When altmap is disabled, deallocation of the struct pages array occurs
-  via free_pages().
-* When altmap is enabled, deallocation occurs via vmem_altmap_free().
+To solve this, regmap accessor functions configured by this driver
+were changed to use non-relaxed forms of the low-level register
+access functions, which include a barrier on platforms that require
+it. This assures memory writes before a controller register access are
+visible to all cores. The community concluded defaulting to correct
+operation outweighed defaulting to the small performance gains from
+using relaxed access functions. Being a low speed device added weight to
+this choice of default register access behavior.
 
-Link: https://lkml.kernel.org/r/20231120145354.308999-3-sumanthk@linux.ibm.com
-Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jan Bottorff <janb@os.amperecomputing.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory_hotplug.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-designware-common.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1458,7 +1458,7 @@ int __ref add_memory_resource(int nid, s
- 	/* create memory block devices after memory was added */
- 	ret = create_memory_block_devices(start, size, params.altmap, group);
- 	if (ret) {
--		arch_remove_memory(start, size, NULL);
-+		arch_remove_memory(start, size, params.altmap);
- 		goto error_free;
- 	}
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index 4e752321b95e0..cb1d8d192ac0c 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -63,7 +63,7 @@ static int dw_reg_read(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
  
+-	*val = readl_relaxed(dev->base + reg);
++	*val = readl(dev->base + reg);
+ 
+ 	return 0;
+ }
+@@ -72,7 +72,7 @@ static int dw_reg_write(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writel_relaxed(val, dev->base + reg);
++	writel(val, dev->base + reg);
+ 
+ 	return 0;
+ }
+@@ -81,7 +81,7 @@ static int dw_reg_read_swab(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	*val = swab32(readl_relaxed(dev->base + reg));
++	*val = swab32(readl(dev->base + reg));
+ 
+ 	return 0;
+ }
+@@ -90,7 +90,7 @@ static int dw_reg_write_swab(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writel_relaxed(swab32(val), dev->base + reg);
++	writel(swab32(val), dev->base + reg);
+ 
+ 	return 0;
+ }
+@@ -99,8 +99,8 @@ static int dw_reg_read_word(void *context, unsigned int reg, unsigned int *val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	*val = readw_relaxed(dev->base + reg) |
+-		(readw_relaxed(dev->base + reg + 2) << 16);
++	*val = readw(dev->base + reg) |
++		(readw(dev->base + reg + 2) << 16);
+ 
+ 	return 0;
+ }
+@@ -109,8 +109,8 @@ static int dw_reg_write_word(void *context, unsigned int reg, unsigned int val)
+ {
+ 	struct dw_i2c_dev *dev = context;
+ 
+-	writew_relaxed(val, dev->base + reg);
+-	writew_relaxed(val >> 16, dev->base + reg + 2);
++	writew(val, dev->base + reg);
++	writew(val >> 16, dev->base + reg + 2);
+ 
+ 	return 0;
+ }
+-- 
+2.42.0
+
 
 
 
