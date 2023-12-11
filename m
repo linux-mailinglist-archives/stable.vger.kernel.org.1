@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-5540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC89C80D549
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58E9E80D56D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC9A31C20939
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BA8A1C214D8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1825101B;
-	Mon, 11 Dec 2023 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2042951029;
+	Mon, 11 Dec 2023 18:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKu+MgWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnPdfixB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0274F212;
-	Mon, 11 Dec 2023 18:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C41C433C7;
-	Mon, 11 Dec 2023 18:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14D74F213;
+	Mon, 11 Dec 2023 18:24:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC6BC433C8;
+	Mon, 11 Dec 2023 18:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318937;
-	bh=OY8WirsI+WBNs+pLsCC5YLbUW4S9jq962mytxNGhckY=;
+	s=korg; t=1702319069;
+	bh=5tuNGEUGwKMsG8l4WxgV6/kqCSjNP35Xd1Lp6ZAIgKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKu+MgWfB0SrlczF7gfBCc1E8wh4pz9Rfa92qzsTo1uZwsxQVUh1OsEjzRErrpnso
-	 1jTHBSZCE4zd3L2lXBPo+wrFCNNvKlY1nKVWiWSJRmsRW2Hzg/1X1yu036d75kXHUo
-	 4zgNIm7JQAttwqvCIFnAdvo+LG5DdgmovPw6+jWM=
+	b=SnPdfixBROG9f8R5ieAKbV74X+CL1DWdvjiuTNBZ6iuwI79i10AyudUBbB4hmQDN9
+	 mMmN3tUgqjIt4ROYZLzltZwPOd7f10h8/2tqqV2D4zuV0dbczfK13uuQBrdKJYHXax
+	 InwaE33tB07D2wVRm7kfCgx6KZPmJz4kzHqU4GqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 25/25] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
+	Christoph Hellwig <hch@lst.de>,
+	Omar Sandoval <osandov@fb.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 06/55] block: introduce multi-page bvec helpers
 Date: Mon, 11 Dec 2023 19:21:16 +0100
-Message-ID: <20231211182009.610018236@linuxfoundation.org>
+Message-ID: <20231211182012.465741504@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,159 +55,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit e03781879a0d524ce3126678d50a80484a513c4b upstream.
+[ Upstream commit 3d75ca0adef4280650c6690a0c4702a74a6f3c95 ]
 
-The "NET_DM" generic netlink family notifies drop locations over the
-"events" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+This patch introduces helpers of 'mp_bvec_iter_*' for multi-page bvec
+support.
 
-Fix by adding a new field to the generic netlink multicast group
-structure that when set prevents non-root users or root without the
-'CAP_SYS_ADMIN' capability (in the user namespace owning the network
-namespace) from joining the group. Set this field for the "events"
-group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
-nature of the information that is shared over this group.
+The introduced helpers treate one bvec as real multi-page segment,
+which may include more than one pages.
 
-Note that the capability check in this case will always be performed
-against the initial user namespace since the family is not netns aware
-and only operates in the initial network namespace.
+The existed helpers of bvec_iter_* are interfaces for supporting current
+bvec iterator which is thought as single-page by drivers, fs, dm and
+etc. These introduced helpers will build single-page bvec in flight, so
+this way won't break current bio/bvec users, which needn't any change.
 
-A new field is added to the structure rather than using the "flags"
-field because the existing field uses uAPI flags and it is inappropriate
-to add a new uAPI flag for an internal kernel check. In net-next we can
-rework the "flags" field to use internal flags and fold the new field
-into it. But for now, in order to reduce the amount of changes, add a
-new field.
+Follows some multi-page bvec background:
 
-Since the information can only be consumed by root, mark the control
-plane operations that start and stop the tracing as root-only using the
-'GENL_ADMIN_PERM' flag.
+- bvecs stored in bio->bi_io_vec is always multi-page style
 
-Tested using [1].
+- bvec(struct bio_vec) represents one physically contiguous I/O
+  buffer, now the buffer may include more than one page after
+  multi-page bvec is supported, and all these pages represented
+  by one bvec is physically contiguous. Before multi-page bvec
+  support, at most one page is included in one bvec, we call it
+  single-page bvec.
 
-Before:
+- .bv_page of the bvec points to the 1st page in the multi-page bvec
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
+- .bv_offset of the bvec is the offset of the buffer in the bvec
 
-After:
+The effect on the current drivers/filesystem/dm/bcache/...:
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
- Failed to join "events" multicast group
+- almost everyone supposes that one bvec only includes one single
+  page, so we keep the sp interface not changed, for example,
+  bio_for_each_segment() still returns single-page bvec
 
-[1]
- $ cat dm.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
+- bio_for_each_segment_all() will return single-page bvec too
 
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int grp, err;
+- during iterating, iterator variable(struct bvec_iter) is always
+  updated in multi-page bvec style, and bvec_iter_advance() is kept
+  not changed
 
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
+- returned(copied) single-page bvec is built in flight by bvec
+  helpers from the stored multi-page bvec
 
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
- 	if (grp < 0) {
- 		fprintf(stderr,
- 			"Failed to resolve \"events\" multicast group\n");
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
- 		return err;
- 	}
-
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
-
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Omar Sandoval <osandov@fb.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/genetlink.h |    2 ++
- net/core/drop_monitor.c |    4 +++-
- net/netlink/genetlink.c |    3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ include/linux/bvec.h | 30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
---- a/include/net/genetlink.h
-+++ b/include/net/genetlink.h
-@@ -11,10 +11,12 @@
- /**
-  * struct genl_multicast_group - generic netlink multicast group
-  * @name: name of the multicast group, names are per-family
-+ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index bc1f16e9f3f4d..cd43c03e31129 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -23,6 +23,7 @@
+ #include <linux/kernel.h>
+ #include <linux/bug.h>
+ #include <linux/errno.h>
++#include <linux/mm.h>
+ 
+ /*
+  * was unsigned short, but we might as well be ready for > 64kB I/O pages
+@@ -52,16 +53,39 @@ struct bvec_iter {
   */
- struct genl_multicast_group {
- 	char			name[GENL_NAMSIZ];
- 	u8			flags;
-+	u8			cap_sys_admin:1;
- };
+ #define __bvec_iter_bvec(bvec, iter)	(&(bvec)[(iter).bi_idx])
  
- struct genl_ops;
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -122,7 +122,7 @@ out:
- }
+-#define bvec_iter_page(bvec, iter)				\
++/* multi-page (mp_bvec) helpers */
++#define mp_bvec_iter_page(bvec, iter)				\
+ 	(__bvec_iter_bvec((bvec), (iter))->bv_page)
  
- static const struct genl_multicast_group dropmon_mcgrps[] = {
--	{ .name = "events", },
-+	{ .name = "events", .cap_sys_admin = 1 },
- };
+-#define bvec_iter_len(bvec, iter)				\
++#define mp_bvec_iter_len(bvec, iter)				\
+ 	min((iter).bi_size,					\
+ 	    __bvec_iter_bvec((bvec), (iter))->bv_len - (iter).bi_bvec_done)
  
- static void send_dm_alert(struct work_struct *work)
-@@ -370,10 +370,12 @@ static const struct genl_ops dropmon_ops
- 	{
- 		.cmd = NET_DM_CMD_START,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_STOP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- };
+-#define bvec_iter_offset(bvec, iter)				\
++#define mp_bvec_iter_offset(bvec, iter)				\
+ 	(__bvec_iter_bvec((bvec), (iter))->bv_offset + (iter).bi_bvec_done)
  
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -982,6 +982,9 @@ static int genl_bind(struct net *net, in
- 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
-+		if (grp->cap_sys_admin &&
-+		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
-+			ret = -EPERM;
- 
- 		break;
- 	}
++#define mp_bvec_iter_page_idx(bvec, iter)			\
++	(mp_bvec_iter_offset((bvec), (iter)) / PAGE_SIZE)
++
++#define mp_bvec_iter_bvec(bvec, iter)				\
++((struct bio_vec) {						\
++	.bv_page	= mp_bvec_iter_page((bvec), (iter)),	\
++	.bv_len		= mp_bvec_iter_len((bvec), (iter)),	\
++	.bv_offset	= mp_bvec_iter_offset((bvec), (iter)),	\
++})
++
++/* For building single-page bvec in flight */
++ #define bvec_iter_offset(bvec, iter)				\
++	(mp_bvec_iter_offset((bvec), (iter)) % PAGE_SIZE)
++
++#define bvec_iter_len(bvec, iter)				\
++	min_t(unsigned, mp_bvec_iter_len((bvec), (iter)),		\
++	      PAGE_SIZE - bvec_iter_offset((bvec), (iter)))
++
++#define bvec_iter_page(bvec, iter)				\
++	nth_page(mp_bvec_iter_page((bvec), (iter)),		\
++		 mp_bvec_iter_page_idx((bvec), (iter)))
++
+ #define bvec_iter_bvec(bvec, iter)				\
+ ((struct bio_vec) {						\
+ 	.bv_page	= bvec_iter_page((bvec), (iter)),	\
+-- 
+2.42.0
+
 
 
 
