@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-5832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12ADE80D757
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7676C80D7A7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37961F219CF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BD92281F7E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E78051C50;
-	Mon, 11 Dec 2023 18:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8179552F9D;
+	Mon, 11 Dec 2023 18:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdjqN8+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUZYJVaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5938051C3B;
-	Mon, 11 Dec 2023 18:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8291EC433C8;
-	Mon, 11 Dec 2023 18:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEACFC06;
+	Mon, 11 Dec 2023 18:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DE9C433C7;
+	Mon, 11 Dec 2023 18:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319784;
-	bh=RsUiTDF2ZhmpczDOk+7qcKU6MuM1hLoN0hNqiqvdVR8=;
+	s=korg; t=1702319914;
+	bh=iZJ5JCGBn2YZOCIIKCgKeUhbuSELsm80SQkmd5dxowM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdjqN8+6M7Kgo07XI1GKs42eUBpJdFMR0wYQFUTwLAb+l7Ew9hpQk6mEGPHyxPCLJ
-	 CXNNAtY0Q0iHKXhz/FZZAvu6f/a285MULkEC3gSUKvbUCq7QUeongUxIfOrkl5mWrP
-	 GGq3Iw9ByTJX0sbdbaLMmsbjOw7MM6NfA60JpoUg=
+	b=dUZYJVaL9DclCJqi1vkLCA/SkHPq+LC+STxbLlfdzhBpZ6WBso2tIq9hVV8FUZPDX
+	 RHu7rvPEAsHd9FuSX0A8/lESN59QNbplQkQjNXYPqNO7ENCqygaiGSo2eHSuE5RIum
+	 iMzi/c/NeXTSLck/oJMUnZx6reJzEUdsiTmjMRPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/244] perf: Fix perf_event_validate_size()
+Subject: [PATCH 5.10 35/97] bpf: sockmap, updating the sg structure should also update curr
 Date: Mon, 11 Dec 2023 19:21:38 +0100
-Message-ID: <20231211182055.143470548@linuxfoundation.org>
+Message-ID: <20231211182021.274162570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,137 +53,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: John Fastabend <john.fastabend@gmail.com>
 
-[ Upstream commit 382c27f4ed28f803b1f1473ac2d8db0afc795a1b ]
+[ Upstream commit bb9aefde5bbaf6c168c77ba635c155b4980c2287 ]
 
-Budimir noted that perf_event_validate_size() only checks the size of
-the newly added event, even though the sizes of all existing events
-can also change due to not all events having the same read_format.
+Curr pointer should be updated when the sg structure is shifted.
 
-When we attach the new event, perf_group_attach(), we do re-compute
-the size for all events.
-
-Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 7246d8ed4dcce ("bpf: helper to pop data from messages")
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20231206232706.374377-3-john.fastabend@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 61 +++++++++++++++++++++++++++-----------------
- 1 file changed, 38 insertions(+), 23 deletions(-)
+ net/core/filter.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 6dbb03c532375..252387b6ac8d6 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1814,31 +1814,34 @@ static inline void perf_event__state_init(struct perf_event *event)
- 					      PERF_EVENT_STATE_INACTIVE;
+diff --git a/net/core/filter.c b/net/core/filter.c
+index ea8ab9c704832..6cfc8fb0562a2 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2595,6 +2595,22 @@ BPF_CALL_2(bpf_msg_cork_bytes, struct sk_msg *, msg, u32, bytes)
+ 	return 0;
  }
  
--static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
-+static int __perf_event_read_size(u64 read_format, int nr_siblings)
- {
- 	int entry = sizeof(u64); /* value */
- 	int size = 0;
- 	int nr = 1;
- 
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
- 		size += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
-+	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
- 		size += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_ID)
-+	if (read_format & PERF_FORMAT_ID)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_LOST)
-+	if (read_format & PERF_FORMAT_LOST)
- 		entry += sizeof(u64);
- 
--	if (event->attr.read_format & PERF_FORMAT_GROUP) {
-+	if (read_format & PERF_FORMAT_GROUP) {
- 		nr += nr_siblings;
- 		size += sizeof(u64);
++static void sk_msg_reset_curr(struct sk_msg *msg)
++{
++	u32 i = msg->sg.start;
++	u32 len = 0;
++
++	do {
++		len += sk_msg_elem(msg, i)->length;
++		sk_msg_iter_var_next(i);
++		if (len >= msg->sg.size)
++			break;
++	} while (i != msg->sg.end);
++
++	msg->sg.curr = i;
++	msg->sg.copybreak = 0;
++}
++
+ static const struct bpf_func_proto bpf_msg_cork_bytes_proto = {
+ 	.func           = bpf_msg_cork_bytes,
+ 	.gpl_only       = false,
+@@ -2714,6 +2730,7 @@ BPF_CALL_4(bpf_msg_pull_data, struct sk_msg *, msg, u32, start,
+ 		      msg->sg.end - shift + NR_MSG_FRAG_IDS :
+ 		      msg->sg.end - shift;
+ out:
++	sk_msg_reset_curr(msg);
+ 	msg->data = sg_virt(&msg->sg.data[first_sge]) + start - offset;
+ 	msg->data_end = msg->data + bytes;
+ 	return 0;
+@@ -2850,6 +2867,7 @@ BPF_CALL_4(bpf_msg_push_data, struct sk_msg *, msg, u32, start,
+ 		msg->sg.data[new] = rsge;
  	}
  
--	size += entry * nr;
--	event->read_size = size;
-+	/*
-+	 * Since perf_event_validate_size() limits this to 16k and inhibits
-+	 * adding more siblings, this will never overflow.
-+	 */
-+	return size + nr * entry;
++	sk_msg_reset_curr(msg);
+ 	sk_msg_compute_data_pointers(msg);
+ 	return 0;
  }
+@@ -3018,6 +3036,7 @@ BPF_CALL_4(bpf_msg_pop_data, struct sk_msg *, msg, u32, start,
  
- static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-@@ -1888,8 +1891,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
-  */
- static void perf_event__header_size(struct perf_event *event)
- {
--	__perf_event_read_size(event,
--			       event->group_leader->nr_siblings);
-+	event->read_size =
-+		__perf_event_read_size(event->attr.read_format,
-+				       event->group_leader->nr_siblings);
- 	__perf_event_header_size(event, event->attr.sample_type);
+ 	sk_mem_uncharge(msg->sk, len - pop);
+ 	msg->sg.size -= (len - pop);
++	sk_msg_reset_curr(msg);
+ 	sk_msg_compute_data_pointers(msg);
+ 	return 0;
  }
- 
-@@ -1920,24 +1924,35 @@ static void perf_event__id_header_size(struct perf_event *event)
- 	event->id_header_size = size;
- }
- 
-+/*
-+ * Check that adding an event to the group does not result in anybody
-+ * overflowing the 64k event limit imposed by the output buffer.
-+ *
-+ * Specifically, check that the read_size for the event does not exceed 16k,
-+ * read_size being the one term that grows with groups size. Since read_size
-+ * depends on per-event read_format, also (re)check the existing events.
-+ *
-+ * This leaves 48k for the constant size fields and things like callchains,
-+ * branch stacks and register sets.
-+ */
- static bool perf_event_validate_size(struct perf_event *event)
- {
--	/*
--	 * The values computed here will be over-written when we actually
--	 * attach the event.
--	 */
--	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
--	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
--	perf_event__id_header_size(event);
-+	struct perf_event *sibling, *group_leader = event->group_leader;
- 
--	/*
--	 * Sum the lot; should not exceed the 64k limit we have on records.
--	 * Conservative limit to allow for callchains and other variable fields.
--	 */
--	if (event->read_size + event->header_size +
--	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
-+	if (__perf_event_read_size(event->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
- 		return false;
- 
-+	if (__perf_event_read_size(group_leader->attr.read_format,
-+				   group_leader->nr_siblings + 1) > 16*1024)
-+		return false;
-+
-+	for_each_sibling_event(sibling, group_leader) {
-+		if (__perf_event_read_size(sibling->attr.read_format,
-+					   group_leader->nr_siblings + 1) > 16*1024)
-+			return false;
-+	}
-+
- 	return true;
- }
- 
 -- 
 2.42.0
 
