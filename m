@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1444380D62A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7711880D87A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B5B2823EF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22A601F21707
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA0241740;
-	Mon, 11 Dec 2023 18:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B5E51C2B;
+	Mon, 11 Dec 2023 18:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7UKSG5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI/PgUUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63113C2D0;
-	Mon, 11 Dec 2023 18:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE35C433CA;
-	Mon, 11 Dec 2023 18:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057125102A;
+	Mon, 11 Dec 2023 18:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80553C433C7;
+	Mon, 11 Dec 2023 18:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319511;
-	bh=mE22yiiwJXGCL1vyx1qoRY+N2EpcWZf/zTZC9/37FFQ=;
+	s=korg; t=1702320370;
+	bh=byrQwR36zx/IXLVqAL9TpA//f6ngbtaJK5aceqni7ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7UKSG5uvXpVuDfk5X14a66eFS1eOAMnQqEhCyCcUPLeifPnWoHIoTvG2AkqRxGZ3
-	 P/G7Gg3+5uOttti9EJx61NnNsegKNC9Ln8n2/NUCDZbhUnOFuXaZX67RDMT5ue/GVC
-	 t5nfQU7ka4BQZ3sOc9Z0ksornl58TFnAE+AF+1ms=
+	b=cI/PgUUfWLUZtu1MRst36UQi8WAYNllif8bpF8OyW73sVtZmg1VSR+Lua3ZmoWfKU
+	 7Ckz9pbh6JgAgomSkNzt8I1nL1Mk7rcymRqZOmLxp9kQaC2Hyi+5MuFRvXMcegWxIj
+	 xQVGgzWPqekpT59D3aoy7AqKcc90Ssz0H4bl6pLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 132/244] rethook: Use __rcu pointer for rethook::handler
-Date: Mon, 11 Dec 2023 19:20:25 +0100
-Message-ID: <20231211182051.725345913@linuxfoundation.org>
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geethasowjanya Akula <gakula@marvell.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/194] octeontx2-af: fix a use-after-free in rvu_npa_register_reporters
+Date: Mon, 11 Dec 2023 19:20:26 +0100
+Message-ID: <20231211182038.183484922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,144 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc upstream.
+[ Upstream commit 3c91c909f13f0c32b0d54d75c3f798479b1a84f5 ]
 
-Since the rethook::handler is an RCU-maganged pointer so that it will
-notice readers the rethook is stopped (unregistered) or not, it should
-be an __rcu pointer and use appropriate functions to be accessed. This
-will use appropriate memory barrier when accessing it. OTOH,
-rethook::data is never changed, so we don't need to check it in
-get_kretprobe().
+The rvu_dl will be freed in rvu_npa_health_reporters_destroy(rvu_dl)
+after the create_workqueue fails, and after that free, the rvu_dl will
+be translate back through rvu_npa_health_reporters_create,
+rvu_health_reporters_create, and rvu_register_dl. Finally it goes to the
+err_dl_health label, being freed again in
+rvu_health_reporters_destroy(rvu) by rvu_npa_health_reporters_destroy.
+In the second calls of rvu_npa_health_reporters_destroy, however,
+it uses rvu_dl->rvu_npa_health_reporter, which is already freed at
+the end of rvu_npa_health_reporters_destroy in the first call.
 
-NOTE: To avoid sparse warning, rethook::handler is defined by a raw
-function pointer type with __rcu instead of rethook_handler_t.
+So this patch prevents the first destroy by instantly returning -ENONMEN
+when create_workqueue fails. In addition, since the failure of
+create_workqueue is the only entrence of label err, it has been
+integrated into the error-handling path of create_workqueue.
 
-Link: https://lore.kernel.org/all/170126066201.398836.837498688669005979.stgit@devnote2/
-
-Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311241808.rv9ceuAh-lkp@intel.com/
-Tested-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1168d1e207c ("octeontx2-af: Add devlink health reporters for NPA")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Geethasowjanya Akula <gakula@marvell.com>
+Link: https://lore.kernel.org/r/20231202095902.3264863-1-alexious@zju.edu.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kprobes.h |    6 ++----
- include/linux/rethook.h |    7 ++++++-
- kernel/trace/rethook.c  |   23 ++++++++++++++---------
- 3 files changed, 22 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -202,10 +202,8 @@ extern int arch_trampoline_kprobe(struct
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return (struct kretprobe *)READ_ONCE(ri->node.rethook->data);
-+	/* rethook::data is non-changed field, so that you can access it freely. */
-+	return (struct kretprobe *)ri->node.rethook->data;
- }
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
- {
---- a/include/linux/rethook.h
-+++ b/include/linux/rethook.h
-@@ -29,7 +29,12 @@ typedef void (*rethook_handler_t) (struc
-  */
- struct rethook {
- 	void			*data;
--	rethook_handler_t	handler;
-+	/*
-+	 * To avoid sparse warnings, this uses a raw function pointer with
-+	 * __rcu, instead of rethook_handler_t. But this must be same as
-+	 * rethook_handler_t.
-+	 */
-+	void (__rcu *handler) (struct rethook_node *, void *, unsigned long, struct pt_regs *);
- 	struct freelist_head	pool;
- 	refcount_t		ref;
- 	struct rcu_head		rcu;
---- a/kernel/trace/rethook.c
-+++ b/kernel/trace/rethook.c
-@@ -63,7 +63,7 @@ static void rethook_free_rcu(struct rcu_
-  */
- void rethook_stop(struct rethook *rh)
- {
--	WRITE_ONCE(rh->handler, NULL);
-+	rcu_assign_pointer(rh->handler, NULL);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index dc7bd2ce78f7d..d609512998992 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -1285,7 +1285,7 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
+ 
+ 	rvu_dl->devlink_wq = create_workqueue("rvu_devlink_wq");
+ 	if (!rvu_dl->devlink_wq)
+-		goto err;
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&rvu_reporters->intr_work, rvu_npa_intr_work);
+ 	INIT_WORK(&rvu_reporters->err_work, rvu_npa_err_work);
+@@ -1293,9 +1293,6 @@ static int rvu_npa_register_reporters(struct rvu_devlink *rvu_dl)
+ 	INIT_WORK(&rvu_reporters->ras_work, rvu_npa_ras_work);
+ 
+ 	return 0;
+-err:
+-	rvu_npa_health_reporters_destroy(rvu_dl);
+-	return -ENOMEM;
  }
  
- /**
-@@ -78,11 +78,17 @@ void rethook_stop(struct rethook *rh)
-  */
- void rethook_free(struct rethook *rh)
- {
--	WRITE_ONCE(rh->handler, NULL);
-+	rethook_stop(rh);
- 
- 	call_rcu(&rh->rcu, rethook_free_rcu);
- }
- 
-+static inline rethook_handler_t rethook_get_handler(struct rethook *rh)
-+{
-+	return (rethook_handler_t)rcu_dereference_check(rh->handler,
-+							rcu_read_lock_any_held());
-+}
-+
- /**
-  * rethook_alloc() - Allocate struct rethook.
-  * @data: a data to pass the @handler when hooking the return.
-@@ -102,7 +108,7 @@ struct rethook *rethook_alloc(void *data
- 	}
- 
- 	rh->data = data;
--	rh->handler = handler;
-+	rcu_assign_pointer(rh->handler, handler);
- 	rh->pool.head = NULL;
- 	refcount_set(&rh->ref, 1);
- 
-@@ -142,9 +148,10 @@ static void free_rethook_node_rcu(struct
-  */
- void rethook_recycle(struct rethook_node *node)
- {
--	lockdep_assert_preemption_disabled();
-+	rethook_handler_t handler;
- 
--	if (likely(READ_ONCE(node->rethook->handler)))
-+	handler = rethook_get_handler(node->rethook);
-+	if (likely(handler))
- 		freelist_add(&node->freelist, &node->rethook->pool);
- 	else
- 		call_rcu(&node->rcu, free_rethook_node_rcu);
-@@ -160,11 +167,9 @@ NOKPROBE_SYMBOL(rethook_recycle);
-  */
- struct rethook_node *rethook_try_get(struct rethook *rh)
- {
--	rethook_handler_t handler = READ_ONCE(rh->handler);
-+	rethook_handler_t handler = rethook_get_handler(rh);
- 	struct freelist_node *fn;
- 
--	lockdep_assert_preemption_disabled();
--
- 	/* Check whether @rh is going to be freed. */
- 	if (unlikely(!handler))
- 		return NULL;
-@@ -312,7 +317,7 @@ unsigned long rethook_trampoline_handler
- 		rhn = container_of(first, struct rethook_node, llist);
- 		if (WARN_ON_ONCE(rhn->frame != frame))
- 			break;
--		handler = READ_ONCE(rhn->rethook->handler);
-+		handler = rethook_get_handler(rhn->rethook);
- 		if (handler)
- 			handler(rhn, rhn->rethook->data,
- 				correct_ret_addr, regs);
+ static int rvu_npa_health_reporters_create(struct rvu_devlink *rvu_dl)
+-- 
+2.42.0
+
 
 
 
