@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240AA80D557
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:23:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFA5C80D8C0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558931C214D8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98F4281DB5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87AE51020;
-	Mon, 11 Dec 2023 18:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E15E51C2D;
+	Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEOnJYLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpENR452"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89EAD4F212;
-	Mon, 11 Dec 2023 18:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA79C433C7;
-	Mon, 11 Dec 2023 18:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FBC5102A;
+	Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8187AC433C7;
+	Mon, 11 Dec 2023 18:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319022;
-	bh=6bgtMAZVKawyusdL66RWjXjkUMPeWZSJ5T6cr7ndN+k=;
+	s=korg; t=1702320515;
+	bh=MWAO75snP/z8MzPch9qrTJ/cBixUixeSJUaOhbab7m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEOnJYLTYJqk2HTQi7CsjY3bJ/zzd7cK85g+m8dK/WYrvdEBgabk6hzOI4wNyFuLE
-	 DDj2UuJBf2fzIeuSeGTxAJImGK2pOsUcAYlsv9z5jCc60QSDUwufldgbONfR34WeaR
-	 5B6hu+TzaD4Si5pFmlcwd/4WHT47OP7424xvvulQ=
+	b=IpENR452n8VgkY6Bj2Ccdm1ukZGKfX8iu/Alw000RpsQrmuxikMPqGFD7zp0VYl1k
+	 OwfRS2y7bS7A5UOfHiZVyZ8lLyx/gu7mrmRXo4iUNfWQvtKPkyH58ijFdQoGZx/cSt
+	 9QhPiDp6im3inIC6iGNU3RV7frUamGkLFr+Xxyhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/55] tg3: Increment tx_dropped in tg3_tso_bug()
+Subject: [PATCH 6.1 090/194] tracing: Fix a warning when allocating buffered events fails
 Date: Mon, 11 Dec 2023 19:21:20 +0100
-Message-ID: <20231211182012.590773724@linuxfoundation.org>
+Message-ID: <20231211182040.471364742@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +53,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+Function trace_buffered_event_disable() produces an unexpected warning
+when the previous call to trace_buffered_event_enable() fails to
+allocate pages for buffered events.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The situation can occur as follows:
+
+* The counter trace_buffered_event_ref is at 0.
+
+* The soft mode gets enabled for some event and
+  trace_buffered_event_enable() is called. The function increments
+  trace_buffered_event_ref to 1 and starts allocating event pages.
+
+* The allocation fails for some page and trace_buffered_event_disable()
+  is called for cleanup.
+
+* Function trace_buffered_event_disable() decrements
+  trace_buffered_event_ref back to 0, recognizes that it was the last
+  use of buffered events and frees all allocated pages.
+
+* The control goes back to trace_buffered_event_enable() which returns.
+  The caller of trace_buffered_event_enable() has no information that
+  the function actually failed.
+
+* Some time later, the soft mode is disabled for the same event.
+  Function trace_buffered_event_disable() is called. It warns on
+  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
+
+Buffered events are just an optimization and can handle failures. Make
+trace_buffered_event_enable() exit on the first failure and left any
+cleanup later to when trace_buffered_event_disable() is called.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
+
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 84a5bddf614c8..68bb4a2ff7cee 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7889,8 +7889,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index ddcfc78e93e00..f65d2649fd9bc 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2707,8 +2707,11 @@ void trace_buffered_event_enable(void)
+ 	for_each_tracing_cpu(cpu) {
+ 		page = alloc_pages_node(cpu_to_node(cpu),
+ 					GFP_KERNEL | __GFP_NORETRY, 0);
+-		if (!page)
+-			goto failed;
++		/* This is just an optimization and can handle failures */
++		if (!page) {
++			pr_err("Failed to allocate event buffer\n");
++			break;
++		}
  
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
-+	}
+ 		event = page_address(page);
+ 		memset(event, 0, sizeof(*event));
+@@ -2722,10 +2725,6 @@ void trace_buffered_event_enable(void)
+ 			WARN_ON_ONCE(1);
+ 		preempt_enable();
+ 	}
+-
+-	return;
+- failed:
+-	trace_buffered_event_disable();
+ }
  
- 	do {
- 		nskb = segs;
+ static void enable_trace_buffered_event(void *data)
 -- 
 2.42.0
 
