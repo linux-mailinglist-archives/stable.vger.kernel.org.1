@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33BA80D7CC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9CB80D586
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8984D1F20E9B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C6F71C212E1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E047752F72;
-	Mon, 11 Dec 2023 18:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB6C5101A;
+	Mon, 11 Dec 2023 18:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q28eq0GW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpU/La0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1B71D696;
-	Mon, 11 Dec 2023 18:40:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBF2C433C7;
-	Mon, 11 Dec 2023 18:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2C44F212;
+	Mon, 11 Dec 2023 18:25:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E460C433C7;
+	Mon, 11 Dec 2023 18:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320022;
-	bh=RcCcQ1nbHAYLO6SWvQiGJIVl/DApMyvtUmdf6EQXygY=;
+	s=korg; t=1702319135;
+	bh=drrs9SdxBPLKmDvT759RwmNqCsRSIfnY/53eix2ICt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q28eq0GW4cw1u0NSAAHo7EjQJapD3qwt3Tdh7tBzwVhMIVZ6f21xtVLsjFTs8waDr
-	 SYJ+S1J4Q9pHbbDgHrwR4qJXQSvEl5gr09P79tof1iWDj89VUXJOdvQOe8MKCmk6I8
-	 1Vg6461BKMdYRA9ywpbDEaoP8qsk7dn4b/itpDjA=
+	b=MpU/La0cRumibSgOsuYthNSdgC33/C8SH/N8gLxyjTXy00EpNsF9ZDNQXra4DhpMN
+	 tS2Rw0fQUVbn3CgdiIEiP3sXKTDvXCYVUrhAeIT/OjvVz/1nSjRSwIyViQdF0UPYkc
+	 l7ny/t7UlnzzfI4VNrA/Gr/8Gv9Ea8y3abK/Sb9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 5.10 57/97] arm64: dts: mediatek: mt7622: fix memory node warning check
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 50/55] psample: Require CAP_NET_ADMIN when joining "packets" group
 Date: Mon, 11 Dec 2023 19:22:00 +0100
-Message-ID: <20231211182022.178022031@linuxfoundation.org>
+Message-ID: <20231211182014.119262043@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +55,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
+commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 upstream.
 
-dtbs_check throws a warning at the memory node:
-Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+The "psample" generic netlink family notifies sampled packets over the
+"packets" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-fix by adding the address into the node name.
+Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
+prevent non-root users or root without the 'CAP_NET_ADMIN' capability
+(in the user namespace owning the network namespace) from joining the
+group.
 
-Cc: stable@vger.kernel.org
-Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested using [1].
+
+Before:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+
+After:
+
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+ Failed to join "packets" multicast group
+
+[1]
+ $ cat psample.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
+
+ int join_grp(struct nl_sock *sk, const char *grp_name)
+ {
+ 	int grp, err;
+
+ 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
+ 	if (grp < 0) {
+ 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
+ 			grp_name);
+ 		return grp;
+ 	}
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
+ 			grp_name);
+ 		return err;
+ 	}
+
+ 	return 0;
+ }
+
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int err;
+
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	err = join_grp(sk, "config");
+ 	if (err)
+ 		return err;
+
+ 	err = join_grp(sk, "packets");
+ 	if (err)
+ 		return err;
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+
+Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
- arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/psample/psample.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
-@@ -69,7 +69,7 @@
- 		};
- 	};
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
  
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x40000000>;
- 	};
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+-	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
++	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
++				      .flags = GENL_UNS_ADMIN_PERM },
+ };
  
---- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
-@@ -55,7 +55,7 @@
- 		};
- 	};
- 
--	memory {
-+	memory@40000000 {
- 		reg = <0 0x40000000 0 0x20000000>;
- 	};
- 
+ static struct genl_family psample_nl_family __ro_after_init;
 
 
 
