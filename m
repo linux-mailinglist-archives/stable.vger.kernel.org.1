@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E64880D561
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2526880D545
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CECEE281982
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38ED2819D3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34355101B;
-	Mon, 11 Dec 2023 18:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ED55101B;
+	Mon, 11 Dec 2023 18:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgqktxda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+p1IRas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D624F212;
-	Mon, 11 Dec 2023 18:24:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B35C433C7;
-	Mon, 11 Dec 2023 18:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257464F212;
+	Mon, 11 Dec 2023 18:22:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57525C433C8;
+	Mon, 11 Dec 2023 18:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319050;
-	bh=wszyAsbNLwP5GKixuEdhJfXEkNorm2l8bOfiKMk1BB4=;
+	s=korg; t=1702318926;
+	bh=O7BQTvfEUGVxlJx88nsj0hU6qpz4SCzDG0SgcqKMOL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgqktxda8++CYyy+STZnHVVIXPadDo4+6wwv1wwx+cutu0Sxo1pCFv4op5iwA6U7d
-	 HnplmIICGKuWKEpxkShHzB8KBpS68iADDQLA1fJToFE+Hz+FrvRHN4b6rIcmeV6P5O
-	 gkgBYDMIaQhcbtxkG6WjC2u8jYSdnskMRMkacKY4=
+	b=B+p1IRasxX/7i1EqhwtR55K28GynyD1mKtd6Ejhcs3/rdvZOndlOqGY+N6LX/Bzs3
+	 qQWKU9E7hCpJpYN+Rnxzuq02yF3KwBcUCQeD90xxkKc6QDJOYW5z/3Z7WfdE/ksis7
+	 60g78zD6X88GcWFuHsaz5GsJUXrAjaiu1ugGzRyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Gong <yibin.gong@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/55] spi: imx: move wml setting to later than setup_transfer
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 21/25] nilfs2: fix missing error check for sb_set_blocksize call
 Date: Mon, 11 Dec 2023 19:21:12 +0100
-Message-ID: <20231211182012.344555680@linuxfoundation.org>
+Message-ID: <20231211182009.466378698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,109 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Gong <yibin.gong@nxp.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 987a2dfe3f0485a82d87106e7e1c43f35c1d3b09 ]
+commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
 
-Current dynamic burst length is based on the whole transfer length,
-that's ok if there is only one sg, but is not right in case multi sgs
-in one transfer,because the tail data should be based on the last sg
-length instead of the whole transfer length. Move wml setting for DMA
-to the later place, thus, the next patch could get the right last sg
-length for wml setting. This patch is a preparation one, no any
-function change involved.
+When mounting a filesystem image with a block size larger than the page
+size, nilfs2 repeatedly outputs long error messages with stack traces to
+the kernel log, such as the following:
 
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 00b80ac93553 ("spi: imx: mx51-ecspi: Move some initialisation to prepare_message hook.")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ getblk(): invalid block size 8192 requested
+ logical block size: 512
+ ...
+ Call Trace:
+  dump_stack_lvl+0x92/0xd4
+  dump_stack+0xd/0x10
+  bdev_getblk+0x33a/0x354
+  __breadahead+0x11/0x80
+  nilfs_search_super_root+0xe2/0x704 [nilfs2]
+  load_nilfs+0x72/0x504 [nilfs2]
+  nilfs_mount+0x30f/0x518 [nilfs2]
+  legacy_get_tree+0x1b/0x40
+  vfs_get_tree+0x18/0xc4
+  path_mount+0x786/0xa88
+  __ia32_sys_mount+0x147/0x1a8
+  __do_fast_syscall_32+0x56/0xc8
+  do_fast_syscall_32+0x29/0x58
+  do_SYSENTER_32+0x15/0x18
+  entry_SYSENTER_32+0x98/0xf1
+ ...
+
+This overloads the system logger.  And to make matters worse, it sometimes
+crashes the kernel with a memory access violation.
+
+This is because the return value of the sb_set_blocksize() call, which
+should be checked for errors, is not checked.
+
+The latter issue is due to out-of-buffer memory being accessed based on a
+large block size that caused sb_set_blocksize() to fail for buffers read
+with the initial minimum block size that remained unupdated in the
+super_block structure.
+
+Since nilfs2 mkfs tool does not accept block sizes larger than the system
+page size, this has been overlooked.  However, it is possible to create
+this situation by intentionally modifying the tool or by passing a
+filesystem image created on a system with a large page size to a system
+with a smaller page size and mounting it.
+
+Fix this issue by inserting the expected error handling for the call to
+sb_set_blocksize().
+
+Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ fs/nilfs2/the_nilfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index eb27f47578eb9..686251e05edfe 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -64,6 +64,7 @@ struct spi_imx_devtype_data {
- 	void (*trigger)(struct spi_imx_data *);
- 	int (*rx_available)(struct spi_imx_data *);
- 	void (*reset)(struct spi_imx_data *);
-+	void (*setup_wml)(struct spi_imx_data *);
- 	void (*disable)(struct spi_imx_data *);
- 	bool has_dmamode;
- 	bool has_slavemode;
-@@ -601,6 +602,11 @@ static int mx51_ecspi_config(struct spi_device *spi)
- 	else			/* SCLK is _very_ slow */
- 		usleep_range(delay, delay + 10);
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -697,7 +697,11 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 			goto failed_sbh;
+ 		}
+ 		nilfs_release_super_block(nilfs);
+-		sb_set_blocksize(sb, blocksize);
++		if (!sb_set_blocksize(sb, blocksize)) {
++			nilfs_msg(sb, KERN_ERR, "bad blocksize %d", blocksize);
++			err = -EINVAL;
++			goto out;
++		}
  
-+	return 0;
-+}
-+
-+static void mx51_setup_wml(struct spi_imx_data *spi_imx)
-+{
- 	/*
- 	 * Configure the DMA register: setup the watermark
- 	 * and enable DMA request.
-@@ -611,8 +617,6 @@ static int mx51_ecspi_config(struct spi_device *spi)
- 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
- 		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
- 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
--
--	return 0;
- }
- 
- static int mx51_ecspi_rx_available(struct spi_imx_data *spi_imx)
-@@ -973,6 +977,7 @@ static struct spi_imx_devtype_data imx51_ecspi_devtype_data = {
- 	.trigger = mx51_ecspi_trigger,
- 	.rx_available = mx51_ecspi_rx_available,
- 	.reset = mx51_ecspi_reset,
-+	.setup_wml = mx51_setup_wml,
- 	.fifo_size = 64,
- 	.has_dmamode = true,
- 	.dynamic_burst = true,
-@@ -1181,7 +1186,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 				 struct spi_transfer *t)
- {
- 	struct spi_imx_data *spi_imx = spi_master_get_devdata(spi->master);
--	int ret;
- 
- 	if (!t)
- 		return 0;
-@@ -1222,12 +1226,6 @@ static int spi_imx_setupxfer(struct spi_device *spi,
- 	else
- 		spi_imx->usedma = 0;
- 
--	if (spi_imx->usedma) {
--		ret = spi_imx_dma_configure(spi->master);
--		if (ret)
--			return ret;
--	}
--
- 	if (is_imx53_ecspi(spi_imx) && spi_imx->slave_mode) {
- 		spi_imx->rx = mx53_ecspi_rx_slave;
- 		spi_imx->tx = mx53_ecspi_tx_slave;
-@@ -1332,6 +1330,13 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	unsigned long timeout;
- 	struct spi_master *master = spi_imx->bitbang.master;
- 	struct sg_table *tx = &transfer->tx_sg, *rx = &transfer->rx_sg;
-+	int ret;
-+
-+	ret = spi_imx_dma_configure(master);
-+	if (ret)
-+		return ret;
-+
-+	spi_imx->devtype_data->setup_wml(spi_imx);
- 
- 	/*
- 	 * The TX DMA setup starts the transfer, so make sure RX is configured
--- 
-2.42.0
-
+ 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
+ 		if (err)
 
 
 
