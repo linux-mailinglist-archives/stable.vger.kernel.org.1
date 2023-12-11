@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2526880D545
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36D380D79A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38ED2819D3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FFFE1C2157F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ED55101B;
-	Mon, 11 Dec 2023 18:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18D3E52F85;
+	Mon, 11 Dec 2023 18:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+p1IRas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozGgfXXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257464F212;
-	Mon, 11 Dec 2023 18:22:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57525C433C8;
-	Mon, 11 Dec 2023 18:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD80451C58;
+	Mon, 11 Dec 2023 18:38:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52557C433C8;
+	Mon, 11 Dec 2023 18:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318926;
-	bh=O7BQTvfEUGVxlJx88nsj0hU6qpz4SCzDG0SgcqKMOL4=;
+	s=korg; t=1702319900;
+	bh=ZJ4L5UnxbSGgDbLYxe0QBhW6iclOauB2fNjE/5CMKTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+p1IRasxX/7i1EqhwtR55K28GynyD1mKtd6Ejhcs3/rdvZOndlOqGY+N6LX/Bzs3
-	 qQWKU9E7hCpJpYN+Rnxzuq02yF3KwBcUCQeD90xxkKc6QDJOYW5z/3Z7WfdE/ksis7
-	 60g78zD6X88GcWFuHsaz5GsJUXrAjaiu1ugGzRyM=
+	b=ozGgfXXpbrV0mEP2bOWkPTHGIcqRRWNEENX2SoRJn+SwYoJnCQLXAfqUkPnBMf2U0
+	 +rdy2TeKW/Wv/cWtWDAumUqIyUa2F0NA14nERzBmdrgHWOps+rID5rplwS0Hn8/pNe
+	 pUrHnb66vcf0akx5viiis/gOO9jHNlCDtfBi5884=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 21/25] nilfs2: fix missing error check for sb_set_blocksize call
-Date: Mon, 11 Dec 2023 19:21:12 +0100
-Message-ID: <20231211182009.466378698@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 10/97] platform/x86: asus-nb-wmi: Add tablet_mode_sw=lid-flip quirk for the TP200s
+Date: Mon, 11 Dec 2023 19:21:13 +0100
+Message-ID: <20231211182020.268812139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
+[ Upstream commit 411f48bb58f49c40a627b052402a90e8301cd07e ]
 
-When mounting a filesystem image with a block size larger than the page
-size, nilfs2 repeatedly outputs long error messages with stack traces to
-the kernel log, such as the following:
+The Asus TP200s / E205SA 360 degree hinges 2-in-1 supports reporting
+SW_TABLET_MODE info through the ASUS_WMI_DEVID_LID_FLIP WMI device-id.
+Add a quirk to enable this.
 
- getblk(): invalid block size 8192 requested
- logical block size: 512
- ...
- Call Trace:
-  dump_stack_lvl+0x92/0xd4
-  dump_stack+0xd/0x10
-  bdev_getblk+0x33a/0x354
-  __breadahead+0x11/0x80
-  nilfs_search_super_root+0xe2/0x704 [nilfs2]
-  load_nilfs+0x72/0x504 [nilfs2]
-  nilfs_mount+0x30f/0x518 [nilfs2]
-  legacy_get_tree+0x1b/0x40
-  vfs_get_tree+0x18/0xc4
-  path_mount+0x786/0xa88
-  __ia32_sys_mount+0x147/0x1a8
-  __do_fast_syscall_32+0x56/0xc8
-  do_fast_syscall_32+0x29/0x58
-  do_SYSENTER_32+0x15/0x18
-  entry_SYSENTER_32+0x98/0xf1
- ...
-
-This overloads the system logger.  And to make matters worse, it sometimes
-crashes the kernel with a memory access violation.
-
-This is because the return value of the sb_set_blocksize() call, which
-should be checked for errors, is not checked.
-
-The latter issue is due to out-of-buffer memory being accessed based on a
-large block size that caused sb_set_blocksize() to fail for buffers read
-with the initial minimum block size that remained unupdated in the
-super_block structure.
-
-Since nilfs2 mkfs tool does not accept block sizes larger than the system
-page size, this has been overlooked.  However, it is possible to create
-this situation by intentionally modifying the tool or by passing a
-filesystem image created on a system with a large page size to a system
-with a smaller page size and mounting it.
-
-Fix this issue by inserting the expected error handling for the call to
-sb_set_blocksize().
-
-Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BugLink: https://gitlab.freedesktop.org/libinput/libinput/-/issues/639
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20210812145513.39117-2-hdegoede@redhat.com
+Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/the_nilfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/platform/x86/asus-nb-wmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -697,7 +697,11 @@ int init_nilfs(struct the_nilfs *nilfs,
- 			goto failed_sbh;
- 		}
- 		nilfs_release_super_block(nilfs);
--		sb_set_blocksize(sb, blocksize);
-+		if (!sb_set_blocksize(sb, blocksize)) {
-+			nilfs_msg(sb, KERN_ERR, "bad blocksize %d", blocksize);
-+			err = -EINVAL;
-+			goto out;
-+		}
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index b7eacf54f2862..59ca3dab59e10 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -462,6 +462,15 @@ static const struct dmi_system_id asus_quirks[] = {
+ 		},
+ 		.driver_data = &quirk_asus_use_lid_flip_devid,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "ASUS TP200s / E205SA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "E205SA"),
++		},
++		.driver_data = &quirk_asus_use_lid_flip_devid,
++	},
+ 	{},
+ };
  
- 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
- 		if (err)
+-- 
+2.42.0
+
 
 
 
