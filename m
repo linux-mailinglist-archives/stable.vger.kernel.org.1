@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BBC80D9FA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABBC80D7C4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9CD0B21B07
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C7DB1C21132
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B684524B1;
-	Mon, 11 Dec 2023 18:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAEA7537F1;
+	Mon, 11 Dec 2023 18:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrMzdG2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opE97trc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B274E548;
-	Mon, 11 Dec 2023 18:58:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA1AC433C8;
-	Mon, 11 Dec 2023 18:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A470952F88;
+	Mon, 11 Dec 2023 18:40:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236EEC433C8;
+	Mon, 11 Dec 2023 18:40:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321081;
-	bh=Ks/Q69Ai3wDYGbczuF83H5nvHnaMNsJiGqAg/Ry4x5g=;
+	s=korg; t=1702320003;
+	bh=Tl9P+pg+2bUgoY/Hydl9q1j42s3O2jSB0ddGZCmKmOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrMzdG2FA96nlr3rIzgVReG6kMZS6Vt0dYmORkJCgyiVs17uYJALbzCQWCwaemZFk
-	 d6gyEnzUw/p3njgiSnaC0aWgHDEu3wbXowTkvKWj0RsZGsYPjlaTXJpFIUJ6evevzf
-	 dOis4iWj430juhUz+EURgFZ4wy1489cS84gU+988=
+	b=opE97trcCOY8xA5k8aC7UDFS0nfGOOErATse8Zz9XtlNGO4AoxfRqIujz8v2UJ2t+
+	 rjuRaoKLA1LpRGSRYAtiTr9KfG9wSR2bxivQ5sqF8E8QjzXhIAgpN+qlF6oerI0xWJ
+	 djntXuvjXLEf5023Y4WZiB17SSu5wDoM+5KSSYFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/141] ARM: dts: imx28-xea: Pass the model property
+Subject: [PATCH 5.10 68/97] drm/amdgpu: correct the amdgpu runtime dereference usage count
 Date: Mon, 11 Dec 2023 19:22:11 +0100
-Message-ID: <20231211182029.686324868@linuxfoundation.org>
+Message-ID: <20231211182022.690929928@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit 63ef8fc9bcee6b73ca445a19a7ac6bd544723c9f ]
+[ Upstream commit c6df7f313794c3ad41a49b9a7c95da369db607f3 ]
 
-Per root-node.yaml, 'model' is a required property.
+Fix the amdgpu runpm dereference usage count.
 
-Pass it to fix the following dt-schema warning:
-
-imx28-xea.dtb: /: 'model' is a required property
-	from schema $id: http://devicetree.org/schemas/root-node.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Fixes: 445ae16ac1c5 ("ARM: dts: imx28: Add DTS description of imx28 based XEA board")
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx28-xea.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx28-xea.dts b/arch/arm/boot/dts/imx28-xea.dts
-index a400c108f66a2..6c5e6856648af 100644
---- a/arch/arm/boot/dts/imx28-xea.dts
-+++ b/arch/arm/boot/dts/imx28-xea.dts
-@@ -8,6 +8,7 @@
- #include "imx28-lwe.dtsi"
- 
- / {
-+	model = "Liebherr XEA board";
- 	compatible = "lwn,imx28-xea", "fsl,imx28";
- };
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+index 7cc7af2a6822e..3671a700189d0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -299,13 +299,11 @@ int amdgpu_display_crtc_set_config(struct drm_mode_set *set,
+ 		adev->have_disp_power_ref = true;
+ 		return ret;
+ 	}
+-	/* if we have no active crtcs, then drop the power ref
+-	   we got before */
+-	if (!active && adev->have_disp_power_ref) {
+-		pm_runtime_put_autosuspend(dev->dev);
++	/* if we have no active crtcs, then go to
++	 * drop the power ref we got before
++	 */
++	if (!active && adev->have_disp_power_ref)
+ 		adev->have_disp_power_ref = false;
+-	}
+-
+ out:
+ 	/* drop the power reference we got coming in here */
+ 	pm_runtime_put_autosuspend(dev->dev);
 -- 
 2.42.0
 
