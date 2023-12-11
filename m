@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-6168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDA080D92D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D150E80D7E9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D5B81C21695
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 722B9B2101A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BBA951C38;
-	Mon, 11 Dec 2023 18:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB60151C3E;
+	Mon, 11 Dec 2023 18:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH5FUm3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfp3w/Rd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 278F05102A;
-	Mon, 11 Dec 2023 18:51:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A53C433C7;
-	Mon, 11 Dec 2023 18:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68BFC06;
+	Mon, 11 Dec 2023 18:40:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11244C433C8;
+	Mon, 11 Dec 2023 18:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320695;
-	bh=Gsblf123Cl2eHGZHYQDvtKTkxxHTtherBDkhHoY9leI=;
+	s=korg; t=1702320049;
+	bh=Gw5/nYZXNY8yQNPJUX7g4rGiedirmNoQ9/Qrjy0/+UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MH5FUm3SWrVr7/Ehos/KJiaSmPvcq/t+ZYIosjLfWRp52kypcuQdY32hR0ae+/jwi
-	 ZiLOPRBA9O9R7E8gdWUJR9CJpomYMBwgHdHvZU0leLY+AbkiYD1HwQKUyiPFBa5b45
-	 0rG6LRFGeMftHCdkcMq6560fb2LVLcpPEuhgljwE=
+	b=bfp3w/RdoF07ik9bNcFClmc71pKfnZVvP1/mfHA3PFpIlKPFrPKWVuxOt/XPi+4j3
+	 LF1C6mZNBfk2vnQer0zjzAXOejHy08SYwy1HzAsO+T8CG4VfnC67BCQzqYrTotUz3W
+	 dbOaQmh9/bYdSmyev329dLL7Hbi35KZN6UZ4mTnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Candice Li <candice.li@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/194] drm/amdgpu: Add EEPROM I2C address support for ip discovery
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH 5.10 84/97] genetlink: add CAP_NET_ADMIN test for multicast bind
 Date: Mon, 11 Dec 2023 19:22:27 +0100
-Message-ID: <20231211182043.655028129@linuxfoundation.org>
+Message-ID: <20231211182023.417040962@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,80 +51,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Candice Li <candice.li@amd.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit c9bdc6c3cf39df6db9c611d05fc512b1276b1cc8 ]
+This is a partial backport of upstream commit 4d54cc32112d ("mptcp:
+avoid lock_fast usage in accept path"). It is only a partial backport
+because the patch in the link below was erroneously squash-merged into
+upstream commit 4d54cc32112d ("mptcp: avoid lock_fast usage in accept
+path"). Below is the original patch description from Florian Westphal:
 
-1. Update EEPROM_I2C_MADDR_SMU_13_0_0 to EEPROM_I2C_MADDR_54H
-2. Add EEPROM I2C address support for smu v13_0_0 and v13_0_10.
+"
+genetlink sets NL_CFG_F_NONROOT_RECV for its netlink socket so anyone can
+subscribe to multicast messages.
 
-Signed-off-by: Candice Li <candice.li@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+rtnetlink doesn't allow this unconditionally,  rtnetlink_bind() restricts
+bind requests to CAP_NET_ADMIN for a few groups.
+
+This allows to set GENL_UNS_ADMIN_PERM flag on genl mcast groups to
+mandate CAP_NET_ADMIN.
+
+This will be used by the upcoming mptcp netlink event facility which
+exposes the token (mptcp connection identifier) to userspace.
+"
+
+Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c    | 20 +++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ include/net/genetlink.h |    1 +
+ net/netlink/genetlink.c |   32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-index 7dc39154822c5..7268ae65c140c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -38,7 +38,7 @@
- #define EEPROM_I2C_MADDR_ARCTURUS_D342  0x0
- #define EEPROM_I2C_MADDR_SIENNA_CICHLID 0x0
- #define EEPROM_I2C_MADDR_ALDEBARAN      0x0
--#define EEPROM_I2C_MADDR_SMU_13_0_0     (0x54UL << 16)
-+#define EEPROM_I2C_MADDR_54H            (0x54UL << 16)
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -14,6 +14,7 @@
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
++	u8			flags;
+ };
  
- /*
-  * The 2 macros bellow represent the actual size in bytes that
-@@ -124,6 +124,19 @@ static bool __get_eeprom_i2c_addr_arct(struct amdgpu_device *adev,
- 	return true;
- }
+ struct genl_ops;
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1364,11 +1364,43 @@ static struct genl_family genl_ctrl __ro
+ 	.netnsok = true,
+ };
  
-+static bool __get_eeprom_i2c_addr_ip_discovery(struct amdgpu_device *adev,
-+				       struct amdgpu_ras_eeprom_control *control)
++static int genl_bind(struct net *net, int group)
 +{
-+	switch (adev->ip_versions[MP1_HWIP][0]) {
-+	case IP_VERSION(13, 0, 0):
-+	case IP_VERSION(13, 0, 10):
-+		control->i2c_address = EEPROM_I2C_MADDR_54H;
-+		return true;
-+	default:
-+		return false;
++	const struct genl_family *family;
++	unsigned int id;
++	int ret = 0;
++
++	genl_lock_all();
++
++	idr_for_each_entry(&genl_fam_idr, family, id) {
++		const struct genl_multicast_group *grp;
++		int i;
++
++		if (family->n_mcgrps == 0)
++			continue;
++
++		i = group - family->mcgrp_offset;
++		if (i < 0 || i >= family->n_mcgrps)
++			continue;
++
++		grp = &family->mcgrps[i];
++		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++			ret = -EPERM;
++
++		break;
 +	}
++
++	genl_unlock_all();
++	return ret;
 +}
 +
- static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 				  struct amdgpu_ras_eeprom_control *control)
+ static int __net_init genl_pernet_init(struct net *net)
  {
-@@ -163,13 +176,16 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
- 		control->i2c_address = EEPROM_I2C_MADDR_ALDEBARAN;
- 		break;
+ 	struct netlink_kernel_cfg cfg = {
+ 		.input		= genl_rcv,
+ 		.flags		= NL_CFG_F_NONROOT_RECV,
++		.bind		= genl_bind,
+ 	};
  
-+	case CHIP_IP_DISCOVERY:
-+		return __get_eeprom_i2c_addr_ip_discovery(adev, control);
-+
- 	default:
- 		return false;
- 	}
- 
- 	switch (adev->ip_versions[MP1_HWIP][0]) {
- 	case IP_VERSION(13, 0, 0):
--		control->i2c_address = EEPROM_I2C_MADDR_SMU_13_0_0;
-+		control->i2c_address = EEPROM_I2C_MADDR_54H;
- 		break;
- 
- 	default:
--- 
-2.42.0
-
+ 	/* we'll bump the group number right afterwards */
 
 
 
