@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-6164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BF880D927
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 714B280D7E2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2A011F21AF4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A761F210D5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C934E51C5E;
-	Mon, 11 Dec 2023 18:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A9851C2E;
+	Mon, 11 Dec 2023 18:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1U5GOH1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh0dx6Ro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835F65102A;
-	Mon, 11 Dec 2023 18:51:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AB0C433C8;
-	Mon, 11 Dec 2023 18:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FD6FC06;
+	Mon, 11 Dec 2023 18:40:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8E6C433C8;
+	Mon, 11 Dec 2023 18:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320684;
-	bh=n8KWG4ToQwMdY5zPQwM4iRBXobbHpfA2awrwaGZKHVo=;
+	s=korg; t=1702320041;
+	bh=f5I3w+Z2Pj85YjZcGfJq+sVz5l6ZP5AQHlOWPZOR8n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1U5GOH1uoQkbteMEKVmcdS8kxyEgBpdeBG+HvwzmDpcbbAblJ+j1Z9Qxk0JuuMTjI
-	 D9iaswh7vBRPXFF+4Rf7c1U4QDR7DN76vKVaXKikq7Z3Euvl7r9dS12vq4dZhLjhGY
-	 sHgLEyYvooSlEvZMEGbu+Zc6O/jqBuZTV/lM+S/k=
+	b=Fh0dx6RoWMENZjERX+Z53eyq/51ANP1iULW73klUrqb7N48b8zl+Pz1ohooRJ+7un
+	 7zrXUwyH4D1p1EUtUfoHbFpYq+HcApaECpItJjpxOYMEu8OcrEWJLHmcukLVT57Z8F
+	 Ot01MTOHowz2qOF4Wfwk1lks9Gt4hLLsDiR6jo70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/194] drm/amdgpu: fix memory overflow in the IB test
-Date: Mon, 11 Dec 2023 19:22:23 +0100
-Message-ID: <20231211182043.481747623@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 81/97] MIPS: Loongson64: Enable DMA noncoherent support
+Date: Mon, 11 Dec 2023 19:22:24 +0100
+Message-ID: <20231211182023.277870337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +50,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 6b0b7789a7a5f3e69185449f891beea58e563f9b ]
+commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
 
-Fix a memory overflow issue in the gfx IB test
-for some ASICs. At least 20 bytes are needed for
-the IB test packet.
+There are some Loongson64 systems come with broken coherent DMA
+support, firmware will set a bit in boot_param and pass nocoherentio
+in cmdline.
 
-v2: correct code indentation errors. (Christian)
+However nonconherent support was missed out when spin off Loongson-2EF
+form Loongson64, and that boot_param change never made itself into
+upstream.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Support DMA noncoherent properly to get those systems working.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c  | 4 ++--
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c  | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ arch/mips/Kconfig                                  |    2 ++
+ arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
+ arch/mips/loongson64/env.c                         |   10 +++++++++-
+ 3 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 23e7e5126eae6..66a6f7a37ebcf 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -397,7 +397,7 @@ static int gfx_v11_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
- 		adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
- 		cpu_ptr = &adev->wb.wb[index];
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -468,6 +468,7 @@ config MACH_LOONGSON2EF
  
--		r = amdgpu_ib_get(adev, NULL, 16, AMDGPU_IB_POOL_DIRECT, &ib);
-+		r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
- 		if (r) {
- 			DRM_ERROR("amdgpu: failed to get ib (%ld).\n", r);
- 			goto err1;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-index 7f0b18b0d4c48..71ef25425c7f6 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-@@ -883,8 +883,8 @@ static int gfx_v8_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
- 	gpu_addr = adev->wb.gpu_addr + (index * 4);
- 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
- 	memset(&ib, 0, sizeof(ib));
--	r = amdgpu_ib_get(adev, NULL, 16,
--					AMDGPU_IB_POOL_DIRECT, &ib);
+ config MACH_LOONGSON64
+ 	bool "Loongson 64-bit family of machines"
++	select ARCH_DMA_DEFAULT_COHERENT
+ 	select ARCH_SPARSEMEM_ENABLE
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+@@ -1379,6 +1380,7 @@ config CPU_LOONGSON64
+ 	select CPU_SUPPORTS_MSA
+ 	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
+ 	select CPU_MIPSR2_IRQ_VI
++	select DMA_NONCOHERENT
+ 	select WEAK_ORDERING
+ 	select WEAK_REORDERING_BEYOND_LLSC
+ 	select MIPS_ASID_BITS_VARIABLE
+--- a/arch/mips/include/asm/mach-loongson64/boot_param.h
++++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+@@ -117,7 +117,8 @@ struct irq_source_routing_table {
+ 	u64 pci_io_start_addr;
+ 	u64 pci_io_end_addr;
+ 	u64 pci_config_addr;
+-	u32 dma_mask_bits;
++	u16 dma_mask_bits;
++	u16 dma_noncoherent;
+ } __packed;
+ 
+ struct interface_info {
+--- a/arch/mips/loongson64/env.c
++++ b/arch/mips/loongson64/env.c
+@@ -13,6 +13,8 @@
+  * Copyright (C) 2009 Lemote Inc.
+  * Author: Wu Zhangjin, wuzhangjin@gmail.com
+  */
 +
-+	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
- 	if (r)
- 		goto err1;
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index fe371022e5104..84ca601f7d5f3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -1034,8 +1034,8 @@ static int gfx_v9_0_ring_test_ib(struct amdgpu_ring *ring, long timeout)
- 	gpu_addr = adev->wb.gpu_addr + (index * 4);
- 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
- 	memset(&ib, 0, sizeof(ib));
--	r = amdgpu_ib_get(adev, NULL, 16,
--					AMDGPU_IB_POOL_DIRECT, &ib);
++#include <linux/dma-map-ops.h>
+ #include <linux/export.h>
+ #include <linux/pci_ids.h>
+ #include <asm/bootinfo.h>
+@@ -131,8 +133,14 @@ void __init prom_init_env(void)
+ 	loongson_sysconf.pci_io_base = eirq_source->pci_io_start_addr;
+ 	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
+ 	if (loongson_sysconf.dma_mask_bits < 32 ||
+-		loongson_sysconf.dma_mask_bits > 64)
++			loongson_sysconf.dma_mask_bits > 64) {
+ 		loongson_sysconf.dma_mask_bits = 32;
++		dma_default_coherent = true;
++	} else {
++		dma_default_coherent = !eirq_source->dma_noncoherent;
++	}
 +
-+	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
- 	if (r)
- 		goto err1;
++	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
  
--- 
-2.42.0
-
+ 	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
+ 	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
 
 
 
