@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-5866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA680D791
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8217A80D55C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C7D1F21B51
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14BA1C20AB1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BA653819;
-	Mon, 11 Dec 2023 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5EF5101B;
+	Mon, 11 Dec 2023 18:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT8BYwGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVcNmhZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA55552F89;
-	Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA9DC433C7;
-	Mon, 11 Dec 2023 18:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA844F212;
+	Mon, 11 Dec 2023 18:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6E0C433C7;
+	Mon, 11 Dec 2023 18:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319878;
-	bh=x2Xc6u7/BoXKd8//YqHVvpyg/CTNRLNtSJe0Yw561B8=;
+	s=korg; t=1702319036;
+	bh=ABDIy7CHBUIiStB3jEwQVW3fgOjiTBuyX+lQpLpEHGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wT8BYwGulI8bmP4gx43pJJa8vBE+cjHYf6S5VMSZx0l4bNp4AhQ5D4u/LOOARtzBe
-	 BRpkyqaQlNukalmLBnbrUhMbuezr78vnFnVZdchNHII7m2bB+W3DoDfVCdsHrvupsw
-	 dvlPfcHxnyqyasGbl3Gf6X8aDp6cwRhEC6wBLExw=
+	b=xVcNmhZ2Ir+XnQxOCmHeVD5U7lHMG3dYjsdJORtLAuc1KSgg4U/YpVtz1vYBEGY39
+	 HO9kL8npLr7EiE3CuqknNI+1KlFHz5yqUZAlbgSyzCCclWn2kXzSPdtPx/PxKN98KN
+	 yOn1oIzloi8tZIw7iYTTGm6vRubxaaD2+gAO+Ywk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	David Ahern <dsahern@kernel.org>,
+	"Ahmed S. Darwish" <a.darwish@linutronix.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 21/97] ipv6: fix potential NULL deref in fib6_add()
-Date: Mon, 11 Dec 2023 19:21:24 +0100
-Message-ID: <20231211182020.682861957@linuxfoundation.org>
+Subject: [PATCH 4.19 15/55] net: arcnet: Fix RESET flag handling
+Date: Mon, 11 Dec 2023 19:21:25 +0100
+Message-ID: <20231211182012.768630607@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,84 +54,301 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ahmed S. Darwish <a.darwish@linutronix.de>
 
-[ Upstream commit 75475bb51e78a3f54ad2f69380f2a1c985e85f2d ]
+[ Upstream commit 01365633bd1c836240f9bbf86bbeee749795480a ]
 
-If fib6_find_prefix() returns NULL, we should silently fallback
-using fib6_null_entry regardless of RT6_DEBUG value.
+The main arcnet interrupt handler calls arcnet_close() then
+arcnet_open(), if the RESET status flag is encountered.
 
-syzbot reported:
+This is invalid:
 
-WARNING: CPU: 0 PID: 5477 at net/ipv6/ip6_fib.c:1516 fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
-Modules linked in:
-CPU: 0 PID: 5477 Comm: syz-executor.0 Not tainted 6.7.0-rc2-syzkaller-00029-g9b6de136b5f0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:fib6_add+0x310d/0x3fa0 net/ipv6/ip6_fib.c:1516
-Code: 00 48 8b 54 24 68 e8 42 22 00 00 48 85 c0 74 14 49 89 c6 e8 d5 d3 c2 f7 eb 5d e8 ce d3 c2 f7 e9 ca 00 00 00 e8 c4 d3 c2 f7 90 <0f> 0b 90 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 38 80 3c 01 00
-RSP: 0018:ffffc90005067740 EFLAGS: 00010293
-RAX: ffffffff89cba5bc RBX: ffffc90005067ab0 RCX: ffff88801a2e9dc0
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-RBP: ffffc90005067980 R08: ffffffff89cbca85 R09: 1ffff110040d4b85
-R10: dffffc0000000000 R11: ffffed10040d4b86 R12: 00000000ffffffff
-R13: 1ffff110051c3904 R14: ffff8880206a5c00 R15: ffff888028e1c820
-FS: 00007f763783c6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f763783bff8 CR3: 000000007f74d000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-__ip6_ins_rt net/ipv6/route.c:1303 [inline]
-ip6_route_add+0x88/0x120 net/ipv6/route.c:3847
-ipv6_route_ioctl+0x525/0x7b0 net/ipv6/route.c:4467
-inet6_ioctl+0x21a/0x270 net/ipv6/af_inet6.c:575
-sock_do_ioctl+0x152/0x460 net/socket.c:1220
-sock_ioctl+0x615/0x8c0 net/socket.c:1339
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl+0xf8/0x170 fs/ioctl.c:857
-do_syscall_x64 arch/x86/entry/common.c:51 [inline]
-do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+  1) In general, interrupt handlers should never call ->ndo_stop() and
+     ->ndo_open() functions. They are usually full of blocking calls and
+     other methods that are expected to be called only from drivers
+     init and exit code paths.
 
-Fixes: 7bbfe00e0252 ("ipv6: fix general protection fault in fib6_add()")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Wei Wang <weiwan@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20231129160630.3509216-1-edumazet@google.com
+  2) arcnet_close() contains a del_timer_sync(). If the irq handler
+     interrupts the to-be-deleted timer, del_timer_sync() will just loop
+     forever.
+
+  3) arcnet_close() also calls tasklet_kill(), which has a warning if
+     called from irq context.
+
+  4) For device reset, the sequence "arcnet_close(); arcnet_open();" is
+     not complete.  Some children arcnet drivers have special init/exit
+     code sequences, which then embed a call to arcnet_open() and
+     arcnet_close() accordingly. Check drivers/net/arcnet/com20020.c.
+
+Run the device RESET sequence from a scheduled workqueue instead.
+
+Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20210128194802.727770-1-a.darwish@linutronix.de
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/arcnet/arc-rimi.c     |    4 +-
+ drivers/net/arcnet/arcdevice.h    |    6 +++
+ drivers/net/arcnet/arcnet.c       |   66 +++++++++++++++++++++++++++++++++++---
+ drivers/net/arcnet/com20020-isa.c |    4 +-
+ drivers/net/arcnet/com20020-pci.c |    2 -
+ drivers/net/arcnet/com20020_cs.c  |    2 -
+ drivers/net/arcnet/com90io.c      |    4 +-
+ drivers/net/arcnet/com90xx.c      |    4 +-
+ 8 files changed, 78 insertions(+), 14 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index c783b91231321..608205c632c8c 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1499,13 +1499,9 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 			if (!pn_leaf && !(pn->fn_flags & RTN_RTINFO)) {
- 				pn_leaf = fib6_find_prefix(info->nl_net, table,
- 							   pn);
--#if RT6_DEBUG >= 2
--				if (!pn_leaf) {
--					WARN_ON(!pn_leaf);
-+				if (!pn_leaf)
- 					pn_leaf =
- 					    info->nl_net->ipv6.fib6_null_entry;
--				}
--#endif
- 				fib6_info_hold(pn_leaf);
- 				rcu_assign_pointer(pn->leaf, pn_leaf);
- 			}
--- 
-2.42.0
-
+--- a/drivers/net/arcnet/arc-rimi.c
++++ b/drivers/net/arcnet/arc-rimi.c
+@@ -332,7 +332,7 @@ static int __init arc_rimi_init(void)
+ 		dev->irq = 9;
+ 
+ 	if (arcrimi_probe(dev)) {
+-		free_netdev(dev);
++		free_arcdev(dev);
+ 		return -EIO;
+ 	}
+ 
+@@ -349,7 +349,7 @@ static void __exit arc_rimi_exit(void)
+ 	iounmap(lp->mem_start);
+ 	release_mem_region(dev->mem_start, dev->mem_end - dev->mem_start + 1);
+ 	free_irq(dev->irq, dev);
+-	free_netdev(dev);
++	free_arcdev(dev);
+ }
+ 
+ #ifndef MODULE
+--- a/drivers/net/arcnet/arcdevice.h
++++ b/drivers/net/arcnet/arcdevice.h
+@@ -303,6 +303,10 @@ struct arcnet_local {
+ 
+ 	int excnak_pending;    /* We just got an excesive nak interrupt */
+ 
++	/* RESET flag handling */
++	int reset_in_progress;
++	struct work_struct reset_work;
++
+ 	struct {
+ 		uint16_t sequence;	/* sequence number (incs with each packet) */
+ 		__be16 aborted_seq;
+@@ -355,7 +359,9 @@ void arcnet_dump_skb(struct net_device *
+ 
+ void arcnet_unregister_proto(struct ArcProto *proto);
+ irqreturn_t arcnet_interrupt(int irq, void *dev_id);
++
+ struct net_device *alloc_arcdev(const char *name);
++void free_arcdev(struct net_device *dev);
+ 
+ int arcnet_open(struct net_device *dev);
+ int arcnet_close(struct net_device *dev);
+--- a/drivers/net/arcnet/arcnet.c
++++ b/drivers/net/arcnet/arcnet.c
+@@ -387,10 +387,44 @@ static void arcnet_timer(struct timer_li
+ 	struct arcnet_local *lp = from_timer(lp, t, timer);
+ 	struct net_device *dev = lp->dev;
+ 
+-	if (!netif_carrier_ok(dev)) {
++	spin_lock_irq(&lp->lock);
++
++	if (!lp->reset_in_progress && !netif_carrier_ok(dev)) {
+ 		netif_carrier_on(dev);
+ 		netdev_info(dev, "link up\n");
+ 	}
++
++	spin_unlock_irq(&lp->lock);
++}
++
++static void reset_device_work(struct work_struct *work)
++{
++	struct arcnet_local *lp;
++	struct net_device *dev;
++
++	lp = container_of(work, struct arcnet_local, reset_work);
++	dev = lp->dev;
++
++	/* Do not bring the network interface back up if an ifdown
++	 * was already done.
++	 */
++	if (!netif_running(dev) || !lp->reset_in_progress)
++		return;
++
++	rtnl_lock();
++
++	/* Do another check, in case of an ifdown that was triggered in
++	 * the small race window between the exit condition above and
++	 * acquiring RTNL.
++	 */
++	if (!netif_running(dev) || !lp->reset_in_progress)
++		goto out;
++
++	dev_close(dev);
++	dev_open(dev);
++
++out:
++	rtnl_unlock();
+ }
+ 
+ static void arcnet_reply_tasklet(unsigned long data)
+@@ -452,12 +486,25 @@ struct net_device *alloc_arcdev(const ch
+ 		lp->dev = dev;
+ 		spin_lock_init(&lp->lock);
+ 		timer_setup(&lp->timer, arcnet_timer, 0);
++		INIT_WORK(&lp->reset_work, reset_device_work);
+ 	}
+ 
+ 	return dev;
+ }
+ EXPORT_SYMBOL(alloc_arcdev);
+ 
++void free_arcdev(struct net_device *dev)
++{
++	struct arcnet_local *lp = netdev_priv(dev);
++
++	/* Do not cancel this at ->ndo_close(), as the workqueue itself
++	 * indirectly calls the ifdown path through dev_close().
++	 */
++	cancel_work_sync(&lp->reset_work);
++	free_netdev(dev);
++}
++EXPORT_SYMBOL(free_arcdev);
++
+ /* Open/initialize the board.  This is called sometime after booting when
+  * the 'ifconfig' program is run.
+  *
+@@ -587,6 +634,10 @@ int arcnet_close(struct net_device *dev)
+ 
+ 	/* shut down the card */
+ 	lp->hw.close(dev);
++
++	/* reset counters */
++	lp->reset_in_progress = 0;
++
+ 	module_put(lp->hw.owner);
+ 	return 0;
+ }
+@@ -820,6 +871,9 @@ irqreturn_t arcnet_interrupt(int irq, vo
+ 
+ 	spin_lock_irqsave(&lp->lock, flags);
+ 
++	if (lp->reset_in_progress)
++		goto out;
++
+ 	/* RESET flag was enabled - if device is not running, we must
+ 	 * clear it right away (but nothing else).
+ 	 */
+@@ -852,11 +906,14 @@ irqreturn_t arcnet_interrupt(int irq, vo
+ 		if (status & RESETflag) {
+ 			arc_printk(D_NORMAL, dev, "spurious reset (status=%Xh)\n",
+ 				   status);
+-			arcnet_close(dev);
+-			arcnet_open(dev);
++
++			lp->reset_in_progress = 1;
++			netif_stop_queue(dev);
++			netif_carrier_off(dev);
++			schedule_work(&lp->reset_work);
+ 
+ 			/* get out of the interrupt handler! */
+-			break;
++			goto out;
+ 		}
+ 		/* RX is inhibited - we must have received something.
+ 		 * Prepare to receive into the next buffer.
+@@ -1052,6 +1109,7 @@ irqreturn_t arcnet_interrupt(int irq, vo
+ 	udelay(1);
+ 	lp->hw.intmask(dev, lp->intmask);
+ 
++out:
+ 	spin_unlock_irqrestore(&lp->lock, flags);
+ 	return retval;
+ }
+--- a/drivers/net/arcnet/com20020-isa.c
++++ b/drivers/net/arcnet/com20020-isa.c
+@@ -169,7 +169,7 @@ static int __init com20020_init(void)
+ 		dev->irq = 9;
+ 
+ 	if (com20020isa_probe(dev)) {
+-		free_netdev(dev);
++		free_arcdev(dev);
+ 		return -EIO;
+ 	}
+ 
+@@ -182,7 +182,7 @@ static void __exit com20020_exit(void)
+ 	unregister_netdev(my_dev);
+ 	free_irq(my_dev->irq, my_dev);
+ 	release_region(my_dev->base_addr, ARCNET_TOTAL_SIZE);
+-	free_netdev(my_dev);
++	free_arcdev(my_dev);
+ }
+ 
+ #ifndef MODULE
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -294,7 +294,7 @@ static void com20020pci_remove(struct pc
+ 
+ 		unregister_netdev(dev);
+ 		free_irq(dev->irq, dev);
+-		free_netdev(dev);
++		free_arcdev(dev);
+ 	}
+ }
+ 
+--- a/drivers/net/arcnet/com20020_cs.c
++++ b/drivers/net/arcnet/com20020_cs.c
+@@ -177,7 +177,7 @@ static void com20020_detach(struct pcmci
+ 		dev = info->dev;
+ 		if (dev) {
+ 			dev_dbg(&link->dev, "kfree...\n");
+-			free_netdev(dev);
++			free_arcdev(dev);
+ 		}
+ 		dev_dbg(&link->dev, "kfree2...\n");
+ 		kfree(info);
+--- a/drivers/net/arcnet/com90io.c
++++ b/drivers/net/arcnet/com90io.c
+@@ -394,7 +394,7 @@ static int __init com90io_init(void)
+ 	err = com90io_probe(dev);
+ 
+ 	if (err) {
+-		free_netdev(dev);
++		free_arcdev(dev);
+ 		return err;
+ 	}
+ 
+@@ -417,7 +417,7 @@ static void __exit com90io_exit(void)
+ 
+ 	free_irq(dev->irq, dev);
+ 	release_region(dev->base_addr, ARCNET_TOTAL_SIZE);
+-	free_netdev(dev);
++	free_arcdev(dev);
+ }
+ 
+ module_init(com90io_init)
+--- a/drivers/net/arcnet/com90xx.c
++++ b/drivers/net/arcnet/com90xx.c
+@@ -554,7 +554,7 @@ err_free_irq:
+ err_release_mem:
+ 	release_mem_region(dev->mem_start, dev->mem_end - dev->mem_start + 1);
+ err_free_dev:
+-	free_netdev(dev);
++	free_arcdev(dev);
+ 	return -EIO;
+ }
+ 
+@@ -672,7 +672,7 @@ static void __exit com90xx_exit(void)
+ 		release_region(dev->base_addr, ARCNET_TOTAL_SIZE);
+ 		release_mem_region(dev->mem_start,
+ 				   dev->mem_end - dev->mem_start + 1);
+-		free_netdev(dev);
++		free_arcdev(dev);
+ 	}
+ }
+ 
 
 
 
