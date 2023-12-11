@@ -1,49 +1,53 @@
-Return-Path: <stable+bounces-6261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE34B80D9A8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBBC80D8FC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AC641F21BA0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8D41C2168D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E487D51C5C;
-	Mon, 11 Dec 2023 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69FF524C9;
+	Mon, 11 Dec 2023 18:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wegjL+KX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyxORaoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53B0321B8;
-	Mon, 11 Dec 2023 18:55:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DD6C433C7;
-	Mon, 11 Dec 2023 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75857524B9;
+	Mon, 11 Dec 2023 18:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F167DC433C7;
+	Mon, 11 Dec 2023 18:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320948;
-	bh=7zvvJojG/vdNwj/FO8FYwB3ROsap8dbL62APWt13A3M=;
+	s=korg; t=1702320604;
+	bh=FUmreMWz5MEYZpoG43+uGLTJBGyV+fv09JnMi2MI9/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wegjL+KXveJ3yVwfyYje8ZyMLO3IAaEIYpOO82KANjcBy5MHS7sSsTbf2AvregCmE
-	 KXO998buSF7l6qYc4XsUw9NI8hFk3FypcIH0tf8aEqLS4KqAT5yBVNJMnAmKF07nRG
-	 f6/+rviXxtJ5G6z2/Hm2VYnQXRPGesrPaFxMm8mA=
+	b=zyxORaoVjI3xs28wg/ESxDVS6NCPxjt+gtuofqmf2RWBMvVfnCNBqIWn2tnduhPkE
+	 lh8dOXyj7+wnVvXQJi/NHVy7reKGev23XDwo+jfD/l4pL/2KAxCnC7+1M5wm9rsseX
+	 kRqVpIy+6NRD6BkA6hHnAJbh/gnJm/vGqQe+b8lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/141] RDMA/rtrs-srv: Check return values while processing info request
+	syzbot+6ada951e7c0f7bc8a71e@syzkaller.appspotmail.com,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	Rik van Riel <riel@surriel.com>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 123/194] hugetlb: fix null-ptr-deref in hugetlb_vma_lock_write
 Date: Mon, 11 Dec 2023 19:21:53 +0100
-Message-ID: <20231211182028.885805421@linuxfoundation.org>
+Message-ID: <20231211182042.010714009@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,97 +59,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Mike Kravetz <mike.kravetz@oracle.com>
 
-[ Upstream commit ed1e52aefa16f15dc2f04054a3baf11726a7460e ]
+commit 187da0f8250aa94bd96266096aef6f694e0b4cd2 upstream.
 
-While processing info request, it could so happen that the srv_path goes
-to CLOSING state, cause of any of the error events from RDMA. That state
-change should be picked up while trying to change the state in
-process_info_req, by checking the return value. In case the state change
-call in process_info_req fails, we fail the processing.
+The routine __vma_private_lock tests for the existence of a reserve map
+associated with a private hugetlb mapping.  A pointer to the reserve map
+is in vma->vm_private_data.  __vma_private_lock was checking the pointer
+for NULL.  However, it is possible that the low bits of the pointer could
+be used as flags.  In such instances, vm_private_data is not NULL and not
+a valid pointer.  This results in the null-ptr-deref reported by syzbot:
 
-We should also check the return value for rtrs_srv_path_up, since it
-sends a link event to the client above, and the client can fail for any
-reason.
+general protection fault, probably for non-canonical address 0xdffffc000000001d:
+ 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
+CPU: 0 PID: 5048 Comm: syz-executor139 Not tainted 6.6.0-rc7-syzkaller-00142-g88
+8cf78c29e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 1
+0/09/2023
+RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5004
+...
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5753 [inline]
+ lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5718
+ down_write+0x93/0x200 kernel/locking/rwsem.c:1573
+ hugetlb_vma_lock_write mm/hugetlb.c:300 [inline]
+ hugetlb_vma_lock_write+0xae/0x100 mm/hugetlb.c:291
+ __hugetlb_zap_begin+0x1e9/0x2b0 mm/hugetlb.c:5447
+ hugetlb_zap_begin include/linux/hugetlb.h:258 [inline]
+ unmap_vmas+0x2f4/0x470 mm/memory.c:1733
+ exit_mmap+0x1ad/0xa60 mm/mmap.c:3230
+ __mmput+0x12a/0x4d0 kernel/fork.c:1349
+ mmput+0x62/0x70 kernel/fork.c:1371
+ exit_mm kernel/exit.c:567 [inline]
+ do_exit+0x9ad/0x2a20 kernel/exit.c:861
+ __do_sys_exit kernel/exit.c:991 [inline]
+ __se_sys_exit kernel/exit.c:989 [inline]
+ __x64_sys_exit+0x42/0x50 kernel/exit.c:989
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-4-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mask off low bit flags before checking for NULL pointer.  In addition, the
+reserve map only 'belongs' to the OWNER (parent in parent/child
+relationships) so also check for the OWNER flag.
+
+Link: https://lkml.kernel.org/r/20231114012033.259600-1-mike.kravetz@oracle.com
+Reported-by: syzbot+6ada951e7c0f7bc8a71e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/00000000000078d1e00608d7878b@google.com/
+Fixes: bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Cc: Edward Adam Davis <eadavis@qq.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ include/linux/hugetlb.h |    5 +----
+ mm/hugetlb.c            |    7 +++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 9f7f694036f72..43de2895f1b1d 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -722,20 +722,23 @@ static void rtrs_srv_info_rsp_done(struct ib_cq *cq, struct ib_wc *wc)
- 	WARN_ON(wc->opcode != IB_WC_SEND);
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -880,10 +880,7 @@ static inline bool hugepage_migration_su
+ 	return arch_hugetlb_migration_supported(h);
  }
  
--static void rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
-+static int rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
+-static inline bool __vma_private_lock(struct vm_area_struct *vma)
+-{
+-	return (!(vma->vm_flags & VM_MAYSHARE)) && vma->vm_private_data;
+-}
++bool __vma_private_lock(struct vm_area_struct *vma);
+ 
+ /*
+  * Movability check is different as compared to migration check.
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -1189,6 +1189,13 @@ static int is_vma_resv_set(struct vm_are
+ 	return (get_vma_private_data(vma) & flag) != 0;
+ }
+ 
++bool __vma_private_lock(struct vm_area_struct *vma)
++{
++	return !(vma->vm_flags & VM_MAYSHARE) &&
++		get_vma_private_data(vma) & ~HPAGE_RESV_MASK &&
++		is_vma_resv_set(vma, HPAGE_RESV_OWNER);
++}
++
+ void hugetlb_dup_vma_private(struct vm_area_struct *vma)
  {
- 	struct rtrs_srv *srv = srv_path->srv;
- 	struct rtrs_srv_ctx *ctx = srv->ctx;
--	int up;
-+	int up, ret = 0;
- 
- 	mutex_lock(&srv->paths_ev_mutex);
- 	up = ++srv->paths_up;
- 	if (up == 1)
--		ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
-+		ret = ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
- 	mutex_unlock(&srv->paths_ev_mutex);
- 
- 	/* Mark session as established */
--	srv_path->established = true;
-+	if (!ret)
-+		srv_path->established = true;
-+
-+	return ret;
- }
- 
- static void rtrs_srv_path_down(struct rtrs_srv_path *srv_path)
-@@ -864,7 +867,12 @@ static int process_info_req(struct rtrs_srv_con *con,
- 		goto iu_free;
- 	kobject_get(&srv_path->kobj);
- 	get_device(&srv_path->srv->dev);
--	rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
-+	err = rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
-+	if (!err) {
-+		rtrs_err(s, "rtrs_srv_change_state(), err: %d\n", err);
-+		goto iu_free;
-+	}
-+
- 	rtrs_srv_start_hb(srv_path);
- 
- 	/*
-@@ -873,7 +881,11 @@ static int process_info_req(struct rtrs_srv_con *con,
- 	 * all connections are successfully established.  Thus, simply notify
- 	 * listener with a proper event if we are the first path.
- 	 */
--	rtrs_srv_path_up(srv_path);
-+	err = rtrs_srv_path_up(srv_path);
-+	if (err) {
-+		rtrs_err(s, "rtrs_srv_path_up(), err: %d\n", err);
-+		goto iu_free;
-+	}
- 
- 	ib_dma_sync_single_for_device(srv_path->s.dev->ib_dev,
- 				      tx_iu->dma_addr,
--- 
-2.42.0
-
+ 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
 
 
 
