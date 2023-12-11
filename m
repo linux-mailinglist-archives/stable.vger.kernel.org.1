@@ -1,49 +1,53 @@
-Return-Path: <stable+bounces-5790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3547080D6EE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAB280D55B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3E1D1F21D49
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F02B31C213FC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9778E51C46;
-	Mon, 11 Dec 2023 18:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1055101B;
+	Mon, 11 Dec 2023 18:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkE9vN4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVr6uCqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5317EFBE0;
-	Mon, 11 Dec 2023 18:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6399C433C8;
-	Mon, 11 Dec 2023 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D950D4F212;
+	Mon, 11 Dec 2023 18:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EF5C433C7;
+	Mon, 11 Dec 2023 18:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319671;
-	bh=F4xXdyqlr6TH5a1Eo/Fh7c+pkfslbp8qwgBrLQcTnTo=;
+	s=korg; t=1702319033;
+	bh=vGnghQTw0j2hVZyYsKrA6LFrH/NlvmdVcdIa7VWk/6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkE9vN4QaS6uz12kCE5X+gsNjBAEF0KSlMIalat8pVhyzl3nXg8UzN2wFZ4SrI03b
-	 vR0BX5ahb8h5iW/wLRC0Djmd2B6pzaM+PGc4mp+4CMTsk7GiT3Mq5bIS1zG9OeFzSM
-	 RtX3VdweHCg59sBWepaHcH3t2s4IWkaEOGNkyM1Q=
+	b=yVr6uCqn5qcLMAEufNfXO6FqwvUQqGwYIWIP6Tk5qrv5IzLb4WXSpQq5FnlUiK84y
+	 4CW/bgmH/ISBG9g4Y/ArIdEqQiH2j89fOKay5dc3CXfREdKDMEw1YPLFDJ5Sa8GoIl
+	 fzZEpzIx7xyGl5QZD1NSre7P9LGv3DcMyzOczUxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/244] hwtracing: hisi_ptt: Add dummy callback pmu::read()
+Subject: [PATCH 4.19 14/55] hv_netvsc: rndis_filter needs to select NLS
 Date: Mon, 11 Dec 2023 19:21:24 +0100
-Message-ID: <20231211182054.512409866@linuxfoundation.org>
+Message-ID: <20231211182012.738136767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 55e0a2fb0cb5ab7c9c99c1ad4d3e6954de8b73a0 ]
+[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
 
-When start trace with perf option "-C $cpu" and immediately stop it
-with SIGTERM or others, the perf core will invoke pmu::read() while
-the driver doesn't implement it. Add a dummy pmu::read() to avoid
-any issues.
+rndis_filter uses utf8s_to_utf16s() which is provided by setting
+NLS, so select NLS to fix the build error:
 
-Fixes: ff0de066b463 ("hwtracing: hisi_ptt: Add trace function support for HiSilicon PCIe Tune and Trace device")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231010084731.30450-6-yangyicong@huawei.com
+ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
+
+Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: K. Y. Srinivasan <kys@microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/ptt/hisi_ptt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/hyperv/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
-index 49ea1b0f74890..3045d1894b81b 100644
---- a/drivers/hwtracing/ptt/hisi_ptt.c
-+++ b/drivers/hwtracing/ptt/hisi_ptt.c
-@@ -1178,6 +1178,10 @@ static void hisi_ptt_pmu_del(struct perf_event *event, int flags)
- 	hisi_ptt_pmu_stop(event, PERF_EF_UPDATE);
- }
- 
-+static void hisi_ptt_pmu_read(struct perf_event *event)
-+{
-+}
-+
- static void hisi_ptt_remove_cpuhp_instance(void *hotplug_node)
- {
- 	cpuhp_state_remove_instance_nocalls(hisi_ptt_pmu_online, hotplug_node);
-@@ -1221,6 +1225,7 @@ static int hisi_ptt_register_pmu(struct hisi_ptt *hisi_ptt)
- 		.stop		= hisi_ptt_pmu_stop,
- 		.add		= hisi_ptt_pmu_add,
- 		.del		= hisi_ptt_pmu_del,
-+		.read		= hisi_ptt_pmu_read,
- 	};
- 
- 	reg = readl(hisi_ptt->iobase + HISI_PTT_LOCATION);
+diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
+index 0765d5f61714e..386658ce1297a 100644
+--- a/drivers/net/hyperv/Kconfig
++++ b/drivers/net/hyperv/Kconfig
+@@ -2,5 +2,6 @@ config HYPERV_NET
+ 	tristate "Microsoft Hyper-V virtual network driver"
+ 	depends on HYPERV
+ 	select UCS2_STRING
++	select NLS
+ 	help
+ 	  Select this option to enable the Hyper-V virtual network driver.
 -- 
 2.42.0
 
