@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A2B80D552
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4CA380D8C8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D36282094
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3D2281E3E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC595101E;
-	Mon, 11 Dec 2023 18:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1778951C2D;
+	Mon, 11 Dec 2023 18:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REwSWOjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MQ72xCg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4444F212;
-	Mon, 11 Dec 2023 18:22:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5AE3C433C8;
-	Mon, 11 Dec 2023 18:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCE75102A;
+	Mon, 11 Dec 2023 18:48:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B47EC433C9;
+	Mon, 11 Dec 2023 18:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318957;
-	bh=wdJusmBfZIWL6R/PFP+d25N8eSjvF/dTfEQrvUQexw0=;
+	s=korg; t=1702320531;
+	bh=lYTcl3pyRqtgSoeOhUIaWzDtBnlZ76ZUkxxMQ4UyEf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REwSWOjEyxrGBzNAiJ8yp3d6yV24y8J1a3/eEdXUXV95g5q71jD1PnLdoBGha0A1q
-	 01x9nFw6mqG4dyG1V+EQy29biIJp/lmDemyPod8qMzEKZzFFIUhYcvgorwE6fUPWJv
-	 OK6EzYt5fiO56FLf1vGWCB/wK6mpvcJQjCtSKY58=
+	b=0MQ72xCgngnjNNc8+hmwU2X3MJzvDrMaH+6q8Tt0XiCZNjBe6KLjLaJ/LnjBDXPDJ
+	 4+m4E5N2BMPK/qNdQ+SWJRBiTbsH0Q/2UmcVNcyDriUnt2xJgzy9AaN4c4LapGm32N
+	 HL3+WtB8osy/g4iXjjN6LN3txsaE2nYtCdfJ1T8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 4.14 17/25] ARM: PL011: Fix DMA support
+	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/194] RDMA/irdma: Refactor error handling in create CQP
 Date: Mon, 11 Dec 2023 19:21:08 +0100
-Message-ID: <20231211182009.304317381@linuxfoundation.org>
+Message-ID: <20231211182039.970516129@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,340 +55,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Sindhu Devale <sindhu.devale@intel.com>
 
-commit 58ac1b3799799069d53f5bf95c093f2fe8dd3cc5 upstream.
+[ Upstream commit 133b1cba46c6c8b67c630eacc0a1e4969da16517 ]
 
-Since there is no guarantee that the memory returned by
-dma_alloc_coherent() is associated with a 'struct page', using the
-architecture specific phys_to_page() is wrong, but using
-virt_to_page() would be as well.
+In case of a failure in irdma_create_cqp, do not call
+irdma_destroy_cqp, but cleanup all the allocated resources
+in reverse order.
 
-Stop using sg lists altogether and just use the *_single() functions
-instead. This also simplifies the code a bit since the scatterlists in
-this driver always have only one entry anyway.
+Drop the extra argument in irdma_destroy_cqp as its no longer needed.
 
-https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
-    Use consistent names for dma buffers
-
-gc: Add a commit log from the initial thread:
-https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
-    Use consistent names for dma buffers
-
-Fixes: cb06ff102e2d7 ("ARM: PL011: Add support for Rx DMA buffer polling.")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20231122171503.235649-1-gregory.clement@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Link: https://lore.kernel.org/r/20230725155505.1069-3-shiraz.saleem@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 2b78832f50c4 ("RDMA/irdma: Fix UAF in irdma_sc_ccq_get_cqe_info()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |  112 +++++++++++++++++++---------------------
- 1 file changed, 54 insertions(+), 58 deletions(-)
+ drivers/infiniband/hw/irdma/hw.c | 35 +++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -240,17 +240,18 @@ static struct vendor_data vendor_zte = {
- 
- /* Deals with DMA transactions */
- 
--struct pl011_sgbuf {
--	struct scatterlist sg;
--	char *buf;
-+struct pl011_dmabuf {
-+	dma_addr_t		dma;
-+	size_t			len;
-+	char			*buf;
- };
- 
- struct pl011_dmarx_data {
- 	struct dma_chan		*chan;
- 	struct completion	complete;
- 	bool			use_buf_b;
--	struct pl011_sgbuf	sgbuf_a;
--	struct pl011_sgbuf	sgbuf_b;
-+	struct pl011_dmabuf	dbuf_a;
-+	struct pl011_dmabuf	dbuf_b;
- 	dma_cookie_t		cookie;
- 	bool			running;
- 	struct timer_list	timer;
-@@ -263,7 +264,8 @@ struct pl011_dmarx_data {
- 
- struct pl011_dmatx_data {
- 	struct dma_chan		*chan;
--	struct scatterlist	sg;
-+	dma_addr_t		dma;
-+	size_t			len;
- 	char			*buf;
- 	bool			queued;
- };
-@@ -384,32 +386,24 @@ static int pl011_fifo_to_tty(struct uart
- 
- #define PL011_DMA_BUFFER_SIZE PAGE_SIZE
- 
--static int pl011_sgbuf_init(struct dma_chan *chan, struct pl011_sgbuf *sg,
-+static int pl011_dmabuf_init(struct dma_chan *chan, struct pl011_dmabuf *db,
- 	enum dma_data_direction dir)
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index 027584febb8ca..8aa507e87df37 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -572,7 +572,7 @@ static void irdma_destroy_irq(struct irdma_pci_f *rf,
+  * Issue destroy cqp request and
+  * free the resources associated with the cqp
+  */
+-static void irdma_destroy_cqp(struct irdma_pci_f *rf, bool free_hwcqp)
++static void irdma_destroy_cqp(struct irdma_pci_f *rf)
  {
--	dma_addr_t dma_addr;
--
--	sg->buf = dma_alloc_coherent(chan->device->dev,
--		PL011_DMA_BUFFER_SIZE, &dma_addr, GFP_KERNEL);
--	if (!sg->buf)
-+	db->buf = dma_alloc_coherent(chan->device->dev, PL011_DMA_BUFFER_SIZE,
-+				     &db->dma, GFP_KERNEL);
-+	if (!db->buf)
- 		return -ENOMEM;
--
--	sg_init_table(&sg->sg, 1);
--	sg_set_page(&sg->sg, phys_to_page(dma_addr),
--		PL011_DMA_BUFFER_SIZE, offset_in_page(dma_addr));
--	sg_dma_address(&sg->sg) = dma_addr;
--	sg_dma_len(&sg->sg) = PL011_DMA_BUFFER_SIZE;
-+	db->len = PL011_DMA_BUFFER_SIZE;
+ 	struct irdma_sc_dev *dev = &rf->sc_dev;
+ 	struct irdma_cqp *cqp = &rf->cqp;
+@@ -580,8 +580,8 @@ static void irdma_destroy_cqp(struct irdma_pci_f *rf, bool free_hwcqp)
  
+ 	if (rf->cqp_cmpl_wq)
+ 		destroy_workqueue(rf->cqp_cmpl_wq);
+-	if (free_hwcqp)
+-		status = irdma_sc_cqp_destroy(dev->cqp);
++
++	status = irdma_sc_cqp_destroy(dev->cqp);
+ 	if (status)
+ 		ibdev_dbg(to_ibdev(dev), "ERR: Destroy CQP failed %d\n", status);
+ 
+@@ -925,8 +925,8 @@ static int irdma_create_cqp(struct irdma_pci_f *rf)
+ 
+ 	cqp->scratch_array = kcalloc(sqsize, sizeof(*cqp->scratch_array), GFP_KERNEL);
+ 	if (!cqp->scratch_array) {
+-		kfree(cqp->cqp_requests);
+-		return -ENOMEM;
++		status = -ENOMEM;
++		goto err_scratch;
+ 	}
+ 
+ 	dev->cqp = &cqp->sc_cqp;
+@@ -936,15 +936,14 @@ static int irdma_create_cqp(struct irdma_pci_f *rf)
+ 	cqp->sq.va = dma_alloc_coherent(dev->hw->device, cqp->sq.size,
+ 					&cqp->sq.pa, GFP_KERNEL);
+ 	if (!cqp->sq.va) {
+-		kfree(cqp->scratch_array);
+-		kfree(cqp->cqp_requests);
+-		return -ENOMEM;
++		status = -ENOMEM;
++		goto err_sq;
+ 	}
+ 
+ 	status = irdma_obj_aligned_mem(rf, &mem, sizeof(struct irdma_cqp_ctx),
+ 				       IRDMA_HOST_CTX_ALIGNMENT_M);
+ 	if (status)
+-		goto exit;
++		goto err_ctx;
+ 
+ 	dev->cqp->host_ctx_pa = mem.pa;
+ 	dev->cqp->host_ctx = mem.va;
+@@ -970,7 +969,7 @@ static int irdma_create_cqp(struct irdma_pci_f *rf)
+ 	status = irdma_sc_cqp_init(dev->cqp, &cqp_init_info);
+ 	if (status) {
+ 		ibdev_dbg(to_ibdev(dev), "ERR: cqp init status %d\n", status);
+-		goto exit;
++		goto err_ctx;
+ 	}
+ 
+ 	spin_lock_init(&cqp->req_lock);
+@@ -981,7 +980,7 @@ static int irdma_create_cqp(struct irdma_pci_f *rf)
+ 		ibdev_dbg(to_ibdev(dev),
+ 			  "ERR: cqp create failed - status %d maj_err %d min_err %d\n",
+ 			  status, maj_err, min_err);
+-		goto exit;
++		goto err_ctx;
+ 	}
+ 
+ 	INIT_LIST_HEAD(&cqp->cqp_avail_reqs);
+@@ -995,8 +994,16 @@ static int irdma_create_cqp(struct irdma_pci_f *rf)
+ 	init_waitqueue_head(&cqp->remove_wq);
  	return 0;
+ 
+-exit:
+-	irdma_destroy_cqp(rf, false);
++err_ctx:
++	dma_free_coherent(dev->hw->device, cqp->sq.size,
++			  cqp->sq.va, cqp->sq.pa);
++	cqp->sq.va = NULL;
++err_sq:
++	kfree(cqp->scratch_array);
++	cqp->scratch_array = NULL;
++err_scratch:
++	kfree(cqp->cqp_requests);
++	cqp->cqp_requests = NULL;
+ 
+ 	return status;
  }
- 
--static void pl011_sgbuf_free(struct dma_chan *chan, struct pl011_sgbuf *sg,
-+static void pl011_dmabuf_free(struct dma_chan *chan, struct pl011_dmabuf *db,
- 	enum dma_data_direction dir)
- {
--	if (sg->buf) {
-+	if (db->buf) {
- 		dma_free_coherent(chan->device->dev,
--			PL011_DMA_BUFFER_SIZE, sg->buf,
--			sg_dma_address(&sg->sg));
-+				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
- 	}
- }
- 
-@@ -570,8 +564,8 @@ static void pl011_dma_tx_callback(void *
- 
- 	spin_lock_irqsave(&uap->port.lock, flags);
- 	if (uap->dmatx.queued)
--		dma_unmap_sg(dmatx->chan->device->dev, &dmatx->sg, 1,
--			     DMA_TO_DEVICE);
-+		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
-+				dmatx->len, DMA_TO_DEVICE);
- 
- 	dmacr = uap->dmacr;
- 	uap->dmacr = dmacr & ~UART011_TXDMAE;
-@@ -657,18 +651,19 @@ static int pl011_dma_tx_refill(struct ua
- 			memcpy(&dmatx->buf[first], &xmit->buf[0], second);
- 	}
- 
--	dmatx->sg.length = count;
--
--	if (dma_map_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE) != 1) {
-+	dmatx->len = count;
-+	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
-+				    DMA_TO_DEVICE);
-+	if (dmatx->dma == DMA_MAPPING_ERROR) {
- 		uap->dmatx.queued = false;
- 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
- 		return -EBUSY;
- 	}
- 
--	desc = dmaengine_prep_slave_sg(chan, &dmatx->sg, 1, DMA_MEM_TO_DEV,
-+	desc = dmaengine_prep_slave_single(chan, dmatx->dma, dmatx->len, DMA_MEM_TO_DEV,
- 					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc) {
--		dma_unmap_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE);
-+		dma_unmap_single(dma_dev->dev, dmatx->dma, dmatx->len, DMA_TO_DEVICE);
- 		uap->dmatx.queued = false;
- 		/*
- 		 * If DMA cannot be used right now, we complete this
-@@ -832,8 +827,8 @@ __acquires(&uap->port.lock)
- 	dmaengine_terminate_async(uap->dmatx.chan);
- 
- 	if (uap->dmatx.queued) {
--		dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
--			     DMA_TO_DEVICE);
-+		dma_unmap_single(uap->dmatx.chan->device->dev, uap->dmatx.dma,
-+				 uap->dmatx.len, DMA_TO_DEVICE);
- 		uap->dmatx.queued = false;
- 		uap->dmacr &= ~UART011_TXDMAE;
- 		pl011_write(uap->dmacr, uap, REG_DMACR);
-@@ -847,15 +842,15 @@ static int pl011_dma_rx_trigger_dma(stru
- 	struct dma_chan *rxchan = uap->dmarx.chan;
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_async_tx_descriptor *desc;
--	struct pl011_sgbuf *sgbuf;
-+	struct pl011_dmabuf *dbuf;
- 
- 	if (!rxchan)
- 		return -EIO;
- 
- 	/* Start the RX DMA job */
--	sgbuf = uap->dmarx.use_buf_b ?
--		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
--	desc = dmaengine_prep_slave_sg(rxchan, &sgbuf->sg, 1,
-+	dbuf = uap->dmarx.use_buf_b ?
-+		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
-+	desc = dmaengine_prep_slave_single(rxchan, dbuf->dma, dbuf->len,
- 					DMA_DEV_TO_MEM,
- 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	/*
-@@ -895,8 +890,8 @@ static void pl011_dma_rx_chars(struct ua
- 			       bool readfifo)
- {
- 	struct tty_port *port = &uap->port.state->port;
--	struct pl011_sgbuf *sgbuf = use_buf_b ?
--		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
-+	struct pl011_dmabuf *dbuf = use_buf_b ?
-+		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
- 	int dma_count = 0;
- 	u32 fifotaken = 0; /* only used for vdbg() */
- 
-@@ -905,7 +900,7 @@ static void pl011_dma_rx_chars(struct ua
- 
- 	if (uap->dmarx.poll_rate) {
- 		/* The data can be taken by polling */
--		dmataken = sgbuf->sg.length - dmarx->last_residue;
-+		dmataken = dbuf->len - dmarx->last_residue;
- 		/* Recalculate the pending size */
- 		if (pending >= dmataken)
- 			pending -= dmataken;
-@@ -919,7 +914,7 @@ static void pl011_dma_rx_chars(struct ua
- 		 * Note that tty_insert_flip_buf() tries to take as many chars
- 		 * as it can.
- 		 */
--		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
-+		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
- 				pending);
- 
- 		uap->port.icount.rx += dma_count;
-@@ -930,7 +925,7 @@ static void pl011_dma_rx_chars(struct ua
- 
- 	/* Reset the last_residue for Rx DMA poll */
- 	if (uap->dmarx.poll_rate)
--		dmarx->last_residue = sgbuf->sg.length;
-+		dmarx->last_residue = dbuf->len;
- 
- 	/*
- 	 * Only continue with trying to read the FIFO if all DMA chars have
-@@ -967,8 +962,8 @@ static void pl011_dma_rx_irq(struct uart
- {
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_chan *rxchan = dmarx->chan;
--	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
--		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
-+	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
-+		&dmarx->dbuf_b : &dmarx->dbuf_a;
- 	size_t pending;
- 	struct dma_tx_state state;
- 	enum dma_status dmastat;
-@@ -990,7 +985,7 @@ static void pl011_dma_rx_irq(struct uart
- 	pl011_write(uap->dmacr, uap, REG_DMACR);
- 	uap->dmarx.running = false;
- 
--	pending = sgbuf->sg.length - state.residue;
-+	pending = dbuf->len - state.residue;
- 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
- 	/* Then we terminate the transfer - we now know our residue */
- 	dmaengine_terminate_all(rxchan);
-@@ -1017,8 +1012,8 @@ static void pl011_dma_rx_callback(void *
- 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
- 	struct dma_chan *rxchan = dmarx->chan;
- 	bool lastbuf = dmarx->use_buf_b;
--	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
--		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
-+	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
-+		&dmarx->dbuf_b : &dmarx->dbuf_a;
- 	size_t pending;
- 	struct dma_tx_state state;
- 	int ret;
-@@ -1036,7 +1031,7 @@ static void pl011_dma_rx_callback(void *
- 	 * the DMA irq handler. So we check the residue here.
- 	 */
- 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
--	pending = sgbuf->sg.length - state.residue;
-+	pending = dbuf->len - state.residue;
- 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
- 	/* Then we terminate the transfer - we now know our residue */
- 	dmaengine_terminate_all(rxchan);
-@@ -1088,16 +1083,16 @@ static void pl011_dma_rx_poll(unsigned l
- 	unsigned long flags = 0;
- 	unsigned int dmataken = 0;
- 	unsigned int size = 0;
--	struct pl011_sgbuf *sgbuf;
-+	struct pl011_dmabuf *dbuf;
- 	int dma_count;
- 	struct dma_tx_state state;
- 
--	sgbuf = dmarx->use_buf_b ? &uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
-+	dbuf = dmarx->use_buf_b ? &uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
- 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
- 	if (likely(state.residue < dmarx->last_residue)) {
--		dmataken = sgbuf->sg.length - dmarx->last_residue;
-+		dmataken = dbuf->len - dmarx->last_residue;
- 		size = dmarx->last_residue - state.residue;
--		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
-+		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
- 				size);
- 		if (dma_count == size)
- 			dmarx->last_residue =  state.residue;
-@@ -1144,7 +1139,7 @@ static void pl011_dma_startup(struct uar
- 		return;
- 	}
- 
--	sg_init_one(&uap->dmatx.sg, uap->dmatx.buf, PL011_DMA_BUFFER_SIZE);
-+	uap->dmatx.len = PL011_DMA_BUFFER_SIZE;
- 
- 	/* The DMA buffer is now the FIFO the TTY subsystem can use */
- 	uap->port.fifosize = PL011_DMA_BUFFER_SIZE;
-@@ -1154,7 +1149,7 @@ static void pl011_dma_startup(struct uar
- 		goto skip_rx;
- 
- 	/* Allocate and map DMA RX buffers */
--	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
-+	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_a,
- 			       DMA_FROM_DEVICE);
- 	if (ret) {
- 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
-@@ -1162,12 +1157,12 @@ static void pl011_dma_startup(struct uar
- 		goto skip_rx;
- 	}
- 
--	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_b,
-+	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_b,
- 			       DMA_FROM_DEVICE);
- 	if (ret) {
- 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
- 			"RX buffer B", ret);
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a,
- 				 DMA_FROM_DEVICE);
- 		goto skip_rx;
- 	}
-@@ -1223,8 +1218,9 @@ static void pl011_dma_shutdown(struct ua
- 		/* In theory, this should already be done by pl011_dma_flush_buffer */
- 		dmaengine_terminate_all(uap->dmatx.chan);
- 		if (uap->dmatx.queued) {
--			dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
--				     DMA_TO_DEVICE);
-+			dma_unmap_single(uap->dmatx.chan->device->dev,
-+					 uap->dmatx.dma, uap->dmatx.len,
-+					 DMA_TO_DEVICE);
- 			uap->dmatx.queued = false;
- 		}
- 
-@@ -1235,8 +1231,8 @@ static void pl011_dma_shutdown(struct ua
- 	if (uap->using_rx_dma) {
- 		dmaengine_terminate_all(uap->dmarx.chan);
- 		/* Clean up the RX DMA */
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a, DMA_FROM_DEVICE);
--		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_b, DMA_FROM_DEVICE);
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a, DMA_FROM_DEVICE);
-+		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_b, DMA_FROM_DEVICE);
- 		if (uap->dmarx.poll_rate)
- 			del_timer_sync(&uap->dmarx.timer);
- 		uap->using_rx_dma = false;
+@@ -1744,7 +1751,7 @@ void irdma_ctrl_deinit_hw(struct irdma_pci_f *rf)
+ 				      rf->reset, rf->rdma_ver);
+ 		fallthrough;
+ 	case CQP_CREATED:
+-		irdma_destroy_cqp(rf, true);
++		irdma_destroy_cqp(rf);
+ 		fallthrough;
+ 	case INITIAL_STATE:
+ 		irdma_del_init_mem(rf);
+-- 
+2.42.0
+
 
 
 
