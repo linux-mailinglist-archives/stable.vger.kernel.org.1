@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6291F80D8E8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA50080D972
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A11F21B8C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 167CF1C215A0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9469251C35;
-	Mon, 11 Dec 2023 18:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB451C50;
+	Mon, 11 Dec 2023 18:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7ZXiqYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rszLHVfJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5B5102A;
-	Mon, 11 Dec 2023 18:49:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB23C433C9;
-	Mon, 11 Dec 2023 18:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D608C51C44;
+	Mon, 11 Dec 2023 18:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEBFC433C8;
+	Mon, 11 Dec 2023 18:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320566;
-	bh=CBwq/L8/T1wptKzJuFPxhGXrhgXQtUBWVhMhb+JRjzc=;
+	s=korg; t=1702320827;
+	bh=vgMdfa40MQw1hqG3rs4AwOGwDEEiJavJ8QP0gr07yes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7ZXiqYJChC90vuiWm05E5gEacwbp15rsTB40ZsmLsHrLz8clCN4TToREkbWLBRAQ
-	 3BnOwAv/nabX7qgNoaiswiYRtHMAwDp0KMV1EYLDlr+Zs5h5DDEz++Uxk5c1EykuMT
-	 YdHc6GLJRrSHOwhjOSA4lFNVpaupMxnsMwDHa874=
+	b=rszLHVfJtjK8IJKZ/cO/l3zd3OQqRom+GCkbyfaUhr6RUIQ7A8rySK3goitiMI/1u
+	 qs4laTvxLnaEcjcdsZNOowQbNBvDxr/+rKbBm2Ba+9GaXVcMwVE609SvwIR7teZjqJ
+	 mwaMa+j+LcWJMeYEckeatJuPgeW7F7W4ZqXuLKK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	urbinek@gmail.com,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/194] hwmon: (acpi_power_meter) Fix 4.29 MW bug
+Subject: [PATCH 5.15 011/141] platform/x86: asus-wmi: Simplify tablet-mode-switch probing
 Date: Mon, 11 Dec 2023 19:21:10 +0100
-Message-ID: <20231211182040.048013997@linuxfoundation.org>
+Message-ID: <20231211182026.984378270@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +53,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 1fefca6c57fb928d2131ff365270cbf863d89c88 ]
+[ Upstream commit c98dc61ee08f833e68337700546e120e2edac7c9 ]
 
-The ACPI specification says:
+The 3 different tablet-mode-switch initialization paths repeat a lot
+of the same code. Add a helper function for this.
 
-"If an error occurs while obtaining the meter reading or if the value
-is not available then an Integer with all bits set is returned"
+This also makes the error-handling for the kbd_dock_devid case consistent
+with the other 2 cases.
 
-Since the "integer" is 32 bits in case of the ACPI power meter,
-userspace will get a power reading of 2^32 * 1000 miliwatts (~4.29 MW)
-in case of such an error. This was discovered due to a lm_sensors
-bugreport (https://github.com/lm-sensors/lm-sensors/issues/460).
-Fix this by returning -ENODATA instead.
-
-Tested-by: <urbinek@gmail.com>
-Fixes: de584afa5e18 ("hwmon driver for ACPI 4.0 power meters")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231124182747.13956-1-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Cc: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20220824151145.1448010-1-hdegoede@redhat.com
+Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/acpi_power_meter.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/x86/asus-wmi.c | 55 +++++++++++++--------------------
+ 1 file changed, 22 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 0962c12eba5a0..2147afb725581 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -31,6 +31,7 @@
- #define POWER_METER_CAN_NOTIFY	(1 << 3)
- #define POWER_METER_IS_BATTERY	(1 << 8)
- #define UNKNOWN_HYSTERESIS	0xFFFFFFFF
-+#define UNKNOWN_POWER		0xFFFFFFFF
- 
- #define METER_NOTIFY_CONFIG	0x80
- #define METER_NOTIFY_TRIP	0x81
-@@ -348,6 +349,9 @@ static ssize_t show_power(struct device *dev,
- 	update_meter(resource);
- 	mutex_unlock(&resource->lock);
- 
-+	if (resource->power == UNKNOWN_POWER)
-+		return -ENODATA;
-+
- 	return sprintf(buf, "%llu\n", resource->power * 1000);
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 8b7a86c6c363f..35b2fbb466b45 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -364,13 +364,28 @@ static bool asus_wmi_dev_is_present(struct asus_wmi *asus, u32 dev_id)
  }
+ 
+ /* Input **********************************************************************/
++static void asus_wmi_tablet_sw_init(struct asus_wmi *asus, u32 dev_id, int event_code)
++{
++	struct device *dev = &asus->platform_device->dev;
++	int result;
++
++	result = asus_wmi_get_devstate_simple(asus, dev_id);
++	if (result < 0)
++		asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
++	if (result >= 0) {
++		input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
++		input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
++	} else if (result == -ENODEV) {
++		dev_err(dev, "This device has tablet-mode-switch quirk but got ENODEV checking it. This is a bug.");
++	} else {
++		dev_err(dev, "Error checking for tablet-mode-switch: %d\n", result);
++	}
++}
+ 
+ static int asus_wmi_input_init(struct asus_wmi *asus)
+ {
+-	struct device *dev;
+-	int err, result;
+-
+-	dev = &asus->platform_device->dev;
++	struct device *dev = &asus->platform_device->dev;
++	int err;
+ 
+ 	asus->inputdev = input_allocate_device();
+ 	if (!asus->inputdev)
+@@ -390,39 +405,13 @@ static int asus_wmi_input_init(struct asus_wmi *asus)
+ 	case asus_wmi_no_tablet_switch:
+ 		break;
+ 	case asus_wmi_kbd_dock_devid:
+-		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_KBD_DOCK);
+-		if (result >= 0) {
+-			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
+-			input_report_switch(asus->inputdev, SW_TABLET_MODE, !result);
+-		} else if (result != -ENODEV) {
+-			dev_err(dev, "Error checking for keyboard-dock: %d\n", result);
+-		}
++		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_KBD_DOCK, NOTIFY_KBD_DOCK_CHANGE);
+ 		break;
+ 	case asus_wmi_lid_flip_devid:
+-		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP);
+-		if (result < 0)
+-			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
+-		if (result >= 0) {
+-			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
+-			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
+-		} else if (result == -ENODEV) {
+-			dev_err(dev, "This device has lid_flip quirk but got ENODEV checking it. This is a bug.");
+-		} else {
+-			dev_err(dev, "Error checking for lid-flip: %d\n", result);
+-		}
++		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_LID_FLIP, NOTIFY_LID_FLIP);
+ 		break;
+ 	case asus_wmi_lid_flip_rog_devid:
+-		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP_ROG);
+-		if (result < 0)
+-			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
+-		if (result >= 0) {
+-			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
+-			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
+-		} else if (result == -ENODEV) {
+-			dev_err(dev, "This device has lid-flip-rog quirk but got ENODEV checking it. This is a bug.");
+-		} else {
+-			dev_err(dev, "Error checking for lid-flip: %d\n", result);
+-		}
++		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_LID_FLIP_ROG, NOTIFY_LID_FLIP_ROG);
+ 		break;
+ 	}
  
 -- 
 2.42.0
