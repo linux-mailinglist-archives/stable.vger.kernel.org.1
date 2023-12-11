@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 825B980D687
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97FF80D895
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C65F282457
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63BD81F219E3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67705102A;
-	Mon, 11 Dec 2023 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3158B51C2A;
+	Mon, 11 Dec 2023 18:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFygRZe6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJAL/C3Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D395380F;
-	Mon, 11 Dec 2023 18:32:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1865DC433BD;
-	Mon, 11 Dec 2023 18:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1965C8C8;
+	Mon, 11 Dec 2023 18:47:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D0AC433C7;
+	Mon, 11 Dec 2023 18:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319563;
-	bh=yW1qp/bUmAjM28kQHNqbyts1ZUE/Lvbn8VFpLtTLuaY=;
+	s=korg; t=1702320422;
+	bh=aMoNcS5UhYua3mkC447VUfTsjr7uyB9iMOG11m7GqLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFygRZe6+fRZBEHuksBtAa54LFe35gbHS5i45BPOdK4BvPR1rJzxe2XU/ivA/t5aR
-	 QvjcXdQWCMcUOALoDU2LqSW14lgvam1e5XCUo9c+veKSIfepal7QvzdAXkom8djOZp
-	 EaqG5jY9HueD7jXtEBZk0wIdloZeAWSBQ5A3Ayvc=
+	b=MJAL/C3QFx6uNr91h2qRy40Bm5LXKmf91leFGPE8JojlvMBzFWSUXoSerZFS6uts7
+	 UAeeFI8/bgOnT6pf9BcMIDTSFPjXLMuDiEGh8R2s3OAvRWfIBcfRanvuntSgMet849
+	 TKQ8K3mUKg6JMeeUKyO8NIpVcZ8YaGnfkiZM08lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Maninder Singh <maninder1.s@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Vaneet Narang <v.narang@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 152/244] checkstack: fix printed address
-Date: Mon, 11 Dec 2023 19:20:45 +0100
-Message-ID: <20231211182052.640063890@linuxfoundation.org>
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/194] netfilter: nf_tables: validate family when identifying table via handle
+Date: Mon, 11 Dec 2023 19:20:46 +0100
+Message-ID: <20231211182039.046694656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit ee34db3f271cea4d4252048617919c2caafe698b upstream.
+[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
 
-All addresses printed by checkstack have an extra incorrect 0 appended at
-the end.
+Validate table family when looking up for it via NFTA_TABLE_HANDLE.
 
-This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
-display $dre as different entity"): since then the address is taken from
-the line which contains the function name, instead of the line which
-contains stack consumption. E.g. on s390:
-
-0000000000100a30 <do_one_initcall>:
-...
-  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
-
-So the used regex which matches spaces and hexadecimal numbers to extract
-an address now matches a different substring. Subsequently replacing spaces
-with 0 appends a zero at the and, instead of replacing leading spaces.
-
-Fix this by using the proper regex, and simplify the code a bit.
-
-Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
-Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Maninder Singh <maninder1.s@samsung.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Vaneet Narang <v.narang@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/checkstack.pl |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/scripts/checkstack.pl
-+++ b/scripts/checkstack.pl
-@@ -139,15 +139,11 @@ $total_size = 0;
- while (my $line = <STDIN>) {
- 	if ($line =~ m/$funcre/) {
- 		$func = $1;
--		next if $line !~ m/^($xs*)/;
-+		next if $line !~ m/^($x*)/;
- 		if ($total_size > $min_stack) {
- 			push @stack, "$intro$total_size\n";
- 		}
--
--		$addr = $1;
--		$addr =~ s/ /0/g;
--		$addr = "0x$addr";
--
-+		$addr = "0x$1";
- 		$intro = "$addr $func [$file]:";
- 		my $padlen = 56 - length($intro);
- 		while ($padlen > 0) {
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 421211eba838b..05fa5141af516 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -805,7 +805,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
+ 
+ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 						   const struct nlattr *nla,
+-						   u8 genmask, u32 nlpid)
++						   int family, u8 genmask, u32 nlpid)
+ {
+ 	struct nftables_pernet *nft_net;
+ 	struct nft_table *table;
+@@ -813,6 +813,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
+ 	nft_net = nft_pernet(net);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+ 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
++		    table->family == family &&
+ 		    nft_active_genmask(table, genmask)) {
+ 			if (nft_table_has_owner(table) &&
+ 			    nlpid && table->nlpid != nlpid)
+@@ -1537,7 +1538,7 @@ static int nf_tables_deltable(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ 	if (nla[NFTA_TABLE_HANDLE]) {
+ 		attr = nla[NFTA_TABLE_HANDLE];
+-		table = nft_table_lookup_byhandle(net, attr, genmask,
++		table = nft_table_lookup_byhandle(net, attr, family, genmask,
+ 						  NETLINK_CB(skb).portid);
+ 	} else {
+ 		attr = nla[NFTA_TABLE_NAME];
+-- 
+2.42.0
+
 
 
 
