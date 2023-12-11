@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C7280D7BE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A78580D770
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0551F21AEB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B1841C21437
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF7D52F67;
-	Mon, 11 Dec 2023 18:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED386537F2;
+	Mon, 11 Dec 2023 18:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWUj+MRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w12KarOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30177524D4;
-	Mon, 11 Dec 2023 18:39:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8110C433C8;
-	Mon, 11 Dec 2023 18:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADDC524CF;
+	Mon, 11 Dec 2023 18:36:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303FFC433C8;
+	Mon, 11 Dec 2023 18:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319987;
-	bh=vatcabIuw1BBJKtSZ+YpgeAaTfENvLhnCX4iT7VEEng=;
+	s=korg; t=1702319812;
+	bh=cFL2JlvVvZXwynxobGN+oJvMGNujdPwiA+o+FP8+2TU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWUj+MRXPneRMhSeowc9X3p9PAyjdESjZoO0OBC1yh93BNvYHOpBIgEGR0omLgbIf
-	 G/H6qqA909VriU6isDwiT0EN88OsZ3fs4SlORzDk0eLLByiDMLaXJqrr2Sny1sQSTE
-	 BmweY7wqMZdwOifc+dULKpvaYzTYByRqQXqPttAw=
+	b=w12KarOMbOwdiKwHkdZlIGqbRKdRjPcWB+N2XPG6xWl5CnqyM+DfkZiktP7hPJ1i4
+	 UddLviuSBbPTDh3SIzbd/qDosqqHBB7OLOQENgW6lTjV+/7DUi8XovsIvPH5Lg2d5y
+	 hjwQCdHIdUfiWp3Ft4zRCL0U8GfWPSvc1LUKC3DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 32/97] net: hns: fix fake link up on xge port
+Subject: [PATCH 6.6 202/244] arm64: dts: mediatek: add missing space before {
 Date: Mon, 11 Dec 2023 19:21:35 +0100
-Message-ID: <20231211182021.139013089@linuxfoundation.org>
+Message-ID: <20231211182055.006408766@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,76 +53,279 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f708aba40f9c1eeb9c7e93ed4863b5f85b09b288 ]
+[ Upstream commit a9c740c57f977deb41bc53c02d0dae3d0e2f191a ]
 
-If a xge port just connect with an optical module and no fiber,
-it may have a fake link up because there may be interference on
-the hardware. This patch adds an anti-shake to avoid the problem.
-And the time of anti-shake is base on tests.
+Add missing whitespace between node name/label and opening {.
 
-Fixes: b917078c1c10 ("net: hns: Add ACPI support to check SFP present")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230705150006.293690-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 8980c30141d3 ("arm64: dts: mt8183: kukui: Fix underscores in node names")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 29 +++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/arm64/boot/dts/mediatek/mt8183-evb.dts   | 48 +++++++++----------
+ .../arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 12 ++---
+ .../boot/dts/mediatek/mt8183-pumpkin.dts      | 12 ++---
+ 3 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index 4a448138b4ec1..1f44a6463f45b 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -66,6 +66,27 @@ static enum mac_mode hns_get_enet_interface(const struct hns_mac_cb *mac_cb)
- 	}
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-evb.dts b/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
+index a27d906db7ea0..77f9ab94c00bd 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
+@@ -155,8 +155,8 @@ &mt6358_vsram_gpu_reg {
+ };
  
-+static u32 hns_mac_link_anti_shake(struct mac_driver *mac_ctrl_drv)
-+{
-+#define HNS_MAC_LINK_WAIT_TIME 5
-+#define HNS_MAC_LINK_WAIT_CNT 40
-+
-+	u32 link_status = 0;
-+	int i;
-+
-+	if (!mac_ctrl_drv->get_link_status)
-+		return link_status;
-+
-+	for (i = 0; i < HNS_MAC_LINK_WAIT_CNT; i++) {
-+		msleep(HNS_MAC_LINK_WAIT_TIME);
-+		mac_ctrl_drv->get_link_status(mac_ctrl_drv, &link_status);
-+		if (!link_status)
-+			break;
-+	}
-+
-+	return link_status;
-+}
-+
- void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- {
- 	struct mac_driver *mac_ctrl_drv;
-@@ -83,6 +104,14 @@ void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- 							       &sfp_prsnt);
- 		if (!ret)
- 			*link_status = *link_status && sfp_prsnt;
-+
-+		/* for FIBER port, it may have a fake link up.
-+		 * when the link status changes from down to up, we need to do
-+		 * anti-shake. the anti-shake time is base on tests.
-+		 * only FIBER port need to do this.
-+		 */
-+		if (*link_status && !mac_cb->link)
-+			*link_status = hns_mac_link_anti_shake(mac_ctrl_drv);
- 	}
+ &pio {
+-	i2c_pins_0: i2c0{
+-		pins_i2c{
++	i2c_pins_0: i2c0 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
+ 				 <PINMUX_GPIO83__FUNC_SCL0>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -164,8 +164,8 @@ pins_i2c{
+ 		};
+ 	};
  
- 	mac_cb->link = *link_status;
+-	i2c_pins_1: i2c1{
+-		pins_i2c{
++	i2c_pins_1: i2c1 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
+ 				 <PINMUX_GPIO84__FUNC_SCL1>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -173,8 +173,8 @@ pins_i2c{
+ 		};
+ 	};
+ 
+-	i2c_pins_2: i2c2{
+-		pins_i2c{
++	i2c_pins_2: i2c2 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO103__FUNC_SCL2>,
+ 				 <PINMUX_GPIO104__FUNC_SDA2>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -182,8 +182,8 @@ pins_i2c{
+ 		};
+ 	};
+ 
+-	i2c_pins_3: i2c3{
+-		pins_i2c{
++	i2c_pins_3: i2c3 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO50__FUNC_SCL3>,
+ 				 <PINMUX_GPIO51__FUNC_SDA3>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -191,8 +191,8 @@ pins_i2c{
+ 		};
+ 	};
+ 
+-	i2c_pins_4: i2c4{
+-		pins_i2c{
++	i2c_pins_4: i2c4 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO105__FUNC_SCL4>,
+ 				 <PINMUX_GPIO106__FUNC_SDA4>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -200,8 +200,8 @@ pins_i2c{
+ 		};
+ 	};
+ 
+-	i2c_pins_5: i2c5{
+-		pins_i2c{
++	i2c_pins_5: i2c5 {
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO48__FUNC_SCL5>,
+ 				 <PINMUX_GPIO49__FUNC_SDA5>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -209,8 +209,8 @@ pins_i2c{
+ 		};
+ 	};
+ 
+-	spi_pins_0: spi0{
+-		pins_spi{
++	spi_pins_0: spi0 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO85__FUNC_SPI0_MI>,
+ 				 <PINMUX_GPIO86__FUNC_SPI0_CSB>,
+ 				 <PINMUX_GPIO87__FUNC_SPI0_MO>,
+@@ -324,8 +324,8 @@ pins_clk {
+ 		};
+ 	};
+ 
+-	spi_pins_1: spi1{
+-		pins_spi{
++	spi_pins_1: spi1 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO161__FUNC_SPI1_A_MI>,
+ 				 <PINMUX_GPIO162__FUNC_SPI1_A_CSB>,
+ 				 <PINMUX_GPIO163__FUNC_SPI1_A_MO>,
+@@ -334,8 +334,8 @@ pins_spi{
+ 		};
+ 	};
+ 
+-	spi_pins_2: spi2{
+-		pins_spi{
++	spi_pins_2: spi2 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO0__FUNC_SPI2_CSB>,
+ 				 <PINMUX_GPIO1__FUNC_SPI2_MO>,
+ 				 <PINMUX_GPIO2__FUNC_SPI2_CLK>,
+@@ -344,8 +344,8 @@ pins_spi{
+ 		};
+ 	};
+ 
+-	spi_pins_3: spi3{
+-		pins_spi{
++	spi_pins_3: spi3 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO21__FUNC_SPI3_MI>,
+ 				 <PINMUX_GPIO22__FUNC_SPI3_CSB>,
+ 				 <PINMUX_GPIO23__FUNC_SPI3_MO>,
+@@ -354,8 +354,8 @@ pins_spi{
+ 		};
+ 	};
+ 
+-	spi_pins_4: spi4{
+-		pins_spi{
++	spi_pins_4: spi4 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO17__FUNC_SPI4_MI>,
+ 				 <PINMUX_GPIO18__FUNC_SPI4_CSB>,
+ 				 <PINMUX_GPIO19__FUNC_SPI4_MO>,
+@@ -364,8 +364,8 @@ pins_spi{
+ 		};
+ 	};
+ 
+-	spi_pins_5: spi5{
+-		pins_spi{
++	spi_pins_5: spi5 {
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO13__FUNC_SPI5_MI>,
+ 				 <PINMUX_GPIO14__FUNC_SPI5_CSB>,
+ 				 <PINMUX_GPIO15__FUNC_SPI5_MO>,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+index a3add21602337..9a6bfa5882e31 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
+@@ -692,7 +692,7 @@ pins_scp_uart {
+ 	};
+ 
+ 	spi0_pins: spi0 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO85__FUNC_SPI0_MI>,
+ 				 <PINMUX_GPIO86__FUNC_GPIO86>,
+ 				 <PINMUX_GPIO87__FUNC_SPI0_MO>,
+@@ -702,7 +702,7 @@ pins_spi{
+ 	};
+ 
+ 	spi1_pins: spi1 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO161__FUNC_SPI1_A_MI>,
+ 				 <PINMUX_GPIO162__FUNC_SPI1_A_CSB>,
+ 				 <PINMUX_GPIO163__FUNC_SPI1_A_MO>,
+@@ -712,7 +712,7 @@ pins_spi{
+ 	};
+ 
+ 	spi2_pins: spi2 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO0__FUNC_SPI2_CSB>,
+ 				 <PINMUX_GPIO1__FUNC_SPI2_MO>,
+ 				 <PINMUX_GPIO2__FUNC_SPI2_CLK>;
+@@ -725,7 +725,7 @@ pins_spi_mi {
+ 	};
+ 
+ 	spi3_pins: spi3 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO21__FUNC_SPI3_MI>,
+ 				 <PINMUX_GPIO22__FUNC_SPI3_CSB>,
+ 				 <PINMUX_GPIO23__FUNC_SPI3_MO>,
+@@ -735,7 +735,7 @@ pins_spi{
+ 	};
+ 
+ 	spi4_pins: spi4 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO17__FUNC_SPI4_MI>,
+ 				 <PINMUX_GPIO18__FUNC_SPI4_CSB>,
+ 				 <PINMUX_GPIO19__FUNC_SPI4_MO>,
+@@ -745,7 +745,7 @@ pins_spi{
+ 	};
+ 
+ 	spi5_pins: spi5 {
+-		pins_spi{
++		pins_spi {
+ 			pinmux = <PINMUX_GPIO13__FUNC_SPI5_MI>,
+ 				 <PINMUX_GPIO14__FUNC_SPI5_CSB>,
+ 				 <PINMUX_GPIO15__FUNC_SPI5_MO>,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts b/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
+index 526bcae7a3f8f..b5784a60c315d 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8183-pumpkin.dts
+@@ -193,7 +193,7 @@ &mt6358_vsram_gpu_reg {
+ 
+ &pio {
+ 	i2c_pins_0: i2c0 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
+ 				 <PINMUX_GPIO83__FUNC_SCL0>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -202,7 +202,7 @@ pins_i2c{
+ 	};
+ 
+ 	i2c_pins_1: i2c1 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
+ 				 <PINMUX_GPIO84__FUNC_SCL1>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -211,7 +211,7 @@ pins_i2c{
+ 	};
+ 
+ 	i2c_pins_2: i2c2 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO103__FUNC_SCL2>,
+ 				 <PINMUX_GPIO104__FUNC_SDA2>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -220,7 +220,7 @@ pins_i2c{
+ 	};
+ 
+ 	i2c_pins_3: i2c3 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO50__FUNC_SCL3>,
+ 				 <PINMUX_GPIO51__FUNC_SDA3>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -229,7 +229,7 @@ pins_i2c{
+ 	};
+ 
+ 	i2c_pins_4: i2c4 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO105__FUNC_SCL4>,
+ 				 <PINMUX_GPIO106__FUNC_SDA4>;
+ 			mediatek,pull-up-adv = <3>;
+@@ -238,7 +238,7 @@ pins_i2c{
+ 	};
+ 
+ 	i2c_pins_5: i2c5 {
+-		pins_i2c{
++		pins_i2c {
+ 			pinmux = <PINMUX_GPIO48__FUNC_SCL5>,
+ 				 <PINMUX_GPIO49__FUNC_SDA5>;
+ 			mediatek,pull-up-adv = <3>;
 -- 
 2.42.0
 
