@@ -1,111 +1,128 @@
-Return-Path: <stable+bounces-5517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8AE80D3AB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D31280D3B1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B7701C215A8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:24:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0681C215C9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12244E1A1;
-	Mon, 11 Dec 2023 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D1C4E1BA;
+	Mon, 11 Dec 2023 17:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="X/HElSps"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xjTugPex"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71C69B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:24:22 -0800 (PST)
-Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6cef5220d07so1003900b3a.2
-        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:24:22 -0800 (PST)
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2A8FBD
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:26:40 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-a00c200782dso633780266b.1
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:26:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702315462; x=1702920262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OIO4WNjR5xVb+yTIblaWghN44VQDB2yiwlWnOskO7lQ=;
-        b=X/HElSpsabf/JSNO5yuoYy7tmRFjNqnSfKB8lq23BvtLoaEbQ/DnSu50VHbA6BR06L
-         zs4lopBJYqqozWHk4ZG7iIlZrboP4B/mbUauspaHlcXlE+edktmPncm1OwbnRIIeoAsB
-         diaiK3kW3ZaDM8K5hpS1RA3CGqLVhPN4IIkSUQIGc0OrEmvHqe5trqyaCcRu7L1f+/5l
-         IngXVePIRNX/D6PflAUXWB/KYxx0aHl4MH3j0D0LvyQQOF547Bdv24qJ+xepqhgQJTQy
-         t7uk1+1HopMXTp5RN36HOFsjz/cPsOVtUsh1YpjagZsaDtsvuqVbuClbln1kfwPDVgLC
-         FVKw==
+        d=linaro.org; s=google; t=1702315599; x=1702920399; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8dOU7vgCrWoj+Jdp90eY+meUzL5fXI8ikuHYzvel8Q=;
+        b=xjTugPexuaiydY/nBgm2Nj6iGiTRwVIab1DQIit9GHwoUMH/e9cRVOjiB4XIkyfnJ9
+         zNxh+NhugNOYyfQgGYSi1aC0Msznq0dJIaCiICpOOPEUndfWRI/DCkrtiW011PfI/Xyz
+         MWge1ORw1l2hRlIVYUfeKKW3QmZ7kDoiqvJNhE7zFpn9HMSRExp54zbpTujxMeb/vW6u
+         44dMeMF0ZQcTXteolPdnqgo3YJPJ/5q4fj5kQHoEalX5216BW/1+wAeLKJ6BSKAUPrnX
+         yT3MyZgDdG2DLKvorV6/p8VTyDfmOztOd1t5lDF/tC6ZPjmCE3AQum/e9Cd+IlCSA8Sw
+         7u+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702315462; x=1702920262;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OIO4WNjR5xVb+yTIblaWghN44VQDB2yiwlWnOskO7lQ=;
-        b=cuyoUIR2iFngkqiZEu9d5cp8sKn+QLQGzTQw4EVEX+fUFYHhWQoqAi8XVdquzh+T0Y
-         kpK7ZbpZVD1Qv3llwZpYed0rNYN4/2A4zw1nlw1PYrom/3HCIZPK3NHbNxz76j4Q9Ahj
-         eQHALa6AOfY6czdg4pFKqu9C9rWJ2ZmCbtlUJ0XX4fNuhJF7ZupjwaIkDELMnR3fCH3H
-         qPg2IxDd5trQAfKhWdrJldvkKF2jIfGsPwL94f1G+1Rtq+gRYkoW4nQliEa8aAxxPmQr
-         9DS5pK9kU4REMsFHpZX2COIfkWUqYcx3I9gpK+o1x7ReyHrfgxeM2UErBj0Og58TMkvt
-         rCNg==
-X-Gm-Message-State: AOJu0YxF2PZH5qK0aIuiOdBf03JLuiJiU4ASDDmtZDFFByysdEtNHiXx
-	w98oTarYsDxFQyRuzr/2/7oUETIL+jqn0fBx2g==
-X-Google-Smtp-Source: AGHT+IF/o7tMygudcvDEgvWVGduVd5AMvlcE/EGogBR8ckxyLh/FBo/ByXUkDPmqNZldCt3kozHQaA==
-X-Received: by 2002:a05:6a00:1b57:b0:6ce:f78d:b376 with SMTP id o23-20020a056a001b5700b006cef78db376mr1612136pfv.7.1702315462108;
-        Mon, 11 Dec 2023 09:24:22 -0800 (PST)
-Received: from localhost.localdomain ([2409:40f4:103d:670f:7d18:86fe:2cd9:84f3])
-        by smtp.gmail.com with ESMTPSA id r21-20020aa78b95000000b006cef5c09ca3sm4495255pfd.147.2023.12.11.09.24.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 09:24:21 -0800 (PST)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: andersson@kernel.org,
-	konrad.dybcio@linaro.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] ARM: dts: qcom-sdx55: Fix the base address of PCIe PHY
-Date: Mon, 11 Dec 2023 22:54:11 +0530
-Message-Id: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1702315599; x=1702920399;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z8dOU7vgCrWoj+Jdp90eY+meUzL5fXI8ikuHYzvel8Q=;
+        b=Zx8QeBFXeYNFC7WUE93yU1DUylfr0gyVXTTzaZrQUwbKv5PUVZkhq90vQKGoFeAFsG
+         Ofl7aszG2QKCwkP7xAiyz0iFXxqDg1J8BmScinwzjeD4T/2rXYA2hZQVO00/il5BhXWO
+         8vxIKq/u9p76kzFkbanbCCYV/OMHXGNZl6a3FIKDZjNhYQBwg8/xlFEqlj+Nx3beuYRQ
+         Yh9A3AUa2qQMWGs3vreff3OogZ3Ll0kZdSIahoAhnAuhOV3k+PjUJHKoVG65yn/Ro3j8
+         Q93pvshms2bRvisuYtZsrT1KI2uQVmiunURh2BUbUKMDyaYBvyUndKt0nWT3o5t60JM8
+         eQ8Q==
+X-Gm-Message-State: AOJu0YxITJ3oNOL2piTcHtHhOu1C+gl/ygkq+tTEdMkSVYN6pS+pkkv9
+	QUPtF5nkjNavrIRN4GAsPm3pNw==
+X-Google-Smtp-Source: AGHT+IEfw0tEWsYPUq1rUjK9r/SXMnRXPdUdO3qwcb1lgx/CQQoGx2F5+1XWcfj41LNcAiufmggqNA==
+X-Received: by 2002:a17:907:c2a:b0:a1c:695d:c936 with SMTP id ga42-20020a1709070c2a00b00a1c695dc936mr1648188ejc.73.1702315599451;
+        Mon, 11 Dec 2023 09:26:39 -0800 (PST)
+Received: from [192.168.36.128] (178235179179.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.179])
+        by smtp.gmail.com with ESMTPSA id vt4-20020a170907a60400b00a1e1a1dd318sm5140324ejc.137.2023.12.11.09.26.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Dec 2023 09:26:39 -0800 (PST)
+Message-ID: <9d8be91b-36f4-4f01-bced-73359f98a84d@linaro.org>
+Date: Mon, 11 Dec 2023 18:26:37 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: dts: qcom-sdx55: Fix the base address of PCIe PHY
+Content-Language: en-US
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ andersson@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, stable@vger.kernel.org
+References: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20231211172411.141289-1-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-While convering the binding to new format, serdes address specified in the
-old binding was used as the base address. This causes a boot hang as the
-driver tries to access memory region outside of the specified address. Fix
-it!
+On 11.12.2023 18:24, Manivannan Sadhasivam wrote:
+> While convering the binding to new format, serdes address specified in the
+> old binding was used as the base address. This causes a boot hang as the
+> driver tries to access memory region outside of the specified address. Fix
+> it!
+> 
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Cc: stable@vger.kernel.org # 6.6
+> Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org # 6.6
-Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
----
- arch/arm/boot/dts/qcom/qcom-sdx55.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-index 2aa5089a8513..a88f186fcf03 100644
---- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-@@ -436,9 +436,9 @@ pcie_ep: pcie-ep@1c00000 {
- 			status = "disabled";
- 		};
- 
--		pcie_phy: phy@1c07000 {
-+		pcie_phy: phy@1c06000 {
- 			compatible = "qcom,sdx55-qmp-pcie-phy";
--			reg = <0x01c07000 0x2000>;
-+			reg = <0x01c06000 0x2000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
--- 
-2.25.1
-
+Konrad
 
