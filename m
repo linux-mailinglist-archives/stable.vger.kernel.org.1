@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-6114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8642380D8D1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A458080D564
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80721C21623
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0B9281BA7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1160E51C2C;
-	Mon, 11 Dec 2023 18:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F4D5101D;
+	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbVpDhFD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4yEzs8L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74855102A;
-	Mon, 11 Dec 2023 18:49:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E2DC433C7;
-	Mon, 11 Dec 2023 18:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59A24F212;
+	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39898C433C8;
+	Mon, 11 Dec 2023 18:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320550;
-	bh=rMpq82bbYe3VJzAwb4ZheKRQMO+PfjYnEM5wXuZcbMU=;
+	s=korg; t=1702319058;
+	bh=zKMvuAUqEVymUHReL4yxVKut6ZJOds/vvpxrSsioDb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbVpDhFDjF1x5hqOUaZMh3tI1HZm10jr8X5U8cwSHbf3yC/9RzYnE/Igzyakhr0yx
-	 LimamtGmAiSEXagFLzrbPWfegc2t0ZhHIi6cLU1/1y/l8ELBUYCkgH50Gwim7yRmED
-	 YScQX2uJ1s8ZL/AqNAd+i0RfC3PPPG8bcfPfLU30=
+	b=C4yEzs8LhRlekA6Ln8AAk0vulwj3A6J2ynPi0ToT+HExx1pVkb5PfqXOT0pRYfO0U
+	 DaMWHf43dN6S00sfO/llbq+luKjK/i7S1YApRZpsPsilXL59fo9Yzi/0tXeDi12IxW
+	 EEJLtc1b9w/AIv2Kqy6iSOQP2nnJ2aGpnuQP5+9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.1 102/194] io_uring/af_unix: disable sending io_uring over sockets
+	Eric Dumazet <edumazet@google.com>,
+	Yepeng Pan <yepeng.pan@cispa.de>,
+	Christian Rossow <rossow@cispa.de>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 22/55] tcp: do not accept ACK of bytes we never sent
 Date: Mon, 11 Dec 2023 19:21:32 +0100
-Message-ID: <20231211182040.988288320@linuxfoundation.org>
+Message-ID: <20231211182013.033093862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +56,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 705318a99a138c29a512a72c3e0043b3cd7f55f4 upstream.
+[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
 
-File reference cycles have caused lots of problems for io_uring
-in the past, and it still doesn't work exactly right and races with
-unix_stream_read_generic(). The safest fix would be to completely
-disallow sending io_uring files via sockets via SCM_RIGHT, so there
-are no possible cycles invloving registered files and thus rendering
-SCM accounting on the io_uring side unnecessary.
+This patch is based on a detailed report and ideas from Yepeng Pan
+and Christian Rossow.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
-Reported-and-suggested-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/c716c88321939156909cfa1bd8b0faaf1c804103.1701868795.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ACK seq validation is currently following RFC 5961 5.2 guidelines:
+
+   The ACK value is considered acceptable only if
+   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
+   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
+   above condition MUST be discarded and an ACK sent back.  It needs to
+   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
+   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
+   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
+   ACK, drop the segment, and return".  The "ignored" above implies that
+   the processing of the incoming data segment continues, which means
+   the ACK value is treated as acceptable.  This mitigation makes the
+   ACK check more stringent since any ACK < SND.UNA wouldn't be
+   accepted, instead only ACKs that are in the range ((SND.UNA -
+   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
+
+This can be refined for new (and possibly spoofed) flows,
+by not accepting ACK for bytes that were never sent.
+
+This greatly improves TCP security at a little cost.
+
+I added a Fixes: tag to make sure this patch will reach stable trees,
+even if the 'blamed' patch was adhering to the RFC.
+
+tp->bytes_acked was added in linux-4.2
+
+Following packetdrill test (courtesy of Yepeng Pan) shows
+the issue at hand:
+
+0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++0 bind(3, ..., ...) = 0
++0 listen(3, 1024) = 0
+
+// ---------------- Handshake ------------------- //
+
+// when window scale is set to 14 the window size can be extended to
+// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
+// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
+// ,though this ack number acknowledges some data never
+// sent by the server.
+
++0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
++0 > S. 0:0(0) ack 1 <...>
++0 < . 1:1(0) ack 1 win 65535
++0 accept(3, ..., ...) = 4
+
+// For the established connection, we send an ACK packet,
+// the ack packet uses ack number 1 - 1073725300 + 2^32,
+// where 2^32 is used to wrap around.
+// Note: we used 1073725300 instead of 1073725440 to avoid possible
+// edge cases.
+// 1 - 1073725300 + 2^32 = 3221241997
+
+// Oops, old kernels happily accept this packet.
++0 < . 1:1001(1000) ack 3221241997 win 65535
+
+// After the kernel fix the following will be replaced by a challenge ACK,
+// and prior malicious frame would be dropped.
++0 > . 1:1(0) ack 1001
+
+Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
+Reported-by: Christian Rossow <rossow@cispa.de>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.h |    7 -------
- net/core/scm.c  |    6 ++++++
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ net/ipv4/tcp_input.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -79,17 +79,10 @@ int io_sqe_files_register(struct io_ring
- 
- int __io_scm_file_account(struct io_ring_ctx *ctx, struct file *file);
- 
--#if defined(CONFIG_UNIX)
--static inline bool io_file_need_scm(struct file *filp)
--{
--	return !!unix_get_socket(filp);
--}
--#else
- static inline bool io_file_need_scm(struct file *filp)
- {
- 	return false;
- }
--#endif
- 
- static inline int io_scm_file_account(struct io_ring_ctx *ctx,
- 				      struct file *file)
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -26,6 +26,7 @@
- #include <linux/nsproxy.h>
- #include <linux/slab.h>
- #include <linux/errqueue.h>
-+#include <linux/io_uring.h>
- 
- #include <linux/uaccess.h>
- 
-@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *c
- 
- 		if (fd < 0 || !(file = fget_raw(fd)))
- 			return -EBADF;
-+		/* don't allow io_uring files */
-+		if (io_uring_get_socket(file)) {
-+			fput(file);
-+			return -EINVAL;
-+		}
- 		*fpp++ = file;
- 		fpl->count++;
- 	}
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0052a6194cc1a..407ad07dc5985 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -3640,8 +3640,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 	 * then we can probably ignore it.
+ 	 */
+ 	if (before(ack, prior_snd_una)) {
++		u32 max_window;
++
++		/* do not accept ACK for bytes we never sent. */
++		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
+ 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
+-		if (before(ack, prior_snd_una - tp->max_window)) {
++		if (before(ack, prior_snd_una - max_window)) {
+ 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
+ 				tcp_send_challenge_ack(sk, skb);
+ 			return -1;
+-- 
+2.42.0
+
 
 
 
