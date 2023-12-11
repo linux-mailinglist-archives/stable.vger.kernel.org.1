@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-6044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7259F80D876
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7B480D628
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E8D72816D6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870A9282422
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15AD51038;
-	Mon, 11 Dec 2023 18:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0DE20DDE;
+	Mon, 11 Dec 2023 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tdxt6dYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiZRqSO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5044437B;
-	Mon, 11 Dec 2023 18:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 024C2C433C8;
-	Mon, 11 Dec 2023 18:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16E4C2D0;
+	Mon, 11 Dec 2023 18:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F8EC433C7;
+	Mon, 11 Dec 2023 18:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320360;
-	bh=eCVPyvDCYnzkQprWNm/3hsarX6X7vxObmbHhquhsJaY=;
+	s=korg; t=1702319505;
+	bh=DUzAA6y4oyZ38/jmF5tm7FKtTRM+kOaizVzBmYzwDJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tdxt6dYtT0lzz+KJtjs0A1EiJHx37fVDWN8wb0Gx4OjrKciKs1GHYIiQvRxcqDpvE
-	 hp2vYXK23VnBJMdtWOWU3OYOUEzdt4i5OR0LUo+MRjmcgEG4lAutiExR+lHh6guhp6
-	 de1BtTwen9/3ejKRVY8n9lZWNvBoIjtIWHIMnlvA=
+	b=PiZRqSO97C7uXucM3Nb4Dc/8vX1l5dqkSTwEwkfW0CRfE2meAH37jXgZKJVs2Tfyr
+	 gTEJEpcsefdlgL6D0tRcI6g+iJg5njslntF6xRyLbSwOOoit0SkXXdfoE7PCJYLjKg
+	 LEv2ratdcZefYnaGICw2Vdc29vFvLTNGWvYQvocM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Mamindlapalli <naveenm@marvell.com>,
-	Suman Ghosh <sumang@marvell.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Baoquan He <bhe@redhat.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Eric DeVolder <eric_devolder@yahoo.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/194] octeontx2-pf: consider both Rx and Tx packet stats for adaptive interrupt coalescing
+Subject: [PATCH 6.6 130/244] kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP
 Date: Mon, 11 Dec 2023 19:20:23 +0100
-Message-ID: <20231211182038.050359850@linuxfoundation.org>
+Message-ID: <20231211182051.638939905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,102 +56,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Mamindlapalli <naveenm@marvell.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit adbf100fc47001c93d7e513ecac6fd6e04d5b4a1 ]
+[ Upstream commit dccf78d39f1069a5ddf4328bf0c97aa5f2f4296e ]
 
-The current adaptive interrupt coalescing code updates only rx
-packet stats for dim algorithm. This patch also updates tx packet
-stats which will be useful when there is only tx traffic.
-Also moved configuring hardware adaptive interrupt setting to
-driver dim callback.
+Ignat Korchagin complained that a potential config regression was
+introduced by commit 89cde455915f ("kexec: consolidate kexec and crash
+options into kernel/Kconfig.kexec").  Before the commit, CONFIG_CRASH_DUMP
+has no dependency on CONFIG_KEXEC.  After the commit, CRASH_DUMP selects
+KEXEC.  That enforces system to have CONFIG_KEXEC=y as long as
+CONFIG_CRASH_DUMP=Y which people may not want.
 
-Fixes: 6e144b47f560 ("octeontx2-pf: Add support for adaptive interrupt coalescing")
-Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231201053330.3903694-1-sumang@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In Ignat's case, he sets CONFIG_CRASH_DUMP=y, CONFIG_KEXEC_FILE=y and
+CONFIG_KEXEC=n because kexec_load interface could have security issue if
+kernel/initrd has no chance to be signed and verified.
+
+CRASH_DUMP has select of KEXEC because Eric, author of above commit, met a
+LKP report of build failure when posting patch of earlier version.  Please
+see below link to get detail of the LKP report:
+
+    https://lore.kernel.org/all/3e8eecd1-a277-2cfb-690e-5de2eb7b988e@oracle.com/T/#u
+
+In fact, that LKP report is triggered because arm's <asm/kexec.h> is
+wrapped in CONFIG_KEXEC ifdeffery scope.  That is wrong.  CONFIG_KEXEC
+controls the enabling/disabling of kexec_load interface, but not kexec
+feature.  Removing the wrongly added CONFIG_KEXEC ifdeffery scope in
+<asm/kexec.h> of arm allows us to drop the select KEXEC for CRASH_DUMP.
+Meanwhile, change arch/arm/kernel/Makefile to let machine_kexec.o
+relocate_kernel.o depend on KEXEC_CORE.
+
+Link: https://lkml.kernel.org/r/20231128054457.659452-1-bhe@redhat.com
+Fixes: 89cde455915f ("kexec: consolidate kexec and crash options into kernel/Kconfig.kexec")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reported-by: Ignat Korchagin <ignat@cloudflare.com>
+Tested-by: Ignat Korchagin <ignat@cloudflare.com>	[compile-time only]
+Tested-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Eric DeVolder <eric_devolder@yahoo.com>
+Tested-by: Eric DeVolder <eric_devolder@yahoo.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |  9 +++++++++
- .../marvell/octeontx2/nic/otx2_txrx.c         | 20 +++++++++----------
- 2 files changed, 19 insertions(+), 10 deletions(-)
+ arch/arm/include/asm/kexec.h | 4 ----
+ arch/arm/kernel/Makefile     | 2 +-
+ kernel/Kconfig.kexec         | 1 -
+ 3 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 18c5d2b3f7f95..55807e2043edf 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1676,6 +1676,14 @@ static void otx2_do_set_rx_mode(struct otx2_nic *pf)
- 	mutex_unlock(&pf->mbox.lock);
- }
+diff --git a/arch/arm/include/asm/kexec.h b/arch/arm/include/asm/kexec.h
+index e62832dcba760..a8287e7ab9d41 100644
+--- a/arch/arm/include/asm/kexec.h
++++ b/arch/arm/include/asm/kexec.h
+@@ -2,8 +2,6 @@
+ #ifndef _ARM_KEXEC_H
+ #define _ARM_KEXEC_H
  
-+static void otx2_set_irq_coalesce(struct otx2_nic *pfvf)
-+{
-+	int cint;
-+
-+	for (cint = 0; cint < pfvf->hw.cint_cnt; cint++)
-+		otx2_config_irq_coalescing(pfvf, cint);
-+}
-+
- static void otx2_dim_work(struct work_struct *w)
- {
- 	struct dim_cq_moder cur_moder;
-@@ -1691,6 +1699,7 @@ static void otx2_dim_work(struct work_struct *w)
- 		CQ_TIMER_THRESH_MAX : cur_moder.usec;
- 	pfvf->hw.cq_ecount_wait = (cur_moder.pkts > NAPI_POLL_WEIGHT) ?
- 		NAPI_POLL_WEIGHT : cur_moder.pkts;
-+	otx2_set_irq_coalesce(pfvf);
- 	dim->state = DIM_START_MEASURE;
- }
+-#ifdef CONFIG_KEXEC
+-
+ /* Maximum physical address we can use pages from */
+ #define KEXEC_SOURCE_MEMORY_LIMIT (-1UL)
+ /* Maximum address we can reach in physical address mode */
+@@ -82,6 +80,4 @@ static inline struct page *boot_pfn_to_page(unsigned long boot_pfn)
  
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index 20d801d30c732..aee392a15b23c 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -510,11 +510,18 @@ static void otx2_adjust_adaptive_coalese(struct otx2_nic *pfvf, struct otx2_cq_p
- {
- 	struct dim_sample dim_sample;
- 	u64 rx_frames, rx_bytes;
-+	u64 tx_frames, tx_bytes;
+ #endif /* __ASSEMBLY__ */
  
- 	rx_frames = OTX2_GET_RX_STATS(RX_BCAST) + OTX2_GET_RX_STATS(RX_MCAST) +
- 		OTX2_GET_RX_STATS(RX_UCAST);
- 	rx_bytes = OTX2_GET_RX_STATS(RX_OCTS);
--	dim_update_sample(pfvf->napi_events, rx_frames, rx_bytes, &dim_sample);
-+	tx_bytes = OTX2_GET_TX_STATS(TX_OCTS);
-+	tx_frames = OTX2_GET_TX_STATS(TX_UCAST);
-+
-+	dim_update_sample(pfvf->napi_events,
-+			  rx_frames + tx_frames,
-+			  rx_bytes + tx_bytes,
-+			  &dim_sample);
- 	net_dim(&cq_poll->dim, dim_sample);
- }
- 
-@@ -555,16 +562,9 @@ int otx2_napi_handler(struct napi_struct *napi, int budget)
- 		if (pfvf->flags & OTX2_FLAG_INTF_DOWN)
- 			return workdone;
- 
--		/* Check for adaptive interrupt coalesce */
--		if (workdone != 0 &&
--		    ((pfvf->flags & OTX2_FLAG_ADPTV_INT_COAL_ENABLED) ==
--		     OTX2_FLAG_ADPTV_INT_COAL_ENABLED)) {
--			/* Adjust irq coalese using net_dim */
-+		/* Adjust irq coalese using net_dim */
-+		if (pfvf->flags & OTX2_FLAG_ADPTV_INT_COAL_ENABLED)
- 			otx2_adjust_adaptive_coalese(pfvf, cq_poll);
--			/* Update irq coalescing */
--			for (i = 0; i < pfvf->hw.cint_cnt; i++)
--				otx2_config_irq_coalescing(pfvf, i);
--		}
- 
- 		/* Re-enable interrupts */
- 		otx2_write64(pfvf, NIX_LF_CINTX_ENA_W1S(cq_poll->cint_idx),
+-#endif /* CONFIG_KEXEC */
+-
+ #endif /* _ARM_KEXEC_H */
+diff --git a/arch/arm/kernel/Makefile b/arch/arm/kernel/Makefile
+index d53f56d6f8408..771264d4726a7 100644
+--- a/arch/arm/kernel/Makefile
++++ b/arch/arm/kernel/Makefile
+@@ -59,7 +59,7 @@ obj-$(CONFIG_FUNCTION_TRACER)	+= entry-ftrace.o
+ obj-$(CONFIG_DYNAMIC_FTRACE)	+= ftrace.o insn.o patch.o
+ obj-$(CONFIG_FUNCTION_GRAPH_TRACER)	+= ftrace.o insn.o patch.o
+ obj-$(CONFIG_JUMP_LABEL)	+= jump_label.o insn.o patch.o
+-obj-$(CONFIG_KEXEC)		+= machine_kexec.o relocate_kernel.o
++obj-$(CONFIG_KEXEC_CORE)	+= machine_kexec.o relocate_kernel.o
+ # Main staffs in KPROBES are in arch/arm/probes/ .
+ obj-$(CONFIG_KPROBES)		+= patch.o insn.o
+ obj-$(CONFIG_OABI_COMPAT)	+= sys_oabi-compat.o
+diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+index 9bfe68fe96762..143f4d8eab7c0 100644
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -97,7 +97,6 @@ config CRASH_DUMP
+ 	depends on ARCH_SUPPORTS_KEXEC
+ 	select CRASH_CORE
+ 	select KEXEC_CORE
+-	select KEXEC
+ 	help
+ 	  Generate crash dump after being started by kexec.
+ 	  This should be normally only set in special crash dump kernels
 -- 
 2.42.0
 
