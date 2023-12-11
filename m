@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-5560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF83C80D55F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEBD80D6FB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F4A1C214A7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 423F3B21403
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C1A51020;
-	Mon, 11 Dec 2023 18:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7DD524BA;
+	Mon, 11 Dec 2023 18:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqQ93hp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbQVrYfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84764F212;
-	Mon, 11 Dec 2023 18:24:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4825EC433C7;
-	Mon, 11 Dec 2023 18:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF97951C5C;
+	Mon, 11 Dec 2023 18:34:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A32FC433CA;
+	Mon, 11 Dec 2023 18:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319047;
-	bh=sY6jWWyDFb3J1/I0DcNvB5lHN+lK9QTUeKS0xrfhX9M=;
+	s=korg; t=1702319684;
+	bh=MzpXPY3S9tgXQFTaaBhQY8VB2AyFZlFZEF/MM0rgKsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqQ93hp4TSM3pvxfd1lcQxTlTnxgxZFzqEjRNgJTYZaSEfgl0A528V+5GgtoTGzQ0
-	 LzKkM2u/8YdSkhaGOrlQK6Ra+SIKrIOMH5LtxxW0x6gYhOqz9ESAaY99qhvOVh+MGI
-	 ix/q7nUnWY/EQkV1I0IGyldQpx6e2r0EnTEv7vrs=
+	b=ZbQVrYfwsr5peYxvFGmowvkoGNUtbNcPStV2QPg8WEFdWtCBNT+bv35bJLwHdOORf
+	 KeXUndPuq52Az88ID2dSXTG1WlSS1plWxJWJeobmwtW/jpleWRW27Oc6IYeh8+OS14
+	 A1Z1NPYQaBXCZvBKutGFRligSMC9l3Xgwxsk02Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Su Hui <suhui@nfschina.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 19/55] net: hns: fix fake link up on xge port
+Subject: [PATCH 6.6 196/244] misc: mei: client.c: fix problem of return -EOVERFLOW in mei_cl_write
 Date: Mon, 11 Dec 2023 19:21:29 +0100
-Message-ID: <20231211182012.934854706@linuxfoundation.org>
+Message-ID: <20231211182054.732137881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,76 +52,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit f708aba40f9c1eeb9c7e93ed4863b5f85b09b288 ]
+[ Upstream commit ee6236027218f8531916f1c5caa5dc330379f287 ]
 
-If a xge port just connect with an optical module and no fiber,
-it may have a fake link up because there may be interference on
-the hardware. This patch adds an anti-shake to avoid the problem.
-And the time of anti-shake is base on tests.
+Clang static analyzer complains that value stored to 'rets' is never
+read.Let 'buf_len = -EOVERFLOW' to make sure we can return '-EOVERFLOW'.
 
-Fixes: b917078c1c10 ("net: hns: Add ACPI support to check SFP present")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8c8d964ce90f ("mei: move hbuf_depth from the mei device to the hw modules")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231120095523.178385-2-suhui@nfschina.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 29 +++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/misc/mei/client.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index cfdc92de9dc0e..d2791bcff5d49 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -70,6 +70,27 @@ static enum mac_mode hns_get_enet_interface(const struct hns_mac_cb *mac_cb)
- 	}
- }
+diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
+index 75bc2a32ec0d7..32f2287823184 100644
+--- a/drivers/misc/mei/client.c
++++ b/drivers/misc/mei/client.c
+@@ -2032,7 +2032,7 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb, unsigned long time
  
-+static u32 hns_mac_link_anti_shake(struct mac_driver *mac_ctrl_drv)
-+{
-+#define HNS_MAC_LINK_WAIT_TIME 5
-+#define HNS_MAC_LINK_WAIT_CNT 40
-+
-+	u32 link_status = 0;
-+	int i;
-+
-+	if (!mac_ctrl_drv->get_link_status)
-+		return link_status;
-+
-+	for (i = 0; i < HNS_MAC_LINK_WAIT_CNT; i++) {
-+		msleep(HNS_MAC_LINK_WAIT_TIME);
-+		mac_ctrl_drv->get_link_status(mac_ctrl_drv, &link_status);
-+		if (!link_status)
-+			break;
-+	}
-+
-+	return link_status;
-+}
-+
- void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- {
- 	struct mac_driver *mac_ctrl_drv;
-@@ -87,6 +108,14 @@ void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
- 							       &sfp_prsnt);
- 		if (!ret)
- 			*link_status = *link_status && sfp_prsnt;
-+
-+		/* for FIBER port, it may have a fake link up.
-+		 * when the link status changes from down to up, we need to do
-+		 * anti-shake. the anti-shake time is base on tests.
-+		 * only FIBER port need to do this.
-+		 */
-+		if (*link_status && !mac_cb->link)
-+			*link_status = hns_mac_link_anti_shake(mac_ctrl_drv);
+ 	hbuf_slots = mei_hbuf_empty_slots(dev);
+ 	if (hbuf_slots < 0) {
+-		rets = -EOVERFLOW;
++		buf_len = -EOVERFLOW;
+ 		goto out;
  	}
  
- 	mac_cb->link = *link_status;
 -- 
 2.42.0
 
