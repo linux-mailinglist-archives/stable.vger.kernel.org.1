@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 960DB80D7F9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B794380D839
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 400531F218C8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAD2E1C21557
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CEB524CD;
-	Mon, 11 Dec 2023 18:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281E851036;
+	Mon, 11 Dec 2023 18:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBlRDL+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pt4xpI/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A71FBE1;
-	Mon, 11 Dec 2023 18:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EF4C433C7;
-	Mon, 11 Dec 2023 18:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F9DFC06;
+	Mon, 11 Dec 2023 18:43:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60182C433C7;
+	Mon, 11 Dec 2023 18:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320090;
-	bh=+wJu+BlOWFhWmRdDj+/Jtz7dZg48u85eOT1YIS1laVw=;
+	s=korg; t=1702320228;
+	bh=Rlo9aAg0LS5Q+du9frSfjXKC5/gSA/pLt8dWYbWdHmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBlRDL+dLj0+KHmFJhkQHoPtdYMv9BXH2OfLbeLa40nI1uY7Y+/wEq1uXGe2IFO6n
-	 vyUs3eBkuUrXrfJwqWW5casXKTLluRIn3vs2Jw8hphYt0vzha5jN37s8kxP7F7kOYJ
-	 f0eIg6vyUBNokB0M0WlfR3ZP9KP945u6lojxFAGQ=
+	b=pt4xpI/cBrxZV+3uD1XOTDiy9l97h/d7Pr/Au1MQnycNG/cMvR/irgvIKcV/83o1/
+	 vJ7xXL3yRdcg/40J3lR5QOOJT33x1WbBuIZ7fZuNHP4/AwAOFE/6JJoBFu2sJu2u+I
+	 b6SxRijVd7CbcmYs5LwrhRq83mc6cR16DB2JxQoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 91/97] mmc: block: Be sure to wait while busy in CQE error recovery
-Date: Mon, 11 Dec 2023 19:22:34 +0100
-Message-ID: <20231211182023.734749693@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 51/67] ARM: PL011: Fix DMA support
+Date: Mon, 11 Dec 2023 19:22:35 +0100
+Message-ID: <20231211182017.181327276@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +53,340 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit c616696a902987352426fdaeec1b0b3240949e6b upstream.
+commit 58ac1b3799799069d53f5bf95c093f2fe8dd3cc5 upstream.
 
-STOP command does not guarantee to wait while busy, but subsequent command
-MMC_CMDQ_TASK_MGMT to discard the queue will fail if the card is busy, so
-be sure to wait by employing mmc_poll_for_busy().
+Since there is no guarantee that the memory returned by
+dma_alloc_coherent() is associated with a 'struct page', using the
+architecture specific phys_to_page() is wrong, but using
+virt_to_page() would be as well.
 
-Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-4-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Tested-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Stop using sg lists altogether and just use the *_single() functions
+instead. This also simplifies the code a bit since the scatterlists in
+this driver always have only one entry anyway.
+
+https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
+    Use consistent names for dma buffers
+
+gc: Add a commit log from the initial thread:
+https://lore.kernel.org/lkml/86db0fe5-930d-4cbb-bd7d-03367da38951@app.fastmail.com/
+    Use consistent names for dma buffers
+
+Fixes: cb06ff102e2d7 ("ARM: PL011: Add support for Rx DMA buffer polling.")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20231122171503.235649-1-gregory.clement@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/core.c    |    2 ++
- drivers/mmc/core/mmc_ops.c |    3 ++-
- drivers/mmc/core/mmc_ops.h |    1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/tty/serial/amba-pl011.c |  112 +++++++++++++++++++---------------------
+ 1 file changed, 54 insertions(+), 58 deletions(-)
 
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -553,6 +553,8 @@ int mmc_cqe_recovery(struct mmc_host *ho
- 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -227,17 +227,18 @@ static struct vendor_data vendor_zte = {
  
-+	mmc_poll_for_busy(host->card, MMC_CQE_RECOVERY_TIMEOUT, MMC_BUSY_IO);
-+
- 	memset(&cmd, 0, sizeof(cmd));
- 	cmd.opcode       = MMC_CMDQ_TASK_MGMT;
- 	cmd.arg          = 1; /* Discard entire queue */
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -452,7 +452,7 @@ static int mmc_busy_status(struct mmc_ca
- 	u32 status = 0;
- 	int err;
+ /* Deals with DMA transactions */
  
--	if (host->ops->card_busy) {
-+	if (busy_cmd != MMC_BUSY_IO && host->ops->card_busy) {
- 		*busy = host->ops->card_busy(host);
- 		return 0;
- 	}
-@@ -473,6 +473,7 @@ static int mmc_busy_status(struct mmc_ca
- 		err = R1_STATUS(status) ? -EIO : 0;
- 		break;
- 	case MMC_BUSY_HPI:
-+	case MMC_BUSY_IO:
- 		break;
- 	default:
- 		err = -EINVAL;
---- a/drivers/mmc/core/mmc_ops.h
-+++ b/drivers/mmc/core/mmc_ops.h
-@@ -14,6 +14,7 @@ enum mmc_busy_cmd {
- 	MMC_BUSY_CMD6,
- 	MMC_BUSY_ERASE,
- 	MMC_BUSY_HPI,
-+	MMC_BUSY_IO,
+-struct pl011_sgbuf {
+-	struct scatterlist sg;
+-	char *buf;
++struct pl011_dmabuf {
++	dma_addr_t		dma;
++	size_t			len;
++	char			*buf;
  };
  
- struct mmc_host;
+ struct pl011_dmarx_data {
+ 	struct dma_chan		*chan;
+ 	struct completion	complete;
+ 	bool			use_buf_b;
+-	struct pl011_sgbuf	sgbuf_a;
+-	struct pl011_sgbuf	sgbuf_b;
++	struct pl011_dmabuf	dbuf_a;
++	struct pl011_dmabuf	dbuf_b;
+ 	dma_cookie_t		cookie;
+ 	bool			running;
+ 	struct timer_list	timer;
+@@ -250,7 +251,8 @@ struct pl011_dmarx_data {
+ 
+ struct pl011_dmatx_data {
+ 	struct dma_chan		*chan;
+-	struct scatterlist	sg;
++	dma_addr_t		dma;
++	size_t			len;
+ 	char			*buf;
+ 	bool			queued;
+ };
+@@ -371,32 +373,24 @@ static int pl011_fifo_to_tty(struct uart
+ 
+ #define PL011_DMA_BUFFER_SIZE PAGE_SIZE
+ 
+-static int pl011_sgbuf_init(struct dma_chan *chan, struct pl011_sgbuf *sg,
++static int pl011_dmabuf_init(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 	enum dma_data_direction dir)
+ {
+-	dma_addr_t dma_addr;
+-
+-	sg->buf = dma_alloc_coherent(chan->device->dev,
+-		PL011_DMA_BUFFER_SIZE, &dma_addr, GFP_KERNEL);
+-	if (!sg->buf)
++	db->buf = dma_alloc_coherent(chan->device->dev, PL011_DMA_BUFFER_SIZE,
++				     &db->dma, GFP_KERNEL);
++	if (!db->buf)
+ 		return -ENOMEM;
+-
+-	sg_init_table(&sg->sg, 1);
+-	sg_set_page(&sg->sg, phys_to_page(dma_addr),
+-		PL011_DMA_BUFFER_SIZE, offset_in_page(dma_addr));
+-	sg_dma_address(&sg->sg) = dma_addr;
+-	sg_dma_len(&sg->sg) = PL011_DMA_BUFFER_SIZE;
++	db->len = PL011_DMA_BUFFER_SIZE;
+ 
+ 	return 0;
+ }
+ 
+-static void pl011_sgbuf_free(struct dma_chan *chan, struct pl011_sgbuf *sg,
++static void pl011_dmabuf_free(struct dma_chan *chan, struct pl011_dmabuf *db,
+ 	enum dma_data_direction dir)
+ {
+-	if (sg->buf) {
++	if (db->buf) {
+ 		dma_free_coherent(chan->device->dev,
+-			PL011_DMA_BUFFER_SIZE, sg->buf,
+-			sg_dma_address(&sg->sg));
++				  PL011_DMA_BUFFER_SIZE, db->buf, db->dma);
+ 	}
+ }
+ 
+@@ -557,8 +551,8 @@ static void pl011_dma_tx_callback(void *
+ 
+ 	spin_lock_irqsave(&uap->port.lock, flags);
+ 	if (uap->dmatx.queued)
+-		dma_unmap_sg(dmatx->chan->device->dev, &dmatx->sg, 1,
+-			     DMA_TO_DEVICE);
++		dma_unmap_single(dmatx->chan->device->dev, dmatx->dma,
++				dmatx->len, DMA_TO_DEVICE);
+ 
+ 	dmacr = uap->dmacr;
+ 	uap->dmacr = dmacr & ~UART011_TXDMAE;
+@@ -644,18 +638,19 @@ static int pl011_dma_tx_refill(struct ua
+ 			memcpy(&dmatx->buf[first], &xmit->buf[0], second);
+ 	}
+ 
+-	dmatx->sg.length = count;
+-
+-	if (dma_map_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE) != 1) {
++	dmatx->len = count;
++	dmatx->dma = dma_map_single(dma_dev->dev, dmatx->buf, count,
++				    DMA_TO_DEVICE);
++	if (dmatx->dma == DMA_MAPPING_ERROR) {
+ 		uap->dmatx.queued = false;
+ 		dev_dbg(uap->port.dev, "unable to map TX DMA\n");
+ 		return -EBUSY;
+ 	}
+ 
+-	desc = dmaengine_prep_slave_sg(chan, &dmatx->sg, 1, DMA_MEM_TO_DEV,
++	desc = dmaengine_prep_slave_single(chan, dmatx->dma, dmatx->len, DMA_MEM_TO_DEV,
+ 					     DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	if (!desc) {
+-		dma_unmap_sg(dma_dev->dev, &dmatx->sg, 1, DMA_TO_DEVICE);
++		dma_unmap_single(dma_dev->dev, dmatx->dma, dmatx->len, DMA_TO_DEVICE);
+ 		uap->dmatx.queued = false;
+ 		/*
+ 		 * If DMA cannot be used right now, we complete this
+@@ -819,8 +814,8 @@ __acquires(&uap->port.lock)
+ 	dmaengine_terminate_async(uap->dmatx.chan);
+ 
+ 	if (uap->dmatx.queued) {
+-		dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
+-			     DMA_TO_DEVICE);
++		dma_unmap_single(uap->dmatx.chan->device->dev, uap->dmatx.dma,
++				 uap->dmatx.len, DMA_TO_DEVICE);
+ 		uap->dmatx.queued = false;
+ 		uap->dmacr &= ~UART011_TXDMAE;
+ 		pl011_write(uap->dmacr, uap, REG_DMACR);
+@@ -834,15 +829,15 @@ static int pl011_dma_rx_trigger_dma(stru
+ 	struct dma_chan *rxchan = uap->dmarx.chan;
+ 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
+ 	struct dma_async_tx_descriptor *desc;
+-	struct pl011_sgbuf *sgbuf;
++	struct pl011_dmabuf *dbuf;
+ 
+ 	if (!rxchan)
+ 		return -EIO;
+ 
+ 	/* Start the RX DMA job */
+-	sgbuf = uap->dmarx.use_buf_b ?
+-		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
+-	desc = dmaengine_prep_slave_sg(rxchan, &sgbuf->sg, 1,
++	dbuf = uap->dmarx.use_buf_b ?
++		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
++	desc = dmaengine_prep_slave_single(rxchan, dbuf->dma, dbuf->len,
+ 					DMA_DEV_TO_MEM,
+ 					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+ 	/*
+@@ -882,8 +877,8 @@ static void pl011_dma_rx_chars(struct ua
+ 			       bool readfifo)
+ {
+ 	struct tty_port *port = &uap->port.state->port;
+-	struct pl011_sgbuf *sgbuf = use_buf_b ?
+-		&uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
++	struct pl011_dmabuf *dbuf = use_buf_b ?
++		&uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
+ 	int dma_count = 0;
+ 	u32 fifotaken = 0; /* only used for vdbg() */
+ 
+@@ -892,7 +887,7 @@ static void pl011_dma_rx_chars(struct ua
+ 
+ 	if (uap->dmarx.poll_rate) {
+ 		/* The data can be taken by polling */
+-		dmataken = sgbuf->sg.length - dmarx->last_residue;
++		dmataken = dbuf->len - dmarx->last_residue;
+ 		/* Recalculate the pending size */
+ 		if (pending >= dmataken)
+ 			pending -= dmataken;
+@@ -906,7 +901,7 @@ static void pl011_dma_rx_chars(struct ua
+ 		 * Note that tty_insert_flip_buf() tries to take as many chars
+ 		 * as it can.
+ 		 */
+-		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
++		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
+ 				pending);
+ 
+ 		uap->port.icount.rx += dma_count;
+@@ -917,7 +912,7 @@ static void pl011_dma_rx_chars(struct ua
+ 
+ 	/* Reset the last_residue for Rx DMA poll */
+ 	if (uap->dmarx.poll_rate)
+-		dmarx->last_residue = sgbuf->sg.length;
++		dmarx->last_residue = dbuf->len;
+ 
+ 	/*
+ 	 * Only continue with trying to read the FIFO if all DMA chars have
+@@ -954,8 +949,8 @@ static void pl011_dma_rx_irq(struct uart
+ {
+ 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
+ 	struct dma_chan *rxchan = dmarx->chan;
+-	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
+-		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
++	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
++		&dmarx->dbuf_b : &dmarx->dbuf_a;
+ 	size_t pending;
+ 	struct dma_tx_state state;
+ 	enum dma_status dmastat;
+@@ -977,7 +972,7 @@ static void pl011_dma_rx_irq(struct uart
+ 	pl011_write(uap->dmacr, uap, REG_DMACR);
+ 	uap->dmarx.running = false;
+ 
+-	pending = sgbuf->sg.length - state.residue;
++	pending = dbuf->len - state.residue;
+ 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
+ 	/* Then we terminate the transfer - we now know our residue */
+ 	dmaengine_terminate_all(rxchan);
+@@ -1004,8 +999,8 @@ static void pl011_dma_rx_callback(void *
+ 	struct pl011_dmarx_data *dmarx = &uap->dmarx;
+ 	struct dma_chan *rxchan = dmarx->chan;
+ 	bool lastbuf = dmarx->use_buf_b;
+-	struct pl011_sgbuf *sgbuf = dmarx->use_buf_b ?
+-		&dmarx->sgbuf_b : &dmarx->sgbuf_a;
++	struct pl011_dmabuf *dbuf = dmarx->use_buf_b ?
++		&dmarx->dbuf_b : &dmarx->dbuf_a;
+ 	size_t pending;
+ 	struct dma_tx_state state;
+ 	int ret;
+@@ -1023,7 +1018,7 @@ static void pl011_dma_rx_callback(void *
+ 	 * the DMA irq handler. So we check the residue here.
+ 	 */
+ 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
+-	pending = sgbuf->sg.length - state.residue;
++	pending = dbuf->len - state.residue;
+ 	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
+ 	/* Then we terminate the transfer - we now know our residue */
+ 	dmaengine_terminate_all(rxchan);
+@@ -1075,16 +1070,16 @@ static void pl011_dma_rx_poll(struct tim
+ 	unsigned long flags = 0;
+ 	unsigned int dmataken = 0;
+ 	unsigned int size = 0;
+-	struct pl011_sgbuf *sgbuf;
++	struct pl011_dmabuf *dbuf;
+ 	int dma_count;
+ 	struct dma_tx_state state;
+ 
+-	sgbuf = dmarx->use_buf_b ? &uap->dmarx.sgbuf_b : &uap->dmarx.sgbuf_a;
++	dbuf = dmarx->use_buf_b ? &uap->dmarx.dbuf_b : &uap->dmarx.dbuf_a;
+ 	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
+ 	if (likely(state.residue < dmarx->last_residue)) {
+-		dmataken = sgbuf->sg.length - dmarx->last_residue;
++		dmataken = dbuf->len - dmarx->last_residue;
+ 		size = dmarx->last_residue - state.residue;
+-		dma_count = tty_insert_flip_string(port, sgbuf->buf + dmataken,
++		dma_count = tty_insert_flip_string(port, dbuf->buf + dmataken,
+ 				size);
+ 		if (dma_count == size)
+ 			dmarx->last_residue =  state.residue;
+@@ -1131,7 +1126,7 @@ static void pl011_dma_startup(struct uar
+ 		return;
+ 	}
+ 
+-	sg_init_one(&uap->dmatx.sg, uap->dmatx.buf, PL011_DMA_BUFFER_SIZE);
++	uap->dmatx.len = PL011_DMA_BUFFER_SIZE;
+ 
+ 	/* The DMA buffer is now the FIFO the TTY subsystem can use */
+ 	uap->port.fifosize = PL011_DMA_BUFFER_SIZE;
+@@ -1141,7 +1136,7 @@ static void pl011_dma_startup(struct uar
+ 		goto skip_rx;
+ 
+ 	/* Allocate and map DMA RX buffers */
+-	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
++	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_a,
+ 			       DMA_FROM_DEVICE);
+ 	if (ret) {
+ 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
+@@ -1149,12 +1144,12 @@ static void pl011_dma_startup(struct uar
+ 		goto skip_rx;
+ 	}
+ 
+-	ret = pl011_sgbuf_init(uap->dmarx.chan, &uap->dmarx.sgbuf_b,
++	ret = pl011_dmabuf_init(uap->dmarx.chan, &uap->dmarx.dbuf_b,
+ 			       DMA_FROM_DEVICE);
+ 	if (ret) {
+ 		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
+ 			"RX buffer B", ret);
+-		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a,
++		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a,
+ 				 DMA_FROM_DEVICE);
+ 		goto skip_rx;
+ 	}
+@@ -1208,8 +1203,9 @@ static void pl011_dma_shutdown(struct ua
+ 		/* In theory, this should already be done by pl011_dma_flush_buffer */
+ 		dmaengine_terminate_all(uap->dmatx.chan);
+ 		if (uap->dmatx.queued) {
+-			dma_unmap_sg(uap->dmatx.chan->device->dev, &uap->dmatx.sg, 1,
+-				     DMA_TO_DEVICE);
++			dma_unmap_single(uap->dmatx.chan->device->dev,
++					 uap->dmatx.dma, uap->dmatx.len,
++					 DMA_TO_DEVICE);
+ 			uap->dmatx.queued = false;
+ 		}
+ 
+@@ -1220,8 +1216,8 @@ static void pl011_dma_shutdown(struct ua
+ 	if (uap->using_rx_dma) {
+ 		dmaengine_terminate_all(uap->dmarx.chan);
+ 		/* Clean up the RX DMA */
+-		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_a, DMA_FROM_DEVICE);
+-		pl011_sgbuf_free(uap->dmarx.chan, &uap->dmarx.sgbuf_b, DMA_FROM_DEVICE);
++		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_a, DMA_FROM_DEVICE);
++		pl011_dmabuf_free(uap->dmarx.chan, &uap->dmarx.dbuf_b, DMA_FROM_DEVICE);
+ 		if (uap->dmarx.poll_rate)
+ 			del_timer_sync(&uap->dmarx.timer);
+ 		uap->using_rx_dma = false;
 
 
 
