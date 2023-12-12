@@ -1,65 +1,167 @@
-Return-Path: <stable+bounces-6412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1CE80E65F
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 09:38:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784C580E675
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 09:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35FE41C21362
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 08:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AE81F22030
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 08:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D18199CE;
-	Tue, 12 Dec 2023 08:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A20321376;
+	Tue, 12 Dec 2023 08:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrNErf73"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRs0WQ8P"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E6A17989;
-	Tue, 12 Dec 2023 08:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8C2C433C8;
-	Tue, 12 Dec 2023 08:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F41D1A737
+	for <Stable@vger.kernel.org>; Tue, 12 Dec 2023 08:43:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4680FC433C7;
+	Tue, 12 Dec 2023 08:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702370283;
-	bh=EZ8pP+VmaRjw/ejK1MQLyfXennenzJPFUPWU6sbYqyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qrNErf73CgaGGscBfdmkq3tKDcdg9NERY2e2M6F7y76MMsFc2ajy15UYRdOZqS/Xv
-	 eSYXlDql+Kneu/+w/N7XDxAimOibptt+8Zx05oCrjhpknDSjbBDjlMYi/Kg1RPMt8I
-	 6/bNmVcbThOXUk6RI0Jn8X8AJ+rY5+7C+T16LeHs=
-Date: Tue, 12 Dec 2023 09:38:00 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Omar Sandoval <osandov@fb.com>, Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 4.19 06/55] block: introduce multi-page bvec helpers
-Message-ID: <2023121242-treachery-poker-8509@gregkh>
-References: <20231211182012.263036284@linuxfoundation.org>
- <20231211182012.465741504@linuxfoundation.org>
- <20231212054706.GA10922@lst.de>
+	s=korg; t=1702370621;
+	bh=+EhE6cT13GAnsRV30TPfpFB82bCeqXe52L+pvhkwIXA=;
+	h=Subject:To:From:Date:From;
+	b=QRs0WQ8P/OnnkYROVw8L/L9+2kfXC0bhTf0KSlSIxLaAaCNt53DciLQzO1N9MEDZU
+	 vhLabG7A9AvNrl2PtJMmHHhDfaBkzypeliW9YR5cn63/8ODT77Qi7+O8L4bOjnabnR
+	 52xeanFD7KHBw7wexH5FQeexbv74HdYmvoChd4WY=
+Subject: patch "iio: kx022a: Fix acceleration value scaling" added to char-misc-linus
+To: mazziesaccount@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,jagathjog1996@gmail.com
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 12 Dec 2023 09:43:39 +0100
+Message-ID: <2023121238-helpful-overpass-213a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231212054706.GA10922@lst.de>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Tue, Dec 12, 2023 at 06:47:06AM +0100, Christoph Hellwig wrote:
-> Uh-oh.  multi-page bvecs are bot a backportable feature.  And doing
-> a partial backport just askes for trouble.
-> 
-> So in this from: NAK
-> 
 
-Odd, this wasn't needed in this branch at all, so I've dropped it now.
+This is a note to let you know that I've just added the patch titled
 
-thanks,
+    iio: kx022a: Fix acceleration value scaling
 
-greg k-h
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
+
+
+From 92bfa4ab1b79be95c4f52d13f5386390f0a513c2 Mon Sep 17 00:00:00 2001
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+Date: Thu, 19 Oct 2023 16:23:56 +0300
+Subject: iio: kx022a: Fix acceleration value scaling
+
+The IIO ABI mandates acceleration values from accelerometer to be
+emitted in m/s^2. The KX022A was emitting values in micro m/s^2.
+
+Fix driver to report the correct scale values.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Reported-by: Jagath Jog J <jagathjog1996@gmail.com>
+Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
+Tested-by: Jagath Jog J <jagathjog1996@gmail.com>
+Link: https://lore.kernel.org/r/ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/accel/kionix-kx022a.c | 37 ++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/iio/accel/kionix-kx022a.c b/drivers/iio/accel/kionix-kx022a.c
+index 60864be3a667..53d59a04ae15 100644
+--- a/drivers/iio/accel/kionix-kx022a.c
++++ b/drivers/iio/accel/kionix-kx022a.c
+@@ -393,17 +393,17 @@ static const unsigned int kx022a_odrs[] = {
+  *	(range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
+  *	=> KX022A uses 16 bit (HiRes mode - assume the low 8 bits are zeroed
+  *	in low-power mode(?) )
+- *	=> +/-2G  => 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
+- *	=> +/-2G  - 598.550415
+- *	   +/-4G  - 1197.10083
+- *	   +/-8G  - 2394.20166
+- *	   +/-16G - 4788.40332
++ *	=> +/-2G  => 4 / 2^16 * 9,80665
++ *	=> +/-2G  - 0.000598550415
++ *	   +/-4G  - 0.00119710083
++ *	   +/-8G  - 0.00239420166
++ *	   +/-16G - 0.00478840332
+  */
+ static const int kx022a_scale_table[][2] = {
+-	{ 598, 550415 },
+-	{ 1197, 100830 },
+-	{ 2394, 201660 },
+-	{ 4788, 403320 },
++	{ 0, 598550 },
++	{ 0, 1197101 },
++	{ 0, 2394202 },
++	{ 0, 4788403 },
+ };
+ 
+ static int kx022a_read_avail(struct iio_dev *indio_dev,
+@@ -422,7 +422,7 @@ static int kx022a_read_avail(struct iio_dev *indio_dev,
+ 		*vals = (const int *)kx022a_scale_table;
+ 		*length = ARRAY_SIZE(kx022a_scale_table) *
+ 			  ARRAY_SIZE(kx022a_scale_table[0]);
+-		*type = IIO_VAL_INT_PLUS_MICRO;
++		*type = IIO_VAL_INT_PLUS_NANO;
+ 		return IIO_AVAIL_LIST;
+ 	default:
+ 		return -EINVAL;
+@@ -485,6 +485,20 @@ static int kx022a_turn_on_unlock(struct kx022a_data *data)
+ 	return ret;
+ }
+ 
++static int kx022a_write_raw_get_fmt(struct iio_dev *idev,
++				    struct iio_chan_spec const *chan,
++				    long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		return IIO_VAL_INT_PLUS_NANO;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return IIO_VAL_INT_PLUS_MICRO;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int kx022a_write_raw(struct iio_dev *idev,
+ 			    struct iio_chan_spec const *chan,
+ 			    int val, int val2, long mask)
+@@ -629,7 +643,7 @@ static int kx022a_read_raw(struct iio_dev *idev,
+ 
+ 		kx022a_reg2scale(regval, val, val2);
+ 
+-		return IIO_VAL_INT_PLUS_MICRO;
++		return IIO_VAL_INT_PLUS_NANO;
+ 	}
+ 
+ 	return -EINVAL;
+@@ -856,6 +870,7 @@ static int kx022a_fifo_flush(struct iio_dev *idev, unsigned int samples)
+ static const struct iio_info kx022a_info = {
+ 	.read_raw = &kx022a_read_raw,
+ 	.write_raw = &kx022a_write_raw,
++	.write_raw_get_fmt = &kx022a_write_raw_get_fmt,
+ 	.read_avail = &kx022a_read_avail,
+ 
+ 	.validate_trigger	= iio_validate_own_trigger,
+-- 
+2.43.0
+
+
 
