@@ -1,212 +1,198 @@
-Return-Path: <stable+bounces-6487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3933380F5A4
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:46:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B948280F5A9
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DF94B20DD3
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAEAD1C20BB5
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3C07F546;
-	Tue, 12 Dec 2023 18:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDD07F54E;
+	Tue, 12 Dec 2023 18:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="c4gfaC8Q"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="iuqBpxMz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC9BCE
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 10:46:38 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-28ad44e5d5aso424485a91.3
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 10:46:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702406797; x=1703011597; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qlpo8CUysbutpbVG9tA4TbQt88DWc7+TPXpqWZzjKUg=;
-        b=c4gfaC8QbhYbcm2flY+NTdpDlEgJzZU71KiEHU51FkpHaA8ZUcZaNZqDy53o2QI99/
-         rOBKqwK8Yy/X+6TqC4MPh5qLH7xVil1ERfql31qc5mlUQdrTCGicIK/os4x/iglKlmUJ
-         whP6H3La5UKnFqF5mXy2Jwu0cv27jpFFkdju7N8yCka9evK/ScOM4yfF0lRuR+b4WRR1
-         hlggH1VjduPNl/wtT1uMfJnNZcmGi/LC9e8TMy4bHMO69goEjuT+17LKvZYlMVU9MA3c
-         O7kgjNx+GaHEplg2l2cs8SHQHPaAUb1GFmhT12jzZcexAQvM0ZYX2XCPaq69GvQPzZck
-         zXXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702406797; x=1703011597;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qlpo8CUysbutpbVG9tA4TbQt88DWc7+TPXpqWZzjKUg=;
-        b=tISOeeffDwBsJ41ZCHKHUIU5FtEX3DxDt0EW61OBjIUKIJUwTCgZlUBWKYq02h9uoz
-         cwnd2pri0Ckbbxm4VCw9Fb6I8AafYgWE2asKj4vXODxh6fcPwTWhw5pBGLwjglJL2Qp2
-         FLz/3/tG1BYEKwDfC5WDYQAJ9hFshT4piI/G48fSF8h/cpqkHCkidF+DxNg/rK0L/jou
-         k4F66C4KZ9d7G1l2TDv8lF9vAXOJKCqKhhFOLFMXAo5KmbYoKjCmBcr2pwYJufWX8tBQ
-         lD1r9XxgVlqvRXi+gPtkIhiJo/qU4dC9a+zrwiDVRe4HNY4yVrskqYdnO0si0M8LgoyV
-         oX/g==
-X-Gm-Message-State: AOJu0YyK7YpUUYoixYywI9iw4zkkoRVz+Ah04FqQbDU4rcZgU3lLL9oC
-	cEkou7XqTJDzin+Qmr6Xdt6Q4CpC0Jwto4iLCnwNWQ==
-X-Google-Smtp-Source: AGHT+IFViqWG6XnEr1oitfV1s2CwnjFhJ+vNpY6xMbArQUOR447XLbsm7sthB5MB+xbhAWYrqsHutw==
-X-Received: by 2002:a17:90a:2c84:b0:286:6cc1:77f8 with SMTP id n4-20020a17090a2c8400b002866cc177f8mr5359784pjd.59.1702406797619;
-        Tue, 12 Dec 2023 10:46:37 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 19-20020a17090a1a5300b002802a080d1dsm10285108pjl.16.2023.12.12.10.46.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 10:46:37 -0800 (PST)
-Message-ID: <6578aa8d.170a0220.fe598.f920@mx.google.com>
-Date: Tue, 12 Dec 2023 10:46:37 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6484BD
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 10:47:53 -0800 (PST)
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BCDAM8j023234;
+	Tue, 12 Dec 2023 10:47:47 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=PPS06212021; bh=kmhdh
+	E7FECI83mwVDWoNt4ckeI8eZ+d7VFLWS/THbKA=; b=iuqBpxMzcncxOAQwHVLnw
+	5Y6HyayNJ8iJTNDYAsnw7w3bTRMH0N/NtABfXnotNXpaAyKQu5FMvBrb8nIhvfaT
+	c0KWGR0+iq4rK4NuAFXDh8JUiAxZ31xeDRLTX8Cdac2TWq17D5UtZdVhk/tVXoH5
+	riQ22SN4TPEFJlenXt2LY6Udn4WgY1mXCm2u/eTgThsDpFtmyCauWdldTA/Qp3Hd
+	EMFB5HsWmQc0IvK4bxp4anFgE5OVXXsT1MJyw1rkw6tukAVwwQb//wvQSVv6WWj5
+	dKsEF8Rb28eraSxOZ4Nja5kNq3axBv3Re2w8XhA/R7s1ZLRxR4CmXrrOGofkIhv3
+	w==
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 3uwyxj9mj0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 12 Dec 2023 10:47:46 -0800 (PST)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 12 Dec 2023 10:47:50 -0800
+Received: from yow-lpggp3.wrs.com (128.224.137.13) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.35 via Frontend Transport; Tue, 12 Dec 2023 10:47:50 -0800
+From: <paul.gortmaker@windriver.com>
+To: Namjae Jeon <linkinjeon@kernel.org>, Steve French <stfrench@microsoft.com>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431
+Date: Tue, 12 Dec 2023 13:47:44 -0500
+Message-ID: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v4.19.301-54-ga7780f896379d
-Subject: stable-rc/linux-4.19.y baseline: 95 runs,
- 2 regressions (v4.19.301-54-ga7780f896379d)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: k4fISsCT-FOL_mgohZYFtK89Mj2mnyTF
+X-Proofpoint-GUID: k4fISsCT-FOL_mgohZYFtK89Mj2mnyTF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-16_25,2023-11-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ malwarescore=0 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 priorityscore=1501 mlxlogscore=999 adultscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312120143
 
-stable-rc/linux-4.19.y baseline: 95 runs, 2 regressions (v4.19.301-54-ga778=
-0f896379d)
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-Regressions Summary
--------------------
+This is a bit long, but I've never touched this code and all I can do is
+compile test it.  So the below basically represents a capture of my
+thought process in fixing this for the v5.15.y-stable branch.
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
-         =
-
-beaglebone-black | arm  | lab-cip     | gcc-10   | omap2plus_defconfig | 1 =
-         =
+I am hoping the folks who normally work with this code can double check
+that I didn't get off-track somewhere...
 
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
-nel/v4.19.301-54-ga7780f896379d/plan/baseline/
+CVE-2023-38431 points at commit 368ba06881c3 ("ksmbd: check the
+validation of pdu_size in ksmbd_conn_handler_loop") as the fix:
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-4.19.y
-  Describe: v4.19.301-54-ga7780f896379d
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      a7780f896379de16bc4e805ecf216959b5b876a4 =
+https://nvd.nist.gov/vuln/detail/CVE-2023-38431
 
+For convenience, here is a link to the fix:
 
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/fs/smb/server?id=368ba06881c3
 
-Test Regressions
----------------- =
+It was added in v6.4
 
+git describe --contains 368ba06881c3
+v6.4-rc6~2^2~1
 
+...and backported to several stable releases.  But just not v5.15.
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
-         =
+Why not v5.15?  If we look at the code the fix patches with "git blame"
+we get commit 0626e6641f6b4 ("cifsd: add server handler for central
+processing and tranport layers")
 
+$git describe --contains 0626e6641f6b4
+v5.15-rc1~183^2~94
 
-  Details:     https://kernelci.org/test/plan/id/657877d272d384581ce13476
+So that would have been the commit the "Fixes:" line would have pointed
+at if it had one.
 
-  Results:     42 PASS, 9 FAIL, 1 SKIP
-  Full config: multi_v5_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-01-54-ga7780f896379d/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
-1sam9g20ek.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-01-54-ga7780f896379d/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
-1sam9g20ek.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
+Applying the fix to v5.15 reveals two problems.  The 1st is a trivial
+file rename (fs/smb/server/connection.c --> fs/ksmbd/connection.c for
+v5.15) and then the commit *applies*.   The 2nd problem is only revealed
+at compile time...
 
+The compile fails because the v5.15 baseline does not have smb2_get_msg().
+Where does that come from?
 
+commit cb4517201b8acdb5fd5314494aaf86c267f22345
+Author: Namjae Jeon <linkinjeon@kernel.org>
+Date:   Wed Nov 3 08:08:44 2021 +0900
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657877d272d384581ce134ac
-        failing since 14 days (last pass: v4.19.299-93-g263cae4d5493f, firs=
-t fail: v4.19.299-93-gc66845304b463)
+    ksmbd: remove smb2_buf_length in smb2_hdr
 
-    2023-12-12T15:09:30.875258  + set +x
-    2023-12-12T15:09:30.875789  <8><LAVA_SIGNAL_ENDRUN 0_dmesg 345181_1.5.2=
-.4.1>
-    2023-12-12T15:09:30.988081  / # #
-    2023-12-12T15:09:31.091258  export SHELL=3D/bin/sh
-    2023-12-12T15:09:31.092046  #
-    2023-12-12T15:09:31.193974  / # export SHELL=3D/bin/sh. /lava-345181/en=
-vironment
-    2023-12-12T15:09:31.194837  =
+git describe --contains cb4517201b8a
+v5.16-rc1~21^2~6
 
-    2023-12-12T15:09:31.296850  / # . /lava-345181/environment/lava-345181/=
-bin/lava-test-runner /lava-345181/1
-    2023-12-12T15:09:31.298236  =
+So now we see why v5.15 didn't get a linux-stable backport by default.
+In cb4517201b8a we see:
 
-    2023-12-12T15:09:31.301826  / # /lava-345181/bin/lava-test-runner /lava=
--345181/1 =
++static inline void *smb2_get_msg(void *buf)
++{
++       return buf + 4;
++}
 
-    ... (12 line(s) more)  =
+However we can't just take that context free of the rest of the commit,
+and then glue it into v5.15.  The whole reason the function exists is
+because a length field of 4 was removed from the front of a struct.
+If we look at the typical changes the struct change caused, we see:
 
- =
+-       struct smb2_hdr *rcv_hdr2 = work->request_buf;
++       struct smb2_hdr *rcv_hdr2 = smb2_get_msg(work->request_buf);
 
+If we manually inline that, we obviously get:
 
+-       struct smb2_hdr *rcv_hdr2 = work->request_buf;
++       struct smb2_hdr *rcv_hdr2 = work->request_buf + 4;
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-beaglebone-black | arm  | lab-cip     | gcc-10   | omap2plus_defconfig | 1 =
-         =
+Now consider the lines added in the fix which is post struct reduction:
 
++#define SMB2_MIN_SUPPORTED_HEADER_SIZE (sizeof(struct smb2_hdr) + 4)
 
-  Details:     https://kernelci.org/test/plan/id/65787d73ab457bd79be134a4
++               if (((struct smb2_hdr *)smb2_get_msg(conn->request_buf))->ProtocolId ==
++                   SMB2_PROTO_NUMBER) {
++                       if (pdu_size < SMB2_MIN_SUPPORTED_HEADER_SIZE)
++                               break;
++               }
 
-  Results:     41 PASS, 10 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-01-54-ga7780f896379d/arm/omap2plus_defconfig/gcc-10/lab-cip/baseline-beagle=
-bone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-01-54-ga7780f896379d/arm/omap2plus_defconfig/gcc-10/lab-cip/baseline-beagle=
-bone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
+...and if we inline/expand everything, we get:
 
++               if (((struct smb2_hdr *)(conn->request_buf + 4))->ProtocolId ==
++                   SMB2_PROTO_NUMBER) {
++                       if (pdu_size < (sizeof(struct smb2_hdr) + 4))
++                               break;
++               }
 
+And so, by extension the v5.15 code, which is *pre* struct reduction, would
+simply not have the "+4" and hence be:
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65787d73ab457bd79be134da
-        failing since 0 day (last pass: v4.19.301, first fail: v4.19.301-56=
--g47e943e888e77)
++               if (((struct smb2_hdr *)(conn->request_buf))->ProtocolId ==
++                   SMB2_PROTO_NUMBER) {
++                       if (pdu_size < (sizeof(struct smb2_hdr)))
++                               break;
++               }
 
-    2023-12-12T15:33:35.514377  / # #
-    2023-12-12T15:33:35.615416  export SHELL=3D/bin/sh
-    2023-12-12T15:33:35.615885  #
-    2023-12-12T15:33:35.716516  / # export SHELL=3D/bin/sh. /lava-1057453/e=
-nvironment
-    2023-12-12T15:33:35.717049  =
+If we then put the macro back (without the 4), the v5.15 version would be:
 
-    2023-12-12T15:33:35.818005  / # . /lava-1057453/environment/lava-105745=
-3/bin/lava-test-runner /lava-1057453/1
-    2023-12-12T15:33:35.818499  =
++#define SMB2_MIN_SUPPORTED_HEADER_SIZE (sizeof(struct smb2_hdr))
 
-    2023-12-12T15:33:35.860865  / # /lava-1057453/bin/lava-test-runner /lav=
-a-1057453/1
-    2023-12-12T15:33:36.037335  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-12-12T15:33:36.037790  + cd /lava-1057453/1/tests/1_bootrr =
++               if (((struct smb2_hdr *)(conn->request_buf))->ProtocolId ==
++                   SMB2_PROTO_NUMBER) {
++                       if (pdu_size < SMB2_MIN_SUPPORTED_HEADER_SIZE)
++                               break;
++               }
 
-    ... (10 line(s) more)  =
+And so that is what I convinced myself is right to put in the backport.
 
- =20
+If you read/reviewed this far - thanks!
+Paul.
+
+---
+
+Namjae Jeon (1):
+  ksmbd: check the validation of pdu_size in ksmbd_conn_handler_loop
+
+ fs/ksmbd/connection.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+-- 
+2.40.0
+
 
