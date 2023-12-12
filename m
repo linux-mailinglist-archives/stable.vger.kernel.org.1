@@ -1,99 +1,98 @@
-Return-Path: <stable+bounces-6481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDFB180F46A
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:21:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C55780F4A8
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F032825FC
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:21:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA429281B76
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7F07D892;
-	Tue, 12 Dec 2023 17:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75197D8A3;
+	Tue, 12 Dec 2023 17:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sg+6t1As"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L0Gg8vLB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7597B3CC;
-	Tue, 12 Dec 2023 17:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F012AC433C8;
-	Tue, 12 Dec 2023 17:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702401706;
-	bh=ycMr8MM5ftWs8zYQIf6QMOdO2N+q3aTQBI93SqgK/d0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sg+6t1As+Ksr5VxeJvEvdiiiTLI1ak5JqD++Q2iMDZhhJLoBe1W/aSYz28Gxk5nUb
-	 Q63YaHJgpn9vV3Ovd5HDucifW5ZpcFeCZqFISTOq/qNPgXU7M9foPkwnHDHocOkGug
-	 N/Wo2v9HwGNyPSUzVURcAQwHk3ntFaJYh3Z4YGXbPNcfEFh9/8bzSSSZk2yMvrr42E
-	 /vZMFkE6O1qirpjyUiTFA8USm3zON92CUHKPwd3h6xNeNWVA6TjZ0+PdRGzF/gMdWe
-	 GwD0OCZ1iQdFkdX9FWk4RZLVKua3a3qTqFLmd1VPRl8jvGInPacmSZGcuNa5HSjdbz
-	 Qbi+vYX9fiv4A==
-From: Will Deacon <will@kernel.org>
-To: Rob Clark <robdclark@gmail.com>,
-	iommu@lists.linux-foundation.org
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	"open list:IOMMU SUBSYSTEM" <iommu@lists.linux.dev>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joro@8bytes.org>,
-	linux-arm-msm@vger.kernel.org,
-	stable@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	Danila Tikhonov <danila@jiaxyga.com>,
-	"moderated list:ARM SMMU DRIVERS" <linux-arm-kernel@lists.infradead.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>
-Subject: Re: [PATCH v2] iommu/arm-smmu-qcom: Add missing GMU entry to match table
-Date: Tue, 12 Dec 2023 17:21:00 +0000
-Message-Id: <170238423845.3097390.5149753894021729752.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20231210180655.75542-1-robdclark@gmail.com>
-References: <20231210180655.75542-1-robdclark@gmail.com>
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E377BA1;
+	Tue, 12 Dec 2023 09:34:04 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b8b8372e30so4410672b6e.3;
+        Tue, 12 Dec 2023 09:34:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702402444; x=1703007244; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L0z2AT1BJQCnr747Qe1roJ7ZoVnIRvZI+JcfC+nIFJY=;
+        b=L0Gg8vLBN/QdLnBK+t25yyYd5JFQJumGXF5XELe+oBMae3Fk8PQ3OGe4Hs8mfZclrI
+         XPuUTeGGHScuRZr3NqDg+tmsg7J87TvqvXs3nfZemXOTAGW5RfbALaZzEXFBUqmXHRGy
+         nvOy6TUxWWkR++XjGrKRjocTP6i+rzgI9Od3dATmHPxm2X4HtoHQ7/Zf2YwbLaPZvH7N
+         7rUcMtCTC8pcJacY1jVtYzCEplyBTmC5jkkQsfVR0ALl+mB2Lyh6Ew5APPcRvtfJumnS
+         bynd0agfkvp8VEXWhfFNoCGbpMBo5U78nVn8mXiCCqgx6ahNG26Uuz+T/HViRVuKNNmw
+         zOZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702402444; x=1703007244;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L0z2AT1BJQCnr747Qe1roJ7ZoVnIRvZI+JcfC+nIFJY=;
+        b=I9yjtAS+mVA7rtn+OjF+sQN54cIAAzQ/q2BdXw3nl54UQtdSE6JMAy74iEF7gdMnlD
+         3dmcVPkHqR92WNTle6g+ywGThQdWGZSijExZmPN7wRL1XSLW8f/3mloMfHo+07yO6PLH
+         h1/hZWH51B/5pfe0W50M6AIiYwIgq1bnx1YE4oy3NOPtv4PugPE1933QMvZKXpIznzQ0
+         fr7WegjSyRlMhO1RbmGiwiuUDWMxbto2gr86ffIj7Xhx9pluin5aDGM2gitMOkjIr+bd
+         2XO01hL735Pd0SjT2wbzmYJQ5vASb5AD5W7EMS7eLj4PhYP4RQ/CEOICK7K6ooM0R0P1
+         5SFA==
+X-Gm-Message-State: AOJu0YzUOBInNKk2G1RJRMUd09qUeaHyXDQG1NIJi+IUK3qV6Fhsr8OM
+	zzk4hvJDGZLaYuh2J0wtk8s=
+X-Google-Smtp-Source: AGHT+IFCiLt4rwoXp6x0bRjRpea/9EBC/0MF+xgyL2PXBDccmn3cy84+U+frpTFB5Idvb9FJiO+44A==
+X-Received: by 2002:a05:6870:4153:b0:1fa:fe4b:21d0 with SMTP id r19-20020a056870415300b001fafe4b21d0mr8077857oad.47.1702402444232;
+        Tue, 12 Dec 2023 09:34:04 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id ps5-20020a0568709e0500b001fb33181cfasm3180566oab.55.2023.12.12.09.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 09:34:03 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 12 Dec 2023 09:34:02 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/194] 6.1.68-rc1 review
+Message-ID: <a461d8ce-cf28-4840-af5c-6c7895c300e5@roeck-us.net>
+References: <20231211182036.606660304@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
 
-On Sun, 10 Dec 2023 10:06:53 -0800, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
+On Mon, Dec 11, 2023 at 07:19:50PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.68 release.
+> There are 194 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> In some cases the firmware expects cbndx 1 to be assigned to the GMU,
-> so we also want the default domain for the GMU to be an identy domain.
-> This way it does not get a context bank assigned.  Without this, both
-> of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
-> allocating and configuring a context bank.  So GMU ends up attached to
-> both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
-> and surprises the firmware if the GPU later triggers a translation
-> fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
-> getting wedged and the GPU stuck without memory access.
+> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
 
-Applied to will (for-joerg/arm-smmu/updates), thanks!
+Build results:
+	total: 157 pass: 157 fail: 0
+Qemu test results:
+	total: 545 pass: 545 fail: 0
 
-[1/1] iommu/arm-smmu-qcom: Add missing GMU entry to match table
-      https://git.kernel.org/will/c/afc95681c306
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Cheers,
--- 
-Will
-
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
+Guenter
 
