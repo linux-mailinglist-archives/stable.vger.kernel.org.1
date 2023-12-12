@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-6408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598CF80E4BE
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 08:18:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F1E80E54D
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 08:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0E312835B2
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 07:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7691F2264C
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 07:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E2116431;
-	Tue, 12 Dec 2023 07:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6B917993;
+	Tue, 12 Dec 2023 07:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="QNCnDXNV"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="lrtIoHLg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53070A1
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 23:18:40 -0800 (PST)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6ce6dd83945so4635697b3a.3
-        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 23:18:40 -0800 (PST)
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD45A0
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 23:57:14 -0800 (PST)
+Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-5c6839373f8so3814550a12.0
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 23:57:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702365519; x=1702970319; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702367833; x=1702972633; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=UORNWQMgvuQOp2OW1M+lDyerMrpl3y4tPzU2WOkHKIA=;
-        b=QNCnDXNVSrQStQ4H9IgoebnBzuCoFkIjCmLMCn3yVsYowvy6GoaLAZz6WxdfkOnL4d
-         A638CLcn8GyMQkxDhmZ+YRvjcqNjr8gZL4GXZOMcQIlwPpWC4wQvzzJVacLXbZSvbm2y
-         +Rf4aj7Y8zjT1PzceE6tH89EoVqsJ83UTiEB7E1py2zq0kqqfTQ/NJGD8z44znBo+z7a
-         LuhtmQN5SmIqQyClRMpwAQPTlBJZn6tSNqnoHtR7qqLWM3nU3NRsI3MJWfVfOT/7C8pj
-         4UMaXfRfWRB2aOjN0///nSL+khfaJjWwPxj/Q63pbcHxPyweE/+i6hkYp4Bz2OMmgO9t
-         tSHQ==
+        bh=kA2bzANlJbuwz9uQwZrpdxhnfEwv1K2R6T+0armRGBU=;
+        b=lrtIoHLgBb9RwYDcozgobkHN/llZPIRc7ucdqAHDSws8FK8zDCvHvYoRc6hj5941Yz
+         GQ35pHSYiOj4IYnZKBrBEplrGjJHrxNOQSyBcnFYfe1cp9HeZMg9D1Kg3uHgDPJ6WbWL
+         Ixer3w+1aLPyPAayV1Ka0z8KwV+zOP8c96MWF6M6v87/4Qpt4rSggc5Wx3Yk/7ScMPCH
+         tndu78F+TXOYr8Bak42KY36JMGLnOaT0op7lueHECkLmC96VLnEBOlxES37d+Pi7ljUL
+         cxxXTV5vxdtdWC5RfEEW0kHfj+WHQxOuAObF2ESRDhkhPEF6ykWuC2m+bRdVNPhKOStx
+         Sl6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702365519; x=1702970319;
+        d=1e100.net; s=20230601; t=1702367833; x=1702972633;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=UORNWQMgvuQOp2OW1M+lDyerMrpl3y4tPzU2WOkHKIA=;
-        b=S+tgXjta56prCh0rMKYaphsiluR5ttNZWAEoa9DGxsXAEP6PAHeKBFa27t4zMhuUbx
-         35Y8dvGs6oCIhfA5xmHrzQmEwnVAc5qeDao5fEGZ8qacPEeD0AsCkK8hghDM9s0Gys6s
-         Cyw7r86rV4/KTe38Pnw+QjrmxtdATTaFqUjvT4B54EM0vAMM2L16uM999hd8e8RxukeH
-         rQ9LAGFZWd8xudZGnvLsyfLKtjkTRVYilwnLp3eVPwyld+B6qCCC5mp6W2JobgnJi0Xu
-         u4nTsSuAy/b84Jzr1yFnqnM/YySNHslduvwk/Yg+9PR/lOwXNyZTaOTUZgQZwGC210TD
-         BewQ==
-X-Gm-Message-State: AOJu0YwZL5nc4oT5AyYrh3fpEK3SmIgfbacqoiNE2QLzt4X2ojFPw1Vl
-	kgVa93VyNfVbX+Ftos5s103woQeQ9zf/sMvSk59/qg==
-X-Google-Smtp-Source: AGHT+IFfJY8ptwrLH2zO7f7tSQRUe79eOn8HF3YhOThYMZ2UFEWhkoWOsEYUPBi6Ol/pcB8pmacEIA==
-X-Received: by 2002:a05:6a00:4b4a:b0:6ce:2731:a089 with SMTP id kr10-20020a056a004b4a00b006ce2731a089mr5720249pfb.56.1702365519326;
-        Mon, 11 Dec 2023 23:18:39 -0800 (PST)
+        bh=kA2bzANlJbuwz9uQwZrpdxhnfEwv1K2R6T+0armRGBU=;
+        b=tl+HJnJk1c13AXR/htjd9LoFIdnOCOBTq/MjBXwfdbwUewNEpvhbOgbdmU0ZkxaRrw
+         aIdU1EGUZFcUhZtpLN+vqC2Xs6QtmjDwQ3Oa3O4jqoLdyEsPTE7I//pWDlOq7NHgM3Q3
+         QhUt/NA2Rtf0krPHA5QAVZ6uzrwJ35IgEs4z5WCZuL8ie5axdWW9iUcvxAF5eV2yTNVL
+         kNTqiJFlpt6QrA9az1OaCxkvZ+ajHVB06h3dy5vl8fyOjlpNpi1jkSpil048lNRiZw/+
+         xOyQH60vCDypKlQ4Say/BR9Dby+9jaRUBq3ZVJVENUlNJFd4EGI1TptbOs2gzK4BJWJJ
+         aqRQ==
+X-Gm-Message-State: AOJu0YyaDPKBkYeouwqzb1ajrEcCuxetx7PgQXYdAVKcIFvFubPt9duZ
+	SKbtT4UT2tBXwtQ+qtgpIfKKIl6pR3UpVf8kM/aa8w==
+X-Google-Smtp-Source: AGHT+IGRGQAoKRce4Op8D2orwOJkA0ssL6yJXr1yW7cQWw3QX5ZgBbwo8OwDmc3c4KtCkJzYVmBSpg==
+X-Received: by 2002:a05:6a20:13d9:b0:190:e402:8bc6 with SMTP id ho25-20020a056a2013d900b00190e4028bc6mr3424112pzc.43.1702367833382;
+        Mon, 11 Dec 2023 23:57:13 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id j17-20020a056a00175100b006ce6bf5491dsm7441714pfc.198.2023.12.11.23.18.38
+        by smtp.gmail.com with ESMTPSA id c23-20020aa78817000000b006ce358d5d9asm7772868pfo.141.2023.12.11.23.57.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Dec 2023 23:18:38 -0800 (PST)
-Message-ID: <6578094e.050a0220.65701.5a16@mx.google.com>
-Date: Mon, 11 Dec 2023 23:18:38 -0800 (PST)
+        Mon, 11 Dec 2023 23:57:12 -0800 (PST)
+Message-ID: <65781258.a70a0220.31318.6586@mx.google.com>
+Date: Mon, 11 Dec 2023 23:57:12 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,161 +62,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
+X-Kernelci-Branch: linux-5.15.y
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.67-194-g4d98cff86b0fc
-Subject: stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed,
- 1 warning (v6.1.67-194-g4d98cff86b0fc)
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.15.142-142-g83fb9eaaf8115
+Subject: stable-rc/linux-5.15.y baseline: 104 runs,
+ 1 regressions (v5.15.142-142-g83fb9eaaf8115)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.=
-67-194-g4d98cff86b0fc)
+stable-rc/linux-5.15.y baseline: 104 runs, 1 regressions (v5.15.142-142-g83=
+fb9eaaf8115)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.67-194-g4d98cff86b0fc/
+Regressions Summary
+-------------------
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.67-194-g4d98cff86b0fc
-Git Commit: 4d98cff86b0fc36bff804a47ed7f62b0c09c58e2
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
+platform                     | arch  | lab           | compiler | defconfig=
+                  | regressions
+-----------------------------+-------+---------------+----------+----------=
+------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
++arm64-chromebook | 1          =
 
 
-Warnings summary:
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.15.y/ker=
+nel/v5.15.142-142-g83fb9eaaf8115/plan/baseline/
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.15.y
+  Describe: v5.15.142-142-g83fb9eaaf8115
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      83fb9eaaf811580c8f9c768023db10686fd30985 =
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
 
-Detailed per-defconfig build reports:
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
+Test Regressions
+---------------- =
 
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+platform                     | arch  | lab           | compiler | defconfig=
+                  | regressions
+-----------------------------+-------+---------------+----------+----------=
+------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora | gcc-10   | defconfig=
++arm64-chromebook | 1          =
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+  Details:     https://kernelci.org/test/plan/id/6577ddfd832db550a1e134d9
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+42-142-g83fb9eaaf8115/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora=
+/baseline-mt8183-kukui-jacuzzi-juniper-sku16.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+42-142-g83fb9eaaf8115/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora=
+/baseline-mt8183-kukui-jacuzzi-juniper-sku16.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+  * baseline.login: https://kernelci.org/test/case/id/6577ddfd832db550a1e13=
+4da
+        new failure (last pass: v5.15.142) =
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+ =20
 
