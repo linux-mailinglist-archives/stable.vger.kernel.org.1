@@ -1,123 +1,99 @@
-Return-Path: <stable+bounces-6480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A992F80F41B
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDFB180F46A
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6458A28148F
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:11:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F032825FC
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13FB7B3C1;
-	Tue, 12 Dec 2023 17:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7F07D892;
+	Tue, 12 Dec 2023 17:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hCZotIl5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sg+6t1As"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06D79CF
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 09:10:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702401059;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4gv0M0HGbrAnaBTITUU22qWIN+D01416eS5uSG0g/5E=;
-	b=hCZotIl5FZk9ZQDT/V5CKJSAM9XkIeQNnDOotIscsE2djXncG/UVvpguqvgk5kF4nFzoue
-	jRU5mj4XaC90KeOVtW901dvXDrPQgHBmKkAv7Ek76Wq1rsOBPwl1t31EIryk46HmavoAVk
-	5nzn54ZU+QKc2GH3HKlfY5FN6uWoESw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-sc7vRIH0N7iyizZE1qVcUg-1; Tue, 12 Dec 2023 12:10:55 -0500
-X-MC-Unique: sc7vRIH0N7iyizZE1qVcUg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 39174891067;
-	Tue, 12 Dec 2023 17:10:55 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.161])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D393F2166B31;
-	Tue, 12 Dec 2023 17:10:52 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: nathan@kernel.org
-Cc: dcavalca@meta.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	masahiroy@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] rpm-pkg: simplify installkernel %post
-Date: Tue, 12 Dec 2023 18:10:44 +0100
-Message-ID: <20231212171044.1108464-1-jtornosm@redhat.com>
-In-Reply-To: <20231108000749.GA3723879@dev-arch.thelio-3990X>
-References: <20231108000749.GA3723879@dev-arch.thelio-3990X>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7597B3CC;
+	Tue, 12 Dec 2023 17:21:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F012AC433C8;
+	Tue, 12 Dec 2023 17:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702401706;
+	bh=ycMr8MM5ftWs8zYQIf6QMOdO2N+q3aTQBI93SqgK/d0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Sg+6t1As+Ksr5VxeJvEvdiiiTLI1ak5JqD++Q2iMDZhhJLoBe1W/aSYz28Gxk5nUb
+	 Q63YaHJgpn9vV3Ovd5HDucifW5ZpcFeCZqFISTOq/qNPgXU7M9foPkwnHDHocOkGug
+	 N/Wo2v9HwGNyPSUzVURcAQwHk3ntFaJYh3Z4YGXbPNcfEFh9/8bzSSSZk2yMvrr42E
+	 /vZMFkE6O1qirpjyUiTFA8USm3zON92CUHKPwd3h6xNeNWVA6TjZ0+PdRGzF/gMdWe
+	 GwD0OCZ1iQdFkdX9FWk4RZLVKua3a3qTqFLmd1VPRl8jvGInPacmSZGcuNa5HSjdbz
+	 Qbi+vYX9fiv4A==
+From: Will Deacon <will@kernel.org>
+To: Rob Clark <robdclark@gmail.com>,
+	iommu@lists.linux-foundation.org
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	"open list:IOMMU SUBSYSTEM" <iommu@lists.linux.dev>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	linux-arm-msm@vger.kernel.org,
+	stable@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	"moderated list:ARM SMMU DRIVERS" <linux-arm-kernel@lists.infradead.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>
+Subject: Re: [PATCH v2] iommu/arm-smmu-qcom: Add missing GMU entry to match table
+Date: Tue, 12 Dec 2023 17:21:00 +0000
+Message-Id: <170238423845.3097390.5149753894021729752.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20231210180655.75542-1-robdclark@gmail.com>
+References: <20231210180655.75542-1-robdclark@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-A new installkernel application is now included in systemd-udev package
-and it has been improved to allow simplifications.
+On Sun, 10 Dec 2023 10:06:53 -0800, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+> so we also want the default domain for the GMU to be an identy domain.
+> This way it does not get a context bank assigned.  Without this, both
+> of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+> allocating and configuring a context bank.  So GMU ends up attached to
+> both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+> and surprises the firmware if the GPU later triggers a translation
+> fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+> getting wedged and the GPU stuck without memory access.
+> 
+> [...]
 
-For the new installkernel application, as Davide says:
-<<The %post currently does a shuffling dance before calling installkernel.
-This isn't actually necessary afaict, and the current implementation
-ends up triggering downstream issues such as
-https://github.com/systemd/systemd/issues/29568
-This commit simplifies the logic to remove the shuffling. For reference,
-the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-section to create initramfs and grub hooks").>>
+Applied to will (for-joerg/arm-smmu/updates), thanks!
 
-But we need to keep the old behavior as well, because the old installkernel
-application from grubby package, does not allow this simplification and
-we need to be backward compatible to avoid issues with the different
-packages. So the easiest solution is to check the package that provides
-the installkernel application, and simplify (and fix for this
-application at the same time), only if the package is systemd-udev.
+[1/1] iommu/arm-smmu-qcom: Add missing GMU entry to match table
+      https://git.kernel.org/will/c/afc95681c306
 
-cc: stable@vger.kernel.org
-Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-V1 -> V2:
-- Complete to be backward compatible with the previous installkernel
-application.
-
- scripts/package/kernel.spec | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 3eee0143e0c5..d4276ddb6645 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -77,12 +77,16 @@ rm -rf %{buildroot}
- 
- %post
- if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
-+if [ $(rpm -qf /sbin/installkernel --queryformat "%{n}") = systemd-udev ];then
-+/sbin/installkernel %{KERNELRELEASE} /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
-+else
- cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
- cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
- rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
- /sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
- rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
- fi
-+fi
- 
- %preun
- if [ -x /sbin/new-kernel-pkg ]; then
+Cheers,
 -- 
-2.43.0
+Will
 
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
