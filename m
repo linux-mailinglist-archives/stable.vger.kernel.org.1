@@ -1,246 +1,227 @@
-Return-Path: <stable+bounces-6453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E3C80EE56
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 15:06:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C692880EEC9
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 15:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE0D1C20B3C
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 14:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8FEF1C20B0B
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 14:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568D773166;
-	Tue, 12 Dec 2023 14:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E0573193;
+	Tue, 12 Dec 2023 14:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JMXhQw70"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Une6hubG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F5C106
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 06:05:52 -0800 (PST)
-Received: by mail-ua1-x92d.google.com with SMTP id a1e0cc1a2514c-7c5524f258aso3179010241.1
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 06:05:52 -0800 (PST)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96103AC
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 06:29:27 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6cea5548eb2so4951182b3a.0
+        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 06:29:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702389951; x=1702994751; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p7OvG7f2fbkAHiV1C+DyWDQaFlk/Jc1a6xMCOYx9TeE=;
-        b=JMXhQw70t3gBlXbYnbhtMd8sT+YMLYfQnpcXwIcTPerY+Rd8RLdwfgFJcOK/hE2P/Q
-         sjfBbg+8VTN3OMXmu2rDnP2A1uGKR2MOIGnx/q/9X+0HGjw42NdHNETL1Z1FVwgoVEcl
-         NWFCOCFuXsTr9SukmEY3ZEq9BRPXZJEab/WSKqI3kI93hHENHJ/8xNO6fZ1J8LXQ9liy
-         SZBz2lBm4s9HLYR9p5gPUVwsHqdyNoG/RnTuj3g0uWPyQnAm/hNSyfP+VXCGpcjmMiBz
-         kFAIN0SsuVaUM0QUsKyBkKkogUsS6D/dbn3nr4/wa/IxH1fplnmazQCfli2difWLJYb9
-         NKQw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702391367; x=1702996167; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6wC6Jz11TOfGI8PJgayHvK3bANFVMCWf3H8aQrOcz28=;
+        b=Une6hubGzUf5gNKHfUP00uC7x6XN5qrWNKCjo4g8gi8BxMxuzyyFa1RNIpTsj1OzlX
+         gcdgFdcE9MNgHcABczgMVGu85JRSpucD1R7N9LGw2CASPpzkAzZUfph/e+EwqecCWaxi
+         Hx7xmnAeyukrtzMeG7c/cSLUrlrg1A5LZsYPop2y701inmAV5iFpVyWnQ+aT5qGxEjDw
+         1QQqCNAWKvk6622NJOlRWc81Md68qzKrOUDXgg5VQcIpKJwhjKis93JQk9AclM0KoQmj
+         2btnw8Aef4KqDKQN0Y6p7KM9eJx1QGffY5uKEZc5s8jzo2Z6mPjnVPxrtdsor1WHrFbn
+         lpnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702389951; x=1702994751;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p7OvG7f2fbkAHiV1C+DyWDQaFlk/Jc1a6xMCOYx9TeE=;
-        b=fKsSHmJGR1RzKfz5VmUDOrrFBgcTtb1Y+Sbzyrt7HybRHfYS9bmblxsAD0r29uYhce
-         AO3HhVe37WfAZ83RW0m0yVfZ5DmnDyDvCvPU7Vg0YKA8EoiM3PU4NeSMqSFRUfHNGVrE
-         Hiariav3L2IbXJ4csh4NxHAGXND21hb1p5faRHu2RJCWTP4q4v/pJ2cLGRGzq+egwhup
-         iaAemox9KoHb8IJ/2OGkqxBwgBc8y+O5eNDdturfgui1Vg/Sk9YRmlpYOZ3gVnF4HwEU
-         dBjWsWNPhfKMucijz3gvUyAT7DmB7WSi7pRAR4jVP1naWa0TC8XGMeNJL9ubqO3kJ8zx
-         c6Fw==
-X-Gm-Message-State: AOJu0Yzt0F3Qlfh7DTkF0iRBBkDrZJcbxtBUkolYd8P0QXaGu9q2/IXS
-	RzYe+5301+KiqAAyrotjCC607LqLX2ntDVbQ53+bhA==
-X-Google-Smtp-Source: AGHT+IHjL8RuvYBi5lCSVjhpl70n3kPkPo88eDYA9ZzAJSxm8dM5e8yvPzby7XDfhdt4oFYZC7H9kVG2s9jQJiDbOP8=
-X-Received: by 2002:a05:6102:9a1:b0:464:91f9:d5d6 with SMTP id
- f1-20020a05610209a100b0046491f9d5d6mr4845488vsb.30.1702389951460; Tue, 12 Dec
- 2023 06:05:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702391367; x=1702996167;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6wC6Jz11TOfGI8PJgayHvK3bANFVMCWf3H8aQrOcz28=;
+        b=PfzoJ5D3IOs4Rx+kIeIZj/RHYj8vA3tJbW0yzDplRLivaEm10JQ86og9buFihYDKX5
+         bJdX/sDSpb64q6ieSTt+DUpWyT7do570cqUcWP49CSOUMUJSDU+jNjYjJoFMHKVeOlEl
+         l481MwBHXa+xzs97jiN5lJwGV0aNhw6z5k79FFzhWBioayv9n7dxGExi/7VeChp9coB0
+         0t/WjYeX8PMHtKP/wel5hZQbVQXbCSS5Lp25dIwDNPNTiXRoZGex2qBkBSJp8lrgiIj4
+         n1u0zKm1JB4/z5/IaTRvofb2RjHXMOliHJ9I4mXquIa8dHykKz+AkIQ/2WnbuYkzpXx7
+         0Sog==
+X-Gm-Message-State: AOJu0Yz0f3bpNLJfuPzUGAC2tg4GBqeUBJEXvtqi7ufrGRCLhTYn31RH
+	2w+fQPmVhj0BLoH+lvJw+RAPWo2HSK7KAHYVaMucxw==
+X-Google-Smtp-Source: AGHT+IErmwkcHm2RZbpgl+yj/22JBlKYrL4ZxTxroe5LmEljrlOwjEu6PhqGR9Vz5HgfP7aMndqRsw==
+X-Received: by 2002:a05:6a20:1609:b0:18f:97c:8a1e with SMTP id l9-20020a056a20160900b0018f097c8a1emr8049182pzj.73.1702391366696;
+        Tue, 12 Dec 2023 06:29:26 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id i1-20020a6551c1000000b005c6e8fa9f24sm7155177pgq.49.2023.12.12.06.29.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 06:29:26 -0800 (PST)
+Message-ID: <65786e46.650a0220.f35d4.32e9@mx.google.com>
+Date: Tue, 12 Dec 2023 06:29:26 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231211182045.784881756@linuxfoundation.org>
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 12 Dec 2023 19:35:39 +0530
-Message-ID: <CA+G9fYvN9xBZdiFgBSD5HuLm2j-Ny0AyTvCngh0E32mWWXB00A@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/244] 6.6.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.67-194-ge8e28130acd37
+Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.67-194-ge8e28130acd37)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Mon, 11 Dec 2023 at 23:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.7 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.7-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
+67-194-ge8e28130acd37)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.67-194-ge8e28130acd37/
+
+Tree: stable-rc
+Branch: queue/6.1
+Git Describe: v6.1.67-194-ge8e28130acd37
+Git Commit: e8e28130acd376914049f7ff126b248527180d14
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Warnings summary:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
-## Build
-* kernel: 6.6.7-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.6.y
-* git commit: 4970875239e5185c5957f2eadd5b4caf546f2bc0
-* git describe: v6.6.6-245-g4970875239e5
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.6=
--245-g4970875239e5
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-## Test Regressions (compared to v6.6.5)
+Detailed per-defconfig build reports:
 
-## Metric Regressions (compared to v6.6.5)
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
-## Test Fixes (compared to v6.6.5)
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
-## Metric Fixes (compared to v6.6.5)
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
-## Test result summary
-total: 154499, pass: 132659, fail: 2462, skip: 19242, xfail: 136
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 144 passed, 1 failed
-* arm64: 52 total, 49 passed, 3 failed
-* i386: 41 total, 40 passed, 1 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 36 passed, 0 failed
-* riscv: 25 total, 24 passed, 1 failed
-* s390: 13 total, 13 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 45 passed, 1 failed
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
---
-Linaro LKFT
-https://lkft.linaro.org
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
