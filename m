@@ -1,233 +1,99 @@
-Return-Path: <stable+bounces-6474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CA180F337
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:39:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C366680F3CC
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F601C20EF2
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 16:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4FC1F215E6
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 16:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BD078E85;
-	Tue, 12 Dec 2023 16:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6447B3AF;
+	Tue, 12 Dec 2023 16:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="VBS7T/j4"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IT3he8N5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A497D5F
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:39:02 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6ce76f0748fso3689249b3a.2
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:39:02 -0800 (PST)
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A2A107
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:57:27 -0800 (PST)
+Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-548f853fc9eso8099585a12.1
+        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:57:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702399141; x=1703003941; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jRZ7tJz6VLakppDBwMNWloP6HgEWGAA0+Eejdy+rHo4=;
-        b=VBS7T/j4j2SQ4LyFBAKVgowcPX4RQ058uBiENqGiKsAQ0tn/3OIjjJ+7owxlIGEqHw
-         7v6wA4DzOJ0J3jS6qQ1SiEK3iOB285EF8mAvLcA0jWNes3q07Iy6f/dv4PYeBNryFy+U
-         plE9ZTkmK9O2T115JWj6EDxEFrPACc+WaKMwJn62VsURTYuzQGgm3p68rvkmNa+13pok
-         /gyQMVDmYHGJwRy+IufFMq2MJW8uCjZ8ZyzMJetXnvyjk9B0PbD5puVwaYEtaY/4kLjc
-         hXYNgraRi/Gx81FWrLvryW7sUThQ5DGOJ9gqEEgUkCwwws0VxDUmZOFQCAlKw50f+zq9
-         xCaw==
+        d=suse.com; s=google; t=1702400246; x=1703005046; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:in-reply-to:subject
+         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+lMTVtJ6H9PCFimJOMBMX+fMUzbTEUbpPe5aIJIvTUQ=;
+        b=IT3he8N5E6dzwaqyZv2UvEjBZPbBJwZY7fDL/dAUPYKceWoJttaXBculDICYSQgvsK
+         8/I3wr7pQ+xjzAnG/Kexvjstp3uWRMrkNI+p5LoUYVLkFCeYXjQCd2lwfDn0+W0zw1Vd
+         ZWl46ikAkTtK6d+4HlnUBehhSL39oaXf/Z2kewJSQGwf7JOXk+VX9pclUPE3SR6MTuEQ
+         hdqU/q43voZm7ZVfE4kjwEgKk0vP2fAhRW3PjHPHPfstCj7HM3KrIr8YHQ8GqyegsSJZ
+         glkB7sg+VufnU0vldoJtoJ3EKmCmRCbDbf3+5V4LmqLHf0/g9zSqmFzqxNkCt2tWHiF2
+         OoNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702399141; x=1703003941;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jRZ7tJz6VLakppDBwMNWloP6HgEWGAA0+Eejdy+rHo4=;
-        b=cI5iJmGZ3dkuBzLiJhdaFUU9hJgyejoBeduD5VB+dEUgPM6KkkpN45M/rUSwfzI9zF
-         IwTYY+YXzQoNBmoZ4VFmgcWSNImtLrbcSjw8xSIhr7D2daU6YoUlCpHENMxV5tkvqInG
-         qET+FvgiEnV1yCZx0L44fPbq33PYLb6CZIElSiVvFpmH6ZQDEsVG/45zYtN0o1Rfl4zE
-         U5XjTn/nemxTjpZ1TEIWG9qiyGQQu+wCK5N+tWYryzOo4xmBb7nTuC89U5u7D0WAngQ0
-         9/OAHsDVJn1dhxjOheBI10WaI++eeRDfXIgDTjWGwChkqqHy3Z+0JPSUJ84v9Tt9Liau
-         rJTg==
-X-Gm-Message-State: AOJu0YxmeHoPXOOuS6Qa6f/ifJ1OzxriZyRxkV22A4MWSU7d6SiG14cq
-	LByowUCiuMLvKBnh15MBEjTkYnevh4F2CvP1kv5JRQ==
-X-Google-Smtp-Source: AGHT+IHwp6Ir1aUXaYbibGGCYanlkCR2HLc/i4oRxx9azaLE08aOGEEmoq47C+18Ea8Pz7SwRold6g==
-X-Received: by 2002:a05:6a00:1302:b0:6cd:dfae:1b44 with SMTP id j2-20020a056a00130200b006cddfae1b44mr4015228pfu.34.1702399141502;
-        Tue, 12 Dec 2023 08:39:01 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id m9-20020a62f209000000b006cb903ab057sm8242600pfh.83.2023.12.12.08.39.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 08:39:01 -0800 (PST)
-Message-ID: <65788ca5.620a0220.aa270.8c38@mx.google.com>
-Date: Tue, 12 Dec 2023 08:39:01 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1702400246; x=1703005046;
+        h=mime-version:user-agent:references:message-id:in-reply-to:subject
+         :cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+lMTVtJ6H9PCFimJOMBMX+fMUzbTEUbpPe5aIJIvTUQ=;
+        b=Skvbq8ujPzVZe8AddIIfDdN9qii/15/X/YGvkHTnFvCtGV80szAujF0e5K8bayg0Of
+         3Hvn788rFEwDDjOLMKWVNH+/BlMbVTiKMIDE34UrONOs0HJ8hN/q5PSkD9tehhrypL9V
+         CSyKpCoQuD6FQQsIMR5IjT+MY9PrK5gsDq2USRbeWOCnrCVW4tYayQoK5G00HL7aMd0E
+         9wtjDRN04iegRL6trxmDXaZOF8g0DWXUlctL+Qd5SPjHGjrPhDEg5G+vafMGih4M20yU
+         vLgWat4y5ouPCpQfj4a3r6C7gYig2IrTaez+IhZJJbvYZp4io5Mo/Xk00UdoLnvGgQO4
+         JnXQ==
+X-Gm-Message-State: AOJu0YzHSoASubhLHU2yZuDdR8E1/RVWo9SPuAS0tP8ahfmjalwuKJwb
+	rZbJkXrIw4vZJ/cbS8z1AmBRWw==
+X-Google-Smtp-Source: AGHT+IGfbuCInx3RFO2rETPGTleTrH3IgAr8XT2Yzv//r2Wg7OvimKJNEBvV3fpuGej4OApyjNJRNg==
+X-Received: by 2002:a17:906:3f58:b0:a1d:3858:9c66 with SMTP id f24-20020a1709063f5800b00a1d38589c66mr1813082ejj.171.1702400245950;
+        Tue, 12 Dec 2023 08:57:25 -0800 (PST)
+Received: from localhost ([193.86.92.180])
+        by smtp.gmail.com with ESMTPSA id st3-20020a170907c08300b00a1c4fde4e88sm6592557ejc.18.2023.12.12.08.57.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 12 Dec 2023 08:57:25 -0800 (PST)
+From: Jiri Kosina <jkosina@suse.com>
+X-Google-Original-From: Jiri Kosina <jikos@kernel.org>
+Date: Tue, 12 Dec 2023 17:57:26 +0100 (CET)
+To: xiongxin <xiongxin@kylinos.cn>
+cc: Thomas Gleixner <tglx@linutronix.de>, benjamin.tissoires@redhat.com, 
+    linux-input@vger.kernel.org, stable@vger.kernel.org, 
+    Riwen Lu <luriwen@kylinos.cn>
+Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
+ in pairs
+In-Reply-To: <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
+Message-ID: <nycvar.YFH.7.76.2312121755290.24250@cbobk.fhfr.pm>
+References: <20231207014003.12919-1-xiongxin@kylinos.cn> <87ttosssxd.ffs@tglx> <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.203-97-g43162d9d816b3
-Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.203-97-g43162d9d816b3)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=US-ASCII
 
-stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
-10.203-97-g43162d9d816b3)
+On Mon, 11 Dec 2023, xiongxin wrote:
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-0/kernel/v5.10.203-97-g43162d9d816b3/
+> In this scenario, unmask_irq() will not be called, and then gpio corresponding
+> interrupt pin will be masked. Finally, in the suspend() process driven by gpio
+> interrupt controller, the interrupt mask register will be saved, and then
+> masked will continue to be read when resuming () process. After the kernel
+> resumed, the i2c hid gpio interrupt was masked and the i2c hid device was
+> unavailable.
 
-Tree: stable-rc
-Branch: queue/5.10
-Git Describe: v5.10.203-97-g43162d9d816b3
-Git Commit: 43162d9d816b3442700eb0e971e9ae52e2d8b807
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+In addition to what Thomas already wrote -- what exactly is the problem 
+you are trying to solve here?
 
-Warnings Detected:
+Is it that your device drive by i2c-hid driver is no longer sending any 
+data reports after a suspend/resume cycle? What makes you think that it's 
+because of its IRQ being disabled?
 
-arc:
+Don't you just perhaps need I2C_HID_QUIRK_RESET_ON_RESUME quirk for that 
+device?
 
-arm64:
+-- 
+Jiri Kosina
+SUSE Labs
 
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
 
