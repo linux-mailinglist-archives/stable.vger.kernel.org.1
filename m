@@ -1,219 +1,296 @@
-Return-Path: <stable+bounces-6395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EAA80E2FC
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 04:49:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6591180E319
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 04:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B67FAB219D1
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 03:49:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A15428220D
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 03:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3446BA43;
-	Tue, 12 Dec 2023 03:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE91BE7D;
+	Tue, 12 Dec 2023 03:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="fROLbcGR"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="n/ZPJ8u3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBACCF7
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 19:48:46 -0800 (PST)
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 34ED640335
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 03:48:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1702352925;
-	bh=1HUhMLBROFN0g5LMy9mB5yaj+3rDSuc7mR6eTwrGU9Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=fROLbcGR1F9ZRqOnT8oPh4wd5dSjYCG8R9luEyUH3nYOK+byt7rvqTq+0iImRCmou
-	 HT/Itt6gMMNAkloE96TspCnVRFALO4NIFR7/KqIvGYqzg9Osv8F0nYoqwHUA/42nWn
-	 SZuAdKRhAfaDtdQ2oXhgaEAo/MXne1IwJkaN2HP3jEPA/r0wxVhc2toiX3kHPy4crK
-	 /1XUZiB8UG0oq7Rs2PyrMynL4rKxjbyRv6qokFM1ejfxdOTYerOrOenmY6HmiFE92R
-	 NCmRrcMjtgHn81fkQWvpPBzNpVAN0jzttp8F43pAu0ZY0FpV9OkHwk0sm3fEdkzeal
-	 qQt8AyQMiDlqg==
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-5c67bf38266so4554970a12.0
-        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 19:48:45 -0800 (PST)
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C12C6AC
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 19:57:17 -0800 (PST)
+Received: by mail-io1-xd30.google.com with SMTP id ca18e2360f4ac-7b373d61694so237603639f.2
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 19:57:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702353436; x=1702958236; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=kz6rakp9hZNNoCh0rjbvEL4ZgqBABBUjsV8tfhaknmE=;
+        b=n/ZPJ8u3BIhY0j/UsOoZoJTMQ8Bg0Gk47plmO3LFVVmh+QiMzmCgYDQZhL28vCmtDU
+         ml7TlUQmWl8JRF7oo0YSJDUgoL08acqj6mPv/MbMEwADXUokKqYq7lQ+m8+kijzcXc+W
+         qXyEK0gVRFtRaPzu/ciyXdVq/zIjW8LIYKujNBhJcxmShkgkr8YSLphb9XM66wDHrXEp
+         vh8D7R7uq3v1AVHHcKBXcJkSHVRaQEfT9FxJQ+L/btwYtJ+UuJrwFeb9yjOA1qjkuWux
+         fpcPVXOCcytT2rrI73kAULk6CJggLVmv2aKYNUKk0Ugv9SGqXm1h7R/wo3aT2M9pCxdS
+         OSgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702352920; x=1702957720;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1HUhMLBROFN0g5LMy9mB5yaj+3rDSuc7mR6eTwrGU9Y=;
-        b=vWBQ0iyBS+IEkygNUOZG0nIjgTGG1gfr8We5Jilw8vCmZzi85YAX/BpNyryzwEoUsR
-         MvAro1JCaRsThceBdlzGmEivhroi34toBBbyHxjZPJZIid7qOuEJx61opCJfw7mjeW5s
-         epHJudijPPy+j5WdHyNnSfxYCOQN6TSxFK1jIL0MB6Cpa/mDcvc9ssV4IbLFmNxPkmZ0
-         5bo0+DuD1qodc+px0B2pYzjQjexCd7b+ejbgnOsgwqwLWHuDAOl+er6Qq26d8jdzxbvp
-         /G4ut5VXX6LRu6pBTadXn7iBGx3KnHneMd9pNH+qY6WQICAwWNzbFrBYAviAEQhd/hVn
-         GKQg==
-X-Gm-Message-State: AOJu0Yw5GAQ5m+gdWxJVwYJr4pbRyswZ4bLKAyUzSacxZSZZtieVnag/
-	ylX8/IsnpP8Cf/6xFwN6VNG1Sps4WKK7umzmZOkU6fAwOLZlAXuT1hRKnUdMjS+swF6+jIUAe7C
-	+M1aCz0dzZL3R8lAIyW+IxIcrJGVQ7RN044E7m60GJ4g//OqhVA==
-X-Received: by 2002:a05:6a20:918b:b0:190:63b6:2064 with SMTP id v11-20020a056a20918b00b0019063b62064mr7360054pzd.92.1702352920650;
-        Mon, 11 Dec 2023 19:48:40 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqJkKjDbObn3XUeRSCrDEKIGU4z0L3FDpaVXD13mjmCeE4ARWwVkG/egsSQz2KqotM9nc+q27fkNfBMfIw3pI=
-X-Received: by 2002:a05:6a20:918b:b0:190:63b6:2064 with SMTP id
- v11-20020a056a20918b00b0019063b62064mr7360026pzd.92.1702352920339; Mon, 11
- Dec 2023 19:48:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702353436; x=1702958236;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kz6rakp9hZNNoCh0rjbvEL4ZgqBABBUjsV8tfhaknmE=;
+        b=K5dyR9To3x8h3IzgeCZLlpQUa5f29OmMcovLIWlnwRyBo8nT7RMhmPBw7OJJsIhKuz
+         hm9if8hdWZgwsWg7huNkPK4fCtjZoLd9WMiBz+KTRztbAe0BauMwQlUhOwt0m0uH3TsE
+         VbcGpljJrviL7JakFOQkC2VUGXBOS9N7ejZX1kabhqGAXFkt94H/EizWLh1rVAVPWNgZ
+         Al0SeTV7YowFxbdhPM20ixiuHraukDMVaFvNhzM1+CGPAeVt8q2yqGofzKZqS279tOXA
+         sfnvD9enfboGVa9C7PuQPUOa+HoBBQM3LSiIiejle/tNPvDXueLEro5draTVFjfmMMPh
+         nu1A==
+X-Gm-Message-State: AOJu0YzYyrF/AlPl1kcGfVaHmUe8mOtrA1Ngk+yQEMpkMsdbcFiLk/dh
+	itY5S/EYu8+appR4bVBArw6KnYiYdeAa52OeUyx/sQ==
+X-Google-Smtp-Source: AGHT+IHGHQkkVtWEJzbEUgdP1GnjOkuuunFUWVoL2xiYDWKIjQpAGeOr/R/ts5MuT0miQe3rBmWLFg==
+X-Received: by 2002:a05:6e02:1a0c:b0:35d:50a8:8e00 with SMTP id s12-20020a056e021a0c00b0035d50a88e00mr9300937ild.18.1702353436730;
+        Mon, 11 Dec 2023 19:57:16 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id v4-20020a17090331c400b001d0c5037ed3sm7551003ple.46.2023.12.11.19.57.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Dec 2023 19:57:16 -0800 (PST)
+Message-ID: <6577da1c.170a0220.a1291.6cd2@mx.google.com>
+Date: Mon, 11 Dec 2023 19:57:16 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231128081512.19387-2-johan+linaro@kernel.org> <20231207204716.GA764883@bhelgaas>
-In-Reply-To: <20231207204716.GA764883@bhelgaas>
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Date: Tue, 12 Dec 2023 11:48:27 +0800
-Message-ID: <CAAd53p59q3D7u01ECsgRUgkDkTkchV-Gv+q=TMFcC44_tOs51Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link state
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	=?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Andy Gross <agross@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Nirmal Patel <nirmal.patel@linux.intel.com>, 
-	Jonathan Derrick <jonathan.derrick@linux.dev>, linux-arm-msm@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Michael Bottini <michael.a.bottini@linux.intel.com>, 
-	"David E . Box" <david.e.box@linux.intel.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.332-26-g8dee2d695a2d2
+Subject: stable-rc/linux-4.14.y build: 16 builds: 3 failed, 13 passed, 3 errors,
+ 21 warnings (v4.14.332-26-g8dee2d695a2d2)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Fri, Dec 8, 2023 at 4:47=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.org> w=
-rote:
->
-> [+cc Kai-Heng]
->
-> On Tue, Nov 28, 2023 at 09:15:07AM +0100, Johan Hovold wrote:
-> > Add a helper for enabling link states that can be used in contexts wher=
-e
-> > a pci_bus_sem read lock is already held (e.g. from pci_walk_bus()).
-> >
-> > This helper will be used to fix a couple of potential deadlocks where
-> > the current helper is called with the lock already held, hence the CC
-> > stable tag.
-> >
-> > Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LT=
-R")
-> > Cc: stable@vger.kernel.org    # 6.3
-> > Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
-> > Cc: David E. Box <david.e.box@linux.intel.com>
-> > Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/pci/pcie/aspm.c | 53 +++++++++++++++++++++++++++++++----------
-> >  include/linux/pci.h     |  3 +++
-> >  2 files changed, 43 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> > index 50b04ae5c394..5eb462772354 100644
-> > --- a/drivers/pci/pcie/aspm.c
-> > +++ b/drivers/pci/pcie/aspm.c
-> > @@ -1109,17 +1109,7 @@ int pci_disable_link_state(struct pci_dev *pdev,=
- int state)
-> >  }
-> >  EXPORT_SYMBOL(pci_disable_link_state);
-> >
-> > -/**
-> > - * pci_enable_link_state - Clear and set the default device link state=
- so that
-> > - * the link may be allowed to enter the specified states. Note that if=
- the
-> > - * BIOS didn't grant ASPM control to the OS, this does nothing because=
- we can't
-> > - * touch the LNKCTL register. Also note that this does not enable stat=
-es
-> > - * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> > - *
-> > - * @pdev: PCI device
-> > - * @state: Mask of ASPM link states to enable
-> > - */
-> > -int pci_enable_link_state(struct pci_dev *pdev, int state)
-> > +static int __pci_enable_link_state(struct pci_dev *pdev, int state, bo=
-ol locked)
-> >  {
-> >       struct pcie_link_state *link =3D pcie_aspm_get_link(pdev);
-> >
-> > @@ -1136,7 +1126,8 @@ int pci_enable_link_state(struct pci_dev *pdev, i=
-nt state)
-> >               return -EPERM;
-> >       }
-> >
-> > -     down_read(&pci_bus_sem);
-> > +     if (!locked)
-> > +             down_read(&pci_bus_sem);
-> >       mutex_lock(&aspm_lock);
-> >       link->aspm_default =3D 0;
-> >       if (state & PCIE_LINK_STATE_L0S)
-> > @@ -1157,12 +1148,48 @@ int pci_enable_link_state(struct pci_dev *pdev,=
- int state)
-> >       link->clkpm_default =3D (state & PCIE_LINK_STATE_CLKPM) ? 1 : 0;
-> >       pcie_set_clkpm(link, policy_to_clkpm_state(link));
-> >       mutex_unlock(&aspm_lock);
-> > -     up_read(&pci_bus_sem);
-> > +     if (!locked)
-> > +             up_read(&pci_bus_sem);
-> >
-> >       return 0;
-> >  }
-> > +
-> > +/**
-> > + * pci_enable_link_state - Clear and set the default device link state=
- so that
-> > + * the link may be allowed to enter the specified states. Note that if=
- the
-> > + * BIOS didn't grant ASPM control to the OS, this does nothing because=
- we can't
-> > + * touch the LNKCTL register. Also note that this does not enable stat=
-es
-> > + * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> > + *
-> > + * @pdev: PCI device
-> > + * @state: Mask of ASPM link states to enable
-> > + */
-> > +int pci_enable_link_state(struct pci_dev *pdev, int state)
-> > +{
-> > +     return __pci_enable_link_state(pdev, state, false);
-> > +}
-> >  EXPORT_SYMBOL(pci_enable_link_state);
->
-> As far as I can see, we end up with pci_enable_link_state() defined
-> but never called and pci_enable_link_state_locked() being called only
-> by pcie-qcom.c and vmd.c.
->
-> Can we just rename pci_enable_link_state() to
-> pci_enable_link_state_locked() and assert that pci_bus_sem is held, so
-> we don't end up with a function that's never used?
->
-> I hope we can obsolete this whole idea someday.  Using pci_walk_bus()
-> in qcom and vmd to enable ASPM is an ugly hack to work around this
-> weird idea that "the OS isn't allowed to enable more ASPM states than
-> the BIOS did because the BIOS might have left ASPM disabled because it
-> knows about hardware issues."  More history at
-> https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.feng@=
-canonical.com/T/#u
->
-> I think we need to get to a point where Linux enables all supported
-> ASPM features by default.  If we really think x86 BIOS assumes an
-> implicit contract that the OS will never enable ASPM more
-> aggressively, we might need some kind of arch quirk for that.
+stable-rc/linux-4.14.y build: 16 builds: 3 failed, 13 passed, 3 errors, 21 =
+warnings (v4.14.332-26-g8dee2d695a2d2)
 
-The reality is that PC ODM toggles ASPM to workaround hardware
-defects, assuming that OS will honor what's set by the BIOS.
-If ASPM gets enabled for all devices, many devices will break.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.332-26-g8dee2d695a2d2/
 
-Kai-Heng
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.332-26-g8dee2d695a2d2
+Git Commit: 8dee2d695a2d2bb2a061db66133d4e85ab951aa6
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
->
-> If we can get there, the qcom use of pci_enable_link_state() could go
-> away, and the vmd use could be replaced by some kind of "if device is
-> below VMD, get rid of the legacy x86 ASPM assumption" quirk.
->
-> Bjorn
+Build Failures Detected:
+
+arm64:
+    defconfig: (gcc-10) FAIL
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+arm:
+    multi_v7_defconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 1 error
+    defconfig+arm64-chromebook (gcc-10): 1 error
+
+arm:
+    multi_v7_defconfig (gcc-10): 1 error
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+Errors summary:
+
+    3    drivers/tty/serial/amba-pl011.c:657:20: error: =E2=80=98DMA_MAPPIN=
+G_ERROR=E2=80=99 undeclared (first use in this function)
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    1    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section mi=
+smatches
+
+Errors:
+    drivers/tty/serial/amba-pl011.c:657:20: error: =E2=80=98DMA_MAPPING_ERR=
+OR=E2=80=99 undeclared (first use in this function)
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 0 warni=
+ngs, 0 section mismatches
+
+Errors:
+    drivers/tty/serial/amba-pl011.c:657:20: error: =E2=80=98DMA_MAPPING_ERR=
+OR=E2=80=99 undeclared (first use in this function)
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
+tion mismatches
+
+Errors:
+    drivers/tty/serial/amba-pl011.c:657:20: error: =E2=80=98DMA_MAPPING_ERR=
+OR=E2=80=99 undeclared (first use in this function)
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
