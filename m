@@ -1,274 +1,152 @@
-Return-Path: <stable+bounces-6455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035BB80EF94
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 16:05:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 107D880EFB4
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 16:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6A74281420
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 15:05:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96812814C5
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 15:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD73B745F1;
-	Tue, 12 Dec 2023 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC64075402;
+	Tue, 12 Dec 2023 15:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="u5nOq4Z1"
+	dkim=pass (1024-bit key) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.b="qlsCeVLT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6CEDB
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 07:05:00 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1d340b47f5aso3004275ad.3
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 07:05:00 -0800 (PST)
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2097.outbound.protection.outlook.com [40.107.96.97])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BAA4DB;
+	Tue, 12 Dec 2023 07:09:37 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IaJBaLgKKTEDi/uf7BqkZOnsF86VQliotfJIp8F0AyoZqlNajp1vxZdRMob9KVKzinpbXKYUdAqQIOXklSswSrjU7XQDp1JUbZU94c4CDCBlSjz3tUpOzRorxFRgo7VyDpda2WxQ5o2TjV/8N/Pa9CuZ09lZ1rU+SpZI2CV7GywPYudz6WhGzg87EHXHPSDaOmw6+xbotE7JTWsS3rklVMOkufxgjX0J+q8qyhS7MtAOjb80UVP9aWreXmb3R8RL+QVaehRavtQYclA/FbhnHerVfw/a9sr1i4Jk2MvqPZnRWNkUw2/Z7UtufApTmduvWO9bTCOyJm3Mb6h8TTiSlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KLEuQ34booPuomLbdm79z0w4a6KTTB8tiH6fjKqJTL4=;
+ b=BoCqDjTe+A3ZBpxm6A8mu6EDZzyeJNBLHV4lCUfoNNXLZXcNQ1NNrWj0jrSDEPNF1uFXsfcIUp24TbXzJO8uKFGvQRylohluxmRbvcfoWCF7Z/Qs9rkPDYR2V7X2HTM0W2Pz7wiVKpQn6l4YcdMoWV5UVjax4kP+FZWyYetmPbxobijM4wyuRiIVmAZdTIvDH6tFn/kozsJkpdHFVOyC/0yJOSeBMRu7QiC0OEukdWDLDAReXeFfjTZkNxEMwW3HFapvr/OAAa5Qvrlyb8GxRT5hCHn5KzQ4f/GLmGZdUYuz45rQ+GLzzXVMZ8wyX7f0Swc01FSITDQDquTzVdktiw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702393499; x=1702998299; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=oJ7rN4wLB/2sl49LixmFWSU2VomeMw4mI5M3mtFpCMo=;
-        b=u5nOq4Z1C+M+jNcTZw0Kb6yf6GxhA9FcfZBAWjbOpkCaFLzYPC3Z1v8QdVFSB8btL8
-         M0DumZEZ7itBLj41kuSR5xOLSi4fuBejHDHRp8Kbs15kz3L289bcjmoPqGOes6OngDf0
-         ZfilzqbFEyc0xm1h/8zwq969YmHUxVfQFYVWVsym66vo0/1vwAynnzzBcoPw+pudzOS5
-         N9M/a8Fsf2zW+rB3dALVFHri6iJgMnkbkWDL2+xXcMxofby4DCM8kqCZHjX90U9AJe3z
-         nz2/jW34uutgTP13//HTFhhERkt6PVVhKuYkMuLdjOPcFn4EeE0oqE4wc+2pABh7/xHV
-         pQNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702393499; x=1702998299;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oJ7rN4wLB/2sl49LixmFWSU2VomeMw4mI5M3mtFpCMo=;
-        b=QTEK0httd78E7tynWzygjzLxmueePMrOZ2zJ4TzF0ULR9PBEzTyWjxhEZalU1ojKc3
-         38H9WsjAPmmbQA8QrOcQ9HzZTwfI2cwM9ByW1tKhwCK1iWquiKvbiPn006lu15jZTi5g
-         e7P71kEFHcb9EXsS6xUlUOOYLq2vnS4DoJucHpgILXHiZkSIxXZdl2EzelDws3hGKFvz
-         qN90TfscOjKF3RNhAQruLxgsIAGyGjUD5aFMxWKmOFg/QFgdNfO/d9fTvQ7grHMQQVK6
-         le0n4IoLNlTdIa/qye0c/KmSXkjS8dhDjCVF/UtOz4Ixf2L80tCcWUjLnt5KrGv6DBBI
-         Upqw==
-X-Gm-Message-State: AOJu0Yy3+IvvToSKjAIZ4DJF5KOAmPZSDEwo3vAVcuN4WAb+Hx3TyzUQ
-	jnNB67dWic82z2ChWyK51wRFUwacWrSSdzkce9piKw==
-X-Google-Smtp-Source: AGHT+IEhU3xrKxQvUyH+Ue7IpnUzoloUXaLbaUfFyHkC6/7RCgocaOO3cOcDCWTzGRP5JOEWMCmSjA==
-X-Received: by 2002:a17:903:98c:b0:1d3:4316:68d3 with SMTP id mb12-20020a170903098c00b001d3431668d3mr459834plb.76.1702393499116;
-        Tue, 12 Dec 2023 07:04:59 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id k10-20020a170902694a00b001d0ba4513b0sm8670364plt.287.2023.12.12.07.04.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Dec 2023 07:04:58 -0800 (PST)
-Message-ID: <6578769a.170a0220.e1749.90d1@mx.google.com>
-Date: Tue, 12 Dec 2023 07:04:58 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KLEuQ34booPuomLbdm79z0w4a6KTTB8tiH6fjKqJTL4=;
+ b=qlsCeVLTaf70mOPXwQf5TI8vB9VCH2h5jbka6PqgxJBoZqpeQId/2PFMGkLWxD9wjTHsHbgscrRS0F7TRfNEisxpbVt70DFZGAltbtblTqPn1JHXw/w3YdGOSC7ncvJfeWPMK4qabdWx2Oqjb7vcpXFYYdiDUVchhp5WU8fk5V0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from BL0PR13MB4403.namprd13.prod.outlook.com (2603:10b6:208:1c4::8)
+ by SA1PR13MB5054.namprd13.prod.outlook.com (2603:10b6:806:184::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.36; Tue, 12 Dec
+ 2023 15:09:34 +0000
+Received: from BL0PR13MB4403.namprd13.prod.outlook.com
+ ([fe80::d3c0:fa39:cb9e:a536]) by BL0PR13MB4403.namprd13.prod.outlook.com
+ ([fe80::d3c0:fa39:cb9e:a536%7]) with mapi id 15.20.7068.027; Tue, 12 Dec 2023
+ 15:09:33 +0000
+Date: Tue, 12 Dec 2023 17:09:24 +0200
+From: Louis Peens <louis.peens@corigine.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: David Miller <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+	Hui Zhou <hui.zhou@corigine.com>, netdev@vger.kernel.org,
+	stable@vger.kernel.org, oss-drivers@corigine.com
+Subject: Re: [PATCH net 2/2] nfp: flower: fix hardware offload for the
+ transfer layer port
+Message-ID: <ZXh3pLA6/bI5vO4K@LouisNoVo>
+References: <20231208065956.11917-1-louis.peens@corigine.com>
+ <20231208065956.11917-3-louis.peens@corigine.com>
+ <20231211190849.6c7d5246@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211190849.6c7d5246@kernel.org>
+X-ClientProxiedBy: JN2P275CA0026.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:2::14)
+ To BL0PR13MB4403.namprd13.prod.outlook.com (2603:10b6:208:1c4::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.332-25-g68f9b81cad708
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.332-25-g68f9b81cad708)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR13MB4403:EE_|SA1PR13MB5054:EE_
+X-MS-Office365-Filtering-Correlation-Id: a312285f-ff28-4881-ddf1-08dbfb24591c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	3gu2/QOF6UYVEmN8vWA94pI1xDyPzTUtR5AUouTLl+9uIRqh2Ac6FRofrPeovIze+AKRCfXKiIz5/Hu5Hzhvoo9cT76Bij9TieQdE9tnkXfZPlRCQkI+IethNBkSzWgZJvODXL5u1ERNR8o8RLKE+Dyvr2x06s4T/OZlfrUXKhNQbPzpBKPEkaaaMWDtG+vCOlcw/bYJkghBa5uD7zEA05Py49IBEVWbOHKQzk5jMHglX8Gc5JS3PAPP2vkyZ/NprTBBTc47qm+95AGK1STx5fdxzgEc2c+bO9eEjkYJZ5AhVqk3sWWGbElJcocK6fgd/RtJ1XmukPGTIkbs7+0JYDTdXKlIJ/iykfkymoBSbCovM/Q3Plz3ninz7Ly+0/k+DwT6jr+4MloVL0PmItsjui+euwFnDN08oVQvIq8AYpzW/+aEZJlnXNtKD7y+wmKy48gppOFe9RxJIkbGwwW8CIHbIh6warUC3xnO33aOcJ3UwPlG062BrAc58govbR5mYwYuWhp743WZ6zPaNQUQoBo0A+zIOWjA0b3M8eGMr6Sm4kXXeTHI4u/Lm2Llwv5is142sKma+iLrGdHeO+uaKMOgt6FCHywkhieR3NfWE+4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR13MB4403.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39830400003)(346002)(376002)(396003)(366004)(136003)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(54906003)(66556008)(66946007)(66476007)(9686003)(41300700001)(6506007)(6666004)(6512007)(107886003)(26005)(86362001)(38100700002)(33716001)(478600001)(6486002)(44832011)(8936002)(8676002)(4326008)(2906002)(5660300002)(6916009)(316002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KRZWmlXzLdvxjBGXZrBCm7CeF3q1mU38X5ho/bqN+e7e5ciigujGkk4A4+nT?=
+ =?us-ascii?Q?YqlfpUEzgoa19d5dAwmurtnlvAIkGQZ61tYs/VzAS/kMtj9w9phsBfPfS3Jl?=
+ =?us-ascii?Q?R9I/odZirHh/d7f0ZwElRkREhGDyXDZcrJScP9ygtI9i1/4iSEiYEY41qAjP?=
+ =?us-ascii?Q?uCzlZsv16h0+X/AsH53k5VXjWG+H/z+6qY7Ttsq1FYhfEQksVmUzxTqJyXuv?=
+ =?us-ascii?Q?qUH6NWfqs6Yz2KXdHbpMdvdX9hX3dhQny2gqAHsrOvrkio3+YpOZPcJA5B9R?=
+ =?us-ascii?Q?kURejCZ6lmhsL9GnegfJgIiW2LkeexubORMrpF28Fv72wo/D2iLgPtpIqjgq?=
+ =?us-ascii?Q?2t3kOy8Yu/fuQgXvIPDcKDIINK7lRvBDZZAy4PibwN4/M8PKOSZxAkqjcW+X?=
+ =?us-ascii?Q?SUQ6I9S04SkUSo6C92wAlwsvVaK3AJpxMNA7/mtkzI97tW7SnMO4/Is6J44q?=
+ =?us-ascii?Q?QpgFAwGCRc6Oyjb0LqYabafGBrlzlXAsd026E4oSaTikws5f8TXZRTYNpAos?=
+ =?us-ascii?Q?VdCv19f3d8WuMN283givKL6DsA2bwMqCygfwrRVaLNFEctTEDR6KLknYGhRV?=
+ =?us-ascii?Q?ZHkXyd8ITgDVp4MQbsXO4vBKcdJTrx3Qv+N5qgiQoBNRwS6XBi8kup9ZW5eQ?=
+ =?us-ascii?Q?iJgvwziVBZMV1J2kj3ePBNiGJw23IyuM+FKix5+Lv1L97/cQ4FuH7CwAwp/X?=
+ =?us-ascii?Q?Caj+H6YmJk41mIi3GoeArXQi53HNG68qMASZyMq4u0WK7fJcjDJivh64cyRC?=
+ =?us-ascii?Q?2B89nhe13LK5id8DbwVsQJb9iuzUZfQpKCyYIlV7QtUtZb5hky3WkPviFSHF?=
+ =?us-ascii?Q?7sbs31uqmnXiLTRUwPk98nQWoPcA+rRzwVWPH9mimbaD9hXN2lnk5/sDGox7?=
+ =?us-ascii?Q?Nj1nmY4TwqqPamS/WAMm17rjohaC2xhKSrdp1HMLKpjvPdx1U7aT/dzyryk2?=
+ =?us-ascii?Q?QjsVzbr1hhS6cbGvBlnbn7XLMGUaZfleOFqKendxc07tSRbscERkMyTZLHZJ?=
+ =?us-ascii?Q?RE0frSojx7PmnOdJNjDkTfTNZhDReFoUkORPtYWtGh0ZfSUCF2C92NE4JaSz?=
+ =?us-ascii?Q?8yKXXwY9NgZ3hsUB5HDZBlqDINK+z2rjfn7/zFHN4jxKXEiJXiGc4kqYs9pC?=
+ =?us-ascii?Q?auwjSBeFSvYCPgbd+9rZN1GPwy4zvBEw6J6Fkjfy9jbqukrzxZ/sog4cNvdS?=
+ =?us-ascii?Q?sgKhQabr2uiFFVeZ5wWz2LGTjFS98gwLr8UyHSpTlS7azNbNbg/hZORYFthb?=
+ =?us-ascii?Q?c0uKzD/x2JrVrYe9GJxTx99ov46WiGZlaUTm19nhqD5JRnf96abgEXgsF+3n?=
+ =?us-ascii?Q?/M+4iqv2IpFVTNOIf3fCzs1myxUXCLyUPDnBwWzaexorkY+4bu+wP8j5Lkhh?=
+ =?us-ascii?Q?dTtzvCdfOCpdx2XYiyhV6AqW6rlp5KFNlMCSbN7uP7aqhW0GBR8N7coLQHPT?=
+ =?us-ascii?Q?cUeb+vdbYwj9nfcTkmSqusa+B2qKhaW9m6N9mYqfJrWdCLaXwwdX8f6ZrVb5?=
+ =?us-ascii?Q?TvBtxDHeJb5M4DKyhfByfLc6rnzsk1gBeCKVqaRA5FpGsUJJS1x12XdlsQp/?=
+ =?us-ascii?Q?KcNdr8bHA8yaETjm7cabBeoWSNoMM1BbyWbOyOfIHaAVgvFOTwamcy9U1xmv?=
+ =?us-ascii?Q?RA=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a312285f-ff28-4881-ddf1-08dbfb24591c
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR13MB4403.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Dec 2023 15:09:33.7455
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jD8YU167cSknY9ALYB1ds9FOyGmSuUFlVdwXJXdrycnJmnULP4jFr4MHe+xJJ9bh3F5lq8/cFmbGx06jz61PA9k082pQcTDra+tzf2XU60c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR13MB5054
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.332-25-g68f9b81cad708)
+On Mon, Dec 11, 2023 at 07:08:49PM -0800, Jakub Kicinski wrote:
+> On Fri,  8 Dec 2023 08:59:56 +0200 Louis Peens wrote:
+> > +		if (mangle_action->mangle.offset == offsetof(struct tcphdr, source)) {
+> > +			mangle_action->mangle.val =
+> > +				(__force u32)cpu_to_be32(mangle_action->mangle.val << 16);
+> > +			mangle_action->mangle.mask =
+> > +				(__force u32)cpu_to_be32(mangle_action->mangle.mask << 16 | 0xFFFF);
+> 
+> This a bit odd. Here you fill in the "other half" of the mask with Fs...
+> 
+> > +		}
+> > +		if (mangle_action->mangle.offset == offsetof(struct tcphdr, dest)) {
+> > +			mangle_action->mangle.offset = 0;
+> > +			mangle_action->mangle.val =
+> > +				(__force u32)cpu_to_be32(mangle_action->mangle.val);
+> > +			mangle_action->mangle.mask =
+> > +				(__force u32)cpu_to_be32(mangle_action->mangle.mask);
+> > +		}
+> 
+> .. but here you just let it be zero.
+> 
+> If it's correct it'd be good to explain in the commit msg why.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.332-25-g68f9b81cad708/
+Thanks for asking, it does indeed look a bit strange. It has to do with
+act_ct using the inverse value of the mask, basically requiring a
+rotate-left operation for the source field. It can definitely do with a
+better explanation. Will submit a v2 doing so.
 
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.332-25-g68f9b81cad708
-Git Commit: 68f9b81cad708b197a2f7aa4e293c2669590d2ad
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+> -- 
+> pw-bot: cr
 
