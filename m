@@ -1,131 +1,73 @@
-Return-Path: <stable+bounces-6439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8A680EA75
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 12:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29AAC80EAB6
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 12:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E8841C20C1B
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 11:35:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AADE1C20C8E
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 11:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C52C5D4A6;
-	Tue, 12 Dec 2023 11:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE895DF01;
+	Tue, 12 Dec 2023 11:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FvsonUF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXTgqe/C"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF5D5CD;
-	Tue, 12 Dec 2023 03:35:22 -0800 (PST)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BCBWBxX023198;
-	Tue, 12 Dec 2023 11:35:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:from:to:cc:references
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=LDgvI07ObLh7qIhXltVCW2uzZOetks4/bakQTKmv6GA=; b=Fv
-	sonUF9q5yu2V8CiD3z154iNCKutFE2sN00TLIGMm5RR+cZyKRpEUFzWCDJQfSDiC
-	hFgflu7oUvNqOD61/4cKkvz7mE5fuCoSSQ10F/kHcUAtFSf4KTiol26Zg9i4rYGA
-	PQ6uJTrP9Uk3sFyGRqWjatsm1lqAfKJT/aujkCIDIiusfxqArrx9QVq46m5qkqCX
-	isuZHdUgVYRfnpbhXIJ+hUHhjSmwNLZ2gKTG0uBx0iGEs07IwcLEQ+7YDIfr3WOB
-	PBLWZqFoCCzCXwaNCeUO1UJ+piNZhviBWFTAGCJltVx3RC/LPTmU+KEBIGYVNBqY
-	ZaCmQ/MVymnRgM8rHChA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uxkxfgexr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Dec 2023 11:35:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BCBZI3U012093
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Dec 2023 11:35:18 GMT
-Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 12 Dec
- 2023 03:35:16 -0800
-Message-ID: <605a4c59-6e7e-0ae8-a825-f364530216d5@quicinc.com>
-Date: Tue, 12 Dec 2023 17:05:13 +0530
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7905D4BD
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 11:44:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C651FC433C8;
+	Tue, 12 Dec 2023 11:44:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702381443;
+	bh=eqmQ3zCBD/6tpWUKuDbGF0pIhxZDCoYVmpZUroAh/4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lXTgqe/CGqYOqcSZKpN+ibMRTZeXxL3jEOEyGO/OLGNlm+qlJ54pG50vBysl/x5Bt
+	 emuzBnQiOZEiZHkkO7NKWQNDTQWnxAqFjWP9zcB/noK83P4y2xszhRgD97vShSmR5n
+	 EbEuX28etV3jsBitC08A+VVPr+CGz6O4NA56ZCrs=
+Date: Tue, 12 Dec 2023 12:44:00 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Daniel Starke <daniel.starke@siemens.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Russ Gorby <russ.gorby@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH 5.10 0/3] tty: n_gsm: fix tty registration before control
+ channel open
+Message-ID: <2023121232-magenta-recall-2cec@gregkh>
+References: <20231212111431.4064760-1-Ilia.Gavrilov@infotecs.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] usb: dwc3: core: Add support for
- XHCI_SG_TRB_CACHE_SIZE_QUIRK
-Content-Language: en-US
-From: Prashanth K <quic_prashk@quicinc.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Mathias Nyman <mathias.nyman@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20231121135936.1669167-1-quic_prashk@quicinc.com>
- <d4d25747-83d4-a8e7-7968-caf3b14a844c@quicinc.com>
-In-Reply-To: <d4d25747-83d4-a8e7-7968-caf3b14a844c@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4d8uLoFOQo-fs-xTJs7WbQWsdZozOVE9
-X-Proofpoint-ORIG-GUID: 4d8uLoFOQo-fs-xTJs7WbQWsdZozOVE9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- bulkscore=0 mlxlogscore=748 spamscore=0 lowpriorityscore=0 adultscore=0
- clxscore=1015 impostorscore=0 priorityscore=1501 malwarescore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
- definitions=main-2312120093
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231212111431.4064760-1-Ilia.Gavrilov@infotecs.ru>
 
+On Tue, Dec 12, 2023 at 11:17:21AM +0000, Gavrilov Ilia wrote:
+> Syzkaller reports memory leak issue at gsmld_attach_gsm() in
+> 5.10 stable releases. The reproducer injects the memory allocation
+> errors to tty_register_device(); as a result, tty_kref_get() isn't called
+> after this error, which leads to tty_struct leak.
+> The issue has been fixed by the following patches that can be cleanly
+> applied to the 5.10 branch.
+> 
+> Found by InfoTeCS on behalf of Linux Verification Center
+> (linuxtesting.org) with Syzkaller
 
+Do you actually have any hardware for this protocol running on the
+5.10.y kernel?  How was this tested?  Why was just this specific set of
+patches picked to be backported?
 
-On 27-11-23 02:28 pm, Prashanth K wrote:
+thanks,
 
-> --- a/drivers/usb/dwc3/host.c
-> +++ b/drivers/usb/dwc3/host.c
-> @@ -89,6 +89,8 @@ int dwc3_host_init(struct dwc3 *dwc)
-> 
->          memset(props, 0, sizeof(struct property_entry) * 
-> ARRAY_SIZE(props));
-> 
-> +       props[prop_idx++] = 
-> PROPERTY_ENTRY_BOOL("xhci-sg-trb-cache-size-quirk");
-> +
->          if (dwc->usb3_lpm_capable)
->                  props[prop_idx++] = 
-> PROPERTY_ENTRY_BOOL("usb3-lpm-capable");
-> 
-> 
-> --- a/drivers/usb/host/xhci-plat.c
-> +++ b/drivers/usb/host/xhci-plat.c
-> @@ -323,6 +323,9 @@ static int xhci_plat_probe(struct platform_device 
-> *pdev)
->                  if (device_property_read_bool(tmpdev, 
-> "quirk-broken-port-ped"))
->                          xhci->quirks |= XHCI_BROKEN_PORT_PED;
-> 
-> +               if (device_property_read_bool(tmpdev, 
-> "xhci-sg-trb-cache-size-quirk"))
-> +                       xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
-> +
->                  device_property_read_u32(tmpdev, "imod-interval-ns",
->                                           &xhci->imod_interval);
->          }
-> 
-> 
-> Regards,
-> Prashanth K
-> 
-
-Updated the patch by splitting it into a series of 2 patch-sets
-https://lore.kernel.org/all/20231212112521.3774610-1-quic_prashk@quicinc.com/
-
-Thanks,
-Prashanth K
+greg k-h
 
