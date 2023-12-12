@@ -1,146 +1,97 @@
-Return-Path: <stable+bounces-6517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3743680F940
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6CC80F952
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5CAD2812FD
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:26:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5418E1F210B1
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7AD64CF9;
-	Tue, 12 Dec 2023 21:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AA66413B;
+	Tue, 12 Dec 2023 21:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gcAQwOkQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5Q7DnGG"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8414CF;
-	Tue, 12 Dec 2023 13:25:35 -0800 (PST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCLBLx7012625;
-	Tue, 12 Dec 2023 21:25:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=wAvNN1SeJ/lIs+/n8FB/TmcNHVe2pqXbsreNOYoG0dw=;
- b=gcAQwOkQrfddWBENs3iSKBy2/5jb/F+q5pehm4+mro7Qd2EUY5xTXLresPn7UamzXWEu
- VBqT48ulFan3kbIopcCRb77uPwsuHS2JMkT50BSvarF6N9x3sThJuZvuhJmQAOIWVcvn
- I71YG0kA3RoPf70ncBE5fw32NqgOH73EaIuItEb2530GiHVJrvDll/co9a46gNxbwrds
- ZOaIpb6v4vRDMEQYEOyu7Jj11td1QA/dcSoAkn2BSAfMtNSW0N/qB7enZ2z3ckTD4mle
- 9ruYBdVLGsXJJajujxzZiR2miTSoVszbUEpE+OxXtSBUywG9d0feydwRLGwCop+I/KCf CQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxy328gb7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Dec 2023 21:25:34 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BCLF5bS024131;
-	Tue, 12 Dec 2023 21:25:33 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxy328gap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Dec 2023 21:25:33 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCLD0FI028212;
-	Tue, 12 Dec 2023 21:25:32 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw2xym8dy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Dec 2023 21:25:32 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BCLPU2d37683862
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Dec 2023 21:25:31 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D7B3B58052;
-	Tue, 12 Dec 2023 21:25:30 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0154F5805D;
-	Tue, 12 Dec 2023 21:25:30 +0000 (GMT)
-Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.187.43])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Dec 2023 21:25:29 +0000 (GMT)
-From: Tony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        alex.williamson@redhat.com, kwankhede@nvidia.com,
-        stable@vger.kernel.org
-Subject: [PATCH v2 6/6] s390/vfio-ap: do not reset queue removed from host config
-Date: Tue, 12 Dec 2023 16:25:17 -0500
-Message-ID: <20231212212522.307893-7-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231212212522.307893-1-akrowiak@linux.ibm.com>
-References: <20231212212522.307893-1-akrowiak@linux.ibm.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF165A9E;
+	Tue, 12 Dec 2023 21:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82447C433C7;
+	Tue, 12 Dec 2023 21:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702416430;
+	bh=dswbdDQkq9R1rqLEQPK78MDzN2SBMjw7O1v1jhL3dU4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=r5Q7DnGGEGhJChFt9UzIVBp28k4PNZQGG3QDcSIoEbRCqDHkk1/x+AZynmP5SKQy1
+	 8sYavtfW2mETOwNUcbgsiTi7SIbNF6x5Ld7NVxdgKyyCmZN+CVgSiaXpuacBLP/D8a
+	 YJSgzrt9VlXDXRA4oiQXbfmeM9SgZzYXvffVfDRGO5QsiI7Ix2HPCiCWe7IWC03RJZ
+	 uyNrfJoL/abXRAV95IvqkTJHRlHFzsL+c2rKHGYdb+k0G1U8E3w9/zBGSyTRKPVe6y
+	 qcqiN7g7G7hry8Y3pkrVhlnRxEp8/DdQop2rAkqd3TuohbEzDwkKzjV4k8Qbk2FYbV
+	 nUEXOkCGRFvSg==
+Date: Tue, 12 Dec 2023 15:27:07 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
+	Jonathan Derrick <jonathan.derrick@linux.dev>,
+	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Michael Bottini <michael.a.bottini@linux.intel.com>,
+	"David E . Box" <david.e.box@linux.intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link
+ state
+Message-ID: <20231212212707.GA1021099@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: p4a9rDnsUK8uVIzbeiirvL6bLz8rA2bC
-X-Proofpoint-GUID: KZy8XATUXV6dnBfTl0LlNembbSnnnklW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-12_12,2023-12-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 phishscore=0 malwarescore=0 impostorscore=0
- priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2312120165
+In-Reply-To: <CAAd53p59q3D7u01ECsgRUgkDkTkchV-Gv+q=TMFcC44_tOs51Q@mail.gmail.com>
 
-When a queue is unbound from the vfio_ap device driver, it is reset to
-ensure its crypto data is not leaked when it is bound to another device
-driver. If the queue is unbound due to the fact that the adapter or domain
-was removed from the host's AP configuration, then attempting to reset it
-will fail with response code 01 (APID not valid) getting returned from the
-reset command. Let's ensure that the queue is assigned to the host's
-configuration before resetting it.
+On Tue, Dec 12, 2023 at 11:48:27AM +0800, Kai-Heng Feng wrote:
+> On Fri, Dec 8, 2023 at 4:47 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> ...
 
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Fixes: eeb386aeb5b7 ("s390/vfio-ap: handle config changed and scan complete notification")
-Cc: <stable@vger.kernel.org>
----
- drivers/s390/crypto/vfio_ap_ops.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+> > I hope we can obsolete this whole idea someday.  Using pci_walk_bus()
+> > in qcom and vmd to enable ASPM is an ugly hack to work around this
+> > weird idea that "the OS isn't allowed to enable more ASPM states than
+> > the BIOS did because the BIOS might have left ASPM disabled because it
+> > knows about hardware issues."  More history at
+> > https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.feng@canonical.com/T/#u
+> >
+> > I think we need to get to a point where Linux enables all supported
+> > ASPM features by default.  If we really think x86 BIOS assumes an
+> > implicit contract that the OS will never enable ASPM more
+> > aggressively, we might need some kind of arch quirk for that.
+> 
+> The reality is that PC ODM toggles ASPM to workaround hardware
+> defects, assuming that OS will honor what's set by the BIOS.
+> If ASPM gets enabled for all devices, many devices will break.
 
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index e014108067dc..84decb0d5c97 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -2197,6 +2197,8 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
- 	q = dev_get_drvdata(&apdev->device);
- 	get_update_locks_for_queue(q);
- 	matrix_mdev = q->matrix_mdev;
-+	apid = AP_QID_CARD(q->apqn);
-+	apqi = AP_QID_QUEUE(q->apqn);
- 
- 	if (matrix_mdev) {
- 		/* If the queue is assigned to the guest's AP configuration */
-@@ -2214,8 +2216,16 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
- 		}
- 	}
- 
--	vfio_ap_mdev_reset_queue(q);
--	flush_work(&q->reset_work);
-+	/*
-+	 * If the queue is not in the host's AP configuration, then resetting
-+	 * it will fail with response code 01, (APQN not valid); so, let's make
-+	 * sure it is in the host's config.
-+	 */
-+	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
-+	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
-+		vfio_ap_mdev_reset_queue(q);
-+		flush_work(&q->reset_work);
-+	}
- 
- done:
- 	if (matrix_mdev)
--- 
-2.43.0
+That's why I mentioned some kind of arch quirk.  Maybe we're forced to
+do that for x86, for instance.  But even that is a stop-gap.
 
+The idea that the BIOS ASPM config is some kind of handoff protocol is
+really unsupportable.
+
+Do we have concrete examples of where enabling ASPM for a device that
+advertises ASPM support will break something?
+
+Bjorn
 
