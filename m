@@ -1,98 +1,117 @@
-Return-Path: <stable+bounces-6496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD3280F66F
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:19:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9F380F675
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0861C20CAE
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:19:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 753561C20AE9
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478081E34;
-	Tue, 12 Dec 2023 19:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E7381E3A;
+	Tue, 12 Dec 2023 19:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8ZKjkAj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sv4X21Aq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20DDF83;
-	Tue, 12 Dec 2023 11:18:55 -0800 (PST)
-Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6d852e06b07so3169533a34.3;
-        Tue, 12 Dec 2023 11:18:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702408734; x=1703013534; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lRI+Z3So7cR4czFluxvYwlfma5c41gzeBHqb5Y4Vja4=;
-        b=L8ZKjkAj4FxUuDel9bmnOGK4HBLG4mWngj2QLiVQ99A3jpDeinLzXLuV0lyFGbO2Hq
-         hkL6e330DaXwDzdCW+pqSswR/MeCX7S07m0SMqHKGc4U/z24DCUl9sg1PUKhRN3HqhYD
-         FKQo9Nk3J8rAPjdTTZ9zk0PY/Tw7W6MJcnOPjvaMSkekJ9usnTIiAm0bP/jqXFbvZsYQ
-         LrKYv8lVk/F9BGiKUU/W13ibOodmT7fNfHI6NX6LOwcKjxs7MN/s9dJsE+ALN9TYrcd4
-         q5eJ8jYqRlIa3tBDl6AJ8LMQQrAcjoDaGrGAHe7vL9wkT0lutFFaxKagi4X0mSztUiqh
-         n1jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702408734; x=1703013534;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lRI+Z3So7cR4czFluxvYwlfma5c41gzeBHqb5Y4Vja4=;
-        b=iwbLn70FD/z0b86V2KIu+7RYAsjZDy81Rr5xJda7/UX7HUCm6mwbfJTGOfItdXUzJ3
-         72pEspHEoMPVcc1ltfVfgu1soco3+mGP97mysmZGEtBUGuSHYv6wlyvje2nUBsb0xV/j
-         Lx6WSIkt0NehJRA/yhFX6z9I2o/vaQGcIGibspSHWbjy35lDae8NHI37jCWNNXL6MqIX
-         oUr4xGiy71SYaRgBcCAOf7zuuqTQx/sAaE6olEzBxTwZuGfRQ0IgJUpHvp0u6NYbOhnr
-         IdT0Oyj3O/UX0e8v032jDr/OpBXcpnBELqqBFnaZq7uwrMVIZkSRaw5i7Szpb9fhHVBO
-         +6Cw==
-X-Gm-Message-State: AOJu0YyfcvR+d8Xi05DUnsNTGocgJiUMwVRv3AdBV0OFModl9ExJQWZM
-	jW9B6H9GHIYWiofGE4C6uSq/NAaGBD1wzEnL2vY=
-X-Google-Smtp-Source: AGHT+IH7Gl41yzN1LlyzIXzr+mlZbXiwYsHqWWxOt4X/4Qmx+WYf32alvxIxL2Sd1mYkqJPxFCwDNJ75FR52QYnPlC0=
-X-Received: by 2002:a05:6830:118c:b0:6da:3071:2f78 with SMTP id
- u12-20020a056830118c00b006da30712f78mr516440otq.23.1702408734423; Tue, 12 Dec
- 2023 11:18:54 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3352781E2E;
+	Tue, 12 Dec 2023 19:19:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 266EEC433C8;
+	Tue, 12 Dec 2023 19:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702408760;
+	bh=uqEk75tNt0gCIiuSDm0WdJvZtKoO1NR6Qn5m6gbH2tU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sv4X21Aqaaa/6NVM5siE3Ts0NlVAQSrkbVJ/0ylBNduhTX6+Dba0Vt1QiATLtcOWL
+	 oaMQYtwW0TZi9F3BXbqJmoXNItwUQxVbXk0ikBvQDrLNzFIWMLwW8Seer+KzR2ozQx
+	 CuAHW5UBoSYKyG+L6H3YQJy4dNGoaNNCzTtH8ZR1eK4ASA99wU9jgNDI7/opQymw5A
+	 WUlcMnSIf215SpBE2LAyuyUluuruGGyKB3pFQ5bowm71qutLyVTS3MxtfmJETEGJZU
+	 ALZRN2ehEtppvlOhdfhjuuQ9YFOt7GRg4OSRWfHUPvdb77a/Hrc699kRymsDTz9VVW
+	 hGUsCMps1pOrg==
+Date: Tue, 12 Dec 2023 12:19:18 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, masahiroy@kernel.org,
+	ndesaulniers@google.com, nicolas@fjasle.eu, stable@vger.kernel.org
+Subject: Re: [PATCH v2] rpm-pkg: simplify installkernel %post
+Message-ID: <20231212191918.GA2914380@dev-arch.thelio-3990X>
+References: <20231108000749.GA3723879@dev-arch.thelio-3990X>
+ <20231212171044.1108464-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231212120210.556388977@linuxfoundation.org>
-In-Reply-To: <20231212120210.556388977@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Tue, 12 Dec 2023 11:18:42 -0800
-Message-ID: <CAOMdWSKV3KfehCOpkANWxbbi7-kCwbBs93L12Pay6Bk_QRfPXA@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/139] 5.15.143-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231212171044.1108464-1-jtornosm@redhat.com>
 
-> This is the start of the stable review cycle for the 5.15.143 release.
-> There are 139 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 14 Dec 2023 12:01:32 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.143-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+On Tue, Dec 12, 2023 at 06:10:44PM +0100, Jose Ignacio Tornos Martinez wrote:
+> A new installkernel application is now included in systemd-udev package
+> and it has been improved to allow simplifications.
+> 
+> For the new installkernel application, as Davide says:
+> <<The %post currently does a shuffling dance before calling installkernel.
+> This isn't actually necessary afaict, and the current implementation
+> ends up triggering downstream issues such as
+> https://github.com/systemd/systemd/issues/29568
+> This commit simplifies the logic to remove the shuffling. For reference,
+> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
+> section to create initramfs and grub hooks").>>
+> 
+> But we need to keep the old behavior as well, because the old installkernel
+> application from grubby package, does not allow this simplification and
+> we need to be backward compatible to avoid issues with the different
+> packages. So the easiest solution is to check the package that provides
+> the installkernel application, and simplify (and fix for this
+> application at the same time), only if the package is systemd-udev.
+> 
+> cc: stable@vger.kernel.org
+> Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+Thanks, I can confirm that installing the same RPM package produced by
+binrpm-pkg on both Fedora 38 and 39 works as expected now and the check
+seems reasonable to me but I'll defer to Masahiro for further comments.
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
 
-Thanks.
+> ---
+> V1 -> V2:
+> - Complete to be backward compatible with the previous installkernel
+> application.
+> 
+>  scripts/package/kernel.spec | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+> index 3eee0143e0c5..d4276ddb6645 100644
+> --- a/scripts/package/kernel.spec
+> +++ b/scripts/package/kernel.spec
+> @@ -77,12 +77,16 @@ rm -rf %{buildroot}
+>  
+>  %post
+>  if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
+> +if [ $(rpm -qf /sbin/installkernel --queryformat "%{n}") = systemd-udev ];then
+> +/sbin/installkernel %{KERNELRELEASE} /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
+> +else
+>  cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
+>  cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
+>  rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
+>  /sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
+>  rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
+>  fi
+> +fi
+>  
+>  %preun
+>  if [ -x /sbin/new-kernel-pkg ]; then
+> -- 
+> 2.43.0
+> 
 
