@@ -1,99 +1,98 @@
-Return-Path: <stable+bounces-6475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C366680F3CC
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:57:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B13280F3E0
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 18:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4FC1F215E6
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 16:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9EFE2813B6
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 17:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6447B3AF;
-	Tue, 12 Dec 2023 16:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF447B3B7;
+	Tue, 12 Dec 2023 17:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IT3he8N5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M/+XMRf7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9A2A107
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:57:27 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-548f853fc9eso8099585a12.1
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 08:57:27 -0800 (PST)
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC96D8F;
+	Tue, 12 Dec 2023 09:00:56 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6da2e360861so185374a34.1;
+        Tue, 12 Dec 2023 09:00:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1702400246; x=1703005046; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+lMTVtJ6H9PCFimJOMBMX+fMUzbTEUbpPe5aIJIvTUQ=;
-        b=IT3he8N5E6dzwaqyZv2UvEjBZPbBJwZY7fDL/dAUPYKceWoJttaXBculDICYSQgvsK
-         8/I3wr7pQ+xjzAnG/Kexvjstp3uWRMrkNI+p5LoUYVLkFCeYXjQCd2lwfDn0+W0zw1Vd
-         ZWl46ikAkTtK6d+4HlnUBehhSL39oaXf/Z2kewJSQGwf7JOXk+VX9pclUPE3SR6MTuEQ
-         hdqU/q43voZm7ZVfE4kjwEgKk0vP2fAhRW3PjHPHPfstCj7HM3KrIr8YHQ8GqyegsSJZ
-         glkB7sg+VufnU0vldoJtoJ3EKmCmRCbDbf3+5V4LmqLHf0/g9zSqmFzqxNkCt2tWHiF2
-         OoNQ==
+        d=gmail.com; s=20230601; t=1702400456; x=1703005256; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S8DPcbxgddFzyx98HpwcBqWBaG444HnxJOTuiHjDE8g=;
+        b=M/+XMRf7TE7HtQ1pwb9Che19BGeFQ/UshnUEMKjOgKUfU1hGPZYlo4AIDeQ85rX1eo
+         ohT8Z+6UbV0XFcRyVKIUo8mjEzNByU7nDy3usrQMh8ch1/wOzu6naUFXlLU+Gu3DCAYu
+         Ndl0+tETAR4OV7uhrBkAk8FiZLdnwQzkgn8DIMj6BOKbVmm/QQeUiz3wi251lpPrvi81
+         pVx/XVqJltQjjfAp+UU+mPgjstTyNls/OtgdSvbnLeRtcljnNTC96BXh9ZDoi3HOFes3
+         bizp65aiQoUfKegywt1Iix1LcRtgovmEtZp96szz9YtYobey9FM07l5eVMFD09nlclQX
+         S5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702400246; x=1703005046;
-        h=mime-version:user-agent:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+lMTVtJ6H9PCFimJOMBMX+fMUzbTEUbpPe5aIJIvTUQ=;
-        b=Skvbq8ujPzVZe8AddIIfDdN9qii/15/X/YGvkHTnFvCtGV80szAujF0e5K8bayg0Of
-         3Hvn788rFEwDDjOLMKWVNH+/BlMbVTiKMIDE34UrONOs0HJ8hN/q5PSkD9tehhrypL9V
-         CSyKpCoQuD6FQQsIMR5IjT+MY9PrK5gsDq2USRbeWOCnrCVW4tYayQoK5G00HL7aMd0E
-         9wtjDRN04iegRL6trxmDXaZOF8g0DWXUlctL+Qd5SPjHGjrPhDEg5G+vafMGih4M20yU
-         vLgWat4y5ouPCpQfj4a3r6C7gYig2IrTaez+IhZJJbvYZp4io5Mo/Xk00UdoLnvGgQO4
-         JnXQ==
-X-Gm-Message-State: AOJu0YzHSoASubhLHU2yZuDdR8E1/RVWo9SPuAS0tP8ahfmjalwuKJwb
-	rZbJkXrIw4vZJ/cbS8z1AmBRWw==
-X-Google-Smtp-Source: AGHT+IGfbuCInx3RFO2rETPGTleTrH3IgAr8XT2Yzv//r2Wg7OvimKJNEBvV3fpuGej4OApyjNJRNg==
-X-Received: by 2002:a17:906:3f58:b0:a1d:3858:9c66 with SMTP id f24-20020a1709063f5800b00a1d38589c66mr1813082ejj.171.1702400245950;
-        Tue, 12 Dec 2023 08:57:25 -0800 (PST)
-Received: from localhost ([193.86.92.180])
-        by smtp.gmail.com with ESMTPSA id st3-20020a170907c08300b00a1c4fde4e88sm6592557ejc.18.2023.12.12.08.57.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 12 Dec 2023 08:57:25 -0800 (PST)
-From: Jiri Kosina <jkosina@suse.com>
-X-Google-Original-From: Jiri Kosina <jikos@kernel.org>
-Date: Tue, 12 Dec 2023 17:57:26 +0100 (CET)
-To: xiongxin <xiongxin@kylinos.cn>
-cc: Thomas Gleixner <tglx@linutronix.de>, benjamin.tissoires@redhat.com, 
-    linux-input@vger.kernel.org, stable@vger.kernel.org, 
-    Riwen Lu <luriwen@kylinos.cn>
-Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
- in pairs
-In-Reply-To: <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
-Message-ID: <nycvar.YFH.7.76.2312121755290.24250@cbobk.fhfr.pm>
-References: <20231207014003.12919-1-xiongxin@kylinos.cn> <87ttosssxd.ffs@tglx> <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        d=1e100.net; s=20230601; t=1702400456; x=1703005256;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S8DPcbxgddFzyx98HpwcBqWBaG444HnxJOTuiHjDE8g=;
+        b=Q8e4CV0duY9sMriGpx+T/ZYBc9qg/bZ70NWNvbef0DGhxnfnM2Mqu+QCY5tnC/xkLy
+         xuul+lZrRmRZJdAjD9+BS1UWXW+YMlbrirLat3+hinYNySagi2a7ZslwYSSqiS0j8tI8
+         B7JhHKoJXBW8OIGbgn7Pi3ErIZKF27cjW038aZbsfdtTzwOm18dNTj8OwN+riZFX1l79
+         +1XM4/aih5yDI+V6ZZdTEZq1Rwh5b+uF8kGE3EtaSN3L0JifPY5qL0i4J3bh7CcIy5OF
+         RZ6z38D0dnZ6C2iDtKP9Of5o+ERHqCQjlUWToVu2rXeClf4W1AB4G82ZDexUEa+Uiap1
+         iTtw==
+X-Gm-Message-State: AOJu0YwqglDiIkuOjIH+7v7VFkeArem8HuFNt5O0lg6nTp33Hn0mRgIG
+	ulTfbTYwYxKkeWD44SFRVTk=
+X-Google-Smtp-Source: AGHT+IEnWzRUimBTu2VT9179iW9r74HE/QVAYtF1FST/1iY23TTgMz1NgfRUE9NbKfeMxUeRx5fbIw==
+X-Received: by 2002:a05:6870:d185:b0:1fb:788:e8b4 with SMTP id a5-20020a056870d18500b001fb0788e8b4mr3311007oac.47.1702400455786;
+        Tue, 12 Dec 2023 09:00:55 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id mm3-20020a056871728300b001fb05cf9dfdsm3282252oac.19.2023.12.12.09.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 09:00:55 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 12 Dec 2023 09:00:54 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 5.4 00/67] 5.4.264-rc1 review
+Message-ID: <4d4ebe9e-9187-451f-bc6c-c8e11a66dc7a@roeck-us.net>
+References: <20231211182015.049134368@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
 
-On Mon, 11 Dec 2023, xiongxin wrote:
+On Mon, Dec 11, 2023 at 07:21:44PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.264 release.
+> There are 67 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
+> Anything received after that time might be too late.
+> 
 
-> In this scenario, unmask_irq() will not be called, and then gpio corresponding
-> interrupt pin will be masked. Finally, in the suspend() process driven by gpio
-> interrupt controller, the interrupt mask register will be saved, and then
-> masked will continue to be read when resuming () process. After the kernel
-> resumed, the i2c hid gpio interrupt was masked and the i2c hid device was
-> unavailable.
+Build results:
+	total: 152 pass: 152 fail: 0
+Qemu test results:
+	total: 464 pass: 464 fail: 0
 
-In addition to what Thomas already wrote -- what exactly is the problem 
-you are trying to solve here?
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-Is it that your device drive by i2c-hid driver is no longer sending any 
-data reports after a suspend/resume cycle? What makes you think that it's 
-because of its IRQ being disabled?
-
-Don't you just perhaps need I2C_HID_QUIRK_RESET_ON_RESUME quirk for that 
-device?
-
--- 
-Jiri Kosina
-SUSE Labs
-
+Guenter
 
