@@ -1,327 +1,95 @@
-Return-Path: <stable+bounces-6444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6997F80EB3E
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 13:05:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2908580EBBA
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 13:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8E731F21D96
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 12:05:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B69AB1F2134B
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 12:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF315DF3D;
-	Tue, 12 Dec 2023 12:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7175EE8B;
+	Tue, 12 Dec 2023 12:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQsCvB2r"
+	dkim=pass (1024-bit key) header.d=infotecs.ru header.i=@infotecs.ru header.b="Nk//3Rzg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55FC5DF2B;
-	Tue, 12 Dec 2023 12:05:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4DFC433C7;
-	Tue, 12 Dec 2023 12:05:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702382712;
-	bh=SWC+Nat235TfMnBb+/6EkvPUKFseOAinCkhNaARYsag=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EQsCvB2rvg3wr3eEZRcI09WFbK6/2YJHQOlR0YNb0PuGAhCXDh+j3kihrpndd9L20
-	 NWROiM541o1UO2Rr13OiHP+f6H2AGGGizYWJTECWd+ZnfwQamaI4lToOknLDt02WYN
-	 0V4v9LDHIZEQD5ioy6EaJghbm4MhKhCjlNVbxOkQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 4.19 00/53] 4.19.302-rc2 review
-Date: Tue, 12 Dec 2023 13:05:09 +0100
-Message-ID: <20231212120154.063773918@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
+Received: from mx0.infotecs.ru (mx0.infotecs.ru [91.244.183.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF8FF2;
+	Tue, 12 Dec 2023 04:25:42 -0800 (PST)
+Received: from mx0.infotecs-nt (localhost [127.0.0.1])
+	by mx0.infotecs.ru (Postfix) with ESMTP id 7374D13ED234;
+	Tue, 12 Dec 2023 15:25:40 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx0.infotecs.ru 7374D13ED234
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=infotecs.ru; s=mx;
+	t=1702383940; bh=83CzuIVbhaIyLEUA88mWIgWaPi/eOQgcDFoTRZ8bsTE=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To:From;
+	b=Nk//3RzgxKaWFY1/xy7L/3KYKBlw+k92T78ArohxKkDEX+K5KllfWnzwfAp+KbTFP
+	 82Bk6uaQ97Awt0ybm42K75XDvxrA6Euj6cEYS8dmiS8mm2DY6zRppRXJGmNXz2RCoQ
+	 VDt9YjGec1jxCBAH2GKYyO44d5omG8gVtAQfDOSQ=
+Received: from msk-exch-01.infotecs-nt (msk-exch-01.infotecs-nt [10.0.7.191])
+	by mx0.infotecs-nt (Postfix) with ESMTP id 710553177CA6;
+	Tue, 12 Dec 2023 15:25:40 +0300 (MSK)
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Daniel Starke
+	<daniel.starke@siemens.com>, Jiri Slaby <jirislaby@kernel.org>, Russ Gorby
+	<russ.gorby@intel.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>
+Subject: Re: [PATCH 5.10 0/3] tty: n_gsm: fix tty registration before control
+ channel open
+Thread-Topic: [PATCH 5.10 0/3] tty: n_gsm: fix tty registration before control
+ channel open
+Thread-Index: AQHaLPZRrftlSiHR9Eacwd+dnfCWVg==
+Date: Tue, 12 Dec 2023 12:25:40 +0000
+Message-ID: <4e524540-3e2c-4f27-afda-1f42465ecf18@infotecs.ru>
+References: <20231212111431.4064760-1-Ilia.Gavrilov@infotecs.ru>
+ <2023121232-magenta-recall-2cec@gregkh>
+In-Reply-To: <2023121232-magenta-recall-2cec@gregkh>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-exclaimer-md-config: 208ac3cd-1ed4-4982-a353-bdefac89ac0a
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <BD55A63B7A44224E8D57A3E2F9CABEAB@infotecs.ru>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.302-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.19.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.19.302-rc2
-X-KernelTest-Deadline: 2023-12-14T12:01+00:00
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-This is the start of the stable review cycle for the 4.19.302 release.
-There are 53 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Thu, 14 Dec 2023 12:01:29 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.302-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.19.302-rc2
-
-Mukesh Ojha <quic_mojha@quicinc.com>
-    devcoredump: Send uevent once devcd is ready
-
-Mukesh Ojha <quic_mojha@quicinc.com>
-    devcoredump : Serialize devcd_del work
-
-Sagi Grimberg <sagi@grimberg.me>
-    IB/isert: Fix unaligned immediate-data handling
-
-Namhyung Kim <namhyung@kernel.org>
-    tools headers UAPI: Sync linux/perf_event.h with the kernel sources
-
-Ido Schimmel <idosch@nvidia.com>
-    drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
-
-Ido Schimmel <idosch@nvidia.com>
-    psample: Require 'CAP_NET_ADMIN' when joining "packets" group
-
-Ido Schimmel <idosch@nvidia.com>
-    genetlink: add CAP_NET_ADMIN test for multicast bind
-
-Ido Schimmel <idosch@nvidia.com>
-    netlink: don't call ->netlink_bind with table lock held
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: fix missing error check for sb_set_blocksize call
-
-Claudio Imbrenda <imbrenda@linux.ibm.com>
-    KVM: s390/mm: Properly reset no-dat
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    x86/CPU/AMD: Check vendor in the AMD microcode callback
-
-Ronald Wahl <ronald.wahl@raritan.com>
-    serial: 8250_omap: Add earlycon support for the AM654 UART controller
-
-Daniel Mack <daniel@zonque.org>
-    serial: sc16is7xx: address RX timeout interrupt errata
-
-RD Babiera <rdbabiera@google.com>
-    usb: typec: class: fix typec_altmode_put_partner to put plugs
-
-Cameron Williams <cang1@live.co.uk>
-    parport: Add support for Brainboxes IX/UC/PX parallel cards
-
-Konstantin Aladyshev <aladyshev22@gmail.com>
-    usb: gadget: f_hid: fix report descriptor allocation
-
-Boerge Struempfel <boerge.struempfel@gmail.com>
-    gpiolib: sysfs: Fix error handling on failed export
-
-Peter Zijlstra <peterz@infradead.org>
-    perf: Fix perf_event_validate_size()
-
-Namhyung Kim <namhyung@kernel.org>
-    perf/core: Add a new read format to get a number of lost samples
-
-Petr Pavlu <petr.pavlu@suse.com>
-    tracing: Fix a possible race when disabling buffered events
-
-Petr Pavlu <petr.pavlu@suse.com>
-    tracing: Fix incomplete locking when disabling buffered events
-
-Steven Rostedt (Google) <rostedt@goodmis.org>
-    tracing: Always update snapshot buffer size
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
-
-Daniel Borkmann <daniel@iogearbox.net>
-    packet: Move reference count in packet_sock to atomic_long_t
-
-Jason Zhang <jason.zhang@rock-chips.com>
-    ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
-
-Philipp Zabel <p.zabel@pengutronix.de>
-    ARM: dts: imx7: Declare timers compatible with fsl,imx6dl-gpt
-
-Anson Huang <Anson.Huang@nxp.com>
-    ARM: dts: imx: make gpt node name generic
-
-Kunwu Chan <chentao@kylinos.cn>
-    ARM: imx: Check return value of devm_kasprintf in imx_mmdc_perf_init
-
-Dinghao Liu <dinghao.liu@zju.edu.cn>
-    scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
-
-Petr Pavlu <petr.pavlu@suse.com>
-    tracing: Fix a warning when allocating buffered events fails
-
-Armin Wolf <W_Armin@gmx.de>
-    hwmon: (acpi_power_meter) Fix 4.29 MW bug
-
-Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-    RDMA/bnxt_re: Correct module description string
-
-Eric Dumazet <edumazet@google.com>
-    tcp: do not accept ACK of bytes we never sent
-
-Phil Sutter <phil@nwl.cc>
-    netfilter: xt_owner: Fix for unsafe access of sk->sk_socket
-
-Lukasz Pawelczyk <l.pawelczyk@samsung.com>
-    netfilter: xt_owner: Add supplementary groups option
-
-Yonglong Liu <liuyonglong@huawei.com>
-    net: hns: fix fake link up on xge port
-
-Shigeru Yoshida <syoshida@redhat.com>
-    ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()
-
-Thomas Reichinger <thomas.reichinger@sohard.de>
-    arcnet: restoring support for multiple Sohard Arcnet cards
-
-Tong Zhang <ztong0001@gmail.com>
-    net: arcnet: com20020 fix error handling
-
-Ahmed S. Darwish <a.darwish@linutronix.de>
-    net: arcnet: Fix RESET flag handling
-
-Randy Dunlap <rdunlap@infradead.org>
-    hv_netvsc: rndis_filter needs to select NLS
-
-Eric Dumazet <edumazet@google.com>
-    ipv6: fix potential NULL deref in fib6_add()
-
-YuanShang <YuanShang.Mao@amd.com>
-    drm/amdgpu: correct chunk_ptr to a pointer to chunk.
-
-Masahiro Yamada <masahiroy@kernel.org>
-    kconfig: fix memory leak from range properties
-
-Alex Pakhunov <alexey.pakhunov@spacex.com>
-    tg3: Increment tx_dropped in tg3_tso_bug()
-
-Alex Pakhunov <alexey.pakhunov@spacex.com>
-    tg3: Move the [rt]x_dropped counters to tg3_napi
-
-Jozsef Kadlecsik <kadlec@netfilter.org>
-    netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
-
-Thomas Gleixner <tglx@linutronix.de>
-    hrtimers: Push pending hrtimers away from outgoing CPU earlier
-
-Evgeny Novikov <novikov@ispras.ru>
-    media: davinci: vpif_capture: fix potential double free
-
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-    spi: imx: mx51-ecspi: Move some initialisation to prepare_message hook.
-
-Robin Gong <yibin.gong@nxp.com>
-    spi: imx: correct wml as the last sg length
-
-Robin Gong <yibin.gong@nxp.com>
-    spi: imx: move wml setting to later than setup_transfer
-
-Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-    spi: imx: add a device specific prepare_message callback
-
-
--------------
-
-Diffstat:
-
- Makefile                                          |   4 +-
- arch/arm/boot/dts/imx6qdl.dtsi                    |   2 +-
- arch/arm/boot/dts/imx6sl.dtsi                     |   2 +-
- arch/arm/boot/dts/imx6sx.dtsi                     |   2 +-
- arch/arm/boot/dts/imx6ul.dtsi                     |   4 +-
- arch/arm/boot/dts/imx7s.dtsi                      |  16 +--
- arch/arm/mach-imx/mmdc.c                          |   7 +-
- arch/s390/mm/pgtable.c                            |   2 +-
- arch/x86/kernel/cpu/amd.c                         |   3 +
- drivers/base/devcoredump.c                        |  86 +++++++++++-
- drivers/gpio/gpiolib-sysfs.c                      |  15 ++-
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c            |   2 +-
- drivers/hwmon/acpi_power_meter.c                  |   4 +
- drivers/infiniband/hw/bnxt_re/main.c              |   2 +-
- drivers/infiniband/ulp/isert/ib_isert.c           |  93 ++++++-------
- drivers/infiniband/ulp/isert/ib_isert.h           |  41 ++++--
- drivers/media/platform/davinci/vpif_capture.c     |   2 -
- drivers/net/arcnet/arc-rimi.c                     |   4 +-
- drivers/net/arcnet/arcdevice.h                    |   8 ++
- drivers/net/arcnet/arcnet.c                       |  66 +++++++++-
- drivers/net/arcnet/com20020-isa.c                 |   4 +-
- drivers/net/arcnet/com20020-pci.c                 | 119 +++++++++--------
- drivers/net/arcnet/com20020_cs.c                  |   2 +-
- drivers/net/arcnet/com90io.c                      |   4 +-
- drivers/net/arcnet/com90xx.c                      |   4 +-
- drivers/net/ethernet/broadcom/tg3.c               |  42 +++++-
- drivers/net/ethernet/broadcom/tg3.h               |   4 +-
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c |  29 +++++
- drivers/net/hyperv/Kconfig                        |   1 +
- drivers/parport/parport_pc.c                      |  21 +++
- drivers/scsi/be2iscsi/be_main.c                   |   1 +
- drivers/spi/spi-imx.c                             | 151 ++++++++++++++++------
- drivers/tty/serial/8250/8250_early.c              |   1 +
- drivers/tty/serial/sc16is7xx.c                    |  12 ++
- drivers/usb/gadget/function/f_hid.c               |   7 +-
- drivers/usb/typec/class.c                         |   5 +-
- fs/nilfs2/sufile.c                                |  44 +++++--
- fs/nilfs2/the_nilfs.c                             |   6 +-
- include/linux/cpuhotplug.h                        |   1 +
- include/linux/hrtimer.h                           |   4 +-
- include/linux/perf_event.h                        |   2 +
- include/net/genetlink.h                           |   3 +
- include/uapi/linux/netfilter/xt_owner.h           |   7 +-
- include/uapi/linux/perf_event.h                   |   5 +-
- kernel/cpu.c                                      |   8 +-
- kernel/events/core.c                              |  80 ++++++++----
- kernel/events/ring_buffer.c                       |   5 +-
- kernel/time/hrtimer.c                             |  33 ++---
- kernel/trace/trace.c                              |  42 +++---
- net/core/drop_monitor.c                           |   4 +-
- net/ipv4/ip_gre.c                                 |  11 +-
- net/ipv4/tcp_input.c                              |   6 +-
- net/ipv6/ip6_fib.c                                |   6 +-
- net/netfilter/ipset/ip_set_core.c                 |  14 +-
- net/netfilter/xt_owner.c                          |  37 +++++-
- net/netlink/af_netlink.c                          |   4 +-
- net/netlink/genetlink.c                           |  35 +++++
- net/packet/af_packet.c                            |  16 +--
- net/packet/internal.h                             |   2 +-
- net/psample/psample.c                             |   3 +-
- scripts/kconfig/symbol.c                          |  14 +-
- sound/core/pcm.c                                  |   1 +
- tools/include/uapi/linux/perf_event.h             |   5 +-
- 63 files changed, 830 insertions(+), 340 deletions(-)
-
-
+X-KLMS-Rule-ID: 5
+X-KLMS-Message-Action: clean
+X-KLMS-AntiSpam-Status: not scanned, disabled by settings
+X-KLMS-AntiSpam-Interceptor-Info: not scanned
+X-KLMS-AntiPhishing: Clean, bases: 2023/12/12 08:32:00
+X-KLMS-AntiVirus: Kaspersky Security for Linux Mail Server, version 8.0.3.30, bases: 2023/12/12 10:17:00 #22666118
+X-KLMS-AntiVirus-Status: Clean, skipped
+
+T24gMTIvMTIvMjMgMTQ6NDQsIEdyZWcgS3JvYWgtSGFydG1hbiB3cm90ZToNCj4gT24gVHVlLCBE
+ZWMgMTIsIDIwMjMgYXQgMTE6MTc6MjFBTSArMDAwMCwgR2F2cmlsb3YgSWxpYSB3cm90ZToNCj4+
+IFN5emthbGxlciByZXBvcnRzIG1lbW9yeSBsZWFrIGlzc3VlIGF0IGdzbWxkX2F0dGFjaF9nc20o
+KSBpbg0KPj4gNS4xMCBzdGFibGUgcmVsZWFzZXMuIFRoZSByZXByb2R1Y2VyIGluamVjdHMgdGhl
+IG1lbW9yeSBhbGxvY2F0aW9uDQo+PiBlcnJvcnMgdG8gdHR5X3JlZ2lzdGVyX2RldmljZSgpOyBh
+cyBhIHJlc3VsdCwgdHR5X2tyZWZfZ2V0KCkgaXNuJ3QgY2FsbGVkDQo+PiBhZnRlciB0aGlzIGVy
+cm9yLCB3aGljaCBsZWFkcyB0byB0dHlfc3RydWN0IGxlYWsuDQo+PiBUaGUgaXNzdWUgaGFzIGJl
+ZW4gZml4ZWQgYnkgdGhlIGZvbGxvd2luZyBwYXRjaGVzIHRoYXQgY2FuIGJlIGNsZWFubHkNCj4+
+IGFwcGxpZWQgdG8gdGhlIDUuMTAgYnJhbmNoLg0KPj4NCj4+IEZvdW5kIGJ5IEluZm9UZUNTIG9u
+IGJlaGFsZiBvZiBMaW51eCBWZXJpZmljYXRpb24gQ2VudGVyDQo+PiAobGludXh0ZXN0aW5nLm9y
+Zykgd2l0aCBTeXprYWxsZXINCj4gDQo+IERvIHlvdSBhY3R1YWxseSBoYXZlIGFueSBoYXJkd2Fy
+ZSBmb3IgdGhpcyBwcm90b2NvbCBydW5uaW5nIG9uIHRoZQ0KPiA1LjEwLnkga2VybmVsPyAgSG93
+IHdhcyB0aGlzIHRlc3RlZD8gIFdoeSB3YXMganVzdCB0aGlzIHNwZWNpZmljIHNldCBvZg0KPiBw
+YXRjaGVzIHBpY2tlZCB0byBiZSBiYWNrcG9ydGVkPw0KPiANCg0KTm8sIEkgZG9uJ3QgaGF2ZSBh
+bnkgaGFyZHdhcmUgZm9yIHRoaXMgcHJvdG9jb2wuIEkgdGVzdGVkIHRoaXMgbWFudWFsbHkgDQpv
+biB2aXJ0dWFsIG1hY2hpbmVzIGFuZCB1c2luZyBhIHJlcHJvZHVjZXIgKGdlbmVyYXRlZCBieSBz
+eXprYWxsZXIpLg0KVGhlIGZpcnN0IHBhdGNoIGZpeGVzIHRoZSBtYWluIHByb2JsZW0obWVtb3J5
+IGxlYWspLiBUaGUgdGhpcmQgcGF0Y2ggDQpmaXhlcyB0aGUgcHJvYmxlbSB3aXRoINCwIG51bGwg
+cG9pbnRlciBkZXJlZmVyZW5jZS4gSSBhZGRlZCB0aGlzIHBhdGNoIA0KYmVjYXVzZSBpdCBoYXMg
+YSAiZml4ZXMiIHRhZyB0aGF0IHJlZmVyZW5jZXMgdG8gdGhlIGZpcnN0IHBhdGNoLiBUaGUgDQp0
+aGlyZCBwYXRjaCBjYW4ndCBiZSBhcHBsaWVkIGNsZWFubHkgd2l0aG91dCB0aGUgc2Vjb25kIHBh
+dGNoLg0KDQo+IHRoYW5rcywNCj4gDQo+IGdyZWcgay1oDQoNCg==
 
