@@ -1,152 +1,258 @@
-Return-Path: <stable+bounces-6511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1A380F8F3
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:15:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D05780F913
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 008E61F21796
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7862282035
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4276865A85;
-	Tue, 12 Dec 2023 21:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9661565A9F;
+	Tue, 12 Dec 2023 21:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="e8DA0JhC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IA6rjAB8"
 X-Original-To: stable@vger.kernel.org
-Received: from CO1PR02CU002.outbound.protection.outlook.com (mail-westus2azon11020027.outbound.protection.outlook.com [52.101.46.27])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503CCA7
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 13:15:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aIXBvQmLaMzPsgzWAFkyQVVX2XCLHdtkMT7d4gAeqCDA8DN105cTcWXMNVCLph36L/R8L9/WnKiT/EvOs3sJwcMUcNIaGorvpvT3ilPpl6tn9H8Kt20ZCpGUMVyDapXjemxT6tr1HjMnnxvqbyGOhLPPIBOIpv/RzUV0ThdSNcP9unKx2Cf3JkNCwMWkmlmtA+rowKV96JBCNbidPZb0o+oP535ZkYIqrsks4Wf+W4OOfMzqB4m9tQSa7OJq1gDdLnMDmMTFQDQ7yzueWBbXcvy3t+GJiVIL4cWCCpYwfbAdmlmfYQeVLMzcc61tmpzXggVaHa1aE11twV4+y368GA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IcVeip6d6mRJ8b2yttEkvVQZFZb0INebsRiw5/Q31yI=;
- b=UDa3khStgup679xRzPtVa9BxRmg+YeN7s29zM46QxfDYthDPp88+om+ytcxXCtqhbP/toIvkC9FvnZU9x9Mvl9CMzj1ANSsPxoeOWhV1V7w6+rzrqZTpayB53iurKJJmkDWZQRP0tvNSMdnRzOLsw5//8/k2NeJXgl5UFEks+gb9elERP4RhNCnprDdYYOYeu3Sc5uCqs1fIDFgHcltPogCcc9WzsNNm/2BDvuFeQVMaU1GZ6zabTMUcUbnEXRaDU0K/Q8VbZh2S/hm1m/M9et/XQ7tHnVhvZcxri5W7KMJjGJNKuAWScfQTO5FLodqGSMRQvZZuSmHMpBLzo2D5fA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IcVeip6d6mRJ8b2yttEkvVQZFZb0INebsRiw5/Q31yI=;
- b=e8DA0JhCOV+ZMAwid0MHq9YkWTkVwrrWmzRPUTAYwlpch238C4Bf/9Id4o0QUKcmglVpxI7m8YS7IMFib+sNvAu2kNnf7WcVpuzf97/lRbAYhigTYG1OepHFDYHVrU6x8OjGFbCH1lT7mfsLzoXM7s84RwsWd24Wbkt89ZrsWRw=
-Received: from DM4PR21MB3441.namprd21.prod.outlook.com (2603:10b6:8:ac::18) by
- PH0PR21MB1306.namprd21.prod.outlook.com (2603:10b6:510:10d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.7; Tue, 12 Dec
- 2023 21:15:20 +0000
-Received: from DM4PR21MB3441.namprd21.prod.outlook.com
- ([fe80::424e:ad61:8198:101f]) by DM4PR21MB3441.namprd21.prod.outlook.com
- ([fe80::424e:ad61:8198:101f%7]) with mapi id 15.20.7113.001; Tue, 12 Dec 2023
- 21:15:19 +0000
-From: Steven French <Steven.French@microsoft.com>
-To: Paul Gortmaker <paul.gortmaker@windriver.com>
-CC: Greg KH <gregkh@linuxfoundation.org>, Namjae Jeon <linkinjeon@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for
- CVE-2023-38431
-Thread-Topic: [EXTERNAL] Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for
- CVE-2023-38431
-Thread-Index: AQHaLTZ0FraRoh/tHEGy7qr1Q4udKLCmEtOwgAANBICAAARm4A==
-Date: Tue, 12 Dec 2023 21:15:19 +0000
-Message-ID:
- <DM4PR21MB344158B63C4D77E25E6DF2E9E48EA@DM4PR21MB3441.namprd21.prod.outlook.com>
-References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
- <2023121241-pope-fragility-edad@gregkh>
- <DM4PR21MB34417B034A9637445C598675E48EA@DM4PR21MB3441.namprd21.prod.outlook.com>
- <ZXjIEyiEvrISjsX/@windriver.com>
-In-Reply-To: <ZXjIEyiEvrISjsX/@windriver.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=7efc2df4-71a3-4cfd-bae7-59dbb5ef499f;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-12-12T21:08:19Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR21MB3441:EE_|PH0PR21MB1306:EE_
-x-ms-office365-filtering-correlation-id: 4345d359-1a79-44cd-e5c2-08dbfb57720c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- t2WMoKIhNoEgcdpdNqDBZZaO8i2bboHzhcbvCGK5CmMBMjRSMvKy4WB7EhfkdorgpT492lb3WtAI2rrjkbkeOw82+jn/DLUGkObuq3cSfxAQ8oLIzlJhJYhlfuk0rgnwm5eNDJaDNfRijUbC9aDUn9sIc9iTGgYqp/bEPnoXq/yo7TfDdswB3S/Vf8gyevRpxV5fclMsX+0lgVievmSecTRvmtJ6idXCwTHcoGxWYsNJFKSsni3CgrKAT2hBIIOx+1Zjeg4p6RKUJyvz/RN0qgDIxFdYpintMt+DnZFFrIun65O09sxM56jiFW+mhNfi2Ak05U1o9VxiokXiYrSZult5OO9nmRC0OXeZ4iOnOYbu3+9NABuH4vALFSvFJdqqziLU2E9XM2QdLg37rFWjL8Kqzf7c5tfYAC6qnBljxwB5glS55MteUeWo8E84bHYBE65UbAOwpdYycrv6Is1b3l15I7cpgQcx8g3SVwERUvW8P/UGfs1pHPodL94QQOwJUYrpF9ln86sKs1aHuPDF56vV0Y2JhDiGql5CC/koUKctCTYCpq6KMqZvxvEbJi+4PaP3wyAu/tEUkfRYQYWGZ2I8aERNh107QNNIVjRGaJr2770dK4eFyhdNkrNLdEByn+gJtGo5z8t85mEZSgnUf4ePaL395Bo3Hr5lGMUC47w=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR21MB3441.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(346002)(396003)(136003)(366004)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(6506007)(71200400001)(7696005)(9686003)(122000001)(5660300002)(83380400001)(8990500004)(4326008)(8936002)(52536014)(8676002)(41300700001)(54906003)(2906002)(478600001)(316002)(10290500003)(66946007)(66476007)(76116006)(66556008)(6916009)(66446008)(64756008)(82960400001)(86362001)(33656002)(38100700002)(82950400001)(38070700009)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?mpnQB3W+cy90nTxTGUfHiNr63QHha9AoeQGoShKtRNW/CWhws2+YBLvmL+Mv?=
- =?us-ascii?Q?676WQt4LufvJhtp1Uq/B+BCe380lltewKjngnDORJ3qR3zFmW2/JnFeYJgWR?=
- =?us-ascii?Q?gZdk/gE7+1Syo8KAVmprQNJ+CELnIHFsWHm28950VtUrLX+ffxoxdM5xHoxB?=
- =?us-ascii?Q?5i7SwC25/Qh+d5F/tq3GTnde6Kp+vFDWhEbf5D4DQ2FXUhZPN7MDsyquTH0S?=
- =?us-ascii?Q?+OsNJhD4QyLpjf49axMqZ/BKpG3osiPpT0SOKROrM5JJi+nT3ZtEkHMPPXIn?=
- =?us-ascii?Q?kbGKPcIi1Ejyiy6ckGg942LjhGvcGaIUKo6z74Z27guGVshPPTKbsOaEaY63?=
- =?us-ascii?Q?LgILZEmlc7+07ju30JzFZ3MHxlDGjPV8BccF2N7lQJ6gd5MUlxkk5YGWO8Eo?=
- =?us-ascii?Q?zYrr7HAmjLRivEB/wKqxuuu3j96XO2YXTbkiybVIH+henvD7V1qOHeP3/PX3?=
- =?us-ascii?Q?8E4Kg0rGT1V60v+XIhRnO9I7Ok7vp31Xk6Aq9a/rSGHKVWhIn9xuTSk/AHCE?=
- =?us-ascii?Q?kC397L8HziAqPNp0wF8ciag8N06SIDQ9JD/CA2q+eLKI3DDjCRn6gOsy9cgD?=
- =?us-ascii?Q?k8de0KV9p8wU9gpqa0gHQ0FTxTQubCAEJ4bjYMaxgtrCT/QAZ+8xQVvUFAgP?=
- =?us-ascii?Q?EYivvuZfPmE2FpzM0x2OsE8NsSWAnMNBJdtoqb1OCdwmoLbxQwcLgHCtdBAT?=
- =?us-ascii?Q?Cw3mh7UsXISJlcbNj/xFF87txD1gRuXqm1tgGsXgaO23ldv5UmL+ZA1oWEhN?=
- =?us-ascii?Q?0wMN6frWoZywS8JoSuqRs2KTjT+kPLyJCaqsWpc+Z/xPBysDdZ3XeL48acnz?=
- =?us-ascii?Q?X2oiJyWfFZE1+L55rMRUFzsk/zqQLoovEZDyvkthNiuB4cmYtMMoEs2G+JJ+?=
- =?us-ascii?Q?p3rywDdKbXU5MiPM+Oyzlibfe8KFoSEuYowMiS2fgAZg5hG6SZn9TRD+VsjE?=
- =?us-ascii?Q?o49RmVqZj6KmWRL4ZLUhJ+uiekwO7bwh2Gbu5M4PFpVusKjVM9EPqPHDHMr/?=
- =?us-ascii?Q?j/PklE70v/THaTgMpyVV5gE4lauBsGV7hcfzmT+qubER2Uw7TeFcCbQ3IGv7?=
- =?us-ascii?Q?aXip+Ux8QBXfJDj8mcRH1WdehIIlpQU8MRlz/p8dVIe6lABGyeX74E55Ga7p?=
- =?us-ascii?Q?Wd4z4BZFKWJ4Ujuu+FJdBDFpPjQoDDv7ynmaIqwbpWUW9D/rZmR6QgscytKx?=
- =?us-ascii?Q?hrXc1OV5qfBTTOG0augGBnzC5cpeSC+/2DjIt7bOOyLFYJa0i9nQ99dlxnCN?=
- =?us-ascii?Q?CrUPu6mPwtnZYo+I9YWdve5VaH+r8/jtwRYxzBjh5yQkntZv7FiCXaz70HRG?=
- =?us-ascii?Q?fl/K/CR0v3QN4RESON8M2UQpeAE7cF9iPzmowDNeyIe13Ar4hS3zBfHq6xOZ?=
- =?us-ascii?Q?gG5MgcIpDlvapPCO4tgFQToZ4BwvL4kXoJE5XYHOo/G+yS8ilUsrVhNpeK5v?=
- =?us-ascii?Q?BE6a9eHFVPgMYaonhIL/bGs0N0HZfgWi8isHdyrkpZ1ypOb9RyDiRIHO9xJM?=
- =?us-ascii?Q?FT9oJMtrramCvg11vJF/mcc6vq2k7VThjcqSv4QmtMwVMFhEmHciy6f4aKgA?=
- =?us-ascii?Q?6MUHV17FnMlXqpNbJqLAa8yACI2s3OlteAADbcG5ThjA/wab/r9JHkR/AwxT?=
- =?us-ascii?Q?O1CvpQe2VPfMGduegzHL4iYuN6HOt68HdmrV+2KvLT/H?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F95D65A84;
+	Tue, 12 Dec 2023 21:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3066C433C7;
+	Tue, 12 Dec 2023 21:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702415972;
+	bh=oWti6B2hluT7CCjS/Eg6sEi+TjyY1oxWXDgmY5tZaQA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=IA6rjAB8f07IXHyEMQPRZc7h4Iz18ba9PXjsZXw0PW0bMcN1tSptu4EESUP112Rku
+	 RoEpI5VWZB4K+qmsd/YmOiUdsRuVFjOIrYmlfV7EfXDIoypo+ntUcrRzWcW3+78vTt
+	 so0nwBuPJIz0CpUkWByHwdHHBohGAUL95OdoJKQ7/x3AH5ObTbu3UzlcjHdz838nOt
+	 sIWMe/PEHnKPHQ5wDdLFWz+L/XCBV66MAdCSTmbH1DayMDY/JR8DeQ2XrYPVfB2U3+
+	 gjLToAkvH+hZ1Xrfnsel0PwF++d/f+r/nPP91vjCCTovlx1qC11uBVtKfHC95V9v32
+	 GStWzWtoSkcMA==
+Date: Tue, 12 Dec 2023 15:19:30 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Dongli Zhang <dongli.zhang@oracle.com>
+Cc: linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	imammedo@redhat.com, mst@redhat.com, rafael@kernel.org,
+	lenb@kernel.org, bhelgaas@google.com,
+	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com,
+	joe.jin@oracle.com, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>,
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
+Subject: Re: [Regression report] commit 40613da52b13 ("PCI: acpiphp: Reassign
+ resources on bridge if necessary")
+Message-ID: <20231212211930.GA1020759@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR21MB3441.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4345d359-1a79-44cd-e5c2-08dbfb57720c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Dec 2023 21:15:19.6703
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: z/JZIaftoK1uc6Q6uqxSvoU++XdPKr0i8L9Elr5E5KsDzyHzPomZTA3fOmDqOtsYnQSVZzUxGHKlf6DgD6yBBg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR21MB1306
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com>
 
-> Larger backports like that can make sense for a target audience who are i=
-nvested in some feature but don't want to move anything else - then it beco=
-mes a deliverable in itself, typically from a professional services group. =
- But linux-stable is definitely not the place for things like that.
+[+cc Fiona, Thomas]
 
-I wasn't so much thinking about it for stable, but for cases where it is sa=
-fer to use an alternative to stable for a particular module (and for a part=
-icular older kernel).  For active components (where dozens of patches go in=
- each release) stable can carry risks because of subtle patch dependencies.=
-    Maybe not as much issue for the cifs.ko and ksmbd.ko cases because ther=
-e are excellent testcase suites that could be automated for stable to catch=
- the vast majority of stable backport problems for those, but that assumes =
-that this (stable kernel component by component testing) is automated (whic=
-h was a big topic of discussion at the most recent LSF/MM/Storage summit). =
-  Obviously distros do this all the time, and backport more than stable wou=
-ld for the more active modules, but there are probably cases where Debian e=
-.g. users would want a module that had various security features backported=
- and so couldn't use stable (because stable would typically not include new=
- features, even if critical)
+On Mon, Dec 11, 2023 at 04:14:25PM -0800, Dongli Zhang wrote:
+> This is to report a regression caused by commit 40613da52b13 ("PCI: acpiphp:
+> Reassign resources on bridge if necessary").
+> 
+> PCI: acpiphp: Reassign resources on bridge if necessary
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=40613da52b13fb21c5566f10b287e0ca8c12c4e9
 
+Thanks very much for the report and the detailed analysis!
 
+Just for completeness, I'm cc'ing folks from another report that
+appears to be the same or very similar issue:
+https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
 
+There's also a bugzilla with some logs attached:
+https://bugzilla.kernel.org/show_bug.cgi?id=218255
+
+#regzbot dup: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+
+> That patch may reconfigure the mmio resource of the bridge so that to write to
+> mmio during PCI hotplug may lose effect.
+> 
+> Here is how to reproduce the issue.
+> 
+> 1. Create QEMU (v8.1.0) VM with the below.
+> 
+> qemu-system-x86_64 -machine pc,accel=kvm \
+> -smp 8 -m 8G -cpu host -hda uefi-os.qcow2 \
+> -drive if=pflash,format=raw,unit=0,file=OVMF_CODE.fd,readonly \
+> -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
+> -kernel mainline-linux/arch/x86_64/boot/bzImage \
+> -append "root=/dev/sda2 init=/sbin/init text console=ttyS0 loglevel=7" \
+> -serial none -display none -vnc :9 -monitor stdio \
+> -net nic -net user,hostfwd=tcp::5027-:22 \
+> -device pci-bridge,id=bridge1,bus=pci.0,chassis_nr=2
+> 
+> We should have CONFIG_SCSI_SCAN_ASYNC=y so that scsi probing happens in another
+> thread.
+> 
+> 2. Hot-add two vhost-scsi PCI devices consecutively.
+> 
+> (qemu) device_add vhost-scsi-pci,wwpn=naa.5001405324af0985,id=vhost01,bus=bridge1,addr=8
+> (qemu) device_add vhost-scsi-pci,wwpn=naa.5001405324af0986,id=vhost02,bus=bridge1,addr=0
+> 
+> 3. The 1st hot-add succeeds.
+> 
+> [   44.365111] ACPI: \_SB_.PCI0.S20_.S40_: Device check in hotplug_event()
+> [   44.365261] pci 0000:01:08.0: [1af4:1004] type 00 class 0x010000
+> [   44.365377] pci 0000:01:08.0: reg 0x10: [io  0x0000-0x003f]
+> [   44.365425] pci 0000:01:08.0: reg 0x14: [mem 0x00000000-0x00000fff]
+> [   44.365589] pci 0000:01:08.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
+> [   44.366479] pci 0000:01:08.0: EDR: Notify handler installed
+> [   44.367255] pci 0000:01:08.0: vgaarb: pci_notify
+> [   44.367490] pci 0000:00:04.0: BAR 15: assigned [mem 0x800100000-0x8001fffff 64bit pref]
+> [   44.367497] pci 0000:01:08.0: BAR 4: assigned [mem 0x800100000-0x800103fff 64bit pref]
+> [   44.367579] pci 0000:01:08.0: BAR 1: assigned [mem 0xc1000000-0xc1000fff]
+> [   44.367605] pci 0000:01:08.0: BAR 0: assigned [io  0xc000-0xc03f]
+> [   44.367638] pci 0000:00:04.0: PCI bridge to [bus 01]
+> [   44.367653] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
+> [   44.369258] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
+> [   44.370134] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
+> [   44.372147] virtio-pci 0000:01:08.0: vgaarb: pci_notify
+> [   44.372155] virtio-pci 0000:01:08.0: runtime IRQ mapping not provided by arch
+> [   44.409717] ACPI: \_SB_.LNKD: Enabled at IRQ 10
+> [   44.409781] virtio-pci 0000:01:08.0: enabling device (0000 -> 0003)
+> [   44.448742] virtio-pci 0000:01:08.0: enabling bus mastering
+> [   44.452982] scsi host2: Virtio SCSI HBA
+> [   44.470553] virtio-pci 0000:01:08.0: vgaarb: pci_notify
+> [   44.471124] scsi 2:0:1:0: Direct-Access     LIO-ORG  lun1             4.0  PQ: 0 ANSI: 5
+> [   44.490102] sd 2:0:1:0: Attached scsi generic sg2 type 0
+> [   44.490240] sd 2:0:1:0: [sdb] 262144 512-byte logical blocks: (134 MB/128 MiB)
+> [   44.490275] sd 2:0:1:0: [sdb] Write Protect is off
+> [   44.490279] sd 2:0:1:0: [sdb] Mode Sense: 43 00 10 08
+> [   44.490333] sd 2:0:1:0: [sdb] Write cache: enabled, read cache: enabled, supports DPO and FUA
+> [   44.501807] sd 2:0:1:0: [sdb] Preferred minimum I/O size 512 bytes
+> [   44.501812] sd 2:0:1:0: [sdb] Optimal transfer size 8388608 bytes
+> [   44.504009] sd 2:0:1:0: [sdb] Attached SCSI disk
+> 
+> 4. The 2nd hot-add fails. We do not see scsi probing finished.
+> 
+> [   52.285341] ACPI: \_SB_.PCI0.S20_.S00_: Device check in hotplug_event()
+> [   52.285488] pci 0000:01:00.0: [1af4:1004] type 00 class 0x010000
+> [   52.285620] pci 0000:01:00.0: reg 0x10: [io  0x0000-0x003f]
+> [   52.285668] pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x00000fff]
+> [   52.285833] pci 0000:01:00.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
+> [   52.286687] pci 0000:01:00.0: EDR: Notify handler installed
+> [   52.287484] pci 0000:01:00.0: vgaarb: pci_notify
+> [   52.287568] pci 0000:01:00.0: BAR 4: assigned [mem 0x800104000-0x800107fff 64bit pref]
+> [   52.287650] pci 0000:01:00.0: BAR 1: assigned [mem 0xc1001000-0xc1001fff]
+> [   52.287676] pci 0000:01:00.0: BAR 0: assigned [io  0xc040-0xc07f]
+> [   52.287701] pci 0000:00:04.0: PCI bridge to [bus 01]
+> [   52.287715] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
+> [   52.289611] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
+> [   52.291062] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
+> [   52.294057] virtio-pci 0000:01:00.0: vgaarb: pci_notify
+> [   52.294065] virtio-pci 0000:01:00.0: runtime IRQ mapping not provided by arch
+> [   52.294083] virtio-pci 0000:01:00.0: enabling device (0000 -> 0003)
+> [   52.335305] virtio-pci 0000:01:00.0: enabling bus mastering
+> [   52.339810] scsi host3: Virtio SCSI HBA
+> [   52.358165] virtio-pci 0000:01:00.0: vgaarb: pci_notify
+> [   52.358380] pci 0000:00:04.0: PCI bridge to [bus 01]
+> [   52.358398] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
+> [   52.358518] scsi 3:0:1:0: Direct-Access     LIO-ORG  lun2             4.0  PQ: 0 ANSI: 5
+> [   52.360287] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
+> [   52.362313] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
+> 
+> It is because of the following. To reconfigure the mmio resource of bridge and
+> to probe scsi happens at the same time, in different threads.
+> 
+> [   52.358398] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
+> [   52.358518] scsi 3:0:1:0: Direct-Access     LIO-ORG  lun2             4.0  PQ: 0 ANSI: 5
+> [   52.360287] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
+> [   52.362313] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
+> 
+> The race starts since line 638.
+> 
+> 627 static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
+> 628 {
+> 629         struct resource *res;
+> 630         struct pci_bus_region region;
+> 631         u32 l, bu, lu;
+> 632
+> 633         /*
+> 634          * Clear out the upper 32 bits of PREF limit.  If
+> 635          * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
+> 636          * PREF range, which is ok.
+> 637          */
+> 638         pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
+> 639
+> 640         /* Set up PREF base/limit */
+> 641         bu = lu = 0;
+> 642         res = &bridge->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
+> 643         pcibios_resource_to_bus(bridge->bus, &region, res);
+> 644         if (res->flags & IORESOURCE_PREFETCH) {
+> 645                 l = (region.start >> 16) & 0xfff0;
+> 646                 l |= region.end & 0xfff00000;
+> 647                 if (res->flags & IORESOURCE_MEM_64) {
+> 648                         bu = upper_32_bits(region.start);
+> 649                         lu = upper_32_bits(region.end);
+> 650                 }
+> 651                 pci_info(bridge, "  bridge window %pR\n", res);
+> 652         } else {
+> 653                 l = 0x0000fff0;
+> 654         }
+> 655         pci_write_config_dword(bridge, PCI_PREF_MEMORY_BASE, l);
+> 656
+> 657         /* Set the upper 32 bits of PREF base & limit */
+> 658         pci_write_config_dword(bridge, PCI_PREF_BASE_UPPER32, bu);
+> 659         pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, lu);
+> 660 }
+> 
+> 
+> To probe the vhost-scsi and to reconfigure bridge window happen in different
+> threads. There is a race between them so that to write to mmio may not work. It
+> is called ioeventfd from KVM/QEMU's perspective.
+> 
+> [0] pci_setup_bridge_mmio_pref
+> [0] pci_setup_bridge
+> [0] pci_assign_unassigned_bridge_resources
+> [0] enable_slot
+> [0] acpiphp_check_bridge
+> [0] acpiphp_hotplug_notify
+> [0] acpi_device_hotplug
+> [0] acpi_hotplug_work_fn
+> [0] process_one_work
+> [0] worker_thread
+> [0] kthread
+> [0] ret_from_fork
+> [0] ret_from_fork_asm
+> 
+> [0] blk_execute_rq
+> [0] scsi_execute_cmd
+> [0] scsi_probe_lun
+> [0] scsi_probe_and_add_lun
+> [0] __scsi_scan_target
+> [0] scsi_scan_channel
+> [0] scsi_scan_host_selected
+> [0] do_scsi_scan_host
+> [0] do_scan_async
+> [0] async_run_entry_fn
+> [0] process_one_work
+> [0] worker_thread
+> [0] kthread
+> [0] ret_from_fork
+> 
+> 
+> Indeed, I am curious if this impacts other PCI devices on this PCI bridge,
+> doing mmio (e.g., to kick the doorbell register during that time).
+> 
+> There used to be similar issue. According to prior commits, we may need to
+> touch the bridge window for only once.
+> 
+> PCI: Probe bridge window attributes once at enumeration-time
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=51c48b310183ab6ba5419edfc6a8de889cc04521
+> 
+> 
+> Thank you very much!
+> 
+> Dongli Zhang
 
