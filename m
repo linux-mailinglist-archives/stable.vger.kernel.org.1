@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B72E80E93B
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 11:37:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 115CB80E93E
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 11:38:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40C83281584
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 10:37:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9B1A281579
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 10:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CD854273;
-	Tue, 12 Dec 2023 10:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849AF5B1ED;
+	Tue, 12 Dec 2023 10:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M07axvke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulDQP9Za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C221373
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 10:37:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB23C433C7;
-	Tue, 12 Dec 2023 10:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4974021373
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 10:38:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B7FC433C8;
+	Tue, 12 Dec 2023 10:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702377472;
-	bh=tHOj0nE4Bl4l5rWpW/U5BzV3QynrhJMGPGcXrEFE7fw=;
+	s=korg; t=1702377521;
+	bh=fjwRJ81EFXNm7uhFGJOJM0uB2pMquxnxTeqieU3K7Ng=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M07axvkeDo1T2HmbV8RkzTCxaqGb5crAmuVX0fOFyaH0/wUZ+Qhr24ECeZXs1kEJV
-	 KWzh9f9o/cndgqEv/9rpORMs2lGKc/jTku9I1ycmQzSbw66d0bFtvoSKP6EJng//Zo
-	 24WR5FsLKZiWONDN2BkgFRwpoK9FQ271FmN4pyMQ=
-Subject: FAILED: patch "[PATCH] ARM: PL011: Fix DMA support" failed to apply to 4.14-stable tree
+	b=ulDQP9ZaxhixxPq5W07WHeCaazKBhL8PSPzx/LKH1EJsNuBwltyeiOEWyTQAaac7s
+	 6P9lq7OgUTP4X6bo2AFSGm2Qx0fyR8vEfL+taRBvGQxyB1oyYzI3P+CIWcvp+j9BGR
+	 Np9lXI0l2Z1XwERcl5tvoa7h4DrTHnE4RK2MzqHM=
+Subject: FAILED: patch "[PATCH] ARM: PL011: Fix DMA support" failed to apply to 4.19-stable tree
 To: arnd@arndb.de,gregkh@linuxfoundation.org,gregory.clement@bootlin.com,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 12 Dec 2023 11:37:50 +0100
-Message-ID: <2023121249-grimace-outtakes-a409@gregkh>
+Date: Tue, 12 Dec 2023 11:38:38 +0100
+Message-ID: <2023121238-crunchy-kosher-db6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 58ac1b3799799069d53f5bf95c093f2fe8dd3cc5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121249-grimace-outtakes-a409@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121238-crunchy-kosher-db6e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
