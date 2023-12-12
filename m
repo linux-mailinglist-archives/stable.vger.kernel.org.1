@@ -1,127 +1,72 @@
-Return-Path: <stable+bounces-6502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0DF80F767
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:03:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D2980F76D
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED92B1C20DDC
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:03:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B23DB20E0B
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BC15276B;
-	Tue, 12 Dec 2023 20:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6485276B;
+	Tue, 12 Dec 2023 20:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="VAN/d/JU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZncvbNx8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 982B38E;
-	Tue, 12 Dec 2023 12:03:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=GU5bD/tkNbwYE01vFKqUORHlQtxGJUzogaJ4KX5B+SE=; b=VAN/d/JUx6n8DA7SJeL3AgkgOn
-	cSxx9y9yZlUFXcC3B6FH4I8KAzxipMdU68Cr7JHARKBZAHpbhqHo8DjQXD1j5HUtWNXuRw8H/xlkF
-	j/y+wCxPoLkCNdG5pVGkTNV9YrfvE6ybnNiQGaz2Esrt+XgRIquyvu58/84CEV14giuU=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:50180 helo=pettiford)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rD8y6-0003S3-F0; Tue, 12 Dec 2023 15:03:03 -0500
-Date: Tue, 12 Dec 2023 15:03:02 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, gregkh@linuxfoundation.org,
- jirislaby@kernel.org, hvilleneuve@dimonoff.com,
- oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, stable@vger.kernel.org
-Message-Id: <20231212150302.a9ec5d085a4ba65e89ca41af@hugovil.com>
-In-Reply-To: <CAHp75VebCZckUrNraYQj9k=Mrn2kbYs1Lx26f5-8rKJ3RXeh-w@mail.gmail.com>
-References: <20231130191050.3165862-2-hugo@hugovil.com>
-	<202312061443.Cknef7Uq-lkp@intel.com>
-	<20231207125243.c056d5cd0f875ea6dfdfa194@hugovil.com>
-	<CAHp75VebCZckUrNraYQj9k=Mrn2kbYs1Lx26f5-8rKJ3RXeh-w@mail.gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3966358C
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 20:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC2C433C7;
+	Tue, 12 Dec 2023 20:04:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702411481;
+	bh=W9wTDyIOJ5Q8acGZqrIiS3PovLd/eJYGI4ioYT2c55Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZncvbNx8TRPl14qPCZAQjWdhI7qJtM3M5uE/+GYO0VTzdPea8LMVgTHp8UxzKSW8l
+	 0s3n4n5wmvpzTUbPQgz/gEUhDmdYFnbUzp8U1cmICO8By2spwx/ezUuo/h4f/v2vt2
+	 co11cGe/0hEi6KGdQR8mW6XRv4PpJEh2ORk42IKI=
+Date: Tue, 12 Dec 2023 21:04:38 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: paul.gortmaker@windriver.com
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431
+Message-ID: <2023121241-pope-fragility-edad@gregkh>
+References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
- sc16is7xx_regmap_name()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
 
-On Thu, 7 Dec 2023 20:24:45 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Tue, Dec 12, 2023 at 01:47:44PM -0500, paul.gortmaker@windriver.com wrote:
+> From: Paul Gortmaker <paul.gortmaker@windriver.com>
+> 
+> This is a bit long, but I've never touched this code and all I can do is
+> compile test it.  So the below basically represents a capture of my
+> thought process in fixing this for the v5.15.y-stable branch.
 
-> On Thu, Dec 7, 2023 at 7:52 PM Hugo Villeneuve <hugo@hugovil.com> wrote:
-> > On Wed, 6 Dec 2023 14:29:39 +0800
-> > kernel test robot <lkp@intel.com> wrote:
-> 
-> ...
-> 
-> > >    drivers/tty/serial/sc16is7xx.c: In function 'sc16is7xx_i2c_probe':
-> > > >> drivers/tty/serial/sc16is7xx.c:1703:41: warning: '%u' directive output may be truncated writing between 1 and 10 bytes into a region of size 2 [-Wformat-truncation=]
-> > >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> > >          |                                         ^~
-> > >    In function 'sc16is7xx_regmap_name',
-> > >        inlined from 'sc16is7xx_i2c_probe' at drivers/tty/serial/sc16is7xx.c:1805:17:
-> > >    drivers/tty/serial/sc16is7xx.c:1703:36: note: directive argument in the range [0, 4294967294]
-> > >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> > >          |                                    ^~~~~~~~
-> > >    drivers/tty/serial/sc16is7xx.c:1703:9: note: 'snprintf' output between 6 and 15 bytes into a destination of size 6
-> > >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> > >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> >
-> > Hi,
-> > the only solution I could find is to add this line just before snprintf:
-> >
-> >     BUG_ON(port_id > MAX310X_MAX_PORTS);
-> >
-> > it allows us to have the smallest buffer size possible.
-> >
-> > One other solution would be to change port_id from "unsigned int"
-> > to "u8", and increase the buffer by an additional 2 bytes to silence
-> > the warning, but then wasting 2 bytes for each channel, like so:
-> 
-> I didn't get this. It's a buffer that is rewritten on each port (why
-> is it even static?). Just make sure it's enough for any given number
-> and drop the static.
-> 
-> ...
-> 
-> While at it, can you look at the following items to improve?
-> - sc16is7xx_alloc_line() can be updated to use IDA framework
-> - move return xxx; to the default cases in a few functions
-> - if (div > 0xffff) { --> if (div >= BIT(16)) { as it better shows why
-> the limit is that (we have only 16 bits for the divider)
-> - do {} while (0) in the sc16is7xx_port_irq, WTH?!
-> - while (1) { -- do { } while (keep_polling); in sc16is7xx_irq()
-> - use in_range() in sc16is7xx_setup_mctrl_ports() ? (maybe not, dunno)
-> - for (i--; i >= 0; i--) { --> while (i--) {
-> - use spi_get_device_match_data() and i2c_get_match_data()
-> - 15000000 --> 15 * HZ_PER_MHZ ?
-> - dropping MODULE_ALIAS (and fix the ID tables, _if_ needed)
-> - split the code to the core / main + SPI + I2C glue drivers
-> 
-> * These just come on the first glance at the code, perhaps there is
-> more room to improve.
+Nice work, but really, given that there are _SO_ many ksmb patches that
+have NOT been backported to 5.15.y, I would strongly recommend that we
+just mark the thing as depending on BROKEN there for now as your one
+backport here is not going to make a dent in the fixes that need to be
+applied there to resolve the known issues that the codebase currently
+has resolved in newer kernels.
 
-Hi Andy,
-just to let you know that I have implemented almost all of the fixes /
-improvements. I will submit them once V2 of this current series
-lands in Greg's next tree.
+Do you use this codebase on 5.15.y?  What drove you to want to backport
+this, just the presence of a random CVE identifier?  If that's all it
+takes to get companies to actually do backports, maybe I should go
+allocate more of them :)
 
-However, for sc16is7xx_alloc_line(), I looked at using the IDA framework
-but it doesn't seem possible because there is no IDA function
-to search if a bit is set, which is a needed functionality.
+thanks,
 
-Hugo Villeneuve
+greg k-h
 
