@@ -1,307 +1,98 @@
-Return-Path: <stable+bounces-6495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BB680F669
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:17:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD3280F66F
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 20:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073931C20969
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0861C20CAE
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 19:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA8881E47;
-	Tue, 12 Dec 2023 19:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7478081E34;
+	Tue, 12 Dec 2023 19:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwahl@gmx.de header.b="KgQbRwCn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L8ZKjkAj"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31437DC;
-	Tue, 12 Dec 2023 11:17:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1702408636; x=1703013436; i=rwahl@gmx.de;
-	bh=ykMOjMXy1k07U6KJzpyqS9UjNtKUU8CmbA6s98wML4Q=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-	b=KgQbRwCnHn651/SAIhG+RWBZBQR9bhsWAroyPzR7SRZT68y6MlC26CXbQh7N10Lz
-	 xssZ2GS4ahPukBSVL+rTEdlwSpIxqQXPsipqdknvXHCyMyh/Ii+j4I6NTQOvy33sg
-	 iiaPZPbrpy9ChZesnEQyLfQymxu87LuWCzNhf8meXNruG3kFPj0kKoZJEJKZ2jd43
-	 H4DX1fCkKc1bjQWPcRbcChZyy5TDUA2z+xG9Yw6NwfegimMPT8I5hMpmPUD5tnavj
-	 aYBKTnFj7dJ4wONz29hdQcDp3Vo2XYB28eC+8BE5uk15YksYP0oeTW22eIRQiq4Kv
-	 qJOPG6qVMmmriPf8LA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from rohan.localdomain ([84.156.159.24]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MaJ81-1qjjI12Nfx-00WIKl; Tue, 12
- Dec 2023 20:17:16 +0100
-From: Ronald Wahl <rwahl@gmx.de>
-To: rwahl@gmx.de
-Cc: Ronald Wahl <ronald.wahl@raritan.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: ks8851: Fix TX stall caused by TX buffer overrun
-Date: Tue, 12 Dec 2023 20:16:32 +0100
-Message-ID: <20231212191632.197656-1-rwahl@gmx.de>
-X-Mailer: git-send-email 2.43.0
+Received: from mail-ot1-x335.google.com (mail-ot1-x335.google.com [IPv6:2607:f8b0:4864:20::335])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20DDF83;
+	Tue, 12 Dec 2023 11:18:55 -0800 (PST)
+Received: by mail-ot1-x335.google.com with SMTP id 46e09a7af769-6d852e06b07so3169533a34.3;
+        Tue, 12 Dec 2023 11:18:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702408734; x=1703013534; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lRI+Z3So7cR4czFluxvYwlfma5c41gzeBHqb5Y4Vja4=;
+        b=L8ZKjkAj4FxUuDel9bmnOGK4HBLG4mWngj2QLiVQ99A3jpDeinLzXLuV0lyFGbO2Hq
+         hkL6e330DaXwDzdCW+pqSswR/MeCX7S07m0SMqHKGc4U/z24DCUl9sg1PUKhRN3HqhYD
+         FKQo9Nk3J8rAPjdTTZ9zk0PY/Tw7W6MJcnOPjvaMSkekJ9usnTIiAm0bP/jqXFbvZsYQ
+         LrKYv8lVk/F9BGiKUU/W13ibOodmT7fNfHI6NX6LOwcKjxs7MN/s9dJsE+ALN9TYrcd4
+         q5eJ8jYqRlIa3tBDl6AJ8LMQQrAcjoDaGrGAHe7vL9wkT0lutFFaxKagi4X0mSztUiqh
+         n1jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702408734; x=1703013534;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lRI+Z3So7cR4czFluxvYwlfma5c41gzeBHqb5Y4Vja4=;
+        b=iwbLn70FD/z0b86V2KIu+7RYAsjZDy81Rr5xJda7/UX7HUCm6mwbfJTGOfItdXUzJ3
+         72pEspHEoMPVcc1ltfVfgu1soco3+mGP97mysmZGEtBUGuSHYv6wlyvje2nUBsb0xV/j
+         Lx6WSIkt0NehJRA/yhFX6z9I2o/vaQGcIGibspSHWbjy35lDae8NHI37jCWNNXL6MqIX
+         oUr4xGiy71SYaRgBcCAOf7zuuqTQx/sAaE6olEzBxTwZuGfRQ0IgJUpHvp0u6NYbOhnr
+         IdT0Oyj3O/UX0e8v032jDr/OpBXcpnBELqqBFnaZq7uwrMVIZkSRaw5i7Szpb9fhHVBO
+         +6Cw==
+X-Gm-Message-State: AOJu0YyfcvR+d8Xi05DUnsNTGocgJiUMwVRv3AdBV0OFModl9ExJQWZM
+	jW9B6H9GHIYWiofGE4C6uSq/NAaGBD1wzEnL2vY=
+X-Google-Smtp-Source: AGHT+IH7Gl41yzN1LlyzIXzr+mlZbXiwYsHqWWxOt4X/4Qmx+WYf32alvxIxL2Sd1mYkqJPxFCwDNJ75FR52QYnPlC0=
+X-Received: by 2002:a05:6830:118c:b0:6da:3071:2f78 with SMTP id
+ u12-20020a056830118c00b006da30712f78mr516440otq.23.1702408734423; Tue, 12 Dec
+ 2023 11:18:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:t+58Wdjgsm3vL9T4RJPaUnMTc3YpHKhgBLe7RoGwldscKoVdK5i
- ciKo2gkQIpkyDVsUc9Oqn6qc48H/+8kvoa2S8o8ISH1AKO1GUo9z9qwY8Cb87sTxDU7N0EU
- 1Ssi9F6VDSiqINjVlyM4+WypJ6MblfgttFh26ule1ZjUkIzIMzBs2pzyTLj9St/IhPq0CD1
- Ma4KK8Gh7N2pXsnXtEgjA==
-UI-OutboundReport: notjunk:1;M01:P0:rEBorfRP344=;RvvZ2N+UL9oHxfSREqJvdUnkjap
- a1xPVp/6lmzsJSxhODlXR8Ax8HNmaHY4Su/PBImcR4sfdD9khWFKmXFyOy7rBuulcnb86eYoo
- 8B8IXVYibUNKwqgaAmf5UYgB1Y1HfZVndByrYu1vfc6/AaSI2fVnDiWj3NEPTx4M1iNLqSsBH
- JcCMsZfZpNrcWG8foyyLsS4GSXWMmFcFISpNVbmCkZqP9jTEqgMgv+9qYlHB0AHswwsgESEU9
- lF5cIKy3wzRSEXEqDgXYUidmFvM22jzbp8hMDKQ1Hm9aCNc9aUxd7cHokxdegsH4qVARTty3h
- Tzc2DPDIFGb9+IDSzHU1A8pG9iZj6KueOZKC/IKTQRrhpV/enajF1BTbol+Rd9CDVrgg6aHaU
- sM2+UZek09GLrFFX1YZFoJxzVOjOMVEcrsmM4BLmOSna6ComhRV37LGh5nVAV/9KNpqSBbn3/
- Obwk/9etd9QFXul5JmXDKWvV1XAIFUkYSE+hdnVPNjrz0cDFud5oFdVgU3jq/RuVKqzbslaxB
- oy4a9FJtKUEs3c8uYMb2cBd3EEc1bETjCpKv2Tj9/km9fGMypSt+Xd9zzkG19dOSijmrIYddg
- CIBABcwlSHuamRFJuvJZhzOB/K96n/RAXvIrAdG1Jgf8YL8XWOoIH89rL4WgfD7mhPWSIRZo5
- HNk6wdIZxWPYlRfQEQUOvdllsBauE5ajV6K1XOhwLxkj2iXfTqES972NavI1tN36ELPqv3s4F
- 8RJKaJ7IB6vgwoVXLPhNS054P/xpCRkpZNTSHyRrMNeAwiqlIHtZJ7InIBuQl/R6JtL1eXOdE
- f31mTu1E2t/gaVMuyYzMbKzeYKCoHZLQSRAlpfURc9FGUJfaeGJvBYE46X1WyadBbFV+HbDZO
- GbqcFImiga4gzQr4TB76s9qZRVCU+N3cdmQxamHNmjugYiDZQFoC8q41ThbsvTIiIi84CncGF
- bA6NQg==
+References: <20231212120210.556388977@linuxfoundation.org>
+In-Reply-To: <20231212120210.556388977@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Tue, 12 Dec 2023 11:18:42 -0800
+Message-ID: <CAOMdWSKV3KfehCOpkANWxbbi7-kCwbBs93L12Pay6Bk_QRfPXA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/139] 5.15.143-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+> This is the start of the stable review cycle for the 5.15.143 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Dec 2023 12:01:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.143-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-There is a bug in the ks8851 Ethernet driver that more data is written
-to the hardware TX buffer than actually available. This is caused by
-wrong accounting of the free TX buffer space.
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-The driver maintains a tx_space variable that represents the TX buffer
-space that is deemed to be free. The ks8851_start_xmit_spi() function
-adds an SKB to a queue if tx_space is large enough and reduces tx_space
-by the amount of buffer space it will later need in the TX buffer and
-then schedules a work item. If there is not enough space then the TX
-queue is stopped.
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-The worker function ks8851_tx_work() dequeues all the SKBs and writes
-the data into the hardware TX buffer. The last packet will trigger an
-interrupt after it was send. Here it is assumed that all data fits into
-the TX buffer.
-
-In the interrupt routine (which runs asynchronously because it is a
-threaded interrupt) tx_space is updated with the current value from the
-hardware. Also the TX queue is woken up again.
-
-Now it could happen that after data was sent to the hardware and before
-handling the TX interrupt new data is queued in ks8851_start_xmit_spi()
-when the TX buffer space had still some space left. When the interrupt
-is actually handled tx_space is updated from the hardware but now we
-already have new SKBs queued that have not been written to the hardware
-TX buffer yet. Since tx_space has been overwritten by the value from the
-hardware the space is not accounted for.
-
-Now we have more data queued then buffer space available in the hardware
-and ks8851_tx_work() will potentially overrun the hardware TX buffer. In
-many cases it will still work because often the buffer is written out
-fast enough so that no overrun occurs but for example if the peer
-throttles us via flow control then an overrun may happen.
-
-This can be fixed in different ways. The most simple way would be to set
-tx_space to 0 before writing data to the hardware TX buffer preventing
-the queuing of more SKBs until the TX interrupt has been handled. I have
-chosen a slightly more efficient (and still rather simple) way and
-track the amount of data that is already queued and not yet written to
-the hardware. When new SKBs are to be queued the already queued amount
-of data is honoured when checking free TX buffer space.
-
-I tested this with a setup of two linked KS8851 running iperf3 between
-the two in bidirectional mode. Before the fix I got a stall after some
-minutes. With the fix I saw now issues anymore after hours.
-
-Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: Tristram Ha <Tristram.Ha@microchip.com>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-=2D--
-V2: - Added Fixes: tag (issue actually present from the beginning)
-    - cosmetics reported by checkpatch
-
- drivers/net/ethernet/micrel/ks8851.h        |  1 +
- drivers/net/ethernet/micrel/ks8851_common.c | 20 +++++-----
- drivers/net/ethernet/micrel/ks8851_spi.c    | 41 +++++++++++++--------
- 3 files changed, 37 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/m=
-icrel/ks8851.h
-index fecd43754cea..ce7e524f2542 100644
-=2D-- a/drivers/net/ethernet/micrel/ks8851.h
-+++ b/drivers/net/ethernet/micrel/ks8851.h
-@@ -399,6 +399,7 @@ struct ks8851_net {
- 	struct work_struct	rxctrl_work;
-
- 	struct sk_buff_head	txq;
-+	unsigned int		queued_len;
-
- 	struct eeprom_93cx6	eeprom;
- 	struct regulator	*vdd_reg;
-diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/eth=
-ernet/micrel/ks8851_common.c
-index cfbc900d4aeb..0bf13b38b8f5 100644
-=2D-- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -362,16 +362,18 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 		handled |=3D IRQ_RXPSI;
-
- 	if (status & IRQ_TXI) {
--		handled |=3D IRQ_TXI;
-+		unsigned short tx_space =3D ks8851_rdreg16(ks, KS_TXMIR);
-
--		/* no lock here, tx queue should have been stopped */
-+		netif_dbg(ks, intr, ks->netdev,
-+			  "%s: txspace %d\n", __func__, tx_space);
-
--		/* update our idea of how much tx space is available to the
--		 * system */
--		ks->tx_space =3D ks8851_rdreg16(ks, KS_TXMIR);
-+		spin_lock(&ks->statelock);
-+		ks->tx_space =3D tx_space;
-+		if (netif_queue_stopped(ks->netdev))
-+			netif_wake_queue(ks->netdev);
-+		spin_unlock(&ks->statelock);
-
--		netif_dbg(ks, intr, ks->netdev,
--			  "%s: txspace %d\n", __func__, ks->tx_space);
-+		handled |=3D IRQ_TXI;
- 	}
-
- 	if (status & IRQ_RXI)
-@@ -414,9 +416,6 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
- 	if (status & IRQ_LCI)
- 		mii_check_link(&ks->mii);
-
--	if (status & IRQ_TXI)
--		netif_wake_queue(ks->netdev);
--
- 	return IRQ_HANDLED;
- }
-
-@@ -500,6 +499,7 @@ static int ks8851_net_open(struct net_device *dev)
- 	ks8851_wrreg16(ks, KS_ISR, ks->rc_ier);
- 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
-
-+	ks->queued_len =3D 0;
- 	netif_start_queue(ks->netdev);
-
- 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
-diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethern=
-et/micrel/ks8851_spi.c
-index 70bc7253454f..eb089b3120bc 100644
-=2D-- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -286,6 +286,18 @@ static void ks8851_wrfifo_spi(struct ks8851_net *ks, =
-struct sk_buff *txp,
- 		netdev_err(ks->netdev, "%s: spi_sync() failed\n", __func__);
- }
-
-+/**
-+ * calc_txlen - calculate size of message to send packet
-+ * @len: Length of data
-+ *
-+ * Returns the size of the TXFIFO message needed to send
-+ * this packet.
-+ */
-+static unsigned int calc_txlen(unsigned int len)
-+{
-+	return ALIGN(len + 4, 4);
-+}
-+
- /**
-  * ks8851_rx_skb_spi - receive skbuff
-  * @ks: The device state
-@@ -310,6 +322,8 @@ static void ks8851_tx_work(struct work_struct *work)
- 	unsigned long flags;
- 	struct sk_buff *txb;
- 	bool last;
-+	unsigned short tx_space;
-+	unsigned int dequeued_len =3D 0;
-
- 	kss =3D container_of(work, struct ks8851_net_spi, tx_work);
- 	ks =3D &kss->ks8851;
-@@ -320,6 +334,7 @@ static void ks8851_tx_work(struct work_struct *work)
- 	while (!last) {
- 		txb =3D skb_dequeue(&ks->txq);
- 		last =3D skb_queue_empty(&ks->txq);
-+		dequeued_len +=3D calc_txlen(txb->len);
-
- 		if (txb) {
- 			ks8851_wrreg16_spi(ks, KS_RXQCR,
-@@ -332,6 +347,13 @@ static void ks8851_tx_work(struct work_struct *work)
- 		}
- 	}
-
-+	tx_space =3D ks8851_rdreg16_spi(ks, KS_TXMIR);
-+
-+	spin_lock(&ks->statelock);
-+	ks->queued_len -=3D dequeued_len;
-+	ks->tx_space =3D tx_space;
-+	spin_unlock(&ks->statelock);
-+
- 	ks8851_unlock_spi(ks, &flags);
- }
-
-@@ -346,18 +368,6 @@ static void ks8851_flush_tx_work_spi(struct ks8851_ne=
-t *ks)
- 	flush_work(&kss->tx_work);
- }
-
--/**
-- * calc_txlen - calculate size of message to send packet
-- * @len: Length of data
-- *
-- * Returns the size of the TXFIFO message needed to send
-- * this packet.
-- */
--static unsigned int calc_txlen(unsigned int len)
--{
--	return ALIGN(len + 4, 4);
--}
--
- /**
-  * ks8851_start_xmit_spi - transmit packet using SPI
-  * @skb: The buffer to transmit
-@@ -386,16 +396,17 @@ static netdev_tx_t ks8851_start_xmit_spi(struct sk_b=
-uff *skb,
-
- 	spin_lock(&ks->statelock);
-
--	if (needed > ks->tx_space) {
-+	if (ks->queued_len + needed > ks->tx_space) {
- 		netif_stop_queue(dev);
- 		ret =3D NETDEV_TX_BUSY;
- 	} else {
--		ks->tx_space -=3D needed;
-+		ks->queued_len +=3D needed;
- 		skb_queue_tail(&ks->txq, skb);
- 	}
-
- 	spin_unlock(&ks->statelock);
--	schedule_work(&kss->tx_work);
-+	if (ret =3D=3D NETDEV_TX_OK)
-+		schedule_work(&kss->tx_work);
-
- 	return ret;
- }
-=2D-
-2.43.0
-
+Thanks.
 
