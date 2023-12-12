@@ -1,97 +1,119 @@
-Return-Path: <stable+bounces-6518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6CC80F952
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:27:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8530980F9D0
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5418E1F210B1
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:27:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4BF1B20EE8
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AA66413B;
-	Tue, 12 Dec 2023 21:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF8964CD0;
+	Tue, 12 Dec 2023 21:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5Q7DnGG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="DxRaJI41"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF165A9E;
-	Tue, 12 Dec 2023 21:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82447C433C7;
-	Tue, 12 Dec 2023 21:27:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702416430;
-	bh=dswbdDQkq9R1rqLEQPK78MDzN2SBMjw7O1v1jhL3dU4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=r5Q7DnGGEGhJChFt9UzIVBp28k4PNZQGG3QDcSIoEbRCqDHkk1/x+AZynmP5SKQy1
-	 8sYavtfW2mETOwNUcbgsiTi7SIbNF6x5Ld7NVxdgKyyCmZN+CVgSiaXpuacBLP/D8a
-	 YJSgzrt9VlXDXRA4oiQXbfmeM9SgZzYXvffVfDRGO5QsiI7Ix2HPCiCWe7IWC03RJZ
-	 uyNrfJoL/abXRAV95IvqkTJHRlHFzsL+c2rKHGYdb+k0G1U8E3w9/zBGSyTRKPVe6y
-	 qcqiN7g7G7hry8Y3pkrVhlnRxEp8/DdQop2rAkqd3TuohbEzDwkKzjV4k8Qbk2FYbV
-	 nUEXOkCGRFvSg==
-Date: Tue, 12 Dec 2023 15:27:07 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Jonathan Derrick <jonathan.derrick@linux.dev>,
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Michael Bottini <michael.a.bottini@linux.intel.com>,
-	"David E . Box" <david.e.box@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link
- state
-Message-ID: <20231212212707.GA1021099@bhelgaas>
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C22CF
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 13:57:37 -0800 (PST)
+Received: from eig-obgw-5006a.ext.cloudfilter.net ([10.0.29.179])
+	by cmsmtp with ESMTPS
+	id D73trfUnC6nOZDAkyrCJ0n; Tue, 12 Dec 2023 21:57:36 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id DAkxrkWGp1J28DAkyrYyQ1; Tue, 12 Dec 2023 21:57:36 +0000
+X-Authority-Analysis: v=2.4 cv=Tqz1ORbh c=1 sm=1 tr=0 ts=6578d750
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0cQHmX4nwYpBrUPThzpHV5PH8SkdWp/17nq7d6ebImc=; b=DxRaJI41o9i6woKLHsgFnIJVKe
+	kcubgGaZHaFbVG5btE77TVkdhX0L5blto3HaQeJdVOJKtuwauATmVUb+EqaBimsIh6rY5xkKTiVZm
+	nmzriv8avVZtuF91W6igvmvdHz2fxduL2TR+IyPt94jDPSkAopu0fkq/HnN1N3Nbw9g9zsosQi37N
+	KNm0N01iojOnTnHafL2kJLVoBPoj+/ksoi0lKnvSPseCTaTkJk6qvbOeyY7d+zr3+QkfhYWMBf1az
+	JQU1zfmJSEqTx6s6nVpWlOGDxPh6BBIO60gBkIMXPTQzBKwKdY9u0xCA5qAwveKOLVMZ/OVCo9+Wi
+	gOFGc5Gg==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:59568 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rDAkv-000sVw-1R;
+	Tue, 12 Dec 2023 14:57:33 -0700
+Subject: Re: [PATCH 6.1 000/194] 6.1.68-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <619b9375-3c15-e627-699e-7fb164803828@w6rz.net>
+Date: Tue, 12 Dec 2023 13:57:30 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAd53p59q3D7u01ECsgRUgkDkTkchV-Gv+q=TMFcC44_tOs51Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rDAkv-000sVw-1R
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:59568
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBbPcTLVQOFuNveH019ZP1hTrRqWOZQ9BlxdZP91zuW4bJOFLWgm77IhUnocR4JWNnKfChZ7lzA4D1wxKSD4/pnZzoUBLRUgrDGFiryMZ4O2tJxAa1zC
+ nTOpfPH28dtZ7ngl8Un5IMRm/50CMWgdn83aXdJOK62UPGrVx58yldzx9/Kf34f7CzdvJ60N/B2y7Q==
 
-On Tue, Dec 12, 2023 at 11:48:27AM +0800, Kai-Heng Feng wrote:
-> On Fri, Dec 8, 2023 at 4:47 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> ...
+On 12/11/23 10:19 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.68 release.
+> There are 194 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.68-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> > I hope we can obsolete this whole idea someday.  Using pci_walk_bus()
-> > in qcom and vmd to enable ASPM is an ugly hack to work around this
-> > weird idea that "the OS isn't allowed to enable more ASPM states than
-> > the BIOS did because the BIOS might have left ASPM disabled because it
-> > knows about hardware issues."  More history at
-> > https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.feng@canonical.com/T/#u
-> >
-> > I think we need to get to a point where Linux enables all supported
-> > ASPM features by default.  If we really think x86 BIOS assumes an
-> > implicit contract that the OS will never enable ASPM more
-> > aggressively, we might need some kind of arch quirk for that.
-> 
-> The reality is that PC ODM toggles ASPM to workaround hardware
-> defects, assuming that OS will honor what's set by the BIOS.
-> If ASPM gets enabled for all devices, many devices will break.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-That's why I mentioned some kind of arch quirk.  Maybe we're forced to
-do that for x86, for instance.  But even that is a stop-gap.
+Tested-by: Ron Economos <re@w6rz.net>
 
-The idea that the BIOS ASPM config is some kind of handoff protocol is
-really unsupportable.
-
-Do we have concrete examples of where enabling ASPM for a device that
-advertises ASPM support will break something?
-
-Bjorn
 
