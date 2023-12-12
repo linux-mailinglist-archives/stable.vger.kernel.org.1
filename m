@@ -1,258 +1,272 @@
-Return-Path: <stable+bounces-6512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D05780F913
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:19:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2B380F933
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 22:25:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7862282035
-	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23D2E282108
+	for <lists+stable@lfdr.de>; Tue, 12 Dec 2023 21:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9661565A9F;
-	Tue, 12 Dec 2023 21:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CB964159;
+	Tue, 12 Dec 2023 21:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IA6rjAB8"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lMsnfB5n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F95D65A84;
-	Tue, 12 Dec 2023 21:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3066C433C7;
-	Tue, 12 Dec 2023 21:19:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702415972;
-	bh=oWti6B2hluT7CCjS/Eg6sEi+TjyY1oxWXDgmY5tZaQA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=IA6rjAB8f07IXHyEMQPRZc7h4Iz18ba9PXjsZXw0PW0bMcN1tSptu4EESUP112Rku
-	 RoEpI5VWZB4K+qmsd/YmOiUdsRuVFjOIrYmlfV7EfXDIoypo+ntUcrRzWcW3+78vTt
-	 so0nwBuPJIz0CpUkWByHwdHHBohGAUL95OdoJKQ7/x3AH5ObTbu3UzlcjHdz838nOt
-	 sIWMe/PEHnKPHQ5wDdLFWz+L/XCBV66MAdCSTmbH1DayMDY/JR8DeQ2XrYPVfB2U3+
-	 gjLToAkvH+hZ1Xrfnsel0PwF++d/f+r/nPP91vjCCTovlx1qC11uBVtKfHC95V9v32
-	 GStWzWtoSkcMA==
-Date: Tue, 12 Dec 2023 15:19:30 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Dongli Zhang <dongli.zhang@oracle.com>
-Cc: linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	imammedo@redhat.com, mst@redhat.com, rafael@kernel.org,
-	lenb@kernel.org, bhelgaas@google.com,
-	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com,
-	joe.jin@oracle.com, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>,
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: Re: [Regression report] commit 40613da52b13 ("PCI: acpiphp: Reassign
- resources on bridge if necessary")
-Message-ID: <20231212211930.GA1020759@bhelgaas>
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE4CB3;
+	Tue, 12 Dec 2023 13:25:30 -0800 (PST)
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCKhZGQ020658;
+	Tue, 12 Dec 2023 21:25:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=W/rDZcFYvEKxv7IsdcV7co3Hn2U+Y2v7rDJ2EcuzIiM=;
+ b=lMsnfB5nnPiVooPPa14eKcCGc9n6A58AdXYjIiSlFz7zJbC+4Rm9VwdrA7QvcaAWHE2e
+ Jn5hZJt5IFOP7NfiEpbA0L8rfjG8iBa5X9XHDM1h1KW9Ps05LqtGoc24De1KvSPE/rfD
+ VV2eo4K+5OSccc7Wr5Z/mnHbn4PZIi8Q+FzjNsLLMyZNnEw3oR4HL6rCkJ8TCATu/Yau
+ eNIS6Uqk3xCCGeztmw4God63KtRJWb6SgNXd87oOdw+EgJjj8GRChPPo9R9hXIpE0+S9
+ 5+uUOHN6iwYk/Sy+lS3NhJ1c5KDLwgh30B0/uj2nxan7969OcegeHJv11Y1VnL6FO4AN Ug== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxxsxrw74-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 21:25:28 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BCLCpAi006430;
+	Tue, 12 Dec 2023 21:25:28 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uxxsxrw6c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 21:25:27 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BCLGS9w028229;
+	Tue, 12 Dec 2023 21:25:27 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uw2xym8db-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Dec 2023 21:25:27 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BCLPP1L15532770
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 Dec 2023 21:25:25 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8F07F58052;
+	Tue, 12 Dec 2023 21:25:25 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ACAFA58056;
+	Tue, 12 Dec 2023 21:25:24 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.187.43])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 Dec 2023 21:25:24 +0000 (GMT)
+From: Tony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        alex.williamson@redhat.com, kwankhede@nvidia.com,
+        stable@vger.kernel.org
+Subject: [PATCH v2 1/6] s390/vfio-ap: always filter entire AP matrix
+Date: Tue, 12 Dec 2023 16:25:12 -0500
+Message-ID: <20231212212522.307893-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231212212522.307893-1-akrowiak@linux.ibm.com>
+References: <20231212212522.307893-1-akrowiak@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: HiSPbOm8GyCqj1LbJaIOpMQJNsqhpKN6
+X-Proofpoint-GUID: 0jFDMgRjzEkbNPxfU8mCc2Myfzd-kemq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-12_12,2023-12-12_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 clxscore=1015 adultscore=0
+ phishscore=0 impostorscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312120165
 
-[+cc Fiona, Thomas]
+The vfio_ap_mdev_filter_matrix function is called whenever a new adapter or
+domain is assigned to the mdev. The purpose of the function is to update
+the guest's AP configuration by filtering the matrix of adapters and
+domains assigned to the mdev. When an adapter or domain is assigned, only
+the APQNs associated with the APID of the new adapter or APQI of the new
+domain are inspected. If an APQN does not reference a queue device bound to
+the vfio_ap device driver, then it's APID will be filtered from the mdev's
+matrix when updating the guest's AP configuration.
 
-On Mon, Dec 11, 2023 at 04:14:25PM -0800, Dongli Zhang wrote:
-> This is to report a regression caused by commit 40613da52b13 ("PCI: acpiphp:
-> Reassign resources on bridge if necessary").
-> 
-> PCI: acpiphp: Reassign resources on bridge if necessary
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=40613da52b13fb21c5566f10b287e0ca8c12c4e9
+Inspecting only the APID of the new adapter or APQI of the new domain will
+result in passing AP queues through to a guest that are not bound to the
+vfio_ap device driver under certain circumstances. Consider the following:
 
-Thanks very much for the report and the detailed analysis!
+guest's AP configuration (all also assigned to the mdev's matrix):
+14.0004
+14.0005
+14.0006
+16.0004
+16.0005
+16.0006
 
-Just for completeness, I'm cc'ing folks from another report that
-appears to be the same or very similar issue:
-https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+unassign domain 4
+unbind queue 16.0005
+assign domain 4
 
-There's also a bugzilla with some logs attached:
-https://bugzilla.kernel.org/show_bug.cgi?id=218255
+When domain 4 is re-assigned, since only domain 4 will be inspected, the
+APQNs that will be examined will be:
+14.0004
+16.0004
 
-#regzbot dup: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+Since both of those APQNs reference queue devices that are bound to the
+vfio_ap device driver, nothing will get filtered from the mdev's matrix
+when updating the guest's AP configuration. Consequently, queue 16.0005
+will get passed through despite not being bound to the driver. This
+violates the linux device model requirement that a guest shall only be
+given access to devices bound to the device driver facilitating their
+pass-through.
 
-> That patch may reconfigure the mmio resource of the bridge so that to write to
-> mmio during PCI hotplug may lose effect.
-> 
-> Here is how to reproduce the issue.
-> 
-> 1. Create QEMU (v8.1.0) VM with the below.
-> 
-> qemu-system-x86_64 -machine pc,accel=kvm \
-> -smp 8 -m 8G -cpu host -hda uefi-os.qcow2 \
-> -drive if=pflash,format=raw,unit=0,file=OVMF_CODE.fd,readonly \
-> -drive if=pflash,format=raw,unit=1,file=OVMF_VARS.fd \
-> -kernel mainline-linux/arch/x86_64/boot/bzImage \
-> -append "root=/dev/sda2 init=/sbin/init text console=ttyS0 loglevel=7" \
-> -serial none -display none -vnc :9 -monitor stdio \
-> -net nic -net user,hostfwd=tcp::5027-:22 \
-> -device pci-bridge,id=bridge1,bus=pci.0,chassis_nr=2
-> 
-> We should have CONFIG_SCSI_SCAN_ASYNC=y so that scsi probing happens in another
-> thread.
-> 
-> 2. Hot-add two vhost-scsi PCI devices consecutively.
-> 
-> (qemu) device_add vhost-scsi-pci,wwpn=naa.5001405324af0985,id=vhost01,bus=bridge1,addr=8
-> (qemu) device_add vhost-scsi-pci,wwpn=naa.5001405324af0986,id=vhost02,bus=bridge1,addr=0
-> 
-> 3. The 1st hot-add succeeds.
-> 
-> [   44.365111] ACPI: \_SB_.PCI0.S20_.S40_: Device check in hotplug_event()
-> [   44.365261] pci 0000:01:08.0: [1af4:1004] type 00 class 0x010000
-> [   44.365377] pci 0000:01:08.0: reg 0x10: [io  0x0000-0x003f]
-> [   44.365425] pci 0000:01:08.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> [   44.365589] pci 0000:01:08.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> [   44.366479] pci 0000:01:08.0: EDR: Notify handler installed
-> [   44.367255] pci 0000:01:08.0: vgaarb: pci_notify
-> [   44.367490] pci 0000:00:04.0: BAR 15: assigned [mem 0x800100000-0x8001fffff 64bit pref]
-> [   44.367497] pci 0000:01:08.0: BAR 4: assigned [mem 0x800100000-0x800103fff 64bit pref]
-> [   44.367579] pci 0000:01:08.0: BAR 1: assigned [mem 0xc1000000-0xc1000fff]
-> [   44.367605] pci 0000:01:08.0: BAR 0: assigned [io  0xc000-0xc03f]
-> [   44.367638] pci 0000:00:04.0: PCI bridge to [bus 01]
-> [   44.367653] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
-> [   44.369258] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
-> [   44.370134] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
-> [   44.372147] virtio-pci 0000:01:08.0: vgaarb: pci_notify
-> [   44.372155] virtio-pci 0000:01:08.0: runtime IRQ mapping not provided by arch
-> [   44.409717] ACPI: \_SB_.LNKD: Enabled at IRQ 10
-> [   44.409781] virtio-pci 0000:01:08.0: enabling device (0000 -> 0003)
-> [   44.448742] virtio-pci 0000:01:08.0: enabling bus mastering
-> [   44.452982] scsi host2: Virtio SCSI HBA
-> [   44.470553] virtio-pci 0000:01:08.0: vgaarb: pci_notify
-> [   44.471124] scsi 2:0:1:0: Direct-Access     LIO-ORG  lun1             4.0  PQ: 0 ANSI: 5
-> [   44.490102] sd 2:0:1:0: Attached scsi generic sg2 type 0
-> [   44.490240] sd 2:0:1:0: [sdb] 262144 512-byte logical blocks: (134 MB/128 MiB)
-> [   44.490275] sd 2:0:1:0: [sdb] Write Protect is off
-> [   44.490279] sd 2:0:1:0: [sdb] Mode Sense: 43 00 10 08
-> [   44.490333] sd 2:0:1:0: [sdb] Write cache: enabled, read cache: enabled, supports DPO and FUA
-> [   44.501807] sd 2:0:1:0: [sdb] Preferred minimum I/O size 512 bytes
-> [   44.501812] sd 2:0:1:0: [sdb] Optimal transfer size 8388608 bytes
-> [   44.504009] sd 2:0:1:0: [sdb] Attached SCSI disk
-> 
-> 4. The 2nd hot-add fails. We do not see scsi probing finished.
-> 
-> [   52.285341] ACPI: \_SB_.PCI0.S20_.S00_: Device check in hotplug_event()
-> [   52.285488] pci 0000:01:00.0: [1af4:1004] type 00 class 0x010000
-> [   52.285620] pci 0000:01:00.0: reg 0x10: [io  0x0000-0x003f]
-> [   52.285668] pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x00000fff]
-> [   52.285833] pci 0000:01:00.0: reg 0x20: [mem 0x00000000-0x00003fff 64bit pref]
-> [   52.286687] pci 0000:01:00.0: EDR: Notify handler installed
-> [   52.287484] pci 0000:01:00.0: vgaarb: pci_notify
-> [   52.287568] pci 0000:01:00.0: BAR 4: assigned [mem 0x800104000-0x800107fff 64bit pref]
-> [   52.287650] pci 0000:01:00.0: BAR 1: assigned [mem 0xc1001000-0xc1001fff]
-> [   52.287676] pci 0000:01:00.0: BAR 0: assigned [io  0xc040-0xc07f]
-> [   52.287701] pci 0000:00:04.0: PCI bridge to [bus 01]
-> [   52.287715] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
-> [   52.289611] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
-> [   52.291062] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
-> [   52.294057] virtio-pci 0000:01:00.0: vgaarb: pci_notify
-> [   52.294065] virtio-pci 0000:01:00.0: runtime IRQ mapping not provided by arch
-> [   52.294083] virtio-pci 0000:01:00.0: enabling device (0000 -> 0003)
-> [   52.335305] virtio-pci 0000:01:00.0: enabling bus mastering
-> [   52.339810] scsi host3: Virtio SCSI HBA
-> [   52.358165] virtio-pci 0000:01:00.0: vgaarb: pci_notify
-> [   52.358380] pci 0000:00:04.0: PCI bridge to [bus 01]
-> [   52.358398] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
-> [   52.358518] scsi 3:0:1:0: Direct-Access     LIO-ORG  lun2             4.0  PQ: 0 ANSI: 5
-> [   52.360287] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
-> [   52.362313] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
-> 
-> It is because of the following. To reconfigure the mmio resource of bridge and
-> to probe scsi happens at the same time, in different threads.
-> 
-> [   52.358398] pci 0000:00:04.0:   bridge window [io  0xc000-0xcfff]
-> [   52.358518] scsi 3:0:1:0: Direct-Access     LIO-ORG  lun2             4.0  PQ: 0 ANSI: 5
-> [   52.360287] pci 0000:00:04.0:   bridge window [mem 0xc1000000-0xc11fffff]
-> [   52.362313] pci 0000:00:04.0:   bridge window [mem 0x800100000-0x8001fffff 64bit pref]
-> 
-> The race starts since line 638.
-> 
-> 627 static void pci_setup_bridge_mmio_pref(struct pci_dev *bridge)
-> 628 {
-> 629         struct resource *res;
-> 630         struct pci_bus_region region;
-> 631         u32 l, bu, lu;
-> 632
-> 633         /*
-> 634          * Clear out the upper 32 bits of PREF limit.  If
-> 635          * PCI_PREF_BASE_UPPER32 was non-zero, this temporarily disables
-> 636          * PREF range, which is ok.
-> 637          */
-> 638         pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, 0);
-> 639
-> 640         /* Set up PREF base/limit */
-> 641         bu = lu = 0;
-> 642         res = &bridge->resource[PCI_BRIDGE_PREF_MEM_WINDOW];
-> 643         pcibios_resource_to_bus(bridge->bus, &region, res);
-> 644         if (res->flags & IORESOURCE_PREFETCH) {
-> 645                 l = (region.start >> 16) & 0xfff0;
-> 646                 l |= region.end & 0xfff00000;
-> 647                 if (res->flags & IORESOURCE_MEM_64) {
-> 648                         bu = upper_32_bits(region.start);
-> 649                         lu = upper_32_bits(region.end);
-> 650                 }
-> 651                 pci_info(bridge, "  bridge window %pR\n", res);
-> 652         } else {
-> 653                 l = 0x0000fff0;
-> 654         }
-> 655         pci_write_config_dword(bridge, PCI_PREF_MEMORY_BASE, l);
-> 656
-> 657         /* Set the upper 32 bits of PREF base & limit */
-> 658         pci_write_config_dword(bridge, PCI_PREF_BASE_UPPER32, bu);
-> 659         pci_write_config_dword(bridge, PCI_PREF_LIMIT_UPPER32, lu);
-> 660 }
-> 
-> 
-> To probe the vhost-scsi and to reconfigure bridge window happen in different
-> threads. There is a race between them so that to write to mmio may not work. It
-> is called ioeventfd from KVM/QEMU's perspective.
-> 
-> [0] pci_setup_bridge_mmio_pref
-> [0] pci_setup_bridge
-> [0] pci_assign_unassigned_bridge_resources
-> [0] enable_slot
-> [0] acpiphp_check_bridge
-> [0] acpiphp_hotplug_notify
-> [0] acpi_device_hotplug
-> [0] acpi_hotplug_work_fn
-> [0] process_one_work
-> [0] worker_thread
-> [0] kthread
-> [0] ret_from_fork
-> [0] ret_from_fork_asm
-> 
-> [0] blk_execute_rq
-> [0] scsi_execute_cmd
-> [0] scsi_probe_lun
-> [0] scsi_probe_and_add_lun
-> [0] __scsi_scan_target
-> [0] scsi_scan_channel
-> [0] scsi_scan_host_selected
-> [0] do_scsi_scan_host
-> [0] do_scan_async
-> [0] async_run_entry_fn
-> [0] process_one_work
-> [0] worker_thread
-> [0] kthread
-> [0] ret_from_fork
-> 
-> 
-> Indeed, I am curious if this impacts other PCI devices on this PCI bridge,
-> doing mmio (e.g., to kick the doorbell register during that time).
-> 
-> There used to be similar issue. According to prior commits, we may need to
-> touch the bridge window for only once.
-> 
-> PCI: Probe bridge window attributes once at enumeration-time
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=51c48b310183ab6ba5419edfc6a8de889cc04521
-> 
-> 
-> Thank you very much!
-> 
-> Dongli Zhang
+To resolve this problem, every adapter and domain assigned to the mdev will
+be inspected when filtering the mdev's matrix.
+
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
+Cc: <stable@vger.kernel.org>
+---
+ drivers/s390/crypto/vfio_ap_ops.c | 57 +++++++++----------------------
+ 1 file changed, 17 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 4db538a55192..9382b32e5bd1 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -670,8 +670,7 @@ static bool vfio_ap_mdev_filter_cdoms(struct ap_matrix_mdev *matrix_mdev)
+  * Return: a boolean value indicating whether the KVM guest's APCB was changed
+  *	   by the filtering or not.
+  */
+-static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
+-				       struct ap_matrix_mdev *matrix_mdev)
++static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+ {
+ 	unsigned long apid, apqi, apqn;
+ 	DECLARE_BITMAP(prev_shadow_apm, AP_DEVICES);
+@@ -692,8 +691,8 @@ static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
+ 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
+ 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
+ 
+-	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
+-		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
++	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
+ 			/*
+ 			 * If the APQN is not bound to the vfio_ap device
+ 			 * driver, then we can't assign it to the guest's
+@@ -958,7 +957,6 @@ static ssize_t assign_adapter_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apid;
+-	DECLARE_BITMAP(apm_delta, AP_DEVICES);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -987,11 +985,8 @@ static ssize_t assign_adapter_store(struct device *dev,
+ 	}
+ 
+ 	vfio_ap_mdev_link_adapter(matrix_mdev, apid);
+-	memset(apm_delta, 0, sizeof(apm_delta));
+-	set_bit_inv(apid, apm_delta);
+ 
+-	if (vfio_ap_mdev_filter_matrix(apm_delta,
+-				       matrix_mdev->matrix.aqm, matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 
+ 	ret = count;
+@@ -1167,7 +1162,6 @@ static ssize_t assign_domain_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apqi;
+-	DECLARE_BITMAP(aqm_delta, AP_DOMAINS);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -1196,11 +1190,8 @@ static ssize_t assign_domain_store(struct device *dev,
+ 	}
+ 
+ 	vfio_ap_mdev_link_domain(matrix_mdev, apqi);
+-	memset(aqm_delta, 0, sizeof(aqm_delta));
+-	set_bit_inv(apqi, aqm_delta);
+ 
+-	if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm, aqm_delta,
+-				       matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 
+ 	ret = count;
+@@ -2091,9 +2082,7 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apdev)
+ 	if (matrix_mdev) {
+ 		vfio_ap_mdev_link_queue(matrix_mdev, q);
+ 
+-		if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm,
+-					       matrix_mdev->matrix.aqm,
+-					       matrix_mdev))
++		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 	}
+ 	dev_set_drvdata(&apdev->device, q);
+@@ -2443,34 +2432,22 @@ void vfio_ap_on_cfg_changed(struct ap_config_info *cur_cfg_info,
+ 
+ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
+ {
+-	bool do_hotplug = false;
+-	int filter_domains = 0;
+-	int filter_adapters = 0;
+-	DECLARE_BITMAP(apm, AP_DEVICES);
+-	DECLARE_BITMAP(aqm, AP_DOMAINS);
++	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
+ 
+ 	mutex_lock(&matrix_mdev->kvm->lock);
+ 	mutex_lock(&matrix_dev->mdevs_lock);
+ 
+-	filter_adapters = bitmap_and(apm, matrix_mdev->matrix.apm,
+-				     matrix_mdev->apm_add, AP_DEVICES);
+-	filter_domains = bitmap_and(aqm, matrix_mdev->matrix.aqm,
+-				    matrix_mdev->aqm_add, AP_DOMAINS);
+-
+-	if (filter_adapters && filter_domains)
+-		do_hotplug |= vfio_ap_mdev_filter_matrix(apm, aqm, matrix_mdev);
+-	else if (filter_adapters)
+-		do_hotplug |=
+-			vfio_ap_mdev_filter_matrix(apm,
+-						   matrix_mdev->shadow_apcb.aqm,
+-						   matrix_mdev);
+-	else
+-		do_hotplug |=
+-			vfio_ap_mdev_filter_matrix(matrix_mdev->shadow_apcb.apm,
+-						   aqm, matrix_mdev);
++	filter_adapters = bitmap_intersects(matrix_mdev->matrix.apm,
++					    matrix_mdev->apm_add, AP_DEVICES);
++	filter_domains = bitmap_intersects(matrix_mdev->matrix.aqm,
++					   matrix_mdev->aqm_add, AP_DOMAINS);
++	filter_cdoms = bitmap_intersects(matrix_mdev->matrix.adm,
++					 matrix_mdev->adm_add, AP_DOMAINS);
++
++	if (filter_adapters || filter_domains)
++		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev);
+ 
+-	if (bitmap_intersects(matrix_mdev->matrix.adm, matrix_mdev->adm_add,
+-			      AP_DOMAINS))
++	if (filter_cdoms)
+ 		do_hotplug |= vfio_ap_mdev_filter_cdoms(matrix_mdev);
+ 
+ 	if (do_hotplug)
+-- 
+2.43.0
+
 
