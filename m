@@ -1,131 +1,108 @@
-Return-Path: <stable+bounces-6661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDD7811F4E
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:48:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03C2811FA7
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 21:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC38282811
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0AA71C20DDA
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2B176DCF;
-	Wed, 13 Dec 2023 19:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1667E540;
+	Wed, 13 Dec 2023 20:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UYs4BEp1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9o4dZNc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BA429C;
-	Wed, 13 Dec 2023 11:48:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702496923; x=1734032923;
-  h=message-id:subject:from:reply-to:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=aA4k2O4QxXBzZN4A6Xdv+7/OCMnepuyXKc9VbGVRZF4=;
-  b=UYs4BEp19kcR+yRy4vlWPCepMONrNnvgdWQxqvAroSEIsnlpwUNM7yjB
-   fK8QwVvVbNnToOWmAxThBEBYZzBUcsNuE5fkW4teXDbDStqlKgbu4GzT0
-   mqDF+vXKGFMUSwtLUXx33CkkgB1oBKXJ7MNJzuQv/7xADOYqbHssuxAwW
-   3hE8T7xLHCM4woBfHZcYf7nn4dDughXWE2o6tbDjYhtpZ8JXOfcR/YiGr
-   L9pBhuoY0TqQg3L1MJNcCkV6zcDdirnz8LsS/BwF57Z7kHxdnq9kt4cRB
-   ZV588yHRZb1+6NM7fbc7EDlYcTyPJLHTapsjehjYjn0z5oPCl0cl2XcKA
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="8412616"
-X-IronPort-AV: E=Sophos;i="6.04,273,1695711600"; 
-   d="scan'208";a="8412616"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 11:48:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="864730997"
-X-IronPort-AV: E=Sophos;i="6.04,273,1695711600"; 
-   d="scan'208";a="864730997"
-Received: from linux.intel.com ([10.54.29.200])
-  by FMSMGA003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 11:48:42 -0800
-Received: from acharris-mobl.amr.corp.intel.com (unknown [10.255.228.183])
-	by linux.intel.com (Postfix) with ESMTP id DFF9B580DA9;
-	Wed, 13 Dec 2023 11:48:41 -0800 (PST)
-Message-ID: <970144d9b5c3d36dbd0d50f01c1c4355cd42de89.camel@linux.intel.com>
-Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link
- state
-From: "David E. Box" <david.e.box@linux.intel.com>
-Reply-To: david.e.box@linux.intel.com
-To: Bjorn Helgaas <helgaas@kernel.org>, Kai-Heng Feng
-	 <kai.heng.feng@canonical.com>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Lorenzo Pieralisi
- <lpieralisi@kernel.org>, Krzysztof =?UTF-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,  Bjorn Helgaas <bhelgaas@google.com>, Andy Gross
- <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,  Konrad Dybcio
- <konrad.dybcio@linaro.org>, Manivannan Sadhasivam <mani@kernel.org>, Rob
- Herring <robh@kernel.org>,  Nirmal Patel <nirmal.patel@linux.intel.com>,
- Jonathan Derrick <jonathan.derrick@linux.dev>, 
- linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Manivannan Sadhasivam
- <manivannan.sadhasivam@linaro.org>
-Date: Wed, 13 Dec 2023 11:48:41 -0800
-In-Reply-To: <20231212212707.GA1021099@bhelgaas>
-References: <20231212212707.GA1021099@bhelgaas>
-Organization: David E. Box
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3260DC
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 12:03:34 -0800 (PST)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7b3708b3eacso304509239f.2
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 12:03:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702497814; x=1703102614; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Qb0Chor65PZwcWQrckJnWHpUdZLfS48jXZAf3E2TW4A=;
+        b=A9o4dZNcaIowUuCvXSLY65C2Ty/tLptnCZgEQjIOHJGR4y829aL9U/7NzSMATDehty
+         Lr0LBmVGYmrqiYKbSzwNFoZiA8ruDJcJNdGF06WfTTfCbh4PvU2dc9tXV7Fq4IQZgfC/
+         7VXKHSD+5hNbWsgBTWTLALibFyJ2qB8WlIPzr8aKdoSDevDCGz3MeADOJdyuxE27WH1W
+         zKpp7dmEk/PKenYovXYpjlGepLiXf1NFXjbamKS/l+tOt2iMfXhvxJEpimYGwW7EdH3N
+         +lm0MaJwlrxK3X1281e/35iWIfB398oB7Y0zp7GHborT3+CtiUjCcRYamRElh/5jvR0g
+         rt8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702497814; x=1703102614;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qb0Chor65PZwcWQrckJnWHpUdZLfS48jXZAf3E2TW4A=;
+        b=W/qteS7CGSQdu6X0ZNL1UuU4dOcQkBuWy6wD9RMsD+a/PBnNzekOoHZHLhQ+5i1CW8
+         ce/pQ6WoMvZZ7md5H8H5uDwWHHeg4JcBTbhkXPgupIai2+eeMN1au1kM9Or3vgbOZgXk
+         37VLkJUL200j/7gugWRJCFc/mDUfT9Bx5wWgEOCtCplWeU6cxiU2abWmCX1UaUD89wn6
+         t5k18RucPwnUHwt8fF5+DHgNEXwBjqFKoGDpvQP6cl023UIJzR6H3OD3V1ZRnXvsYEEr
+         VJJgm1ieVS1I7CP0s0f2exBpRwE9oMDT0ZoHT11ohsq7zFg9xhu19kE2P5jq0Ld40RuP
+         sOWA==
+X-Gm-Message-State: AOJu0YxX+19QtSjTBPN/vyn+mWNr6e0A/1yz/gwufEpWVy9cZHq7p/i0
+	pEV657KoytVUQ352103akLw=
+X-Google-Smtp-Source: AGHT+IFV/vrZBJsnC90uYksGEy6IktKmTZJpQ4bUjLwE2JNNQ4jAgOyDSOJMfeRgZgTnkpY+LF+gxA==
+X-Received: by 2002:a05:6602:80b:b0:791:1b1c:b758 with SMTP id z11-20020a056602080b00b007911b1cb758mr8380586iow.19.1702497813983;
+        Wed, 13 Dec 2023 12:03:33 -0800 (PST)
+Received: from ?IPV6:2001:470:42c4:101:b11e:59d6:a73:7922? ([2001:470:42c4:101:b11e:59d6:a73:7922])
+        by smtp.gmail.com with ESMTPSA id g14-20020a02cd0e000000b0046455c93317sm3089544jaq.92.2023.12.13.12.03.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Dec 2023 12:03:33 -0800 (PST)
+Message-ID: <97abd266-3848-165e-001c-b5d3e0504323@gmail.com>
+Date: Wed, 13 Dec 2023 13:03:32 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 6.6 126/244] arm64: dts: rockchip: Fix eMMC Data Strobe PD
+ on rk3588
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+ Heiko Stuebner <heiko@sntech.de>, Sasha Levin <sashal@kernel.org>
+References: <20231211182045.784881756@linuxfoundation.org>
+ <20231211182051.468710881@linuxfoundation.org>
+ <0584789e-2337-2d94-608c-81c09ca0d6d9@gmail.com>
+ <2023121244-distrust-draw-d67b@gregkh>
+From: Sam Edwards <cfsworks@gmail.com>
+In-Reply-To: <2023121244-distrust-draw-d67b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2023-12-12 at 15:27 -0600, Bjorn Helgaas wrote:
-> On Tue, Dec 12, 2023 at 11:48:27AM +0800, Kai-Heng Feng wrote:
-> > On Fri, Dec 8, 2023 at 4:47=E2=80=AFAM Bjorn Helgaas <helgaas@kernel.or=
-g> wrote:
-> > ...
->=20
-> > > I hope we can obsolete this whole idea someday.=C2=A0 Using pci_walk_=
-bus()
-> > > in qcom and vmd to enable ASPM is an ugly hack to work around this
-> > > weird idea that "the OS isn't allowed to enable more ASPM states than
-> > > the BIOS did because the BIOS might have left ASPM disabled because i=
-t
-> > > knows about hardware issues."=C2=A0 More history at
-> > > https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.f=
-eng@canonical.com/T/#u
-> > >=20
-> > > I think we need to get to a point where Linux enables all supported
-> > > ASPM features by default.=C2=A0 If we really think x86 BIOS assumes a=
-n
-> > > implicit contract that the OS will never enable ASPM more
-> > > aggressively, we might need some kind of arch quirk for that.
-> >=20
-> > The reality is that PC ODM toggles ASPM to workaround hardware
-> > defects, assuming that OS will honor what's set by the BIOS.
-> > If ASPM gets enabled for all devices, many devices will break.
->=20
-> That's why I mentioned some kind of arch quirk.=C2=A0 Maybe we're forced =
-to
-> do that for x86, for instance.=C2=A0 But even that is a stop-gap.
->=20
-> The idea that the BIOS ASPM config is some kind of handoff protocol is
-> really unsupportable.
+On 12/12/23 03:36, Greg Kroah-Hartman wrote:
+> On Mon, Dec 11, 2023 at 03:05:31PM -0700, Sam Edwards wrote:
+>> - 6.6 isn't LTS
+> 
+> It isn't?  That's news to me, you might want to check the page:
+> 	https://kernel.org/category/releases.html
+> :)
 
-To be clear, you are not talking about a situation where ACPI_FADT_NO_ASPM =
-or
-_OSC PCIe disallow OS ASPM control, right? Everyone agrees that this should=
- be
-honored? The question is what to do by default when the OS is not restricte=
-d by
-these mechanisms?
+Hi Greg,
 
-Reading the mentioned thread, I too think that using the BIOS config as the
-default would be the safest option, but only to avoid breaking systems, not
-because of an implied contract between the BIOS and OS. However, enabling a=
-ll
-capable ASPM features is the ideal option. If the OS isn't limited by
-ACPI_FADT_NO_ASPM or _OSC PCIe, then ASPM enabling is fully under its contr=
-ol.
-If this doesn't work for some devices then they are broken and need a quirk=
-.
+Haha, oh man... the resource I referenced on Monday was out-of-date and 
+didn't reflect that 6.6 was LTS until ~6 hours after I had clicked 
+"send." Should have seen the look on my face when I got your reply and 
+went to check it again; had a moment of doubting my own grip on reality 
+until I saw the edit history. Serves me right for not relying on 
+kernel.org *first,* I guess!
 
-David
+Okay, since 6.6 is LTS, it makes a ton of sense that this patch should 
+be in stable-6.6 and I withdraw my prior apprehensions. Sorry for the 
+confusion. :)
+
+> thanks,
+> 
+> greg k-h
+
+Thank you as well,
+Sam
 
