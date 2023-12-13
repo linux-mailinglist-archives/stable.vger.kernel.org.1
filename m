@@ -1,139 +1,280 @@
-Return-Path: <stable+bounces-6597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430878112E0
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:30:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E028113B2
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B68282266
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:30:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C4D81F229D6
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443692D039;
-	Wed, 13 Dec 2023 13:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="aNCcX/L1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF012E41F;
+	Wed, 13 Dec 2023 13:52:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFA7AB;
-	Wed, 13 Dec 2023 05:30:06 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 26F7B1C0006;
-	Wed, 13 Dec 2023 13:30:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1702474204;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HciAWFsqkTxL2YfZMqDwMzCKBXTjDgpSa3BIdLw1iBs=;
-	b=aNCcX/L1lLEUCaI+nAphi60hLG1V6H/zJUUUQdovJM0PG7ClWWHhQNHhZZE7KzdgObaL0H
-	/pxH7yGkUUrC9OSKj+xA1CuDkQlJYYcyMaIOwZqcN525TlLHDDraNR/f/QJceUlR8K6MCs
-	RZ66ckPUrqxam7KtTipV56LU4EY27KXcnmGoCvm5Fz3R9VUVOWGcr9n5xdsDCByavM/gFb
-	M7pPohCK0AM04k7LlCwwWNFRbx4Y55wzJgOkUf+NYcyDta3fks+Y2rSJijIA+Eu+JPjO3K
-	XW0nX7kv0uZ/gFgWZbnCP0M3tmKRM+K9rvriw42lFsDp4cxznN2PGQpJQ9nRjA==
-Message-ID: <92a45817-cd45-c132-a8fc-b2f057d388d9@gtucker.io>
-Date: Wed, 13 Dec 2023 14:30:03 +0100
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCF1E3581;
+	Wed, 13 Dec 2023 05:52:21 -0800 (PST)
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-1fae54afb66so845510fac.1;
+        Wed, 13 Dec 2023 05:52:21 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702475535; x=1703080335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ns4LGXhzsELqeFy5cKH0B3W9wewJJdmQ50HMk4RT/LI=;
+        b=bRRbDVGdR45B3UgsLLZMPd4HxzW2pfjT5KirfiDkwlQEYjKTE3Kwlp2YTCZaadNsK3
+         baS1ES58NuCtdTyqI6icbQZH45H67eF/qCBkQ7Rx9FZ2dFoqrZEn+ZcGYxq+t8Tw+SAu
+         xadh4iQDHuIE+ZjmY0Bd3Qjn9FUX6btRA0THi9Q/MJ+38iAqyIQ7Cc3m3fd2ydNWyXmd
+         JiDPwUtJZtRRAnn83m/HQycRLk+e0444WKafoad3oMZ/D6gyQOawlbHPqypP9EsG3QMf
+         4EfBtvWwDrRwnc8+DgUqPexQ/6/QBq4v69uII1d/R8I5vDncZVOt8Xrnnl0/K/AW0Rol
+         8+0Q==
+X-Gm-Message-State: AOJu0Yw7d93kG/1hp0i/x0p0caxfCmS9rD5vcOviZ9NX6py4Yt1mgLfi
+	HVQL34657z6u1CLFvYPGeBKc0cC+2YRhbLmuec0=
+X-Google-Smtp-Source: AGHT+IFklC2+2yx5+/6px6dm4plrZumhRqC32TtxPC7w0lY9NXF5sm33JROV1+LfS+a7VWPf8xUrG2EjBMfksHgaVsY=
+X-Received: by 2002:a05:6871:208c:b0:1fb:19d6:8715 with SMTP id
+ ry12-20020a056871208c00b001fb19d68715mr14383677oab.4.1702475534692; Wed, 13
+ Dec 2023 05:52:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: stable/LTS test report from KernelCI (2023-12-08)
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, stable@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Shreeya Patel <shreeya.patel@collabora.com>,
- "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
-References: <738c6c87-527e-a1c2-671f-eed6a1dbaef3@collabora.com>
- <2023120846-taste-saga-c4a9@gregkh>
- <1ca05280-a03c-66c0-cd67-87c58c8f3929@gtucker.io>
- <2023121131-delirious-roster-e729@gregkh>
-Content-Language: en-GB
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-In-Reply-To: <2023121131-delirious-roster-e729@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+References: <20231213011103.1491414-1-zhanghongchen@loongson.cn>
+In-Reply-To: <20231213011103.1491414-1-zhanghongchen@loongson.cn>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 13 Dec 2023 14:52:03 +0100
+Message-ID: <CAJZ5v0iTfpo9EH3bCAwJ+E8W67uJyy_9wFBOucJVWmmGV_-XpA@mail.gmail.com>
+Subject: Re: [PATCH v3] PM: hibernate: use acquire/release ordering when
+ compress/decompress image
+To: Hongchen Zhang <zhanghongchen@loongson.cn>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, 
+	Bojan Smojver <bojan@rexursive.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn, 
+	stable@vger.kernel.org, Weihao Li <liweihao@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/12/2023 14:07, Greg KH wrote:
-> On Mon, Dec 11, 2023 at 11:14:03AM +0100, Guillaume Tucker wrote:
->> On a related topic, it was once mentioned that since stable
->> releases occur once a week and they are used as the basis for
->> many distros and products, it would make sense to have
->> long-running tests after the release has been declared.  So we
->> could have say, 48h of testing with extended coverage from LTP,
->> fstests, benchmarks etc.  That would be a reply to the email with
->> the release tag, not the patch review.
-> 
-> What tests take longer than 48 hours?
+On Wed, Dec 13, 2023 at 2:11=E2=80=AFAM Hongchen Zhang
+<zhanghongchen@loongson.cn> wrote:
+>
+> When we test S4(suspend to disk) on LoongArch 3A6000 platform, the
+> test case sometimes fails. The dmesg log shows the following error:
+>         Invalid LZO compressed length
+> After we dig into the code, we find out that:
+> When compress/decompress the image, the synchronization operation
+> between the control thread and the compress/decompress/crc thread
+> uses relaxed ordering interface, which is unreliable, and the
+> following situation may occur:
+> CPU 0                                   CPU 1
+> save_image_lzo                          lzo_compress_threadfn
+>                                           atomic_set(&d->stop, 1);
+>   atomic_read(&data[thr].stop)
+>   data[thr].cmp =3D data[thr].cmp_len;
+>                                           WRITE data[thr].cmp_len
+> Then CPU0 get a old cmp_len and write to disk. When cpu resume from S4,
+> wrong cmp_len is loaded.
+>
+> To maintain data consistency between two threads, we should use the
+> acquire/release ordering interface. So we change atomic_read/atomic_set
+> to atomic_read_acquire/atomic_set_release.
+>
+> Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hi=
+bernation, checksum image")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Weihao Li <liweihao@loongson.cn>
 
-Well, I'm not sure what you're actually asking here.  Strictly
-speaking, some benchmarks and fuzzing can run for longer than
-48h.
+I gather that the tag above is the only difference between this
+version of the patch and the previous one.
 
-What I meant is that testing is always open-ended, we could run
-tests literally forever on every kernel revision if we wanted to.
-For maintainer trees, it's really useful to have a short feedback
-loop and get useful results within say, 1h.  For linux-next and
-mainline, maybe more testing can be done and results could take
-up to 4h to arrive.  Then for stable releases (not stable-rc), as
-they happen basically once a week and are adopted as a base
-revision by a large group of users, it would make sense to have a
-bigger "testing budget" and allow up to maybe 48h of testing
-efforts.  As to how to make best use of this time, there are
-various ways to look at it.
+It is always better to list the changes made between consecutive
+versions of a patch.
 
-I would suggest to first run the tests that aren't usually run
-such as some less common fstests combinations as well as some LTP
-and kselftests suites that take more than 30 min to complete.
-Also, if there are any reproducers for the fixes that have been
-applied to the stable branch then they could be run as true
-regression testing to confirm these issues don't come back.  Then
-some additional benchmarks and tests that are known to "fail"
-occasionally could also be run to gather more stats.  This could
-potentially show trends in case of say, performance deviation
-over several months on LTS with finer granularity.
+> Signed-off-by: Weihao Li <liweihao@loongson.cn>
+> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> ---
+>  kernel/power/swap.c | 38 +++++++++++++++++++-------------------
+>  1 file changed, 19 insertions(+), 19 deletions(-)
+>
+> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
+> index a2cb0babb5ec..d44f5937f1e5 100644
+> --- a/kernel/power/swap.c
+> +++ b/kernel/power/swap.c
+> @@ -606,11 +606,11 @@ static int crc32_threadfn(void *data)
+>         unsigned i;
+>
+>         while (1) {
+> -               wait_event(d->go, atomic_read(&d->ready) ||
+> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>                                   kthread_should_stop());
+>                 if (kthread_should_stop()) {
+>                         d->thr =3D NULL;
+> -                       atomic_set(&d->stop, 1);
+> +                       atomic_set_release(&d->stop, 1);
+>                         wake_up(&d->done);
+>                         break;
+>                 }
+> @@ -619,7 +619,7 @@ static int crc32_threadfn(void *data)
+>                 for (i =3D 0; i < d->run_threads; i++)
+>                         *d->crc32 =3D crc32_le(*d->crc32,
+>                                              d->unc[i], *d->unc_len[i]);
+> -               atomic_set(&d->stop, 1);
+> +               atomic_set_release(&d->stop, 1);
+>                 wake_up(&d->done);
+>         }
+>         return 0;
+> @@ -649,12 +649,12 @@ static int lzo_compress_threadfn(void *data)
+>         struct cmp_data *d =3D data;
+>
+>         while (1) {
+> -               wait_event(d->go, atomic_read(&d->ready) ||
+> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>                                   kthread_should_stop());
+>                 if (kthread_should_stop()) {
+>                         d->thr =3D NULL;
+>                         d->ret =3D -1;
+> -                       atomic_set(&d->stop, 1);
+> +                       atomic_set_release(&d->stop, 1);
+>                         wake_up(&d->done);
+>                         break;
+>                 }
+> @@ -663,7 +663,7 @@ static int lzo_compress_threadfn(void *data)
+>                 d->ret =3D lzo1x_1_compress(d->unc, d->unc_len,
+>                                           d->cmp + LZO_HEADER, &d->cmp_le=
+n,
+>                                           d->wrk);
+> -               atomic_set(&d->stop, 1);
+> +               atomic_set_release(&d->stop, 1);
+>                 wake_up(&d->done);
+>         }
+>         return 0;
+> @@ -798,7 +798,7 @@ static int save_image_lzo(struct swap_map_handle *han=
+dle,
+>
+>                         data[thr].unc_len =3D off;
+>
+> -                       atomic_set(&data[thr].ready, 1);
+> +                       atomic_set_release(&data[thr].ready, 1);
+>                         wake_up(&data[thr].go);
+>                 }
+>
+> @@ -806,12 +806,12 @@ static int save_image_lzo(struct swap_map_handle *h=
+andle,
+>                         break;
+>
+>                 crc->run_threads =3D thr;
+> -               atomic_set(&crc->ready, 1);
+> +               atomic_set_release(&crc->ready, 1);
+>                 wake_up(&crc->go);
+>
+>                 for (run_threads =3D thr, thr =3D 0; thr < run_threads; t=
+hr++) {
+>                         wait_event(data[thr].done,
+> -                                  atomic_read(&data[thr].stop));
+> +                               atomic_read_acquire(&data[thr].stop));
+>                         atomic_set(&data[thr].stop, 0);
+>
+>                         ret =3D data[thr].ret;
+> @@ -850,7 +850,7 @@ static int save_image_lzo(struct swap_map_handle *han=
+dle,
+>                         }
+>                 }
+>
+> -               wait_event(crc->done, atomic_read(&crc->stop));
+> +               wait_event(crc->done, atomic_read_acquire(&crc->stop));
+>                 atomic_set(&crc->stop, 0);
+>         }
+>
+> @@ -1132,12 +1132,12 @@ static int lzo_decompress_threadfn(void *data)
+>         struct dec_data *d =3D data;
+>
+>         while (1) {
+> -               wait_event(d->go, atomic_read(&d->ready) ||
+> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>                                   kthread_should_stop());
+>                 if (kthread_should_stop()) {
+>                         d->thr =3D NULL;
+>                         d->ret =3D -1;
+> -                       atomic_set(&d->stop, 1);
+> +                       atomic_set_release(&d->stop, 1);
+>                         wake_up(&d->done);
+>                         break;
+>                 }
+> @@ -1150,7 +1150,7 @@ static int lzo_decompress_threadfn(void *data)
+>                         flush_icache_range((unsigned long)d->unc,
+>                                            (unsigned long)d->unc + d->unc=
+_len);
+>
+> -               atomic_set(&d->stop, 1);
+> +               atomic_set_release(&d->stop, 1);
+>                 wake_up(&d->done);
+>         }
+>         return 0;
+> @@ -1335,7 +1335,7 @@ static int load_image_lzo(struct swap_map_handle *h=
+andle,
+>                 }
+>
+>                 if (crc->run_threads) {
+> -                       wait_event(crc->done, atomic_read(&crc->stop));
+> +                       wait_event(crc->done, atomic_read_acquire(&crc->s=
+top));
+>                         atomic_set(&crc->stop, 0);
+>                         crc->run_threads =3D 0;
+>                 }
+> @@ -1371,7 +1371,7 @@ static int load_image_lzo(struct swap_map_handle *h=
+andle,
+>                                         pg =3D 0;
+>                         }
+>
+> -                       atomic_set(&data[thr].ready, 1);
+> +                       atomic_set_release(&data[thr].ready, 1);
+>                         wake_up(&data[thr].go);
+>                 }
+>
+> @@ -1390,7 +1390,7 @@ static int load_image_lzo(struct swap_map_handle *h=
+andle,
+>
+>                 for (run_threads =3D thr, thr =3D 0; thr < run_threads; t=
+hr++) {
+>                         wait_event(data[thr].done,
+> -                                  atomic_read(&data[thr].stop));
+> +                               atomic_read_acquire(&data[thr].stop));
+>                         atomic_set(&data[thr].stop, 0);
+>
+>                         ret =3D data[thr].ret;
+> @@ -1421,7 +1421,7 @@ static int load_image_lzo(struct swap_map_handle *h=
+andle,
+>                                 ret =3D snapshot_write_next(snapshot);
+>                                 if (ret <=3D 0) {
+>                                         crc->run_threads =3D thr + 1;
+> -                                       atomic_set(&crc->ready, 1);
+> +                                       atomic_set_release(&crc->ready, 1=
+);
+>                                         wake_up(&crc->go);
+>                                         goto out_finish;
+>                                 }
+> @@ -1429,13 +1429,13 @@ static int load_image_lzo(struct swap_map_handle =
+*handle,
+>                 }
+>
+>                 crc->run_threads =3D thr;
+> -               atomic_set(&crc->ready, 1);
+> +               atomic_set_release(&crc->ready, 1);
+>                 wake_up(&crc->go);
+>         }
+>
+>  out_finish:
+>         if (crc->run_threads) {
+> -               wait_event(crc->done, atomic_read(&crc->stop));
+> +               wait_event(crc->done, atomic_read_acquire(&crc->stop));
+>                 atomic_set(&crc->stop, 0);
+>         }
+>         stop =3D ktime_get();
+> --
 
->> I've mentioned before the concept of finding "2nd derivatives" in
->> the rest results, basically the first delta gives you all the
->> regressions and then you do a delta of the regressions to find
->> the new ones.  Maintainer trees would be typically comparing
->> against mainline or say, the -rc2 tag where they based their
->> branch.  In the case of stable, it would be between the stable-rc
->> branch being tested and the base stable branch with the last
->> tagged release.
-> 
-> Yes, that is going to be required for this to be useful.
+Applied as 6.8 material with some edits in the subject and changelog.
 
-OK thanks for confirming.
-
->> One last thing, I see there's a change in KernelCI now to
->> actually stop sending the current (suboptimal) automated reports
->> to the stable mailing list:
->>
->>   https://github.com/kernelci/kernelci-jenkins/pull/136
->>
->> Is this actually what people here want?
-> 
-> If these reports are currently for me, I'm just deleting them as they
-> provide no value anymore.  So yes, let's stop this until we can get
-> something that actually works for us please.
-
-Right, I wasn't sure if anyone else was interested in them.  It
-sounds like Sasha doesn't really need them either, although he
-wrote on IRC that he wouldn't disable them until something better
-was in place.  I would suggest sending at least an email to the
-stable list to propose to stop these emails with a particular
-date and ideally some kind of plan about when some new emails
-would be available to replace them.  But if really nobody else
-than you needs the current emails, then effectively nobody needs
-them and we can stop now of course.
-
-Cheers,
-Guillaume
+Thanks!
 
