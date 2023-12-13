@@ -1,90 +1,142 @@
-Return-Path: <stable+bounces-6592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C01C811126
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:32:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2420A811235
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9F628199A
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 12:32:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D116D281F0A
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0223F1F5E6;
-	Wed, 13 Dec 2023 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04F02C1BC;
+	Wed, 13 Dec 2023 13:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgUohgwo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L5rvBkq7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F72660EB;
-	Wed, 13 Dec 2023 12:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F4BC433C8;
-	Wed, 13 Dec 2023 12:32:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702470769;
-	bh=vrdMpHk3hes/pW7t5HwtgiIc6BqoYwfb1U2KPkDWxgE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dgUohgwoOyhk6M6Wd7/FpKATne5jZCu9xiDWyOmoagGffRNlTYcsChdGvykCND8fn
-	 plnKDqWey43X6DVHTv14SZisx9rxXTuCin3kQVp/z4hCwvXL8JD+J0LsXGW1v+D+os
-	 RM4xJw8uLWmUECtdtXKkVieONogprH1N/wmuAfmjAGlr21zer0fD2oRef0475J0XYK
-	 MCmOrhKOuj7yg4Jni2BiO3dqo1I8epmsTZZRWM3OuVEgAPZK/A+/WuqYOKtiSr1P/j
-	 igHPxaS0UybluJ8YmZ74QXb3bmx8hgE42BAe520dtWTgJeblq+gXeZ5f9+WBZquiqm
-	 wkp7N1j6pOJ9w==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rDOPu-0004dw-0X;
-	Wed, 13 Dec 2023 13:32:46 +0100
-Date: Wed, 13 Dec 2023 13:32:46 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Yujie Liu <yujie.liu@intel.com>
-Cc: kernel test robot <lkp@intel.com>,
-	Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-	oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
-Message-ID: <ZXmkbgOqI4D3k7ds@hovoldconsulting.com>
-References: <20231211132608.27861-3-johan+linaro@kernel.org>
- <ZXdGxI0OrIUKrbcS@be2c62907a9b>
- <ZXdJZ6yfK0NWz_zj@hovoldconsulting.com>
- <ZXgedtUhbKEwtSMr@yujie-X299>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE172EA
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 04:59:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702472399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wFCv+0tZaZnz6YeZzK8hxOwjz0J3Dsh5vJIVe/dhdnE=;
+	b=L5rvBkq7WhtTSAr5d60UpyQkuONVIJszllE9YfmiaablMmK19b5Of86TWIgU+CBxQQVrE0
+	iU769KPoCmTn9+BWqI3OP83FfRYe6lyvJIMrAN8wGULRwSc0x+VN5xW5Xn6fOochAoayWx
+	h/idZuqlyQMGsCasW7MA5WfSNyUzzHM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-492-_1ewMQSjMia1L5Y54fo5Ig-1; Wed, 13 Dec 2023 07:59:57 -0500
+X-MC-Unique: _1ewMQSjMia1L5Y54fo5Ig-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40c2c461e18so11757415e9.0
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 04:59:57 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702472396; x=1703077196;
+        h=mime-version:user-agent:content-transfer-encoding:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wFCv+0tZaZnz6YeZzK8hxOwjz0J3Dsh5vJIVe/dhdnE=;
+        b=j0i9HG/JhUsVI0gstO9ON0sqvdmTjbn67culHZ/qJ0UrhKaj1vMHkTkDwkDSEjdav3
+         /tskpDh5HedjYPM/MtWphXgauzfBTG40fxlkV9zAPgePxIbJSiudtJ4wdfiHTRmd1W9c
+         GpZWBECa62gWP2jJtXPUYZ69IPRZ2rVR0UxKJtMEe7sfc+uNtfSNiok5bVtaIsnYybzm
+         taCHd3ykN6vYBFfnDsM7leXiCymC9NSOv/oQZlIw6X9/rGEzBmGa8ROG6zEW1WQWB9k5
+         j6NSVXkhRrKNPYpzjkBQuYLVtm9Oq6AJ7H/HArCg7rL+oAfK3X260jH+zEp7MKu6Lt5R
+         FUKg==
+X-Gm-Message-State: AOJu0YwJQoagb5cFduKwxvSqeEBvjRcWgeZg0KxpY4WpZlAgw9q0u4Dv
+	VKGBlDNT4LdG02CbbuLLmrWW+tSm0ZWcWIJVXwU/TTBWCTMQfoBxFEBxusjoL0m7NIhPqhLOB9A
+	p5ULLvCHA6R9Ez/Rj
+X-Received: by 2002:a05:600c:511a:b0:40b:516a:3856 with SMTP id o26-20020a05600c511a00b0040b516a3856mr9749072wms.1.1702472396613;
+        Wed, 13 Dec 2023 04:59:56 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwXql9nJbq7x4v2uy9r9nzvBcsRQ6cZzXgBsR4vsn2vk2qU4KbpFlHbt/UWL+c1VfSst1fYA==
+X-Received: by 2002:a05:600c:511a:b0:40b:516a:3856 with SMTP id o26-20020a05600c511a00b0040b516a3856mr9749062wms.1.1702472396246;
+        Wed, 13 Dec 2023 04:59:56 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id g9-20020a5d4889000000b0033609584b9dsm13081881wrq.74.2023.12.13.04.59.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 04:59:55 -0800 (PST)
+Message-ID: <74219796e91675c533daea6a2a6afc6d06fb7461.camel@redhat.com>
+Subject: Further cleanups for pci_iounmap() and lib/iomap.c discussion
+From: Philipp Stanner <pstanner@redhat.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Johannes Berg <johannes@sipsolutions.net>, Randy Dunlap
+ <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,  John Sanpe
+ <sanpeqf@gmail.com>, Kent Overstreet <kent.overstreet@gmail.com>, Niklas
+ Schnelle <schnelle@linux.ibm.com>, Philipp Stanner <pstanner@redhat.com>,
+ Dave Jiang <dave.jiang@intel.com>, Uladzislau Koshchanka
+ <koshchanka@gmail.com>,  "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>, Rae
+ Moar <rmoar@google.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury Norov
+ <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Marco Elver <elver@google.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+ dakr@redhat.com
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 13 Dec 2023 13:59:54 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZXgedtUhbKEwtSMr@yujie-X299>
 
-On Tue, Dec 12, 2023 at 04:48:54PM +0800, Yujie Liu wrote:
-> On Mon, Dec 11, 2023 at 06:39:51PM +0100, Johan Hovold wrote:
-> > On Tue, Dec 12, 2023 at 01:28:36AM +0800, kernel test robot wrote:
-> > > Hi,
-> > > 
-> > > Thanks for your patch.
-> > > 
-> > > FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> > > 
-> > > The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-> > > 
-> > > Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-> > > Subject: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
->                    ^
-> 
-> > > Link: https://lore.kernel.org/stable/20231211132608.27861-3-johan%2Blinaro%40kernel.org
-> > 
-> > Please fix your robot. This is a series of stable kernel backports so
-> > the above warning makes no sense.
-> 
-> Sorry for this wrong report. We introduced b4 tool into the robot
-> recently to help simplify patch processing, but seems that b4
-> automatically removed the "stable-6.6" prefix in the patch subject when
-> grabbing the mail thread, and triggered this wrong report. We've fixed
-> this issue for the bot just now.
+Hola,
 
-Perfect, thanks!
+This is a discussion about whether we want to move lib/iomap.c and
+remove the remaining pci_io(un)map() definition of s390.
 
-Johan
+That would be followup work on our pci_iounmap() cleanup [1] that was
+discussed here [2] (but is not yet merged).
+
+
+The summary from the last discussions was:
+ * GENERIC_IOMAP is not generic anymore, but x86-specific
+ * All (?) archs should be able to use generic pci_iounmap()
+
+
+I've been looking into GENERIC_IOMAP a bit and am unsure whether that's
+true. Notably, powerpc seems to do something with it; see
+platforms/Kconfig:
+
+config PPC_INDIRECT_PIO
+bool
+select GENERIC_IOMAP
+
+
+I've had a few ideas, but don't really want to pursue them until we had
+a discussion about it:
+   1. If GENERIC_IOMAP is really x86-specific, that should mean that we
+      could move lib/iomap.c to x86 completely, since that file is only
+      built when that symbol is defined.
+   2. If it's moved to x86, the question arises whether it's possible
+      to provide exact variants for lib/iomap.c's PIO_* constants. The
+      comment above them in that file hint at those being just rough
+      estimates ("assuming that all the low addresses are always PIO").
+   3. To really just have one pci_iounmap(), we'd have to jump into
+      s390 and replace its pci_iounmap(), which might be a bad idea
+      since it also has its own pci_iomap().
+
+
+So my tendency would be to leave s390 alone, figure out what's going on
+with powerpc and then, if possible, move lib/iomap.c to x86 and
+consequently have the second "generic" definition of iomem_is_ioport()
+from asm-generic/iomap.h removed.
+
+Ideas?
+
+P.
+
+
+[1] https://lore.kernel.org/all/20231213104922.13894-1-pstanner@redhat.com/
+[2] https://lore.kernel.org/all/619ea619-29e4-42fb-9b27-1d1a32e0ee66@app.fa=
+stmail.com/
+
 
