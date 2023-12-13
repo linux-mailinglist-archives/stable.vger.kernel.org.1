@@ -1,79 +1,292 @@
-Return-Path: <stable+bounces-6541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C1B8106C2
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:37:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 316B381073B
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D02E2823B3
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 00:37:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 619551C20E66
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E496394;
-	Wed, 13 Dec 2023 00:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GER0MF1r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C4EA53;
+	Wed, 13 Dec 2023 01:04:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD57EA
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 16:37:47 -0800 (PST)
-Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-548ae9a5eeaso3035a12.1
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 16:37:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702427866; x=1703032666; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=1LnE6BidxYtGaY3naq+UID6BS2mBFdrix5t5XhfBs+I=;
-        b=GER0MF1r3n4hbuvaztv/r7g9jGVPXuX+pJokY1ZkDTPPmo/wIIE7c3LqkFrIvPx7Ty
-         UmLA14tAQQgXEpxv1asWdk6rQ9QS2lE3212qvuOC5Uqba7fKx8y01Dcai3PkJSVclyC4
-         4d7V/natmrN/jvPJAp6oV71SbAhayZrmkPzjwkmmwXO9if/oJjJuGXYWgNKIQpkkvAnc
-         J4vXJjAFWk9P/rxTN54I3hpjYqEZ23HiBM1rWIUZSMAdLfACuq0k0KHmiaBfY23LymOI
-         v0G+TFSg5rUV7GY8TmIqZ/fk6B6mBxbGwbw7g+Svkh+7JES+wEZTsa8I91/Z8s0rEkl8
-         rZMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702427866; x=1703032666;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1LnE6BidxYtGaY3naq+UID6BS2mBFdrix5t5XhfBs+I=;
-        b=E+677C/djcELRzmNqL4Mn3ClhnWt9nYD5KQhSBjrwVvLYEaubldAYhfVgb8z8cr1yR
-         cC/fkcI2UiprHvxleDXIM6heFCnziiqnKAlF1DRBv5Ce4NjIFI7HL1PE7vtQysW92jE7
-         DhR+t0dt9jF/jVPRVttKj3OXqZFSKu84urykxXBV+mQmfuv85Hgxm4cCFQHhUfr1AThE
-         eGsoPplF+6vHx3k+CSm4ntY7IS6x7buGeP9UDHat7C+Z31NjzuI5XPxL/17eKAB9jdXF
-         zji0HlOP4/rb5Y9bSaDQbKKDJggdrY504YQ5bzx82b3iPPnoNXdEme1fYy1uDIyvGJN1
-         KCqQ==
-X-Gm-Message-State: AOJu0Yxasj4uzAo9Bugwz2WQxnqoI+iZmERJzIH0sMXZunq+rLqcX73L
-	xOidpVPBK9AAbrslzJrbDCQLACAzloVZ3o49NyyI
-X-Google-Smtp-Source: AGHT+IGnMQRiKEPWZSvwWYwwY8FAhUWy825RQ67iHfal2GL8IR+NeDwrblzRUmQldUIwiAa92DPPmgK9pAj6EIrAdq4=
-X-Received: by 2002:a50:d601:0:b0:551:f450:752a with SMTP id
- x1-20020a50d601000000b00551f450752amr37151edi.6.1702427866162; Tue, 12 Dec
- 2023 16:37:46 -0800 (PST)
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8F67799;
+	Tue, 12 Dec 2023 17:03:58 -0800 (PST)
+Received: from loongson.cn (unknown [111.207.111.194])
+	by gateway (Coremail) with SMTP id _____8DxS+n6Anll6H4AAA--.3111S3;
+	Wed, 13 Dec 2023 09:03:54 +0800 (CST)
+Received: from [10.180.13.176] (unknown [111.207.111.194])
+	by localhost.localdomain (Coremail) with SMTP id AQAAf8Cx73PyAnllSIoBAA--.10143S3;
+	Wed, 13 Dec 2023 09:03:47 +0800 (CST)
+Subject: Re: [PATCH v2] PM: hibernate: use acquire/release ordering when
+ compress/decompress image
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+ Bojan Smojver <bojan@rexursive.com>, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+ stable@vger.kernel.org, Weihao Li <liweihao@loongson.cn>
+References: <20231116005609.1583858-1-zhanghongchen@loongson.cn>
+ <CAJZ5v0gTcntizfqKMa0YxHbOhNsLf=nAEoOBf2f9fFt-uzzgsg@mail.gmail.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
+Message-ID: <ee169c10-7c49-898a-caee-124ec3254330@loongson.cn>
+Date: Wed, 13 Dec 2023 09:02:57 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <000000000000b505f3060c454a49@google.com> <ZXfBmiTHnm_SsM-n@sashalap>
-In-Reply-To: <ZXfBmiTHnm_SsM-n@sashalap>
-From: Robert Kolchmeyer <rkolchmeyer@google.com>
-Date: Tue, 12 Dec 2023 16:37:31 -0800
-Message-ID: <CAJc0_fz4LEyNT2rB7KAsAZuym8TT3DZLEfFqSoBigs-316LNKQ@mail.gmail.com>
-Subject: Re: IMA performance regression in 5.10.194 when using overlayfs
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	regressions@lists.linux.dev, eric.snowberg@oracle.com, zohar@linux.ibm.com, 
-	jlayton@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAJZ5v0gTcntizfqKMa0YxHbOhNsLf=nAEoOBf2f9fFt-uzzgsg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:AQAAf8Cx73PyAnllSIoBAA--.10143S3
+X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAEB2V3wy0JQgABs0
+X-Coremail-Antispam: 1Uk129KBj93XoW3Ar15Ar47KrWruFyktr1DArc_yoWxKw15pF
+	Z5Xan0kF4UJFW5AwsFva10v345AwnYyFZrGrs3Ja4fuasIgws5ta40gF9Yvr1YyF1xKa40
+	9a1Utr90gryqvFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
 
-> Looking at the dependencies you've identified, it probably makes sense
-> to just take them as is (as it's something we would have done if these
-> dependencies were identified explicitly).
->
-> I'll plan to queue them up after the current round of releases is out.
+Hi Rafael,
+    Thanks for your review.
+On 2023/12/12 下午9:03, Rafael J. Wysocki wrote:
+> On Thu, Nov 16, 2023 at 1:56 AM Hongchen Zhang
+> <zhanghongchen@loongson.cn> wrote:
+>>
+>> When we test S4(suspend to disk) on LoongArch 3A6000 platform, the
+>> test case sometimes fails. The dmesg log shows the following error:
+>>          Invalid LZO compressed length
+>> After we dig into the code, we find out that:
+>> When compress/decompress the image, the synchronization operation
+>> between the control thread and the compress/decompress/crc thread
+>> uses relaxed ordering interface, which is unreliable, and the
+>> following situation may occur:
+>> CPU 0                                   CPU 1
+>> save_image_lzo                          lzo_compress_threadfn
+>>                                            atomic_set(&d->stop, 1);
+>>    atomic_read(&data[thr].stop)
+>>    data[thr].cmp = data[thr].cmp_len;
+>>                                            WRITE data[thr].cmp_len
+>> Then CPU0 get a old cmp_len and write to disk. When cpu resume from S4,
+>> wrong cmp_len is loaded.
+>>
+>> To maintain data consistency between two threads, we should use the
+>> acquire/release ordering interface. So we change atomic_read/atomic_set
+>> to atomic_read_acquire/atomic_set_release.
+>>
+>> Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+>> Signed-off-by: Weihao Li <liweihao@loongson.cn>
+> 
+> I was about to apply this patch when I noticed the S-o-b confusion.
+> 
+> Either a From: header pointing to Weihao Li <liweihao@loongson.cn> is
+> missing and the Hongchen Zhang <zhanghongchen@loongson.cn> sign-off
+> means that the patch is sent on behalf of Weihao Li, or you both
+> worked on the patch together and a Co-developed-by: tag pointing to
+> Weihao Li <liweihao@loongson.cn> is missing.
+> 
+> Which of the above is the case?
+Yes, we both worked on this patch,let me add
+Co-developed-by: Weihao Li <liweihao@loongson.cn>
+and send V3.
 
-Sounds great, thank you!
+> 
+>> ---
+>> v1 -> v2:
+>>          1. add Cc: stable@vger.kernel.org in commit log
+>>          2. add Fixes: line in commit log
+>> ---
+>>   kernel/power/swap.c | 38 +++++++++++++++++++-------------------
+>>   1 file changed, 19 insertions(+), 19 deletions(-)
+>>
+>> diff --git a/kernel/power/swap.c b/kernel/power/swap.c
+>> index a2cb0babb5ec..d44f5937f1e5 100644
+>> --- a/kernel/power/swap.c
+>> +++ b/kernel/power/swap.c
+>> @@ -606,11 +606,11 @@ static int crc32_threadfn(void *data)
+>>          unsigned i;
+>>
+>>          while (1) {
+>> -               wait_event(d->go, atomic_read(&d->ready) ||
+>> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>>                                    kthread_should_stop());
+>>                  if (kthread_should_stop()) {
+>>                          d->thr = NULL;
+>> -                       atomic_set(&d->stop, 1);
+>> +                       atomic_set_release(&d->stop, 1);
+>>                          wake_up(&d->done);
+>>                          break;
+>>                  }
+>> @@ -619,7 +619,7 @@ static int crc32_threadfn(void *data)
+>>                  for (i = 0; i < d->run_threads; i++)
+>>                          *d->crc32 = crc32_le(*d->crc32,
+>>                                               d->unc[i], *d->unc_len[i]);
+>> -               atomic_set(&d->stop, 1);
+>> +               atomic_set_release(&d->stop, 1);
+>>                  wake_up(&d->done);
+>>          }
+>>          return 0;
+>> @@ -649,12 +649,12 @@ static int lzo_compress_threadfn(void *data)
+>>          struct cmp_data *d = data;
+>>
+>>          while (1) {
+>> -               wait_event(d->go, atomic_read(&d->ready) ||
+>> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>>                                    kthread_should_stop());
+>>                  if (kthread_should_stop()) {
+>>                          d->thr = NULL;
+>>                          d->ret = -1;
+>> -                       atomic_set(&d->stop, 1);
+>> +                       atomic_set_release(&d->stop, 1);
+>>                          wake_up(&d->done);
+>>                          break;
+>>                  }
+>> @@ -663,7 +663,7 @@ static int lzo_compress_threadfn(void *data)
+>>                  d->ret = lzo1x_1_compress(d->unc, d->unc_len,
+>>                                            d->cmp + LZO_HEADER, &d->cmp_len,
+>>                                            d->wrk);
+>> -               atomic_set(&d->stop, 1);
+>> +               atomic_set_release(&d->stop, 1);
+>>                  wake_up(&d->done);
+>>          }
+>>          return 0;
+>> @@ -798,7 +798,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
+>>
+>>                          data[thr].unc_len = off;
+>>
+>> -                       atomic_set(&data[thr].ready, 1);
+>> +                       atomic_set_release(&data[thr].ready, 1);
+>>                          wake_up(&data[thr].go);
+>>                  }
+>>
+>> @@ -806,12 +806,12 @@ static int save_image_lzo(struct swap_map_handle *handle,
+>>                          break;
+>>
+>>                  crc->run_threads = thr;
+>> -               atomic_set(&crc->ready, 1);
+>> +               atomic_set_release(&crc->ready, 1);
+>>                  wake_up(&crc->go);
+>>
+>>                  for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+>>                          wait_event(data[thr].done,
+>> -                                  atomic_read(&data[thr].stop));
+>> +                               atomic_read_acquire(&data[thr].stop));
+>>                          atomic_set(&data[thr].stop, 0);
+>>
+>>                          ret = data[thr].ret;
+>> @@ -850,7 +850,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
+>>                          }
+>>                  }
+>>
+>> -               wait_event(crc->done, atomic_read(&crc->stop));
+>> +               wait_event(crc->done, atomic_read_acquire(&crc->stop));
+>>                  atomic_set(&crc->stop, 0);
+>>          }
+>>
+>> @@ -1132,12 +1132,12 @@ static int lzo_decompress_threadfn(void *data)
+>>          struct dec_data *d = data;
+>>
+>>          while (1) {
+>> -               wait_event(d->go, atomic_read(&d->ready) ||
+>> +               wait_event(d->go, atomic_read_acquire(&d->ready) ||
+>>                                    kthread_should_stop());
+>>                  if (kthread_should_stop()) {
+>>                          d->thr = NULL;
+>>                          d->ret = -1;
+>> -                       atomic_set(&d->stop, 1);
+>> +                       atomic_set_release(&d->stop, 1);
+>>                          wake_up(&d->done);
+>>                          break;
+>>                  }
+>> @@ -1150,7 +1150,7 @@ static int lzo_decompress_threadfn(void *data)
+>>                          flush_icache_range((unsigned long)d->unc,
+>>                                             (unsigned long)d->unc + d->unc_len);
+>>
+>> -               atomic_set(&d->stop, 1);
+>> +               atomic_set_release(&d->stop, 1);
+>>                  wake_up(&d->done);
+>>          }
+>>          return 0;
+>> @@ -1335,7 +1335,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
+>>                  }
+>>
+>>                  if (crc->run_threads) {
+>> -                       wait_event(crc->done, atomic_read(&crc->stop));
+>> +                       wait_event(crc->done, atomic_read_acquire(&crc->stop));
+>>                          atomic_set(&crc->stop, 0);
+>>                          crc->run_threads = 0;
+>>                  }
+>> @@ -1371,7 +1371,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
+>>                                          pg = 0;
+>>                          }
+>>
+>> -                       atomic_set(&data[thr].ready, 1);
+>> +                       atomic_set_release(&data[thr].ready, 1);
+>>                          wake_up(&data[thr].go);
+>>                  }
+>>
+>> @@ -1390,7 +1390,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
+>>
+>>                  for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
+>>                          wait_event(data[thr].done,
+>> -                                  atomic_read(&data[thr].stop));
+>> +                               atomic_read_acquire(&data[thr].stop));
+>>                          atomic_set(&data[thr].stop, 0);
+>>
+>>                          ret = data[thr].ret;
+>> @@ -1421,7 +1421,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
+>>                                  ret = snapshot_write_next(snapshot);
+>>                                  if (ret <= 0) {
+>>                                          crc->run_threads = thr + 1;
+>> -                                       atomic_set(&crc->ready, 1);
+>> +                                       atomic_set_release(&crc->ready, 1);
+>>                                          wake_up(&crc->go);
+>>                                          goto out_finish;
+>>                                  }
+>> @@ -1429,13 +1429,13 @@ static int load_image_lzo(struct swap_map_handle *handle,
+>>                  }
+>>
+>>                  crc->run_threads = thr;
+>> -               atomic_set(&crc->ready, 1);
+>> +               atomic_set_release(&crc->ready, 1);
+>>                  wake_up(&crc->go);
+>>          }
+>>
+>>   out_finish:
+>>          if (crc->run_threads) {
+>> -               wait_event(crc->done, atomic_read(&crc->stop));
+>> +               wait_event(crc->done, atomic_read_acquire(&crc->stop));
+>>                  atomic_set(&crc->stop, 0);
+>>          }
+>>          stop = ktime_get();
+>> --
+>> 2.33.0
+>>
 
--Robert
+
+-- 
+Best Regards
+Hongchen Zhang
+
 
