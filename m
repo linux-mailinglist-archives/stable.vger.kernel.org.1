@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EDEC810787
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA935810788
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:20:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2460A1F21AFA
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D2C3280F04
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C86A5E;
-	Wed, 13 Dec 2023 01:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15C417C7;
+	Wed, 13 Dec 2023 01:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jOCUB3Vb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FwDQxx1D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D363FEB8;
-	Wed, 13 Dec 2023 01:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34186C433C8;
-	Wed, 13 Dec 2023 01:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630F817C3;
+	Wed, 13 Dec 2023 01:20:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0837C433C8;
+	Wed, 13 Dec 2023 01:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1702430442;
-	bh=OmOuBdXlTmofdiQGAvEYe2YDCxhlyOmbYR7+6VkopwE=;
+	s=korg; t=1702430446;
+	bh=m5+dRLdY8iZv9/v6DO+7/k/g4Le28xhlR1GtSEm+RJw=;
 	h=Date:To:From:Subject:From;
-	b=jOCUB3VbIiVqk78WcMTX36nlb5OpGyp+SDEOuPO+R0SIZzZQCX5/nCeN5e8jkzNFN
-	 aoK73G7FLrrfKpUi43jiucgJBYaOtL2KLxlXtFLOkhD8TE/HRshTO61SV+0uhJQGmF
-	 /AiN287eC4wzoqQVc6tD10aZyam6jsq1g0vXv6FM=
-Date: Tue, 12 Dec 2023 17:20:41 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bhe@redhat.com,agordeev@linux.ibm.com,ignat@cloudflare.com,akpm@linux-foundation.org
+	b=FwDQxx1DFV2HR1PTfKEyVwrbRi2ZCVOK7Ax8kW12P7JSXWqacjy4X7paz33KtdK/A
+	 NbvjTiVCT/lCAIySX5zUKCWDnNRBqBLkvjS1CESQJjgneEQjbFpm7BLUgXnoFhtYUT
+	 mFf7EYdBe1E2UuEkEyJAeFi1GRu7BmhZdTeALIbI=
+Date: Tue, 12 Dec 2023 17:20:46 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,changbin.du@intel.com,acsjakub@amazon.de,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch removed from -mm tree
-Message-Id: <20231213012042.34186C433C8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch removed from -mm tree
+Message-Id: <20231213012046.C0837C433C8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,116 +42,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
+     Subject: mm/damon/core: make damon_start() waits until kdamond_fn() starts
 has been removed from the -mm tree.  Its filename was
-     kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch
+     mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Ignat Korchagin <ignat@cloudflare.com>
-Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
-Date: Wed, 29 Nov 2023 22:04:09 +0000
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/core: make damon_start() waits until kdamond_fn() starts
+Date: Fri, 8 Dec 2023 17:50:18 +0000
 
-In commit f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for
-CRASH_DUMP") we tried to fix a config regression, where CONFIG_CRASH_DUMP
-required CONFIG_KEXEC.
+The cleanup tasks of kdamond threads including reset of corresponding
+DAMON context's ->kdamond field and decrease of global nr_running_ctxs
+counter is supposed to be executed by kdamond_fn().  However, commit
+0f91d13366a4 ("mm/damon: simplify stop mechanism") made neither
+damon_start() nor damon_stop() ensure the corresponding kdamond has
+started the execution of kdamond_fn().
 
-However, it was not enough at least for arm64 platforms.  While further
-testing the patch with our arm64 config I noticed that CONFIG_CRASH_DUMP
-is unavailable in menuconfig.  This is because CONFIG_CRASH_DUMP still
-depends on the new CONFIG_ARCH_SUPPORTS_KEXEC introduced in commit
-91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec") and on
-arm64 CONFIG_ARCH_SUPPORTS_KEXEC requires CONFIG_PM_SLEEP_SMP=y, which in
-turn requires either CONFIG_SUSPEND=y or CONFIG_HIBERNATION=y neither of
-which are set in our config.
+As a result, the cleanup can be skipped if damon_stop() is called fast
+enough after the previous damon_start().  Especially the skipped reset
+of ->kdamond could cause a use-after-free.
 
-Given that we already established that CONFIG_KEXEC (which is a switch for
-kexec system call itself) is not required for CONFIG_CRASH_DUMP drop
-CONFIG_ARCH_SUPPORTS_KEXEC dependency as well.  The arm64 kernel builds
-just fine with CONFIG_CRASH_DUMP=y and with both CONFIG_KEXEC=n and
-CONFIG_KEXEC_FILE=n after f8ff23429c62 ("kernel/Kconfig.kexec: drop select
-of KEXEC for CRASH_DUMP") and this patch are applied given that the
-necessary shared bits are included via CONFIG_KEXEC_CORE dependency.
+Fix it by waiting for start of kdamond_fn() execution from
+damon_start().
 
-[bhe@redhat.com: don't export some symbols when CONFIG_MMU=n]
-  Link: https://lkml.kernel.org/r/ZW03ODUKGGhP1ZGU@MiWiFi-R3L-srv
-[bhe@redhat.com: riscv, kexec: fix dependency of two items]
-  Link: https://lkml.kernel.org/r/ZW04G/SKnhbE5mnX@MiWiFi-R3L-srv
-Link: https://lkml.kernel.org/r/20231129220409.55006-1-ignat@cloudflare.com
-Fixes: 91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec")
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: <stable@vger.kernel.org> # 6.6+: f8ff234: kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP
-Cc: <stable@vger.kernel.org> # 6.6+
+Link: https://lkml.kernel.org/r/20231208175018.63880-1-sj@kernel.org
+Fixes: 0f91d13366a4 ("mm/damon: simplify stop mechanism")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Jakub Acs <acsjakub@amazon.de>
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/riscv/Kconfig             |    4 ++--
- arch/riscv/kernel/crash_core.c |    4 +++-
- kernel/Kconfig.kexec           |    1 -
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ include/linux/damon.h |    2 ++
+ mm/damon/core.c       |    6 ++++++
+ 2 files changed, 8 insertions(+)
 
---- a/arch/riscv/Kconfig~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
-+++ a/arch/riscv/Kconfig
-@@ -685,7 +685,7 @@ config RISCV_BOOT_SPINWAIT
- 	  If unsure what to do here, say N.
+--- a/include/linux/damon.h~mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts
++++ a/include/linux/damon.h
+@@ -559,6 +559,8 @@ struct damon_ctx {
+ 	 * update
+ 	 */
+ 	unsigned long next_ops_update_sis;
++	/* for waiting until the execution of the kdamond_fn is started */
++	struct completion kdamond_started;
  
- config ARCH_SUPPORTS_KEXEC
--	def_bool MMU
-+	def_bool y
+ /* public: */
+ 	struct task_struct *kdamond;
+--- a/mm/damon/core.c~mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts
++++ a/mm/damon/core.c
+@@ -445,6 +445,8 @@ struct damon_ctx *damon_new_ctx(void)
+ 	if (!ctx)
+ 		return NULL;
  
- config ARCH_SELECTS_KEXEC
- 	def_bool y
-@@ -693,7 +693,7 @@ config ARCH_SELECTS_KEXEC
- 	select HOTPLUG_CPU if SMP
++	init_completion(&ctx->kdamond_started);
++
+ 	ctx->attrs.sample_interval = 5 * 1000;
+ 	ctx->attrs.aggr_interval = 100 * 1000;
+ 	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
+@@ -668,11 +670,14 @@ static int __damon_start(struct damon_ct
+ 	mutex_lock(&ctx->kdamond_lock);
+ 	if (!ctx->kdamond) {
+ 		err = 0;
++		reinit_completion(&ctx->kdamond_started);
+ 		ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+ 				nr_running_ctxs);
+ 		if (IS_ERR(ctx->kdamond)) {
+ 			err = PTR_ERR(ctx->kdamond);
+ 			ctx->kdamond = NULL;
++		} else {
++			wait_for_completion(&ctx->kdamond_started);
+ 		}
+ 	}
+ 	mutex_unlock(&ctx->kdamond_lock);
+@@ -1433,6 +1438,7 @@ static int kdamond_fn(void *data)
  
- config ARCH_SUPPORTS_KEXEC_FILE
--	def_bool 64BIT && MMU
-+	def_bool 64BIT
+ 	pr_debug("kdamond (%d) starts\n", current->pid);
  
- config ARCH_SELECTS_KEXEC_FILE
- 	def_bool y
---- a/arch/riscv/kernel/crash_core.c~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
-+++ a/arch/riscv/kernel/crash_core.c
-@@ -5,18 +5,20 @@
++	complete(&ctx->kdamond_started);
+ 	kdamond_init_intervals_sis(ctx);
  
- void arch_crash_save_vmcoreinfo(void)
- {
--	VMCOREINFO_NUMBER(VA_BITS);
- 	VMCOREINFO_NUMBER(phys_ram_base);
- 
- 	vmcoreinfo_append_str("NUMBER(PAGE_OFFSET)=0x%lx\n", PAGE_OFFSET);
- 	vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
- 	vmcoreinfo_append_str("NUMBER(VMALLOC_END)=0x%lx\n", VMALLOC_END);
-+#ifdef CONFIG_MMU
-+	VMCOREINFO_NUMBER(VA_BITS);
- 	vmcoreinfo_append_str("NUMBER(VMEMMAP_START)=0x%lx\n", VMEMMAP_START);
- 	vmcoreinfo_append_str("NUMBER(VMEMMAP_END)=0x%lx\n", VMEMMAP_END);
- #ifdef CONFIG_64BIT
- 	vmcoreinfo_append_str("NUMBER(MODULES_VADDR)=0x%lx\n", MODULES_VADDR);
- 	vmcoreinfo_append_str("NUMBER(MODULES_END)=0x%lx\n", MODULES_END);
- #endif
-+#endif
- 	vmcoreinfo_append_str("NUMBER(KERNEL_LINK_ADDR)=0x%lx\n", KERNEL_LINK_ADDR);
- 	vmcoreinfo_append_str("NUMBER(va_kernel_pa_offset)=0x%lx\n",
- 						kernel_map.va_kernel_pa_offset);
---- a/kernel/Kconfig.kexec~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
-+++ a/kernel/Kconfig.kexec
-@@ -94,7 +94,6 @@ config KEXEC_JUMP
- config CRASH_DUMP
- 	bool "kernel crash dumps"
- 	depends on ARCH_SUPPORTS_CRASH_DUMP
--	depends on ARCH_SUPPORTS_KEXEC
- 	select CRASH_CORE
- 	select KEXEC_CORE
- 	help
+ 	if (ctx->ops.init)
 _
 
-Patches currently in -mm which might be from ignat@cloudflare.com are
+Patches currently in -mm which might be from sj@kernel.org are
 
+selftests-damon-implement-a-python-module-for-test-purpose-damon-sysfs-controls.patch
+selftests-damon-_damon_sysfs-implement-kdamonds-start-function.patch
+selftests-damon-_damon_sysfs-implement-updat_schemes_tried_bytes-command.patch
+selftests-damon-add-a-test-for-update_schemes_tried_regions-sysfs-command.patch
+selftests-damon-add-a-test-for-update_schemes_tried_regions-hang-bug.patch
 
 
