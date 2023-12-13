@@ -1,215 +1,139 @@
-Return-Path: <stable+bounces-6596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55080811295
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:15:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 430878112E0
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:30:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7966B1C20E14
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:15:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B68282266
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78E22C85A;
-	Wed, 13 Dec 2023 13:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443692D039;
+	Wed, 13 Dec 2023 13:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AlxembAF";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I8OUWC0l";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AlxembAF";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I8OUWC0l"
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="aNCcX/L1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106D5DD
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 05:15:02 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 20E5C219C0;
-	Wed, 13 Dec 2023 13:15:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702473300;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CFA7AB;
+	Wed, 13 Dec 2023 05:30:06 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 26F7B1C0006;
+	Wed, 13 Dec 2023 13:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1702474204;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
-	b=AlxembAFuGzXLoKikMWezt6YCg3t4i+gDtyUnvwaaGliNHj5pN/jZfmeHquNvE0TM8ws9C
-	7NS4Sl3VJTnB3lpQeyBpDCKoRJYSHOBtxwd/6/yodNolWCmGQZ84k3zMCAEL95fZE73FOz
-	W+LSWN+9R6g2f4sn6UbxF3xtCGepxXU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702473300;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
-	b=I8OUWC0l75Rfsa3R9KGATeWe2T5Zhscyv4ZVbOS0K7RPXXKykmOc8Vbunmg5W4nYlVQ0i5
-	Ml3Xf7Ng/BmO8JAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702473300;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
-	b=AlxembAFuGzXLoKikMWezt6YCg3t4i+gDtyUnvwaaGliNHj5pN/jZfmeHquNvE0TM8ws9C
-	7NS4Sl3VJTnB3lpQeyBpDCKoRJYSHOBtxwd/6/yodNolWCmGQZ84k3zMCAEL95fZE73FOz
-	W+LSWN+9R6g2f4sn6UbxF3xtCGepxXU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702473300;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
-	b=I8OUWC0l75Rfsa3R9KGATeWe2T5Zhscyv4ZVbOS0K7RPXXKykmOc8Vbunmg5W4nYlVQ0i5
-	Ml3Xf7Ng/BmO8JAA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id B843213240;
-	Wed, 13 Dec 2023 13:14:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id Dh1NK1OueWVXKQAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Wed, 13 Dec 2023 13:14:59 +0000
-Date: Wed, 13 Dec 2023 14:08:08 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
-Subject: Re: [PATCH 5.4 63/94] btrfs: add dmesg output for first mount and
- last unmount of a filesystem
-Message-ID: <20231213130808.GC3001@suse.cz>
-Reply-To: dsterba@suse.cz
-References: <20231205031522.815119918@linuxfoundation.org>
- <20231205031526.359703653@linuxfoundation.org>
- <20231209172836.GA2154579@dev-arch.thelio-3990X>
- <2023121106-henna-unclog-6d2f@gregkh>
+	bh=HciAWFsqkTxL2YfZMqDwMzCKBXTjDgpSa3BIdLw1iBs=;
+	b=aNCcX/L1lLEUCaI+nAphi60hLG1V6H/zJUUUQdovJM0PG7ClWWHhQNHhZZE7KzdgObaL0H
+	/pxH7yGkUUrC9OSKj+xA1CuDkQlJYYcyMaIOwZqcN525TlLHDDraNR/f/QJceUlR8K6MCs
+	RZ66ckPUrqxam7KtTipV56LU4EY27KXcnmGoCvm5Fz3R9VUVOWGcr9n5xdsDCByavM/gFb
+	M7pPohCK0AM04k7LlCwwWNFRbx4Y55wzJgOkUf+NYcyDta3fks+Y2rSJijIA+Eu+JPjO3K
+	XW0nX7kv0uZ/gFgWZbnCP0M3tmKRM+K9rvriw42lFsDp4cxznN2PGQpJQ9nRjA==
+Message-ID: <92a45817-cd45-c132-a8fc-b2f057d388d9@gtucker.io>
+Date: Wed, 13 Dec 2023 14:30:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023121106-henna-unclog-6d2f@gregkh>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Score: 4.99
-X-Spamd-Bar: ++
-X-Rspamd-Queue-Id: 20E5C219C0
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AlxembAF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I8OUWC0l;
-	dmarc=none;
-	spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of dsterba@suse.cz) smtp.mailfrom=dsterba@suse.cz
-X-Spam-Score: 2.79
-X-Spamd-Result: default: False [2.79 / 50.00];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 DMARC_NA(1.20)[suse.cz];
-	 R_SPF_SOFTFAIL(4.60)[~all];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.cz:dkim,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
-X-Rspamd-Server: rspamd1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: stable/LTS test report from KernelCI (2023-12-08)
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Gustavo Padovan <gustavo.padovan@collabora.com>, stable@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Shreeya Patel <shreeya.patel@collabora.com>,
+ "kernelci@lists.linux.dev" <kernelci@lists.linux.dev>
+References: <738c6c87-527e-a1c2-671f-eed6a1dbaef3@collabora.com>
+ <2023120846-taste-saga-c4a9@gregkh>
+ <1ca05280-a03c-66c0-cd67-87c58c8f3929@gtucker.io>
+ <2023121131-delirious-roster-e729@gregkh>
+Content-Language: en-GB
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <2023121131-delirious-roster-e729@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: gtucker@gtucker.io
 
-On Mon, Dec 11, 2023 at 03:56:16PM +0100, Greg Kroah-Hartman wrote:
-> On Sat, Dec 09, 2023 at 10:28:36AM -0700, Nathan Chancellor wrote:
-> > On Tue, Dec 05, 2023 at 12:17:31PM +0900, Greg Kroah-Hartman wrote:
-> > > 5.4-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Qu Wenruo <wqu@suse.com>
-> > > 
-> > > commit 2db313205f8b96eea467691917138d646bb50aef upstream.
-> > > 
-> > > There is a feature request to add dmesg output when unmounting a btrfs.
-> > > There are several alternative methods to do the same thing, but with
-> > > their own problems:
-> > > 
-> > > - Use eBPF to watch btrfs_put_super()/open_ctree()
-> > >   Not end user friendly, they have to dip their head into the source
-> > >   code.
-> > > 
-> > > - Watch for directory /sys/fs/<uuid>/
-> > >   This is way more simple, but still requires some simple device -> uuid
-> > >   lookups.  And a script needs to use inotify to watch /sys/fs/.
-> > > 
-> > > Compared to all these, directly outputting the information into dmesg
-> > > would be the most simple one, with both device and UUID included.
-> > > 
-> > > And since we're here, also add the output when mounting a filesystem for
-> > > the first time for parity. A more fine grained monitoring of subvolume
-> > > mounts should be done by another layer, like audit.
-> > > 
-> > > Now mounting a btrfs with all default mkfs options would look like this:
-> > > 
-> > >   [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-> > >   [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
-> > >   [81.908258] BTRFS info (device dm-8): using free space tree
-> > >   [81.912644] BTRFS info (device dm-8): auto enabling async discard
-> > >   [81.913277] BTRFS info (device dm-8): checking UUID tree
-> > >   [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-> > > 
-> > > CC: stable@vger.kernel.org # 5.4+
-> > > Link: https://github.com/kdave/btrfs-progs/issues/689
-> > > Reviewed-by: Anand Jain <anand.jain@oracle.com>
-> > > Signed-off-by: Qu Wenruo <wqu@suse.com>
-> > > Reviewed-by: David Sterba <dsterba@suse.com>
-> > > [ update changelog ]
-> > > Signed-off-by: David Sterba <dsterba@suse.com>
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >  fs/btrfs/disk-io.c |    1 +
-> > >  fs/btrfs/super.c   |    5 ++++-
-> > >  2 files changed, 5 insertions(+), 1 deletion(-)
-> > > 
-> > > --- a/fs/btrfs/disk-io.c
-> > > +++ b/fs/btrfs/disk-io.c
-> > > @@ -2829,6 +2829,7 @@ int open_ctree(struct super_block *sb,
-> > >  		goto fail_alloc;
-> > >  	}
-> > >  
-> > > +	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
-> > 
-> > clang tells me this backport does not appear to be correct and will
-> > likely introduce a null pointer deference:
-> > 
-> >   fs/btrfs/disk-io.c:2832:55: warning: variable 'disk_super' is uninitialized when used here [-Wuninitialized]
-> >    2832 |         btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
-> >         |                                                              ^~~~~~~~~~
-> >   fs/btrfs/ctree.h:3002:41: note: expanded from macro 'btrfs_info'
-> >    3002 |         btrfs_printk(fs_info, KERN_INFO fmt, ##args)
-> >         |                                                ^~~~
-> >   fs/btrfs/disk-io.c:2630:38: note: initialize the variable 'disk_super' to silence this warning
-> >    2630 |         struct btrfs_super_block *disk_super;
-> >         |                                             ^
-> >         |                                              = NULL
-> >   1 warning generated.
+On 11/12/2023 14:07, Greg KH wrote:
+> On Mon, Dec 11, 2023 at 11:14:03AM +0100, Guillaume Tucker wrote:
+>> On a related topic, it was once mentioned that since stable
+>> releases occur once a week and they are used as the basis for
+>> many distros and products, it would make sense to have
+>> long-running tests after the release has been declared.  So we
+>> could have say, 48h of testing with extended coverage from LTP,
+>> fstests, benchmarks etc.  That would be a reply to the email with
+>> the release tag, not the patch review.
 > 
-> Thanks for the notice, I've now reverted this.
+> What tests take longer than 48 hours?
 
-Thanks. I've verified that this only affects 5.4. The patch is still
-possible to apply there, the btrfs_info() call would have to be moved
-after 'disk_super' is initialized. The patch is not that important so
-reverting is OK for me.
+Well, I'm not sure what you're actually asking here.  Strictly
+speaking, some benchmarks and fuzzing can run for longer than
+48h.
+
+What I meant is that testing is always open-ended, we could run
+tests literally forever on every kernel revision if we wanted to.
+For maintainer trees, it's really useful to have a short feedback
+loop and get useful results within say, 1h.  For linux-next and
+mainline, maybe more testing can be done and results could take
+up to 4h to arrive.  Then for stable releases (not stable-rc), as
+they happen basically once a week and are adopted as a base
+revision by a large group of users, it would make sense to have a
+bigger "testing budget" and allow up to maybe 48h of testing
+efforts.  As to how to make best use of this time, there are
+various ways to look at it.
+
+I would suggest to first run the tests that aren't usually run
+such as some less common fstests combinations as well as some LTP
+and kselftests suites that take more than 30 min to complete.
+Also, if there are any reproducers for the fixes that have been
+applied to the stable branch then they could be run as true
+regression testing to confirm these issues don't come back.  Then
+some additional benchmarks and tests that are known to "fail"
+occasionally could also be run to gather more stats.  This could
+potentially show trends in case of say, performance deviation
+over several months on LTS with finer granularity.
+
+>> I've mentioned before the concept of finding "2nd derivatives" in
+>> the rest results, basically the first delta gives you all the
+>> regressions and then you do a delta of the regressions to find
+>> the new ones.  Maintainer trees would be typically comparing
+>> against mainline or say, the -rc2 tag where they based their
+>> branch.  In the case of stable, it would be between the stable-rc
+>> branch being tested and the base stable branch with the last
+>> tagged release.
+> 
+> Yes, that is going to be required for this to be useful.
+
+OK thanks for confirming.
+
+>> One last thing, I see there's a change in KernelCI now to
+>> actually stop sending the current (suboptimal) automated reports
+>> to the stable mailing list:
+>>
+>>   https://github.com/kernelci/kernelci-jenkins/pull/136
+>>
+>> Is this actually what people here want?
+> 
+> If these reports are currently for me, I'm just deleting them as they
+> provide no value anymore.  So yes, let's stop this until we can get
+> something that actually works for us please.
+
+Right, I wasn't sure if anyone else was interested in them.  It
+sounds like Sasha doesn't really need them either, although he
+wrote on IRC that he wouldn't disable them until something better
+was in place.  I would suggest sending at least an email to the
+stable list to propose to stop these emails with a particular
+date and ideally some kind of plan about when some new emails
+would be available to replace them.  But if really nobody else
+than you needs the current emails, then effectively nobody needs
+them and we can stop now of course.
+
+Cheers,
+Guillaume
 
