@@ -1,102 +1,154 @@
-Return-Path: <stable+bounces-6640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A80811DD5
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:00:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8C8811E09
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7105D1F21742
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:00:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA4F282C23
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCD467B5B;
-	Wed, 13 Dec 2023 19:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47BC67B65;
+	Wed, 13 Dec 2023 19:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ECfmI8sU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLqc3MZK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DFEB2
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:00:30 -0800 (PST)
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-50bf32c0140so8299587e87.1
-        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:00:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702494028; x=1703098828; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qK7Oyh72XFSFSL4xPkFqcCR8+DGBFGrbcMmMNxvkKPw=;
-        b=ECfmI8sUg78xe6FINCnL/QtG2lG6omV10LmYW2AOdb01km5aL+xebUanY2y5xzjI56
-         bRaX4LL8L/xGfobK+iZ96GwAodYZ++l5APN4+4JMHGmQLJJA1Fc/dpUl220CUnjvogRa
-         mdjDzx5r3ltvrRju/GhW9l9+rEOl8xlicUOHPkoL/0+cuZk+zKm9TIMjsRk7PACBFxVq
-         fnA1MSpaElJYs1MmOagrzs6oPizj2r7BJzoitUMS4dHb1GJTPALlNlxaeTHO6e+5Aizj
-         po3T+QLiq5kIYkL7vWHgpRwlv8TswqK3vc2wBBbr8vZIE3d4OSfuB6i08aPozw/YCG3h
-         affw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702494028; x=1703098828;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qK7Oyh72XFSFSL4xPkFqcCR8+DGBFGrbcMmMNxvkKPw=;
-        b=ogsbAsh2rMxtjaKlUe/1UaJL4Jp+zwc5Tg4d7GKN0nSTBj6Z91lgThZ4nH8EjFjgFD
-         O+BYzG5Mp3yio6oC4Zp3QB+lkpCr7zfmi0I8xiqJU2BNg2L8DgpMWHAflld7cOkP8Rvb
-         EdTFMSn+35oeuVO08zSiQy5QBIlkXlTPT1kUj55kGDsz1vOleN29X8CHJE9U3Yu/6QgQ
-         RpT14sklFIJqPvrNaj4g03UDvcfVEoSaCJLN7rKLEoKOlBe5xodzxjQKt0auoUqZrW7A
-         lM5ulOXPWE4hZqUJCSzPnntkkKoHy7E4SIG5Q7KTBgTqebTIAc64o02kSEinbVM9LsPS
-         zLsw==
-X-Gm-Message-State: AOJu0YyZSxZcHefjuiC+o+/HviRPQ56Bw6DGVG+oD7+ig1o2TXILsD5G
-	OQblE0gZCjnFR7/ocGeogQCjpQ==
-X-Google-Smtp-Source: AGHT+IEjXurmiqb7G4f2AEjbM9CKTFKc2qPOfSmJeViFUwTe2NCpCJa8AveSRgjNSxmd4lBdmfAQEg==
-X-Received: by 2002:ac2:597a:0:b0:50c:125:c6c3 with SMTP id h26-20020ac2597a000000b0050c0125c6c3mr3803080lfp.128.1702494028402;
-        Wed, 13 Dec 2023 11:00:28 -0800 (PST)
-Received: from [172.30.204.126] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id u4-20020a05651206c400b005009c4ba3f0sm1680336lff.72.2023.12.13.11.00.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 11:00:28 -0800 (PST)
-Message-ID: <4ee3e8eb-de4f-4dba-8e66-966ba7692d83@linaro.org>
-Date: Wed, 13 Dec 2023 20:00:25 +0100
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBB267B60
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 19:05:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760CAC43391;
+	Wed, 13 Dec 2023 19:05:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702494344;
+	bh=r89+7htyHkX5d01hxevZpYpK1vGj/49NDc8UGc0+0q0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bLqc3MZKwj49EYo705QpdWII1KDl9YTP/VRTKXkpYYTtEzbsfFr5ndBY4IfqqPEt0
+	 CjSKyvKwklTxtvoWdmbDfCAZhQDx1jxHy7NKpYgsjmVmwxbR5ItsXr6t/iErtBhmTb
+	 anqoKMVELVovtbnwOsfXDNZbWpb+pRt0EUZNpARg=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.333
+Date: Wed, 13 Dec 2023 20:05:39 +0100
+Message-ID: <2023121339-scrunch-puppy-042f@gregkh>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8150: fix USB SS wakeup
-Content-Language: en-US
-To: Johan Hovold <johan+linaro@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Jack Pham <quic_jackp@quicinc.com>, Jonathan Marek <jonathan@marek.ca>
-References: <20231213173403.29544-1-johan+linaro@kernel.org>
- <20231213173403.29544-6-johan+linaro@kernel.org>
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231213173403.29544-6-johan+linaro@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+I'm announcing the release of the 4.14.333 kernel.
 
+All users of the 4.14 kernel series must upgrade.
 
-On 12/13/23 18:34, Johan Hovold wrote:
-> The USB SS PHY interrupts need to be provided by the PDC interrupt
-> controller in order to be able to wake the system up from low-power
-> states.
-> 
-> Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
-> Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
-> Cc: stable@vger.kernel.org      # 5.10
-> Cc: Jack Pham <quic_jackp@quicinc.com>
-> Cc: Jonathan Marek <jonathan@marek.ca>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
-Matches ds
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+thanks,
 
-Konrad
+greg k-h
+
+------------
+
+ Makefile                                          |    2 -
+ arch/s390/mm/pgtable.c                            |    2 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c            |    2 -
+ drivers/hwmon/acpi_power_meter.c                  |    4 ++
+ drivers/infiniband/hw/bnxt_re/main.c              |    2 -
+ drivers/net/ethernet/broadcom/tg3.c               |   42 ++++++++++++++++++----
+ drivers/net/ethernet/broadcom/tg3.h               |    4 +-
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c |   29 +++++++++++++++
+ drivers/parport/parport_pc.c                      |   21 +++++++++++
+ drivers/scsi/be2iscsi/be_main.c                   |    1 
+ drivers/tty/serial/8250/8250_early.c              |    1 
+ drivers/tty/serial/sc16is7xx.c                    |   12 ++++++
+ fs/nilfs2/sufile.c                                |   42 ++++++++++++++++++----
+ fs/nilfs2/the_nilfs.c                             |    6 ++-
+ include/net/genetlink.h                           |    3 +
+ kernel/trace/trace.c                              |   38 +++++++++----------
+ net/core/drop_monitor.c                           |    4 +-
+ net/ipv4/tcp_input.c                              |    6 ++-
+ net/netlink/af_netlink.c                          |    4 +-
+ net/netlink/genetlink.c                           |   35 ++++++++++++++++++
+ net/packet/af_packet.c                            |   16 ++++----
+ net/packet/internal.h                             |    2 -
+ net/psample/psample.c                             |    3 +
+ sound/core/pcm.c                                  |    1 
+ 24 files changed, 228 insertions(+), 54 deletions(-)
+
+Alex Pakhunov (2):
+      tg3: Move the [rt]x_dropped counters to tg3_napi
+      tg3: Increment tx_dropped in tg3_tso_bug()
+
+Armin Wolf (1):
+      hwmon: (acpi_power_meter) Fix 4.29 MW bug
+
+Cameron Williams (1):
+      parport: Add support for Brainboxes IX/UC/PX parallel cards
+
+Claudio Imbrenda (1):
+      KVM: s390/mm: Properly reset no-dat
+
+Daniel Borkmann (1):
+      packet: Move reference count in packet_sock to atomic_long_t
+
+Daniel Mack (1):
+      serial: sc16is7xx: address RX timeout interrupt errata
+
+Dinghao Liu (1):
+      scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
+
+Eric Dumazet (1):
+      tcp: do not accept ACK of bytes we never sent
+
+Greg Kroah-Hartman (1):
+      Linux 4.14.333
+
+Ido Schimmel (4):
+      netlink: don't call ->netlink_bind with table lock held
+      genetlink: add CAP_NET_ADMIN test for multicast bind
+      psample: Require 'CAP_NET_ADMIN' when joining "packets" group
+      drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
+
+Jason Zhang (1):
+      ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
+
+Kalesh AP (1):
+      RDMA/bnxt_re: Correct module description string
+
+Petr Pavlu (3):
+      tracing: Fix a warning when allocating buffered events fails
+      tracing: Fix incomplete locking when disabling buffered events
+      tracing: Fix a possible race when disabling buffered events
+
+Ronald Wahl (1):
+      serial: 8250_omap: Add earlycon support for the AM654 UART controller
+
+Ryusuke Konishi (2):
+      nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
+      nilfs2: fix missing error check for sb_set_blocksize call
+
+Steven Rostedt (Google) (1):
+      tracing: Always update snapshot buffer size
+
+Yonglong Liu (1):
+      net: hns: fix fake link up on xge port
+
+YuanShang (1):
+      drm/amdgpu: correct chunk_ptr to a pointer to chunk.
+
 
