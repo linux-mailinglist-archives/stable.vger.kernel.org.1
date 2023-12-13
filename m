@@ -1,133 +1,258 @@
-Return-Path: <stable+bounces-6582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190C2810E69
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 11:26:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9781E810ED1
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 11:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE06AB20CB2
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 10:26:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B81411C20A4B
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 10:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA452224ED;
-	Wed, 13 Dec 2023 10:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A956922EF8;
+	Wed, 13 Dec 2023 10:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n2Kuf9Wk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RhlJT0Pv"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F6A3DB;
-	Wed, 13 Dec 2023 02:26:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702463182; x=1733999182;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=1tYxh5KDFW8jW7XIdLhEhe4VnSkz8vV7KmPG573q+vc=;
-  b=n2Kuf9WkYzq/SyPgzCXoKmlyZeOueYBPZsyGkzlldf3rXy4Ybq7EQUP2
-   N1nFINaUQf2214ZoL3E01uM56Ga1HfH+ESLQRkUR+uRW1amUNwjm80bg9
-   S8q4QXucub4QbXtWL9QIZCpAeV43xT/wxhgpgKcZA8cW1qPS3eLsA4irg
-   otCTRZ8LO9ZWYZyzNMJvDFjb2Sr+iS2kIzQXbCCNYYKTUghfdK8PQtdGE
-   FyQkUB9Cp9Rhq3Xs6kZxHA5fpUJbT1IenHz00SA+mfVdJz1uG7m1/pCpN
-   n1Gmv9B9XpRLMMy5PynzdqwlR5Ilv+VIzBOMUzn9UBqfAHSF5xeyXzyXG
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="16497467"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="16497467"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 02:26:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="897276991"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="897276991"
-Received: from stetter-mobl1.ger.corp.intel.com ([10.252.50.95])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 02:26:17 -0800
-Date: Wed, 13 Dec 2023 12:26:16 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Jiri Slaby <jirislaby@kernel.org>, u.kleine-koenig@pengutronix.de, 
-    shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com, 
-    alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com, 
-    hugo@hugovil.com, LKML <linux-kernel@vger.kernel.org>, 
-    linux-serial <linux-serial@vger.kernel.org>, LinoSanfilippo@gmx.de, 
-    Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v5 6/7] serial: omap: do not override settings for RS485
- support
-In-Reply-To: <20231209125836.16294-7-l.sanfilippo@kunbus.com>
-Message-ID: <e1e8d86e-2cb-db8d-77a5-dcb5cd3fbb22@linux.intel.com>
-References: <20231209125836.16294-1-l.sanfilippo@kunbus.com> <20231209125836.16294-7-l.sanfilippo@kunbus.com>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A666B0
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 02:49:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702464571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Jsenl4ryPejHUAvVnk0GRNLRuch6fMe21jriRXS4vNY=;
+	b=RhlJT0PvLGVVp0hI20MxX8lTSj2OwdZ/tT4k9Vsg6H5DfKawbQzlVOmo9fKRe5JJxoOFiD
+	OUHpUR0mTVn+a9hTYRgm3IfRi2scMptAoqXfUyPL0Yc7uRx4pEat6wuaTpVMW7S4iv1X7h
+	4UoItnA864AirPOGX0lBSvOiJhiLAlM=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-1eMLEPwiOS6xnbm47lruig-1; Wed, 13 Dec 2023 05:49:30 -0500
+X-MC-Unique: 1eMLEPwiOS6xnbm47lruig-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a1e27c6de0eso141067866b.1
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 02:49:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702464569; x=1703069369;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jsenl4ryPejHUAvVnk0GRNLRuch6fMe21jriRXS4vNY=;
+        b=NMzahJIWF+MFjc5MfE/eGQ69Q+gNh2XSKRhtDVVpo8mF1s8eU0gybAIPG1CiS7l4LC
+         446//Ml+/8yvBsjjSBhMf0oJOdFxGIROloVuS8ZenNwMEU3W84iVb/jX0LiN8NVB8cyY
+         fEQpdjuEHmopQ/oGPPr8dUB3bR0IMy72cdvfVnkUB8f6fpbHT6vBmoxIKyq2BYjDOqrN
+         +mQqZnT9wKijtqJ/36SOT/lGWvOoCYWKGdaysppNU01DqVsf8StXq43YHINLfAEmJENV
+         b0UFJ6qvra5n4QY6q84y1WKYZ0xku10I1SAvCV8y8bfBvCAzbTYSi3gDfjeBl5EWO1l7
+         IdGg==
+X-Gm-Message-State: AOJu0YxJPzASIvEIt8MaXV0xpJmfOW3qQ6eoA1I46JqEIxW1hqo5mBWk
+	vIAxi26WsTpkPHndMFjHftUmI0P9M6DikrvBWb9/o/3fWh6r64MxzYRZe1bhODEkOd57W1Xa33L
+	iEVFzIdkXwPoMYwoH
+X-Received: by 2002:a17:906:99cf:b0:a1c:5944:29bb with SMTP id s15-20020a17090699cf00b00a1c594429bbmr8372970ejn.7.1702464568905;
+        Wed, 13 Dec 2023 02:49:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFjgYBJbvfH0mH+1Rv7rE+9uQlzPl9IwjMtgaG3uNiiAi7RPtxxtWG9rSZgClhoFT2vsB4Rqw==
+X-Received: by 2002:a17:906:99cf:b0:a1c:5944:29bb with SMTP id s15-20020a17090699cf00b00a1c594429bbmr8372945ejn.7.1702464568536;
+        Wed, 13 Dec 2023 02:49:28 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb ([2a01:599:914:ed27:4fa9:dbce:10f5:d0b9])
+        by smtp.gmail.com with ESMTPSA id vu8-20020a170907a64800b00a1d5c52d628sm7527135ejc.3.2023.12.13.02.49.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 02:49:28 -0800 (PST)
+From: Philipp Stanner <pstanner@redhat.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	NeilBrown <neilb@suse.de>,
+	John Sanpe <sanpeqf@gmail.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Rae Moar <rmoar@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	dakr@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v5 0/5] Regather scattered PCI-Code
+Date: Wed, 13 Dec 2023 11:49:17 +0100
+Message-ID: <20231213104922.13894-1-pstanner@redhat.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Sat, 9 Dec 2023, Lino Sanfilippo wrote:
+@Stable-Kernel:
+You receive this patch series because its first patch fixes leaks in
+PCI.
 
-> In serial_omap_rs485() RS485 support may be deactivated due to a missing
+Changes in v5:
+- Add forgotten update to MAINTAINERS file.
 
-There's no serial_omap_rs485() function. I assume/know you meant 
-serial_omap_probe_rs485() but please correct.
+Changes in v4:
+- Apply Arnd's Reviewed-by's
+- Add ifdef CONFIG_HAS_IOPORT_MAP guard in drivers/pci/iomap.c (build
+  error on openrisc)
+- Fix typo in patch no.5
 
-> RTS GPIO. This is done by nullifying the ports rs485_supported struct.
-> After that however the serial_omap_rs485_supported struct is assigned to
-> the same structure unconditionally, which results in an unintended
-> reactivation of RS485 support.
->
-> Fix this by callling serial_omap_rs485() after the assignment of
+Changes in v3:
+- Create a separate patch for the leaks in lib/iomap.c. Make it the
+  series' first patch. (Arnd)
+- Turns out the aforementioned bug wasn't just accidentally removing
+  iounmap() with the ifdef, it was also missing ioport_unmap() to begin
+  with. Add it.
+- Move the ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT-mechanism from
+  asm-generic/io.h to asm-generic/ioport.h. (Arnd)
+- Adjust the implementation of iomem_is_ioport() in asm-generic/io.h so
+  that it matches exactly what pci_iounmap() previously did in
+  lib/pci_iomap.c. (Arnd)
+- Move the CONFIG_HAS_IOPORT guard in asm-generic/io.h so that
+  iomem_is_ioport() will always be compiled and just returns false if
+  there are no ports.
+- Add TODOs to several places informing about the generic
+  iomem_is_ioport() in lib/iomap.c not being generic.
+- Add TODO about the followup work to make drivers/pci/iomap.c's
+  pci_iounmap() actually generic.
 
-callling -> calling.
+Changes in v2:
+- Replace patch 4, previously extending the comment about pci_iounmap()
+  in lib/iomap.c, with a patch that moves pci_iounmap() from that file
+  to drivers/pci/iomap.c, creating a unified version there. (Arnd)
+- Implement iomem_is_ioport() as a new helper in asm-generic/io.h and
+  lib/iomap.c. (Arnd)
+- Move the build rule in drivers/pci/Makefile for iomap.o under the
+  guard of #if PCI. This had to be done because when just checking for
+  GENERIC_PCI_IOMAP being defined, the functions don't disappear, which
+  was the case previously in lib/pci_iomap.c, where the entire file was
+  made empty if PCI was not set by the guard #ifdef PCI. (Intel's Bots)
+- Rephares all patches' commit messages a little bit.
 
-Again, the function name is incorrect.
 
-> rs485_supported.
+Sooooooooo. I reworked v1.
 
-Wouldn't it be better if all rs485 init/setups would occur in the same 
-place rather than being spread around? That is, move the rs485_config and 
-rs485_supported setup into serial_omap_probe_rs485()?
+Please review this carefully, the IO-Ranges are obviously a bit tricky,
+as is the build-system / ifdef-ery.
+
+Arnd has suggested that architectures defining a custom inb() need their
+own iomem_is_ioport(), as well. I've grepped for inb() and found the
+following list of archs that define their own:
+  - alpha
+  - arm
+  - m68k <--
+  - parisc
+  - powerpc
+  - sh
+  - sparc
+  - x86 <--
+
+All of those have their own definitons of pci_iounmap(). Therefore, they
+don't need our generic version in the first place and, thus, also need
+no iomem_is_ioport().
+The two exceptions are x86 and m68k. The former uses lib/iomap.c through
+CONFIG_GENERIC_IOMAP, as Arnd pointed out in the previous discussion
+(thus, CONFIG_GENERIC_IOMAP is not really generic in this regard).
+
+So as I see it, only m68k WOULD need its own custom definition of
+iomem_is_ioport(). But as I understand it it doesn't because it uses the
+one from asm-generic/pci_iomap.h ??
+
+I wasn't entirely sure how to deal with the address ranges for the
+generic implementation in asm-generic/io.h. It's marked with a TODO.
+Input appreciated.
+
+I removed the guard around define pci_iounmap in asm-generic/io.h. An
+alternative would be to have it be guarded by CONFIG_GENERIC_IOMAP and
+CONFIG_GENERIC_PCI_IOMAP, both. Without such a guard, there is no
+collision however, because generic pci_iounmap() from
+drivers/pci/iomap.c will only get pulled in when
+CONFIG_GENERIC_PCI_IOMAP is actually set.
+
+I cross-built this for a variety of architectures, including the usual
+suspects (s390, m68k). So far successfully. But let's see what Intel's
+robots say :O
+
+P.
+
+
+Original cover letter:
+
+Hi!
+
+So it seems that since ca. 2007 the PCI code has been scattered a bit.
+PCI's devres code, which is only ever used by users of the entire
+PCI-subsystem anyways, resides in lib/devres.c and is guarded by an
+ifdef PCI, just as the content of lib/pci_iomap.c is.
+
+It, thus, seems reasonable to move all of that.
+
+As I were at it, I moved as much of the devres-specific code from pci.c
+to devres.c, too. The only exceptions are four functions that are
+currently difficult to move. More information about that can be read
+here [1].
+
+I noticed these scattered files while working on (new) PCI-specific
+devres functions. If we can get this here merged, I'll soon send another
+patch series that addresses some API-inconsistencies and could move the
+devres-part of the four remaining functions.
+
+I don't want to do that in this series as this here is only about moving
+code, whereas the next series would have to actually change API
+behavior.
+
+I successfully (cross-)built this for x86, x86_64, AARCH64 and ARM
+(allyesconfig). I booted a kernel with it on x86_64, with a Fedora
+desktop environment as payload. The OS came up fine
+
+I hope this is OK. If we can get it in, we'd soon have a very
+consistent PCI API again.
+
+Regards,
+P.
+
+
+
+Philipp Stanner (5):
+  lib/pci_iomap.c: fix cleanup bugs in pci_iounmap()
+  lib: move pci_iomap.c to drivers/pci/
+  lib: move pci-specific devres code to drivers/pci/
+  pci: move devres code from pci.c to devres.c
+  lib, pci: unify generic pci_iounmap()
+
+ MAINTAINERS                            |   1 -
+ drivers/pci/Kconfig                    |   5 +
+ drivers/pci/Makefile                   |   3 +-
+ drivers/pci/devres.c                   | 450 +++++++++++++++++++++++++
+ lib/pci_iomap.c => drivers/pci/iomap.c |  49 +--
+ drivers/pci/pci.c                      | 249 --------------
+ drivers/pci/pci.h                      |  24 ++
+ include/asm-generic/io.h               |  27 +-
+ include/asm-generic/iomap.h            |  21 ++
+ lib/Kconfig                            |   3 -
+ lib/Makefile                           |   1 -
+ lib/devres.c                           | 208 +-----------
+ lib/iomap.c                            |  28 +-
+ 13 files changed, 566 insertions(+), 503 deletions(-)
+ create mode 100644 drivers/pci/devres.c
+ rename lib/pci_iomap.c => drivers/pci/iomap.c (75%)
 
 -- 
- i.
+2.43.0
 
-> Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-> ---
->  drivers/tty/serial/omap-serial.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/omap-serial.c b/drivers/tty/serial/omap-serial.c
-> index ad4c1c5d0a7f..d9b2936308c4 100644
-> --- a/drivers/tty/serial/omap-serial.c
-> +++ b/drivers/tty/serial/omap-serial.c
-> @@ -1604,10 +1604,6 @@ static int serial_omap_probe(struct platform_device *pdev)
->  		dev_info(up->port.dev, "no wakeirq for uart%d\n",
->  			 up->port.line);
->  
-> -	ret = serial_omap_probe_rs485(up, &pdev->dev);
-> -	if (ret < 0)
-> -		goto err_rs485;
-> -
->  	sprintf(up->name, "OMAP UART%d", up->port.line);
->  	up->port.mapbase = mem->start;
->  	up->port.membase = base;
-> @@ -1622,6 +1618,10 @@ static int serial_omap_probe(struct platform_device *pdev)
->  			 DEFAULT_CLK_SPEED);
->  	}
->  
-> +	ret = serial_omap_probe_rs485(up, &pdev->dev);
-> +	if (ret < 0)
-> +		goto err_rs485;
-> +
->  	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
->  	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
->  	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
-> -- 
-> 2.42.0
-> 
-> 
 
