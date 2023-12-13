@@ -1,134 +1,90 @@
-Return-Path: <stable+bounces-6590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9318F811121
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C01C811126
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC65281A7F
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 12:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9F628199A
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 12:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFE928E25;
-	Wed, 13 Dec 2023 12:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0223F1F5E6;
+	Wed, 13 Dec 2023 12:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dgUohgwo"
 X-Original-To: stable@vger.kernel.org
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBF6610E
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 04:31:03 -0800 (PST)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1rDOOC-005j4y-0O; Wed, 13 Dec 2023 12:31:00 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Wed, 13 Dec 2023 12:21:19 +0000
-Subject: [git:media_stage/master] media: i2c: imx290: Properly encode registers as little-endian
-To: linuxtv-commits@linuxtv.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Alexander Stein <alexander.stein@ew.tq-group.com>, stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1rDOOC-005j4y-0O@www.linuxtv.org>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F72660EB;
+	Wed, 13 Dec 2023 12:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24F4BC433C8;
+	Wed, 13 Dec 2023 12:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702470769;
+	bh=vrdMpHk3hes/pW7t5HwtgiIc6BqoYwfb1U2KPkDWxgE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dgUohgwoOyhk6M6Wd7/FpKATne5jZCu9xiDWyOmoagGffRNlTYcsChdGvykCND8fn
+	 plnKDqWey43X6DVHTv14SZisx9rxXTuCin3kQVp/z4hCwvXL8JD+J0LsXGW1v+D+os
+	 RM4xJw8uLWmUECtdtXKkVieONogprH1N/wmuAfmjAGlr21zer0fD2oRef0475J0XYK
+	 MCmOrhKOuj7yg4Jni2BiO3dqo1I8epmsTZZRWM3OuVEgAPZK/A+/WuqYOKtiSr1P/j
+	 igHPxaS0UybluJ8YmZ74QXb3bmx8hgE42BAe520dtWTgJeblq+gXeZ5f9+WBZquiqm
+	 wkp7N1j6pOJ9w==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rDOPu-0004dw-0X;
+	Wed, 13 Dec 2023 13:32:46 +0100
+Date: Wed, 13 Dec 2023 13:32:46 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Yujie Liu <yujie.liu@intel.com>
+Cc: kernel test robot <lkp@intel.com>,
+	Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+	oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
+Message-ID: <ZXmkbgOqI4D3k7ds@hovoldconsulting.com>
+References: <20231211132608.27861-3-johan+linaro@kernel.org>
+ <ZXdGxI0OrIUKrbcS@be2c62907a9b>
+ <ZXdJZ6yfK0NWz_zj@hovoldconsulting.com>
+ <ZXgedtUhbKEwtSMr@yujie-X299>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXgedtUhbKEwtSMr@yujie-X299>
 
-This is an automatic generated email to let you know that the following patch were queued:
+On Tue, Dec 12, 2023 at 04:48:54PM +0800, Yujie Liu wrote:
+> On Mon, Dec 11, 2023 at 06:39:51PM +0100, Johan Hovold wrote:
+> > On Tue, Dec 12, 2023 at 01:28:36AM +0800, kernel test robot wrote:
+> > > Hi,
+> > > 
+> > > Thanks for your patch.
+> > > 
+> > > FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> > > 
+> > > The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+> > > 
+> > > Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+> > > Subject: [PATCH 2/2] ASoC: qcom: sc8280xp: Limit speaker digital volumes
+>                    ^
+> 
+> > > Link: https://lore.kernel.org/stable/20231211132608.27861-3-johan%2Blinaro%40kernel.org
+> > 
+> > Please fix your robot. This is a series of stable kernel backports so
+> > the above warning makes no sense.
+> 
+> Sorry for this wrong report. We introduced b4 tool into the robot
+> recently to help simplify patch processing, but seems that b4
+> automatically removed the "stable-6.6" prefix in the patch subject when
+> grabbing the mail thread, and triggered this wrong report. We've fixed
+> this issue for the bot just now.
 
-Subject: media: i2c: imx290: Properly encode registers as little-endian
-Author:  Alexander Stein <alexander.stein@ew.tq-group.com>
-Date:    Thu Nov 2 10:50:48 2023 +0100
+Perfect, thanks!
 
-The conversion to CCI also converted the multi-byte register access to
-big-endian. Correct the register definition by using the correct
-little-endian ones.
-
-Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: Fixed the Fixes: tag.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- drivers/media/i2c/imx290.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
-
----
-
-diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-index 52ba6188911b..9967f3477433 100644
---- a/drivers/media/i2c/imx290.c
-+++ b/drivers/media/i2c/imx290.c
-@@ -41,18 +41,18 @@
- #define IMX290_WINMODE_720P				(1 << 4)
- #define IMX290_WINMODE_CROP				(4 << 4)
- #define IMX290_FR_FDG_SEL				CCI_REG8(0x3009)
--#define IMX290_BLKLEVEL					CCI_REG16(0x300a)
-+#define IMX290_BLKLEVEL					CCI_REG16_LE(0x300a)
- #define IMX290_GAIN					CCI_REG8(0x3014)
--#define IMX290_VMAX					CCI_REG24(0x3018)
-+#define IMX290_VMAX					CCI_REG24_LE(0x3018)
- #define IMX290_VMAX_MAX					0x3ffff
--#define IMX290_HMAX					CCI_REG16(0x301c)
-+#define IMX290_HMAX					CCI_REG16_LE(0x301c)
- #define IMX290_HMAX_MAX					0xffff
--#define IMX290_SHS1					CCI_REG24(0x3020)
-+#define IMX290_SHS1					CCI_REG24_LE(0x3020)
- #define IMX290_WINWV_OB					CCI_REG8(0x303a)
--#define IMX290_WINPV					CCI_REG16(0x303c)
--#define IMX290_WINWV					CCI_REG16(0x303e)
--#define IMX290_WINPH					CCI_REG16(0x3040)
--#define IMX290_WINWH					CCI_REG16(0x3042)
-+#define IMX290_WINPV					CCI_REG16_LE(0x303c)
-+#define IMX290_WINWV					CCI_REG16_LE(0x303e)
-+#define IMX290_WINPH					CCI_REG16_LE(0x3040)
-+#define IMX290_WINWH					CCI_REG16_LE(0x3042)
- #define IMX290_OUT_CTRL					CCI_REG8(0x3046)
- #define IMX290_ODBIT_10BIT				(0 << 0)
- #define IMX290_ODBIT_12BIT				(1 << 0)
-@@ -78,28 +78,28 @@
- #define IMX290_ADBIT2					CCI_REG8(0x317c)
- #define IMX290_ADBIT2_10BIT				0x12
- #define IMX290_ADBIT2_12BIT				0x00
--#define IMX290_CHIP_ID					CCI_REG16(0x319a)
-+#define IMX290_CHIP_ID					CCI_REG16_LE(0x319a)
- #define IMX290_ADBIT3					CCI_REG8(0x31ec)
- #define IMX290_ADBIT3_10BIT				0x37
- #define IMX290_ADBIT3_12BIT				0x0e
- #define IMX290_REPETITION				CCI_REG8(0x3405)
- #define IMX290_PHY_LANE_NUM				CCI_REG8(0x3407)
- #define IMX290_OPB_SIZE_V				CCI_REG8(0x3414)
--#define IMX290_Y_OUT_SIZE				CCI_REG16(0x3418)
--#define IMX290_CSI_DT_FMT				CCI_REG16(0x3441)
-+#define IMX290_Y_OUT_SIZE				CCI_REG16_LE(0x3418)
-+#define IMX290_CSI_DT_FMT				CCI_REG16_LE(0x3441)
- #define IMX290_CSI_DT_FMT_RAW10				0x0a0a
- #define IMX290_CSI_DT_FMT_RAW12				0x0c0c
- #define IMX290_CSI_LANE_MODE				CCI_REG8(0x3443)
--#define IMX290_EXTCK_FREQ				CCI_REG16(0x3444)
--#define IMX290_TCLKPOST					CCI_REG16(0x3446)
--#define IMX290_THSZERO					CCI_REG16(0x3448)
--#define IMX290_THSPREPARE				CCI_REG16(0x344a)
--#define IMX290_TCLKTRAIL				CCI_REG16(0x344c)
--#define IMX290_THSTRAIL					CCI_REG16(0x344e)
--#define IMX290_TCLKZERO					CCI_REG16(0x3450)
--#define IMX290_TCLKPREPARE				CCI_REG16(0x3452)
--#define IMX290_TLPX					CCI_REG16(0x3454)
--#define IMX290_X_OUT_SIZE				CCI_REG16(0x3472)
-+#define IMX290_EXTCK_FREQ				CCI_REG16_LE(0x3444)
-+#define IMX290_TCLKPOST					CCI_REG16_LE(0x3446)
-+#define IMX290_THSZERO					CCI_REG16_LE(0x3448)
-+#define IMX290_THSPREPARE				CCI_REG16_LE(0x344a)
-+#define IMX290_TCLKTRAIL				CCI_REG16_LE(0x344c)
-+#define IMX290_THSTRAIL					CCI_REG16_LE(0x344e)
-+#define IMX290_TCLKZERO					CCI_REG16_LE(0x3450)
-+#define IMX290_TCLKPREPARE				CCI_REG16_LE(0x3452)
-+#define IMX290_TLPX					CCI_REG16_LE(0x3454)
-+#define IMX290_X_OUT_SIZE				CCI_REG16_LE(0x3472)
- #define IMX290_INCKSEL7					CCI_REG8(0x3480)
- 
- #define IMX290_PGCTRL_REGEN				BIT(0)
+Johan
 
