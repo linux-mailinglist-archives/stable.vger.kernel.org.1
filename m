@@ -1,124 +1,84 @@
-Return-Path: <stable+bounces-6539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7868106A9
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:36:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E968106C6
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD5EB21067
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 00:36:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BE6EB20EE8
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 00:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F905A41;
-	Wed, 13 Dec 2023 00:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720D7A41;
+	Wed, 13 Dec 2023 00:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b502p4SV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TuzlRARs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A677D0
-	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 16:36:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702427787;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4J3yyMVT0Ck6UqVMMggnyCj20M3aIOGukmt1/w28WlA=;
-	b=b502p4SV8c/jw6bUhE4hTUTMeTdPcAtdCTUItOX5fVTY7fzmkM+5e+bP2/bKYmGKSO5l7A
-	rSJhxm69iFD1VCOPdfbnNVL64W7xzpPKVExDkIDlpgflyswuwXv3A4C7EqzMQQoRjFX6G9
-	UL9xqb59gQsBce0hRHW5zR1bA8zWX8o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-496-nIPG_mAZOtSj-ICft5S-pQ-1; Tue,
- 12 Dec 2023 19:36:23 -0500
-X-MC-Unique: nIPG_mAZOtSj-ICft5S-pQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A3BE53833343;
-	Wed, 13 Dec 2023 00:36:22 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id D2C821121306;
-	Wed, 13 Dec 2023 00:36:20 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: Dongli Zhang <dongli.zhang@oracle.com>,
-	linux-acpi@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	imammedo@redhat.com,
-	mst@redhat.com,
-	rafael@kernel.org,
-	lenb@kernel.org,
-	bhelgaas@google.com,
-	mika.westerberg@linux.intel.com,
-	boris.ostrovsky@oracle.com,
-	joe.jin@oracle.com,
-	stable@vger.kernel.org,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple devices at a time
-Date: Wed, 13 Dec 2023 01:36:14 +0100
-Message-Id: <20231213003614.1648343-3-imammedo@redhat.com>
-In-Reply-To: <20231213003614.1648343-1-imammedo@redhat.com>
-References: <20231213003614.1648343-1-imammedo@redhat.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202F092
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 16:38:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702427897; x=1733963897;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=YcJt9IXIkiNyi/hImJF2SZNtZU9rFDUD8sh9hZRpYNk=;
+  b=TuzlRARsT4ydSj6RlewkiDTXVMClx6YWqni2YaqjTBPaK/naNhCMNRVr
+   DuPwIZnlg0BlLYQHmnPu0MMxmMHFHVH3cS+Bj1rXpozpPXDGzdmgJ9FU8
+   q3DhcbsT+UbzIbFm9iHa3KCwYIgMB2wG6Wfb3ws9rsnMT22pCOW0jbyUi
+   ErIRnQBAVZQ/Zp+xdQsH0qKYHjs2ZBY5vMWRJ7Os8qKeaMsX5CEsreoNI
+   jV2OdSL31YgyPJzTUK2+2zBs0kr+jmCAy00BWn30F8V3GIHPDNuDqm8dc
+   IjGPH7Cj3Wb0icNZsSsCwEleEroahEBiZvLEAhXGhXBsAWsmBaJ7BMm5k
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="392069294"
+X-IronPort-AV: E=Sophos;i="6.04,271,1695711600"; 
+   d="scan'208";a="392069294"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2023 16:38:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="749899227"
+X-IronPort-AV: E=Sophos;i="6.04,271,1695711600"; 
+   d="scan'208";a="749899227"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 12 Dec 2023 16:38:15 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rDDGP-000Jul-0h;
+	Wed, 13 Dec 2023 00:38:13 +0000
+Date: Wed, 13 Dec 2023 08:37:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [RFC 1/2] PCI: acpiphp: enable slot only if it hasn't been
+ enabled already
+Message-ID: <ZXj8wESEjwBQk9At@171f04e7aea4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231213003614.1648343-2-imammedo@redhat.com>
 
-previous commit ("PCI: acpiphp: enable slot only if it hasn't been enabled already"
-introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
-bridge reconfiguration in case of single HBA hotplug.
-However in virt environment it's possible to pause machine hotplug several
-HBAs and let machine run. That can hit the same race when 2nd hotplugged
-HBA will start re-configuring bridge.
-Do the same thing as SHPC and throttle down hotplug of 2nd and up
-devices within single hotplug event.
+Hi,
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
- drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Thanks for your patch.
 
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index 6b11609927d6..30bca2086b24 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -37,6 +37,7 @@
- #include <linux/mutex.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-+#include <linux/delay.h>
- 
- #include "../pci.h"
- #include "acpiphp.h"
-@@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
- static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
- {
- 	struct acpiphp_slot *slot;
-+        int nr_hp_slots = 0;
- 
- 	/* Bail out if the bridge is going away. */
- 	if (bridge->is_going_away)
-@@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
- 
- 			/* configure all functions */
- 			if (slot->flags != SLOT_ENABLED) {
-+				if (nr_hp_slots)
-+					msleep(1000);
-+
-+                                ++nr_hp_slots;
- 				enable_slot(slot, true);
- 			}
- 		} else {
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [RFC 1/2] PCI: acpiphp: enable slot only if it hasn't been enabled already
+Link: https://lore.kernel.org/stable/20231213003614.1648343-2-imammedo%40redhat.com
+
 -- 
-2.39.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
