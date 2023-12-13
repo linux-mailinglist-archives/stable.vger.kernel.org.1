@@ -1,116 +1,79 @@
-Return-Path: <stable+bounces-6568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2B8810B74
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 08:26:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DF1810B9A
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 08:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9A941C20FC5
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 07:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6DC1F21D6D
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 07:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB143199A4;
-	Wed, 13 Dec 2023 07:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BBF1946A;
+	Wed, 13 Dec 2023 07:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7KlIn0S"
+	dkim=pass (2048-bit key) header.d=atomide.com header.i=@atomide.com header.b="hWZ47rdx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDF1C14F;
-	Wed, 13 Dec 2023 07:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9ADC433C7;
-	Wed, 13 Dec 2023 07:26:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702452390;
-	bh=76OJVqmnozrsnIZlwxGqTR/mpG0Abmmm32RAtiZ6W+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o7KlIn0S1Hpqs8X1x8ZQp5yK2Q09F2mVnQ56btuzJyny0Gewb2PB8TvdDEDW9BYYZ
-	 iGbx/j27UdO53hdQnvB2R4g3yV2Cbc50kAb64IwIOok0MYUsO0JjS8+xn1QmQCQ/Cf
-	 E85+4GrJzX66OeaX2QlF3E/9FcBnQk2dFgMGF3PI=
-Date: Wed, 13 Dec 2023 08:26:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Dongli Zhang <dongli.zhang@oracle.com>,
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
-	mst@redhat.com, rafael@kernel.org, lenb@kernel.org,
-	bhelgaas@google.com, mika.westerberg@linux.intel.com,
-	boris.ostrovsky@oracle.com, joe.jin@oracle.com,
-	stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>,
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
-Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
- devices at a time
-Message-ID: <2023121321-politely-creamer-fbad@gregkh>
-References: <20231213003614.1648343-1-imammedo@redhat.com>
- <20231213003614.1648343-3-imammedo@redhat.com>
+Received: from mail5.25mail.st (mail5.25mail.st [74.50.62.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3627BB7;
+	Tue, 12 Dec 2023 23:37:01 -0800 (PST)
+Received: from localhost (91-158-86-216.elisa-laajakaista.fi [91.158.86.216])
+	by mail5.25mail.st (Postfix) with ESMTPSA id 2274E60402;
+	Wed, 13 Dec 2023 07:36:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=atomide.com;
+	s=25mailst; t=1702453019;
+	bh=ySuNDXt7/qREolS5muvDf1EPyM3JYE99pT4IeNacUio=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hWZ47rdxUD7y+RK1w1/FOqgtD7RW2mGkRi2B8/hqbjteh2nWSLl7DFXPmpH3nu0fJ
+	 6NDz8gdpKQHv+ZLUzQbrlk/oGA/0Ibc05HqcY335PlLNIdWcj/vqRHvZSiIk+W6lr6
+	 nshFdCEmb0KVfxZzOn/Hrl++dwllv/x94ROujsQcBrPnzV3w0dc+vZvAEstUt6gyl8
+	 UdRr2GHDsX2+Z92NKoQaKQMKqk71zVu429hVfg8b+r0iyi2aL9yC7bXDxASICqcpt4
+	 dNlR4wDo831A2BnsQAUW4TxeqnldACftMwmNAtbkQY6D/x62dj2jVBMH4Y7NQW2aJf
+	 XaLjr4228SGxw==
+From: Tony Lindgren <tony@atomide.com>
+To: linux-omap@vger.kernel.org
+Cc: =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
+	devicetree@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ARM: dts: Fix occasional boot hang for am3 usb
+Date: Wed, 13 Dec 2023 09:36:37 +0200
+Message-ID: <20231213073637.58778-1-tony@atomide.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213003614.1648343-3-imammedo@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Dec 13, 2023 at 01:36:14AM +0100, Igor Mammedov wrote:
-> previous commit ("PCI: acpiphp: enable slot only if it hasn't been enabled already"
-> introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
-> bridge reconfiguration in case of single HBA hotplug.
-> However in virt environment it's possible to pause machine hotplug several
-> HBAs and let machine run. That can hit the same race when 2nd hotplugged
-> HBA will start re-configuring bridge.
-> Do the same thing as SHPC and throttle down hotplug of 2nd and up
-> devices within single hotplug event.
-> 
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 6b11609927d6..30bca2086b24 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -37,6 +37,7 @@
->  #include <linux/mutex.h>
->  #include <linux/slab.h>
->  #include <linux/acpi.h>
-> +#include <linux/delay.h>
->  
->  #include "../pci.h"
->  #include "acpiphp.h"
-> @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
->  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
->  {
->  	struct acpiphp_slot *slot;
-> +        int nr_hp_slots = 0;
->  
->  	/* Bail out if the bridge is going away. */
->  	if (bridge->is_going_away)
-> @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
->  
->  			/* configure all functions */
->  			if (slot->flags != SLOT_ENABLED) {
-> +				if (nr_hp_slots)
-> +					msleep(1000);
-> +
-> +                                ++nr_hp_slots;
->  				enable_slot(slot, true);
->  			}
->  		} else {
-> -- 
-> 2.39.3
-> 
-> 
+With subtle timings changes, we can now sometimes get an external abort on
+non-linefetch error booting am3 devices at sysc_reset(). This is because
+of a missing reset delay needed for the usb target module.
 
-<formletter>
+Looks like we never enabled the delay earlier for am3, although a similar
+issue was seen earlier with a similar usb setup for dm814x as described in
+commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Cc: stable@vger.kernel.org
+Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+---
+ arch/arm/boot/dts/ti/omap/am33xx.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-</formletter>
+diff --git a/arch/arm/boot/dts/ti/omap/am33xx.dtsi b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+--- a/arch/arm/boot/dts/ti/omap/am33xx.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+@@ -359,6 +359,7 @@ usb: target-module@47400000 {
+ 					<SYSC_IDLE_NO>,
+ 					<SYSC_IDLE_SMART>,
+ 					<SYSC_IDLE_SMART_WKUP>;
++			ti,sysc-delay-us = <2>;
+ 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
+ 			clock-names = "fck";
+ 			#address-cells = <1>;
+-- 
+2.43.0
 
