@@ -1,132 +1,193 @@
-Return-Path: <stable+bounces-6615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EF6811A19
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:52:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4296811A25
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D4981C21177
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 16:52:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3BCE282932
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 16:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E504639FEC;
-	Wed, 13 Dec 2023 16:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E1539FC8;
+	Wed, 13 Dec 2023 16:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iumBcq/K"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="STtM/iAE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E11DD;
-	Wed, 13 Dec 2023 08:52:11 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3b9f8c9307dso4072632b6e.0;
-        Wed, 13 Dec 2023 08:52:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702486331; x=1703091131; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kn2LQrRHuyBOrFQpLnvxY7FFQLx8DGIahG91siXRMzA=;
-        b=iumBcq/Ko9g9IGTv7WNxZ1AJfjAa0TDZBcG4SrrYM6iA8qRTYBLsspfu6aSaVK1/va
-         eU5cEii19tGFK63eiBntIRkUXmOo1Ce3DzughblmvECtmo0I7JIDnwoA4Tu1qEBuUx+3
-         acslsa3D23Hm2tDKmhKdk+KBXeqQUlA+NS28KDPfNO2EpOlmkae+lvh1HqpfL70qErQe
-         MfS5CFpsDvUflpwmqrLOMP2kDX+IZKCnThj9jwp+fQFUBpeigNlxu2Vkpyt1RZcsgl7N
-         TlO7wV7wrdJY66wvUQoi/MbnveAYhZAiOEV8HUkW0M+dyiPHasIqBiPJyN0ieRWVqfVH
-         hwlQ==
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7F9AAF
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 08:54:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702486488;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TDCWZoZHEnL9q9UlZCk5o8FDqw1MfF12zxN5vbn51B8=;
+	b=STtM/iAE0PFB4xeBQcpBr0HYaWDSkP04f7kzZyT7+ZVrYzSErpi/9KS/J6fvGQGAvNM5gd
+	FHn8KM7NZa+VJswzymlH/oGM81Z2hHM69Yu+LkEiNt7u0uZl+nm7xG6OtdTe/P2bEnS2BW
+	Ljv7oa5wBdVxbe4qhXnJmYMAGIC5dyM=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-639-hpi4xWFhP9KZGOsP8OQTAA-1; Wed, 13 Dec 2023 11:54:46 -0500
+X-MC-Unique: hpi4xWFhP9KZGOsP8OQTAA-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a1eb3f3dc2eso172521866b.2
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 08:54:46 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702486331; x=1703091131;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kn2LQrRHuyBOrFQpLnvxY7FFQLx8DGIahG91siXRMzA=;
-        b=CspCd7xKrmdjP+lfjBt2ga20KIY2PD86HqJwmp+7O0pdrT6wS2XQW2gN0yVP+7drQh
-         2XbVYmRtnnv9MMC0CZFpRcvhxH91Aki/+CCnrP1+XaqCjcAYV6+JPlE8c+Ezd5PBh/Je
-         3+S99R6bPzokS61ciWzThJHv5ZitLlrF3KcGuV2OC8Lzexb+1A6jQdVeuMUWINq35Dm7
-         dmAM+f8EGUQPzj0R4DHIT0KBsFghPyQEL6HhJYrStNx71X80HBy5uDvPK3pXTO7g2mnb
-         JkPqtVncSSaOldaOoy5Ltm86Wfb+0mAPn4F8C/DTCNHFJfD9xDUX1vn6ie/IWNuQefp/
-         dxgg==
-X-Gm-Message-State: AOJu0YxXwmVVZEWSZ5VHqEOgJjPYp01ARfdB3kvrI0HCQCvx2G7WbRqm
-	0341XTGHEvUsVrHmwpsc7a/dGDs0a3j7SuxMsRU=
-X-Google-Smtp-Source: AGHT+IGQVaLaZCAEUxZCneLTseyDtM91xFC+skaNgPLS4wOnX+qIuGenyGOaibcb8Lxy82isx1azUCGNBOSqVaoeMic=
-X-Received: by 2002:a05:6870:ed8b:b0:1fb:75c:3ff1 with SMTP id
- fz11-20020a056870ed8b00b001fb075c3ff1mr11041512oab.81.1702486331103; Wed, 13
- Dec 2023 08:52:11 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702486486; x=1703091286;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TDCWZoZHEnL9q9UlZCk5o8FDqw1MfF12zxN5vbn51B8=;
+        b=DobnBKu2HToYL6bKCVxgYopJ1o+MrS14RrM9BxFe6qgKI6ul4KtcQk+k/0n7gfaOEH
+         hHlaXrMDRj9j9Sr+S9YQUcOOubF1CizI0gbBidxQ8os0vxI9cTUam9p28SLZCp0YSJSq
+         MT8qr2QRxKA+7zYIlMpwOB6EXdbZPv1ysIXPGBqAZ3/WAZr+IRSWknsJA6XPUMQsQui6
+         MZdSSM0tTZGLLqRTR2bRikbrdwa1HAfC/Yg7ec0/96FyL8xPL5KNjaksRBLJnSrELmDy
+         UtO+lFw0ViaCZy3tTw+Pno2KF6GXe3OBICrAedw4fHx0rI1n4pRRb4DiFbT/p0rxXrEb
+         ObaQ==
+X-Gm-Message-State: AOJu0Yy7MIoFm1DMfGMf+xn+DCi07WpgmL8tHk3onPiXb2TxJLda1SWF
+	wky+TgNlyJ8aHxzVju31W/e417j4Fcv9wx+eK3OIMhC08XaGyRndRY//Hr91LC8vpSmo76NFFlk
+	7eSRUsndC8X9erpv0
+X-Received: by 2002:a17:906:2247:b0:a1f:a03d:2fdb with SMTP id 7-20020a170906224700b00a1fa03d2fdbmr2758557ejr.14.1702486485864;
+        Wed, 13 Dec 2023 08:54:45 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDrym3BHQqr1gGWd0AZbVrLuc3zfrg6EtZUmOadG4ycS5fHuh89Cl4oMrZuV8jvPmVaQKjWA==
+X-Received: by 2002:a17:906:2247:b0:a1f:a03d:2fdb with SMTP id 7-20020a170906224700b00a1fa03d2fdbmr2758543ejr.14.1702486485461;
+        Wed, 13 Dec 2023 08:54:45 -0800 (PST)
+Received: from redhat.com ([2a02:14f:16d:d414:dc39:9ae8:919b:572d])
+        by smtp.gmail.com with ESMTPSA id hw18-20020a170907a0d200b00a1cbe52300csm8108840ejc.56.2023.12.13.08.54.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 08:54:44 -0800 (PST)
+Date: Wed, 13 Dec 2023 11:54:40 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+	Dongli Zhang <dongli.zhang@oracle.com>, linux-acpi@vger.kernel.org,
+	linux-pci@vger.kernel.org, lenb@kernel.org, bhelgaas@google.com,
+	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com,
+	joe.jin@oracle.com, stable@vger.kernel.org,
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
+Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
+ devices at a time
+Message-ID: <20231213115248-mutt-send-email-mst@kernel.org>
+References: <20231213003614.1648343-1-imammedo@redhat.com>
+ <20231213003614.1648343-3-imammedo@redhat.com>
+ <CAJZ5v0gowV0WJd8pjwrDyHSJPvwgkCXYu9bDG7HHfcyzkSSY6w@mail.gmail.com>
+ <CAMLWh55dr2e_R+TYVj=8cFfV==D-DfOZvAeq9JEehYs3nw6-OQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231213150703.6262-1-bschubert@ddn.com>
-In-Reply-To: <20231213150703.6262-1-bschubert@ddn.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 13 Dec 2023 18:51:59 +0200
-Message-ID: <CAOQ4uxh3KqagHvLMV5PxUeeW9Sk8kY3pmg-k+OhXtjwtr_Cccw@mail.gmail.com>
-Subject: Re: [PATCH] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
-To: Bernd Schubert <bschubert@ddn.com>
-Cc: linux-fsdevel@vger.kernel.org, bernd.schubert@fastmail.fm, 
-	Hao Xu <howeyxu@tencent.com>, Miklos Szeredi <miklos@szeredi.hu>, 
-	Dharmendra Singh <dsingh@ddn.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMLWh55dr2e_R+TYVj=8cFfV==D-DfOZvAeq9JEehYs3nw6-OQ@mail.gmail.com>
 
-On Wed, Dec 13, 2023 at 5:07=E2=80=AFPM Bernd Schubert <bschubert@ddn.com> =
-wrote:
->
-> There were multiple issues with direct_io_allow_mmap:
-> - fuse_link_write_file() was missing, resulting in warnings in
->   fuse_write_file_get() and EIO from msync()
-> - "vma->vm_ops =3D &fuse_file_vm_ops" was not set, but especially
->   fuse_page_mkwrite is needed.
->
-> The semantics of invalidate_inode_pages2() is so far not clearly defined
-> in fuse_file_mmap. It dates back to
-> commit 3121bfe76311 ("fuse: fix "direct_io" private mmap")
-> Though, as direct_io_allow_mmap is a new feature, that was for MAP_PRIVAT=
-E
-> only. As invalidate_inode_pages2() is calling into fuse_launder_folio()
-> and writes out dirty pages, it should be save to call
+On Wed, Dec 13, 2023 at 05:49:39PM +0100, Igor Mammedov wrote:
+> On Wed, Dec 13, 2023 at 2:08 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+> >
+> > On Wed, Dec 13, 2023 at 1:36 AM Igor Mammedov <imammedo@redhat.com> wrote:
+> > >
+> > > previous commit ("PCI: acpiphp: enable slot only if it hasn't been enabled already"
+> > > introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
+> > > bridge reconfiguration in case of single HBA hotplug.
+> > > However in virt environment it's possible to pause machine hotplug several
+> > > HBAs and let machine run. That can hit the same race when 2nd hotplugged
+> > > HBA will start re-configuring bridge.
+> > > Do the same thing as SHPC and throttle down hotplug of 2nd and up
+> > > devices within single hotplug event.
+> > >
+> > > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> > > ---
+> > >  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > >
+> > > diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+> > > index 6b11609927d6..30bca2086b24 100644
+> > > --- a/drivers/pci/hotplug/acpiphp_glue.c
+> > > +++ b/drivers/pci/hotplug/acpiphp_glue.c
+> > > @@ -37,6 +37,7 @@
+> > >  #include <linux/mutex.h>
+> > >  #include <linux/slab.h>
+> > >  #include <linux/acpi.h>
+> > > +#include <linux/delay.h>
+> > >
+> > >  #include "../pci.h"
+> > >  #include "acpiphp.h"
+> > > @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
+> > >  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
+> > >  {
+> > >         struct acpiphp_slot *slot;
+> > > +        int nr_hp_slots = 0;
+> > >
+> > >         /* Bail out if the bridge is going away. */
+> > >         if (bridge->is_going_away)
+> > > @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
+> > >
+> > >                         /* configure all functions */
+> > >                         if (slot->flags != SLOT_ENABLED) {
+> > > +                               if (nr_hp_slots)
+> > > +                                       msleep(1000);
+> >
+> > Why is 1000 considered the most suitable number here?  Any chance to
+> > define a symbol for it?
+> 
+> Timeout was borrowed from SHPC hotplug workflow where it apparently
+> makes race harder to reproduce.
+> (though it's not excuse to add more timeouts elsewhere)
+> 
+> > And won't this affect the cases when the race in question is not a concern?
+> 
+> In practice it's not likely, since even in virt scenario hypervisor won't
+> stop VM to hotplug device (which beats whole purpose of hotplug).
+> 
+> But in case of a very slow VM (overcommit case) it's possible for
+> several HBA's to be hotplugged by the time acpiphp gets a chance
+> to handle the 1st hotplug event. SHPC is more or less 'safe' with its
+> 1sec delay.
+> 
+> > Also, adding arbitrary timeouts is not the most robust way of
+> > addressing race conditions IMV.  Wouldn't it be better to add some
+> > proper synchronization between the pieces of code that can race with
+> > each other?
+> 
+> I don't like it either, it's a stop gap measure to hide regression on
+> short notice,
+> which I can fixup without much risk in short time left, before folks
+> leave on holidays.
+> It's fine to drop the patch as chances of this happening are small.
+> [1/2] should cover reported cases.
+> 
+> Since it's RFC, I basically ask for opinions on a proper way to fix
+> SCSI_ASYNC_SCAN
+> running wild while the hotplug is in progress (and maybe SCSI is not
+> the only user that
+> schedules async job from device probe).
 
-typo: safe to call...
+Of course not. And things don't have to be scheduled from probe right?
+Can be triggered by an interrupt or userspace activity.
 
-> invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as well.
->
-> Cc: Hao Xu <howeyxu@tencent.com>
-> Cc: Miklos Szeredi <miklos@szeredi.hu>
-> Cc: Dharmendra Singh <dsingh@ddn.com>
-> Cc: Amir Goldstein <amir73il@gmail.com>
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restriction=
-s in no cache mode")
-> Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-> ---
+> So adding synchronisation and testing
+> would take time (not something I'd do this late in the cycle).
+> 
+> So far I'm thinking about adding rw mutex to bridge with the PCI
+> hotplug subsystem
+> being a writer while scsi scan jobs would be readers and wait till hotplug code
+> says it's safe to proceed.
+> I plan to work in this direction and give it some testing, unless
+> someone has a better idea.
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+> >
+> > > +
+> > > +                                ++nr_hp_slots;
+> > >                                 enable_slot(slot, true);
+> > >                         }
+> > >                 } else {
+> > > --
+> >
 
-Thanks,
-Amir.
-
->  fs/fuse/file.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-> index a660f1f21540..174aa16407c4 100644
-> --- a/fs/fuse/file.c
-> +++ b/fs/fuse/file.c
-> @@ -2475,7 +2475,10 @@ static int fuse_file_mmap(struct file *file, struc=
-t vm_area_struct *vma)
->
->                 invalidate_inode_pages2(file->f_mapping);
->
-> -               return generic_file_mmap(file, vma);
-> +               if (!(vma->vm_flags & VM_MAYSHARE)) {
-> +                       /* MAP_PRIVATE */
-> +                       return generic_file_mmap(file, vma);
-> +               }
->         }
->
->         if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
-> --
-> 2.40.1
->
 
