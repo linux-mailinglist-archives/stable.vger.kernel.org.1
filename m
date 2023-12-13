@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D4081214B
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 23:15:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF9381215C
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 23:23:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BB56B2122D
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 22:15:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D89D31F2113A
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 22:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2BF7FBDC;
-	Wed, 13 Dec 2023 22:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA5481823;
+	Wed, 13 Dec 2023 22:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=linosanfilippo@gmx.de header.b="KTlTE20b"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=linosanfilippo@gmx.de header.b="GJej2Go6"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B60C4AC;
-	Wed, 13 Dec 2023 14:14:54 -0800 (PST)
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6D09C;
+	Wed, 13 Dec 2023 14:23:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1702505663; x=1703110463; i=linosanfilippo@gmx.de;
-	bh=VD92t9JQp648Z2BNkoulPTRk8jdfCT5rO006AN+QRvs=;
+	t=1702506186; x=1703110986; i=linosanfilippo@gmx.de;
+	bh=DQ7xBBQCgcshkcRM262ggbnkjqtSZ6ncm89KuR3cYt0=;
 	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
 	 In-Reply-To;
-	b=KTlTE20beEeIhJ6autpBTl+6pkkXbzaZrpyLfnJDYuxsNtQY7eal/CvkoPKCFn1I
-	 RRttj9oQBue6q+G9M28VyBPB8vZkU5QaI7j0yKBg3EaC0794dzVoBerb9PLElb3Mn
-	 z7HWdHwZchQVN8OrnXb22TF/iKou3qjg3B4tRBCSVdV1RxAndc4J+tFciuORDM7at
-	 K2tewL/KsU02zTqJlgG5YT+ZTUFS3A04F6B1F+9VWmq6qqD8gIKPvNdIUzB8+rtpw
-	 xghaRgu9YMI7uSZlsdQe3GXhndaXsw0iMhgye9i09t6AQgTbYz7/O5hZCrCgkXMd1
-	 /2gLU4SHGtvCmGVO7w==
+	b=GJej2Go6lh4QHv8jJwR0EdstE3FwpWKqBmk6Jo47z1QpK8QJ4D980XgbFTeZo/C1
+	 8Vp+yN4P2uCp+8TQDSm2dCveGp47KDflGeW2Q8IFgd+lF33OOGT9nU1HnppKQK6Td
+	 GeeKuaOiyPIxziGdex9PW543G8tmC+I9JBgxS8BiGGLq2Lr0o52kUP3aV8md+TMJb
+	 tbxtQtyFj7UpKPcZq8RNpGBoMfJpWyWbtdw6h5a1flXBLqkIERCWAYzIyp4TIBKbT
+	 Duh6SX5+Gr4pbmj+m3H2e5Id6SpnFzBWcSHLjRY5FAqm6HcQwOXCRvb9qgEobSBGY
+	 kktoK3+ud+mMVwkXlg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.42] ([84.180.3.177]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M5wLT-1r6fzw1Kmp-007SSp; Wed, 13
- Dec 2023 23:14:23 +0100
-Message-ID: <422984bc-897c-45b5-8ac0-639e295a729b@gmx.de>
-Date: Wed, 13 Dec 2023 23:14:20 +0100
+Received: from [192.168.2.42] ([84.180.3.177]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MfHEJ-1rg0cz1xVr-00gmKJ; Wed, 13
+ Dec 2023 23:23:06 +0100
+Message-ID: <abec93ce-4c6d-47e7-8fd0-99eb5b9e6043@gmx.de>
+Date: Wed, 13 Dec 2023 23:23:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,12 +42,11 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/7] serial: Do not hold the port lock when setting
- rx-during-tx GPIO
+Subject: Re: [PATCH v5 4/7] serial: core: make sure RS485 cannot be enabled
+ when it is not supported
 Content-Language: en-US
 To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Lino Sanfilippo <l.sanfilippo@kunbus.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+ Lino Sanfilippo <l.sanfilippo@kunbus.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Jiri Slaby <jirislaby@kernel.org>, u.kleine-koenig@pengutronix.de,
  shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
@@ -56,139 +55,102 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  linux-serial <linux-serial@vger.kernel.org>, Lukas Wunner <lukas@wunner.de>,
  p.rosenberger@kunbus.com, stable@vger.kernel.org
 References: <20231209125836.16294-1-l.sanfilippo@kunbus.com>
- <20231209125836.16294-2-l.sanfilippo@kunbus.com>
- <e65d73ed-9d7f-8037-78c9-48c817ea3492@linux.intel.com>
+ <20231209125836.16294-5-l.sanfilippo@kunbus.com>
+ <5a1f1e87-38c8-7f0-35bf-689ceff844ba@linux.intel.com>
 From: Lino Sanfilippo <LinoSanfilippo@gmx.de>
-In-Reply-To: <e65d73ed-9d7f-8037-78c9-48c817ea3492@linux.intel.com>
+In-Reply-To: <5a1f1e87-38c8-7f0-35bf-689ceff844ba@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VdkmPdhHd+Q5Mw4KhPwk/5s/309926jL8kYFEFZPuJVod6yL9Xv
- c/E3PF5DfqrwgPlFqgPPq3z0xyMCp+7lLOjK/EuzKfUsREaAVvQL1ARNvbdCwA18hgKQEQr
- bWele30U/C12E6kCMo78X5v0p2AyuZ7WZSk5gFM6PIiz1UdL1If5ZEvYjG2JoHxE6XzYAXo
- MZJKIsKSQGyj+CA3uh7Tg==
-UI-OutboundReport: notjunk:1;M01:P0:6jZAvjpyU2Y=;GRvwOnRBB/3apl3heyZlbMRdJOF
- PVTFgh3B/x8JjwF+KH/HdRWvGFekTxirpGPJi7FIYm0K5qOeRjf19EhhzhzZHzsXsfkOiPkEG
- 2ZRIr3CIzgGGc6Afg8+JpJvDWHW0jNGQFF2zud5LhAhLeBJ+q3dnnF/4xZnfqDSN2ifVcjXxC
- z7Id2tRMR328W9RikJpYTcq2m0WIsVC9lVqsa3IoQEIDcaDGuo+U0DPH0/PGMkYK+TO316Rm7
- 7FprM2XcQIjQwnfsRFsgsNNLmpskqI6vfDYBWZ4aU1qRX+u1Px6r/8TIm8f5IvVoqve3FCBo9
- 7iupQIWvu8kbAXh41J7GMgRu+U683yHqoOVECZDw9srILNgEGg8DbAme34et45/wv+UU3grSE
- +0PKRd59xGqaA1jDvpX5puIc+Nzcod83rCcPKhMStTlU4dN4AQYoTSxRbdzqdAiaC4Z7RMd5V
- rkQaBPrck515wFgtDSgbAy9y8TlO3E4EZP8ETTuK2ZnOJ/w5eNcHxj0sVoLxyOZKy1SnReVa7
- m6eLYLnq6aYbCVP1odQHymwnIbXDT2FRyniXd1ZEuO953MvHnyX6h3aemJZ2QOGg7H1gP5l01
- V/9RX+5r1NhhGUJL+hUTidWgBZeVq7SzITImE1vHFt9p+Ot6VaR5KGY4jYo1bErDF4Goj/9eB
- chWZvhHRDUGpeF1qFlWsdQYLJRnCdzWgKQ8uhsT7/e9GY7axIgaIeZfYIIz7SO/dkIXl8n1++
- 85eCEaKqJKm8y1qF94u20PrwMdorPtjzMs7mc1QcbmadHh7ATR8aEgeBitcMsuAGWwrRxZ/ji
- ZgoSJ+T85X75RjbF25U388zFpcBXo0ifh9EYOy04tp2bOovbBga3Qwb48Y4I4gUApzmf7VTx7
- dkiO3ibSa43wTmli6kUupf89jCHjpnYkzT+FlGzHsm1mXpsd69iiVtq6zXaU864U7d8HG+9pt
- co9UOA==
+X-Provags-ID: V03:K1:p39tPFUa/8fO6Ycej9GbAUfZkBZXy6SSkJUWOqMehm4VB+hSPL1
+ QJaahOi7vSMYCcpsNhpzadNvK9BC6nypWxho1z26swS0FTlcOp7lhkUSIsoyE0KLpzzWJDV
+ UPnrr9fjFDXTngSEGIQBvTp6hkiRjoNRooqBbJ+BqJ53xmERUofbj6kCHh6jNgrVdXS2egh
+ /FCBDJF/lCJTxTGpsJ9Ag==
+UI-OutboundReport: notjunk:1;M01:P0:Vkt1SRPMJSg=;QUWY42ysatQmaTCuL3u4p5Uz5kA
+ PFpGzR0gptWG9miTP/vOZuHJQKHGi8MBNyZ7unyt5eKtb5AxkyHpIlvW3ruaxU5cM+X2iVXf6
+ 7QdDjx51eyEyabmjefn652e9eoQXu/xIRUCBPB9mJbFROaXXXgfp/KQ5sHDnjVPle0QRSzDWN
+ jSZKvtbBB2vG/LrbcPvvVVvTxIGQCu7H6Fn6SqPcL40Km0XHQ+9hGz31ms4EzjOyWGeczc8Vg
+ cI98nEOBHut0Q9yDYAwsAwiCCqMjEoZL30RkJWwoxJ+Q1pExoFS+7Tr0Sa5mylYdbQGCL03AE
+ fX/piXa6R9K3w1OCfIpsLg5iNvuWa5myLCdo/DJM4zyMUXtLTxWBgqluKo7v2LBBu7tg8CNIY
+ 4KfiVXJR3/k5Qsqo3YqnJeLO7gAkGnG+liv9rjFqXTXEhqpg42DAopx9mQWKvJkTZyP4wfTKG
+ B7Fk8xILWBFWCgHxIzlZU+986CUUktq9W1TBUt6zr+1AKomDn4fzSj37XFexMwhrlSpru9SvT
+ TAQGEkhFOCx6uyA5UFLkR0rXggIWVOw2OMLCTL7vbyI6xkj1+JxQiGSlO3Go9mWusF+l65VYE
+ 2SVtCLE4fIP5VXIJayeKqYG7TLqQu9BxhxIGz3DfW7wyLOrlN+R0AZNHNeY7uarj2zGv+pE76
+ 8Rk8UL28cZwx5fCmBZY9MTxVhrSLRZVxFct8lASHa3r45ZmD4DGvwzeFCnZhbUoc6sWRLOu0k
+ +OuThidqVs4VxvTWY9mBiKQAl4V9F3s9v1Q4d4suwF3l+W6BkSRHL+SNwRrtcpgEiMMXRxU3k
+ AZFZS9RowLOh8au1VeK5KrbZ93tH6/3OrqV8x7YP6NofN6ZYRBjJ4oaSmP1vkwrhsjes0QNn2
+ SooCO7GjsS0Cbzguo5+RbZR8ignrmXk54unA3X2XZLkuq/PKehi1XZ42AEwtMMqEFCi632br/
+ pfbw5BsBcRgI6PgDxVAKqBL0aBU=
 
-Hi,
 
-On 11.12.23 11:35, Ilpo J=C3=A4rvinen wrote:
+
+On 11.12.23 11:53, Ilpo J=C3=A4rvinen wrote:
 > On Sat, 9 Dec 2023, Lino Sanfilippo wrote:
 >
->> Both the imx and stm32 driver set the rx-during-tx GPIO in rs485_config=
-().
->> Since this function is called with the port lock held, this can be an
->> problem in case that setting the GPIO line can sleep (e.g. if a GPIO
->> expander is used which is connected via SPI or I2C).
+>> Some uart drivers specify a rs485_config() function and then decide lat=
+er
+>> to disable RS485 support for some reason (e.g. imx and ar933).
 >>
->> Avoid this issue by moving the GPIO setting outside of the port lock in=
-to
->> the serial core and thus making it a generic feature.
+>> In these cases userspace may be able to activate RS485 via TIOCSRS485
+>> nevertheless, since in uart_set_rs485_config() an existing rs485_config=
+()
+>> function indicates that RS485 is supported.
 >>
->> Fixes: c54d48543689 ("serial: stm32: Add support for rs485 RX_DURING_TX=
- output GPIO")
->> Fixes: ca530cfa968c ("serial: imx: Add support for RS485 RX_DURING_TX o=
-utput GPIO")
+>> Make sure that this is not longer possible by checking the uarts
+>> rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is n=
+ot
+>> set.
+>>
+>> Furthermore instead of returning an empty structure return -ENOTTY if t=
+he
+>> RS485 configuration is requested via TIOCGRS485 but RS485 is not suppor=
+ted.
+>> This has a small impact on userspace visibility but it is consistent wi=
+th
+>> the -ENOTTY error for TIOCGRS485.
+>>
+>> Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
+>> Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
 >> Cc: Shawn Guo <shawnguo@kernel.org>
 >> Cc: Sascha Hauer <s.hauer@pengutronix.de>
 >> Cc: stable@vger.kernel.org
 >> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 >> ---
->>  drivers/tty/serial/imx.c         |  4 ----
->>  drivers/tty/serial/serial_core.c | 12 ++++++++++++
->>  drivers/tty/serial/stm32-usart.c |  5 +----
->>  3 files changed, 13 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
->> index 708b9852a575..9cffeb23112b 100644
->> --- a/drivers/tty/serial/imx.c
->> +++ b/drivers/tty/serial/imx.c
->> @@ -1943,10 +1943,6 @@ static int imx_uart_rs485_config(struct uart_por=
-t *port, struct ktermios *termio
->>  	    rs485conf->flags & SER_RS485_RX_DURING_TX)
->>  		imx_uart_start_rx(port);
->>
->> -	if (port->rs485_rx_during_tx_gpio)
->> -		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
->> -					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
->> -
->>  	return 0;
->>  }
+>>  drivers/tty/serial/serial_core.c | 5 ++++-
+>>  1 file changed, 4 insertions(+), 1 deletion(-)
 >>
 >> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/seri=
 al_core.c
->> index f1348a509552..a0290a5fe8b3 100644
+>> index 4eae1406cb6c..661074ab8edb 100644
 >> --- a/drivers/tty/serial/serial_core.c
 >> +++ b/drivers/tty/serial/serial_core.c
->> @@ -1402,6 +1402,16 @@ static void uart_set_rs485_termination(struct ua=
-rt_port *port,
->>  				 !!(rs485->flags & SER_RS485_TERMINATE_BUS));
->>  }
+>> @@ -1448,6 +1448,9 @@ static int uart_get_rs485_config(struct uart_port=
+ *port,
+>>  	unsigned long flags;
+>>  	struct serial_rs485 aux;
 >>
->> +static void uart_set_rs485_rx_during_tx(struct uart_port *port,
->> +					const struct serial_rs485 *rs485)
->> +{
->> +	if (!(rs485->flags & SER_RS485_ENABLED))
->> +		return;
+>> +	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
+>> +		return -ENOTTY;
 >> +
->> +	gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
->> +				 !!(rs485->flags & SER_RS485_RX_DURING_TX));
->> +}
->> +
->>  static int uart_rs485_config(struct uart_port *port)
->>  {
->>  	struct serial_rs485 *rs485 =3D &port->rs485;
->> @@ -1413,6 +1423,7 @@ static int uart_rs485_config(struct uart_port *po=
-rt)
->>
->>  	uart_sanitize_serial_rs485(port, rs485);
->>  	uart_set_rs485_termination(port, rs485);
->> +	uart_set_rs485_rx_during_tx(port, rs485);
->>
 >>  	uart_port_lock_irqsave(port, &flags);
->>  	ret =3D port->rs485_config(port, NULL, rs485);
->> @@ -1457,6 +1468,7 @@ static int uart_set_rs485_config(struct tty_struc=
+>>  	aux =3D port->rs485;
+>>  	uart_port_unlock_irqrestore(port, flags);
+>> @@ -1465,7 +1468,7 @@ static int uart_set_rs485_config(struct tty_struc=
 t *tty, struct uart_port *port,
->>  		return ret;
->>  	uart_sanitize_serial_rs485(port, &rs485);
->>  	uart_set_rs485_termination(port, &rs485);
->> +	uart_set_rs485_rx_during_tx(port, &rs485);
+>>  	int ret;
+>>  	unsigned long flags;
 >>
->>  	uart_port_lock_irqsave(port, &flags);
->>  	ret =3D port->rs485_config(port, &tty->termios, &rs485);
+>> -	if (!port->rs485_config)
+>> +	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
+>>  		return -ENOTTY;
+>>
+>>  	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
 >
-> Also a nice simplification of driver-side code.
->
-> Reviewed-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
->
-> Just noting since this is now in core that if ->rs485_config() fails,
-> I suppose it's just normal to not rollback gpiod_set_value_cansleep()
-> (skimming through existing users in tree, it looks it's practically
-> never touched on the error rollback paths so I guess it's the normal
-> practice)?
->
-> Anyway, since neither of the users currently don't fail in their
-> ->rs485_config() so it doesn't seem a critical issue.
->
+> Looking through debian code search entries for TIOCGRS485, this might
+> actually fly... I'd suggest splitting this into two patches though.
 
-Thats a good point actually. Rolling back is not hard to implement and
-although it may not matter right now since currently no driver returns an =
-error
-code, this can change very soon.
-So I will rework this patch for the next version, thanks!
+Ok. I will split this into two patches or maybe even leave the change for =
+uart_get_rs485_config()
+completely out of this series (which is only about bug fixes) for now. Tha=
+nks!
 
-Regards,
-Lino
 
