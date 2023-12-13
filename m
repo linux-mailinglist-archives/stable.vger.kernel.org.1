@@ -1,105 +1,136 @@
-Return-Path: <stable+bounces-6607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE79181155C
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 15:57:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F20C2811565
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 15:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5DA51C20CA6
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:56:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6F01F21070
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1B52EB1B;
-	Wed, 13 Dec 2023 14:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CC82F844;
+	Wed, 13 Dec 2023 14:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="b0wEgu04"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1Dk+2Wow";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uST60tem"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27BAF11A;
-	Wed, 13 Dec 2023 06:56:51 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1d345b187bbso13772415ad.0;
-        Wed, 13 Dec 2023 06:56:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702479410; x=1703084210;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=02iXJsr8I1Hx9DZ+EoYreRi3wtC3FVG+hruJRxTtQ7A=;
-        b=qVJlyFFwUG045BNSPFryRYReOm2TTo5lFSSEFYkEbgdx/vAkfFU8MfWWVLSMsvn4Zy
-         WYC8s8w8iIAyUnAs2fb8UT5SJQ44Xn1AzKx79vZ/VxuK6NG7yJbhcMb8woaBhfA8YUfz
-         6VERFZADHGNsLh26IOVO1vAJOhEAZOp2+5D5lnn53emeCZqAR/D4OmMtvbpgFvy4j1RV
-         wo2zewwI7sScrXnbt9pxo2+8+69dMC3pPYJ89GPIO+Ysafnqpq6JYyWW3+9O/QV6bv6V
-         0ubvf/yF8oRWwgim1nBLw92Tj6c8jEI86GZ5YYHVpIvtwRz+t/Kh5+SygeiPJ8+NNbKD
-         0pDA==
-X-Gm-Message-State: AOJu0YwS79G8fWhaGf8UpOxHWI9xOpssanfRSXQHaf7dhoXfm/yEaQlB
-	hWsHzDnQir6HDLby4IxieFw=
-X-Google-Smtp-Source: AGHT+IEUekH9GLpWwt0/WDKEjJs8j4o6eNZpMgpQCDoKoClcvbEREqLdQ6LnT8C4MXV9lTmXxI08yQ==
-X-Received: by 2002:a17:902:d481:b0:1cf:f3a0:3c8e with SMTP id c1-20020a170902d48100b001cff3a03c8emr9251575plg.28.1702479410447;
-        Wed, 13 Dec 2023 06:56:50 -0800 (PST)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id f7-20020a170902ab8700b001cfc19c2d01sm3288445plr.296.2023.12.13.06.56.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 06:56:49 -0800 (PST)
-Date: Wed, 13 Dec 2023 11:56:48 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2023; t=1702479408;
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB32393;
+	Wed, 13 Dec 2023 06:59:33 -0800 (PST)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702479572;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=02iXJsr8I1Hx9DZ+EoYreRi3wtC3FVG+hruJRxTtQ7A=;
-	b=b0wEgu04ocg3IOIKXrOQ3dQnCw7yQIdZVesOv/Y8h9L8xhaMS11m4gTAxV9R5XQyF4zEWi
-	H9YIT5JiSDo2r7YTljqS/VyihJGYFNCd0S1StYDmR3ICAiKLOeA0mSra8G0ecx6fH8DGjn
-	LVk6/LICEyRx84geKZWBAK/xS8X3/z3agSCl7L7hmGUF+cH8eZ8QZ+l9dBgzLgk/RhW7AG
-	izGup9AkxwxOHZg2gcHhwGVgH20PIVivHnq1SKbu1Rx3Ss4WeDtRt2MAgPz//csgxgFJVf
-	zJKd6UyVEtNSRQWkFSCCD1daGG42mmc24gOcOxrYtp8QzNF1gEdI0n0+GCa4FA==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/244] 6.6.7-rc1 review
-Message-ID: <zzonspyiqrsxgs7ygfpuwo5pbqeuhj5arizokbungiwwms7tj6@zkwnv2fwk2hf>
-References: <20231211182045.784881756@linuxfoundation.org>
+	bh=foW+ZiDixud3U2NWD+f47jXaCIGRQEuK1RL8JyJXNEg=;
+	b=1Dk+2WowdGiO+Nc6YoCeRk4MBUkLTmEwK1mTz1+Vnbq0zDiUYn03tPXac7qQ3Z8PrUaVyG
+	uxT+XMkLI7qjPKpo3QtzqODBn4rg1LBdIdXjpQM1Ejr39aCZXJljpnO3YAbGaH7h1qltsZ
+	NpcKEB80J+0EVgBA27u819GQ0quMT3V7rlemWWKFDLjGK/GkW4kKrGeiQueSuqJIkYe4l/
+	H0aFiiYw6q+mgLU9q4YP6TG/Qo53kW2OgnZASTZCkUTih4lyGcT9tjhJQ8AYhwftuT2AsW
+	OeK2dxLagtBG5LTY6Qvbu2k4rG60jJnJITnVWnBMhbMYVCq44qVU8FNma/Nqng==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702479572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=foW+ZiDixud3U2NWD+f47jXaCIGRQEuK1RL8JyJXNEg=;
+	b=uST60temtwUPk5nrXczqgBP/EwCCDyRB14JgeVhMZ8CGUimz2/EkOl9pnl/fM76Vjxi/ym
+	wmL30e05LKJRA8Dw==
+To: xiongxin <xiongxin@kylinos.cn>, jikos@kernel.org,
+ benjamin.tissoires@redhat.com
+Cc: linux-input@vger.kernel.org, stable@vger.kernel.org, Riwen Lu
+ <luriwen@kylinos.cn>, hoan@os.amperecomputing.com,
+ fancer.lancer@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+ andy@kernel.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
+ in pairs
+In-Reply-To: <bf4004bf-4868-4953-8d8e-0c0e03be673e@kylinos.cn>
+References: <20231207014003.12919-1-xiongxin@kylinos.cn>
+ <87ttosssxd.ffs@tglx> <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
+ <874jgnqwlo.ffs@tglx> <bf4004bf-4868-4953-8d8e-0c0e03be673e@kylinos.cn>
+Date: Wed, 13 Dec 2023 15:59:31 +0100
+Message-ID: <875y12p2r0.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 23/12/11 07:18PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.7 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Dec 13 2023 at 10:29, xiongxin wrote:
+> =E5=9C=A8 2023/12/12 23:17, Thomas Gleixner =E5=86=99=E9=81=93:
+> Sorry, the previous reply may not have clarified the BUG process. I=20
+> re-debugged and confirmed it yesterday. The current BUG execution=20
+> sequence is described as follows:
 
-No regressions on my system:
-[    0.000000] Linux version 6.6.7-rc1+ (rbmarliere@debian) (Debian clang version 16.0.6 (19), GNU ld (GNU Binutils for Debian) 2.41.50.20231206) #12 SMP PREEMPT_DYNAMIC Wed Dec 13 11:37:51 -03 2023
+It's the sequence how this works and it works correctly.
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Just because it does not work on your machine it does not mean that this
+is incorrect and a BUG.
 
-Thanks!
--	Ricardo
+You are trying to fix a symptom and thereby violating guarantees of the
+core code.
+
+> That is, there is a time between the 1:handle_level_irq() and=20
+> 3:irq_thread_fn() calls for the 2:disable_irq() call to acquire the lock=
+=20
+> and then implement the irq_state_set_disabled() operation. When finally=20
+> call irq_thread_fn()->irq_finalize_oneshot(), it cannot enter the=20
+> unmask_thread_irq() process.
+
+Correct, because the interrupt has been DISABLED in the mean time.
+
+> In this case, the gpio irq_chip irq_mask()/irq_unmask() callback pairs=20
+> are not called in pairs, so I think this is a BUG, but not necessarily=20
+> fixed from the irq core code layer.
+
+No. It is _NOT_ a BUG. unmask() is not allowed to be invoked when the
+interrupt is DISABLED. That's the last time I'm going to tell you that.
+Only enable_irq() can undo the effect of disable_irq(), period.
+
+> Next, when the gpio controller driver calls the suspend/resume process,=20
+> it is as follows:
+>
+> suspend process:
+> dwapb_gpio_suspend()
+>      ctx->int_mask   =3D dwapb_read(gpio, GPIO_INTMASK);
+>
+> resume process:
+> dwapb_gpio_resume()
+>      dwapb_write(gpio, GPIO_INTMASK, ctx->int_mask);
+
+Did you actually look at the sequence I gave you?
+
+   Suspend:
+
+	  i2c_hid_core_suspend()
+	     disable_irq();       <- Marks it disabled and eventually
+				     masks it.
+
+	  gpio_irq_suspend()
+	     save_registers();    <- Saves masked interrupt
+
+   Resume:
+
+	  gpio_irq_resume()
+	     restore_registers(); <- Restores masked interrupt
+
+	  i2c_hid_core_resume()
+	     enable_irq();        <- Unmasks interrupt and removes the
+				     disabled marker
+
+
+Have you verified that this order of invocations is what happens on
+your machine?
+
+Thanks,
+
+        tglx
 
