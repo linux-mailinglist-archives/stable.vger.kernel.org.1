@@ -1,274 +1,304 @@
-Return-Path: <stable+bounces-6659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A37811EF8
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7481F811F3D
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:45:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5AB282A1A
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:35:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15078282299
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74F68274;
-	Wed, 13 Dec 2023 19:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE7868280;
+	Wed, 13 Dec 2023 19:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="wN7uyvKf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d5NtjA+d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376CA9C
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:34:59 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5be30d543c4so4193428a12.2
-        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:34:59 -0800 (PST)
+Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B0010E
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:44:54 -0800 (PST)
+Received: by mail-ot1-x333.google.com with SMTP id 46e09a7af769-6d8029dae41so5621898a34.0
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:44:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702496098; x=1703100898; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+bYwVbzVA3mPcXuCHPqaHqZOmfL4g7dcBx2kGj3IDY=;
-        b=wN7uyvKfzGYahVODr6bnLwZxBTB1XZxVQNFbPFskQC1lCPStXvnqP0fEYIfAY6fiXp
-         rTNpN45piLQUP8t+Ljzj7izJdVR5zE/1dkQgw1fT/GJDZW6Ie0xhsN6cYYIFgUN9kmhb
-         tG2MmWxTMYLtcTAph61CMuSqumMAhsj2NjU1z+NOf9nmdHbgrSlyFIh9iQdDyrh9KrfG
-         Wadh00Pys5nk/Clkz1TzOxvg2/tFsUMjrhzPrTDUj5tVpOsxNxf/0Psm51I8KkvLX99e
-         KfCJAF6TJoS0lAfQc8BrE/cjLkjzgV70VkyGP6ZoVwc2UCdADsxgdJfLdvxKOZ/U4nMW
-         0qkQ==
+        d=gmail.com; s=20230601; t=1702496694; x=1703101494; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Jxz50Q9h5N8BuDMjDAXa/uil5mwnNC0OLP+UwU3EH78=;
+        b=d5NtjA+dwjX7c7br0JnUoP0sSkRx6UAQjC3axGHbyupCO/GXY1YFVd4tMGp8+B+5j/
+         nJ/bkE13R25u4sQCIQILfwyjLyQIiZcni5ybKMhqjkBuvJyovm9j3L1XUfc3hIcRxDSG
+         HrnVRrZovHAUjZMr0HSB22eb8yEcWpcwc02bcIwSuE0gVTGu6q959psZxMx4GKFGe5PC
+         7qWCNRqkUmR+lWoVSr+Tz+p+FiaQ87iSZafnhEa9bfB6AnGJOYJHrTFrCFY8k5lT46/P
+         APpOOJ4J2cSVxbPZrAc4Ha2qBxZalGZZjmeNmbzWi4y7xBNQuu7W2NFJb7niVYry7csH
+         WYmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702496098; x=1703100898;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q+bYwVbzVA3mPcXuCHPqaHqZOmfL4g7dcBx2kGj3IDY=;
-        b=kjNsXutKMUD6ZhAIx0Zjr3sVYwJ5seF7scfWXsSHcTXNC9/KA90+7HmWmKm9qakd7W
-         aY3DCKmCT9wRKRjLMVe0CSijRoWVaUOlYDt9t2Se+1oMiqsdpd1vKaFKLtuQto/ELN18
-         RKt80ZS9E5SWXuNYDUOX0EknFaV2hJSfebR8fYGRLmhrniipW41p2r3MJmFFu75xFXkQ
-         TVvXm1JhPlj3SZSZZC7CX6ht2ERumNYtKsTkC8rBgWS4WXIYe5gIMoTe9phZowxCl89a
-         c6tobdGDPyMeMamZEiRHqVXao5th03/YAAVqC0Wl0Xji591KmuUemddD3prT0+w+FFUy
-         RY+w==
-X-Gm-Message-State: AOJu0Yz2wzpsEVAyWIfLYRlG+nzFwBeeRPrsWd6MMyfkO3jcoEPXwH/E
-	3k2SPQ7y01/HytZOCDHo5IWhej8A+U2e2YKbleZE1g==
-X-Google-Smtp-Source: AGHT+IFc/cB02hGAdvjaIsF5q2iznwdZClyem9Qg4LbQGDmfC/sxIvT+4U5swREykzQaNuhlSmA1Rw==
-X-Received: by 2002:a05:6a20:560c:b0:190:4daf:70bc with SMTP id ir12-20020a056a20560c00b001904daf70bcmr4641834pzc.108.1702496098201;
-        Wed, 13 Dec 2023 11:34:58 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id b17-20020a056a000cd100b006ce4054d1cfsm10162476pfv.184.2023.12.13.11.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 11:34:57 -0800 (PST)
-Message-ID: <657a0761.050a0220.4946a.f84f@mx.google.com>
-Date: Wed, 13 Dec 2023 11:34:57 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1702496694; x=1703101494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jxz50Q9h5N8BuDMjDAXa/uil5mwnNC0OLP+UwU3EH78=;
+        b=Y/WvWyF3txRBTFn39W+Qx5I6+i7ZqPwc8ieXSH0WKTGGo7JsUrrXWI5hkXxTCpodtn
+         s769pS/VIt9eNjHtwRmtTEuLV5VRoPBOG7VcdSEI6zGR5s30jLd0DlbfCpAUiYoYHm1X
+         0kQriR97FdfZ0SFOp+/qAoMUBRh5ya6nB/npjDeHvYrPVkx7itUrurfF4QlX88gHds5i
+         a5+Wu5VRlO9yw9DrcKUmpuKLvVDFhkNPaMBiIgyt1X7yykWwhhZaWQ6IaCWoWFRjfTHZ
+         okUC9Z5ACZ3SrGdrEyD9FrbBFcBdgKOJDH7RIL5T5aN4q/LoNdcGOR8TbaXuKwuwSdWF
+         jMyA==
+X-Gm-Message-State: AOJu0Yz8qPbdWSqrhiRaBrQ8v9QhytPnDkXvl9fW9FvD4Zw7xLu1Bk2M
+	jsG0DfccaCanNK0bOwugK7KuetfL7CRs+jpx1APKFXz7tlY=
+X-Google-Smtp-Source: AGHT+IFQ/IvfYvlggwT+lZ+IVE+tsFV5zNzne40K9JXV+ZmVEN1cRMMvqmS7G66NGtrnf5xewXXT/qDGfpcGFBy1hdg=
+X-Received: by 2002:a05:6871:146:b0:1fb:1373:c889 with SMTP id
+ z6-20020a056871014600b001fb1373c889mr10223753oab.102.1702496694160; Wed, 13
+ Dec 2023 11:44:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20231213170454.5962-1-mario.limonciello@amd.com>
+ <CADnq5_O=Kp+TkSEHXxSPEtWEYknFL_e_D7m5nXN=y8CJrR950g@mail.gmail.com>
+ <38da4566-d936-42d9-9879-eee993270da0@amd.com> <13694238-418a-4fcb-8921-f9ab31e08120@amd.com>
+In-Reply-To: <13694238-418a-4fcb-8921-f9ab31e08120@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Wed, 13 Dec 2023 14:44:42 -0500
+Message-ID: <CADnq5_MkkWqLyC3VYbTXSX7JL2Q5aaeJ6sFT9ROXjqdVfsXgjw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd: Add a workaround for GFX11 systems that fail to
+ flush TLB
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>, amd-gfx@lists.freedesktop.org, 
+	Tim Huang <Tim.Huang@amd.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.333
-Subject: stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.333)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (v4.=
-14.333)
+On Wed, Dec 13, 2023 at 2:32=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> On 12/13/2023 13:12, Mario Limonciello wrote:
+> > On 12/13/2023 13:07, Alex Deucher wrote:
+> >> On Wed, Dec 13, 2023 at 1:00=E2=80=AFPM Mario Limonciello
+> >> <mario.limonciello@amd.com> wrote:
+> >>>
+> >>> Some systems with MP1 13.0.4 or 13.0.11 have a firmware bug that
+> >>> causes the first MES packet after resume to fail. This packet is
+> >>> used to flush the TLB when GART is enabled.
+> >>>
+> >>> This issue is fixed in newer firmware, but as OEMs may not roll this
+> >>> out to the field, introduce a workaround that will retry the flush
+> >>> when detecting running on an older firmware and decrease relevant
+> >>> error messages to debug while workaround is in use.
+> >>>
+> >>> Cc: stable@vger.kernel.org # 6.1+
+> >>> Cc: Tim Huang <Tim.Huang@amd.com>
+> >>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3045
+> >>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> >>> ---
+> >>>   drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 10 ++++++++--
+> >>>   drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |  2 ++
+> >>>   drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c  | 17 ++++++++++++++++-
+> >>>   drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |  8 ++++++--
+> >>>   4 files changed, 32 insertions(+), 5 deletions(-)
+> >>>
+> >>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+> >>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+> >>> index 9ddbf1494326..6ce3f6e6b6de 100644
+> >>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+> >>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+> >>> @@ -836,8 +836,14 @@ int amdgpu_mes_reg_write_reg_wait(struct
+> >>> amdgpu_device *adev,
+> >>>          }
+> >>>
+> >>>          r =3D adev->mes.funcs->misc_op(&adev->mes, &op_input);
+> >>> -       if (r)
+> >>> -               DRM_ERROR("failed to reg_write_reg_wait\n");
+> >>> +       if (r) {
+> >>> +               const char *msg =3D "failed to reg_write_reg_wait\n";
+> >>> +
+> >>> +               if (adev->mes.suspend_workaround)
+> >>> +                       DRM_DEBUG(msg);
+> >>> +               else
+> >>> +                       DRM_ERROR(msg);
+> >>> +       }
+> >>>
+> >>>   error:
+> >>>          return r;
+> >>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+> >>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+> >>> index a27b424ffe00..90f2bba3b12b 100644
+> >>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+> >>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+> >>> @@ -135,6 +135,8 @@ struct amdgpu_mes {
+> >>>
+> >>>          /* ip specific functions */
+> >>>          const struct amdgpu_mes_funcs   *funcs;
+> >>> +
+> >>> +       bool                            suspend_workaround;
+> >>>   };
+> >>>
+> >>>   struct amdgpu_mes_process {
+> >>> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >>> b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >>> index 23d7b548d13f..e810c7bb3156 100644
+> >>> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >>> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >>> @@ -889,7 +889,11 @@ static int gmc_v11_0_gart_enable(struct
+> >>> amdgpu_device *adev)
+> >>>                  false : true;
+> >>>
+> >>>          adev->mmhub.funcs->set_fault_enable_default(adev, value);
+> >>> -       gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0);
+> >>> +
+> >>> +       do {
+> >>> +               gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0)=
+;
+> >>> +               adev->mes.suspend_workaround =3D false;
+> >>> +       } while (adev->mes.suspend_workaround);
+> >>
+> >> Shouldn't this be something like:
+> >>
+> >>> +       do {
+> >>> +               gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0)=
+;
+> >>> +               adev->mes.suspend_workaround =3D false;
+> >>> +               gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0)=
+;
+> >>> +       } while (adev->mes.suspend_workaround);
+> >>
+> >> If we actually need the flush.  Maybe a better approach would be to
+> >> check if we are in s0ix in
+> >
+> > Ah you're right; I had shifted this around to keep less stateful
+> > variables and push them up the stack from when I first made it and that
+> > logic is wrong now.
+> >
+> > I don't think the one you suggested is right either; it's going to appl=
+y
+> > twice on ASICs that only need it once.
+> >
+> > I guess pending on what Christian comments on below I'll respin to logi=
+c
+> > that only calls twice on resume for these ASICs.
+>
+> One more comment.  Tim and I both did an experiment for this (skipping
+> the flush) separately.  The problem isn't the flush itself, rather it's
+> the first MES packet after exiting GFXOFF.
+>
+> So it seems that it pushes off the issue to the next thing which is a
+> ring buffer test:
+>
+> [drm:amdgpu_ib_ring_tests [amdgpu]] *ERROR* IB test failed on comp_1.0.0
+> (-110).
+> [drm:process_one_work] *ERROR* ib ring test failed (-110).
+>
+> So maybe a better workaround is a "dummy" command that is only sent for
+> the broken firmware that we don't care about the outcome and discard erro=
+rs.
+>
+> Then the workaround doesn't need to get as entangled with correct flow.
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-4.14.y/k=
-ernel/v4.14.333/
+Yeah. Something like that seems cleaner.  Just a question of where to
+put it since we skip GC and MES for s0ix.  Probably somewhere in
+gmc_v11_0_resume() before gmc_v11_0_gart_enable().  Maybe add a new
+mes callback.
 
-Tree: stable
-Branch: linux-4.14.y
-Git Describe: v4.14.333
-Git Commit: 27972f32764632d687a5f851c1ce5e206a09acce
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 6 unique architectures
+Alex
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+>
+> >
+> >>
+> >> diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >> b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c in gmc_v11_0_flush_gpu_tlb():
+> >> index 23d7b548d13f..bd6d9953a80e 100644
+> >> --- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >> +++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
+> >> @@ -227,7 +227,8 @@ static void gmc_v11_0_flush_gpu_tlb(struct
+> >> amdgpu_device *adev, uint32_t vmid,
+> >>           * Directly use kiq to do the vm invalidation instead
+> >>           */
+> >>          if ((adev->gfx.kiq[0].ring.sched.ready ||
+> >> adev->mes.ring.sched.ready) &&
+> >> -           (amdgpu_sriov_runtime(adev) || !amdgpu_sriov_vf(adev))) {
+> >> +           (amdgpu_sriov_runtime(adev) || !amdgpu_sriov_vf(adev)) ||
+> >> +           !adev->in_s0ix) {
+> >>                  amdgpu_virt_kiq_reg_write_reg_wait(adev, req, ack,
+> >> inv_req,
+> >>                                  1 << vmid, GET_INST(GC, 0));
+> >>                  return;
+> >>
+> >> @Christian Koenig is this logic correct?
+> >>
+> >>          /* For SRIOV run time, driver shouldn't access the register
+> >> through MMIO
+> >>           * Directly use kiq to do the vm invalidation instead
+> >>           */
+> >>          if ((adev->gfx.kiq[0].ring.sched.ready ||
+> >> adev->mes.ring.sched.ready) &&
+> >>              (amdgpu_sriov_runtime(adev) || !amdgpu_sriov_vf(adev))) {
+> >>                  amdgpu_virt_kiq_reg_write_reg_wait(adev, req, ack,
+> >> inv_req,
+> >>                                  1 << vmid, GET_INST(GC, 0));
+> >>                  return;
+> >>          }
+> >>
+> >> We basically always use the MES with that logic.  If that is the case,
+> >> we should just drop the rest of that function.  Shouldn't we only use
+> >> KIQ or MES for SR-IOV?  gmc v10 has similar logic which also seems
+> >> wrong.
+> >>
+> >> Alex
+> >>
+> >>
+> >>>
+> >>>          DRM_INFO("PCIE GART of %uM enabled (table at 0x%016llX).\n",
+> >>>                   (unsigned int)(adev->gmc.gart_size >> 20),
+> >>> @@ -960,6 +964,17 @@ static int gmc_v11_0_resume(void *handle)
+> >>>          int r;
+> >>>          struct amdgpu_device *adev =3D (struct amdgpu_device *)handl=
+e;
+> >>>
+> >>> +       switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
+> >>> +       case IP_VERSION(13, 0, 4):
+> >>> +       case IP_VERSION(13, 0, 11):
+> >>> +               /* avoid problems with first TLB flush after resume *=
+/
+> >>> +               if ((adev->pm.fw_version & 0x00FFFFFF) < 0x004c4900)
+> >>> +                       adev->mes.suspend_workaround =3D adev->in_s0i=
+x;
+> >>> +               break;
+> >>> +       default:
+> >>> +               break;
+> >>> +       }
+> >>> +
+> >>>          r =3D gmc_v11_0_hw_init(adev);
+> >>>          if (r)
+> >>>                  return r;
+> >>> diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+> >>> b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+> >>> index 4dfec56e1b7f..84ab8c611e5e 100644
+> >>> --- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+> >>> +++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+> >>> @@ -137,8 +137,12 @@ static int
+> >>> mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
+> >>>          r =3D amdgpu_fence_wait_polling(ring, ring->fence_drv.sync_s=
+eq,
+> >>>                        timeout);
+> >>>          if (r < 1) {
+> >>> -               DRM_ERROR("MES failed to response msg=3D%d\n",
+> >>> -                         x_pkt->header.opcode);
+> >>> +               if (mes->suspend_workaround)
+> >>> +                       DRM_DEBUG("MES failed to response msg=3D%d\n"=
+,
+> >>> +                                 x_pkt->header.opcode);
+> >>> +               else
+> >>> +                       DRM_ERROR("MES failed to response msg=3D%d\n"=
+,
+> >>> +                                 x_pkt->header.opcode);
+> >>>
+> >>>                  while (halt_if_hws_hang)
+> >>>                          schedule();
+> >>> --
+> >>> 2.34.1
+> >>>
+> >
+>
 
