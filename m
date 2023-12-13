@@ -1,107 +1,148 @@
-Return-Path: <stable+bounces-6627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73E9811B3F
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:34:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C16BD811B52
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9F9B20A06
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:34:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB6A1C20CDF
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD83C56B7C;
-	Wed, 13 Dec 2023 17:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC76756B97;
+	Wed, 13 Dec 2023 17:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c6pAKJKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXMl99mb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CADA57893;
-	Wed, 13 Dec 2023 17:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEF0C433C9;
-	Wed, 13 Dec 2023 17:34:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702488859;
-	bh=pOzeZqYCumnmyLY7QOO5p/wpjgqUMF/9UXyX7tE2MGk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6pAKJKPxD9ImO3af3kB3QdIS3Vukdcv56y93m+ANRPOWTLMMrf3y1jkOIhRrEHVT
-	 mFAQsnGxpWTs1lRk/Lq+02Cxt+pzoDzvwhPf0q6zmZy9hkMrY53g30Za5vSTlnbyYf
-	 z77fjnWKBxyygARx8tvDSHvPdS0lKAPWfGoOEoB8Zb1x09Qae0HmtnhSvx3IiNqjh1
-	 JkJw7K1QY26j5US1ioosTjGz6iu9YsFL8zICiixoSxxpwh/KTa6Rh5gnjIF3jDHGM8
-	 0BbGniqbEzvUaa5/qu7L1r6F2FWM3OrXDKPQ0DQWi1p2/Vn2iIc62v5hYiG3l2oBTH
-	 q0mjZia+cOJ0Q==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rDT7h-0007h4-2I;
-	Wed, 13 Dec 2023 18:34:17 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Jack Pham <quic_jackp@quicinc.com>,
-	Jonathan Marek <jonathan@marek.ca>
-Subject: [PATCH 5/5] arm64: dts: qcom: sm8150: fix USB SS wakeup
-Date: Wed, 13 Dec 2023 18:34:03 +0100
-Message-ID: <20231213173403.29544-6-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231213173403.29544-1-johan+linaro@kernel.org>
-References: <20231213173403.29544-1-johan+linaro@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3498534B;
+	Wed, 13 Dec 2023 17:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7905CC433C7;
+	Wed, 13 Dec 2023 17:37:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702489075;
+	bh=viG7AGNHVM+j/Siqe34sl7MtKrSza3x0N/RnzU7GrTU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aXMl99mb+3U6hbUTcdKvaoTXYjVfUtH/NB7jCFXl+PpYGZJZiL6tEx3PWkO5KbyU6
+	 hOengl1NuXpCaAQ+cbxH5ERo+Hrid2EHIhLsLtu/B0C/Q0NxmMFhextD1NDC3SFAhQ
+	 3TLE1spIGzsT2J9ZKFqhrNUbyKHv0amQBb5R96Ec=
+Date: Wed, 13 Dec 2023 18:37:52 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Pavel Machek <pavel@denx.de>, Guenter Roeck <linux@roeck-us.net>,
+	grundler@chromium.org, davem@davemloft.net, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: RTL8152_INACCESSIBLE was Re: [PATCH 6.1 000/194] 6.1.68-rc1
+ review
+Message-ID: <2023121322-mortician-superman-54a9@gregkh>
+References: <20231211182036.606660304@linuxfoundation.org>
+ <ZXi9wyS7vjGyUWU8@duo.ucw.cz>
+ <a6af01bf-7785-4531-8514-8e5eb09e207e@roeck-us.net>
+ <ZXliuTqyO_IjlIz7@amd.ucw.cz>
+ <2023121342-wanted-overarch-84a7@gregkh>
+ <CAD=FV=WK52EjYh0nn8e0PEvY5ovUOn9rymnY09B7SQNgUXymPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=WK52EjYh0nn8e0PEvY5ovUOn9rymnY09B7SQNgUXymPw@mail.gmail.com>
 
-The USB SS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+On Wed, Dec 13, 2023 at 07:16:52AM -0800, Doug Anderson wrote:
+> Hi,
+> 
+> On Wed, Dec 13, 2023 at 12:50 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Wed, Dec 13, 2023 at 08:52:25AM +0100, Pavel Machek wrote:
+> > > Hi!
+> > >
+> > > > > > This is the start of the stable review cycle for the 6.1.68 release.
+> > > > > > There are 194 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > >
+> > > > >
+> > > > > > Douglas Anderson <dianders@chromium.org>
+> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8153_aldps_en()
+> > > > > >
+> > > > > > Douglas Anderson <dianders@chromium.org>
+> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8153_pre_firmware_1()
+> > > > > >
+> > > > > > Douglas Anderson <dianders@chromium.org>
+> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8156b_wait_loading_flash()
+> > > > > >
+> > > > > > Douglas Anderson <dianders@chromium.org>
+> > > > > >      r8152: Add RTL8152_INACCESSIBLE checks to more loops
+> > > > > >
+> > > > > > Douglas Anderson <dianders@chromium.org>
+> > > > > >      r8152: Rename RTL8152_UNPLUG to RTL8152_INACCESSIBLE
+> > > > >
+> > > > > Central patch that actually fixes something is:
+> > > > >
+> > > > > commit d9962b0d42029bcb40fe3c38bce06d1870fa4df4
+> > > > > Author: Douglas Anderson <dianders@chromium.org>
+> > > > > Date:   Fri Oct 20 14:06:59 2023 -0700
+> > > > >
+> > > > >      r8152: Block future register access if register access fails
+> > > > >
+> > > > > ...but we don't have that in 6.1. So we should not need the rest,
+> > > > > either.
+> > > > >
+> > > >
+> > > > Also, the missing patch is fixed subsequently by another patch, so it can not
+> > > > be added on its own.
+> > >
+> > > For the record I'm trying to advocate "drop all patches listed as they
+> > > don't fix the bug", not "add more", as this does not meet stable
+> > > criteria.
+> >
+> > But the original commit here does say it fixes a bug, see the text of
+> > the commits listed above.  So perhaps someone got this all wrong when
+> > they wrote the original commits that got merged into 6.7-rc?  Otherwise
+> > this seems like they are sane to keep for now, unless the original
+> > author says they should be dropped, or someone who can test this driver
+> > says something went wrong.
+> 
+> Right. The patches that "add RTL8152_INACCESSIBLE" to more loops are
+> bugfixes, but they're not terribly important ones to backport. While
+> they technically make sense even on older kernels and could
+> conceivably make the older kernels unload the r8152 driver a little
+> faster when a device is unplugged, it's not a big deal. On the first
+> version of the recent patches I didn't even add a "Fixes" tag for them
+> but I was asked to during the review process.
+> 
+> The "add RTL8152_INACCESSIBLE" patches become more important with
+> commit d9962b0d4202 ("r8152: Block future register access if register
+> access fails"). Once you have that it's possible to end up in the
+> "INACCESSIBLE" situation in response to normal (ish) error handling
+> and thus you want it to be faster.
+> 
+> Based on our experience in ChromeOS, commit d9962b0d4202 ("r8152:
+> Block future register access if register access fails") is a pretty
+> important fix and I would say it should be backported to stable.
+> Certainly we've backported it to our kernels in ChromeOS. In our case
+> we made things easier on ourselves by backporting pretty much all
+> patches to the r8152 driver.
 
-Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
-Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Cc: Jack Pham <quic_jackp@quicinc.com>
-Cc: Jonathan Marek <jonathan@marek.ca>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Ok, as lots of fixes seem to be needed here, do you have a list of the
+git ids that we should backport to bring this up to a workable state
+like you have in your tree?
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 5e46b9ef8642..56c74a841d80 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -3566,7 +3566,7 @@ usb_1: usb@a6f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-@@ -3619,7 +3619,7 @@ usb_2: usb@a8f8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
- 
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 7 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
--- 
-2.41.0
+thanks,
 
+greg k-h
 
