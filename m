@@ -1,260 +1,157 @@
-Return-Path: <stable+bounces-6544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4CB581076F
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:11:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EDEC810787
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:20:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8AC41C20E75
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:11:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2460A1F21AFA
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 01:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BE0EB8;
-	Wed, 13 Dec 2023 01:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C86A5E;
+	Wed, 13 Dec 2023 01:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jOCUB3Vb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6F842A7;
-	Tue, 12 Dec 2023 17:11:16 -0800 (PST)
-Received: from loongson.cn (unknown [10.180.129.93])
-	by gateway (Coremail) with SMTP id _____8DxE_CsBHlldYIAAA--.3183S3;
-	Wed, 13 Dec 2023 09:11:08 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.180.129.93])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8DxkuOpBHllxY8BAA--.10748S2;
-	Wed, 13 Dec 2023 09:11:05 +0800 (CST)
-From: Hongchen Zhang <zhanghongchen@loongson.cn>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <len.brown@intel.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Bojan Smojver <bojan@rexursive.com>
-Cc: linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Hongchen Zhang <zhanghongchen@loongson.cn>,
-	stable@vger.kernel.org,
-	Weihao Li <liweihao@loongson.cn>
-Subject: [PATCH v3] PM: hibernate: use acquire/release ordering when compress/decompress image
-Date: Wed, 13 Dec 2023 09:11:03 +0800
-Message-Id: <20231213011103.1491414-1-zhanghongchen@loongson.cn>
-X-Mailer: git-send-email 2.33.0
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D363FEB8;
+	Wed, 13 Dec 2023 01:20:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34186C433C8;
+	Wed, 13 Dec 2023 01:20:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1702430442;
+	bh=OmOuBdXlTmofdiQGAvEYe2YDCxhlyOmbYR7+6VkopwE=;
+	h=Date:To:From:Subject:From;
+	b=jOCUB3VbIiVqk78WcMTX36nlb5OpGyp+SDEOuPO+R0SIZzZQCX5/nCeN5e8jkzNFN
+	 aoK73G7FLrrfKpUi43jiucgJBYaOtL2KLxlXtFLOkhD8TE/HRshTO61SV+0uhJQGmF
+	 /AiN287eC4wzoqQVc6tD10aZyam6jsq1g0vXv6FM=
+Date: Tue, 12 Dec 2023 17:20:41 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bhe@redhat.com,agordeev@linux.ibm.com,ignat@cloudflare.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch removed from -mm tree
+Message-Id: <20231213012042.34186C433C8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8DxkuOpBHllxY8BAA--.10748S2
-X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAEB2V3wy0JUgABsk
-X-Coremail-Antispam: 1Uk129KBj93XoW3Gw47uFWkJrW7ZFyrXFWkGrX_yoW7KrW8pF
-	W8Xan0kr4UXrs8Z39rAay8Z345AFnYyFZrGrsxC34fuasIgrsYya40gF9Yvr1YyFy8t34v
-	9a17K34qgryqqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
-	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8Dl1DUUUUU==
 
-When we test S4(suspend to disk) on LoongArch 3A6000 platform, the
-test case sometimes fails. The dmesg log shows the following error:
-	Invalid LZO compressed length
-After we dig into the code, we find out that:
-When compress/decompress the image, the synchronization operation
-between the control thread and the compress/decompress/crc thread
-uses relaxed ordering interface, which is unreliable, and the
-following situation may occur:
-CPU 0					CPU 1
-save_image_lzo				lzo_compress_threadfn
-					  atomic_set(&d->stop, 1);
-  atomic_read(&data[thr].stop)
-  data[thr].cmp = data[thr].cmp_len;
-	  				  WRITE data[thr].cmp_len
-Then CPU0 get a old cmp_len and write to disk. When cpu resume from S4,
-wrong cmp_len is loaded.
 
-To maintain data consistency between two threads, we should use the
-acquire/release ordering interface. So we change atomic_read/atomic_set
-to atomic_read_acquire/atomic_set_release.
+The quilt patch titled
+     Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
+has been removed from the -mm tree.  Its filename was
+     kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch
 
-Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
-Cc: stable@vger.kernel.org
-Co-developed-by: Weihao Li <liweihao@loongson.cn>
-Signed-off-by: Weihao Li <liweihao@loongson.cn>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Ignat Korchagin <ignat@cloudflare.com>
+Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
+Date: Wed, 29 Nov 2023 22:04:09 +0000
+
+In commit f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for
+CRASH_DUMP") we tried to fix a config regression, where CONFIG_CRASH_DUMP
+required CONFIG_KEXEC.
+
+However, it was not enough at least for arm64 platforms.  While further
+testing the patch with our arm64 config I noticed that CONFIG_CRASH_DUMP
+is unavailable in menuconfig.  This is because CONFIG_CRASH_DUMP still
+depends on the new CONFIG_ARCH_SUPPORTS_KEXEC introduced in commit
+91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec") and on
+arm64 CONFIG_ARCH_SUPPORTS_KEXEC requires CONFIG_PM_SLEEP_SMP=y, which in
+turn requires either CONFIG_SUSPEND=y or CONFIG_HIBERNATION=y neither of
+which are set in our config.
+
+Given that we already established that CONFIG_KEXEC (which is a switch for
+kexec system call itself) is not required for CONFIG_CRASH_DUMP drop
+CONFIG_ARCH_SUPPORTS_KEXEC dependency as well.  The arm64 kernel builds
+just fine with CONFIG_CRASH_DUMP=y and with both CONFIG_KEXEC=n and
+CONFIG_KEXEC_FILE=n after f8ff23429c62 ("kernel/Kconfig.kexec: drop select
+of KEXEC for CRASH_DUMP") and this patch are applied given that the
+necessary shared bits are included via CONFIG_KEXEC_CORE dependency.
+
+[bhe@redhat.com: don't export some symbols when CONFIG_MMU=n]
+  Link: https://lkml.kernel.org/r/ZW03ODUKGGhP1ZGU@MiWiFi-R3L-srv
+[bhe@redhat.com: riscv, kexec: fix dependency of two items]
+  Link: https://lkml.kernel.org/r/ZW04G/SKnhbE5mnX@MiWiFi-R3L-srv
+Link: https://lkml.kernel.org/r/20231129220409.55006-1-ignat@cloudflare.com
+Fixes: 91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec")
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: <stable@vger.kernel.org> # 6.6+: f8ff234: kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP
+Cc: <stable@vger.kernel.org> # 6.6+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/power/swap.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index a2cb0babb5ec..d44f5937f1e5 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -606,11 +606,11 @@ static int crc32_threadfn(void *data)
- 	unsigned i;
+ arch/riscv/Kconfig             |    4 ++--
+ arch/riscv/kernel/crash_core.c |    4 +++-
+ kernel/Kconfig.kexec           |    1 -
+ 3 files changed, 5 insertions(+), 4 deletions(-)
+
+--- a/arch/riscv/Kconfig~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
++++ a/arch/riscv/Kconfig
+@@ -685,7 +685,7 @@ config RISCV_BOOT_SPINWAIT
+ 	  If unsure what to do here, say N.
  
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -619,7 +619,7 @@ static int crc32_threadfn(void *data)
- 		for (i = 0; i < d->run_threads; i++)
- 			*d->crc32 = crc32_le(*d->crc32,
- 			                     d->unc[i], *d->unc_len[i]);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -649,12 +649,12 @@ static int lzo_compress_threadfn(void *data)
- 	struct cmp_data *d = data;
+ config ARCH_SUPPORTS_KEXEC
+-	def_bool MMU
++	def_bool y
  
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -663,7 +663,7 @@ static int lzo_compress_threadfn(void *data)
- 		d->ret = lzo1x_1_compress(d->unc, d->unc_len,
- 		                          d->cmp + LZO_HEADER, &d->cmp_len,
- 		                          d->wrk);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -798,7 +798,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
+ config ARCH_SELECTS_KEXEC
+ 	def_bool y
+@@ -693,7 +693,7 @@ config ARCH_SELECTS_KEXEC
+ 	select HOTPLUG_CPU if SMP
  
- 			data[thr].unc_len = off;
+ config ARCH_SUPPORTS_KEXEC_FILE
+-	def_bool 64BIT && MMU
++	def_bool 64BIT
  
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
+ config ARCH_SELECTS_KEXEC_FILE
+ 	def_bool y
+--- a/arch/riscv/kernel/crash_core.c~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
++++ a/arch/riscv/kernel/crash_core.c
+@@ -5,18 +5,20 @@
  
-@@ -806,12 +806,12 @@ static int save_image_lzo(struct swap_map_handle *handle,
- 			break;
+ void arch_crash_save_vmcoreinfo(void)
+ {
+-	VMCOREINFO_NUMBER(VA_BITS);
+ 	VMCOREINFO_NUMBER(phys_ram_base);
  
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
- 
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
- 
- 			ret = data[thr].ret;
-@@ -850,7 +850,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
- 			}
- 		}
- 
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
- 	}
- 
-@@ -1132,12 +1132,12 @@ static int lzo_decompress_threadfn(void *data)
- 	struct dec_data *d = data;
- 
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -1150,7 +1150,7 @@ static int lzo_decompress_threadfn(void *data)
- 			flush_icache_range((unsigned long)d->unc,
- 					   (unsigned long)d->unc + d->unc_len);
- 
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -1335,7 +1335,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 		}
- 
- 		if (crc->run_threads) {
--			wait_event(crc->done, atomic_read(&crc->stop));
-+			wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 			atomic_set(&crc->stop, 0);
- 			crc->run_threads = 0;
- 		}
-@@ -1371,7 +1371,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 					pg = 0;
- 			}
- 
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
- 
-@@ -1390,7 +1390,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
- 
- 			ret = data[thr].ret;
-@@ -1421,7 +1421,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 				ret = snapshot_write_next(snapshot);
- 				if (ret <= 0) {
- 					crc->run_threads = thr + 1;
--					atomic_set(&crc->ready, 1);
-+					atomic_set_release(&crc->ready, 1);
- 					wake_up(&crc->go);
- 					goto out_finish;
- 				}
-@@ -1429,13 +1429,13 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 		}
- 
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
- 	}
- 
- out_finish:
- 	if (crc->run_threads) {
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
- 	}
- 	stop = ktime_get();
--- 
-2.33.0
+ 	vmcoreinfo_append_str("NUMBER(PAGE_OFFSET)=0x%lx\n", PAGE_OFFSET);
+ 	vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
+ 	vmcoreinfo_append_str("NUMBER(VMALLOC_END)=0x%lx\n", VMALLOC_END);
++#ifdef CONFIG_MMU
++	VMCOREINFO_NUMBER(VA_BITS);
+ 	vmcoreinfo_append_str("NUMBER(VMEMMAP_START)=0x%lx\n", VMEMMAP_START);
+ 	vmcoreinfo_append_str("NUMBER(VMEMMAP_END)=0x%lx\n", VMEMMAP_END);
+ #ifdef CONFIG_64BIT
+ 	vmcoreinfo_append_str("NUMBER(MODULES_VADDR)=0x%lx\n", MODULES_VADDR);
+ 	vmcoreinfo_append_str("NUMBER(MODULES_END)=0x%lx\n", MODULES_END);
+ #endif
++#endif
+ 	vmcoreinfo_append_str("NUMBER(KERNEL_LINK_ADDR)=0x%lx\n", KERNEL_LINK_ADDR);
+ 	vmcoreinfo_append_str("NUMBER(va_kernel_pa_offset)=0x%lx\n",
+ 						kernel_map.va_kernel_pa_offset);
+--- a/kernel/Kconfig.kexec~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
++++ a/kernel/Kconfig.kexec
+@@ -94,7 +94,6 @@ config KEXEC_JUMP
+ config CRASH_DUMP
+ 	bool "kernel crash dumps"
+ 	depends on ARCH_SUPPORTS_CRASH_DUMP
+-	depends on ARCH_SUPPORTS_KEXEC
+ 	select CRASH_CORE
+ 	select KEXEC_CORE
+ 	help
+_
+
+Patches currently in -mm which might be from ignat@cloudflare.com are
+
 
 
