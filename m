@@ -1,198 +1,146 @@
-Return-Path: <stable+bounces-6560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E1081095A
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 06:14:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3654A810960
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 06:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 241F51F218AB
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 05:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3A01F2192E
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 05:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5743FC2DA;
-	Wed, 13 Dec 2023 05:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8D2C2DE;
+	Wed, 13 Dec 2023 05:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wxt9RIvZ"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="eSm+mNYY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC0B6126
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 05:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777FAC433C9
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 05:14:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702444440;
-	bh=VOo4lw7P/AeYJORZqLpnw4ethh+22T70cQKqLaKFcEM=;
-	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-	b=Wxt9RIvZR2AuBsJOjO776LrSURQSSTrP5usKFG77D8jQoEtXXEiYTPr5lqWxRb0CP
-	 wt0FnEYS9BX+Ft0/A3gEfcAB/H8Kt1VFRTsWIPnxazGgSI/Rng6KxOcD4l4KUWyXff
-	 Un0E+SdtmY9F4W9RtN5VhgNrRu5kZk1Q1sDnzSNMtadOx8f02do5ehSvPgW5wt9E/B
-	 zeH5xAsqmJOrZMlTSFVDwlT34dbSK2PkA5rqX2zxrS3EnSFEEM371Q6nrUxOflEdaN
-	 nKq3tjdv2Yo2e6K2HV+lIk6lbV5/oLIaRWZCssAJfS+dsDOAkstY08H8LAxKpaLx4s
-	 CnQx4bRUzdF7w==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-58ceab7daddso2754646eaf.3
-        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 21:14:00 -0800 (PST)
-X-Gm-Message-State: AOJu0YxN1FD1VzJABex/SWXlqqK9qvbrBzTRcmLVotPubKJlg6DZFkJC
-	WzazjjcBM09xiMl4qYdekX2d1PnNidubSLqmpQo=
-X-Google-Smtp-Source: AGHT+IH4UlYTkhDBgwhLs5Ko+9DCfqnU/u3BwwicVW6sFaEGUmPmjgArBCIT1v9VMdF76M6pEn4nLlfTX3iMZz1td78=
-X-Received: by 2002:a05:6870:168e:b0:203:2201:db17 with SMTP id
- j14-20020a056870168e00b002032201db17mr175473oae.53.1702444439630; Tue, 12 Dec
- 2023 21:13:59 -0800 (PST)
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59EECD;
+	Tue, 12 Dec 2023 21:17:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1702444629; x=1733980629;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=H/EH6tQoOujC8sN9THaYTQOj3Fa4ltukpYjXl3eXRIQ=;
+  b=eSm+mNYYEP97DVsEDuPT9rL5SBEODiDy3rD1qKaHb2wYejU6rwiZ+BKI
+   td0U4uqlA43sicaDKILskgtnYGQN3vibR92d8hu9pbejrKAKRhKBZpqK9
+   P3HPAUoElx87PT/QxgUg+xtl1kYKTGga9PngpeQF61MH+LQnutxUbJhhT
+   U=;
+X-IronPort-AV: E=Sophos;i="6.04,272,1695686400"; 
+   d="scan'208";a="373447902"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 05:17:08 +0000
+Received: from smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan2.iad.amazon.com [10.32.235.34])
+	by email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com (Postfix) with ESMTPS id 2ABD4806BB;
+	Wed, 13 Dec 2023 05:17:05 +0000 (UTC)
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:23380]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.95:2525] with esmtp (Farcaster)
+ id 650e561f-6b55-43b2-8323-f20778c0f1b5; Wed, 13 Dec 2023 05:17:05 +0000 (UTC)
+X-Farcaster-Flow-ID: 650e561f-6b55-43b2-8323-f20778c0f1b5
+Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 13 Dec 2023 05:17:04 +0000
+Received: from u1e958862c3245e.ant.amazon.com (10.43.143.133) by
+ EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 13 Dec 2023 05:17:02 +0000
+From: Suraj Jitindar Singh <surajjs@amazon.com>
+To: <tytso@mit.edu>
+CC: <adilger.kernel@dilger.ca>, <jack@suse.cz>, <linux-ext4@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <sjitindarsingh@smail.com>, "Suraj Jitindar
+ Singh" <surajjs@amazon.com>, <stable@vger.kernel.org>
+Subject: [PATCH] fs/ext4: Allow for the last group to be marked as trimmed
+Date: Wed, 13 Dec 2023 16:16:35 +1100
+Message-ID: <20231213051635.37731-1-surajjs@amazon.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: by 2002:ac9:5dc6:0:b0:507:5de0:116e with HTTP; Tue, 12 Dec 2023
- 21:13:58 -0800 (PST)
-In-Reply-To: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
-References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 13 Dec 2023 14:13:58 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd-FgPgU2MUjygxfXMVp1yV34dHr5KE6tvEcNQTAP=aH+A@mail.gmail.com>
-Message-ID: <CAKYAXd-FgPgU2MUjygxfXMVp1yV34dHr5KE6tvEcNQTAP=aH+A@mail.gmail.com>
-Subject: Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431
-To: paul.gortmaker@windriver.com
-Cc: Steve French <stfrench@microsoft.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
+ EX19D030UWB002.ant.amazon.com (10.13.139.182)
 
-2023-12-13 3:47 GMT+09:00, paul.gortmaker@windriver.com
-<paul.gortmaker@windriver.com>:
-> From: Paul Gortmaker <paul.gortmaker@windriver.com>
->
-> This is a bit long, but I've never touched this code and all I can do is
-> compile test it.  So the below basically represents a capture of my
-> thought process in fixing this for the v5.15.y-stable branch.
->
-> I am hoping the folks who normally work with this code can double check
-> that I didn't get off-track somewhere...
->
->
-> CVE-2023-38431 points at commit 368ba06881c3 ("ksmbd: check the
-> validation of pdu_size in ksmbd_conn_handler_loop") as the fix:
->
-> https://nvd.nist.gov/vuln/detail/CVE-2023-38431
->
-> For convenience, here is a link to the fix:
->
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/fs/smb/server?id=368ba06881c3
->
-> It was added in v6.4
->
-> git describe --contains 368ba06881c3
-> v6.4-rc6~2^2~1
->
-> ...and backported to several stable releases.  But just not v5.15.
->
-> Why not v5.15?  If we look at the code the fix patches with "git blame"
-> we get commit 0626e6641f6b4 ("cifsd: add server handler for central
-> processing and tranport layers")
->
-> $git describe --contains 0626e6641f6b4
-> v5.15-rc1~183^2~94
->
-> So that would have been the commit the "Fixes:" line would have pointed
-> at if it had one.
->
-> Applying the fix to v5.15 reveals two problems.  The 1st is a trivial
-> file rename (fs/smb/server/connection.c --> fs/ksmbd/connection.c for
-> v5.15) and then the commit *applies*.   The 2nd problem is only revealed
-> at compile time...
->
-> The compile fails because the v5.15 baseline does not have smb2_get_msg().
-> Where does that come from?
->
-> commit cb4517201b8acdb5fd5314494aaf86c267f22345
-> Author: Namjae Jeon <linkinjeon@kernel.org>
-> Date:   Wed Nov 3 08:08:44 2021 +0900
->
->     ksmbd: remove smb2_buf_length in smb2_hdr
->
-> git describe --contains cb4517201b8a
-> v5.16-rc1~21^2~6
->
-> So now we see why v5.15 didn't get a linux-stable backport by default.
-> In cb4517201b8a we see:
->
-> +static inline void *smb2_get_msg(void *buf)
-> +{
-> +       return buf + 4;
-> +}
->
-> However we can't just take that context free of the rest of the commit,
-> and then glue it into v5.15.  The whole reason the function exists is
-> because a length field of 4 was removed from the front of a struct.
-> If we look at the typical changes the struct change caused, we see:
->
-> -       struct smb2_hdr *rcv_hdr2 = work->request_buf;
-> +       struct smb2_hdr *rcv_hdr2 = smb2_get_msg(work->request_buf);
->
-> If we manually inline that, we obviously get:
->
-> -       struct smb2_hdr *rcv_hdr2 = work->request_buf;
-> +       struct smb2_hdr *rcv_hdr2 = work->request_buf + 4;
->
-> Now consider the lines added in the fix which is post struct reduction:
->
-> +#define SMB2_MIN_SUPPORTED_HEADER_SIZE (sizeof(struct smb2_hdr) + 4)
->
-> +               if (((struct smb2_hdr
-> *)smb2_get_msg(conn->request_buf))->ProtocolId ==
-> +                   SMB2_PROTO_NUMBER) {
-> +                       if (pdu_size < SMB2_MIN_SUPPORTED_HEADER_SIZE)
-> +                               break;
-> +               }
->
-> ...and if we inline/expand everything, we get:
->
-> +               if (((struct smb2_hdr *)(conn->request_buf + 4))->ProtocolId
-> ==
-> +                   SMB2_PROTO_NUMBER) {
-> +                       if (pdu_size < (sizeof(struct smb2_hdr) + 4))
-> +                               break;
-> +               }
->
-> And so, by extension the v5.15 code, which is *pre* struct reduction, would
-> simply not have the "+4" and hence be:
->
-> +               if (((struct smb2_hdr *)(conn->request_buf))->ProtocolId ==
-> +                   SMB2_PROTO_NUMBER) {
-> +                       if (pdu_size < (sizeof(struct smb2_hdr)))
-> +                               break;
-> +               }
->
-> If we then put the macro back (without the 4), the v5.15 version would be:
->
-> +#define SMB2_MIN_SUPPORTED_HEADER_SIZE (sizeof(struct smb2_hdr))
->
-> +               if (((struct smb2_hdr *)(conn->request_buf))->ProtocolId ==
-> +                   SMB2_PROTO_NUMBER) {
-> +                       if (pdu_size < SMB2_MIN_SUPPORTED_HEADER_SIZE)
-> +                               break;
-> +               }
->
-> And so that is what I convinced myself is right to put in the backport.
->
-Hi Paul,
-> If you read/reviewed this far - thanks!
-Your backport patch looks good :), I have checked it work fine.
+The ext4 filesystem tracks the trim status of blocks at the group level.
+When an entire group has been trimmed then it is marked as such and subsequent
+trim invocations with the same minimum trim size will not be attempted on that
+group unless it is marked as able to be trimmed again such as when a block is
+freed.
 
-Thanks for your work!
-> Paul.
->
-> ---
->
-> Namjae Jeon (1):
->   ksmbd: check the validation of pdu_size in ksmbd_conn_handler_loop
->
->  fs/ksmbd/connection.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
->
-> --
-> 2.40.0
->
->
+Currently the last group can't be marked as trimmed due to incorrect logic
+in ext4_last_grp_cluster(). ext4_last_grp_cluster() is supposed to return the
+zero based index of the last cluster in a group. This is then used by
+ext4_try_to_trim_range() to determine if the trim operation spans the entire
+group and as such if the trim status of the group should be recorded.
+
+ext4_last_grp_cluster() takes a 0 based group index, thus the valid values
+for grp are 0..(ext4_get_groups_count - 1). Any group index less than
+(ext4_get_groups_count - 1) is not the last group and must have
+EXT4_CLUSTERS_PER_GROUP(sb) clusters. For the last group we need to calculate
+the number of clusters based on the number of blocks in the group. Finally
+subtract 1 from the number of clusters as zero based indexing is expected.
+Rearrange the function slightly to make it clear what we are calculating
+and returning.
+
+Reproducer:
+// Create file system where the last group has fewer blocks than blocks per group
+$ mkfs.ext4 -b 4096 -g 8192 /dev/nvme0n1 8191
+$ mount /dev/nvme0n1 /mnt
+
+Before Patch:
+$ fstrim -v /mnt
+/mnt: 25.9 MiB (27156480 bytes) trimmed
+// Group not marked as trimmed so second invocation still discards blocks
+$ fstrim -v /mnt
+/mnt: 25.9 MiB (27156480 bytes) trimmed
+
+After Patch:
+fstrim -v /mnt
+/mnt: 25.9 MiB (27156480 bytes) trimmed
+// Group marked as trimmed so second invocation DOESN'T discard any blocks
+fstrim -v /mnt
+/mnt: 0 B (0 bytes) trimmed
+
+Fixes: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
+Cc: stable@vger.kernel.org # 4.19+
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+---
+ fs/ext4/mballoc.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
+
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 454d5612641ee..c15d8b6f887dd 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6731,11 +6731,16 @@ __acquires(bitlock)
+ static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
+ 					   ext4_group_t grp)
+ {
+-	if (grp < ext4_get_groups_count(sb))
+-		return EXT4_CLUSTERS_PER_GROUP(sb) - 1;
+-	return (ext4_blocks_count(EXT4_SB(sb)->s_es) -
+-		ext4_group_first_block_no(sb, grp) - 1) >>
+-					EXT4_CLUSTER_BITS(sb);
++	unsigned long nr_clusters_in_group;
++
++	if (grp < (ext4_get_groups_count(sb) - 1))
++		nr_clusters_in_group = EXT4_CLUSTERS_PER_GROUP(sb);
++	else
++		nr_clusters_in_group = (ext4_blocks_count(EXT4_SB(sb)->s_es) -
++					ext4_group_first_block_no(sb, grp))
++				       >> EXT4_CLUSTER_BITS(sb);
++
++	return nr_clusters_in_group - 1;
+ }
+ 
+ static bool ext4_trim_interrupted(void)
+-- 
+2.34.1
+
 
