@@ -1,126 +1,215 @@
-Return-Path: <stable+bounces-6595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8734E81128A
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:08:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55080811295
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 14:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43B1C281E4E
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:08:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7966B1C20E14
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EB32C85A;
-	Wed, 13 Dec 2023 13:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78E22C85A;
+	Wed, 13 Dec 2023 13:15:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AlxembAF";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I8OUWC0l";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="AlxembAF";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="I8OUWC0l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AF3B2;
-	Wed, 13 Dec 2023 05:08:11 -0800 (PST)
-Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-59158202d22so58389eaf.0;
-        Wed, 13 Dec 2023 05:08:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702472890; x=1703077690;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dfzhlsnoq9Ysoezun43pMBPmJAkFvJFC0eB1jMYm89g=;
-        b=LLSJ6rosSw0zGs1doQW5MzW1mS2bWTmK+S29GsQkQNM+ma2nfzKcj/UaaACJoRA5pk
-         4nrkPN+Xp2/NXZk4UoOcO36Eq95buwJWC6qlmI8zZSApH4ftqx2pHYkVUvCe0DF8VOVV
-         +HOWZp7/kgunTBIntjL7Ngh7O0xPqruUx4Zjw0LojUUJTe3zsosTLdeVlDsakrmiXl2t
-         P2Ds+qwXH816LRDucarCJyfATuYMc0EU1ovclGcAew009zUeLQdoK9i0amrbencM2pZ4
-         58NYDIegCsDoVw1HS5YARNE0aFYfYzc3VVj8aEtp4fVlf5qnmt7EuwZk2RR7x+Dj3VYK
-         2vgw==
-X-Gm-Message-State: AOJu0Yyaywyq6fLLDllCRHOVFiHKjkWaTU7BYP1iRlCp5n8QLmvMx+Uq
-	E4/1SiSJ/x7w84JbFe/FICVcF5RKjPEVl6J/PxA=
-X-Google-Smtp-Source: AGHT+IEksZOaTrdaIJm4lcb85oyK5X2mMVWwsxlOxVmkTgEU6wD3nKcf13Ky+z3N80hZuRCQiIgW0WBLZWxvZNYNM94=
-X-Received: by 2002:a05:6871:892:b0:203:1727:c6b with SMTP id
- r18-20020a056871089200b0020317270c6bmr2841209oaq.5.1702472890600; Wed, 13 Dec
- 2023 05:08:10 -0800 (PST)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 106D5DD
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 05:15:02 -0800 (PST)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 20E5C219C0;
+	Wed, 13 Dec 2023 13:15:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1702473300;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
+	b=AlxembAFuGzXLoKikMWezt6YCg3t4i+gDtyUnvwaaGliNHj5pN/jZfmeHquNvE0TM8ws9C
+	7NS4Sl3VJTnB3lpQeyBpDCKoRJYSHOBtxwd/6/yodNolWCmGQZ84k3zMCAEL95fZE73FOz
+	W+LSWN+9R6g2f4sn6UbxF3xtCGepxXU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1702473300;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
+	b=I8OUWC0l75Rfsa3R9KGATeWe2T5Zhscyv4ZVbOS0K7RPXXKykmOc8Vbunmg5W4nYlVQ0i5
+	Ml3Xf7Ng/BmO8JAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1702473300;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
+	b=AlxembAFuGzXLoKikMWezt6YCg3t4i+gDtyUnvwaaGliNHj5pN/jZfmeHquNvE0TM8ws9C
+	7NS4Sl3VJTnB3lpQeyBpDCKoRJYSHOBtxwd/6/yodNolWCmGQZ84k3zMCAEL95fZE73FOz
+	W+LSWN+9R6g2f4sn6UbxF3xtCGepxXU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1702473300;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N+tRkpzKknIH5zGeJRqYhM0xsQDyR09cPqGQ08XRLYo=;
+	b=I8OUWC0l75Rfsa3R9KGATeWe2T5Zhscyv4ZVbOS0K7RPXXKykmOc8Vbunmg5W4nYlVQ0i5
+	Ml3Xf7Ng/BmO8JAA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id B843213240;
+	Wed, 13 Dec 2023 13:14:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id Dh1NK1OueWVXKQAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Wed, 13 Dec 2023 13:14:59 +0000
+Date: Wed, 13 Dec 2023 14:08:08 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>
+Subject: Re: [PATCH 5.4 63/94] btrfs: add dmesg output for first mount and
+ last unmount of a filesystem
+Message-ID: <20231213130808.GC3001@suse.cz>
+Reply-To: dsterba@suse.cz
+References: <20231205031522.815119918@linuxfoundation.org>
+ <20231205031526.359703653@linuxfoundation.org>
+ <20231209172836.GA2154579@dev-arch.thelio-3990X>
+ <2023121106-henna-unclog-6d2f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231213003614.1648343-1-imammedo@redhat.com> <20231213003614.1648343-3-imammedo@redhat.com>
-In-Reply-To: <20231213003614.1648343-3-imammedo@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 13 Dec 2023 14:07:59 +0100
-Message-ID: <CAJZ5v0gowV0WJd8pjwrDyHSJPvwgkCXYu9bDG7HHfcyzkSSY6w@mail.gmail.com>
-Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
- devices at a time
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Dongli Zhang <dongli.zhang@oracle.com>, 
-	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, mst@redhat.com, 
-	rafael@kernel.org, lenb@kernel.org, bhelgaas@google.com, 
-	mika.westerberg@linux.intel.com, boris.ostrovsky@oracle.com, 
-	joe.jin@oracle.com, stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>, 
-	Thomas Lamprecht <t.lamprecht@proxmox.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023121106-henna-unclog-6d2f@gregkh>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Score: 4.99
+X-Spamd-Bar: ++
+X-Rspamd-Queue-Id: 20E5C219C0
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AlxembAF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I8OUWC0l;
+	dmarc=none;
+	spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of dsterba@suse.cz) smtp.mailfrom=dsterba@suse.cz
+X-Spam-Score: 2.79
+X-Spamd-Result: default: False [2.79 / 50.00];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 DMARC_NA(1.20)[suse.cz];
+	 R_SPF_SOFTFAIL(4.60)[~all];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,suse.cz:dkim,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Flag: NO
+X-Rspamd-Server: rspamd1
 
-On Wed, Dec 13, 2023 at 1:36=E2=80=AFAM Igor Mammedov <imammedo@redhat.com>=
- wrote:
->
-> previous commit ("PCI: acpiphp: enable slot only if it hasn't been enable=
-d already"
-> introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
-> bridge reconfiguration in case of single HBA hotplug.
-> However in virt environment it's possible to pause machine hotplug severa=
-l
-> HBAs and let machine run. That can hit the same race when 2nd hotplugged
-> HBA will start re-configuring bridge.
-> Do the same thing as SHPC and throttle down hotplug of 2nd and up
-> devices within single hotplug event.
->
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acp=
-iphp_glue.c
-> index 6b11609927d6..30bca2086b24 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -37,6 +37,7 @@
->  #include <linux/mutex.h>
->  #include <linux/slab.h>
->  #include <linux/acpi.h>
-> +#include <linux/delay.h>
->
->  #include "../pci.h"
->  #include "acpiphp.h"
-> @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
->  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
->  {
->         struct acpiphp_slot *slot;
-> +        int nr_hp_slots =3D 0;
->
->         /* Bail out if the bridge is going away. */
->         if (bridge->is_going_away)
-> @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_brid=
-ge *bridge)
->
->                         /* configure all functions */
->                         if (slot->flags !=3D SLOT_ENABLED) {
-> +                               if (nr_hp_slots)
-> +                                       msleep(1000);
+On Mon, Dec 11, 2023 at 03:56:16PM +0100, Greg Kroah-Hartman wrote:
+> On Sat, Dec 09, 2023 at 10:28:36AM -0700, Nathan Chancellor wrote:
+> > On Tue, Dec 05, 2023 at 12:17:31PM +0900, Greg Kroah-Hartman wrote:
+> > > 5.4-stable review patch.  If anyone has any objections, please let me know.
+> > > 
+> > > ------------------
+> > > 
+> > > From: Qu Wenruo <wqu@suse.com>
+> > > 
+> > > commit 2db313205f8b96eea467691917138d646bb50aef upstream.
+> > > 
+> > > There is a feature request to add dmesg output when unmounting a btrfs.
+> > > There are several alternative methods to do the same thing, but with
+> > > their own problems:
+> > > 
+> > > - Use eBPF to watch btrfs_put_super()/open_ctree()
+> > >   Not end user friendly, they have to dip their head into the source
+> > >   code.
+> > > 
+> > > - Watch for directory /sys/fs/<uuid>/
+> > >   This is way more simple, but still requires some simple device -> uuid
+> > >   lookups.  And a script needs to use inotify to watch /sys/fs/.
+> > > 
+> > > Compared to all these, directly outputting the information into dmesg
+> > > would be the most simple one, with both device and UUID included.
+> > > 
+> > > And since we're here, also add the output when mounting a filesystem for
+> > > the first time for parity. A more fine grained monitoring of subvolume
+> > > mounts should be done by another layer, like audit.
+> > > 
+> > > Now mounting a btrfs with all default mkfs options would look like this:
+> > > 
+> > >   [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+> > >   [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
+> > >   [81.908258] BTRFS info (device dm-8): using free space tree
+> > >   [81.912644] BTRFS info (device dm-8): auto enabling async discard
+> > >   [81.913277] BTRFS info (device dm-8): checking UUID tree
+> > >   [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+> > > 
+> > > CC: stable@vger.kernel.org # 5.4+
+> > > Link: https://github.com/kdave/btrfs-progs/issues/689
+> > > Reviewed-by: Anand Jain <anand.jain@oracle.com>
+> > > Signed-off-by: Qu Wenruo <wqu@suse.com>
+> > > Reviewed-by: David Sterba <dsterba@suse.com>
+> > > [ update changelog ]
+> > > Signed-off-by: David Sterba <dsterba@suse.com>
+> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > ---
+> > >  fs/btrfs/disk-io.c |    1 +
+> > >  fs/btrfs/super.c   |    5 ++++-
+> > >  2 files changed, 5 insertions(+), 1 deletion(-)
+> > > 
+> > > --- a/fs/btrfs/disk-io.c
+> > > +++ b/fs/btrfs/disk-io.c
+> > > @@ -2829,6 +2829,7 @@ int open_ctree(struct super_block *sb,
+> > >  		goto fail_alloc;
+> > >  	}
+> > >  
+> > > +	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
+> > 
+> > clang tells me this backport does not appear to be correct and will
+> > likely introduce a null pointer deference:
+> > 
+> >   fs/btrfs/disk-io.c:2832:55: warning: variable 'disk_super' is uninitialized when used here [-Wuninitialized]
+> >    2832 |         btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
+> >         |                                                              ^~~~~~~~~~
+> >   fs/btrfs/ctree.h:3002:41: note: expanded from macro 'btrfs_info'
+> >    3002 |         btrfs_printk(fs_info, KERN_INFO fmt, ##args)
+> >         |                                                ^~~~
+> >   fs/btrfs/disk-io.c:2630:38: note: initialize the variable 'disk_super' to silence this warning
+> >    2630 |         struct btrfs_super_block *disk_super;
+> >         |                                             ^
+> >         |                                              = NULL
+> >   1 warning generated.
+> 
+> Thanks for the notice, I've now reverted this.
 
-Why is 1000 considered the most suitable number here?  Any chance to
-define a symbol for it?
-
-And won't this affect the cases when the race in question is not a concern?
-
-Also, adding arbitrary timeouts is not the most robust way of
-addressing race conditions IMV.  Wouldn't it be better to add some
-proper synchronization between the pieces of code that can race with
-each other?
-
-> +
-> +                                ++nr_hp_slots;
->                                 enable_slot(slot, true);
->                         }
->                 } else {
-> --
+Thanks. I've verified that this only affects 5.4. The patch is still
+possible to apply there, the btrfs_info() call would have to be moved
+after 'disk_super' is initialized. The patch is not that important so
+reverting is OK for me.
 
