@@ -1,83 +1,186 @@
-Return-Path: <stable+bounces-6589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DC2810EF3
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 11:52:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D3D811122
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 13:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF3F1F21134
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 10:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB321C20F8C
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 12:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3E022EF1;
-	Wed, 13 Dec 2023 10:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cthiuZr0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D395E660EB;
+	Wed, 13 Dec 2023 12:31:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643BED5
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 02:52:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702464722; x=1734000722;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=azxtPodpWsrfROV8QwGyX4v9jxYAoOU1Lvp6luubsYY=;
-  b=cthiuZr0dHWHIot5fiLjWiZcCwXhmR/o2KvmRKgeT4dcfJezHpMI7ugq
-   vfSyUEkazuikRNUbiRo4kg/FWeYYjp6QOqjYnhlwcyeLp43AXwezhGiFS
-   M/sVD4v4LhfzYJJ6qDPsbFCMijXTiTNspeCNO5S5pOzj7SuJPKXg1q1Vs
-   NoLQLDBPHUK4H6QYPUq08fQTfUM71U5oFRQZJn0hd9i1dyTf+KbCGSJTe
-   EG6UgwzVnlyqPr6zRBPBROb6QEe91aNIx1H0JbseMNal77Rkv9I2aaJKj
-   AnuTzqzDrPclKxz1JKyUx1k8qBDxVBPVJef4ZsnVvqpeUNKRyQjATPTSO
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="375100204"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="375100204"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 02:52:02 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10922"; a="1021068080"
-X-IronPort-AV: E=Sophos;i="6.04,272,1695711600"; 
-   d="scan'208";a="1021068080"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 13 Dec 2023 02:52:01 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rDMqN-000KQl-0H;
-	Wed, 13 Dec 2023 10:51:59 +0000
-Date: Wed, 13 Dec 2023 18:51:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5 2/5] lib: move pci_iomap.c to drivers/pci/
-Message-ID: <ZXmMnhe3YpLOqYam@171f04e7aea4>
+Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E733F5
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 04:31:03 -0800 (PST)
+Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1rDOOD-005j8X-2K; Wed, 13 Dec 2023 12:31:01 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Wed, 13 Dec 2023 12:21:19 +0000
+Subject: [git:media_stage/master] media: v4l2-cci: Add support for little-endian encoded registers
+To: linuxtv-commits@linuxtv.org
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, Alexander Stein <alexander.stein@ew.tq-group.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1rDOOD-005j8X-2K@www.linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213104922.13894-3-pstanner@redhat.com>
 
-Hi,
+This is an automatic generated email to let you know that the following patch were queued:
 
-Thanks for your patch.
+Subject: media: v4l2-cci: Add support for little-endian encoded registers
+Author:  Alexander Stein <alexander.stein@ew.tq-group.com>
+Date:    Thu Nov 2 10:50:47 2023 +0100
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Some sensors, e.g. Sony IMX290, are using little-endian registers. Add
+support for those by encoding the endianness into Bit 20 of the register
+address.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+[Sakari Ailus: Fixed commit message.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v5 2/5] lib: move pci_iomap.c to drivers/pci/
-Link: https://lore.kernel.org/stable/20231213104922.13894-3-pstanner%40redhat.com
+ drivers/media/v4l2-core/v4l2-cci.c | 44 +++++++++++++++++++++++++++++++-------
+ include/media/v4l2-cci.h           |  5 +++++
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+---
 
-
-
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index 3179160abde3..10005c80f43b 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -18,6 +18,7 @@
+ 
+ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ {
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
++	little_endian = reg & CCI_REG_LE;
+ 	len = CCI_REG_WIDTH_BYTES(reg);
+ 	reg = CCI_REG_ADDR(reg);
+ 
+@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 		*val = buf[0];
+ 		break;
+ 	case 2:
+-		*val = get_unaligned_be16(buf);
++		if (little_endian)
++			*val = get_unaligned_le16(buf);
++		else
++			*val = get_unaligned_be16(buf);
+ 		break;
+ 	case 3:
+-		*val = get_unaligned_be24(buf);
++		if (little_endian)
++			*val = get_unaligned_le24(buf);
++		else
++			*val = get_unaligned_be24(buf);
+ 		break;
+ 	case 4:
+-		*val = get_unaligned_be32(buf);
++		if (little_endian)
++			*val = get_unaligned_le32(buf);
++		else
++			*val = get_unaligned_be32(buf);
+ 		break;
+ 	case 8:
+-		*val = get_unaligned_be64(buf);
++		if (little_endian)
++			*val = get_unaligned_le64(buf);
++		else
++			*val = get_unaligned_be64(buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
+ 
+ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ {
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
++	little_endian = reg & CCI_REG_LE;
+ 	len = CCI_REG_WIDTH_BYTES(reg);
+ 	reg = CCI_REG_ADDR(reg);
+ 
+@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 		buf[0] = val;
+ 		break;
+ 	case 2:
+-		put_unaligned_be16(val, buf);
++		if (little_endian)
++			put_unaligned_le16(val, buf);
++		else
++			put_unaligned_be16(val, buf);
+ 		break;
+ 	case 3:
+-		put_unaligned_be24(val, buf);
++		if (little_endian)
++			put_unaligned_le24(val, buf);
++		else
++			put_unaligned_be24(val, buf);
+ 		break;
+ 	case 4:
+-		put_unaligned_be32(val, buf);
++		if (little_endian)
++			put_unaligned_le32(val, buf);
++		else
++			put_unaligned_be32(val, buf);
+ 		break;
+ 	case 8:
+-		put_unaligned_be64(val, buf);
++		if (little_endian)
++			put_unaligned_le64(val, buf);
++		else
++			put_unaligned_be64(val, buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+index 406772a4e32e..4e96e90ee636 100644
+--- a/include/media/v4l2-cci.h
++++ b/include/media/v4l2-cci.h
+@@ -43,12 +43,17 @@ struct cci_reg_sequence {
+ #define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
+ #define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
+ #define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
++#define CCI_REG_LE			BIT(20)
+ 
+ #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG16_LE(x)			(CCI_REG_LE | (2U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG24_LE(x)			(CCI_REG_LE | (3U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG32_LE(x)			(CCI_REG_LE | (4U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG64_LE(x)			(CCI_REG_LE | (8U << CCI_REG_WIDTH_SHIFT) | (x))
+ 
+ /**
+  * cci_read() - Read a value from a single CCI register
 
