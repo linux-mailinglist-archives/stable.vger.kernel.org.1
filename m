@@ -1,102 +1,119 @@
-Return-Path: <stable+bounces-6555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1032810846
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 03:35:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4179B810881
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 04:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E0C02823AD
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 02:35:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9167B20F66
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 03:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F8517F4;
-	Wed, 13 Dec 2023 02:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBFF2115;
+	Wed, 13 Dec 2023 03:01:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="RdbMOYnx"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2326CA0;
-	Tue, 12 Dec 2023 18:35:21 -0800 (PST)
-X-UUID: 53fad169989a4261baec166a670e509e-20231213
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:aa5ad371-f611-4054-af9d-a17c68cc0f39,IP:15,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-INFO: VERSION:1.1.33,REQID:aa5ad371-f611-4054-af9d-a17c68cc0f39,IP:15,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:a9932161-c89d-4129-91cb-8ebfae4653fc,B
-	ulkID:231212231719IH1VMLZ5,BulkQuantity:9,Recheck:0,SF:24|17|19|44|64|66|1
-	02,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,COL
-	:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
-X-UUID: 53fad169989a4261baec166a670e509e-20231213
-Received: from node4.com.cn [(39.156.73.12)] by mailgw
-	(envelope-from <xiongxin@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1210511912; Wed, 13 Dec 2023 10:35:16 +0800
-Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id CE30016001CC8;
-	Wed, 13 Dec 2023 10:35:15 +0800 (CST)
-X-ns-mid: postfix-65791863-774384874
-Received: from [172.20.116.203] (unknown [172.20.116.203])
-	by node4.com.cn (NSMail) with ESMTPA id D283E16001CC8;
-	Wed, 13 Dec 2023 02:35:14 +0000 (UTC)
-Message-ID: <2a704112-05fd-4dbd-accd-b2038d5e4d81@kylinos.cn>
-Date: Wed, 13 Dec 2023 10:35:14 +0800
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64037AB
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 19:01:05 -0800 (PST)
+Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
+	by cmsmtp with ESMTPS
+	id Ct0BrOU86hqFdDFUerr2Dg; Wed, 13 Dec 2023 03:01:04 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id DFUdr87b0kUbtDFUerZUFU; Wed, 13 Dec 2023 03:01:04 +0000
+X-Authority-Analysis: v=2.4 cv=WpU4jPTv c=1 sm=1 tr=0 ts=65791e70
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=2SA1H0gNNTX1gE9MOmMA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=gbNxPHSj4xxqAJgtk4Y4EHrvPUIwaT3LyX2jo27M0xc=; b=RdbMOYnx4EVgtSQWb/yoF9LItL
+	gLrvHUV8d/DtDOfuk7wi1T5u8195lKsIvtlZzozs3tytgDcBOPcI2bOA11yiWMBxxpklNmtv8q8UY
+	upxnEXPcz5S/lT36ypra38gr7zYJjrs1XME4DHQPI7IM4IIGAzycAohGpVj5fDQ/K+UQEa5+HN7Pk
+	+YEXuMKOO/QlitF+/JjHTBrhIoavj1n9AX+DkCphSNcnpoW6Gu5N1l9183WiBdtABkeEtTXWWMV7T
+	mIG1XHMYAcOzDaO4IKc/IRZDVP49nr0Q2me0/vkv76bQgtl5h1TPMGzjDk+JuYjJrGmB8PWUc0wBu
+	u3WB0KuQ==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:59642 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rDFUb-002YNG-1B;
+	Tue, 12 Dec 2023 20:01:01 -0700
+Subject: Re: [PATCH 5.15 000/139] 5.15.143-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231212120210.556388977@linuxfoundation.org>
+In-Reply-To: <20231212120210.556388977@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <be0b6665-5330-255d-31a6-f3bbe4e6b1a0@w6rz.net>
+Date: Tue, 12 Dec 2023 19:00:58 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
- in pairs
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-To: Jiri Kosina <jkosina@suse.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, benjamin.tissoires@redhat.com,
- linux-input@vger.kernel.org, stable@vger.kernel.org,
- Riwen Lu <luriwen@kylinos.cn>
-References: <20231207014003.12919-1-xiongxin@kylinos.cn> <87ttosssxd.ffs@tglx>
- <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
- <1702429454313015.485.seg@mailgw>
-From: xiongxin <xiongxin@kylinos.cn>
-In-Reply-To: <1702429454313015.485.seg@mailgw>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rDFUb-002YNG-1B
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:59642
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfOLSG9WqIsEe2mhefE5raVePMBEBtg62NYxiKgLUaEX9akD1lc5sP3diW/2pYY7CmnrZnM3Vn9b7LGTUYkjCg//Gd+bCnD46jd94Nyedl03welObxpIC
+ 4KMqQjRhLDd6o2r0C1NXQibt01XWeTeW/AQsK4heZoz/CvZoK5wEddpJIgVbnOOtWQ0azrRb8J/0pQ==
 
-=E5=9C=A8 2023/12/13 00:57, Jiri Kosina =E5=86=99=E9=81=93:
-> On Mon, 11 Dec 2023, xiongxin wrote:
->=20
->> In this scenario, unmask_irq() will not be called, and then gpio corre=
-sponding
->> interrupt pin will be masked. Finally, in the suspend() process driven=
- by gpio
->> interrupt controller, the interrupt mask register will be saved, and t=
-hen
->> masked will continue to be read when resuming () process. After the ke=
-rnel
->> resumed, the i2c hid gpio interrupt was masked and the i2c hid device =
-was
->> unavailable.
->=20
-> In addition to what Thomas already wrote -- what exactly is the problem
-> you are trying to solve here?
->=20
-> Is it that your device drive by i2c-hid driver is no longer sending any
-> data reports after a suspend/resume cycle? What makes you think that it=
-'s
-> because of its IRQ being disabled?
->=20
-> Don't you just perhaps need I2C_HID_QUIRK_RESET_ON_RESUME quirk for tha=
-t
-> device?
->=20
+On 12/12/23 4:04 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.143 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Dec 2023 12:01:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.143-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I have confirmed I2C_HID_QUIRK_RESET_ON_RESUME quirk, the current BUG is=20
-related to GPIO interrupt masking, and has little to do with hid code.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-I explained the detailed process of the BUG in another email.
+Tested-by: Ron Economos <re@w6rz.net>
+
 
