@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-6639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55E58811DC5
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:00:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8A80811DD5
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFD06B21251
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:59:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7105D1F21742
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3414E63BEC;
-	Wed, 13 Dec 2023 18:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FCD467B5B;
+	Wed, 13 Dec 2023 19:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nh42G/pS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ECfmI8sU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-x12c.google.com (mail-lf1-x12c.google.com [IPv6:2a00:1450:4864:20::12c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27802DD
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 10:59:48 -0800 (PST)
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-50c05ea5805so8652547e87.0
-        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 10:59:48 -0800 (PST)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26DFEB2
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:00:30 -0800 (PST)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-50bf32c0140so8299587e87.1
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 11:00:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702493986; x=1703098786; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702494028; x=1703098828; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=iNrE6iOMC6ZmXH10NKi8LKgjS0EPT4eglJncC3DzCT0=;
-        b=nh42G/pSI3IZihlY3nlnGj1Z3zDQ3wdeQ+AHIVrUeha2IasAhyVaWt5CfF4nPqCZHz
-         /5o2DInwrtIiHbOzYqxCO1IfUSdA2NEIodyv4lpbgFZZ3cq3nibK6kqd/MlR7XNHkAjs
-         KvMc9u7SOY4Xu/oaSCd5oAfwYWyuEpEs3LbUUV6D8DgK4/9MG3LplRioGnk3h319wH8B
-         DcV4XEzOJc9GHnrylDB3PScl5vdxbQl2iBfBnrbvJJKGpZmIi04CacdoyGDuLax3lhBF
-         ZPKCGX40cfuScAZWRMxqB5V1MrMH145nZSjO6M2ykhf2xfsZbuvbYoq46C/XZehb6ZKZ
-         LQWw==
+        bh=qK7Oyh72XFSFSL4xPkFqcCR8+DGBFGrbcMmMNxvkKPw=;
+        b=ECfmI8sUg78xe6FINCnL/QtG2lG6omV10LmYW2AOdb01km5aL+xebUanY2y5xzjI56
+         bRaX4LL8L/xGfobK+iZ96GwAodYZ++l5APN4+4JMHGmQLJJA1Fc/dpUl220CUnjvogRa
+         mdjDzx5r3ltvrRju/GhW9l9+rEOl8xlicUOHPkoL/0+cuZk+zKm9TIMjsRk7PACBFxVq
+         fnA1MSpaElJYs1MmOagrzs6oPizj2r7BJzoitUMS4dHb1GJTPALlNlxaeTHO6e+5Aizj
+         po3T+QLiq5kIYkL7vWHgpRwlv8TswqK3vc2wBBbr8vZIE3d4OSfuB6i08aPozw/YCG3h
+         affw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702493986; x=1703098786;
+        d=1e100.net; s=20230601; t=1702494028; x=1703098828;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iNrE6iOMC6ZmXH10NKi8LKgjS0EPT4eglJncC3DzCT0=;
-        b=sX/i/ZCKgvVXYvgdn2WEfZJxq33TBobYJM/GsPMATiNt6uRtYaaAMWZ1E0IdKDW+Rj
-         WJc7Tyd5BPxgTuS0jo5sEy/9bln019mb3TTdCk4tiX8pCTNBsGXOExzpuEis5lsr3os/
-         t1X7uLPnNBFHUHPGHNBXFTahrGijaHqaYZdfq2FzuOKW3xYSHE30FT4a3a5L4nnzoczP
-         L2aNmh3xFBhIyHOC1UdCei1GI/RZnj7+K6Rr3Qucige2JGQZpTZovv2aRPOK+zQ0ZgeN
-         XGJLB4uQSE/+vL+Q1nCBUB3LRsNZ+ezCbQBjuws0T3mLkFF06aMeX39RG0UWmji58U7t
-         4CEA==
-X-Gm-Message-State: AOJu0YwV/TGRVmv9uDuPOlP5LAShM/1WEFADR/G2m5Nt2Xci0yH4nPF2
-	R+t5SIrYHhgzAnhHbwdhwc6k718FD/LE6RWlTIeCJ7Hh
-X-Google-Smtp-Source: AGHT+IHcw2PlO89hKXFwUl/TAuGJKffMwWbwYyqvDxXvI+D/RA+jlT6rS7rVGkiS+uTeHfXx65ZmBw==
-X-Received: by 2002:a05:6512:159f:b0:50b:fe57:c7a2 with SMTP id bp31-20020a056512159f00b0050bfe57c7a2mr5427381lfb.5.1702493986418;
-        Wed, 13 Dec 2023 10:59:46 -0800 (PST)
+        bh=qK7Oyh72XFSFSL4xPkFqcCR8+DGBFGrbcMmMNxvkKPw=;
+        b=ogsbAsh2rMxtjaKlUe/1UaJL4Jp+zwc5Tg4d7GKN0nSTBj6Z91lgThZ4nH8EjFjgFD
+         O+BYzG5Mp3yio6oC4Zp3QB+lkpCr7zfmi0I8xiqJU2BNg2L8DgpMWHAflld7cOkP8Rvb
+         EdTFMSn+35oeuVO08zSiQy5QBIlkXlTPT1kUj55kGDsz1vOleN29X8CHJE9U3Yu/6QgQ
+         RpT14sklFIJqPvrNaj4g03UDvcfVEoSaCJLN7rKLEoKOlBe5xodzxjQKt0auoUqZrW7A
+         lM5ulOXPWE4hZqUJCSzPnntkkKoHy7E4SIG5Q7KTBgTqebTIAc64o02kSEinbVM9LsPS
+         zLsw==
+X-Gm-Message-State: AOJu0YyZSxZcHefjuiC+o+/HviRPQ56Bw6DGVG+oD7+ig1o2TXILsD5G
+	OQblE0gZCjnFR7/ocGeogQCjpQ==
+X-Google-Smtp-Source: AGHT+IEjXurmiqb7G4f2AEjbM9CKTFKc2qPOfSmJeViFUwTe2NCpCJa8AveSRgjNSxmd4lBdmfAQEg==
+X-Received: by 2002:ac2:597a:0:b0:50c:125:c6c3 with SMTP id h26-20020ac2597a000000b0050c0125c6c3mr3803080lfp.128.1702494028402;
+        Wed, 13 Dec 2023 11:00:28 -0800 (PST)
 Received: from [172.30.204.126] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id u4-20020a05651206c400b005009c4ba3f0sm1680336lff.72.2023.12.13.10.59.44
+        by smtp.gmail.com with ESMTPSA id u4-20020a05651206c400b005009c4ba3f0sm1680336lff.72.2023.12.13.11.00.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 10:59:46 -0800 (PST)
-Message-ID: <04f0102d-fed9-41ba-a93e-2d0347d555f0@linaro.org>
-Date: Wed, 13 Dec 2023 19:59:44 +0100
+        Wed, 13 Dec 2023 11:00:28 -0800 (PST)
+Message-ID: <4ee3e8eb-de4f-4dba-8e66-966ba7692d83@linaro.org>
+Date: Wed, 13 Dec 2023 20:00:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,8 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] arm64: dts: qcom: sm8150: fix USB DP/DM HS PHY
- interrupts
+Subject: Re: [PATCH 5/5] arm64: dts: qcom: sm8150: fix USB SS wakeup
 Content-Language: en-US
 To: Johan Hovold <johan+linaro@kernel.org>,
  Bjorn Andersson <andersson@kernel.org>
@@ -75,26 +74,19 @@ Cc: Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org,
  Jack Pham <quic_jackp@quicinc.com>, Jonathan Marek <jonathan@marek.ca>
 References: <20231213173403.29544-1-johan+linaro@kernel.org>
- <20231213173403.29544-5-johan+linaro@kernel.org>
+ <20231213173403.29544-6-johan+linaro@kernel.org>
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231213173403.29544-5-johan+linaro@kernel.org>
+In-Reply-To: <20231213173403.29544-6-johan+linaro@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 12/13/23 18:34, Johan Hovold wrote:
-> The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
+> The USB SS PHY interrupts need to be provided by the PDC interrupt
 > controller in order to be able to wake the system up from low-power
-> states and to be able to detect disconnect events, which requires
-> triggering on falling edges.
+> states.
 > 
-> A recent commit updated the trigger type but failed to change the
-> interrupt provider as required. This leads to the current Linux driver
-> failing to probe instead of printing an error during suspend and USB
-> wakeup not working as intended.
-> 
-> Fixes: 54524b6987d1 ("arm64: dts: qcom: sm8150: fix USB wakeup interrupt types")
 > Fixes: 0c9dde0d2015 ("arm64: dts: qcom: sm8150: Add secondary USB and PHY nodes")
 > Fixes: b33d2868e8d3 ("arm64: dts: qcom: sm8150: Add USB and PHY device nodes")
 > Cc: stable@vger.kernel.org      # 5.10
