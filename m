@@ -1,126 +1,304 @@
-Return-Path: <stable+bounces-6666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DA081202B
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 21:45:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A23B81202E
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 21:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8EF21C21201
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:45:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F671B21089
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 20:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1622E7E570;
-	Wed, 13 Dec 2023 20:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E677E569;
+	Wed, 13 Dec 2023 20:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jU0biiVw"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="L7UrAKBF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65A5C084;
-	Wed, 13 Dec 2023 20:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0203C433C8;
-	Wed, 13 Dec 2023 20:45:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702500314;
-	bh=CctU/GXFsJ6lkzjLDWKmTw9Q8WHFXHMPsA3fF1u3ins=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=jU0biiVwBqqCmMPRcXhKvCDlf5/4gMNy06byWaEFkVgA+mOoYcSVBKhWycLe60QTE
-	 dPvQSQLQjGzSLvS8QGPNwrQeuVTpyPReHAkMKGJHFmX3rdhvv+dELhJDUMEAfJ+HLk
-	 GfQEns7Arnq4/Oi6o4IGLO3QDuXI/fTGO4yFdypXzodmQkGQ9fsdMFqWZxhmnRbq4G
-	 kqD/6D/kkoyBkuYABDuS1FFHFSZVuQ9ijv9eyXeC9LaJF++Bh6LghOcFJNzH783MG3
-	 TAmWPGpxmnmCqlnxz7pJfrPrJYSqJ1EnfQw2WlUR5D2ABvELju644Ai3BM7nvbUoc+
-	 NiS6BH/jeSW0g==
-Date: Wed, 13 Dec 2023 14:45:12 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: "David E. Box" <david.e.box@linux.intel.com>
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Jonathan Derrick <jonathan.derrick@linux.dev>,
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link
- state
-Message-ID: <20231213204512.GA1056289@bhelgaas>
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1491B0
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 12:45:46 -0800 (PST)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-5c69ecda229so4144369a12.2
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 12:45:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702500346; x=1703105146; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Axd3VJmg6Y8HtG+0WkvAjjHrKgZS6uKE88WN+gMZCPk=;
+        b=L7UrAKBF3S6/787cnTjDJWwLpNKag+mtusfW+Tfq8CgE4ay/DA8/QJ49vtS5QuQaJK
+         59z5zoWoV/MtVQ9xQ4sWQY00NUvymyUz9w833WTMZHhpa7YZhtjWMq2pA9Ezy8d0Jdv7
+         LX68Ou48XutCVmSieAVVmt5XILlK55AWAvVFTD+6bvwV6k4edW54FzYfuRhk7AeB/2P/
+         oPa+3Nfqyz0IoYvTg3+s1slaDtzevEVLD5mk2KveameK3vu3PMF01H9Ubvf3CTDMyEho
+         uX+L5cELMtt7t//V1b1iDIvmV9oBxpR2AbbIVo78YzWGcmU4KymsfEwYKushi6p2+c+h
+         KNGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702500346; x=1703105146;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Axd3VJmg6Y8HtG+0WkvAjjHrKgZS6uKE88WN+gMZCPk=;
+        b=HFn0OX/aDy6N6Cat9yrSCKistEPe2GAKpwdIlP6yHNKrTw67CcnLwEgdVi1K8VrHFU
+         txn6ldzAb34ghqTAPZOrk3cFgqYs5DUUdg1/PnqWwgr3cCM6wbFjrJhH8B1jlf4FtPvu
+         8CylI89YPiriFY5hKjePhwZSi9zR9AiGyRfgdnDBEq2auBgxHKB27/HajLZEb2tCMLXk
+         y2MkYIj1spVPlnLPzNvNNEQjY52Le95auMO0Tf/sC+gpZyoE6eXryX2LgkAXZW5V14wz
+         RQnvmotwkKfjjq/0u/88z1uURSwzjdva8KtRNaA1H8Y2ZCBqIvbKonF4jBhRfPv/Jl9B
+         C7aQ==
+X-Gm-Message-State: AOJu0Yx1fXOVhLa+5Weh/MZtuatNJArPL9GDCFM0gQE3/uRjrmRf/BDI
+	dJbGT/zyhpl9AMFy9HKlkYmkoafhmz7b5t8yiOa8Vw==
+X-Google-Smtp-Source: AGHT+IENfCRL2lVZM0RoPbqt86aTpeZBTpZyDispbinc+wEWy58ejDQAYgG+K+yDNp/m/Ry0KWCIpA==
+X-Received: by 2002:a05:6a20:560c:b0:18f:97c:9278 with SMTP id ir12-20020a056a20560c00b0018f097c9278mr4101631pzc.93.1702500345669;
+        Wed, 13 Dec 2023 12:45:45 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id x6-20020aa784c6000000b006c8b14f3f0asm10356363pfn.117.2023.12.13.12.45.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 12:45:45 -0800 (PST)
+Message-ID: <657a17f9.a70a0220.26d54.0f14@mx.google.com>
+Date: Wed, 13 Dec 2023 12:45:45 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <970144d9b5c3d36dbd0d50f01c1c4355cd42de89.camel@linux.intel.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.263-67-gc96a336300278
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.263-67-gc96a336300278)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Wed, Dec 13, 2023 at 11:48:41AM -0800, David E. Box wrote:
-> On Tue, 2023-12-12 at 15:27 -0600, Bjorn Helgaas wrote:
-> > On Tue, Dec 12, 2023 at 11:48:27AM +0800, Kai-Heng Feng wrote:
-> > > On Fri, Dec 8, 2023 at 4:47 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > > ...
-> > 
-> > > > I hope we can obsolete this whole idea someday.  Using pci_walk_bus()
-> > > > in qcom and vmd to enable ASPM is an ugly hack to work around this
-> > > > weird idea that "the OS isn't allowed to enable more ASPM states than
-> > > > the BIOS did because the BIOS might have left ASPM disabled because it
-> > > > knows about hardware issues."  More history at
-> > > > https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.feng@canonical.com/T/#u
-> > > > 
-> > > > I think we need to get to a point where Linux enables all supported
-> > > > ASPM features by default.  If we really think x86 BIOS assumes an
-> > > > implicit contract that the OS will never enable ASPM more
-> > > > aggressively, we might need some kind of arch quirk for that.
-> > > 
-> > > The reality is that PC ODM toggles ASPM to workaround hardware
-> > > defects, assuming that OS will honor what's set by the BIOS.
-> > > If ASPM gets enabled for all devices, many devices will break.
-> > 
-> > That's why I mentioned some kind of arch quirk.  Maybe we're forced to
-> > do that for x86, for instance.  But even that is a stop-gap.
-> > 
-> > The idea that the BIOS ASPM config is some kind of handoff protocol is
-> > really unsupportable.
-> 
-> To be clear, you are not talking about a situation where
-> ACPI_FADT_NO_ASPM or _OSC PCIe disallow OS ASPM control, right?
-> Everyone agrees that this should be honored? The question is what to
-> do by default when the OS is not restricted by these mechanisms?
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.263-67-gc96a336300278)
 
-Exactly.  The OS should respect ACPI_FADT_NO_ASPM and _OSC.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.263-67-gc96a336300278/
 
-I think there are a couple exceptions where we want to disable ASPM
-even if the platform said the OS shouldn't touch ASPM at all, but
-that's a special case.
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.263-67-gc96a336300278
+Git Commit: c96a3363002789c1ef9bd2a85f60197d6d3dd78d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-> Reading the mentioned thread, I too think that using the BIOS config
-> as the default would be the safest option, but only to avoid
-> breaking systems, not because of an implied contract between the
-> BIOS and OS. However, enabling all capable ASPM features is the
-> ideal option. If the OS isn't limited by ACPI_FADT_NO_ASPM or _OSC
-> PCIe, then ASPM enabling is fully under its control.  If this
-> doesn't work for some devices then they are broken and need a quirk.
+Warnings Detected:
 
-Agreed.  It may not be practical to identify such devices, so we may
-need a broader arch-based and/or date-based quirk.
+arc:
 
-I'd be shocked if Windows treated the BIOS config as a "do not exceed
-this" situation, so my secret hope is that some of these "broken"
-devices are really caused by defects in the Linux ASPM support or the
-driver, and that we can fix them if we find out about them.
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
-But I have no details about any of these alleged broken devices, so
-it's hard to make progress on them.  Maybe we should log a debug note
-if the device advertises ASPM support that BIOS didn't enable.
+arm:
 
-Bjorn
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
