@@ -1,146 +1,243 @@
-Return-Path: <stable+bounces-6561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3654A810960
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 06:17:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258DB8109F5
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 07:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3A01F2192E
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 05:17:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B94C7B20B3D
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 06:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8D2C2DE;
-	Wed, 13 Dec 2023 05:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5BADF5B;
+	Wed, 13 Dec 2023 06:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="eSm+mNYY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eQblFENh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E59EECD;
-	Tue, 12 Dec 2023 21:17:08 -0800 (PST)
+Received: from mail-ua1-x92e.google.com (mail-ua1-x92e.google.com [IPv6:2607:f8b0:4864:20::92e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720F9DB
+	for <stable@vger.kernel.org>; Tue, 12 Dec 2023 22:12:16 -0800 (PST)
+Received: by mail-ua1-x92e.google.com with SMTP id a1e0cc1a2514c-7cb1a0e2cafso1061355241.0
+        for <stable@vger.kernel.org>; Tue, 12 Dec 2023 22:12:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1702444629; x=1733980629;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=H/EH6tQoOujC8sN9THaYTQOj3Fa4ltukpYjXl3eXRIQ=;
-  b=eSm+mNYYEP97DVsEDuPT9rL5SBEODiDy3rD1qKaHb2wYejU6rwiZ+BKI
-   td0U4uqlA43sicaDKILskgtnYGQN3vibR92d8hu9pbejrKAKRhKBZpqK9
-   P3HPAUoElx87PT/QxgUg+xtl1kYKTGga9PngpeQF61MH+LQnutxUbJhhT
-   U=;
-X-IronPort-AV: E=Sophos;i="6.04,272,1695686400"; 
-   d="scan'208";a="373447902"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2023 05:17:08 +0000
-Received: from smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan2.iad.amazon.com [10.32.235.34])
-	by email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com (Postfix) with ESMTPS id 2ABD4806BB;
-	Wed, 13 Dec 2023 05:17:05 +0000 (UTC)
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:23380]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.27.95:2525] with esmtp (Farcaster)
- id 650e561f-6b55-43b2-8323-f20778c0f1b5; Wed, 13 Dec 2023 05:17:05 +0000 (UTC)
-X-Farcaster-Flow-ID: 650e561f-6b55-43b2-8323-f20778c0f1b5
-Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 13 Dec 2023 05:17:04 +0000
-Received: from u1e958862c3245e.ant.amazon.com (10.43.143.133) by
- EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 13 Dec 2023 05:17:02 +0000
-From: Suraj Jitindar Singh <surajjs@amazon.com>
-To: <tytso@mit.edu>
-CC: <adilger.kernel@dilger.ca>, <jack@suse.cz>, <linux-ext4@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <sjitindarsingh@smail.com>, "Suraj Jitindar
- Singh" <surajjs@amazon.com>, <stable@vger.kernel.org>
-Subject: [PATCH] fs/ext4: Allow for the last group to be marked as trimmed
-Date: Wed, 13 Dec 2023 16:16:35 +1100
-Message-ID: <20231213051635.37731-1-surajjs@amazon.com>
-X-Mailer: git-send-email 2.34.1
+        d=linaro.org; s=google; t=1702447935; x=1703052735; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2e7SuwWSkPy5d+O+99K5FQ0FXWBJpq2eT9M5oPNmEik=;
+        b=eQblFENhNu1WbJ1VPLysgfryBo0hlKC0LnBYeDDL9C2WoYRnKYFIPVsscESUeSmOoI
+         WqSoLf89mGd69gB4lFG5Y7TfxU9A4cy8ztDjAssTWkP/K8Q39kzoeGMpeOnM/vWzIus/
+         of0kvBshE51tByVFI4Zj5S5zszfvX2KWA/t2xBW4/qV7mXVNDuAgdKLuruuexu2JQqNR
+         jPGcjAkA9Fgv5E5SLmxd3hRVG331QhxjU1KFXGf5fdl/Vw/3Ii1LGVXEsFk4PxR3wgxj
+         LwWa7JGxnCxGc3a+GFQcFwnkfQT0mRh6qpksRR2RspZrnVe3kay/5AUfzUbSZ0Bn2I4k
+         /SLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702447935; x=1703052735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2e7SuwWSkPy5d+O+99K5FQ0FXWBJpq2eT9M5oPNmEik=;
+        b=SzUCIFMGqkRL9lx+KZ+rGZfiTqPUF9RVHSP4ys4ItX6zU+0R9RiI2iobLfRGtJMfB9
+         gRj5qYLnkxpL8YBa0DHJpqeaPt1kZt1QhddfKOcvBa3qmFVaKDYKcQAMqZpkgsJJRLwM
+         EzCl4wWYm+oNvw39r9jBGeglD6VTG5hfo/ZaU+ei80/sTrFK5l5CM+FXMJh9SJF2DB2n
+         KQZ3BVzwiGACSA+YzVm0ZVssoh8IuUBCDb90rXG6QzqsniW5VYf6D9ICpH8tlFfXbo1f
+         lM+yZNQrJ6KVCEoHe8ZwNX4EfCuRj4H0+AGt19MoXDYZ6apiGNLFC7tX1slYhXNTcuyY
+         mNjQ==
+X-Gm-Message-State: AOJu0YxsyUw8SMibJYmzgs7Jtu02B6fmph1dq3k2WnkHFgKQWgWCeogB
+	lMkwtoY4WHvnzh4IsxFYZ/10bY8MOEZMoIjANxg0Rw==
+X-Google-Smtp-Source: AGHT+IERYbh4u2SMTvwZfr1Ma3Voh9+wFrLovJl22BLO3gSoCKuEYxExiPzH4V+h+9ENf+T+rbjMEApN2MFVsruDW8A=
+X-Received: by 2002:a05:6102:6cf:b0:465:f182:c312 with SMTP id
+ m15-20020a05610206cf00b00465f182c312mr5390083vsg.28.1702447935424; Tue, 12
+ Dec 2023 22:12:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWA003.ant.amazon.com (10.13.139.46) To
- EX19D030UWB002.ant.amazon.com (10.13.139.182)
+References: <20231212120210.556388977@linuxfoundation.org>
+In-Reply-To: <20231212120210.556388977@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 13 Dec 2023 11:42:04 +0530
+Message-ID: <CA+G9fYupTF+iuBxQ_dZadnVcjMaMZDDnVXDp_pYKs-LUqWPSsg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/139] 5.15.143-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The ext4 filesystem tracks the trim status of blocks at the group level.
-When an entire group has been trimmed then it is marked as such and subsequent
-trim invocations with the same minimum trim size will not be attempted on that
-group unless it is marked as able to be trimmed again such as when a block is
-freed.
+On Tue, 12 Dec 2023 at 17:35, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.143 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 14 Dec 2023 12:01:32 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.143-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Currently the last group can't be marked as trimmed due to incorrect logic
-in ext4_last_grp_cluster(). ext4_last_grp_cluster() is supposed to return the
-zero based index of the last cluster in a group. This is then used by
-ext4_try_to_trim_range() to determine if the trim operation spans the entire
-group and as such if the trim status of the group should be recorded.
 
-ext4_last_grp_cluster() takes a 0 based group index, thus the valid values
-for grp are 0..(ext4_get_groups_count - 1). Any group index less than
-(ext4_get_groups_count - 1) is not the last group and must have
-EXT4_CLUSTERS_PER_GROUP(sb) clusters. For the last group we need to calculate
-the number of clusters based on the number of blocks in the group. Finally
-subtract 1 from the number of clusters as zero based indexing is expected.
-Rearrange the function slightly to make it clear what we are calculating
-and returning.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Reproducer:
-// Create file system where the last group has fewer blocks than blocks per group
-$ mkfs.ext4 -b 4096 -g 8192 /dev/nvme0n1 8191
-$ mount /dev/nvme0n1 /mnt
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Before Patch:
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group not marked as trimmed so second invocation still discards blocks
-$ fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
+## Build
+* kernel: 5.15.143-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 58ec986ace5fb848c4bef206a848b461883867e7
+* git describe: v5.15.142-140-g58ec986ace5f
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.142-140-g58ec986ace5f
 
-After Patch:
-fstrim -v /mnt
-/mnt: 25.9 MiB (27156480 bytes) trimmed
-// Group marked as trimmed so second invocation DOESN'T discard any blocks
-fstrim -v /mnt
-/mnt: 0 B (0 bytes) trimmed
+## Test Regressions (compared to v5.15.142)
 
-Fixes: 45e4ab320c9b ("ext4: move setting of trimmed bit into ext4_try_to_trim_range()")
-Cc: stable@vger.kernel.org # 4.19+
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
----
- fs/ext4/mballoc.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+## Metric Regressions (compared to v5.15.142)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 454d5612641ee..c15d8b6f887dd 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6731,11 +6731,16 @@ __acquires(bitlock)
- static ext4_grpblk_t ext4_last_grp_cluster(struct super_block *sb,
- 					   ext4_group_t grp)
- {
--	if (grp < ext4_get_groups_count(sb))
--		return EXT4_CLUSTERS_PER_GROUP(sb) - 1;
--	return (ext4_blocks_count(EXT4_SB(sb)->s_es) -
--		ext4_group_first_block_no(sb, grp) - 1) >>
--					EXT4_CLUSTER_BITS(sb);
-+	unsigned long nr_clusters_in_group;
-+
-+	if (grp < (ext4_get_groups_count(sb) - 1))
-+		nr_clusters_in_group = EXT4_CLUSTERS_PER_GROUP(sb);
-+	else
-+		nr_clusters_in_group = (ext4_blocks_count(EXT4_SB(sb)->s_es) -
-+					ext4_group_first_block_no(sb, grp))
-+				       >> EXT4_CLUSTER_BITS(sb);
-+
-+	return nr_clusters_in_group - 1;
- }
- 
- static bool ext4_trim_interrupted(void)
--- 
-2.34.1
+## Test Fixes (compared to v5.15.142)
 
+## Metric Fixes (compared to v5.15.142)
+
+## Test result summary
+total: 95978, pass: 75790, fail: 2770, skip: 17353, xfail: 65
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 117 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 34 total, 34 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 26 total, 26 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 11 total, 11 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 38 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
