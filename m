@@ -1,148 +1,119 @@
-Return-Path: <stable+bounces-6628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C16BD811B52
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:38:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF014811C04
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 19:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB6A1C20CDF
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:37:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3D4281161
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC76756B97;
-	Wed, 13 Dec 2023 17:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BFB5A10D;
+	Wed, 13 Dec 2023 18:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXMl99mb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FX7QEjno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3498534B;
-	Wed, 13 Dec 2023 17:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7905CC433C7;
-	Wed, 13 Dec 2023 17:37:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702489075;
-	bh=viG7AGNHVM+j/Siqe34sl7MtKrSza3x0N/RnzU7GrTU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aXMl99mb+3U6hbUTcdKvaoTXYjVfUtH/NB7jCFXl+PpYGZJZiL6tEx3PWkO5KbyU6
-	 hOengl1NuXpCaAQ+cbxH5ERo+Hrid2EHIhLsLtu/B0C/Q0NxmMFhextD1NDC3SFAhQ
-	 3TLE1spIGzsT2J9ZKFqhrNUbyKHv0amQBb5R96Ec=
-Date: Wed, 13 Dec 2023 18:37:52 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Pavel Machek <pavel@denx.de>, Guenter Roeck <linux@roeck-us.net>,
-	grundler@chromium.org, davem@davemloft.net, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: RTL8152_INACCESSIBLE was Re: [PATCH 6.1 000/194] 6.1.68-rc1
- review
-Message-ID: <2023121322-mortician-superman-54a9@gregkh>
-References: <20231211182036.606660304@linuxfoundation.org>
- <ZXi9wyS7vjGyUWU8@duo.ucw.cz>
- <a6af01bf-7785-4531-8514-8e5eb09e207e@roeck-us.net>
- <ZXliuTqyO_IjlIz7@amd.ucw.cz>
- <2023121342-wanted-overarch-84a7@gregkh>
- <CAD=FV=WK52EjYh0nn8e0PEvY5ovUOn9rymnY09B7SQNgUXymPw@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6927C59527;
+	Wed, 13 Dec 2023 18:11:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AAD9C433C8;
+	Wed, 13 Dec 2023 18:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702491076;
+	bh=DSiErSlPeiuZHKb7NJWMA2u0Y0HWFXxL9sLwA8/tUYA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=FX7QEjnoKh72ueYdqD74yg05wXYTxMVUztUw7TdfxupRtYLKoHIGYJsP11rYCTQTo
+	 uouhlxVXtBC887SAwVBb2yYOQa7RH4MrEYgKX87qK4bOiWqPPkpxqFjPcU601TN7hL
+	 3Y0w4pGKpX4nIhjLB0nfK2THpQRnnGuPmwgLix/TXa+9n+BK9+hlXUHWdpyFI4Io3g
+	 BuXr8NgPUAxhJZrmzByMoXBeHYq8iJHblN+8jdDxw66md/V3s8P2fCj3+F1CPH3oNl
+	 77uySKk2deCI6nau+9Rd9hSX6X6qf/SM7mcEvXTGHk0J0gEcAG6wcmkdS55T54Eti7
+	 3ObQIm+NmM4Bw==
+Date: Wed, 13 Dec 2023 12:11:15 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Dongli Zhang <dongli.zhang@oracle.com>,
+	linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org,
+	mst@redhat.com, rafael@kernel.org, lenb@kernel.org,
+	bhelgaas@google.com, mika.westerberg@linux.intel.com,
+	boris.ostrovsky@oracle.com, joe.jin@oracle.com,
+	stable@vger.kernel.org, Fiona Ebner <f.ebner@proxmox.com>,
+	Thomas Lamprecht <t.lamprecht@proxmox.com>
+Subject: Re: [RFC 0/2] PCI: acpiphp: workaround race between hotplug and
+ SCSI_SCAN_ASYNC job
+Message-ID: <20231213181115.GA1050010@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=WK52EjYh0nn8e0PEvY5ovUOn9rymnY09B7SQNgUXymPw@mail.gmail.com>
+In-Reply-To: <20231213003614.1648343-1-imammedo@redhat.com>
 
-On Wed, Dec 13, 2023 at 07:16:52AM -0800, Doug Anderson wrote:
-> Hi,
+On Wed, Dec 13, 2023 at 01:36:12AM +0100, Igor Mammedov wrote:
+> Hacks to mask a race between HBA scan job and bridge re-configuration(s)
+> during hotplug. 
 > 
-> On Wed, Dec 13, 2023 at 12:50 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Dec 13, 2023 at 08:52:25AM +0100, Pavel Machek wrote:
-> > > Hi!
-> > >
-> > > > > > This is the start of the stable review cycle for the 6.1.68 release.
-> > > > > > There are 194 patches in this series, all will be posted as a response
-> > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > let me know.
-> > > > >
-> > > > >
-> > > > > > Douglas Anderson <dianders@chromium.org>
-> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8153_aldps_en()
-> > > > > >
-> > > > > > Douglas Anderson <dianders@chromium.org>
-> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8153_pre_firmware_1()
-> > > > > >
-> > > > > > Douglas Anderson <dianders@chromium.org>
-> > > > > >      r8152: Add RTL8152_INACCESSIBLE to r8156b_wait_loading_flash()
-> > > > > >
-> > > > > > Douglas Anderson <dianders@chromium.org>
-> > > > > >      r8152: Add RTL8152_INACCESSIBLE checks to more loops
-> > > > > >
-> > > > > > Douglas Anderson <dianders@chromium.org>
-> > > > > >      r8152: Rename RTL8152_UNPLUG to RTL8152_INACCESSIBLE
-> > > > >
-> > > > > Central patch that actually fixes something is:
-> > > > >
-> > > > > commit d9962b0d42029bcb40fe3c38bce06d1870fa4df4
-> > > > > Author: Douglas Anderson <dianders@chromium.org>
-> > > > > Date:   Fri Oct 20 14:06:59 2023 -0700
-> > > > >
-> > > > >      r8152: Block future register access if register access fails
-> > > > >
-> > > > > ...but we don't have that in 6.1. So we should not need the rest,
-> > > > > either.
-> > > > >
-> > > >
-> > > > Also, the missing patch is fixed subsequently by another patch, so it can not
-> > > > be added on its own.
-> > >
-> > > For the record I'm trying to advocate "drop all patches listed as they
-> > > don't fix the bug", not "add more", as this does not meet stable
-> > > criteria.
-> >
-> > But the original commit here does say it fixes a bug, see the text of
-> > the commits listed above.  So perhaps someone got this all wrong when
-> > they wrote the original commits that got merged into 6.7-rc?  Otherwise
-> > this seems like they are sane to keep for now, unless the original
-> > author says they should be dropped, or someone who can test this driver
-> > says something went wrong.
-> 
-> Right. The patches that "add RTL8152_INACCESSIBLE" to more loops are
-> bugfixes, but they're not terribly important ones to backport. While
-> they technically make sense even on older kernels and could
-> conceivably make the older kernels unload the r8152 driver a little
-> faster when a device is unplugged, it's not a big deal. On the first
-> version of the recent patches I didn't even add a "Fixes" tag for them
-> but I was asked to during the review process.
-> 
-> The "add RTL8152_INACCESSIBLE" patches become more important with
-> commit d9962b0d4202 ("r8152: Block future register access if register
-> access fails"). Once you have that it's possible to end up in the
-> "INACCESSIBLE" situation in response to normal (ish) error handling
-> and thus you want it to be faster.
-> 
-> Based on our experience in ChromeOS, commit d9962b0d4202 ("r8152:
-> Block future register access if register access fails") is a pretty
-> important fix and I would say it should be backported to stable.
-> Certainly we've backported it to our kernels in ChromeOS. In our case
-> we made things easier on ourselves by backporting pretty much all
-> patches to the r8152 driver.
+> I don't like it a bit but it something that could be done quickly
+> and solves problems that were reported.
 
-Ok, as lots of fixes seem to be needed here, do you have a list of the
-git ids that we should backport to bring this up to a workable state
-like you have in your tree?
+I agree, I don't like it either.  Adding a 1s delay doesn't address
+the real problem, and putting in a band-aid like this means the real
+problem would likely never be addressed.
 
-thanks,
+At this point the best option I see is to revert these:
 
-greg k-h
+  cc22522fd55e2 ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+  40613da52b13f ("PCI: acpiphp: Reassign resources on bridge if necessary")
+
+I hate the fact that reverting them would mean the root bus hotplug
+and ACPI bus check notifications would become issues again.
+
+But keeping these commits even though they add a new different problem
+that breaks things for somebody else seems worse to me.
+
+Bjorn
+
+> Other options to discuss/possibly more invasive:
+>  1: make sure pci_assign_unassigned_bridge_resources() doesn't reconfigure
+>     bridge if it's not necessary.
+>  2. make SCSI_SCAN_ASYNC job wait till hotplug is finished for all slots on
+>     the bridge or somehow restart the job if it fails
+>  3. any other ideas?
+> 
+> 
+> 1st reported: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+> 
+> CC: Dongli Zhang <dongli.zhang@oracle.com>
+> CC: linux-acpi@vger.kernel.org
+> CC: linux-pci@vger.kernel.org
+> CC: imammedo@redhat.com
+> CC: mst@redhat.com
+> CC: rafael@kernel.org
+> CC: lenb@kernel.org
+> CC: bhelgaas@google.com
+> CC: mika.westerberg@linux.intel.com
+> CC: boris.ostrovsky@oracle.com
+> CC: joe.jin@oracle.com
+> CC: stable@vger.kernel.org
+> CC: linux-kernel@vger.kernel.org
+> CC: Fiona Ebner <f.ebner@proxmox.com>
+> CC: Thomas Lamprecht <t.lamprecht@proxmox.com>
+> 
+> Igor Mammedov (2):
+>   PCI: acpiphp: enable slot only if it hasn't been enabled already
+>   PCI: acpiphp: slowdown hotplug if hotplugging multiple devices at a
+>     time
+> 
+>  drivers/pci/hotplug/acpiphp_glue.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> -- 
+> 2.39.3
+> 
 
