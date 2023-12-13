@@ -1,212 +1,314 @@
-Return-Path: <stable+bounces-6617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C689811A60
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45314811A82
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 18:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6BB028285C
-	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:05:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C74B228299F
+	for <lists+stable@lfdr.de>; Wed, 13 Dec 2023 17:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644C43A28B;
-	Wed, 13 Dec 2023 17:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7C63A8F8;
+	Wed, 13 Dec 2023 17:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GYiD+zRV"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="PLSjBY3g";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="HC+up8GY"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2087.outbound.protection.outlook.com [40.107.96.87])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAB0F10E
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 09:05:25 -0800 (PST)
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05A43C9;
+	Wed, 13 Dec 2023 09:09:51 -0800 (PST)
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BDER28u023870;
+	Wed, 13 Dec 2023 17:09:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=i8DC1ob1638TzWEVmaIn6qn7ErtWP1ASwtF01jtziro=;
+ b=PLSjBY3g0dLY2ye9az+XqKdwqE8YcoPz5Syb0/X4JBNMMCEB3PZqDXCzVNfwXAg6Q+3q
+ mqnwAS+I9lMQTWVOcUCpRjPLN0Qh5lnZ5MAgfMbguzXXqygCGrTW04xLwy2p6z0+wXRD
+ 00vFcdc3FJ4qIP9H6S5FZCy96fUfdL90ffKKd25zbG8tE2xJ69z4e7rmaJBcZCg71p5l
+ C8Hs8uq5kfUvQLKxcNhTewQW7yhVJYPKCtq94g7coO9/YyqjcIIOwrKJgYBEEgJt4EQF
+ xWO2RM2+MPya7GlzmVUBhXbCfrC+S0GD4YhxXvI+gIGuEAHF2eC1TSl3DCFuAGvkt5Fa wg== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uvf5c8sec-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Dec 2023 17:09:24 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3BDGx3cA003106;
+	Wed, 13 Dec 2023 17:09:23 GMT
+Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2169.outbound.protection.outlook.com [104.47.57.169])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uvep8mcpy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 Dec 2023 17:09:23 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gMOL6F1YUQJEsdWveJRER6bhm0B1y8yaL2qeq/SRvViATJydRebL+sdXTl7MNz7v99j83vkl5b3D28vvAqRtBXIiklG5GN9Y1GzYYd9BI9Zj6v1kikqIDLSWHNAepsRQ8EhKaahkPwwAnxthZGYLyal3AqcAEZmeF77/EpzABKYnWkeb14d1+mhchH0pk/7gMo9r7XYPKcvCBGmmX8Hp4LDrTeLzbuOwXOVfMvdqRVhIKWlaxruRW/0f+f2v6fpFJ4HElJFzxKNski9XDPBz7rwNIsWX4oArHwHTIRrQWjqHSvgoAK+bORSKEmzEsaog/PglH7Ck34k+vEQFAOBHCQ==
+ b=UgpCkOqtuZlxJKueZpcAwjNRXiK6lp+MBDrxrbVzgjV4z35IAltBClLiQ6pXkbhxpQRe3OKUmxq8vcBmJO3ZJkI6SIdXY1WQlfg2zPQzyJBe+w1bJObiOTELzssYOthAznGjUw3l6zX6ltsWf6SVTKqEWKhpFVthbMLexV5hAXAk2k1ToyXqjWhifQOy5tPQm6J6rTzlR4HFIHxryxarT/0tud6Mj1jR6aQzLWd3xFv38GTQ5u4yyubIEkR5mKbIyRQK6S0etzpLT1eALLFYImlElnOFHBOq1vgsROoEzAQS//C4TKDaJ4tT0AYjvBex9KgzQOTuHv0oFU8hDYi0jQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Px99XqTrxq398VC48XCkrjLbB3LDF3Pl7CU5ScOzLDQ=;
- b=YyismHhEHXhWJlKYj5xjTcXJSZxV5eHSEYz60v2k/LvhxOxKjnfRtLRCcxlpbyxvVYL/yzI6AO6VuSLUeLbMqKeqc0fus4rUIHP7R2nhPi6LPqkCLvfOW23QKVZl4UMCEbLhem6XStGDxtxvJvp2zuu0u43HMcssJUjGBA2JyiZoWFtZUJjBG3EYk/to+X1WOa6NSkl2csbqqX4x+/V3hUMPVDT8bCtbwawtBM5lTMlKdu7P3vnIO61odtWPym2/a/JXI6/8jeKEUu7/6a8ErHuzufE4a6Wst+XtJhx1uOK+35j9HKAd+8nuOMzj3fGs4rDFsKCbrWzVIo/qFkbHPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=i8DC1ob1638TzWEVmaIn6qn7ErtWP1ASwtF01jtziro=;
+ b=aMjzba0qE9B8splPvbrB14GMVX5WHf3LEGtJVjg4aWp98t8oqru7M4h3uEmYNKLLSj6ygnGwN9CUZyikkLU5e241H9//3OYmLwYf0GUFw/mQzYQlxaf+46FN7yGrGGtNuI5PwyMl0kLDIji6/DDU4VOx95nRh3Q9DGlu6l+yfBh//vxmz1tac6NJCallMZ0VSQYef1tHYemYCp0xPgodxfGGeI0zQS+U57wiNpout2KZ2MukxjLFyQ11fkCLJnWRg7kyDkxkl3IQ8A4CiF8XKXSmIkYPO7CpkzRO04CrvseECPLHCTwY+wjwvlmL/EREgL4V2Yl6iRaXpsQwA0Eluw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Px99XqTrxq398VC48XCkrjLbB3LDF3Pl7CU5ScOzLDQ=;
- b=GYiD+zRVWAfzVdsFT6QAXJiuSMRyYvrxfzqxDxFukC8nrxyRwSsP5KBA+psTikk8BL756SdhhG3TOImvPvLD7f6WoThh+NLIFIlUUzA4ECYdmPH533mVKIp7y5RVmHnrj+eBJYZ0Y9XWOhxgKsPLQGxi5/N1JGIXE3c180oHrNk=
-Received: from DS7PR03CA0130.namprd03.prod.outlook.com (2603:10b6:5:3b4::15)
- by DM8PR12MB5416.namprd12.prod.outlook.com (2603:10b6:8:28::18) with
+ bh=i8DC1ob1638TzWEVmaIn6qn7ErtWP1ASwtF01jtziro=;
+ b=HC+up8GYQ6/whGSpwjB26QLJxMQNmZSvD9Zxn2k0CCYeKxWEvAGQ7EmWosFX+rkBq/ekNmfXvP7HUWvZBNd/4+l7RhSe7CbiFRcBVx+AiKSk6fV46M6IXmaZFUvXndS+9qxdUdUklKoZx50oEzFceG1HSdo8MpyPz8fqGew6aVg=
+Received: from BYAPR10MB2663.namprd10.prod.outlook.com (2603:10b6:a02:a9::20)
+ by SJ0PR10MB5567.namprd10.prod.outlook.com (2603:10b6:a03:3dd::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26; Wed, 13 Dec
- 2023 17:05:21 +0000
-Received: from DS3PEPF000099E2.namprd04.prod.outlook.com
- (2603:10b6:5:3b4:cafe::da) by DS7PR03CA0130.outlook.office365.com
- (2603:10b6:5:3b4::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.26 via Frontend
- Transport; Wed, 13 Dec 2023 17:05:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099E2.mail.protection.outlook.com (10.167.17.201) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7091.26 via Frontend Transport; Wed, 13 Dec 2023 17:05:20 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 13 Dec
- 2023 11:05:20 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Mario Limonciello <mario.limonciello@amd.com>, <stable@vger.kernel.org>,
-	Tim Huang <Tim.Huang@amd.com>
-Subject: [PATCH] drm/amd: Add a workaround for GFX11 systems that fail to flush TLB
-Date: Wed, 13 Dec 2023 11:04:54 -0600
-Message-ID: <20231213170454.5962-1-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
+ 2023 17:09:19 +0000
+Received: from BYAPR10MB2663.namprd10.prod.outlook.com
+ ([fe80::dec8:8ef8:62b0:7777]) by BYAPR10MB2663.namprd10.prod.outlook.com
+ ([fe80::dec8:8ef8:62b0:7777%4]) with mapi id 15.20.7091.022; Wed, 13 Dec 2023
+ 17:09:19 +0000
+Message-ID: <a8db0ed6-05f4-7c2d-c63e-5f2976d25a45@oracle.com>
+Date: Wed, 13 Dec 2023 09:09:18 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [RFC 2/2] PCI: acpiphp: slowdown hotplug if hotplugging multiple
+ devices at a time
+To: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-pci@vger.kernel.org, lenb@kernel.org,
+        bhelgaas@google.com, mika.westerberg@linux.intel.com,
+        boris.ostrovsky@oracle.com, joe.jin@oracle.com, stable@vger.kernel.org,
+        Fiona Ebner <f.ebner@proxmox.com>,
+        Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <20231213003614.1648343-1-imammedo@redhat.com>
+ <20231213003614.1648343-3-imammedo@redhat.com>
+ <CAJZ5v0gowV0WJd8pjwrDyHSJPvwgkCXYu9bDG7HHfcyzkSSY6w@mail.gmail.com>
+ <CAMLWh55dr2e_R+TYVj=8cFfV==D-DfOZvAeq9JEehYs3nw6-OQ@mail.gmail.com>
+ <20231213115248-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Dongli Zhang <dongli.zhang@oracle.com>
+In-Reply-To: <20231213115248-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SJ0PR03CA0282.namprd03.prod.outlook.com
+ (2603:10b6:a03:39e::17) To BYAPR10MB2663.namprd10.prod.outlook.com
+ (2603:10b6:a02:a9::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099E2:EE_|DM8PR12MB5416:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7416236c-5c14-4466-e1ba-08dbfbfdb092
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2663:EE_|SJ0PR10MB5567:EE_
+X-MS-Office365-Filtering-Correlation-Id: 834d3ab4-21d6-4a9a-53f5-08dbfbfe3e63
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	A4Tey9hL43cw+/thZ4DHC8ZdiB1vuUQtSQyiTdqZds8t5RJcgdj3ensHJD4/WnQNYgVzijosw9cDvBp/nPcEVsPk5srJ3bR730bGCM77dC63LsPL/qbwL84dji/CAGO0BSkBu4hrqLoTwvZFgtdiHrlvNU1+/I4/Nz2I+Pzlq7y4cxDrH5Wnf+G28sCR98EGCEOjr492zpBdcg4b5ezF7GIvZgTxANs8s+brce50lVCjRK4YnGyLu2aSqRzc1CGQ0frI0rwle84a/HqPRWnn6Gzvg714zjK5J/9eEyFz30u/bVcsbWAfnfQzGMjR062JCqRy7mE2mg5hNfkzm3Uc8yFmDiQtzwE8DEh5vFuHiuHvkWq16DwzxGeSfrP6fUquCVemP/YCS1a6usgJSbed618RlfBIVtXX9Wa1jO+izN2HBgypObQn//mUV20B+NE17zQQQCh1nAxT9Ba3a/kKnKMUtXS5j03Al1CfLctfYU400gyqVDQFJXSYzh9j0NrH2GEt1BUXO1HAFu91H6KyhNHZOy2GsDwX501/+x9cYWGJosm7eOUrJOs1oDFwRTHNcJL+7wO69sGkTgvWYsjziiquna5CRivS5rIGIzOxm0kOEU8sy9XsdFcqBdSkNJrx0k+Rz+e2gV8AxuflS+eZj7qW7mFW0lnS9hAjyuuKezFJrWLRlrhNMkuEMrgrJVvyqBkdRsq/oNoeGDg2N4QkfDp5THRVP+fEkfKmbFkCP9RtmiXwObDIPT+eTZXEHCGd
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(346002)(396003)(376002)(230922051799003)(451199024)(82310400011)(1800799012)(186009)(64100799003)(40470700004)(46966006)(36840700001)(40480700001)(1076003)(2616005)(16526019)(336012)(26005)(426003)(7696005)(6666004)(40460700003)(86362001)(82740400003)(81166007)(356005)(36756003)(5660300002)(8676002)(8936002)(44832011)(4326008)(36860700001)(83380400001)(47076005)(966005)(54906003)(6916009)(70206006)(70586007)(41300700001)(2906002)(316002)(478600001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 17:05:20.9833
+X-Microsoft-Antispam-Message-Info: 
+	mpRZZMKKMS9z6Zh09fMvzlSC/GcRIGFSj52fyZpoIYZ+J34X9VSi2M9xwPt2dZc0rmHpy/2B+FZlGFp/XunST1vwk/rxmtNdXrraSfy5dxzkarFHSXl3dJqEgkm8XwdmIiExf6KWkxkbv5uy5Md5SrII2Sa8GR+DppOkFS2p6QtsJ1s/FFyfDRkF+Tg/4x6JCp9BLrYPHCWvntgqBN2X+EhS6eB98J+OJvRFfBhvZO7sQbWhg5AM+4Ys2oikHsUv+MXum6vbY8cdJprMAUPjxwFCLHyxkonZIiY/qyMmYMfUlmn10iiPLRZVDzNcoY5WKydSsSCTIg3Ern2XH6u8H4ERR/cU28xra8Ox02TI+tgA+6OFoS1vgI+9rkEco4ohXDk8Kiaf6mYn4XtCn3eHp5joixVdKSh5TsT9pAdsLjTE7DF3+7yUhstovfib+xBpQbjfkCj4PI7iF18Lc7HFeOyo4CFQyVXH07WfH2dG9/MzVVOL+niF5GN0a47ez9lvS+y8D/rjZ7ASEKYJexID3TZrssUTDctgu0wyQyMBhH74Mn23hmkYcLZX6QW2C4qGH4TVdurYtoQ1jhIDOwpTtyrFW2/IPlIP5SX7Modp6ELM+bQKtm89eZWx1/s4CWpa2jOUXCiowE2y9ZRasZ/y3A==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR10MB2663.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(396003)(39860400002)(376002)(366004)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(26005)(6512007)(2616005)(6506007)(86362001)(38100700002)(31686004)(66476007)(44832011)(66946007)(54906003)(66556008)(316002)(110136005)(478600001)(6486002)(966005)(53546011)(83380400001)(8936002)(8676002)(4326008)(31696002)(7416002)(2906002)(36756003)(41300700001)(5660300002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?NGhPY0VscWVZOGl2WmNhVWwvNVZmVDRsdkZjV1ZiRSt1SW1FQlViMUxoZ3ZO?=
+ =?utf-8?B?NCs2Q2Nld3A3THhiZkNrZ0FMaTVkRlV3SytiOXE4T0R3VkpDeU8vOXBVUlgy?=
+ =?utf-8?B?aTFDcTk2cDdUbm9xaUpLSTU0THErbmV3SEI1aU9LeWtNd3lIaTFZWlJ4UFNC?=
+ =?utf-8?B?clBjSGVGQzJDZVl0clhvZkFIb2tNOEx1alBZRHFGUmdqeVRpeVpBN0FxSlhk?=
+ =?utf-8?B?MHV3S3ZpcVowS1JWRGRsYllPWWVBMUxLRjRicWhpTmNQUWRmUUFKMWVTSys3?=
+ =?utf-8?B?T2FWREI5d0x3TStPK2xqOGRoenREaGI3U0JvNzFFS0RHOGZBWEg0RXB3UjBz?=
+ =?utf-8?B?T2lzMVE4N0J3ZS9xL2E4TTNjWmc5aTFjSUxkV01sTzVlbWFFcFVqT21GaHZX?=
+ =?utf-8?B?UjlvWHd1ZnVrL3p1OGdCdkhjMlJ4UjIvc1YxVTVTWTF5VGJQUnpZUHIrc1dC?=
+ =?utf-8?B?Q3R2YXhBQkttMXBnbTRQSFdDM0I0VU15RmhoNC9wdVRsT05CQVN2dDd4cWxk?=
+ =?utf-8?B?N0lCcFRBZ2JXaVV2Kzk2K3JYSkdoSVpRc1RuTlZPek11YjUwZDdjM1RkQ05u?=
+ =?utf-8?B?ZWRvYngzQ2N4bWJtenhqVm9LS2pwaXhrY2VkUENYbDNxaW5JUFZENXZIckJw?=
+ =?utf-8?B?d0FYRWE5RUtEb3ZWU2hGd25tK2h3MHUwTlZsYXhVZHBwcTZpTTRvVkE4MzhO?=
+ =?utf-8?B?UmVESmVORG9aanh6alRwMVQ4dy8xa2lOeEZ0K2JMRmFYRUVHYlUwWWZqaDdV?=
+ =?utf-8?B?Q3pISXQxbkxBZlJrQmk0M2hCK1AwR0hoQTkyZnpENWh0NVpZNk9OOW9rbnRo?=
+ =?utf-8?B?MlRYSnQxWGU0WHVBb1JvODBXOWVqU1hhbUxWSnJQVVZacUZRa1dXVVcrREpu?=
+ =?utf-8?B?U1dYUU5Jd0srZkJBRGs3dWVzcUYraXRpQlpvRXFzRjFYcjVIUVRVNmQ4cXpm?=
+ =?utf-8?B?N1Q0czcxTTRGeFM3VVAzbWU0cHphb2RsMVZZNlU0aStLcExqd0d0WFdTcXND?=
+ =?utf-8?B?c1Z2ZWJyMWdvYlVtYXFGT0hQN0hUbm1mQ3kxTHZrNGZTd0NYT3IwWWFnUlNO?=
+ =?utf-8?B?eCtWUkFxTUlCKzhpa0lidUJmNm1UbVUwcEJoUWtESTN2SjJWTE5uSzhlMVNl?=
+ =?utf-8?B?Y3FqVUROeVVoWEdMWmh4TFU1K1VSWVRvMzZsd0JVRHRxdUlSY1EzVWppaU90?=
+ =?utf-8?B?UWVkRkdWTk9ZWmN3cW03MWl0bUZQVWhpSE1rVDV2QkIzaGE1Q3Y5cXZKZjdY?=
+ =?utf-8?B?WlBNS3hQa1grM2ZNQnZ5ZE9XR3ZPLytEa2QwZkh6U0o4RzA3TlBUc2h3UlNJ?=
+ =?utf-8?B?NTRKem5TakhRQjJtOGw5WWtqSFJoMkpGSy9yUjUySlR5TU9yd0FzaHZlWVZZ?=
+ =?utf-8?B?Yll2bHVsM2pyUDBmcVR6NXR1TEJQSURZbXJHRXdvNFFrWkhFZytabnRNd29E?=
+ =?utf-8?B?RE5YL2ltUGNPNENKOFRUNTJlOUd3SDJVbVJaSTRDL1dTTEQwQjIvOE1zZGxI?=
+ =?utf-8?B?b3dGUjJMVWc5QXF6R3NRUEFEa05tR3VHc2MvSnhRNUw5bXgwbkRpUC92MWw0?=
+ =?utf-8?B?S0JwNlVZNTllNkV1b0JyOC9Zd1h5c2NPNXpsK2tYTEw5cUgzT045b0w3OTVD?=
+ =?utf-8?B?OE96T1RqUjc5WHc2ZmhvWjNSaFFFUlVvaEdWSkJteG4xRlV6SnF0TDdaS1dx?=
+ =?utf-8?B?cDkyTEtndE8wT0VqWFJ5ZXJFdHR3SWhqUGFxaXdnK3RxM0NVaWRpbkQyTXBJ?=
+ =?utf-8?B?d20zWFY2K01UcXRxdmZYUXNBbmlUWkJjRUxtanJnT2RLdjlmV1FFR3BlNnV6?=
+ =?utf-8?B?WGwzZlo4M09MbTZ2eTBFOHVpM2x2S1VDWVlnNHM1WEUvclJHQnZQNnptT0dV?=
+ =?utf-8?B?ZTJTMG9YSWlTQXJkR3dpUTgwSW9FSmRBQ21odWJwREFGSGYrN0ZZS3BtMmFz?=
+ =?utf-8?B?R3NHL1BhenVkY1pxTFdWU1lNengyL2QycWdIeWtiUVVRZnpMTncreHNDRXp5?=
+ =?utf-8?B?UEVTMjdZSFRlSnZtWWVQT3NRN2doZ21rTThIQnEwZ2NNOXpwUHhRN09sVG9Z?=
+ =?utf-8?B?b1J3UUhYNHI3blZtZ09QdFVBbjJnem9xRWQrZFlyYkh4Z3RHQWJQbDloWWpk?=
+ =?utf-8?Q?1JRQNaHxXpDW0gnSzQemzGXFU?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	5IGZmkYWXbVDhJqPsnVBMy+4xnkV1rwjpMU6Ja1lyIKX8sJ4jobgV/2Yi5h9h+SBy8I2r17UZsi/q9DsaCcA3W2yMSdB/3ZVv4iWtFOiWsVNBqWsSlW3kZo3b36oWRmpUrrNXVGatn1sGkZ2r/FeV/oUSDhwDmpVYDrrNpKSNpUuJhQuAi7v8jWsY/m75iHZGcbaOd5NHLjtxdjiC0uBINgOs9MEWRqvLWnb/2u66KJ7whvPGi8w27QUtcq6edqiTZEILbotsFPTzm/3OQLBMOvRgjK21DF4Z24GtQSjO+u6h1vLKDQqgK67d76pwf/C0HwKhO9rY4UbQPyma/dGuL5yF0nFk9swpBnmTEHJrWS9I8H5Jit3bxYdQjTr2d2DjSA+ntfjItqwVl53vgb0/PEURfGrTuYEa7FRCwn/W1XvDvzMqcOxPSu3lBv6vb4UATuOCy0aNz3xOlwXFUBDHfL6lmLFieYbGpnQHEv2mdbt7HtOQZqv6vs+hQSM1NYU8QGg1X/9ZitiGfhG1TwYIshHhL32BzYgwubrUTnlfgWfxoS1VISERXtt7kYhvsScbHAWYFNe4qsS5nQYpQ3Yla0i+mJpz7toQeeLcRNbImQ=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 834d3ab4-21d6-4a9a-53f5-08dbfbfe3e63
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2663.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Dec 2023 17:09:19.1632
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7416236c-5c14-4466-e1ba-08dbfbfdb092
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099E2.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR12MB5416
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lXJhCI9GWBTbNPatw8PBvU1e1gvMhnpokZL0N/qTpb6pXXtToBAafsE3c8iJZ7kbBQ2by2Z3o5gKzOoLvXdVYg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5567
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-13_10,2023-12-13_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 mlxlogscore=999 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2312130122
+X-Proofpoint-ORIG-GUID: txVwy_g0EtAzh7ZMwg-QBnFmc7OYX3eh
+X-Proofpoint-GUID: txVwy_g0EtAzh7ZMwg-QBnFmc7OYX3eh
 
-Some systems with MP1 13.0.4 or 13.0.11 have a firmware bug that
-causes the first MES packet after resume to fail. This packet is
-used to flush the TLB when GART is enabled.
+Hi Igor,
 
-This issue is fixed in newer firmware, but as OEMs may not roll this
-out to the field, introduce a workaround that will retry the flush
-when detecting running on an older firmware and decrease relevant
-error messages to debug while workaround is in use.
+On 12/13/23 08:54, Michael S. Tsirkin wrote:
+> On Wed, Dec 13, 2023 at 05:49:39PM +0100, Igor Mammedov wrote:
+>> On Wed, Dec 13, 2023 at 2:08 PM Rafael J. Wysocki <rafael@kernel.org> wrote:
+>>>
+>>> On Wed, Dec 13, 2023 at 1:36 AM Igor Mammedov <imammedo@redhat.com> wrote:
+>>>>
+>>>> previous commit ("PCI: acpiphp: enable slot only if it hasn't been enabled already"
+>>>> introduced a workaround to avoid a race between SCSI_SCAN_ASYNC job and
+>>>> bridge reconfiguration in case of single HBA hotplug.
+>>>> However in virt environment it's possible to pause machine hotplug several
+>>>> HBAs and let machine run. That can hit the same race when 2nd hotplugged
+>>>> HBA will start re-configuring bridge.
+>>>> Do the same thing as SHPC and throttle down hotplug of 2nd and up
+>>>> devices within single hotplug event.
+>>>>
+>>>> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+>>>> ---
+>>>>  drivers/pci/hotplug/acpiphp_glue.c | 6 ++++++
+>>>>  1 file changed, 6 insertions(+)
+>>>>
+>>>> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+>>>> index 6b11609927d6..30bca2086b24 100644
+>>>> --- a/drivers/pci/hotplug/acpiphp_glue.c
+>>>> +++ b/drivers/pci/hotplug/acpiphp_glue.c
+>>>> @@ -37,6 +37,7 @@
+>>>>  #include <linux/mutex.h>
+>>>>  #include <linux/slab.h>
+>>>>  #include <linux/acpi.h>
+>>>> +#include <linux/delay.h>
+>>>>
+>>>>  #include "../pci.h"
+>>>>  #include "acpiphp.h"
+>>>> @@ -700,6 +701,7 @@ static void trim_stale_devices(struct pci_dev *dev)
+>>>>  static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
+>>>>  {
+>>>>         struct acpiphp_slot *slot;
+>>>> +        int nr_hp_slots = 0;
+>>>>
+>>>>         /* Bail out if the bridge is going away. */
+>>>>         if (bridge->is_going_away)
+>>>> @@ -723,6 +725,10 @@ static void acpiphp_check_bridge(struct acpiphp_bridge *bridge)
+>>>>
+>>>>                         /* configure all functions */
+>>>>                         if (slot->flags != SLOT_ENABLED) {
+>>>> +                               if (nr_hp_slots)
+>>>> +                                       msleep(1000);
+>>>
+>>> Why is 1000 considered the most suitable number here?  Any chance to
+>>> define a symbol for it?
+>>
+>> Timeout was borrowed from SHPC hotplug workflow where it apparently
+>> makes race harder to reproduce.
+>> (though it's not excuse to add more timeouts elsewhere)
+>>
+>>> And won't this affect the cases when the race in question is not a concern?
+>>
+>> In practice it's not likely, since even in virt scenario hypervisor won't
+>> stop VM to hotplug device (which beats whole purpose of hotplug).
+>>
+>> But in case of a very slow VM (overcommit case) it's possible for
+>> several HBA's to be hotplugged by the time acpiphp gets a chance
+>> to handle the 1st hotplug event. SHPC is more or less 'safe' with its
+>> 1sec delay.
+>>
+>>> Also, adding arbitrary timeouts is not the most robust way of
+>>> addressing race conditions IMV.  Wouldn't it be better to add some
+>>> proper synchronization between the pieces of code that can race with
+>>> each other?
+>>
+>> I don't like it either, it's a stop gap measure to hide regression on
+>> short notice,
+>> which I can fixup without much risk in short time left, before folks
+>> leave on holidays.
+>> It's fine to drop the patch as chances of this happening are small.
+>> [1/2] should cover reported cases.
+>>
+>> Since it's RFC, I basically ask for opinions on a proper way to fix
+>> SCSI_ASYNC_SCAN
+>> running wild while the hotplug is in progress (and maybe SCSI is not
+>> the only user that
+>> schedules async job from device probe).
+> 
+> Of course not. And things don't have to be scheduled from probe right?
+> Can be triggered by an interrupt or userspace activity.
 
-Cc: stable@vger.kernel.org # 6.1+
-Cc: Tim Huang <Tim.Huang@amd.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3045
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c | 10 ++++++++--
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |  2 ++
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c  | 17 ++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  |  8 ++++++--
- 4 files changed, 32 insertions(+), 5 deletions(-)
+I agree with Michael. TBH, I am curious if the two patches can
+workaround/resolve the issue.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index 9ddbf1494326..6ce3f6e6b6de 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -836,8 +836,14 @@ int amdgpu_mes_reg_write_reg_wait(struct amdgpu_device *adev,
- 	}
- 
- 	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
--	if (r)
--		DRM_ERROR("failed to reg_write_reg_wait\n");
-+	if (r) {
-+		const char *msg = "failed to reg_write_reg_wait\n";
-+
-+		if (adev->mes.suspend_workaround)
-+			DRM_DEBUG(msg);
-+		else
-+			DRM_ERROR(msg);
-+	}
- 
- error:
- 	return r;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-index a27b424ffe00..90f2bba3b12b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-@@ -135,6 +135,8 @@ struct amdgpu_mes {
- 
- 	/* ip specific functions */
- 	const struct amdgpu_mes_funcs   *funcs;
-+
-+	bool				suspend_workaround;
- };
- 
- struct amdgpu_mes_process {
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-index 23d7b548d13f..e810c7bb3156 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -889,7 +889,11 @@ static int gmc_v11_0_gart_enable(struct amdgpu_device *adev)
- 		false : true;
- 
- 	adev->mmhub.funcs->set_fault_enable_default(adev, value);
--	gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0);
-+
-+	do {
-+		gmc_v11_0_flush_gpu_tlb(adev, 0, AMDGPU_MMHUB0(0), 0);
-+		adev->mes.suspend_workaround = false;
-+	} while (adev->mes.suspend_workaround);
- 
- 	DRM_INFO("PCIE GART of %uM enabled (table at 0x%016llX).\n",
- 		 (unsigned int)(adev->gmc.gart_size >> 20),
-@@ -960,6 +964,17 @@ static int gmc_v11_0_resume(void *handle)
- 	int r;
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
-+	case IP_VERSION(13, 0, 4):
-+	case IP_VERSION(13, 0, 11):
-+		/* avoid problems with first TLB flush after resume */
-+		if ((adev->pm.fw_version & 0x00FFFFFF) < 0x004c4900)
-+			adev->mes.suspend_workaround = adev->in_s0ix;
-+		break;
-+	default:
-+		break;
-+	}
-+
- 	r = gmc_v11_0_hw_init(adev);
- 	if (r)
- 		return r;
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 4dfec56e1b7f..84ab8c611e5e 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -137,8 +137,12 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 	r = amdgpu_fence_wait_polling(ring, ring->fence_drv.sync_seq,
- 		      timeout);
- 	if (r < 1) {
--		DRM_ERROR("MES failed to response msg=%d\n",
--			  x_pkt->header.opcode);
-+		if (mes->suspend_workaround)
-+			DRM_DEBUG("MES failed to response msg=%d\n",
-+				  x_pkt->header.opcode);
-+		else
-+			DRM_ERROR("MES failed to response msg=%d\n",
-+				  x_pkt->header.opcode);
- 
- 		while (halt_if_hws_hang)
- 			schedule();
--- 
-2.34.1
+Would you mind helping explain if to run enable_slot() for a new PCI device can
+impact the other PCI devices existing on the bridge?
 
+E.g.,:
+
+1. Attach several virtio-scsi or virtio-net on the same bridge.
+
+2. Trigger workload for those PCI devices. They may do mmio write to kick the
+doorbell (to trigger KVM/QEMU ioeventfd) very frequently.
+
+3. Now hot-add an extra PCI device. Since the slot is never enabled, it enables
+the slot via enable_slot().
+
+Can I assume the last enable_slot() will temporarily re-configure the bridge
+window so that all other PCI devices' mmio will lose effect at that time point?
+
+Since drivers always kick the doorbell conditionally, they may hang forever.
+
+As I have reported, we used to have the similar issue.
+
+PCI: Probe bridge window attributes once at enumeration-time
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=51c48b310183ab6ba5419edfc6a8de889cc04521
+
+
+Therefore, can I assume the issue is not because to re-enable an already-enabled
+slot, but to touch the bridge window for more than once?
+
+Thank you very much!
+
+Dongli Zhang
+
+> 
+>> So adding synchronisation and testing
+>> would take time (not something I'd do this late in the cycle).
+>>
+>> So far I'm thinking about adding rw mutex to bridge with the PCI
+>> hotplug subsystem
+>> being a writer while scsi scan jobs would be readers and wait till hotplug code
+>> says it's safe to proceed.
+>> I plan to work in this direction and give it some testing, unless
+>> someone has a better idea.
+> 
+>>>
+>>>> +
+>>>> +                                ++nr_hp_slots;
+>>>>                                 enable_slot(slot, true);
+>>>>                         }
+>>>>                 } else {
+>>>> --
+>>>
+> 
 
