@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-6701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1228D812534
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 03:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A83581254F
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 03:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3AB71C214B6
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:23:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6750F1C212C1
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0BCEC7;
-	Thu, 14 Dec 2023 02:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320CF391;
+	Thu, 14 Dec 2023 02:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="1CFo8Hb4"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="xHgUXu4x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D9B4106
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:23:15 -0800 (PST)
-Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-5c66e7eafabso6410131a12.0
-        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:23:15 -0800 (PST)
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96660B7
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:32:39 -0800 (PST)
+Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6da330ff8fdso1310455a34.0
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:32:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702520594; x=1703125394; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702521158; x=1703125958; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=40fPLMgp3itPhdyAP1iHzW7RkoGpyvl6gY+frpNnJ1c=;
-        b=1CFo8Hb4/sB+sB6B4TRw7yB2p7YtMTSxzsrlyboWU54nD2dP20H1GGUqvIOyswWHI7
-         rhZv6UJurV/S1JWnD2Xl55T27/im5bBTscl01u/bu6ZlMOg4pcUNQPa1UPgl/LHGeewP
-         SXPSa3iLKBFFxFFjbIiNv8y4AiNn71xEi+RNZ2nBM+Q5rzxIpGIG+5SscqU2ni0Gb0th
-         M9FQRcG9H5LLpTCfzIn60m/HHgN0HnFUTWQTLEIWAIy2N+3316AJsQ2Ch9KXe0kePhD1
-         l1nVgsQx/NBb/u1furGx1Bph0wmKWeR71T55m2BHpl9tCHlCH+AIzEh0gs9dWzHUgGWM
-         UIIg==
+        bh=aDL3mM6D/0+VDV7gCvtGz8JFtWOgjMt6q9tF1JTFXdk=;
+        b=xHgUXu4xxJPvUZHrbW1b8ooy8Kb3A5wi2qrUNgN+oqZuqYZjQgTDJGVwlyrU9l+rRX
+         qfeSUX1eFaKO2UAT5PqQfd54TQ9SlPaxKrZwwm0/lma4E4kcsSHylD8CW9ncVfN0vtUY
+         eq2+jgrrQgMgq3ldF+9QzmbnxpEN3tHhoF3wCp5YLo2ZNo628SPEKQzQ1kIw51zHrRxw
+         xEDPXi0R8Xi7LOUzUt1pM4RGSut8rVFaq7z3YWKQXvdpAcqJfE5E82QUTAxIpOokEn+W
+         zCi/CqC4O8l062+86ebbXlFq2tJmEsH4zrrrcU18rKydxWHKMN1xsqy9QbKrMWUrS/3U
+         lYCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702520594; x=1703125394;
+        d=1e100.net; s=20230601; t=1702521158; x=1703125958;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=40fPLMgp3itPhdyAP1iHzW7RkoGpyvl6gY+frpNnJ1c=;
-        b=xH6S6FLaKrp36iHnxoR2V6QBUHbo8GschzcweJWrWW4vIdCLShWAUqBjEANZwPlBev
-         I/GbXWTInBYB+CkgAf2PpTXfzBsq3xylUA3SoQUXEE+8lZJiejH7UbTXd858rZuT+Ttn
-         mZAkj1x+0+QHD5l4WDt4HTjX8BODgqWsSUduj49Tru+1kxXuIwyIDCMXQexHxdq1qLIb
-         KerjjHp3HodOAaBkfvVDmxYvC4a/pkuyGGAWQFTX+VOD+gDb/cEl7GxsAc49ZDv673Md
-         94J5hNXez8SRZXT89liMepEHW5pZ0cvT3P9Gz12cNQR9+owUlQ/NeC8XEE9CTBqB1wle
-         FbaA==
-X-Gm-Message-State: AOJu0YzMoH0M+zm6gGc2PlXn/Enw8DuZSq6pR07hz8IXof4eVhHRkhop
-	upbcU1D/sEd5Tfy14Vpw7AsiznNDS4mTS+uoR0v1mA==
-X-Google-Smtp-Source: AGHT+IHAkMZY9iF2sGQzcJBQJW26CmH+L6u3+RoU1OxR1S/UQBoYxw6t6oaarKK5kSC5tYmGBD4pkQ==
-X-Received: by 2002:a05:6a20:9390:b0:18f:c737:1c9f with SMTP id x16-20020a056a20939000b0018fc7371c9fmr11134860pzh.5.1702520594530;
-        Wed, 13 Dec 2023 18:23:14 -0800 (PST)
+        bh=aDL3mM6D/0+VDV7gCvtGz8JFtWOgjMt6q9tF1JTFXdk=;
+        b=CkzRCw8Sw1Gnr/P0lU2TKEZZF5IJIubka2ra8iRNfd54JuHBjswx6DeqZ0b1WGmC5K
+         SSRR+MlcwIY9csYBm+cxACjPrcBZrn3qFw5cAGc+Y5SDNsNjKBVV5RQfTTwLAzDLFyml
+         GJ3zSuZGuDHGA8Hl/CgfiGmBnoJwBaNQ8cFSZv5Nt2MHXwp8/j8l/CqN+jiPS2EuRNEi
+         TKyK86+ux8066rI+K+viZoNCcRPsb7u25+deOla/ya2HVMRSENZHFRVNw9mOCkSVsnOW
+         gofeTXGvg20nNhWHkS+XACnXal8gQIx7tzWASAwbDeC+8bSP5gQB+eJa/W+j2cyPFLb3
+         PU3Q==
+X-Gm-Message-State: AOJu0YxsM5b7oGEP5/F5QqS5E0KSW/L0tlrP9KDsa21dG22n6rqqd236
+	/rp8h51hk1Szm13Tz2b1+VhVgCb7XDOPFkc+pEEuhw==
+X-Google-Smtp-Source: AGHT+IEfO7YsA2pUeiMcBxqkkDwLPsC21T7+bO9PkMkJl8zVDYgeaoJo3IMvNgm8KPEF3UZVajBuxg==
+X-Received: by 2002:a05:6808:11d0:b0:3ba:4c6:f39b with SMTP id p16-20020a05680811d000b003ba04c6f39bmr8627715oiv.98.1702521158471;
+        Wed, 13 Dec 2023 18:32:38 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 3-20020a630c43000000b005bdbe9a597fsm10384211pgm.57.2023.12.13.18.23.13
+        by smtp.gmail.com with ESMTPSA id it24-20020a056a00459800b006cbafa4b426sm10517919pfb.110.2023.12.13.18.32.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Dec 2023 18:23:13 -0800 (PST)
-Message-ID: <657a6711.630a0220.ed389.fb52@mx.google.com>
-Date: Wed, 13 Dec 2023 18:23:13 -0800 (PST)
+        Wed, 13 Dec 2023 18:32:37 -0800 (PST)
+Message-ID: <657a6945.050a0220.3da06.17cd@mx.google.com>
+Date: Wed, 13 Dec 2023 18:32:37 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,161 +62,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.67-194-gb1f34ec337363
-Subject: stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed,
- 1 warning (v6.1.67-194-gb1f34ec337363)
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.10.204
+Subject: stable/linux-5.10.y baseline: 156 runs, 1 regressions (v5.10.204)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.=
-67-194-gb1f34ec337363)
+stable/linux-5.10.y baseline: 156 runs, 1 regressions (v5.10.204)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.67-194-gb1f34ec337363/
+Regressions Summary
+-------------------
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.67-194-gb1f34ec337363
-Git Commit: b1f34ec337363d820a35e7e5ae939996ed093f3b
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
+platform   | arch  | lab         | compiler | defconfig | regressions
+-----------+-------+-------------+----------+-----------+------------
+juno-uboot | arm64 | lab-broonie | gcc-10   | defconfig | 1          =
 
 
-Warnings summary:
+  Details:  https://kernelci.org/test/job/stable/branch/linux-5.10.y/kernel=
+/v5.10.204/plan/baseline/
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+  Test:     baseline
+  Tree:     stable
+  Branch:   linux-5.10.y
+  Describe: v5.10.204
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able.git
+  SHA:      b50306f77190155d2c14a72be5d2e02254d17dbd =
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
 
-Detailed per-defconfig build reports:
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
+Test Regressions
+---------------- =
 
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+platform   | arch  | lab         | compiler | defconfig | regressions
+-----------+-------+-------------+----------+-----------+------------
+juno-uboot | arm64 | lab-broonie | gcc-10   | defconfig | 1          =
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+  Details:     https://kernelci.org/test/plan/id/657a3825fc86d92232e13475
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+  Results:     50 PASS, 11 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.10.y/v5.10.204/=
+arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.10.y/v5.10.204/=
+arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/657a3826fc86d92232e134b5
+        new failure (last pass: v5.10.203)
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+    2023-12-13T23:02:32.369502  <8>[   29.497489] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 350454_1.5.2.4.1>
+    2023-12-13T23:02:32.477638  / # #
+    2023-12-13T23:02:32.580474  export SHELL=3D/bin/sh
+    2023-12-13T23:02:32.581248  #
+    2023-12-13T23:02:32.683252  / # export SHELL=3D/bin/sh. /lava-350454/en=
+vironment
+    2023-12-13T23:02:32.683993  =
 
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+    2023-12-13T23:02:32.785950  / # . /lava-350454/environment/lava-350454/=
+bin/lava-test-runner /lava-350454/1
+    2023-12-13T23:02:32.787249  =
 
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
+    2023-12-13T23:02:32.801767  / # /lava-350454/bin/lava-test-runner /lava=
+-350454/1
+    2023-12-13T23:02:32.860650  + export 'TESTRUN_ID=3D1_bootrr' =
 
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
+    ... (11 line(s) more)  =
 
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+ =20
 
