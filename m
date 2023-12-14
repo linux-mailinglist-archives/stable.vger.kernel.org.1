@@ -1,267 +1,151 @@
-Return-Path: <stable+bounces-6730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53B0812D57
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:50:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8130812E06
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 12:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31DE5B2115C
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 10:50:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6081C21515
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3543C488;
-	Thu, 14 Dec 2023 10:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DA23E47B;
+	Thu, 14 Dec 2023 11:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vQkTMrY5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3bzta1/D";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vQkTMrY5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3bzta1/D"
 X-Original-To: stable@vger.kernel.org
-X-Greylist: delayed 307 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Dec 2023 02:49:53 PST
-Received: from mout.perfora.net (mout.perfora.net [74.208.4.196])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5981E10F;
-	Thu, 14 Dec 2023 02:49:53 -0800 (PST)
-Received: from [10.10.1.198] ([84.226.64.168]) by mrelay.perfora.net
- (mreueus003 [74.208.5.2]) with ESMTPSA (Nemesis) id 0LgJO6-1rahYl3X9Q-00nlIy;
- Thu, 14 Dec 2023 11:44:36 +0100
-Message-ID: <34f364a5ed0703b562b631efa1f3cd1fd8f3a93a.camel@ziswiler.com>
-Subject: Re: [PATCH v3] wifi: mwifiex: add extra delay for firmware ready
-From: Marcel Ziswiler <marcel@ziswiler.com>
-To: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, briannorris@chromium.org,
- kvalo@kernel.org,  francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
- stable@vger.kernel.org
-Date: Thu, 14 Dec 2023 11:44:29 +0100
-In-Reply-To: <20231208234029.2197-1-yu-hao.lin@nxp.com>
-References: <20231208234029.2197-1-yu-hao.lin@nxp.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 (by Flathub.org) 
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC03E11A;
+	Thu, 14 Dec 2023 03:04:14 -0800 (PST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3E1E71F7C5;
+	Thu, 14 Dec 2023 11:04:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1702551851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Skljw5BSFfgpdqQOUDwAU/GCeFOgAjR5XeHFC81qJ/A=;
+	b=vQkTMrY51vyqlOg2jW5/nLQEPzZYE1f5yCnE4mFBzuluT+Njn+CXslgqe6U70uf9/1tT3P
+	EzkUXzYNjB/at29bS8wHUI++bWErXHEwijxXpk/xZP6DJByPieFXU9oTkZniEuAkDx/fzA
+	8nZ0f7FozdBeDA5GIhbh+nRyftoUpFc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1702551851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Skljw5BSFfgpdqQOUDwAU/GCeFOgAjR5XeHFC81qJ/A=;
+	b=3bzta1/DtvaaOVt6hYd6neZPDuvXk7u9Vqc6CdtOsl03namm2nc4Pk9CipUVASKQOrKvGa
+	TxZ2knK6DoJRBpAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1702551851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Skljw5BSFfgpdqQOUDwAU/GCeFOgAjR5XeHFC81qJ/A=;
+	b=vQkTMrY51vyqlOg2jW5/nLQEPzZYE1f5yCnE4mFBzuluT+Njn+CXslgqe6U70uf9/1tT3P
+	EzkUXzYNjB/at29bS8wHUI++bWErXHEwijxXpk/xZP6DJByPieFXU9oTkZniEuAkDx/fzA
+	8nZ0f7FozdBeDA5GIhbh+nRyftoUpFc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1702551851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Skljw5BSFfgpdqQOUDwAU/GCeFOgAjR5XeHFC81qJ/A=;
+	b=3bzta1/DtvaaOVt6hYd6neZPDuvXk7u9Vqc6CdtOsl03namm2nc4Pk9CipUVASKQOrKvGa
+	TxZ2knK6DoJRBpAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DEF27137E8;
+	Thu, 14 Dec 2023 11:04:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LA0HNSrhemXnZgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 14 Dec 2023 11:04:10 +0000
+Date: Thu, 14 Dec 2023 12:04:10 +0100
+Message-ID: <87edfpqc45.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Gergo Koteles <soyer@irl.hu>
+Cc: Shenghao Ding <shenghao-ding@ti.com>,
+	Kevin Lu <kevin-lu@ti.com>,
+	Baojun Xu <baojun.xu@ti.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] ALSA: hda/tas2781: call cleanup functions only once
+In-Reply-To: <1a0885c424bb21172702d254655882b59ef6477a.1702510018.git.soyer@irl.hu>
+References: <1a0885c424bb21172702d254655882b59ef6477a.1702510018.git.soyer@irl.hu>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Provags-ID: V03:K1:XeA/xXqrmulH1plKeWO0XxF2pnY5I9eUikZ1d+Eg2nx5HVSmlu6
- UQSW5RY8/TQmpHT8FK/kjCI0oQgf4eMlCo62ZKFedOyOLjGVvTStfK7h3S3S5FmJ4/9PU3S
- pdl2Yu0KcqHGH3HzHElQ4dVB8xnY4/1TFMUH12hDhOR6/Iwo/x2a1zYa1oao6Agzds5EmEg
- 5gxbhKsTP6EQJxpTI6eNw==
-UI-OutboundReport: notjunk:1;M01:P0:fP6UGUopE7c=;FLVEd0jnlTpVRgmon88h/Q8qtvR
- OjiMLM29xt+lGFHEGefMsnL8kXnnTwRxoJSJFSYRI5vXKTnTfg4gX5n3zml/Nglx03FJYSfI9
- C0EMJMCawL+RTTun5W5joMvDZ0S6YICefjPXNiWZPBkBIUnHSGSlhjrlYhioAHye6dkryJeDX
- cHqHbJEXXfb2yUkgZiH/Y7U2wJer8yOMQ2JD+O2h54yg04pFo23JLEhB4s0RlBTgAHUFadGfN
- VP7IlZUCucjDmpjM5/rBhvY7v/sMfQxij2Pf95OXpXy6qstLNY0rqW+HRLFckST6nZ6o9psS7
- Y0McWog8eBMmZcKTsg/8fIO96oGRsthMl42aE+NlgNvT3WNCKHVth+e3K7I6qCbmyZRkcW7qS
- d+7MbK+rawPMTjfejRtQVLBCD3s3H4C49tYVT93wInC2aYmCzMf9XzNG5J4A1ruJlQRW2adl2
- NOtAW0tW9PQVPoARaF7AC6//e7aXhzRmQzi1Jja9MDduyg5QQ315XGGdL1QXx8JcSWPofXPth
- v2YDiThWtjuxo78wxQ7Qpa2QmYSobgJbxeIqFzoJR783d/alSnZEvxWTsN92XEBsxspRYZxCk
- 0TXEOB4px1QIgjD9bN1xRyNPDg4vPUS8KWFlK8xKlBnQM1iH0efiurL3fNNhg57O5Nealoe+o
- ubwltyfJ4mfLQXaTfOM0XE+15VxdL8q0xlPhUyTKWcGjMwjgp9LwMnCDjTS+65RrmXoHDHDTS
- aA0rLJ56rnFvNv1jS2QzdHBapk8Wr0Ix8JUbafEhnOU0AdTkLyCb4wOagZJROUMP5TJ7m9Hkg
- O7giSIVxFob06LdNkTr6r0ClXAk447glbubpVRU0zVCJJ0+Fr4By3Bf8k0QPSOIyEseyXBJdb
- cjznSj+HF5fosOg==
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: 0.87
+X-Spam-Level: 
+X-Spam-Score: 0.84
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spamd-Result: default: False [0.84 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 RCPT_COUNT_SEVEN(0.00)[9];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.06)[60.79%]
+X-Spam-Flag: NO
 
-On Sat, 2023-12-09 at 07:40 +0800, David Lin wrote:
-> For SDIO IW416, due to a bug, FW may return ready before complete
-> full initialization.
+On Thu, 14 Dec 2023 00:28:16 +0100,
+Gergo Koteles wrote:
+> 
+> If the module can load the RCA but not the firmware binary, it will call
+> the cleanup functions. Then unloading the module causes general
+> protection fault due to double free.
+> 
+> Do not call the cleanup functions in tasdev_fw_ready.
+> 
+> general protection fault, probably for non-canonical address
+> 0x6f2b8a2bff4c8fec: 0000 [#1] PREEMPT SMP NOPTI
+> Call Trace:
+>  <TASK>
+>  ? die_addr+0x36/0x90
+>  ? exc_general_protection+0x1c5/0x430
+>  ? asm_exc_general_protection+0x26/0x30
+>  ? tasdevice_config_info_remove+0x6d/0xd0 [snd_soc_tas2781_fmwlib]
+>  tas2781_hda_unbind+0xaa/0x100 [snd_hda_scodec_tas2781_i2c]
+>  component_unbind+0x2e/0x50
+>  component_unbind_all+0x92/0xa0
+>  component_del+0xa8/0x140
+>  tas2781_hda_remove.isra.0+0x32/0x60 [snd_hda_scodec_tas2781_i2c]
+>  i2c_device_remove+0x26/0xb0
+> 
+> Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Gergo Koteles <soyer@irl.hu>
 
-BTW: What makes you think this issue is exclusive to the IW416?
+Thanks, applied.
 
-We have also seen this in the past both on our Verdin iMX8M Mini (SDIO/SDIO=
-) and Verdin iMX8M Plus (SDIO/UART)
-with 88W8997.
 
-good case:
-
-[    6.496541] mwifiex_sdio mmc0:0001:1: info: FW download over, size 59455=
-6 bytes
-...
-[    7.272436] mwifiex_sdio mmc0:0001:1: WLAN FW is active
-[    7.314958] mwifiex_sdio mmc0:0001:1: Unknown api_id: 5
-[    7.347647] mwifiex_sdio mmc0:0001:1: info: MWIFIEX VERSION: mwifiex 1.0=
- (16.92.21.p55)=20
-[    7.355977] mwifiex_sdio mmc0:0001:1: driver_version =3D mwifiex 1.0 (16=
-.92.21.p55)=20
-
-bad case:
-
-[    8.720216] mwifiex_sdio mmc0:0001:1: info: FW download over, size 59455=
-6 bytes
-...
-[   24.976699] mwifiex_sdio mmc0:0001:1: FW failed to be active in time
-[   24.983098] mwifiex_sdio mmc0:0001:1: info: _mwifiex_fw_dpc: unregister =
-device
-
-> Command timeout may occur at driver load after reboot.
-> Workaround by adding 100ms delay at checking FW status.
->=20
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Cc: stable@vger.kernel.org
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com> # Verdin AM62 (IW4=
-16)
-
-> ---
->=20
-> v3:
-> =C2=A0=C2=A0 - v2 was a not finished patch that was send to the LKML by m=
-istake
-> =C2=A0=C2=A0 - changed check condition for extra delay with clear comment=
-s.
-> =C2=A0=C2=A0 - added flag to struct mwifiex_sdio_device / mwifiex_sdio_sd=
-8978 to
-> =C2=A0=C2=A0=C2=A0=C2=A0 enable extra delay only for IW416.
-> ---
-> =C2=A0drivers/net/wireless/marvell/mwifiex/sdio.c | 19 ++++++++++++++++++=
-+
-> =C2=A0drivers/net/wireless/marvell/mwifiex/sdio.h |=C2=A0 2 ++
-> =C2=A02 files changed, 21 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wi=
-reless/marvell/mwifiex/sdio.c
-> index 6462a0ffe698..ef3e68d1059c 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-> @@ -331,6 +331,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8786 =3D {
-> =C2=A0	.can_dump_fw =3D false,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D false,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 =3D {
-> @@ -346,6 +347,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8787 =3D {
-> =C2=A0	.can_dump_fw =3D false,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 =3D {
-> @@ -361,6 +363,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8797 =3D {
-> =C2=A0	.can_dump_fw =3D false,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 =3D {
-> @@ -376,6 +379,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8897 =3D {
-> =C2=A0	.can_dump_fw =3D true,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 =3D {
-> @@ -392,6 +396,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8977 =3D {
-> =C2=A0	.fw_dump_enh =3D true,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 =3D {
-> @@ -408,6 +413,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8978 =3D {
-> =C2=A0	.fw_dump_enh =3D true,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D true,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 =3D {
-> @@ -425,6 +431,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8997 =3D {
-> =C2=A0	.fw_dump_enh =3D true,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 =3D {
-> @@ -440,6 +447,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8887 =3D {
-> =C2=A0	.can_dump_fw =3D false,
-> =C2=A0	.can_auto_tdls =3D true,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 =3D {
-> @@ -456,6 +464,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8987 =3D {
-> =C2=A0	.fw_dump_enh =3D true,
-> =C2=A0	.can_auto_tdls =3D true,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 =3D {
-> @@ -471,6 +480,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_=
-sd8801 =3D {
-> =C2=A0	.can_dump_fw =3D false,
-> =C2=A0	.can_auto_tdls =3D false,
-> =C2=A0	.can_ext_scan =3D true,
-> +	.fw_ready_extra_delay =3D false,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static struct memory_type_mapping generic_mem_type_map[] =3D {
-> @@ -563,6 +573,7 @@ mwifiex_sdio_probe(struct sdio_func *func, const stru=
-ct sdio_device_id *id)
-> =C2=A0		card->fw_dump_enh =3D data->fw_dump_enh;
-> =C2=A0		card->can_auto_tdls =3D data->can_auto_tdls;
-> =C2=A0		card->can_ext_scan =3D data->can_ext_scan;
-> +		card->fw_ready_extra_delay =3D data->fw_ready_extra_delay;
-> =C2=A0		INIT_WORK(&card->work, mwifiex_sdio_work);
-> =C2=A0	}
-> =C2=A0
-> @@ -766,6 +777,7 @@ mwifiex_sdio_read_fw_status(struct mwifiex_adapter *a=
-dapter, u16 *dat)
-> =C2=A0static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
-> =C2=A0				=C2=A0=C2=A0 u32 poll_num)
-> =C2=A0{
-> +	struct sdio_mmc_card *card =3D adapter->card;
-> =C2=A0	int ret =3D 0;
-> =C2=A0	u16 firmware_stat;
-> =C2=A0	u32 tries;
-> @@ -783,6 +795,13 @@ static int mwifiex_check_fw_status(struct mwifiex_ad=
-apter *adapter,
-> =C2=A0		ret =3D -1;
-> =C2=A0	}
-> =C2=A0
-> +	if (card->fw_ready_extra_delay &&
-> +	=C2=A0=C2=A0=C2=A0 firmware_stat =3D=3D FIRMWARE_READY_SDIO)
-> +		/* firmware might pretend to be ready, when it's not.
-> +		 * Wait a little bit more as a workaround.
-> +		 */
-> +		msleep(100);
-> +
-> =C2=A0	return ret;
-> =C2=A0}
-> =C2=A0
-> diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wi=
-reless/marvell/mwifiex/sdio.h
-> index b86a9263a6a8..cb63ad55d675 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/sdio.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
-> @@ -255,6 +255,7 @@ struct sdio_mmc_card {
-> =C2=A0	bool fw_dump_enh;
-> =C2=A0	bool can_auto_tdls;
-> =C2=A0	bool can_ext_scan;
-> +	bool fw_ready_extra_delay;
-> =C2=A0
-> =C2=A0	struct mwifiex_sdio_mpa_tx mpa_tx;
-> =C2=A0	struct mwifiex_sdio_mpa_rx mpa_rx;
-> @@ -278,6 +279,7 @@ struct mwifiex_sdio_device {
-> =C2=A0	bool fw_dump_enh;
-> =C2=A0	bool can_auto_tdls;
-> =C2=A0	bool can_ext_scan;
-> +	bool fw_ready_extra_delay;
-> =C2=A0};
-> =C2=A0
-> =C2=A0/*
->=20
-> base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
+Takashi
 
