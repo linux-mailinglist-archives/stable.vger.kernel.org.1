@@ -1,150 +1,304 @@
-Return-Path: <stable+bounces-6698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 272498124FC
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 03:08:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4F5812522
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 03:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AECB2824E6
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:08:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB0D82824D9
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAF57FD;
-	Thu, 14 Dec 2023 02:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968EB7F9;
+	Thu, 14 Dec 2023 02:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fUsUytfZ"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="WZJbrkE9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CB3BD
-	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:08:17 -0800 (PST)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-286f22c52c7so5512815a91.2
-        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:08:17 -0800 (PST)
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A07F7
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:17:04 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3b9efed2e6fso4628576b6e.0
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:17:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1702519696; x=1703124496; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qShNyLDmN+8IdcHnMPIUGtk6Jx1xybC2q6g+/Fg38uw=;
-        b=fUsUytfZVHYe5jB/M99+nPVBP/ghSkIVtppT+4H8eKMpNIlK2s8QriEJyhrJXpDPdI
-         Nv/nCYBzmvmChtZgCR5UqqxhRkC14yRk1tpX0FYuGSnfm+Q6HlYQOXkGtTU75wgzwjaD
-         Yi+fUqx8OI/nm5rGNylSgR+iRO0i3bsAXdWLo=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702520223; x=1703125023; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=5LWoNUfjyt72lRzDHyZRrNH31N7Xr4i+3bp/XwbtlXI=;
+        b=WZJbrkE9s2PqAFgxrXvbTXp/LYKts7t07kqJNw4fWmvN5lZlp0R6vJVcHpoNABbBBP
+         N8S6V9iyhomaMF6yhCRul7XjN35VcYj8DrjrgoIAvUDfbPBUPA8amSTDr4lQ1xc+Nbi4
+         5QA2ob4QWNZMnlSwt3tL591zVCpfGv4gLdfd+EmoQad7olSD3fQOLrBZpKcBYbQrPvTR
+         jO1OK/AMsGSvmiVOZus2YpUrJ5lvxsFAo+5Z3vuXGYqyi7Qbfj3J3z4EDHq+ZIBvQLHk
+         ZE5wWxO/RKhiLnvhAcnwaCbvPyx2f8ZpG94dEdfSA9bBMVAKTIn2TL7G4lroY0y9sMyX
+         /VlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702519696; x=1703124496;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qShNyLDmN+8IdcHnMPIUGtk6Jx1xybC2q6g+/Fg38uw=;
-        b=gRAcPdhzQT6u24k9jyaZGepgh2+qWSP2mUGK+21IryGPU0K1RJ+NHmpK2BWQA/gUzp
-         MlVZdTtPkKAmZZBwz4M4Qkv8521dA0bgoYmxI//w9RCHbJ81nZVDd2iEEbUVPY0Cbdez
-         nKX8pZQzxLnXP8+TWwb7ypwH0rummRx1xJgyHzNdD4gI+xU6/tAHgcaXmtYASshlLbcp
-         HB5FGx+smX2VTWKE9Ogu0Zk0ryqCDQxyq7B+55Ob+ca6ELTKR5LXi+1rtc4tT4nDZymS
-         fYBjzSMA6uw5u/7YxH8hIJyU9QlY5n7OuUKCy9aeJA8tB2G16V4m+YEjI9CA7LX5xQWL
-         yHKQ==
-X-Gm-Message-State: AOJu0Ywdz+TVLEDfqvLiBvG+0Ghv1PUgKP4u5Mv4MOhFz/cKplM7OL2/
-	ugM4iEScsEnhBZP3uU3yd1d5QA==
-X-Google-Smtp-Source: AGHT+IEPabyCmug2FZX5OX8mOdwgFWcT5xhOBOTmVRK23klj0sBiFix6IBT+AyWyXDLvszIEihTHLg==
-X-Received: by 2002:a05:6a20:ce83:b0:18f:c24e:7249 with SMTP id if3-20020a056a20ce8300b0018fc24e7249mr4358658pzb.90.1702519696466;
-        Wed, 13 Dec 2023 18:08:16 -0800 (PST)
-Received: from localhost ([2620:15c:9d:2:17f:673b:ab18:3603])
-        by smtp.gmail.com with UTF8SMTPSA id s13-20020a170902ea0d00b001d1d27259cesm11188492plg.180.2023.12.13.18.08.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Dec 2023 18:08:16 -0800 (PST)
-Date: Wed, 13 Dec 2023 18:08:14 -0800
-From: Brian Norris <briannorris@chromium.org>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
-Message-ID: <ZXpjjmD5Se7axJju@google.com>
-References: <20231208234127.2251-1-yu-hao.lin@nxp.com>
+        d=1e100.net; s=20230601; t=1702520223; x=1703125023;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5LWoNUfjyt72lRzDHyZRrNH31N7Xr4i+3bp/XwbtlXI=;
+        b=YxI2O3YSSusYq/QWjij3Xpbr1fmLFbcbGUdOoKZbA+X4t5j9O+ZN1XrnFpeIIO1eeO
+         aoq7CSrnzvn+Q1LDpdx++kC0rfdPUDVT4wIwF+fXwklm4Tpf8g9txJ6QqXF8sZhUvTNi
+         Z59lFEX/WjbzTqz21o4JIdfno0V83FDpzpdpgyyBi0QRgI7LgAJvDwRmwRfzb42QmmBH
+         UW5VbaMi9KSbikyZ3TCmyOXytyCgsjQmResyoJU4RBAPLAN/ADmbUNC7JVk8EuplvvHQ
+         d5RsMA0TwF7af3ZgoG4Ahw+4P9CMmVo/m5OQ6wuH59bbe0ukd5LPhpCaU4PgEpQzrmE0
+         f7nw==
+X-Gm-Message-State: AOJu0YzWsqtxwRj4UYwqk30gjma5T14m1SzBac/wxzppZ1nDRGH++ZEC
+	0SprugoUnCkX7Sy/lro9A6C58PjHH3865/kDZCA88g==
+X-Google-Smtp-Source: AGHT+IEd6MYgYRGcm4/1WdMkkPMKnIdKn9bqwTxuwIfqL93/pKyuF/5mKPLQjzrR4EvQctHOm3msMQ==
+X-Received: by 2002:a05:6808:14c4:b0:3b8:b402:74de with SMTP id f4-20020a05680814c400b003b8b40274demr11372161oiw.32.1702520223667;
+        Wed, 13 Dec 2023 18:17:03 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id u23-20020aa78497000000b006d0d83a11afsm1583177pfn.203.2023.12.13.18.17.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Dec 2023 18:17:03 -0800 (PST)
+Message-ID: <657a659f.a70a0220.5da89.57ee@mx.google.com>
+Date: Wed, 13 Dec 2023 18:17:03 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231208234127.2251-1-yu-hao.lin@nxp.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.264
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.264)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hi,
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.264)
 
-Nitpick: "fix STA cannot connect to AP" isn't the best commit message;
-that could describe an enormous number of fixes. Maybe something more
-like "Configure BSSID consistently when starting AP"?
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.264/
 
-On Sat, Dec 09, 2023 at 07:41:27AM +0800, David Lin wrote:
-> AP BSSID configuration is missing at AP start.
-> Without this fix, FW returns STA interface MAC address after first init.
-> When hostapd restarts, it gets MAC address from netdev before driver
-> sets STA MAC to netdev again. Now MAC address between hostapd and net
-> interface are different causes STA cannot connect to AP.
-> After that MAC address of uap0 mlan0 become the same. And issue
-> disappears after following hostapd restart (another issue is AP/STA MAC
-> address become the same).
-> This patch fixes the issue cleanly.
-> 
-> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
-> Cc: stable@vger.kernel.org
-> 
-> ---
-> 
-> v2:
->    - v1 was a not finished patch that was send to the LKML by mistake
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.264
+Git Commit: 16e6e107a688046df37976fb6d7310e886c8115d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Looks fine to me:
+Warnings Detected:
 
-Acked-by: Brian Norris <briannorris@chromium.org>
+arc:
 
->  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
->  drivers/net/wireless/marvell/mwifiex/fw.h       | 1 +
->  drivers/net/wireless/marvell/mwifiex/ioctl.h    | 1 +
->  drivers/net/wireless/marvell/mwifiex/uap_cmd.c  | 8 ++++++++
->  4 files changed, 12 insertions(+)
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
-> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+arm:
 
-> @@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
->  	int i;
->  	u16 cmd_size = *param_size;
->  
-> +	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-Not directly related to this patch, but while you're expanding the size
-of this command buffer: it always felt like a security-hole-in-waiting
-that none of these command producers do any kinds of bounds checking.
-We're just "lucky" that these function only generate contents of ~100
-bytes at max, while MWIFIEX_SIZE_OF_CMD_BUFFER=2048. But, just add a few
-more user-space controlled TLV params, and boom, we'll have ourselves a
-nice little CVE.
+mips:
 
-It probably wouldn't hurt to significantly write much of this driver,
-but at a minimum, we could probably use a few checks like this:
+riscv:
 
-	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
-	if (cmd_size > MWIFIEX_SIZE_OF_CMD_BUFFER)
-		return -1;
-	// Only touch tlv *after* the bounds check.
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
 
-That doesn't need to block this patch, of course.
 
-Brian
+Warnings summary:
 
-> +	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
-> +	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
-> +	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
-> +	cmd_size += sizeof(struct host_cmd_tlyyv_mac_addr);
-> +	tlv += sizeof(struct host_cmd_tlv_mac_addr);
-> +
->  	if (bss_cfg->ssid.ssid_len) {
->  		ssid = (struct host_cmd_tlv_ssid *)tlv;
->  		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
-> 
-> base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
-> -- 
-> 2.25.1
-> 
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
