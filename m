@@ -1,104 +1,99 @@
-Return-Path: <stable+bounces-6715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0A08129A9
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 08:43:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762B28129EF
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 09:05:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6CF72821E3
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 07:43:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 095ECB20CAF
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 08:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C3415481;
-	Thu, 14 Dec 2023 07:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4608C15482;
+	Thu, 14 Dec 2023 08:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAiIqQTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFVJO8cc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EE312E78;
-	Thu, 14 Dec 2023 07:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC456C433CA;
-	Thu, 14 Dec 2023 07:43:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702539819;
-	bh=l55zeFifKbWF2oDn+P1nsRBo9MUetHUzY3iyTXVZNo4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAiIqQTZBc9pQiGXERJe4aqi8/+2XYvgN/+3b8ZZQDxRd7HamMCXO/GC8SzDfvX3R
-	 StzBUroTXkpgIs7tvpQ5B9T8CIlFfKM3xxgiNaLp8p6u9sjscfJGrwISWUgCSI6K+C
-	 pcKUqUa7FjgjA/FH+ht77vAFh2q1rU2PD8bbf3kRzFYmZLq6TURu/I2T3wwGhys/0E
-	 ghTOSWCEwvey6PQgZtswFsyqHOBTh7cwOs9zHFlFQpkmdDtIBtow9lZwok9etn2wa2
-	 5SfT7uvIWBgYshvY7YTznt1oAOr01k+8wDhB8n1Eo7iVfhXMSi31rzdo0q7v0gd37l
-	 BhCxZ0bXaHovw==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rDgNf-0002sA-18;
-	Thu, 14 Dec 2023 08:43:39 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 3/3] arm64: dts: qcom: sc8180x: fix USB SS wakeup
-Date: Thu, 14 Dec 2023 08:43:19 +0100
-Message-ID: <20231214074319.11023-4-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231214074319.11023-1-johan+linaro@kernel.org>
-References: <20231214074319.11023-1-johan+linaro@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFCE15E81
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:05:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E83C433C8;
+	Thu, 14 Dec 2023 08:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702541141;
+	bh=rxAhYM8vwVOvccy8Vl4CmgUocn1hM/kYn7pn6f2Hymg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hFVJO8ccqIEvUZUYgiiId1zu/lj1Kfve0MJ3TDlGNMx8/WKlkAxFrzjcNOuboC2w2
+	 B5RuD7Asp9+qdzb5UmAbr/vTRMhanYmioHM82CdN4ezXd05O4R3M4cHKIIwd+vPqyJ
+	 5E89tTyjSL5C+jAWssaHxco0qDilHBzrHSSCUyIA=
+Date: Thu, 14 Dec 2023 09:05:38 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steven French <Steven.French@microsoft.com>,
+	"paul.gortmaker@windriver.com" <paul.gortmaker@windriver.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [EXTERNAL] Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for
+ CVE-2023-38431
+Message-ID: <2023121434-universal-lively-3efa@gregkh>
+References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
+ <2023121241-pope-fragility-edad@gregkh>
+ <DM4PR21MB34417B034A9637445C598675E48EA@DM4PR21MB3441.namprd21.prod.outlook.com>
+ <2023121350-spearmint-manned-b7b1@gregkh>
+ <CAKYAXd9H+-zi5QnGQCD5T8nKkK733O6MPUnPn2_d10OW0Pp_Ww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKYAXd9H+-zi5QnGQCD5T8nKkK733O6MPUnPn2_d10OW0Pp_Ww@mail.gmail.com>
 
-The USB SS PHY interrupt needs to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+On Thu, Dec 14, 2023 at 08:31:44AM +0900, Namjae Jeon wrote:
+> 2023-12-13 23:36 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+> > On Tue, Dec 12, 2023 at 08:13:37PM +0000, Steven French wrote:
+> >> Out of curiosity, has there been an alternative approach for some
+> >> backports, where someone backports most fixes and features (and safe
+> >> cleanup) but does not backport any of the changesets which have
+> >> dependencies outside the module (e.g. VFS changes, netfs or mm changes
+> >> etc.)  to reduce patch dependency risk (ie 70-80% backport instead of
+> >> the typical 10-20% that are picked up by stable)?
+> >>
+> >> For example, we (on the client) ran into issues with 5.15 kernel (for
+> >> the client) missing so many important fixes and features (and
+> >> sometimes hard to distinguish when a new feature is also a 'fix') that
+> >> I did a "full backport" for cifs.ko again a few months ago for 5.15
+> >> (leaving out about 10% of the patches, those with dependencies or that
+> >> would be risky).
+> >
+> > We did take a "big backport/sync" for io_uring in 5.15.y a while ago, so
+> > there is precident for this.
+> >
+> > But really, is anyone even using this feature in 5.15.y anyway?  I don't
+> > know of any major distro using 5.15.y any more, and Android systems
+> > based on 5.15.y don't use this specific filesystem, so what is left?
+> > Can we just mark it broken and be done with it?
+> As I know, ksmbd is enable in 5.15 kernel of some distros(opensuse,
+> ubuntu, etc) except redhat.
 
-Fixes: b080f53a8f44 ("arm64: dts: qcom: sc8180x: Add remoteprocs, wifi and usb nodes")
-Cc: stable@vger.kernel.org      # 6.5
-Cc: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+But do any of them actually use the 5.15.y kernel tree and take updates
+from there?  That's the key thing here.
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 8f95779c75fa..7a53d6d18498 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -2549,7 +2549,7 @@ usb_prim: usb@a6f8800 {
- 			compatible = "qcom,sc8180x-dwc3", "qcom,dwc3";
- 			reg = <0 0x0a6f8800 0 0x400>;
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq",
-@@ -2623,7 +2623,7 @@ usb_sec: usb@a8f8800 {
- 			resets = <&gcc GCC_USB30_SEC_BCR>;
- 			power-domains = <&gcc USB30_SEC_GDSC>;
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 7 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
--- 
-2.41.0
+> And users can use this feature. I will
+> make the time for ksmbd backporting job. To facilitate backport, Can I
+> submit clean-up patches for ksmbd of 5.15 kernel or only bug fixes are
+> allowed?
 
+If a fix relies on an upstream cleanup, that's fine to take.
+
+But first, find out if anyone is actually using this before you take the
+time here.
+
+thanks,
+
+greg k-h
 
