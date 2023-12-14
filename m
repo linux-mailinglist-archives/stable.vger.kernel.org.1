@@ -1,186 +1,204 @@
-Return-Path: <stable+bounces-6748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EEE38135D8
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 17:11:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E595E813670
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 17:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE699281124
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 16:11:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27D0281973
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 16:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345C75F1D3;
-	Thu, 14 Dec 2023 16:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E58A5F1E3;
+	Thu, 14 Dec 2023 16:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QT2Btu+v"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D95010E;
-	Thu, 14 Dec 2023 08:11:40 -0800 (PST)
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="398975372"
-X-IronPort-AV: E=Sophos;i="6.04,276,1695711600"; 
-   d="scan'208";a="398975372"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2023 08:11:39 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="1105760897"
-X-IronPort-AV: E=Sophos;i="6.04,276,1695711600"; 
-   d="scan'208";a="1105760897"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2023 08:11:35 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andy@kernel.org>)
-	id 1rDoJA-00000005tGw-2aR6;
-	Thu, 14 Dec 2023 18:11:32 +0200
-Date: Thu, 14 Dec 2023 18:11:32 +0200
-From: Andy Shevchenko <andy@kernel.org>
-To: Serge Semin <fancer.lancer@gmail.com>
-Cc: xiongxin <xiongxin@kylinos.cn>, Thomas Gleixner <tglx@linutronix.de>,
-	jikos@kernel.org, benjamin.tissoires@redhat.com,
-	linux-input@vger.kernel.org, stable@vger.kernel.org,
-	Riwen Lu <luriwen@kylinos.cn>, hoan@os.amperecomputing.com,
-	linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
- in pairs
-Message-ID: <ZXspNGWszB9jAown@smile.fi.intel.com>
-References: <20231207014003.12919-1-xiongxin@kylinos.cn>
- <87ttosssxd.ffs@tglx>
- <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
- <874jgnqwlo.ffs@tglx>
- <bf4004bf-4868-4953-8d8e-0c0e03be673e@kylinos.cn>
- <875y12p2r0.ffs@tglx>
- <1844c927-2dd4-49b4-a6c4-c4c176b1f75d@kylinos.cn>
- <f5vtfoqylht5ijj6tdvxee3f3u6ywps2it7kv3fhmfsx75od2y@ftjlt4t4z4dk>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE7F0114
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:39:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1702571997;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zCZ2sYMYoakAhH7rbcWBFxYoyyTbLnD1Gd9pCzeJjaM=;
+	b=QT2Btu+v8UW1EpUw6AjX05YF/Oceaqy9p+mQL/54GIUcvHggVKhRL9gLLqP8+eufgmKZoO
+	pCMmJ90uch3Yt1kVPXJvR3ueJXAZTKTWcMnFE6Is1R/InywhQA4iuDW0YTo1wJeuglfMq8
+	GExwpHPLI3MCry+2DeEEE1PjS2/Q4ao=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-142-AsrnAyi_OCagecAFAHCVZw-1; Thu, 14 Dec 2023 11:39:55 -0500
+X-MC-Unique: AsrnAyi_OCagecAFAHCVZw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 317218870EC;
+	Thu, 14 Dec 2023 16:39:54 +0000 (UTC)
+Received: from hydra.bos2.lab (unknown [10.39.192.137])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id AC2E61121306;
+	Thu, 14 Dec 2023 16:39:52 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: dri-devel@lists.freedesktop.org,
+	tzimmermann@suse.de,
+	airlied@redhat.com,
+	daniel@ffwll.ch,
+	javierm@redhat.com
+Cc: Jocelyn Falempe <jfalempe@redhat.com>,
+	stable@vger.kernel.org,
+	Roger Sewell <roger.sewell@cantab.net>
+Subject: [PATCH] drm/mgag200: Fix gamma lut not initialized for G200ER, G200EV, G200SE
+Date: Thu, 14 Dec 2023 17:38:06 +0100
+Message-ID: <20231214163849.359691-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f5vtfoqylht5ijj6tdvxee3f3u6ywps2it7kv3fhmfsx75od2y@ftjlt4t4z4dk>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Thu, Dec 14, 2023 at 01:06:23PM +0300, Serge Semin wrote:
-> On Thu, Dec 14, 2023 at 09:54:06AM +0800, xiongxin wrote:
-> > 在 2023/12/13 22:59, Thomas Gleixner 写道:
-> > > On Wed, Dec 13 2023 at 10:29, xiongxin wrote:
-> > > > 在 2023/12/12 23:17, Thomas Gleixner 写道:
-> > > > Sorry, the previous reply may not have clarified the BUG process. I
-> > > > re-debugged and confirmed it yesterday. The current BUG execution
-> > > > sequence is described as follows:
-> > > 
-> > > It's the sequence how this works and it works correctly.
-> > > 
-> > > Just because it does not work on your machine it does not mean that this
-> > > is incorrect and a BUG.
-> > > 
-> > > You are trying to fix a symptom and thereby violating guarantees of the
-> > > core code.
-> > > 
-> > > > That is, there is a time between the 1:handle_level_irq() and
-> > > > 3:irq_thread_fn() calls for the 2:disable_irq() call to acquire the lock
-> > > > and then implement the irq_state_set_disabled() operation. When finally
-> > > > call irq_thread_fn()->irq_finalize_oneshot(), it cannot enter the
-> > > > unmask_thread_irq() process.
-> > > 
-> > > Correct, because the interrupt has been DISABLED in the mean time.
-> > > 
-> > > > In this case, the gpio irq_chip irq_mask()/irq_unmask() callback pairs
-> > > > are not called in pairs, so I think this is a BUG, but not necessarily
-> > > > fixed from the irq core code layer.
-> > > 
-> > > No. It is _NOT_ a BUG. unmask() is not allowed to be invoked when the
-> > > interrupt is DISABLED. That's the last time I'm going to tell you that.
-> > > Only enable_irq() can undo the effect of disable_irq(), period.
-> > > 
-> > > > Next, when the gpio controller driver calls the suspend/resume process,
-> > > > it is as follows:
-> > > > 
-> > > > suspend process:
-> > > > dwapb_gpio_suspend()
-> > > >       ctx->int_mask   = dwapb_read(gpio, GPIO_INTMASK);
-> > > > 
-> > > > resume process:
-> > > > dwapb_gpio_resume()
-> > > >       dwapb_write(gpio, GPIO_INTMASK, ctx->int_mask);
-> > > 
-> > > Did you actually look at the sequence I gave you?
-> > > 
-> > >     Suspend:
-> > > 
-> > > 	  i2c_hid_core_suspend()
-> > > 	     disable_irq();       <- Marks it disabled and eventually
-> > > 				     masks it.
-> > > 
-> > > 	  gpio_irq_suspend()
-> > > 	     save_registers();    <- Saves masked interrupt
-> > > 
-> > >     Resume:
-> > > 
-> > > 	  gpio_irq_resume()
-> > > 	     restore_registers(); <- Restores masked interrupt
-> > > 
-> > > 	  i2c_hid_core_resume()
-> > > 	     enable_irq();        <- Unmasks interrupt and removes the
-> > > 				     disabled marker
-> > > 
-> > > 
-> > > Have you verified that this order of invocations is what happens on
-> > > your machine?
-> > > 
-> > > Thanks,
-> > > 
-> > >          tglx
-> > 
-> > As described earlier, in the current situation, the irq_mask() callback of
-> > gpio irq_chip is called in mask_irq(), followed by the disable_irq() in
-> > i2c_hid_core_suspend(), unmask_irq() will not be executed.
-> > 
-> > Then call enable_irq() in i2c_hid_core_resume(). Since gpio irq_chip does
-> > not implement the irq_startup() callback, it ends up calling irq_enable().
-> > 
-> > The irq_enable() function is then implemented as follows:
-> > 
-> > irq_state_clr_disabled(desc);
-> > if (desc->irq_data.chip->irq_enable) {
-> > 	desc->irq_data.chip->irq_enable(&desc->irq_data);
-> > 	irq_state_clr_masked(desc);
-> > } else {
-> > 	unmask_irq(desc);
-> > }
-> > 
-> > Because gpio irq_chip implements irq_enable(), unmask_irq() is not executed,
-> > and gpio irq_chip's irq_unmask() callback is not called. Instead,
-> > irq_state_clr_masked() was called to clear the masked flag.
-> > 
-> > The irq masked behavior is actually controlled by the
-> > irq_mask()/irq_unmask() callback function pairs in gpio irq_chip. When the
-> > whole situation occurs, there is one more irq_mask() operation, or one less
-> > irq_unmask() operation. This ends the i2c hid resume and the gpio
-> > corresponding i2c hid interrupt is also masked.
-> > 
-> > Please help confirm whether the current situation is a BUG, or suggest other
-> > solutions to fix it.
-> 
-> I has just been Cc'ed to this thread from the very start of the thread
-> so not sure whether I fully understand the problem. But a while ago an
-> IRQ disable/undisable-mask/unmask-unpairing problem was reported for
-> DW APB GPIO driver implementation, but in a another context though:
-> https://lore.kernel.org/linux-gpio/1606728979-44259-1-git-send-email-luojiaxing@huawei.com/
-> We didn't come to a final conclusion back then, so the patch got lost
-> in the emails archive. Xiong, is it related to the problem in your
-> case?
+When mgag200 switched from simple KMS to regular atomic helpers,
+the initialization of the gamma settings was lost.
+This leads to a black screen, if the bios/uefi doesn't use the same
+pixel color depth.
+This has been fixed with commit ad81e23426a6 ("drm/mgag200: Fix gamma
+lut not initialized.") for most G200, but G200ER, G200EV, G200SE use
+their own version of crtc_helper_atomic_enable() and need to be fixed
+too.
 
-From what explained it sounds to me that GPIO driver has missing part and
-this seems the missing patch (in one or another form). Perhaps we can get
-a second round of review,
+Fixes: 1baf9127c482 ("drm/mgag200: Replace simple-KMS with regular atomic helpers")
+Cc: <stable@vger.kernel.org> #v6.1+
+Reported-by: Roger Sewell <roger.sewell@cantab.net>
+Suggested-by: Roger Sewell <roger.sewell@cantab.net>
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+---
+ drivers/gpu/drm/mgag200/mgag200_drv.h    |  4 ++++
+ drivers/gpu/drm/mgag200/mgag200_g200er.c |  2 ++
+ drivers/gpu/drm/mgag200/mgag200_g200ev.c |  2 ++
+ drivers/gpu/drm/mgag200/mgag200_g200se.c |  2 ++
+ drivers/gpu/drm/mgag200/mgag200_mode.c   | 26 ++++++++++++++----------
+ 5 files changed, 25 insertions(+), 11 deletions(-)
 
+diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h b/drivers/gpu/drm/mgag200/mgag200_drv.h
+index 57c7edcab602..ed90a92b5fcd 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_drv.h
++++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
+@@ -392,6 +392,10 @@ void mgag200_primary_plane_helper_atomic_disable(struct drm_plane *plane,
+ 	.destroy = drm_plane_cleanup, \
+ 	DRM_GEM_SHADOW_PLANE_FUNCS
+ 
++void mgag200_crtc_set_gamma(struct mga_device *mdev,
++			    const struct drm_format_info *format,
++			    struct drm_property_blob *gamma_lut);
++
+ enum drm_mode_status mgag200_crtc_helper_mode_valid(struct drm_crtc *crtc,
+ 						    const struct drm_display_mode *mode);
+ int mgag200_crtc_helper_atomic_check(struct drm_crtc *crtc, struct drm_atomic_state *new_state);
+diff --git a/drivers/gpu/drm/mgag200/mgag200_g200er.c b/drivers/gpu/drm/mgag200/mgag200_g200er.c
+index bce267e0f7de..38815cb94c61 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_g200er.c
++++ b/drivers/gpu/drm/mgag200/mgag200_g200er.c
+@@ -202,6 +202,8 @@ static void mgag200_g200er_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+ 
+ 	mgag200_g200er_reset_tagfifo(mdev);
+ 
++	mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
++
+ 	mgag200_enable_display(mdev);
+ 
+ 	if (funcs->enable_vidrst)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_g200ev.c b/drivers/gpu/drm/mgag200/mgag200_g200ev.c
+index ac957f42abe1..e698a3a499bf 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_g200ev.c
++++ b/drivers/gpu/drm/mgag200/mgag200_g200ev.c
+@@ -203,6 +203,8 @@ static void mgag200_g200ev_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+ 
+ 	mgag200_g200ev_set_hiprilvl(mdev);
+ 
++	mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
++
+ 	mgag200_enable_display(mdev);
+ 
+ 	if (funcs->enable_vidrst)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_g200se.c b/drivers/gpu/drm/mgag200/mgag200_g200se.c
+index bd6e573c9a1a..7e4ea0046a6b 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_g200se.c
++++ b/drivers/gpu/drm/mgag200/mgag200_g200se.c
+@@ -334,6 +334,8 @@ static void mgag200_g200se_crtc_helper_atomic_enable(struct drm_crtc *crtc,
+ 
+ 	mgag200_g200se_set_hiprilvl(mdev, adjusted_mode, format);
+ 
++	mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
++
+ 	mgag200_enable_display(mdev);
+ 
+ 	if (funcs->enable_vidrst)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c b/drivers/gpu/drm/mgag200/mgag200_mode.c
+index af3ce5a6a636..d2a04b317232 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_mode.c
++++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+@@ -65,9 +65,9 @@ static void mgag200_crtc_set_gamma_linear(struct mga_device *mdev,
+ 	}
+ }
+ 
+-static void mgag200_crtc_set_gamma(struct mga_device *mdev,
+-				   const struct drm_format_info *format,
+-				   struct drm_color_lut *lut)
++static void mgag200_crtc_set_gamma_table(struct mga_device *mdev,
++					 const struct drm_format_info *format,
++					 struct drm_color_lut *lut)
+ {
+ 	int i;
+ 
+@@ -103,6 +103,16 @@ static void mgag200_crtc_set_gamma(struct mga_device *mdev,
+ 	}
+ }
+ 
++void mgag200_crtc_set_gamma(struct mga_device *mdev,
++			    const struct drm_format_info *format,
++			    struct drm_property_blob *gamma_lut)
++{
++	if (gamma_lut)
++		mgag200_crtc_set_gamma_table(mdev, format, gamma_lut->data);
++	else
++		mgag200_crtc_set_gamma_linear(mdev, format);
++}
++
+ static inline void mga_wait_vsync(struct mga_device *mdev)
+ {
+ 	unsigned long timeout = jiffies + HZ/10;
+@@ -616,10 +626,7 @@ void mgag200_crtc_helper_atomic_flush(struct drm_crtc *crtc, struct drm_atomic_s
+ 	if (crtc_state->enable && crtc_state->color_mgmt_changed) {
+ 		const struct drm_format_info *format = mgag200_crtc_state->format;
+ 
+-		if (crtc_state->gamma_lut)
+-			mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut->data);
+-		else
+-			mgag200_crtc_set_gamma_linear(mdev, format);
++		mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
+ 	}
+ }
+ 
+@@ -642,10 +649,7 @@ void mgag200_crtc_helper_atomic_enable(struct drm_crtc *crtc, struct drm_atomic_
+ 	if (funcs->pixpllc_atomic_update)
+ 		funcs->pixpllc_atomic_update(crtc, old_state);
+ 
+-	if (crtc_state->gamma_lut)
+-		mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut->data);
+-	else
+-		mgag200_crtc_set_gamma_linear(mdev, format);
++	mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
+ 
+ 	mgag200_enable_display(mdev);
+ 
+
+base-commit: 6c9dbee84cd005bed5f9d07b3a2797ae6414b435
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
