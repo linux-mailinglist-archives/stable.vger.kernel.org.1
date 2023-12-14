@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-6718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54740812A2A
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 09:19:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B2B812A33
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 09:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D38C9B210E9
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 08:19:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93C5C282651
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 08:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D45168AC;
-	Thu, 14 Dec 2023 08:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C08116402;
+	Thu, 14 Dec 2023 08:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uaeL8ER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmewIIee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E1DDB6
-	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:19:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90277C433C7;
-	Thu, 14 Dec 2023 08:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC4C1C6B0
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:20:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF876C43395;
+	Thu, 14 Dec 2023 08:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702541940;
-	bh=FpHdXuSx6X/SeV2ntVhUOpyjzeoCmgTKDNKQBgUsSAg=;
+	s=korg; t=1702542026;
+	bh=WgldY4t+s5U8rYaaPx7NM2kIjdgws/mqrpqwCOrc1Qs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2uaeL8ERFWqVuDTZ96WkrSy+3oQYtjY5gEbE/vls/kSKFLvUNZF9Xy0S14WGYsB1B
-	 a25mRw3iQAWtztNCnD0oHBe4iCkwg13zyly7FAMmHjed8EvG1hMbXiYCre6yXIBG8R
-	 FQWgNCQKwaiXeCiXzDf5HcWAoaCmZGBOvUyR8Osg=
-Date: Thu, 14 Dec 2023 09:18:56 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Berg, Johannes" <johannes.berg@intel.com>
-Cc: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>,
-	=?iso-8859-1?B?TOlv?= Lam <leo@leolam.fr>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [Regression] 6.1.66, 6.6.5 - wifi: cfg80211: fix CQM for
- non-range use
-Message-ID: <2023121423-factual-credibly-2d46@gregkh>
-References: <e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org>
- <2023121139-scrunch-smilingly-54f4@gregkh>
- <aee3e5a0-94b5-4c19-88e4-bb6a8d1fafe3@manjaro.org>
- <2023121127-obstinate-constable-e04f@gregkh>
- <DM4PR11MB5359FE14974D50E0D48C2D02E98FA@DM4PR11MB5359.namprd11.prod.outlook.com>
- <43a1aa34-5109-41ad-88e7-19ba6101dad3@manjaro.org>
- <e7a6e6a6-2e5c-4c60-b8e0-0f8eca460586@manjaro.org>
- <DM4PR11MB5359B0524B31A258DD3B20F4E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+	b=wmewIIee8U6x7KZ0s3gRlxwAfJR98gBvk5VdViQJYGTCkBRVPS4JZWblwmDWpNzn4
+	 QeCwLj/Kn7zwSDUDnWTCdW7DQxGcac6amX4lCX2OT1zyf5j+xY/DKiuOX4cg+E0pmX
+	 vn2gT+kgc0vy0z0KLAG0QtJq6iBxZVXoJYOXWH/o=
+Date: Thu, 14 Dec 2023 09:20:23 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431
+Message-ID: <2023121407-composed-unscathed-5081@gregkh>
+References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
+ <2023121241-pope-fragility-edad@gregkh>
+ <ZXjGg3SKPHFsTxkb@windriver.com>
+ <2023121344-scorebook-doily-5050@gregkh>
+ <ZXp2dTSlZ10aQ99t@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,25 +49,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM4PR11MB5359B0524B31A258DD3B20F4E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+In-Reply-To: <ZXp2dTSlZ10aQ99t@windriver.com>
 
-On Thu, Dec 14, 2023 at 08:05:55AM +0000, Berg, Johannes wrote:
->  
-> > So Greg, how we move forward with this one? Keep the revert or integrate
-> > Leo's work on top of Johannes'?
+On Wed, Dec 13, 2023 at 10:28:53PM -0500, Paul Gortmaker wrote:
+> [Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431] On 13/12/2023 (Wed 15:34) Greg KH wrote:
 > 
-> It would be "resend with the fixes rolled in as a new backport".
-
-No, the new change needs to be a seprate commit.
-
-> > Johannes, how important is your fix for the stable 6.x kernels when done
-> > properly?
+> > On Tue, Dec 12, 2023 at 03:45:55PM -0500, Paul Gortmaker wrote:
+> > > [Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431] On 12/12/2023 (Tue 21:04) Greg KH wrote:
+> > > 
+> > > > On Tue, Dec 12, 2023 at 01:47:44PM -0500, paul.gortmaker@windriver.com wrote:
+> > > > > From: Paul Gortmaker <paul.gortmaker@windriver.com>
+> > > > > 
+> > > > > This is a bit long, but I've never touched this code and all I can do is
+> > > > > compile test it.  So the below basically represents a capture of my
+> > > > > thought process in fixing this for the v5.15.y-stable branch.
+> > > > 
+> > > > Nice work, but really, given that there are _SO_ many ksmb patches that
+> > > > have NOT been backported to 5.15.y, I would strongly recommend that we
+> > > > just mark the thing as depending on BROKEN there for now as your one
+> > > 
+> > > I'd be 100% fine with that.  Can't speak for anyone else though.
+> > > 
+> > > > backport here is not going to make a dent in the fixes that need to be
+> > > > applied there to resolve the known issues that the codebase currently
+> > > > has resolved in newer kernels.
+> > > > 
+> > > > Do you use this codebase on 5.15.y?  What drove you to want to backport
+> > > 
+> > > I don't use it, and I don't know of anyone who does.
+> > 
+> > Then why are you all backporting stuff for it?
 > 
-> Well CQM was broken completely for anything but (effectively) brcmfmac ... That means roaming decisions will be less optimal, mostly.
-> 
-> Is that annoying? Probably. Super critical? I guess not.
+> Firstly, you've cut the context where I already explained that I did it
+> because others said it couldn't be done.  Of all people, I am sure you
+> can respect that.
 
-Is it a regression or was it always like this?
+Sure, I saw that, but I didn't understand why someone was doing it in
+the first place.
+
+> The Yocto Project still offers v5.15 as an option, and whenever I can, I
+> help out to advance the Yocto Project as time permits.  Ask Richard.
+
+As an option, but is it recommended and does anyone actually use it
+there?  Does yocto systems expect to use this kernel option for the
+5.15 kernel?
+
+> > If no one steps up, I'll just mark the thing as broken, it is _so_ far
+> > behind in patches that it's just sad.
+> 
+> Again, in this case - I have no problem with that - but as a note of
+> record -- whenever linux-stable removes a Kconfig, either explicitly or
+> by a depends on BROKEN - it does trigger fallout for some people.
+
+In what way?  Just having to update default config options?
+
+> The Yocto/OE does an audit on the Kconfig output looking for options
+> that were explicitly set (or un-set) by the user, or by base templates.
+> If they don't land in the final .config file -- it lets you know.
+
+So defconfig type checks?
 
 thanks,
 
