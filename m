@@ -1,110 +1,99 @@
-Return-Path: <stable+bounces-6736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80204812F8A
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 12:58:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135E5812F92
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 12:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B320B1C21984
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:58:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5961F2211F
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9A441216;
-	Thu, 14 Dec 2023 11:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BBD41220;
+	Thu, 14 Dec 2023 11:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbSVlyDb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSapnCof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C457C3F8EA
-	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 11:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2611C433C7;
-	Thu, 14 Dec 2023 11:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855554120E
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 11:59:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06273C433C7;
+	Thu, 14 Dec 2023 11:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702555100;
-	bh=XZh9Zr+khmeAEUj6/ZRixvfGqq85P5vPJD88a8XwOC8=;
+	s=korg; t=1702555153;
+	bh=M5xxhdqjusdxRpI65RthaK7ej7Yz8lUwIbdA27z9cFQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HbSVlyDbpei7Tnz/b0dalTT/T4Xca2vgPXh/LfbNd/TUda/Y/JqqxU9WO+j+0G8EP
-	 58bkeZVAhCfrwAo6/y4NIk/mKA3xbicdsxmB4VP5ENYAQDDP+bTZn4paIZy/9BIHCA
-	 HMVRvn/B3XSvMBaLEQi+AYytdMAM8zf8dIqwt/M4=
-Date: Thu, 14 Dec 2023 12:58:17 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steven French <Steven.French@microsoft.com>,
-	"paul.gortmaker@windriver.com" <paul.gortmaker@windriver.com>,
+	b=bSapnCofx+BKj7sI1BQLmoB/epy/tMhEr9dsPvNNUIY+mUGSmV7COr3A/pGB7TRN9
+	 cFfkQf6KdOqZQsr7cWml1xXnTrU5LifW9XwJAGgQypXI/Kqqr3InEMbykeHZqtdCd9
+	 v/dINaWq44y/ZL0BfkB25i49endRUR76iYguld/I=
+Date: Thu, 14 Dec 2023 12:59:10 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
+Cc: "Berg, Johannes" <johannes.berg@intel.com>,
+	=?iso-8859-1?B?TOlv?= Lam <leo@leolam.fr>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [EXTERNAL] Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for
- CVE-2023-38431
-Message-ID: <2023121439-landowner-glamour-f7ad@gregkh>
-References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
- <2023121241-pope-fragility-edad@gregkh>
- <DM4PR21MB34417B034A9637445C598675E48EA@DM4PR21MB3441.namprd21.prod.outlook.com>
- <2023121350-spearmint-manned-b7b1@gregkh>
- <CAKYAXd9H+-zi5QnGQCD5T8nKkK733O6MPUnPn2_d10OW0Pp_Ww@mail.gmail.com>
- <2023121434-universal-lively-3efa@gregkh>
- <CAKYAXd_CU9qRt8Y2n5n-=tUKPPHBUpiu2sLOp7=bF4=MzPMz4w@mail.gmail.com>
+Subject: Re: [Regression] 6.1.66, 6.6.5 - wifi: cfg80211: fix CQM for
+ non-range use
+Message-ID: <2023121450-habitual-transpose-68a1@gregkh>
+References: <2023121139-scrunch-smilingly-54f4@gregkh>
+ <aee3e5a0-94b5-4c19-88e4-bb6a8d1fafe3@manjaro.org>
+ <2023121127-obstinate-constable-e04f@gregkh>
+ <DM4PR11MB5359FE14974D50E0D48C2D02E98FA@DM4PR11MB5359.namprd11.prod.outlook.com>
+ <43a1aa34-5109-41ad-88e7-19ba6101dad3@manjaro.org>
+ <e7a6e6a6-2e5c-4c60-b8e0-0f8eca460586@manjaro.org>
+ <DM4PR11MB5359B0524B31A258DD3B20F4E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+ <2023121423-factual-credibly-2d46@gregkh>
+ <DM4PR11MB535948386880F5A2DB3C5582E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+ <779818b0-5175-449f-93fb-6e76166a325f@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CAKYAXd_CU9qRt8Y2n5n-=tUKPPHBUpiu2sLOp7=bF4=MzPMz4w@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <779818b0-5175-449f-93fb-6e76166a325f@manjaro.org>
 
-On Thu, Dec 14, 2023 at 08:33:48PM +0900, Namjae Jeon wrote:
-> 2023-12-14 17:05 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
-> > On Thu, Dec 14, 2023 at 08:31:44AM +0900, Namjae Jeon wrote:
-> >> 2023-12-13 23:36 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
-> >> > On Tue, Dec 12, 2023 at 08:13:37PM +0000, Steven French wrote:
-> >> >> Out of curiosity, has there been an alternative approach for some
-> >> >> backports, where someone backports most fixes and features (and safe
-> >> >> cleanup) but does not backport any of the changesets which have
-> >> >> dependencies outside the module (e.g. VFS changes, netfs or mm changes
-> >> >> etc.)  to reduce patch dependency risk (ie 70-80% backport instead of
-> >> >> the typical 10-20% that are picked up by stable)?
-> >> >>
-> >> >> For example, we (on the client) ran into issues with 5.15 kernel (for
-> >> >> the client) missing so many important fixes and features (and
-> >> >> sometimes hard to distinguish when a new feature is also a 'fix') that
-> >> >> I did a "full backport" for cifs.ko again a few months ago for 5.15
-> >> >> (leaving out about 10% of the patches, those with dependencies or that
-> >> >> would be risky).
-> >> >
-> >> > We did take a "big backport/sync" for io_uring in 5.15.y a while ago,
-> >> > so
-> >> > there is precident for this.
-> >> >
-> >> > But really, is anyone even using this feature in 5.15.y anyway?  I
-> >> > don't
-> >> > know of any major distro using 5.15.y any more, and Android systems
-> >> > based on 5.15.y don't use this specific filesystem, so what is left?
-> >> > Can we just mark it broken and be done with it?
-> >> As I know, ksmbd is enable in 5.15 kernel of some distros(opensuse,
-> >> ubuntu, etc) except redhat.
-> >
-> > But do any of them actually use the 5.15.y kernel tree and take updates
-> > from there?  That's the key thing here.
-> Yes, openWRT guy said that openWRT use ksmbd module of stable 5.15.y
-> kernel for their NAS function.
-> The most recent major release, 23.05.x, uses the 5.15 kernel, and the
-> kernel version is updated in minor releases.
-> https://github.com/openwrt/openwrt/commit/95ebd609ae7bdcdb48c74ad93d747f24c94d4a07
+On Thu, Dec 14, 2023 at 03:32:47PM +0700, Philip Müller wrote:
+> On 14.12.23 15:24, Berg, Johannes wrote:
+> > > > > So Greg, how we move forward with this one? Keep the revert or
+> > > > > integrate Leo's work on top of Johannes'?
+> > > > 
+> > > > It would be "resend with the fixes rolled in as a new backport".
+> > > 
+> > > No, the new change needs to be a seprate commit.
+> > 
+> > Oh, I stand corrected. I thought you said earlier you'd prefer a new, fixed, backport of the change that was meant to fix CQM but broke the locking, rather than two new commits.
+> > 
+> > > > > Johannes, how important is your fix for the stable 6.x kernels when
+> > > > > done properly?
+> > > > 
+> > > > Well CQM was broken completely for anything but (effectively) brcmfmac ...
+> > > That means roaming decisions will be less optimal, mostly.
+> > > > 
+> > > > Is that annoying? Probably. Super critical? I guess not.
+> > > 
+> > > Is it a regression or was it always like this?
+> > 
+> > It was a regression.
+> > 
+> > johannes
 > 
-> https://downloads.openwrt.org/releases/23.05.2/targets/x86/64/kmods/5.15.137-1-47964456485559d992fe6f536131fc64/
-> 
-> https://downloads.openwrt.org/releases/23.05.2/targets/x86/64/kmods/5.15.137-1-47964456485559d992fe6f536131fc64/kmod-fs-ksmbd_5.15.137-1_x86_64.ipk
-> 
-> https://github.com/openwrt/openwrt/blob/fcf08d9db6a50a3ca6f0b64d105d975ab896cc35/package/kernel/linux/modules/fs.mk#L349
+> So basically the reversed patch by Johannes gets re-applied as it was and
+> Leo's patch added to the series of patches to fix it. That is the way I
+> currently ship it in my kernels so far.
 
-Ok, thanks, that's good to know.  Also you might want to warn them that
-it's missing loads of security fixes at this point in time and that they
-might want to move to a newer kernel release :)
+Great, can someone please send the series like this with your:
 
-thanks,
+> We can add a Tested-by from my end if wanted.
+
+that would be wonderful.
 
 greg k-h
+
 
