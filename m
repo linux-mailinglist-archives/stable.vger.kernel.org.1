@@ -1,100 +1,83 @@
-Return-Path: <stable+bounces-6728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B06812D39
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:41:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABFCD812D3B
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 11:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9C61F21973
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 10:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE9C51C20AE5
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 10:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FFC3C464;
-	Thu, 14 Dec 2023 10:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887A03C465;
+	Thu, 14 Dec 2023 10:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mgGhoHQX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZYdAzH3M"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5450E3;
-	Thu, 14 Dec 2023 02:41:38 -0800 (PST)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BE2aLdQ023225;
-	Thu, 14 Dec 2023 10:41:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=VHVrSPE
-	x7yMYOapnlmrO0EMsqodHECDF4yBhBZxHFkA=; b=mgGhoHQXtUY5buFzNBWWdqe
-	0f8bxtHeOanP9rRvyjBOYpc3fa+EGJPhuXSxumsjqhbCuBEu+r9xDWJXBVE2on8F
-	JorqqXwO4bo9Fj6nZ60a3ROwdRv0BS4Nj6Gz+rQOVNGqwrC6EdL6oVvNPBoOAw86
-	JcPH9Pp1CkHJa+5SpFHM5GITcBDQ7ARmmc4qgl4rl0W38fNpGJSsShrJ3pQ5r8IJ
-	Lv/klCChFg1xR15aimuCTiRAC8TAj4H0s2/yANJ/o8cmvfFMW650WNBCPiPysiLv
-	CnIdI5k39jLfr7DcPQCSykEDUC47kN6riNKWU88zdL0TsRmWrlL+DpCIhRO0LKg=
-	=
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uyqd512qj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Dec 2023 10:41:34 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BEAfXj7004154
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Dec 2023 10:41:33 GMT
-Received: from hu-varada-blr.qualcomm.com (10.80.80.8) by
- nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 14 Dec 2023 02:41:30 -0800
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
-To: <agross@kernel.org>, <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
-        <lgirdwood@gmail.com>, <broonie@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <stable@vger.kernel.org>, Varadarajan Narayanan <quic_varada@quicinc.com>
-Subject: [PATCH] regulator: qcom_smd: Add LDO5 MP5496 regulator
-Date: Thu, 14 Dec 2023 16:10:52 +0530
-Message-ID: <20231214104052.3267039-1-quic_varada@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53CF106
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 02:42:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702550558; x=1734086558;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=V7IuKL/SSyamqX/xSrLW5KXDTTl9FQjW+VnJq5UOCVs=;
+  b=ZYdAzH3M6Bl67t/4RURj79QZ5S9Os+XovPQFeeIeNXqU0Th2fI3Tj9Ku
+   W1K53jtF2UmWRZOrpTgrHxw80VrI4gXh2G8iYpx1litDfctfCpVfCGMCw
+   xQBo1UwfTVj5FGklc3Yx+24iJSKTx/jAc5/KWH5RhXQd8QccGp+u7tX5P
+   Ozu+Ds0KF4NyXMGOic1NUt6gmiAh0ntNf4oc+v+WUJOEAnB5WWI4Y1hfz
+   tHy1QiifcBBREUkqMpO6LfyGo8zh1Y+BdP5J7d8/BZ0/ywS2XzkmTmQKA
+   baTe0QSkdFlT5u2MPA7qzSLndeP5wKhvt0C5PKm2GIytPWL6zn9CP1u5U
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="481297798"
+X-IronPort-AV: E=Sophos;i="6.04,275,1695711600"; 
+   d="scan'208";a="481297798"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2023 02:42:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10923"; a="803243774"
+X-IronPort-AV: E=Sophos;i="6.04,275,1695711600"; 
+   d="scan'208";a="803243774"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 14 Dec 2023 02:42:36 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rDjAo-000Lvb-0J;
+	Thu, 14 Dec 2023 10:42:34 +0000
+Date: Thu, 14 Dec 2023 18:42:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Varadarajan Narayanan <quic_varada@quicinc.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] regulator: qcom_smd: Add LDO5 MP5496 regulator
+Message-ID: <ZXrcDFV11ih830s3@171f04e7aea4>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: tLRtoh7logdbI6pqJzVZmROlrpw5qusD
-X-Proofpoint-ORIG-GUID: tLRtoh7logdbI6pqJzVZmROlrpw5qusD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
- adultscore=0 clxscore=1011 suspectscore=0 phishscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=772 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2312140071
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231214104052.3267039-1-quic_varada@quicinc.com>
 
-Add support for LDO5 regulator. This is used by IPQ9574 USB.
+Hi,
 
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
----
- drivers/regulator/qcom_smd-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for your patch.
 
-diff --git a/drivers/regulator/qcom_smd-regulator.c b/drivers/regulator/qcom_smd-regulator.c
-index 09c471a0ba2e..d1be9568025e 100644
---- a/drivers/regulator/qcom_smd-regulator.c
-+++ b/drivers/regulator/qcom_smd-regulator.c
-@@ -796,6 +796,7 @@ static const struct rpm_regulator_data rpm_mp5496_regulators[] = {
- 	{ "s1", QCOM_SMD_RPM_SMPA, 1, &mp5496_smps, "s1" },
- 	{ "s2", QCOM_SMD_RPM_SMPA, 2, &mp5496_smps, "s2" },
- 	{ "l2", QCOM_SMD_RPM_LDOA, 2, &mp5496_ldoa2, "l2" },
-+	{ "l5", QCOM_SMD_RPM_LDOA, 5, &mp5496_ldoa2, "l5" },
- 	{}
- };
- 
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] regulator: qcom_smd: Add LDO5 MP5496 regulator
+Link: https://lore.kernel.org/stable/20231214104052.3267039-1-quic_varada%40quicinc.com
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
