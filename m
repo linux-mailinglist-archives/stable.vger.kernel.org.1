@@ -1,178 +1,150 @@
-Return-Path: <stable+bounces-6697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B854A8124D4
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:54:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272498124FC
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 03:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DC61B2122B
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 01:54:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AECB2824E6
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 02:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCBF97FD;
-	Thu, 14 Dec 2023 01:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAF57FD;
+	Thu, 14 Dec 2023 02:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fUsUytfZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4673EE3;
-	Wed, 13 Dec 2023 17:54:25 -0800 (PST)
-X-UUID: 9adb435ddafe451b89aac4d78a16ce0f-20231214
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:93de4f45-1a62-41a9-b5b1-da36f8375241,IP:15,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-INFO: VERSION:1.1.33,REQID:93de4f45-1a62-41a9-b5b1-da36f8375241,IP:15,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:0
-X-CID-META: VersionHash:364b77b,CLOUDID:e05e2c61-c89d-4129-91cb-8ebfae4653fc,B
-	ulkID:231212231719IH1VMLZ5,BulkQuantity:15,Recheck:0,SF:38|24|17|19|44|64|
-	66|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil
-	,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_OBB,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,
-	TF_CID_SPAM_FSD
-X-UUID: 9adb435ddafe451b89aac4d78a16ce0f-20231214
-Received: from node4.com.cn [(39.156.73.12)] by mailgw
-	(envelope-from <xiongxin@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 473595861; Thu, 14 Dec 2023 09:54:10 +0800
-Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id 4062B16001CC8;
-	Thu, 14 Dec 2023 09:54:10 +0800 (CST)
-X-ns-mid: postfix-657A6042-155688377
-Received: from [172.20.116.203] (unknown [172.20.116.203])
-	by node4.com.cn (NSMail) with ESMTPA id 8192316001CC8;
-	Thu, 14 Dec 2023 01:54:07 +0000 (UTC)
-Message-ID: <1844c927-2dd4-49b4-a6c4-c4c176b1f75d@kylinos.cn>
-Date: Thu, 14 Dec 2023 09:54:06 +0800
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04CB3BD
+	for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:08:17 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-286f22c52c7so5512815a91.2
+        for <stable@vger.kernel.org>; Wed, 13 Dec 2023 18:08:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1702519696; x=1703124496; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qShNyLDmN+8IdcHnMPIUGtk6Jx1xybC2q6g+/Fg38uw=;
+        b=fUsUytfZVHYe5jB/M99+nPVBP/ghSkIVtppT+4H8eKMpNIlK2s8QriEJyhrJXpDPdI
+         Nv/nCYBzmvmChtZgCR5UqqxhRkC14yRk1tpX0FYuGSnfm+Q6HlYQOXkGtTU75wgzwjaD
+         Yi+fUqx8OI/nm5rGNylSgR+iRO0i3bsAXdWLo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702519696; x=1703124496;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qShNyLDmN+8IdcHnMPIUGtk6Jx1xybC2q6g+/Fg38uw=;
+        b=gRAcPdhzQT6u24k9jyaZGepgh2+qWSP2mUGK+21IryGPU0K1RJ+NHmpK2BWQA/gUzp
+         MlVZdTtPkKAmZZBwz4M4Qkv8521dA0bgoYmxI//w9RCHbJ81nZVDd2iEEbUVPY0Cbdez
+         nKX8pZQzxLnXP8+TWwb7ypwH0rummRx1xJgyHzNdD4gI+xU6/tAHgcaXmtYASshlLbcp
+         HB5FGx+smX2VTWKE9Ogu0Zk0ryqCDQxyq7B+55Ob+ca6ELTKR5LXi+1rtc4tT4nDZymS
+         fYBjzSMA6uw5u/7YxH8hIJyU9QlY5n7OuUKCy9aeJA8tB2G16V4m+YEjI9CA7LX5xQWL
+         yHKQ==
+X-Gm-Message-State: AOJu0Ywdz+TVLEDfqvLiBvG+0Ghv1PUgKP4u5Mv4MOhFz/cKplM7OL2/
+	ugM4iEScsEnhBZP3uU3yd1d5QA==
+X-Google-Smtp-Source: AGHT+IEPabyCmug2FZX5OX8mOdwgFWcT5xhOBOTmVRK23klj0sBiFix6IBT+AyWyXDLvszIEihTHLg==
+X-Received: by 2002:a05:6a20:ce83:b0:18f:c24e:7249 with SMTP id if3-20020a056a20ce8300b0018fc24e7249mr4358658pzb.90.1702519696466;
+        Wed, 13 Dec 2023 18:08:16 -0800 (PST)
+Received: from localhost ([2620:15c:9d:2:17f:673b:ab18:3603])
+        by smtp.gmail.com with UTF8SMTPSA id s13-20020a170902ea0d00b001d1d27259cesm11188492plg.180.2023.12.13.18.08.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Dec 2023 18:08:16 -0800 (PST)
+Date: Wed, 13 Dec 2023 18:08:14 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvalo@kernel.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: mwifiex: fix STA cannot connect to AP
+Message-ID: <ZXpjjmD5Se7axJju@google.com>
+References: <20231208234127.2251-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
- in pairs
-Content-Language: en-US
-To: Thomas Gleixner <tglx@linutronix.de>, jikos@kernel.org,
- benjamin.tissoires@redhat.com
-Cc: linux-input@vger.kernel.org, stable@vger.kernel.org,
- Riwen Lu <luriwen@kylinos.cn>, hoan@os.amperecomputing.com,
- fancer.lancer@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
- andy@kernel.org, linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20231207014003.12919-1-xiongxin@kylinos.cn> <87ttosssxd.ffs@tglx>
- <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn> <874jgnqwlo.ffs@tglx>
- <bf4004bf-4868-4953-8d8e-0c0e03be673e@kylinos.cn> <875y12p2r0.ffs@tglx>
-From: xiongxin <xiongxin@kylinos.cn>
-In-Reply-To: <875y12p2r0.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231208234127.2251-1-yu-hao.lin@nxp.com>
 
-=E5=9C=A8 2023/12/13 22:59, Thomas Gleixner =E5=86=99=E9=81=93:
-> On Wed, Dec 13 2023 at 10:29, xiongxin wrote:
->> =E5=9C=A8 2023/12/12 23:17, Thomas Gleixner =E5=86=99=E9=81=93:
->> Sorry, the previous reply may not have clarified the BUG process. I
->> re-debugged and confirmed it yesterday. The current BUG execution
->> sequence is described as follows:
->=20
-> It's the sequence how this works and it works correctly.
->=20
-> Just because it does not work on your machine it does not mean that thi=
-s
-> is incorrect and a BUG.
->=20
-> You are trying to fix a symptom and thereby violating guarantees of the
-> core code.
->=20
->> That is, there is a time between the 1:handle_level_irq() and
->> 3:irq_thread_fn() calls for the 2:disable_irq() call to acquire the lo=
-ck
->> and then implement the irq_state_set_disabled() operation. When finall=
-y
->> call irq_thread_fn()->irq_finalize_oneshot(), it cannot enter the
->> unmask_thread_irq() process.
->=20
-> Correct, because the interrupt has been DISABLED in the mean time.
->=20
->> In this case, the gpio irq_chip irq_mask()/irq_unmask() callback pairs
->> are not called in pairs, so I think this is a BUG, but not necessarily
->> fixed from the irq core code layer.
->=20
-> No. It is _NOT_ a BUG. unmask() is not allowed to be invoked when the
-> interrupt is DISABLED. That's the last time I'm going to tell you that.
-> Only enable_irq() can undo the effect of disable_irq(), period.
->=20
->> Next, when the gpio controller driver calls the suspend/resume process=
-,
->> it is as follows:
->>
->> suspend process:
->> dwapb_gpio_suspend()
->>       ctx->int_mask   =3D dwapb_read(gpio, GPIO_INTMASK);
->>
->> resume process:
->> dwapb_gpio_resume()
->>       dwapb_write(gpio, GPIO_INTMASK, ctx->int_mask);
->=20
-> Did you actually look at the sequence I gave you?
->=20
->     Suspend:
->=20
-> 	  i2c_hid_core_suspend()
-> 	     disable_irq();       <- Marks it disabled and eventually
-> 				     masks it.
->=20
-> 	  gpio_irq_suspend()
-> 	     save_registers();    <- Saves masked interrupt
->=20
->     Resume:
->=20
-> 	  gpio_irq_resume()
-> 	     restore_registers(); <- Restores masked interrupt
->=20
-> 	  i2c_hid_core_resume()
-> 	     enable_irq();        <- Unmasks interrupt and removes the
-> 				     disabled marker
->=20
->=20
-> Have you verified that this order of invocations is what happens on
-> your machine?
->=20
-> Thanks,
->=20
->          tglx
+Hi,
 
-As described earlier, in the current situation, the irq_mask() callback=20
-of gpio irq_chip is called in mask_irq(), followed by the disable_irq()=20
-in i2c_hid_core_suspend(), unmask_irq() will not be executed.
+Nitpick: "fix STA cannot connect to AP" isn't the best commit message;
+that could describe an enormous number of fixes. Maybe something more
+like "Configure BSSID consistently when starting AP"?
 
-Then call enable_irq() in i2c_hid_core_resume(). Since gpio irq_chip=20
-does not implement the irq_startup() callback, it ends up calling=20
-irq_enable().
+On Sat, Dec 09, 2023 at 07:41:27AM +0800, David Lin wrote:
+> AP BSSID configuration is missing at AP start.
+> Without this fix, FW returns STA interface MAC address after first init.
+> When hostapd restarts, it gets MAC address from netdev before driver
+> sets STA MAC to netdev again. Now MAC address between hostapd and net
+> interface are different causes STA cannot connect to AP.
+> After that MAC address of uap0 mlan0 become the same. And issue
+> disappears after following hostapd restart (another issue is AP/STA MAC
+> address become the same).
+> This patch fixes the issue cleanly.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
+> Cc: stable@vger.kernel.org
+> 
+> ---
+> 
+> v2:
+>    - v1 was a not finished patch that was send to the LKML by mistake
 
-The irq_enable() function is then implemented as follows:
+Looks fine to me:
 
-irq_state_clr_disabled(desc);
-if (desc->irq_data.chip->irq_enable) {
-	desc->irq_data.chip->irq_enable(&desc->irq_data);
-	irq_state_clr_masked(desc);
-} else {
-	unmask_irq(desc);
-}
+Acked-by: Brian Norris <briannorris@chromium.org>
 
-Because gpio irq_chip implements irq_enable(), unmask_irq() is not=20
-executed, and gpio irq_chip's irq_unmask() callback is not called.=20
-Instead, irq_state_clr_masked() was called to clear the masked flag.
+>  drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
+>  drivers/net/wireless/marvell/mwifiex/fw.h       | 1 +
+>  drivers/net/wireless/marvell/mwifiex/ioctl.h    | 1 +
+>  drivers/net/wireless/marvell/mwifiex/uap_cmd.c  | 8 ++++++++
+>  4 files changed, 12 insertions(+)
 
-The irq masked behavior is actually controlled by the=20
-irq_mask()/irq_unmask() callback function pairs in gpio irq_chip. When=20
-the whole situation occurs, there is one more irq_mask() operation, or=20
-one less irq_unmask() operation. This ends the i2c hid resume and the=20
-gpio corresponding i2c hid interrupt is also masked.
+> --- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
 
-Please help confirm whether the current situation is a BUG, or suggest=20
-other solutions to fix it.
+> @@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+>  	int i;
+>  	u16 cmd_size = *param_size;
+>  
+> +	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
 
+Not directly related to this patch, but while you're expanding the size
+of this command buffer: it always felt like a security-hole-in-waiting
+that none of these command producers do any kinds of bounds checking.
+We're just "lucky" that these function only generate contents of ~100
+bytes at max, while MWIFIEX_SIZE_OF_CMD_BUFFER=2048. But, just add a few
+more user-space controlled TLV params, and boom, we'll have ourselves a
+nice little CVE.
+
+It probably wouldn't hurt to significantly write much of this driver,
+but at a minimum, we could probably use a few checks like this:
+
+	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
+	if (cmd_size > MWIFIEX_SIZE_OF_CMD_BUFFER)
+		return -1;
+	// Only touch tlv *after* the bounds check.
+
+That doesn't need to block this patch, of course.
+
+Brian
+
+> +	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
+> +	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
+> +	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
+> +	cmd_size += sizeof(struct host_cmd_tlyyv_mac_addr);
+> +	tlv += sizeof(struct host_cmd_tlv_mac_addr);
+> +
+>  	if (bss_cfg->ssid.ssid_len) {
+>  		ssid = (struct host_cmd_tlv_ssid *)tlv;
+>  		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
+> 
+> base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
+> -- 
+> 2.25.1
+> 
 
