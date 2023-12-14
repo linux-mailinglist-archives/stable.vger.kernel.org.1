@@ -1,99 +1,132 @@
-Return-Path: <stable+bounces-6741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62448131BE
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 14:37:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5FF813253
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 14:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C23D1F22220
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 13:37:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BDAB1C21A97
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 13:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502AA56B8B;
-	Thu, 14 Dec 2023 13:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D597F5811E;
+	Thu, 14 Dec 2023 13:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjxROe/s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyccBsBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032C256B63;
-	Thu, 14 Dec 2023 13:37:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3450AC433C7;
-	Thu, 14 Dec 2023 13:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FE258101
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 13:58:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FF76C433CC
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 13:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702561053;
-	bh=eymAWZlO9JPHMLfxP6Diuxd61Do848nh1zutAJya4/k=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=TjxROe/siCd9MJtwUu0sYWjyW+7XSYlZtnXyyRYhToZIIabcQPILgQsFmMVQoQOHr
-	 OfpYkdLEFUtuVbzrswYTwR/f8H1+Gez2LnCeC7z0xKMDaJp/dwummdlDqd27F2YSAv
-	 XQPiY1dNJgAkWBD0JbMxLGnix5hv1yEddt2+KTCK5PU4wywvuh1JqK6Df/bm/Fdf0e
-	 5oLjoq448SOcdL6CrAFK4rshOeSzU6hlIttiPbREX8V/tsr5aSm+gJH4G/3PUGogyK
-	 votvonORf2pOogZeDDT+UzF1XFvLs/zKknYZffcbkVEerjzkhTUEZctt1iuhkb649H
-	 ssw4DJkxGoUVg==
-From: Mark Brown <broonie@kernel.org>
-To: ryan.wanner@microchip.com, Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: thomas.petazzoni@bootlin.com, nicolas.ferre@microchip.com, 
- alexandre.belloni@bootlin.com, claudiu.beznea@tuxon.dev, 
- haavard.skinnemoen@atmel.com, akpm@linux-foundation.org, 
- dbrownell@users.sourceforge.net, linux-spi@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-In-Reply-To: <20231204154903.11607-1-louis.chauvet@bootlin.com>
-References: <20231204154903.11607-1-louis.chauvet@bootlin.com>
-Subject: Re: [PATCH] spi: atmel: Fix clock issue when using devices with
- different polarities
-Message-Id: <170256105093.58838.9858114740206767634.b4-ty@kernel.org>
-Date: Thu, 14 Dec 2023 13:37:30 +0000
+	s=k20201202; t=1702562315;
+	bh=wpEb4YwzF0OG1Kt2GsjU2fc3rJTU/2D9j0oUU41n070=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=EyccBsBuWIijgUrRa3uob6O+nbgcTK1rnFqhkxsY95RvvSl84ycZYLaYnvDOSS8ll
+	 KswxSi5hvdg9OtKHt/TjHEPSEYYgSyg5DCebpHLYtl0KJ6TJq3vklvXccygTXI6GRF
+	 mu0OCJAC7cFP0aCDbH+f53SVoAnwdpoLogONiAxgF/G2Tk2umBEbP/BqVlxvepVjFC
+	 g8kfEk7K3a5TFdHtd0QkwMHEzx83SjI4b6dtIpgH4S1AVGyLKpiTsj3lLltvzHmqzw
+	 6SGmMjzK4+pw/rY8k+tbXKbYdrFWUDKthNkVfuGaNWe1Ruz9e9eV+Cpzw8jpXD8Rh3
+	 nICOQ9Zo8RaIw==
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-20308664c13so2027608fac.3
+        for <stable@vger.kernel.org>; Thu, 14 Dec 2023 05:58:35 -0800 (PST)
+X-Gm-Message-State: AOJu0YwNReOpTmWk5sL130IoVdNFpU/1FNTQMc+mMJZB2oPwTdXkYxGZ
+	cUEmoiy/4gwl6btpxuQznRPu/X5jwvJMmYYktiI=
+X-Google-Smtp-Source: AGHT+IGIlDGxEHhsN1ZDdBxHbu1UXUM7Lbu0+qKx43MB/zzsJi/v937p07QhIR1DUNnManoJ8pMWLavvercpz9N2S64=
+X-Received: by 2002:a05:6870:4e01:b0:1fa:25de:2f6b with SMTP id
+ pl1-20020a0568704e0100b001fa25de2f6bmr12691784oab.23.1702562314656; Thu, 14
+ Dec 2023 05:58:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-5c066
+Received: by 2002:ac9:7f88:0:b0:507:5de0:116e with HTTP; Thu, 14 Dec 2023
+ 05:58:33 -0800 (PST)
+In-Reply-To: <2023121439-landowner-glamour-f7ad@gregkh>
+References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
+ <2023121241-pope-fragility-edad@gregkh> <DM4PR21MB34417B034A9637445C598675E48EA@DM4PR21MB3441.namprd21.prod.outlook.com>
+ <2023121350-spearmint-manned-b7b1@gregkh> <CAKYAXd9H+-zi5QnGQCD5T8nKkK733O6MPUnPn2_d10OW0Pp_Ww@mail.gmail.com>
+ <2023121434-universal-lively-3efa@gregkh> <CAKYAXd_CU9qRt8Y2n5n-=tUKPPHBUpiu2sLOp7=bF4=MzPMz4w@mail.gmail.com>
+ <2023121439-landowner-glamour-f7ad@gregkh>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Thu, 14 Dec 2023 22:58:33 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8qBOvUrgcguv9DW+OBiu5Muh+9QsA5PR8ESWeVU2D+vQ@mail.gmail.com>
+Message-ID: <CAKYAXd8qBOvUrgcguv9DW+OBiu5Muh+9QsA5PR8ESWeVU2D+vQ@mail.gmail.com>
+Subject: Re: [EXTERNAL] Re: [PATCH 0/1] RFC: linux-5.15.y ksmbd backport for CVE-2023-38431
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Steven French <Steven.French@microsoft.com>, 
+	"paul.gortmaker@windriver.com" <paul.gortmaker@windriver.com>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 04 Dec 2023 16:49:03 +0100, Louis Chauvet wrote:
-> The current Atmel SPI controller driver (v2) behaves incorrectly when
-> using two SPI devices with different clock polarities and GPIO CS.
-> 
-> When switching from one device to another, the controller driver first
-> enables the CS and then applies whatever configuration suits the targeted
-> device (typically, the polarities). The side effect of such order is the
-> apparition of a spurious clock edge after enabling the CS when the clock
-> polarity needs to be inverted wrt. the previous configuration of the
-> controller.
-> 
-> [...]
-
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
-
+2023-12-14 20:58 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+> On Thu, Dec 14, 2023 at 08:33:48PM +0900, Namjae Jeon wrote:
+>> 2023-12-14 17:05 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+>> > On Thu, Dec 14, 2023 at 08:31:44AM +0900, Namjae Jeon wrote:
+>> >> 2023-12-13 23:36 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+>> >> > On Tue, Dec 12, 2023 at 08:13:37PM +0000, Steven French wrote:
+>> >> >> Out of curiosity, has there been an alternative approach for some
+>> >> >> backports, where someone backports most fixes and features (and
+>> >> >> safe
+>> >> >> cleanup) but does not backport any of the changesets which have
+>> >> >> dependencies outside the module (e.g. VFS changes, netfs or mm
+>> >> >> changes
+>> >> >> etc.)  to reduce patch dependency risk (ie 70-80% backport instead
+>> >> >> of
+>> >> >> the typical 10-20% that are picked up by stable)?
+>> >> >>
+>> >> >> For example, we (on the client) ran into issues with 5.15 kernel
+>> >> >> (for
+>> >> >> the client) missing so many important fixes and features (and
+>> >> >> sometimes hard to distinguish when a new feature is also a 'fix')
+>> >> >> that
+>> >> >> I did a "full backport" for cifs.ko again a few months ago for 5.15
+>> >> >> (leaving out about 10% of the patches, those with dependencies or
+>> >> >> that
+>> >> >> would be risky).
+>> >> >
+>> >> > We did take a "big backport/sync" for io_uring in 5.15.y a while
+>> >> > ago,
+>> >> > so
+>> >> > there is precident for this.
+>> >> >
+>> >> > But really, is anyone even using this feature in 5.15.y anyway?  I
+>> >> > don't
+>> >> > know of any major distro using 5.15.y any more, and Android systems
+>> >> > based on 5.15.y don't use this specific filesystem, so what is left?
+>> >> > Can we just mark it broken and be done with it?
+>> >> As I know, ksmbd is enable in 5.15 kernel of some distros(opensuse,
+>> >> ubuntu, etc) except redhat.
+>> >
+>> > But do any of them actually use the 5.15.y kernel tree and take updates
+>> > from there?  That's the key thing here.
+>> Yes, openWRT guy said that openWRT use ksmbd module of stable 5.15.y
+>> kernel for their NAS function.
+>> The most recent major release, 23.05.x, uses the 5.15 kernel, and the
+>> kernel version is updated in minor releases.
+>> https://github.com/openwrt/openwrt/commit/95ebd609ae7bdcdb48c74ad93d747f24c94d4a07
+>>
+>> https://downloads.openwrt.org/releases/23.05.2/targets/x86/64/kmods/5.15.137-1-47964456485559d992fe6f536131fc64/
+>>
+>> https://downloads.openwrt.org/releases/23.05.2/targets/x86/64/kmods/5.15.137-1-47964456485559d992fe6f536131fc64/kmod-fs-ksmbd_5.15.137-1_x86_64.ipk
+>>
+>> https://github.com/openwrt/openwrt/blob/fcf08d9db6a50a3ca6f0b64d105d975ab896cc35/package/kernel/linux/modules/fs.mk#L349
+>
+> Ok, thanks, that's good to know.  Also you might want to warn them that
+> it's missing loads of security fixes at this point in time and that they
+> might want to move to a newer kernel release :)
+Okay, I will.
+And I will check ksmbd in 6.1 LTS kernel as well as 5.15.
 Thanks!
-
-[1/1] spi: atmel: Fix clock issue when using devices with different polarities
-      commit: fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+>
+> thanks,
+>
+> greg k-h
+>
 
