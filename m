@@ -1,169 +1,239 @@
-Return-Path: <stable+bounces-6751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E9A8136FF
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 17:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D2E8137AE
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 18:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C330B20C8A
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 16:54:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34031B21F26
+	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 17:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FC661FB0;
-	Thu, 14 Dec 2023 16:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9985B63DFA;
+	Thu, 14 Dec 2023 17:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FYu5gmAg"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bh+21aKE"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 282A58E
-	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:54:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702572846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qMqA7655Z3p8MOMWi6x4CyiogFMNXMtt8stH7qzpZwU=;
-	b=FYu5gmAgVyadl9THwJlKeO+Zr1sNuNT5mXpuj90RoLG/2mtZAZHoCgPVoiMDFeN8hOlw0N
-	0SDAJoqw9F5msgM0/39Rak4r7+xzXUCKTONYxW5MD1eDInOvDZih1Z/JAKh74IaIlC99Sk
-	sdglY6lF28jmZlXhir+EzsMeuxYBuZA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-224-wNVzxDqzPXiU7Mlmtd3Biw-1; Thu, 14 Dec 2023 11:54:02 -0500
-X-MC-Unique: wNVzxDqzPXiU7Mlmtd3Biw-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a0c510419caso236284666b.1
-        for <stable@vger.kernel.org>; Thu, 14 Dec 2023 08:54:02 -0800 (PST)
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5391C118
+	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 09:11:22 -0800 (PST)
+Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-5c690c3d113so6956358a12.1
+        for <stable@vger.kernel.org>; Thu, 14 Dec 2023 09:11:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702573881; x=1703178681; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4SRRNsPjdx4a65XJupN/nTV2DnA6Mmci73VdbnTvv64=;
+        b=bh+21aKE6L7YAsuTzSfE7XPJWk1kOvXCiLvkR1ujz1RcEN3j4DqLLAyu8DQXv4HZcs
+         Jz971Glh+CkkQvIPFSDkPltG/k9mKdeA0rkgVg1EEkHgzfgQGzqdzIya/xYlxKG8vQTJ
+         NSZ28P0dkfCqwrbHQZ1hFRkhBWDKj1SckvzdP7S99wxG2DSBrX2FPSB1C2//VSsU2n5A
+         ipsN21UcjqnlkzuF2ClmQVnOR2676ZZNk7NFjEl4Pf91/T327J+8O/uWVp62HBN/nJzW
+         2rsxllRJArhrOCD6sKSmLVahYe4LGLKwjRHXjagtwz3d/wJrazTrEu93cdMK/cYojfJT
+         EOtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702572841; x=1703177641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qMqA7655Z3p8MOMWi6x4CyiogFMNXMtt8stH7qzpZwU=;
-        b=mcacG5YxCKJHO8S7+khd2hGEPkMnSwCZloM0YiZTQmiYfcIpxqpQMomZ6XGaYX3xXT
-         3nHpsfNqrjYKeNXGSEtiYC1ol785Oo2BWdclfyJfaMxH/dRqWGxIm6S0p9pIzT3TQ1Id
-         HpXbXqnm5a7ut0yvcEyd+tFvctXcoBQiqsWUmt6zDxj6QNdnYqL5eCmO0RfggsrSLCWj
-         K9gDZOHnEHuokEhLbHcSPRzMgMp2GQzjgR27aSj2IYVp7a04Fdvk/VMBXjT8DXtI3x3f
-         rDM7zNL3lyu9+316ycPvpco350CQIY1JZOStEVkofW1h9CmcHiYLe61fwPHTfewjCQRo
-         V2wQ==
-X-Gm-Message-State: AOJu0Yxf5F8VwJGGABnexlam5ug3S/UhkF9MYg/9x6vIzwwts4uawkha
-	BOFPxYfA73FJiDhNpH4Erw/vJ5rTYIqdwbbBJdjn4lqZv6wgOQcimPhsleBHhILKfddlA6RPnil
-	rfmy6BwxUnvhnkvZq
-X-Received: by 2002:a17:907:72d6:b0:a1b:68e6:9d4c with SMTP id du22-20020a17090772d600b00a1b68e69d4cmr5493499ejc.71.1702572841650;
-        Thu, 14 Dec 2023 08:54:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEkqFrfc5jBUV2ddMjDS7NjtGh4X75LNMmDt+o23cAiZ+j+A+ROIBUzQ7WNqeOu4c4r3qRznA==
-X-Received: by 2002:a17:907:72d6:b0:a1b:68e6:9d4c with SMTP id du22-20020a17090772d600b00a1b68e69d4cmr5493495ejc.71.1702572841330;
-        Thu, 14 Dec 2023 08:54:01 -0800 (PST)
-Received: from redhat.com ([2.52.132.243])
-        by smtp.gmail.com with ESMTPSA id ld4-20020a1709079c0400b00a1df88cc7c0sm9514218ejc.182.2023.12.14.08.53.57
+        d=1e100.net; s=20230601; t=1702573881; x=1703178681;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4SRRNsPjdx4a65XJupN/nTV2DnA6Mmci73VdbnTvv64=;
+        b=Iyj5sbxgzMeII0qSWQ12lVcblT992H6QAw3RAZqSrqS1LjDhy7v3LKqSn5XWCY7O6C
+         6krMNhQUlXvKduOsjg22WchXtAq3lqkdZlxYrF6yWiLuyrkj/ipDq3Ov87Gl+6jc/Jg2
+         atg5nXeJCRGX3D2G6pMO4bq4xLSsSjBBRd9ewz84BDuW0YTOEDCCKsVGYVzAv3FpBuHx
+         StFDVYzDGmdKRcJFLtYNIXbKXFNNyptZrOzxfm1rGHkqywC9PCjiJpf99Cl/XxnDLGCL
+         g3ZONktyX2QCuSdoHibKYABjCouFcFEhuFe6a1GyJO7asItHmzM7dhV5dV8HPEG7DjnN
+         rxwA==
+X-Gm-Message-State: AOJu0YywI2Ig/p9uh/me0w2qq2L32uGZRzK0BMO8f6AlbitioQbkuFa8
+	1rfDgdDQzCH21fglhT3GOQ8r+hVLrBaioQqPrSo=
+X-Google-Smtp-Source: AGHT+IHqSABlucSlJEgE7vEReN3icD1b33qzovCCxucVwxqNplsfxWPH1piDHnNxoGqRfieWewCH4Q==
+X-Received: by 2002:a17:902:db11:b0:1d3:77da:1c73 with SMTP id m17-20020a170902db1100b001d377da1c73mr675837plx.107.1702573881263;
+        Thu, 14 Dec 2023 09:11:21 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id t16-20020a170902e85000b001cfb93fa4fasm672332plg.150.2023.12.14.09.11.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Dec 2023 08:54:00 -0800 (PST)
-Date: Thu, 14 Dec 2023 11:53:55 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Igor Mammedov <imammedo@redhat.com>,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "PCI: acpiphp: Reassign resources on bridge if
- necessary"
-Message-ID: <20231214115156-mutt-send-email-mst@kernel.org>
-References: <20231214165102.1093961-1-helgaas@kernel.org>
+        Thu, 14 Dec 2023 09:11:20 -0800 (PST)
+Message-ID: <657b3738.170a0220.23962.2b5c@mx.google.com>
+Date: Thu, 14 Dec 2023 09:11:20 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231214165102.1093961-1-helgaas@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.15
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.143-19-ga90a765613123
+Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.143-19-ga90a765613123)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Thu, Dec 14, 2023 at 10:51:02AM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
-> subsequent fix to it:
-> 
->   cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-> 
-> 40613da52b13 fixed a problem where hot-adding a device with large BARs
-> failed if the bridge windows programmed by firmware were not large enough.
-> 
-> cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
-> only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
-> of a device on a PCI root bus (common in the virt world) or firmware
-> sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
-> 7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
-> 
-> Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
-> problems:
-> 
->   - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
->     sometimes.
-> 
->   - Dongli reported a similar problem with hot-add of SCSI disks.
-> 
->   - Jonathan reported a console freeze during boot on bare metal due to an
->     error in radeon GPU initialization.
-> 
-> Revert both patches to avoid adding these problems.  This means we will
-> again see the problems with hot-adding devices with large BARs and the NULL
-> pointer dereferences and suspend/resume issues that 40613da52b13 and
-> cc22522fd55e were intended to fix.
-> 
-> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-> Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-> Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
-> Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
-> Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
-> Reported-by: Jonathan Woithe <jwoithe@just42.net>
-> Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: <stable@vger.kernel.org>
-> Cc: Igor Mammedov <imammedo@redhat.com>
+stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
+15.143-19-ga90a765613123)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.143-19-ga90a765613123/
+
+Tree: stable-rc
+Branch: queue/5.15
+Git Describe: v5.15.143-19-ga90a765613123
+Git Commit: a90a765613123cce217f9cb6299d64446f968ee5
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
 
 
-It's up to you whether to apply the revert - hopefully a fix can be
-developed soon. The revert itself looks like it's done correctly so from
-that POV:
+Warnings summary:
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
+Detailed per-defconfig build reports:
 
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 601129772b2d..5b1f271c6034 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -512,15 +512,12 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->  				if (pass && dev->subordinate) {
->  					check_hotplug_bridge(slot, dev);
->  					pcibios_resource_survey_bus(dev->subordinate);
-> -					if (pci_is_root_bus(bus))
-> -						__pci_bus_size_bridges(dev->subordinate, &add_list);
-> +					__pci_bus_size_bridges(dev->subordinate,
-> +							       &add_list);
->  				}
->  			}
->  		}
-> -		if (pci_is_root_bus(bus))
-> -			__pci_bus_assign_resources(bus, &add_list, NULL);
-> -		else
-> -			pci_assign_unassigned_bridge_resources(bus->self);
-> +		__pci_bus_assign_resources(bus, &add_list, NULL);
->  	}
->  
->  	acpiphp_sanitize_bus(bus);
-> -- 
-> 2.34.1
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
 
