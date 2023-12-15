@@ -1,109 +1,82 @@
-Return-Path: <stable+bounces-6795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965AB8145F8
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:48:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CB3814609
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 371311F24146
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 10:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 758C6284096
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 10:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804501F61E;
-	Fri, 15 Dec 2023 10:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEE21C2BD;
+	Fri, 15 Dec 2023 10:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="hPA92YN5"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="UsyWWptT"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B491CF95
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 10:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-Id:Date:Subject:From:
-	Content-Type; bh=v3fQPKea24jmrGNK5NAnT+6ISVSDrV912y7d4YqCZU8=; b=hPA92YN5heH7
-	/aCu2XsAGwsJPaCY/z19i0YPkYi3dCVNgbkBjWQ7ZLhP1Nl/xiHy4NGe4AshKeucQewS2It8hdya7
-	1nDm7IBCpMQSuq9FQi9vZM9Lhi5EwjDKHep9Yzv4/3oL2oCkMqP1hKLOz2P2aQazpYjVZee+w1nVJ
-	xPRwK3BOhgS+CmCGrxYI/H6ggLifzKO1m5BVEBEyy7f7NCgafun82h6IYf0QzH1JAHlWjmXcdro8w
-	JVd4ZG18XxUsfUcjOEVI91jViwPKqExBKUeLKi7p4UZCLvxnUBkuiFZSKq0Mnra4aM0fxeDMZ5j9R
-	ue9sqfe7opUSw/cjpfS24Q==;
-Received: from [130.117.225.1] (helo=dev011.ch-qa.vzint.dev)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <alexander.atanasov@virtuozzo.com>)
-	id 1rE5Qb-001Ov4-05;
-	Fri, 15 Dec 2023 11:30:18 +0100
-From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-To: "James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Hannes Reinecke <hare@suse.com>
-Cc: kernel@openvz.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76DA18C2F
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 10:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 315EB1C0011;
+	Fri, 15 Dec 2023 10:59:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1702637947;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/DpdWacBeVmA/hm3BZ9y4VmrrqsusBo4XPro7WpjvvY=;
+	b=UsyWWptTAHwwGOCcNJ4fSN6Lrz3BPwQsCTfMAUA55rtU4qfVBRnAtOhGwuf1HVU0GI1yPg
+	oQiXvTQTxoAW0QYNbshTaxwGwGcYPXgCoyltQx+Ks18slm0i1wcS8SXmwGaXvd14LK98fH
+	OJ0U8qbLb8idRdApoAXdsJ9yEHP3I/QYkVIA4hdK78zrIeGwKsQBKye0pdATo6C40yPaBn
+	pWgEckrfOz39xg8Wjulva1huA4XpkPRVbAgNzSLIyJU8LIKLdvrrLaJLqA5Jns3jthpxX3
+	OB5LdEF1DBJ6fTKtU4X1Vjzp8ovmrwQsWFeR50KKs2Ujg6UoQut7MXjydpH0yw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	linux-mtd@lists.infradead.org
+Cc: Tomas Winkler <tomas.winkler@intel.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>,
+	kernel test robot <lkp@intel.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] scsi: code: always send batch on reset or error handling command
-Date: Fri, 15 Dec 2023 12:30:13 +0200
-Message-Id: <20231215103013.2879483-1-alexander.atanasov@virtuozzo.com>
-X-Mailer: git-send-email 2.39.3
+Subject: Re: [PATCH] mtd: maps: vmu-flash: Fix the (mtd core) switch to ref counters
+Date: Fri, 15 Dec 2023 11:59:03 +0100
+Message-Id: <20231215105903.499114-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231205075936.13831-1-miquel.raynal@bootlin.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-linux-mtd-patch-notification: thanks
+X-linux-mtd-patch-commit: b'a7d84a2e7663bbe12394cc771107e04668ea313a'
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-In commit 8930a6c20791 ("scsi: core: add support for request batching")
-blk-mq last flags was mapped to SCMD_LAST and used as an indicator to
-send the batch for the drivers that implement it but the error handling
-code was not updated.
+On Tue, 2023-12-05 at 07:59:36 UTC, Miquel Raynal wrote:
+> While switching to ref counters for track mtd devices use, the vmu-flash
+> driver was forgotten. The reason for reading the ref counter seems
+> debatable, but let's just fix the build for now.
+> 
+> Fixes: 19bfa9ebebb5 ("mtd: use refcount to prevent corruption")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202312022315.79twVRZw-lkp@intel.com/
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-scsi_send_eh_cmnd(...) is used to send error handling commands and
-request sense. The problem is that request sense comes as a single
-command that gets into the batch queue and times out.  As result
-device goes offline after several failed resets. This was observed
-on virtio_scsi device resize operation.
+Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next.
 
-[  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
-[  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
-[  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
-
-To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd and
-scsi_reset_ioctl(...).
-
-Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
-Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
----
- drivers/scsi/scsi_error.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-v1->v2: fix it globally not only for virtio_scsi, as suggested by
-Paolo Bonzini, to avoid reintroducing the same bug.
-
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index c67cdcdc3ba8..1223d34c04da 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -1152,6 +1152,7 @@ static enum scsi_disposition scsi_send_eh_cmnd(struct scsi_cmnd *scmd,
- 
- 	scsi_log_send(scmd);
- 	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
-+	scmd->flags |= SCMD_LAST;
- 
- 	/*
- 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
-@@ -2459,6 +2460,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
- 	scsi_init_command(dev, scmd);
- 
- 	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
-+	scmd->flags |= SCMD_LAST;
- 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
- 
- 	scmd->cmd_len			= 0;
--- 
-2.39.3
-
+Miquel
 
