@@ -1,152 +1,78 @@
-Return-Path: <stable+bounces-6789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31D75814233
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 08:14:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D31814236
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 08:15:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC8EF1F22E98
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 07:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 357B22831DA
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 07:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CEAD27E;
-	Fri, 15 Dec 2023 07:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7A86FA1;
+	Fri, 15 Dec 2023 07:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HuUfVCfp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0KMe7wA7";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HuUfVCfp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0KMe7wA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="emzyONE1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C87D28F;
-	Fri, 15 Dec 2023 07:14:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 309241F81D;
-	Fri, 15 Dec 2023 07:13:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1702624439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DueD1ycJeZpomdNur64/vGkxE0MwuO7XBirtEWUESXQ=;
-	b=HuUfVCfp+L4OZuCGMUNjNj2K5u3Z3MXxBjt26N6AHE3o3XUXvArLAyp68XL3A0LoL738LR
-	0lSl3LY3Ga3PsnoE5avswzuT/xA7AA8fPXv+FiykNA+ylPDplJcStRORjwsSiAbXKj5JR1
-	jKNnRFWD0O+KYgoTl6TNcjozEvFFaew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1702624439;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DueD1ycJeZpomdNur64/vGkxE0MwuO7XBirtEWUESXQ=;
-	b=0KMe7wA79ifaIm0aeQz0UntgBIGdqNGyyie3rjDoLYS2fkGpFareUueG0rKiaHkX9VY6U5
-	PQJtJMznpY6TVyDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1702624439; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DueD1ycJeZpomdNur64/vGkxE0MwuO7XBirtEWUESXQ=;
-	b=HuUfVCfp+L4OZuCGMUNjNj2K5u3Z3MXxBjt26N6AHE3o3XUXvArLAyp68XL3A0LoL738LR
-	0lSl3LY3Ga3PsnoE5avswzuT/xA7AA8fPXv+FiykNA+ylPDplJcStRORjwsSiAbXKj5JR1
-	jKNnRFWD0O+KYgoTl6TNcjozEvFFaew=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1702624439;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DueD1ycJeZpomdNur64/vGkxE0MwuO7XBirtEWUESXQ=;
-	b=0KMe7wA79ifaIm0aeQz0UntgBIGdqNGyyie3rjDoLYS2fkGpFareUueG0rKiaHkX9VY6U5
-	PQJtJMznpY6TVyDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E206E13726;
-	Fri, 15 Dec 2023 07:13:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BZfVNbb8e2VyKQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 15 Dec 2023 07:13:58 +0000
-Date: Fri, 15 Dec 2023 08:13:58 +0100
-Message-ID: <87a5qcos3t.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Gergo Koteles <soyer@irl.hu>
-Cc: Shenghao Ding <shenghao-ding@ti.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/tas2781: select program 0, conf 0 by default
-In-Reply-To: <038add0bdca1f979cc7abcce8f24cbcd3544084b.1702596646.git.soyer@irl.hu>
-References: <038add0bdca1f979cc7abcce8f24cbcd3544084b.1702596646.git.soyer@irl.hu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665F8101C3
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 07:15:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B807C433C7;
+	Fri, 15 Dec 2023 07:15:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702624504;
+	bh=yc8W7APrmhEaH8yW2IpJ5+zeGOt4Wona7eOL12d6udM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=emzyONE1OOzPHho7QoRX4m076h8SQZQNPnDqR1hPSoKhD0O7mHspHWtUjSvY0cyaB
+	 QapWTjLxFRVAOGr5vdWdtAoPfS/yZ/od/SooGu24iiQ07Bjnt0ftlQttE/yoEp4LNR
+	 7FzkV5esKLMZjbYkIcGYV++cIpYd+YZjx6L4V/Wc=
+Date: Fri, 15 Dec 2023 08:15:01 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: stable@vger.kernel.org, kernel-team@android.com
+Subject: Re: [PATCH 5.10 0/2] checkpatch: fix repeated word annoyance
+Message-ID: <2023121506-cavity-snowstorm-c7a3@gregkh>
+References: <20231214181505.2780546-1-cmllamas@google.com>
+ <2023121442-cold-scraggly-f19b@gregkh>
+ <ZXtLdyHSamRjH94u@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: ****
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HuUfVCfp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0KMe7wA7
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-6.86 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-0.95)[-0.954];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DWL_DNSWL_HI(-3.50)[suse.de:dkim];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[9];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-2.89)[99.55%]
-X-Spam-Score: -6.86
-X-Rspamd-Queue-Id: 309241F81D
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZXtLdyHSamRjH94u@google.com>
 
-On Fri, 15 Dec 2023 00:33:27 +0100,
-Gergo Koteles wrote:
+On Thu, Dec 14, 2023 at 06:37:43PM +0000, Carlos Llamas wrote:
+> On Thu, Dec 14, 2023 at 07:23:28PM +0100, Greg KH wrote:
+> > On Thu, Dec 14, 2023 at 06:15:02PM +0000, Carlos Llamas wrote:
+> > > The checkpatch.pl in v5.10.y still triggers lots of false positives for
+> > > REPEATED_WORD warnings, particularly for commit logs. Can we please
+> > > backport these two fixes?
+> > 
+> > Why is older versions of checkpatch being used?  Why not always use the
+> > latest version, much like perf is handled?
+> > 
+> > No new code should be written against older kernels, so who is using
+> > this old tool?
 > 
-> Currently, cur_prog/cur_conf remains at the default value (-1), while
-> program 0 has been loaded into the amplifiers.
-> 
-> In the playback hook, tasdevice_tuning_switch tries to restore the
-> cur_prog/cur_conf. In the runtime_resume/system_resume,
-> tasdevice_prmg_load tries to load the cur_prog as well.
-> 
-> Set cur_prog and cur_conf to 0 if available in the firmware.
-> 
-> Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+> This is a minor annoyance when working directly with the v5.10 stable
+> tree and doing e.g ./scripts/checkpatch.pl -g HEAD. I suppose it makes
+> sense to always prefer the top-of-tree scripts. However, this could be
+> inconvenient for some scenarios were master needs to be pulled
+> separately.
 
-Thanks, applied now.
+It makes more sense to use the newer version of the tool, especially as
+you are probably having it review backports of newer patches, which
+obviously, should follow the newer checkpatch settings, not the older
+ones :)
 
+thanks,
 
-Takashi
+greg k-h
 
