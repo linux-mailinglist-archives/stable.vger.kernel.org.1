@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCC5814909
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3802081490B
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F326EB221D6
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2D071F237CF
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9992DB82;
-	Fri, 15 Dec 2023 13:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4212DB89;
+	Fri, 15 Dec 2023 13:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjVcLW0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxgnCdqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2567E30D11
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCEBC433CA;
-	Fri, 15 Dec 2023 13:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FA331598
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2BD5C433C8;
+	Fri, 15 Dec 2023 13:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702646475;
-	bh=GUYeKTqGHmeueBu87Z1RHDqPq4nTKLlsZbJgYBdVUrg=;
+	s=korg; t=1702646478;
+	bh=zjLZEtbLVZaBf7Zk4LDwRoMfAFakOVvXResPp9km9bY=;
 	h=Subject:To:From:Date:From;
-	b=cjVcLW0dQsPqvAxf1nPuYjqsY/Ld8j3sRKqUei0TgM7gXJACt7KsSyRx+Yqxz8WIe
-	 3av+L/SuaSEMASa8cRnb2qKVgx8NWHnOI6tC5mVzi5/4vyrEx45YUHde0MO342KFGf
-	 QFNmkD7KN1OxHCG/J109qzJR+B2OH27eyiQTvbDA=
-Subject: patch "serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for" added to tty-testing
+	b=BxgnCdqWLa2WiZFilvisiy1mtNloXFc5WuKGp/3Jv+d15aQb4IPZwLiTGKx3/Ms79
+	 qrN26W7V5h7LwSl6VJcIWRJwMn5SFRCfS907oJyJw8D93/UmSQiSPYQHPkoFc9mgFE
+	 V6ZCxLh0t6L3wfiCi2cIt6p0b6r6HuqUZl2TYxCI=
+Subject: patch "serial: sc16is7xx: fix unconditional activation of THRI interrupt" added to tty-testing
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Dec 2023 14:20:54 +0100
-Message-ID: <2023121554-flirt-ambulance-526d@gregkh>
+Date: Fri, 15 Dec 2023 14:20:55 +0100
+Message-ID: <2023121555-bulb-broadside-cf8e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for
+    serial: sc16is7xx: fix unconditional activation of THRI interrupt
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
@@ -61,88 +61,73 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From dbf4ab821804df071c8b566d9813083125e6d97b Mon Sep 17 00:00:00 2001
+From 9915753037eba7135b209fef4f2afeca841af816 Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 11 Dec 2023 12:13:52 -0500
-Subject: serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for
- FIFO
+Date: Mon, 11 Dec 2023 12:13:53 -0500
+Subject: serial: sc16is7xx: fix unconditional activation of THRI interrupt
 
-The SC16IS7XX IC supports a burst mode to access the FIFOs where the
-initial register address is sent ($00), followed by all the FIFO data
-without having to resend the register address each time. In this mode, the
-IC doesn't increment the register address for each R/W byte.
+Commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop") changed
+behavior to unconditionnaly set the THRI interrupt in sc16is7xx_tx_proc().
 
-The regmap_raw_read() and regmap_raw_write() are functions which can
-perform IO over multiple registers. They are currently used to read/write
-from/to the FIFO, and although they operate correctly in this burst mode on
-the SPI bus, they would corrupt the regmap cache if it was not disabled
-manually. The reason is that when the R/W size is more than 1 byte, these
-functions assume that the register address is incremented and handle the
-cache accordingly.
+For example when sending a 65 bytes message, and assuming the Tx FIFO is
+initially empty, sc16is7xx_handle_tx() will write the first 64 bytes of the
+message to the FIFO and sc16is7xx_tx_proc() will then activate THRI. When
+the THRI IRQ is fired, the driver will write the remaining byte of the
+message to the FIFO, and disable THRI by calling sc16is7xx_stop_tx().
 
-Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
-remove the manual cache control which was a workaround when using the
-_raw_ versions. FIFO registers are properly declared as volatile so
-cache will not be used/updated for FIFO accesses.
+When sending a 2 bytes message, sc16is7xx_handle_tx() will write the 2
+bytes of the message to the FIFO and call sc16is7xx_stop_tx(), disabling
+THRI. After sc16is7xx_handle_tx() exits, control returns to
+sc16is7xx_tx_proc() which will unconditionally set THRI. When the THRI IRQ
+is fired, the driver simply acknowledges the interrupt and does nothing
+more, since all the data has already been written to the FIFO. This results
+in 2 register writes and 4 register reads all for nothing and taking
+precious cycles from the I2C/SPI bus.
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
+Fix this by enabling the THRI interrupt only when we fill the Tx FIFO to
+its maximum capacity and there are remaining bytes to send in the message.
+
+Fixes: cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
 Cc:  <stable@vger.kernel.org>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231211171353.2901416-7-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 0bda9b74d096..7e4b9b52841d 100644
+index 7e4b9b52841d..e40e4a99277e 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -381,9 +381,7 @@ static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+@@ -687,6 +687,8 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
  
--	regcache_cache_bypass(one->regmap, true);
--	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
--	regcache_cache_bypass(one->regmap, false);
-+	regmap_noinc_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+ 	if (uart_circ_empty(xmit))
+ 		sc16is7xx_stop_tx(port);
++	else
++		sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+ 	uart_port_unlock_irqrestore(port, flags);
  }
  
- static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
-@@ -398,9 +396,7 @@ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
- 	if (unlikely(!to_send))
- 		return;
- 
--	regcache_cache_bypass(one->regmap, true);
--	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
--	regcache_cache_bypass(one->regmap, false);
-+	regmap_noinc_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
- }
- 
- static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
-@@ -492,6 +488,11 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
- 	return false;
- }
- 
-+static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
-+{
-+	return reg == SC16IS7XX_RHR_REG;
-+}
-+
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+@@ -815,7 +817,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
  {
+ 	struct uart_port *port = &(to_sc16is7xx_one(ws, tx_work)->port);
  	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
-@@ -1709,6 +1710,10 @@ static struct regmap_config regcfg = {
- 	.cache_type = REGCACHE_RBTREE,
- 	.volatile_reg = sc16is7xx_regmap_volatile,
- 	.precious_reg = sc16is7xx_regmap_precious,
-+	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
-+	.readable_noinc_reg = sc16is7xx_regmap_noinc,
-+	.max_raw_read = SC16IS7XX_FIFO_SIZE,
-+	.max_raw_write = SC16IS7XX_FIFO_SIZE,
- 	.max_register = SC16IS7XX_EFCR_REG,
- };
+-	unsigned long flags;
  
+ 	if ((port->rs485.flags & SER_RS485_ENABLED) &&
+ 	    (port->rs485.delay_rts_before_send > 0))
+@@ -824,10 +825,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
+ 	mutex_lock(&one->efr_lock);
+ 	sc16is7xx_handle_tx(port);
+ 	mutex_unlock(&one->efr_lock);
+-
+-	uart_port_lock_irqsave(port, &flags);
+-	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+-	uart_port_unlock_irqrestore(port, flags);
+ }
+ 
+ static void sc16is7xx_reconf_rs485(struct uart_port *port)
 -- 
 2.43.0
 
