@@ -1,161 +1,185 @@
-Return-Path: <stable+bounces-6845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CD1814FED
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 19:59:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3A581502D
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 20:29:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA0C1F24DBF
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 18:59:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9E691F251FD
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 19:29:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5076730CE7;
-	Fri, 15 Dec 2023 18:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27393FE55;
+	Fri, 15 Dec 2023 19:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMb7/5RC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ivyvzy9e"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24030119
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 18:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A4CC433C8;
-	Fri, 15 Dec 2023 18:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702666761;
-	bh=kWzL6Vr3Jwk1etDj2Mdm+0prj6W2xusgCRqzxsQ4L3c=;
-	h=Subject:To:From:Date:From;
-	b=SMb7/5RC8L23tghSZep9LgZQFvitUL4keHFh+3++X9y6zyfS1h1jyl1qIXEVSq/if
-	 NS1rEx+w22UPYxsWi5ma/Yb8kfWjbqFZsVWtv8wOmnchNpGjlhapwcJFwi6n55yi1Y
-	 Vc9H8s9shCTfmRRRdThhqHjdUPfcWHb9k5yuPdZQ=
-Subject: patch "parport: parport_serial: Add Brainboxes device IDs and geometry" added to char-misc-testing
-To: cang1@live.co.uk,gregkh@linuxfoundation.org,stable@vger.kernel.org,sudipm.mukherjee@gmail.com
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Dec 2023 19:59:10 +0100
-Message-ID: <2023121510-multiply-endocrine-5fe5@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9F53C486
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 19:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702668587; x=1734204587;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=kDPpI3fkMDDzAkv/Z2BG2V2007cWdm8q5hoXZVjOrWs=;
+  b=Ivyvzy9ekHeCe/VijUjgZt6qKKlUh2k6yHCKVZp+NlRoGhTVslC3Nphv
+   e8tWCGcmQp9uoVn6uEjlPrvJvPlGztZshwPq2q7ZkNrXJw2BQH05uWNbJ
+   1eNdOdbUyCYiw5YTUQl8Ijl/889YPcQ/J2dIQwU+/12f9Q1Xz4T6teKrY
+   y8/gFyL7bHBGvHMrtcKgTSr4rljwVDt65y6qZb6N/dAdqEFvIL3SfD64/
+   n0yrPo6ePDepiTXhU/kCP7zwIjKXH541YfkeIJgXW1LxB98pGX2PeK7He
+   8LMN82tpWMQNa4YGZuw85wirpJfFQK4fAYq+r6qwwK2HhKvMzfYMB24OC
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="399158835"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="399158835"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 11:29:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="948072708"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="948072708"
+Received: from ssaleem-mobl1.amr.corp.intel.com ([10.92.235.40])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 11:29:45 -0800
+From: Shiraz Saleem <shiraz.saleem@intel.com>
+To: stable@vger.kernel.org
+Cc: Christopher Bednarz <christopher.n.bednarz@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>
+Subject: [PATCH 5.15.x] RDMA/irdma: Prevent zero-length STAG registration
+Date: Fri, 15 Dec 2023 13:29:39 -0600
+Message-Id: <20231215192939.478-1-shiraz.saleem@intel.com>
+X-Mailer: git-send-email 2.39.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Christopher Bednarz <christopher.n.bednarz@intel.com>
 
-This is a note to let you know that I've just added the patch titled
+[Upstream commit bb6d73d9add68ad270888db327514384dfa44958]
 
-    parport: parport_serial: Add Brainboxes device IDs and geometry
+Currently irdma allows zero-length STAGs to be programmed in HW during
+the kernel mode fast register flow. Zero-length MR or STAG registration
+disable HW memory length checks.
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+Improve gaps in bounds checking in irdma by preventing zero-length STAG or
+MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+This addresses the disclosure CVE-2023-25775.
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The kernel version to apply this patch is 5.15.x.
 
-If you have any questions about this process, please let me know.
-
-
-From 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 Mon Sep 17 00:00:00 2001
-From: Cameron Williams <cang1@live.co.uk>
-Date: Thu, 2 Nov 2023 21:07:06 +0000
-Subject: parport: parport_serial: Add Brainboxes device IDs and geometry
-
-Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
-IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
-for the cards.
-This patch requires part 1 of this series.
-
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
 ---
- drivers/parport/parport_serial.c | 56 ++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ drivers/infiniband/hw/irdma/ctrl.c  |  6 ++++++
+ drivers/infiniband/hw/irdma/type.h  |  2 ++
+ drivers/infiniband/hw/irdma/verbs.c | 10 ++++++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/parport/parport_serial.c b/drivers/parport/parport_serial.c
-index 11989368611a..3644997a8342 100644
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -285,6 +285,38 @@ static struct pci_device_id parport_serial_pci_tbl[] = {
- 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
- 	  0x0104, 0, 0, sunix_5099a },
+diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
+index ad14c2404e94..e6851cffa40a 100644
+--- a/drivers/infiniband/hw/irdma/ctrl.c
++++ b/drivers/infiniband/hw/irdma/ctrl.c
+@@ -1043,6 +1043,9 @@ void irdma_sc_qp_setctx(struct irdma_sc_qp *qp, __le64 *qp_ctx,
+ 	u64 hdr;
+ 	enum irdma_page_size page_size;
  
-+	/* Brainboxes UC-203 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
 +
-+	/* Brainboxes UC-257 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
+ 	if (info->page_size == 0x40000000)
+ 		page_size = IRDMA_PAGE_SIZE_1G;
+ 	else if (info->page_size == 0x200000)
+@@ -1109,6 +1112,9 @@ void irdma_sc_qp_setctx(struct irdma_sc_qp *qp, __le64 *qp_ctx,
+ 	u8 addr_type;
+ 	enum irdma_page_size page_size;
+ 
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
 +
-+	/* Brainboxes UC-414 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
-+
-+	/* Brainboxes UC-475 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes IS-300/IS-500 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
-+
-+	/* Brainboxes PX-263/PX-295 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
-+
- 	{ 0, } /* terminate list */
- };
- MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
-@@ -550,6 +582,30 @@ static struct pciserial_board pci_parport_serial_boards[] = {
- 		.base_baud      = 921600,
- 		.uart_offset	= 0x8,
- 	},
-+	[brainboxes_uc257] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 2,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_is300] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 1,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_uc414] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_px263] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 921600,
-+		.uart_offset	= 8,
-+	},
+ 	if (info->page_size == 0x40000000)
+ 		page_size = IRDMA_PAGE_SIZE_1G;
+ 	else if (info->page_size == 0x200000)
+diff --git a/drivers/infiniband/hw/irdma/type.h b/drivers/infiniband/hw/irdma/type.h
+index 8b75e2610e5b..021dc9fe1d02 100644
+--- a/drivers/infiniband/hw/irdma/type.h
++++ b/drivers/infiniband/hw/irdma/type.h
+@@ -1013,6 +1013,7 @@ struct irdma_allocate_stag_info {
+ 	bool remote_access:1;
+ 	bool use_hmc_fcn_index:1;
+ 	bool use_pf_rid:1;
++	bool all_memory:1;
+ 	u8 hmc_fcn_index;
  };
  
- struct parport_serial_private {
+@@ -1040,6 +1041,7 @@ struct irdma_reg_ns_stag_info {
+ 	bool use_hmc_fcn_index:1;
+ 	u8 hmc_fcn_index;
+ 	bool use_pf_rid:1;
++	bool all_memory:1;
+ };
+ 
+ struct irdma_fast_reg_stag_info {
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 8ccbe761b860..fa1ccd6a9400 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2514,7 +2514,8 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
+ 			       struct irdma_mr *iwmr)
+ {
+ 	struct irdma_allocate_stag_info *info;
+-	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct irdma_pd *iwpd = to_iwpd(pd);
+ 	enum irdma_status_code status;
+ 	int err = 0;
+ 	struct irdma_cqp_request *cqp_request;
+@@ -2531,6 +2532,7 @@ static int irdma_hw_alloc_stag(struct irdma_device *iwdev,
+ 	info->stag_idx = iwmr->stag >> IRDMA_CQPSQ_STAG_IDX_S;
+ 	info->pd_id = iwpd->sc_pd.pd_id;
+ 	info->total_len = iwmr->len;
++	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	info->remote_access = true;
+ 	cqp_info->cqp_cmd = IRDMA_OP_ALLOC_STAG;
+ 	cqp_info->post_sq = 1;
+@@ -2581,6 +2583,8 @@ static struct ib_mr *irdma_alloc_mr(struct ib_pd *pd, enum ib_mr_type mr_type,
+ 	iwmr->type = IRDMA_MEMREG_TYPE_MEM;
+ 	palloc = &iwpbl->pble_alloc;
+ 	iwmr->page_cnt = max_num_sg;
++	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
++	iwmr->len = max_num_sg * PAGE_SIZE;
+ 	status = irdma_get_pble(iwdev->rf->pble_rsrc, palloc, iwmr->page_cnt,
+ 				true);
+ 	if (status)
+@@ -2652,7 +2656,8 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
+ {
+ 	struct irdma_pbl *iwpbl = &iwmr->iwpbl;
+ 	struct irdma_reg_ns_stag_info *stag_info;
+-	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct irdma_pd *iwpd = to_iwpd(pd);
+ 	struct irdma_pble_alloc *palloc = &iwpbl->pble_alloc;
+ 	enum irdma_status_code status;
+ 	int err = 0;
+@@ -2672,6 +2677,7 @@ static int irdma_hwreg_mr(struct irdma_device *iwdev, struct irdma_mr *iwmr,
+ 	stag_info->total_len = iwmr->len;
+ 	stag_info->access_rights = irdma_get_mr_access(access);
+ 	stag_info->pd_id = iwpd->sc_pd.pd_id;
++	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	if (stag_info->access_rights & IRDMA_ACCESS_FLAGS_ZERO_BASED)
+ 		stag_info->addr_type = IRDMA_ADDR_TYPE_ZERO_BASED;
+ 	else
 -- 
-2.43.0
-
+1.8.3.1
 
 
