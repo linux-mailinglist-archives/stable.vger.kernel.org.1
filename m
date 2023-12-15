@@ -1,366 +1,229 @@
-Return-Path: <stable+bounces-6778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A58813E64
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 00:51:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E2B813EDD
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 01:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28FA1F22B19
-	for <lists+stable@lfdr.de>; Thu, 14 Dec 2023 23:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D66D91C21F1B
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 00:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DE42C6AD;
-	Thu, 14 Dec 2023 23:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D250390;
+	Fri, 15 Dec 2023 00:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vU08v2Dl"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="o11Y6W0V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2052.outbound.protection.outlook.com [40.107.8.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C6A6C6FE
-	for <stable@vger.kernel.org>; Thu, 14 Dec 2023 23:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-54744e66d27so5660a12.0
-        for <stable@vger.kernel.org>; Thu, 14 Dec 2023 15:51:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702597898; x=1703202698; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fp/I7DMT70xgZqvYPb/pR7anfyQRttZJnBDn8rEZYag=;
-        b=vU08v2DleGxKYK3Fh73dgtGQv/GtrwH8XAvGL4JAcdmG6Gu4CF6UAtuob3QOWLO1/W
-         I1l8I4r2TPjtJR6BfAk6bhuTOveNzLlrdYin4lWy7ixtqNS6ZOUWN6nYAt4xWEnRLWBs
-         T0co1W0GK2BmheU22az4BtNO5W07xsPcSVOrs7o8Z/3y3zMsoH1Uvjx3jFOVRs6DGyIL
-         SdgZ7lXONFvw/G3IpOPWwhBNroKiatsXdc+7WgHUi/Ba+MwNPTEAyqdwgpktQmdZGxLM
-         jtm6gUovXnfyknkqw/Sh7sdis8bxznfvFcCQqTon6z4kSH9wgjBBCvc5jiOhZl8hWe3V
-         Pr0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702597898; x=1703202698;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fp/I7DMT70xgZqvYPb/pR7anfyQRttZJnBDn8rEZYag=;
-        b=aV0X+3Qyk/UKrSnAuaAa06aCkd3nOTu0QYdRgZDsM2iFKvdp0KZ9gKoeqkpJkIDhvV
-         5r96a5kK+sP6JYTQYhkuyKVQBmuH0GMXRlXJGZGSZgG6v+QGSZL8coqKJ6PLPvIlyiX1
-         FAGgujivCZwYRQCIsazd0oPgflJY5tg1OXqgAObatRDudMcJ4Tof5v4/uVJZD8m5XTIZ
-         BwJcveUnP/YWD2rZdns4zAKN3zDUggZxenNJS4yCFGCPUIQN9KsGCL9rn9ttD9hTGtnR
-         fCshiV4AwBDKs+oZLVrjT4qNfg1LY+jcI3VbPzQyuZro5Osl/TGUTRh5RDwZbN2mmKpv
-         qQxQ==
-X-Gm-Message-State: AOJu0YyrxNc6msi4zhb3DH/FzJ2ynfDxlygXSNZ2T7u31iL3anzNJ/yy
-	DJGvCNN7Q2UQNAcuTPi/IiwfJR2iWC9/MXvLznARPw==
-X-Google-Smtp-Source: AGHT+IHfBFCtoShuRoZ+56vAPMWpQr9j8KC1Gh2PsHr/GVH4O6e4S4cKgYI3j38AwMEOc2XuC/1Cb732xXahrHATO+M=
-X-Received: by 2002:a50:d601:0:b0:551:f450:752a with SMTP id
- x1-20020a50d601000000b00551f450752amr305174edi.6.1702597897781; Thu, 14 Dec
- 2023 15:51:37 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCA41879;
+	Fri, 15 Dec 2023 00:52:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bDJSEdS4fkGRcJxiYe4PQ2ztxKbAYMtPh4mM2GP45V70/mBu3d4RJ22lAeNbWOaXnmUv6xMgEJivLHyg+ijoDir95nBpx2YIsN4SUiWwxFtAwjhJyZK0cDFW8D8YA+xQ2BqWLXhAplyVsokClehLJ65j/ZLUD53hhmgtrbGorQ7vJOrecuaBI1W8k06Vkhf6+Ccg7DhPyqz2iAHNAn6ffOVsBCIWcvfT5xLdOgId28Q1Kx8/zoJpMibp8r/JB6orwxJK1iF8xS2XsT974SfYlFR+fa3OOMWOElCTJr4+QETjAjfA1/FsHt7CVAr2qQ2csKfzm6fVFRj4BTKMgO3/YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ab9blAguUcILGfIrLlPilcyYWkuKcH2esCRlsoiOgQY=;
+ b=En16NU4UQuOSrAIotduQCSN5mxBldczr6IQvvoCQZuLi+/SwwmwZAkU08OMcK4wYQPNTx6W7LwOfu4sfpcv4YWK+bLOPGiIRT2xGDcIbgNLp5PX5phNikqUM7tGnzf0QAWJ5EyBPjPT9PS9JCs8IdyTlG0dsi/vlrYUADsifdMxnLnOuls3qT1Z+zeBTy1u9kzblkO7zd1Fjv94tSeWc11VoerwfkKTzK92fpE2K4wWwW4nrCtsixUorVVDuTaXA/c5+YxLO8oq2HaT1qHdMpRx7BshIeRQWooOj2vR/OTZS90UBU9O5VyeHW+vfKhTokDdHjcwUFlT5al6JRtdd1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ab9blAguUcILGfIrLlPilcyYWkuKcH2esCRlsoiOgQY=;
+ b=o11Y6W0VOswBvCxBMcMdPQxgjH4PIUPTzbAIQGDC3E39IgJ09d0MDbLU4nVOq3f/qSHcoyXDLPreIX2GXrRZxFokR3bZ1tNOQZM6+X80TITm6I7F4VanPR20+Z7zSN47sOFD+ICwG1vBEvgm0e5QHCDQs2Yz/nB2aInMmt+S1zg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by PAXPR04MB8176.eurprd04.prod.outlook.com (2603:10a6:102:1c9::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Fri, 15 Dec
+ 2023 00:52:05 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::ef2d:51b6:463f:846]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::ef2d:51b6:463f:846%4]) with mapi id 15.20.7091.030; Fri, 15 Dec 2023
+ 00:52:05 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	briannorris@chromium.org,
+	kvalo@kernel.org,
+	francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com,
+	David Lin <yu-hao.lin@nxp.com>,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Rafael Beims <rafael.beims@toradex.com>
+Subject: [PATCH v3] wifi: mwifiex: configure BSSID consistently when starting AP
+Date: Fri, 15 Dec 2023 08:51:18 +0800
+Message-Id: <20231215005118.17031-1-yu-hao.lin@nxp.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TY2PR0101CA0030.apcprd01.prod.exchangelabs.com
+ (2603:1096:404:8000::16) To PA4PR04MB9638.eurprd04.prod.outlook.com
+ (2603:10a6:102:273::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231208061407.2125867-1-yuzhao@google.com> <CAMgjq7BTaV5OvHNjGRVJP2VDxj+PXhfd6957CjS4BJ9J4OY8HA@mail.gmail.com>
- <CAOUHufYwZAUaJh6i8Fazc4gVMSqcsz9JbRNpj0cpx2qR+bZBFw@mail.gmail.com>
- <CAMgjq7AtceR-CXnKFfQHM3qi0y4oGyJ4_sw_uh5EkpXCBzkCXg@mail.gmail.com>
- <CAMgjq7CJ3hYHysyRfHzYU4hOYqhUOttxMYGtg0FxzM_wvvyhFA@mail.gmail.com>
- <CAOUHufa=ybd-EPos9DryLHYyhphN0P7qyV5NY3Pui0dfVSk9tQ@mail.gmail.com>
- <ZXpx0K8Vdo3FJixg@google.com> <CAMgjq7CRf4iEKuW2qWKzbhssMbixBo3UoLPqsSk4b+Tvw8at8A@mail.gmail.com>
-In-Reply-To: <CAMgjq7CRf4iEKuW2qWKzbhssMbixBo3UoLPqsSk4b+Tvw8at8A@mail.gmail.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Thu, 14 Dec 2023 16:51:00 -0700
-Message-ID: <CAOUHufY6x_Erz02Bzoejfs_g2hcmrMFpiOdjiaWZ97oirz71aQ@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 1/4] mm/mglru: fix underprotected page cache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|PAXPR04MB8176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81bb39ab-956c-4938-c58e-08dbfd080edf
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+ mmk7/VvKFNFkYuCHz575596IrEP/il3KyMljfe1yMGKbXNMBq/qTDeTa4s7H0hwz4qpvqIDtOEJePmIQWa0EixpHhY50cRYTzhMjpVFYYuwqZNKm1mLX3i6+7Ykdsv+yK1wAw2bCQFKAqlzVCmoSBG2RkviWhF41Wvn+yq34NNFm/Uy2LBfUsjhhUcQYv4Uku0Ol/7hZYixfDutBkujnC8yUS9HUTeDtPLxD0Wnv7G9t2Z66ycJfe7gvcjOSbuBBmv/K3mg/BYWEvAZxMpi2fufeXATZu1tJdN7b9X/l1kgFwQHRkRYyT8yyYWZFwiNjyiGMqBVEu4iSOD1/889aaoy5nCfF5TP9eWH3m7v7hMRbbz9cqkw6npr+4al2pHNF16bKkdKp2fGgY1RGMBEveIMSaXQPy2F5HvJQ2czZmCtgFFu/s5I2JN+vuDfayuGMRYek+qwbOZrPvJ5IrECumvPJfWAlxrqwqMyKCwDyO0mdfR8aOUb4rq3D6+xIh1wvj5F95b8RHC9eKKDglfyXntPVmPu4HDDsUO5l+zeZTYQlZJCrCy1Nk8ftKUmSXfA+
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(366004)(346002)(39860400002)(136003)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(6666004)(478600001)(6486002)(38100700002)(1076003)(2616005)(66899024)(6512007)(6506007)(52116002)(5660300002)(2906002)(8676002)(41300700001)(36756003)(8936002)(4326008)(86362001)(6916009)(54906003)(66556008)(316002)(66946007)(66476007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?us-ascii?Q?8/bUv8rgDpVHAnfiEzzZVzRlnDO5ovMKhlzyhp/VmnZLqn3ojQPUd79zjEt4?=
+ =?us-ascii?Q?VsmxZagzTax78ijjZF3ewUXuVGGIUZG05M3yUB0txI+RvQgTGKryrjZsyBay?=
+ =?us-ascii?Q?p9EmGPJNhz8uiMt6mRlFkdW8XIGKuZemzRzk/E0hMSMWcv59burTAmdiO74C?=
+ =?us-ascii?Q?vnx244rR7YPtC2/CGGRAZlFQ0/FTHEjwwNIxtp0B6dJVal2v0AA793PgjDkS?=
+ =?us-ascii?Q?PsOv4Fxdg++C2qHMH3sEcx14JGQewkr/L5em6B6G9MxFqurueGg471BGQcB3?=
+ =?us-ascii?Q?JavHuVVwJJh3daRVPi+yk59H4YxwPhQalZOwWNPcYnxjud7CIyyCt1SH/pF/?=
+ =?us-ascii?Q?Qsc+oZtdudhv2XNJydybABqmOM+Jz2f79JwtMQZTNYrW2GmplfeXCoGrlLBG?=
+ =?us-ascii?Q?dGwOmFPx+Wb4Lh+ZeM0kDTzdT03b41TGKoLwayh2BFhl4qlPqcExffVt5375?=
+ =?us-ascii?Q?cWmyzka4tqsVPFYp+D5yC5ZGc3hFLNrkHstLFTmUGF74QpFcwxyom7yEUfi9?=
+ =?us-ascii?Q?Mf2mY189D4CUkoi4jn0+pvnd4HKCjMc2qweVcoXxg8NxWZsqxVMyPvi1AZ/t?=
+ =?us-ascii?Q?GNnE5/WydjPPiPVEicol2LxPtkwwspg18EARF7BiVaKNgapK28pv7K5xiwYW?=
+ =?us-ascii?Q?K/52lBwALQwFZatBI6hi8XnWE4Ujb53nBYyyslmUU1Qe+VAr8vbi/8BhVfN4?=
+ =?us-ascii?Q?lzdXY32hAe+FIaq3x6V5w3JgoRwYMEX1I/qxrgeeTvZJGYOqxBXAQIryZGUF?=
+ =?us-ascii?Q?SdIevc3aeh5EGRkkgeZWr4FxKjPyBhoi010zcFxUjXiHO4/HfnYe3cjYqp0P?=
+ =?us-ascii?Q?sBTx+pEUDQDst8KI5PpKXLuo7VsQB5oKilR/UG7h90UaNf94lbkLqj29aBeb?=
+ =?us-ascii?Q?36MT/kmqwGNmIt1NR3QXESSmzriisrANkUtc1El5xrZ+gQGxdIrAJ4nYHwGH?=
+ =?us-ascii?Q?GnFarJ3mS13KIgWy5HgvO7aWKZhFy6OAlqAPDYjYk0f3vE+i2NjMBWAVR4Ze?=
+ =?us-ascii?Q?+Em+aFt1APJXxx1eLYFL27Px4mO48sFtNQ9riMaak/RWxzaE/eB0AZoEaUmi?=
+ =?us-ascii?Q?2U6rEwt6lz0n1r34CrvTly5mLXqEOgciA0+ooJ9NQlaie15aNts9o6y5sMrP?=
+ =?us-ascii?Q?9ypdXAqjOYssZIxUm4f7zkYS0fU5xYnmIFlc3PKX7FxiVfDbv3jKThGk7AA2?=
+ =?us-ascii?Q?dtLxZMb3pDhYgeh62nrHcmBgmJjiKP3dM9m0LgP+w1T5W7sCCBbRPXf+FkNS?=
+ =?us-ascii?Q?+gLk356IO0/LiU2VQKC3dt454yF85/ovxLRy259O5qjv32Zrd+ZyF+VGj5p7?=
+ =?us-ascii?Q?gBUmjyXg17uylvkQYnuoTzn+2uWXirQgjRM80JwvEr6U7AgBH1CjGfzPsyDO?=
+ =?us-ascii?Q?byIok/Ynfy+O8LNqgSnXQgsrH6OEI66ivvvCxs1uaXeeYlq8kvwPoAAuusz7?=
+ =?us-ascii?Q?5BCxF0/0I+xoT2fzRG1CTyQNoT9kyDMHPHZsQ06/6jd90bHqV0t4XR0Ai16O?=
+ =?us-ascii?Q?8CX5CT1kkOiussSds7aAbGu6g0FEUdUOWVlMsJuINLKoytbEvtyzqlteS4e4?=
+ =?us-ascii?Q?EZrqzFny3XqWhOVKQjxHRNEiuYxR7Ehna8FLsRW9aB5hEzrA7nmepnV3VCLa?=
+ =?us-ascii?Q?hvBx95n2y8+be1vroyWzsiliAGlta7Gxte08e0FW1+lI?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81bb39ab-956c-4938-c58e-08dbfd080edf
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 00:52:05.5517
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: G2NXeVyV9DaCzYFxg3CSPYEIjMjM+H9M2qnjILvb4KUCoMNksSHjSrlnmpdVssXxHxLScCHVSOII4iY7mMT4pg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8176
 
-On Thu, Dec 14, 2023 at 11:38=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=8814=E6=97=A5=
-=E5=91=A8=E5=9B=9B 11:09=E5=86=99=E9=81=93=EF=BC=9A
-> > On Wed, Dec 13, 2023 at 12:59:14AM -0700, Yu Zhao wrote:
-> > > On Tue, Dec 12, 2023 at 8:03=E2=80=AFPM Kairui Song <ryncsn@gmail.com=
-> wrote:
-> > > >
-> > > > Kairui Song <ryncsn@gmail.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=8812=
-=E6=97=A5=E5=91=A8=E4=BA=8C 14:52=E5=86=99=E9=81=93=EF=BC=9A
-> > > > >
-> > > > > Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=8812=
-=E6=97=A5=E5=91=A8=E4=BA=8C 06:07=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > >
-> > > > > > On Fri, Dec 8, 2023 at 1:24=E2=80=AFAM Kairui Song <ryncsn@gmai=
-l.com> wrote:
-> > > > > > >
-> > > > > > > Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=88=
-8=E6=97=A5=E5=91=A8=E4=BA=94 14:14=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > > > >
-> > > > > > > > Unmapped folios accessed through file descriptors can be
-> > > > > > > > underprotected. Those folios are added to the oldest genera=
-tion based
-> > > > > > > > on:
-> > > > > > > > 1. The fact that they are less costly to reclaim (no need t=
-o walk the
-> > > > > > > >    rmap and flush the TLB) and have less impact on performa=
-nce (don't
-> > > > > > > >    cause major PFs and can be non-blocking if needed again)=
-.
-> > > > > > > > 2. The observation that they are likely to be single-use. E=
-.g., for
-> > > > > > > >    client use cases like Android, its apps parse configurat=
-ion files
-> > > > > > > >    and store the data in heap (anon); for server use cases =
-like MySQL,
-> > > > > > > >    it reads from InnoDB files and holds the cached data for=
- tables in
-> > > > > > > >    buffer pools (anon).
-> > > > > > > >
-> > > > > > > > However, the oldest generation can be very short lived, and=
- if so, it
-> > > > > > > > doesn't provide the PID controller with enough time to resp=
-ond to a
-> > > > > > > > surge of refaults. (Note that the PID controller uses weigh=
-ted
-> > > > > > > > refaults and those from evicted generations only take a hal=
-f of the
-> > > > > > > > whole weight.) In other words, for a short lived generation=
-, the
-> > > > > > > > moving average smooths out the spike quickly.
-> > > > > > > >
-> > > > > > > > To fix the problem:
-> > > > > > > > 1. For folios that are already on LRU, if they can be beyon=
-d the
-> > > > > > > >    tracking range of tiers, i.e., five accesses through fil=
-e
-> > > > > > > >    descriptors, move them to the second oldest generation t=
-o give them
-> > > > > > > >    more time to age. (Note that tiers are used by the PID c=
-ontroller
-> > > > > > > >    to statistically determine whether folios accessed multi=
-ple times
-> > > > > > > >    through file descriptors are worth protecting.)
-> > > > > > > > 2. When adding unmapped folios to LRU, adjust the placement=
- of them so
-> > > > > > > >    that they are not too close to the tail. The effect of t=
-his is
-> > > > > > > >    similar to the above.
-> > > > > > > >
-> > > > > > > > On Android, launching 55 apps sequentially:
-> > > > > > > >                            Before     After      Change
-> > > > > > > >   workingset_refault_anon  25641024   25598972   0%
-> > > > > > > >   workingset_refault_file  115016834  106178438  -8%
-> > > > > > >
-> > > > > > > Hi Yu,
-> > > > > > >
-> > > > > > > Thanks you for your amazing works on MGLRU.
-> > > > > > >
-> > > > > > > I believe this is the similar issue I was trying to resolve p=
-reviously:
-> > > > > > > https://lwn.net/Articles/945266/
-> > > > > > > The idea is to use refault distance to decide if the page sho=
-uld be
-> > > > > > > place in oldest generation or some other gen, which per my te=
-st,
-> > > > > > > worked very well, and we have been using refault distance for=
- MGLRU in
-> > > > > > > multiple workloads.
-> > > > > > >
-> > > > > > > There are a few issues left in my previous RFC series, like a=
-non pages
-> > > > > > > in MGLRU shouldn't be considered, I wanted to collect feedbac=
-k or test
-> > > > > > > cases, but unfortunately it seems didn't get too much attenti=
-on
-> > > > > > > upstream.
-> > > > > > >
-> > > > > > > I think both this patch and my previous series are for solvin=
-g the
-> > > > > > > file pages underpertected issue, and I did a quick test using=
- this
-> > > > > > > series, for mongodb test, refault distance seems still a bett=
-er
-> > > > > > > solution (I'm not saying these two optimization are mutually =
-exclusive
-> > > > > > > though, just they do have some conflicts in implementation an=
-d solving
-> > > > > > > similar problem):
-> > > > > > >
-> > > > > > > Previous result:
-> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > > > > Execution Results after 905 seconds
-> > > > > > > -------------------------------------------------------------=
------
-> > > > > > >                   Executed        Time (=C2=B5s)       Rate
-> > > > > > >   STOCK_LEVEL     2542            27121571486.2   0.09 txn/s
-> > > > > > > -------------------------------------------------------------=
------
-> > > > > > >   TOTAL           2542            27121571486.2   0.09 txn/s
-> > > > > > >
-> > > > > > > This patch:
-> > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > > > > Execution Results after 900 seconds
-> > > > > > > -------------------------------------------------------------=
------
-> > > > > > >                   Executed        Time (=C2=B5s)       Rate
-> > > > > > >   STOCK_LEVEL     1594            27061522574.4   0.06 txn/s
-> > > > > > > -------------------------------------------------------------=
------
-> > > > > > >   TOTAL           1594            27061522574.4   0.06 txn/s
-> > > > > > >
-> > > > > > > Unpatched version is always around ~500.
-> > > > > >
-> > > > > > Thanks for the test results!
-> > > > > >
-> > > > > > > I think there are a few points here:
-> > > > > > > - Refault distance make use of page shadow so it can better
-> > > > > > > distinguish evicted pages of different access pattern (re-acc=
-ess
-> > > > > > > distance).
-> > > > > > > - Throttled refault distance can help hold part of workingset=
- when
-> > > > > > > memory is too small to hold the whole workingset.
-> > > > > > >
-> > > > > > > So maybe part of this patch and the bits of previous series c=
-an be
-> > > > > > > combined to work better on this issue, how do you think?
-> > > > > >
-> > > > > > I'll try to find some time this week to look at your RFC. It'd =
-be a
-> > > >
-> > > > Hi Yu,
-> > > >
-> > > > I'm working on V4 of the RFC now, which just update some comments, =
-and
-> > > > skip anon page re-activation in refault path for mglru which was no=
-t
-> > > > very helpful, only some tiny adjustment.
-> > > > And I found it easier to test with fio, using following test script=
-:
-> > > >
-> > > > #!/bin/bash
-> > > > swapoff -a
-> > > >
-> > > > modprobe brd rd_nr=3D1 rd_size=3D16777216
-> > > > mkfs.ext4 /dev/ram0
-> > > > mount /dev/ram0 /mnt
-> > > >
-> > > > mkdir -p /sys/fs/cgroup/benchmark
-> > > > cd /sys/fs/cgroup/benchmark
-> > > >
-> > > > echo 4G > memory.max
-> > > > echo $$ > cgroup.procs
-> > > > echo 3 > /proc/sys/vm/drop_caches
-> > > >
-> > > > fio -name=3Dmglru --numjobs=3D12 --directory=3D/mnt --size=3D1024m =
-\
-> > > >           --buffered=3D1 --ioengine=3Dio_uring --iodepth=3D128 \
-> > > >           --iodepth_batch_submit=3D32 --iodepth_batch_complete=3D32=
- \
-> > > >           --rw=3Drandread --random_distribution=3Dzipf:0.5 --norand=
-ommap \
-> > > >           --time_based --ramp_time=3D5m --runtime=3D5m --group_repo=
-rting
-> > > >
-> > > > zipf:0.5 is used here to simulate a cached read with slight bias
-> > > > towards certain pages.
-> > > > Unpatched 6.7-rc4:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D6548MiB/s (6866MB/s), 6548MiB/s-6548MiB/s
-> > > > (6866MB/s-6866MB/s), io=3D1918GiB (2060GB), run=3D300001-300001msec
-> > > >
-> > > > Patched with RFC v4:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D7270MiB/s (7623MB/s), 7270MiB/s-7270MiB/s
-> > > > (7623MB/s-7623MB/s), io=3D2130GiB (2287GB), run=3D300001-300001msec
-> > > >
-> > > > Patched with this series:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D7098MiB/s (7442MB/s), 7098MiB/s-7098MiB/s
-> > > > (7442MB/s-7442MB/s), io=3D2079GiB (2233GB), run=3D300002-300002msec
-> > > >
-> > > > MGLRU off:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D6525MiB/s (6842MB/s), 6525MiB/s-6525MiB/s
-> > > > (6842MB/s-6842MB/s), io=3D1912GiB (2052GB), run=3D300002-300002msec
-> > > >
-> > > > - If I change zipf:0.5 to random:
-> > > > Unpatched 6.7-rc4:
-> > > > Patched with this series:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D5975MiB/s (6265MB/s), 5975MiB/s-5975MiB/s
-> > > > (6265MB/s-6265MB/s), io=3D1750GiB (1879GB), run=3D300002-300002msec
-> > > >
-> > > > Patched with RFC v4:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D5987MiB/s (6278MB/s), 5987MiB/s-5987MiB/s
-> > > > (6278MB/s-6278MB/s), io=3D1754GiB (1883GB), run=3D300001-300001msec
-> > > >
-> > > > Patched with this series:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D5839MiB/s (6123MB/s), 5839MiB/s-5839MiB/s
-> > > > (6123MB/s-6123MB/s), io=3D1711GiB (1837GB), run=3D300001-300001msec
-> > > >
-> > > > MGLRU off:
-> > > > Run status group 0 (all jobs):
-> > > >    READ: bw=3D5689MiB/s (5965MB/s), 5689MiB/s-5689MiB/s
-> > > > (5965MB/s-5965MB/s), io=3D1667GiB (1790GB), run=3D300003-300003msec
-> > > >
-> > > > fio uses ramdisk so LRU accuracy will have smaller impact. The Mong=
-odb
-> > > > test I provided before uses a SATA SSD so it will have a much highe=
-r
-> > > > impact. I'll provides a script to setup the test case and run it, i=
-t's
-> > > > more complex to setup than fio since involving setting up multiple
-> > > > replicas and auth and hundreds of GB of test fixtures, I'm currentl=
-y
-> > > > occupied by some other tasks but will try best to send them out as
-> > > > soon as possible.
-> > >
-> > > Thanks! Apparently your RFC did show better IOPS with both access
-> > > patterns, which was a surprise to me because it had higher refaults
-> > > and usually higher refautls result in worse performance.
-> > >
-> > > So I'm still trying to figure out why it turned out the opposite. My
-> > > current guess is that:
-> > > 1. It had a very small but stable inactive LRU list, which was able t=
-o
-> > > fit into the L3 cache entirely.
-> > > 2. It counted few folios as workingset and therefore incurred less
-> > > overhead from CONFIG_PSI and/or CONFIG_TASK_DELAY_ACCT.
-> > >
-> > > Did you save workingset_refault_file when you ran the test? If so, ca=
-n
-> > > you check the difference between this series and your RFC?
-> >
-> >
-> > It seems I was right about #1 above. After I scaled your test up by 20x=
-,
-> > I saw my series performed ~5% faster with zipf and ~9% faster with rand=
-om
-> > accesses.
->
-> Hi Yu,
->
-> Thank you so much for testing and sharing this result.
->
-> I'm not sure about #1, the ramdisk size, access data, are far larger
-> than L3 (16M on my CPU) even in down scaled test, and both random/zipf
-> shows similar result.
+AP BSSID configuration is missing at AP start.
+Without this fix, FW returns STA interface MAC address after first init.
+When hostapd restarts, it gets MAC address from netdev before driver
+sets STA MAC to netdev again. Now MAC address between hostapd and net
+interface are different causes STA cannot connect to AP.
+After that MAC address of uap0 mlan0 become the same. And issue
+disappears after following hostapd restart (another issue is AP/STA MAC
+address become the same).
+This patch fixes the issue cleanly.
 
-It's the LRU list not pages. IOW, the kernel data structure, not the
-content in LRU pages. Does it make sense?
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP/SD8997 SD
+Acked-by: Brian Norris <briannorris@chromium.org>
 
-> > IOW, I made rd_size from 16GB to 320GB, memory.max from 4GB to 80GB,
-> > --numjobs from 12 to 60 and --size from 1GB to 4GB.
+---
 
-Would you be able to try a larger configuration like above instead?
+v3:
+   - patch title change from "wifi: mwifiex: fix STA cannot connect to AP"
+     to "wifi: mwifiex: configure BSSID consistently when starting AP".
+
+v2:
+   - v1 was a not finished patch that was send to the LKML by mistake.
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 ++
+ drivers/net/wireless/marvell/mwifiex/fw.h       | 1 +
+ drivers/net/wireless/marvell/mwifiex/ioctl.h    | 1 +
+ drivers/net/wireless/marvell/mwifiex/uap_cmd.c  | 8 ++++++++
+ 4 files changed, 12 insertions(+)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 7a15ea8072e6..3604abcbcff9 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -2047,6 +2047,8 @@ static int mwifiex_cfg80211_start_ap(struct wiphy *wiphy,
+ 
+ 	mwifiex_set_sys_config_invalid_data(bss_cfg);
+ 
++	memcpy(bss_cfg->mac_addr, priv->curr_addr, ETH_ALEN);
++
+ 	if (params->beacon_interval)
+ 		bss_cfg->beacon_period = params->beacon_interval;
+ 	if (params->dtim_period)
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 8e6db904e5b2..62f3c9a52a1d 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -165,6 +165,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
+ #define TLV_TYPE_STA_MAC_ADDR       (PROPRIETARY_TLV_BASE_ID + 32)
+ #define TLV_TYPE_BSSID              (PROPRIETARY_TLV_BASE_ID + 35)
+ #define TLV_TYPE_CHANNELBANDLIST    (PROPRIETARY_TLV_BASE_ID + 42)
++#define TLV_TYPE_UAP_MAC_ADDRESS    (PROPRIETARY_TLV_BASE_ID + 43)
+ #define TLV_TYPE_UAP_BEACON_PERIOD  (PROPRIETARY_TLV_BASE_ID + 44)
+ #define TLV_TYPE_UAP_DTIM_PERIOD    (PROPRIETARY_TLV_BASE_ID + 45)
+ #define TLV_TYPE_UAP_BCAST_SSID     (PROPRIETARY_TLV_BASE_ID + 48)
+diff --git a/drivers/net/wireless/marvell/mwifiex/ioctl.h b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+index 091e7ca79376..e8825f302de8 100644
+--- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
++++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+@@ -107,6 +107,7 @@ struct mwifiex_uap_bss_param {
+ 	u8 qos_info;
+ 	u8 power_constraint;
+ 	struct mwifiex_types_wmm_info wmm_info;
++	u8 mac_addr[ETH_ALEN];
+ };
+ 
+ enum {
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+index e78a201cd150..491e36611909 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -468,6 +468,7 @@ void mwifiex_config_uap_11d(struct mwifiex_private *priv,
+ static int
+ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+ {
++	struct host_cmd_tlv_mac_addr *mac_tlv;
+ 	struct host_cmd_tlv_dtim_period *dtim_period;
+ 	struct host_cmd_tlv_beacon_period *beacon_period;
+ 	struct host_cmd_tlv_ssid *ssid;
+@@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+ 	int i;
+ 	u16 cmd_size = *param_size;
+ 
++	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
++	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
++	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
++	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
++	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
++	tlv += sizeof(struct host_cmd_tlv_mac_addr);
++
+ 	if (bss_cfg->ssid.ssid_len) {
+ 		ssid = (struct host_cmd_tlv_ssid *)tlv;
+ 		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
+
+base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
+-- 
+2.25.1
+
 
