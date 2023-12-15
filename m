@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA46814906
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCC5814909
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C869281799
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F326EB221D6
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14B42DB7F;
-	Fri, 15 Dec 2023 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9992DB82;
+	Fri, 15 Dec 2023 13:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ol09rUM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjVcLW0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3E230CF7
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFBEC433C9;
-	Fri, 15 Dec 2023 13:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2567E30D11
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCEBC433CA;
+	Fri, 15 Dec 2023 13:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702646473;
-	bh=ELX3QbbVI78K+4Z7NmhjlVVH5K8ujG4GYaUICrlv0d8=;
+	s=korg; t=1702646475;
+	bh=GUYeKTqGHmeueBu87Z1RHDqPq4nTKLlsZbJgYBdVUrg=;
 	h=Subject:To:From:Date:From;
-	b=Ol09rUM3kYQUQW/LGazesd3fPwFWtZMJ/GNQQ8S+AIVt7PYQm+EpIRk3Jf6bCTaKC
-	 ioaeUmIAuhTKB7J7aPPfzhRcJ138Vxr7rA/vpeu65hbBn/AcUt3EikSN9ERw6rPYYf
-	 xi9mST61EFChp21jlLT/OvI9CUi9a4j26pS+xZfg=
-Subject: patch "serial: sc16is7xx: remove unused line structure member" added to tty-testing
+	b=cjVcLW0dQsPqvAxf1nPuYjqsY/Ld8j3sRKqUei0TgM7gXJACt7KsSyRx+Yqxz8WIe
+	 3av+L/SuaSEMASa8cRnb2qKVgx8NWHnOI6tC5mVzi5/4vyrEx45YUHde0MO342KFGf
+	 QFNmkD7KN1OxHCG/J109qzJR+B2OH27eyiQTvbDA=
+Subject: patch "serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for" added to tty-testing
 To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Dec 2023 14:20:52 +0100
-Message-ID: <2023121551-sadly-isolated-0220@gregkh>
+Date: Fri, 15 Dec 2023 14:20:54 +0100
+Message-ID: <2023121554-flirt-ambulance-526d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: remove unused line structure member
+    serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
@@ -61,43 +61,88 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 41a308cbedb2a68a6831f0f2e992e296c4b8aff0 Mon Sep 17 00:00:00 2001
+From dbf4ab821804df071c8b566d9813083125e6d97b Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 11 Dec 2023 12:13:50 -0500
-Subject: serial: sc16is7xx: remove unused line structure member
+Date: Mon, 11 Dec 2023 12:13:52 -0500
+Subject: serial: sc16is7xx: convert from _raw_ to _noinc_ regmap functions for
+ FIFO
 
-Now that the driver has been converted to use one regmap per port, the line
-structure member is no longer used, so remove it.
+The SC16IS7XX IC supports a burst mode to access the FIFOs where the
+initial register address is sent ($00), followed by all the FIFO data
+without having to resend the register address each time. In this mode, the
+IC doesn't increment the register address for each R/W byte.
 
-Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+The regmap_raw_read() and regmap_raw_write() are functions which can
+perform IO over multiple registers. They are currently used to read/write
+from/to the FIFO, and although they operate correctly in this burst mode on
+the SPI bus, they would corrupt the regmap cache if it was not disabled
+manually. The reason is that when the R/W size is more than 1 byte, these
+functions assume that the register address is incremented and handle the
+cache accordingly.
+
+Convert FIFO R/W functions to use the regmap _noinc_ versions in order to
+remove the manual cache control which was a workaround when using the
+_raw_ versions. FIFO registers are properly declared as volatile so
+cache will not be used/updated for FIFO accesses.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
 Cc:  <stable@vger.kernel.org>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-4-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231211171353.2901416-6-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index a4ad3ae8cae2..0a7a9aa5c9fa 100644
+index 0bda9b74d096..7e4b9b52841d 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -322,7 +322,6 @@ struct sc16is7xx_one_config {
+@@ -381,9 +381,7 @@ static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
  
- struct sc16is7xx_one {
- 	struct uart_port		port;
--	u8				line;
- 	struct regmap			*regmap;
- 	struct kthread_work		tx_work;
- 	struct kthread_work		reg_work;
-@@ -1552,7 +1551,6 @@ static int sc16is7xx_probe(struct device *dev,
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
+ }
  
- 	for (i = 0; i < devtype->nr_uart; ++i) {
--		s->p[i].line		= i;
- 		/* Initialize port data */
- 		s->p[i].port.dev	= dev;
- 		s->p[i].port.irq	= irq;
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+@@ -398,9 +396,7 @@ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(one->regmap, true);
+-	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+-	regcache_cache_bypass(one->regmap, false);
++	regmap_noinc_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+@@ -492,6 +488,11 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+ 	return false;
+ }
+ 
++static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
++{
++	return reg == SC16IS7XX_RHR_REG;
++}
++
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+@@ -1709,6 +1710,10 @@ static struct regmap_config regcfg = {
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.writeable_noinc_reg = sc16is7xx_regmap_noinc,
++	.readable_noinc_reg = sc16is7xx_regmap_noinc,
++	.max_raw_read = SC16IS7XX_FIFO_SIZE,
++	.max_raw_write = SC16IS7XX_FIFO_SIZE,
+ 	.max_register = SC16IS7XX_EFCR_REG,
+ };
+ 
 -- 
 2.43.0
 
