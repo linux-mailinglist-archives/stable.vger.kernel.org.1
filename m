@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B28814901
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFE1814902
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67FF71C23A82
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8641D2832BA
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4707830346;
-	Fri, 15 Dec 2023 13:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A739F2DB72;
+	Fri, 15 Dec 2023 13:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zya1qhjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRnyKsCL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065923033B
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3170FC433C8;
-	Fri, 15 Dec 2023 13:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720BB30646
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EB2C433C7;
+	Fri, 15 Dec 2023 13:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702646467;
-	bh=OPtsVLpHLwEPJmg13bk8E3I5ELfgEDp0z6pOAgOR4a8=;
+	s=korg; t=1702646470;
+	bh=WFX0LmZnIthZ671v/3TS1FZxL2m43L3EfSuxMWlClsY=;
 	h=Subject:To:From:Date:From;
-	b=zya1qhjFGgjISEnFSpyhPIuLp+hZvaQYAoX2QYpQGwW3zCYm+K9J6rXr1EM4aQHIy
-	 uc4JJEPYYWnOpdIajewWS6oJAoyBAHbMKHcf0yL9fhONtGkk151sPVgITIMBa9CEqO
-	 vXuPltrYLmo64Ve4ZlMpU0rCfXHb/vyWoVqOb+Dk=
-Subject: patch "serial: sc16is7xx: remove global regmap from struct sc16is7xx_port" added to tty-testing
-To: hvilleneuve@dimonoff.com,andy.shevchenko@gmail.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
+	b=RRnyKsCLI8rtP0u7KV+gfzxOdAvQTmpGMNhb6Lea6Yp9iQZr9j6a7DELVaISEoRgf
+	 mcVqhl0APFNNUglPtX2iDTIjW5hfD2qWiRGYo1P9tLI1egTQPh+YwAIit4DpFd6Vh6
+	 FFbJub1UiUKjGsU2c8t19UNAoxLOK8/omHOf+NsM=
+Subject: patch "serial: sc16is7xx: change EFR lock to operate on each channels" added to tty-testing
+To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Dec 2023 14:20:51 +0100
-Message-ID: <2023121551-gopher-basis-70d0@gregkh>
+Date: Fri, 15 Dec 2023 14:20:52 +0100
+Message-ID: <2023121552-squash-unstable-8909@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+    serial: sc16is7xx: change EFR lock to operate on each channels
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
@@ -61,94 +61,210 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From f6959c5217bd799bcb770b95d3c09b3244e175c6 Mon Sep 17 00:00:00 2001
+From 4409df5866b7ff7686ba27e449ca97a92ee063c9 Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 11 Dec 2023 12:13:49 -0500
-Subject: serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
+Date: Mon, 11 Dec 2023 12:13:51 -0500
+Subject: serial: sc16is7xx: change EFR lock to operate on each channels
 
-Remove global struct regmap so that it is more obvious that this
-regmap is to be used only in the probe function.
-
-Also add a comment to that effect in probe function.
+Now that the driver has been converted to use one regmap per port, change
+efr locking to operate on a channel basis instead of on the whole IC.
 
 Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-3-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231211171353.2901416-5-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 49 ++++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 8d1de4982b65..a4ad3ae8cae2 100644
+index 0a7a9aa5c9fa..0bda9b74d096 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -334,7 +334,6 @@ struct sc16is7xx_one {
+@@ -323,6 +323,7 @@ struct sc16is7xx_one_config {
+ struct sc16is7xx_one {
+ 	struct uart_port		port;
+ 	struct regmap			*regmap;
++	struct mutex			efr_lock; /* EFR registers access */
+ 	struct kthread_work		tx_work;
+ 	struct kthread_work		reg_work;
+ 	struct kthread_delayed_work	ms_work;
+@@ -342,7 +343,6 @@ struct sc16is7xx_port {
+ 	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
+ 	struct kthread_worker		kworker;
+ 	struct task_struct		*kworker_task;
+-	struct mutex			efr_lock;
+ 	struct sc16is7xx_one		p[];
+ };
  
- struct sc16is7xx_port {
- 	const struct sc16is7xx_devtype	*devtype;
--	struct regmap			*regmap;
- 	struct clk			*clk;
- #ifdef CONFIG_GPIOLIB
- 	struct gpio_chip		gpio;
-@@ -1434,7 +1433,8 @@ static void sc16is7xx_setup_irda_ports(struct sc16is7xx_port *s)
- /*
-  * Configure ports designated to operate as modem control lines.
-  */
--static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-+static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
-+				       struct regmap *regmap)
+@@ -494,7 +494,6 @@ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+ 
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
  {
- 	int i;
- 	int ret;
-@@ -1463,7 +1463,7 @@ static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
- 
- 	if (s->mctrl_mask)
- 		regmap_update_bits(
--			s->regmap,
-+			regmap,
- 			SC16IS7XX_IOCONTROL_REG,
- 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
- 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
-@@ -1495,6 +1495,10 @@ static int sc16is7xx_probe(struct device *dev,
- 	 * This device does not have an identification register that would
- 	 * tell us if we are really connected to the correct device.
- 	 * The best we can do is to check if communication is at all possible.
-+	 *
-+	 * Note: regmap[0] is used in the probe function to access registers
-+	 * common to all channels/ports, as it is guaranteed to be present on
-+	 * all variants.
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	u8 lcr;
+ 	u8 prescaler = 0;
+@@ -518,7 +517,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	 * because the bulk of the interrupt processing is run as a workqueue
+ 	 * job in thread context.
  	 */
- 	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
- 	if (ret < 0)
-@@ -1530,7 +1534,6 @@ static int sc16is7xx_probe(struct device *dev,
- 			return -EINVAL;
+-	mutex_lock(&s->efr_lock);
++	mutex_lock(&one->efr_lock);
+ 
+ 	lcr = sc16is7xx_port_read(port, SC16IS7XX_LCR_REG);
+ 
+@@ -537,7 +536,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	mutex_unlock(&s->efr_lock);
++	mutex_unlock(&one->efr_lock);
+ 
+ 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
+ 			      SC16IS7XX_MCR_CLKSEL_BIT,
+@@ -705,11 +704,10 @@ static unsigned int sc16is7xx_get_hwmctrl(struct uart_port *port)
+ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
+ {
+ 	struct uart_port *port = &one->port;
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	unsigned long flags;
+ 	unsigned int status, changed;
+ 
+-	lockdep_assert_held_once(&s->efr_lock);
++	lockdep_assert_held_once(&one->efr_lock);
+ 
+ 	status = sc16is7xx_get_hwmctrl(port);
+ 	changed = status ^ one->old_mctrl;
+@@ -735,15 +733,20 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
+ 
+ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+ {
++	bool rc = true;
+ 	struct uart_port *port = &s->p[portno].port;
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
++
++	mutex_lock(&one->efr_lock);
+ 
+ 	do {
+ 		unsigned int iir, rxlen;
+-		struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 
+ 		iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
+-		if (iir & SC16IS7XX_IIR_NO_INT_BIT)
+-			return false;
++		if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
++			rc = false;
++			goto out_port_irq;
++		}
+ 
+ 		iir &= SC16IS7XX_IIR_ID_MASK;
+ 
+@@ -783,15 +786,17 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+ 			break;
+ 		}
+ 	} while (0);
+-	return true;
++
++out_port_irq:
++	mutex_unlock(&one->efr_lock);
++
++	return rc;
+ }
+ 
+ static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
+ {
+ 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
+ 
+-	mutex_lock(&s->efr_lock);
+-
+ 	while (1) {
+ 		bool keep_polling = false;
+ 		int i;
+@@ -802,24 +807,22 @@ static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
+ 			break;
  	}
  
--	s->regmap = regmaps[0];
+-	mutex_unlock(&s->efr_lock);
+-
+ 	return IRQ_HANDLED;
+ }
+ 
+ static void sc16is7xx_tx_proc(struct kthread_work *ws)
+ {
+ 	struct uart_port *port = &(to_sc16is7xx_one(ws, tx_work)->port);
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	unsigned long flags;
+ 
+ 	if ((port->rs485.flags & SER_RS485_ENABLED) &&
+ 	    (port->rs485.delay_rts_before_send > 0))
+ 		msleep(port->rs485.delay_rts_before_send);
+ 
+-	mutex_lock(&s->efr_lock);
++	mutex_lock(&one->efr_lock);
+ 	sc16is7xx_handle_tx(port);
+-	mutex_unlock(&s->efr_lock);
++	mutex_unlock(&one->efr_lock);
+ 
+ 	uart_port_lock_irqsave(port, &flags);
+ 	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
+@@ -926,9 +929,9 @@ static void sc16is7xx_ms_proc(struct kthread_work *ws)
+ 	struct sc16is7xx_port *s = dev_get_drvdata(one->port.dev);
+ 
+ 	if (one->port.state) {
+-		mutex_lock(&s->efr_lock);
++		mutex_lock(&one->efr_lock);
+ 		sc16is7xx_update_mlines(one);
+-		mutex_unlock(&s->efr_lock);
++		mutex_unlock(&one->efr_lock);
+ 
+ 		kthread_queue_delayed_work(&s->kworker, &one->ms_work, HZ);
+ 	}
+@@ -1012,7 +1015,6 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 				  struct ktermios *termios,
+ 				  const struct ktermios *old)
+ {
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	unsigned int lcr, flow = 0;
+ 	int baud;
+@@ -1071,7 +1073,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 		port->ignore_status_mask |= SC16IS7XX_LSR_BRK_ERROR_MASK;
+ 
+ 	/* As above, claim the mutex while accessing the EFR. */
+-	mutex_lock(&s->efr_lock);
++	mutex_lock(&one->efr_lock);
+ 
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+ 			     SC16IS7XX_LCR_CONF_MODE_B);
+@@ -1101,7 +1103,7 @@ static void sc16is7xx_set_termios(struct uart_port *port,
+ 	/* Update LCR register */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+ 
+-	mutex_unlock(&s->efr_lock);
++	mutex_unlock(&one->efr_lock);
+ 
+ 	/* Get baud rate generator configuration */
+ 	baud = uart_get_baud_rate(port, termios, old,
+@@ -1535,7 +1537,6 @@ static int sc16is7xx_probe(struct device *dev,
+ 
  	s->devtype = devtype;
  	dev_set_drvdata(dev, s);
- 	mutex_init(&s->efr_lock);
-@@ -1545,7 +1548,7 @@ static int sc16is7xx_probe(struct device *dev,
- 	sched_set_fifo(s->kworker_task);
+-	mutex_init(&s->efr_lock);
  
- 	/* reset device, purging any pending irq / data */
--	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
-+	regmap_write(regmaps[0], SC16IS7XX_IOCONTROL_REG,
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+ 	kthread_init_worker(&s->kworker);
+ 	s->kworker_task = kthread_run(kthread_worker_fn, &s->kworker,
+@@ -1578,6 +1579,8 @@ static int sc16is7xx_probe(struct device *dev,
+ 			goto out_ports;
+ 		}
  
- 	for (i = 0; i < devtype->nr_uart; ++i) {
-@@ -1616,7 +1619,7 @@ static int sc16is7xx_probe(struct device *dev,
- 
- 	sc16is7xx_setup_irda_ports(s);
- 
--	ret = sc16is7xx_setup_mctrl_ports(s);
-+	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
- 	if (ret)
- 		goto out_ports;
- 
++		mutex_init(&s->p[i].efr_lock);
++
+ 		ret = uart_get_rs485_mode(&s->p[i].port);
+ 		if (ret)
+ 			goto out_ports;
 -- 
 2.43.0
 
