@@ -1,166 +1,122 @@
-Return-Path: <stable+bounces-6793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70D681444C
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 10:13:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672DA8144BB
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 10:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C22E21C2296B
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 09:13:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C68A1F23597
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 09:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B69117986;
-	Fri, 15 Dec 2023 09:13:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ut7X5JBl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B4418654;
+	Fri, 15 Dec 2023 09:38:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD35E171BB
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 09:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702631617;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mCTQScLuKQiezRjjUFhdXG9Jlauh3ct64es9RA+0UfM=;
-	b=Ut7X5JBleC6Xwi2tkiqWmj0y9k0MRYQS81sKNoraysSLkDTy37GdLYO7XFzBM6fEoJz1L0
-	DLAs2roPQJYRLwv2VpbwNkT7WcoMrAMKtHZ01AbMWZdPkqVRaAGP8Hgq3oCI9U1z2qc31q
-	s45NiwPcDXznc0kTMS3I/UjC8qpG9aw=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-mbPSSxUUOIm_qstTMMWCgw-1; Fri, 15 Dec 2023 04:13:34 -0500
-X-MC-Unique: mbPSSxUUOIm_qstTMMWCgw-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a19d1aace7cso27494266b.2
-        for <stable@vger.kernel.org>; Fri, 15 Dec 2023 01:13:34 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702631613; x=1703236413;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mCTQScLuKQiezRjjUFhdXG9Jlauh3ct64es9RA+0UfM=;
-        b=pzN3XNt4WM9qHO9AjrgJlBr/uo8o8jSxpKI05IIj48objajYS/RlEIXJjddo9JFU/r
-         rzcDIS98AlOlI2DHZFQ0GqVNib1LC1e6knChr5K8e7HzCTTl7bkI4d1WANMlCH/BHlhp
-         d077TLGZO4aH6w1ArLfSuh/eHSXCxh3RYE/vo6A+JkUO+On2S8q8Xum48rL7zkm+ZdIO
-         EXQj444zGOQUyt88GE9FbaDzWM/AVcYVXYkwcDij932TltRIfSywoYdxQnv7zAZLQSm9
-         cSJUYEL4SOyRR97JNDIBz0Q601e2XZFs7oM0KEzEBLFULXaFdn2TllJiXPhcJaSHqj2I
-         dV8Q==
-X-Gm-Message-State: AOJu0Yxm0TyGCu8ivJVbCKuaJCV+BLoMS10pt3m8AHIz741byObh5Dy2
-	FGhB7ehL8SseSdTdH6Ntl52d2bwYR/vxqYNApWli486lSKbQscZWqZ+ow/v1tim+xg9pZaxvXbf
-	9rORv1eqhH3GzeTwC
-X-Received: by 2002:a17:907:7ea1:b0:a1e:9d8b:1e7b with SMTP id qb33-20020a1709077ea100b00a1e9d8b1e7bmr6763948ejc.69.1702631613263;
-        Fri, 15 Dec 2023 01:13:33 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFQX2K49wZx8NRs4i3izG9jXcEjfCvo6Nhck0rRshHPWrt45MA2CA1J4VUIPKs3qJYCJq+Npw==
-X-Received: by 2002:a17:907:7ea1:b0:a1e:9d8b:1e7b with SMTP id qb33-20020a1709077ea100b00a1e9d8b1e7bmr6763936ejc.69.1702631612926;
-        Fri, 15 Dec 2023 01:13:32 -0800 (PST)
-Received: from imammedo.users.ipa.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id un7-20020a170907cb8700b009fc42f37970sm10618107ejc.171.2023.12.15.01.13.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 01:13:32 -0800 (PST)
-Date: Fri, 15 Dec 2023 10:13:31 +0100
-From: Igor Mammedov <imammedo@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, Fiona Ebner
- <f.ebner@proxmox.com>, Dongli Zhang <dongli.zhang@oracle.com>, Jonathan
- Woithe <jwoithe@just42.net>, "Rafael J . Wysocki" <rafael@kernel.org>,
- "Michael S . Tsirkin" <mst@redhat.com>, Bjorn Helgaas
- <bhelgaas@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "PCI: acpiphp: Reassign resources on bridge if
- necessary"
-Message-ID: <20231215101331.3db4d131@imammedo.users.ipa.redhat.com>
-In-Reply-To: <20231214165102.1093961-1-helgaas@kernel.org>
-References: <20231214165102.1093961-1-helgaas@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4796F18AE1;
+	Fri, 15 Dec 2023 09:38:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rE4ec-0006LH-4f; Fri, 15 Dec 2023 10:38:46 +0100
+Message-ID: <7766d1f5-103a-4a46-b95b-2e27dc63644f@leemhuis.info>
+Date: Fri, 15 Dec 2023 10:38:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] vsocket timeout with kata containers agent 3.2.0 and
+ kernel 6.1.63
+Content-Language: en-US, de-DE
+To: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+References: <CACW2H-4FpZAizkp+U1aS94V_ODn8NUd1ta27BAz_zh0wo63_rQ@mail.gmail.com>
+ <CAGxU2F6C8oUY4B38y17Ti9u9QdYqQKamM+S2nofjYe5b9L1tBQ@mail.gmail.com>
+ <CACW2H-7xr8-kDWJ9xqzx7c1Ud3QhqL2w+BGYpjOEdnkj9_Kzhg@mail.gmail.com>
+ <CAGxU2F5=fTNQVf7gkmLGTeRe825H6tw_vi_uuUiX-hXyRR=1nQ@mail.gmail.com>
+From: "Linux regression tracking #update (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAGxU2F5=fTNQVf7gkmLGTeRe825H6tw_vi_uuUiX-hXyRR=1nQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1702633128;56993870;
+X-HE-SMSGID: 1rE4ec-0006LH-4f
 
-On Thu, 14 Dec 2023 10:51:02 -0600
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
-> subsequent fix to it:
-> 
->   cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-> 
-> 40613da52b13 fixed a problem where hot-adding a device with large BARs
-> failed if the bridge windows programmed by firmware were not large enough.
-> 
-> cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
-> only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
-> of a device on a PCI root bus (common in the virt world) or firmware
-> sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
-> 7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
-> 
-> Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
-> problems:
-> 
->   - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
->     sometimes.
-> 
->   - Dongli reported a similar problem with hot-add of SCSI disks.
-> 
->   - Jonathan reported a console freeze during boot on bare metal due to an
->     error in radeon GPU initialization.
-> 
-> Revert both patches to avoid adding these problems.  This means we will
-> again see the problems with hot-adding devices with large BARs and the NULL
-> pointer dereferences and suspend/resume issues that 40613da52b13 and
-> cc22522fd55e were intended to fix.
-> 
-> Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-> Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-> Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-> Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
-> Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
-> Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
-> Reported-by: Jonathan Woithe <jwoithe@just42.net>
-> Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: <stable@vger.kernel.org>
-> Cc: Igor Mammedov <imammedo@redhat.com>
+On 11.12.23 16:23, Stefano Garzarella wrote:
+> On Mon, Dec 11, 2023 at 3:20 PM Simon Kaegi <simon.kaegi@gmail.com> wrote:
+>> Thanks Greg, Stefano,
+>>
+>> tldr; withdrawing the regression -- rust-vmm vsock mistake
 
-Acked-by: Igor Mammedov <imammedo@redhat.com>
+In that case:
 
-> ---
->  drivers/pci/hotplug/acpiphp_glue.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+#regzbot resolve: reporter withdrawed the report
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
+>> Thanks all... nothing to see.
+>> - Simon
+>>
+>> On Mon, Dec 11, 2023 at 3:39 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>>
+>>> On Mon, Dec 11, 2023 at 5:05 AM Simon Kaegi <simon.kaegi@gmail.com> wrote:
+>>>>
+>>>> #regzbot introduced v6.1.62..v6.1.63
+>>>> #regzbot introduced: baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
+>>>>
+>>>> We hit this regression when updating our guest vm kernel from 6.1.62 to
+>>>> 6.1.63 -- bisecting, this problem was introduced
+>>>> in baddcc2c71572968cdaeee1c4ab3dc0ad90fa765 -- virtio/vsock: replace
+>>>> virtio_vsock_pkt with sk_buff --
+>>>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.63&id=baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
+>>>>
+>>>> We're getting a timeout when trying to connect to the vsocket in the
+>>>> guest VM when launching a kata containers 3.2.0 agent. We haven't done
+>>>> much more to understand the problem at this point.
+>>>
+>>> It looks like the same issue described here:
+>>> https://github.com/rust-vmm/vm-virtio/issues/204
+>>>
+>>> In summary that patch also contains a performance improvement, because
+>>> by switching to sk_buffs, we can use only one descriptor for the whole
+>>> packet (header + payload), whereas before we used two for each packet.
+>>> Some devices (e.g. rust-vmm's vsock) mistakenly always expect 2
+>>> descriptors, but this is a violation of the VIRTIO specification.
+>>>
+>>> Which device are you using?
+>>>
+>>> Can you confirm that your device conforms to the specification?
+>>>
+>>> Stefano
+>>>
+>>>>
+>>>> We can reproduce 100% of the time but don't currently have a simple
+>>>> reproducer as the problem was found in our build service which uses
+>>>> kata-containers (with cloud-hypervisor).
+>>>>
+>>>> We have not checked the mainline as we currently are tied to 6.1.x.
+>>>>
+>>>> -Simon
+>>>>
+>>>
+>>
 > 
-> diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-> index 601129772b2d..5b1f271c6034 100644
-> --- a/drivers/pci/hotplug/acpiphp_glue.c
-> +++ b/drivers/pci/hotplug/acpiphp_glue.c
-> @@ -512,15 +512,12 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
->  				if (pass && dev->subordinate) {
->  					check_hotplug_bridge(slot, dev);
->  					pcibios_resource_survey_bus(dev->subordinate);
-> -					if (pci_is_root_bus(bus))
-> -						__pci_bus_size_bridges(dev->subordinate, &add_list);
-> +					__pci_bus_size_bridges(dev->subordinate,
-> +							       &add_list);
->  				}
->  			}
->  		}
-> -		if (pci_is_root_bus(bus))
-> -			__pci_bus_assign_resources(bus, &add_list, NULL);
-> -		else
-> -			pci_assign_unassigned_bridge_resources(bus->self);
-> +		__pci_bus_assign_resources(bus, &add_list, NULL);
->  	}
->  
->  	acpiphp_sanitize_bus(bus);
-
+> 
+> 
 
