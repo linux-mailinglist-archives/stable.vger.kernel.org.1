@@ -1,130 +1,88 @@
-Return-Path: <stable+bounces-6809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111858146A3
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 12:19:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720FA8146D8
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 12:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1EE428423C
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:19:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10BFF1F211A5
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB48200AD;
-	Fri, 15 Dec 2023 11:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E8124A15;
+	Fri, 15 Dec 2023 11:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z066T/hi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tr2LhUQz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AB734558
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 11:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702639075; x=1734175075;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=CABde8yKJe0Cl0xxR+1vVQSnkZhyPhpDfbH3OaB8c5U=;
-  b=Z066T/hi0C7Y0EiS0f1/BpaW66AwNppwxBi1k5M8pywPABsAzI0EQ+Wl
-   gdlvgu1HgYZtmRHHLoDjtM90jYukqcuwGReW+HtMjYTOdCmjJYSmu5FYG
-   3JE00SJcDl3uuq/a/5bkWABC4T3fOZUy4tvLKHFIAVC8XRYKbdfllOHNY
-   cL+r6szK0AQooiNHlSmkoc8Todq3KqFydABevLDWSsWKp/XkFHqZMwJdS
-   qDtrBs9Pgfg12/eUwnFdTHhW52bz+2QfFuqzm0ht+J6dRRbOWvIAli5dJ
-   G4eD8THBnhNouKgmtFmaTKP0OSHVWsNExelLiS3TFWqdcMBFSW7hdFqmh
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="380258271"
-X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
-   d="scan'208";a="380258271"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 03:17:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="767948148"
-X-IronPort-AV: E=Sophos;i="6.04,278,1695711600"; 
-   d="scan'208";a="767948148"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga007.jf.intel.com with SMTP; 15 Dec 2023 03:17:46 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 15 Dec 2023 13:17:45 +0200
-Date: Fri, 15 Dec 2023 13:17:45 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: "Lisovskiy, Stanislav" <stanislav.lisovskiy@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915: Reject async flips with bigjoiner
-Message-ID: <ZXw12T9rLTo0u2Mc@intel.com>
-References: <20231211081134.2698-1-ville.syrjala@linux.intel.com>
- <ZXn5aJsa41Nv2tXA@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B431B250E2
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 11:26:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1835C433C7;
+	Fri, 15 Dec 2023 11:26:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702639618;
+	bh=fA1hGhHhAZ1Xj+eOMfobIe1sLYNAJzCGgh4X92ivN/g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Tr2LhUQzeR0dgamyiDGksl41wMZ+68ga/H8bs3R5M6mtIsEJ/8ReeUrWPWaGEZCiQ
+	 9U59lvKcroyW8l+yVgsKPlbWYO0c3WQkWgTiMf6ptP0B2+BWkL8vTPMeE1GYOKbImx
+	 Fih+6c/MDg26+qH8wNVzdFSnfFsq1YsHNJL41Hyg=
+Date: Fri, 15 Dec 2023 12:26:55 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Ming Lei <ming.lei@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	Hannes Reinecke <hare@suse.com>, kernel@openvz.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] scsi: code: always send batch on reset or error
+ handling command
+Message-ID: <2023121548-dubiously-staple-758e@gregkh>
+References: <20231215103013.2879483-1-alexander.atanasov@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZXn5aJsa41Nv2tXA@intel.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <20231215103013.2879483-1-alexander.atanasov@virtuozzo.com>
 
-On Wed, Dec 13, 2023 at 08:36:49PM +0200, Lisovskiy, Stanislav wrote:
-> On Mon, Dec 11, 2023 at 10:11:34AM +0200, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > Currently async flips are busted when bigjoiner is in use.
-> > As a short term fix simply reject async flips in that case.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9769
-> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > ---
-> >  drivers/gpu/drm/i915/display/intel_display.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-> > index d955957b7d18..61053c19f4cc 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_display.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_display.c
-> > @@ -5926,6 +5926,17 @@ static int intel_async_flip_check_uapi(struct intel_atomic_state *state,
-> >  		return -EINVAL;
-> >  	}
-> >  
-> > +	/*
-> > +	 * FIXME: Bigjoiner+async flip is busted currently.
-> > +	 * Remove this check once the issues are fixed.
-> > +	 */
-> > +	if (new_crtc_state->bigjoiner_pipes) {
-> > +		drm_dbg_kms(&i915->drm,
-> > +			    "[CRTC:%d:%s] async flip disallowed with bigjoiner\n",
-> > +			    crtc->base.base.id, crtc->base.name);
-> > +		return -EINVAL;
-> > +	}
-> > +
+On Fri, Dec 15, 2023 at 12:30:13PM +0200, Alexander Atanasov wrote:
+> In commit 8930a6c20791 ("scsi: core: add support for request batching")
+> blk-mq last flags was mapped to SCMD_LAST and used as an indicator to
+> send the batch for the drivers that implement it but the error handling
+> code was not updated.
 > 
-> Was recently wondering, whether should we add some kind of helper
-> func for that check to look more readable, i.e instead of just
-> checking if crtc_state->bigjoiner_pipes != 0, call smth like
-> is_bigjoiner_used(new_crtc_state)..
-
-I suppose we could have something like that. We do have something
-along those lines for eg. port sync. The difference being that
-port sync has a bit more state than a single bitmask, so it's
-more useful there.
-
+> scsi_send_eh_cmnd(...) is used to send error handling commands and
+> request sense. The problem is that request sense comes as a single
+> command that gets into the batch queue and times out.  As result
+> device goes offline after several failed resets. This was observed
+> on virtio_scsi device resize operation.
 > 
-> Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
->
+> [  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
+> [  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
+> [  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
+> 
+> To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd and
+> scsi_reset_ioctl(...).
+> 
+> Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
+> Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+> ---
+>  drivers/scsi/scsi_error.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Thanks.
+<formletter>
 
-> >  	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
-> >  					     new_plane_state, i) {
-> >  		if (plane->pipe != crtc->pipe)
-> > -- 
-> > 2.41.0
-> > 
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
--- 
-Ville Syrjälä
-Intel
+</formletter>
 
