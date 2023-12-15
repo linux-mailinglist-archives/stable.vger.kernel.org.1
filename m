@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BC48148FD
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B28814901
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 14:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C3E1C23349
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67FF71C23A82
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 13:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713152DB65;
-	Fri, 15 Dec 2023 13:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4707830346;
+	Fri, 15 Dec 2023 13:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bft5prgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zya1qhjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD1A2FE38
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 499B9C433C7;
-	Fri, 15 Dec 2023 13:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065923033B
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 13:21:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3170FC433C8;
+	Fri, 15 Dec 2023 13:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702646464;
-	bh=9ADrbossqAK6t9+2kre0zKPpm0Bt+93Ic73/DYHCLcU=;
+	s=korg; t=1702646467;
+	bh=OPtsVLpHLwEPJmg13bk8E3I5ELfgEDp0z6pOAgOR4a8=;
 	h=Subject:To:From:Date:From;
-	b=Bft5prgLjpm/7QHij+UGn1QToD5Mbt5Ne/Y00kpL5RBrMEbv57NOU/saoYLR8hoa5
-	 k5mJph3l4Bwd8tGXhreqPRqzPWwP/3+QcVFMi7CR1xboGnBvO1/q4j7j+g63/nxkwI
-	 nRixI89RAW0mPX81T86ngDHO4k7er39j83VmuxIY=
-Subject: patch "serial: sc16is7xx: remove wasteful static buffer in" added to tty-testing
+	b=zya1qhjFGgjISEnFSpyhPIuLp+hZvaQYAoX2QYpQGwW3zCYm+K9J6rXr1EM4aQHIy
+	 uc4JJEPYYWnOpdIajewWS6oJAoyBAHbMKHcf0yL9fhONtGkk151sPVgITIMBa9CEqO
+	 vXuPltrYLmo64Ve4ZlMpU0rCfXHb/vyWoVqOb+Dk=
+Subject: patch "serial: sc16is7xx: remove global regmap from struct sc16is7xx_port" added to tty-testing
 To: hvilleneuve@dimonoff.com,andy.shevchenko@gmail.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 15 Dec 2023 14:20:50 +0100
-Message-ID: <2023121550-unmoved-crunching-3e2d@gregkh>
+Date: Fri, 15 Dec 2023 14:20:51 +0100
+Message-ID: <2023121551-gopher-basis-70d0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: remove wasteful static buffer in
+    serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
@@ -61,58 +61,94 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 6bcab3c8acc88e265c570dea969fd04f137c8a4c Mon Sep 17 00:00:00 2001
+From f6959c5217bd799bcb770b95d3c09b3244e175c6 Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 11 Dec 2023 12:13:48 -0500
-Subject: serial: sc16is7xx: remove wasteful static buffer in
- sc16is7xx_regmap_name()
+Date: Mon, 11 Dec 2023 12:13:49 -0500
+Subject: serial: sc16is7xx: remove global regmap from struct sc16is7xx_port
 
-Using a static buffer inside sc16is7xx_regmap_name() was a convenient and
-simple way to set the regmap name without having to allocate and free a
-buffer each time it is called. The drawback is that the static buffer
-wastes memory for nothing once regmap is fully initialized.
+Remove global struct regmap so that it is more obvious that this
+regmap is to be used only in the probe function.
 
-Remove static buffer and use constant strings instead.
-
-This also avoids a truncation warning when using "%d" or "%u" in snprintf
-which was flagged by kernel test robot.
+Also add a comment to that effect in probe function.
 
 Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+Cc:  <stable@vger.kernel.org>
 Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-2-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231211171353.2901416-3-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 9cb503169a48..8d1de4982b65 100644
+index 8d1de4982b65..a4ad3ae8cae2 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1708,13 +1708,15 @@ static struct regmap_config regcfg = {
- 	.max_register = SC16IS7XX_EFCR_REG,
- };
+@@ -334,7 +334,6 @@ struct sc16is7xx_one {
  
--static const char *sc16is7xx_regmap_name(unsigned int port_id)
-+static const char *sc16is7xx_regmap_name(u8 port_id)
+ struct sc16is7xx_port {
+ 	const struct sc16is7xx_devtype	*devtype;
+-	struct regmap			*regmap;
+ 	struct clk			*clk;
+ #ifdef CONFIG_GPIOLIB
+ 	struct gpio_chip		gpio;
+@@ -1434,7 +1433,8 @@ static void sc16is7xx_setup_irda_ports(struct sc16is7xx_port *s)
+ /*
+  * Configure ports designated to operate as modem control lines.
+  */
+-static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
++static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s,
++				       struct regmap *regmap)
  {
--	static char buf[6];
--
--	snprintf(buf, sizeof(buf), "port%d", port_id);
--
--	return buf;
-+	switch (port_id) {
-+	case 0:	return "port0";
-+	case 1:	return "port1";
-+	default:
-+		WARN_ON(true);
-+		return NULL;
-+	}
- }
+ 	int i;
+ 	int ret;
+@@ -1463,7 +1463,7 @@ static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
  
- static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
+ 	if (s->mctrl_mask)
+ 		regmap_update_bits(
+-			s->regmap,
++			regmap,
+ 			SC16IS7XX_IOCONTROL_REG,
+ 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
+ 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
+@@ -1495,6 +1495,10 @@ static int sc16is7xx_probe(struct device *dev,
+ 	 * This device does not have an identification register that would
+ 	 * tell us if we are really connected to the correct device.
+ 	 * The best we can do is to check if communication is at all possible.
++	 *
++	 * Note: regmap[0] is used in the probe function to access registers
++	 * common to all channels/ports, as it is guaranteed to be present on
++	 * all variants.
+ 	 */
+ 	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
+ 	if (ret < 0)
+@@ -1530,7 +1534,6 @@ static int sc16is7xx_probe(struct device *dev,
+ 			return -EINVAL;
+ 	}
+ 
+-	s->regmap = regmaps[0];
+ 	s->devtype = devtype;
+ 	dev_set_drvdata(dev, s);
+ 	mutex_init(&s->efr_lock);
+@@ -1545,7 +1548,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 	sched_set_fifo(s->kworker_task);
+ 
+ 	/* reset device, purging any pending irq / data */
+-	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
++	regmap_write(regmaps[0], SC16IS7XX_IOCONTROL_REG,
+ 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+ 
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
+@@ -1616,7 +1619,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 
+ 	sc16is7xx_setup_irda_ports(s);
+ 
+-	ret = sc16is7xx_setup_mctrl_ports(s);
++	ret = sc16is7xx_setup_mctrl_ports(s, regmaps[0]);
+ 	if (ret)
+ 		goto out_ports;
+ 
 -- 
 2.43.0
 
