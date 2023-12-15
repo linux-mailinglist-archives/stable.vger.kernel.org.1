@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-6844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76EBE814FEC
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 19:59:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CD1814FED
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 19:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33682286918
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 18:59:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA0C1F24DBF
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 18:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EBD83FB11;
-	Fri, 15 Dec 2023 18:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5076730CE7;
+	Fri, 15 Dec 2023 18:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ie4nYvuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMb7/5RC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5824A3FB0B
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 18:59:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EA1C433C7;
-	Fri, 15 Dec 2023 18:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24030119
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 18:59:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A4CC433C8;
+	Fri, 15 Dec 2023 18:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702666752;
-	bh=QMWqrgoMVmHokKD72uCnxLlfo6Vcc/wP1tNnOGEHnco=;
+	s=korg; t=1702666761;
+	bh=kWzL6Vr3Jwk1etDj2Mdm+0prj6W2xusgCRqzxsQ4L3c=;
 	h=Subject:To:From:Date:From;
-	b=ie4nYvuc0YD6Ry/ZZD9g0Hk9mkFtkhe+Psk1+uhruhKlb/gpqu2JgMOLR3c7S5KGt
-	 2C3TRNDMJyV1gLbQpOojPdmGeXTm6lVNavdWb50WxFrD8VE7L8BsxpA9PHg9P+lZz1
-	 2oaP9PeZT2mMZWcVCTJgJmqtXA0+Armw4U2UOUbI=
-Subject: patch "parport: parport_serial: Add Brainboxes BAR details" added to char-misc-testing
+	b=SMb7/5RC8L23tghSZep9LgZQFvitUL4keHFh+3++X9y6zyfS1h1jyl1qIXEVSq/if
+	 NS1rEx+w22UPYxsWi5ma/Yb8kfWjbqFZsVWtv8wOmnchNpGjlhapwcJFwi6n55yi1Y
+	 Vc9H8s9shCTfmRRRdThhqHjdUPfcWHb9k5yuPdZQ=
+Subject: patch "parport: parport_serial: Add Brainboxes device IDs and geometry" added to char-misc-testing
 To: cang1@live.co.uk,gregkh@linuxfoundation.org,stable@vger.kernel.org,sudipm.mukherjee@gmail.com
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 15 Dec 2023 19:59:10 +0100
-Message-ID: <2023121510-landmark-bounding-be8c@gregkh>
+Message-ID: <2023121510-multiply-endocrine-5fe5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    parport: parport_serial: Add Brainboxes BAR details
+    parport: parport_serial: Add Brainboxes device IDs and geometry
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -61,48 +61,99 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 65fde134b0a4ffe838729f9ee11b459a2f6f2815 Mon Sep 17 00:00:00 2001
+From 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 Mon Sep 17 00:00:00 2001
 From: Cameron Williams <cang1@live.co.uk>
-Date: Thu, 2 Nov 2023 21:07:05 +0000
-Subject: parport: parport_serial: Add Brainboxes BAR details
+Date: Thu, 2 Nov 2023 21:07:06 +0000
+Subject: parport: parport_serial: Add Brainboxes device IDs and geometry
 
-Add BAR/enum entries for Brainboxes serial/parallel cards.
+Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
+IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
+for the cards.
+This patch requires part 1 of this series.
 
 Cc:  <stable@vger.kernel.org>
 Signed-off-by: Cameron Williams <cang1@live.co.uk>
 Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB79035155C2D5C3333AE6FA52C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/parport_serial.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/parport/parport_serial.c | 56 ++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
 diff --git a/drivers/parport/parport_serial.c b/drivers/parport/parport_serial.c
-index 9f5d784cd95d..11989368611a 100644
+index 11989368611a..3644997a8342 100644
 --- a/drivers/parport/parport_serial.c
 +++ b/drivers/parport/parport_serial.c
-@@ -65,6 +65,10 @@ enum parport_pc_pci_cards {
- 	sunix_5069a,
- 	sunix_5079a,
- 	sunix_5099a,
-+	brainboxes_uc257,
-+	brainboxes_is300,
-+	brainboxes_uc414,
-+	brainboxes_px263,
+@@ -285,6 +285,38 @@ static struct pci_device_id parport_serial_pci_tbl[] = {
+ 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
+ 	  0x0104, 0, 0, sunix_5099a },
+ 
++	/* Brainboxes UC-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-414 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
++
++	/* Brainboxes UC-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes IS-300/IS-500 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
++
++	/* Brainboxes PX-263/PX-295 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
++
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
+@@ -550,6 +582,30 @@ static struct pciserial_board pci_parport_serial_boards[] = {
+ 		.base_baud      = 921600,
+ 		.uart_offset	= 0x8,
+ 	},
++	[brainboxes_uc257] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 2,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_is300] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 1,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_uc414] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_px263] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 921600,
++		.uart_offset	= 8,
++	},
  };
  
- /* each element directly indexed from enum list, above */
-@@ -158,6 +162,10 @@ static struct parport_pc_pci cards[] = {
- 	/* sunix_5069a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5079a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5099a */		{ 1, { { 1, 2 }, } },
-+	/* brainboxes_uc257 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_is300 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_uc414 */  { 1, { { 3, -1 }, } },
-+	/* brainboxes_px263 */	{ 1, { { 3, -1 }, } },
- };
- 
- static struct pci_device_id parport_serial_pci_tbl[] = {
+ struct parport_serial_private {
 -- 
 2.43.0
 
