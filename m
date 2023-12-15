@@ -1,98 +1,136 @@
-Return-Path: <stable+bounces-6804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0505081468D
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 12:15:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F09814682
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 12:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37ACB1C22DBB
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:15:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C6D6B2384E
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 11:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D495249EF;
-	Fri, 15 Dec 2023 11:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9E3208A0;
+	Fri, 15 Dec 2023 11:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QAkSQ5tr"
-X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q0jKyCLB"
+X-Original-To: Stable@vger.kernel.org
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B431C292
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 11:15:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 178F4C433C8;
-	Fri, 15 Dec 2023 11:15:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702638944;
-	bh=hd4e2lV5ChQziGpxO0vExderVTsEU3Yjco23mKtv63s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QAkSQ5tr+USy1TV1kiHotBKcYYQiTmT7FtKm2KEZO5/s2Tg3SwjtwlTmRdzmE6HqY
-	 LrVvNTh9RDs8rAMRLjE8QW9XflE9t88fV5b7GGhIV2xTALGv+suqHy1IHbTIUtZp3l
-	 G6gi8z99LcCkSwCTTG12zZhwpxhcQdeeH9B8dWTHqJJd5/X8vta1yehEzh7uvMsNoi
-	 UV5yVubyHehOYtNo//XSVd+oeHha/n36znpVcDW7px3KUnhdf9d5g2fjdm9TvAz0VM
-	 E19QyBabxj0VWjNOvjRyWenVvxr4aqZPZ5ibuqbGJ5F3WYxyu/Mf97Cyq2EUwOMnwW
-	 G+0KHXnnpHwdA==
-From: Naveen N Rao <naveen@kernel.org>
-To: <stable@vger.kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.4.y 2/2] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
-Date: Fri, 15 Dec 2023 16:43:29 +0530
-Message-ID: <20231215111329.2362254-2-naveen@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231215111329.2362254-1-naveen@kernel.org>
-References: <2023080737-guileless-magazine-d8dc@gregkh>
- <20231215111329.2362254-1-naveen@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27BC24B57
+	for <Stable@vger.kernel.org>; Fri, 15 Dec 2023 11:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-336447100e9so481918f8f.1
+        for <Stable@vger.kernel.org>; Fri, 15 Dec 2023 03:14:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702638850; x=1703243650; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OnJpzLu7OYN2kATFIxauIPkE+ThNdZJEPlO0+LslewE=;
+        b=q0jKyCLBqP5P2yytnfjdxWjXzP/FB2eWySUmf4FK5nSWEJrsqXt9JfsLqQEyx1GwOE
+         UBF+sX/NiWGUQTjihJa+sf00WVZy3ezM+m5Dlqk0klshK5KAy8iVpSChDk3O5nz/946g
+         VCFTuStKz4sere4JtQGK+MRcEDRiicGrjf0EAqwgD3PAXTy1oUO9GKDffwMAJk2HZQng
+         Dve3hZ3jkx/+dO7fjwffSE02DUU8Gi98VQ55f6DZkv+GDluCZxszjnwZzFd44EAYeB3b
+         i3YK1uvEDi+slcZbGjefACnR8R3K/MQhvbyJbppLgFsGGwtnvUe0UL/IFjoqImvf0eHs
+         fYzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702638850; x=1703243650;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OnJpzLu7OYN2kATFIxauIPkE+ThNdZJEPlO0+LslewE=;
+        b=lK4r6KID+xh/cK+9hoB2nBx/GvIlw661B5K7ZN1q7wEPnunVBsbFilP8h3KlVWrwYH
+         edgRvVqGdWt0k03xz0Cc4htN8GUga2roo8HbQtI30ol0UnupIU7r+ewCJc7ES3j6gaoY
+         Tz8kylwh/xaTi73uUBOEwd/BPLqsnSGIbMu/jpe0il1mAyG7NI7HWtX0/sHMRNSRQ4Wm
+         srxHwukyCXBO1qpsgV0YvlKdXibL0geLuSOUh4br2tALyQBfR6J86aBCbMiGmtzisWET
+         LOY91QsGk0t+Qzxw+k9S762rTflwx5Mo8XuIB6iEF+k07TzjrlY72FOFaE7YVBHkcoVn
+         AuLw==
+X-Gm-Message-State: AOJu0Yz6d6j6OLTNa4i1gTCnlaEWOM/0ge9Tp031Ox+EEAtuxiGDJH0u
+	Xm6HckJaCyvAgMRDNBNP1unPxw==
+X-Google-Smtp-Source: AGHT+IEQKXQ5LyKOaRaMJojLvq3gOiWO1LAIRx+9ZVuoAsq3xlmZhmmHfL8ZTS4YRtVL1AjHvilqoQ==
+X-Received: by 2002:a05:6000:361:b0:334:b2bb:6d20 with SMTP id f1-20020a056000036100b00334b2bb6d20mr5855159wrf.136.1702638850043;
+        Fri, 15 Dec 2023 03:14:10 -0800 (PST)
+Received: from localhost.localdomain ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id s15-20020a5d69cf000000b0033641783aeesm6310757wrw.7.2023.12.15.03.14.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Dec 2023 03:14:08 -0800 (PST)
+From: srinivas.kandagatla@linaro.org
+To: gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	Stable@vger.kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 1/2] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+Date: Fri, 15 Dec 2023 11:13:57 +0000
+Message-Id: <20231215111358.316727-2-srinivas.kandagatla@linaro.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231215111358.316727-1-srinivas.kandagatla@linaro.org>
+References: <20231215111358.316727-1-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1617; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=UKAdVIXxLSVBpAJKLuqzEbLVs38PD1Le2xvasZyzjIY=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBlfDTr5PT7T6ZV3YrphFFwHqKtzIySk17uPKUOd zyrCuGAT46JATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZXw06wAKCRB6of1ZxzRV N2RGB/48szrzNOEZ67K0VhqAoDiIn4lVCY8fRMR948594eiPbRPYnAb44I1O4cwf03yQgovwftU 1mumOpVul/nKyDJ5A4fSxVpdHbR/UTrzp9exXhsBs0nniqJ2pUcKspe4xMckjVI99nJhNG4Ysf4 ROPWqaO0xdYPhVOfOLaU1Lzj7jEFUN3MDO/06ZA2NLYOXlkPy7dxWR+gmp8oS4B//oJqp7t7zwl ZpDWZvwu/MB+F6XoPnqt6edD8Nl6a1GzxkKn12EOoYScASGPrmuXocA6cAQXUdatXwhvYdOkMT1 x1GHxoI76rT9nQQGCbdYhBEGVwbH21ljeuo87jtxO74UOJAx
+X-Developer-Key: i=srinivas.kandagatla@linaro.org; a=openpgp; fpr=ED6472765AB36EC43B3EF97AD77E3FC0562560D6
 Content-Transfer-Encoding: 8bit
 
-commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
+From: Fabio Estevam <festevam@denx.de>
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
+the format:
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
+compatible = "fsl,imx28-ocotp", "fsl,ocotp";
 
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
+Document the "fsl,ocotp" entry to fix the following schema
+warning:
+
+efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
+from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
+
+Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 ---
- arch/powerpc/kernel/trace/ftrace_64_mprofile.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-index da2ca0c6c2c4..0bc39ff53233 100644
---- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-@@ -55,7 +55,7 @@ _GLOBAL(ftrace_regs_caller)
- 	SAVE_10GPRS(22, r1)
+diff --git a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+index f43186f98607..d9287be89877 100644
+--- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+@@ -15,9 +15,11 @@ allOf:
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	std	r8, GPR1(r1)
+ properties:
+   compatible:
+-    enum:
+-      - fsl,imx23-ocotp
+-      - fsl,imx28-ocotp
++    items:
++      - enum:
++          - fsl,imx23-ocotp
++          - fsl,imx28-ocotp
++      - const: fsl,ocotp
  
- 	/* Load special regs for save below */
-@@ -150,7 +150,7 @@ ftrace_no_trace:
- 	mflr	r3
- 	mtctr	r3
- 	REST_GPR(3, r1)
--	addi	r1, r1, SWITCH_FRAME_SIZE
-+	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	mtlr	r0
- 	bctr
- 
+   reg:
+     maxItems: 1
+@@ -35,7 +37,7 @@ unevaluatedProperties: false
+ examples:
+   - |
+     ocotp: efuse@8002c000 {
+-        compatible = "fsl,imx28-ocotp";
++        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+         #address-cells = <1>;
+         #size-cells = <1>;
+         reg = <0x8002c000 0x2000>;
 -- 
-2.43.0
+2.25.1
 
 
