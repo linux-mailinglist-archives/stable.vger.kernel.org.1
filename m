@@ -1,237 +1,183 @@
-Return-Path: <stable+bounces-6849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C938153E6
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 23:44:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFC7815402
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 23:52:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50E131F22124
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 22:44:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 361C5B20E32
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 22:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5726E13AC6;
-	Fri, 15 Dec 2023 22:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7120018027;
+	Fri, 15 Dec 2023 22:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="HVFK5PRb"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="HQ8reMnW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2044.outbound.protection.outlook.com [40.107.94.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BD82F5A
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 22:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6d9d4193d94so820098a34.3
-        for <stable@vger.kernel.org>; Fri, 15 Dec 2023 14:44:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702680274; x=1703285074; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=G78PEVLdPo7yRkFQ8+UVjs30huzHL4y0fYT1i8kj8os=;
-        b=HVFK5PRbC5yqdWA7z/xOS8/DPycUg8M6Y6kAfb6+h7tJbOXNYGb/1YtYHrdwRC18D4
-         yuJyB7Pnwza/d3+oVhV3BzuEGSnPSBToW8tH4G+RBpbzFpKX2xOhXzys81vg3A1z++2G
-         MOCgoy4YzxKIUfXNzxqV/Cmvqg+UDVTMifS9QRgzSnhpMKd33i8D9BpseU/iAGE0TP05
-         bPtcyZQLiSKgG1bkO9vHKD1PzMrFTGBqENsqhQZ/BcIdvYSIoZ2cigJzLtIlgQ2TqDxv
-         /4upElmYCTPN/HQmW2ulD32xczVpp139uESml1xLDhmEtpxWehWTXu1egIrqTUvyibWz
-         a5aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702680274; x=1703285074;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G78PEVLdPo7yRkFQ8+UVjs30huzHL4y0fYT1i8kj8os=;
-        b=U/JBDyDOINnMMbImGqEH6v+N7Ejv0tplrymwu8JfQ9FR1zyr5wWUj4L63Sk0I1G72Y
-         Zggq4sWlv7o7pENDGF+5yAu3NnC/W1AXSZJ7w+LkAESNgKcbVaIWTjZo9xpNB1qg7VE1
-         k/u+FEXyZ5MT6zql/yoS3aynmW92YH/x4dKoTKyu031D1/X4/MSGxtpxfFVDFx3blBI0
-         4e6hQk+tq1NPB9OrKutr0L2QpEFx/JvCJWUZGx8dJR40Zqx+DDU0YSb5wtM1ehYAdIMv
-         IOEF2rMK20afoz7DbiEWfmb+oeNI2wmWlujLIFg6Ut48GGvG7lnOvX5RYNHj8WfUpGYE
-         +0cg==
-X-Gm-Message-State: AOJu0YyoiSxeZqgZQ/eUyPQCbwyp+8lEWgeR4UO96ZN/eU3KBSPwV6cp
-	X7qxavu9XuV2sMLhNq9D4peyXgbCOvPdoVVqfgI=
-X-Google-Smtp-Source: AGHT+IFClZnH3JkMKpE6J++J4WHBJLXUfNcmSlGY/o7lQB+h4buPfy6rba66iEFdpBkpi57bRjZh2Q==
-X-Received: by 2002:a9d:7a89:0:b0:6d9:d817:c1a with SMTP id l9-20020a9d7a89000000b006d9d8170c1amr12517013otn.46.1702680274008;
-        Fri, 15 Dec 2023 14:44:34 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id h4-20020aa79f44000000b0069346777241sm31130pfr.97.2023.12.15.14.44.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 14:44:33 -0800 (PST)
-Message-ID: <657cd6d1.a70a0220.758a0.018d@mx.google.com>
-Date: Fri, 15 Dec 2023 14:44:33 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35F049F60
+	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 22:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hcvIWeZzeOkLNESMyQHPRQQzS3DHghqAnL6Z26IAh5xSr6+GtuGW/1mpNNKqA8M7fBuvNOxdz5IUQwhWELbVBeuWRcqePwm3D6BGGHVUQalLWT5VKtXL1IYPus9aUC7acvYL/Tt4x0+kUOMPgILp+aRrq0wVv8YQ3xviwaERK4M9gH5efzxIjXZXI1L87eqozp2bYr+OSn0hCFpg22+jiGTNtcSzpJwAJXDDG86mg51CX05ufCYIEV5Ol7Yasg6Kpk48brbDE0j0o5bk0K+afH2he9nnRXem+ArfCa3VFw4mfm12Z4OfywAD6TT/BQ+5v9K4KfpZRfMC8Dm3WFIXyw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c2HdhAZuI637Nt703ZGKyEevpmX3I6Hnf00QMjWpmYA=;
+ b=BHWcDOC/Ezr9326ips101P8Lq5b7BhrxpNflhUYQxI5TfCc6XYS4rYRXNlQTsHf6YcVSsDyCHDZx2cdQ+8YUIH8E7i2esUAUQFlxO6n74WsNoBGjWNi+3bZdwwDK5KtS0FcQHNZxeSWhuXQORxGrRaLXaN9RRsNd5T5ikQ3Yfedp3bnXiiOkVkfnM5mS9cxlw//RONniJtU70KM7dreA+u1oBIzpVwWUgS55/kSPiLnq4kIZR9le7A+9e2JPFXDX6Ua+wlMaK0HssPHWh4FR+GNt4CZXOfxxQzby6ZlrI1lprBKvU2DO65qFHLwl0hNWgC7iNREUgSL8JcjdxV9lAw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c2HdhAZuI637Nt703ZGKyEevpmX3I6Hnf00QMjWpmYA=;
+ b=HQ8reMnW7M6G+TxMNjMXVuv+VJAl3RTzJrGr+mOhpFoL/TJFn3+sYoWgOhgmu56iTOoQM5qE39rWtlOj6oWgBd06xDw8N7Qog86Sj6dpHqmIMkLFSSjtsruGUUwGssmq+Qy47cTaMjUrkXlQlPcrfWgFgPNcTFwaS/KUy2hr1fg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
+ PH7PR12MB6586.namprd12.prod.outlook.com (2603:10b6:510:212::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.28; Fri, 15 Dec
+ 2023 22:52:27 +0000
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::59a9:6428:ea3:2bb2]) by DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::59a9:6428:ea3:2bb2%6]) with mapi id 15.20.7091.032; Fri, 15 Dec 2023
+ 22:52:27 +0000
+Message-ID: <5d42649b-7e59-4887-bccb-227d3d0cc213@amd.com>
+Date: Fri, 15 Dec 2023 16:52:24 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: disable FPO and SubVP for older DMUB
+ versions on DCN32x
+To: Hamza Mahfooz <hamza.mahfooz@amd.com>, amd-gfx@lists.freedesktop.org
+Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+ Leo Li <sunpeng.li@amd.com>, Wenjing Liu <wenjing.liu@amd.com>,
+ "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+ Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Samson Tam
+ <samson.tam@amd.com>, Saaem Rizvi <syedsaaem.rizvi@amd.com>,
+ Alvin Lee <alvin.lee2@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+ stable@vger.kernel.org, Jun Lei <jun.lei@amd.com>,
+ Harry Wentland <harry.wentland@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+References: <20231215160116.17012-1-hamza.mahfooz@amd.com>
+Content-Language: en-US
+From: Mario Limonciello <mario.limonciello@amd.com>
+In-Reply-To: <20231215160116.17012-1-hamza.mahfooz@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA9PR13CA0020.namprd13.prod.outlook.com
+ (2603:10b6:806:21::25) To DS7PR12MB6095.namprd12.prod.outlook.com
+ (2603:10b6:8:9c::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.204-13-g361190381c8fa
-Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.204-13-g361190381c8fa)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|PH7PR12MB6586:EE_
+X-MS-Office365-Filtering-Correlation-Id: a38b8a31-a464-4706-36c9-08dbfdc082d0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	ADfgNx73lqOsqJoOfobk7ZrXQB/0KIu6PsxZQNiZqHiCTz/wd4GmZkbPply1Y5yNaq3wk9ssgK0eSZ8IJHAaHlrFYGrtUgz0YIfFLQ/fCk94bQkHMrA8V684k6fziuyg11Ul3UjYc98JcOT4Eb7mIN/94fiPiRMkybKl3cZbUxzuXuLjDCgRE68GUhY388zRIxOpBIRsOiYPM//jE4JWljyivt78yAXYlEYIWpAszOH92EPpxD3sUwx5ddbkIDWj34yVEHUFhl6RLo5xVwtJcQ5wYJCsekwTAdEj0uW5AyecgNcHPHp3cF/iUbk63aBrlW/AVNLoPAw1IvKIdcVkMgFz0QKh/PbHuMF9q7DfZpfoSQqZeVI5yUsQJ9jV+JVAngOw6/pUBF8/q3DNM0ESb/IbbbrlClMLqzto93aJZjW/Tf6Wogm0aoti5Ej7bBEgoGQ9SnXNrEILR1D9h2MFism3Uap5zRg+700RD+7dttn6f0uK4CWjcscvwfG1cgl7irbhoVbgvRC1M08SZBEhg53Uo4OIUI1hi+ZHW8jAqNLVcsKibymQRF2M+0QNzt2EUOxlbhjriglztslmtX0Ud24YNrfsUw6peT/aXxNkWaPhzDZamhVCcxek2u5PEvfuT6ZoqTkkYID7yMuacfLPzLR3P52ped33lsOi+yXtipU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(366004)(396003)(39860400002)(136003)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(38100700002)(4326008)(8936002)(2906002)(316002)(83380400001)(36756003)(8676002)(5660300002)(44832011)(26005)(31686004)(41300700001)(31696002)(6512007)(2616005)(478600001)(6666004)(54906003)(6486002)(6506007)(966005)(53546011)(66556008)(66476007)(66946007)(86362001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1VNR0JwbTl4OGo5NGRDZ1ZJcXpUeGlQN2R1bDgvRVdVS3VuSkZ3bDR4YTk0?=
+ =?utf-8?B?djNTQUYvN0hGNUVqRXVQbnAwSmlLWUx4ZC9EN1lOc21hekI4SFh3TkdjNW5s?=
+ =?utf-8?B?UkNLaloxMlM3WjVvSzdLV2NNVjRpYXlweFNBWGwxRDYrWW05dGl2Vk12eUV6?=
+ =?utf-8?B?YXlTNFU1d28vNnFTWVVhR3gxbTFjS0txSkd6Z3dWZXhQT3dvSEpLTzF3ZGxO?=
+ =?utf-8?B?MzRLQVY5cmxXdnFOcHBmK3dmN3JTdHdWVkcwSGliMnVRZkFMMWt2V3k3cTBG?=
+ =?utf-8?B?N2lvRjFFYWtLUDVPM0t5VUNFZjVobW13Tm95ZkRXNDUvekp4M2dZRDdLSGhm?=
+ =?utf-8?B?U1IxaHMxTVdITVBqcXlBbnNVQnFwejhOOEZqdHRyQUJ0NEoyVlJMUUMyeUFC?=
+ =?utf-8?B?Vk5SWkEzTVBZa1Ivdlg0cm15S2VtOEZSMTl1ZWt4bUVLcWFTKzBWR3NEblB1?=
+ =?utf-8?B?VTArcVEzUUEvUjBjdEsxSEdMNFZ1czJoak5hUDhoaDluWHpiVkw2NmJqMStW?=
+ =?utf-8?B?allMQ0RLeFVvZS9IWm9YOGJnOWdJNjNmY016Y0JUcGhUbXpyRi9Za0l4eE54?=
+ =?utf-8?B?RXhwVTZYVGQ2UWdDOVRNdnA2ZHFwWkxvMXJrdUlvaGFBMFVEektUNVBvVEdw?=
+ =?utf-8?B?cUVzN2lmV2VOaHMxZEt0aVpXN2dHK0x6ZXZqaFlrSFJsZlR2ZHMrTWw1VFVG?=
+ =?utf-8?B?MkxjWkZjcXBXdEF2eVdFQkxGdHNsOFRwbHpQYlNhcXV6N1VoWWtPVktydEVs?=
+ =?utf-8?B?dVY4azhuZDcvSUdZUEFybG5DcTNpOHRCUEVhTnhQQ2RFcEs3b0J3dCtkeUhO?=
+ =?utf-8?B?ejcwNUdYRHVaY1FQaXZ5Tzh2aXlWdXB0NWJLTm80ZlRNNFBwbUc0OWR0NlRm?=
+ =?utf-8?B?d3BxMTE1NVBSYzlRd1pRZm1wckVKSGY1MEtqamtTck1YOExKbExMdG91WnND?=
+ =?utf-8?B?TU5HNzM2TWNyZHpZR29UMndiUlpUclV6WVgvWmdINk5yc3hNUnRhczE4S1Ry?=
+ =?utf-8?B?QUN1QVh6d2t5YldTWk1NbHZHWGViY0JVMi8ybTAxcjRyaGdpcDhCRW9TT2lB?=
+ =?utf-8?B?WDNtWUpnZjdaZWViNnIxS2Mxc1dvZWp4eExlTHFpQUsxMEh5YUxDYUJlRks4?=
+ =?utf-8?B?MHVES3A2QXFmd25rN2luM0V4bHA5MkF1SVJZQzgySFRUeXdQSlBmR1BjM3Ry?=
+ =?utf-8?B?WDVERktnaXh3a3JqL29CaWpBNmE2K2Nnd1FwZm5QOGNMQURvcG95SW1JT1V3?=
+ =?utf-8?B?M1FZS1NLemM2SUxjTVNtbUpTR29ra2UxVTZOYVQvTDEyZmo3Y04zNnM1QmUy?=
+ =?utf-8?B?WXl5aTVPZEpsQmxqL3lFWmV0ZU1kcjhjYjgwYjk5QzIxYlZKS01yb0pmNWlq?=
+ =?utf-8?B?cnV5MzN6V01WWnlnQms5bW9vaFgyS3BRdU1keXRxSkQ2VjhBTFZWanZDdE9Q?=
+ =?utf-8?B?NUdXOEQ5S3JIZUhpYUxQWU10RzRqc1lHRXBOVkhEZ0pDTWZCckZLb01lbllu?=
+ =?utf-8?B?Z1NJWVNtbk1tWUFJTDNqMjk2MENIanIwQmI4MzZkbkRmLzk1bDRxKy9nZm5r?=
+ =?utf-8?B?VGN6b2dOblVpdjBVRVhoaC83TDlZRUJxY1V0WWFJcjc0YkxxZWtWcXVzNmFB?=
+ =?utf-8?B?NndyRzRmSERFcXdOaDN4TDRwQnZoamlDOHpBdzI1V283Y1NKVVhqaUpkV2JZ?=
+ =?utf-8?B?aGgrZUkwYy8xcnBJNjJ4WjlCNmZUS2JkUzBaVHhCblVtbWhaTmwyR2pDVUZq?=
+ =?utf-8?B?VXhKdUlSTkxDNElaejRhay9uanhYUE1hVHFqWW5nbTRGeXZWR2IvZ3RMZVZL?=
+ =?utf-8?B?TmprUWw0TG5iZXM5YUJkQTc0WHZZTDJ3MExxVmloaXU5QWlReXlpUm53Y3dQ?=
+ =?utf-8?B?TlE0dkNlWUQ0N0lScG1BdHhxaEdSdUhlTkkrSkFiMWsyYVpBRWkyQitWRmpH?=
+ =?utf-8?B?VUt6VVJYSElwcDRRaStDSkNpZ3N4REhLTnJnWkxGNUR0RVdtZm1LVUUxeDlT?=
+ =?utf-8?B?cyt1K3ZkYlRoTjFjSlozTmVQamFZaG41d3R6VjR5dnp2YmoybU82N2g1dWUr?=
+ =?utf-8?B?Y2VqVEkrWmhtL25TaGRzUnp3dEJoNnhVbDBFVHl0TVJrN1NhWlNOM2dpc0pp?=
+ =?utf-8?Q?Z5YayI/FmiM2nkxhahHoHI0PV?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a38b8a31-a464-4706-36c9-08dbfdc082d0
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 22:52:27.5359
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MpG8mwmcJj5n2WKvVI35ERfRNutcuahU47lkUZn8Ji7aCHY6Hx9v89joqC8KBo28pFACOGpcY/lp792YbXXqxA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6586
 
-stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
-10.204-13-g361190381c8fa)
+On 12/15/2023 10:01, Hamza Mahfooz wrote:
+> There have recently been changes that break backwards compatibility,
+> that were introduced into DMUB firmware (for DCN32x) concerning FPO and
+> SubVP. So, since those are just power optimization features, we can just
+> disable them unless the user is using a new enough version of DMUB
+> firmware.
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2870
+> Fixes: ed6e2782e974 ("drm/amd/display: For cursor P-State allow for SubVP")
+> Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> Closes: https://lore.kernel.org/r/CABXGCsNRb0QbF2pKLJMDhVOKxyGD6-E+8p-4QO6FOWa6zp22_A@mail.gmail.com/
+> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-0/kernel/v5.10.204-13-g361190381c8fa/
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Tree: stable-rc
-Branch: queue/5.10
-Git Describe: v5.10.204-13-g361190381c8fa
-Git Commit: 361190381c8fa74758ecd626e1ccc71bfa4e45d9
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+> ---
+>   drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+> index 5c323718ec90..0f0972ad441a 100644
+> --- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+> +++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+> @@ -960,6 +960,12 @@ void dcn32_init_hw(struct dc *dc)
+>   		dc->caps.dmub_caps.subvp_psr = dc->ctx->dmub_srv->dmub->feature_caps.subvp_psr_support;
+>   		dc->caps.dmub_caps.gecc_enable = dc->ctx->dmub_srv->dmub->feature_caps.gecc_enable;
+>   		dc->caps.dmub_caps.mclk_sw = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch;
+> +
+> +		if (dc->ctx->dmub_srv->dmub->fw_version <
+> +		    DMUB_FW_VERSION(7, 0, 35)) {
+> +			dc->debug.force_disable_subvp = true;
+> +			dc->debug.disable_fpo_optimizations = true;
+> +		}
 
-Warnings Detected:
+One potential improvement would be to emit a message in this case to let 
+the user know that this has happened and if they upgrade their firmware 
+they can get additional power optimizations.
 
-arc:
+>   	}
+>   }
+>   
 
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
 
