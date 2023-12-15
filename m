@@ -1,147 +1,167 @@
-Return-Path: <stable+bounces-6829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224DD814C59
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 17:02:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3391814C5D
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 17:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 461101C231E8
-	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 16:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E5DAB22937
+	for <lists+stable@lfdr.de>; Fri, 15 Dec 2023 16:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E293F39FD5;
-	Fri, 15 Dec 2023 16:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1181639FE9;
+	Fri, 15 Dec 2023 16:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fOnRYbLq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EkTbs8Sv"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2062.outbound.protection.outlook.com [40.107.223.62])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2211A381D3
-	for <stable@vger.kernel.org>; Fri, 15 Dec 2023 16:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D83kCXMvqUDtrLumLBzKWNjfL734kSpOQzzcpExNWvGa/nUpENWXHVH0IF8Xcx5OqhXxZI3xQzsKkHyOgM07yikiL9SA1E2h+z3n5oVfUe39MmJ+8x9fWWY3LmOapGwPVvJS5USVDwcvqzCsHtIvwVTITiP2JfW6xZBeVVqGyN3LIg8jX5Bf/Nc9Yn3oyvRdoBZfgU8BHe9lNxiuFY0impU3rn4O6tWoIJ5KT126BDXmpr/OmAPGRiuq3l16kizHqqB1hQJWmS8SlxwosF5J6luj0Oz6qFcDNSQmZcQ00pgjdXRywpHuv3mSkyf375BTi0+Emj/5DPbQ3mhdhiN4Ow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ctxaJ7MdCHY+QDZFnoDdK9Mw+njZtOVNvufVwrVKLqI=;
- b=J+BV9SPg38Mz3jhfBSsc/7WoYistpdxLX7rdjJNugix9RFl4Ym9OzKU8LROsH79sQRGZ1nip5ZBthOI3r+JRq93xdm43Fqf+pu+26tTnuJvwenE0PsQvRLM4aoz7xdPyxTcDPS1DBH5X28RMFaFF3m7Yo+eenw+o0HhEDhC1zU/gCW8zSZPgeKv7ypDib7osF6AqjicktS+OhEoNtzc9Gqimx5Aiai2GHgSr3z8BM/W9Bu0Yawb/03MnFIMvfAlZYjnrwKluSVJ5zVSvZwQktc980OnCAX2b9B2IAoTN4TBXmX62pZvDAHtAlvUuknH3hIoRYB6ByoPYA9GdZBnenw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ctxaJ7MdCHY+QDZFnoDdK9Mw+njZtOVNvufVwrVKLqI=;
- b=fOnRYbLqpAIh2yJXDKG44jT2YbksQ6A1Es8ngS23bLyayCIyjanUjWcGfj9ha6XBeQCvFWZBKfDuAUiX0yLEGSI5oZnI0xJyyLr8VNzUH2g219IGg756yTgZZE38LGJByblUeeLI6xv60n9UZMkO84xqzBBzoM4sMgXtPL/Ia98=
-Received: from SJ0PR03CA0191.namprd03.prod.outlook.com (2603:10b6:a03:2ef::16)
- by MN2PR12MB4256.namprd12.prod.outlook.com (2603:10b6:208:1d2::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.31; Fri, 15 Dec
- 2023 16:02:11 +0000
-Received: from DS3PEPF000099DD.namprd04.prod.outlook.com
- (2603:10b6:a03:2ef:cafe::f5) by SJ0PR03CA0191.outlook.office365.com
- (2603:10b6:a03:2ef::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.31 via Frontend
- Transport; Fri, 15 Dec 2023 16:02:11 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS3PEPF000099DD.mail.protection.outlook.com (10.167.17.199) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7113.14 via Frontend Transport; Fri, 15 Dec 2023 16:02:11 +0000
-Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 15 Dec
- 2023 10:02:08 -0600
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
-	<christian.koenig@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>, Alvin Lee
-	<alvin.lee2@amd.com>, Jun Lei <jun.lei@amd.com>, Wenjing Liu
-	<wenjing.liu@amd.com>, Saaem Rizvi <syedsaaem.rizvi@amd.com>, Samson Tam
-	<samson.tam@amd.com>, Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	<stable@vger.kernel.org>, Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH] drm/amd/display: disable FPO and SubVP for older DMUB versions on DCN32x
-Date: Fri, 15 Dec 2023 11:01:16 -0500
-Message-ID: <20231215160116.17012-1-hamza.mahfooz@amd.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E95F36AE0;
+	Fri, 15 Dec 2023 16:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702656142; x=1734192142;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=T9RSzfQqw97u35cP02echEw6kn4/I1wBERkazpCYse0=;
+  b=EkTbs8SvvR7AaB51QsNZO88wzFpbWK5raXEw/acUXUV3+d3DjA1jgrk+
+   rmgNV49L3O87SFWyKtzk4qdGELRTCc//CjlAMp3aHWOv0AObN3OWqfaPJ
+   uJF5lsNU7AmFdAxnYdh5PZciJyOhH3EwPSlieYLRCxBYRBeKvCEidN7wO
+   o48T3FvxoqVgxp+8W/clSVr4nNd0oJ7iyWos+NldW8PcK0rPdTkL8ebZR
+   88b0gEpP72/eOOWXCtA91DzGst29IB0DgtnkBO0YjwvhX6VaKRks8KakH
+   tmxmneJ2X4zKUb4nHMu7aaxOF6UkwBjeWmRzm5FRkzCwVCrVvVSjEUJrK
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="13973685"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="13973685"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Dec 2023 08:02:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10924"; a="948010121"
+X-IronPort-AV: E=Sophos;i="6.04,279,1695711600"; 
+   d="scan'208";a="948010121"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
+  by orsmga005.jf.intel.com with ESMTP; 15 Dec 2023 08:02:20 -0800
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: jikos@kernel.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	Basavaraj.Natikar@amd.com
+Cc: linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: light: hid-sensor-als: Avoid failure for chromaticity support
+Date: Fri, 15 Dec 2023 08:01:59 -0800
+Message-Id: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF000099DD:EE_|MN2PR12MB4256:EE_
-X-MS-Office365-Filtering-Correlation-Id: d09bc165-40a3-4deb-327e-08dbfd873267
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	WE2t8n2SDRWfRcu5lQEMmg72F/3EIT6Onr8j/Gz75XGqgHxBSBI+noP5m8V7+QrTHd2kAc/4QdYnh8T4dQAO0uRBeOvwJX2DkTByodTYuTMMLzrFqrzDBTSF1lQn85AotkSyIx2Y10b20/eFfCCT62Dg7kaRlEazKz6wRx4VajDxVTOa7lQgtpSm5soXZY2GTUKpkLWyuu/tLokLZcBkL8mTb7s42GNFdZn78WZQovJJpZw72N45dIbEOJdPEwXPpcmEIvC3CmFJGZ4S3QTWLjuJt/Yns/IjSaxM62+ApXbCwsEyWpsM6hZnVrFDODDp78a/PbdmeDtBLp/CkKrEfhbSM+gpEfs8uOWS3AiDI7Y7UXFxih74Th2KG5fw+xv68A0o/liUMmAE4lSLKOhtOn63dpLZC2vqGYZDsbjilF6v1kHSfrZ0/6mTEVdDTyA+A4rXMkH+b7CP923n62v+e4F0zJlQ3vL8fXVnHls1oK+lc2ikedEztkteJfgKvO5l45SYzKgIeq+PTD70NBDx52q5/lm/OdBrU0T8ZnQkISFealRdKXF2M96Xg+SDVyPXBwcqHBKdZBwEQB7BvNz3PPULXv44V5mNJrwqH65QaIbGgWb2eKzfQwyMs4Dp/pB5X7X2iVLfkUATPPUgXgwUtbICJM6o974DDua+dJ7c0CcnRIXozyzyU0vQHHP384hSpv7UZADAScBJGJoaR8fQWmeUrqK0Xm2ktt3xwySq3dFPM/mmOXXQmyVn9xvWu4uu23IT2/YIGLm9W9WEE9PPNpiW/kB5dxYq10DP2YyCAVxJUSHpP5TeLLuCSSQ94tluqEoXSTDb4d+qFVc7iEceFQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(376002)(346002)(136003)(230922051799003)(1800799012)(186009)(64100799003)(82310400011)(451199024)(46966006)(40470700004)(36840700001)(40480700001)(40460700003)(36860700001)(47076005)(81166007)(356005)(82740400003)(2906002)(36756003)(5660300002)(83380400001)(336012)(6666004)(426003)(16526019)(1076003)(26005)(2616005)(478600001)(6916009)(54906003)(70206006)(966005)(70586007)(41300700001)(86362001)(4326008)(8676002)(8936002)(316002)(44832011)(16060500005)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Dec 2023 16:02:11.0312
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d09bc165-40a3-4deb-327e-08dbfd873267
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS3PEPF000099DD.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4256
 
-There have recently been changes that break backwards compatibility,
-that were introduced into DMUB firmware (for DCN32x) concerning FPO and
-SubVP. So, since those are just power optimization features, we can just
-disable them unless the user is using a new enough version of DMUB
-firmware.
+With the commit ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity
+support"), there is an assumption that the every HID ALS descriptor has
+support of usage ids for chromaticity support. If they are not present,
+probe fails for the driver . This breaks ALS functionality on majority of
+platforms.
 
+It is possible that chromaticity usage ids are not present. When not
+present, restrict number of IIO channels to not include support for
+chromaticity and continue.
+
+Fixes: ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity support")
+Reported-by: Thomas Weißschuh <thomas@t-8ch.de>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218223
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2870
-Fixes: ed6e2782e974 ("drm/amd/display: For cursor P-State allow for SubVP")
-Reported-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Closes: https://lore.kernel.org/r/CABXGCsNRb0QbF2pKLJMDhVOKxyGD6-E+8p-4QO6FOWa6zp22_A@mail.gmail.com/
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iio/light/hid-sensor-als.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index 5c323718ec90..0f0972ad441a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -960,6 +960,12 @@ void dcn32_init_hw(struct dc *dc)
- 		dc->caps.dmub_caps.subvp_psr = dc->ctx->dmub_srv->dmub->feature_caps.subvp_psr_support;
- 		dc->caps.dmub_caps.gecc_enable = dc->ctx->dmub_srv->dmub->feature_caps.gecc_enable;
- 		dc->caps.dmub_caps.mclk_sw = dc->ctx->dmub_srv->dmub->feature_caps.fw_assisted_mclk_switch;
-+
-+		if (dc->ctx->dmub_srv->dmub->fw_version <
-+		    DMUB_FW_VERSION(7, 0, 35)) {
-+			dc->debug.force_disable_subvp = true;
-+			dc->debug.disable_fpo_optimizations = true;
-+		}
- 	}
- }
+diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-sensor-als.c
+index f17304b54468..9941b0b927c7 100644
+--- a/drivers/iio/light/hid-sensor-als.c
++++ b/drivers/iio/light/hid-sensor-als.c
+@@ -303,11 +303,14 @@ static int als_parse_report(struct platform_device *pdev,
+ 				struct hid_sensor_hub_device *hsdev,
+ 				struct iio_chan_spec *channels,
+ 				unsigned usage_id,
+-				struct als_state *st)
++				struct als_state *st,
++				int *max_channels)
+ {
+ 	int ret;
+ 	int i;
  
++	*max_channels = CHANNEL_SCAN_INDEX_MAX;
++
+ 	for (i = 0; i <= CHANNEL_SCAN_INDEX_ILLUM; ++i) {
+ 		ret = sensor_hub_input_get_attribute_info(hsdev,
+ 						HID_INPUT_REPORT,
+@@ -326,8 +329,12 @@ static int als_parse_report(struct platform_device *pdev,
+ 				usage_id,
+ 				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
+ 				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
+-	if (ret < 0)
+-		return ret;
++	if (ret < 0) {
++		*max_channels = CHANNEL_SCAN_INDEX_ILLUM;
++		ret = 0;
++		goto skip_color_chromaticity;
++	}
++
+ 	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
+ 				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
+ 
+@@ -354,6 +361,7 @@ static int als_parse_report(struct platform_device *pdev,
+ 			st->als[next_scan_index].report_id);
+ 	}
+ 
++skip_color_chromaticity:
+ 	st->scale_precision = hid_sensor_format_scale(usage_id,
+ 				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
+ 				&st->scale_pre_decml, &st->scale_post_decml);
+@@ -364,7 +372,7 @@ static int als_parse_report(struct platform_device *pdev,
+ /* Function to initialize the processing for usage id */
+ static int hid_als_probe(struct platform_device *pdev)
+ {
+-	int ret = 0;
++	int ret = 0, max_channels;
+ 	static const char *name = "als";
+ 	struct iio_dev *indio_dev;
+ 	struct als_state *als_state;
+@@ -398,15 +406,15 @@ static int hid_als_probe(struct platform_device *pdev)
+ 
+ 	ret = als_parse_report(pdev, hsdev,
+ 			       (struct iio_chan_spec *)indio_dev->channels,
+-			       hsdev->usage,
+-			       als_state);
++			       hsdev->usage, als_state, &max_channels);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "failed to setup attributes\n");
+ 		return ret;
+ 	}
+ 
+-	indio_dev->num_channels =
+-				ARRAY_SIZE(als_channels);
++	/* +1 to include time stamp */
++	indio_dev->num_channels = max_channels + 1;
++
+ 	indio_dev->info = &als_info;
+ 	indio_dev->name = name;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
 -- 
-2.43.0
+2.25.1
 
 
