@@ -1,243 +1,184 @@
-Return-Path: <stable+bounces-6872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E60815833
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 08:13:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B36E81583A
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 08:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63950287DE6
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 07:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA491F25C2F
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 07:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E7F10793;
-	Sat, 16 Dec 2023 07:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58036134D6;
+	Sat, 16 Dec 2023 07:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="KhArtjjB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i972+3lo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CC134AD
-	for <stable@vger.kernel.org>; Sat, 16 Dec 2023 07:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6ce939ecfc2so1327419b3a.2
-        for <stable@vger.kernel.org>; Fri, 15 Dec 2023 23:13:25 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BC66FAA;
+	Sat, 16 Dec 2023 07:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-203349901d5so1005652fac.0;
+        Fri, 15 Dec 2023 23:28:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702710805; x=1703315605; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=rZnL6U1N2tP+UedDaePYExGbc2nwdjsaWjI4gyhW3J0=;
-        b=KhArtjjBDdW9mIIadhfkeW7KZkmjWB1X/dwg4LmNVAhSQIHi9NnXSp83HLTEem8ui7
-         H+j5ColxAqKCTGvCgtC0UVEtfO7w765ZqYtsewsXIDnhMhEcL7yJd5Ku4dS5252F/PHA
-         ufvdz29qmfKAw2SAa7b63Oh5dPgfQJ1dd+KcX3ph7RMp1+fghQF7ksK34ygu1QUrCCfO
-         R/5PyS2b0wGkZ0Y7tXkVJwpJaoAkNkXoTpJClMLLynA8PT6grd4GOdLHePmdpcVGSHcb
-         5rm1VzoOL4OKhC9F5F0fjErd4oP+z1FrN4DfPiw6Mb0oayvzOgNAawlnQWhT/iZeRrtE
-         wBOA==
+        d=gmail.com; s=20230601; t=1702711712; x=1703316512; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=RSFhQuqLdRSJiFgcG2RcKezbLQH979C+mk+iCh6NLz0=;
+        b=i972+3lo3DR2Zu614ug2OdXLQ5KfildMJQqXhjT5dq9kbREv87nXehNqUnarLrb1uf
+         mMlVSVa5sYpCQBS+YS0uHpZZGlSi+Yejsd9nMc5xAqI/PLUTT2iE9NjAcGl8AY7fpy6f
+         x9t5Io7gaDdk5YBRHTHQe0FDKtbejXqHGVC5vGvV6P6iSW6cG3zhpNrzXeuAgdTbRpFJ
+         7ilwhqYFEXNybWafYRpiSYIy+pHJqW8EWWrVC8yzptmDOpIoQOOl4maeqt6qDwZLIJM4
+         80NM+ttew4QuyW9oJfC0TbEv3RgxAny++eOAw14GyULHEKJAibtHx607j+xMl3gKfq7P
+         +N0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702710805; x=1703315605;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rZnL6U1N2tP+UedDaePYExGbc2nwdjsaWjI4gyhW3J0=;
-        b=QzbG/3P9php+fmvjLAkAnHrL1f6ohd+g1oxRQXfruDbnrTS/Itox1+d3ikxhVDWNS4
-         pphctYGjvLBume8jfNDbMYueNEkeb3CR8DM//MZsocAmSjKkB4f1aA616JyE9nKL304j
-         bdy8EH+lnHiaFK/pb3P23KGNrgv4mV1VjtIkLzDvCuAEnjB65lLfzMytACfsYY4ChDNm
-         GsNcn06FayHv6FN4QzEM3FieiAQDrAJnElq2jeh21CF+v012OZmKHr8D5TOmvHTszJiK
-         yuithZYB7bXqmInp9o87AELrmyTxFFTfm4joyD5iaHl8F23YKUFoGNVSXDrVCNPU2t4m
-         MGzA==
-X-Gm-Message-State: AOJu0YwVOPuot6kA0yh6xmM+OwfomQkgeNUE4JguyvX3USHzA8F7ZvaN
-	00aTDz2jiEHZKsX1A7YQSg+m6rvIQo/svmDBacg=
-X-Google-Smtp-Source: AGHT+IH26Ns8+ZiqGKJ5+xeLGRW/dEsyxirqcwtvF/pVKdeMNslJb6cc4AYDqft6UzDYLrC58gAndw==
-X-Received: by 2002:a05:6a00:4581:b0:6d2:6b0c:613f with SMTP id it1-20020a056a00458100b006d26b0c613fmr3465042pfb.67.1702710805051;
-        Fri, 15 Dec 2023 23:13:25 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id k16-20020a6568d0000000b005c6676349f8sm12391153pgt.89.2023.12.15.23.13.24
+        d=1e100.net; s=20230601; t=1702711712; x=1703316512;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RSFhQuqLdRSJiFgcG2RcKezbLQH979C+mk+iCh6NLz0=;
+        b=QCSKhLtba7kxvmBXm8o+HnXpNk59p5YILjgPJ/qxpG/Vh4qvfRN6MDUJLs4R07pGxL
+         GRReOmaVYE/JCFC0pIS0kJMOJmPG4vBldxm3/rsuS5DnrszXUJ61rjszLP+Dlwt/r3uV
+         vwDCi+1y13g89I/xI6CKpgIxeNZM50QiCvz5qL2tToaLwuGIuh9Qi/Xwcx/sRRgoYCFS
+         7+alT3G31q3kNh3iFQDGRepKrc7NPDpBudL5y2xrHKGt0ISzd7iPVVlzeAusOxDAfS7o
+         j8rDDTSbsbg+wL+bEpTLjlX0rkAH36c45dAeUgNGV1T2nPdjnKX6rKQ313zgv8xwkyW0
+         ROAw==
+X-Gm-Message-State: AOJu0YzJSAPKZS/32e+seeYf24OZ5Qc9yBuk5YS8ehBJNOFWmeGoWhHO
+	V0w/l4sBKry1svj7ht5+H2Q=
+X-Google-Smtp-Source: AGHT+IHzjFUEHdZsTee8x3eqe883NXONc4kpL2SuLpFGLoAbAsIoJoQJenn7ksReVgKVvaNTsQcUwQ==
+X-Received: by 2002:a05:6871:2307:b0:203:55f0:caa4 with SMTP id sf7-20020a056871230700b0020355f0caa4mr4782425oab.101.1702711712421;
+        Fri, 15 Dec 2023 23:28:32 -0800 (PST)
+Received: from bangji.hsd1.ca.comcast.net ([2601:647:6780:42e0:8afe:d11b:778:2238])
+        by smtp.gmail.com with ESMTPSA id z21-20020a656115000000b0059d219cb359sm12507812pgu.9.2023.12.15.23.28.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 23:13:24 -0800 (PST)
-Message-ID: <657d4e14.650a0220.5747d.3e05@mx.google.com>
-Date: Fri, 15 Dec 2023 23:13:24 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Fri, 15 Dec 2023 23:28:32 -0800 (PST)
+Sender: Namhyung Kim <namhyung@gmail.com>
+From: Namhyung Kim <namhyung@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Stephane Eranian <eranian@google.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf/x86: Fix out of range data
+Date: Fri, 15 Dec 2023 23:28:30 -0800
+Message-ID: <20231216072830.1009339-1-namhyung@kernel.org>
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.143-46-g7158dd3b52d95
-Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.143-46-g7158dd3b52d95)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
 
-stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
-15.143-46-g7158dd3b52d95)
+On x86 each cpu_hw_events maintains a table for counter assignment but
+it missed to update one for the deleted event in x86_pmu_del().  This
+can make perf_clear_dirty_counters() reset used counter if it's called
+before event scheduling or enabling.  Then it would return out of range
+data which doesn't make sense.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-5/kernel/v5.15.143-46-g7158dd3b52d95/
+The following code can reproduce the problem.
 
-Tree: stable-rc
-Branch: queue/5.15
-Git Describe: v5.15.143-46-g7158dd3b52d95
-Git Commit: 7158dd3b52d95755f1d2a933caca00028524479c
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+  $ cat repro.c
+  #include <pthread.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <unistd.h>
+  #include <linux/perf_event.h>
+  #include <sys/ioctl.h>
+  #include <sys/mman.h>
+  #include <sys/syscall.h>
 
-Warnings Detected:
+  struct perf_event_attr attr = {
+  	.type = PERF_TYPE_HARDWARE,
+  	.config = PERF_COUNT_HW_CPU_CYCLES,
+  	.disabled = 1,
+  };
 
-arc:
+  void *worker(void *arg)
+  {
+  	int cpu = (long)arg;
+  	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+  	void *p;
 
-arm64:
+  	do {
+  		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
+  		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
+  		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
 
-arm:
+  		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
+  		munmap(p, 4096);
+  		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
+  	} while (1);
 
-i386:
+  	return NULL;
+  }
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+  int main(void)
+  {
+  	int i;
+  	int n = sysconf(_SC_NPROCESSORS_ONLN);
+  	pthread_t *th = calloc(n, sizeof(*th));
 
-riscv:
+  	for (i = 0; i < n; i++)
+  		pthread_create(&th[i], NULL, worker, (void *)(long)i);
+  	for (i = 0; i < n; i++)
+  		pthread_join(th[i], NULL);
 
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-board (gcc-10): 1 warning
+  	free(th);
+  	return 0;
+  }
 
+And you can see the out of range data using perf stat like this.
+Probably it'd be easier to see on a large machine.
 
-Warnings summary:
+  $ gcc -o repro repro.c -pthread
+  $ ./repro &
+  $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
+       1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
+       1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
+       1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
+       2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
+       2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
+       2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
+       2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
+       3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
+       3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
+       3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
+       3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+It should move the contents in the cpuc->assign as well.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
-ning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
+Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 ---
-For more info write to <info@kernelci.org>
+ arch/x86/events/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 09050641ce5d..5b0dd07b1ef1 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
+ 	while (++i < cpuc->n_events) {
+ 		cpuc->event_list[i-1] = cpuc->event_list[i];
+ 		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
++		cpuc->assign[i-1] = cpuc->assign[i];
+ 	}
+ 	cpuc->event_constraint[i-1] = NULL;
+ 	--cpuc->n_events;
+-- 
+2.43.0.472.g3155946c3a-goog
+
 
