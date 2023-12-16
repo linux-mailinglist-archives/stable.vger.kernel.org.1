@@ -1,155 +1,98 @@
-Return-Path: <stable+bounces-6884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705BD815924
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 13:59:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6FF3815AF0
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 18:59:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24DD3283577
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 12:59:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A57E1F220EA
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 17:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AB625553;
-	Sat, 16 Dec 2023 12:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796CA30F91;
+	Sat, 16 Dec 2023 17:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PKY4+2ul";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rP9aWcIK"
+	dkim=pass (1024-bit key) header.d=leolam.fr header.i=@leolam.fr header.b="gDBJJ7fl"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82AA18EB1;
-	Sat, 16 Dec 2023 12:58:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sat, 16 Dec 2023 12:58:51 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702731532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sCmp3T+knp1U2hYoByK4bhCzVso6/l7XB1ru7MM2DrQ=;
-	b=PKY4+2ulXfJyLbM5w9zxB9NXj8L+74iucfszlreFdltcQVxcaXZ2JM/4WZ+NbOfHWCJztA
-	1BRjVcoRQDzmFlVpUObL1c3xHdnfVo2Co8j48M/s3YkVMt/Hic24bwkBbGW5EgGIldb+2f
-	MzTWTt1GREYtn9V2U9r7+8Abd88M3VfY5QFi616f35vivQBeL4NKy6NPsli+iQUmeBJCAK
-	3PPAz8C/UizCaeOAOmSNgrl+fiHuKxDQDcLtcGcyLmVns73VFDEAA+xBZrqMnItRvAy40C
-	ZgX3NVyFSuMidabyXJt4w+HzMPSS6kwbvoZT+q7D/gT4hkSWACFW8++m3K+kfA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702731532;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sCmp3T+knp1U2hYoByK4bhCzVso6/l7XB1ru7MM2DrQ=;
-	b=rP9aWcIK8/zyVZJZStGABzJ+I0KpnsaIuHbAxJfKYz/tiXkdXHfMtWVyv2FaVkWjuPhEe3
-	9dX+snpD0cCgCPBA==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/smpboot/64: Handle X2APIC BIOS inconsistency gracefully
-Cc: Chris Lindee <chris.lindee@gmail.com>,
- Thomas Gleixner <tglx@linutronix.de>, "Borislav Petkov (AMD)" <bp@alien8.de>,
- Ashok Raj <ashok.raj@intel.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To:
- <CA%2B2tU59853R49EaU_tyvOZuOTDdcU0RshGyydccp9R1NX9bEeQ@mail.gmail.com>
-References:
- <CA%2B2tU59853R49EaU_tyvOZuOTDdcU0RshGyydccp9R1NX9bEeQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E356117729
+	for <stable@vger.kernel.org>; Sat, 16 Dec 2023 17:59:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=leolam.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leolam.fr
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Ssv3r1kSyzMq2jV;
+	Sat, 16 Dec 2023 17:59:20 +0000 (UTC)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Ssv3q32KwzMpnPr;
+	Sat, 16 Dec 2023 18:59:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leolam.fr;
+	s=20210220; t=1702749560;
+	bh=szUHEFSp4j+Un2MtFaNsKCgciTua9FQw2V6FMsGfelk=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date:From;
+	b=gDBJJ7flpgPpP9TQlLGKmIpmSYyyycFNkEWHhWAnX+MpuW2LnTy55r5lJiUHXwoi+
+	 0s8J/mtdBrFvI2wfWGPQJZmeOfuKdEjrwP5JfT4543AlD9PZ2tqpDV8PYS3Y5zcuba
+	 yykOgBr3y7DcfNve315GIJpQ9Wp3frl/PbVYpFqA=
+Message-ID: <eff5692861533201b7a1e680bc36c551d0aa0a65.camel@leolam.fr>
+Subject: Re: [Regression] 6.1.66, 6.6.5 - wifi: cfg80211: fix CQM for
+ non-range use
+From: =?ISO-8859-1?Q?L=E9o?= Lam <leo@leolam.fr>
+To: Philip =?ISO-8859-1?Q?M=FCller?= <philm@manjaro.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Berg, Johannes" <johannes.berg@intel.com>, "stable@vger.kernel.org"
+	 <stable@vger.kernel.org>
+In-Reply-To: <a6d9940b-76e4-43cf-9a37-53def408a5b4@manjaro.org>
+References: <2023121139-scrunch-smilingly-54f4@gregkh>
+	 <aee3e5a0-94b5-4c19-88e4-bb6a8d1fafe3@manjaro.org>
+	 <2023121127-obstinate-constable-e04f@gregkh>
+	 <DM4PR11MB5359FE14974D50E0D48C2D02E98FA@DM4PR11MB5359.namprd11.prod.outlook.com>
+	 <43a1aa34-5109-41ad-88e7-19ba6101dad3@manjaro.org>
+	 <e7a6e6a6-2e5c-4c60-b8e0-0f8eca460586@manjaro.org>
+	 <DM4PR11MB5359B0524B31A258DD3B20F4E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+	 <2023121423-factual-credibly-2d46@gregkh>
+	 <DM4PR11MB535948386880F5A2DB3C5582E98CA@DM4PR11MB5359.namprd11.prod.outlook.com>
+	 <779818b0-5175-449f-93fb-6e76166a325f@manjaro.org>
+	 <2023121450-habitual-transpose-68a1@gregkh>
+	 <a6d9940b-76e4-43cf-9a37-53def408a5b4@manjaro.org>
+Autocrypt: addr=leo@leolam.fr; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 16 Dec 2023 17:58:24 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170273153180.398.6629279525112148301.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Evolution 3.50.2 
+X-Infomaniak-Routing: alpha
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sat, 2023-12-16 at 17:47 +0700, Philip M=C3=BCller wrote:
+>=20
+> Leo provided the patch series here:
+> https://lore.kernel.org/stable/20231216054715.7729-4-leo@leolam.fr/
+>=20
+> However, without a cover letter to it. Since we reverted Johannes' patch=
+=20
+> both in 6.1.67 and 6.6.6 both patches may added to both series to=20
+> restore the original intent.
+>=20
 
-Commit-ID:     69a7386c1ec25476a0c78ffeb59de08a2a08f495
-Gitweb:        https://git.kernel.org/tip/69a7386c1ec25476a0c78ffeb59de08a2a08f495
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Fri, 15 Dec 2023 09:58:58 +01:00
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Fri, 15 Dec 2023 19:33:54 +01:00
+Ah sorry, I assumed the link I added in the patch description provided
+enough context!
 
-x86/smpboot/64: Handle X2APIC BIOS inconsistency gracefully
+Also I should note that my Tested-by only covers 6.6.7, while Phillip's
+Tested-by covers both 6.1 and 6.6 as there are forum users who tested
+both.
 
-Chris reported that a Dell PowerEdge T340 system stopped to boot when upgrading
-to a kernel which contains the parallel hotplug changes.  Disabling parallel
-hotplug on the kernel command line makes it boot again.
+--=20
+Thanks,
+Leo
 
-It turns out that the Dell BIOS has x2APIC enabled and the boot CPU comes up in
-X2APIC mode, but the APs come up inconsistently in xAPIC mode.
-
-Parallel hotplug requires that the upcoming CPU reads out its APIC ID from the
-local APIC in order to map it to the Linux CPU number.
-
-In this particular case the readout on the APs uses the MMIO mapped registers
-because the BIOS failed to enable x2APIC mode. That readout results in a page
-fault because the kernel does not have the APIC MMIO space mapped when X2APIC
-mode was enabled by the BIOS on the boot CPU and the kernel switched to X2APIC
-mode early. That page fault can't be handled on the upcoming CPU that early and
-results in a silent boot failure.
-
-If parallel hotplug is disabled the system boots because in that case the APIC
-ID read is not required as the Linux CPU number is provided to the AP in the
-smpboot control word. When the kernel uses x2APIC mode then the APs are
-switched to x2APIC mode too slightly later in the bringup process, but there is
-no reason to do it that late.
-
-Cure the BIOS bogosity by checking in the parallel bootup path whether the
-kernel uses x2APIC mode and if so switching over the APs to x2APIC mode before
-the APIC ID readout.
-
-Fixes: 0c7ffa32dbd6 ("x86/smpboot/64: Implement arch_cpuhp_init_parallel_bringup() and enable it")
-Reported-by: Chris Lindee <chris.lindee@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ashok Raj <ashok.raj@intel.com>
-Tested-by: Chris Lindee <chris.lindee@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/CA%2B2tU59853R49EaU_tyvOZuOTDdcU0RshGyydccp9R1NX9bEeQ@mail.gmail.com
----
- arch/x86/kernel/head_64.S | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 086a2c3..0f81032 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -255,6 +255,22 @@ SYM_INNER_LABEL(secondary_startup_64_no_verify, SYM_L_GLOBAL)
- 	testl	$X2APIC_ENABLE, %eax
- 	jnz	.Lread_apicid_msr
- 
-+#ifdef CONFIG_X86_X2APIC
-+	/*
-+	 * If system is in X2APIC mode then MMIO base might not be
-+	 * mapped causing the MMIO read below to fault. Faults can't
-+	 * be handled at that point.
-+	 */
-+	cmpl	$0, x2apic_mode(%rip)
-+	jz	.Lread_apicid_mmio
-+
-+	/* Force the AP into X2APIC mode. */
-+	orl	$X2APIC_ENABLE, %eax
-+	wrmsr
-+	jmp	.Lread_apicid_msr
-+#endif
-+
-+.Lread_apicid_mmio:
- 	/* Read the APIC ID from the fix-mapped MMIO space. */
- 	movq	apic_mmio_base(%rip), %rcx
- 	addq	$APIC_ID, %rcx
 
