@@ -1,32 +1,32 @@
-Return-Path: <stable+bounces-6859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF12F815745
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:22:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2FD815749
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:22:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68067B227D5
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E43CB20F00
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28D910A1B;
-	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531B6125D9;
+	Sat, 16 Dec 2023 04:21:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F33610A06;
-	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29489C433CA;
-	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303681171E;
+	Sat, 16 Dec 2023 04:21:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05736C43397;
+	Sat, 16 Dec 2023 04:21:52 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1rEMCI-00000002yAm-0etS;
-	Fri, 15 Dec 2023 23:22:42 -0500
-Message-ID: <20231216042241.937275443@goodmis.org>
+	id 1rEMCJ-00000002yCF-03UD;
+	Fri, 15 Dec 2023 23:22:43 -0500
+Message-ID: <20231216042242.803616937@goodmis.org>
 User-Agent: quilt/0.67
-Date: Fri, 15 Dec 2023 23:22:15 -0500
+Date: Fri, 15 Dec 2023 23:22:18 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -34,7 +34,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org
-Subject: [for-linus][PATCH 01/15] ring-buffer: Fix writing to the buffer with max_data_size
+Subject: [for-linus][PATCH 04/15] ring-buffer: Fix memory leak of free page
 References: <20231216042214.905262999@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -46,85 +46,46 @@ Content-Type: text/plain; charset=UTF-8
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-The maximum ring buffer data size is the maximum size of data that can be
-recorded on the ring buffer. Events must be smaller than the sub buffer
-data size minus any meta data. This size is checked before trying to
-allocate from the ring buffer because the allocation assumes that the size
-will fit on the sub buffer.
+Reading the ring buffer does a swap of a sub-buffer within the ring buffer
+with a empty sub-buffer. This allows the reader to have full access to the
+content of the sub-buffer that was swapped out without having to worry
+about contention with the writer.
 
-The maximum size was calculated as the size of a sub buffer page (which is
-currently PAGE_SIZE minus the sub buffer header) minus the size of the
-meta data of an individual event. But it missed the possible adding of a
-time stamp for events that are added long enough apart that the event meta
-data can't hold the time delta.
+The readers call ring_buffer_alloc_read_page() to allocate a page that
+will be used to swap with the ring buffer. When the code is finished with
+the reader page, it calls ring_buffer_free_read_page(). Instead of freeing
+the page, it stores it as a spare. Then next call to
+ring_buffer_alloc_read_page() will return this spare instead of calling
+into the memory management system to allocate a new page.
 
-When an event is added that is greater than the current BUF_MAX_DATA_SIZE
-minus the size of a time stamp, but still less than or equal to
-BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
-for a page that can hold the event. Luckily, there's a check for this loop
-and after 1000 iterations and a warning is emitted and the ring buffer is
-disabled. But this should never happen.
+Unfortunately, on freeing of the ring buffer, this spare page is not
+freed, and causes a memory leak.
 
-This can happen when a large event is added first, or after a long period
-where an absolute timestamp is prefixed to the event, increasing its size
-by 8 bytes. This passes the check and then goes into the algorithm that
-causes the infinite loop.
-
-For events that are the first event on the sub-buffer, it does not need to
-add a timestamp, because the sub-buffer itself contains an absolute
-timestamp, and adding one is redundant.
-
-The fix is to check if the event is to be the first event on the
-sub-buffer, and if it is, then do not add a timestamp.
-
-This also fixes 32 bit adding a timestamp when a read of before_stamp or
-write_stamp is interrupted. There's still no need to add that timestamp if
-the event is going to be the first event on the sub buffer.
-
-Also, if the buffer has "time_stamp_abs" set, then also check if the
-length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
-
-Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
-Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231210221250.7b9cc83c@rorschach.local.home
 
 Cc: stable@vger.kernel.org
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
-Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
-Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
+Fixes: 73a757e63114d ("ring-buffer: Return reader page back into existing ring buffer")
 Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 8d2a4f00eca9..b8986f82eccf 100644
+index b8986f82eccf..dcd47895b424 100644
 --- a/kernel/trace/ring_buffer.c
 +++ b/kernel/trace/ring_buffer.c
-@@ -3579,7 +3579,10 @@ __rb_reserve_next(struct ring_buffer_per_cpu *cpu_buffer,
- 		 * absolute timestamp.
- 		 * Don't bother if this is the start of a new page (w == 0).
- 		 */
--		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
-+		if (!w) {
-+			/* Use the sub-buffer timestamp */
-+			info->delta = 0;
-+		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
- 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
- 			info->length += RB_LEN_TIME_EXTEND;
- 		} else {
-@@ -3737,6 +3740,8 @@ rb_reserve_next_event(struct trace_buffer *buffer,
- 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
- 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
- 		info.length += RB_LEN_TIME_EXTEND;
-+		if (info.length > BUF_MAX_DATA_SIZE)
-+			goto out_fail;
- 	} else {
- 		add_ts_default = RB_ADD_STAMP_NONE;
+@@ -1787,6 +1787,8 @@ static void rb_free_cpu_buffer(struct ring_buffer_per_cpu *cpu_buffer)
+ 		free_buffer_page(bpage);
  	}
+ 
++	free_page((unsigned long)cpu_buffer->free_page);
++
+ 	kfree(cpu_buffer);
+ }
+ 
 -- 
 2.42.0
 
