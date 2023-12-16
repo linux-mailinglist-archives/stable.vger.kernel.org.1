@@ -1,184 +1,278 @@
-Return-Path: <stable+bounces-6873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B36E81583A
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 08:28:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15570815842
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 08:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA491F25C2F
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 07:28:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73558B225D5
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 07:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58036134D6;
-	Sat, 16 Dec 2023 07:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76913134C0;
+	Sat, 16 Dec 2023 07:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i972+3lo"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="2ClRa+bT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BC66FAA;
-	Sat, 16 Dec 2023 07:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-203349901d5so1005652fac.0;
-        Fri, 15 Dec 2023 23:28:33 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A7C14264
+	for <stable@vger.kernel.org>; Sat, 16 Dec 2023 07:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-6d2ec415bf6so295652b3a.3
+        for <stable@vger.kernel.org>; Fri, 15 Dec 2023 23:33:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702711712; x=1703316512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSFhQuqLdRSJiFgcG2RcKezbLQH979C+mk+iCh6NLz0=;
-        b=i972+3lo3DR2Zu614ug2OdXLQ5KfildMJQqXhjT5dq9kbREv87nXehNqUnarLrb1uf
-         mMlVSVa5sYpCQBS+YS0uHpZZGlSi+Yejsd9nMc5xAqI/PLUTT2iE9NjAcGl8AY7fpy6f
-         x9t5Io7gaDdk5YBRHTHQe0FDKtbejXqHGVC5vGvV6P6iSW6cG3zhpNrzXeuAgdTbRpFJ
-         7ilwhqYFEXNybWafYRpiSYIy+pHJqW8EWWrVC8yzptmDOpIoQOOl4maeqt6qDwZLIJM4
-         80NM+ttew4QuyW9oJfC0TbEv3RgxAny++eOAw14GyULHEKJAibtHx607j+xMl3gKfq7P
-         +N0g==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702712007; x=1703316807; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=HxBbDAoXDL6LXglCOTsJYFa8q84DVYaT083xlyPsmHg=;
+        b=2ClRa+bTLbCBAu4RJqG9+yKAS5AjOPz7rjmGl7cb8kQjUZ2Pg8U7my6Gv4+vUFmJu+
+         TxVOr+dXMfjddnVw8FLNQwnUoFfvMF2jb3Dv2Kl7zEKzFET0gyvTacacp4L47OJB6ot9
+         nDieypD+LF/9Ax6YPgnZ/9kGlni6sjYBWGQG2VeIy8WtUxoDP9ObvnNRWq9UtrPvxh7r
+         rKE9yWWpwfjsYwLtNHWJlOPOgcYUi/ZlfZg+4WfOt2geb4dzxikhwWAMpTodVxZWWBGP
+         MpLI9Aiz4oKJJB1D/kC37VKAMaJMDKwQulY8BTo2CvfX6SX6XgcaNzJ4D8fCTHZQjxLL
+         raYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702711712; x=1703316512;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RSFhQuqLdRSJiFgcG2RcKezbLQH979C+mk+iCh6NLz0=;
-        b=QCSKhLtba7kxvmBXm8o+HnXpNk59p5YILjgPJ/qxpG/Vh4qvfRN6MDUJLs4R07pGxL
-         GRReOmaVYE/JCFC0pIS0kJMOJmPG4vBldxm3/rsuS5DnrszXUJ61rjszLP+Dlwt/r3uV
-         vwDCi+1y13g89I/xI6CKpgIxeNZM50QiCvz5qL2tToaLwuGIuh9Qi/Xwcx/sRRgoYCFS
-         7+alT3G31q3kNh3iFQDGRepKrc7NPDpBudL5y2xrHKGt0ISzd7iPVVlzeAusOxDAfS7o
-         j8rDDTSbsbg+wL+bEpTLjlX0rkAH36c45dAeUgNGV1T2nPdjnKX6rKQ313zgv8xwkyW0
-         ROAw==
-X-Gm-Message-State: AOJu0YzJSAPKZS/32e+seeYf24OZ5Qc9yBuk5YS8ehBJNOFWmeGoWhHO
-	V0w/l4sBKry1svj7ht5+H2Q=
-X-Google-Smtp-Source: AGHT+IHzjFUEHdZsTee8x3eqe883NXONc4kpL2SuLpFGLoAbAsIoJoQJenn7ksReVgKVvaNTsQcUwQ==
-X-Received: by 2002:a05:6871:2307:b0:203:55f0:caa4 with SMTP id sf7-20020a056871230700b0020355f0caa4mr4782425oab.101.1702711712421;
-        Fri, 15 Dec 2023 23:28:32 -0800 (PST)
-Received: from bangji.hsd1.ca.comcast.net ([2601:647:6780:42e0:8afe:d11b:778:2238])
-        by smtp.gmail.com with ESMTPSA id z21-20020a656115000000b0059d219cb359sm12507812pgu.9.2023.12.15.23.28.31
+        d=1e100.net; s=20230601; t=1702712007; x=1703316807;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HxBbDAoXDL6LXglCOTsJYFa8q84DVYaT083xlyPsmHg=;
+        b=N1HBB4vkbKMwvWp63pyHdGq0/AFrjfj0YgSd6Gq+zE/gm4oXHFvven/HbtdyZSPt32
+         01zFujg96PXj5E+17bHtWRJdpfqz5bdlYZ7VQP01PyB7Wxxm/l5dqJXkoCjmHQnpHkdU
+         RiXXPHlW6wJ72fPQrk+Lp4sZclCiN7PYLmYNi4Rw1It68XQzjJlp5yqED9jWr6PwnrT2
+         RKZ07pxXuLpwC3FvRtKmv2EpmE33H2UcS0yp/WIJjhVqMewH8gYYBMvcqVndE17U4FZN
+         GkurmbK0N57oY2nSnQDrRO7A1VLthibImL3nklCB06Loa1AotF8KXQXB6dFKio2fD8NR
+         nKfw==
+X-Gm-Message-State: AOJu0YwfZqN+cRkhPerj8uW0S9VkMTJbckdjh2uCUYrGh77EWzo2PWEV
+	OfTSabKvC5aGMKvBib7FDR9J/KiFVwmmY2GtZd8=
+X-Google-Smtp-Source: AGHT+IFQNKRbGlSOByBBo4CULZLhSNqNAfnn8xjdfL8NhJZjwnZX11Vf2Pk1JOsZN5NidasKEiaHEw==
+X-Received: by 2002:a05:6a20:2927:b0:18f:97c:978e with SMTP id t39-20020a056a20292700b0018f097c978emr11769687pzf.118.1702712007356;
+        Fri, 15 Dec 2023 23:33:27 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id bv190-20020a632ec7000000b005c2967852c5sm14191963pgb.30.2023.12.15.23.33.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 23:28:32 -0800 (PST)
-Sender: Namhyung Kim <namhyung@gmail.com>
-From: Namhyung Kim <namhyung@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Stephane Eranian <eranian@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86: Fix out of range data
-Date: Fri, 15 Dec 2023 23:28:30 -0800
-Message-ID: <20231216072830.1009339-1-namhyung@kernel.org>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+        Fri, 15 Dec 2023 23:33:26 -0800 (PST)
+Message-ID: <657d52c6.630a0220.a6b2b.cfbc@mx.google.com>
+Date: Fri, 15 Dec 2023 23:33:26 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.333-12-g3b8ab577e6a29
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.333-12-g3b8ab577e6a29)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On x86 each cpu_hw_events maintains a table for counter assignment but
-it missed to update one for the deleted event in x86_pmu_del().  This
-can make perf_clear_dirty_counters() reset used counter if it's called
-before event scheduling or enabling.  Then it would return out of range
-data which doesn't make sense.
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.333-12-g3b8ab577e6a29)
 
-The following code can reproduce the problem.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.333-12-g3b8ab577e6a29/
 
-  $ cat repro.c
-  #include <pthread.h>
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <unistd.h>
-  #include <linux/perf_event.h>
-  #include <sys/ioctl.h>
-  #include <sys/mman.h>
-  #include <sys/syscall.h>
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.333-12-g3b8ab577e6a29
+Git Commit: 3b8ab577e6a29e28917c3de46938a2127791886d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-  struct perf_event_attr attr = {
-  	.type = PERF_TYPE_HARDWARE,
-  	.config = PERF_COUNT_HW_CPU_CYCLES,
-  	.disabled = 1,
-  };
+Warnings Detected:
 
-  void *worker(void *arg)
-  {
-  	int cpu = (long)arg;
-  	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
-  	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
-  	void *p;
+arc:
 
-  	do {
-  		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
-  		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
-  		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
+arm64:
 
-  		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
-  		munmap(p, 4096);
-  		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
-  	} while (1);
+arm:
 
-  	return NULL;
-  }
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
 
-  int main(void)
-  {
-  	int i;
-  	int n = sysconf(_SC_NPROCESSORS_ONLN);
-  	pthread_t *th = calloc(n, sizeof(*th));
+mips:
 
-  	for (i = 0; i < n; i++)
-  		pthread_create(&th[i], NULL, worker, (void *)(long)i);
-  	for (i = 0; i < n; i++)
-  		pthread_join(th[i], NULL);
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
-  	free(th);
-  	return 0;
-  }
 
-And you can see the out of range data using perf stat like this.
-Probably it'd be easier to see on a large machine.
+Warnings summary:
 
-  $ gcc -o repro repro.c -pthread
-  $ ./repro &
-  $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
-       1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
-       1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
-       1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
-       2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
-       2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
-       2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
-       2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
-       3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
-       3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
-       3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
-       3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
 
-It should move the contents in the cpuc->assign as well.
+Section mismatches summary:
 
-Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- arch/x86/events/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
-index 09050641ce5d..5b0dd07b1ef1 100644
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
- 	while (++i < cpuc->n_events) {
- 		cpuc->event_list[i-1] = cpuc->event_list[i];
- 		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
-+		cpuc->assign[i-1] = cpuc->assign[i];
- 	}
- 	cpuc->event_constraint[i-1] = NULL;
- 	--cpuc->n_events;
--- 
-2.43.0.472.g3155946c3a-goog
-
+For more info write to <info@kernelci.org>
 
