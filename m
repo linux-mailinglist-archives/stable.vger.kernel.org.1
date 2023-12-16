@@ -1,40 +1,42 @@
-Return-Path: <stable+bounces-6862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B02681574D
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:22:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F3D815754
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE9FC1F256F3
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FCF41F25C89
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2764714A97;
-	Sat, 16 Dec 2023 04:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618FB1A29B;
+	Sat, 16 Dec 2023 04:21:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008111427B;
-	Sat, 16 Dec 2023 04:21:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6927C433BC;
-	Sat, 16 Dec 2023 04:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4099519BA5;
+	Sat, 16 Dec 2023 04:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E6EC433CB;
+	Sat, 16 Dec 2023 04:21:53 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1rEMCJ-00000002yDl-3hwE;
-	Fri, 15 Dec 2023 23:22:43 -0500
-Message-ID: <20231216042243.671261141@goodmis.org>
+	id 1rEMCK-00000002yFF-3BcO;
+	Fri, 15 Dec 2023 23:22:44 -0500
+Message-ID: <20231216042244.539165490@goodmis.org>
 User-Agent: quilt/0.67
-Date: Fri, 15 Dec 2023 23:22:21 -0500
+Date: Fri, 15 Dec 2023 23:22:24 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org
-Subject: [for-linus][PATCH 07/15] ring-buffer: Have saved event hold the entire event
+ stable@vger.kernel.org,
+ Joel Fernandes <joel@joelfernandes.org>,
+ Vincent Donnefort <vdonnefort@google.com>
+Subject: [for-linus][PATCH 10/15] ring-buffer: Do not try to put back write_stamp
 References: <20231216042214.905262999@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -46,52 +48,96 @@ Content-Type: text/plain; charset=UTF-8
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-For the ring buffer iterator (non-consuming read), the event needs to be
-copied into the iterator buffer to make sure that a writer does not
-overwrite it while the user is reading it. If a write happens during the
-copy, the buffer is simply discarded.
+If an update to an event is interrupted by another event between the time
+the initial event allocated its buffer and where it wrote to the
+write_stamp, the code try to reset the write stamp back to the what it had
+just overwritten. It knows that it was overwritten via checking the
+before_stamp, and if it didn't match what it wrote to the before_stamp
+before it allocated its space, it knows it was overwritten.
 
-But the temp buffer itself was not big enough. The allocation of the
-buffer was only BUF_MAX_DATA_SIZE, which is the maximum data size that can
-be passed into the ring buffer and saved. But the temp buffer needs to
-hold the meta data as well. That would be BUF_PAGE_SIZE and not
-BUF_MAX_DATA_SIZE.
+To put back the write_stamp, it uses the before_stamp it read. The problem
+here is that by writing the before_stamp to the write_stamp it makes the
+two equal again, which means that the write_stamp can be considered valid
+as the last timestamp written to the ring buffer. But this is not
+necessarily true. The event that interrupted the event could have been
+interrupted in a way that it was interrupted as well, and can end up
+leaving with an invalid write_stamp. But if this happens and returns to
+this context that uses the before_stamp to update the write_stamp again,
+it can possibly incorrectly make it valid, causing later events to have in
+correct time stamps.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231212072558.61f76493@gandalf.local.home
+As it is OK to leave this function with an invalid write_stamp (one that
+doesn't match the before_stamp), there's no reason to try to make it valid
+again in this case. If this race happens, then just leave with the invalid
+write_stamp and the next event to come along will just add a absolute
+timestamp and validate everything again.
+
+Bonus points: This gets rid of another cmpxchg64!
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231214222921.193037a7@gandalf.local.home
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 785888c544e04 ("ring-buffer: Have rb_iter_head_event() handle concurrent writer")
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/ring_buffer.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c | 29 ++++++-----------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
 
 diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index c7abcc215fe2..1d9caee7f542 100644
+index 1d9caee7f542..2668dde23343 100644
 --- a/kernel/trace/ring_buffer.c
 +++ b/kernel/trace/ring_buffer.c
-@@ -2409,7 +2409,7 @@ rb_iter_head_event(struct ring_buffer_iter *iter)
- 	 */
- 	barrier();
+@@ -3612,14 +3612,14 @@ __rb_reserve_next(struct ring_buffer_per_cpu *cpu_buffer,
+ 	}
  
--	if ((iter->head + length) > commit || length > BUF_MAX_DATA_SIZE)
-+	if ((iter->head + length) > commit || length > BUF_PAGE_SIZE)
- 		/* Writer corrupted the read? */
- 		goto reset;
- 
-@@ -5118,7 +5118,8 @@ ring_buffer_read_prepare(struct trace_buffer *buffer, int cpu, gfp_t flags)
- 	if (!iter)
- 		return NULL;
- 
--	iter->event = kmalloc(BUF_MAX_DATA_SIZE, flags);
-+	/* Holds the entire event: data and meta data */
-+	iter->event = kmalloc(BUF_PAGE_SIZE, flags);
- 	if (!iter->event) {
- 		kfree(iter);
- 		return NULL;
+ 	if (likely(tail == w)) {
+-		u64 save_before;
+-		bool s_ok;
+-
+ 		/* Nothing interrupted us between A and C */
+  /*D*/		rb_time_set(&cpu_buffer->write_stamp, info->ts);
+-		barrier();
+- /*E*/		s_ok = rb_time_read(&cpu_buffer->before_stamp, &save_before);
+-		RB_WARN_ON(cpu_buffer, !s_ok);
++		/*
++		 * If something came in between C and D, the write stamp
++		 * may now not be in sync. But that's fine as the before_stamp
++		 * will be different and then next event will just be forced
++		 * to use an absolute timestamp.
++		 */
+ 		if (likely(!(info->add_timestamp &
+ 			     (RB_ADD_STAMP_FORCE | RB_ADD_STAMP_ABSOLUTE))))
+ 			/* This did not interrupt any time update */
+@@ -3627,24 +3627,7 @@ __rb_reserve_next(struct ring_buffer_per_cpu *cpu_buffer,
+ 		else
+ 			/* Just use full timestamp for interrupting event */
+ 			info->delta = info->ts;
+-		barrier();
+ 		check_buffer(cpu_buffer, info, tail);
+-		if (unlikely(info->ts != save_before)) {
+-			/* SLOW PATH - Interrupted between C and E */
+-
+-			a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
+-			RB_WARN_ON(cpu_buffer, !a_ok);
+-
+-			/* Write stamp must only go forward */
+-			if (save_before > info->after) {
+-				/*
+-				 * We do not care about the result, only that
+-				 * it gets updated atomically.
+-				 */
+-				(void)rb_time_cmpxchg(&cpu_buffer->write_stamp,
+-						      info->after, save_before);
+-			}
+-		}
+ 	} else {
+ 		u64 ts;
+ 		/* SLOW PATH - Interrupted between A and C */
 -- 
 2.42.0
 
