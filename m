@@ -1,293 +1,187 @@
-Return-Path: <stable+bounces-6881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F008158C8
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 12:23:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8132D81590D
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 13:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DAF1B23F96
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 11:23:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F9C1C217B3
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 12:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55F914292;
-	Sat, 16 Dec 2023 11:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B69154BA;
+	Sat, 16 Dec 2023 12:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="gHhoGKCC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FIadpSFt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BBC018EB1;
+	Sat, 16 Dec 2023 12:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702730569; x=1734266569;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=h3m09+4KjTj3d57m3tEhG5HBvKHUIukfDwoLjjYG9vk=;
+  b=FIadpSFtrrNLguSDwCfMnOBE3a++Ibqi8Rjm7ETQ7LFVDxHBoxFy4p+4
+   mc9xSmjQvLf8YB+ourb6rWnFm+N72ooHU8XbSygmyRYsMNHpKuAwcAT8F
+   eFD7DYswHTUYuO0fBWK7yvSVh2YbGwRv6fYN6ZOIWLmjGP/HrDUrTKP/Y
+   Ad6YLa6itVFz/T2kVOU72QRXVhIUM6fzblYoq82BaXi5e7sRGD+onK6xF
+   fAdI8Vgv/dUBQz0CoIDBZPYf9U1AHjH34BEgYXG+lsDN1P9uQxo/DQ94t
+   IsHwcM7qLVYUdewaGURJhsg8NNL06U4loqthG1vuR08oo3w70IomJGr84
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="2553231"
+X-IronPort-AV: E=Sophos;i="6.04,281,1695711600"; 
+   d="scan'208";a="2553231"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2023 04:42:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10925"; a="768306234"
+X-IronPort-AV: E=Sophos;i="6.04,281,1695711600"; 
+   d="scan'208";a="768306234"
+Received: from linux.intel.com ([10.54.29.200])
+  by orsmga007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2023 04:42:48 -0800
+Received: from [10.209.139.210] (kliang2-mobl1.ccr.corp.intel.com [10.209.139.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FF915E94
-	for <stable@vger.kernel.org>; Sat, 16 Dec 2023 11:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-20335dcec64so1101510fac.3
-        for <stable@vger.kernel.org>; Sat, 16 Dec 2023 03:23:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702725799; x=1703330599; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=73Vbvj677nKnkyd1XuKX8P5nVdkUX2oIOKtqzC4rkkY=;
-        b=gHhoGKCCXlXGFl9uwK1fZImLF5DoHsEfW/M5OLlpzkQNOP1YwHYRwwmwbdTlEyjkx7
-         mJ1+QiqeJXl/NoLgPyjFs15n+tTtSi69EYUdYEremY0UBifhbZMyi7e65aBLqdxVyN8L
-         LQc5rYKQW8D43GoKJQtyyMP2+23oS6ctDcWmmR5+GpdJIWnt3VK3nlJ1PiFWXgpp5Omc
-         ghwZO6XkzKgZwBIUfKpmoo7cIW2d/HfHUaJ0UosR9uwVtvV7Zozu2cXuGtX+qlASuFMB
-         FwKdMBpWoOkngWEP8ofV5BQkcCgdoJ8BO4jRPpFK+U3oZ8GUXKKmtW+fcAR5AOUdr0l2
-         CYwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702725799; x=1703330599;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=73Vbvj677nKnkyd1XuKX8P5nVdkUX2oIOKtqzC4rkkY=;
-        b=u8+nXfd951rEHtXF6dTDKustxYl3TzoIS/HAJbwcBhIRiH7PCV3afdHxnyy8D2LQZk
-         tTneoYeMR4bp/6z0/enJr5KGF1Z9l4HtoAB+6iD/l0IhPxgzAl2Vi31v5wVtmgOfqN9S
-         a4XP0YwnuoMX+rJO0E0HuLGbHHduM5X90WMqknOt8dvI+LTs4bRaIvhFRvIJKN03L/4g
-         oUjApLmkcPptubcAr6UPLDF0+78veMiHAqlLKpuP334P8ktgm4pz620LCCZOJ9dEeQdt
-         W7LNF50KWpuSRwLIEGEejM1hxGBJtoLSI+Rs9Sse4FCs2ICr5wqXLEGhAX/5ETOdIdiv
-         dITQ==
-X-Gm-Message-State: AOJu0Yxfo1JPvaMZG6/OQs0wt/aOFjEi8Q2+LLCFPX2ZEFMIpwO36ntA
-	M0ukGjnF3l9ZgZgJ/1DjRjtt3QSR5OG/0XwStfk=
-X-Google-Smtp-Source: AGHT+IFc88dW6uu9115Tkolm8nLj4HMlnQ0ZUo0IT2IqnEbK+ueqVbyvzwInNOts/sczzSvJTb+6gw==
-X-Received: by 2002:a05:6870:503:b0:203:4ae6:f7e7 with SMTP id j3-20020a056870050300b002034ae6f7e7mr5229648oao.89.1702725799447;
-        Sat, 16 Dec 2023 03:23:19 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id r13-20020a17090ad40d00b0028b03f9107asm5195735pju.55.2023.12.16.03.23.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Dec 2023 03:23:18 -0800 (PST)
-Message-ID: <657d88a6.170a0220.809b5.fe57@mx.google.com>
-Date: Sat, 16 Dec 2023 03:23:18 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by linux.intel.com (Postfix) with ESMTPS id EF95A580BE1;
+	Sat, 16 Dec 2023 04:42:46 -0800 (PST)
+Message-ID: <ae648bc4-b32c-4b15-8dfc-9dbd481bb927@linux.intel.com>
+Date: Sat, 16 Dec 2023 07:42:45 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v6.1.68-44-g3047154b12a05
-Subject: stable-rc/queue/6.1 baseline: 109 runs,
- 3 regressions (v6.1.68-44-g3047154b12a05)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/6.1 baseline: 109 runs, 3 regressions (v6.1.68-44-g3047154b=
-12a05)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
-el/v6.1.68-44-g3047154b12a05/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/6.1
-  Describe: v6.1.68-44-g3047154b12a05
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      3047154b12a054ad9e1ddf1304432b93dcc310bd =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657d57f9c19da4ac2ee134a2
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
-.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
-.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657d57f9c19da4ac2ee134ab
-        failing since 23 days (last pass: v6.1.31-26-gef50524405c2, first f=
-ail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-16T08:02:54.483324  / # #
-
-    2023-12-16T08:02:54.585476  export SHELL=3D/bin/sh
-
-    2023-12-16T08:02:54.586181  #
-
-    2023-12-16T08:02:54.687573  / # export SHELL=3D/bin/sh. /lava-12286053/=
-environment
-
-    2023-12-16T08:02:54.688307  =
-
-
-    2023-12-16T08:02:54.789825  / # . /lava-12286053/environment/lava-12286=
-053/bin/lava-test-runner /lava-12286053/1
-
-    2023-12-16T08:02:54.790887  =
-
-
-    2023-12-16T08:02:54.807865  / # /lava-12286053/bin/lava-test-runner /la=
-va-12286053/1
-
-    2023-12-16T08:02:54.856273  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-16T08:02:54.856804  + cd /lav<8>[   19.111481] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12286053_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657d546f61a045082ee13476
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
-64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
-64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657d546f61a045082ee1347f
-        failing since 23 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-16T07:40:25.118247  / # #
-    2023-12-16T07:40:25.219598  export SHELL=3D/bin/sh
-    2023-12-16T07:40:25.220107  #
-    2023-12-16T07:40:25.323129  / # export SHELL=3D/bin/sh. /lava-448361/en=
-vironment
-    2023-12-16T07:40:25.323640  =
-
-    2023-12-16T07:40:25.424545  / # . /lava-448361/environment/lava-448361/=
-bin/lava-test-runner /lava-448361/1
-    2023-12-16T07:40:25.425244  =
-
-    2023-12-16T07:40:25.429651  / # /lava-448361/bin/lava-test-runner /lava=
--448361/1
-    2023-12-16T07:40:25.502709  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-12-16T07:40:25.503240  + cd /lava-448361/<8>[   18.594871] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 448361_1.5.2.4.5> =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657d5477c46ed9a5cde134e0
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
-e-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-44=
--g3047154b12a05/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
-e-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657d5477c46ed9a5cde134e9
-        failing since 23 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-16T07:48:03.831650  / # #
-
-    2023-12-16T07:48:03.933492  export SHELL=3D/bin/sh
-
-    2023-12-16T07:48:03.933708  #
-
-    2023-12-16T07:48:04.034237  / # export SHELL=3D/bin/sh. /lava-12286066/=
-environment
-
-    2023-12-16T07:48:04.034706  =
-
-
-    2023-12-16T07:48:04.135741  / # . /lava-12286066/environment/lava-12286=
-066/bin/lava-test-runner /lava-12286066/1
-
-    2023-12-16T07:48:04.136775  =
-
-
-    2023-12-16T07:48:04.140379  / # /lava-12286066/bin/lava-test-runner /la=
-va-12286066/1
-
-    2023-12-16T07:48:04.220253  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-16T07:48:04.220787  + cd /lava-1228606<8>[   19.344570] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12286066_1.5.2.4.5>
- =
-
-    ... (11 line(s) more)  =
-
- =20
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] perf/x86: Fix out of range data
+To: Namhyung Kim <namhyung@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, Stephane Eranian <eranian@google.com>,
+ stable@vger.kernel.org
+References: <20231216072830.1009339-1-namhyung@kernel.org>
+Content-Language: en-US
+From: "Liang, Kan" <kan.liang@linux.intel.com>
+In-Reply-To: <20231216072830.1009339-1-namhyung@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+
+
+On 2023-12-16 2:28 a.m., Namhyung Kim wrote:
+> On x86 each cpu_hw_events maintains a table for counter assignment but
+> it missed to update one for the deleted event in x86_pmu_del().  This
+> can make perf_clear_dirty_counters() reset used counter if it's called
+> before event scheduling or enabling.  Then it would return out of range
+> data which doesn't make sense.
+> 
+> The following code can reproduce the problem.
+> 
+>   $ cat repro.c
+>   #include <pthread.h>
+>   #include <stdio.h>
+>   #include <stdlib.h>
+>   #include <unistd.h>
+>   #include <linux/perf_event.h>
+>   #include <sys/ioctl.h>
+>   #include <sys/mman.h>
+>   #include <sys/syscall.h>
+> 
+>   struct perf_event_attr attr = {
+>   	.type = PERF_TYPE_HARDWARE,
+>   	.config = PERF_COUNT_HW_CPU_CYCLES,
+>   	.disabled = 1,
+>   };
+> 
+>   void *worker(void *arg)
+>   {
+>   	int cpu = (long)arg;
+>   	int fd1 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+>   	int fd2 = syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0);
+>   	void *p;
+> 
+>   	do {
+>   		ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
+>   		p = mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
+>   		ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
+> 
+>   		ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
+>   		munmap(p, 4096);
+>   		ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
+>   	} while (1);
+> 
+>   	return NULL;
+>   }
+> 
+>   int main(void)
+>   {
+>   	int i;
+>   	int n = sysconf(_SC_NPROCESSORS_ONLN);
+>   	pthread_t *th = calloc(n, sizeof(*th));
+> 
+>   	for (i = 0; i < n; i++)
+>   		pthread_create(&th[i], NULL, worker, (void *)(long)i);
+>   	for (i = 0; i < n; i++)
+>   		pthread_join(th[i], NULL);
+> 
+>   	free(th);
+>   	return 0;
+>   }
+> 
+> And you can see the out of range data using perf stat like this.
+> Probably it'd be easier to see on a large machine.
+> 
+>   $ gcc -o repro repro.c -pthread
+>   $ ./repro &
+>   $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) print }'
+>        1.001028462 CPU6   196,719,295,683,763      cycles                           # 194290.996 GHz                       (71.54%)
+>        1.001028462 CPU3   396,077,485,787,730      branch-misses                    # 15804359784.80% of all branches      (71.07%)
+>        1.001028462 CPU17  197,608,350,727,877      branch-misses                    # 14594186554.56% of all branches      (71.22%)
+>        2.020064073 CPU4   198,372,472,612,140      cycles                           # 194681.113 GHz                       (70.95%)
+>        2.020064073 CPU6   199,419,277,896,696      cycles                           # 195720.007 GHz                       (70.57%)
+>        2.020064073 CPU20  198,147,174,025,639      cycles                           # 194474.654 GHz                       (71.03%)
+>        2.020064073 CPU20  198,421,240,580,145      stalled-cycles-frontend          #  100.14% frontend cycles idle        (70.93%)
+>        3.037443155 CPU4   197,382,689,923,416      cycles                           # 194043.065 GHz                       (71.30%)
+>        3.037443155 CPU20  196,324,797,879,414      cycles                           # 193003.773 GHz                       (71.69%)
+>        3.037443155 CPU5   197,679,956,608,205      stalled-cycles-backend           # 1315606428.66% backend cycles idle   (71.19%)
+>        3.037443155 CPU5   198,571,860,474,851      instructions                     # 13215422.58  insn per cycle
+> 
+> It should move the contents in the cpuc->assign as well.
+
+Yes, the patch looks good to me.
+
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+
+Thanks,
+Kan
+> 
+> Fixes: 5471eea5d3bf ("perf/x86: Reset the dirty counter to prevent the leak for an RDPMC task")
+> Cc: Kan Liang <kan.liang@linux.intel.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> ---
+>  arch/x86/events/core.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+> index 09050641ce5d..5b0dd07b1ef1 100644
+> --- a/arch/x86/events/core.c
+> +++ b/arch/x86/events/core.c
+> @@ -1644,6 +1644,7 @@ static void x86_pmu_del(struct perf_event *event, int flags)
+>  	while (++i < cpuc->n_events) {
+>  		cpuc->event_list[i-1] = cpuc->event_list[i];
+>  		cpuc->event_constraint[i-1] = cpuc->event_constraint[i];
+> +		cpuc->assign[i-1] = cpuc->assign[i];
+>  	}
+>  	cpuc->event_constraint[i-1] = NULL;
+>  	--cpuc->n_events;
 
