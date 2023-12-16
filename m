@@ -1,155 +1,205 @@
-Return-Path: <stable+bounces-6867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089208157AC
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 06:15:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A3781581D
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 08:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7307C1F25E6A
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:15:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 245B4B24638
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 07:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4107F10A3D;
-	Sat, 16 Dec 2023 05:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE0F11187;
+	Sat, 16 Dec 2023 07:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1WOQpo/"
+	dkim=pass (1024-bit key) header.d=leolam.fr header.i=@leolam.fr header.b="b0+9IvNV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [83.166.143.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0EA1798C;
-	Sat, 16 Dec 2023 05:15:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 995ACC433C7;
-	Sat, 16 Dec 2023 05:15:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702703727;
-	bh=071/Li+i9BFjkm30UNlSbnsfjr5iK7JNHvUhvR6YccA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C1WOQpo/kmnwvcTHbuIbnjlsuquvX50qq/yd4oPloDvB5oWlRoEDBT2TJPjKnPo5U
-	 WwyxzDU/IdPMyRt0bIvge0UGAeqTMui7EtBnGqJH+/2RfC7Bu3lKalWu1djc20HhS0
-	 vvOr6OMe8pVnmSN+2oy40R6r7ZpFJ0+rj8CEvkecVPat32lg3Y/oVqAeyqn/iGEl+a
-	 ug+kmZ5GAyqh1cT/e1vdiZiDLKeC+WBWruiwaZshf4bnrV4q31cIWf18FxIeYfw/M1
-	 fEwcnotrP815Y8QUxR9ac/lKAcGqteimg5m/l8T9JmtiuPagCEITYZmDG+CO7ZQN4O
-	 L1RkoLUpPmA/A==
-Date: Sat, 16 Dec 2023 10:45:12 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Qiang Yu <quic_qianyu@quicinc.com>
-Cc: mani@kernel.org, quic_jhugo@quicinc.com, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	quic_cang@quicinc.com, quic_mrana@quicinc.com,
-	Bhaumik Bhatt <bbhatt@codeaurora.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] bus: mhi: host: Add spinlock to protect WP access
- when queueing TREs
-Message-ID: <20231216051512.GA3405@thinkpad>
-References: <1702276972-41296-1-git-send-email-quic_qianyu@quicinc.com>
- <1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCA18ED8
+	for <stable@vger.kernel.org>; Sat, 16 Dec 2023 07:01:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=leolam.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leolam.fr
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+	by smtp-2-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4SsZrJ2kbWzMqHHc;
+	Sat, 16 Dec 2023 05:48:16 +0000 (UTC)
+Received: from unknown by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4SsZrH4lWPzMpnPd;
+	Sat, 16 Dec 2023 06:48:15 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leolam.fr;
+	s=20210220; t=1702705696;
+	bh=b2sno1i3SpSoDGnvUBT4UGpM1VNGczXBm1u75nmSDjg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b0+9IvNVoAnyXvNhM4mwU6l/LbPiIR7AAcdrIbPhlqe5j8/pHsJ8RpRXryZhO6MBr
+	 FCfoJrHN92N8jwR+q6ZlmCtumVuwP/6ltDEoeQV/UUSPLpP+BmpK9/2MT4qe2DWSqg
+	 65kW7ve2R07Sf1mNiMBc/8ajEkgE+bgj2R+CHd7U=
+From: =?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
+To: stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
+Subject: [PATCH 1/2] wifi: cfg80211: fix CQM for non-range use
+Date: Sat, 16 Dec 2023 05:47:15 +0000
+Message-ID: <20231216054715.7729-2-leo@leolam.fr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com>
+X-Infomaniak-Routing: alpha
 
-On Mon, Dec 11, 2023 at 02:42:51PM +0800, Qiang Yu wrote:
-> From: Bhaumik Bhatt <bbhatt@codeaurora.org>
-> 
-> Protect WP accesses such that multiple threads queueing buffers for
-> incoming data do not race.
-> 
-> Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
-> __local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
-> take irqsave lock after TRE is generated to avoid running write_unlock_bh
-> when irqsave lock is held.
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
-> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-> Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+commit 7e7efdda6adb385fbdfd6f819d76bc68c923c394 upstream.
 
-- Mani
+[note: this is commit 4a7e92551618f3737b305f62451353ee05662f57 reapplied;
+that commit had been reverted in 6.6.6 because it caused regressions, see
+https://lore.kernel.org/stable/2023121450-habitual-transpose-68a1@gregkh/
+for details]
 
-> ---
->  drivers/bus/mhi/host/main.c | 22 +++++++++++++---------
->  1 file changed, 13 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
-> index dcf627b..32021fe 100644
-> --- a/drivers/bus/mhi/host/main.c
-> +++ b/drivers/bus/mhi/host/main.c
-> @@ -1122,17 +1122,15 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
->  	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
->  		return -EIO;
->  
-> -	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
-> -
->  	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
-> -	if (unlikely(ret)) {
-> -		ret = -EAGAIN;
-> -		goto exit_unlock;
-> -	}
-> +	if (unlikely(ret))
-> +		return -EAGAIN;
->  
->  	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
->  	if (unlikely(ret))
-> -		goto exit_unlock;
-> +		return ret;
-> +
-> +	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
->  
->  	/* Packet is queued, take a usage ref to exit M3 if necessary
->  	 * for host->device buffer, balanced put is done on buffer completion
-> @@ -1152,7 +1150,6 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
->  	if (dir == DMA_FROM_DEVICE)
->  		mhi_cntrl->runtime_put(mhi_cntrl);
->  
-> -exit_unlock:
->  	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
->  
->  	return ret;
-> @@ -1204,6 +1201,9 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
->  	int eot, eob, chain, bei;
->  	int ret;
->  
-> +	/* Protect accesses for reading and incrementing WP */
-> +	write_lock_bh(&mhi_chan->lock);
-> +
->  	buf_ring = &mhi_chan->buf_ring;
->  	tre_ring = &mhi_chan->tre_ring;
->  
-> @@ -1221,8 +1221,10 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
->  
->  	if (!info->pre_mapped) {
->  		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
-> -		if (ret)
-> +		if (ret) {
-> +			write_unlock_bh(&mhi_chan->lock);
->  			return ret;
-> +		}
->  	}
->  
->  	eob = !!(flags & MHI_EOB);
-> @@ -1239,6 +1241,8 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
->  	mhi_add_ring_element(mhi_cntrl, tre_ring);
->  	mhi_add_ring_element(mhi_cntrl, buf_ring);
->  
-> +	write_unlock_bh(&mhi_chan->lock);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.7.4
-> 
-> 
+My prior race fix here broke CQM when ranges aren't used, as
+the reporting worker now requires the cqm_config to be set in
+the wdev, but isn't set when there's no range configured.
 
+Rather than continuing to special-case the range version, set
+the cqm_config always and configure accordingly, also tracking
+if range was used or not to be able to clear the configuration
+appropriately with the same API, which was actually not right
+if both were implemented by a driver for some reason, as is
+the case with mac80211 (though there the implementations are
+equivalent so it doesn't matter.)
+
+Also, the original multiple-RSSI commit lost checking for the
+callback, so might have potentially crashed if a driver had
+neither implementation, and userspace tried to use it despite
+not being advertised as supported.
+
+Cc: stable@vger.kernel.org
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Léo Lam <leo@leolam.fr>
+---
+ net/wireless/core.h    |  1 +
+ net/wireless/nl80211.c | 50 ++++++++++++++++++++++++++----------------
+ 2 files changed, 32 insertions(+), 19 deletions(-)
+
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index e536c0b615a0..f0a3a2317638 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -299,6 +299,7 @@ struct cfg80211_cqm_config {
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
+ 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
++	bool use_range_api;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[] __counted_by(n_rssi_thresholds);
+ };
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 931a03f4549c..6a82dd876f27 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12824,10 +12824,6 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
+ 	int i, n, low_index;
+ 	int err;
+ 
+-	/* RSSI reporting disabled? */
+-	if (!cqm_config)
+-		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
+-
+ 	/*
+ 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
+ 	 * event has been received yet, we should receive an event after a
+@@ -12902,18 +12898,6 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
+ 
+-	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+-		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+-			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+-
+-		return rdev_set_cqm_rssi_config(rdev, dev,
+-						thresholds[0], hysteresis);
+-	}
+-
+-	if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
+-		return -EOPNOTSUPP;
+-
+ 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
+ 		n_thresholds = 0;
+ 
+@@ -12921,6 +12905,20 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 	old = rcu_dereference_protected(wdev->cqm_config,
+ 					lockdep_is_held(&wdev->mtx));
+ 
++	/* if already disabled just succeed */
++	if (!n_thresholds && !old)
++		return 0;
++
++	if (n_thresholds > 1) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
++		    !rdev->ops->set_cqm_rssi_range_config)
++			return -EOPNOTSUPP;
++	} else {
++		if (!rdev->ops->set_cqm_rssi_config)
++			return -EOPNOTSUPP;
++	}
++
+ 	if (n_thresholds) {
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+@@ -12935,13 +12933,26 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 		memcpy(cqm_config->rssi_thresholds, thresholds,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
++		cqm_config->use_range_api = n_thresholds > 1 ||
++					    !rdev->ops->set_cqm_rssi_config;
+ 
+ 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
++
++		if (cqm_config->use_range_api)
++			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev,
++						       thresholds[0],
++						       hysteresis);
+ 	} else {
+ 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
++		/* if enabled as range also disable via range */
++		if (old->use_range_api)
++			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+ 	}
+ 
+-	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
+ 	if (err) {
+ 		rcu_assign_pointer(wdev->cqm_config, old);
+ 		kfree_rcu(cqm_config, rcu_head);
+@@ -19131,10 +19142,11 @@ void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy, struct wiphy_work *work)
+ 	wdev_lock(wdev);
+ 	cqm_config = rcu_dereference_protected(wdev->cqm_config,
+ 					       lockdep_is_held(&wdev->mtx));
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		goto unlock;
+ 
+-	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
++	if (cqm_config->use_range_api)
++		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
+ 
+ 	rssi_level = cqm_config->last_rssi_event_value;
+ 	rssi_event = cqm_config->last_rssi_event_type;
 -- 
-மணிவண்ணன் சதாசிவம்
+2.43.0
+
 
