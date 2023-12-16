@@ -1,112 +1,132 @@
-Return-Path: <stable+bounces-6858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00AE81572C
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:07:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF12F815745
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 05:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B461F25776
-	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:07:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68067B227D5
+	for <lists+stable@lfdr.de>; Sat, 16 Dec 2023 04:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B5710A1B;
-	Sat, 16 Dec 2023 04:07:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QkaAgdu0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28D910A1B;
+	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC3B10953;
-	Sat, 16 Dec 2023 04:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6d9d307a732so977722a34.1;
-        Fri, 15 Dec 2023 20:07:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702699631; x=1703304431; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lh1fPASUA2RVK3PUb6yIztNzpjqxC47uH/J5SJ+A7yY=;
-        b=QkaAgdu0TxJztWJF7AQPUjHia/ywruRw7xFzyJR6uBQz9ySX9rtCw/fHNgbTVl88cN
-         vL+JAUM92yOaEqEpLRSrvY7+jqRx78D54YTOPs8RJSuJoVjxEdk+EBTe+QxkB76HgWvI
-         +hqVTFhrk+hD5xI9pjCNnmbs8tn7Ql/855uJYGEIRIJUIWIV5aVjarMHRZGBkpmDJG24
-         RhsPgpVAAAbzgSxyd0Ag6TipdE4secb8KJpn10w6fEOggw89coolxI5UPIuKMoOzjq/v
-         fYqCu6E4glunHy8pGRadH6+IB2mN8DXz/8ROOu1sWxzkDsNlv8r6aRVZkZoNP4k7PwM4
-         BRtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702699631; x=1703304431;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lh1fPASUA2RVK3PUb6yIztNzpjqxC47uH/J5SJ+A7yY=;
-        b=cgOexhWC5S2Q+cA9yWVE/cQ9qmX/LrJ2/e/QWTIHh2AwC+gzchSUZRoeFNXEvVxmbw
-         Ubas3boTWCqq94D8+x0MkqzYcYfPYvh/edHEtvnyDglqLUAt8+klztp71RTaDJOXyn0U
-         hYkYfECEIsy2APza3kDf5+C6+CbzKZRIec4TutfTLxq6n6+VBClBMklSml1Ee5HoBRqz
-         c+FueEX9tTu8EzEXe4B3qNjHUgxrxPjazYZzLNkYHY+FSlaXdreJW1t8U3uEi7P0TpFG
-         78O5JyoIAiz9okHzIUGS82UvkYQwIvYGrZyQUBTB8PxqQ+kSvqGCsA94jvY/DS9tVY/v
-         CKGA==
-X-Gm-Message-State: AOJu0YxkUpnLOzPgYLJ7yc2hCV8ma9eRLBubqK7H40SVLpoo5teXFE2y
-	LPaOuynDYMihS5xvwQ0vdpc=
-X-Google-Smtp-Source: AGHT+IFcAdimm0eRg4pVwTxwgiiokcG0S1CDTXH57Tb0zgAxZ+ctCXVTXDZ7OB/TWvwa9DxP8a2jLQ==
-X-Received: by 2002:a9d:6297:0:b0:6d9:cf49:f5e2 with SMTP id x23-20020a9d6297000000b006d9cf49f5e2mr12531859otk.19.1702699630980;
-        Fri, 15 Dec 2023 20:07:10 -0800 (PST)
-Received: from buildbot-shaka.infra.immortalwrt.org ([38.150.14.243])
-        by smtp.gmail.com with ESMTPSA id f26-20020aa79d9a000000b006cb94825843sm14216936pfq.180.2023.12.15.20.07.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Dec 2023 20:07:10 -0800 (PST)
-From: Tianling Shen <cnsztl@gmail.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Tianling Shen <cnsztl@gmail.com>
-Cc: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: rockchip: configure pad driver strength for orangepi r1 plus lts
-Date: Sat, 16 Dec 2023 12:07:23 +0800
-Message-ID: <20231216040723.17864-1-cnsztl@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F33610A06;
+	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29489C433CA;
+	Sat, 16 Dec 2023 04:21:51 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rEMCI-00000002yAm-0etS;
+	Fri, 15 Dec 2023 23:22:42 -0500
+Message-ID: <20231216042241.937275443@goodmis.org>
+User-Agent: quilt/0.67
+Date: Fri, 15 Dec 2023 23:22:15 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org
+Subject: [for-linus][PATCH 01/15] ring-buffer: Fix writing to the buffer with max_data_size
+References: <20231216042214.905262999@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 
-The default strength is not enough to provide stable connection
-under 3.3v LDO voltage.
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 Plus LTS")
+The maximum ring buffer data size is the maximum size of data that can be
+recorded on the ring buffer. Events must be smaller than the sub buffer
+data size minus any meta data. This size is checked before trying to
+allocate from the ring buffer because the allocation assumes that the size
+will fit on the sub buffer.
 
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Tianling Shen <cnsztl@gmail.com>
+The maximum size was calculated as the size of a sub buffer page (which is
+currently PAGE_SIZE minus the sub buffer header) minus the size of the
+meta data of an individual event. But it missed the possible adding of a
+time stamp for events that are added long enough apart that the event meta
+data can't hold the time delta.
+
+When an event is added that is greater than the current BUF_MAX_DATA_SIZE
+minus the size of a time stamp, but still less than or equal to
+BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
+for a page that can hold the event. Luckily, there's a check for this loop
+and after 1000 iterations and a warning is emitted and the ring buffer is
+disabled. But this should never happen.
+
+This can happen when a large event is added first, or after a long period
+where an absolute timestamp is prefixed to the event, increasing its size
+by 8 bytes. This passes the check and then goes into the algorithm that
+causes the infinite loop.
+
+For events that are the first event on the sub-buffer, it does not need to
+add a timestamp, because the sub-buffer itself contains an absolute
+timestamp, and adding one is redundant.
+
+The fix is to check if the event is to be the first event on the
+sub-buffer, and if it is, then do not add a timestamp.
+
+This also fixes 32 bit adding a timestamp when a read of before_stamp or
+write_stamp is interrupted. There's still no need to add that timestamp if
+the event is going to be the first event on the sub buffer.
+
+Also, if the buffer has "time_stamp_abs" set, then also check if the
+length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
+
+Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
+Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/trace/ring_buffer.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-index 5d7d567283e5..4237f2ee8fee 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-@@ -26,9 +26,11 @@ yt8531c: ethernet-phy@0 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <0>;
- 
-+			motorcomm,auto-sleep-disabled;
- 			motorcomm,clk-out-frequency-hz = <125000000>;
- 			motorcomm,keep-pll-enabled;
--			motorcomm,auto-sleep-disabled;
-+			motorcomm,rx-clk-drv-microamp = <5020>;
-+			motorcomm,rx-data-drv-microamp = <5020>;
- 
- 			pinctrl-0 = <&eth_phy_reset_pin>;
- 			pinctrl-names = "default";
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 8d2a4f00eca9..b8986f82eccf 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3579,7 +3579,10 @@ __rb_reserve_next(struct ring_buffer_per_cpu *cpu_buffer,
+ 		 * absolute timestamp.
+ 		 * Don't bother if this is the start of a new page (w == 0).
+ 		 */
+-		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
++		if (!w) {
++			/* Use the sub-buffer timestamp */
++			info->delta = 0;
++		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
+ 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
+ 			info->length += RB_LEN_TIME_EXTEND;
+ 		} else {
+@@ -3737,6 +3740,8 @@ rb_reserve_next_event(struct trace_buffer *buffer,
+ 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
+ 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
+ 		info.length += RB_LEN_TIME_EXTEND;
++		if (info.length > BUF_MAX_DATA_SIZE)
++			goto out_fail;
+ 	} else {
+ 		add_ts_default = RB_ADD_STAMP_NONE;
+ 	}
 -- 
-2.43.0
+2.42.0
+
 
 
