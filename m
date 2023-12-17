@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677CF81616C
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:52:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E17A81616D
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F442828FA
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:52:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF6D51C20BAD
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C670746BBA;
-	Sun, 17 Dec 2023 17:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01AC46B8C;
+	Sun, 17 Dec 2023 17:52:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G84iHuDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2yVNs34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF5A46BAE
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:52:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B642EC433C7;
-	Sun, 17 Dec 2023 17:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FEE4654C
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D24EC433C7;
+	Sun, 17 Dec 2023 17:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702835534;
-	bh=fseGUHrIgmjtkEa6AxqoPkfYFpLnFS+Z1iULXkwi+Bw=;
+	s=korg; t=1702835537;
+	bh=hGOe3Nh2IOZ7PzyrD8LcyCzyv+mi5ApGoL5zbqU5Lm0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=G84iHuDff1+nVYlXbhp9GOOQ0rIfTgAboCirIlwai9LtTd5d9IcV6yqEJblKdhZAt
-	 Pvx+aGaqxZOYsPfL64hIximHUk/Xxc80fo5AUlTh745I7+0ZPMUtiamAerRF5uwjpW
-	 8hOtGmlYOfCvNqeM8OkVpi898/x42rgTp+wl5sE8=
-Subject: FAILED: patch "[PATCH] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE" failed to apply to 5.15-stable tree
+	b=L2yVNs34Wd8TF8fKUhLOOpHYJRtWHe3hQNHe0A+L2WZt8T91VWFeg8PovZEEQJTA9
+	 9+BdM1NhXhtjXUPr+TaGbrs5Rrv82gYoeoJBQ/9wHKsC/MzrpzMdj/W4vq0j5qdafU
+	 ptyS5AINyFnHzqilXnlg31kFm1RT6xXMfnct6pjk=
+Subject: FAILED: patch "[PATCH] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE" failed to apply to 5.10-stable tree
 To: linkinjeon@kernel.org,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Dec 2023 18:52:11 +0100
-Message-ID: <2023121711-oxford-deodorize-be5a@gregkh>
+Date: Sun, 17 Dec 2023 18:52:12 +0100
+Message-ID: <2023121712-confess-junkie-8479@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 13736654481198e519059d4a2e2e3b20fa9fdb3e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121711-oxford-deodorize-be5a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121712-confess-junkie-8479@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
