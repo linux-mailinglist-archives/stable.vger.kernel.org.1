@@ -1,352 +1,177 @@
-Return-Path: <stable+bounces-6899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4336A816055
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:10:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7919D816058
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A5A7B21EBD
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 16:10:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8BF1B214D1
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 16:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B87745014;
-	Sun, 17 Dec 2023 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B9745974;
+	Sun, 17 Dec 2023 16:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="POq+cE1w"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fHz9YpYW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC4E42A8B
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 16:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3b9e7f4a0d7so2016543b6e.1
-        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 08:10:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702829434; x=1703434234; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=X+M7ObhY89mboBTg6ogfu0zNY1l1swV5JxmUcxM/6M8=;
-        b=POq+cE1wOWR/WLdQb4XNSk2ZmlkP7FjfgDKLHd1igYETzhXtoQYueyhzm8aszAWa43
-         JOihPPcNHFc3DZ0W4L786y+hjPiQrWqNS/UAg+WwBgCfZIokhcNwed5z9UJ6AKt69Y1w
-         R3XyhccXbJjKob9HCUGiQ/X6QV7s4H9sdiUYLbPqOynbZ5Y4eQnKp3eoczqRalwma4Tc
-         nXHXIvBkMUTvRuHchbyciRZJf00B73TtDFlbnv5flPDd0XH/BJdoSjbhUgjktuhYwjDQ
-         4bMnhEi1kkGbE6ibc8PVjm+KZE0mvml4l2x9S60YGr1j9EnADfMIW9AVjMRNd+X/r52a
-         qaqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702829434; x=1703434234;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X+M7ObhY89mboBTg6ogfu0zNY1l1swV5JxmUcxM/6M8=;
-        b=SX2cnaBkA7Ckkml6FtGoWBJZtt9ILNCfoqL07yIUepx40w5fnjox9h0hB5O8tWkV79
-         FA8sCX3nLXPQY5luAGNJ00HWzz+eIq6jC+VslLIZkrw0d8CGNzO9u2I/QKRjpUuWsnje
-         4LOnWIvaTGlKvIOS31NDBbkCOgotArLmbPPOBCHxSjpxa4I42i4SrIqGzWILFGeLYZ2U
-         RqYmkzwoEGmtTa5mUsr+HTQ2bgCREaIrsI0Mw/71oMJkEGI6SIj230ei4NL9ReK61xgE
-         1qoYSxAmCwsKPKh7Xp7Rhug6qA7A/eAciWIHNVKa3xAWsPBb8BBlE9x4x88vPSFD/Hd9
-         r9zw==
-X-Gm-Message-State: AOJu0Yy30g4/+1IM8jc102oWihjUVFzp6wC1rREotksqgHpZTZXEpqga
-	ztmyxuQ5/r5XNoYfnKAuBr/zvWkyNPkUfKPeI+k=
-X-Google-Smtp-Source: AGHT+IEVzWv+mCh5X+oHDU4ZYyyUn3gt/dsTioktOBaT+Leif7Q/znYAZrOx3J74lSjeg51HRMy0xQ==
-X-Received: by 2002:a05:6808:320a:b0:3ba:9d:9b54 with SMTP id cb10-20020a056808320a00b003ba009d9b54mr23158873oib.14.1702829433736;
-        Sun, 17 Dec 2023 08:10:33 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id t22-20020a056a0021d600b006d6015297d4sm1031826pfj.49.2023.12.17.08.10.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Dec 2023 08:10:33 -0800 (PST)
-Message-ID: <657f1d79.050a0220.1095.1ba8@mx.google.com>
-Date: Sun, 17 Dec 2023 08:10:33 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B1245BE4;
+	Sun, 17 Dec 2023 16:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1702829675; x=1734365675;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=WB4iKFQ6lflwL/cpKRo4oLwAL8X04AxUZMzKYtP8CDo=;
+  b=fHz9YpYWSQTLtOPpzbr2cuZlSKnMgkX6UOfb9ZCd2i9yU1ULNC60mYAq
+   xyunNyrn1hHlzuDYFa6/2Xx8+EjYg0TNMHmhcHBQwMQTyaN0PVYOxk9m8
+   /U9LCAlnKNA/HQ6IvNXpeHhOnGGoKx8hGbEbTqKtDIU2+R5tGyQz/tICa
+   UmBAJyou0Q85ftlXXTLB2nkRHrqMWWdDrWEDXunuuUlK89LSOmydJ+5lg
+   +r4/XfnxDvmxa+VOH5EqSLpSndWNCIMAIXQUhVG2m8P2fi4u/Qy0EEn5g
+   ysPALeiuX5yFobwBDT/h7mVAGCWOfaDo9nJlI1ceB/AL6qIM/EzonfmKQ
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10927"; a="8779403"
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="8779403"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 08:14:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,283,1695711600"; 
+   d="scan'208";a="23453885"
+Received: from spandruv-desk.jf.intel.com (HELO spandruv-desk.amr.corp.intel.com) ([10.54.75.14])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2023 08:14:33 -0800
+Message-ID: <4e3e6260d844215809696bb744baf0519a9c0af0.camel@linux.intel.com>
+Subject: Re: [PATCH] iio: light: hid-sensor-als: Avoid failure for
+ chromaticity support
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com, 
+	linux-input@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+	 <thomas@t-8ch.de>, stable@vger.kernel.org
+Date: Sun, 17 Dec 2023 08:14:19 -0800
+In-Reply-To: <20231217143555.1f89ddaa@jic23-huawei>
+References: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
+	 <20231217143555.1f89ddaa@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.44.4 (3.44.4-3.fc36) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.19
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.302-27-g617995ea40861
-Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
- 33 warnings (v4.19.302-27-g617995ea40861)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 33 warnings (v4=
-.19.302-27-g617995ea40861)
+T24gU3VuLCAyMDIzLTEyLTE3IGF0IDE0OjM1ICswMDAwLCBKb25hdGhhbiBDYW1lcm9uIHdyb3Rl
+Ogo+IE9uIEZyaSwgMTUgRGVjIDIwMjMgMDg6MDE6NTkgLTA4MDAKPiBTcmluaXZhcyBQYW5kcnV2
+YWRhIDxzcmluaXZhcy5wYW5kcnV2YWRhQGxpbnV4LmludGVsLmNvbT4gd3JvdGU6Cj4gCj4gPiBX
+aXRoIHRoZSBjb21taXQgZWUzNzEwZjM5ZjlkICgiaWlvOiBoaWQtc2Vuc29yLWFsczogQWRkIGxp
+Z2h0Cj4gPiBjaHJvbWF0aWNpdHkKPiA+IHN1cHBvcnQiKSwgdGhlcmUgaXMgYW4gYXNzdW1wdGlv
+biB0aGF0IHRoZSBldmVyeSBISUQgQUxTIGRlc2NyaXB0b3IKPiA+IGhhcwo+ID4gc3VwcG9ydCBv
+ZiB1c2FnZSBpZHMgZm9yIGNocm9tYXRpY2l0eSBzdXBwb3J0LiBJZiB0aGV5IGFyZSBub3QKPiA+
+IHByZXNlbnQsCj4gPiBwcm9iZSBmYWlscyBmb3IgdGhlIGRyaXZlciAuIFRoaXMgYnJlYWtzIEFM
+UyBmdW5jdGlvbmFsaXR5IG9uCj4gPiBtYWpvcml0eSBvZgo+ID4gcGxhdGZvcm1zLgo+ID4gCj4g
+PiBJdCBpcyBwb3NzaWJsZSB0aGF0IGNocm9tYXRpY2l0eSB1c2FnZSBpZHMgYXJlIG5vdCBwcmVz
+ZW50LiBXaGVuCj4gPiBub3QKPiA+IHByZXNlbnQsIHJlc3RyaWN0IG51bWJlciBvZiBJSU8gY2hh
+bm5lbHMgdG8gbm90IGluY2x1ZGUgc3VwcG9ydCBmb3IKPiA+IGNocm9tYXRpY2l0eSBhbmQgY29u
+dGludWUuCj4gPiAKPiA+IEZpeGVzOiBlZTM3MTBmMzlmOWQgKCJpaW86IGhpZC1zZW5zb3ItYWxz
+OiBBZGQgbGlnaHQgY2hyb21hdGljaXR5Cj4gPiBzdXBwb3J0IikKPiA+IFJlcG9ydGVkLWJ5OiBU
+aG9tYXMgV2Vpw59zY2h1aCA8dGhvbWFzQHQtOGNoLmRlPgo+ID4gQ2xvc2VzOiBodHRwczovL2J1
+Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dpP2lkPTIxODIyMwo+ID4gU2lnbmVkLW9mZi1i
+eTogU3Jpbml2YXMgUGFuZHJ1dmFkYQo+ID4gPHNyaW5pdmFzLnBhbmRydXZhZGFAbGludXguaW50
+ZWwuY29tPgo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiA+IC0tLQo+ID4gwqBkcml2
+ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jIHwgMjQgKysrKysrKysrKysrKysrKy0tLS0t
+LS0tCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxNiBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygt
+KQo+ID4gCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9paW8vbGlnaHQvaGlkLXNlbnNvci1hbHMu
+Ywo+ID4gYi9kcml2ZXJzL2lpby9saWdodC9oaWQtc2Vuc29yLWFscy5jCj4gPiBpbmRleCBmMTcz
+MDRiNTQ0NjguLjk5NDFiMGI5MjdjNyAxMDA2NDQKPiA+IC0tLSBhL2RyaXZlcnMvaWlvL2xpZ2h0
+L2hpZC1zZW5zb3ItYWxzLmMKPiA+ICsrKyBiL2RyaXZlcnMvaWlvL2xpZ2h0L2hpZC1zZW5zb3It
+YWxzLmMKPiA+IEBAIC0zMDMsMTEgKzMwMywxNCBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBv
+cnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGhp
+ZF9zZW5zb3JfaHViX2RldmljZQo+ID4gKmhzZGV2LAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCBpaW9fY2hh
+bl9zcGVjICpjaGFubmVscywKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB1bnNpZ25lZCB1c2FnZV9pZCwKPiA+IC3CoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oHN0cnVjdCBhbHNfc3RhdGUgKnN0KQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgc3RydWN0IGFsc19zdGF0ZSAqc3QsCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqBpbnQgKm1heF9jaGFubmVscykKPiA+IMKgewo+ID4gwqDCoMKgwqDCoMKgwqDCoGlu
+dCByZXQ7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW50IGk7Cj4gPiDCoAo+ID4gK8KgwqDCoMKgwqDC
+oMKgKm1heF9jaGFubmVscyA9IENIQU5ORUxfU0NBTl9JTkRFWF9NQVg7Cj4gPiArCj4gPiDCoMKg
+wqDCoMKgwqDCoMKgZm9yIChpID0gMDsgaSA8PSBDSEFOTkVMX1NDQU5fSU5ERVhfSUxMVU07ICsr
+aSkgewo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqByZXQgPSBzZW5zb3JfaHVi
+X2lucHV0X2dldF9hdHRyaWJ1dGVfaW5mbyhoc2RldiwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoEhJRF9JTlBVVF9SRVBPUlQsCj4gPiBAQCAtMzI2LDggKzMyOSwx
+MiBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBvcnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZp
+Y2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgdXNhZ2VfaWQsCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgSElEX1VTQUdFX1NFTlNP
+Ul9MSUdIVF9DT0xPUl9URU1QRVIKPiA+IEFUVVJFLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCZzdC0KPiA+ID5hbHNb
+Q0hBTk5FTF9TQ0FOX0lOREVYX0NPTE9SX1RFTVBdKTsKPiA+IC3CoMKgwqDCoMKgwqDCoGlmIChy
+ZXQgPCAwKQo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4g
+PiArwqDCoMKgwqDCoMKgwqBpZiAocmV0IDwgMCkgewo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCptYXhfY2hhbm5lbHMgPSBDSEFOTkVMX1NDQU5fSU5ERVhfSUxMVU07Cj4gPiAr
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gMDsKPiA+ICvCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqBnb3RvIHNraXBfY29sb3JfY2hyb21hdGljaXR5Owo+ID4gK8KgwqDC
+oMKgwqDCoMKgfQo+ID4gKwo+ID4gwqDCoMKgwqDCoMKgwqDCoGFsc19hZGp1c3RfY2hhbm5lbF9i
+aXRfbWFzayhjaGFubmVscywKPiA+IENIQU5ORUxfU0NBTl9JTkRFWF9DT0xPUl9URU1QLAo+ID4g
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoHN0LQo+ID4gPmFsc1tDSEFOTkVMX1NDQU5fSU5ERVhfQ09MT1JfVEVNUF0uc2l6ZSk7
+Cj4gPiDCoAo+ID4gQEAgLTM1NCw2ICszNjEsNyBAQCBzdGF0aWMgaW50IGFsc19wYXJzZV9yZXBv
+cnQoc3RydWN0Cj4gPiBwbGF0Zm9ybV9kZXZpY2UgKnBkZXYsCj4gPiDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBzdC0+YWxzW25leHRfc2Nhbl9pbmRleF0u
+cmVwb3J0X2lkKTsKPiA+IMKgwqDCoMKgwqDCoMKgwqB9Cj4gPiDCoAo+ID4gK3NraXBfY29sb3Jf
+Y2hyb21hdGljaXR5Ogo+ID4gwqDCoMKgwqDCoMKgwqDCoHN0LT5zY2FsZV9wcmVjaXNpb24gPSBo
+aWRfc2Vuc29yX2Zvcm1hdF9zY2FsZSh1c2FnZV9pZCwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAmc3QtCj4gPiA+YWxz
+W0NIQU5ORUxfU0NBTl9JTkRFWF9JTlRFTlNJVFldLAo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCZzdC0+c2NhbGVfcHJl
+X2RlY21sLCAmc3QtCj4gPiA+c2NhbGVfcG9zdF9kZWNtbCk7Cj4gPiBAQCAtMzY0LDcgKzM3Miw3
+IEBAIHN0YXRpYyBpbnQgYWxzX3BhcnNlX3JlcG9ydChzdHJ1Y3QKPiA+IHBsYXRmb3JtX2Rldmlj
+ZSAqcGRldiwKPiA+IMKgLyogRnVuY3Rpb24gdG8gaW5pdGlhbGl6ZSB0aGUgcHJvY2Vzc2luZyBm
+b3IgdXNhZ2UgaWQgKi8KPiA+IMKgc3RhdGljIGludCBoaWRfYWxzX3Byb2JlKHN0cnVjdCBwbGF0
+Zm9ybV9kZXZpY2UgKnBkZXYpCj4gPiDCoHsKPiA+IC3CoMKgwqDCoMKgwqDCoGludCByZXQgPSAw
+Owo+ID4gK8KgwqDCoMKgwqDCoMKgaW50IHJldCA9IDAsIG1heF9jaGFubmVsczsKPiA+IMKgwqDC
+oMKgwqDCoMKgwqBzdGF0aWMgY29uc3QgY2hhciAqbmFtZSA9ICJhbHMiOwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoHN0cnVjdCBpaW9fZGV2ICppbmRpb19kZXY7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgc3Ry
+dWN0IGFsc19zdGF0ZSAqYWxzX3N0YXRlOwo+ID4gQEAgLTM5OCwxNSArNDA2LDE1IEBAIHN0YXRp
+YyBpbnQgaGlkX2Fsc19wcm9iZShzdHJ1Y3QKPiA+IHBsYXRmb3JtX2RldmljZSAqcGRldikKPiA+
+IMKgCj4gPiDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gYWxzX3BhcnNlX3JlcG9ydChwZGV2LCBoc2Rl
+diwKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCAoc3RydWN0IGlpb19jaGFuX3NwZWMgKilpbmRpb19kZXYtCj4gPiA+Y2hhbm5l
+bHMsCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoCBoc2Rldi0+dXNhZ2UsCj4gPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhbHNfc3RhdGUpOwo+ID4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaHNkZXYt
+PnVzYWdlLCBhbHNfc3RhdGUsCj4gPiAmbWF4X2NoYW5uZWxzKTsKPiA+IMKgwqDCoMKgwqDCoMKg
+wqBpZiAocmV0KSB7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGRldl9lcnIo
+JnBkZXYtPmRldiwgImZhaWxlZCB0byBzZXR1cAo+ID4gYXR0cmlidXRlc1xuIik7Cj4gPiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybiByZXQ7Cj4gPiDCoMKgwqDCoMKgwqDC
+oMKgfQo+ID4gwqAKPiA+IC3CoMKgwqDCoMKgwqDCoGluZGlvX2Rldi0+bnVtX2NoYW5uZWxzID0K
+PiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoEFSUkFZX1NJWkUoYWxzX2NoYW5uZWxzKTsKPiA+ICvCoMKgwqDCoMKgwqDCoC8q
+ICsxIHRvIGluY2x1ZGUgdGltZSBzdGFtcCAqLwo+ID4gK8KgwqDCoMKgwqDCoMKgaW5kaW9fZGV2
+LT5udW1fY2hhbm5lbHMgPSBtYXhfY2hhbm5lbHMgKyAxOwo+IAo+IEluIHRoZSBjdXJyZW50IGFy
+cmF5IHRoZSB0aW1lc3RhbXAgY2hhbm5lbCBpc24ndCB0aGUgbmV4dCBvbmUsIHNvIGhvdwo+IGRv
+ZXMgdGhpcyB3b3JrPwo+IAo+IEkgdGhpbmsgd2UgZWl0aGVyIGhhdmUgdG8gZm9ybSB0aGUgY2hh
+bm5lbCBhcnJheSBkeW5hbWljYWxseSBvciBwaWNrCj4gYmV0d2Vlbgo+IG9uZSB0aGF0IGRvZXMg
+aGF2ZSB0aGUgY29sb3VyIGluZm8gYW5kIG9uZSB0aGF0IGRvZXNuJ3QgZm9yIHRoZQo+IG9yaWdp
+bmFsIGNhc2UuCj4gCllvdSBhcmUgcmlnaHQsIGxldCBtZSByZXN1Ym1pdC4KCgo+IEdpdmVuIHRp
+bWluZyB3ZSBtYXkganVzdCBuZWVkIHRvIHJldmVydCB0aGUgYnJva2VuIHBhdGNoIGFuZCByZXZp
+c2l0Cj4gdGhpcyBuZXh0Cj4gY3ljbGUuClRoaXMgaXMgYmV0dGVyLiBJIHdpbGwgc2VuZCBhIHJl
+dmVydC4KClRoYW5rcywKU3Jpbml2YXMKCgo+IAo+IEpvbmF0aGFuCj4gCj4gCj4gPiArCj4gPiDC
+oMKgwqDCoMKgwqDCoMKgaW5kaW9fZGV2LT5pbmZvID0gJmFsc19pbmZvOwo+ID4gwqDCoMKgwqDC
+oMKgwqDCoGluZGlvX2Rldi0+bmFtZSA9IG5hbWU7Cj4gPiDCoMKgwqDCoMKgwqDCoMKgaW5kaW9f
+ZGV2LT5tb2RlcyA9IElORElPX0RJUkVDVF9NT0RFOwo+IAoK
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-9/kernel/v4.19.302-27-g617995ea40861/
-
-Tree: stable-rc
-Branch: queue/4.19
-Git Describe: v4.19.302-27-g617995ea40861
-Git Commit: 617995ea40861ccffa613ddfb7beb3e5c8a78a9f
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-    haps_hs_smp_defconfig (gcc-10): 1 warning
-
-arm64:
-    defconfig (gcc-10): 4 warnings
-    defconfig+arm64-chromebook (gcc-10): 4 warnings
-
-arm:
-    imx_v6_v7_defconfig (gcc-10): 1 warning
-    multi_v5_defconfig (gcc-10): 1 warning
-    multi_v7_defconfig (gcc-10): 1 warning
-    omap2plus_defconfig (gcc-10): 1 warning
-    vexpress_defconfig (gcc-10): 1 warning
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    defconfig (gcc-10): 1 warning
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    13   include/linux/kernel.h:847:29: warning: comparison of distinct poi=
-nter types lacks a cast
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    4    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 1 warning, 0 section mi=
-smatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section m=
-ismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warn=
-ings, 0 section mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
-section mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
-types lacks a cast
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
