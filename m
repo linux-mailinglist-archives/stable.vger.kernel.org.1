@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-6925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4BB816209
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 21:25:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F698816225
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 21:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2468F1F21DA5
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 20:25:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39DC61C2121D
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 20:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF60481B8;
-	Sun, 17 Dec 2023 20:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1D535F0D;
+	Sun, 17 Dec 2023 20:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hrRCF380"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="KOiiFB+F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4DA481AF
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 20:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB8481C0
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 20:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d075392ff6so16888945ad.1
-        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 12:24:34 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6da579e6858so1607967a34.3
+        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 12:44:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702844674; x=1703449474; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702845862; x=1703450662; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=kF4NCArtsKsAVTGC8jb4kdqlaX2eybErfRsynDcpV8E=;
-        b=hrRCF380VDf/IZJSuYqCrplioL9wBLplbgHr8LvfD6z4CxEbXYiqVeZGIW6CHbcEa1
-         d5HrAx+iLbR1IXapbkhqDVNTkSxWmmYq9KDRdA6lamPFCEtTDWhEX3pQci7GdzRj02wN
-         BYYVTGkqMx946c5/1zJXBFmMhpnw9/u+cgAWVQXZKwHT11iueJ+OjKLqbfOJsJcMZfFa
-         cvNYQn3be74VOTosxZakL7pltAQx3DC7Pnkiu9XJzZPLhbbTroxUyjZrF+9N+rWWekpf
-         tge9htV4IqEf3G1kLZ23ZfQbMnhp6DMOkeqjZssrCZz3CiPD+N98+n8QKnr5Zfj3/3mm
-         MbYQ==
+        bh=PXVF1zhJ9VZ9exrKsukMUSZ51MK3VzVEgd10zII9k8k=;
+        b=KOiiFB+FGOmriUG2HUQpuiEr9PiukgqRH4p4+X8D7Cpvsx8pwaHYRuvJ+FuQ9uGW/5
+         FY4x/9qWZQ0BJPlYo71fCpcyW/5Tpza+mhre7cz36tshwCylArR2u/bFbzmUYq4n0zlX
+         xWUzY4rSTY68eyW0ppDovI/cAzsCMe5cXNfhAeJNwDS+D/BR5CaA2SkRmnY0fuGJBbjv
+         +T4qwgFXj0xTX94CYqkEqjRdyQs86Hd0DOvPEQ0c8jVtktuPojla3RRnfQzOBc6u3Sdi
+         T0dNKjcB7EwpYv6JalP5vAO94LOH8OH2Rq+yVWyjaZOYvTKTzuTWqRAy1TnkvON2RuRI
+         XFEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702844674; x=1703449474;
+        d=1e100.net; s=20230601; t=1702845862; x=1703450662;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=kF4NCArtsKsAVTGC8jb4kdqlaX2eybErfRsynDcpV8E=;
-        b=Py/m43W76t0aJ4sbrWXBHLvZTeRj/jADE0YO6Vfzo+4ZBf1uebx/MdIa+PdDtL98PE
-         GuxwQBHMPn5w8b4BjEGJRILAz0EXFsZIFaeVxek5on4P0VsL8dGph67HrdmhMqIVyJxh
-         tePwrmVFQhTYdBJ6+TgA1aH4rkUOp71RSN5pHA2olaFENeGQWkle9ZRShuL56Cog8HSW
-         mB903N8fXXPU0dE7SyAXnVVUvvQC5OKg2id/1+iLNK1FHJwRxYX/ayEvXMstRuixZIKB
-         F87AX2nrK/E7KRJuauL5DLSx61ztdL/DemZi8XNGxDMoY20nlXWDAo55JQXwXv0O5jn3
-         X/ng==
-X-Gm-Message-State: AOJu0YxctwwuOJsLNUK4fMLH0RDBCcidjoZX4rLnRdYFVToKkAPPgSRp
-	Mu33H5w6xb+RYTeDKWj7mCs35szFDUGc96FnKVU=
-X-Google-Smtp-Source: AGHT+IFW1c2leLBb9EHTh7Rmmz/qGwK4DqVnsNJUD9SMB54m/GLXRQf+QlxgTzTFu6T+MSKvBv9V0g==
-X-Received: by 2002:a17:902:f68b:b0:1d3:6255:6c93 with SMTP id l11-20020a170902f68b00b001d362556c93mr9587442plg.19.1702844673989;
-        Sun, 17 Dec 2023 12:24:33 -0800 (PST)
+        bh=PXVF1zhJ9VZ9exrKsukMUSZ51MK3VzVEgd10zII9k8k=;
+        b=XN5kS/Ylnc47OsTlKkdnZHlsGiydwWw/m8wNwHUWK9j8+IqtCdKyRWlWRdsrlxRwEj
+         StM673B03C0mtmz5tEYNzxqjC4U69A6EFkFXLP2igjZh8ZZl9BcgAFEng2HP3vidIUBQ
+         v+Zcs0uwfu7YDNrc8qVvaOqpiOSXHiWRlLxiNWy002hc56Enp1Oh5T3ytUmKM5YWwfyq
+         50nvcUAD4uzpYvs9zd/siN1Nr6d90OUflD++YvtUKQriChOBLAK4kOhB0Ik8pxlVzbMX
+         9hvjk0BRzkFu4pBPtM93vUS3rt0uP+YcXJFg4/i0a8NgsbC3GM97yPz4jxPfEJEAeyJ8
+         mOCw==
+X-Gm-Message-State: AOJu0Yz+5RLNAXKZmu1Jt/4Kkn5L0aJt8mYaFnV6gBWVyl9+5/HsHdUQ
+	2eLmohQwWswNFh8qR4CeuB0XcZ+HbzBwB4MPRl0=
+X-Google-Smtp-Source: AGHT+IFQxHrrlg6odFz9EuVORk98dp4WfAfsSwQbylUdte+t8aKz9xZwJolRrTpuSbASjDUnB7aqCw==
+X-Received: by 2002:a05:6830:1282:b0:6da:6a31:fd08 with SMTP id z2-20020a056830128200b006da6a31fd08mr766657otp.73.1702845862509;
+        Sun, 17 Dec 2023 12:44:22 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id t1-20020a170902b20100b001bb9d6b1baasm17529839plr.198.2023.12.17.12.24.33
+        by smtp.gmail.com with ESMTPSA id t22-20020a056a0021d600b006d6015297d4sm1232037pfj.49.2023.12.17.12.44.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Dec 2023 12:24:33 -0800 (PST)
-Message-ID: <657f5901.170a0220.a1c8.3e73@mx.google.com>
-Date: Sun, 17 Dec 2023 12:24:33 -0800 (PST)
+        Sun, 17 Dec 2023 12:44:22 -0800 (PST)
+Message-ID: <657f5da6.050a0220.1095.2593@mx.google.com>
+Date: Sun, 17 Dec 2023 12:44:22 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,37 +66,49 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
+X-Kernelci-Branch: queue/5.10
 X-Kernelci-Tree: stable-rc
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.68-79-gcd84d41e714d8
-Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.68-79-gcd84d41e714d8)
+X-Kernelci-Kernel: v5.10.204-56-g66e9372e76961
+Subject: stable-rc/queue/5.10 build: 19 builds: 3 failed, 16 passed, 3 errors,
+ 11 warnings (v5.10.204-56-g66e9372e76961)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
-68-79-gcd84d41e714d8)
+stable-rc/queue/5.10 build: 19 builds: 3 failed, 16 passed, 3 errors, 11 wa=
+rnings (v5.10.204-56-g66e9372e76961)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.68-79-gcd84d41e714d8/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.204-56-g66e9372e76961/
 
 Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.68-79-gcd84d41e714d8
-Git Commit: cd84d41e714d82582cd2058ef5ef58b89a290c45
+Branch: queue/5.10
+Git Describe: v5.10.204-56-g66e9372e76961
+Git Commit: 66e9372e7696129bb675a1b93821e3594f96ca0b
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
 
-Warnings Detected:
+Build Failures Detected:
+
+arm64:
+    defconfig: (gcc-10) FAIL
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+arm:
+    multi_v7_defconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
 
 arc:
 
 arm64:
+    defconfig (gcc-10): 1 error, 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 1 error, 2 warnings
 
 arm:
+    multi_v7_defconfig (gcc-10): 1 error, 2 warnings
 
 i386:
 
@@ -104,15 +116,28 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
 
+Errors summary:
+
+    3    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declarat=
+ion of function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3D=
+implicit-function-declaration]
 
 Warnings summary:
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+    3    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization =
+of =E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 mak=
+es pointer from integer without a cast [-Wint-conversion]
+    3    cc1: some warnings being treated as errors
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -127,14 +152,8 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
 
 ---------------------------------------------------------------------------=
 -----
@@ -143,18 +162,45 @@ n mismatches
 
 ---------------------------------------------------------------------------=
 -----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
 defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 section mi=
+smatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warni=
+ngs, 0 section mismatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
@@ -178,8 +224,19 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 sec=
+tion mismatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
@@ -188,18 +245,21 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
 ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
 ---------------------------------------------------------------------------=
 -----
