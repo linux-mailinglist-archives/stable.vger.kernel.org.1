@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DD381615D
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:45:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0498816163
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487281C208D8
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:45:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3171C20410
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B44F46541;
-	Sun, 17 Dec 2023 17:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EBF46BBF;
+	Sun, 17 Dec 2023 17:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7BiL/eM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLYyaB+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D581DFE9
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:45:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C194C433C7;
-	Sun, 17 Dec 2023 17:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101A46BBE
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31503C433C7;
+	Sun, 17 Dec 2023 17:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702835122;
-	bh=A25H6OUqnMwH9k8/8WMBP1nNt1GdjLouJxp3xBpixww=;
+	s=korg; t=1702835184;
+	bh=c+tk4to2C9J7wsroxhziPLyN5LMbsdJVa5TINvQ/5bw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=n7BiL/eMUhOwIGXYg3ZXpvbPDtdVtN8ybzqMMaQ6Bc55/bCUE7I+6XuUY9oE0FGkm
-	 9KA4iAoDdnhdfVyn9ZsPsqrEmseZ9tFVO0eH6Fahwq9mfEqyFA2ey5vzHwtO/JCWt+
-	 xVGlH9Y8tSOnoH3jKogbEUa5nXPSkwzmvcam88ZQ=
-Subject: FAILED: patch "[PATCH] fuse: share lookup state between submount and its parent" failed to apply to 5.10-stable tree
-To: kjlx@templeofstupid.com,mszeredi@redhat.com
+	b=BLYyaB+QGoxIXU0laxrG2m7Ha1zlde7DdHCo4XutJOAXSyO7G7nJxfdYkm4+Byj6X
+	 VIMm+bWusskmPWkIeWdzftrNoCoCE5zF5eYgpIWRtMywBpVqlg2SHqnJs7F7jkKRB9
+	 K5JZe9tdP6PWrxhPURpR8OrIAVqmviB9McH8NTpg=
+Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 6.6-stable tree
+To: asml.silence@gmail.com,davem@davemloft.net,jannh@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Dec 2023 18:45:10 +0100
-Message-ID: <2023121710-lifting-customer-7805@gregkh>
+Date: Sun, 17 Dec 2023 18:46:21 +0100
+Message-ID: <2023121721-canary-transpire-3973@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,30 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x c4d361f66ac91db8fc65061a9671682f61f4ca9d
+git cherry-pick -x 69db702c83874fbaa2a51af761e35a8e5a593b95
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121710-lifting-customer-7805@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121721-canary-transpire-3973@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-c4d361f66ac9 ("fuse: share lookup state between submount and its parent")
-972f4c46d0a1 ("fuse: cache btime")
-d3045530bdd2 ("fuse: implement statx")
-9dc10a54abe5 ("fuse: add ATTR_TIMEOUT macro")
-8d8f9c4b8df6 ("fuse: handle empty request_mask in statx")
-e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
-5cadfbd5a11e ("fuse: add feature flag for expire-only")
-d40b2f4c94f2 ("Merge tag 'fuse-update-6.3' of git://git.kernel.org/pub/scm/linux/kernel/git/mszeredi/fuse")
+69db702c8387 ("io_uring/af_unix: disable sending io_uring over sockets")
 
 thanks,
 
@@ -76,221 +69,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c4d361f66ac91db8fc65061a9671682f61f4ca9d Mon Sep 17 00:00:00 2001
-From: Krister Johansen <kjlx@templeofstupid.com>
-Date: Fri, 3 Nov 2023 10:39:47 -0700
-Subject: [PATCH] fuse: share lookup state between submount and its parent
+From 69db702c83874fbaa2a51af761e35a8e5a593b95 Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Wed, 6 Dec 2023 13:55:19 +0000
+Subject: [PATCH] io_uring/af_unix: disable sending io_uring over sockets
 
-Fuse submounts do not perform a lookup for the nodeid that they inherit
-from their parent.  Instead, the code decrements the nlookup on the
-submount's fuse_inode when it is instantiated, and no forget is
-performed when a submount root is evicted.
+File reference cycles have caused lots of problems for io_uring
+in the past, and it still doesn't work exactly right and races with
+unix_stream_read_generic(). The safest fix would be to completely
+disallow sending io_uring files via sockets via SCM_RIGHT, so there
+are no possible cycles invloving registered files and thus rendering
+SCM accounting on the io_uring side unnecessary.
 
-Trouble arises when the submount's parent is evicted despite the
-submount itself being in use.  In this author's case, the submount was
-in a container and deatched from the initial mount namespace via a
-MNT_DEATCH operation.  When memory pressure triggered the shrinker, the
-inode from the parent was evicted, which triggered enough forgets to
-render the submount's nodeid invalid.
-
-Since submounts should still function, even if their parent goes away,
-solve this problem by sharing refcounted state between the parent and
-its submount.  When all of the references on this shared state reach
-zero, it's safe to forget the final lookup of the fuse nodeid.
-
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 Cc: stable@vger.kernel.org
-Fixes: 1866d779d5d2 ("fuse: Allow fuse_fill_super_common() for submounts")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
+Reported-and-suggested-by: Jann Horn <jannh@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 69bcffaf4832..1df83eebda92 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -63,6 +63,19 @@ struct fuse_forget_link {
- 	struct fuse_forget_link *next;
- };
+diff --git a/io_uring/rsrc.h b/io_uring/rsrc.h
+index 8625181fb87a..08ac0d8e07ef 100644
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -77,17 +77,10 @@ int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
  
-+/* Submount lookup tracking */
-+struct fuse_submount_lookup {
-+	/** Refcount */
-+	refcount_t count;
-+
-+	/** Unique ID, which identifies the inode between userspace
-+	 * and kernel */
-+	u64 nodeid;
-+
-+	/** The request used for sending the FORGET message */
-+	struct fuse_forget_link *forget;
-+};
-+
- /** FUSE inode */
- struct fuse_inode {
- 	/** Inode data */
-@@ -158,6 +171,8 @@ struct fuse_inode {
- 	 */
- 	struct fuse_inode_dax *dax;
- #endif
-+	/** Submount specific lookup tracking */
-+	struct fuse_submount_lookup *submount_lookup;
- };
+ int __io_scm_file_account(struct io_ring_ctx *ctx, struct file *file);
  
- /** FUSE inode state bits */
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 88090c6026a7..2a6d44f91729 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -68,6 +68,24 @@ struct fuse_forget_link *fuse_alloc_forget(void)
- 	return kzalloc(sizeof(struct fuse_forget_link), GFP_KERNEL_ACCOUNT);
- }
- 
-+static struct fuse_submount_lookup *fuse_alloc_submount_lookup(void)
-+{
-+	struct fuse_submount_lookup *sl;
-+
-+	sl = kzalloc(sizeof(struct fuse_submount_lookup), GFP_KERNEL_ACCOUNT);
-+	if (!sl)
-+		return NULL;
-+	sl->forget = fuse_alloc_forget();
-+	if (!sl->forget)
-+		goto out_free;
-+
-+	return sl;
-+
-+out_free:
-+	kfree(sl);
-+	return NULL;
-+}
-+
- static struct inode *fuse_alloc_inode(struct super_block *sb)
+-#if defined(CONFIG_UNIX)
+-static inline bool io_file_need_scm(struct file *filp)
+-{
+-	return !!unix_get_socket(filp);
+-}
+-#else
+ static inline bool io_file_need_scm(struct file *filp)
  {
- 	struct fuse_inode *fi;
-@@ -83,6 +101,7 @@ static struct inode *fuse_alloc_inode(struct super_block *sb)
- 	fi->attr_version = 0;
- 	fi->orig_ino = 0;
- 	fi->state = 0;
-+	fi->submount_lookup = NULL;
- 	mutex_init(&fi->mutex);
- 	spin_lock_init(&fi->lock);
- 	fi->forget = fuse_alloc_forget();
-@@ -113,6 +132,17 @@ static void fuse_free_inode(struct inode *inode)
- 	kmem_cache_free(fuse_inode_cachep, fi);
+ 	return false;
  }
+-#endif
  
-+static void fuse_cleanup_submount_lookup(struct fuse_conn *fc,
-+					 struct fuse_submount_lookup *sl)
-+{
-+	if (!refcount_dec_and_test(&sl->count))
-+		return;
-+
-+	fuse_queue_forget(fc, sl->forget, sl->nodeid, 1);
-+	sl->forget = NULL;
-+	kfree(sl);
-+}
-+
- static void fuse_evict_inode(struct inode *inode)
- {
- 	struct fuse_inode *fi = get_fuse_inode(inode);
-@@ -132,6 +162,11 @@ static void fuse_evict_inode(struct inode *inode)
- 					  fi->nlookup);
- 			fi->forget = NULL;
- 		}
-+
-+		if (fi->submount_lookup) {
-+			fuse_cleanup_submount_lookup(fc, fi->submount_lookup);
-+			fi->submount_lookup = NULL;
+ static inline int io_scm_file_account(struct io_ring_ctx *ctx,
+ 				      struct file *file)
+diff --git a/net/core/scm.c b/net/core/scm.c
+index 880027ecf516..7dc47c17d863 100644
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -26,6 +26,7 @@
+ #include <linux/nsproxy.h>
+ #include <linux/slab.h>
+ #include <linux/errqueue.h>
++#include <linux/io_uring.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
+ 
+ 		if (fd < 0 || !(file = fget_raw(fd)))
+ 			return -EBADF;
++		/* don't allow io_uring files */
++		if (io_uring_get_socket(file)) {
++			fput(file);
++			return -EINVAL;
 +		}
+ 		*fpp++ = file;
+ 		fpl->count++;
  	}
- 	if (S_ISREG(inode->i_mode) && !fuse_is_bad(inode)) {
- 		WARN_ON(!list_empty(&fi->write_files));
-@@ -330,6 +365,13 @@ void fuse_change_attributes(struct inode *inode, struct fuse_attr *attr,
- 		fuse_dax_dontcache(inode, attr->flags);
- }
- 
-+static void fuse_init_submount_lookup(struct fuse_submount_lookup *sl,
-+				      u64 nodeid)
-+{
-+	sl->nodeid = nodeid;
-+	refcount_set(&sl->count, 1);
-+}
-+
- static void fuse_init_inode(struct inode *inode, struct fuse_attr *attr,
- 			    struct fuse_conn *fc)
- {
-@@ -392,12 +434,22 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 	 */
- 	if (fc->auto_submounts && (attr->flags & FUSE_ATTR_SUBMOUNT) &&
- 	    S_ISDIR(attr->mode)) {
-+		struct fuse_inode *fi;
-+
- 		inode = new_inode(sb);
- 		if (!inode)
- 			return NULL;
- 
- 		fuse_init_inode(inode, attr, fc);
--		get_fuse_inode(inode)->nodeid = nodeid;
-+		fi = get_fuse_inode(inode);
-+		fi->nodeid = nodeid;
-+		fi->submount_lookup = fuse_alloc_submount_lookup();
-+		if (!fi->submount_lookup) {
-+			iput(inode);
-+			return NULL;
-+		}
-+		/* Sets nlookup = 1 on fi->submount_lookup->nlookup */
-+		fuse_init_submount_lookup(fi->submount_lookup, nodeid);
- 		inode->i_flags |= S_AUTOMOUNT;
- 		goto done;
- 	}
-@@ -420,11 +472,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
- 		iput(inode);
- 		goto retry;
- 	}
--done:
- 	fi = get_fuse_inode(inode);
- 	spin_lock(&fi->lock);
- 	fi->nlookup++;
- 	spin_unlock(&fi->lock);
-+done:
- 	fuse_change_attributes(inode, attr, NULL, attr_valid, attr_version);
- 
- 	return inode;
-@@ -1465,6 +1517,8 @@ static int fuse_fill_super_submount(struct super_block *sb,
- 	struct super_block *parent_sb = parent_fi->inode.i_sb;
- 	struct fuse_attr root_attr;
- 	struct inode *root;
-+	struct fuse_submount_lookup *sl;
-+	struct fuse_inode *fi;
- 
- 	fuse_sb_defaults(sb);
- 	fm->sb = sb;
-@@ -1487,12 +1541,27 @@ static int fuse_fill_super_submount(struct super_block *sb,
- 	 * its nlookup should not be incremented.  fuse_iget() does
- 	 * that, though, so undo it here.
- 	 */
--	get_fuse_inode(root)->nlookup--;
-+	fi = get_fuse_inode(root);
-+	fi->nlookup--;
-+
- 	sb->s_d_op = &fuse_dentry_operations;
- 	sb->s_root = d_make_root(root);
- 	if (!sb->s_root)
- 		return -ENOMEM;
- 
-+	/*
-+	 * Grab the parent's submount_lookup pointer and take a
-+	 * reference on the shared nlookup from the parent.  This is to
-+	 * prevent the last forget for this nodeid from getting
-+	 * triggered until all users have finished with it.
-+	 */
-+	sl = parent_fi->submount_lookup;
-+	WARN_ON(!sl);
-+	if (sl) {
-+		refcount_inc(&sl->count);
-+		fi->submount_lookup = sl;
-+	}
-+
- 	return 0;
- }
- 
 
 
