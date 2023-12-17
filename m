@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CABEF816164
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D75816166
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4B31F2158D
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDF0AB212F1
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D0146541;
-	Sun, 17 Dec 2023 17:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B088646B81;
+	Sun, 17 Dec 2023 17:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUF4fBmd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMua7+/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D444C8C
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C6AC433C7;
-	Sun, 17 Dec 2023 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F1546549
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1353C433C7;
+	Sun, 17 Dec 2023 17:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702835188;
-	bh=ZumWN2I8pbosdLTvdKBQQuSq5LwQJlgAQqY/Fd/RaVQ=;
+	s=korg; t=1702835191;
+	bh=RWbx3GqhH9qSh/GPajP70r0j2yt3otvoLYsvLzxSFhM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RUF4fBmdV1GDtRr+SHN9ptr+GAip1pvuOmivlx55+RNzJ6O73ec70Y7nnx+XyvbH8
-	 RGOP7G8yspvTKvS0NrV1Ha7nyof4XLZPJ9bE1iQo8BPeEX6YtJ5URRz5t08jV8PV6+
-	 li/5OHbFqaLITcT5C60cidY8Iwv67E1M1h6qCYLo=
-Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 6.1-stable tree
+	b=HMua7+/YiFrAyvXn1bh8GpiiFsluJEWtMEZK0hjM+2oiHPttyBb18aqmo/MrGCt5r
+	 Lj3FdWPx+U45lxpZJ8O63HqaEzgVV1Ne4CR7i9KKRiQcqJSVnT7VplAamy1g6w1s3g
+	 /VRJFKoBI7YZ+KuQUnCedbuQ2Th18aA4EPwgK/P8=
+Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 5.15-stable tree
 To: asml.silence@gmail.com,davem@davemloft.net,jannh@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Dec 2023 18:46:22 +0100
-Message-ID: <2023121722-wobbly-footsore-5965@gregkh>
+Date: Sun, 17 Dec 2023 18:46:23 +0100
+Message-ID: <2023121723-exemption-flyer-502e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 69db702c83874fbaa2a51af761e35a8e5a593b95
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121722-wobbly-footsore-5965@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121723-exemption-flyer-502e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 69db702c8387 ("io_uring/af_unix: disable sending io_uring over sockets")
+38eddb2c75fb ("io_uring: remove FFS_SCM")
+735729844819 ("io_uring: move rsrc related data, core, and commands")
+3b77495a9723 ("io_uring: split provided buffers handling into its own file")
+7aaff708a768 ("io_uring: move cancelation into its own file")
+329061d3e2f9 ("io_uring: move poll handling into its own file")
+cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
+92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
+c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
+a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
+e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
+17437f311490 ("io_uring: move SQPOLL related handling into its own file")
+59915143e89f ("io_uring: move timeout opcodes and handling into its own file")
+e418bbc97bff ("io_uring: move our reference counting into a header")
+36404b09aa60 ("io_uring: move msg_ring into its own file")
+f9ead18c1058 ("io_uring: split network related opcodes into its own file")
+e0da14def1ee ("io_uring: move statx handling to its own file")
+a9c210cebe13 ("io_uring: move epoll handler to its own file")
+4cf90495281b ("io_uring: add a dummy -EOPNOTSUPP prep handler")
+99f15d8d6136 ("io_uring: move uring_cmd handling to its own file")
 
 thanks,
 
