@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79286816167
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677CF81616C
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173B61F2166C
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F442828FA
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0691046B8D;
-	Sun, 17 Dec 2023 17:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C670746BBA;
+	Sun, 17 Dec 2023 17:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHl7mhF9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G84iHuDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C552B46550
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4291DC433C7;
-	Sun, 17 Dec 2023 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF5A46BAE
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B642EC433C7;
+	Sun, 17 Dec 2023 17:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702835196;
-	bh=HqNz9m8trApC937SMpUjdYe/knR66HhVsDv/M9E2XIU=;
+	s=korg; t=1702835534;
+	bh=fseGUHrIgmjtkEa6AxqoPkfYFpLnFS+Z1iULXkwi+Bw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iHl7mhF9tsd55rGeyLmug2t8pnpxL9QFOaE16mdwjgjTmNKp4f2Y2U7H+Tq0oWN0+
-	 N7u6WdUwv6QQvtIAWiRr9c30K874MufBG5mTDGlyZyRPtRmFyKRrt/UCoi6dEq9MQ5
-	 mb+Lyy/Ly3LRAFckTFwAiSEZtIAl9exUQS24nL1c=
-Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 5.4-stable tree
-To: asml.silence@gmail.com,davem@davemloft.net,jannh@google.com,kuba@kernel.org
+	b=G84iHuDff1+nVYlXbhp9GOOQ0rIfTgAboCirIlwai9LtTd5d9IcV6yqEJblKdhZAt
+	 Pvx+aGaqxZOYsPfL64hIximHUk/Xxc80fo5AUlTh745I7+0ZPMUtiamAerRF5uwjpW
+	 8hOtGmlYOfCvNqeM8OkVpi898/x42rgTp+wl5sE8=
+Subject: FAILED: patch "[PATCH] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE" failed to apply to 5.15-stable tree
+To: linkinjeon@kernel.org,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Dec 2023 18:46:25 +0100
-Message-ID: <2023121725-stomp-exposable-9409@gregkh>
+Date: Sun, 17 Dec 2023 18:52:11 +0100
+Message-ID: <2023121711-oxford-deodorize-be5a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 69db702c83874fbaa2a51af761e35a8e5a593b95
+git cherry-pick -x 13736654481198e519059d4a2e2e3b20fa9fdb3e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121725-stomp-exposable-9409@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121711-oxford-deodorize-be5a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-69db702c8387 ("io_uring/af_unix: disable sending io_uring over sockets")
-38eddb2c75fb ("io_uring: remove FFS_SCM")
-735729844819 ("io_uring: move rsrc related data, core, and commands")
-3b77495a9723 ("io_uring: split provided buffers handling into its own file")
-7aaff708a768 ("io_uring: move cancelation into its own file")
-329061d3e2f9 ("io_uring: move poll handling into its own file")
-cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
-92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
-c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
-a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
-e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
-17437f311490 ("io_uring: move SQPOLL related handling into its own file")
-59915143e89f ("io_uring: move timeout opcodes and handling into its own file")
-e418bbc97bff ("io_uring: move our reference counting into a header")
-36404b09aa60 ("io_uring: move msg_ring into its own file")
-f9ead18c1058 ("io_uring: split network related opcodes into its own file")
-e0da14def1ee ("io_uring: move statx handling to its own file")
-a9c210cebe13 ("io_uring: move epoll handler to its own file")
-4cf90495281b ("io_uring: add a dummy -EOPNOTSUPP prep handler")
-99f15d8d6136 ("io_uring: move uring_cmd handling to its own file")
+137366544811 ("ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE")
 
 thanks,
 
@@ -88,70 +69,34 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 69db702c83874fbaa2a51af761e35a8e5a593b95 Mon Sep 17 00:00:00 2001
-From: Pavel Begunkov <asml.silence@gmail.com>
-Date: Wed, 6 Dec 2023 13:55:19 +0000
-Subject: [PATCH] io_uring/af_unix: disable sending io_uring over sockets
+From 13736654481198e519059d4a2e2e3b20fa9fdb3e Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 6 Dec 2023 08:23:49 +0900
+Subject: [PATCH] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE
 
-File reference cycles have caused lots of problems for io_uring
-in the past, and it still doesn't work exactly right and races with
-unix_stream_read_generic(). The safest fix would be to completely
-disallow sending io_uring files via sockets via SCM_RIGHT, so there
-are no possible cycles invloving registered files and thus rendering
-SCM accounting on the io_uring side unnecessary.
+MS confirm that "AISi" name of SMB2_CREATE_ALLOCATION_SIZE in MS-SMB2
+specification is a typo. cifs/ksmbd have been using this wrong name from
+MS-SMB2. It should be "AlSi". Also It will cause problem when running
+smb2.create.open test in smbtorture against ksmbd.
 
 Cc: stable@vger.kernel.org
-Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
-Reported-and-suggested-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Acked-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 12197a7fdda9 ("Clarify SMB2/SMB3 create context and add missing ones")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/io_uring/rsrc.h b/io_uring/rsrc.h
-index 8625181fb87a..08ac0d8e07ef 100644
---- a/io_uring/rsrc.h
-+++ b/io_uring/rsrc.h
-@@ -77,17 +77,10 @@ int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
- 
- int __io_scm_file_account(struct io_ring_ctx *ctx, struct file *file);
- 
--#if defined(CONFIG_UNIX)
--static inline bool io_file_need_scm(struct file *filp)
--{
--	return !!unix_get_socket(filp);
--}
--#else
- static inline bool io_file_need_scm(struct file *filp)
- {
- 	return false;
- }
--#endif
- 
- static inline int io_scm_file_account(struct io_ring_ctx *ctx,
- 				      struct file *file)
-diff --git a/net/core/scm.c b/net/core/scm.c
-index 880027ecf516..7dc47c17d863 100644
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -26,6 +26,7 @@
- #include <linux/nsproxy.h>
- #include <linux/slab.h>
- #include <linux/errqueue.h>
-+#include <linux/io_uring.h>
- 
- #include <linux/uaccess.h>
- 
-@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *cmsg, struct scm_fp_list **fplp)
- 
- 		if (fd < 0 || !(file = fget_raw(fd)))
- 			return -EBADF;
-+		/* don't allow io_uring files */
-+		if (io_uring_get_socket(file)) {
-+			fput(file);
-+			return -EINVAL;
-+		}
- 		*fpp++ = file;
- 		fpl->count++;
- 	}
+diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
+index 8b603b13e372..57f2343164a3 100644
+--- a/fs/smb/common/smb2pdu.h
++++ b/fs/smb/common/smb2pdu.h
+@@ -1145,7 +1145,7 @@ struct smb2_server_client_notification {
+ #define SMB2_CREATE_SD_BUFFER			"SecD" /* security descriptor */
+ #define SMB2_CREATE_DURABLE_HANDLE_REQUEST	"DHnQ"
+ #define SMB2_CREATE_DURABLE_HANDLE_RECONNECT	"DHnC"
+-#define SMB2_CREATE_ALLOCATION_SIZE		"AISi"
++#define SMB2_CREATE_ALLOCATION_SIZE		"AlSi"
+ #define SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST "MxAc"
+ #define SMB2_CREATE_TIMEWARP_REQUEST		"TWrp"
+ #define SMB2_CREATE_QUERY_ON_DISK_ID		"QFid"
 
 
