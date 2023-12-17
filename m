@@ -1,389 +1,308 @@
-Return-Path: <stable+bounces-6917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944BC81619D
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 19:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB468161AE
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 19:56:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54278282130
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:32:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFA6C28280F
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287EB1E480;
-	Sun, 17 Dec 2023 18:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEAB47F45;
+	Sun, 17 Dec 2023 18:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3jJlt+Bd"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="a6AOL8f7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FE01DFE3
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 18:32:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-40c32bea30dso53195e9.0
-        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 10:32:19 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCA0481A2
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 18:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d04c097e34so16545185ad.0
+        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 10:56:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702837938; x=1703442738; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xi8WxnO/5ju1HSV+e8T/TEEABVPzUu+B2D1s+/TqHas=;
-        b=3jJlt+Bd7d/jRLGy9LwxTN1t+ckbRwK2FRLawsiFAnfsmi7rE+2vcfoOUe973po2Zk
-         gEB1YsVvEda5OAmRdEV+vNrygrHm4j6ARIf7WXbtGyviICjZKXto/OMug2Av2ZE2/lqr
-         lnUWkdiVo1ucoIcPcr4meo7jiUupEksX0x8L9TSPEe1oXI7ph3UV/gRkh6n2/vlW+CKF
-         gEdnndFMwpoKfzWrkjHICLIqO+ld/xqBKLXX73wwiVEXF2w9Ztq8n7KruK/ZsjtDXU8M
-         I/k96H6DPCqTaYNrx/0ZmKNWdY8M7s+uost/9D3fKB0Sz/PrKi7RIs1EnzTMxOMKwZ4J
-         YBSA==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702839370; x=1703444170; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=n0yQG21+84/pljdocADuKzfhTw1A9MDSbjve5ZknogE=;
+        b=a6AOL8f771c7KNvB+uPoqIoG9qyaz/ALDCQHBbqcVJIy6NPBzpGYTMV4PZEQwRWLQQ
+         AM1Gve0D9hxk4/RQGvJwzCLqcXBH7bfe9FDPrCuExxm+C9bavAuKdF+lxz8sJIIksRWQ
+         y1zKX47SHM1NvhEgibfoJ/6YMXE2wq0RhePiE5v/sO9z0aQReRaugXt8wm4t3+9EnH5u
+         h4hDPODqUkbh0gbEZ7MpDGoTsBMEugActJgEv/Kj36YuLizZnVJ0xzX1yT+qiPwNvwo4
+         lEi1c69BmqHuvbSVJjHMr493NM2S6QEJ85nNHLko/6GPSsdnVj0AmfpYXyq7xDseJZ6h
+         nzAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702837938; x=1703442738;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xi8WxnO/5ju1HSV+e8T/TEEABVPzUu+B2D1s+/TqHas=;
-        b=hgl2VffFjfpfz7qZrCOgzGMPJBwCAoxbkbkRmCEUHU2+mhI9iH3gUcgmD09hPbi1H2
-         jlFiCE9qQGSQzgTErXc8NjvgvaPak+akzRXklYf3fa7mTpOqsHFx5cC6D5TYFrXS+kqQ
-         gl2A4RL7bucS9J7bYZ5RLG/n04oLzx+EmBuO6vw2esq437ph7Dw4ZhssNDim0xAc8sWF
-         JVhJWiSyocz0N120d9XD0mnH6Btf7MAfELJyHdklFFsrE27taGb6lJijx5TdvNetyurt
-         DUmIOno5bva85vv7Ns1x4DHvM+17G7Nmerzf291GzEEQw0gVajmZcSaWZzbOhW2Sg7ce
-         KzMQ==
-X-Gm-Message-State: AOJu0Yw8m618SlLpLQDszO8xbgFDkd44GIgv2vZaT4h94SBvOS7nghaI
-	Jgzsra7kXvW1dx9/F+tWE1yeVT5ulTfWb757czLUZ34JqbV8
-X-Google-Smtp-Source: AGHT+IGdXOu9eyPcTs+cJBufM93L37weDLAN8z1jWXvoCUM6NrDSrdmQ2RCVAhUxS6+gFnQdcTdQA5rb3u3Bvdsop+0=
-X-Received: by 2002:a05:600c:4655:b0:40d:1482:896a with SMTP id
- n21-20020a05600c465500b0040d1482896amr96929wmo.1.1702837937966; Sun, 17 Dec
- 2023 10:32:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702839370; x=1703444170;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n0yQG21+84/pljdocADuKzfhTw1A9MDSbjve5ZknogE=;
+        b=Te2XHZxCqVYiiKyRJttsBlo25lBaGkGcKUtA/Uca4NA8Dejum1RKTkq9cacBbVdeVc
+         vthdqFpAE9dzRDeJvQSIjPiI10Hwe9yeraG0+GhQneCc5JstrM+6t555kfZbpBZTJg16
+         ZiG610Xmat/zasUS8UB/5v1nd1A159+CBrHUUSVlrfWyc7dJXM+cOatH4mXJLbCkJbpT
+         AT778VMAg6Y23zmoIyX3/istRHAXEhzNmUBH2e/gPhHJO4TsGqFrCvOM/uCt0skEZqfs
+         FP3/iCfYxzN4GYRXzy6EkFgJAmzai4vcZnIhzfL7q7P4jtEuxRwGRrfY41AQrMB0xDmB
+         V3/A==
+X-Gm-Message-State: AOJu0Yzd65UU7B7hv7DwBfcahoaYcfu7GD6GmoMQNr/vgIVlYrwmvPGG
+	tkOQWfOP5DezuYNJ1q4bdfscS4FZiGSGpmJL8/w=
+X-Google-Smtp-Source: AGHT+IHSmu8Z8g4dKD+u5psjL3Uc3htwS9MvL1ZrrybKigB9/J3B0PXl/25CZ4+VXf1/ATiu5NYPkg==
+X-Received: by 2002:a17:902:d48e:b0:1d3:5da4:68e7 with SMTP id c14-20020a170902d48e00b001d35da468e7mr9268054plg.53.1702839369910;
+        Sun, 17 Dec 2023 10:56:09 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id c21-20020a170902b69500b001d1d1ef8be6sm17491558pls.267.2023.12.17.10.56.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Dec 2023 10:56:09 -0800 (PST)
+Message-ID: <657f4449.170a0220.5ea9f.4a81@mx.google.com>
+Date: Sun, 17 Dec 2023 10:56:09 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231208061407.2125867-1-yuzhao@google.com> <CAMgjq7BTaV5OvHNjGRVJP2VDxj+PXhfd6957CjS4BJ9J4OY8HA@mail.gmail.com>
- <CAOUHufYwZAUaJh6i8Fazc4gVMSqcsz9JbRNpj0cpx2qR+bZBFw@mail.gmail.com>
- <CAMgjq7AtceR-CXnKFfQHM3qi0y4oGyJ4_sw_uh5EkpXCBzkCXg@mail.gmail.com>
- <CAMgjq7CJ3hYHysyRfHzYU4hOYqhUOttxMYGtg0FxzM_wvvyhFA@mail.gmail.com>
- <CAOUHufa=ybd-EPos9DryLHYyhphN0P7qyV5NY3Pui0dfVSk9tQ@mail.gmail.com>
- <ZXpx0K8Vdo3FJixg@google.com> <CAMgjq7CRf4iEKuW2qWKzbhssMbixBo3UoLPqsSk4b+Tvw8at8A@mail.gmail.com>
- <CAOUHufY6x_Erz02Bzoejfs_g2hcmrMFpiOdjiaWZ97oirz71aQ@mail.gmail.com>
-In-Reply-To: <CAOUHufY6x_Erz02Bzoejfs_g2hcmrMFpiOdjiaWZ97oirz71aQ@mail.gmail.com>
-From: Yu Zhao <yuzhao@google.com>
-Date: Sun, 17 Dec 2023 11:31:39 -0700
-Message-ID: <CAOUHufatF_xUqJLeNQ5D_5zUetYHJmHiai=KmD5Ttpji4pkv0g@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 1/4] mm/mglru: fix underprotected page cache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org, 
-	Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.264-31-g971deb5730108
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.264-31-g971deb5730108)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Thu, Dec 14, 2023 at 4:51=E2=80=AFPM Yu Zhao <yuzhao@google.com> wrote:
->
-> On Thu, Dec 14, 2023 at 11:38=E2=80=AFAM Kairui Song <ryncsn@gmail.com> w=
-rote:
-> >
-> > Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=8814=E6=97=
-=A5=E5=91=A8=E5=9B=9B 11:09=E5=86=99=E9=81=93=EF=BC=9A
-> > > On Wed, Dec 13, 2023 at 12:59:14AM -0700, Yu Zhao wrote:
-> > > > On Tue, Dec 12, 2023 at 8:03=E2=80=AFPM Kairui Song <ryncsn@gmail.c=
-om> wrote:
-> > > > >
-> > > > > Kairui Song <ryncsn@gmail.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=881=
-2=E6=97=A5=E5=91=A8=E4=BA=8C 14:52=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > >
-> > > > > > Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=8812=
-=E6=97=A5=E5=91=A8=E4=BA=8C 06:07=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > > >
-> > > > > > > On Fri, Dec 8, 2023 at 1:24=E2=80=AFAM Kairui Song <ryncsn@gm=
-ail.com> wrote:
-> > > > > > > >
-> > > > > > > > Yu Zhao <yuzhao@google.com> =E4=BA=8E2023=E5=B9=B412=E6=9C=
-=888=E6=97=A5=E5=91=A8=E4=BA=94 14:14=E5=86=99=E9=81=93=EF=BC=9A
-> > > > > > > > >
-> > > > > > > > > Unmapped folios accessed through file descriptors can be
-> > > > > > > > > underprotected. Those folios are added to the oldest gene=
-ration based
-> > > > > > > > > on:
-> > > > > > > > > 1. The fact that they are less costly to reclaim (no need=
- to walk the
-> > > > > > > > >    rmap and flush the TLB) and have less impact on perfor=
-mance (don't
-> > > > > > > > >    cause major PFs and can be non-blocking if needed agai=
-n).
-> > > > > > > > > 2. The observation that they are likely to be single-use.=
- E.g., for
-> > > > > > > > >    client use cases like Android, its apps parse configur=
-ation files
-> > > > > > > > >    and store the data in heap (anon); for server use case=
-s like MySQL,
-> > > > > > > > >    it reads from InnoDB files and holds the cached data f=
-or tables in
-> > > > > > > > >    buffer pools (anon).
-> > > > > > > > >
-> > > > > > > > > However, the oldest generation can be very short lived, a=
-nd if so, it
-> > > > > > > > > doesn't provide the PID controller with enough time to re=
-spond to a
-> > > > > > > > > surge of refaults. (Note that the PID controller uses wei=
-ghted
-> > > > > > > > > refaults and those from evicted generations only take a h=
-alf of the
-> > > > > > > > > whole weight.) In other words, for a short lived generati=
-on, the
-> > > > > > > > > moving average smooths out the spike quickly.
-> > > > > > > > >
-> > > > > > > > > To fix the problem:
-> > > > > > > > > 1. For folios that are already on LRU, if they can be bey=
-ond the
-> > > > > > > > >    tracking range of tiers, i.e., five accesses through f=
-ile
-> > > > > > > > >    descriptors, move them to the second oldest generation=
- to give them
-> > > > > > > > >    more time to age. (Note that tiers are used by the PID=
- controller
-> > > > > > > > >    to statistically determine whether folios accessed mul=
-tiple times
-> > > > > > > > >    through file descriptors are worth protecting.)
-> > > > > > > > > 2. When adding unmapped folios to LRU, adjust the placeme=
-nt of them so
-> > > > > > > > >    that they are not too close to the tail. The effect of=
- this is
-> > > > > > > > >    similar to the above.
-> > > > > > > > >
-> > > > > > > > > On Android, launching 55 apps sequentially:
-> > > > > > > > >                            Before     After      Change
-> > > > > > > > >   workingset_refault_anon  25641024   25598972   0%
-> > > > > > > > >   workingset_refault_file  115016834  106178438  -8%
-> > > > > > > >
-> > > > > > > > Hi Yu,
-> > > > > > > >
-> > > > > > > > Thanks you for your amazing works on MGLRU.
-> > > > > > > >
-> > > > > > > > I believe this is the similar issue I was trying to resolve=
- previously:
-> > > > > > > > https://lwn.net/Articles/945266/
-> > > > > > > > The idea is to use refault distance to decide if the page s=
-hould be
-> > > > > > > > place in oldest generation or some other gen, which per my =
-test,
-> > > > > > > > worked very well, and we have been using refault distance f=
-or MGLRU in
-> > > > > > > > multiple workloads.
-> > > > > > > >
-> > > > > > > > There are a few issues left in my previous RFC series, like=
- anon pages
-> > > > > > > > in MGLRU shouldn't be considered, I wanted to collect feedb=
-ack or test
-> > > > > > > > cases, but unfortunately it seems didn't get too much atten=
-tion
-> > > > > > > > upstream.
-> > > > > > > >
-> > > > > > > > I think both this patch and my previous series are for solv=
-ing the
-> > > > > > > > file pages underpertected issue, and I did a quick test usi=
-ng this
-> > > > > > > > series, for mongodb test, refault distance seems still a be=
-tter
-> > > > > > > > solution (I'm not saying these two optimization are mutuall=
-y exclusive
-> > > > > > > > though, just they do have some conflicts in implementation =
-and solving
-> > > > > > > > similar problem):
-> > > > > > > >
-> > > > > > > > Previous result:
-> > > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.264-31-g971deb5730108)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.264-31-g971deb5730108/
+
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.264-31-g971deb5730108
+Git Commit: 971deb57301081fe9a0ba38032cb256394aa8310
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > > > > > Execution Results after 905 seconds
-> > > > > > > > -----------------------------------------------------------=
--------
-> > > > > > > >                   Executed        Time (=C2=B5s)       Rate
-> > > > > > > >   STOCK_LEVEL     2542            27121571486.2   0.09 txn/=
-s
-> > > > > > > > -----------------------------------------------------------=
--------
-> > > > > > > >   TOTAL           2542            27121571486.2   0.09 txn/=
-s
-> > > > > > > >
-> > > > > > > > This patch:
-> > > > > > > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > > > > > > Execution Results after 900 seconds
-> > > > > > > > -----------------------------------------------------------=
--------
-> > > > > > > >                   Executed        Time (=C2=B5s)       Rate
-> > > > > > > >   STOCK_LEVEL     1594            27061522574.4   0.06 txn/=
-s
-> > > > > > > > -----------------------------------------------------------=
--------
-> > > > > > > >   TOTAL           1594            27061522574.4   0.06 txn/=
-s
-> > > > > > > >
-> > > > > > > > Unpatched version is always around ~500.
-> > > > > > >
-> > > > > > > Thanks for the test results!
-> > > > > > >
-> > > > > > > > I think there are a few points here:
-> > > > > > > > - Refault distance make use of page shadow so it can better
-> > > > > > > > distinguish evicted pages of different access pattern (re-a=
-ccess
-> > > > > > > > distance).
-> > > > > > > > - Throttled refault distance can help hold part of workings=
-et when
-> > > > > > > > memory is too small to hold the whole workingset.
-> > > > > > > >
-> > > > > > > > So maybe part of this patch and the bits of previous series=
- can be
-> > > > > > > > combined to work better on this issue, how do you think?
-> > > > > > >
-> > > > > > > I'll try to find some time this week to look at your RFC. It'=
-d be a
-> > > > >
-> > > > > Hi Yu,
-> > > > >
-> > > > > I'm working on V4 of the RFC now, which just update some comments=
-, and
-> > > > > skip anon page re-activation in refault path for mglru which was =
-not
-> > > > > very helpful, only some tiny adjustment.
-> > > > > And I found it easier to test with fio, using following test scri=
-pt:
-> > > > >
-> > > > > #!/bin/bash
-> > > > > swapoff -a
-> > > > >
-> > > > > modprobe brd rd_nr=3D1 rd_size=3D16777216
-> > > > > mkfs.ext4 /dev/ram0
-> > > > > mount /dev/ram0 /mnt
-> > > > >
-> > > > > mkdir -p /sys/fs/cgroup/benchmark
-> > > > > cd /sys/fs/cgroup/benchmark
-> > > > >
-> > > > > echo 4G > memory.max
-> > > > > echo $$ > cgroup.procs
-> > > > > echo 3 > /proc/sys/vm/drop_caches
-> > > > >
-> > > > > fio -name=3Dmglru --numjobs=3D12 --directory=3D/mnt --size=3D1024=
-m \
-> > > > >           --buffered=3D1 --ioengine=3Dio_uring --iodepth=3D128 \
-> > > > >           --iodepth_batch_submit=3D32 --iodepth_batch_complete=3D=
-32 \
-> > > > >           --rw=3Drandread --random_distribution=3Dzipf:0.5 --nora=
-ndommap \
-> > > > >           --time_based --ramp_time=3D5m --runtime=3D5m --group_re=
-porting
-> > > > >
-> > > > > zipf:0.5 is used here to simulate a cached read with slight bias
-> > > > > towards certain pages.
-> > > > > Unpatched 6.7-rc4:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D6548MiB/s (6866MB/s), 6548MiB/s-6548MiB/s
-> > > > > (6866MB/s-6866MB/s), io=3D1918GiB (2060GB), run=3D300001-300001ms=
-ec
-> > > > >
-> > > > > Patched with RFC v4:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D7270MiB/s (7623MB/s), 7270MiB/s-7270MiB/s
-> > > > > (7623MB/s-7623MB/s), io=3D2130GiB (2287GB), run=3D300001-300001ms=
-ec
-> > > > >
-> > > > > Patched with this series:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D7098MiB/s (7442MB/s), 7098MiB/s-7098MiB/s
-> > > > > (7442MB/s-7442MB/s), io=3D2079GiB (2233GB), run=3D300002-300002ms=
-ec
-> > > > >
-> > > > > MGLRU off:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D6525MiB/s (6842MB/s), 6525MiB/s-6525MiB/s
-> > > > > (6842MB/s-6842MB/s), io=3D1912GiB (2052GB), run=3D300002-300002ms=
-ec
-> > > > >
-> > > > > - If I change zipf:0.5 to random:
-> > > > > Unpatched 6.7-rc4:
-> > > > > Patched with this series:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D5975MiB/s (6265MB/s), 5975MiB/s-5975MiB/s
-> > > > > (6265MB/s-6265MB/s), io=3D1750GiB (1879GB), run=3D300002-300002ms=
-ec
-> > > > >
-> > > > > Patched with RFC v4:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D5987MiB/s (6278MB/s), 5987MiB/s-5987MiB/s
-> > > > > (6278MB/s-6278MB/s), io=3D1754GiB (1883GB), run=3D300001-300001ms=
-ec
-> > > > >
-> > > > > Patched with this series:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D5839MiB/s (6123MB/s), 5839MiB/s-5839MiB/s
-> > > > > (6123MB/s-6123MB/s), io=3D1711GiB (1837GB), run=3D300001-300001ms=
-ec
-> > > > >
-> > > > > MGLRU off:
-> > > > > Run status group 0 (all jobs):
-> > > > >    READ: bw=3D5689MiB/s (5965MB/s), 5689MiB/s-5689MiB/s
-> > > > > (5965MB/s-5965MB/s), io=3D1667GiB (1790GB), run=3D300003-300003ms=
-ec
-> > > > >
-> > > > > fio uses ramdisk so LRU accuracy will have smaller impact. The Mo=
-ngodb
-> > > > > test I provided before uses a SATA SSD so it will have a much hig=
-her
-> > > > > impact. I'll provides a script to setup the test case and run it,=
- it's
-> > > > > more complex to setup than fio since involving setting up multipl=
-e
-> > > > > replicas and auth and hundreds of GB of test fixtures, I'm curren=
-tly
-> > > > > occupied by some other tasks but will try best to send them out a=
-s
-> > > > > soon as possible.
-> > > >
-> > > > Thanks! Apparently your RFC did show better IOPS with both access
-> > > > patterns, which was a surprise to me because it had higher refaults
-> > > > and usually higher refautls result in worse performance.
-> > > >
-> > > > So I'm still trying to figure out why it turned out the opposite. M=
-y
-> > > > current guess is that:
-> > > > 1. It had a very small but stable inactive LRU list, which was able=
- to
-> > > > fit into the L3 cache entirely.
-> > > > 2. It counted few folios as workingset and therefore incurred less
-> > > > overhead from CONFIG_PSI and/or CONFIG_TASK_DELAY_ACCT.
-> > > >
-> > > > Did you save workingset_refault_file when you ran the test? If so, =
-can
-> > > > you check the difference between this series and your RFC?
-> > >
-> > >
-> > > It seems I was right about #1 above. After I scaled your test up by 2=
-0x,
-> > > I saw my series performed ~5% faster with zipf and ~9% faster with ra=
-ndom
-> > > accesses.
-> >
-> > Hi Yu,
-> >
-> > Thank you so much for testing and sharing this result.
-> >
-> > I'm not sure about #1, the ramdisk size, access data, are far larger
-> > than L3 (16M on my CPU) even in down scaled test, and both random/zipf
-> > shows similar result.
->
-> It's the LRU list not pages. IOW, the kernel data structure, not the
-> content in LRU pages. Does it make sense?
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-FYI. Willy just reminded me that he explained it a lot better than I
-did: https://lore.kernel.org/linux-mm/ZTc7SHQ4RbPkD3eZ@casper.infradead.org=
-/
+Detailed per-defconfig build reports:
 
-> > > IOW, I made rd_size from 16GB to 320GB, memory.max from 4GB to 80GB,
-> > > --numjobs from 12 to 60 and --size from 1GB to 4GB.
->
-> Would you be able to try a larger configuration like above instead?
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
