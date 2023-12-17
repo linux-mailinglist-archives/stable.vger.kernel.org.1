@@ -1,174 +1,278 @@
-Return-Path: <stable+bounces-6896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCA7815FDD
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 15:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DA47816044
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 16:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 136402892F0
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 14:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31D65283602
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 15:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C999036AFA;
-	Sun, 17 Dec 2023 14:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A0044C99;
+	Sun, 17 Dec 2023 15:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ER6anyDg"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="DAScXU5p"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857341DFD7;
-	Sun, 17 Dec 2023 14:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF555C433C8;
-	Sun, 17 Dec 2023 14:36:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702823770;
-	bh=ZJHYl2x/5sOZYR/DGxvRXI5eEW8wCSGNtFDh8x+V5bA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ER6anyDg+jhiNEW1JfE8yrcTvOcyVAP0Abw8SQdsCjpjoqLLjgS5jMoiATdIloM46
-	 b/FhcviIxYDHyZntmQy5Qc70SgkXtcVdjUeCjFthZJaW0wtLse26fS7MoCrrhmf3Tc
-	 c1zs2CeJaoqfs/KY7ZYaHCyIRIn0riKBffgxuMh4gHwk+ILaKNGM30u7y5musRZRhn
-	 ThtSw78tFbwtYsdpqlZaLqPv44W/4lUMbm2zO0byt/gSz76j/23SB30K1C6VFyq7Jj
-	 WZGKqHkTyDzXB2FCd/+AAQ6Az06U9s66pD8rF/Onv5x/NaL5lruOo7Mfv2gOXCbyFT
-	 sldL/41dId8CA==
-Date: Sun, 17 Dec 2023 14:35:55 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: jikos@kernel.org, lars@metafoo.de, Basavaraj.Natikar@amd.com,
- linux-input@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Thomas =?UTF-8?B?V2Vpw59zY2h1aA==?=
- <thomas@t-8ch.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: light: hid-sensor-als: Avoid failure for
- chromaticity support
-Message-ID: <20231217143555.1f89ddaa@jic23-huawei>
-In-Reply-To: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
-References: <20231215160159.648963-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA2C45014
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 15:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1d336760e72so19343055ad.3
+        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 07:51:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702828286; x=1703433086; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=r9iZ/wO+xWjUktHiviJ+it4NqNkAOifI/cMdvMtmV9U=;
+        b=DAScXU5p4x+6X22Q0M64UnMY+mYvGWX+yxCws7nJKIWe+FY3K66J87sQA8TldFriU3
+         55muJfDgVsw87ebHxOPXg/XnqdyZ6idXfB9wScn5JsY/8i/W8sZw+STco28AQ0ZS/u9o
+         Q58y6OuTmu4USfkIwtjxRlJTN4iAizVSKJ1eEx2QFmb17oQTM7ochj77AtNWD1mRPLlP
+         VwWjI0N9e/6ozc1OfB9gLvRPoNyoOCqkIJDYoMK9K228Ky6azrExu/rZ2AgGiF83PAA8
+         XQ9DCYqAAdhchO/Rxu5ie1Ef17GeJ3euoC3/6A2BiPUDL8PlJ1sbkBaVR0neE7rkWJ+I
+         +Fhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702828286; x=1703433086;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r9iZ/wO+xWjUktHiviJ+it4NqNkAOifI/cMdvMtmV9U=;
+        b=QVbpUSxHLIxthdiUVp3iskvLTPj0pax5Hu5OPjfjKFEF69bNBHqFDC32Iq9/MyiSPc
+         pOpmpiLF+lgNbgdsBukA7QLOvbOdVUPzBNfJ9ZRyKfsHNNGIu2QaAbvgq8C8WRPbEKU3
+         W05E22uiu/J+bebajQIalobMSYwV9ckxhwFjozv2MrZCke4pB7kccBKWchbR0Oi+5EFS
+         3AB4B7bNzIJ3bdc5OYMZ/s7dBH1mfKrkZkZZu/lh7GWavwnvW8nwKdW2oFqd7m7vN0xw
+         0jAwpkMOAwr4obkrQb9RUZ0lR2WYrx9wxtabl+30b7OK3t7r6/7rNRaJ/lsZ/sxKf3DP
+         hFiw==
+X-Gm-Message-State: AOJu0Yz3UYJsvd7/t1FwIem0EPeY8dXfPqHFlR+HWWMXaQDNYdZQmTyV
+	WeztWkZP+iOBSf36KoWVw6/3P2RJJx5ydTLgY/k=
+X-Google-Smtp-Source: AGHT+IGO7nAzBtD7TE6bpahLX5m8Uk6X97XjpKctv66KeKsucLSL7dQgqw4kZzJTYCDxTsqZ47/9CA==
+X-Received: by 2002:a17:902:778c:b0:1d3:7b2a:da5c with SMTP id o12-20020a170902778c00b001d37b2ada5cmr4959462pll.28.1702828285905;
+        Sun, 17 Dec 2023 07:51:25 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id b8-20020a170903228800b001d077c9a9acsm17276444plh.185.2023.12.17.07.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Dec 2023 07:51:25 -0800 (PST)
+Message-ID: <657f18fd.170a0220.7138e.4c65@mx.google.com>
+Date: Sun, 17 Dec 2023 07:51:25 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.333-20-g89c87325d4d1e
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.333-20-g89c87325d4d1e)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Fri, 15 Dec 2023 08:01:59 -0800
-Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.333-20-g89c87325d4d1e)
 
-> With the commit ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity
-> support"), there is an assumption that the every HID ALS descriptor has
-> support of usage ids for chromaticity support. If they are not present,
-> probe fails for the driver . This breaks ALS functionality on majority of
-> platforms.
->=20
-> It is possible that chromaticity usage ids are not present. When not
-> present, restrict number of IIO channels to not include support for
-> chromaticity and continue.
->=20
-> Fixes: ee3710f39f9d ("iio: hid-sensor-als: Add light chromaticity support=
-")
-> Reported-by: Thomas Wei=C3=9Fschuh <thomas@t-8ch.de>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D218223
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/iio/light/hid-sensor-als.c | 24 ++++++++++++++++--------
->  1 file changed, 16 insertions(+), 8 deletions(-)
->=20
-> diff --git a/drivers/iio/light/hid-sensor-als.c b/drivers/iio/light/hid-s=
-ensor-als.c
-> index f17304b54468..9941b0b927c7 100644
-> --- a/drivers/iio/light/hid-sensor-als.c
-> +++ b/drivers/iio/light/hid-sensor-als.c
-> @@ -303,11 +303,14 @@ static int als_parse_report(struct platform_device =
-*pdev,
->  				struct hid_sensor_hub_device *hsdev,
->  				struct iio_chan_spec *channels,
->  				unsigned usage_id,
-> -				struct als_state *st)
-> +				struct als_state *st,
-> +				int *max_channels)
->  {
->  	int ret;
->  	int i;
-> =20
-> +	*max_channels =3D CHANNEL_SCAN_INDEX_MAX;
-> +
->  	for (i =3D 0; i <=3D CHANNEL_SCAN_INDEX_ILLUM; ++i) {
->  		ret =3D sensor_hub_input_get_attribute_info(hsdev,
->  						HID_INPUT_REPORT,
-> @@ -326,8 +329,12 @@ static int als_parse_report(struct platform_device *=
-pdev,
->  				usage_id,
->  				HID_USAGE_SENSOR_LIGHT_COLOR_TEMPERATURE,
->  				&st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP]);
-> -	if (ret < 0)
-> -		return ret;
-> +	if (ret < 0) {
-> +		*max_channels =3D CHANNEL_SCAN_INDEX_ILLUM;
-> +		ret =3D 0;
-> +		goto skip_color_chromaticity;
-> +	}
-> +
->  	als_adjust_channel_bit_mask(channels, CHANNEL_SCAN_INDEX_COLOR_TEMP,
->  				st->als[CHANNEL_SCAN_INDEX_COLOR_TEMP].size);
-> =20
-> @@ -354,6 +361,7 @@ static int als_parse_report(struct platform_device *p=
-dev,
->  			st->als[next_scan_index].report_id);
->  	}
-> =20
-> +skip_color_chromaticity:
->  	st->scale_precision =3D hid_sensor_format_scale(usage_id,
->  				&st->als[CHANNEL_SCAN_INDEX_INTENSITY],
->  				&st->scale_pre_decml, &st->scale_post_decml);
-> @@ -364,7 +372,7 @@ static int als_parse_report(struct platform_device *p=
-dev,
->  /* Function to initialize the processing for usage id */
->  static int hid_als_probe(struct platform_device *pdev)
->  {
-> -	int ret =3D 0;
-> +	int ret =3D 0, max_channels;
->  	static const char *name =3D "als";
->  	struct iio_dev *indio_dev;
->  	struct als_state *als_state;
-> @@ -398,15 +406,15 @@ static int hid_als_probe(struct platform_device *pd=
-ev)
-> =20
->  	ret =3D als_parse_report(pdev, hsdev,
->  			       (struct iio_chan_spec *)indio_dev->channels,
-> -			       hsdev->usage,
-> -			       als_state);
-> +			       hsdev->usage, als_state, &max_channels);
->  	if (ret) {
->  		dev_err(&pdev->dev, "failed to setup attributes\n");
->  		return ret;
->  	}
-> =20
-> -	indio_dev->num_channels =3D
-> -				ARRAY_SIZE(als_channels);
-> +	/* +1 to include time stamp */
-> +	indio_dev->num_channels =3D max_channels + 1;
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.333-20-g89c87325d4d1e/
 
-In the current array the timestamp channel isn't the next one, so how does =
-this work?
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.333-20-g89c87325d4d1e
+Git Commit: 89c87325d4d1eadfc145aada8f449c7c17489b63
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-I think we either have to form the channel array dynamically or pick between
-one that does have the colour info and one that doesn't for the original ca=
-se.
+Warnings Detected:
 
-Given timing we may just need to revert the broken patch and revisit this n=
-ext
-cycle.
+arc:
 
-Jonathan
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-> +
->  	indio_dev->info =3D &als_info;
->  	indio_dev->name =3D name;
->  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+Warnings summary:
 
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
