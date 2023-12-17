@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0498816163
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CABEF816164
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 18:46:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3171C20410
-	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F4B31F2158D
+	for <lists+stable@lfdr.de>; Sun, 17 Dec 2023 17:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37EBF46BBF;
-	Sun, 17 Dec 2023 17:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03D0146541;
+	Sun, 17 Dec 2023 17:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLYyaB+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUF4fBmd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101A46BBE
-	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31503C433C7;
-	Sun, 17 Dec 2023 17:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D444C8C
+	for <stable@vger.kernel.org>; Sun, 17 Dec 2023 17:46:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C6AC433C7;
+	Sun, 17 Dec 2023 17:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702835184;
-	bh=c+tk4to2C9J7wsroxhziPLyN5LMbsdJVa5TINvQ/5bw=;
+	s=korg; t=1702835188;
+	bh=ZumWN2I8pbosdLTvdKBQQuSq5LwQJlgAQqY/Fd/RaVQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=BLYyaB+QGoxIXU0laxrG2m7Ha1zlde7DdHCo4XutJOAXSyO7G7nJxfdYkm4+Byj6X
-	 VIMm+bWusskmPWkIeWdzftrNoCoCE5zF5eYgpIWRtMywBpVqlg2SHqnJs7F7jkKRB9
-	 K5JZe9tdP6PWrxhPURpR8OrIAVqmviB9McH8NTpg=
-Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 6.6-stable tree
+	b=RUF4fBmdV1GDtRr+SHN9ptr+GAip1pvuOmivlx55+RNzJ6O73ec70Y7nnx+XyvbH8
+	 RGOP7G8yspvTKvS0NrV1Ha7nyof4XLZPJ9bE1iQo8BPeEX6YtJ5URRz5t08jV8PV6+
+	 li/5OHbFqaLITcT5C60cidY8Iwv67E1M1h6qCYLo=
+Subject: FAILED: patch "[PATCH] io_uring/af_unix: disable sending io_uring over sockets" failed to apply to 6.1-stable tree
 To: asml.silence@gmail.com,davem@davemloft.net,jannh@google.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 17 Dec 2023 18:46:21 +0100
-Message-ID: <2023121721-canary-transpire-3973@gregkh>
+Date: Sun, 17 Dec 2023 18:46:22 +0100
+Message-ID: <2023121722-wobbly-footsore-5965@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 69db702c83874fbaa2a51af761e35a8e5a593b95
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121721-canary-transpire-3973@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121722-wobbly-footsore-5965@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
