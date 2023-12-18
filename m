@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321F58170F2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07733817228
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C75CA1F23189
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0051F24BAA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B751D122;
-	Mon, 18 Dec 2023 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9173788E;
+	Mon, 18 Dec 2023 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo1MjN2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/qBI27v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F519129ED2;
-	Mon, 18 Dec 2023 13:52:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F71C433C8;
-	Mon, 18 Dec 2023 13:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226B11D13A;
+	Mon, 18 Dec 2023 14:03:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC6CC433C8;
+	Mon, 18 Dec 2023 14:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907558;
-	bh=YzVponcZ24teLN8wzxDvEplvgyub0tHMHn9Y0lv/vo0=;
+	s=korg; t=1702908232;
+	bh=0gJXVNIPKaVhnQf0xEIynHeSKslS74770FWH9BfZWD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xo1MjN2PCUkWFWMwYFUgbmRkPjIG0T9rtSKR1lHzIyu8s+ecKAP4UWGgmX/Ex4zLX
-	 YtdwJ8D9PDzFw52ZdIYEF1LrBb3p8jMI7Q5jn+iWzEba12Ngd3Kz801c50+vHEu/5v
-	 /lnrGSpRM0QS0hbaIzgG9MChPyaNxTHd2SvP3XU4=
+	b=t/qBI27v6cToOGqStL/rNslajrNEkuTYJq99VC9nZ4bwIIOUf0dgtFkBbTmJ/uuSN
+	 0n0lE2P3iAhyBBg5COAL01C5P3i23kyOsvw2vSSJWSIi84Z9I/qnvbjJTJLhpDSZ8B
+	 6cgkoE2p9HMtMFB8jRx09zpGMqOFB785ST/IxYoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/26] atm: Fix Use-After-Free in do_vcc_ioctl
+Subject: [PATCH 6.6 102/166] LoongArch: Record pc instead of offset in la_abs relocation
 Date: Mon, 18 Dec 2023 14:51:08 +0100
-Message-ID: <20231218135040.902192753@linuxfoundation.org>
+Message-ID: <20231218135109.568316073@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +54,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: WANG Rui <wangrui@loongson.cn>
 
-[ Upstream commit 24e90b9e34f9e039f56b5f25f6e6eb92cdd8f4b3 ]
+[ Upstream commit aa0cbc1b506b090c3a775b547c693ada108cc0d7 ]
 
-Because do_vcc_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with vcc_recvmsg().
-A use-after-free for skb occurs with the following flow.
-```
-do_vcc_ioctl() -> skb_peek()
-vcc_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-```
-Add sk->sk_receive_queue.lock to do_vcc_ioctl() to fix this issue.
+To clarify, the previous version functioned flawlessly. However, it's
+worth noting that the LLVM's LoongArch backend currently lacks support
+for cross-section label calculations. With this patch, we enable the use
+of clang to compile relocatable kernels.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231209094210.GA403126@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/ioctl.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/asmmacro.h | 3 +--
+ arch/loongarch/include/asm/setup.h    | 2 +-
+ arch/loongarch/kernel/relocate.c      | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/atm/ioctl.c b/net/atm/ioctl.c
-index 2ff0e5e470e3d..38f7f164e4848 100644
---- a/net/atm/ioctl.c
-+++ b/net/atm/ioctl.c
-@@ -71,14 +71,17 @@ static int do_vcc_ioctl(struct socket *sock, unsigned int cmd,
- 	case SIOCINQ:
- 	{
- 		struct sk_buff *skb;
-+		int amount;
+diff --git a/arch/loongarch/include/asm/asmmacro.h b/arch/loongarch/include/asm/asmmacro.h
+index c9544f358c339..655db7d7a4279 100644
+--- a/arch/loongarch/include/asm/asmmacro.h
++++ b/arch/loongarch/include/asm/asmmacro.h
+@@ -609,8 +609,7 @@
+ 	lu32i.d	\reg, 0
+ 	lu52i.d	\reg, \reg, 0
+ 	.pushsection ".la_abs", "aw", %progbits
+-	768:
+-	.dword	768b-766b
++	.dword	766b
+ 	.dword	\sym
+ 	.popsection
+ #endif
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index a0bc159ce8bdc..ee52fb1e99631 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -25,7 +25,7 @@ extern void set_merr_handler(unsigned long offset, void *addr, unsigned long len
+ #ifdef CONFIG_RELOCATABLE
  
- 		if (sock->state != SS_CONNECTED) {
- 			error = -EINVAL;
- 			goto done;
- 		}
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
- 		skb = skb_peek(&sk->sk_receive_queue);
--		error = put_user(skb ? skb->len : 0,
--				 (int __user *)argp) ? -EFAULT : 0;
-+		amount = skb ? skb->len : 0;
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
-+		error = put_user(amount, (int __user *)argp) ? -EFAULT : 0;
- 		goto done;
- 	}
- 	case SIOCGSTAMP: /* borrowed from IP */
+ struct rela_la_abs {
+-	long offset;
++	long pc;
+ 	long symvalue;
+ };
+ 
+diff --git a/arch/loongarch/kernel/relocate.c b/arch/loongarch/kernel/relocate.c
+index 6c3eff9af9fb1..288b739ca88dd 100644
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -52,7 +52,7 @@ static inline void __init relocate_absolute(long random_offset)
+ 	for (p = begin; (void *)p < end; p++) {
+ 		long v = p->symvalue;
+ 		uint32_t lu12iw, ori, lu32id, lu52id;
+-		union loongarch_instruction *insn = (void *)p - p->offset;
++		union loongarch_instruction *insn = (void *)p->pc;
+ 
+ 		lu12iw = (v >> 12) & 0xfffff;
+ 		ori    = v & 0xfff;
 -- 
 2.43.0
 
