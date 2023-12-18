@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C5578172C9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7227D81731E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FE9D1C24EB8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC35289573
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296864FF85;
-	Mon, 18 Dec 2023 14:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 359511D145;
+	Mon, 18 Dec 2023 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4tFSslK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+Ij7nqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7581D148;
-	Mon, 18 Dec 2023 14:10:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D49C433C7;
-	Mon, 18 Dec 2023 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5901D14F;
+	Mon, 18 Dec 2023 14:13:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077F5C433C7;
+	Mon, 18 Dec 2023 14:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908604;
-	bh=+5nOFu2w0l02YFR2/4OUNRgoH1ClEALYuP+yhAUegjU=;
+	s=korg; t=1702908820;
+	bh=1Q1RfpzNouIx+mfyP+xg9W+WfHNyXrTHy0N4jP1EzBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4tFSslKIOKS9bQKfF1nKYHl6uOwrKPncrhpTI246m9yZA66alHA1v0onJKrw+uE1
-	 IEC4fYdptng64lkgtrhNgMtB+/Q1gpdGPUgDW7jnnmYiOAiI0YDUQ2d15oM2ALQfzT
-	 WaSg0k3cGtLizCk/tCt06LCNLA1miotB9OUhmjA4=
+	b=x+Ij7nqTSu1EtP1C44UbY4FJcg4D5do5xdB0oR9EZDqTSCFmzmwVQl5s0aTYkFLUq
+	 zzMOE3UwRMC2D+qRSMgN/8ayh/gkl2XYQCzvL4Y9kw7oN8H68BMn0gyQ+jmDaXzkJr
+	 YDWHGIixIrq233BC0hG6N/6M4hBfDmkC+0h4LOZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aoba K <nexp_0x17@outlook.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Oliver Neukum <oneukum@suse.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 43/62] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
+Subject: [PATCH 5.15 46/83] usb: aqc111: check packet for fixup for true limit
 Date: Mon, 18 Dec 2023 14:52:07 +0100
-Message-ID: <20231218135048.168514047@linuxfoundation.org>
+Message-ID: <20231218135051.780819334@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aoba K <nexp_0x17@outlook.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
+[ Upstream commit ccab434e674ca95d483788b1895a70c21b7f016a ]
 
-Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
-mode until the input mode feature is written by the host.  The touchpad do
-report the input mode at touchpad(3), while itself working under mouse mode. As
-a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
-feature in mt_set_input_mode for such device.
+If a device sends a packet that is inbetween 0
+and sizeof(u64) the value passed to skb_trim()
+as length will wrap around ending up as some very
+large value.
 
-The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
-information on the internel by this string at present.  As the serial number of
-the laptop is GLO-G52, while DMI info reports the laptop serial number as
-GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
+The driver will then proceed to parse the header
+located at that position, which will either oops or
+process some random value.
 
-Signed-off-by: Aoba K <nexp_0x17@outlook.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+The fix is to check against sizeof(u64) rather than
+0, which the driver currently does. The issue exists
+since the introduction of the driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/usb/aqc111.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 84b12599eaf69..7d43d62df2409 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1962,6 +1962,11 @@ static const struct hid_device_id mt_devices[] = {
- 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
- 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index e8d49886d6953..bc5e3f45c499e 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1079,17 +1079,17 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 	u16 pkt_count = 0;
+ 	u64 desc_hdr = 0;
+ 	u16 vlan_tag = 0;
+-	u32 skb_len = 0;
++	u32 skb_len;
  
-+	/* HONOR GLO-GXXX panel */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x347d, 0x7853) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+ 	if (!skb)
+ 		goto err;
+ 
+-	if (skb->len == 0)
++	skb_len = skb->len;
++	if (skb_len < sizeof(desc_hdr))
+ 		goto err;
+ 
+-	skb_len = skb->len;
+ 	/* RX Descriptor Header */
+-	skb_trim(skb, skb->len - sizeof(desc_hdr));
++	skb_trim(skb, skb_len - sizeof(desc_hdr));
+ 	desc_hdr = le64_to_cpup((u64 *)skb_tail_pointer(skb));
+ 
+ 	/* Check these packets */
 -- 
 2.43.0
 
