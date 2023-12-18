@@ -1,175 +1,352 @@
-Return-Path: <stable+bounces-7622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED798173FC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9BBA81746A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1905D1C21704
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:44:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F762284EA6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B470F3786E;
-	Mon, 18 Dec 2023 14:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866B4200C0;
+	Mon, 18 Dec 2023 14:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UXf5xKNI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Q8X0/aQi";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UXf5xKNI";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Q8X0/aQi"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="CFPKpmMp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB48D1D132;
-	Mon, 18 Dec 2023 14:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EBDBE21F2E;
-	Mon, 18 Dec 2023 14:43:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702910627; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8GrftnGjxPKzceHJS6yGcWMugVOXmdYuVtBRV+I0mM=;
-	b=UXf5xKNIqQe5GVWIakWF12limsR4ecoCOgCy773GvIhJGVEw/k3zLBvtZ5ZnWv+Dnpu2Bg
-	v9z+bKViKz1GGHx/Uz3YtWx0vyfe/r9fnKXnu3hzn33AhTYig/Ume5uDOXHVg7mnrN42MQ
-	JPSB6FAD9K9wWXVyPROib9yjIQoeMVk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702910627;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8GrftnGjxPKzceHJS6yGcWMugVOXmdYuVtBRV+I0mM=;
-	b=Q8X0/aQia3CZ+g2cFg/vk5DmfxY4jnMzhoYyKOHZzp+NHyI8keqw1JRlkzP0Vxo1sbgRsR
-	K2xGi1aVFsLUKnBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702910627; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8GrftnGjxPKzceHJS6yGcWMugVOXmdYuVtBRV+I0mM=;
-	b=UXf5xKNIqQe5GVWIakWF12limsR4ecoCOgCy773GvIhJGVEw/k3zLBvtZ5ZnWv+Dnpu2Bg
-	v9z+bKViKz1GGHx/Uz3YtWx0vyfe/r9fnKXnu3hzn33AhTYig/Ume5uDOXHVg7mnrN42MQ
-	JPSB6FAD9K9wWXVyPROib9yjIQoeMVk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702910627;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d8GrftnGjxPKzceHJS6yGcWMugVOXmdYuVtBRV+I0mM=;
-	b=Q8X0/aQia3CZ+g2cFg/vk5DmfxY4jnMzhoYyKOHZzp+NHyI8keqw1JRlkzP0Vxo1sbgRsR
-	K2xGi1aVFsLUKnBQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id DAAA713927;
-	Mon, 18 Dec 2023 14:43:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id FU0SNaJagGUccQAAn2gu4w
-	(envelope-from <jack@suse.cz>); Mon, 18 Dec 2023 14:43:46 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 7E230A07E0; Mon, 18 Dec 2023 15:43:42 +0100 (CET)
-Date: Mon, 18 Dec 2023 15:43:42 +0100
-From: Jan Kara <jack@suse.cz>
-To: Baokun Li <libaokun1@huawei.com>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	jack@suse.cz, ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
-	yi.zhang@huawei.com, yangerkun@huawei.com, yukuai3@huawei.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/4] ext4: avoid dividing by 0 in
- mb_update_avg_fragment_size() when block bitmap corrupt
-Message-ID: <20231218144342.2we3j2dtyedulfga@quack3>
-References: <20231218141814.1477338-1-libaokun1@huawei.com>
- <20231218141814.1477338-5-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF52101DB
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d39e2f1089so16019595ad.1
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:58:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702911487; x=1703516287; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4x6vGpNJZKHNKpuVuXF5zq6fYJyeLV8ki7zx1A4SL7Q=;
+        b=CFPKpmMpeyDI6C4ufbajPqMz5OGwcYSgY068NeYoxo7y5+ai8sNBZuNMG4JYq2L2H0
+         OTb/AJsDhPT2TfYr/b6f/EXYqyaUTEB14y7ErlFxH0R61HtXZF0rbCfQQaMAFDPiUBCW
+         AdWtVFlmn+Kxt+F/QjLUfMJsMTjTpCc00zSI3/QEtvis9Fj6b+JvOt9WLNcGvZgfPFAg
+         /GlkEzdoAZFTuhi7N9zgSJqOaoC0ViOdjOieRc8qYYcv2V0hIkhsdLBgKB4cTwIG7944
+         Omk5pyrgqumsd3pU/dHNjQ9WKHef31QpB8KZ7b8QOwQFZkUsVL5fBJnROCPebMZBjrsx
+         tgwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702911487; x=1703516287;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4x6vGpNJZKHNKpuVuXF5zq6fYJyeLV8ki7zx1A4SL7Q=;
+        b=AjZdmq0ceIcdC8aGEQZHXzxjR4pg2YT+rfHrucs20+iDeK7azR2CitrQbR8NgLkS8d
+         vfHQ4xhAtmk+vmS5FTy1868Hr4UCSgNrATlUYkY/BgG9Go7MFJac93ipHoKziVnwuP6s
+         Hmnh7PT+D2+mS32udtOKBYx125Ic+VuNjekP2eAmX2wurzmZRiijau1Gq+fOAAAJC9bZ
+         icCUlbsj8aGLY7isrDxQrM9VoumsQth9lIgODWSRfvhaQbuRnxJlbt+fy+gQOUQq2C/t
+         /9deDsWwSAHJ8yVk+ShBsrF2es2DSOfkjzDxmDTYGeUbp/O0ivvWmkFVyvm/M2ESnEPj
+         6rmg==
+X-Gm-Message-State: AOJu0YzTHRckuNALsDuajdLUQaTXXUtZWrjqa3F98n0CVCixQuUfbB4k
+	lBI/LYzxMmcvlp/KCRM5PLXjBT7hyhWp2r3knb8=
+X-Google-Smtp-Source: AGHT+IGp8SF/yNyR6FAE5tvj4480LQHC3/hopOZuwqMOcc81ccsJ5CDXqXinx40gVc4RiaMsgjhSSA==
+X-Received: by 2002:a17:902:da89:b0:1d3:5a7b:7ced with SMTP id j9-20020a170902da8900b001d35a7b7cedmr11490284plx.63.1702911487403;
+        Mon, 18 Dec 2023 06:58:07 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id je11-20020a170903264b00b001d09be1bcf9sm2951751plb.80.2023.12.18.06.58.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 06:58:06 -0800 (PST)
+Message-ID: <65805dfe.170a0220.2418b.6e64@mx.google.com>
+Date: Mon, 18 Dec 2023 06:58:06 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231218141814.1477338-5-libaokun1@huawei.com>
-X-Spam-Level: **
-X-Spam-Level: 
-X-Spamd-Bar: /
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UXf5xKNI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Q8X0/aQi"
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email,huawei.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,dilger.ca,suse.cz,gmail.com,huawei.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: EBDBE21F2E
-X-Spam-Flag: NO
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.19
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.19.302-36-ge049e5b8ef404
+Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
+ 33 warnings (v4.19.302-36-ge049e5b8ef404)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Mon 18-12-23 22:18:14, Baokun Li wrote:
-> When bb_free is not 0 but bb_fragments is 0, return directly to avoid
-> system crash due to division by zero.
+stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 33 warnings (v4=
+.19.302-36-ge049e5b8ef404)
 
-How could this possibly happen? bb_fragments is the number of free space
-extents and bb_free is the number of free blocks. No free space extents =>
-no free blocks seems pretty obvious? You can see the logic in
-ext4_mb_generate_buddy()...
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+9/kernel/v4.19.302-36-ge049e5b8ef404/
 
-								Honza
+Tree: stable-rc
+Branch: queue/4.19
+Git Describe: v4.19.302-36-ge049e5b8ef404
+Git Commit: e049e5b8ef404a5d70e76a7de06375177a7c57ea
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-> 
-> Fixes: 83e80a6e3543 ("ext4: use buckets for cr 1 block scan instead of rbtree")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->  fs/ext4/mballoc.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> index 2fbee0f0f5c3..e2a167240335 100644
-> --- a/fs/ext4/mballoc.c
-> +++ b/fs/ext4/mballoc.c
-> @@ -845,6 +845,9 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
->  	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
->  		return;
->  
-> +	if (unlikely(grp->bb_fragments == 0))
-> +		return;
-> +
->  	new_order = mb_avg_fragment_size_order(sb,
->  					grp->bb_free / grp->bb_fragments);
->  	if (new_order == grp->bb_avg_fragment_size_order)
-> -- 
-> 2.31.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Build Failures Detected:
+
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
+
+Warnings Detected:
+
+arc:
+    haps_hs_smp_defconfig (gcc-10): 1 warning
+
+arm64:
+    defconfig (gcc-10): 4 warnings
+    defconfig+arm64-chromebook (gcc-10): 4 warnings
+
+arm:
+    imx_v6_v7_defconfig (gcc-10): 1 warning
+    multi_v5_defconfig (gcc-10): 1 warning
+    multi_v7_defconfig (gcc-10): 1 warning
+    omap2plus_defconfig (gcc-10): 1 warning
+    vexpress_defconfig (gcc-10): 1 warning
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    defconfig (gcc-10): 1 warning
+
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    13   include/linux/kernel.h:847:29: warning: comparison of distinct poi=
+nter types lacks a cast
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    4    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section m=
+ismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warn=
+ings, 0 section mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 =
+section mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    include/linux/kernel.h:847:29: warning: comparison of distinct pointer =
+types lacks a cast
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
