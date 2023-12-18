@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-7249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E9E81719C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1226817296
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 457B2B2155F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 560F2B23B83
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B59129EF7;
-	Mon, 18 Dec 2023 13:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D333D57F;
+	Mon, 18 Dec 2023 14:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tnpdm+XZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAswZcwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF4D1D127;
-	Mon, 18 Dec 2023 13:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910E5C433C8;
-	Mon, 18 Dec 2023 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4391D142;
+	Mon, 18 Dec 2023 14:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596AC433C7;
+	Mon, 18 Dec 2023 14:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907958;
-	bh=Xm6b1MT/7vuP4yOAf/cQLQ1GbMybGUCRJ0RnGDn9oSg=;
+	s=korg; t=1702908484;
+	bh=9I4TlRa0kCsKz/pFCfCrUtU/DvDvW8mZfhyP61JGr8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tnpdm+XZOKB23BQ57FR8eEaqZpct68hFmw35rtR8/CQZRp6KF4cEVoBGVfRFUbtE4
-	 jljFHwYNiU8Yu6ZmHSLzRVFhGsCfzCI0bxVU+TdfnBS21s24BHNPEV5vsgp/vPm9Il
-	 WEPoGQ5fTa+Za5VbOCJ9EKAesRPlhg4NYgqKjWu0=
+	b=vAswZcwJlTxJAR4tv8RFKCKZehJb8pIHfzwTIQf6Dk6cEqe53Uc6Bn6Dyts3NDCAJ
+	 +1BaIcb/9oSwPgp/n3UVLvOt8Jhdnw8InFHlBtVXXNt3W/o7QqaxkGkG4ejxVWNGOn
+	 wKb05VXgVdox4U/dpi6FEq/6bt8JSLt3IJRWagZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 096/106] tracing: Update snapshot buffer on resize if it is allocated
-Date: Mon, 18 Dec 2023 14:51:50 +0100
-Message-ID: <20231218135059.165518868@linuxfoundation.org>
+	Hartmut Knaack <knaack.h@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 27/62] ALSA: hda/realtek: Apply mute LED quirk for HP15-db
+Date: Mon, 18 Dec 2023 14:51:51 +0100
+Message-ID: <20231218135047.460021694@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +52,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Hartmut Knaack <knaack.h@gmx.de>
 
-commit d06aff1cb13d2a0d52b48e605462518149c98c81 upstream.
+commit 9b726bf6ae11add6a7a52883a21f90ff9cbca916 upstream.
 
-The snapshot buffer is to mimic the main buffer so that when a snapshot is
-needed, the snapshot and main buffer are swapped. When the snapshot buffer
-is allocated, it is set to the minimal size that the ring buffer may be at
-and still functional. When it is allocated it becomes the same size as the
-main ring buffer, and when the main ring buffer changes in size, it should
-do.
+The HP laptop 15-db0403ng uses the ALC236 codec and controls the mute
+LED using COEF 0x07 index 1.
+Sound card subsystem: Hewlett-Packard Company Device [103c:84ae]
 
-Currently, the resize only updates the snapshot buffer if it's used by the
-current tracer (ie. the preemptirqsoff tracer). But it needs to be updated
-anytime it is allocated.
+Use the existing quirk for this model.
 
-When changing the size of the main buffer, instead of looking to see if
-the current tracer is utilizing the snapshot buffer, just check if it is
-allocated to know if it should be updated or not.
-
-Also fix typo in comment just above the code change.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231210225447.48476a6a@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: ad909e21bbe69 ("tracing: Add internal tracing_snapshot() functions")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Hartmut Knaack <knaack.h@gmx.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/e61815d0-f1c7-b164-e49d-6ca84771476a@gmx.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6268,7 +6268,7 @@ static int __tracing_resize_ring_buffer(
- 	if (!tr->array_buffer.buffer)
- 		return 0;
- 
--	/* Do not allow tracing while resizng ring buffer */
-+	/* Do not allow tracing while resizing ring buffer */
- 	tracing_stop_tr(tr);
- 
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
-@@ -6276,7 +6276,7 @@ static int __tracing_resize_ring_buffer(
- 		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!tr->current_trace->use_max_tr)
-+	if (!tr->allocated_snapshot)
- 		goto out;
- 
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8986,6 +8986,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x84ae, "HP 15-db0403ng", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x84da, "HP OMEN dc0019-ur", ALC295_FIXUP_HP_OMEN),
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
 
 
 
