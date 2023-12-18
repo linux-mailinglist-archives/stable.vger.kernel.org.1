@@ -1,152 +1,243 @@
-Return-Path: <stable+bounces-7340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019AD81721D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1966581725F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BBC1C24D16
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76F4BB23395
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7603D5A86B;
-	Mon, 18 Dec 2023 14:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B949897;
+	Mon, 18 Dec 2023 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WLTs41Ow"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="3GLYnVGi"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBFB5A857;
-	Mon, 18 Dec 2023 14:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BIDNGEI020964;
-	Mon, 18 Dec 2023 14:02:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=QHF
-	a9KVy94RwhEOf0FG+5uP5Upspb4SPTX/TgXysRzo=; b=WLTs41OwPqA490qAlef
-	m/qLuF2Iesu8y5NAOFfQao0zAlEa9EGGp5GyK/AsUPZn77mM2EoETFPvPBZgry84
-	yDWcO5dDyCwNm8+7NXq43m4mTd8jkUNWF83CYpH1PF9IhDZdFKSAeln+xiAsVoQy
-	AIngIKIAMGcq9+LafsATZKhAf3Ob4nYNwd1fLyPv/kNdH20nbcCFxEbJGWQsxhqx
-	/8/5fZuQF8BURtLEfSGZTCWmoDiq7o3w+AFOTbRXkC07UbkXC05XcL/bIFzWSjlj
-	B+wi10bCG4NGhDgyvRNcOG1xRohWkKzQZCJRj6WwiX6ib6SEcNt/k/+j8ZhvVlfK
-	MQg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v2nxs86kq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Dec 2023 14:02:49 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BIE2mK5025693
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Dec 2023 14:02:48 GMT
-Received: from hu-krichai-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 18 Dec 2023 06:02:43 -0800
-From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-Date: Mon, 18 Dec 2023 19:32:36 +0530
-Subject: [PATCH] arm64: dts: qcom: sc7280: Add additional MSI interrupts
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A084989D
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6d2350636d6so2893044b3a.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:06:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702908362; x=1703513162; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BZO6pvpmYY7so1uqQGhcQSEBXWjiA6NkTEYdcuwIHlc=;
+        b=3GLYnVGircbAvMnymjckpvkn92t8NQhg1VtpmR16xs94KBI/iU5lmd3oCR7Y26kKa/
+         vcJIo1o7wHKjNRV/5VBmi2GrGzqn1Z/44OGSfmTP+HBeMn81QGAjJrHiXob6iL6JvV+p
+         mSECGvwV9CsF8rv3J18CNQLkPxF6VfOYhc9vbu95jpiieSVYK7FcWExKxxr86QlRJC+1
+         0qVtwqZRwLxVfgMfUuwixNTtIYRk3ArdkM9LVGGtgNxMXcG6sqzQJ4+lVY6t9nsB5oM3
+         3LT8gwSkWu3A73nZIL+xNXdnPYM51OdaKcURvofmm+SGQbOTg9VrhsTiaCMXHFauL5zC
+         ItcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702908362; x=1703513162;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BZO6pvpmYY7so1uqQGhcQSEBXWjiA6NkTEYdcuwIHlc=;
+        b=QQUQjery9Kq+C1g8+E/fVfoG18kwj1IGedpdm6KMyRoUa1VBHipdUJCvyCRdTLMiKx
+         YnBhyQvgz9vHvPOB8PU8rfe6ypxo7ajsA22Bg8YGAUSHZhUctmTNC73FYlUoN+HovmOw
+         iyBUIOPmb0WwbyUxwbRHtpuZF1rQZiu6qGoI0Zsyy1wAOxbpkVNVPgrDX9RNJ4vhBwFA
+         1N3zNk2xyq5jxvbFtcSSpZ9TBD8g02tMZDkhUdKvPCtfukXK31aa8KDvqy7S8HFNNiCv
+         HdayeIRcyRsO8wvmpS/WmFyOuILfxXTd6Y1qKl7/ABqfr3KmZk5KfW46hulZppT5bOhI
+         5R+Q==
+X-Gm-Message-State: AOJu0YzTH3WFiQjb71mfJuHTmzLsr13zEyRBOWn4OeozIZLyDklPcGgg
+	PBncNC/FA/0d+HxwnbESe+loH00w9AVrsmM4pFs=
+X-Google-Smtp-Source: AGHT+IEdpqN7BEspArsSLKGFIU90mU3FIBqATOdpuPocd4Ju3re4h+BL7OCLeslAlHY0U0NO6cyCrQ==
+X-Received: by 2002:a05:6a00:21d3:b0:6cd:f50c:32aa with SMTP id t19-20020a056a0021d300b006cdf50c32aamr21018606pfj.13.1702908362220;
+        Mon, 18 Dec 2023 06:06:02 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id fn19-20020a056a002fd300b006d901374d6esm306667pfb.150.2023.12.18.06.06.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 06:06:01 -0800 (PST)
+Message-ID: <658051c9.050a0220.23ba6.11e9@mx.google.com>
+Date: Mon, 18 Dec 2023 06:06:01 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20231218-additional_msi-v1-1-de6917392684@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAP1QgGUC/x2MQQqAIBAAvyJ7TtANxPpKRIhutVAWGhGEf086D
- szMC5kSU4ZevJDo5sxHrKAbAX51cSHJoTKgwlajttKFwFeV3DbtmaVRBoO3Gj12UKMz0czPPxz
- GUj5jufydYAAAAA==
-To: <cros-qcom-dts-watchers@chromium.org>, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        "Krzysztof
- Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Prasad Malisetty <pmaliset@codeaurora.org>,
-        "Stephen
- Boyd" <swboyd@chromium.org>
-CC: <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <quic_vbadigan@quicinc.com>,
-        <quic_ramkri@quicinc.com>, <quic_nitegupt@quicinc.com>,
-        <quic_skananth@quicinc.com>, <quic_parass@quicinc.com>,
-        <stable@vger.kernel.org>,
-        Krishna chaitanya chundru
-	<quic_krichai@quicinc.com>
-X-Mailer: b4 0.13-dev-83828
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1702908163; l=1806;
- i=quic_krichai@quicinc.com; s=20230907; h=from:subject:message-id;
- bh=IHezx7uoKT5LzglxoOVzfJ2zxmnys0wEhJXuVwYPBp8=;
- b=aIDCdpl6OP+PF2Xv4IVJ0RB6vcrG92VT2PVMk8HRKjQl9GTHUsS3p+Z9Uis6e2F6lWl7WxVa1
- 1dbfnGS88f5D0W/UXSJlICPbOG7Cp1VTF0YE6S0G1Feh6Ohfwkd7ED0
-X-Developer-Key: i=quic_krichai@quicinc.com; a=ed25519;
- pk=10CL2pdAKFyzyOHbfSWHCD0X0my7CXxj8gJScmn1FAg=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 5l6c_5PCImzHzQLmnUTGHzEdUopiuiNQ
-X-Proofpoint-ORIG-GUID: 5l6c_5PCImzHzQLmnUTGHzEdUopiuiNQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=670
- malwarescore=0 bulkscore=0 phishscore=0 spamscore=0 mlxscore=0
- impostorscore=0 priorityscore=1501 clxscore=1011 suspectscore=0
- adultscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2311290000 definitions=main-2312180102
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.15
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.143-83-g980d9a43cf444
+Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.143-83-g980d9a43cf444)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Current MSI's mapping doesn't have all the vectors. This platform
-supports 8 vectors each vector supports 32 MSI's, so total MSI's
-supported is 256.
+stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
+15.143-83-g980d9a43cf444)
 
-Add all the MSI groups supported for this PCIe instance in this platform.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.143-83-g980d9a43cf444/
 
-Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
-cc: stable@vger.kernel.org
-Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Tree: stable-rc
+Branch: queue/5.15
+Git Describe: v5.15.143-83-g980d9a43cf444
+Git Commit: 980d9a43cf44411126d79db48cbb6a8f17f09250
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 66f1eb83cca7..e1dc41705f61 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2146,8 +2146,16 @@ pcie1: pci@1c08000 {
- 			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
- 				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
- 
--			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "msi";
-+			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "msi0", "msi1", "msi2", "msi3",
-+					  "msi4", "msi5", "msi6", "msi7";
- 			#interrupt-cells = <1>;
- 			interrupt-map-mask = <0 0 0 0x7>;
- 			interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,
-
----
-base-commit: 5bd7ef53ffe5ca580e93e74eb8c81ed191ddc4bd
-change-id: 20231218-additional_msi-6062dc812c29
-
-Best regards,
--- 
-Krishna chaitanya chundru <quic_krichai@quicinc.com>
-
+For more info write to <info@kernelci.org>
 
