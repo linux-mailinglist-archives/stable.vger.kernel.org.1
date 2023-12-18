@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-7389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85BD817253
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 612DC817290
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23A1FB22DD4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0602866D5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D611914F63;
-	Mon, 18 Dec 2023 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031C33D557;
+	Mon, 18 Dec 2023 14:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDWSr3G5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JLl9Rmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F00642373;
-	Mon, 18 Dec 2023 14:05:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2411FC433C7;
-	Mon, 18 Dec 2023 14:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5BE1D142;
+	Mon, 18 Dec 2023 14:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411E4C433C8;
+	Mon, 18 Dec 2023 14:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908339;
-	bh=Xu+RYb+e/6QLP5YBaU8V58Pyi0blE7tO9j4AsdHj58M=;
+	s=korg; t=1702908470;
+	bh=5nJSxEUNXIHwEH7WcFTtKjueoZeWOgaBPcPbxO7SzVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDWSr3G5wd+JMFlND/CRTJO2LVkKZUN5Q7Rp3vvUUiRZ/YwD4Tadhu9mVcVDZi/k6
-	 UDMNQeO7/dwO1I6D11ovuRvSs5TAJmQmuHwnI7+aNjsbbM7uEu+1jz3CIapiSdgVi2
-	 v25FSGlkKJSDkMIT/z2WPz8flvFsZriYLu5yPSak=
+	b=1JLl9Rmg0EXDbeOs119vjb32tyrm52obi9V9t7iMKaw/YWKeIBvKYKz2wrBDPC0yv
+	 l2KsUnlLeEXpjuyxeJeJcFg7O92TrRK1CMjpBYKFm5mkbOHLGVD7rR+PATazngVJJI
+	 wmOHiVmyEbjz2kVna9rb/BU+w4uPjsZcl8H6ylIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 140/166] mm/mglru: reclaim offlined memcgs harder
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 22/62] appletalk: Fix Use-After-Free in atalk_ioctl
 Date: Mon, 18 Dec 2023 14:51:46 +0100
-Message-ID: <20231218135111.371534529@linuxfoundation.org>
+Message-ID: <20231218135047.221519772@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,121 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 4376807bf2d5371c3e00080c972be568c3f8a7d1 upstream.
+[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
 
-In the effort to reduce zombie memcgs [1], it was discovered that the
-memcg LRU doesn't apply enough pressure on offlined memcgs.  Specifically,
-instead of rotating them to the tail of the current generation
-(MEMCG_LRU_TAIL) for a second attempt, it moves them to the next
-generation (MEMCG_LRU_YOUNG) after the first attempt.
+Because atalk_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with atalk_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+atalk_ioctl() -> skb_peek()
+atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
 
-Not applying enough pressure on offlined memcgs can cause them to build
-up, and this can be particularly harmful to memory-constrained systems.
-
-On Pixel 8 Pro, launching apps for 50 cycles:
-                 Before  After  Change
-  Zombie memcgs  45      35     -22%
-
-[1] https://lore.kernel.org/CABdmKX2M6koq4Q0Cmp_-=wbP0Qa190HdEGGaHfxNS05gAkUtPA@mail.gmail.com/
-
-Link: https://lkml.kernel.org/r/20231208061407.2125867-4-yuzhao@google.com
-Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: T.J. Mercier <tjmercier@google.com>
-Tested-by: T.J. Mercier <tjmercier@google.com>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmzone.h |    8 ++++----
- mm/vmscan.c            |   24 ++++++++++++++++--------
- 2 files changed, 20 insertions(+), 12 deletions(-)
+ net/appletalk/ddp.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -519,10 +519,10 @@ void lru_gen_look_around(struct page_vma
-  * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
-  * 2. The first attempt to reclaim a memcg below low, which triggers
-  *    MEMCG_LRU_TAIL;
-- * 3. The first attempt to reclaim a memcg below reclaimable size threshold,
-- *    which triggers MEMCG_LRU_TAIL;
-- * 4. The second attempt to reclaim a memcg below reclaimable size threshold,
-- *    which triggers MEMCG_LRU_YOUNG;
-+ * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
-+ *    threshold, which triggers MEMCG_LRU_TAIL;
-+ * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
-+ *    threshold, which triggers MEMCG_LRU_YOUNG;
-  * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
-  * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
-  * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5291,7 +5291,12 @@ static bool should_run_aging(struct lruv
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index c94b212d8e7ca..46adb8cefccf2 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1811,15 +1811,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		break;
  	}
+ 	case TIOCINQ: {
+-		/*
+-		 * These two are safe on a single CPU system as only
+-		 * user tasks fiddle here
+-		 */
+-		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
++		struct sk_buff *skb;
+ 		long amount = 0;
  
- 	/* try to scrape all its memory if this memcg was deleted */
--	*nr_to_scan = mem_cgroup_online(memcg) ? (total >> sc->priority) : total;
-+	if (!mem_cgroup_online(memcg)) {
-+		*nr_to_scan = total;
-+		return false;
-+	}
-+
-+	*nr_to_scan = total >> sc->priority;
- 
- 	/*
- 	 * The aging tries to be lazy to reduce the overhead, while the eviction
-@@ -5412,14 +5417,9 @@ static int shrink_one(struct lruvec *lru
- 	bool success;
- 	unsigned long scanned = sc->nr_scanned;
- 	unsigned long reclaimed = sc->nr_reclaimed;
--	int seg = lru_gen_memcg_seg(lruvec);
- 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
- 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
- 
--	/* see the comment on MEMCG_NR_GENS */
--	if (!lruvec_is_sizable(lruvec, sc))
--		return seg != MEMCG_LRU_TAIL ? MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
--
- 	mem_cgroup_calculate_protection(NULL, memcg);
- 
- 	if (mem_cgroup_below_min(NULL, memcg))
-@@ -5427,7 +5427,7 @@ static int shrink_one(struct lruvec *lru
- 
- 	if (mem_cgroup_below_low(NULL, memcg)) {
- 		/* see the comment on MEMCG_NR_GENS */
--		if (seg != MEMCG_LRU_TAIL)
-+		if (lru_gen_memcg_seg(lruvec) != MEMCG_LRU_TAIL)
- 			return MEMCG_LRU_TAIL;
- 
- 		memcg_memory_event(memcg, MEMCG_LOW);
-@@ -5443,7 +5443,15 @@ static int shrink_one(struct lruvec *lru
- 
- 	flush_reclaim_state(sc);
- 
--	return success ? MEMCG_LRU_YOUNG : 0;
-+	if (success && mem_cgroup_online(memcg))
-+		return MEMCG_LRU_YOUNG;
-+
-+	if (!success && lruvec_is_sizable(lruvec, sc))
-+		return 0;
-+
-+	/* one retry if offlined or too small */
-+	return lru_gen_memcg_seg(lruvec) != MEMCG_LRU_TAIL ?
-+	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
- }
- 
- #ifdef CONFIG_MEMCG
++		spin_lock_irq(&sk->sk_receive_queue.lock);
++		skb = skb_peek(&sk->sk_receive_queue);
+ 		if (skb)
+ 			amount = skb->len - sizeof(struct ddpehdr);
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		rc = put_user(amount, (int __user *)argp);
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
