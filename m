@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-7491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043548172CB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5966081731D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 126B31C24E8D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77382890D7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7893A1B0;
-	Mon, 18 Dec 2023 14:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFDE3788F;
+	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbZ3F/tv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNGB4/L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9FC37870;
-	Mon, 18 Dec 2023 14:10:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5222C433C8;
-	Mon, 18 Dec 2023 14:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AAD37869;
+	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A355C433C7;
+	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908610;
-	bh=8EiRsNUVerSQbkeX8pxUSYgc87rT0fdxADQhug103uQ=;
+	s=korg; t=1702908817;
+	bh=fM1/LN3R+juOLSaQjCTmQLVDFg73Edp73OPB3toIjJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbZ3F/tvzQ1/KCZBjy+mYc9dbBJxbDiOW2/rD7mpoX9U7tKNOTjiptioJjysKwsz7
-	 7bFdgvN4Omf3iIoCP46kthkXbuuP7CUnZCKb5AEssomjgcLAuzrttyx9c2YXZvkCZW
-	 GFrXeEUez92ONzV/iIU1E2kUoF+55c92mS0JA72s=
+	b=bNGB4/L7JTSeZCG4OUGlJn1aJ/IyWMxam1ZlWFYwetUaO4xpHyRttvN9SSfvbj0p9
+	 ihS386eiUQFgD58IOY/Ovhp/Y2oNK5Aqjls8w+VN43XCkuk3FC+Ts7bYEbB68DR/KC
+	 04oZrGQFYOL3MbdMcKns1SV2NAUfjGhTkrWJrTNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Fei Shao <fshao@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 10/40] qed: Fix a potential use-after-free in qed_cxt_tables_alloc
-Date: Mon, 18 Dec 2023 14:52:05 +0100
-Message-ID: <20231218135043.109734252@linuxfoundation.org>
+Subject: [PATCH 5.15 45/83] drm/mediatek: Add spinlock for setting vblank event in atomic_begin
+Date: Mon, 18 Dec 2023 14:52:06 +0100
+Message-ID: <20231218135051.741033878@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +57,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit b65d52ac9c085c0c52dee012a210d4e2f352611b ]
+[ Upstream commit fe4c5f662097978b6c91c23a13c24ed92339a180 ]
 
-qed_ilt_shadow_alloc() will call qed_ilt_shadow_free() to
-free p_hwfn->p_cxt_mngr->ilt_shadow on error. However,
-qed_cxt_tables_alloc() accesses the freed pointer on failure
-of qed_ilt_shadow_alloc() through calling qed_cxt_mngr_free(),
-which may lead to use-after-free. Fix this issue by setting
-p_mngr->ilt_shadow to NULL in qed_ilt_shadow_free().
+Add spinlock protection to avoid race condition on vblank event
+between mtk_drm_crtc_atomic_begin() and mtk_drm_finish_page_flip().
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231210045255.21383-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230920090658.31181-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_cxt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-index 8ea46b81b7395..8a7ac17d3ef7e 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1023,6 +1023,7 @@ static void qed_ilt_shadow_free(struct qed_hwfn *p_hwfn)
- 		p_dma->p_virt = NULL;
- 	}
- 	kfree(p_mngr->ilt_shadow);
-+	p_mngr->ilt_shadow = NULL;
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index f2264633be1b7..d6781e54b3356 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -680,6 +680,7 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 									  crtc);
+ 	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
+ 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
++	unsigned long flags;
  
- static int qed_ilt_blk_alloc(struct qed_hwfn *p_hwfn,
+ 	if (mtk_crtc->event && mtk_crtc_state->base.event)
+ 		DRM_ERROR("new event while there is still a pending event\n");
+@@ -687,7 +688,11 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 	if (mtk_crtc_state->base.event) {
+ 		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
+ 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
++
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		mtk_crtc->event = mtk_crtc_state->base.event;
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
++
+ 		mtk_crtc_state->base.event = NULL;
+ 	}
+ }
 -- 
 2.43.0
 
