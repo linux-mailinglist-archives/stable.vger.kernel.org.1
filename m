@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A316A81719B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDDDA81732A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43BB51F25483
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F08AB23C01
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8361D14B;
-	Mon, 18 Dec 2023 13:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948D91D127;
+	Mon, 18 Dec 2023 14:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZl0ImaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJsTqtvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68951D13A;
-	Mon, 18 Dec 2023 13:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCC0C433C7;
-	Mon, 18 Dec 2023 13:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0BB129ED2;
+	Mon, 18 Dec 2023 14:14:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85795C433C7;
+	Mon, 18 Dec 2023 14:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907961;
-	bh=bMcqL8Ojjr4fbUvEFNn5c1lzgEBjqyXKg41KlUAnQu4=;
+	s=korg; t=1702908852;
+	bh=A9y/RmjtNIJor7KIxMT5/1IMMelGOlEBET34NHSTxY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZl0ImaVFgOIViI0gFFyCDIiVrroOALJHxhUXgwbHydUt2eqVwLAJIDrDU7drn8vb
-	 XJRArsGrcNXFJo56JEsgPyaQP/+mdqthxu5Rzp7cv3cOYEww0ZJ26Np1Bek++bjm5n
-	 CsbDoz/f5c4qAxFy0feGAzMkVqu/EZn9TD12U3OU=
+	b=QJsTqtvN8SuQcoaDlCdsRmQBB/wpOAVoZ623UEW9iTnWSWVO/suHad3YsFJ136aiZ
+	 LOTxVfuYIOY7l+T6THPOaGHIQuFLxdd3+u9ryyQFh2yOsLsy0dpKmxFHI40p8dCi7D
+	 o+d86eugiEdfGKxXtvOHud8x9hiGT7JeyN5KgTXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 097/106] ring-buffer: Do not update before stamp when switching sub-buffers
+	Yanteng Si <siyanteng@loongson.cn>,
+	Feiyang Chen <chenfeiyang@loongson.cn>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 30/83] stmmac: dwmac-loongson: Make sure MDIO is initialized before use
 Date: Mon, 18 Dec 2023 14:51:51 +0100
-Message-ID: <20231218135059.199953469@linuxfoundation.org>
+Message-ID: <20231218135051.067760053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +55,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Yanteng Si <siyanteng@loongson.cn>
 
-commit 9e45e39dc249c970d99d2681f6bcb55736fd725c upstream.
+[ Upstream commit e87d3a1370ce9f04770d789bcf7cce44865d2e8d ]
 
-The ring buffer timestamps are synchronized by two timestamp placeholders.
-One is the "before_stamp" and the other is the "write_stamp" (sometimes
-referred to as the "after stamp" but only in the comments. These two
-stamps are key to knowing how to handle nested events coming in with a
-lockless system.
+Generic code will use mdio. If it is not initialized before use,
+the kernel will Oops.
 
-When moving across sub-buffers, the before stamp is updated but the write
-stamp is not. There's an effort to put back the before stamp to something
-that seems logical in case there's nested events. But as the current event
-is about to cross sub-buffers, and so will any new nested event that happens,
-updating the before stamp is useless, and could even introduce new race
-conditions.
-
-The first event on a sub-buffer simply uses the sub-buffer's timestamp
-and keeps a "delta" of zero. The "before_stamp" and "write_stamp" are not
-used in the algorithm in this case. There's no reason to try to fix the
-before_stamp when this happens.
-
-As a bonus, it removes a cmpxchg() when crossing sub-buffers!
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231211114420.36dde01b@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+Signed-off-by: Feiyang Chen <chenfeiyang@loongson.cn>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3601,14 +3601,7 @@ __rb_reserve_next(struct ring_buffer_per
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index 2ae59f94afe1d..cef9734ef259b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -68,17 +68,15 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	if (!plat)
+ 		return -ENOMEM;
  
- 	/* See if we shot pass the end of this buffer page */
- 	if (unlikely(write > BUF_PAGE_SIZE)) {
--		/* before and after may now different, fix it up*/
--		b_ok = rb_time_read(&cpu_buffer->before_stamp, &info->before);
--		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
--		if (a_ok && b_ok && info->before != info->after)
--			(void)rb_time_cmpxchg(&cpu_buffer->before_stamp,
--					      info->before, info->after);
--		if (a_ok && b_ok)
--			check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
-+		check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
- 		return rb_move_tail(cpu_buffer, tail, info);
++	plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
++					   sizeof(*plat->mdio_bus_data),
++					   GFP_KERNEL);
++	if (!plat->mdio_bus_data)
++		return -ENOMEM;
++
+ 	plat->mdio_node = of_get_child_by_name(np, "mdio");
+ 	if (plat->mdio_node) {
+ 		dev_info(&pdev->dev, "Found MDIO subnode\n");
+-
+-		plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
+-						   sizeof(*plat->mdio_bus_data),
+-						   GFP_KERNEL);
+-		if (!plat->mdio_bus_data) {
+-			ret = -ENOMEM;
+-			goto err_put_node;
+-		}
+ 		plat->mdio_bus_data->needs_reset = true;
  	}
  
+-- 
+2.43.0
+
 
 
 
