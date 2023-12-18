@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396C9817357
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7390A8172DF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF3BAB23548
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13DEC1F23A89
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F19B3787B;
-	Mon, 18 Dec 2023 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594973786A;
+	Mon, 18 Dec 2023 14:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzAZj8KB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0stKrMh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71041D148;
-	Mon, 18 Dec 2023 14:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A368C433C7;
-	Mon, 18 Dec 2023 14:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2126D129EF9;
+	Mon, 18 Dec 2023 14:11:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7B3C433C7;
+	Mon, 18 Dec 2023 14:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908934;
-	bh=ZceK/LYpt7eg1DUTZH+1kPQ3Rrzzm0fLzGxjYEK/kPY=;
+	s=korg; t=1702908662;
+	bh=UmBO9CYnPhRKx6+tTqu2p3mVP+h67n7n3p4fCb+dMSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzAZj8KBoB1kbZq946OzY+0Ptz0U51XLVJawSLfz6q0nSeeEW7c/yaG3gnhmWLZ4u
-	 BzIMVsI17BxZSJIbEpLPbIMA653BEFHy8lTnB+DOdl1E3q4LvK2MXiUH5T1SRzmyy2
-	 VPtS3oU4GJq6H5CYU9lkfW/w1+WTicySGHknCcYU=
+	b=0stKrMh7CCPPWjaRVlpjqd0ff2IZ0uJKAahi4U1lC542wD9RoMk6G6OLClLqeFFxq
+	 U95uTavdp1MDp8XU2p4Imbh8K96D6n8lRTK6DzTU6aiEl8HT7znmEw1sF7WmmOnC2y
+	 iQdVbIf0qlTzvg+zOp0MtMl9blvtrSdf6vdWB1+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Neal Gompa <neal@gompa.dev>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 63/83] btrfs: do not allow non subvolume root targets for snapshot
+	Guo Ren <guoren@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 29/40] asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
 Date: Mon, 18 Dec 2023 14:52:24 +0100
-Message-ID: <20231218135052.505523359@linuxfoundation.org>
+Message-ID: <20231218135043.818935620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +55,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit a8892fd71933126ebae3d60aec5918d4dceaae76 upstream.
+[ Upstream commit 125b0bb95dd6bec81b806b997a4ccb026eeecf8f ]
 
-Our btrfs subvolume snapshot <source> <destination> utility enforces
-that <source> is the root of the subvolume, however this isn't enforced
-in the kernel.  Update the kernel to also enforce this limitation to
-avoid problems with other users of this ioctl that don't have the
-appropriate checks in place.
+We really don't want to do atomic_read() or anything like that, since we
+already have the value, not the lock.  The whole point of this is that
+we've loaded the lock from memory, and we want to check whether the
+value we loaded was a locked one or not.
 
-Reported-by: Martin Michaelis <code@mgjm.de>
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The main use of this is the lockref code, which loads both the lock and
+the reference count in one atomic operation, and then works on that
+combined value.  With the atomic_read(), the compiler would pointlessly
+spill the value to the stack, in order to then be able to read it back
+"atomically".
+
+This is the qspinlock version of commit c6f4a9002252 ("asm-generic:
+ticket-lock: Optimize arch_spin_value_unlocked()") which fixed this same
+bug for ticket locks.
+
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/all/CAHk-=whNRv0v6kQiV5QO6DJhjH4KEL36vWQ6Re8Csrnh4zbRkQ@mail.gmail.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ include/asm-generic/qspinlock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -1855,6 +1855,15 @@ static noinline int __btrfs_ioctl_snap_c
- 			 * are limited to own subvolumes only
- 			 */
- 			ret = -EPERM;
-+		} else if (btrfs_ino(BTRFS_I(src_inode)) != BTRFS_FIRST_FREE_OBJECTID) {
-+			/*
-+			 * Snapshots must be made with the src_inode referring
-+			 * to the subvolume inode, otherwise the permission
-+			 * checking above is useless because we may have
-+			 * permission on a lower directory but not the subvol
-+			 * itself.
-+			 */
-+			ret = -EINVAL;
- 		} else {
- 			ret = btrfs_mksnapshot(&file->f_path, mnt_userns,
- 					       name, namelen,
+diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+index fde943d180e03..6dc2269a5398a 100644
+--- a/include/asm-generic/qspinlock.h
++++ b/include/asm-generic/qspinlock.h
+@@ -38,7 +38,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
+  */
+ static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
+ {
+-	return !atomic_read(&lock.val);
++	return !lock.val.counter;
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
