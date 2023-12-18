@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-7509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09078172DE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615C08172B5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F3BE288869
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CF81C24DDB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB28F1D14D;
-	Mon, 18 Dec 2023 14:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B3942372;
+	Mon, 18 Dec 2023 14:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uvp4yQSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOrv20aF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A37129EC8;
-	Mon, 18 Dec 2023 14:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E67C433C7;
-	Mon, 18 Dec 2023 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700383786D;
+	Mon, 18 Dec 2023 14:09:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F65C433C8;
+	Mon, 18 Dec 2023 14:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908659;
-	bh=JEzViTeTxq+79Z00oAQ2abjoojFhhy2xUpVZwEoXklo=;
+	s=korg; t=1702908572;
+	bh=cHVO6q3z83E4RLApUiWJsEMM5a/9kTbTBoVvenj1MxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uvp4yQSyqFhXp+2KN2oonEtkYneByjED0Dm3EqeD1ajsdqB/h86cFVWGfzV7BEFFI
-	 E2Zfnw7yKj87WnzUR1Jt1ej/5TkimzW7rie5dxZZ5lTZITf8VfEApGDr0cljlDiGQa
-	 20ZeKSM1m5SMsOSCF/ZzFmKp6fc3AT/ZNCuXsPm8=
+	b=YOrv20aFwkHkiI2GHqEbm42+EK96fK/tDzVa7Rw9P377a2hvjWhjtuANXqQx66Yr0
+	 5/wNonvtQQFwHp2kITpP1P8h45YPMBVbg7lSd94hsbYdJ2gzNhQeMiaVEvIuwvT4gV
+	 FQQgGUibyhIUP1oTW3E1+ZtX6y/APuOsbqeoX1nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aoba K <nexp_0x17@outlook.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 28/40] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
+	Jiri Slaby <jslaby@suse.cz>,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Subject: [PATCH 5.10 59/62] tty: n_gsm, remove duplicates of parameters
 Date: Mon, 18 Dec 2023 14:52:23 +0100
-Message-ID: <20231218135043.779078384@linuxfoundation.org>
+Message-ID: <20231218135048.796377822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +52,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aoba K <nexp_0x17@outlook.com>
+From: Jiri Slaby <jslaby@suse.cz>
 
-[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
+commit b93db97e1ca08e500305bc46b08c72e2232c4be1 upstream.
 
-Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
-mode until the input mode feature is written by the host.  The touchpad do
-report the input mode at touchpad(3), while itself working under mouse mode. As
-a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
-feature in mt_set_input_mode for such device.
+dp, f, and i are only duplicates of gsmld_receive_buf's parameters. Use
+the parameters directly (cp, fp, and count) and delete these local
+variables.
 
-The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
-information on the internel by this string at present.  As the serial number of
-the laptop is GLO-G52, while DMI info reports the laptop serial number as
-GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
-
-Signed-off-by: Aoba K <nexp_0x17@outlook.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Link: https://lore.kernel.org/r/20210302062214.29627-41-jslaby@suse.cz
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/n_gsm.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 590b25460456b..c37399f61c67b 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2003,6 +2003,11 @@ static const struct hid_device_id mt_devices[] = {
- 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
- 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2577,27 +2577,24 @@ static void gsmld_receive_buf(struct tty
+ 			      char *fp, int count)
+ {
+ 	struct gsm_mux *gsm = tty->disc_data;
+-	const unsigned char *dp;
+-	char *f;
+-	int i;
+ 	char flags = TTY_NORMAL;
  
-+	/* HONOR GLO-GXXX panel */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x347d, 0x7853) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
--- 
-2.43.0
-
+ 	if (debug & 4)
+ 		print_hex_dump_bytes("gsmld_receive: ", DUMP_PREFIX_OFFSET,
+ 				     cp, count);
+ 
+-	for (i = count, dp = cp, f = fp; i; i--, dp++) {
+-		if (f)
+-			flags = *f++;
++	for (; count; count--, cp++) {
++		if (fp)
++			flags = *fp++;
+ 		switch (flags) {
+ 		case TTY_NORMAL:
+-			gsm->receive(gsm, *dp);
++			gsm->receive(gsm, *cp);
+ 			break;
+ 		case TTY_OVERRUN:
+ 		case TTY_BREAK:
+ 		case TTY_PARITY:
+ 		case TTY_FRAME:
+-			gsm_error(gsm, *dp, flags);
++			gsm_error(gsm, *cp, flags);
+ 			break;
+ 		default:
+ 			WARN_ONCE(1, "%s: unknown flag %d\n",
 
 
 
