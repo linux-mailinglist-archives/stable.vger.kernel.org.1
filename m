@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-7251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE1881719E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E788817295
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87134B216AE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E5EE28683D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0407200A0;
-	Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284163D576;
+	Mon, 18 Dec 2023 14:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2PJ95uS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZTioSP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C391D13A;
-	Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2E7C433C8;
-	Mon, 18 Dec 2023 13:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B463D54A;
+	Mon, 18 Dec 2023 14:08:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B76BC433C8;
+	Mon, 18 Dec 2023 14:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907964;
-	bh=NgIOGYmcULwxmCpLCYpndBc6zRp0or7xjCTClGwkdaw=;
+	s=korg; t=1702908486;
+	bh=4gzGtNXmVO7WLdQFo+j/n5Y7dHDimWqKppKnZlezGkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2PJ95uSfGJT/nxEEf1/+rxNoST3guohwUo/FLPE45TDoNzecee2e4qEj86X9JWgx
-	 44H5uOmBnRUNzARfcXyUomzs3J2zrjiSxtNYvkhSMrTL63TV0L3LtLojIRhjY5PdzR
-	 ugUWFKK9zOy2M75wSsk7Kqnr2AuxVV1LWHei+Hqw=
+	b=RZTioSP5GyJquT9faSJI31lnQZkWP2zv2qgsKMEAubmQ8zN4k4GB+HZgo9NWLkoYy
+	 jkB3hcf/kulA6CJPeJl7XVqeY0cKqWJeXTxEIxtSaxI0HZCsdFrI4tFyi23b9xOILu
+	 KG51QwyCEB1dyE4xLXqBSne2H/l5aLKR1O0kH9V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 098/106] ring-buffer: Have saved event hold the entire event
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>
+Subject: [PATCH 5.10 28/62] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
 Date: Mon, 18 Dec 2023 14:51:52 +0100
-Message-ID: <20231218135059.250473915@linuxfoundation.org>
+Message-ID: <20231218135047.509886464@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,59 +56,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-commit b049525855fdd0024881c9b14b8fbec61c3f53d3 upstream.
+commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
 
-For the ring buffer iterator (non-consuming read), the event needs to be
-copied into the iterator buffer to make sure that a writer does not
-overwrite it while the user is reading it. If a write happens during the
-copy, the buffer is simply discarded.
+This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
+subsequent fix to it:
 
-But the temp buffer itself was not big enough. The allocation of the
-buffer was only BUF_MAX_DATA_SIZE, which is the maximum data size that can
-be passed into the ring buffer and saved. But the temp buffer needs to
-hold the meta data as well. That would be BUF_PAGE_SIZE and not
-BUF_MAX_DATA_SIZE.
+  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231212072558.61f76493@gandalf.local.home
+40613da52b13 fixed a problem where hot-adding a device with large BARs
+failed if the bridge windows programmed by firmware were not large enough.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 785888c544e04 ("ring-buffer: Have rb_iter_head_event() handle concurrent writer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
+only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
+of a device on a PCI root bus (common in the virt world) or firmware
+sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
+7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
+
+Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
+problems:
+
+  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
+    sometimes.
+
+  - Dongli reported a similar problem with hot-add of SCSI disks.
+
+  - Jonathan reported a console freeze during boot on bare metal due to an
+    error in radeon GPU initialization.
+
+Revert both patches to avoid adding these problems.  This means we will
+again see the problems with hot-adding devices with large BARs and the NULL
+pointer dereferences and suspend/resume issues that 40613da52b13 and
+cc22522fd55e were intended to fix.
+
+Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+Reported-by: Fiona Ebner <f.ebner@proxmox.com>
+Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
+Reported-by: Jonathan Woithe <jwoithe@just42.net>
+Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2403,7 +2403,7 @@ rb_iter_head_event(struct ring_buffer_it
- 	 */
- 	barrier();
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -503,15 +503,12 @@ static void enable_slot(struct acpiphp_s
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					if (pci_is_root_bus(bus))
+-						__pci_bus_size_bridges(dev->subordinate, &add_list);
++					__pci_bus_size_bridges(dev->subordinate,
++							       &add_list);
+ 				}
+ 			}
+ 		}
+-		if (pci_is_root_bus(bus))
+-			__pci_bus_assign_resources(bus, &add_list, NULL);
+-		else
+-			pci_assign_unassigned_bridge_resources(bus->self);
++		__pci_bus_assign_resources(bus, &add_list, NULL);
+ 	}
  
--	if ((iter->head + length) > commit || length > BUF_MAX_DATA_SIZE)
-+	if ((iter->head + length) > commit || length > BUF_PAGE_SIZE)
- 		/* Writer corrupted the read? */
- 		goto reset;
- 
-@@ -5113,7 +5113,8 @@ ring_buffer_read_prepare(struct trace_bu
- 	if (!iter)
- 		return NULL;
- 
--	iter->event = kmalloc(BUF_MAX_DATA_SIZE, flags);
-+	/* Holds the entire event: data and meta data */
-+	iter->event = kmalloc(BUF_PAGE_SIZE, flags);
- 	if (!iter->event) {
- 		kfree(iter);
- 		return NULL;
+ 	acpiphp_sanitize_bus(bus);
 
 
 
