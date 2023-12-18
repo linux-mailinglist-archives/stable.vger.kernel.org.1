@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D1A81710F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E4881717C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDF7A1F22986
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E6831F24C0B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87731D15F;
-	Mon, 18 Dec 2023 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6351D12B;
+	Mon, 18 Dec 2023 13:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rqJf+yQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/16l+W0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0717215AC0;
-	Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E56C433C7;
-	Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36351129EF7;
+	Mon, 18 Dec 2023 13:58:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C48FC433C8;
+	Mon, 18 Dec 2023 13:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907643;
-	bh=jPqNNIaVBIseiHooJpVp7tWvV7+lO/OzJwDEX6FRJ8w=;
+	s=korg; t=1702907897;
+	bh=V+U3MRd6DIO7Sh+UTqV50zeNYB8cfh3SAlIRt8wCibE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1rqJf+yQZE00IMlQJxAqN4WXso7If+StY3qKxgAG7LQ8Vr+bVt57N6JxUuI0ZrjhV
-	 eap4qKpZZ4QTiVwxesWvblkV0J2r38505+ExCzXuSbOSYEqFLaFhX5o4bA03JOKQJ7
-	 GDUsLVT7M2Qf4gYRvyV8kwU+bgJrvE1opDtBQtcM=
+	b=B/16l+W0NtEAF55Y96KQC0X2Yn1ju9ixYXzOu9/DLvGfLAyzeRzNAHjxIxQDJwhJx
+	 Iw0DRlimqDC5mR9O/ENS3C0/llM6urWqsOOpQ0btjk2fD8d2kFdf7p5IXKgbAX5Url
+	 4bu1olOYh8h4euZdncR6mb61OBkjzZqUiP4/dBJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 4.19 30/36] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+	David Stevens <stevensd@chromium.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Suleiman Souhlal <suleiman@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 086/106] mm/shmem: fix race in shmem_undo_range w/THP
 Date: Mon, 18 Dec 2023 14:51:40 +0100
-Message-ID: <20231218135042.908823420@linuxfoundation.org>
+Message-ID: <20231218135058.754270289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,80 +54,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: David Stevens <stevensd@chromium.org>
 
-commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
+commit 55ac8bbe358bdd2f3c044c12f249fd22d48fe015 upstream.
 
-For files with logical blocks close to EXT_MAX_BLOCKS, the file size
-predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
-This can cause some blocks to be preallocated that will not be used.
-And after [Fixes], the following issue may be triggered:
+Split folios during the second loop of shmem_undo_range.  It's not
+sufficient to only split folios when dealing with partial pages, since
+it's possible for a THP to be faulted in after that point.  Calling
+truncate_inode_folio in that situation can result in throwing away data
+outside of the range being targeted.
 
-=========================================================
- kernel BUG at fs/ext4/mballoc.c:4653!
- Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
- CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
- Hardware name: linux,dummy-virt (DT)
- pc : ext4_mb_use_inode_pa+0x148/0x208
- lr : ext4_mb_use_inode_pa+0x98/0x208
- Call trace:
-  ext4_mb_use_inode_pa+0x148/0x208
-  ext4_mb_new_inode_pa+0x240/0x4a8
-  ext4_mb_use_best_found+0x1d4/0x208
-  ext4_mb_try_best_found+0xc8/0x110
-  ext4_mb_regular_allocator+0x11c/0xf48
-  ext4_mb_new_blocks+0x790/0xaa8
-  ext4_ext_map_blocks+0x7cc/0xd20
-  ext4_map_blocks+0x170/0x600
-  ext4_iomap_begin+0x1c0/0x348
-=========================================================
-
-Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
-
-	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
-	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
-		goto adjust_bex;
-
-The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
-it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
-overflow to a very small value, which ultimately triggers a BUG_ON in
-ext4_mb_new_inode_pa() because pa->pa_free < len.
-
-The last logical block of an actual write request does not exceed
-EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
-the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
-
-The test case in [Link] can reproduce the above issue with 64k block size.
-
-Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
-Cc:  <stable@kernel.org> # 6.4
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[akpm@linux-foundation.org: tidy up comment layout]
+Link: https://lkml.kernel.org/r/20230418084031.3439795-1-stevensd@google.com
+Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+Signed-off-by: David Stevens <stevensd@chromium.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Suleiman Souhlal <suleiman@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ mm/shmem.c |   19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3181,6 +3181,10 @@ ext4_mb_normalize_request(struct ext4_al
- 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
- 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
- 
-+	/* avoid unnecessary preallocation that may trigger assertions */
-+	if (start + size > EXT_MAX_BLOCKS)
-+		size = EXT_MAX_BLOCKS - start;
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1024,7 +1024,24 @@ whole_folios:
+ 				}
+ 				VM_BUG_ON_FOLIO(folio_test_writeback(folio),
+ 						folio);
+-				truncate_inode_folio(mapping, folio);
 +
- 	/* don't cover already allocated blocks in selected range */
- 	if (ar->pleft && start <= ar->lleft) {
- 		size -= ar->lleft + 1 - start;
++				if (!folio_test_large(folio)) {
++					truncate_inode_folio(mapping, folio);
++				} else if (truncate_inode_partial_folio(folio, lstart, lend)) {
++					/*
++					 * If we split a page, reset the loop so
++					 * that we pick up the new sub pages.
++					 * Otherwise the THP was entirely
++					 * dropped or the target range was
++					 * zeroed, so just continue the loop as
++					 * is.
++					 */
++					if (!folio_test_large(folio)) {
++						folio_unlock(folio);
++						index = start;
++						break;
++					}
++				}
+ 			}
+ 			index = folio->index + folio_nr_pages(folio) - 1;
+ 			folio_unlock(folio);
 
 
 
