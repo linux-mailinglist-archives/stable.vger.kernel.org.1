@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723A2817106
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DFA817244
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20510283B73
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CBF21C24D48
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E641D12D;
-	Mon, 18 Dec 2023 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D981542364;
+	Mon, 18 Dec 2023 14:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgtQL/kX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KemPjvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8751D123;
-	Mon, 18 Dec 2023 13:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E687AC433C9;
-	Mon, 18 Dec 2023 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A063B3D568;
+	Mon, 18 Dec 2023 14:05:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E69C433C8;
+	Mon, 18 Dec 2023 14:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907622;
-	bh=PZ+UYIR2rEoX2k3qs8Gd2U6ImITI/eiVBB6OPQbULaU=;
+	s=korg; t=1702908300;
+	bh=llQIt9p6Ylw51jcOz6r+LVb+S9z09gzAeo2uc8s2YGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgtQL/kXs1bpuHJS1ubcXaVtZtvJy51b01SAlanrxb7bS4ddLPhxCmO003Vqs+zID
-	 YjuXHFw24GuXiT66CMfJCHzNwxyvkWVu6iNRCIrVeR2hSMhy3HJ9e0L77514AGR8MR
-	 o8LhOzruHLHQtrJKKGPXNIPV5OhSL+DrnE9D4pXM=
+	b=0KemPjvgtJVtUxcJYKssEfZ0MsSKULJwDWcoCe30dHlt9drReHpQ3dE9+CBDMZcmN
+	 ovM7J06Mjm39v0Gj9FykSNI5Fs0aDNSr0fh34Vi8L9J2SrRi5uDTurEoD7lOWICZfQ
+	 eLnUO4qhWH66IrdauY+GHJU6sCo6FaGDTVi+hqYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 23/36] HID: add ALWAYS_POLL quirk for Apple kb
+	Alison Schofield <alison.schofield@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.6 127/166] cxl/hdm: Fix dpa translation locking
 Date: Mon, 18 Dec 2023 14:51:33 +0100
-Message-ID: <20231218135042.658273808@linuxfoundation.org>
+Message-ID: <20231218135110.758892717@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +55,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
+commit 6f5c4eca48ffe18307b4e1d375817691c9005c87 upstream.
 
-These devices disconnect if suspended without remote wakeup. They can operate
-with the standard driver.
+The helper, cxl_dpa_resource_start(), snapshots the dpa-address of an
+endpoint-decoder after acquiring the cxl_dpa_rwsem. However, it is
+sufficient to assert that cxl_dpa_rwsem is held rather than acquire it
+in the helper. Otherwise, it triggers multiple lockdep reports:
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1/ Tracing callbacks are in an atomic context that can not acquire sleeping
+locks:
+
+    BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1525
+    in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1288, name: bash
+    preempt_count: 2, expected: 0
+    RCU nest depth: 0, expected: 0
+    [..]
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc38 05/24/2023
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x71/0x90
+     __might_resched+0x1b2/0x2c0
+     down_read+0x1a/0x190
+     cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+     cxl_trace_hpa+0x122/0x300 [cxl_core]
+     trace_event_raw_event_cxl_poison+0x1c9/0x2d0 [cxl_core]
+
+2/ The rwsem is already held in the inject poison path:
+
+    WARNING: possible recursive locking detected
+    6.7.0-rc2+ #12 Tainted: G        W  OE    N
+    --------------------------------------------
+    bash/1288 is trying to acquire lock:
+    ffffffffc05f73d0 (cxl_dpa_rwsem){++++}-{3:3}, at: cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+
+    but task is already holding lock:
+    ffffffffc05f73d0 (cxl_dpa_rwsem){++++}-{3:3}, at: cxl_inject_poison+0x7d/0x1e0 [cxl_core]
+    [..]
+    Call Trace:
+     <TASK>
+     dump_stack_lvl+0x71/0x90
+     __might_resched+0x1b2/0x2c0
+     down_read+0x1a/0x190
+     cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+     cxl_trace_hpa+0x122/0x300 [cxl_core]
+     trace_event_raw_event_cxl_poison+0x1c9/0x2d0 [cxl_core]
+     __traceiter_cxl_poison+0x5c/0x80 [cxl_core]
+     cxl_inject_poison+0x1bc/0x1e0 [cxl_core]
+
+This appears to have been an issue since the initial implementation and
+uncovered by the new cxl-poison.sh test [1]. That test is now passing with
+these changes.
+
+Fixes: 28a3ae4ff66c ("cxl/trace: Add an HPA to cxl_poison trace events")
+Link: http://lore.kernel.org/r/e4f2716646918135ddbadf4146e92abb659de734.1700615159.git.alison.schofield@intel.com [1]
+Cc: <stable@vger.kernel.org>
+Cc: Alison Schofield <alison.schofield@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cxl/core/hdm.c  |    3 +--
+ drivers/cxl/core/port.c |    4 ++--
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 0b85f95810b30..2e1b95f73c644 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -35,6 +35,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
--- 
-2.43.0
-
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -373,10 +373,9 @@ resource_size_t cxl_dpa_resource_start(s
+ {
+ 	resource_size_t base = -1;
+ 
+-	down_read(&cxl_dpa_rwsem);
++	lockdep_assert_held(&cxl_dpa_rwsem);
+ 	if (cxled->dpa_res)
+ 		base = cxled->dpa_res->start;
+-	up_read(&cxl_dpa_rwsem);
+ 
+ 	return base;
+ }
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -219,9 +219,9 @@ static ssize_t dpa_resource_show(struct
+ 			    char *buf)
+ {
+ 	struct cxl_endpoint_decoder *cxled = to_cxl_endpoint_decoder(dev);
+-	u64 base = cxl_dpa_resource_start(cxled);
+ 
+-	return sysfs_emit(buf, "%#llx\n", base);
++	guard(rwsem_read)(&cxl_dpa_rwsem);
++	return sysfs_emit(buf, "%#llx\n", (u64)cxl_dpa_resource_start(cxled));
+ }
+ static DEVICE_ATTR_RO(dpa_resource);
+ 
 
 
 
