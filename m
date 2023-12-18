@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE21817319
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFDC8172D0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36C0CB22B84
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151041C24ECA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAAB37884;
-	Mon, 18 Dec 2023 14:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A034FF73;
+	Mon, 18 Dec 2023 14:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4HE28gD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBG5xv0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B862B22091;
-	Mon, 18 Dec 2023 14:13:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E325FC433C9;
-	Mon, 18 Dec 2023 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFD93A1DD;
+	Mon, 18 Dec 2023 14:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744DFC433C7;
+	Mon, 18 Dec 2023 14:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908801;
-	bh=CpRh089F0I47ugIQU8H8tSRjHdOWLxaUm0lWfec3YWo=;
+	s=korg; t=1702908623;
+	bh=RvKSpdIP27I5GKXgkczTM2KabQSbZcr4bT436OfvHjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4HE28gDsXDU4uudb4AD2ozFhJNXGb7qxNdwhJGFHO2iB8PeWBcGvYnU3nqUwYWrY
-	 ms7YxjwzIDPHQSnjJ5CtZ7+MhKnWFOKUjC2TeqUNQ0jvFvuXr2ih+gKCkj61QhSMh/
-	 wXG/Y5sNXSbqJ3nbOBQCYXzVHHm2HkAqKIEReOMg=
+	b=GBG5xv0TV4z9j8MzwmiXp6auVpL3uIPERwoBarefuH9zMHNMFbL6sMvJAB/tmn0fl
+	 Vs/bCueDLDsBxQGuibtgIpYVGvfHegreG4zp9sC7e/Bdz9qyHXILumOb23bcm5VrIO
+	 Ctykg5Oygzh7rpQWyyIStgILfeOpvMbdCXhIsvGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangyu Hua <hbh25y@gmail.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.15 39/83] fuse: dax: set fc->dax to NULL in fuse_dax_conn_free()
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 05/40] qca_spi: Fix reset behavior
 Date: Mon, 18 Dec 2023 14:52:00 +0100
-Message-ID: <20231218135051.472736313@linuxfoundation.org>
+Message-ID: <20231218135042.957286300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 7f8ed28d1401320bcb02dda81b3c23ab2dc5a6d8 upstream.
+[ Upstream commit 1057812d146dd658c9a9a96d869c2551150207b5 ]
 
-fuse_dax_conn_free() will be called when fuse_fill_super_common() fails
-after fuse_dax_conn_alloc(). Then deactivate_locked_super() in
-virtio_fs_get_tree() will call virtio_kill_sb() to release the discarded
-superblock. This will call fuse_dax_conn_free() again in fuse_conn_put(),
-resulting in a possible double free.
+In case of a reset triggered by the QCA7000 itself, the behavior of the
+qca_spi driver was not quite correct:
+- in case of a pending RX frame decoding the drop counter must be
+  incremented and decoding state machine reseted
+- also the reset counter must always be incremented regardless of sync
+  state
 
-Fixes: 1dd539577c42 ("virtiofs: add a mount option to enable dax")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Acked-by: Vivek Goyal <vgoyal@redhat.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # v5.10
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-4-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dax.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/fuse/dax.c
-+++ b/fs/fuse/dax.c
-@@ -1227,6 +1227,7 @@ void fuse_dax_conn_free(struct fuse_conn
- 	if (fc->dax) {
- 		fuse_free_dax_mem_ranges(&fc->dax->free_ranges);
- 		kfree(fc->dax);
-+		fc->dax = NULL;
- 	}
- }
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 04a7185e440db..036ab9dfe7fc5 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -613,11 +613,17 @@ qcaspi_spi_thread(void *data)
+ 			if (intr_cause & SPI_INT_CPU_ON) {
+ 				qcaspi_qca7k_sync(qca, QCASPI_EVENT_CPUON);
  
++				/* Frame decoding in progress */
++				if (qca->frm_handle.state != qca->frm_handle.init)
++					qca->net_dev->stats.rx_dropped++;
++
++				qcafrm_fsm_init_spi(&qca->frm_handle);
++				qca->stats.device_reset++;
++
+ 				/* not synced. */
+ 				if (qca->sync != QCASPI_SYNC_READY)
+ 					continue;
+ 
+-				qca->stats.device_reset++;
+ 				netif_wake_queue(qca->net_dev);
+ 				netif_carrier_on(qca->net_dev);
+ 			}
+-- 
+2.43.0
+
 
 
 
