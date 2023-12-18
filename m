@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E448172CE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9861381726D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D197B23D53
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A3A0B234D2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1873A1C7;
-	Mon, 18 Dec 2023 14:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122CD4FF85;
+	Mon, 18 Dec 2023 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUWaRPth"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klwSoYaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C293A1C0;
-	Mon, 18 Dec 2023 14:10:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C7BC433C8;
-	Mon, 18 Dec 2023 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D036B4FF78;
+	Mon, 18 Dec 2023 14:06:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C39EC433C7;
+	Mon, 18 Dec 2023 14:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908612;
-	bh=oXmv5PN2uwp5uSbORHv1M21KWtZiNG7QXEU+8kljtlI=;
+	s=korg; t=1702908391;
+	bh=fEJOYz2lMHQC0+keJhRIsJpzPfD61Jx1GPQhCtJSRDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MUWaRPthz5oZ3fxZHvdVLik6tI5T0RNtKKlgvPBkgAaTXEg3l+U1YLUQGUFSi9MuS
-	 cPaCxLH32DAFDoclMmqGvZ1yFuvhUa7EdEjyAw1m4MlJZWbtiyYujvkyE7yX3gHUNC
-	 uVH2YbWTkDa4WJY69opSlqbkx3u8bHwUuhau+vPo=
+	b=klwSoYaBU7GYop5WF0txcvhsuGuCZt2+CdN1zfpMrLIAUFu9unMx8Zf9EQFJuphGe
+	 Ka2+cHDeAmaa6IrFYPfemeFJyF/mGPlEDHS60OXyw7FuQmwT8KwvTlAETnAeu97dE3
+	 ufLeQU2eSEL1a/d7A+JJzmrww55E73UIS2aUuGOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/40] net: Remove acked SYN flag from packet in the transmit queue correctly
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 160/166] ring-buffer: Have saved event hold the entire event
 Date: Mon, 18 Dec 2023 14:52:06 +0100
-Message-ID: <20231218135043.137826156@linuxfoundation.org>
+Message-ID: <20231218135112.284428051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,115 +54,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
+commit b049525855fdd0024881c9b14b8fbec61c3f53d3 upstream.
 
-syzkaller report:
+For the ring buffer iterator (non-consuming read), the event needs to be
+copied into the iterator buffer to make sure that a writer does not
+overwrite it while the user is reading it. If a write happens during the
+copy, the buffer is simply discarded.
 
- kernel BUG at net/core/skbuff.c:3452!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
- RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
- Call Trace:
- icmp_glue_bits (net/ipv4/icmp.c:357)
- __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
- ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
- icmp_push_reply (net/ipv4/icmp.c:370)
- __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
- ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
- __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
- ip_output (net/ipv4/ip_output.c:427)
- __ip_queue_xmit (net/ipv4/ip_output.c:535)
- __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
- __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
- tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
- tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
- tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
+But the temp buffer itself was not big enough. The allocation of the
+buffer was only BUF_MAX_DATA_SIZE, which is the maximum data size that can
+be passed into the ring buffer and saved. But the temp buffer needs to
+hold the meta data as well. That would be BUF_PAGE_SIZE and not
+BUF_MAX_DATA_SIZE.
 
-The panic issue was trigered by tcp simultaneous initiation.
-The initiation process is as follows:
+Link: https://lore.kernel.org/linux-trace-kernel/20231212072558.61f76493@gandalf.local.home
 
-      TCP A                                            TCP B
-
-  1.  CLOSED                                           CLOSED
-
-  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
-
-  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
-
-  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
-
-  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
-
-  // TCP B: not send challenge ack for ack limit or packet loss
-  // TCP A: close
-	tcp_close
-	   tcp_send_fin
-              if (!tskb && tcp_under_memory_pressure(sk))
-                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
-           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
-
-  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
-
-  // TCP B: send challenge ack to SYN_FIN_ACK
-
-  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
-
-  // TCP A:  <SND.UNA=101>
-
-  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
-
-	__tcp_retransmit_skb  //skb->len=0
-	    tcp_trim_head
-		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
-		    __pskb_trim_head
-			skb->data_len -= len // skb->len=-1, wrap around
-	    ... ...
-	    ip_fragment
-		icmp_glue_bits //BUG_ON
-
-If we use tcp_trim_head() to remove acked SYN from packet that contains data
-or other flags, skb->len will be incorrectly decremented. We can remove SYN
-flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
-can fix the problem mentioned above.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 785888c544e04 ("ring-buffer: Have rb_iter_head_event() handle concurrent writer")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_output.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/ring_buffer.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 1dce05bfa3005..6d7f441c7dd76 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2945,7 +2945,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (skb_still_in_host_queue(sk, skb))
- 		return -EBUSY;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2409,7 +2409,7 @@ rb_iter_head_event(struct ring_buffer_it
+ 	 */
+ 	barrier();
  
-+start:
- 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
-+		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
-+			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
-+			TCP_SKB_CB(skb)->seq++;
-+			goto start;
-+		}
- 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
- 			WARN_ON_ONCE(1);
- 			return -EINVAL;
--- 
-2.43.0
-
+-	if ((iter->head + length) > commit || length > BUF_MAX_DATA_SIZE)
++	if ((iter->head + length) > commit || length > BUF_PAGE_SIZE)
+ 		/* Writer corrupted the read? */
+ 		goto reset;
+ 
+@@ -5113,7 +5113,8 @@ ring_buffer_read_prepare(struct trace_bu
+ 	if (!iter)
+ 		return NULL;
+ 
+-	iter->event = kmalloc(BUF_MAX_DATA_SIZE, flags);
++	/* Holds the entire event: data and meta data */
++	iter->event = kmalloc(BUF_PAGE_SIZE, flags);
+ 	if (!iter->event) {
+ 		kfree(iter);
+ 		return NULL;
 
 
 
