@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2509817195
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 121B981729D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7267B1F25326
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396EE1C24893
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F4137878;
-	Mon, 18 Dec 2023 13:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A49E3A1AC;
+	Mon, 18 Dec 2023 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2SXCtIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFiJ9Dz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8939D37873;
-	Mon, 18 Dec 2023 13:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD6DC433C9;
-	Mon, 18 Dec 2023 13:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B5537860;
+	Mon, 18 Dec 2023 14:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBFFC433C8;
+	Mon, 18 Dec 2023 14:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907942;
-	bh=tS0h4uliSYDEPp5vSeXWLdB/M/xddT3G0/P5M1aHlls=;
+	s=korg; t=1702908506;
+	bh=tIszlihkCH2NgkLcV2VdavAXxiJ3WktnmETTeSPtatE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2SXCtIHup/mFin9dVLPmDLjEmSTk3qg3gNwZAA6vUedt5oH7PGn/H2d6kcIGUYH0
-	 BlqkZ7iYy59G2lhjHS03NWevPtTuwworrgVaFEf2Br5xxIQA5WrYGqDXjeljJ6sluD
-	 UQgIRQuwVSkgOBE4dnGvALxqugFHkV3QHdGW+oEg=
+	b=YFiJ9Dz6hw/U3Qj0p8JJ4Jq8H06mLTxD0zuIeWRXOiUcfosoMm00qQCIXwytZMxQa
+	 FIlrGq2m06zJTI3QV1R4Nmt/X1/7qXuNgbCMmoNlQkdfD+91OAkkZviG6sEJcGhKns
+	 5w1PHPLD9eQLN8IiLd13pLhb4HhgnaWNr3CMJRPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 103/106] net: tls, update curr on splice as well
-Date: Mon, 18 Dec 2023 14:51:57 +0100
-Message-ID: <20231218135059.468844469@linuxfoundation.org>
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 34/62] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+Date: Mon, 18 Dec 2023 14:51:58 +0100
+Message-ID: <20231218135047.789078447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit c5a595000e2677e865a39f249c056bc05d6e55fd upstream.
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-The curr pointer must also be updated on the splice similar to how
-we do this for other copy types.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-Fixes: d829e9c4112b ("tls: convert to generic sk_msg interface")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Reported-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-2-john.fastabend@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the warning by adding rcu read lock.
+
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c |    2 ++
+ block/blk-throttle.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1225,6 +1225,8 @@ alloc_payload:
- 		}
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index c526fdd0a7b90..4bf514a7bd82c 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1409,6 +1409,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- 		sk_msg_page_add(msg_pl, page, copy, offset);
-+		msg_pl->sg.copybreak = 0;
-+		msg_pl->sg.curr = msg_pl->sg.end;
- 		sk_mem_charge(sk, copy);
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1436,6 +1437,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
+ 	}
++	rcu_read_unlock();
  
- 		offset += copy;
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
+-- 
+2.43.0
+
 
 
 
