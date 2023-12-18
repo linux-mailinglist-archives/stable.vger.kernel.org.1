@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69768172B0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F32A88172D8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBE91C24D80
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B721F23C1E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0D14238D;
-	Mon, 18 Dec 2023 14:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4522F37870;
+	Mon, 18 Dec 2023 14:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfFsn+aU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA58klrT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A92E42384;
-	Mon, 18 Dec 2023 14:09:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E98C433C7;
-	Mon, 18 Dec 2023 14:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4001D144;
+	Mon, 18 Dec 2023 14:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858DAC433C7;
+	Mon, 18 Dec 2023 14:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908555;
-	bh=EDU0KAQ3Odb/gR9zBE6VlII3ZiDYQVYHV3osG4kAkI8=;
+	s=korg; t=1702908642;
+	bh=Q3VoitlyE9SS/8pW3h8IHJsKaDC7EoIKNEr1bATgDW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfFsn+aUc1t1/gx5ruiyJNqxzUEFUNSWOSfivAOPi8N4A5wD52+X1Ct0YvnkZCEmP
-	 h4B5QMCP0A9FY8WzTi9X3gSnd8as72DaHoszKAWX+EUy+a3dngF/CrSkE6QJQule3W
-	 rSUGE+ae6zMHe0ji3JiekmhikmxL+idwOIvblom0=
+	b=AA58klrT1JBhghHFxA//np3hLMMswkX5S3Hk/5CLSXMosEeBApn87G9+HVSFfSwGi
+	 upfJGv9AN5kCCOZEAdWa5B1OfMXz/cgIYNxWVC0X5auiHGn8AIv6GyI8M3Ed2uMpSr
+	 I3SWT2bpNnZCES1vM2uOzeT3OLyPxxUEasZdD6sY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 53/62] tracing: Update snapshot buffer on resize if it is allocated
+	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
+	Coly Li <colyli@suse.de>,
+	Eric Wheeler <bcache@lists.ewheeler.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 22/40] bcache: avoid oversize memory allocation by small stripe_size
 Date: Mon, 18 Dec 2023 14:52:17 +0100
-Message-ID: <20231218135048.592785400@linuxfoundation.org>
+Message-ID: <20231218135043.522049425@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +55,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Coly Li <colyli@suse.de>
 
-commit d06aff1cb13d2a0d52b48e605462518149c98c81 upstream.
+[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
 
-The snapshot buffer is to mimic the main buffer so that when a snapshot is
-needed, the snapshot and main buffer are swapped. When the snapshot buffer
-is allocated, it is set to the minimal size that the ring buffer may be at
-and still functional. When it is allocated it becomes the same size as the
-main ring buffer, and when the main ring buffer changes in size, it should
-do.
+Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
+used for dirty data writeback, their sizes are decided by backing device
+capacity and stripe size. Larger backing device capacity or smaller
+stripe size make these two arraies occupies more dynamic memory space.
 
-Currently, the resize only updates the snapshot buffer if it's used by the
-current tracer (ie. the preemptirqsoff tracer). But it needs to be updated
-anytime it is allocated.
+Currently bcache->stripe_size is directly inherited from
+queue->limits.io_opt of underlying storage device. For normal hard
+drives, its limits.io_opt is 0, and bcache sets the corresponding
+stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
+devices do declare value for queue->limits.io_opt, small stripe_size
+(comparing to 1TB) becomes an issue for oversize memory allocations of
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
+capacity of hard drives gets much larger in recent decade.
 
-When changing the size of the main buffer, instead of looking to see if
-the current tracer is utilizing the snapshot buffer, just check if it is
-allocated to know if it should be updated or not.
+For example a raid5 array assembled by three 20TB hardrives, the raid
+device capacity is 40TB with typical 512KB limits.io_opt. After the math
+calculation in bcache code, these two arraies will occupy 400MB dynamic
+memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
+declared on a new 2TB hard drive, then these two arraies request 2GB and
+512MB dynamic memory from kzalloc(). The result is that bcache device
+always fails to initialize on his system.
 
-Also fix typo in comment just above the code change.
+To avoid the oversize memory allocation, bcache->stripe_size should not
+directly inherited by queue->limits.io_opt from the underlying device.
+This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
+and set bcache device's stripe size against the declared limits.io_opt
+value from the underlying storage device,
+- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size directly by this limits.io_opt value.
+- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size by a value multiplying limits.io_opt and euqal or
+  large than BCH_MIN_STRIPE_SZ.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231210225447.48476a6a@rorschach.local.home
+Then the minimal stripe size of a bcache device will always be >= 4MB.
+For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
+in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
+by these two arraies will be 2.5MB in total.
 
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: ad909e21bbe69 ("tracing: Add internal tracing_snapshot() functions")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Such mount of memory allocated for bcache->stripe_sectors_dirty and
+bcache->full_dirty_stripes is reasonable for most of storage devices.
+
+Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
+Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/bcache.h | 1 +
+ drivers/md/bcache/super.c  | 2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5905,7 +5905,7 @@ static int __tracing_resize_ring_buffer(
- 	if (!tr->array_buffer.buffer)
- 		return 0;
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index 1dd9298cb0e02..7bce582788458 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -265,6 +265,7 @@ struct bcache_device {
+ #define BCACHE_DEV_WB_RUNNING		3
+ #define BCACHE_DEV_RATE_DW_RUNNING	4
+ 	int			nr_stripes;
++#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
+ 	unsigned int		stripe_size;
+ 	atomic_t		*stripe_sectors_dirty;
+ 	unsigned long		*full_dirty_stripes;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 6afaa5e852837..d5f57a9551dda 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -822,6 +822,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
  
--	/* Do not allow tracing while resizng ring buffer */
-+	/* Do not allow tracing while resizing ring buffer */
- 	tracing_stop_tr(tr);
+ 	if (!d->stripe_size)
+ 		d->stripe_size = 1 << 31;
++	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
++		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
  
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
-@@ -5913,7 +5913,7 @@ static int __tracing_resize_ring_buffer(
- 		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!tr->current_trace->use_max_tr)
-+	if (!tr->allocated_snapshot)
- 		goto out;
- 
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+ 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
+ 	if (!n || n > max_stripes) {
+-- 
+2.43.0
+
 
 
 
