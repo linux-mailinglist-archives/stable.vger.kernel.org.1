@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9484F8172AF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B8781710A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3838BB22A59
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F551F233BA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DB54237E;
-	Mon, 18 Dec 2023 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C019715AC0;
+	Mon, 18 Dec 2023 13:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZJfTqgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4kbfxkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4F13786D;
-	Mon, 18 Dec 2023 14:09:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350D9C433C8;
-	Mon, 18 Dec 2023 14:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87607129EF7;
+	Mon, 18 Dec 2023 13:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B04AC433C7;
+	Mon, 18 Dec 2023 13:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908549;
-	bh=Fqm3pFWIdBkcN8YcDHfCefWVJGnhSccRqzn6OLvw2/4=;
+	s=korg; t=1702907630;
+	bh=6VCzw15+kZXQPerd+SyyF+kl0qER/lMBvXBkKuUoRhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZJfTqghZ5KYSpO9Zm6/9HCWyywYAq+WxSeG/qvEc56Z5Gd6IpFcmyTAoKrh65X7S
-	 Snm+BWEMnNUCpIMB/kp6bJ1XVhD3UhX16lk7HzVeC1QuFsmfsSVZA07v2qi2pvbN8i
-	 JNnu9JKTWhGO7c1WCg9XzocI0lVKs1lEy7mWY7Lc=
+	b=g4kbfxkw3ED6v2Y8pMlQnDZWUF9RDymjDXmjcY2NTYcaveuUnuS52X1xQKCPRLGTj
+	 nna1+/HpiTY0ClAdpB48dnibJ4QpzlC/9n3z9XERIXrV+paDJLJMOQzcb87LXh8983
+	 cuIbOycWYEE7bfshhJDPL2NkyYI5rvHN9wfXYaJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radu Bulie <radu-andrei.bulie@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Aoba K <nexp_0x17@outlook.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 11/62] net: fec: correct queue selection
+Subject: [PATCH 4.19 25/36] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
 Date: Mon, 18 Dec 2023 14:51:35 +0100
-Message-ID: <20231218135046.716575313@linuxfoundation.org>
+Message-ID: <20231218135042.743566364@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Bulie <radu-andrei.bulie@nxp.com>
+From: Aoba K <nexp_0x17@outlook.com>
 
-[ Upstream commit 9fc95fe95c3e2a63ced8eeca4b256518ab204b63 ]
+[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
 
-The old implementation extracted VLAN TCI info from the payload
-before the VLAN tag has been pushed in the payload.
+Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
+mode until the input mode feature is written by the host.  The touchpad do
+report the input mode at touchpad(3), while itself working under mouse mode. As
+a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
+feature in mt_set_input_mode for such device.
 
-Another problem was that the VLAN TCI was extracted even if the
-packet did not have VLAN protocol header.
+The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
+information on the internel by this string at present.  As the serial number of
+the laptop is GLO-G52, while DMI info reports the laptop serial number as
+GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
 
-This resulted in invalid VLAN TCI and as a consequence a random
-queue was computed.
-
-This patch fixes the above issues and use the VLAN TCI from the
-skb if it is present or VLAN TCI from payload if present. If no
-VLAN header is present queue 0 is selected.
-
-Fixes: 52c4a1a85f4b ("net: fec: add ndo_select_queue to fix TX bandwidth fluctuations")
-Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Aoba K <nexp_0x17@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 27 +++++++++--------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index e18b3b72fc0df..4ce913559c91d 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3266,31 +3266,26 @@ static int fec_set_features(struct net_device *netdev,
- 	return 0;
- }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 6411ee12c7a30..14dc5ec9edc69 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1981,6 +1981,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
+ 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
  
--static u16 fec_enet_get_raw_vlan_tci(struct sk_buff *skb)
--{
--	struct vlan_ethhdr *vhdr;
--	unsigned short vlan_TCI = 0;
--
--	if (skb->protocol == htons(ETH_P_ALL)) {
--		vhdr = (struct vlan_ethhdr *)(skb->data);
--		vlan_TCI = ntohs(vhdr->h_vlan_TCI);
--	}
--
--	return vlan_TCI;
--}
--
- static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
- 				 struct net_device *sb_dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	u16 vlan_tag;
-+	u16 vlan_tag = 0;
- 
- 	if (!(fep->quirks & FEC_QUIRK_HAS_AVB))
- 		return netdev_pick_tx(ndev, skb, NULL);
- 
--	vlan_tag = fec_enet_get_raw_vlan_tci(skb);
--	if (!vlan_tag)
-+	/* VLAN is present in the payload.*/
-+	if (eth_type_vlan(skb->protocol)) {
-+		struct vlan_ethhdr *vhdr = skb_vlan_eth_hdr(skb);
++	/* HONOR GLO-GXXX panel */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x347d, 0x7853) },
 +
-+		vlan_tag = ntohs(vhdr->h_vlan_TCI);
-+	/*  VLAN is present in the skb but not yet pushed in the payload.*/
-+	} else if (skb_vlan_tag_present(skb)) {
-+		vlan_tag = skb->vlan_tci;
-+	} else {
- 		return vlan_tag;
-+	}
- 
- 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
- }
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
 -- 
 2.43.0
 
