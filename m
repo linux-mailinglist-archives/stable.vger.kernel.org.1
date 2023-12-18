@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-7223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851F781717B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899E681710E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31CA92836BF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEAE61C23A00
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F4E1D127;
-	Mon, 18 Dec 2023 13:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533EA37860;
+	Mon, 18 Dec 2023 13:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEfjWxMR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2A56sGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1E3129EF7;
-	Mon, 18 Dec 2023 13:58:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A99C433C7;
-	Mon, 18 Dec 2023 13:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0899D1D13B;
+	Mon, 18 Dec 2023 13:54:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E0CC433C7;
+	Mon, 18 Dec 2023 13:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907895;
-	bh=c9AIcKz2cyup4cbhsA+faUul1IYNciyPM2HEoIfpyPM=;
+	s=korg; t=1702907640;
+	bh=x1hRkBZWMj8ltHQr0+fRfL+TmqAnaEW4UejNAW7Jjns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEfjWxMR3EaC8KNQ8alvgKM16SXDx4iRKkDUbAxztRycoxOOcNLdzKNP6M/60oa7S
-	 QFrNp4zhrGO6HUg4yXMwWqMwoTRE3IE9Sx6znARCenlE2oEwYvByHlhW2ZJ13fvIoQ
-	 bD7pkWv29rDi3fpnftTXP0lWk24b0DoyRHVomNO4=
+	b=j2A56sGke1GJ9XOlO9rpwmIBgQi59JLBX/bUZn4jVP60AyrCJugBRQMtNfI1f/kHb
+	 uC/EH282rHNsUs75urVlVhLJnBsvOR8aEl9KYPRoVathoUnQMembZJp40EREpz5QIl
+	 qfHTkBcFnZjYRBqaGSBGzcixl7mjuVrCYFQSQC/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 085/106] mm/mglru: fix underprotected page cache
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 4.19 29/36] perf: Fix perf_event_validate_size() lockdep splat
 Date: Mon, 18 Dec 2023 14:51:39 +0100
-Message-ID: <20231218135058.709778525@linuxfoundation.org>
+Message-ID: <20231218135042.878912328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,133 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 081488051d28d32569ebb7c7a23572778b2e7d57 upstream.
+commit 7e2c1e4b34f07d9aa8937fab88359d4a0fce468e upstream.
 
-Unmapped folios accessed through file descriptors can be underprotected.
-Those folios are added to the oldest generation based on:
+When lockdep is enabled, the for_each_sibling_event(sibling, event)
+macro checks that event->ctx->mutex is held. When creating a new group
+leader event, we call perf_event_validate_size() on a partially
+initialized event where event->ctx is NULL, and so when
+for_each_sibling_event() attempts to check event->ctx->mutex, we get a
+splat, as reported by Lucas De Marchi:
 
-1. The fact that they are less costly to reclaim (no need to walk the
-   rmap and flush the TLB) and have less impact on performance (don't
-   cause major PFs and can be non-blocking if needed again).
-2. The observation that they are likely to be single-use. E.g., for
-   client use cases like Android, its apps parse configuration files
-   and store the data in heap (anon); for server use cases like MySQL,
-   it reads from InnoDB files and holds the cached data for tables in
-   buffer pools (anon).
+  WARNING: CPU: 8 PID: 1471 at kernel/events/core.c:1950 __do_sys_perf_event_open+0xf37/0x1080
 
-However, the oldest generation can be very short lived, and if so, it
-doesn't provide the PID controller with enough time to respond to a surge
-of refaults.  (Note that the PID controller uses weighted refaults and
-those from evicted generations only take a half of the whole weight.) In
-other words, for a short lived generation, the moving average smooths out
-the spike quickly.
+This only happens for a new event which is its own group_leader, and in
+this case there cannot be any sibling events. Thus it's safe to skip the
+check for siblings, which avoids having to make invasive and ugly
+changes to for_each_sibling_event().
 
-To fix the problem:
-1. For folios that are already on LRU, if they can be beyond the
-   tracking range of tiers, i.e., five accesses through file
-   descriptors, move them to the second oldest generation to give them
-   more time to age. (Note that tiers are used by the PID controller
-   to statistically determine whether folios accessed multiple times
-   through file descriptors are worth protecting.)
-2. When adding unmapped folios to LRU, adjust the placement of them so
-   that they are not too close to the tail. The effect of this is
-   similar to the above.
+Avoid the splat by bailing out early when the new event is its own
+group_leader.
 
-On Android, launching 55 apps sequentially:
-                           Before     After      Change
-  workingset_refault_anon  25641024   25598972   0%
-  workingset_refault_file  115016834  106178438  -8%
-
-Link: https://lkml.kernel.org/r/20231208061407.2125867-1-yuzhao@google.com
-Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Tested-by: Kalesh Singh <kaleshsingh@google.com>
-Cc: T.J. Mercier <tjmercier@google.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 382c27f4ed28f803 ("perf: Fix perf_event_validate_size()")
+Closes: https://lore.kernel.org/lkml/20231214000620.3081018-1-lucas.demarchi@intel.com/
+Closes: https://lore.kernel.org/lkml/ZXpm6gQ%2Fd59jGsuW@xpf.sh.intel.com/
+Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231215112450.3972309-1-mark.rutland@arm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm_inline.h |   23 ++++++++++++++---------
- mm/vmscan.c               |    2 +-
- mm/workingset.c           |    6 +++---
- 3 files changed, 18 insertions(+), 13 deletions(-)
+ kernel/events/core.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -231,22 +231,27 @@ static inline bool lru_gen_add_folio(str
- 	if (folio_test_unevictable(folio) || !lrugen->enabled)
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1834,6 +1834,16 @@ static bool perf_event_validate_size(str
+ 				   group_leader->nr_siblings + 1) > 16*1024)
  		return false;
- 	/*
--	 * There are three common cases for this page:
--	 * 1. If it's hot, e.g., freshly faulted in or previously hot and
--	 *    migrated, add it to the youngest generation.
--	 * 2. If it's cold but can't be evicted immediately, i.e., an anon page
--	 *    not in swapcache or a dirty page pending writeback, add it to the
--	 *    second oldest generation.
--	 * 3. Everything else (clean, cold) is added to the oldest generation.
-+	 * There are four common cases for this page:
-+	 * 1. If it's hot, i.e., freshly faulted in, add it to the youngest
-+	 *    generation, and it's protected over the rest below.
-+	 * 2. If it can't be evicted immediately, i.e., a dirty page pending
-+	 *    writeback, add it to the second youngest generation.
-+	 * 3. If it should be evicted first, e.g., cold and clean from
-+	 *    folio_rotate_reclaimable(), add it to the oldest generation.
-+	 * 4. Everything else falls between 2 & 3 above and is added to the
-+	 *    second oldest generation if it's considered inactive, or the
-+	 *    oldest generation otherwise. See lru_gen_is_active().
- 	 */
- 	if (folio_test_active(folio))
- 		seq = lrugen->max_seq;
- 	else if ((type == LRU_GEN_ANON && !folio_test_swapcache(folio)) ||
- 		 (folio_test_reclaim(folio) &&
- 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
--		seq = lrugen->min_seq[type] + 1;
--	else
-+		seq = lrugen->max_seq - 1;
-+	else if (reclaiming || lrugen->min_seq[type] + MIN_NR_GENS >= lrugen->max_seq)
- 		seq = lrugen->min_seq[type];
-+	else
-+		seq = lrugen->min_seq[type] + 1;
  
- 	gen = lru_gen_from_seq(seq);
- 	flags = (gen + 1UL) << LRU_GEN_PGOFF;
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4770,7 +4770,7 @@ static bool sort_folio(struct lruvec *lr
- 	}
- 
- 	/* protected */
--	if (tier > tier_idx) {
-+	if (tier > tier_idx || refs == BIT(LRU_REFS_WIDTH)) {
- 		int hist = lru_hist_from_seq(lrugen->min_seq[type]);
- 
- 		gen = folio_inc_gen(lruvec, folio, false);
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -289,10 +289,10 @@ static void lru_gen_refault(struct folio
- 	 * 1. For pages accessed through page tables, hotter pages pushed out
- 	 *    hot pages which refaulted immediately.
- 	 * 2. For pages accessed multiple times through file descriptors,
--	 *    numbers of accesses might have been out of the range.
-+	 *    they would have been protected by sort_folio().
- 	 */
--	if (lru_gen_in_fault() || refs == BIT(LRU_REFS_WIDTH)) {
--		folio_set_workingset(folio);
-+	if (lru_gen_in_fault() || refs >= BIT(LRU_REFS_WIDTH) - 1) {
-+		set_mask_bits(&folio->flags, 0, LRU_REFS_MASK | BIT(PG_workingset));
- 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
- 	}
- unlock:
++	/*
++	 * When creating a new group leader, group_leader->ctx is initialized
++	 * after the size has been validated, but we cannot safely use
++	 * for_each_sibling_event() until group_leader->ctx is set. A new group
++	 * leader cannot have any siblings yet, so we can safely skip checking
++	 * the non-existent siblings.
++	 */
++	if (event == group_leader)
++		return true;
++
+ 	for_each_sibling_event(sibling, group_leader) {
+ 		if (__perf_event_read_size(sibling->attr.read_format,
+ 					   group_leader->nr_siblings + 1) > 16*1024)
 
 
 
