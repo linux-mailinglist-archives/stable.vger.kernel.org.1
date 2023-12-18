@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-7332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1C2817211
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A305817241
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B9641F23A32
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A871C24D69
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BF44FF87;
-	Mon, 18 Dec 2023 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C10F3D564;
+	Mon, 18 Dec 2023 14:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05QdF8SY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djSNAdmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E13F3A1C6;
-	Mon, 18 Dec 2023 14:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FA0C433C7;
-	Mon, 18 Dec 2023 14:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBB93D556;
+	Mon, 18 Dec 2023 14:04:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41FEC433C9;
+	Mon, 18 Dec 2023 14:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908185;
-	bh=gq5qG6dluvApFjD7wF0TRrrQ0B3igRkpw9KgZ0iCL3M=;
+	s=korg; t=1702908292;
+	bh=Ctklw3eBTZXY4VBll/7KfVBROvqk9GZZycxptTbsP9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05QdF8SYw7immsI2lRM9Z9eeBkh5CnIl+AnMjtdqgaoitnHVacNYR/4X31/J8cPXa
-	 G+15vfxRkBdh67KsRqingLGXKp6nTLF/VQ60ge2BpEoV96jwVDFJSsp/jlwOxmDPh3
-	 S6LCQfBC+4Lz2/Uhx7eeZOCS1msGFnRMFhD8jFrk=
+	b=djSNAdmLlGY3Em+vTbdZBNcJ9UPCLIx1wkem+joezQuOKMYopT+6zUu7dKHzKyaPE
+	 KhAn69xMu8Bjx7t4oEqEaflrrl69cn0mtVeC9ElCW7WcOFr9shIqi7oVXTnX9onz4p
+	 Oy8ySqUUYCaEiyrIMr24TTtmeeBXiEmBN4b/+zuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Nico Pache <npache@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/166] drm/i915: Use internal class when counting engine resets
-Date: Mon, 18 Dec 2023 14:50:49 +0100
-Message-ID: <20231218135108.718831379@linuxfoundation.org>
+Subject: [PATCH 6.6 084/166] selftests/mm: cow: print ksft header before printing anything else
+Date: Mon, 18 Dec 2023 14:50:50 +0100
+Message-ID: <20231218135108.761544446@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
 References: <20231218135104.927894164@linuxfoundation.org>
@@ -59,117 +58,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 1f721a93a528268fa97875cff515d1fcb69f4f44 ]
+[ Upstream commit a6fcd57cf2df409d35e9225b8dbad6f937b28df0 ]
 
-Commit 503579448db9 ("drm/i915/gsc: Mark internal GSC engine with reserved uabi class")
-made the GSC0 engine not have a valid uabi class and so broke the engine
-reset counting, which in turn was made class based in cb823ed9915b ("drm/i915/gt: Use intel_gt as the primary object for handling resets").
+Doing a ksft_print_msg() before the ksft_print_header() seems to confuse
+the ksft framework in a strange way: running the test on the cmdline
+results in the expected output.
 
-Despite the title and commit text of the latter is not mentioning it (and
-has left the storage array incorrectly sized), tracking by class, despite
-it adding aliasing in hypthotetical multi-tile systems, is handy for
-virtual engines which for instance do not have a valid engine->id.
+But piping the output somewhere else, results in some odd output,
+whereby we repeatedly get the same info printed:
+	# [INFO] detected THP size: 2048 KiB
+	# [INFO] detected hugetlb page size: 2048 KiB
+	# [INFO] detected hugetlb page size: 1048576 KiB
+	# [INFO] huge zeropage is enabled
+	TAP version 13
+	1..190
+	# [INFO] Anonymous memory tests in private mappings
+	# [RUN] Basic COW after fork() ... with base page
+	# [INFO] detected THP size: 2048 KiB
+	# [INFO] detected hugetlb page size: 2048 KiB
+	# [INFO] detected hugetlb page size: 1048576 KiB
+	# [INFO] huge zeropage is enabled
+	TAP version 13
+	1..190
+	# [INFO] Anonymous memory tests in private mappings
+	# [RUN] Basic COW after fork() ... with base page
+	ok 1 No leak from parent into child
+	# [RUN] Basic COW after fork() ... with swapped out base page
+	# [INFO] detected THP size: 2048 KiB
+	# [INFO] detected hugetlb page size: 2048 KiB
+	# [INFO] detected hugetlb page size: 1048576 KiB
+	# [INFO] huge zeropage is enabled
 
-Therefore we keep that but just change it to use the internal class which
-is always valid. We also add a helper to increment the count, which
-aligns with the existing getter.
+Doing the ksft_print_header() first seems to resolve that and gives us
+the output we expect:
+	TAP version 13
+	# [INFO] detected THP size: 2048 KiB
+	# [INFO] detected hugetlb page size: 2048 KiB
+	# [INFO] detected hugetlb page size: 1048576 KiB
+	# [INFO] huge zeropage is enabled
+	1..190
+	# [INFO] Anonymous memory tests in private mappings
+	# [RUN] Basic COW after fork() ... with base page
+	ok 1 No leak from parent into child
+	# [RUN] Basic COW after fork() ... with swapped out base page
+	ok 2 No leak from parent into child
+	# [RUN] Basic COW after fork() ... with THP
+	ok 3 No leak from parent into child
+	# [RUN] Basic COW after fork() ... with swapped-out THP
+	ok 4 No leak from parent into child
+	# [RUN] Basic COW after fork() ... with PTE-mapped THP
+	ok 5 No leak from parent into child
 
-What was broken without this fix were out of bounds reads every time a
-reset would happen on the GSC0 engine, or during selftests when storing
-and cross-checking the counts in igt_live_test_begin and
-igt_live_test_end.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Fixes: 503579448db9 ("drm/i915/gsc: Mark internal GSC engine with reserved uabi class")
-[tursulin: fixed Fixes tag]
-Reported-by: Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231201122109.729006-2-tvrtko.ursulin@linux.intel.com
-(cherry picked from commit cf9cb028ac56696ff879af1154c4b2f0b12701fd)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lkml.kernel.org/r/20231206103558.38040-1-david@redhat.com
+Fixes: f4b5fd6946e2 ("selftests/vm: anon_cow: THP tests")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Nico Pache <npache@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_reset.c             |  2 +-
- drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c |  5 +++--
- drivers/gpu/drm/i915/i915_gpu_error.h             | 12 ++++++++++--
- 3 files changed, 14 insertions(+), 5 deletions(-)
+ tools/testing/selftests/mm/cow.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_reset.c b/drivers/gpu/drm/i915/gt/intel_reset.c
-index cc6bd21a3e51f..5fa57a34cf4bb 100644
---- a/drivers/gpu/drm/i915/gt/intel_reset.c
-+++ b/drivers/gpu/drm/i915/gt/intel_reset.c
-@@ -1297,7 +1297,7 @@ int __intel_engine_reset_bh(struct intel_engine_cs *engine, const char *msg)
- 	if (msg)
- 		drm_notice(&engine->i915->drm,
- 			   "Resetting %s for %s\n", engine->name, msg);
--	atomic_inc(&engine->i915->gpu_error.reset_engine_count[engine->uabi_class]);
-+	i915_increase_reset_engine_count(&engine->i915->gpu_error, engine);
- 
- 	ret = intel_gt_reset_engine(engine);
- 	if (ret) {
-diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-index dc7b40e06e38a..836e4d9d65ef6 100644
---- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-+++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-@@ -4774,7 +4774,8 @@ static void capture_error_state(struct intel_guc *guc,
- 			if (match) {
- 				intel_engine_set_hung_context(e, ce);
- 				engine_mask |= e->mask;
--				atomic_inc(&i915->gpu_error.reset_engine_count[e->uabi_class]);
-+				i915_increase_reset_engine_count(&i915->gpu_error,
-+								 e);
- 			}
- 		}
- 
-@@ -4786,7 +4787,7 @@ static void capture_error_state(struct intel_guc *guc,
- 	} else {
- 		intel_engine_set_hung_context(ce->engine, ce);
- 		engine_mask = ce->engine->mask;
--		atomic_inc(&i915->gpu_error.reset_engine_count[ce->engine->uabi_class]);
-+		i915_increase_reset_engine_count(&i915->gpu_error, ce->engine);
- 	}
- 
- 	with_intel_runtime_pm(&i915->runtime_pm, wakeref)
-diff --git a/drivers/gpu/drm/i915/i915_gpu_error.h b/drivers/gpu/drm/i915/i915_gpu_error.h
-index 9f5971f5e9801..48f6c00402c47 100644
---- a/drivers/gpu/drm/i915/i915_gpu_error.h
-+++ b/drivers/gpu/drm/i915/i915_gpu_error.h
-@@ -16,6 +16,7 @@
- 
- #include "display/intel_display_device.h"
- #include "gt/intel_engine.h"
-+#include "gt/intel_engine_types.h"
- #include "gt/intel_gt_types.h"
- #include "gt/uc/intel_uc_fw.h"
- 
-@@ -232,7 +233,7 @@ struct i915_gpu_error {
- 	atomic_t reset_count;
- 
- 	/** Number of times an engine has been reset */
--	atomic_t reset_engine_count[I915_NUM_ENGINES];
-+	atomic_t reset_engine_count[MAX_ENGINE_CLASS];
- };
- 
- struct drm_i915_error_state_buf {
-@@ -255,7 +256,14 @@ static inline u32 i915_reset_count(struct i915_gpu_error *error)
- static inline u32 i915_reset_engine_count(struct i915_gpu_error *error,
- 					  const struct intel_engine_cs *engine)
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index 7324ce5363c0c..6f2f839904416 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -1680,6 +1680,8 @@ int main(int argc, char **argv)
  {
--	return atomic_read(&error->reset_engine_count[engine->uabi_class]);
-+	return atomic_read(&error->reset_engine_count[engine->class]);
-+}
-+
-+static inline void
-+i915_increase_reset_engine_count(struct i915_gpu_error *error,
-+				 const struct intel_engine_cs *engine)
-+{
-+	atomic_inc(&error->reset_engine_count[engine->class]);
- }
+ 	int err;
  
- #define CORE_DUMP_FLAG_NONE           0x0
++	ksft_print_header();
++
+ 	pagesize = getpagesize();
+ 	thpsize = read_pmd_pagesize();
+ 	if (thpsize)
+@@ -1689,7 +1691,6 @@ int main(int argc, char **argv)
+ 						    ARRAY_SIZE(hugetlbsizes));
+ 	detect_huge_zeropage();
+ 
+-	ksft_print_header();
+ 	ksft_set_plan(ARRAY_SIZE(anon_test_cases) * tests_per_anon_test_case() +
+ 		      ARRAY_SIZE(anon_thp_test_cases) * tests_per_anon_thp_test_case() +
+ 		      ARRAY_SIZE(non_anon_test_cases) * tests_per_non_anon_test_case());
 -- 
 2.43.0
 
