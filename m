@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DCA81731F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A44E8172D7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809D2289601
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26FC12884CF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6504C3A1A9;
-	Mon, 18 Dec 2023 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914964FF99;
+	Mon, 18 Dec 2023 14:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGD/Ublw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UA+KPlaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8FD3788E;
-	Mon, 18 Dec 2023 14:13:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61918C433C8;
-	Mon, 18 Dec 2023 14:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B62642363;
+	Mon, 18 Dec 2023 14:10:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD97CC433C7;
+	Mon, 18 Dec 2023 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908825;
-	bh=gP8huWIXAV2Jw9Mxb8CN5AC+1Ghta9ZJssYXrRiAQLE=;
+	s=korg; t=1702908640;
+	bh=7Ypuq7Ij1b06X9PtJ+LH1P4OtlATnO7pJfakxrNg9aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGD/UblwmhoM+bMxMizrUxocruvxeceT8X0edSi5UyqUmRb8Sgqb5WDY3c+dm5dFR
-	 2H/RUq4BC7NoUHcZmygzBRfed5O/uRJ8LwDFmld6plBnKbVYpJUVhjK4OvIdE24+hD
-	 bTD2xUQ3sn5AFPLVhwAn0lEdml1BFxCPKq7DByDk=
+	b=UA+KPlaNh7zhdNoUTxuDlHw5JkGtkQcWiP3q4+q6Lr6oHCHKuYjYun1eK6s72TzHo
+	 YCLnOEANW8Hdm6axAFhf2JEuqS0Yi9PqQ8lTxJZxMBROfdLJTX05F+/ihKLIy2FDzf
+	 hIIyIoWbmAX+gsTqO2OJyix001z9m4t7sk43c5TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 47/83] stmmac: dwmac-loongson: Add architecture dependency
+Subject: [PATCH 5.4 13/40] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
 Date: Mon, 18 Dec 2023 14:52:08 +0100
-Message-ID: <20231218135051.817725970@linuxfoundation.org>
+Message-ID: <20231218135043.196873565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 7fbd5fc2b35a8f559a6b380dfa9bcd964a758186 ]
+[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
 
-Only present the DWMAC_LOONGSON option on architectures where it can
-actually be used.
+We need to do signed arithmetic if we expect condition
+`if (bytes < 0)` to be possible
 
-This follows the same logic as the DWMAC_INTEL option.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Cc: Keguang Zhang <keguang.zhang@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/Kconfig | 2 +-
+ net/vmw_vsock/virtio_transport_common.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 929cfc22cd0cf..d19844be9fe50 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -253,7 +253,7 @@ config DWMAC_INTEL
- config DWMAC_LOONGSON
- 	tristate "Loongson PCI DWMAC support"
- 	default MACH_LOONGSON64
--	depends on STMMAC_ETH && PCI
-+	depends on (MACH_LOONGSON64 || COMPILE_TEST) && STMMAC_ETH && PCI
- 	depends on COMMON_CLK
- 	help
- 	  This selects the LOONGSON PCI bus support for the stmmac driver,
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 93c11ffae92bb..e0bb83f5746c6 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -372,7 +372,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	s64 bytes;
+ 
+-	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
+ 
 -- 
 2.43.0
 
