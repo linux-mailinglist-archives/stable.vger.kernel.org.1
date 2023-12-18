@@ -1,46 +1,51 @@
-Return-Path: <stable+bounces-7310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D17DC8171F7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D87F81712B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789252812C8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C11831F23366
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D6A49890;
-	Mon, 18 Dec 2023 14:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4B815AC0;
+	Mon, 18 Dec 2023 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1XL98m+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcBkpwkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEA74988E;
-	Mon, 18 Dec 2023 14:02:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0312DC433C8;
-	Mon, 18 Dec 2023 14:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2624F129ED2;
+	Mon, 18 Dec 2023 13:55:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F5FC433C8;
+	Mon, 18 Dec 2023 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908125;
-	bh=gGotgVnBcv4JRMSgT0BLYmYE85yKCmBtkOa6ETBTOTk=;
+	s=korg; t=1702907700;
+	bh=FIe++Ig7vRce/8OWJbIE2pGeyJegRZkiwItepLlQGPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1XL98m+imI7v5I/zBOZ3VP4FjGLiM1xX8deEhFdBAmOMBCALvwCpHVfz58Ax8LDr
-	 Cnwq02C4h9oQ0y84y1wkH2sH5rVhc/h1UtfnAB/Cja2LWt831IEDyvKr9RvAJMDjcu
-	 o9odjOY1xRNsMnOGEmk0dj5qiyDgjjZA7vjBLXJg=
+	b=IcBkpwkX7jkd1om50qbsro71zf+mPu8Eu7B6KvTxlCjxb/xeuYCn9YVasmu+zL7gb
+	 zWDC7PBRWxlyPfwMfLUmfhiIY/8xgpfU8kV6uBRMFQrRUdK2evef+WJfNUK6MXlkqN
+	 GjmO1b1nlxwUHn+uM1KoovnI8sfbwJ7yCJcGpdFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 063/166] fuse: disable FOPEN_PARALLEL_DIRECT_WRITES with FUSE_DIRECT_IO_ALLOW_MMAP
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 015/106] bnxt_en: Clear resource reservation during resume
 Date: Mon, 18 Dec 2023 14:50:29 +0100
-Message-ID: <20231218135107.862049034@linuxfoundation.org>
+Message-ID: <20231218135055.609402257@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +57,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 3f29f1c336c0e8a4bec52f1e5217f88835553e5b upstream.
+[ Upstream commit 9ef7c58f5abe41e6d91f37f28fe2d851ffedd92a ]
 
-The new fuse init flag FUSE_DIRECT_IO_ALLOW_MMAP breaks assumptions made by
-FOPEN_PARALLEL_DIRECT_WRITES and causes test generic/095 to hit
-BUG_ON(fi->writectr < 0) assertions in fuse_set_nowrite():
+We are issuing HWRM_FUNC_RESET cmd to reset the device including
+all reserved resources, but not clearing the reservations
+within the driver struct. As a result, when the driver re-initializes
+as part of resume, it believes that there is no need to do any
+resource reservation and goes ahead and tries to allocate rings
+which will eventually fail beyond a certain number pre-reserved by
+the firmware.
 
-generic/095 5s ...
-  kernel BUG at fs/fuse/dir.c:1756!
-...
-  ? fuse_set_nowrite+0x3d/0xdd
-  ? do_raw_spin_unlock+0x88/0x8f
-  ? _raw_spin_unlock+0x2d/0x43
-  ? fuse_range_is_writeback+0x71/0x84
-  fuse_sync_writes+0xf/0x19
-  fuse_direct_io+0x167/0x5bd
-  fuse_direct_write_iter+0xf0/0x146
-
-Auto disable FOPEN_PARALLEL_DIRECT_WRITES when server negotiated
-FUSE_DIRECT_IO_ALLOW_MMAP.
-
-Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
-Cc: <stable@vger.kernel.org> # v6.6
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20231208001658.14230-2-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/file.c | 2 ++
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index 89e870d1a526..a660f1f21540 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1574,6 +1574,7 @@ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	ssize_t res;
- 	bool exclusive_lock =
- 		!(ff->open_flags & FOPEN_PARALLEL_DIRECT_WRITES) ||
-+		get_fuse_conn(inode)->direct_io_allow_mmap ||
- 		iocb->ki_flags & IOCB_APPEND ||
- 		fuse_direct_write_extending_i_size(iocb, from);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e81cb825dff4c..44d88bc1fcbd6 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -13882,6 +13882,8 @@ static int bnxt_resume(struct device *device)
+ 	if (rc)
+ 		goto resume_exit;
  
-@@ -1581,6 +1582,7 @@ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	 * Take exclusive lock if
- 	 * - Parallel direct writes are disabled - a user space decision
- 	 * - Parallel direct writes are enabled and i_size is being extended.
-+	 * - Shared mmap on direct_io file is supported (FUSE_DIRECT_IO_ALLOW_MMAP).
- 	 *   This might not be needed at all, but needs further investigation.
- 	 */
- 	if (exclusive_lock)
++	bnxt_clear_reservations(bp, true);
++
+ 	if (bnxt_hwrm_func_drv_rgtr(bp, NULL, 0, false)) {
+ 		rc = -ENODEV;
+ 		goto resume_exit;
 -- 
 2.43.0
 
