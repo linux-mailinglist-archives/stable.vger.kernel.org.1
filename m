@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381CF817199
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4FB817314
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60D0281D08
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2EC1F22D47
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ED7129ED2;
-	Mon, 18 Dec 2023 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B21D3D556;
+	Mon, 18 Dec 2023 14:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yB6BMQaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+vy3hEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A241D13A;
-	Mon, 18 Dec 2023 13:59:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE20C433C7;
-	Mon, 18 Dec 2023 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8E63A1D0;
+	Mon, 18 Dec 2023 14:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844ADC433C8;
+	Mon, 18 Dec 2023 14:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907956;
-	bh=q3kuaPaQZYRAljsNon/8YoYGPo2EC/pFDsSIzWTrerI=;
+	s=korg; t=1702908792;
+	bh=9GLFVoFzvItoG/728pD6guthJ8HDrl3XY4zRplATp74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yB6BMQaGpl/0Zetz7wZ4mInhxzWBbagLhxSMr1JjdhcbE9eao+C29L9G8h1xUS1+V
-	 o+G1biZDgC7vo2SubuKRBzsygoLpcyOzs91oVIKIVVSNPCdQQczbbARtj67RNtEXVS
-	 M2gfbRI753ndFjIg6tSir18nJAN+Py13brbmKTWw=
+	b=m+vy3hEHV2rDhixfsKgpq2dUJ9PGkArY8HdPhIlGnaJ49zHpIFHC22b2gczQJNkFb
+	 a7KIBwa5g0q6M40X5SrwxRgHX3tXEvqjsRKF8Q4MBh2Gw2IneEAQ+qDSWv+wo+YaBJ
+	 BuIryT/sJaLRbQKv1/ozFmGL9v1GPDSGtM3lLBms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 095/106] ring-buffer: Fix memory leak of free page
+	Arthur Kiyanovski <akiyano@amazon.com>,
+	David Arinzon <darinzon@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 28/83] net: ena: Fix xdp drops handling due to multibuf packets
 Date: Mon, 18 Dec 2023 14:51:49 +0100
-Message-ID: <20231218135059.125116635@linuxfoundation.org>
+Message-ID: <20231218135050.978326675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: David Arinzon <darinzon@amazon.com>
 
-commit 17d801758157bec93f26faaf5ff1a8b9a552d67a upstream.
+[ Upstream commit 505b1a88d311ff6f8c44a34f94e3be21745cce6f ]
 
-Reading the ring buffer does a swap of a sub-buffer within the ring buffer
-with a empty sub-buffer. This allows the reader to have full access to the
-content of the sub-buffer that was swapped out without having to worry
-about contention with the writer.
+Current xdp code drops packets larger than ENA_XDP_MAX_MTU.
+This is an incorrect condition since the problem is not the
+size of the packet, rather the number of buffers it contains.
 
-The readers call ring_buffer_alloc_read_page() to allocate a page that
-will be used to swap with the ring buffer. When the code is finished with
-the reader page, it calls ring_buffer_free_read_page(). Instead of freeing
-the page, it stores it as a spare. Then next call to
-ring_buffer_alloc_read_page() will return this spare instead of calling
-into the memory management system to allocate a new page.
+This commit:
 
-Unfortunately, on freeing of the ring buffer, this spare page is not
-freed, and causes a memory leak.
+1. Identifies and drops XDP multi-buffer packets at the
+   beginning of the function.
+2. Increases the xdp drop statistic when this drop occurs.
+3. Adds a one-time print that such drops are happening to
+   give better indication to the user.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231210221250.7b9cc83c@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 73a757e63114d ("ring-buffer: Return reader page back into existing ring buffer")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 838c93dc5449 ("net: ena: implement XDP drop support")
+Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
+Signed-off-by: David Arinzon <darinzon@amazon.com>
+Link: https://lore.kernel.org/r/20231211062801.27891-3-darinzon@amazon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/amazon/ena/ena_netdev.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1801,6 +1801,8 @@ static void rb_free_cpu_buffer(struct ri
- 		free_buffer_page(bpage);
+diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+index da83580a11391..7d4b862be783d 100644
+--- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
++++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
+@@ -1626,20 +1626,23 @@ static void ena_set_rx_hash(struct ena_ring *rx_ring,
  	}
- 
-+	free_page((unsigned long)cpu_buffer->free_page);
-+
- 	kfree(cpu_buffer);
  }
  
+-static int ena_xdp_handle_buff(struct ena_ring *rx_ring, struct xdp_buff *xdp)
++static int ena_xdp_handle_buff(struct ena_ring *rx_ring, struct xdp_buff *xdp, u16 num_descs)
+ {
+ 	struct ena_rx_buffer *rx_info;
+ 	int ret;
+ 
++	/* XDP multi-buffer packets not supported */
++	if (unlikely(num_descs > 1)) {
++		netdev_err_once(rx_ring->adapter->netdev,
++				"xdp: dropped unsupported multi-buffer packets\n");
++		ena_increase_stat(&rx_ring->rx_stats.xdp_drop, 1, &rx_ring->syncp);
++		return ENA_XDP_DROP;
++	}
++
+ 	rx_info = &rx_ring->rx_buffer_info[rx_ring->ena_bufs[0].req_id];
+ 	xdp_prepare_buff(xdp, page_address(rx_info->page),
+ 			 rx_info->page_offset,
+ 			 rx_ring->ena_bufs[0].len, false);
+-	/* If for some reason we received a bigger packet than
+-	 * we expect, then we simply drop it
+-	 */
+-	if (unlikely(rx_ring->ena_bufs[0].len > ENA_XDP_MAX_MTU))
+-		return ENA_XDP_DROP;
+ 
+ 	ret = ena_xdp_execute(rx_ring, xdp);
+ 
+@@ -1708,7 +1711,7 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
+ 			  ena_rx_ctx.l4_proto, ena_rx_ctx.hash);
+ 
+ 		if (ena_xdp_present_ring(rx_ring))
+-			xdp_verdict = ena_xdp_handle_buff(rx_ring, &xdp);
++			xdp_verdict = ena_xdp_handle_buff(rx_ring, &xdp, ena_rx_ctx.descs);
+ 
+ 		/* allocate skb and fill it */
+ 		if (xdp_verdict == ENA_XDP_PASS)
+-- 
+2.43.0
+
 
 
 
