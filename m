@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF03817109
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AADC817175
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFC052812B6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FDA283569
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D4F1D142;
-	Mon, 18 Dec 2023 13:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413711D127;
+	Mon, 18 Dec 2023 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7CKOHlV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ2Pu3fL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCAD0129EF7;
-	Mon, 18 Dec 2023 13:53:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 418F9C433C8;
-	Mon, 18 Dec 2023 13:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060D5129EC8;
+	Mon, 18 Dec 2023 13:57:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB95C433C7;
+	Mon, 18 Dec 2023 13:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907627;
-	bh=jWP+VNzg0OeHsA0ljtuNt04CiaEMjkszKRt5tU6kB1Q=;
+	s=korg; t=1702907878;
+	bh=10UncFFhK69rKroDb+8MjGXFC0vVUlhZV8ajIaAQ2pU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7CKOHlVmiLON4ePSnTPMYwZLuWLUTVNjU/4usTNvFycARnuaCzm7J1PsUCrjFwVt
-	 z0ro8n5P0NqOx8cUNDTDSEgdKwEZ3oSO4u76aQWcWAesos4+tLVTQzyaqJL+fyX62Q
-	 qFKXmo122wKsdOpsmySdRqRVjHWHQ0vh+2Cmc4aQ=
+	b=DJ2Pu3fLQx2xDdUIjflpm7nX2NuSyvA+SUOTsr0iSLLlnmue+spq5PgmOFhpuhFEI
+	 Sqm2c54SWsqr0DzvuOBIID0nmt63BQsTWxmBAvmoB2DEMRehsmwZpxlUjPQW7qhcIb
+	 eORTuvn3oG4q8virGxWgeaM9HCVvu6L1kpfWzLBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/36] HID: hid-asus: reset the backlight brightness level on resume
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 080/106] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
 Date: Mon, 18 Dec 2023 14:51:34 +0100
-Message-ID: <20231218135042.705051349@linuxfoundation.org>
+Message-ID: <20231218135058.489389353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +54,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <benato.denis96@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
+commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
 
-Some devices managed by this driver automatically set brightness to 0
-before entering a suspended state and reset it back to a default
-brightness level after the resume:
-this has the effect of having the kernel report wrong brightness
-status after a sleep, and on some devices (like the Asus RC71L) that
-brightness is the intensity of LEDs directly facing the user.
+For files with logical blocks close to EXT_MAX_BLOCKS, the file size
+predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
+This can cause some blocks to be preallocated that will not be used.
+And after [Fixes], the following issue may be triggered:
 
-Fix the above issue by setting back brightness to the level it had
-before entering a sleep state.
+=========================================================
+ kernel BUG at fs/ext4/mballoc.c:4653!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
+ Hardware name: linux,dummy-virt (DT)
+ pc : ext4_mb_use_inode_pa+0x148/0x208
+ lr : ext4_mb_use_inode_pa+0x98/0x208
+ Call trace:
+  ext4_mb_use_inode_pa+0x148/0x208
+  ext4_mb_new_inode_pa+0x240/0x4a8
+  ext4_mb_use_best_found+0x1d4/0x208
+  ext4_mb_try_best_found+0xc8/0x110
+  ext4_mb_regular_allocator+0x11c/0xf48
+  ext4_mb_new_blocks+0x790/0xaa8
+  ext4_ext_map_blocks+0x7cc/0xd20
+  ext4_map_blocks+0x170/0x600
+  ext4_iomap_begin+0x1c0/0x348
+=========================================================
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
+
+	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
+	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
+		goto adjust_bex;
+
+The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
+it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
+overflow to a very small value, which ultimately triggers a BUG_ON in
+ext4_mb_new_inode_pa() because pa->pa_free < len.
+
+The last logical block of an actual write request does not exceed
+EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
+the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
+
+The test case in [Link] can reproduce the above issue with 64k block size.
+
+Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
+Cc:  <stable@kernel.org> # 6.4
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ fs/ext4/mballoc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 4dddf3ce32d73..12ad6493be8f4 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -614,6 +614,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
- 	return 0;
- }
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4110,6 +4110,10 @@ ext4_mb_normalize_request(struct ext4_al
+ 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
+ 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
  
-+static int __maybe_unused asus_resume(struct hid_device *hdev) {
-+	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-+	int ret = 0;
++	/* avoid unnecessary preallocation that may trigger assertions */
++	if (start + size > EXT_MAX_BLOCKS)
++		size = EXT_MAX_BLOCKS - start;
 +
-+	if (drvdata->kbd_backlight) {
-+		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
-+				drvdata->kbd_backlight->cdev.brightness };
-+		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
-+		if (ret < 0) {
-+			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
-+			goto asus_resume_err;
-+		}
-+	}
-+
-+asus_resume_err:
-+	return ret;
-+}
-+
- static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
- {
- 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-@@ -831,6 +849,7 @@ static struct hid_driver asus_driver = {
- 	.input_configured       = asus_input_configured,
- #ifdef CONFIG_PM
- 	.reset_resume           = asus_reset_resume,
-+	.resume					= asus_resume,
- #endif
- 	.raw_event		= asus_raw_event
- };
--- 
-2.43.0
-
+ 	/* don't cover already allocated blocks in selected range */
+ 	if (ar->pleft && start <= ar->lleft) {
+ 		size -= ar->lleft + 1 - start;
 
 
 
