@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DC88172E1
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583B0817322
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EED51F23E62
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D39F3B2317E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927CF1D157;
-	Mon, 18 Dec 2023 14:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBE13A1A0;
+	Mon, 18 Dec 2023 14:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1m1TgT5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mO7GE+f9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D1F129EDD;
-	Mon, 18 Dec 2023 14:11:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B20C433C8;
-	Mon, 18 Dec 2023 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8595937874;
+	Mon, 18 Dec 2023 14:13:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAE7C433C9;
+	Mon, 18 Dec 2023 14:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908670;
-	bh=M8ZZr0/aZS2Tp5aaMiEDnlAQw8ZRcxReES3zep/8Rbo=;
+	s=korg; t=1702908828;
+	bh=DOPJ2fjS5c+lhhhZDqbIENydPGc9YI0YCcH1H4csrtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1m1TgT5Ivfxx4v4VdhPWUX14yC/ttb8AoK7uMmRnOl7IgCgwKeSWWbseku5exbcw
-	 +Txpc4+EU18Sz6XV+lnkIcSO6KeLBXEJyzmgqEj9jowqcuqIUsYAs8383I9pzDbCw+
-	 UWD0ujOcyLocK3+dLJgS7PBdUrjMtYPdjQX0xaHo=
+	b=mO7GE+f9fOfzDxCrW5Z2VmKFPgA3gB7R5KN1ywPhgm8rmnK6PLWVjHY0gRNqI2bWp
+	 m1vpKwZKgA0EQ9j8ujv5EvIhrvGxyh8ETFxbHPvkNYXvyssO2/+5AnVMjaXxjv9dZ9
+	 0qnhyjiPVtN5rHYRL6MTJ+rNvdpp94+Rrik+kDP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/40] net: stmmac: use dev_err_probe() for reporting mdio bus registration failure
+Subject: [PATCH 5.15 48/83] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
 Date: Mon, 18 Dec 2023 14:52:09 +0100
-Message-ID: <20231218135043.234860944@linuxfoundation.org>
+Message-ID: <20231218135051.858511420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 839612d23ffd933174db911ce56dc3f3ca883ec5 ]
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-I have a board where these two lines are always printed during boot:
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-   imx-dwmac 30bf0000.ethernet: Cannot register the MDIO bus
-   imx-dwmac 30bf0000.ethernet: stmmac_dvr_probe: MDIO bus (id: 1) registration failed
+Fix the warning by adding rcu read lock.
 
-It's perfectly fine, and the device is successfully (and silently, as
-far as the console goes) probed later.
-
-Use dev_err_probe() instead, which will demote these messages to debug
-level (thus removing the alarming messages from the console) when the
-error is -EPROBE_DEFER, and also has the advantage of including the
-error code if/when it happens to be something other than -EPROBE_DEFER.
-
-While here, add the missing \n to one of the format strings.
-
-Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Link: https://lore.kernel.org/r/20220602074840.1143360-1-linux@rasmusvillemoes.dk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e23c0d21ce92 ("net: stmmac: Handle disabled MDIO busses from devicetree")
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ block/blk-throttle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 4eaa65e8d58f2..ee48283b2d967 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4691,9 +4691,9 @@ int stmmac_dvr_probe(struct device *device,
- 		/* MDIO bus Registration */
- 		ret = stmmac_mdio_register(ndev);
- 		if (ret < 0) {
--			dev_err(priv->device,
--				"%s: MDIO bus (id: %d) registration failed",
--				__func__, priv->plat->bus_id);
-+			dev_err_probe(priv->device, ret,
-+				      "%s: MDIO bus (id: %d) registration failed\n",
-+				      __func__, priv->plat->bus_id);
- 			goto error_mdio_register;
- 		}
- 	}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index 40c42637ad755..846bf51f77b61 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -359,7 +359,7 @@ int stmmac_mdio_register(struct net_device *ndev)
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 68cf8dbb4c67a..4da4b25b12f48 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1415,6 +1415,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- 	err = of_mdiobus_register(new_bus, mdio_node);
- 	if (err != 0) {
--		dev_err(dev, "Cannot register the MDIO bus\n");
-+		dev_err_probe(dev, err, "Cannot register the MDIO bus\n");
- 		goto bus_register_fail;
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1442,6 +1443,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
  	}
++	rcu_read_unlock();
  
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
 -- 
 2.43.0
 
