@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07733817228
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE981715A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0051F24BAA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 435361F2437F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9173788E;
-	Mon, 18 Dec 2023 14:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736FE1D127;
+	Mon, 18 Dec 2023 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/qBI27v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZseBkvt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226B11D13A;
-	Mon, 18 Dec 2023 14:03:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC6CC433C8;
-	Mon, 18 Dec 2023 14:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338A0129EC8;
+	Mon, 18 Dec 2023 13:56:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D1DC433C7;
+	Mon, 18 Dec 2023 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908232;
-	bh=0gJXVNIPKaVhnQf0xEIynHeSKslS74770FWH9BfZWD0=;
+	s=korg; t=1702907813;
+	bh=l0Jw6bR/uqmFe4mlhD6FrRwvii2SB5sGLfNZoix31e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/qBI27v6cToOGqStL/rNslajrNEkuTYJq99VC9nZ4bwIIOUf0dgtFkBbTmJ/uuSN
-	 0n0lE2P3iAhyBBg5COAL01C5P3i23kyOsvw2vSSJWSIi84Z9I/qnvbjJTJLhpDSZ8B
-	 6cgkoE2p9HMtMFB8jRx09zpGMqOFB785ST/IxYoc=
+	b=ZseBkvt5n4lJ0KuZoRUVkcGTW6TpPxweDCdNjhA3ZFu5A5hoUhZ2n40VnLN4Slhcj
+	 p3oIuWaQTHyune9MMHTO2dMbFZgxL7iMmXQAuXdPGfE2ZxmP8x+Gu4Xdbjze5DPHbd
+	 4D22Mpfhz5CWhtPuFV/U36AUkFGqy3XkbOisJHZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	WANG Rui <wangrui@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/166] LoongArch: Record pc instead of offset in la_abs relocation
-Date: Mon, 18 Dec 2023 14:51:08 +0100
-Message-ID: <20231218135109.568316073@linuxfoundation.org>
+Subject: [PATCH 6.1 055/106] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+Date: Mon, 18 Dec 2023 14:51:09 +0100
+Message-ID: <20231218135057.420342570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,69 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WANG Rui <wangrui@loongson.cn>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit aa0cbc1b506b090c3a775b547c693ada108cc0d7 ]
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-To clarify, the previous version functioned flawlessly. However, it's
-worth noting that the LLVM's LoongArch backend currently lacks support
-for cross-section label calculations. With this patch, we enable the use
-of clang to compile relocatable kernels.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fix the warning by adding rcu read lock.
+
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/asmmacro.h | 3 +--
- arch/loongarch/include/asm/setup.h    | 2 +-
- arch/loongarch/kernel/relocate.c      | 2 +-
- 3 files changed, 3 insertions(+), 4 deletions(-)
+ block/blk-throttle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/asmmacro.h b/arch/loongarch/include/asm/asmmacro.h
-index c9544f358c339..655db7d7a4279 100644
---- a/arch/loongarch/include/asm/asmmacro.h
-+++ b/arch/loongarch/include/asm/asmmacro.h
-@@ -609,8 +609,7 @@
- 	lu32i.d	\reg, 0
- 	lu52i.d	\reg, \reg, 0
- 	.pushsection ".la_abs", "aw", %progbits
--	768:
--	.dword	768b-766b
-+	.dword	766b
- 	.dword	\sym
- 	.popsection
- #endif
-diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
-index a0bc159ce8bdc..ee52fb1e99631 100644
---- a/arch/loongarch/include/asm/setup.h
-+++ b/arch/loongarch/include/asm/setup.h
-@@ -25,7 +25,7 @@ extern void set_merr_handler(unsigned long offset, void *addr, unsigned long len
- #ifdef CONFIG_RELOCATABLE
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 009b0d76bf036..62a3f62316df1 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1333,6 +1333,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- struct rela_la_abs {
--	long offset;
-+	long pc;
- 	long symvalue;
- };
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1360,6 +1361,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
+ 	}
++	rcu_read_unlock();
  
-diff --git a/arch/loongarch/kernel/relocate.c b/arch/loongarch/kernel/relocate.c
-index 6c3eff9af9fb1..288b739ca88dd 100644
---- a/arch/loongarch/kernel/relocate.c
-+++ b/arch/loongarch/kernel/relocate.c
-@@ -52,7 +52,7 @@ static inline void __init relocate_absolute(long random_offset)
- 	for (p = begin; (void *)p < end; p++) {
- 		long v = p->symvalue;
- 		uint32_t lu12iw, ori, lu32id, lu52id;
--		union loongarch_instruction *insn = (void *)p - p->offset;
-+		union loongarch_instruction *insn = (void *)p->pc;
- 
- 		lu12iw = (v >> 12) & 0xfffff;
- 		ori    = v & 0xfff;
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
 -- 
 2.43.0
 
