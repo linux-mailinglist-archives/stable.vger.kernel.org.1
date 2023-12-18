@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A305817241
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38771817164
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A871C24D69
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD8351F244FF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C10F3D564;
-	Mon, 18 Dec 2023 14:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DCD15AC0;
+	Mon, 18 Dec 2023 13:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djSNAdmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpQQXDTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBB93D556;
-	Mon, 18 Dec 2023 14:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41FEC433C9;
-	Mon, 18 Dec 2023 14:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53E5129EC8;
+	Mon, 18 Dec 2023 13:57:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087ACC433C8;
+	Mon, 18 Dec 2023 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908292;
-	bh=Ctklw3eBTZXY4VBll/7KfVBROvqk9GZZycxptTbsP9k=;
+	s=korg; t=1702907837;
+	bh=zwwxWZUR8R/s6wuoXpawJH5+wvtvID95h2N0RcnSjhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djSNAdmLlGY3Em+vTbdZBNcJ9UPCLIx1wkem+joezQuOKMYopT+6zUu7dKHzKyaPE
-	 KhAn69xMu8Bjx7t4oEqEaflrrl69cn0mtVeC9ElCW7WcOFr9shIqi7oVXTnX9onz4p
-	 Oy8ySqUUYCaEiyrIMr24TTtmeeBXiEmBN4b/+zuU=
+	b=RpQQXDTbIEkSQ4T1/FOOEP7zEJcBnk9iXDekEtPDNKZWrAuBVQYrgwKqCkJLBFp59
+	 PfM/yTkVz2drorTWk+PBn087RbE8D1XuS+E3BYUEiD4SxuKXk5M+9M/a2uP+AqKmmQ
+	 /NA5vwYr2GNzw9L0iBNm6wzWlHZrgInQiBxtIgdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Nico Pache <npache@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Yusong Gao <a869920004@gmail.com>,
+	Juerg Haefliger <juerg.haefliger@canonical.com>,
+	David Howells <dhowells@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/166] selftests/mm: cow: print ksft header before printing anything else
+Subject: [PATCH 6.1 036/106] sign-file: Fix incorrect return values check
 Date: Mon, 18 Dec 2023 14:50:50 +0100
-Message-ID: <20231218135108.761544446@linuxfoundation.org>
+Message-ID: <20231218135056.588366757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,94 +55,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Yusong Gao <a869920004@gmail.com>
 
-[ Upstream commit a6fcd57cf2df409d35e9225b8dbad6f937b28df0 ]
+[ Upstream commit 829649443e78d85db0cff0c37cadb28fbb1a5f6f ]
 
-Doing a ksft_print_msg() before the ksft_print_header() seems to confuse
-the ksft framework in a strange way: running the test on the cmdline
-results in the expected output.
+There are some wrong return values check in sign-file when call OpenSSL
+API. The ERR() check cond is wrong because of the program only check the
+return value is < 0 which ignored the return val is 0. For example:
+1. CMS_final() return 1 for success or 0 for failure.
+2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
+3. i2d_TYPEbio() return 1 for success and 0 for failure.
+4. BIO_free() return 1 for success and 0 for failure.
 
-But piping the output somewhere else, results in some odd output,
-whereby we repeatedly get the same info printed:
-	# [INFO] detected THP size: 2048 KiB
-	# [INFO] detected hugetlb page size: 2048 KiB
-	# [INFO] detected hugetlb page size: 1048576 KiB
-	# [INFO] huge zeropage is enabled
-	TAP version 13
-	1..190
-	# [INFO] Anonymous memory tests in private mappings
-	# [RUN] Basic COW after fork() ... with base page
-	# [INFO] detected THP size: 2048 KiB
-	# [INFO] detected hugetlb page size: 2048 KiB
-	# [INFO] detected hugetlb page size: 1048576 KiB
-	# [INFO] huge zeropage is enabled
-	TAP version 13
-	1..190
-	# [INFO] Anonymous memory tests in private mappings
-	# [RUN] Basic COW after fork() ... with base page
-	ok 1 No leak from parent into child
-	# [RUN] Basic COW after fork() ... with swapped out base page
-	# [INFO] detected THP size: 2048 KiB
-	# [INFO] detected hugetlb page size: 2048 KiB
-	# [INFO] detected hugetlb page size: 1048576 KiB
-	# [INFO] huge zeropage is enabled
-
-Doing the ksft_print_header() first seems to resolve that and gives us
-the output we expect:
-	TAP version 13
-	# [INFO] detected THP size: 2048 KiB
-	# [INFO] detected hugetlb page size: 2048 KiB
-	# [INFO] detected hugetlb page size: 1048576 KiB
-	# [INFO] huge zeropage is enabled
-	1..190
-	# [INFO] Anonymous memory tests in private mappings
-	# [RUN] Basic COW after fork() ... with base page
-	ok 1 No leak from parent into child
-	# [RUN] Basic COW after fork() ... with swapped out base page
-	ok 2 No leak from parent into child
-	# [RUN] Basic COW after fork() ... with THP
-	ok 3 No leak from parent into child
-	# [RUN] Basic COW after fork() ... with swapped-out THP
-	ok 4 No leak from parent into child
-	# [RUN] Basic COW after fork() ... with PTE-mapped THP
-	ok 5 No leak from parent into child
-
-Link: https://lkml.kernel.org/r/20231206103558.38040-1-david@redhat.com
-Fixes: f4b5fd6946e2 ("selftests/vm: anon_cow: THP tests")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: Nico Pache <npache@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://www.openssl.org/docs/manmaster/man3/
+Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
+Signed-off-by: Yusong Gao <a869920004@gmail.com>
+Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20231213024405.624692-1-a869920004@gmail.com/ # v5
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/cow.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index 7324ce5363c0c..6f2f839904416 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -1680,6 +1680,8 @@ int main(int argc, char **argv)
- {
- 	int err;
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 598ef5465f825..3edb156ae52c3 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+ 		    "CMS_final");
  
-+	ksft_print_header();
-+
- 	pagesize = getpagesize();
- 	thpsize = read_pmd_pagesize();
- 	if (thpsize)
-@@ -1689,7 +1691,6 @@ int main(int argc, char **argv)
- 						    ARRAY_SIZE(hugetlbsizes));
- 	detect_huge_zeropage();
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
  
--	ksft_print_header();
- 	ksft_set_plan(ARRAY_SIZE(anon_test_cases) * tests_per_anon_test_case() +
- 		      ARRAY_SIZE(anon_thp_test_cases) * tests_per_anon_thp_test_case() +
- 		      ARRAY_SIZE(non_anon_test_cases) * tests_per_non_anon_test_case());
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) != 1, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
 -- 
 2.43.0
 
