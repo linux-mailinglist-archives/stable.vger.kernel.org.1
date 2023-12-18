@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49612817179
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 000C281710C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C741C240FC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2443B1C2339A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33677129EE3;
-	Mon, 18 Dec 2023 13:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C481D123;
+	Mon, 18 Dec 2023 13:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H13sTDAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNvVwOiN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECFA4129ED2;
-	Mon, 18 Dec 2023 13:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719E6C433C7;
-	Mon, 18 Dec 2023 13:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5F21D13B;
+	Mon, 18 Dec 2023 13:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F58C433C7;
+	Mon, 18 Dec 2023 13:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907889;
-	bh=2RyKfIABJYfiGivOleoEUw4SXtlF9pqNf3OMS2AcgwI=;
+	s=korg; t=1702907635;
+	bh=Vor2npV/17soOnKet2UWWJ3t5Eu2tCjYKnblLjz787g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H13sTDAhv6iaWF5Vr2si5ifVa5iF9dGtvqFgR6yF/dYzAbQT2LmrnFPkreB1UIzSk
-	 m8FVX7322LTQ/jNfiCg+Kb2ngWiaTmAA9cAUTeAt8ZyscO8Gt1aIUTH1PYMO7rJeV/
-	 Z+tRJXDb+yA/yqjX/fEsKW/WyecOVJWX6V0f7GvY=
+	b=eNvVwOiNgPufQJ62QNr0xiezl1K6A3YclMSRZvobaF3/hdja4YpHG+yBfcneqd4sT
+	 8go9y7vL0iXS8UmAIfG1rMUzHrvGRMDi91eJ3AxYRlkTlOk70hqhuKq/oIzS3PX1AO
+	 Jwo4zoIfWnxUgcgeXODDpxLZsDYdBVtqoQ6tD4dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 083/106] drm/amdgpu/sdma5.2: add begin/end_use ring callbacks
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Lech Perczak <lech.perczak@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 27/36] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
 Date: Mon, 18 Dec 2023 14:51:37 +0100
-Message-ID: <20231218135058.610562881@linuxfoundation.org>
+Message-ID: <20231218135042.812352499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +55,70 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Lech Perczak <lech.perczak@gmail.com>
 
-commit ab4750332dbe535243def5dcebc24ca00c1f98ac upstream.
+[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
 
-Add begin/end_use ring callbacks to disallow GFXOFF when
-SDMA work is submitted and allow it again afterward.
+Interface 4 is used by for QMI interface in stock firmware of MF28D, the
+router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
+from option driver.
+The proper configuration is:
 
-This should avoid corner cases where GFXOFF is erroneously
-entered when SDMA is still active.  For now just allow/disallow
-GFXOFF in the begin and end helpers until we root cause the
-issue.  This should not impact power as SDMA usage is pretty
-minimal and GFXOSS should not be active when SDMA is active
-anyway, this just makes it explicit.
+Interface mapping is:
+0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
 
-v2: move everything into sdma5.2 code.  No reason for this
-to be generic at this point.
-v3: Add comments in new code
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=19d2 ProdID=0189 Rev= 0.00
+S:  Manufacturer=ZTE, Incorporated
+S:  Product=ZTE LTE Technologies MSM
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2220
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
-Tested-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
+Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/net/usb/qmi_wwan.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -1690,6 +1690,32 @@ static void sdma_v5_2_get_clockgating_st
- 		*flags |= AMD_CG_SUPPORT_SDMA_LS;
- }
- 
-+static void sdma_v5_2_ring_begin_use(struct amdgpu_ring *ring)
-+{
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
-+	 * disallow GFXOFF in some cases leading to
-+	 * hangs in SDMA.  Disallow GFXOFF while SDMA is active.
-+	 * We can probably just limit this to 5.2.3,
-+	 * but it shouldn't hurt for other parts since
-+	 * this GFXOFF will be disallowed anyway when SDMA is
-+	 * active, this just makes it explicit.
-+	 */
-+	amdgpu_gfx_off_ctrl(adev, false);
-+}
-+
-+static void sdma_v5_2_ring_end_use(struct amdgpu_ring *ring)
-+{
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
-+	 * disallow GFXOFF in some cases leading to
-+	 * hangs in SDMA.  Allow GFXOFF when SDMA is complete.
-+	 */
-+	amdgpu_gfx_off_ctrl(adev, true);
-+}
-+
- const struct amd_ip_funcs sdma_v5_2_ip_funcs = {
- 	.name = "sdma_v5_2",
- 	.early_init = sdma_v5_2_early_init,
-@@ -1738,6 +1764,8 @@ static const struct amdgpu_ring_funcs sd
- 	.test_ib = sdma_v5_2_ring_test_ib,
- 	.insert_nop = sdma_v5_2_ring_insert_nop,
- 	.pad_ib = sdma_v5_2_ring_pad_ib,
-+	.begin_use = sdma_v5_2_ring_begin_use,
-+	.end_use = sdma_v5_2_ring_end_use,
- 	.emit_wreg = sdma_v5_2_ring_emit_wreg,
- 	.emit_reg_wait = sdma_v5_2_ring_emit_reg_wait,
- 	.emit_reg_write_reg_wait = sdma_v5_2_ring_emit_reg_write_reg_wait,
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index aefa57e726954..f787b9a4f9a9e 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -1250,6 +1250,7 @@ static const struct usb_device_id products[] = {
+ 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
+ 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
+ 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
++	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
+ 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
+ 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
+ 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
+-- 
+2.43.0
+
 
 
 
