@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2722F8170DF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA4C78170F7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8F93B21EEB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:51:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87635283B38
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5133437864;
-	Mon, 18 Dec 2023 13:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2453A1D127;
+	Mon, 18 Dec 2023 13:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv8mXMTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvdMwR/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B50F1D15F;
-	Mon, 18 Dec 2023 13:51:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4606FC433C7;
-	Mon, 18 Dec 2023 13:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEBC14F63;
+	Mon, 18 Dec 2023 13:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACA4C433C8;
+	Mon, 18 Dec 2023 13:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907500;
-	bh=YrS57CcnYZ48/ycUITLOlc7lHxsTNR5u7FztyjtikfA=;
+	s=korg; t=1702907575;
+	bh=unkRAYOmofrF784Cxc/dwycALpLn8XVQsCyFQi0WftU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jv8mXMTEXWfmfnfjA9bhSxbcI2olajFEVoh5X0wHMF9TIxNAQtpc2W5xWGaDkEnwy
-	 oeH9JjATxi1bA3CYy6c7k2BowR/yyu61Rzseb8lhQtA87M6gco3jt85O+g7mTSRCwP
-	 ABuKIPUjn+FkDSxt++02omDoFbyJENR1ErQ820nQ=
+	b=PvdMwR/+sZ1DY9VWBAa2vZK5vKAuFqlqmuU981gn3sJDJ6iGgTvk9WIVtEahIGS1E
+	 r8ljjuR2/9d27Fznx6ZPP3h5yW/q7LuxhZMg1oVu6VzU/csYthV70euSDJpmurwHzh
+	 5eOmaT31jY+/m+OzqnUzuWWkB9N+fSzxwhLXdfQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusong Gao <a869920004@gmail.com>,
-	Juerg Haefliger <juerg.haefliger@canonical.com>,
-	David Howells <dhowells@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 10/26] sign-file: Fix incorrect return values check
+Subject: [PATCH 4.19 02/36] qca_debug: Fix ethtool -G iface tx behavior
 Date: Mon, 18 Dec 2023 14:51:12 +0100
-Message-ID: <20231218135041.068371524@linuxfoundation.org>
+Message-ID: <20231218135041.970361428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,81 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yusong Gao <a869920004@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 829649443e78d85db0cff0c37cadb28fbb1a5f6f ]
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-There are some wrong return values check in sign-file when call OpenSSL
-API. The ERR() check cond is wrong because of the program only check the
-return value is < 0 which ignored the return val is 0. For example:
-1. CMS_final() return 1 for success or 0 for failure.
-2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-3. i2d_TYPEbio() return 1 for success and 0 for failure.
-4. BIO_free() return 1 for success and 0 for failure.
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-Link: https://www.openssl.org/docs/manmaster/man3/
-Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
-Signed-off-by: Yusong Gao <a869920004@gmail.com>
-Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20231213024405.624692-1-a869920004@gmail.com/ # v5
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
+
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
+
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sign-file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 7434e9ea926e2..12acc70e5a7a5 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -322,7 +322,7 @@ int main(int argc, char **argv)
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-+		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
- 		    "CMS_final");
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 26b0ca7a7b43d..b650b6a5e8718 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
  
- #else
-@@ -341,10 +341,10 @@ int main(int argc, char **argv)
- 			b = BIO_new_file(sig_file_name, "wb");
- 			ERR(!b, "%s", sig_file_name);
- #ifndef USE_PKCS7
--			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-+			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
- 			    "%s", sig_file_name);
- #else
--			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-+			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
- 			    "%s", sig_file_name);
- #endif
- 			BIO_free(b);
-@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ #define QCASPI_MAX_REGS 0x20
  
- 	if (!raw_sig) {
- #ifndef USE_PKCS7
--		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-+		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
- #else
--		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-+		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
- #endif
- 	} else {
- 		BIO *b;
-@@ -396,7 +396,7 @@ int main(int argc, char **argv)
- 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
- 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
++#define QCASPI_RX_MAX_FRAMES 4
++
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -266,9 +268,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
  
--	ERR(BIO_free(bd) < 0, "%s", dest_name);
-+	ERR(BIO_free(bd) != 1, "%s", dest_name);
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
+ }
  
- 	/* Finally, if we're signing in place, replace the original. */
- 	if (replace_orig)
+@@ -277,7 +279,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
 -- 
 2.43.0
 
