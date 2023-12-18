@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05522817198
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6B3817278
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C3B21049
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ABE51C24DD0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B6537862;
-	Mon, 18 Dec 2023 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BAA37895;
+	Mon, 18 Dec 2023 14:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6I1uvok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwa04Qns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330F51D14D;
-	Mon, 18 Dec 2023 13:59:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB90FC433C7;
-	Mon, 18 Dec 2023 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD65722091;
+	Mon, 18 Dec 2023 14:06:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347A1C433C8;
+	Mon, 18 Dec 2023 14:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907945;
-	bh=u71E72QOnMHplzd+BmnNdmzhDTTsIHjHTISDXT8CfNI=;
+	s=korg; t=1702908418;
+	bh=1huDvhIjScAu22KJewC4fN5f1drcV3396PN2ZPOG6gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6I1uvokVNuGmwOOyYfr/PQP6S/1+WEwenzODWtWJiX9992rcCKkoGfBjIQNCA2kx
-	 geDusK9RxiuU6//aq9ifiJTxpbdC532StVB3oK4thgIHVV6a3rFjPJ5bQidLdO757z
-	 hWJe6IwlRh992kL2lQ7KXxRsPbf3rp+owouEpa54=
+	b=Wwa04Qnscy7YkxAfe6wx58qGzL0pmgsLjq15n3qKIcrDEXE3CY55uEYjfoaYALUs5
+	 R5vWjAQfJDmStu91yPbFyt9gTvrHgY3Zi8yNNKjurjwZlWvDtXx1W9EYf/uAQjlX6s
+	 uUKXl8WFot2F21z7h4CgN6RbEvBPGR0DMZFdpP64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hayes Wang <hayeswang@realtek.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 104/106] r8152: avoid to change cfg for all devices
+	Imre Deak <imre.deak@intel.com>,
+	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 152/166] drm/i915: Fix remapped stride with CCS on ADL+
 Date: Mon, 18 Dec 2023 14:51:58 +0100
-Message-ID: <20231218135059.509970487@linuxfoundation.org>
+Message-ID: <20231218135111.926079005@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +52,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 0d4cda805a183bbe523f2407edb5c14ade50b841 upstream.
+commit 0ccd963fe555451b1f84e6d14d2b3ef03dd5c947 upstream.
 
-The rtl8152_cfgselector_probe() should set the USB configuration to the
-vendor mode only for the devices which the driver (r8152) supports.
-Otherwise, no driver would be used for such devices.
+On ADL+ the hardware automagically calculates the CCS AUX surface
+stride from the main surface stride, so when remapping we can't
+really play a lot of tricks with the main surface stride, or else
+the AUX surface stride would get miscalculated and no longer
+match the actual data layout in memory.
 
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Supposedly we could remap in 256 main surface tile units
+(AUX page(4096)/cachline(64)*4(4x1 main surface tiles per
+AUX cacheline)=256 main surface tiles), but the extra complexity
+is probably not worth the hassle.
+
+So let's just make sure our mapping stride is calculated from
+the full framebuffer stride (instead of the framebuffer width).
+This way the stride we program into PLANE_STRIDE will be the
+original framebuffer stride, and thus there will be no change
+to the AUX stride/layout.
+
+Cc: stable@vger.kernel.org
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231205180308.7505-1-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+(cherry picked from commit 2c12eb36f849256f5eb00ffaee9bf99396fd3814)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c |   20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_fb.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9556,9 +9556,8 @@ static int rtl_fw_init(struct r8152 *tp)
- 	return 0;
- }
+--- a/drivers/gpu/drm/i915/display/intel_fb.c
++++ b/drivers/gpu/drm/i915/display/intel_fb.c
+@@ -1498,8 +1498,20 @@ static u32 calc_plane_remap_info(const s
  
--u8 rtl8152_get_version(struct usb_interface *intf)
-+static u8 __rtl_get_hw_ver(struct usb_device *udev)
- {
--	struct usb_device *udev = interface_to_usbdev(intf);
- 	u32 ocp_data = 0;
- 	__le32 *tmp;
- 	u8 version;
-@@ -9628,10 +9627,19 @@ u8 rtl8152_get_version(struct usb_interf
- 		break;
- 	default:
- 		version = RTL_VER_UNKNOWN;
--		dev_info(&intf->dev, "Unknown version 0x%04x\n", ocp_data);
-+		dev_info(&udev->dev, "Unknown version 0x%04x\n", ocp_data);
- 		break;
- 	}
+ 			size += remap_info->size;
+ 		} else {
+-			unsigned int dst_stride = plane_view_dst_stride_tiles(fb, color_plane,
+-									      remap_info->width);
++			unsigned int dst_stride;
++
++			/*
++			 * The hardware automagically calculates the CCS AUX surface
++			 * stride from the main surface stride so can't really remap a
++			 * smaller subset (unless we'd remap in whole AUX page units).
++			 */
++			if (intel_fb_needs_pot_stride_remap(fb) &&
++			    intel_fb_is_ccs_modifier(fb->base.modifier))
++				dst_stride = remap_info->src_stride;
++			else
++				dst_stride = remap_info->width;
++
++			dst_stride = plane_view_dst_stride_tiles(fb, color_plane, dst_stride);
  
-+	return version;
-+}
-+
-+u8 rtl8152_get_version(struct usb_interface *intf)
-+{
-+	u8 version;
-+
-+	version = __rtl_get_hw_ver(interface_to_usbdev(intf));
-+
- 	dev_dbg(&intf->dev, "Detected version 0x%04x\n", version);
- 
- 	return version;
-@@ -9933,6 +9941,12 @@ static int rtl8152_cfgselector_probe(str
- 	struct usb_host_config *c;
- 	int i, num_configs;
- 
-+	/* Switch the device to vendor mode, if and only if the vendor mode
-+	 * driver supports it.
-+	 */
-+	if (__rtl_get_hw_ver(udev) == RTL_VER_UNKNOWN)
-+		return 0;
-+
- 	/* The vendor mode is not always config #1, so to find it out. */
- 	c = udev->config;
- 	num_configs = udev->descriptor.bNumConfigurations;
+ 			assign_chk_ovf(i915, remap_info->dst_stride, dst_stride);
+ 			color_plane_info->mapping_stride = dst_stride *
 
 
 
