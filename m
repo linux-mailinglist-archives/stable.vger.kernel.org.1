@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCA38172C5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3EC8172F1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2220F1C24DA5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A351F23256
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A843789F;
-	Mon, 18 Dec 2023 14:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A88129EC8;
+	Mon, 18 Dec 2023 14:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4Wi2jIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqm1PBZ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9421D145;
-	Mon, 18 Dec 2023 14:09:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0211FC433C7;
-	Mon, 18 Dec 2023 14:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C04C42370;
+	Mon, 18 Dec 2023 14:11:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CC5C433C7;
+	Mon, 18 Dec 2023 14:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908599;
-	bh=n3LKda7BGUDAAe8ZgS9mGgnNTIvuUS6bbIExC4tmX0c=;
+	s=korg; t=1702908711;
+	bh=EqGu+AcadooOHos4iaZSmaehqWCr58eEEw4U6vq5mjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4Wi2jIxohCxHys667/p/6pnTlm76JG9GJzkcTKuN4ajh7l7hd7BRa5iXicwAtYgk
-	 gEfxMK5IZoMwx33G8/Cx3/lXGgcY7VvaOKBNB+7TEZ4IZVKx1W7wI1+eeuMdbNW4Yz
-	 /stnmOHaiIZv/ZljWO7jriEoFWFaY6CdTzxgpVDU=
+	b=hqm1PBZ2kvUturJVHvr/t1d178HlezrIAOubKV9h1vvzB2oWO0BciNdOXVkOyRsda
+	 WEIIO/Wa+grxlao/Gq4D4kOQFt1KJDh4+1+ajaEKZVCcMvui3J0yIgElb9NLdcdJfx
+	 mHMM0IM/pSR8LH0MebsDHv5J0ULViEMx9HJBY/mA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florent Revest <revest@chromium.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 51/62] team: Fix use-after-free when an option instance allocation fails
+	Oliver Neukum <oneukum@suse.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 20/40] usb: aqc111: check packet for fixup for true limit
 Date: Mon, 18 Dec 2023 14:52:15 +0100
-Message-ID: <20231218135048.506707578@linuxfoundation.org>
+Message-ID: <20231218135043.443611263@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +53,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit c12296bbecc488623b7d1932080e394d08f3226b upstream.
+[ Upstream commit ccab434e674ca95d483788b1895a70c21b7f016a ]
 
-In __team_options_register, team_options are allocated and appended to
-the team's option_list.
-If one option instance allocation fails, the "inst_rollback" cleanup
-path frees the previously allocated options but doesn't remove them from
-the team's option_list.
-This leaves dangling pointers that can be dereferenced later by other
-parts of the team driver that iterate over options.
+If a device sends a packet that is inbetween 0
+and sizeof(u64) the value passed to skb_trim()
+as length will wrap around ending up as some very
+large value.
 
-This patch fixes the cleanup path to remove the dangling pointers from
-the list.
+The driver will then proceed to parse the header
+located at that position, which will either oops or
+process some random value.
 
-As far as I can tell, this uaf doesn't have much security implications
-since it would be fairly hard to exploit (an attacker would need to make
-the allocation of that specific small object fail) but it's still nice
-to fix.
+The fix is to check against sizeof(u64) rather than
+0, which the driver currently does. The issue exists
+since the introduction of the driver.
 
-Cc: stable@vger.kernel.org
-Fixes: 80f7c6683fe0 ("team: add support for per-port options")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231206123719.1963153-1-revest@chromium.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/aqc111.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -284,8 +284,10 @@ static int __team_options_register(struc
- 	return 0;
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 68912e266826b..892d58b38cf5b 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1079,17 +1079,17 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 	u16 pkt_count = 0;
+ 	u64 desc_hdr = 0;
+ 	u16 vlan_tag = 0;
+-	u32 skb_len = 0;
++	u32 skb_len;
  
- inst_rollback:
--	for (i--; i >= 0; i--)
-+	for (i--; i >= 0; i--) {
- 		__team_option_inst_del_option(team, dst_opts[i]);
-+		list_del(&dst_opts[i]->list);
-+	}
+ 	if (!skb)
+ 		goto err;
  
- 	i = option_count;
- alloc_rollback:
+-	if (skb->len == 0)
++	skb_len = skb->len;
++	if (skb_len < sizeof(desc_hdr))
+ 		goto err;
+ 
+-	skb_len = skb->len;
+ 	/* RX Descriptor Header */
+-	skb_trim(skb, skb->len - sizeof(desc_hdr));
++	skb_trim(skb, skb_len - sizeof(desc_hdr));
+ 	desc_hdr = le64_to_cpup((u64 *)skb_tail_pointer(skb));
+ 
+ 	/* Check these packets */
+-- 
+2.43.0
+
 
 
 
