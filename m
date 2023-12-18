@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50A28170F8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E53A8170DE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CF731F230F2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF8AD283AD7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA84A15AC0;
-	Mon, 18 Dec 2023 13:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81FE1D122;
+	Mon, 18 Dec 2023 13:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhSmT4+G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFZOeNsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806B8129ED2;
-	Mon, 18 Dec 2023 13:52:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 994FCC433C7;
-	Mon, 18 Dec 2023 13:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF46129EFE;
+	Mon, 18 Dec 2023 13:51:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9732FC433C7;
+	Mon, 18 Dec 2023 13:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907578;
-	bh=rsmgtwmLYuNXvdlJ+iN41kpv2H2VKl/Ep5qFL8hhJGs=;
+	s=korg; t=1702907506;
+	bh=dMnp+NDIBxBDwOQa3OUKypUAntvTEb9fZgL3C1j2Pg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhSmT4+GVqRZsHntWg73pXAseJpH1GfUyeXrcL/dX7dliir0akq/EKl+M6qD0dzgo
-	 O6L1AkZpq6gpQgkPOMddR2wXcL0WKrfY49Oyx0m3AYTRZuigtdDjBTblsGFRcGq9gB
-	 tQj+mLr9Zo5+JzxoFPGdd1oi4eoyvKfr4sb1+8x0=
+	b=gFZOeNsueISmd6VIIW2SA8TVsGGaVnK3NB6OxAI2A801M2xOUXw/3qNKx0NQvsX2+
+	 qvzEzvaNK8k/b0yDP4uOf8+S4PkQRfXwxPM813IAUihY5067jLoAVXspEZSjYXEMnM
+	 uiV/OC5KVl8NrbNZx9o6bfOA9w34royN6yh/+jzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 03/36] qca_spi: Fix reset behavior
-Date: Mon, 18 Dec 2023 14:51:13 +0100
-Message-ID: <20231218135042.009701117@linuxfoundation.org>
+Subject: [PATCH 4.14 12/26] appletalk: Fix Use-After-Free in atalk_ioctl
+Date: Mon, 18 Dec 2023 14:51:14 +0100
+Message-ID: <20231218135041.136950050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 1057812d146dd658c9a9a96d869c2551150207b5 ]
+[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
 
-In case of a reset triggered by the QCA7000 itself, the behavior of the
-qca_spi driver was not quite correct:
-- in case of a pending RX frame decoding the drop counter must be
-  incremented and decoding state machine reseted
-- also the reset counter must always be incremented regardless of sync
-  state
+Because atalk_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with atalk_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+atalk_ioctl() -> skb_peek()
+atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-4-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/appletalk/ddp.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 656e2955fb792..c4a826176f3ab 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -592,11 +592,17 @@ qcaspi_spi_thread(void *data)
- 			if (intr_cause & SPI_INT_CPU_ON) {
- 				qcaspi_qca7k_sync(qca, QCASPI_EVENT_CPUON);
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1810,15 +1810,14 @@ static int atalk_ioctl(struct socket *so
+ 		break;
+ 	}
+ 	case TIOCINQ: {
+-		/*
+-		 * These two are safe on a single CPU system as only
+-		 * user tasks fiddle here
+-		 */
+-		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
++		struct sk_buff *skb;
+ 		long amount = 0;
  
-+				/* Frame decoding in progress */
-+				if (qca->frm_handle.state != qca->frm_handle.init)
-+					qca->net_dev->stats.rx_dropped++;
-+
-+				qcafrm_fsm_init_spi(&qca->frm_handle);
-+				qca->stats.device_reset++;
-+
- 				/* not synced. */
- 				if (qca->sync != QCASPI_SYNC_READY)
- 					continue;
- 
--				qca->stats.device_reset++;
- 				netif_wake_queue(qca->net_dev);
- 				netif_carrier_on(qca->net_dev);
- 			}
--- 
-2.43.0
-
++		spin_lock_irq(&sk->sk_receive_queue.lock);
++		skb = skb_peek(&sk->sk_receive_queue);
+ 		if (skb)
+ 			amount = skb->len - sizeof(struct ddpehdr);
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		rc = put_user(amount, (int __user *)argp);
+ 		break;
+ 	}
 
 
 
