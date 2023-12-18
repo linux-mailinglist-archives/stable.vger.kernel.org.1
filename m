@@ -1,293 +1,223 @@
-Return-Path: <stable+bounces-6935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3815E8163D9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 01:41:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4328166A5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:45:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 548951C212A4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 00:41:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1F141F21697
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 06:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA5C80E;
-	Mon, 18 Dec 2023 00:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="BEoParDz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580DE6FC5;
+	Mon, 18 Dec 2023 06:45:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32FF64E
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 00:41:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-591a6f1385eso1624660eaf.0
-        for <stable@vger.kernel.org>; Sun, 17 Dec 2023 16:41:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702860068; x=1703464868; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=bWpmLKaQpoM0zf03W0+JenLhHZDCgQg27E9qhMEs4A0=;
-        b=BEoParDz13euR71HMI8qiOrTclmSzmILrYk4lxmQid258GJI7npc7iuDOUKhBgXg43
-         vdITD786THhNu3O5Mi4vYKodb1Ngf8y3Ncl4PetwqIqHvJMNiii34CxdUuR1KeQUu3Ws
-         agrd+qwsRY/KAWYdPlxvQgy3kKOSBmCNTL8WmZlER1t/mxDgFfHVLogOF/0YE30Pil1m
-         UuykwM3uobi+5sJv+Jf/txMs3z4KubEG5vrpZBy9WI0Ii4FKDqOu2oUN/miTQKM+Dzah
-         HrX+GHqtzG68GdyAZq5qX+4SDPMwdgHdKvlgEsszBYPUq2rEHwAn+RzX7sgsgGIwx9Ua
-         2p2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702860068; x=1703464868;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bWpmLKaQpoM0zf03W0+JenLhHZDCgQg27E9qhMEs4A0=;
-        b=nKs7Zsfu61/JUbg87yWcC/efjZLv/7nb7buPM4Q6tF7xfwwtKZ8uJS/yt+Az5eLR/f
-         959VtUnZx31AkxIHkzJ34Bn772hHk2FkcKhYy8fItIkz4qYMIM2omICpPCTEuK3a/pIO
-         d9UgfV1suptOi8BBLk/yCNscte4VXEa+dVN5/ifGUgyUFtEekAgZHRnGUXsXHytvp4Yf
-         v5fZsw31xJLc/vwzKHb6f+oKwRNo57A428bj9Q+GyRz9eGsZ7XYAx1qzCyI0MU4LWlId
-         zj6XkZy052UnKtQ8ljRLgN3iapH5OxWFKVfpEmo+FVDTaD1Y7KsTaU46/7paGFAdVn5G
-         w+1w==
-X-Gm-Message-State: AOJu0YyMeMMOrI5OblnL554HjGvR5upTSUt4Bm0uVxlfwrDMjfu5hyMt
-	jJ9OwnjV2ISKnC3Ud1oAIAFw/tChemnam0q+pzM=
-X-Google-Smtp-Source: AGHT+IFukY1VsyziwGehEWqAmMRSxCF4K0jFM2g4aj0ZTbyPYKuy/NZm9FTe7W1WxtI6tjJkqIOUPA==
-X-Received: by 2002:a05:6358:787:b0:170:b81b:4a20 with SMTP id n7-20020a056358078700b00170b81b4a20mr15897755rwj.51.1702860068426;
-        Sun, 17 Dec 2023 16:41:08 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id qi9-20020a17090b274900b0028a28ad810csm18613663pjb.56.2023.12.17.16.41.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 17 Dec 2023 16:41:07 -0800 (PST)
-Message-ID: <657f9523.170a0220.5f114.77b0@mx.google.com>
-Date: Sun, 17 Dec 2023 16:41:07 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB0C6FA3;
+	Mon, 18 Dec 2023 06:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R961e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=35;SR=0;TI=SMTPD_---0VygHaxt_1702881922;
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VygHaxt_1702881922)
+          by smtp.aliyun-inc.com;
+          Mon, 18 Dec 2023 14:45:26 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: bp@alien8.de,
+	rafael@kernel.org,
+	wangkefeng.wang@huawei.com,
+	tanxiaofei@huawei.com,
+	mawupeng1@huawei.com,
+	tony.luck@intel.com,
+	linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com,
+	james.morse@arm.com,
+	gregkh@linuxfoundation.org,
+	will@kernel.org,
+	jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org,
+	acpica-devel@lists.linuxfoundation.org,
+	stable@vger.kernel.org,
+	x86@kernel.org,
+	xueshuai@linux.alibaba.com,
+	justin.he@arm.com,
+	ardb@kernel.org,
+	ying.huang@intel.com,
+	ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com,
+	lenb@kernel.org,
+	hpa@zytor.com,
+	robert.moore@intel.com,
+	lvying6@huawei.com,
+	xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: [PATCH v10 0/4] ACPI: APEI: handle synchronous errors in task work with proper si_code
+Date: Mon, 18 Dec 2023 14:45:17 +0800
+Message-Id: <20231218064521.37324-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.15.143-70-gfaee57311dcc8
-Subject: stable-rc/queue/5.15 baseline: 108 runs,
- 3 regressions (v5.15.143-70-gfaee57311dcc8)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
+
+## Changes Log
+
+changes since v9:
+- split patch 2 to address exactly one issue in one patch (per Borislav)
+- rewrite commit log according to template (per Borislav)
+- pickup reviewed-by tag of patch 1 from James Morse
+- alloc and free twcb through gen_pool_{alloc, free) (Per James)
+- rewrite cover letter
+
+changes since v8:
+- remove the bug fix tag of patch 2 (per Jarkko Sakkinen)
+- remove the declaration of memory_failure_queue_kick (per Naoya Horiguchi)
+- rewrite the return value comments of memory_failure (per Naoya Horiguchi)
+
+changes since v7:
+- rebase to Linux v6.6-rc2 (no code changed)
+- rewritten the cover letter to explain the motivation of this patchset
+
+changes since v6:
+- add more explicty error message suggested by Xiaofei
+- pick up reviewed-by tag from Xiaofei
+- pick up internal reviewed-by tag from Baolin
+
+changes since v5 by addressing comments from Kefeng:
+- document return value of memory_failure()
+- drop redundant comments in call site of memory_failure() 
+- make ghes_do_proc void and handle abnormal case within it
+- pick up reviewed-by tag from Kefeng Wang 
+
+changes since v4 by addressing comments from Xiaofei:
+- do a force kill only for abnormal sync errors
+
+changes since v3 by addressing comments from Xiaofei:
+- do a force kill for abnormal memory failure error such as invalid PA,
+unexpected severity, OOM, etc
+- pcik up tested-by tag from Ma Wupeng
+
+changes since v2 by addressing comments from Naoya:
+- rename mce_task_work to sync_task_work
+- drop ACPI_HEST_NOTIFY_MCE case in is_hest_sync_notify()
+- add steps to reproduce this problem in cover letter
+
+changes since v1:
+- synchronous events by notify type
+- Link: https://lore.kernel.org/lkml/20221206153354.92394-3-xueshuai@linux.alibaba.com/
+
+## Cover Letter
+
+There are two major types of uncorrected recoverable (UCR) errors :
+
+- Synchronous error: The error is detected and raised at the point of the
+  consumption in the execution flow, e.g. when a CPU tries to access
+  a poisoned cache line. The CPU will take a synchronous error exception
+  such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+  Exception (MCE) on X86. OS requires to take action (for example, offline
+  failure page/kill failure thread) to recover this uncorrectable error.
+
+- Asynchronous error: The error is detected out of processor execution
+  context, e.g. when an error is detected by a background scrubber. Some data
+  in the memory are corrupted. But the data have not been consumed. OS is
+  optional to take action to recover this uncorrectable error.
+
+Currently, both synchronous and asynchronous errors are queued by
+ghes_handle_memory_failure() with flag 0, and handled by a dedicated kernel
+thread in a work queue on the ARM64 platform. As a result, the memory
+failure recovery sends SIBUS with wrong BUS_MCEERR_AO si_code for
+synchronous errors in early kill mode. The main problem is that the
+memory_failure() work is handled in kthread context but not the user-space
+process context which is accessing the corrupt memory location, so it will
+send SIGBUS with BUS_MCEERR_AO si_code to the user-space process instead of
+BUS_MCEERR_AR in kill_proc().
+
+Fix the problem by:
+- Patch 1: seting memory_failure() flags as MF_ACTION_REQUIRED on synchronous
+	   errors.
+- Patch 2: performing a force kill if no memory_failure() work is queued for
+	   synchronous errors.
+- Patch 3: a minor comments improve.
+- Patch 4: queueing memory_failure() as a task_work so that the current
+	   context in memory_failure() exactly belongs to the process
+	   consuming poison data.
+
+Lv Ying and XiuQi from Huawei also proposed to address similar problem[2][4].
+Acknowledge to discussion with them.
+
+## Steps to Reproduce This Problem
+
+To reproduce this problem:
+
+	# STEP1: enable early kill mode
+	#sysctl -w vm.memory_failure_early_kill=1
+	vm.memory_failure_early_kill = 1
+
+	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+	#einj_mem_uc single
+	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+	injecting ...
+	triggering ...
+	signal 7 code 5 addr 0xffffb0d75000
+	page not present
+	Test passed
+
+The si_code (code 5) from einj_mem_uc indicates that it is BUS_MCEERR_AO error
+and it is not fact.
+
+After this patch set:
+
+	# STEP1: enable early kill mode
+	#sysctl -w vm.memory_failure_early_kill=1
+	vm.memory_failure_early_kill = 1
+
+	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+	#einj_mem_uc single
+	0: single   vaddr = 0xffffb0d75400 paddr = 4092d55b400
+	injecting ...
+	triggering ...
+	signal 7 code 4 addr 0xffffb0d75000
+	page not present
+	Test passed
+
+The si_code (code 4) from einj_mem_uc indicates that it is BUS_MCEERR_AR error
+as we expected.
+
+[1] Add ARMv8 RAS virtualization support in QEMU https://patchew.org/QEMU/20200512030609.19593-1-gengdongjiu@huawei.com/
+[2] https://lore.kernel.org/lkml/20221205115111.131568-3-lvying6@huawei.com/
+[3] https://lkml.kernel.org/r/20220914064935.7851-1-xueshuai@linux.alibaba.com
+[4] https://lore.kernel.org/lkml/20221209095407.383211-1-lvying6@huawei.com/
+
+Shuai Xue (4):
+  ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on
+    synchronous events
+  ACPI: APEI: send SIGBUS to current task if synchronous memory error
+    not recovered
+  mm: memory-failure: move memory_failure() return value documentation
+    to function declaration
+  ACPI: APEI: handle synchronous exceptions in task work
+
+ arch/x86/kernel/cpu/mce/core.c |   9 +--
+ drivers/acpi/apei/ghes.c       | 113 ++++++++++++++++++++++-----------
+ include/acpi/ghes.h            |   3 -
+ mm/memory-failure.c            |  22 ++-----
+ 4 files changed, 82 insertions(+), 65 deletions(-)
+
+-- 
+2.39.3
 
-stable-rc/queue/5.15 baseline: 108 runs, 3 regressions (v5.15.143-70-gfaee5=
-7311dcc8)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.15/ker=
-nel/v5.15.143-70-gfaee57311dcc8/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.15
-  Describe: v5.15.143-70-gfaee57311dcc8
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      faee57311dcc8e2c09f9f6d83c7e8342f498f616 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657f5f9eb23f080417e134b1
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657f5f9eb23f080417e134b4
-        failing since 25 days (last pass: v5.15.114-13-g095e387c3889, first=
- fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-17T20:59:53.894310  / # #
-
-    2023-12-17T20:59:53.994803  export SHELL=3D/bin/sh
-
-    2023-12-17T20:59:53.994902  #
-
-    2023-12-17T20:59:54.095301  / # export SHELL=3D/bin/sh. /lava-12295068/=
-environment
-
-    2023-12-17T20:59:54.095423  =
-
-
-    2023-12-17T20:59:54.195863  / # . /lava-12295068/environment/lava-12295=
-068/bin/lava-test-runner /lava-12295068/1
-
-    2023-12-17T20:59:54.196058  =
-
-
-    2023-12-17T20:59:54.208019  / # /lava-12295068/bin/lava-test-runner /la=
-va-12295068/1
-
-    2023-12-17T20:59:54.248386  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-17T20:59:54.267015  + cd /lav<8>[   15.972469] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12295068_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657f5f99b23f080417e13497
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657f5f99b23f080417e1349c
-        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
-t fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-17T20:52:20.775616  <8>[   16.070093] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 448517_1.5.2.4.1>
-    2023-12-17T20:52:20.880504  / # #
-    2023-12-17T20:52:20.982130  export SHELL=3D/bin/sh
-    2023-12-17T20:52:20.982735  #
-    2023-12-17T20:52:21.083719  / # export SHELL=3D/bin/sh. /lava-448517/en=
-vironment
-    2023-12-17T20:52:21.084328  =
-
-    2023-12-17T20:52:21.185330  / # . /lava-448517/environment/lava-448517/=
-bin/lava-test-runner /lava-448517/1
-    2023-12-17T20:52:21.186218  =
-
-    2023-12-17T20:52:21.190938  / # /lava-448517/bin/lava-test-runner /lava=
--448517/1
-    2023-12-17T20:52:21.258976  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/657f5f9d575c8572ace13574
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--70-gfaee57311dcc8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657f5f9d575c8572ace13579
-        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
-t fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-17T21:00:07.694360  / # #
-
-    2023-12-17T21:00:07.796369  export SHELL=3D/bin/sh
-
-    2023-12-17T21:00:07.796601  #
-
-    2023-12-17T21:00:07.897196  / # export SHELL=3D/bin/sh. /lava-12295065/=
-environment
-
-    2023-12-17T21:00:07.897440  =
-
-
-    2023-12-17T21:00:07.998174  / # . /lava-12295065/environment/lava-12295=
-065/bin/lava-test-runner /lava-12295065/1
-
-    2023-12-17T21:00:07.998597  =
-
-
-    2023-12-17T21:00:08.002354  / # /lava-12295065/bin/lava-test-runner /la=
-va-12295065/1
-
-    2023-12-17T21:00:08.044815  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-17T21:00:08.076356  + cd /lava-1229506<8>[   16.821339] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12295065_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
 
