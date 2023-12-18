@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2498A8170EE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E02AA817101
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B898B1F22FF5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE251C23198
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0931D127;
-	Mon, 18 Dec 2023 13:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D9F1D122;
+	Mon, 18 Dec 2023 13:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHfq9v+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gZD5ZpNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568BC129EFB;
-	Mon, 18 Dec 2023 13:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D07DBC433C7;
-	Mon, 18 Dec 2023 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1038129EFB;
+	Mon, 18 Dec 2023 13:53:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6597BC433C8;
+	Mon, 18 Dec 2023 13:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907547;
-	bh=fv1LUMeHn87FoDiC57ATkI2zkABPI0peecSWZ0LtO6Q=;
+	s=korg; t=1702907608;
+	bh=I1nnJAqNoLGtCmDvnvhthf0c8h/XsjshzV6O+tEv3YM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHfq9v+8piXfmYtxuRZ+QC6/ayMjJXqEIGqKbqGk/WehyynWXt7bti+XQoOpfOjWP
-	 PaC3Sf0IX7Z4KwgSAWumtwgCvZWlkMPsazSaP9qGnmP5BYH7SoX8z0AhOUHqmPnIYD
-	 OJxYDmgkLENHPNdIfSW4IDzrj3SG24d+zFrnKnv4=
+	b=gZD5ZpNu2q1XdP7Zjjs0yzHCFdHxl6iuGNF0SJlMVYjTNN5QlzszUVwMo/8fmmQtE
+	 DyyVZyZanfx9nzq5ZfnnGL/1J8dBFIFQrYVphWMYXD2YVogsQ/SFzDjn5FBltY3cwu
+	 wvKS7H+ReK/+sOwyUsCZtrlkRWWTly9QngJHhmwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 4.14 26/26] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 18/36] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
 Date: Mon, 18 Dec 2023 14:51:28 +0100
-Message-ID: <20231218135041.635307293@linuxfoundation.org>
+Message-ID: <20231218135042.498363556@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
+Fix the warning by adding rcu read lock.
 
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace_64_mprofile.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-throttle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-@@ -54,7 +54,7 @@ _GLOBAL(ftrace_caller)
- 	SAVE_10GPRS(22, r1)
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 853b1770df367..e58c03c504c10 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1383,6 +1383,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	std	r8, GPR1(r1)
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1410,6 +1411,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
+ 	}
++	rcu_read_unlock();
  
- 	/* Load special regs for save below */
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
+-- 
+2.43.0
+
 
 
 
