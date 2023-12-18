@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E53A8170DE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEE981711F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF8AD283AD7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73B041C22FE7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81FE1D122;
-	Mon, 18 Dec 2023 13:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A5A1D14D;
+	Mon, 18 Dec 2023 13:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFZOeNsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y69/7JsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF46129EFE;
-	Mon, 18 Dec 2023 13:51:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9732FC433C7;
-	Mon, 18 Dec 2023 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5511D13A;
+	Mon, 18 Dec 2023 13:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3E0C433C7;
+	Mon, 18 Dec 2023 13:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907506;
-	bh=dMnp+NDIBxBDwOQa3OUKypUAntvTEb9fZgL3C1j2Pg0=;
+	s=korg; t=1702907676;
+	bh=gG9qCcgMlVUOJf0TCn+qShp0q+KueRd5lItTUCK9x5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFZOeNsueISmd6VIIW2SA8TVsGGaVnK3NB6OxAI2A801M2xOUXw/3qNKx0NQvsX2+
-	 qvzEzvaNK8k/b0yDP4uOf8+S4PkQRfXwxPM813IAUihY5067jLoAVXspEZSjYXEMnM
-	 uiV/OC5KVl8NrbNZx9o6bfOA9w34royN6yh/+jzY=
+	b=y69/7JsU1VPxpYWtmoWuiGaoeI1snE1napZXgnDrjpUwKYSQGcjRdj1F8dL4//oqw
+	 39gNgRdKd7m71+I/AbzNF6W0jUAFghPBK0bFcid62OF/OIvfkWODvrK8j5nC4ZrC/v
+	 HDJasDMBlC3ypNSGfJk4xbDeE2JRKRPzZ4MypNYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 12/26] appletalk: Fix Use-After-Free in atalk_ioctl
+Subject: [PATCH 4.19 04/36] atm: solos-pci: Fix potential deadlock on &cli_queue_lock
 Date: Mon, 18 Dec 2023 14:51:14 +0100
-Message-ID: <20231218135041.136950050@linuxfoundation.org>
+Message-ID: <20231218135042.038346379@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
+[ Upstream commit d5dba32b8f6cb39be708b726044ba30dbc088b30 ]
 
-Because atalk_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with atalk_recvmsg().
-A use-after-free for skb occurs with the following flow.
-```
-atalk_ioctl() -> skb_peek()
-atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-```
-Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
+As &card->cli_queue_lock is acquired under softirq context along the
+following call chain from solos_bh(), other acquisition of the same
+lock inside process context should disable at least bh to avoid double
+lock.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+<deadlock #1>
+console_show()
+--> spin_lock(&card->cli_queue_lock)
+<interrupt>
+   --> solos_bh()
+   --> spin_lock(&card->cli_queue_lock)
+
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
+
+To prevent the potential deadlock, the patch uses spin_lock_bh()
+on the card->cli_queue_lock under process context code consistently
+to prevent the possible deadlock scenario.
+
+Fixes: 9c54004ea717 ("atm: Driver for Solos PCI ADSL2+ card.")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/appletalk/ddp.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/atm/solos-pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -1810,15 +1810,14 @@ static int atalk_ioctl(struct socket *so
- 		break;
- 	}
- 	case TIOCINQ: {
--		/*
--		 * These two are safe on a single CPU system as only
--		 * user tasks fiddle here
--		 */
--		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
-+		struct sk_buff *skb;
- 		long amount = 0;
+diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
+index 17283018269f0..95d8f1b8cf75f 100644
+--- a/drivers/atm/solos-pci.c
++++ b/drivers/atm/solos-pci.c
+@@ -458,9 +458,9 @@ static ssize_t console_show(struct device *dev, struct device_attribute *attr,
+ 	struct sk_buff *skb;
+ 	unsigned int len;
  
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
-+		skb = skb_peek(&sk->sk_receive_queue);
- 		if (skb)
- 			amount = skb->len - sizeof(struct ddpehdr);
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		rc = put_user(amount, (int __user *)argp);
- 		break;
- 	}
+-	spin_lock(&card->cli_queue_lock);
++	spin_lock_bh(&card->cli_queue_lock);
+ 	skb = skb_dequeue(&card->cli_queue[SOLOS_CHAN(atmdev)]);
+-	spin_unlock(&card->cli_queue_lock);
++	spin_unlock_bh(&card->cli_queue_lock);
+ 	if(skb == NULL)
+ 		return sprintf(buf, "No data.\n");
+ 
+-- 
+2.43.0
+
 
 
 
