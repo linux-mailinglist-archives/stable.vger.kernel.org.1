@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C15D817590
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:40:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA73817594
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B35FA1C24C5C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:40:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D40E1F2122E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6329972074;
-	Mon, 18 Dec 2023 15:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F50F4988C;
+	Mon, 18 Dec 2023 15:36:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA60172042
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91467347A
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-28b4e6579a9so622775a91.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:36:32 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d32c5ce32eso30917275ad.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:36:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913792; x=1703518592;
+        d=1e100.net; s=20230601; t=1702913795; x=1703518595;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hY9buF8qYAujBsSnALRkjI4l6438w+pdJTtuP7a+vuM=;
-        b=K9BBp/TZK407BXhZIHYDrrw21/iBJIqiogbpKJCYCbUx+EpmKI0vByYZH2f9tbGlpl
-         4i8QABi9dsMLC0lkvP5KOzskim6LhNvCDUjp3E5JN2O97M4n4w5Yy8TcW69bHdyA+WK9
-         3NRY1Y7VWUKZijM3CMbLCv+dJmWkqKtX4OJD20BbxbI68PcxhC+QxwjWBxs//UCJQKIv
-         3jVFpK3nZtqQZ7aI+e1C2g6KknZyv0kArlzRKfrOpH0fH6qxLm3CVqFlQOrN7muLhOfO
-         VZF+L4axx8R0x668uzIOXnEEG3qTwietcc5c8c/APJ4FWmCj1NuigXyUgdMPHe7FNo3g
-         d4Og==
-X-Gm-Message-State: AOJu0YwBsXR0Y5YGa3o8Mph6hO4GMvki/IIQuXwz8TpRuZvsVCV7Rksm
-	4nr42aRf7HkbhwWpMkYABQg=
-X-Google-Smtp-Source: AGHT+IErKlNjOMzK3pivchV4SmxA14/VpDPoyNz7UDz6Kj5SHtrnRfV/juFJrnkZSl2mW05epZN2pA==
-X-Received: by 2002:a17:90b:37cf:b0:28b:1868:9924 with SMTP id nc15-20020a17090b37cf00b0028b18689924mr2296739pjb.64.1702913791592;
-        Mon, 18 Dec 2023 07:36:31 -0800 (PST)
+        bh=dzkV90arvSTS9B1NuJj/xSw9o39hMjMUH7bFrogmpZo=;
+        b=su3lohk994cZueFYr3KxbxW4cFeDq1Ro6osQQoACotagWpGNltZ2YnHk8gq+XwgYzK
+         mzpuGWHmk/bO1tJ19aaFRl+tHa/o/+HTGWP6/2K2Hew2eM6cOT20dEszBQsOZrT98NVU
+         hSqXU0YJ8QQljF4EcKWgmZs/lfgWN1UR4P+KbGLaWR1Zo/xIALSnd+VccgaCqlGkB53B
+         +6JqmR0JdoYb+iUMRK6l6fvuqOr2vXlB5SqpKZTXIg4VbElBQME1/xzcWoAgHr3Vj2K4
+         wn0CFtnL7QZUr8U0KKvWr+n4eXg6i4hR/A19uZWK/2esvT37qrLjK7I3B16cobeWvzNB
+         JcTw==
+X-Gm-Message-State: AOJu0Ywu/0eTo9nf/dSpCMHe8VJ9gm8PLhVOzg3tFJzXL3SLjnuZBEED
+	AkMQTxrB8eFXn0oSfupqlFc=
+X-Google-Smtp-Source: AGHT+IFq3eot6cxGTiybCo52P1R6HarfppzV14c+Qea97xMHFiAB/W+RTOVCgPMIItrExpYa74MV+A==
+X-Received: by 2002:a17:90b:4b0e:b0:28b:4c9f:150 with SMTP id lx14-20020a17090b4b0e00b0028b4c9f0150mr4731566pjb.16.1702913795168;
+        Mon, 18 Dec 2023 07:36:35 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.36.29
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.36.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:36:31 -0800 (PST)
+        Mon, 18 Dec 2023 07:36:34 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: smfrench@gmail.com,
 	Hyunchul Lee <hyc.lee@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 022/154] ksmbd: smbd: fix missing client's memory region invalidation
-Date: Tue, 19 Dec 2023 00:32:42 +0900
-Message-Id: <20231218153454.8090-23-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 023/154] ksmbd: smbd: validate buffer descriptor structures
+Date: Tue, 19 Dec 2023 00:32:43 +0900
+Message-Id: <20231218153454.8090-24-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -66,137 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 From: Hyunchul Lee <hyc.lee@gmail.com>
 
-[ Upstream commit 2fd5dcb1c8ef96c9f0fa8bda53ca480524b80ae7 ]
+[ Upstream commit 6d896d3b44cf64ab9b2483697e222098e7b72f70 ]
 
-if the Channel of a SMB2 WRITE request is
-SMB2_CHANNEL_RDMA_V1_INVALIDTE, a client
-does not invalidate its memory regions but
-ksmbd must do it by sending a SMB2 WRITE response
-with IB_WR_SEND_WITH_INV.
-
-But if errors occur while processing a SMB2
-READ/WRITE request, ksmbd sends a response
-with IB_WR_SEND. So a client could use memory
-regions already in use.
+Check ChannelInfoOffset and ChannelInfoLength
+to validate buffer descriptor structures.
+And add a debug log to print the structures'
+content.
 
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Hyunchul Lee <hyc.lee@gmail.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/smb2pdu.c | 71 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 26 deletions(-)
+ fs/ksmbd/smb2pdu.c | 36 ++++++++++++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 6 deletions(-)
 
 diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 7b7b620d2d66..51198d3b4bb6 100644
+index 51198d3b4bb6..99ae8f3f3d92 100644
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -6203,25 +6203,33 @@ static noinline int smb2_read_pipe(struct ksmbd_work *work)
- 	return err;
- }
- 
--static ssize_t smb2_read_rdma_channel(struct ksmbd_work *work,
--				      struct smb2_read_req *req, void *data_buf,
--				      size_t length)
-+static int smb2_set_remote_key_for_rdma(struct ksmbd_work *work,
-+					struct smb2_buffer_desc_v1 *desc,
-+					__le32 Channel,
-+					__le16 ChannelInfoOffset,
-+					__le16 ChannelInfoLength)
+@@ -6209,13 +6209,26 @@ static int smb2_set_remote_key_for_rdma(struct ksmbd_work *work,
+ 					__le16 ChannelInfoOffset,
+ 					__le16 ChannelInfoLength)
  {
--	struct smb2_buffer_desc_v1 *desc =
--		(struct smb2_buffer_desc_v1 *)&req->Buffer[0];
--	int err;
--
++	unsigned int i, ch_count;
++
  	if (work->conn->dialect == SMB30_PROT_ID &&
--	    req->Channel != SMB2_CHANNEL_RDMA_V1)
-+	    Channel != SMB2_CHANNEL_RDMA_V1)
+ 	    Channel != SMB2_CHANNEL_RDMA_V1)
  		return -EINVAL;
  
--	if (req->ReadChannelInfoOffset == 0 ||
--	    le16_to_cpu(req->ReadChannelInfoLength) < sizeof(*desc))
-+	if (ChannelInfoOffset == 0 ||
-+	    le16_to_cpu(ChannelInfoLength) < sizeof(*desc))
+-	if (ChannelInfoOffset == 0 ||
+-	    le16_to_cpu(ChannelInfoLength) < sizeof(*desc))
++	ch_count = le16_to_cpu(ChannelInfoLength) / sizeof(*desc);
++	if (ksmbd_debug_types & KSMBD_DEBUG_RDMA) {
++		for (i = 0; i < ch_count; i++) {
++			pr_info("RDMA r/w request %#x: token %#x, length %#x\n",
++				i,
++				le32_to_cpu(desc[i].token),
++				le32_to_cpu(desc[i].length));
++		}
++	}
++	if (ch_count != 1) {
++		ksmbd_debug(RDMA, "RDMA multiple buffer descriptors %d are not supported yet\n",
++			    ch_count);
  		return -EINVAL;
++	}
  
  	work->need_invalidate_rkey =
--		(req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE);
-+		(Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE);
- 	work->remote_key = le32_to_cpu(desc->token);
-+	return 0;
-+}
+ 		(Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE);
+@@ -6273,9 +6286,15 @@ int smb2_read(struct ksmbd_work *work)
+ 
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE ||
+ 	    req->Channel == SMB2_CHANNEL_RDMA_V1) {
++		unsigned int ch_offset = le16_to_cpu(req->ReadChannelInfoOffset);
 +
-+static ssize_t smb2_read_rdma_channel(struct ksmbd_work *work,
-+				      struct smb2_read_req *req, void *data_buf,
-+				      size_t length)
-+{
-+	struct smb2_buffer_desc_v1 *desc =
-+		(struct smb2_buffer_desc_v1 *)&req->Buffer[0];
-+	int err;
- 
- 	err = ksmbd_conn_rdma_write(work->conn, data_buf, length,
- 				    le32_to_cpu(desc->token),
-@@ -6263,6 +6271,18 @@ int smb2_read(struct ksmbd_work *work)
- 		return smb2_read_pipe(work);
- 	}
- 
-+	if (req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE ||
-+	    req->Channel == SMB2_CHANNEL_RDMA_V1) {
-+		err = smb2_set_remote_key_for_rdma(work,
-+						   (struct smb2_buffer_desc_v1 *)
-+						   &req->Buffer[0],
-+						   req->Channel,
-+						   req->ReadChannelInfoOffset,
-+						   req->ReadChannelInfoLength);
-+		if (err)
++		if (ch_offset < offsetof(struct smb2_read_req, Buffer)) {
++			err = -EINVAL;
 +			goto out;
-+	}
++		}
+ 		err = smb2_set_remote_key_for_rdma(work,
+ 						   (struct smb2_buffer_desc_v1 *)
+-						   &req->Buffer[0],
++						   ((char *)req + ch_offset),
+ 						   req->Channel,
+ 						   req->ReadChannelInfoOffset,
+ 						   req->ReadChannelInfoLength);
+@@ -6516,11 +6535,16 @@ int smb2_write(struct ksmbd_work *work)
+ 
+ 	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
+ 	    req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE) {
+-		if (req->Length != 0 || req->DataOffset != 0)
+-			return -EINVAL;
++		unsigned int ch_offset = le16_to_cpu(req->WriteChannelInfoOffset);
 +
- 	fp = ksmbd_lookup_fd_slow(work, le64_to_cpu(req->VolatileFileId),
- 				  le64_to_cpu(req->PersistentFileId));
- 	if (!fp) {
-@@ -6448,21 +6468,6 @@ static ssize_t smb2_write_rdma_channel(struct ksmbd_work *work,
- 
- 	desc = (struct smb2_buffer_desc_v1 *)&req->Buffer[0];
- 
--	if (work->conn->dialect == SMB30_PROT_ID &&
--	    req->Channel != SMB2_CHANNEL_RDMA_V1)
--		return -EINVAL;
--
--	if (req->Length != 0 || req->DataOffset != 0)
--		return -EINVAL;
--
--	if (req->WriteChannelInfoOffset == 0 ||
--	    le16_to_cpu(req->WriteChannelInfoLength) < sizeof(*desc))
--		return -EINVAL;
--
--	work->need_invalidate_rkey =
--		(req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE);
--	work->remote_key = le32_to_cpu(desc->token);
--
- 	data_buf = kvmalloc(length, GFP_KERNEL | __GFP_ZERO);
- 	if (!data_buf)
- 		return -ENOMEM;
-@@ -6509,6 +6514,20 @@ int smb2_write(struct ksmbd_work *work)
- 		return smb2_write_pipe(work);
- 	}
- 
-+	if (req->Channel == SMB2_CHANNEL_RDMA_V1 ||
-+	    req->Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE) {
-+		if (req->Length != 0 || req->DataOffset != 0)
-+			return -EINVAL;
-+		err = smb2_set_remote_key_for_rdma(work,
-+						   (struct smb2_buffer_desc_v1 *)
-+						   &req->Buffer[0],
-+						   req->Channel,
-+						   req->WriteChannelInfoOffset,
-+						   req->WriteChannelInfoLength);
-+		if (err)
++		if (req->Length != 0 || req->DataOffset != 0 ||
++		    ch_offset < offsetof(struct smb2_write_req, Buffer)) {
++			err = -EINVAL;
 +			goto out;
-+	}
-+
- 	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
- 		ksmbd_debug(SMB, "User does not have write permission\n");
- 		err = -EACCES;
++		}
+ 		err = smb2_set_remote_key_for_rdma(work,
+ 						   (struct smb2_buffer_desc_v1 *)
+-						   &req->Buffer[0],
++						   ((char *)req + ch_offset),
+ 						   req->Channel,
+ 						   req->WriteChannelInfoOffset,
+ 						   req->WriteChannelInfoLength);
 -- 
 2.25.1
 
