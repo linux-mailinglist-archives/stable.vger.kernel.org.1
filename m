@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E779E817151
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2FE817221
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17CE91C23E9C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6194B2309C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5102F129ED2;
-	Mon, 18 Dec 2023 13:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2669D5BF8E;
+	Mon, 18 Dec 2023 14:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpTin9mS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr1fqxnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F72129EFB;
-	Mon, 18 Dec 2023 13:56:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB7EC433C8;
-	Mon, 18 Dec 2023 13:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11BB5BF84;
+	Mon, 18 Dec 2023 14:03:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F4BC433C7;
+	Mon, 18 Dec 2023 14:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907788;
-	bh=LPuYdNyxPY40nW7Kh7ZOE//UAted6d9Q1mz0B9IMRNw=;
+	s=korg; t=1702908212;
+	bh=SPTudHayVUA2aV9c+6+m9FyFzrpRinaPUGLoLoTCw+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YpTin9mSB0DJacyu5oIMje82KpM0OYZLHc+pJsl0ak2cV0j4zfhhoLXN+hHN3/3VE
-	 b5wEj99ZWX1I87JAWHWsSpmHTQI6QickI/AbyuyiJWTi1Q2h/N2CPW3vGWMq9kI6gT
-	 vJVeF1emcWCfEKRXs+WSQfq7OWAgORvyjkD6/LPE=
+	b=Rr1fqxnF75Bk/EKat5I9I1ZF+yIYQ14VstIK7OTVINYIAJyO0CQ+lReEuXv3TdWOh
+	 HaD/enFD3wzolMRzHpGOfEhUDzeqi4AIfdNfkiN0pE/TI8j8KZRud30BLN0BMD2IVm
+	 fk6XVikYPJco9XVQZsc/D2mX4LcU/iWQ9gXHt7Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hartmut Knaack <knaack.h@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 047/106] ALSA: hda/realtek: Apply mute LED quirk for HP15-db
+	Li Nan <linan122@huawei.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 095/166] nbd: fold nbd config initialization into nbd_alloc_config()
 Date: Mon, 18 Dec 2023 14:51:01 +0100
-Message-ID: <20231218135057.042026634@linuxfoundation.org>
+Message-ID: <20231218135109.240494204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +54,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hartmut Knaack <knaack.h@gmx.de>
+From: Li Nan <linan122@huawei.com>
 
-commit 9b726bf6ae11add6a7a52883a21f90ff9cbca916 upstream.
+[ Upstream commit 1b59860540a4018e8071dc18d4893ec389506b7d ]
 
-The HP laptop 15-db0403ng uses the ALC236 codec and controls the mute
-LED using COEF 0x07 index 1.
-Sound card subsystem: Hewlett-Packard Company Device [103c:84ae]
+There are no functional changes, make the code cleaner and prepare to
+fix null-ptr-dereference while accessing 'nbd->config'.
 
-Use the existing quirk for this model.
-
-Signed-off-by: Hartmut Knaack <knaack.h@gmx.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/e61815d0-f1c7-b164-e49d-6ca84771476a@gmx.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://lore.kernel.org/r/20231116162316.1740402-2-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/nbd.c | 41 +++++++++++++++++++----------------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9577,6 +9577,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
-+	SND_PCI_QUIRK(0x103c, 0x84ae, "HP 15-db0403ng", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x84da, "HP OMEN dc0019-ur", ALC295_FIXUP_HP_OMEN),
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 855fdf5c3b4ea..02f844832d912 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1530,17 +1530,20 @@ static int nbd_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 	return error;
+ }
+ 
+-static struct nbd_config *nbd_alloc_config(void)
++static int nbd_alloc_and_init_config(struct nbd_device *nbd)
+ {
+ 	struct nbd_config *config;
+ 
++	if (WARN_ON(nbd->config))
++		return -EINVAL;
++
+ 	if (!try_module_get(THIS_MODULE))
+-		return ERR_PTR(-ENODEV);
++		return -ENODEV;
+ 
+ 	config = kzalloc(sizeof(struct nbd_config), GFP_NOFS);
+ 	if (!config) {
+ 		module_put(THIS_MODULE);
+-		return ERR_PTR(-ENOMEM);
++		return -ENOMEM;
+ 	}
+ 
+ 	atomic_set(&config->recv_threads, 0);
+@@ -1548,7 +1551,10 @@ static struct nbd_config *nbd_alloc_config(void)
+ 	init_waitqueue_head(&config->conn_wait);
+ 	config->blksize_bits = NBD_DEF_BLKSIZE_BITS;
+ 	atomic_set(&config->live_connections, 0);
+-	return config;
++	nbd->config = config;
++	refcount_set(&nbd->config_refs, 1);
++
++	return 0;
+ }
+ 
+ static int nbd_open(struct gendisk *disk, blk_mode_t mode)
+@@ -1567,21 +1573,17 @@ static int nbd_open(struct gendisk *disk, blk_mode_t mode)
+ 		goto out;
+ 	}
+ 	if (!refcount_inc_not_zero(&nbd->config_refs)) {
+-		struct nbd_config *config;
+-
+ 		mutex_lock(&nbd->config_lock);
+ 		if (refcount_inc_not_zero(&nbd->config_refs)) {
+ 			mutex_unlock(&nbd->config_lock);
+ 			goto out;
+ 		}
+-		config = nbd_alloc_config();
+-		if (IS_ERR(config)) {
+-			ret = PTR_ERR(config);
++		ret = nbd_alloc_and_init_config(nbd);
++		if (ret) {
+ 			mutex_unlock(&nbd->config_lock);
+ 			goto out;
+ 		}
+-		nbd->config = config;
+-		refcount_set(&nbd->config_refs, 1);
++
+ 		refcount_inc(&nbd->refs);
+ 		mutex_unlock(&nbd->config_lock);
+ 		if (max_part)
+@@ -1990,22 +1992,17 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
+ 		pr_err("nbd%d already in use\n", index);
+ 		return -EBUSY;
+ 	}
+-	if (WARN_ON(nbd->config)) {
+-		mutex_unlock(&nbd->config_lock);
+-		nbd_put(nbd);
+-		return -EINVAL;
+-	}
+-	config = nbd_alloc_config();
+-	if (IS_ERR(config)) {
++
++	ret = nbd_alloc_and_init_config(nbd);
++	if (ret) {
+ 		mutex_unlock(&nbd->config_lock);
+ 		nbd_put(nbd);
+ 		pr_err("couldn't allocate config\n");
+-		return PTR_ERR(config);
++		return ret;
+ 	}
+-	nbd->config = config;
+-	refcount_set(&nbd->config_refs, 1);
+-	set_bit(NBD_RT_BOUND, &config->runtime_flags);
+ 
++	config = nbd->config;
++	set_bit(NBD_RT_BOUND, &config->runtime_flags);
+ 	ret = nbd_genl_size_set(info, nbd);
+ 	if (ret)
+ 		goto out;
+-- 
+2.43.0
+
 
 
 
