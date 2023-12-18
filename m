@@ -1,293 +1,261 @@
-Return-Path: <stable+bounces-7453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754FA81729E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF0A817367
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E55286966
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE65CB24344
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840E43A1D8;
-	Mon, 18 Dec 2023 14:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A5637894;
+	Mon, 18 Dec 2023 14:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="UxgpPSOo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d3if3aAs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB93814F63
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:08:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6d411636a95so1146674b3a.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:08:24 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8235537860
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:17:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--alpic.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3335df64539so2528915f8f.3
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:17:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702908504; x=1703513304; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wcMD2d+dqpE7HvHjXD40MERSZYDFTTl5IjlEXmZFjgI=;
-        b=UxgpPSOo5Py/LlDXfXpxf+VKRGLMzcIPJpnB+K8KetN/MO+vroy/rDtDpp9BUohLog
-         K1eRmYtHylW1cKzQ4D5xXbGYJ8lxbKgXZ3WWymWtVjQ3bMMZKjQOZICNSo6s/XkXIveS
-         PtUuIB7qV1e+HwQK1mnsYx1s/Yo8YfJjNTu1dVDfUi0a7HYbabiv6angKqnxFiHjUDPR
-         SQaQ9JTtIvEiV1n5e4bojWRmpXxPqo0UVNyqptdA0YGQhQ3ymATZRJyE9BKv+RJNYJYY
-         V5kaJMPSgrF8k9A0H9eSkc+jqj1fJZLQMV7QvLpicJuhTwdLoxQtalJrGHHITDukxCnj
-         s5Rg==
+        d=google.com; s=20230601; t=1702909045; x=1703513845; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=44dw+1MbFrV8dm3vgBswQyvwS3Dp0mHymbgWSDxJ4b4=;
+        b=d3if3aAsu+tGgN2rNVliPhRAiwEdSPGcaNq0qf/Aab8oi84WbRt+aDjWHFeFuBlXMm
+         1kF1rd9kGiIJR69pJZLpj7g2oHDxyiZZuRteWfeIL/CGCDSyqCBClR4xbdcDNpBpUaq7
+         b3VsB53xNeDIYYpkLKoFR59toiyl6Nv5s/EDKtWrd3/2uTfl9kKHZKneiSan/y//Bzco
+         bO7PgoB6+mXybiKUL9Ldyen6XkOJzdJMaxUB3Vw1Xt86RRzGXdelUwZSEsrRGdojNuqS
+         eaO210dgIoGPjtj9wcbCL7UGzDiBQezGc6Ft5Lc45tuCPG/xjgnQsmn46041pb/ltBi6
+         1t4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702908504; x=1703513304;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wcMD2d+dqpE7HvHjXD40MERSZYDFTTl5IjlEXmZFjgI=;
-        b=tn7kkbu9mibKUF8PNWu4Hq3NTeAUMRNaTnd3KzCbZIYzD5keL1RwgxHKOY1uS+XlCm
-         LkAqMcMaGJGzGL2TGCm5WkYX3fbJ3cvkttO+CuhlECigPtYMes6tiN8V2eWfs1H2LEmE
-         6k1kX+BTi8tMOd6YMk73OW0ETmdG1NeN34unH46SZk7iLBvAtleMssvTjHxLkYoH3J93
-         qbqnnrML6pvWcH9jEwgNPKm103eU1vJCM4kf3YcDsFzuKYdY3zTFQeG5Swfg6WCrDimu
-         AlIhfaEokhpsfoGVdDLlZm7CKO39FG5XuUxmv+SuC3FuumUh7JJk0fcbfW7Siht0jx08
-         YBWw==
-X-Gm-Message-State: AOJu0Yyq6ma7/R3d+LCDvjl6NpqAwm30EjQUQJnyhVpDxY4V2onKn9pR
-	Gtb7MFhWOApKze5+XArJ1pUouIhakCF6aVxD/T8=
-X-Google-Smtp-Source: AGHT+IFNYOXvoCIB9GS6C46rwYocedWT4oy58UG4TKl/PPdwr9hMJCV7iqhz+XLasQIKr0grBpDk0g==
-X-Received: by 2002:a05:6a20:ba7:b0:18f:d9ed:fcda with SMTP id i39-20020a056a200ba700b0018fd9edfcdamr17633189pzh.13.1702908503654;
-        Mon, 18 Dec 2023 06:08:23 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id r3-20020aa79883000000b006cbb65edcbfsm18792753pfl.12.2023.12.18.06.08.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 06:08:23 -0800 (PST)
-Message-ID: <65805257.a70a0220.2219b.84de@mx.google.com>
-Date: Mon, 18 Dec 2023 06:08:23 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1702909045; x=1703513845;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=44dw+1MbFrV8dm3vgBswQyvwS3Dp0mHymbgWSDxJ4b4=;
+        b=V4ubQotusq8EQ0cCrfVZR3OmG0DKhXtGzr7j+kb2LWgV12BpwCgbbzAfis9V/Ct5k1
+         1xK4pAVJ8BL29Zo5PFZrYo6nMxu38JH60jP+6mb6ep6oYAwLaGF4nb/OtvEVVKd0rmk0
+         4m2QAyOjETssrsy9JRtcwFuddW3WJo/+DgiYxI6jmB/w6i/nX9RXOgNtxoYN1oU6u84H
+         Se85G682Vnd3e7EDA0cZqBxs59Yp75WT6QrYB/8deyoNU8Vop0SoynAksiNwjAAZloH5
+         yizMp36chrp6qpfsPrhk2FL22H1H+Y3UuZ4/rrlc87deA+2c7LjV/N+DbXk7ugp5trC/
+         xsWA==
+X-Gm-Message-State: AOJu0YxXa78kDjCaW/9gocfe1cxUuOKC6ett+ITrtJtSoJDmWExbOyrR
+	0CftKijW1cvjt418rfMMRmB9lam/8w==
+X-Google-Smtp-Source: AGHT+IGrzpN6d3kxEjH5SGgsV7I6GOM5TxLiko/VpzRBwSB3KAzF5SxT0a1LDJMp1jF3r1F8JbdXhGQb+w==
+X-Received: from alpic.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:1bf2])
+ (user=alpic job=sendgmr) by 2002:a5d:47ca:0:b0:336:5c04:90da with SMTP id
+ o10-20020a5d47ca000000b003365c0490damr17367wrc.6.1702909044844; Mon, 18 Dec
+ 2023 06:17:24 -0800 (PST)
+Date: Mon, 18 Dec 2023 15:16:45 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.15.143-84-g335ba9d04eedc
-Subject: stable-rc/queue/5.15 baseline: 86 runs,
- 3 regressions (v5.15.143-84-g335ba9d04eedc)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231218141645.2548743-1-alpic@google.com>
+Subject: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
+From: Alfred Piccioni <alpic@google.com>
+To: Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Eric Paris <eparis@parisplace.org>
+Cc: stable@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alfred Piccioni <alpic@google.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
+
+However, if a 32-bit process is running on a 64-bit kernel, it emits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
+
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
+
+This patch introduces a new hook, security_file_ioctl_compat, that is
+called from the compat ioctl syscal. All current LSMs have been changed
+to support this hook.
+
+Reviewing the three places where we are currently using
+security_file_ioctl, it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
+
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Cc: stable@vger.kernel.org
+---
+ fs/ioctl.c                    |  3 +--
+ include/linux/lsm_hook_defs.h |  2 ++
+ include/linux/security.h      |  7 +++++++
+ security/security.c           | 17 +++++++++++++++++
+ security/selinux/hooks.c      | 26 ++++++++++++++++++++++++++
+ security/smack/smack_lsm.c    |  1 +
+ security/tomoyo/tomoyo.c      |  1 +
+ 7 files changed, 55 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ioctl.c b/fs/ioctl.c
+index f5fd99d6b0d4..76cf22ac97d7 100644
+--- a/fs/ioctl.c
++++ b/fs/ioctl.c
+@@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
+ 	if (!f.file)
+ 		return -EBADF;
+ 
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out;
+ 
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index ac962c4cb44b..626aa8cf930d 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, struct file *file)
+ LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
+ LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
+ 	 unsigned long arg)
++LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
++	 unsigned long arg)
+ LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
+ LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
+ 	 unsigned long prot, unsigned long flags)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 5f16eecde00b..22a82b7c59f1 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -389,6 +389,7 @@ int security_file_permission(struct file *file, int mask);
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -987,6 +988,12 @@ static inline int security_file_ioctl(struct file *file, unsigned int cmd,
+ 	return 0;
+ }
+ 
++static inline int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++				      unsigned long arg)
++{
++	return 0;
++}
++
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+ {
+diff --git a/security/security.c b/security/security.c
+index 23b129d482a7..5c16ffc99b1e 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2648,6 +2648,23 @@ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ }
+ EXPORT_SYMBOL_GPL(security_file_ioctl);
+ 
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in 32-bit compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit processes
++ * running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
++EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
++
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 2aa0e219d721..de96d156e6ea 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3731,6 +3731,31 @@ static int selinux_file_ioctl(struct file *file, unsigned int cmd,
+ 	return error;
+ }
+ 
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	// If we are in a 64-bit kernel running 32-bit userspace, we need to make
++	// sure we don't compare 32-bit flags to 64-bit flags.
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec __ro_after_init;
+ 
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -7036,6 +7061,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 65130a791f57..1f1ea8529421 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4973,6 +4973,7 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
+index 25006fddc964..298d182759c2 100644
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -568,6 +568,7 @@ static struct security_hook_list tomoyo_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
+
+base-commit: 196e95aa8305aecafc4e1857b7d3eff200d953b6
+-- 
+2.43.0.472.g3155946c3a-goog
 
-stable-rc/queue/5.15 baseline: 86 runs, 3 regressions (v5.15.143-84-g335ba9=
-d04eedc)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.15/ker=
-nel/v5.15.143-84-g335ba9d04eedc/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.15
-  Describe: v5.15.143-84-g335ba9d04eedc
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      335ba9d04eedc230553316f7068c0ab9f6123253 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65801d06412362bbd9e134bd
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65801d06412362bbd9e134c2
-        failing since 25 days (last pass: v5.15.114-13-g095e387c3889, first=
- fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-18T10:28:08.058988  / # #
-
-    2023-12-18T10:28:08.161229  export SHELL=3D/bin/sh
-
-    2023-12-18T10:28:08.162011  #
-
-    2023-12-18T10:28:08.263446  / # export SHELL=3D/bin/sh. /lava-12301567/=
-environment
-
-    2023-12-18T10:28:08.264149  =
-
-
-    2023-12-18T10:28:08.365653  / # . /lava-12301567/environment/lava-12301=
-567/bin/lava-test-runner /lava-12301567/1
-
-    2023-12-18T10:28:08.366795  =
-
-
-    2023-12-18T10:28:08.383113  / # /lava-12301567/bin/lava-test-runner /la=
-va-12301567/1
-
-    2023-12-18T10:28:08.432691  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-18T10:28:08.433198  + cd /lav<8>[   15.970683] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12301567_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65801cf5c40fe424a7e13478
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65801cf5c40fe424a7e1347d
-        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
-t fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-18T10:20:15.559466  / # #
-    2023-12-18T10:20:15.661070  export SHELL=3D/bin/sh
-    2023-12-18T10:20:15.661568  #
-    2023-12-18T10:20:15.762586  / # export SHELL=3D/bin/sh. /lava-448693/en=
-vironment
-    2023-12-18T10:20:15.763178  =
-
-    2023-12-18T10:20:15.864279  / # . /lava-448693/environment/lava-448693/=
-bin/lava-test-runner /lava-448693/1
-    2023-12-18T10:20:15.865294  =
-
-    2023-12-18T10:20:15.869573  / # /lava-448693/bin/lava-test-runner /lava=
--448693/1
-    2023-12-18T10:20:15.901596  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-12-18T10:20:15.937540  + cd /lava-448693/<8>[   16.581853] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 448693_1.5.2.4.5> =
-
-    ... (10 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65801d08b5e6224da4e134a7
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
--84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65801d08b5e6224da4e134ac
-        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
-t fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-12-18T10:28:22.409107  / # #
-
-    2023-12-18T10:28:22.511290  export SHELL=3D/bin/sh
-
-    2023-12-18T10:28:22.512035  #
-
-    2023-12-18T10:28:22.613522  / # export SHELL=3D/bin/sh. /lava-12301575/=
-environment
-
-    2023-12-18T10:28:22.614277  =
-
-
-    2023-12-18T10:28:22.715762  / # . /lava-12301575/environment/lava-12301=
-575/bin/lava-test-runner /lava-12301575/1
-
-    2023-12-18T10:28:22.716986  =
-
-
-    2023-12-18T10:28:22.733333  / # /lava-12301575/bin/lava-test-runner /la=
-va-12301575/1
-
-    2023-12-18T10:28:22.792441  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-18T10:28:22.792955  + cd /lava-1230157<8>[   16.843227] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12301575_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
 
