@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 744D181735E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6648172DA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18360B23869
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3C11C24DEB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2F13A1C0;
-	Mon, 18 Dec 2023 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBE11D127;
+	Mon, 18 Dec 2023 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qux6m6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0390O1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7360C3788C;
-	Mon, 18 Dec 2023 14:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE04C433C7;
-	Mon, 18 Dec 2023 14:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E97129ECF;
+	Mon, 18 Dec 2023 14:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF33C433C8;
+	Mon, 18 Dec 2023 14:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908948;
-	bh=ayQDKPJcylhcapjPO8xjCdYSURYvpDzNQ+p9Fk4Z/9E=;
+	s=korg; t=1702908650;
+	bh=aYR87cHzz/wGtC79skjh0R2p+5QDk0vTzDqJG14xyb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qux6m6BRpHzKDxYgjzPzjSelkLlKj51RCr9dSz4PuovXqgxUoyDYp4x7ddzkKsdJ
-	 a4iCdwxg0xLj3DutvYVVwpnzDx8WlLi9fTT0ww4kQqwc0pc4rQhxKcAFTOGFLxiP5o
-	 Eddu40kQiedpF6MiuXgn819GAbSoQgizSLhj05+g=
+	b=Y0390O1MGuoNwEaRPvzR+VtohxJqAmZxNXF2DCSeA0dL1WGVJ48aH2X+hkeVF3See
+	 g9a1KyAlYtCWQEfR3C6NLo1Hrne4xGejbp253mSenfkbWDRDiBYtU1v8WiRLwSqTj/
+	 sGZGYq7gyuHZ6sDFrIXLWtrEmyjyVZVAzyxKrebo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aoba K <nexp_0x17@outlook.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 58/83] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
-Date: Mon, 18 Dec 2023 14:52:19 +0100
-Message-ID: <20231218135052.292971835@linuxfoundation.org>
+Subject: [PATCH 5.4 25/40] platform/x86: intel_telemetry: Fix kernel doc descriptions
+Date: Mon, 18 Dec 2023 14:52:20 +0100
+Message-ID: <20231218135043.638419215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +53,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aoba K <nexp_0x17@outlook.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
+[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
 
-Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
-mode until the input mode feature is written by the host.  The touchpad do
-report the input mode at touchpad(3), while itself working under mouse mode. As
-a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
-feature in mt_set_input_mode for such device.
+LKP found issues with a kernel doc in the driver:
 
-The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
-information on the internel by this string at present.  As the serial number of
-the laptop is GLO-G52, while DMI info reports the laptop serial number as
-GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
+core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
+core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
 
-Signed-off-by: Aoba K <nexp_0x17@outlook.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+It looks like it were copy'n'paste typos when these descriptions
+had been introduced. Fix the typos.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/platform/x86/intel_telemetry_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 4ec8ca06a0bd0..fc04538d93cbb 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2046,6 +2046,11 @@ static const struct hid_device_id mt_devices[] = {
- 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
- 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
- 
-+	/* HONOR GLO-GXXX panel */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x347d, 0x7853) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+diff --git a/drivers/platform/x86/intel_telemetry_core.c b/drivers/platform/x86/intel_telemetry_core.c
+index d4040bb222b48..59fc6624b1ac9 100644
+--- a/drivers/platform/x86/intel_telemetry_core.c
++++ b/drivers/platform/x86/intel_telemetry_core.c
+@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
+ /**
+  * telemetry_update_events() - Update telemetry Configuration
+  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
+- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
++ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
+  *
+  * This API updates the IOSS & PSS Telemetry configuration. Old config
+  * is overwritten. Call telemetry_reset_events when logging is over
+@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
+ /**
+  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
+  * @pss_evtconfig: Pointer to PSS related configuration.
+- * @pss_evtconfig: Pointer to IOSS related configuration.
++ * @ioss_evtconfig: Pointer to IOSS related configuration.
+  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
+  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
+  *
 -- 
 2.43.0
 
