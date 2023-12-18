@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-7602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D665381734D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB418817350
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69087B2492F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 731A6B2333C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F537865;
-	Mon, 18 Dec 2023 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7BF37860;
+	Mon, 18 Dec 2023 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/TH6ps2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fI3ltvvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A791D12A;
-	Mon, 18 Dec 2023 14:15:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9C7C433C8;
-	Mon, 18 Dec 2023 14:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC3129EF9;
+	Mon, 18 Dec 2023 14:15:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA685C433C7;
+	Mon, 18 Dec 2023 14:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908904;
-	bh=fjnxgRDjuIb+gSIJhTvo3+kczwO0Liq3Q6+tsXifTnY=;
+	s=korg; t=1702908911;
+	bh=ncJSjUkBwCjAOSV750X0AWjuad/KRcwFiQjUcxaixXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/TH6ps22dyvq0KztSWX60M2NmuYhsPLytW29nZ0p6YqOaPGzALAZE9fo37stEPP+
-	 L6HbUdAj6WsQVDrTiZodQKcwSMbk033qNT/CNxzmQOD9UKeV2P6QcADHYOXZzdVQa9
-	 fUnd91kK57GCpJIEiT9clCfCm/kYtf2MVsXGSoxs=
+	b=fI3ltvvWCo3N3SJRk/1qWGbk00CbCXkSanTD+wW2GcRdBbs0WLmJrF7ULlkHTPbBm
+	 mfkAKhYFqcmeRuiM0AkzeCqNlDXNUtPFl3dAdVEDOco6ca8K/wKEvNdBzodWtCdSa3
+	 Xwkq30FDPor/V/A65xKzPqDVm0Wymvr6qh4ta18Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Bednarz <christopher.n.bednarz@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.15 77/83] RDMA/irdma: Prevent zero-length STAG registration
-Date: Mon, 18 Dec 2023 14:52:38 +0100
-Message-ID: <20231218135053.129531159@linuxfoundation.org>
+	Naveen N Rao <naveen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 78/83] powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+Date: Mon, 18 Dec 2023 14:52:39 +0100
+Message-ID: <20231218135053.171011854@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
 References: <20231218135049.738602288@linuxfoundation.org>
@@ -57,118 +56,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christopher Bednarz <christopher.n.bednarz@intel.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit bb6d73d9add68ad270888db327514384dfa44958 upstream.
+commit 41a506ef71eb38d94fe133f565c87c3e06ccc072 upstream.
 
-Currently irdma allows zero-length STAGs to be programmed in HW during
-the kernel mode fast register flow. Zero-length MR or STAG registration
-disable HW memory length checks.
+With ppc64 -mprofile-kernel and ppc32 -pg, profiling instructions to
+call into ftrace are emitted right at function entry. The instruction
+sequence used is minimal to reduce overhead. Crucially, a stackframe is
+not created for the function being traced. This breaks stack unwinding
+since the function being traced does not have a stackframe for itself.
+As such, it never shows up in the backtrace:
 
-Improve gaps in bounds checking in irdma by preventing zero-length STAG or
-MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
+/sys/kernel/debug/tracing # echo 1 > /proc/sys/kernel/stack_tracer_enabled
+/sys/kernel/debug/tracing # cat stack_trace
+        Depth    Size   Location    (17 entries)
+        -----    ----   --------
+  0)     4144      32   ftrace_call+0x4/0x44
+  1)     4112     432   get_page_from_freelist+0x26c/0x1ad0
+  2)     3680     496   __alloc_pages+0x290/0x1280
+  3)     3184     336   __folio_alloc+0x34/0x90
+  4)     2848     176   vma_alloc_folio+0xd8/0x540
+  5)     2672     272   __handle_mm_fault+0x700/0x1cc0
+  6)     2400     208   handle_mm_fault+0xf0/0x3f0
+  7)     2192      80   ___do_page_fault+0x3e4/0xbe0
+  8)     2112     160   do_page_fault+0x30/0xc0
+  9)     1952     256   data_access_common_virt+0x210/0x220
+ 10)     1696     400   0xc00000000f16b100
+ 11)     1296     384   load_elf_binary+0x804/0x1b80
+ 12)      912     208   bprm_execve+0x2d8/0x7e0
+ 13)      704      64   do_execveat_common+0x1d0/0x2f0
+ 14)      640     160   sys_execve+0x54/0x70
+ 15)      480      64   system_call_exception+0x138/0x350
+ 16)      416     416   system_call_common+0x160/0x2c4
 
-This addresses the disclosure CVE-2023-25775.
+Fix this by having ftrace create a dummy stackframe for the function
+being traced. With this, backtraces now capture the function being
+traced:
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230818144838.1758-1-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+/sys/kernel/debug/tracing # cat stack_trace
+        Depth    Size   Location    (17 entries)
+        -----    ----   --------
+  0)     3888      32   _raw_spin_trylock+0x8/0x70
+  1)     3856     576   get_page_from_freelist+0x26c/0x1ad0
+  2)     3280      64   __alloc_pages+0x290/0x1280
+  3)     3216     336   __folio_alloc+0x34/0x90
+  4)     2880     176   vma_alloc_folio+0xd8/0x540
+  5)     2704     416   __handle_mm_fault+0x700/0x1cc0
+  6)     2288      96   handle_mm_fault+0xf0/0x3f0
+  7)     2192      48   ___do_page_fault+0x3e4/0xbe0
+  8)     2144     192   do_page_fault+0x30/0xc0
+  9)     1952     608   data_access_common_virt+0x210/0x220
+ 10)     1344      16   0xc0000000334bbb50
+ 11)     1328     416   load_elf_binary+0x804/0x1b80
+ 12)      912      64   bprm_execve+0x2d8/0x7e0
+ 13)      848     176   do_execveat_common+0x1d0/0x2f0
+ 14)      672     192   sys_execve+0x54/0x70
+ 15)      480      64   system_call_exception+0x138/0x350
+ 16)      416     416   system_call_common+0x160/0x2c4
+
+This results in two additional stores in the ftrace entry code, but
+produces reliable backtraces.
+
+Fixes: 153086644fd1 ("powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230621051349.759567-1-naveen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/ctrl.c  |    6 ++++++
- drivers/infiniband/hw/irdma/type.h  |    2 ++
- drivers/infiniband/hw/irdma/verbs.c |   10 ++++++++--
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/hw/irdma/ctrl.c
-+++ b/drivers/infiniband/hw/irdma/ctrl.c
-@@ -1043,6 +1043,9 @@ irdma_sc_alloc_stag(struct irdma_sc_dev
- 	u64 hdr;
- 	enum irdma_page_size page_size;
+--- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
++++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+@@ -36,6 +36,9 @@ _GLOBAL(ftrace_regs_caller)
+ 	/* Save the original return address in A's stack frame */
+ 	std	r0,LRSAVE(r1)
  
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
++	/* Create a minimal stack frame for representing B */
++	stdu	r1, -STACK_FRAME_MIN_SIZE(r1)
 +
- 	if (info->page_size == 0x40000000)
- 		page_size = IRDMA_PAGE_SIZE_1G;
- 	else if (info->page_size == 0x200000)
-@@ -1109,6 +1112,9 @@ irdma_sc_mr_reg_non_shared(struct irdma_
- 	u8 addr_type;
- 	enum irdma_page_size page_size;
+ 	/* Create our stack frame + pt_regs */
+ 	stdu	r1,-SWITCH_FRAME_SIZE(r1)
  
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
+@@ -64,6 +67,8 @@ _GLOBAL(ftrace_regs_caller)
+ 	mflr	r7
+ 	/* Save it as pt_regs->nip */
+ 	std     r7, _NIP(r1)
++	/* Also save it in B's stackframe header for proper unwind */
++	std	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
+ 	/* Save the read LR in pt_regs->link */
+ 	std     r0, _LINK(r1)
+ 
+@@ -118,7 +123,7 @@ ftrace_regs_call:
+ 	ld	r2, 24(r1)
+ 
+ 	/* Pop our stack frame */
+-	addi r1, r1, SWITCH_FRAME_SIZE
++	addi r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 
+ #ifdef CONFIG_LIVEPATCH
+         /* Based on the cmpd above, if the NIP was altered handle livepatch */
+@@ -150,6 +155,9 @@ _GLOBAL(ftrace_caller)
+ 	/* Save the original return address in A's stack frame */
+ 	std	r0, LRSAVE(r1)
+ 
++	/* Create a minimal stack frame for representing B */
++	stdu	r1, -STACK_FRAME_MIN_SIZE(r1)
 +
- 	if (info->page_size == 0x40000000)
- 		page_size = IRDMA_PAGE_SIZE_1G;
- 	else if (info->page_size == 0x200000)
---- a/drivers/infiniband/hw/irdma/type.h
-+++ b/drivers/infiniband/hw/irdma/type.h
-@@ -1013,6 +1013,7 @@ struct irdma_allocate_stag_info {
- 	bool remote_access:1;
- 	bool use_hmc_fcn_index:1;
- 	bool use_pf_rid:1;
-+	bool all_memory:1;
- 	u8 hmc_fcn_index;
- };
+ 	/* Create our stack frame + pt_regs */
+ 	stdu	r1, -SWITCH_FRAME_SIZE(r1)
  
-@@ -1040,6 +1041,7 @@ struct irdma_reg_ns_stag_info {
- 	bool use_hmc_fcn_index:1;
- 	u8 hmc_fcn_index;
- 	bool use_pf_rid:1;
-+	bool all_memory:1;
- };
+@@ -163,6 +171,7 @@ _GLOBAL(ftrace_caller)
+ 	/* Get the _mcount() call site out of LR */
+ 	mflr	r7
+ 	std     r7, _NIP(r1)
++	std	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
  
- struct irdma_fast_reg_stag_info {
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2528,7 +2528,8 @@ static int irdma_hw_alloc_stag(struct ir
- 			       struct irdma_mr *iwmr)
- {
- 	struct irdma_allocate_stag_info *info;
--	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct irdma_pd *iwpd = to_iwpd(pd);
- 	enum irdma_status_code status;
- 	int err = 0;
- 	struct irdma_cqp_request *cqp_request;
-@@ -2545,6 +2546,7 @@ static int irdma_hw_alloc_stag(struct ir
- 	info->stag_idx = iwmr->stag >> IRDMA_CQPSQ_STAG_IDX_S;
- 	info->pd_id = iwpd->sc_pd.pd_id;
- 	info->total_len = iwmr->len;
-+	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	info->remote_access = true;
- 	cqp_info->cqp_cmd = IRDMA_OP_ALLOC_STAG;
- 	cqp_info->post_sq = 1;
-@@ -2595,6 +2597,8 @@ static struct ib_mr *irdma_alloc_mr(stru
- 	iwmr->type = IRDMA_MEMREG_TYPE_MEM;
- 	palloc = &iwpbl->pble_alloc;
- 	iwmr->page_cnt = max_num_sg;
-+	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
-+	iwmr->len = max_num_sg * PAGE_SIZE;
- 	status = irdma_get_pble(iwdev->rf->pble_rsrc, palloc, iwmr->page_cnt,
- 				true);
- 	if (status)
-@@ -2666,7 +2670,8 @@ static int irdma_hwreg_mr(struct irdma_d
- {
- 	struct irdma_pbl *iwpbl = &iwmr->iwpbl;
- 	struct irdma_reg_ns_stag_info *stag_info;
--	struct irdma_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct irdma_pd *iwpd = to_iwpd(pd);
- 	struct irdma_pble_alloc *palloc = &iwpbl->pble_alloc;
- 	enum irdma_status_code status;
- 	int err = 0;
-@@ -2686,6 +2691,7 @@ static int irdma_hwreg_mr(struct irdma_d
- 	stag_info->total_len = iwmr->len;
- 	stag_info->access_rights = irdma_get_mr_access(access);
- 	stag_info->pd_id = iwpd->sc_pd.pd_id;
-+	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	if (stag_info->access_rights & IRDMA_ACCESS_FLAGS_ZERO_BASED)
- 		stag_info->addr_type = IRDMA_ADDR_TYPE_ZERO_BASED;
- 	else
+ 	/* Save callee's TOC in the ABI compliant location */
+ 	std	r2, 24(r1)
+@@ -197,7 +206,7 @@ ftrace_call:
+ 	ld	r2, 24(r1)
+ 
+ 	/* Pop our stack frame */
+-	addi	r1, r1, SWITCH_FRAME_SIZE
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 
+ 	/* Reload original LR */
+ 	ld	r0, LRSAVE(r1)
 
 
 
