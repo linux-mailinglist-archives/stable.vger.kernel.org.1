@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC22081714D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0186081723E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE8431C23ECD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27DA280E70
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FAA1D148;
-	Mon, 18 Dec 2023 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01233D546;
+	Mon, 18 Dec 2023 14:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGDVizS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEo2oN77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990171D13D;
-	Mon, 18 Dec 2023 13:56:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3BCC433C8;
-	Mon, 18 Dec 2023 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9772F3A1D8;
+	Mon, 18 Dec 2023 14:04:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EE3C433C8;
+	Mon, 18 Dec 2023 14:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907780;
-	bh=P3UXjMA6BiHXFaNyQQ2ao7X7V4E8nl4m3mZj6uO8qnU=;
+	s=korg; t=1702908289;
+	bh=I/pIuodFpSYiiZo7K0+8Ylb5kANmWTXczUAL/ZH+Sig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGDVizS6kk2Uf0aXIQ/s+F44UOF4ZywWvUO5rwnXPJH2hk7U1iRHpITxe1jeimaA2
-	 gJnX78kK4w2+FAavU6k2B1P3kFlUcj8H7qSIvcFwHZryJpP1dx21AXlAzKC+myt6Li
-	 U5mocimoQVnKSFvBRQtIoCRJ+npn4GVdO//hJ62o=
+	b=pEo2oN77Bn1elKGBJQ2wgUBMHLnVdgBL2p0bW9GnXV7C+0aSLc8f9Hl6XtZb48fcJ
+	 AEgsXw1Y6SxNe0dZx/fvIH2Q6QZv8eaJv6f1n8DlqLksJVhD4QVJj/vO1tpS9khSu0
+	 jmMf4TWqt7geixip3s/3yxQkLKRPCmFFAVtzn/KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangyu Hua <hbh25y@gmail.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.1 044/106] fuse: dax: set fc->dax to NULL in fuse_dax_conn_free()
-Date: Mon, 18 Dec 2023 14:50:58 +0100
-Message-ID: <20231218135056.896405298@linuxfoundation.org>
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/166] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+Date: Mon, 18 Dec 2023 14:50:59 +0100
+Message-ID: <20231218135109.145333684@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Coly Li <colyli@suse.de>
 
-commit 7f8ed28d1401320bcb02dda81b3c23ab2dc5a6d8 upstream.
+[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
 
-fuse_dax_conn_free() will be called when fuse_fill_super_common() fails
-after fuse_dax_conn_alloc(). Then deactivate_locked_super() in
-virtio_fs_get_tree() will call virtio_kill_sb() to release the discarded
-superblock. This will call fuse_dax_conn_free() again in fuse_conn_put(),
-resulting in a possible double free.
+This patch adds code comments to bch_btree_node_get() and
+__bch_btree_node_alloc() that NULL pointer will not be returned and it
+is unnecessary to check NULL pointer by the callers of these routines.
 
-Fixes: 1dd539577c42 ("virtiofs: add a mount option to enable dax")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Acked-by: Vivek Goyal <vgoyal@redhat.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Cc: <stable@vger.kernel.org> # v5.10
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dax.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/bcache/btree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/fuse/dax.c
-+++ b/fs/fuse/dax.c
-@@ -1224,6 +1224,7 @@ void fuse_dax_conn_free(struct fuse_conn
- 	if (fc->dax) {
- 		fuse_free_dax_mem_ranges(&fc->dax->free_ranges);
- 		kfree(fc->dax);
-+		fc->dax = NULL;
- 	}
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index 3084c57248f69..b709c2fde782a 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -995,6 +995,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
+  *
+  * The btree node will have either a read or a write lock held, depending on
+  * level and op->lock.
++ *
++ * Note: Only error code or btree pointer will be returned, it is unncessary
++ *       for callers to check NULL pointer.
+  */
+ struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
+ 				 struct bkey *k, int level, bool write,
+@@ -1106,6 +1109,10 @@ static void btree_node_free(struct btree *b)
+ 	mutex_unlock(&b->c->bucket_lock);
  }
  
++/*
++ * Only error code or btree pointer will be returned, it is unncessary for
++ * callers to check NULL pointer.
++ */
+ struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
+ 				     int level, bool wait,
+ 				     struct btree *parent)
+-- 
+2.43.0
+
 
 
 
