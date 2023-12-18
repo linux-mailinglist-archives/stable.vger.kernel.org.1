@@ -1,197 +1,274 @@
-Return-Path: <stable+bounces-7628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46099817544
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:33:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1981D817561
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C4E9B2245A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAD221C227D1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3FF49892;
-	Mon, 18 Dec 2023 15:32:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XIgEK3Jr";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vgGCrf2a";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KUk7fX+i";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7fD5+Bgy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD5C3D54B;
+	Mon, 18 Dec 2023 15:35:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F128E42387;
-	Mon, 18 Dec 2023 15:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D7FBD1FD49;
-	Mon, 18 Dec 2023 15:32:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702913548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
-	b=XIgEK3JrFDDqR8QAwqXnwaUTVADyWH/Kr7iuRdakeO18MAQx5mzKLwJA7+/PAiPQ4Ec4/0
-	NdZwewLHAYCTP5u33h3EVQ/vgRdJKSJVpTKIHJYVBUP+05wwlC3VilPxqmA5UqiLxhcStu
-	QtTUBCMaDl7YcsRuGQoPLApPKCjVkGY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702913548;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
-	b=vgGCrf2a1l8GEw6DBR3FhOFD50FqRwVAJlYil3gMxTclWScu/ctFG4CYqg9giJppWqvYlp
-	oW65Lnzx5PLsS0Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1702913547; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
-	b=KUk7fX+izFMs4HurWN694iAICM8MvW/KNrBYqZUO+D5lEqTxralCp0+778c7OV1JnVHyg9
-	fgoiwMhL/GXWdmNrxU3hjw/8ETSUDZiBIl+ztI2H4SSTIgGCtVhw1RiU9xqgtpVJh8ahP3
-	TO4TSzRZfGdxMLmsfKUgnlHNICiOyt8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1702913547;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
-	b=7fD5+BgyrJSace8PYz5yajZ5/wG9SnT27qNRQFp3I1pJKbn/ZJskdMYeapFFsos593ujRn
-	TEdIzrevBo3WzzBw==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C8CE313BC8;
-	Mon, 18 Dec 2023 15:32:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id MmwCMQtmgGWHfAAAn2gu4w
-	(envelope-from <jack@suse.cz>); Mon, 18 Dec 2023 15:32:27 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5F147A07E0; Mon, 18 Dec 2023 16:32:27 +0100 (CET)
-Date: Mon, 18 Dec 2023 16:32:27 +0100
-From: Jan Kara <jack@suse.cz>
-To: Baokun Li <libaokun1@huawei.com>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	jack@suse.cz, ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
-	yi.zhang@huawei.com, yangerkun@huawei.com, yukuai3@huawei.com,
-	Wei Chen <harperchen1110@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] ext4: fix double-free of blocks due to wrong extents
- moved_len
-Message-ID: <20231218153227.x273h3c5t2dqgh76@quack3>
-References: <20231218141814.1477338-1-libaokun1@huawei.com>
- <20231218141814.1477338-2-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A891F42387
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-28b48f70766so725083a91.3
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:35:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702913743; x=1703518543;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=54Cppsoa4UfkK6E0bEr7G5uU1aHVFg9YvJ5fEdP/6xQ=;
+        b=mfw1Ankbh998QTGzuqYOGRBM9CpLxMHopF6YDEo48nAxBaMTQVvv3FoZHyq12o6TUP
+         GQ2F4Ls7i8H/I8JRJ03EQ2aryEyel9Ygq0Lh5YF25Sg357m1PwivXIzTQeoWWMct2Jzd
+         7A/A/k07GX6fTQeIJFmG84KJAk9MAHhFrGR0Qr5ejCMu9TIbJDobBhKA1LMD2D2owf4b
+         kGfO14BHKeUlH91NyZi26e1lM/27rqQKABK/mqS76mLViy5EfbHxRu6T16t0f6QapZ3+
+         qTsiZcCHVggJ7x0mtXdiwX939guqx6hsNfTlyoM4mmTCnfEgysXeOX5OnyvOcmJuFyWL
+         30eg==
+X-Gm-Message-State: AOJu0Yx5uk58VcokmZfCg9SRPIXYhbuSe3rrQiFxbC8qSHwUIkY3cXkS
+	ff2OwJjYajXC/Qmy/ZHj1BVRj5jU8jM=
+X-Google-Smtp-Source: AGHT+IHY9m1cYKc2a/1G37ULsTCcfaEndSpr+Y1MteLSps65+u6DtmSM+2xEBwOzWQrOy9J5Wf1elQ==
+X-Received: by 2002:a17:90a:1c90:b0:28b:1848:aab1 with SMTP id t16-20020a17090a1c9000b0028b1848aab1mr2386468pjt.10.1702913742703;
+        Mon, 18 Dec 2023 07:35:42 -0800 (PST)
+Received: from localhost.localdomain ([110.14.71.32])
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.35.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 07:35:42 -0800 (PST)
+From: Namjae Jeon <linkinjeon@kernel.org>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: smfrench@gmail.com,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15.y 008/154] ksmbd: use oid registry functions to decode OIDs
+Date: Tue, 19 Dec 2023 00:32:28 +0900
+Message-Id: <20231218153454.8090-9-linkinjeon@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
+References: <20231218153454.8090-1-linkinjeon@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231218141814.1477338-2-libaokun1@huawei.com>
-X-Spam-Level: **
-X-Spam-Level: 
-X-Spamd-Bar: /
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KUk7fX+i;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7fD5+Bgy
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [0.49 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-0.00)[10.49%];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[13];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,dilger.ca,suse.cz,gmail.com,huawei.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Score: 0.49
-X-Rspamd-Queue-Id: D7FBD1FD49
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Mon 18-12-23 22:18:11, Baokun Li wrote:
-> In ext4_move_extents(), moved_len is only updated when all moves are
-> successfully executed, and only discards orig_inode and donor_inode
-> preallocations when moved_len is not zero. When the loop fails to exit
-> after successfully moving some extents, moved_len is not updated and
-> remains at 0, so it does not discard the preallocations.
-> 
-> If the moved extents overlap with the preallocated extents, the
-> overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-> ext4_process_freed_data() (as described in commit 94d7c16cbbbd), and
-> bb_free is incremented twice. Hence when trim is executed, a zero-division
-> bug is triggered in mb_update_avg_fragment_size() because bb_free is not
-> zero and bb_fragments is zero.
-> 
-> Therefore, update move_len after each extent move to avoid the issue.
-> 
-> Reported-by: Wei Chen <harperchen1110@gmail.com>
-> Reported-by: xingwei lee <xrivendell7@gmail.com>
-> Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-> Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-> CC: stable@vger.kernel.org # 3.18
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> ---
->  fs/ext4/move_extent.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-> index 3aa57376d9c2..4b9b503c6346 100644
-> --- a/fs/ext4/move_extent.c
-> +++ b/fs/ext4/move_extent.c
-> @@ -672,7 +672,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
->  		 */
->  		ext4_double_up_write_data_sem(orig_inode, donor_inode);
->  		/* Swap original branches with new branches */
-> -		move_extent_per_page(o_filp, donor_inode,
-> +		*moved_len += move_extent_per_page(o_filp, donor_inode,
->  				     orig_page_index, donor_page_index,
->  				     offset_in_page, cur_len,
->  				     unwritten, &ret);
+From: Hyunchul Lee <hyc.lee@gmail.com>
 
-Although this is currently fine, I think ext4_move_extents() should be
-careful and zero out *moved_len before it starts using it.
+[ Upstream commit 294277410cf3b46bee2b8282ab754e52975c0a70 ]
 
-> @@ -682,7 +682,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
->  		o_start += cur_len;
->  		d_start += cur_len;
->  	}
-> -	*moved_len = o_start - orig_blk;
->  	if (*moved_len > len)
->  		*moved_len = len;
+Use look_up_OID to decode OIDs rather than
+implementing functions.
 
-So I'm not sure the *moved_len > len condition can ever trigger but if it
-does, we'd need to check it whenever we are returning moved_len. So either
-I'd delete the condition or move it to the out label.
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Hyunchul Lee <hyc.lee@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+---
+ fs/ksmbd/asn1.c | 142 +++++++-----------------------------------------
+ 1 file changed, 19 insertions(+), 123 deletions(-)
 
-								Honza
+diff --git a/fs/ksmbd/asn1.c b/fs/ksmbd/asn1.c
+index b014f4638610..c03eba090368 100644
+--- a/fs/ksmbd/asn1.c
++++ b/fs/ksmbd/asn1.c
+@@ -21,101 +21,11 @@
+ #include "ksmbd_spnego_negtokeninit.asn1.h"
+ #include "ksmbd_spnego_negtokentarg.asn1.h"
+ 
+-#define SPNEGO_OID_LEN 7
+ #define NTLMSSP_OID_LEN  10
+-#define KRB5_OID_LEN  7
+-#define KRB5U2U_OID_LEN  8
+-#define MSKRB5_OID_LEN  7
+-static unsigned long SPNEGO_OID[7] = { 1, 3, 6, 1, 5, 5, 2 };
+-static unsigned long NTLMSSP_OID[10] = { 1, 3, 6, 1, 4, 1, 311, 2, 2, 10 };
+-static unsigned long KRB5_OID[7] = { 1, 2, 840, 113554, 1, 2, 2 };
+-static unsigned long KRB5U2U_OID[8] = { 1, 2, 840, 113554, 1, 2, 2, 3 };
+-static unsigned long MSKRB5_OID[7] = { 1, 2, 840, 48018, 1, 2, 2 };
+ 
+ static char NTLMSSP_OID_STR[NTLMSSP_OID_LEN] = { 0x2b, 0x06, 0x01, 0x04, 0x01,
+ 	0x82, 0x37, 0x02, 0x02, 0x0a };
+ 
+-static bool
+-asn1_subid_decode(const unsigned char **begin, const unsigned char *end,
+-		  unsigned long *subid)
+-{
+-	const unsigned char *ptr = *begin;
+-	unsigned char ch;
+-
+-	*subid = 0;
+-
+-	do {
+-		if (ptr >= end)
+-			return false;
+-
+-		ch = *ptr++;
+-		*subid <<= 7;
+-		*subid |= ch & 0x7F;
+-	} while ((ch & 0x80) == 0x80);
+-
+-	*begin = ptr;
+-	return true;
+-}
+-
+-static bool asn1_oid_decode(const unsigned char *value, size_t vlen,
+-			    unsigned long **oid, size_t *oidlen)
+-{
+-	const unsigned char *iptr = value, *end = value + vlen;
+-	unsigned long *optr;
+-	unsigned long subid;
+-
+-	vlen += 1;
+-	if (vlen < 2 || vlen > UINT_MAX / sizeof(unsigned long))
+-		goto fail_nullify;
+-
+-	*oid = kmalloc(vlen * sizeof(unsigned long), GFP_KERNEL);
+-	if (!*oid)
+-		return false;
+-
+-	optr = *oid;
+-
+-	if (!asn1_subid_decode(&iptr, end, &subid))
+-		goto fail;
+-
+-	if (subid < 40) {
+-		optr[0] = 0;
+-		optr[1] = subid;
+-	} else if (subid < 80) {
+-		optr[0] = 1;
+-		optr[1] = subid - 40;
+-	} else {
+-		optr[0] = 2;
+-		optr[1] = subid - 80;
+-	}
+-
+-	*oidlen = 2;
+-	optr += 2;
+-
+-	while (iptr < end) {
+-		if (++(*oidlen) > vlen)
+-			goto fail;
+-
+-		if (!asn1_subid_decode(&iptr, end, optr++))
+-			goto fail;
+-	}
+-	return true;
+-
+-fail:
+-	kfree(*oid);
+-fail_nullify:
+-	*oid = NULL;
+-	return false;
+-}
+-
+-static bool oid_eq(unsigned long *oid1, unsigned int oid1len,
+-		   unsigned long *oid2, unsigned int oid2len)
+-{
+-	if (oid1len != oid2len)
+-		return false;
+-
+-	return memcmp(oid1, oid2, oid1len) == 0;
+-}
+-
+ int
+ ksmbd_decode_negTokenInit(unsigned char *security_blob, int length,
+ 			  struct ksmbd_conn *conn)
+@@ -252,26 +162,18 @@ int build_spnego_ntlmssp_auth_blob(unsigned char **pbuffer, u16 *buflen,
+ int ksmbd_gssapi_this_mech(void *context, size_t hdrlen, unsigned char tag,
+ 			   const void *value, size_t vlen)
+ {
+-	unsigned long *oid;
+-	size_t oidlen;
+-	int err = 0;
+-
+-	if (!asn1_oid_decode(value, vlen, &oid, &oidlen)) {
+-		err = -EBADMSG;
+-		goto out;
+-	}
++	enum OID oid;
+ 
+-	if (!oid_eq(oid, oidlen, SPNEGO_OID, SPNEGO_OID_LEN))
+-		err = -EBADMSG;
+-	kfree(oid);
+-out:
+-	if (err) {
++	oid = look_up_OID(value, vlen);
++	if (oid != OID_spnego) {
+ 		char buf[50];
+ 
+ 		sprint_oid(value, vlen, buf, sizeof(buf));
+ 		ksmbd_debug(AUTH, "Unexpected OID: %s\n", buf);
++		return -EBADMSG;
+ 	}
+-	return err;
++
++	return 0;
+ }
+ 
+ int ksmbd_neg_token_init_mech_type(void *context, size_t hdrlen,
+@@ -279,37 +181,31 @@ int ksmbd_neg_token_init_mech_type(void *context, size_t hdrlen,
+ 				   size_t vlen)
+ {
+ 	struct ksmbd_conn *conn = context;
+-	unsigned long *oid;
+-	size_t oidlen;
++	enum OID oid;
+ 	int mech_type;
+-	char buf[50];
+ 
+-	if (!asn1_oid_decode(value, vlen, &oid, &oidlen))
+-		goto fail;
+-
+-	if (oid_eq(oid, oidlen, NTLMSSP_OID, NTLMSSP_OID_LEN))
++	oid = look_up_OID(value, vlen);
++	if (oid == OID_ntlmssp) {
+ 		mech_type = KSMBD_AUTH_NTLMSSP;
+-	else if (oid_eq(oid, oidlen, MSKRB5_OID, MSKRB5_OID_LEN))
++	} else if (oid == OID_mskrb5) {
+ 		mech_type = KSMBD_AUTH_MSKRB5;
+-	else if (oid_eq(oid, oidlen, KRB5_OID, KRB5_OID_LEN))
++	} else if (oid == OID_krb5) {
+ 		mech_type = KSMBD_AUTH_KRB5;
+-	else if (oid_eq(oid, oidlen, KRB5U2U_OID, KRB5U2U_OID_LEN))
++	} else if (oid == OID_krb5u2u) {
+ 		mech_type = KSMBD_AUTH_KRB5U2U;
+-	else
+-		goto fail;
++	} else {
++		char buf[50];
++
++		sprint_oid(value, vlen, buf, sizeof(buf));
++		ksmbd_debug(AUTH, "Unexpected OID: %s\n", buf);
++		return -EBADMSG;
++	}
+ 
+ 	conn->auth_mechs |= mech_type;
+ 	if (conn->preferred_auth_mech == 0)
+ 		conn->preferred_auth_mech = mech_type;
+ 
+-	kfree(oid);
+ 	return 0;
+-
+-fail:
+-	kfree(oid);
+-	sprint_oid(value, vlen, buf, sizeof(buf));
+-	ksmbd_debug(AUTH, "Unexpected OID: %s\n", buf);
+-	return -EBADMSG;
+ }
+ 
+ int ksmbd_neg_token_init_mech_token(void *context, size_t hdrlen,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.25.1
+
 
