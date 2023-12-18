@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6392817271
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EB08172C0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5BF1C24E33
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 743B7287954
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70D14FF95;
-	Mon, 18 Dec 2023 14:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F504FF6C;
+	Mon, 18 Dec 2023 14:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei8dcHt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As3De1nK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10034FF62;
-	Mon, 18 Dec 2023 14:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8836C433C8;
-	Mon, 18 Dec 2023 14:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD214FF62;
+	Mon, 18 Dec 2023 14:09:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B54C433C8;
+	Mon, 18 Dec 2023 14:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908402;
-	bh=zOKn0uEcNi+m4+pyTuFi9hwIBm8FvQTMID/FNAhM7w4=;
+	s=korg; t=1702908585;
+	bh=KaLPZE25gPdEQU5MD7H8KoAGBXHSRmQG7oq9BRxIVUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ei8dcHt52TATioIz6BgRiSIZjzq8Jhb5DZBYeNld9WpgBJanL3A45ojnSC5applAH
-	 6S//fHyxKOmj7xf7kAn2sOGsB62CVo4toShQcnC+o31G1MrcDJAMJuK4svsPekYeWQ
-	 uKkYYMG0GNfO1Xgl0rKURdGSBHY8cKOfTec9U8Oo=
+	b=As3De1nKmpi8zP+ObL19deyIxy/r0Egvuh4WZLd7MJ0sIPvFMYWQtA7D5lE0ANrwv
+	 cSG5g8BTTyyQOCGxa2LooKnPrvPkNcbh+EgywXvsQdR+J77Jf0n5SlgfeyOG3d6eYm
+	 tLhVbck5m4qxXr8A4TsrLYIcBwteNu2BOKnVNkns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 164/166] ring-buffer: Have rb_time_cmpxchg() set the msb counter too
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 46/62] HID: hid-asus: add const to read-only outgoing usb buffer
 Date: Mon, 18 Dec 2023 14:52:10 +0100
-Message-ID: <20231218135112.455808166@linuxfoundation.org>
+Message-ID: <20231218135048.289484377@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +54,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Denis Benato <benato.denis96@gmail.com>
 
-commit 0aa0e5289cfe984a8a9fdd79ccf46ccf080151f7 upstream.
+[ Upstream commit 06ae5afce8cc1f7621cc5c7751e449ce20d68af7 ]
 
-The rb_time_cmpxchg() on 32-bit architectures requires setting three
-32-bit words to represent the 64-bit timestamp, with some salt for
-synchronization. Those are: msb, top, and bottom
+In the function asus_kbd_set_report the parameter buf is read-only
+as it gets copied in a memory portion suitable for USB transfer,
+but the parameter is not marked as const: add the missing const and mark
+const immutable buffers passed to that function.
 
-The issue is, the rb_time_cmpxchg() did not properly salt the msb portion,
-and the msb that was written was stale.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231215084114.20899342@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: f03f2abce4f39 ("ring-buffer: Have 32 bit time stamps use all 64 bits")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-asus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -722,10 +722,12 @@ static bool rb_time_cmpxchg(rb_time_t *t
- 	 cnt2 = cnt + 1;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 52b0ef99bc955..b46fb92d28e58 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -336,7 +336,7 @@ static int asus_raw_event(struct hid_device *hdev,
+ 	return 0;
+ }
  
- 	 rb_time_split(val, &top, &bottom, &msb);
-+	 msb = rb_time_val_cnt(msb, cnt);
- 	 top = rb_time_val_cnt(top, cnt);
- 	 bottom = rb_time_val_cnt(bottom, cnt);
+-static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size)
++static int asus_kbd_set_report(struct hid_device *hdev, const u8 *buf, size_t buf_size)
+ {
+ 	unsigned char *dmabuf;
+ 	int ret;
+@@ -355,7 +355,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
  
- 	 rb_time_split(set, &top2, &bottom2, &msb2);
-+	 msb2 = rb_time_val_cnt(msb2, cnt);
- 	 top2 = rb_time_val_cnt(top2, cnt2);
- 	 bottom2 = rb_time_val_cnt(bottom2, cnt2);
+ static int asus_kbd_init(struct hid_device *hdev)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
+ 		     0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
+ 	int ret;
  
+@@ -369,7 +369,7 @@ static int asus_kbd_init(struct hid_device *hdev)
+ static int asus_kbd_get_functions(struct hid_device *hdev,
+ 				  unsigned char *kbd_func)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
+ 	u8 *readbuf;
+ 	int ret;
+ 
+-- 
+2.43.0
+
 
 
 
