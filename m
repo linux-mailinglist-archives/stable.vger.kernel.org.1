@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED565817336
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958528172E5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BAF328961E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E9E288964
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E40B37888;
-	Mon, 18 Dec 2023 14:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FCA3786D;
+	Mon, 18 Dec 2023 14:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/4FJee4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbrIGHKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361063A1B9;
-	Mon, 18 Dec 2023 14:14:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FDBC433C8;
-	Mon, 18 Dec 2023 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6EF129EDD;
+	Mon, 18 Dec 2023 14:11:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C60C433C8;
+	Mon, 18 Dec 2023 14:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908883;
-	bh=c/RirXAkCZ60SA9dGKiguealLXZaKDr9sAJA9BpO1j8=;
+	s=korg; t=1702908681;
+	bh=SnNXW0s1GSgFahyNetjhMjlu2vjPfJjS3JcpTbRLT6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/4FJee4xHfMEb3ovYHxtfp8eQWUy34qyQIKaxiLAXt7lfGdII30IYdImyqRKes7b
-	 OsqrGUZmoTgp89Rhpj8V8Bz4nxUrEHH/u8XUOpfYHTZbV1ke0Vu2NvqlbIs07WeuI3
-	 09sAGPPAXd8aYjAxzkIXSzyQ/RvDZ3AN6c7u880k=
+	b=tbrIGHKaceL1WpDu6qXs8imw6NSj/ESPA+HYM8S/0bm4DMb1TnTK1Pi3NwvIumD/S
+	 WBnVG01hbl0xw4btnUiYVw7TwFt41p3m9oXNwEOt6cF0RgrwauRKPbxrYk88fBRitg
+	 fhy6wx91ZKccXD439bP77/f66FgiZ6sfgM7UKa3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 69/83] ring-buffer: Fix memory leak of free page
+	James Houghton <jthoughton@google.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.4 35/40] arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
 Date: Mon, 18 Dec 2023 14:52:30 +0100
-Message-ID: <20231218135052.776998372@linuxfoundation.org>
+Message-ID: <20231218135044.093844302@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +54,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: James Houghton <jthoughton@google.com>
 
-commit 17d801758157bec93f26faaf5ff1a8b9a552d67a upstream.
+commit 3c0696076aad60a2f04c019761921954579e1b0e upstream.
 
-Reading the ring buffer does a swap of a sub-buffer within the ring buffer
-with a empty sub-buffer. This allows the reader to have full access to the
-content of the sub-buffer that was swapped out without having to worry
-about contention with the writer.
+It is currently possible for a userspace application to enter an
+infinite page fault loop when using HugeTLB pages implemented with
+contiguous PTEs when HAFDBS is not available. This happens because:
 
-The readers call ring_buffer_alloc_read_page() to allocate a page that
-will be used to swap with the ring buffer. When the code is finished with
-the reader page, it calls ring_buffer_free_read_page(). Instead of freeing
-the page, it stores it as a spare. Then next call to
-ring_buffer_alloc_read_page() will return this spare instead of calling
-into the memory management system to allocate a new page.
+1. The kernel may sometimes write PTEs that are sw-dirty but hw-clean
+   (PTE_DIRTY | PTE_RDONLY | PTE_WRITE).
 
-Unfortunately, on freeing of the ring buffer, this spare page is not
-freed, and causes a memory leak.
+2. If, during a write, the CPU uses a sw-dirty, hw-clean PTE in handling
+   the memory access on a system without HAFDBS, we will get a page
+   fault.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231210221250.7b9cc83c@rorschach.local.home
+3. HugeTLB will check if it needs to update the dirty bits on the PTE.
+   For contiguous PTEs, it will check to see if the pgprot bits need
+   updating. In this case, HugeTLB wants to write a sequence of
+   sw-dirty, hw-dirty PTEs, but it finds that all the PTEs it is about
+   to overwrite are all pte_dirty() (pte_sw_dirty() => pte_dirty()),
+   so it thinks no update is necessary.
 
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 73a757e63114d ("ring-buffer: Return reader page back into existing ring buffer")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+We can get the kernel to write a sw-dirty, hw-clean PTE with the
+following steps (showing the relevant VMA flags and pgprot bits):
+
+i.   Create a valid, writable contiguous PTE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE
+
+ii.  mprotect the VMA to PROT_NONE.
+       VMA vmflags:     VM_SHARED
+       VMA pgprot bits: PTE_RDONLY
+       PTE pgprot bits: PTE_DIRTY | PTE_RDONLY
+
+iii. mprotect the VMA back to PROT_READ | PROT_WRITE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE | PTE_RDONLY
+
+Make it impossible to create a writeable sw-dirty, hw-clean PTE with
+pte_modify(). Such a PTE should be impossible to create, and there may
+be places that assume that pte_dirty() implies pte_hw_dirty().
+
+Signed-off-by: James Houghton <jthoughton@google.com>
+Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
+Cc: <stable@vger.kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20231204172646.2541916-3-jthoughton@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/pgtable.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1765,6 +1765,8 @@ static void rb_free_cpu_buffer(struct ri
- 		free_buffer_page(bpage);
- 	}
- 
-+	free_page((unsigned long)cpu_buffer->free_page);
-+
- 	kfree(cpu_buffer);
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -679,6 +679,12 @@ static inline pte_t pte_modify(pte_t pte
+ 	if (pte_hw_dirty(pte))
+ 		pte = pte_mkdirty(pte);
+ 	pte_val(pte) = (pte_val(pte) & ~mask) | (pgprot_val(newprot) & mask);
++	/*
++	 * If we end up clearing hw dirtiness for a sw-dirty PTE, set hardware
++	 * dirtiness again.
++	 */
++	if (pte_sw_dirty(pte))
++		pte = pte_mkdirty(pte);
+ 	return pte;
  }
  
 
