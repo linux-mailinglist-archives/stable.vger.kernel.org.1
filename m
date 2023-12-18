@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-7753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12EE181761C
+	by mail.lfdr.de (Postfix) with ESMTPS id C87A581761D
 	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:47:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46ECD2835FA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:47:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75EB6281AA2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EDA740AB;
-	Mon, 18 Dec 2023 15:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5301B498B8;
+	Mon, 18 Dec 2023 15:42:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA93498B4
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBAE74E0B
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-28b436f6cb9so2349352a91.3
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:42:00 -0800 (PST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5cd870422c8so443893a12.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:42:03 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702914120; x=1703518920;
+        d=1e100.net; s=20230601; t=1702914123; x=1703518923;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DROtMtoV7QXL2xe81VSd6z/ePD8kvXXCqOuAt2W7cmY=;
-        b=qXxhJjN/ICfqwBFbjJKV+wUTwMkv4vQQX65q2mwJiszpXsfxhKcem2Gn3F0QAkIWLn
-         8pYEUAIjgtIIccQVg99qS5WMk238NwyZTl8yhZSbnodi9vcDR+FRrQ/trVdzeF4BdZrY
-         Dm7xBmIM+BudJ2GvO3k52Ofjjctho4B8BxU6mDh4EVACfT+rVgoG85fXm6dEIZZ4zLej
-         MECg1n/jfXwXKtlfpC+0jIVws2KggMWOo6rn5Y7kkFbWaCJzzihLSlI9qRFyMQ6PVB/2
-         nKvtQwxM46qFC+MbczvBJZaZLSOONhuX0My5PbNLWegQIvq/3Zdyr8NFURKxAMhC2WhH
-         oAtw==
-X-Gm-Message-State: AOJu0Yz+eKQYyOVLMbcrTkpgzW/C7DhF8wTIygwhKYIAeCM+tIIFjENn
-	FU4+2MDKAK+uh9cjdn8uPbI=
-X-Google-Smtp-Source: AGHT+IFhz8G+T1pPrNxayPMtbnrP4cU0PxXPejLVgHu0II61q7JgfEwMAwEER4GxuC9fdUhhRnBsUQ==
-X-Received: by 2002:a17:90a:2c0f:b0:28b:44a7:48d with SMTP id m15-20020a17090a2c0f00b0028b44a7048dmr1824804pjd.56.1702914120111;
-        Mon, 18 Dec 2023 07:42:00 -0800 (PST)
+        bh=+CM98fRmYCuzoiQA2zFotS21sK3JgajVByra9JR9020=;
+        b=wMnBH5NYfuJXg+GyGkEOoowxk9AywCkTzJtBKjtzJNtbu7DT0Rs+IXmUAT5BbOt+ho
+         WSYNAp5raMM/RraEkbl3Ve1O5uCb/5/98ZhDnftcwo0kA5TBubij5UGMfLF5RUvFzGDP
+         Y1WZdmuBWDY3m3eQ2JY3dbFsvHmoTO6udeFDiCpUGaFPiMixQxJa0YBNFYYTqn28/El/
+         n0noZ6YNe/UxZ5qHto9MLQVPz1CsbPTPg898cpYhmNen8y/PKTUMnlx5HnqBquSAJln8
+         81onV43SCKpez9qJzbaJ0O58y+SHpjEBNH1XlQwNRUS8O3PUwKx/1BDDnWvSForPR/Vw
+         Tc0g==
+X-Gm-Message-State: AOJu0Yx7G2ADQqbpvizAFBNN0V7uWWoESNdFUvvFWzXkg4e9s/rz8ZmC
+	rx1K8Eiuo2rJU2WTTdk4ePk=
+X-Google-Smtp-Source: AGHT+IFjWomlAP8MLWzqnO5yw+2wjlulddgz/YS0WmSszj7Y8KNQQ79CzlXvlC6b6qkAyIEENjEVjA==
+X-Received: by 2002:a17:90b:1d83:b0:28b:8034:8a98 with SMTP id pf3-20020a17090b1d8300b0028b80348a98mr694057pjb.3.1702914123011;
+        Mon, 18 Dec 2023 07:42:03 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.41.58
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.42.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:41:59 -0800 (PST)
+        Mon, 18 Dec 2023 07:42:02 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	zdi-disclosures@trendmicro.com,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 124/154] ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
-Date: Tue, 19 Dec 2023 00:34:24 +0900
-Message-Id: <20231218153454.8090-125-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 125/154] ksmbd: add missing calling smb2_set_err_rsp() on error
+Date: Tue, 19 Dec 2023 00:34:25 +0900
+Message-Id: <20231218153454.8090-126-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -64,34 +63,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 4b081ce0d830b684fdf967abc3696d1261387254 ]
+[ Upstream commit 0e2378eaa2b3a663726cf740d4aaa8a801e2cb31 ]
 
-If authblob->SessionKey.Length is bigger than session key
-size(CIFS_KEY_SIZE), slub overflow can happen in key exchange codes.
-cifs_arc4_crypt copy to session key array from SessionKey from client.
+If some error happen on smb2_sess_setup(), Need to call
+smb2_set_err_rsp() to set error response.
+This patch add missing calling smb2_set_err_rsp() on error.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21940
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/auth.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index ee912d24ad94..9a08e6a90b94 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -355,6 +355,9 @@ int ksmbd_decode_ntlmssp_auth_blob(struct authenticate_message *authblob,
- 		if (blob_len < (u64)sess_key_off + sess_key_len)
- 			return -EINVAL;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 67eb41255903..ef3878bb313b 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1904,6 +1904,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 				ksmbd_conn_set_need_negotiate(conn);
+ 			}
+ 		}
++		smb2_set_err_rsp(work);
+ 	} else {
+ 		unsigned int iov_len;
  
-+		if (sess_key_len > CIFS_KEY_SIZE)
-+			return -EINVAL;
-+
- 		ctx_arc4 = kmalloc(sizeof(*ctx_arc4), GFP_KERNEL);
- 		if (!ctx_arc4)
- 			return -ENOMEM;
 -- 
 2.25.1
 
