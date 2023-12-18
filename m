@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 120E981725C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8817281732D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCA661F24309
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D72B1F236D0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019A54989E;
-	Mon, 18 Dec 2023 14:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD781D144;
+	Mon, 18 Dec 2023 14:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UX5Zc7kH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3y3MNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD30949897;
-	Mon, 18 Dec 2023 14:05:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EA1C433C8;
-	Mon, 18 Dec 2023 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835641D157;
+	Mon, 18 Dec 2023 14:14:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1D5C433C8;
+	Mon, 18 Dec 2023 14:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908358;
-	bh=DEV9pM3+KTR6xwGabJSKCskp1Yq547HqHQeOv5depVc=;
+	s=korg; t=1702908861;
+	bh=LQKJ9yJfu68pQSGpPn0EnmC6CnaF2AhasHLCuoaVbHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UX5Zc7kHeZXNGxJOs8w9NPaLm5XmelJbvVN9oWphpKXti6HRtrqq2H/7EXks0kkAL
-	 RxqZCPuKOfNJXmhpbHSsvZWf4VBcW+Y/zUpUl6EHWcF9Ohtmwlu01TNb6ZQwkGK4qb
-	 1TiOPkuww7lkdHwttArvkq7cXExIUQ1gZ6jfWce0=
+	b=rG3y3MNZbCFHu9FAHBndcr/CKTUwzljQ5pqgha4NPvP8npYGAZ++lD1QZO/yUvmgq
+	 HVrtBGlurGL6oMVCj6rvCAfDtPxZwUtOh+e/06OcVa530rAJOtRAsp9V85un4sJrqD
+	 MEBc+mQEIJOPy+QUsw1VJYLn8pffHBQULEYExflY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 146/166] drm/amdgpu: fix tear down order in amdgpu_vm_pt_free
-Date: Mon, 18 Dec 2023 14:51:52 +0100
-Message-ID: <20231218135111.655356149@linuxfoundation.org>
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 32/83] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+Date: Mon, 18 Dec 2023 14:51:53 +0100
+Message-ID: <20231218135051.154319650@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit ceb9a321e7639700844aa3bf234a4e0884f13b77 upstream.
+[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
 
-When freeing PD/PT with shadows it can happen that the shadow
-destruction races with detaching the PD/PT from the VM causing a NULL
-pointer dereference in the invalidation code.
+We need to do signed arithmetic if we expect condition
+`if (bytes < 0)` to be possible
 
-Fix this by detaching the the PD/PT from the VM first and then
-freeing the shadow instead.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: https://gitlab.freedesktop.org/drm/amd/-/issues/2867
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/vmw_vsock/virtio_transport_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-@@ -642,13 +642,14 @@ static void amdgpu_vm_pt_free(struct amd
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 3a12aee33e92f..00e8b60af0f8f 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -565,7 +565,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	s64 bytes;
  
- 	if (!entry->bo)
- 		return;
-+
-+	entry->bo->vm_bo = NULL;
- 	shadow = amdgpu_bo_shadowed(entry->bo);
- 	if (shadow) {
- 		ttm_bo_set_bulk_move(&shadow->tbo, NULL);
- 		amdgpu_bo_unref(&shadow);
- 	}
- 	ttm_bo_set_bulk_move(&entry->bo->tbo, NULL);
--	entry->bo->vm_bo = NULL;
+-	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
  
- 	spin_lock(&entry->vm->status_lock);
- 	list_del(&entry->vm_status);
+-- 
+2.43.0
+
 
 
 
