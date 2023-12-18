@@ -1,47 +1,52 @@
-Return-Path: <stable+bounces-7381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E196681724A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851F781717B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EB401C24D51
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31CA92836BF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2254B3D563;
-	Mon, 18 Dec 2023 14:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F4E1D127;
+	Mon, 18 Dec 2023 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgFDcH2q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEfjWxMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF21037883;
-	Mon, 18 Dec 2023 14:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64ED8C433C8;
-	Mon, 18 Dec 2023 14:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1E3129EF7;
+	Mon, 18 Dec 2023 13:58:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A99C433C7;
+	Mon, 18 Dec 2023 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908316;
-	bh=bdsGh2VfCQOpeRbZHOikMMHG4MzxJs/rPinuY30R3WI=;
+	s=korg; t=1702907895;
+	bh=c9AIcKz2cyup4cbhsA+faUul1IYNciyPM2HEoIfpyPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgFDcH2qQBDz+2ZuGaM/mKKTfUfPQhH7QFDKKu9mp1FAJcXZyao2+E7dTxD33beUg
-	 h65s00+Oyf7XKvXT6xtNXbvIlgefYyZGmLyEaixVsOI11YmHEfrvIYPrBnTk6+sFLy
-	 9B69wMSF4vFBGnzieC5H5k5P8C38sXkEC8qMqsAA=
+	b=YEfjWxMR3EaC8KNQ8alvgKM16SXDx4iRKkDUbAxztRycoxOOcNLdzKNP6M/60oa7S
+	 QFrNp4zhrGO6HUg4yXMwWqMwoTRE3IE9Sx6znARCenlE2oEwYvByHlhW2ZJ13fvIoQ
+	 bD7pkWv29rDi3fpnftTXP0lWk24b0DoyRHVomNO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 133/166] drm/amdgpu/sdma5.2: add begin/end_use ring callbacks
+	Yu Zhao <yuzhao@google.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 085/106] mm/mglru: fix underprotected page cache
 Date: Mon, 18 Dec 2023 14:51:39 +0100
-Message-ID: <20231218135111.044925342@linuxfoundation.org>
+Message-ID: <20231218135058.709778525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,86 +56,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Yu Zhao <yuzhao@google.com>
 
-commit ab4750332dbe535243def5dcebc24ca00c1f98ac upstream.
+commit 081488051d28d32569ebb7c7a23572778b2e7d57 upstream.
 
-Add begin/end_use ring callbacks to disallow GFXOFF when
-SDMA work is submitted and allow it again afterward.
+Unmapped folios accessed through file descriptors can be underprotected.
+Those folios are added to the oldest generation based on:
 
-This should avoid corner cases where GFXOFF is erroneously
-entered when SDMA is still active.  For now just allow/disallow
-GFXOFF in the begin and end helpers until we root cause the
-issue.  This should not impact power as SDMA usage is pretty
-minimal and GFXOSS should not be active when SDMA is active
-anyway, this just makes it explicit.
+1. The fact that they are less costly to reclaim (no need to walk the
+   rmap and flush the TLB) and have less impact on performance (don't
+   cause major PFs and can be non-blocking if needed again).
+2. The observation that they are likely to be single-use. E.g., for
+   client use cases like Android, its apps parse configuration files
+   and store the data in heap (anon); for server use cases like MySQL,
+   it reads from InnoDB files and holds the cached data for tables in
+   buffer pools (anon).
 
-v2: move everything into sdma5.2 code.  No reason for this
-to be generic at this point.
-v3: Add comments in new code
+However, the oldest generation can be very short lived, and if so, it
+doesn't provide the PID controller with enough time to respond to a surge
+of refaults.  (Note that the PID controller uses weighted refaults and
+those from evicted generations only take a half of the whole weight.) In
+other words, for a short lived generation, the moving average smooths out
+the spike quickly.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2220
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
-Tested-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 5.15+
+To fix the problem:
+1. For folios that are already on LRU, if they can be beyond the
+   tracking range of tiers, i.e., five accesses through file
+   descriptors, move them to the second oldest generation to give them
+   more time to age. (Note that tiers are used by the PID controller
+   to statistically determine whether folios accessed multiple times
+   through file descriptors are worth protecting.)
+2. When adding unmapped folios to LRU, adjust the placement of them so
+   that they are not too close to the tail. The effect of this is
+   similar to the above.
+
+On Android, launching 55 apps sequentially:
+                           Before     After      Change
+  workingset_refault_anon  25641024   25598972   0%
+  workingset_refault_file  115016834  106178438  -8%
+
+Link: https://lkml.kernel.org/r/20231208061407.2125867-1-yuzhao@google.com
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Tested-by: Kalesh Singh <kaleshsingh@google.com>
+Cc: T.J. Mercier <tjmercier@google.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ include/linux/mm_inline.h |   23 ++++++++++++++---------
+ mm/vmscan.c               |    2 +-
+ mm/workingset.c           |    6 +++---
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -1651,6 +1651,32 @@ static void sdma_v5_2_get_clockgating_st
- 		*flags |= AMD_CG_SUPPORT_SDMA_LS;
- }
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -231,22 +231,27 @@ static inline bool lru_gen_add_folio(str
+ 	if (folio_test_unevictable(folio) || !lrugen->enabled)
+ 		return false;
+ 	/*
+-	 * There are three common cases for this page:
+-	 * 1. If it's hot, e.g., freshly faulted in or previously hot and
+-	 *    migrated, add it to the youngest generation.
+-	 * 2. If it's cold but can't be evicted immediately, i.e., an anon page
+-	 *    not in swapcache or a dirty page pending writeback, add it to the
+-	 *    second oldest generation.
+-	 * 3. Everything else (clean, cold) is added to the oldest generation.
++	 * There are four common cases for this page:
++	 * 1. If it's hot, i.e., freshly faulted in, add it to the youngest
++	 *    generation, and it's protected over the rest below.
++	 * 2. If it can't be evicted immediately, i.e., a dirty page pending
++	 *    writeback, add it to the second youngest generation.
++	 * 3. If it should be evicted first, e.g., cold and clean from
++	 *    folio_rotate_reclaimable(), add it to the oldest generation.
++	 * 4. Everything else falls between 2 & 3 above and is added to the
++	 *    second oldest generation if it's considered inactive, or the
++	 *    oldest generation otherwise. See lru_gen_is_active().
+ 	 */
+ 	if (folio_test_active(folio))
+ 		seq = lrugen->max_seq;
+ 	else if ((type == LRU_GEN_ANON && !folio_test_swapcache(folio)) ||
+ 		 (folio_test_reclaim(folio) &&
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+-		seq = lrugen->min_seq[type] + 1;
+-	else
++		seq = lrugen->max_seq - 1;
++	else if (reclaiming || lrugen->min_seq[type] + MIN_NR_GENS >= lrugen->max_seq)
+ 		seq = lrugen->min_seq[type];
++	else
++		seq = lrugen->min_seq[type] + 1;
  
-+static void sdma_v5_2_ring_begin_use(struct amdgpu_ring *ring)
-+{
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
-+	 * disallow GFXOFF in some cases leading to
-+	 * hangs in SDMA.  Disallow GFXOFF while SDMA is active.
-+	 * We can probably just limit this to 5.2.3,
-+	 * but it shouldn't hurt for other parts since
-+	 * this GFXOFF will be disallowed anyway when SDMA is
-+	 * active, this just makes it explicit.
-+	 */
-+	amdgpu_gfx_off_ctrl(adev, false);
-+}
-+
-+static void sdma_v5_2_ring_end_use(struct amdgpu_ring *ring)
-+{
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
-+	 * disallow GFXOFF in some cases leading to
-+	 * hangs in SDMA.  Allow GFXOFF when SDMA is complete.
-+	 */
-+	amdgpu_gfx_off_ctrl(adev, true);
-+}
-+
- const struct amd_ip_funcs sdma_v5_2_ip_funcs = {
- 	.name = "sdma_v5_2",
- 	.early_init = sdma_v5_2_early_init,
-@@ -1698,6 +1724,8 @@ static const struct amdgpu_ring_funcs sd
- 	.test_ib = sdma_v5_2_ring_test_ib,
- 	.insert_nop = sdma_v5_2_ring_insert_nop,
- 	.pad_ib = sdma_v5_2_ring_pad_ib,
-+	.begin_use = sdma_v5_2_ring_begin_use,
-+	.end_use = sdma_v5_2_ring_end_use,
- 	.emit_wreg = sdma_v5_2_ring_emit_wreg,
- 	.emit_reg_wait = sdma_v5_2_ring_emit_reg_wait,
- 	.emit_reg_write_reg_wait = sdma_v5_2_ring_emit_reg_write_reg_wait,
+ 	gen = lru_gen_from_seq(seq);
+ 	flags = (gen + 1UL) << LRU_GEN_PGOFF;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4770,7 +4770,7 @@ static bool sort_folio(struct lruvec *lr
+ 	}
+ 
+ 	/* protected */
+-	if (tier > tier_idx) {
++	if (tier > tier_idx || refs == BIT(LRU_REFS_WIDTH)) {
+ 		int hist = lru_hist_from_seq(lrugen->min_seq[type]);
+ 
+ 		gen = folio_inc_gen(lruvec, folio, false);
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -289,10 +289,10 @@ static void lru_gen_refault(struct folio
+ 	 * 1. For pages accessed through page tables, hotter pages pushed out
+ 	 *    hot pages which refaulted immediately.
+ 	 * 2. For pages accessed multiple times through file descriptors,
+-	 *    numbers of accesses might have been out of the range.
++	 *    they would have been protected by sort_folio().
+ 	 */
+-	if (lru_gen_in_fault() || refs == BIT(LRU_REFS_WIDTH)) {
+-		folio_set_workingset(folio);
++	if (lru_gen_in_fault() || refs >= BIT(LRU_REFS_WIDTH) - 1) {
++		set_mask_bits(&folio->flags, 0, LRU_REFS_MASK | BIT(PG_workingset));
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	}
+ unlock:
 
 
 
