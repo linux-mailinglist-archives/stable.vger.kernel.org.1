@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DA7817232
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40776817169
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B479B283E80
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66FC61C2402A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD845BFB5;
-	Mon, 18 Dec 2023 14:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12631D127;
+	Mon, 18 Dec 2023 13:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kd2KdR6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+G/7ZA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F1B5A867;
-	Mon, 18 Dec 2023 14:04:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9F2C433C8;
-	Mon, 18 Dec 2023 14:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868B7129EE3;
+	Mon, 18 Dec 2023 13:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA32AC433C8;
+	Mon, 18 Dec 2023 13:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908256;
-	bh=q4RfpILcubzy1mAYLeriBrfNoJ0edTpfcALJ2gRm4TI=;
+	s=korg; t=1702907851;
+	bh=FIq4+gY5S8H81BakSUQH40Cwlk9K9tNdiE79vGfniWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kd2KdR6LBiaXsPCaNobCanRJ1UbMGT1sZuXsEf4M7goN3hwBDwb9tEjpg3Aok77fd
-	 g7Lr2UKIJuP2fcjCIYW0iYPuezaxNs02sD8XblMDsdNvTXCLcO5yUM6NnUwou9kuB+
-	 lcjMHTs4GLtMHqqKoiwjqZmlznxQekTFUx8LPjTk=
+	b=z+G/7ZA0eWpbDHROJl9KoELLcwfoXrQYk4AcasI+1tu0sN6qFhqsRIoJTpOOevCI5
+	 19I2EZcFb5lA5mCEsvrzsuV12GC1vqE66Jon2VTNcAJcrPv3q6S7P5u70AtwoABogf
+	 KYUc7zvM3h+/pKox9p9JyQFgdEulgW30DsSPV8sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Raye <braye@fastmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Mark ODonovan <shiftee@posteo.net>,
+	Hannes Reinecke <hare@suse.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/166] HID: glorious: fix Glorious Model I HID report
+Subject: [PATCH 6.1 062/106] nvme-auth: set explanation code for failure2 msgs
 Date: Mon, 18 Dec 2023 14:51:16 +0100
-Message-ID: <20231218135109.946323909@linuxfoundation.org>
+Message-ID: <20231218135057.706142378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,133 +55,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Raye <braye@fastmail.com>
+From: Mark O'Donovan <shiftee@posteo.net>
 
-[ Upstream commit a5e913c25b6b2b6ae02acef6d9400645ac03dfdf ]
+[ Upstream commit 38ce1570e2c46e7e9af983aa337edd7e43723aa2 ]
 
-The Glorious Model I mouse has a buggy HID report descriptor for its
-keyboard endpoint (used for programmable buttons). For report ID 2, there
-is a mismatch between Logical Minimum and Usage Minimum in the array that
-reports keycodes.
+Some error cases were not setting an auth-failure-reason-code-explanation.
+This means an AUTH_Failure2 message will be sent with an explanation value
+of 0 which is a reserved value.
 
-The offending portion of the descriptor: (from hid-decode)
-
-0x95, 0x05,                    //  Report Count (5)                   30
-0x75, 0x08,                    //  Report Size (8)                    32
-0x15, 0x00,                    //  Logical Minimum (0)                34
-0x25, 0x65,                    //  Logical Maximum (101)              36
-0x05, 0x07,                    //  Usage Page (Keyboard)              38
-0x19, 0x01,                    //  Usage Minimum (1)                  40
-0x29, 0x65,                    //  Usage Maximum (101)                42
-0x81, 0x00,                    //  Input (Data,Arr,Abs)               44
-
-This bug shifts all programmed keycodes up by 1. Importantly, this causes
-"empty" array indexes of 0x00 to be interpreted as 0x01, ErrorRollOver.
-The presence of ErrorRollOver causes the system to ignore all keypresses
-from the endpoint and breaks the ability to use the programmable buttons.
-
-Setting byte 41 to 0x00 fixes this, and causes keycodes to be interpreted
-correctly.
-
-Also, USB_VENDOR_ID_GLORIOUS is changed to USB_VENDOR_ID_SINOWEALTH,
-and a new ID for Laview Technology is added. Glorious seems to be
-white-labeling controller boards or mice from these vendors. There isn't a
-single canonical vendor ID for Glorious products.
-
-Signed-off-by: Brett Raye <braye@fastmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-glorious.c |   16 ++++++++++++++--
- drivers/hid/hid-ids.h      |   11 +++++++----
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/nvme/host/auth.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hid/hid-glorious.c
-+++ b/drivers/hid/hid-glorious.c
-@@ -21,6 +21,10 @@ MODULE_DESCRIPTION("HID driver for Glori
-  * Glorious Model O and O- specify the const flag in the consumer input
-  * report descriptor, which leads to inputs being ignored. Fix this
-  * by patching the descriptor.
-+ *
-+ * Glorious Model I incorrectly specifes the Usage Minimum for its
-+ * keyboard HID report, causing keycodes to be misinterpreted.
-+ * Fix this by setting Usage Minimum to 0 in that report.
-  */
- static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		unsigned int *rsize)
-@@ -32,6 +36,10 @@ static __u8 *glorious_report_fixup(struc
- 		rdesc[85] = rdesc[113] = rdesc[141] = \
- 			HID_MAIN_ITEM_VARIABLE | HID_MAIN_ITEM_RELATIVE;
- 	}
-+	if (*rsize == 156 && rdesc[41] == 1) {
-+		hid_info(hdev, "patching Glorious Model I keyboard report descriptor\n");
-+		rdesc[41] = 0;
-+	}
- 	return rdesc;
- }
- 
-@@ -44,6 +52,8 @@ static void glorious_update_name(struct
- 		model = "Model O"; break;
- 	case USB_DEVICE_ID_GLORIOUS_MODEL_D:
- 		model = "Model D"; break;
-+	case USB_DEVICE_ID_GLORIOUS_MODEL_I:
-+		model = "Model I"; break;
+--- a/drivers/nvme/host/auth.c
++++ b/drivers/nvme/host/auth.c
+@@ -834,6 +834,8 @@ static void nvme_queue_auth_work(struct
  	}
  
- 	snprintf(hdev->name, sizeof(hdev->name), "%s %s", "Glorious", model);
-@@ -66,10 +76,12 @@ static int glorious_probe(struct hid_dev
- }
- 
- static const struct hid_device_id glorious_devices[] = {
--	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- 		USB_DEVICE_ID_GLORIOUS_MODEL_O) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- 		USB_DEVICE_ID_GLORIOUS_MODEL_D) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
-+		USB_DEVICE_ID_GLORIOUS_MODEL_I) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, glorious_devices);
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -511,10 +511,6 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_010A 0x010a
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
- 
--#define USB_VENDOR_ID_GLORIOUS  0x258a
--#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
--#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
--
- #define I2C_VENDOR_ID_GOODIX		0x27c6
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
- 
-@@ -746,6 +742,9 @@
- #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
- #define USB_DEVICE_ID_LABTEC_ODDOR_HANDBRAKE	0x8888
- 
-+#define USB_VENDOR_ID_LAVIEW		0x22D4
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_I	0x1503
-+
- #define USB_VENDOR_ID_LCPOWER		0x1241
- #define USB_DEVICE_ID_LCPOWER_LC1000	0xf767
- 
-@@ -1160,6 +1159,10 @@
- #define USB_VENDOR_ID_SIGMATEL		0x066F
- #define USB_DEVICE_ID_SIGMATEL_STMP3780	0x3780
- 
-+#define USB_VENDOR_ID_SINOWEALTH  0x258a
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
-+
- #define USB_VENDOR_ID_SIS_TOUCH		0x0457
- #define USB_DEVICE_ID_SIS9200_TOUCH	0x9200
- #define USB_DEVICE_ID_SIS817_TOUCH	0x0817
+ fail2:
++	if (chap->status == 0)
++		chap->status = NVME_AUTH_DHCHAP_FAILURE_FAILED;
+ 	dev_dbg(ctrl->device, "%s: qid %d send failure2, status %x\n",
+ 		__func__, chap->qid, chap->status);
+ 	tl = nvme_auth_set_dhchap_failure2_data(ctrl, chap);
 
 
 
