@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-7208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8904C81716A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C098170FF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD051F24629
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4305EB21EB2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9169E129EC8;
-	Mon, 18 Dec 2023 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2426C1D13A;
+	Mon, 18 Dec 2023 13:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND7373fA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtFzYik6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5603E129EE3;
-	Mon, 18 Dec 2023 13:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC15FC433C7;
-	Mon, 18 Dec 2023 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E113C1D134;
+	Mon, 18 Dec 2023 13:53:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A291C433C7;
+	Mon, 18 Dec 2023 13:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907854;
-	bh=7ZiNoldkiZ5/X8SWjqpga3gPDAFsuT5pZc1iWjW7D4U=;
+	s=korg; t=1702907591;
+	bh=RiX9Wa1RMRMc51E4etZz1+7VZY6ZsXJx9oQm5Q/HpEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ND7373fAbHFFfIUfNORdrXC/sDZk/DKIYU9RQnMRTuTNIFynkyCnPb3mi5OzLA8+S
-	 ag5NCaLQdqvaxAOlrxWaqApjZz8gfGBKpdUYMbl++ey0yITmUJIMPgCZSs6Wzk1ewz
-	 1Y5LwtZ2i7rufKeC6KiJ1HwtrVrpWpqu/xTXJfao=
+	b=wtFzYik6inHAOnqn6wVvliaspucSsPGBlHCLPcQiecnRC0PFnmnWtcyA0OSlwijtV
+	 Q8SuJxJ1Cq6UI7oZVVwURe7KtSbMZV9XebJTDkdF9j2ejJQ390R1RHyfFAUDrfq7en
+	 kchioYQ/9Ii32jZJLSWRKGCiXDvG0wohL9tHnUvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/106] HID: hid-asus: reset the backlight brightness level on resume
-Date: Mon, 18 Dec 2023 14:51:25 +0100
-Message-ID: <20231218135058.086507890@linuxfoundation.org>
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>
+Subject: [PATCH 4.19 16/36] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
+Date: Mon, 18 Dec 2023 14:51:26 +0100
+Message-ID: <20231218135042.439566084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +56,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <benato.denis96@gmail.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
+commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
 
-Some devices managed by this driver automatically set brightness to 0
-before entering a suspended state and reset it back to a default
-brightness level after the resume:
-this has the effect of having the kernel report wrong brightness
-status after a sleep, and on some devices (like the Asus RC71L) that
-brightness is the intensity of LEDs directly facing the user.
+This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
+subsequent fix to it:
 
-Fix the above issue by setting back brightness to the level it had
-before entering a sleep state.
+  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+40613da52b13 fixed a problem where hot-adding a device with large BARs
+failed if the bridge windows programmed by firmware were not large enough.
+
+cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
+only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
+of a device on a PCI root bus (common in the virt world) or firmware
+sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
+7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
+
+Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
+problems:
+
+  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
+    sometimes.
+
+  - Dongli reported a similar problem with hot-add of SCSI disks.
+
+  - Jonathan reported a console freeze during boot on bare metal due to an
+    error in radeon GPU initialization.
+
+Revert both patches to avoid adding these problems.  This means we will
+again see the problems with hot-adding devices with large BARs and the NULL
+pointer dereferences and suspend/resume issues that 40613da52b13 and
+cc22522fd55e were intended to fix.
+
+Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+Reported-by: Fiona Ebner <f.ebner@proxmox.com>
+Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
+Reported-by: Jonathan Woithe <jwoithe@just42.net>
+Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index d1094bb1aa429..88dfa688f560d 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -1012,6 +1012,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
- 	return 0;
- }
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -510,15 +510,12 @@ static void enable_slot(struct acpiphp_s
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					if (pci_is_root_bus(bus))
+-						__pci_bus_size_bridges(dev->subordinate, &add_list);
++					__pci_bus_size_bridges(dev->subordinate,
++							       &add_list);
+ 				}
+ 			}
+ 		}
+-		if (pci_is_root_bus(bus))
+-			__pci_bus_assign_resources(bus, &add_list, NULL);
+-		else
+-			pci_assign_unassigned_bridge_resources(bus->self);
++		__pci_bus_assign_resources(bus, &add_list, NULL);
+ 	}
  
-+static int __maybe_unused asus_resume(struct hid_device *hdev) {
-+	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-+	int ret = 0;
-+
-+	if (drvdata->kbd_backlight) {
-+		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
-+				drvdata->kbd_backlight->cdev.brightness };
-+		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
-+		if (ret < 0) {
-+			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
-+			goto asus_resume_err;
-+		}
-+	}
-+
-+asus_resume_err:
-+	return ret;
-+}
-+
- static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
- {
- 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-@@ -1303,6 +1321,7 @@ static struct hid_driver asus_driver = {
- 	.input_configured       = asus_input_configured,
- #ifdef CONFIG_PM
- 	.reset_resume           = asus_reset_resume,
-+	.resume					= asus_resume,
- #endif
- 	.event			= asus_event,
- 	.raw_event		= asus_raw_event
--- 
-2.43.0
-
+ 	acpiphp_sanitize_bus(bus);
 
 
 
