@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBF481727C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B44EB8172D1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1275F1C20859
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3776AB23EF3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EBD3A1B5;
-	Mon, 18 Dec 2023 14:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E74B3D546;
+	Mon, 18 Dec 2023 14:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwYhlEbb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUf6m7Ih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519D01D13D;
-	Mon, 18 Dec 2023 14:07:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED44C433C7;
-	Mon, 18 Dec 2023 14:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA04D3A1DE;
+	Mon, 18 Dec 2023 14:10:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F76DC433C8;
+	Mon, 18 Dec 2023 14:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908426;
-	bh=XGngA8E5v1Y2ZFXYpvyzWAiNBiljek39pLU2vnYpVys=;
+	s=korg; t=1702908626;
+	bh=hycHzfQ9CLK/onqfT8zvL3GZOQ28WvP56lMiq0aS9K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZwYhlEbbmt9czp6yrdM/r4MVTga1VbIhbggZIj5rlKW9DVVdONwP/cUjhF0j4cXoT
-	 qa7Norhrxb7+r8ZFrH1FfPmwnPWYVJc6L18ftxiK7M7rd5zCezljC7YE+e+UpJefuL
-	 jTbcdvUdxk/vEr+7u939uWfRNUKuKy10cJmmOdV0=
+	b=VUf6m7Ihn0zUu2rMmPdgybsXjvXEC+GaUS9QXm227Th9V8Ryfvgi/m9mRzLrk0WmZ
+	 CJB0FDxYLJvslqGsKSHBiIEN7CHCfsgdLks3duR89Fq0p5pxZ/m9kYr9caaed7mzzz
+	 3OyoQ4tExYXvFi5/hE47WTmjGaAOPK6CGR7TmvZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 155/166] smb: client: fix NULL deref in asn1_ber_decoder()
+	Chengfeng Ye <dg573847474@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 06/40] atm: solos-pci: Fix potential deadlock on &cli_queue_lock
 Date: Mon, 18 Dec 2023 14:52:01 +0100
-Message-ID: <20231218135112.075998402@linuxfoundation.org>
+Message-ID: <20231218135042.985568614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,136 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 90d025c2e953c11974e76637977c473200593a46 upstream.
+[ Upstream commit d5dba32b8f6cb39be708b726044ba30dbc088b30 ]
 
-If server replied SMB2_NEGOTIATE with a zero SecurityBufferOffset,
-smb2_get_data_area() sets @len to non-zero but return NULL, so
-decode_negTokeninit() ends up being called with a NULL @security_blob:
+As &card->cli_queue_lock is acquired under softirq context along the
+following call chain from solos_bh(), other acquisition of the same
+lock inside process context should disable at least bh to avoid double
+lock.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 2 PID: 871 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:asn1_ber_decoder+0x173/0xc80
-  Code: 01 4c 39 2c 24 75 09 45 84 c9 0f 85 2f 03 00 00 48 8b 14 24 4c 29 ea 48 83 fa 01 0f 86 1e 07 00 00 48 8b 74 24 28 4d 8d 5d 01 <42> 0f b6 3c 2e 89 fa 40 88 7c 24 5c f7 d2 83 e2 1f 0f 84 3d 07 00
-  RSP: 0018:ffffc9000063f950 EFLAGS: 00010202
-  RAX: 0000000000000002 RBX: 0000000000000000 RCX: 000000000000004a
-  RDX: 000000000000004a RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000002 R11: 0000000000000001 R12: 0000000000000000
-  R13: 0000000000000000 R14: 000000000000004d R15: 0000000000000000
-  FS:  00007fce52b0fbc0(0000) GS:ffff88806ba00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 000000001ae64000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? __stack_depot_save+0x1e6/0x480
-   ? exc_page_fault+0x6f/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? asn1_ber_decoder+0x173/0xc80
-   ? check_object+0x40/0x340
-   decode_negTokenInit+0x1e/0x30 [cifs]
-   SMB2_negotiate+0xc99/0x17c0 [cifs]
-   ? smb2_negotiate+0x46/0x60 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   smb2_negotiate+0x46/0x60 [cifs]
-   cifs_negotiate_protocol+0xae/0x130 [cifs]
-   cifs_get_smb_ses+0x517/0x1040 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? queue_delayed_work_on+0x5d/0x90
-   cifs_mount_get_session+0x78/0x200 [cifs]
-   dfs_mount_share+0x13a/0x9f0 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0xbf/0x2b0
-   ? find_nls+0x16/0x80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_mount+0x7e/0x350 [cifs]
-   cifs_smb3_do_mount+0x128/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7fce52c2ab1e
+<deadlock #1>
+console_show()
+--> spin_lock(&card->cli_queue_lock)
+<interrupt>
+   --> solos_bh()
+   --> spin_lock(&card->cli_queue_lock)
 
-Fix this by setting @len to zero when @off == 0 so callers won't
-attempt to dereference non-existing data areas.
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To prevent the potential deadlock, the patch uses spin_lock_bh()
+on the card->cli_queue_lock under process context code consistently
+to prevent the possible deadlock scenario.
+
+Fixes: 9c54004ea717 ("atm: Driver for Solos PCI ADSL2+ card.")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2misc.c |   26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ drivers/atm/solos-pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -313,6 +313,9 @@ static const bool has_smb2_data_area[NUM
- char *
- smb2_get_data_area_len(int *off, int *len, struct smb2_hdr *shdr)
- {
-+	const int max_off = 4096;
-+	const int max_len = 128 * 1024;
-+
- 	*off = 0;
- 	*len = 0;
+diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
+index c32f7dd9879ac..f7ec9ef361921 100644
+--- a/drivers/atm/solos-pci.c
++++ b/drivers/atm/solos-pci.c
+@@ -449,9 +449,9 @@ static ssize_t console_show(struct device *dev, struct device_attribute *attr,
+ 	struct sk_buff *skb;
+ 	unsigned int len;
  
-@@ -384,29 +387,20 @@ smb2_get_data_area_len(int *off, int *le
- 	 * Invalid length or offset probably means data area is invalid, but
- 	 * we have little choice but to ignore the data area in this case.
- 	 */
--	if (*off > 4096) {
--		cifs_dbg(VFS, "offset %d too large, data area ignored\n", *off);
--		*len = 0;
--		*off = 0;
--	} else if (*off < 0) {
--		cifs_dbg(VFS, "negative offset %d to data invalid ignore data area\n",
--			 *off);
-+	if (unlikely(*off < 0 || *off > max_off ||
-+		     *len < 0 || *len > max_len)) {
-+		cifs_dbg(VFS, "%s: invalid data area (off=%d len=%d)\n",
-+			 __func__, *off, *len);
- 		*off = 0;
- 		*len = 0;
--	} else if (*len < 0) {
--		cifs_dbg(VFS, "negative data length %d invalid, data area ignored\n",
--			 *len);
--		*len = 0;
--	} else if (*len > 128 * 1024) {
--		cifs_dbg(VFS, "data area larger than 128K: %d\n", *len);
-+	} else if (*off == 0) {
- 		*len = 0;
- 	}
+-	spin_lock(&card->cli_queue_lock);
++	spin_lock_bh(&card->cli_queue_lock);
+ 	skb = skb_dequeue(&card->cli_queue[SOLOS_CHAN(atmdev)]);
+-	spin_unlock(&card->cli_queue_lock);
++	spin_unlock_bh(&card->cli_queue_lock);
+ 	if(skb == NULL)
+ 		return sprintf(buf, "No data.\n");
  
- 	/* return pointer to beginning of data area, ie offset from SMB start */
--	if ((*off != 0) && (*len != 0))
-+	if (*off > 0 && *len > 0)
- 		return (char *)shdr + *off;
--	else
--		return NULL;
-+	return NULL;
- }
- 
- /*
+-- 
+2.43.0
+
 
 
 
