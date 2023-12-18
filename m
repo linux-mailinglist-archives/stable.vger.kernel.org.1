@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-7567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5966081731D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E448172CE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77382890D7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D197B23D53
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFDE3788F;
-	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1873A1C7;
+	Mon, 18 Dec 2023 14:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNGB4/L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUWaRPth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AAD37869;
-	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A355C433C7;
-	Mon, 18 Dec 2023 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C293A1C0;
+	Mon, 18 Dec 2023 14:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C7BC433C8;
+	Mon, 18 Dec 2023 14:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908817;
-	bh=fM1/LN3R+juOLSaQjCTmQLVDFg73Edp73OPB3toIjJg=;
+	s=korg; t=1702908612;
+	bh=oXmv5PN2uwp5uSbORHv1M21KWtZiNG7QXEU+8kljtlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNGB4/L7JTSeZCG4OUGlJn1aJ/IyWMxam1ZlWFYwetUaO4xpHyRttvN9SSfvbj0p9
-	 ihS386eiUQFgD58IOY/Ovhp/Y2oNK5Aqjls8w+VN43XCkuk3FC+Ts7bYEbB68DR/KC
-	 04oZrGQFYOL3MbdMcKns1SV2NAUfjGhTkrWJrTNs=
+	b=MUWaRPthz5oZ3fxZHvdVLik6tI5T0RNtKKlgvPBkgAaTXEg3l+U1YLUQGUFSi9MuS
+	 cPaCxLH32DAFDoclMmqGvZ1yFuvhUa7EdEjyAw1m4MlJZWbtiyYujvkyE7yX3gHUNC
+	 uVH2YbWTkDa4WJY69opSlqbkx3u8bHwUuhau+vPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	Fei Shao <fshao@chromium.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 45/83] drm/mediatek: Add spinlock for setting vblank event in atomic_begin
+Subject: [PATCH 5.4 11/40] net: Remove acked SYN flag from packet in the transmit queue correctly
 Date: Mon, 18 Dec 2023 14:52:06 +0100
-Message-ID: <20231218135051.741033878@linuxfoundation.org>
+Message-ID: <20231218135043.137826156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,56 +54,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit fe4c5f662097978b6c91c23a13c24ed92339a180 ]
+[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
 
-Add spinlock protection to avoid race condition on vblank event
-between mtk_drm_crtc_atomic_begin() and mtk_drm_finish_page_flip().
+syzkaller report:
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230920090658.31181-1-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+ kernel BUG at net/core/skbuff.c:3452!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
+ RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
+ Call Trace:
+ icmp_glue_bits (net/ipv4/icmp.c:357)
+ __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
+ ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
+ icmp_push_reply (net/ipv4/icmp.c:370)
+ __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
+ ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
+ __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
+ ip_output (net/ipv4/ip_output.c:427)
+ __ip_queue_xmit (net/ipv4/ip_output.c:535)
+ __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
+ __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
+ tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
+ tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
+ tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
+
+The panic issue was trigered by tcp simultaneous initiation.
+The initiation process is as follows:
+
+      TCP A                                            TCP B
+
+  1.  CLOSED                                           CLOSED
+
+  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
+
+  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
+
+  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
+
+  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
+
+  // TCP B: not send challenge ack for ack limit or packet loss
+  // TCP A: close
+	tcp_close
+	   tcp_send_fin
+              if (!tskb && tcp_under_memory_pressure(sk))
+                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
+           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
+
+  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
+
+  // TCP B: send challenge ack to SYN_FIN_ACK
+
+  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
+
+  // TCP A:  <SND.UNA=101>
+
+  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
+
+	__tcp_retransmit_skb  //skb->len=0
+	    tcp_trim_head
+		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
+		    __pskb_trim_head
+			skb->data_len -= len // skb->len=-1, wrap around
+	    ... ...
+	    ip_fragment
+		icmp_glue_bits //BUG_ON
+
+If we use tcp_trim_head() to remove acked SYN from packet that contains data
+or other flags, skb->len will be incorrectly decremented. We can remove SYN
+flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
+can fix the problem mentioned above.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv4/tcp_output.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-index f2264633be1b7..d6781e54b3356 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -680,6 +680,7 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
- 									  crtc);
- 	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
- 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-+	unsigned long flags;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 1dce05bfa3005..6d7f441c7dd76 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2945,7 +2945,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (skb_still_in_host_queue(sk, skb))
+ 		return -EBUSY;
  
- 	if (mtk_crtc->event && mtk_crtc_state->base.event)
- 		DRM_ERROR("new event while there is still a pending event\n");
-@@ -687,7 +688,11 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
- 	if (mtk_crtc_state->base.event) {
- 		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
- 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
-+
-+		spin_lock_irqsave(&crtc->dev->event_lock, flags);
- 		mtk_crtc->event = mtk_crtc_state->base.event;
-+		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
-+
- 		mtk_crtc_state->base.event = NULL;
- 	}
- }
++start:
+ 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
++		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
++			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
++			TCP_SKB_CB(skb)->seq++;
++			goto start;
++		}
+ 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
+ 			WARN_ON_ONCE(1);
+ 			return -EINVAL;
 -- 
 2.43.0
 
