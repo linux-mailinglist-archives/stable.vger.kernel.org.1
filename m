@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C817E817224
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 121488170E6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6944C283EEA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B520A28397E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2D5A873;
-	Mon, 18 Dec 2023 14:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6451D132;
+	Mon, 18 Dec 2023 13:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B12sIgPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3+LlcVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C3D3788E;
-	Mon, 18 Dec 2023 14:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89F5C433CA;
-	Mon, 18 Dec 2023 14:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F0F129EF7;
+	Mon, 18 Dec 2023 13:52:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F5CC433C7;
+	Mon, 18 Dec 2023 13:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908221;
-	bh=5PonOZEbqFusvDsDmWYyrtWokYqyi+SGV8R1OcC+2MM=;
+	s=korg; t=1702907528;
+	bh=NQRYXf5cqNCEYT/+RaEhDyOD/tbMt6IXk4b3PJPMisI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B12sIgPbMWLv2a4E0Zp5vSoKB2aEmD2b1qwqTmAJ4DveTGAZHFnsgKvyC0L1svO5C
-	 Hxb3D94djq/UPhEi6Lwvol5h9te6lkP5CBbe5oWCzdu6QUaqdgB8l9prmbIFAzoqLl
-	 1kRym6Y5/VzLe0bl5EA6pn7nPt15BMhMpY5AePdA=
+	b=e3+LlcVwMUNHbxz7Nyw1TiMyvRFRy9jiSg+V9ioUx1Bj0k3+YGZBAQUCkg+kO77yL
+	 WFNSSGIdFz9peEK3XK/Kxafd/Hd3RBLZO8JF9FLdqlTo2r9aCgULBY36uuBxM/2oez
+	 GAwcTPYVt5u49VRChMPHt649Zv0rfsG7QFAKq3z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark ODonovan <shiftee@posteo.net>,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/166] nvme-auth: set explanation code for failure2 msgs
+Subject: [PATCH 4.14 02/26] qca_debug: Fix ethtool -G iface tx behavior
 Date: Mon, 18 Dec 2023 14:51:04 +0100
-Message-ID: <20231218135109.373243575@linuxfoundation.org>
+Message-ID: <20231218135040.742748687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,38 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark O'Donovan <shiftee@posteo.net>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 38ce1570e2c46e7e9af983aa337edd7e43723aa2 ]
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-Some error cases were not setting an auth-failure-reason-code-explanation.
-This means an AUTH_Failure2 message will be sent with an explanation value
-of 0 which is a reserved value.
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
+
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
+
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -840,6 +840,8 @@ static void nvme_queue_auth_work(struct
- 	}
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 858c39cdae08a..acb60721991d8 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
  
- fail2:
-+	if (chap->status == 0)
-+		chap->status = NVME_AUTH_DHCHAP_FAILURE_FAILED;
- 	dev_dbg(ctrl->device, "%s: qid %d send failure2, status %x\n",
- 		__func__, chap->qid, chap->status);
- 	tl = nvme_auth_set_dhchap_failure2_data(ctrl, chap);
+ #define QCASPI_MAX_REGS 0x20
+ 
++#define QCASPI_RX_MAX_FRAMES 4
++
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -266,9 +268,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
+ }
+ 
+@@ -277,7 +279,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+-- 
+2.43.0
+
 
 
 
