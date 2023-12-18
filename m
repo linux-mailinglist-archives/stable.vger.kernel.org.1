@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C55281715C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88CD8170F5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3DA11C23F6A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68629283B2B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A6C129EFB;
-	Mon, 18 Dec 2023 13:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C50101D4;
+	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KchKtxpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uLlMEMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B25129EE3;
-	Mon, 18 Dec 2023 13:56:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252EBC433C8;
-	Mon, 18 Dec 2023 13:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2735129ED2;
+	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B62C433C7;
+	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907818;
-	bh=OJaxzgsy4U586au1qE5Jo3IkbfoeIkstSJtw72mNYLM=;
+	s=korg; t=1702907566;
+	bh=EG6kwFKSPsKZ46NZiZwDtp4u3ymSnCPaAnvSltuK1bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KchKtxpPnkH5UomOUYBCSjnLyqDKxbg9MS1yaj7/cW0Lo3rbkE3RU+Nm5TGYmMsqs
-	 3wu67089iVKHghlW/NK22nw0kYM9Y1dYbGKQ4d9LJD6saakOfe/h0Yos3V8jfKf2Kd
-	 MdgtCtum1T9iy5OJy3yiKPtpNeSrufametDo1ptk=
+	b=1uLlMEMuOpznEloPQWN5lI/YQOKmyqr209itfYNf9fo5t8B+tl0CNfIgZ+z9e5blh
+	 TEteDnfidyhImwAM0J44z/73s7x+tlMoytgx/iVmD1yZ41PVHsrpuxqEpwNuZGQYo+
+	 JJs6p1iNEREsRXqb0N4Tv/nizXWV4QpYTyerwK1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
-	Coly Li <colyli@suse.de>,
-	Eric Wheeler <bcache@lists.ewheeler.net>,
-	Jens Axboe <axboe@kernel.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/106] bcache: avoid oversize memory allocation by small stripe_size
+Subject: [PATCH 4.14 09/26] net: Remove acked SYN flag from packet in the transmit queue correctly
 Date: Mon, 18 Dec 2023 14:51:11 +0100
-Message-ID: <20231218135057.491846856@linuxfoundation.org>
+Message-ID: <20231218135041.019056309@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,92 +54,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
+[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
 
-Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
-used for dirty data writeback, their sizes are decided by backing device
-capacity and stripe size. Larger backing device capacity or smaller
-stripe size make these two arraies occupies more dynamic memory space.
+syzkaller report:
 
-Currently bcache->stripe_size is directly inherited from
-queue->limits.io_opt of underlying storage device. For normal hard
-drives, its limits.io_opt is 0, and bcache sets the corresponding
-stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
-devices do declare value for queue->limits.io_opt, small stripe_size
-(comparing to 1TB) becomes an issue for oversize memory allocations of
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
-capacity of hard drives gets much larger in recent decade.
+ kernel BUG at net/core/skbuff.c:3452!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
+ RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
+ Call Trace:
+ icmp_glue_bits (net/ipv4/icmp.c:357)
+ __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
+ ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
+ icmp_push_reply (net/ipv4/icmp.c:370)
+ __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
+ ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
+ __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
+ ip_output (net/ipv4/ip_output.c:427)
+ __ip_queue_xmit (net/ipv4/ip_output.c:535)
+ __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
+ __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
+ tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
+ tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
+ tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
 
-For example a raid5 array assembled by three 20TB hardrives, the raid
-device capacity is 40TB with typical 512KB limits.io_opt. After the math
-calculation in bcache code, these two arraies will occupy 400MB dynamic
-memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
-declared on a new 2TB hard drive, then these two arraies request 2GB and
-512MB dynamic memory from kzalloc(). The result is that bcache device
-always fails to initialize on his system.
+The panic issue was trigered by tcp simultaneous initiation.
+The initiation process is as follows:
 
-To avoid the oversize memory allocation, bcache->stripe_size should not
-directly inherited by queue->limits.io_opt from the underlying device.
-This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
-and set bcache device's stripe size against the declared limits.io_opt
-value from the underlying storage device,
-- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size directly by this limits.io_opt value.
-- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size by a value multiplying limits.io_opt and euqal or
-  large than BCH_MIN_STRIPE_SZ.
+      TCP A                                            TCP B
 
-Then the minimal stripe size of a bcache device will always be >= 4MB.
-For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
-in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
-by these two arraies will be 2.5MB in total.
+  1.  CLOSED                                           CLOSED
 
-Such mount of memory allocated for bcache->stripe_sectors_dirty and
-bcache->full_dirty_stripes is reasonable for most of storage devices.
+  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
 
-Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
-Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
+
+  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
+
+  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
+
+  // TCP B: not send challenge ack for ack limit or packet loss
+  // TCP A: close
+	tcp_close
+	   tcp_send_fin
+              if (!tskb && tcp_under_memory_pressure(sk))
+                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
+           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
+
+  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
+
+  // TCP B: send challenge ack to SYN_FIN_ACK
+
+  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
+
+  // TCP A:  <SND.UNA=101>
+
+  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
+
+	__tcp_retransmit_skb  //skb->len=0
+	    tcp_trim_head
+		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
+		    __pskb_trim_head
+			skb->data_len -= len // skb->len=-1, wrap around
+	    ... ...
+	    ip_fragment
+		icmp_glue_bits //BUG_ON
+
+If we use tcp_trim_head() to remove acked SYN from packet that contains data
+or other flags, skb->len will be incorrectly decremented. We can remove SYN
+flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
+can fix the problem mentioned above.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/bcache.h | 1 +
- drivers/md/bcache/super.c  | 2 ++
- 2 files changed, 3 insertions(+)
+ net/ipv4/tcp_output.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index aebb7ef10e631..e86fa736dc4ee 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -265,6 +265,7 @@ struct bcache_device {
- #define BCACHE_DEV_WB_RUNNING		3
- #define BCACHE_DEV_RATE_DW_RUNNING	4
- 	int			nr_stripes;
-+#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
- 	unsigned int		stripe_size;
- 	atomic_t		*stripe_sectors_dirty;
- 	unsigned long		*full_dirty_stripes;
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 7660962e7b8b4..525871380f442 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -905,6 +905,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 67636017f275a..2a07a167124c4 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2883,7 +2883,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (skb_still_in_host_queue(sk, skb))
+ 		return -EBUSY;
  
- 	if (!d->stripe_size)
- 		d->stripe_size = 1 << 31;
-+	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
-+		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
- 
- 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
- 	if (!n || n > max_stripes) {
++start:
+ 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
++		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
++			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
++			TCP_SKB_CB(skb)->seq++;
++			goto start;
++		}
+ 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
+ 			WARN_ON_ONCE(1);
+ 			return -EINVAL;
 -- 
 2.43.0
 
