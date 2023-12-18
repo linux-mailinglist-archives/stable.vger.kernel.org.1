@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E57F817216
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C54817127
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0587BB235B2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F243E1F23423
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D4E4FF9D;
-	Mon, 18 Dec 2023 14:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69C3C3786A;
+	Mon, 18 Dec 2023 13:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9WkwVH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qlKrFdxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D855A84C;
-	Mon, 18 Dec 2023 14:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4786C433C8;
-	Mon, 18 Dec 2023 14:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A32E1D15F;
+	Mon, 18 Dec 2023 13:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBC4C433C9;
+	Mon, 18 Dec 2023 13:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908196;
-	bh=HH7mWhXO/3xi4eO4Y6YhreDDgrpb5j8Y+uixqv4uSDs=;
+	s=korg; t=1702907690;
+	bh=EN8byMA/K1IOTX1GiWsW6yElJFwnZTftUUE8s0p1doI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A9WkwVH8mF3NcaRzQ9xe6YzN97wrB7kpXsjsJmhMZRErF6PvHIFItzXeAYuz/khaT
-	 Rl8Y99H9BG/mELWQxcTJZFB9je0+l79yexPz0UlAlqyB1VAjGsGEufKUUdQTdS7uSM
-	 Q60WqzPiyCWkLOjcr372F0NP98kFBKHXNFmWxIUk=
+	b=qlKrFdxl3hpQuKOkLiNJUP7YOBETvh/njKI04OhxlGjhYUP1WxN7RDySWAo51xyKS
+	 mFPpokxiBPNMp8J20xeoFqdS5DUIxqdzoSHlsFh0sQ8L/hS5LvBla3NkQ7RLyB16v8
+	 DK2yYH1AJlgXnYgOFcMwrffwy8HAtQwcofgDvHiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Marcus Aram <marcus+oss@oxar.nl>,
-	Mark Herbert <mark.herbert42@gmail.com>
-Subject: [PATCH 6.6 059/166] HID: i2c-hid: Add IDEA5002 to i2c_hid_acpi_blacklist[]
+	David Ahern <dsahern@kernel.org>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 011/106] net: ipv6: support reporting otherwise unknown prefix flags in RTM_NEWPREFIX
 Date: Mon, 18 Dec 2023 14:50:25 +0100
-Message-ID: <20231218135107.691913011@linuxfoundation.org>
+Message-ID: <20231218135055.458128178@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +53,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-commit a9f68ffe1170ca4bc17ab29067d806a354a026e0 upstream.
+[ Upstream commit bd4a816752bab609dd6d65ae021387beb9e2ddbd ]
 
-Users have reported problems with recent Lenovo laptops that contain
-an IDEA5002 I2C HID device. Reports include fans turning on and
-running even at idle and spurious wakeups from suspend.
+Lorenzo points out that we effectively clear all unknown
+flags from PIO when copying them to userspace in the netlink
+RTM_NEWPREFIX notification.
 
-Presumably in the Windows ecosystem there is an application that
-uses the HID device. Maybe that puts it into a lower power state so
-it doesn't cause spurious events.
+We could fix this one at a time as new flags are defined,
+or in one fell swoop - I choose the latter.
 
-This device doesn't serve any functional purpose in Linux as nothing
-interacts with it so blacklist it from being probed. This will
-prevent the GPIO driver from setting up the GPIO and the spurious
-interrupts and wake events will not occur.
+We could either define 6 new reserved flags (reserved1..6) and handle
+them individually (and rename them as new flags are defined), or we
+could simply copy the entire unmodified byte over - I choose the latter.
 
-Cc: stable@vger.kernel.org # 6.1
-Reported-and-tested-by: Marcus Aram <marcus+oss@oxar.nl>
-Reported-and-tested-by: Mark Herbert <mark.herbert42@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2812
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This unfortunately requires some anonymous union/struct magic,
+so we add a static assert on the struct size for a little extra safety.
+
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-acpi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/net/addrconf.h | 12 ++++++++++--
+ include/net/if_inet6.h |  4 ----
+ net/ipv6/addrconf.c    |  6 +-----
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
---- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-@@ -40,6 +40,11 @@ static const struct acpi_device_id i2c_h
- 	 * ICN8505 controller, has a _CID of PNP0C50 but is not HID compatible.
- 	 */
- 	{ "CHPN0001" },
-+	/*
-+	 * The IDEA5002 ACPI device causes high interrupt usage and spurious
-+	 * wakeups from suspend.
-+	 */
-+	{ "IDEA5002" },
- 	{ }
+diff --git a/include/net/addrconf.h b/include/net/addrconf.h
+index c04f359655b86..86eb2aba1479c 100644
+--- a/include/net/addrconf.h
++++ b/include/net/addrconf.h
+@@ -31,17 +31,22 @@ struct prefix_info {
+ 	__u8			length;
+ 	__u8			prefix_len;
+ 
++	union __packed {
++		__u8		flags;
++		struct __packed {
+ #if defined(__BIG_ENDIAN_BITFIELD)
+-	__u8			onlink : 1,
++			__u8	onlink : 1,
+ 			 	autoconf : 1,
+ 				reserved : 6;
+ #elif defined(__LITTLE_ENDIAN_BITFIELD)
+-	__u8			reserved : 6,
++			__u8	reserved : 6,
+ 				autoconf : 1,
+ 				onlink : 1;
+ #else
+ #error "Please fix <asm/byteorder.h>"
+ #endif
++		};
++	};
+ 	__be32			valid;
+ 	__be32			prefered;
+ 	__be32			reserved2;
+@@ -49,6 +54,9 @@ struct prefix_info {
+ 	struct in6_addr		prefix;
  };
  
++/* rfc4861 4.6.2: IPv6 PIO is 32 bytes in size */
++static_assert(sizeof(struct prefix_info) == 32);
++
+ #include <linux/ipv6.h>
+ #include <linux/netdevice.h>
+ #include <net/if_inet6.h>
+diff --git a/include/net/if_inet6.h b/include/net/if_inet6.h
+index c8490729b4aea..31bf475eca762 100644
+--- a/include/net/if_inet6.h
++++ b/include/net/if_inet6.h
+@@ -22,10 +22,6 @@
+ #define IF_RS_SENT	0x10
+ #define IF_READY	0x80000000
+ 
+-/* prefix flags */
+-#define IF_PREFIX_ONLINK	0x01
+-#define IF_PREFIX_AUTOCONF	0x02
+-
+ enum {
+ 	INET6_IFADDR_STATE_PREDAD,
+ 	INET6_IFADDR_STATE_DAD,
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index c63ccd39fc552..b8dc20fe7a4e2 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -6105,11 +6105,7 @@ static int inet6_fill_prefix(struct sk_buff *skb, struct inet6_dev *idev,
+ 	pmsg->prefix_len = pinfo->prefix_len;
+ 	pmsg->prefix_type = pinfo->type;
+ 	pmsg->prefix_pad3 = 0;
+-	pmsg->prefix_flags = 0;
+-	if (pinfo->onlink)
+-		pmsg->prefix_flags |= IF_PREFIX_ONLINK;
+-	if (pinfo->autoconf)
+-		pmsg->prefix_flags |= IF_PREFIX_AUTOCONF;
++	pmsg->prefix_flags = pinfo->flags;
+ 
+ 	if (nla_put(skb, PREFIX_ADDRESS, sizeof(pinfo->prefix), &pinfo->prefix))
+ 		goto nla_put_failure;
+-- 
+2.43.0
+
 
 
 
