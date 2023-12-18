@@ -1,132 +1,154 @@
-Return-Path: <stable+bounces-7077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FDCE8170C5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:47:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1DF08170C8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 100F3B21680
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94681C237B4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009C111CA6;
-	Mon, 18 Dec 2023 13:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC5511CA6;
+	Mon, 18 Dec 2023 13:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="itDeCEwX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nJICHXrU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8145A129EF7;
-	Mon, 18 Dec 2023 13:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5cd86e3a9afso1056696a12.1;
-        Mon, 18 Dec 2023 05:47:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD691D15C
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 13:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-7c45fa55391so816073241.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 05:47:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702907230; x=1703512030; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h4k4Fh/TASWn1uJrItxeFdHWOjIQFIOHIcCI80h3IYQ=;
-        b=itDeCEwXhrSLykXNxA9lV5oC4zcQV1hHC28ibq9gUITlXIFkeI8Y523mo2HGlGPxRf
-         XsBlbNMhwOZxaA47RD7a9UJ/srIowUzKEm6lIzXyOAoudD2p7TJhDZXzlpBqRdlYB7P1
-         1jGNxLnJnXTWx6Xlp0QzjZHzMFkE+L/N1VrhpEPL+7GCQtLR6n71Md1Qnhcrn+nlbUCQ
-         zc3HPRNzty/Rs5LTznQb3eofz2RAqqURESogAUcj3AL18dttGa7n/TMEjgFg+FUOVTGf
-         AflqSAav7JT6jG81H/SZdKfgZRxzZnzvHzd5oe7P50a86gWoEwvfB+hZZSTbTwS8uXba
-         LQYw==
+        d=linaro.org; s=google; t=1702907253; x=1703512053; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cA/E6cv8atZDrEKbxJ1M6XASEEFwjGkykB515p9AX5A=;
+        b=nJICHXrUIJnHU7ktNbzvPv1bxe1zaAVR6RzPa1HjVo4/VeuX7c9ciyj1rrb+mis4MQ
+         ohYylRhQY5pkQ4P3m/ZeHXE6+WR1XPvOsN3ig8vqlFpn+sSzhHCEWlCcRfIQrT/v8V/d
+         4YdsOA3ZVlIUDGMgxav77sAsU+Jv3aMDg1Favdp+NYPlLwqTdVgS/HxZs3cjqenoDdBL
+         D6q9PZ15Cr40YromhS4dKSVo46Cz7UNJ91TCQIHbuowD98KiaW69dAWELqi5s7FQngMk
+         KK3VMkYrvBEF7vYq7p73iEKtaQC+5eYKjgq4bgIW1ckK0qJK6G8y+VkdTi8WJMCW6tia
+         6pAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702907230; x=1703512030;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h4k4Fh/TASWn1uJrItxeFdHWOjIQFIOHIcCI80h3IYQ=;
-        b=LZz1YaR2keoMwHZPT5Ozlg77hG4rX+J5Bzd1knDHQ2j3FH81B6G5Tk+nEXjpJioDWz
-         k01gkPYGSjsP32mUzXYFz1kzvVLPJPgph+i9KDa+EeuddmDk+J2AIZrQ6SzDW1kjrPiw
-         UkqzAAIzOZ/hz/Rt9kVsia9LXlSVo76s8ehWQD2ksOyUFhA4/hsjwvk/G4fcFxRuI+Rz
-         lx/4OTjl8Cdnjd2FDlGA8M4zMEcz5/Vn7T5kkSzUNm4GJsvrtBNvGuvwTaTIm0bze/ra
-         B7vyE2OW4Cs58K71Nhy0v01kbUX1/zpYZUmirdQ6srbfmy/MviSpZOGMnjxcFnrDsHtQ
-         5y+w==
-X-Gm-Message-State: AOJu0YzLVdHO8m2q5Jz0hJU8UHrHudqB8xCJLH8yjZUyywvdlyFwEH+2
-	Ag1tmHtHAdZmNya3bFTNX/ObqIPa3LhC62suHqg=
-X-Google-Smtp-Source: AGHT+IGhl9l0lQahMBCLz8nW0EUJgHXkqNUVfWTa3Qroj7zWtlnZkSw49etJjZvFD67/3Xd38zGFkm/VAJIi1eYBap4=
-X-Received: by 2002:a05:6a20:65b0:b0:190:6d:1c5a with SMTP id
- p48-20020a056a2065b000b00190006d1c5amr15311555pzh.56.1702907229671; Mon, 18
- Dec 2023 05:47:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702907253; x=1703512053;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cA/E6cv8atZDrEKbxJ1M6XASEEFwjGkykB515p9AX5A=;
+        b=kczXSojNY3z7XI7In9vJX5r3la1NspSIBaiiYwur5ZhOxjjVH6BiUqBH3yTJOYqxgz
+         G2/iZ7s/nUuTEQVHSQvwvJ2n4c0N0yC32wystzwN5I7PdyAcQaVj525iMuyWlVTsyJju
+         B/8CAAh/4RGPwPzr1R47JjZFEQNHDY26eu3CMu1WIo2ixVOw+iGdLloTLTgqq7P3TXps
+         HiqOhKttqzIUFazi9znJGPEimScNRUrgh2QhbQXGr/PYdneVFTSuhH3Qhzt+nC4syH64
+         ne36xZcBgamo+VYy11hbWtVbYx58sVwJPZtRsojX3RUSBP4t3K/eyNrp7fxP2Jk6Wi9y
+         Jo+w==
+X-Gm-Message-State: AOJu0Yxn4Fw6FpWmbBUyq2uNW3aY5bHGFNA1dPIJMUaiCYnwehFSStYX
+	rJyWXkp4iF4UHqIwv++sPfVZceRZ3FZiUc4eZFoJuRS1JtbctdCkzOs=
+X-Google-Smtp-Source: AGHT+IEwVWdOEe6ilNObtGoPzfILZYGNLVhXl/dsUjA1DMAlBlR/IL9uUqLd5AEM3XI0QkJY9ZJlALNQFra/6Y3vdBc=
+X-Received: by 2002:a05:6122:208a:b0:4b6:c405:140b with SMTP id
+ i10-20020a056122208a00b004b6c405140bmr832682vkd.19.1702907253178; Mon, 18 Dec
+ 2023 05:47:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230906102557.3432236-1-alpic@google.com> <20231218124137.2476015-1-alpic@google.com>
-In-Reply-To: <20231218124137.2476015-1-alpic@google.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Mon, 18 Dec 2023 08:46:58 -0500
-Message-ID: <CAEjxPJ6G7gHi=kLmgT3m1kDQeTpT1xLexDXbZRBMjJdiWrx=mw@mail.gmail.com>
-Subject: Re: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
-To: Alfred Piccioni <alpic@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@parisplace.org>, stable@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 18 Dec 2023 19:17:21 +0530
+Message-ID: <CA+G9fYupBYRYc5eAdHt6TH+xfoCRE31=FpDMS+-QY3b6rKPOQQ@mail.gmail.com>
+Subject: stable-rc: 5.10: arm: arm64 builds failed
+To: linux-stable <stable@vger.kernel.org>, lkft-triage@lists.linaro.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	Maxime Ripard <maxime@cerno.tech>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Daniel Vetter <daniel.vetter@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Anders Roxell <anders.roxell@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 18, 2023 at 7:43=E2=80=AFAM Alfred Piccioni <alpic@google.com> =
-wrote:
->
-> Some ioctl commands do not require ioctl permission, but are routed to
-> other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
-> done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
->
-> However, if a 32-bit process is running on a 64-bit kernel, it emmits
+commit that is causing build failure,
+drm/atomic: Pass the full state to CRTC atomic begin and flush
+[ Upstream commit f6ebe9f9c9233a6114eb922aba9a0c9ccc2d2e14 ]
 
-s/emmits/emits/
 
-> 32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
-> being checked erroneously, which leads to these ioctl operations being
-> routed to the ioctl permission, rather than the correct file
-> permissions.
->
-> This was also noted in a RED-PEN finding from a while back -
-> "/* RED-PEN how should LSM module know it's handling 32bit? */".
->
-> This patch introduces a new hook, security_file_ioctl_compat, that
-> replaces security_file_ioctl if the CONFIG_COMPAT flag is on. All
-> current LSMs have been changed to hook into the compat flag.
+Build log:
+------------
+drivers/gpu/drm/sun4i/sun4i_crtc.c: In function 'sun4i_crtc_atomic_begin':
+drivers/gpu/drm/sun4i/sun4i_crtc.c:63:44: error: implicit declaration
+of function 'drm_atomic_get_old_crtc_state'
+[-Werror=implicit-function-declaration]
+   63 |         struct drm_crtc_state *old_state =
+drm_atomic_get_old_crtc_state(state,
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/sun4i/sun4i_crtc.c:63:44: warning: initialization of
+'struct drm_crtc_state *' from 'int' makes pointer from integer
+without a cast [-Wint-conversion]
+cc1: some warnings being treated as errors
 
-It doesn't (or shouldn't) replace security_file_ioctl, and the hook
-doesn't appear to be conditional on CONFIG_COMPAT per se.
-It is a new hook that is called from the compat ioctl syscall. The old
-hook continues to be used from the regular ioctl syscall and
-elsewhere.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-> Reviewing the three places where we are currently using
-> security_file_ioctl, it appears that only SELinux needs a dedicated
-> compat change; TOMOYO and SMACK appear to be functional without any
-> change.
->
-> Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
-> Signed-off-by: Alfred Piccioni <alpic@google.com>
-> Cc: stable@vger.kernel.org
-> ---
-> diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
-> index 83ef66644c21..170687b5985b 100644
-> --- a/fs/overlayfs/inode.c
-> +++ b/fs/overlayfs/inode.c
-> @@ -751,7 +751,11 @@ static int ovl_security_fileattr(const struct path *=
-realpath, struct fileattr *f
->         else
->                 cmd =3D fa->fsx_valid ? FS_IOC_FSGETXATTR : FS_IOC_GETFLA=
-GS;
->
-> +#ifdef CONFIG_COMPAT
-> +       err =3D security_file_ioctl_compat(file, cmd, 0);
-> +# else
->         err =3D security_file_ioctl(file, cmd, 0);
-> +#endif
 
-I don't understand why you made this change, possibly a leftover of an
-earlier version of the patch that tried to replace
-security_file_ioctl() everywhere?
+Due the build error following builds failed,
+
+Regressions (compared to build v5.10.204)
+------------------------------------------------------------------------
+
+arm:
+
+  * build/gcc-8-defconfig
+  * build/gcc-12-lkftconfig-no-kselftest-frag
+  * build/gcc-12-lkftconfig
+  * build/gcc-12-lkftconfig-kselftest-kernel
+  * build/gcc-12-lkftconfig-debug-kmemleak
+  * build/gcc-12-lkftconfig-perf-kernel
+  * build/gcc-12-lkftconfig-kasan
+  * build/clang-17-lkftconfig
+  * build/gcc-12-lkftconfig-rcutorture
+  * build/clang-lkftconfig
+  * build/gcc-12-lkftconfig-kunit
+  * build/clang-nightly-lkftconfig-kselftest
+  * build/gcc-12-lkftconfig-kselftest
+  * build/gcc-12-lkftconfig-perf
+  * build/gcc-12-lkftconfig-libgpiod
+  * build/clang-17-lkftconfig-no-kselftest-frag
+  * build/gcc-12-defconfig
+  * build/gcc-12-lkftconfig-debug
+  * build/clang-17-defconfig
+arm64:
+
+  * build/gcc-8-defconfig
+  * build/gcc-12-lkftconfig-no-kselftest-frag
+  * build/gcc-12-lkftconfig
+  * build/gcc-12-lkftconfig-kselftest-kernel
+  * build/gcc-12-lkftconfig-64k_page_size
+  * build/gcc-12-lkftconfig-debug-kmemleak
+  * build/gcc-12-defconfig-40bc7ee5
+  * build/gcc-12-lkftconfig-kasan
+  * build/gcc-12-lkftconfig-perf-kernel
+  * build/clang-17-lkftconfig
+  * build/gcc-12-lkftconfig-rcutorture
+  * build/clang-lkftconfig
+  * build/gcc-12-lkftconfig-kunit
+  * build/gcc-12-lkftconfig-armv8_features
+  * build/gcc-8-defconfig-40bc7ee5
+  * build/clang-nightly-lkftconfig-kselftest
+  * build/gcc-12-lkftconfig-kselftest
+  * build/gcc-12-lkftconfig-devicetree
+  * build/gcc-12-lkftconfig-perf
+  * build/gcc-12-lkftconfig-libgpiod
+  * build/clang-17-lkftconfig-no-kselftest-frag
+  * build/clang-17-defconfig-40bc7ee5
+  * build/gcc-12-defconfig
+  * build/gcc-12-lkftconfig-debug
+  * build/clang-17-defconfig
+
+ Links:
+- https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.204-60-g0b1eceef25bc/testrun/21731369/suite/build/test/gcc-12-lkftconfig-kunit/history/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
