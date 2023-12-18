@@ -1,119 +1,151 @@
-Return-Path: <stable+bounces-7828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF38817B1D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 20:39:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8962B817B98
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 21:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D27DB22320
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 19:39:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC69B1C227A8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 20:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D609F71451;
-	Mon, 18 Dec 2023 19:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5200B72047;
+	Mon, 18 Dec 2023 20:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ee1sM63f"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="mb/useEv";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LF1Xkp2v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366CB5D759
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 19:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-552eaf800abso2476a12.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 11:39:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702928357; x=1703533157; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5umlgnbsnFZiZVJ0cVpQu5AC72Lnsh+rnvB7uAFTfiY=;
-        b=ee1sM63fzLs6LTmOWGeAK94NWTKA43uncd97atBiZi6BSwmGCaOHLyfbzdrKypmsBv
-         GBn79kLjb2222f+WZ06uhCzu5ffX8lHA6gCPTB7/iXdo9AD6ds8aOalWzz7TMxGAE2rZ
-         fPHK9fEdfVA0HRfV2jDstrTzevsTdEZkc392kcn4siPR+bwu88DjHkYRRj4pP7ocpM3b
-         RrlKdd7bbzO5tRqZDKL7R+Jn1zCTpo4xlDH/MoWmIx4MSmDK5Lwgz7h3CpiqlxKpxHDp
-         KwNkOAwyC95JSBXZrW/eGOU9IIhWVT4l6UVqbD/NxwSvtha2mRb+pKDhrxooOlGy2WZP
-         dg6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702928357; x=1703533157;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5umlgnbsnFZiZVJ0cVpQu5AC72Lnsh+rnvB7uAFTfiY=;
-        b=vYG9mUbbLlvrfvoBXJbcCra8RszvqLrxAbrhyuXaXNHxXQ6x5xUceyuMDiSxXFGnIw
-         Bvf/XhQelcbG+9b6um8dU9MWC3hl+JXFf01RCD5hVaMvN837ScdASTwzmjK2/Mp8Wkw4
-         PySkAF7fzaQ+PbTies1oHv3+8yGWFNqRXjcFxhZHyyDPTzNHaUq13n4f8n8ayDk3Q8Ri
-         t8OwUR+VrxzJxLFryOAs97DsU9BYdmkzDnUK5PAqZl7+ffOcaNy6Q99GVlNW74SF+40z
-         Avrrl666BLR4MokVgH1CshaNuPpDvEJPWf71M5NpucoImS/F1hFhcbC+o5jWRFL48y1G
-         /XDA==
-X-Gm-Message-State: AOJu0YwEkEyjqMH/zdqtZAUEa2ZgXdM7NkP/cQMwaye8E1fIeU4l9UOj
-	qWfr3tXyqYbLtRhI82HRHjek1SFUo3Yxt6dfGMpdSmi1/AU=
-X-Google-Smtp-Source: AGHT+IG2zTOcLT/slo8Xy1NCbxTjx8uZ3GB00uyChCN28rM0o4JcEyf70j7nxUJQlMxzM1AFksLtvXT6JGsj12dWHxE=
-X-Received: by 2002:a50:d0cd:0:b0:553:7ff4:5885 with SMTP id
- g13-20020a50d0cd000000b005537ff45885mr34380edf.2.1702928357402; Mon, 18 Dec
- 2023 11:39:17 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9BD495DE;
+	Mon, 18 Dec 2023 20:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailout.nyi.internal (Postfix) with ESMTP id B69CA5C020B;
+	Mon, 18 Dec 2023 15:12:25 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 18 Dec 2023 15:12:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1702930345;
+	 x=1703016745; bh=LWYyWkDsY/Zi8FphFf+H4zFoydBDiorSz1khQkPdMEE=; b=
+	mb/useEvR5Rr6NLotqJE7xJWNLJ+871ZGy2/uYtuW2wQXO4yYeUTVbM0SsBzoj0r
+	CzGNA7FvC0317zUMQnG6wLHyTcPZdpmpSSHQCi7sEgM1nTWuk8DpTkQSrtUrwfz2
+	Ih7R0NjNdsj8fZ2CT0HzxSuaqNB2a/9Z5IwFFR5lJIm4TZHt7WpRbqupcfWk+flg
+	hLIzRnHovyAEpOu9WtoLABYKqYR7Y0CXXqmZIldqSaRaTix89BeZTc8sxEWnjycc
+	Szx0VnfX3lvp9K9yPvWFh5v0nX5cFfN8FrvZ3x8fAspjwEm2u/6gURTjdQix3Z6w
+	6FJnphYvBziTP5qGbFYYaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1702930345; x=
+	1703016745; bh=LWYyWkDsY/Zi8FphFf+H4zFoydBDiorSz1khQkPdMEE=; b=L
+	F1Xkp2vIwgqV/4OdisyCGMQFVTW5IFoaaqJj3kCayBQNrYZM9ndbo+Y9cmAmjwcx
+	pbbFhfdrnZqf/fzmntpD/WaxjdiGgE8nMhJbjvvzVnmJl4ijveL5KGerpFgWMNJU
+	Are/Hdy33E1sKsJ0S4ythvV85FNpLYyD8n5+bp4mW7zFAOKZBEe824d0YIuYXtgQ
+	0ChzimvOs/bpWkN+6D/6YZymwuFEBu+yLOcsFZ0JVCAEapToQ0FETVfpOKt+utHM
+	WmEwpFVZ6QkZMZEy8TptfwHDwJf0XtfeC1Ejti5cCaoJc3wMZ013i+NlGX2A8oea
+	gB9EEedZVnqrgai433oBQ==
+X-ME-Sender: <xms:qaeAZVNU9jc9V7p_xXLit5xJB7G8mRHv_3ZA2nCGZ8ny4ifmovULOA>
+    <xme:qaeAZX-VHiIKbDAN6kZVWW-E3xDR5_-vJ0q5PiabrgANmOeI8F7J8ioFwWK5ic3Y8
+    dKU3hDueUpu6XH2Ip4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtkedgudefvdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
+    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
+    grthhtvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeu
+    feefieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:qaeAZUQZyuvtnu9jG9ZCE373jnslc6O9xHM9fgvua2oHX0tj1zoerA>
+    <xmx:qaeAZRtGU3-JqMbkcdE_Qxt1dyMekmGFHGzqJQwMY9vDqDT-YNVqOw>
+    <xmx:qaeAZdffmE7gyHKDv0fAB6a4Heq0I1HVzJOhzTQ4MCVo2OS1d_C1ag>
+    <xmx:qaeAZXt95DbkWPruTOYNUd6HK2gC3gt8H4Pw8fmCaN_8MTgdIqvU2A>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 2CAD3B6008D; Mon, 18 Dec 2023 15:12:25 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1283-g327e3ec917-fm-20231207.002-g327e3ec9
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <000000000000b505f3060c454a49@google.com> <ZXfBmiTHnm_SsM-n@sashalap>
- <CAJc0_fz4LEyNT2rB7KAsAZuym8TT3DZLEfFqSoBigs-316LNKQ@mail.gmail.com>
- <2023121848-filter-pacifier-c457@gregkh> <2023121834-abiding-armory-e468@gregkh>
-In-Reply-To: <2023121834-abiding-armory-e468@gregkh>
-From: Robert Kolchmeyer <rkolchmeyer@google.com>
-Date: Mon, 18 Dec 2023 11:39:04 -0800
-Message-ID: <CAJc0_fzhWtHJJ+7j6vKoSxppVS0TpbqGZ398JwLs=dkUjUTzhQ@mail.gmail.com>
-Subject: Re: IMA performance regression in 5.10.194 when using overlayfs
-To: Greg KH <greg@kroah.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, regressions@lists.linux.dev, 
-	eric.snowberg@oracle.com, zohar@linux.ibm.com, jlayton@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Message-Id: <0877a767-dea5-4c49-8125-d1995ef55407@app.fastmail.com>
+In-Reply-To: <20231218-net-skbuff-build-bug-v1-1-eefc2fb0a7d3@weissschuh.net>
+References: <20231218-net-skbuff-build-bug-v1-1-eefc2fb0a7d3@weissschuh.net>
+Date: Mon, 18 Dec 2023 20:12:07 +0000
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
+Cc: Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
+ "kernel test robot" <lkp@intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] net: avoid build bug in skb extension length calculation
+Content-Type: text/plain;charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 18, 2023 at 3:58=E2=80=AFAM Greg KH <greg@kroah.com> wrote:
+On Mon, Dec 18, 2023, at 17:06, Thomas Wei=C3=9Fschuh wrote:
+> GCC seems to incorrectly fail to evaluate skb_ext_total_length() at
+> compile time under certain conditions.
 >
-> On Mon, Dec 18, 2023 at 12:57:20PM +0100, Greg KH wrote:
-> > On Tue, Dec 12, 2023 at 04:37:31PM -0800, Robert Kolchmeyer wrote:
-> > > > Looking at the dependencies you've identified, it probably makes se=
-nse
-> > > > to just take them as is (as it's something we would have done if th=
-ese
-> > > > dependencies were identified explicitly).
-> > > >
-> > > > I'll plan to queue them up after the current round of releases is o=
-ut.
-> > >
-> > > Sounds great, thank you!
-> >
-> > I've dropped them now as there are some reported bug fixes with just
-> > that commit that do not seem to apply properly at all, and we can't add
-> > new problems when we know we are doing so :)
-> >
-> > So can you provide a working set of full backports for the relevant
-> > kernels that include all fixes (specifically stuff like 8a924db2d7b5
-> > ("fs: Pass AT_GETATTR_NOSEC flag to getattr interface function")) so
-> > that we can properly queue them up then?
+> The issue even occurs if all values in skb_ext_type_len[] are "0",
+> ruling out the possibility of an actual overflow.
 >
-> Also don't forget 18b44bc5a672 ("ovl: Always reevaluate the file
-> signature for IMA") either.  There might be more...
+> As the patch has been in mainline since v6.6 without triggering the
+> problem it seems to be a very uncommon occurrence.
 >
-> thanks,
+> As the issue only occurs when -fno-tree-loop-im is specified as part of
+> CFLAGS_GCOV, disable the BUILD_BUG_ON() only when building with covera=
+ge
+> reporting enabled.
 >
-> greg k-h
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes:=20
+> https://lore.kernel.org/oe-kbuild-all/202312171924.4FozI5FG-lkp@intel.=
+com/
+> Suggested-by: Arnd Bergmann <arnd@arndb.de>
+> Link:=20
+> https://lore.kernel.org/lkml/487cfd35-fe68-416f-9bfd-6bb417f98304@app.=
+fastmail.com/
+> Fixes: 5d21d0a65b57 ("net: generalize calculation of skb extensions=20
+> length")
+> Cc:  <stable@vger.kernel.org>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
 
-Thanks - from what I can tell with `git log --grep`, 8a924db2d7b5
-("fs: Pass AT_GETATTR_NOSEC flag to getattr interface function") is
-the only such fix we need to backport (18b44bc5a672 ("ovl: Always
-reevaluate the file signature for IMA") is already in stable trees and
-introduced the regression that motivated this investigation).
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-I'll prepare these backports and send them to the list.
+> ---
+>  net/core/skbuff.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+> index 83af8aaeb893..94cc40a6f797 100644
+> --- a/net/core/skbuff.c
+> +++ b/net/core/skbuff.c
+> @@ -4825,7 +4825,9 @@ static __always_inline unsigned int=20
+> skb_ext_total_length(void)
+>  static void skb_extensions_init(void)
+>  {
+>  	BUILD_BUG_ON(SKB_EXT_NUM >=3D 8);
+> +#if !IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL)
+>  	BUILD_BUG_ON(skb_ext_total_length() > 255);
+> +#endif
 
-Thanks,
--Robert
+The way I would write this is
+
+BUILD_BUG_ON(!IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL) &&
+             skb_ext_total_length() > 255);
+
+but of course the effect is the same.
+
+     Arnd
 
