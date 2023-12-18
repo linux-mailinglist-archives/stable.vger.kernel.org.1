@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B2D8170F0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD785817156
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2371A1C231FC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5761C23F50
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493F81D123;
-	Mon, 18 Dec 2023 13:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE0E129EE3;
+	Mon, 18 Dec 2023 13:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNl9oJXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qzs/akOS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A55129ED2;
-	Mon, 18 Dec 2023 13:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46790C433C7;
-	Mon, 18 Dec 2023 13:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21471129EFB;
+	Mon, 18 Dec 2023 13:56:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA80C433C7;
+	Mon, 18 Dec 2023 13:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907552;
-	bh=f++bKAGfdlg6MvPx4wQDUz8N5SEtNEvvBHCKgQYgFJY=;
+	s=korg; t=1702907805;
+	bh=rmGD10w/HI9EG1JKdlh6R8YqJU6r0SBxTax+JngkZeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNl9oJXm0RR7iQ+CK/6mrLLU6hM6JFJDLtHofOpvHJLGATTI3hLTPQ3u/JH5p1a02
-	 TiLQ23LbfD+pk5y4u42iax6im1zWlDmj58drGMxkdRUYdA/xvmQe5g1l1UxZ4KrF9z
-	 q7nm1Fg7SGU0NtFUz5vuOJ3r1IIZxelcqcv/3vz4=
+	b=Qzs/akOS1pPhj3BA5Hcl6jrZtCrICSypRxeMrRU5LB4hgR/4RC2LtcB/2bP0Yu8QP
+	 P8g/GZ9z1iT1SVm/9a8sK1SMV2pRViM79vL6BXdKPDFlj7PkbUiZpPi8xg3O0oGQxe
+	 cuKBDnMEOJbve5Xa/TB4h2716PLjF439nHRyp3Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 04/26] atm: solos-pci: Fix potential deadlock on &cli_queue_lock
+Subject: [PATCH 6.1 052/106] x86/hyperv: Fix the detection of E820_TYPE_PRAM in a Gen2 VM
 Date: Mon, 18 Dec 2023 14:51:06 +0100
-Message-ID: <20231218135040.817352474@linuxfoundation.org>
+Message-ID: <20231218135057.274600485@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +54,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit d5dba32b8f6cb39be708b726044ba30dbc088b30 ]
+[ Upstream commit 7e8037b099c0bbe8f2109dc452dbcab8d400fc53 ]
 
-As &card->cli_queue_lock is acquired under softirq context along the
-following call chain from solos_bh(), other acquisition of the same
-lock inside process context should disable at least bh to avoid double
-lock.
+A Gen2 VM doesn't support legacy PCI/PCIe, so both raw_pci_ops and
+raw_pci_ext_ops are NULL, and pci_subsys_init() -> pcibios_init()
+doesn't call pcibios_resource_survey() -> e820__reserve_resources_late();
+as a result, any emulated persistent memory of E820_TYPE_PRAM (12) via
+the kernel parameter memmap=nn[KMG]!ss is not added into iomem_resource
+and hence can't be detected by register_e820_pmem().
 
-<deadlock #1>
-console_show()
---> spin_lock(&card->cli_queue_lock)
-<interrupt>
-   --> solos_bh()
-   --> spin_lock(&card->cli_queue_lock)
+Fix this by directly calling e820__reserve_resources_late() in
+hv_pci_init(), which is called from arch_initcall(pci_arch_init).
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
+It's ok to move a Gen2 VM's e820__reserve_resources_late() from
+subsys_initcall(pci_subsys_init) to arch_initcall(pci_arch_init) because
+the code in-between doesn't depend on the E820 resources.
+e820__reserve_resources_late() depends on e820__reserve_resources(),
+which has been called earlier from setup_arch().
 
-To prevent the potential deadlock, the patch uses spin_lock_bh()
-on the card->cli_queue_lock under process context code consistently
-to prevent the possible deadlock scenario.
+For a Gen-2 VM, the new hv_pci_init() also adds any memory of
+E820_TYPE_PMEM (7) into iomem_resource, and acpi_nfit_register_region() ->
+acpi_nfit_insert_resource() -> region_intersects() returns
+REGION_INTERSECTS, so the memory of E820_TYPE_PMEM won't get added twice.
 
-Fixes: 9c54004ea717 ("atm: Driver for Solos PCI ADSL2+ card.")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Changed the local variable "int gen2vm" to "bool gen2vm".
+
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1699691867-9827-1-git-send-email-ssengar@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/solos-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/hyperv/hv_init.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index 0df1a1c80b001..3a115c7f224fb 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -458,9 +458,9 @@ static ssize_t console_show(struct device *dev, struct device_attribute *attr,
- 	struct sk_buff *skb;
- 	unsigned int len;
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 189ae92de4d06..c18e5c764643b 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -13,6 +13,7 @@
+ #include <linux/io.h>
+ #include <asm/apic.h>
+ #include <asm/desc.h>
++#include <asm/e820/api.h>
+ #include <asm/sev.h>
+ #include <asm/ibt.h>
+ #include <asm/hypervisor.h>
+@@ -267,15 +268,31 @@ static int hv_cpu_die(unsigned int cpu)
  
--	spin_lock(&card->cli_queue_lock);
-+	spin_lock_bh(&card->cli_queue_lock);
- 	skb = skb_dequeue(&card->cli_queue[SOLOS_CHAN(atmdev)]);
--	spin_unlock(&card->cli_queue_lock);
-+	spin_unlock_bh(&card->cli_queue_lock);
- 	if(skb == NULL)
- 		return sprintf(buf, "No data.\n");
+ static int __init hv_pci_init(void)
+ {
+-	int gen2vm = efi_enabled(EFI_BOOT);
++	bool gen2vm = efi_enabled(EFI_BOOT);
  
+ 	/*
+-	 * For Generation-2 VM, we exit from pci_arch_init() by returning 0.
+-	 * The purpose is to suppress the harmless warning:
++	 * A Generation-2 VM doesn't support legacy PCI/PCIe, so both
++	 * raw_pci_ops and raw_pci_ext_ops are NULL, and pci_subsys_init() ->
++	 * pcibios_init() doesn't call pcibios_resource_survey() ->
++	 * e820__reserve_resources_late(); as a result, any emulated persistent
++	 * memory of E820_TYPE_PRAM (12) via the kernel parameter
++	 * memmap=nn[KMG]!ss is not added into iomem_resource and hence can't be
++	 * detected by register_e820_pmem(). Fix this by directly calling
++	 * e820__reserve_resources_late() here: e820__reserve_resources_late()
++	 * depends on e820__reserve_resources(), which has been called earlier
++	 * from setup_arch(). Note: e820__reserve_resources_late() also adds
++	 * any memory of E820_TYPE_PMEM (7) into iomem_resource, and
++	 * acpi_nfit_register_region() -> acpi_nfit_insert_resource() ->
++	 * region_intersects() returns REGION_INTERSECTS, so the memory of
++	 * E820_TYPE_PMEM won't get added twice.
++	 *
++	 * We return 0 here so that pci_arch_init() won't print the warning:
+ 	 * "PCI: Fatal: No config space access function found"
+ 	 */
+-	if (gen2vm)
++	if (gen2vm) {
++		e820__reserve_resources_late();
+ 		return 0;
++	}
+ 
+ 	/* For Generation-1 VM, we'll proceed in pci_arch_init().  */
+ 	return 1;
 -- 
 2.43.0
 
