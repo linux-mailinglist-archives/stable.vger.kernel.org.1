@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-7091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464F88170E7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F593817189
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDBCBB20B0F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA1328371A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DD7129EFE;
-	Mon, 18 Dec 2023 13:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F301D144;
+	Mon, 18 Dec 2023 13:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxrOJjk+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVRXhJoO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2F415AC0;
-	Mon, 18 Dec 2023 13:52:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F32EC433C8;
-	Mon, 18 Dec 2023 13:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFCC1D127;
+	Mon, 18 Dec 2023 13:58:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A92C433C7;
+	Mon, 18 Dec 2023 13:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907525;
-	bh=NTi2BcO5efkDC1XP+1nMdsVrODqeTobtn0SmtleTCkk=;
+	s=korg; t=1702907922;
+	bh=zYyx6cvEr9tR3mHde3Vt31/+WB2E/z3RhuQIlQYV3Pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxrOJjk+2sVfn6LbO7ixJSPyrCEV77UY+b0GFI7nU4iY4iHxYrqeJ8+dyfH3cL7vV
-	 xQn2IMojX8yylNZarHEZ/7PNrcjKadMzIwD58sPD6UIATOOK4OQCdTC4DZ96lVwa/X
-	 doz6QSJAVnWTumq7+xCFMjc0H8mf6OLX2jiHi9Gw=
+	b=eVRXhJoOnQrA1mU8QVIKNpVHIh1ghGXpCxAOL807K38MsVmxkUN8Z0o1tWoGMwXFv
+	 IKIt1z13KoKhRamGxBn2jGxkE6FqQc310Tj/IC+3b20xAhXklfElAa9gOKT/m9z5Gb
+	 XaYMTwyDOXOucrAP9dxIdQF9FmBBjfpnHcJ4+fHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 19/26] asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+Subject: [PATCH 6.1 067/106] platform/x86: intel_telemetry: Fix kernel doc descriptions
 Date: Mon, 18 Dec 2023 14:51:21 +0100
-Message-ID: <20231218135041.355079547@linuxfoundation.org>
+Message-ID: <20231218135057.923883737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +53,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 125b0bb95dd6bec81b806b997a4ccb026eeecf8f ]
+[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
 
-We really don't want to do atomic_read() or anything like that, since we
-already have the value, not the lock.  The whole point of this is that
-we've loaded the lock from memory, and we want to check whether the
-value we loaded was a locked one or not.
+LKP found issues with a kernel doc in the driver:
 
-The main use of this is the lockref code, which loads both the lock and
-the reference count in one atomic operation, and then works on that
-combined value.  With the atomic_read(), the compiler would pointlessly
-spill the value to the stack, in order to then be able to read it back
-"atomically".
+core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
+core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
 
-This is the qspinlock version of commit c6f4a9002252 ("asm-generic:
-ticket-lock: Optimize arch_spin_value_unlocked()") which fixed this same
-bug for ticket locks.
+It looks like it were copy'n'paste typos when these descriptions
+had been introduced. Fix the typos.
 
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/all/CAHk-=whNRv0v6kQiV5QO6DJhjH4KEL36vWQ6Re8Csrnh4zbRkQ@mail.gmail.com/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/qspinlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/telemetry/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index 66260777d6447..c133ed3183150 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -49,7 +49,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
-  */
- static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
- {
--	return !atomic_read(&lock.val);
-+	return !lock.val.counter;
- }
- 
+diff --git a/drivers/platform/x86/intel/telemetry/core.c b/drivers/platform/x86/intel/telemetry/core.c
+index fdf55b5d69480..e4be40f73eebf 100644
+--- a/drivers/platform/x86/intel/telemetry/core.c
++++ b/drivers/platform/x86/intel/telemetry/core.c
+@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
  /**
+  * telemetry_update_events() - Update telemetry Configuration
+  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
+- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
++ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
+  *
+  * This API updates the IOSS & PSS Telemetry configuration. Old config
+  * is overwritten. Call telemetry_reset_events when logging is over
+@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
+ /**
+  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
+  * @pss_evtconfig: Pointer to PSS related configuration.
+- * @pss_evtconfig: Pointer to IOSS related configuration.
++ * @ioss_evtconfig: Pointer to IOSS related configuration.
+  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
+  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
+  *
 -- 
 2.43.0
 
