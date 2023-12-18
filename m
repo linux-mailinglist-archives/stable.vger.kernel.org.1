@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-7451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56DA81729C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31597817279
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA78B1C2474F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7EEDB21FF7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F36E37866;
-	Mon, 18 Dec 2023 14:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3AF4FF9D;
+	Mon, 18 Dec 2023 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGs5pmlT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVUug28n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F714F63;
-	Mon, 18 Dec 2023 14:08:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE7BC433C7;
-	Mon, 18 Dec 2023 14:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF86237889;
+	Mon, 18 Dec 2023 14:06:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CF4C433C8;
+	Mon, 18 Dec 2023 14:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908503;
-	bh=yiHRoC1r1lBxKJb/hoKSSfnFzbFIisABglpp7zhNDdU=;
+	s=korg; t=1702908415;
+	bh=jC8TOH0RaGJ7iH3pkZANn28B9XXZ6HWkMDdfVNb8wQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGs5pmlTlDhr82zG5k7uWi4GimepkuesHny8DmM5YwM1VeZqsJ9s/vPzOf3FYk2R2
-	 AWFUKkQoa5HYt8TwsuWrqBgs9DBE+JktGBVA75xZLcKMtm7HLGsju95s2xpKtujqgJ
-	 2Xhg4LsyaN7AXcO0zjCgtGqNK9yAaGZZdSEAyUuY=
+	b=PVUug28nRdVcRi7GEbjAhhjHA+5pYSFoiHcYjPekvblq+w7Evu6C86hkh7WlIUTTS
+	 bphlnnDlE6VNuu5RaiCBaPlPaKvWYF5SwNz+8MIrAVVfK40pqFB2GUHjIrNfJ+/1zS
+	 LDuSU6SOBmqibXTTz+6q6Yp5eVsool4Zaf+U//JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/62] usb: aqc111: check packet for fixup for true limit
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 151/166] drm/i915: Fix intel_atomic_setup_scalers() plane_state handling
 Date: Mon, 18 Dec 2023 14:51:57 +0100
-Message-ID: <20231218135047.749876426@linuxfoundation.org>
+Message-ID: <20231218135111.882175037@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +50,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit ccab434e674ca95d483788b1895a70c21b7f016a ]
+commit c3070f080f9ba18dea92eaa21730f7ab85b5c8f4 upstream.
 
-If a device sends a packet that is inbetween 0
-and sizeof(u64) the value passed to skb_trim()
-as length will wrap around ending up as some very
-large value.
+Since the plane_state variable is declared outside the scaler_users
+loop in intel_atomic_setup_scalers(), and it's never reset back to
+NULL inside the loop we may end up calling intel_atomic_setup_scaler()
+with a non-NULL plane state for the pipe scaling case. That is bad
+because intel_atomic_setup_scaler() determines whether we are doing
+plane scaling or pipe scaling based on plane_state!=NULL. The end
+result is that we may miscalculate the scaler mode for pipe scaling.
 
-The driver will then proceed to parse the header
-located at that position, which will either oops or
-process some random value.
+The hardware becomes somewhat upset if we end up in this situation
+when scanning out a planar format on a SDR plane. We end up
+programming the pipe scaler into planar mode as well, and the
+result is a screenfull of garbage.
 
-The fix is to check against sizeof(u64) rather than
-0, which the driver currently does. The issue exists
-since the introduction of the driver.
+Fix the situation by making sure we pass the correct plane_state==NULL
+when calculating the scaler mode for pipe scaling.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231207193441.20206-2-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit e81144106e21271c619f0c722a09e27ccb8c043d)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/skl_scaler.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index c9c4095181744..4ea02116be182 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1079,17 +1079,17 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 	u16 pkt_count = 0;
- 	u64 desc_hdr = 0;
- 	u16 vlan_tag = 0;
--	u32 skb_len = 0;
-+	u32 skb_len;
+--- a/drivers/gpu/drm/i915/display/skl_scaler.c
++++ b/drivers/gpu/drm/i915/display/skl_scaler.c
+@@ -504,7 +504,6 @@ int intel_atomic_setup_scalers(struct dr
+ {
+ 	struct drm_plane *plane = NULL;
+ 	struct intel_plane *intel_plane;
+-	struct intel_plane_state *plane_state = NULL;
+ 	struct intel_crtc_scaler_state *scaler_state =
+ 		&crtc_state->scaler_state;
+ 	struct drm_atomic_state *drm_state = crtc_state->uapi.state;
+@@ -536,6 +535,7 @@ int intel_atomic_setup_scalers(struct dr
  
- 	if (!skb)
- 		goto err;
- 
--	if (skb->len == 0)
-+	skb_len = skb->len;
-+	if (skb_len < sizeof(desc_hdr))
- 		goto err;
- 
--	skb_len = skb->len;
- 	/* RX Descriptor Header */
--	skb_trim(skb, skb->len - sizeof(desc_hdr));
-+	skb_trim(skb, skb_len - sizeof(desc_hdr));
- 	desc_hdr = le64_to_cpup((u64 *)skb_tail_pointer(skb));
- 
- 	/* Check these packets */
--- 
-2.43.0
-
+ 	/* walkthrough scaler_users bits and start assigning scalers */
+ 	for (i = 0; i < sizeof(scaler_state->scaler_users) * 8; i++) {
++		struct intel_plane_state *plane_state = NULL;
+ 		int *scaler_id;
+ 		const char *name;
+ 		int idx, ret;
 
 
 
