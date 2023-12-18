@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D686081728B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723A2817106
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0606B236F6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20510283B73
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABCD3A1C0;
-	Mon, 18 Dec 2023 14:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E641D12D;
+	Mon, 18 Dec 2023 13:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C6FVYmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgtQL/kX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04311D15E;
-	Mon, 18 Dec 2023 14:07:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F9FC433C8;
-	Mon, 18 Dec 2023 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8751D123;
+	Mon, 18 Dec 2023 13:53:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E687AC433C9;
+	Mon, 18 Dec 2023 13:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908459;
-	bh=pnnpGx1ODhdw28yQwH05uZa+KXHec9VK5+biQVTzHSg=;
+	s=korg; t=1702907622;
+	bh=PZ+UYIR2rEoX2k3qs8Gd2U6ImITI/eiVBB6OPQbULaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2C6FVYmtLFM7YPc9saemb7Xa6+JzJdFEcFuHLd0tC0cm6TXeQKDcxbPxM/PBfg5mv
-	 7Cq0b+wZ3i/gqpvO6UwKk2hVHesuwhmhJZtpEUHhcyb0oMPB21cLdvkHIJ846+8nte
-	 Oc7PO6CZDQD2bQoKS1Zq0pE78zvisSiza1H69Bok=
+	b=mgtQL/kXs1bpuHJS1ubcXaVtZtvJy51b01SAlanrxb7bS4ddLPhxCmO003Vqs+zID
+	 YjuXHFw24GuXiT66CMfJCHzNwxyvkWVu6iNRCIrVeR2hSMhy3HJ9e0L77514AGR8MR
+	 o8LhOzruHLHQtrJKKGPXNIPV5OhSL+DrnE9D4pXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/62] atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+Subject: [PATCH 4.19 23/36] HID: add ALWAYS_POLL quirk for Apple kb
 Date: Mon, 18 Dec 2023 14:51:33 +0100
-Message-ID: <20231218135046.633842140@linuxfoundation.org>
+Message-ID: <20231218135042.658273808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +53,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 15319a4e8ee4b098118591c6ccbd17237f841613 ]
+[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
 
-As &card->tx_queue_lock is acquired under softirq context along the
-following call chain from solos_bh(), other acquisition of the same
-lock inside process context should disable at least bh to avoid double
-lock.
+These devices disconnect if suspended without remote wakeup. They can operate
+with the standard driver.
 
-<deadlock #2>
-pclose()
---> spin_lock(&card->tx_queue_lock)
-<interrupt>
-   --> solos_bh()
-   --> fpga_tx()
-   --> spin_lock(&card->tx_queue_lock)
-
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch uses spin_lock_bh()
-on &card->tx_queue_lock under process context code consistently to
-prevent the possible deadlock scenario.
-
-Fixes: 213e85d38912 ("solos-pci: clean up pclose() function")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/solos-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index 95f768b28a5e6..d3c30a28c410e 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -956,14 +956,14 @@ static void pclose(struct atm_vcc *vcc)
- 	struct pkt_hdr *header;
- 
- 	/* Remove any yet-to-be-transmitted packets from the pending queue */
--	spin_lock(&card->tx_queue_lock);
-+	spin_lock_bh(&card->tx_queue_lock);
- 	skb_queue_walk_safe(&card->tx_queue[port], skb, tmpskb) {
- 		if (SKB_CB(skb)->vcc == vcc) {
- 			skb_unlink(skb, &card->tx_queue[port]);
- 			solos_pop(vcc, skb);
- 		}
- 	}
--	spin_unlock(&card->tx_queue_lock);
-+	spin_unlock_bh(&card->tx_queue_lock);
- 
- 	skb = alloc_skb(sizeof(*header), GFP_KERNEL);
- 	if (!skb) {
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 0b85f95810b30..2e1b95f73c644 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -35,6 +35,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
 -- 
 2.43.0
 
