@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-7603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39F981734C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 307748172B4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82F152896FA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B55FAB22DB2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ADF37874;
-	Mon, 18 Dec 2023 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB10B37879;
+	Mon, 18 Dec 2023 14:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jROeVSPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE/Bc9sG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35BD1D12A;
-	Mon, 18 Dec 2023 14:15:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FACC433C7;
-	Mon, 18 Dec 2023 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930B91D122;
+	Mon, 18 Dec 2023 14:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A724C433C7;
+	Mon, 18 Dec 2023 14:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908907;
-	bh=EBauG6L/PeW4o1yrqf0FqCD67IMM5xmggefVZJT0kOw=;
+	s=korg; t=1702908566;
+	bh=usnmf4l9PMLFLwaXl+K8R7On1t/Sh/79Wx9dgu6RQrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jROeVSPBjdMOW1NU3gCv9S8ghFtmSfZukwpoAma4rjVE8w5CJaEapI+68uQcb587p
-	 m087Y4IaGE2CCMaUdsZzFkY/K+gTcpDrl5RlUEWr+U0QVuU17GZfbD9hzHNSaKFAse
-	 +MFRp9pTVbomnMbNW7Y5MyM5L8KHHc4ymVCJnbNA=
+	b=cE/Bc9sGh2Scdhft0p9Oi+S2zIjpagCxtw6+4KpF23Lw8i9Wyct+gg4FdhDDgDllv
+	 8dCfoXMWGPHip6VhfGAw/A8SjpRTyFRXdK6tVZqx/XONPa+aN5AetmFR+Sk1rtHliY
+	 Q/ejKpGArgK5nUjKYiiqK4V6YElgBw0ZRDgUk4gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 60/83] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+	Roy Luo <royluo@google.com>
+Subject: [PATCH 5.10 57/62] USB: gadget: core: adjust uevent timing on gadget unbind
 Date: Mon, 18 Dec 2023 14:52:21 +0100
-Message-ID: <20231218135052.372118812@linuxfoundation.org>
+Message-ID: <20231218135048.734995339@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,73 +49,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Roy Luo <royluo@google.com>
 
-[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
+commit 73ea73affe8622bdf292de898da869d441da6a9d upstream.
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
-from option driver.
-The proper configuration is:
+The KOBJ_CHANGE uevent is sent before gadget unbind is actually
+executed, resulting in inaccurate uevent emitted at incorrect timing
+(the uevent would have USB_UDC_DRIVER variable set while it would
+soon be removed).
+Move the KOBJ_CHANGE uevent to the end of the unbind function so that
+uevent is sent only after the change has been made.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
-
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2ccea03a8f7e ("usb: gadget: introduce UDC Class")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roy Luo <royluo@google.com>
+Link: https://lore.kernel.org/r/20231128221756.2591158-1-royluo@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/gadget/udc/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 5c516bf4d3a5f..846ace9830d3b 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1286,6 +1286,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
-+	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
- 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
--- 
-2.43.0
-
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1353,8 +1353,6 @@ static void usb_gadget_remove_driver(str
+ 	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
+ 			udc->driver->function);
+ 
+-	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+-
+ 	usb_gadget_disconnect(udc->gadget);
+ 	if (udc->gadget->irq)
+ 		synchronize_irq(udc->gadget->irq);
+@@ -1363,6 +1361,8 @@ static void usb_gadget_remove_driver(str
+ 
+ 	udc->driver = NULL;
+ 	udc->gadget->dev.driver = NULL;
++
++	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ }
+ 
+ /**
 
 
 
