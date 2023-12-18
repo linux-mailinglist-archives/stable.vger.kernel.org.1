@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0667281722B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F2D081715B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA44E284293
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F8E9B20B97
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAC35BFB1;
-	Mon, 18 Dec 2023 14:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611FB1D136;
+	Mon, 18 Dec 2023 13:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASswO2Hx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avFft9J9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51DD3788A;
-	Mon, 18 Dec 2023 14:04:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF982C433C8;
-	Mon, 18 Dec 2023 14:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B68129EF7;
+	Mon, 18 Dec 2023 13:56:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE47C433C8;
+	Mon, 18 Dec 2023 13:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908240;
-	bh=s1coG7ZhJ3Mz8iAXfNCEuqgkDTfsHMcFAxTncOPhm4Q=;
+	s=korg; t=1702907815;
+	bh=w30fqdjanVHWkecA6vbHft5tpIhJtLb6hRIzWuthPyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASswO2Hx2CA5PZYhyjktSaVJIJdY67D140YGu34HI3LvnQGju0Nmzz9JY4n5y3+oY
-	 kydq8LH/tw7jHiZCcAP05T/CpQjw0npdy5VQBB6omv7kMZoCDC19HnhCJAZU+udfn5
-	 dYdEwaCCQB0MiWJAhPti1815RpPXNVY7Oz1PkdGA=
+	b=avFft9J9lntsmp294vc8k9w4+HIvCCLbj/vN6AstWv0KTS6p80Nub3tMLbiMPPFue
+	 kXU8JznNokPOz6RXxgQJwAZF3HJp5ShHHW8HzDF53uV6JUzOZt0ac/2uDyojUWYlYn
+	 chQ92iDZO1o4hh0y+++I41mm6mmuv+lWCoC69stE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haowu Ge <gehaowu@bitmoe.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/166] LoongArch: Mark {dmw,tlb}_virt_to_page() exports as non-GPL
+Subject: [PATCH 6.1 056/106] blk-cgroup: bypass blkcg_deactivate_policy after destroying
 Date: Mon, 18 Dec 2023 14:51:10 +0100
-Message-ID: <20231218135109.668408810@linuxfoundation.org>
+Message-ID: <20231218135057.451720952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 19d86a496233731882aea7ec24505ce6641b1c0c ]
+[ Upstream commit e63a57303599b17290cd8bc48e6f20b24289a8bc ]
 
-Mark {dmw,tlb}_virt_to_page() exports as non-GPL, in order to let
-out-of-tree modules (e.g. OpenZFS) be built without errors. Otherwise
-we get:
+blkcg_deactivate_policy() can be called after blkg_destroy_all()
+returns, and it isn't necessary since blkg_destroy_all has covered
+policy deactivation.
 
-ERROR: modpost: GPL-incompatible module zfs.ko uses GPL-only symbol 'dmw_virt_to_page'
-ERROR: modpost: GPL-incompatible module zfs.ko uses GPL-only symbol 'tlb_virt_to_page'
-
-Reported-by: Haowu Ge <gehaowu@bitmoe.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-4-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/mm/pgtable.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/blk-cgroup.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/loongarch/mm/pgtable.c b/arch/loongarch/mm/pgtable.c
-index 71d0539e2d0b0..2aae72e638713 100644
---- a/arch/loongarch/mm/pgtable.c
-+++ b/arch/loongarch/mm/pgtable.c
-@@ -13,13 +13,13 @@ struct page *dmw_virt_to_page(unsigned long kaddr)
- {
- 	return pfn_to_page(virt_to_pfn(kaddr));
- }
--EXPORT_SYMBOL_GPL(dmw_virt_to_page);
-+EXPORT_SYMBOL(dmw_virt_to_page);
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 60f366f98fa2b..1b7fd1fc2f337 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -462,6 +462,7 @@ static void blkg_destroy_all(struct gendisk *disk)
+ 	struct request_queue *q = disk->queue;
+ 	struct blkcg_gq *blkg, *n;
+ 	int count = BLKG_DESTROY_BATCH_SIZE;
++	int i;
  
- struct page *tlb_virt_to_page(unsigned long kaddr)
- {
- 	return pfn_to_page(pte_pfn(*virt_to_kpte(kaddr)));
- }
--EXPORT_SYMBOL_GPL(tlb_virt_to_page);
-+EXPORT_SYMBOL(tlb_virt_to_page);
+ restart:
+ 	spin_lock_irq(&q->queue_lock);
+@@ -487,6 +488,18 @@ static void blkg_destroy_all(struct gendisk *disk)
+ 		}
+ 	}
  
- pgd_t *pgd_alloc(struct mm_struct *mm)
- {
++	/*
++	 * Mark policy deactivated since policy offline has been done, and
++	 * the free is scheduled, so future blkcg_deactivate_policy() can
++	 * be bypassed
++	 */
++	for (i = 0; i < BLKCG_MAX_POLS; i++) {
++		struct blkcg_policy *pol = blkcg_policy[i];
++
++		if (pol)
++			__clear_bit(pol->plid, q->blkcg_pols);
++	}
++
+ 	q->root_blkg = NULL;
+ 	spin_unlock_irq(&q->queue_lock);
+ }
 -- 
 2.43.0
 
