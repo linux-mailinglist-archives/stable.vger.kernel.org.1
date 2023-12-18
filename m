@@ -1,83 +1,104 @@
-Return-Path: <stable+bounces-7596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B7BA81733B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA8381737D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7D1FB2447E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A1F21F2416F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84633A1B5;
-	Mon, 18 Dec 2023 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D001D15E;
+	Mon, 18 Dec 2023 14:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gr0maGAL"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB1A37885;
-	Mon, 18 Dec 2023 14:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Sv1yw2hqrzYsp5;
-	Mon, 18 Dec 2023 22:14:00 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA832180087;
-	Mon, 18 Dec 2023 22:14:52 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 18 Dec
- 2023 22:14:52 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <linux-ext4@vger.kernel.org>
-CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
-	<libaokun1@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH 4/4] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
-Date: Mon, 18 Dec 2023 22:18:14 +0800
-Message-ID: <20231218141814.1477338-5-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231218141814.1477338-1-libaokun1@huawei.com>
-References: <20231218141814.1477338-1-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03DC9129EDD
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40c256ffdbcso37003455e9.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:23:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702909408; x=1703514208; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LzQc1yULZChaDLQ9G/ihl8REJbHZhov+DE7MK87TVb0=;
+        b=gr0maGALSR52Eyn6HZ0rH2WG9HnEzVFbQ2nQoUbJlErLmPLZrJ5rn+w8wH3L7hr5f1
+         uyeuM/Kqz2jJb9uVfttqB3VMiff1lJvGo88GJKTHjtj0cIgFsme++XIE422ZRZytO97F
+         T8CjJOoC3KyuZLAknDZ1/JRHefSV0HYfhF+UBtJkBCQJxSpJV7b4c8YJdDOLRTI+sM+E
+         +yIRReU4VzDux188nZBBepttBd1sYYfD+u8rD1FSLQwIfC+HnT7MN1u98fUhwS68U/HV
+         tBvfICpNi1I1WcrdbAEM9KL7HG9X/wWmq2vNj9900Xat8rbkx9s+QNiK1jCx3JHFYbJt
+         8bpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702909408; x=1703514208;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LzQc1yULZChaDLQ9G/ihl8REJbHZhov+DE7MK87TVb0=;
+        b=NB87gcAyq1YFpEwke8DMKoC1bGswiHH+PpuyHuo0Pqz1DfYy/onUtfTFbmURBCZcKj
+         8srU0LP8G0qovxTpBpJ8ppyJgcrrS+7ldOJuGnrLoGdqTRljxH8X9ooc2XHTq7a8CX2n
+         Bz85wbIuEq0pjmPwiWwPJ8s+yqM2Rz9sSEp8as743f+DVI1gtbEXRQ2xJLXX/PJnnOzr
+         ZsLSaB8enEhYdKYrnyzXOoruKpcUHXJFOtDFLCSP3mBmLWAEPofCZylnteh7/fTFzi2E
+         YTnQqC3wqKsA5zc7xw4an20IIFzun0Joo3ehCLMxy79o1FZKonvb2LOBu8cYqDVT2zxL
+         2fyA==
+X-Gm-Message-State: AOJu0YwGz5SdW4MkFshDR0Z2aRgqWZE+Ajkos+wYFqQQgY7OeWXOjztx
+	9cUk1Hn8CyGXwtmkT0Q5wINr8jisqcqy/58hwATpJEI9yTjpQ0wtR2KHcQ==
+X-Google-Smtp-Source: AGHT+IFjfzSrKy1VCxahCZN8bB8Pt2jUcoyta7zgHgxmTr6TUO/ufFtIA/WrJxi9JIIbR7og9rPgwtArG7ubGMx13Uk=
+X-Received: by 2002:a05:600c:4d0e:b0:40b:5e1e:cf1 with SMTP id
+ u14-20020a05600c4d0e00b0040b5e1e0cf1mr7965342wmp.44.1702909408123; Mon, 18
+ Dec 2023 06:23:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+References: <20231218141645.2548743-1-alpic@google.com>
+In-Reply-To: <20231218141645.2548743-1-alpic@google.com>
+From: Alfred Piccioni <alpic@google.com>
+Date: Mon, 18 Dec 2023 15:22:50 +0100
+Message-ID: <CALcwBGDoEjyfAnYHaCCqULa+dwRyw3spHijUXwJ_LAQp=oV-pg@mail.gmail.com>
+Subject: Re: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
+To: Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Eric Paris <eparis@parisplace.org>
+Cc: stable@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-When bb_free is not 0 but bb_fragments is 0, return directly to avoid
-system crash due to division by zero.
+> s/emmits/emits/
 
-Fixes: 83e80a6e3543 ("ext4: use buckets for cr 1 block scan instead of rbtree")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
----
- fs/ext4/mballoc.c | 3 +++
- 1 file changed, 3 insertions(+)
+Fixed.
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 2fbee0f0f5c3..e2a167240335 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -845,6 +845,9 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
- 		return;
- 
-+	if (unlikely(grp->bb_fragments == 0))
-+		return;
-+
- 	new_order = mb_avg_fragment_size_order(sb,
- 					grp->bb_free / grp->bb_fragments);
- 	if (new_order == grp->bb_avg_fragment_size_order)
--- 
-2.31.1
+> It doesn't (or shouldn't) replace security_file_ioctl, and the hook
+> doesn't appear to be conditional on CONFIG_COMPAT per se.
+> It is a new hook that is called from the compat ioctl syscall. The old
+> hook continues to be used from the regular ioctl syscall and
+> elsewhere.
 
+Yup, reworded to be more correct. Partially lack of understanding on
+my part of how the ioctl syscalls were being made.
+
+> I don't understand why you made this change, possibly a leftover of an
+> earlier version of the patch that tried to replace
+> security_file_ioctl() everywhere?
+
+Correct. Forgot to go back and remove it. Fixed.
+
+> By the way, for extra credit, you could augment the ioctl tests in the
+> selinux-testsuite to also exercise this new hook and confirm that it
+> works correctly. See
+> https://github.com/SELinuxProject/selinux-testsuite particularly
+> tests/ioctl and policy/test_ioctl.te. Feel free to ask for help on
+> that.
+
+I do like extra credit. I'll take a look and see if it's something I
+can tackle. I'm primarily doing ad hoc checks on Android devices, so
+I'm unsure how easy it will be for me to run the suite. I'll get back
+to you shortly on that.
 
