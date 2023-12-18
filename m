@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612DC817290
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9624817309
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD0602866D5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69EE41F2367D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031C33D557;
-	Mon, 18 Dec 2023 14:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E7E3D540;
+	Mon, 18 Dec 2023 14:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JLl9Rmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zkg8fqYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5BE1D142;
-	Mon, 18 Dec 2023 14:07:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411E4C433C8;
-	Mon, 18 Dec 2023 14:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D69E3A1CD;
+	Mon, 18 Dec 2023 14:12:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866B3C433C8;
+	Mon, 18 Dec 2023 14:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908470;
-	bh=5nJSxEUNXIHwEH7WcFTtKjueoZeWOgaBPcPbxO7SzVw=;
+	s=korg; t=1702908765;
+	bh=gw9x+3+5o7Gb5u4XOjhrY6nsDGQYs8rFRJxbbGy0W+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JLl9Rmg0EXDbeOs119vjb32tyrm52obi9V9t7iMKaw/YWKeIBvKYKz2wrBDPC0yv
-	 l2KsUnlLeEXpjuyxeJeJcFg7O92TrRK1CMjpBYKFm5mkbOHLGVD7rR+PATazngVJJI
-	 wmOHiVmyEbjz2kVna9rb/BU+w4uPjsZcl8H6ylIM=
+	b=Zkg8fqYvu7KKK/L5S8Ob+vDDAXgvhGRHE4Fn+0NGsVRXIndjXHez2Qkc0jZ7yu9Rp
+	 s4yGXaihCmdXDRdXypDIg9cc3cfTBFtq6ugVA18cToqz8awLhEoLjaZULKOKh19yb6
+	 MUK9zySjZNhvtY7Nwt1vTYtgrYxrWPNhkrV5uQfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 22/62] appletalk: Fix Use-After-Free in atalk_ioctl
+Subject: [PATCH 5.15 25/83] qed: Fix a potential use-after-free in qed_cxt_tables_alloc
 Date: Mon, 18 Dec 2023 14:51:46 +0100
-Message-ID: <20231218135047.221519772@linuxfoundation.org>
+Message-ID: <20231218135050.858110261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
+[ Upstream commit b65d52ac9c085c0c52dee012a210d4e2f352611b ]
 
-Because atalk_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with atalk_recvmsg().
-A use-after-free for skb occurs with the following flow.
-```
-atalk_ioctl() -> skb_peek()
-atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-```
-Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
+qed_ilt_shadow_alloc() will call qed_ilt_shadow_free() to
+free p_hwfn->p_cxt_mngr->ilt_shadow on error. However,
+qed_cxt_tables_alloc() accesses the freed pointer on failure
+of qed_ilt_shadow_alloc() through calling qed_cxt_mngr_free(),
+which may lead to use-after-free. Fix this issue by setting
+p_mngr->ilt_shadow to NULL in qed_ilt_shadow_free().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231210045255.21383-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/appletalk/ddp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index c94b212d8e7ca..46adb8cefccf2 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -1811,15 +1811,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		break;
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+index cb0f2a3a1ac98..7d8401da6f226 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -933,6 +933,7 @@ static void qed_ilt_shadow_free(struct qed_hwfn *p_hwfn)
+ 		p_dma->virt_addr = NULL;
  	}
- 	case TIOCINQ: {
--		/*
--		 * These two are safe on a single CPU system as only
--		 * user tasks fiddle here
--		 */
--		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
-+		struct sk_buff *skb;
- 		long amount = 0;
+ 	kfree(p_mngr->ilt_shadow);
++	p_mngr->ilt_shadow = NULL;
+ }
  
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
-+		skb = skb_peek(&sk->sk_receive_queue);
- 		if (skb)
- 			amount = skb->len - sizeof(struct ddpehdr);
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		rc = put_user(amount, (int __user *)argp);
- 		break;
- 	}
+ static int qed_ilt_blk_alloc(struct qed_hwfn *p_hwfn,
 -- 
 2.43.0
 
