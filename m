@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5DA8172FE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 610D88172A5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16EB2890F3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77551F2297F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B1E1D148;
-	Mon, 18 Dec 2023 14:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C113D579;
+	Mon, 18 Dec 2023 14:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NG5k3G+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXLqmA8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DA14239A;
-	Mon, 18 Dec 2023 14:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C077C433C8;
-	Mon, 18 Dec 2023 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A97129EF9;
+	Mon, 18 Dec 2023 14:08:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF907C433C7;
+	Mon, 18 Dec 2023 14:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908741;
-	bh=5ajVyWuxfDBuz9KYZEbbEgbvL2kABmsj8ewxBBW7SsA=;
+	s=korg; t=1702908525;
+	bh=WY4nEdYZnNRCbbE1zF8SuozvySNat8+FMoHY7qNSa+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NG5k3G+6Wl4wxMRvZBDYA21cOm2EaqX03SRkbvLbPwwwmbGGOGH6YIPRPIAsjvUg4
-	 r4fKoy+54HP3B3mhOcJ0ohW5s2+6LqKWfZ7EzSswEyHYPH1KXBhRxnKWPikYqTCfv6
-	 XBi+KzANdvmkNTUPcttrqvt9qlE8G1C3SZWexXYA=
+	b=MXLqmA8NctVJ6w+8L/SF9YNtIjM42yZmW38bid9t0bMJN07g2Fby48XnrlwUbZGZV
+	 OHLct7BSjMf43WkeRRjbhp7yx1NlWFX15F+nUSEkVTlgIHtWLoblNLg9Vt5Cngsn0l
+	 zhoZ3ALkwnxvwT6vBk/xLQlRKllz/bikTexl/Mck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 17/83] atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+Subject: [PATCH 5.10 14/62] qed: Fix a potential use-after-free in qed_cxt_tables_alloc
 Date: Mon, 18 Dec 2023 14:51:38 +0100
-Message-ID: <20231218135050.518979624@linuxfoundation.org>
+Message-ID: <20231218135046.862604516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 15319a4e8ee4b098118591c6ccbd17237f841613 ]
+[ Upstream commit b65d52ac9c085c0c52dee012a210d4e2f352611b ]
 
-As &card->tx_queue_lock is acquired under softirq context along the
-following call chain from solos_bh(), other acquisition of the same
-lock inside process context should disable at least bh to avoid double
-lock.
+qed_ilt_shadow_alloc() will call qed_ilt_shadow_free() to
+free p_hwfn->p_cxt_mngr->ilt_shadow on error. However,
+qed_cxt_tables_alloc() accesses the freed pointer on failure
+of qed_ilt_shadow_alloc() through calling qed_cxt_mngr_free(),
+which may lead to use-after-free. Fix this issue by setting
+p_mngr->ilt_shadow to NULL in qed_ilt_shadow_free().
 
-<deadlock #2>
-pclose()
---> spin_lock(&card->tx_queue_lock)
-<interrupt>
-   --> solos_bh()
-   --> fpga_tx()
-   --> spin_lock(&card->tx_queue_lock)
-
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch uses spin_lock_bh()
-on &card->tx_queue_lock under process context code consistently to
-prevent the possible deadlock scenario.
-
-Fixes: 213e85d38912 ("solos-pci: clean up pclose() function")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231210045255.21383-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/solos-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index 95f768b28a5e6..d3c30a28c410e 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -956,14 +956,14 @@ static void pclose(struct atm_vcc *vcc)
- 	struct pkt_hdr *header;
- 
- 	/* Remove any yet-to-be-transmitted packets from the pending queue */
--	spin_lock(&card->tx_queue_lock);
-+	spin_lock_bh(&card->tx_queue_lock);
- 	skb_queue_walk_safe(&card->tx_queue[port], skb, tmpskb) {
- 		if (SKB_CB(skb)->vcc == vcc) {
- 			skb_unlink(skb, &card->tx_queue[port]);
- 			solos_pop(vcc, skb);
- 		}
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+index 0a22f8ce9a2c3..1c3737921b6cf 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -933,6 +933,7 @@ static void qed_ilt_shadow_free(struct qed_hwfn *p_hwfn)
+ 		p_dma->virt_addr = NULL;
  	}
--	spin_unlock(&card->tx_queue_lock);
-+	spin_unlock_bh(&card->tx_queue_lock);
+ 	kfree(p_mngr->ilt_shadow);
++	p_mngr->ilt_shadow = NULL;
+ }
  
- 	skb = alloc_skb(sizeof(*header), GFP_KERNEL);
- 	if (!skb) {
+ static int qed_ilt_blk_alloc(struct qed_hwfn *p_hwfn,
 -- 
 2.43.0
 
