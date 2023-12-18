@@ -1,87 +1,156 @@
-Return-Path: <stable+bounces-7786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B0881766C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70B87817688
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:59:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD20C284499
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F12C428191E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7C6101DB;
-	Mon, 18 Dec 2023 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5481D4FF7B;
+	Mon, 18 Dec 2023 15:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="n5cqUAHy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOC8Thm9"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AC43D57D;
-	Mon, 18 Dec 2023 15:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1702915007; x=1703519807; i=rwarsow@gmx.de;
-	bh=VUAgalJo6l3NW0AO6ROoScbPspEfKIlzpzWkSvc/f3Y=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-	b=n5cqUAHyvaUfggHwS8LOV6nuftVokmkUXBqAAoXqjHO0cU/N8+cjgTYaqKwU7qMH
-	 77pWgBZqS67sZCthMkfpZwNva/DVojdXyGE7Jg6gAJN5lHhKA8ZgwHBOGoYpJheCr
-	 5E4yedTFDJ7+cle14vXQ4VfnTGNUq/KbP3N+O5E6IVxMrvVELcbjqjIIWDNX7lR5Y
-	 KpvBl79Km0RqzLgxJzQoc0CJtXBIcgLreSD0MD9kiLwqrgCVxIR341YtAiPY61Mp4
-	 hB6pKggEcuTNpNAyc2vTHAEIIF2mYr6cr2Px044vMI+Hp7K8MvvvBvkwHASAe0hwS
-	 A5R8P+2L7V/jWxWZZQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.32.129]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mnaof-1qqL5G0mvN-00jYU7; Mon, 18
- Dec 2023 16:56:47 +0100
-Message-ID: <10e85703-5eb2-44a8-81b8-dc9dec102833@gmx.de>
-Date: Mon, 18 Dec 2023 16:56:46 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D100B4238B;
+	Mon, 18 Dec 2023 15:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-28b71490fbbso610517a91.0;
+        Mon, 18 Dec 2023 07:58:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702915125; x=1703519925; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C1L/ez+Wv4K7wUuse7sZYv4iNUdOB14MYq1qAXqEUGk=;
+        b=JOC8Thm9b0K6TK8vKxrKBwyahu+qXYYkjWEal1StL+jwTYm2Ibzq1LKR4J0e2j7TOz
+         ekX1uZWLVjMMp9mbrTrpRNywcwK1ayZhRKDxbO3dOzVRSJ0fWhZE7QPEsFzx3ETawglP
+         f8H9GrFvJ2dHRj8IdcrDZDbyMmCLOmiuA+KHeMA2x5w9+Y2rWVq3XhhmaC5qfnFNFdeE
+         Z06jOI83xbSB+BhqHbkgecoqHgw7TPljgJQ4AOafhIv4yYBB7P6Xvcjus5CiSAhnDmrx
+         ujOE1LAksJUEqKlGaE/5A2wGgWowrluQBbHJ29iq9AoEY3J6zziArLJk/+UJ/STCeHH4
+         g30g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702915125; x=1703519925;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C1L/ez+Wv4K7wUuse7sZYv4iNUdOB14MYq1qAXqEUGk=;
+        b=WgV3cOBnlsold0GCGhJzscItSMfsMrA9hw116VcMamXr5X91l/UAl5bzoy7lCUBUQc
+         Mxf2ZX4k7u30Vyh9EbK3kPzpDRm5jnh+yUKzfqDebZ7VhclSl7FLIi2qboWvmay6hJ1v
+         G3dS7GEBTvTJHwsc6sikvOw53cB+oZrls3fEAPvhm9vYhhcGWthvVC8oxbO1hn/WhVrS
+         cfX0FwS7KJQ4+eysSd62INrCiPQUBHnWsxgoTpdNjFvZM1bXpyOG2nCkrGBr2rKq/Sun
+         af/aoJPGe4ajP+waI0y7Gt90LD69rcEaGPW62XXc29XG8fpkkAXED8QgR+Z3RU0soeCg
+         1EIw==
+X-Gm-Message-State: AOJu0YzangxHkMnskjW7N3CxCEcgdv18R1HL6u6lhgPcFweae9h4OTb3
+	5S9fkzDwnbeepZiGz/RgN/aEpqD0J1DgBwBIlRR8eQkk
+X-Google-Smtp-Source: AGHT+IEv8eavEuw5TO6YbqO0CIa9S1vZ+DhDRS8y8ZGHNH845ST2fOLkih/5tge64KbKJSQ6tdCnQ9BubUxOVUVWoHY=
+X-Received: by 2002:a17:90a:e657:b0:28b:95b0:d51b with SMTP id
+ ep23-20020a17090ae65700b0028b95b0d51bmr587205pjb.82.1702915124936; Mon, 18
+ Dec 2023 07:58:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.6 000/166] 6.6.8-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:H5DLEfnojbYinGpYGsDDqe096Clyx9aNq8MqnNImWS+nialr+qC
- QGcSnxU3a2KpEa+LdpzVoYSJe4dQbKvHAIKyvWOAMMYFpm6UCGzQtsn+BGlojVytKBkDNcY
- f+fL8SzRlsNTFM3u4wdtk/Webr62G3Dv6Io9EIsTCLGv6vLSKO0KT61eA4JekML7JIMqCPf
- qIN7KIw9i9JoE/NWzHqzw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LvLkXBV7ZpA=;1W0+zbWxsrLH0Ub6LaI0plit/jh
- vuyTVPQPfYUWu1WpZE73BaKy3l9fJstwwn4LpEkTsHrKyVJ9Tq99sBr8hSOwi2budyfSzpRc4
- gGpeP1yETwjL7Sbl5SHcUh7WMpBi8lKKBSb+xmymwnnmw4kUsrEf+QxoZRdzYcS9ybwgi8Bpi
- Bapm/rrNjxcqVb8r7YiQ53PEJx7jVNZF9RS/5RuWqrp/h73oYKfEGVxtf2aR5lVzSQ2gprROW
- SS5yM76Bt9z6Vpp6FTdRV8VrlJnTOOsx63/xnPbg1UsaXWrjeTNrev1Ff+GyoG2+lcBW5jtdN
- SXV+FUXqF+oUDWREbHOlotib6eYjIrBSgnN5LLXnRgVSEa6DutMIkrbNFUY2EiWAf+073WTVY
- fuTJqxD89WFgQmUTajNF1y5EGQjyi4G8QBt5ULF5H6fGOf0WMP3lxlCQI0ydYIquMgl7jQKv4
- X1xooXzEgtJK9wXO3+gV4QrO0xw2R06FbO6Yr5/vH5n9lUCh2mdV7Pr9/skJfAdNskqqLIt0V
- Es+yfK6ignoI4gEEXGOyLap3D55jM+qGzuQO3HXveAAGlYE01kIq7oPOKb9fQHilOQUR/ouyZ
- vxoJ8HM7josmFBmqrtloGd+JvErk4ZnoN+lTwH5vagC244OgSRiyJ38P8emwU17IGvLXKndPf
- 61eEQXI4N6Czi0EqoP+i36j+4vBJUIP5QpGcaEX2EgOSKfNm0/GrZ9CpYI2e5g7b/RuvdtYSx
- FXXpISYA7RyMnGEg39/GsqrUmv2fNE57FYBrvveN82gRRDq5mMPRsNUDvS6O02it3C9X9JKfp
- aLw3mf4ANxP4uRfQQypSuTrWdJs7YiYZwJZv65CjN0TDAYSZZ3zpH4eUKsNIlMGP2cuD9ugND
- 3KXAxglqug+ykHvMfgL7gHK7t0jgzM6WMP9ZvNkh0KkPh/XeGy1DKhvdIqYC2aMZGtKXweiAe
- FwkqxQ==
+References: <20231218141645.2548743-1-alpic@google.com>
+In-Reply-To: <20231218141645.2548743-1-alpic@google.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Mon, 18 Dec 2023 10:58:33 -0500
+Message-ID: <CAEjxPJ40jPsBS5xZEgS1CCVYORDJhwNOrAj5Oepa3rK=Y1BnYg@mail.gmail.com>
+Subject: Re: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
+To: Alfred Piccioni <alpic@google.com>
+Cc: Paul Moore <paul@paul-moore.com>, Eric Paris <eparis@parisplace.org>, stable@vger.kernel.org, 
+	SElinux list <selinux@vger.kernel.org>, linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+On Mon, Dec 18, 2023 at 9:17=E2=80=AFAM Alfred Piccioni <alpic@google.com> =
+wrote:
+>
+> Some ioctl commands do not require ioctl permission, but are routed to
+> other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+> done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
+>
+> However, if a 32-bit process is running on a 64-bit kernel, it emits
+> 32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+> being checked erroneously, which leads to these ioctl operations being
+> routed to the ioctl permission, rather than the correct file
+> permissions.
+>
+> This was also noted in a RED-PEN finding from a while back -
+> "/* RED-PEN how should LSM module know it's handling 32bit? */".
+>
+> This patch introduces a new hook, security_file_ioctl_compat, that is
+> called from the compat ioctl syscal. All current LSMs have been changed
 
-6.6.8-rc1
+s/syscal/syscall/
+Might to consider checking using codespell to catch such things
+although it is imperfect.
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake: i5-11400)
+> to support this hook.
+>
+> Reviewing the three places where we are currently using
+> security_file_ioctl, it appears that only SELinux needs a dedicated
+> compat change; TOMOYO and SMACK appear to be functional without any
+> change.
+>
+> Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+> Signed-off-by: Alfred Piccioni <alpic@google.com>
+> Cc: stable@vger.kernel.org
+> ---
 
-Thanks
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 2aa0e219d721..de96d156e6ea 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -3731,6 +3731,31 @@ static int selinux_file_ioctl(struct file *file, u=
+nsigned int cmd,
+>         return error;
+>  }
+>
+> +static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd=
+,
+> +                             unsigned long arg)
+> +{
+> +       // If we are in a 64-bit kernel running 32-bit userspace, we need=
+ to make
+> +       // sure we don't compare 32-bit flags to 64-bit flags.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Paul doesn't like C++-style comments so rewrite using kernel coding
+style for multi-line comments or drop.
+I don't think kernel coding style strictly prohibits use for
+single-line comments and it isn't detected by checkpatch.pl but he has
+previously
+raised this on other patches. I actually like the C++-style comments
+for one-liners especially for comments at the end of a line of code
+but Paul is the maintainer so he gets the final word.
 
+> +       switch (cmd) {
+> +       case FS_IOC32_GETFLAGS:
+> +               cmd =3D FS_IOC_GETFLAGS;
+> +               break;
+> +       case FS_IOC32_SETFLAGS:
+> +               cmd =3D FS_IOC_GETFLAGS;
+
+Sorry, missed this the first time but cut-and-paste error above:
+s/GETFLAGS/SETFLAGS/
+
+I didn't do an audit but does anything need to be updated for the BPF
+LSM or does it auto-magically pick up new hooks?
+
+Also, IIRC, Paul prefers putting a pair of parentheses after function
+names to distinguish them, so in the subject line
+and description it should be security_file_ioctl_compat() and
+security_file_ioctl(), and you should put a patch version
+in the [PATCH] prefix e.g. [PATCH v3] to make clear that it is a later
+version, and usually one doesn't capitalize SELinux
+or the leading verb in the subject line (just "selinux: introduce").
 
