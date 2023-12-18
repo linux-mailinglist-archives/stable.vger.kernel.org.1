@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A92817171
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2588817284
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78F2FB20D25
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96213B22B99
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50221D141;
-	Mon, 18 Dec 2023 13:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EC437897;
+	Mon, 18 Dec 2023 14:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPyHDFD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN87qqeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBD4129ED2;
-	Mon, 18 Dec 2023 13:57:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F25C433C7;
-	Mon, 18 Dec 2023 13:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0524F1D13B;
+	Mon, 18 Dec 2023 14:07:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAA8C433C8;
+	Mon, 18 Dec 2023 14:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907862;
-	bh=6GGGhyzrcbU+czhv5Go6gKCGG05OLUE4X6FHJ5TiI+A=;
+	s=korg; t=1702908445;
+	bh=qeu6/+nluIyQpm/8hN6heepatKymDSimRNlsiUelKmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPyHDFD1Qxaq04hqRzzNiAsJsU7+f7PVx8g+ENOdVVe5Dvns6qy+jD8ervPXMlphT
-	 ygCGYvIdbMYAZR+q1P6+bpuugsV8aYSJHG6UIMOH9sHrpNZ7aOUOH3JQ+IyuMiuC2y
-	 tOpMd+CZE/DORtBSUX684pe//WlIcsrXJKu5ERvs=
+	b=VN87qqeEqI8hYyaEG+BU690Zo+culY7prPYwqMtKvZ6tnsvwz+yUJl8mmyArN/PsO
+	 vOzK/ipqPJNRcfG7C7abSZBV/oxU3lrqqD+yrLRrtC8sTWAY1hvGN87FhkkcHiqALe
+	 6YbPiKL0CpyuXSI04LZLPZQVCgZQIO0xNUW9kc2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/106] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+Subject: [PATCH 5.10 04/62] net: ipv6: support reporting otherwise unknown prefix flags in RTM_NEWPREFIX
 Date: Mon, 18 Dec 2023 14:51:28 +0100
-Message-ID: <20231218135058.222332452@linuxfoundation.org>
+Message-ID: <20231218135046.360685147@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,67 +56,112 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
+[ Upstream commit bd4a816752bab609dd6d65ae021387beb9e2ddbd ]
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
-from option driver.
-The proper configuration is:
+Lorenzo points out that we effectively clear all unknown
+flags from PIO when copying them to userspace in the netlink
+RTM_NEWPREFIX notification.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+We could fix this one at a time as new flags are defined,
+or in one fell swoop - I choose the latter.
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+We could either define 6 new reserved flags (reserved1..6) and handle
+them individually (and rename them as new flags are defined), or we
+could simply copy the entire unmodified byte over - I choose the latter.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This unfortunately requires some anonymous union/struct magic,
+so we add a static assert on the struct size for a little extra safety.
+
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/addrconf.h | 12 ++++++++++--
+ include/net/if_inet6.h |  4 ----
+ net/ipv6/addrconf.c    |  6 +-----
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 4fb981b8732ef..2d82481d34e6b 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1288,6 +1288,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
-+	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
- 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
+diff --git a/include/net/addrconf.h b/include/net/addrconf.h
+index edba74a536839..4d0c4cf1d4c88 100644
+--- a/include/net/addrconf.h
++++ b/include/net/addrconf.h
+@@ -31,17 +31,22 @@ struct prefix_info {
+ 	__u8			length;
+ 	__u8			prefix_len;
+ 
++	union __packed {
++		__u8		flags;
++		struct __packed {
+ #if defined(__BIG_ENDIAN_BITFIELD)
+-	__u8			onlink : 1,
++			__u8	onlink : 1,
+ 			 	autoconf : 1,
+ 				reserved : 6;
+ #elif defined(__LITTLE_ENDIAN_BITFIELD)
+-	__u8			reserved : 6,
++			__u8	reserved : 6,
+ 				autoconf : 1,
+ 				onlink : 1;
+ #else
+ #error "Please fix <asm/byteorder.h>"
+ #endif
++		};
++	};
+ 	__be32			valid;
+ 	__be32			prefered;
+ 	__be32			reserved2;
+@@ -49,6 +54,9 @@ struct prefix_info {
+ 	struct in6_addr		prefix;
+ };
+ 
++/* rfc4861 4.6.2: IPv6 PIO is 32 bytes in size */
++static_assert(sizeof(struct prefix_info) == 32);
++
+ #include <linux/ipv6.h>
+ #include <linux/netdevice.h>
+ #include <net/if_inet6.h>
+diff --git a/include/net/if_inet6.h b/include/net/if_inet6.h
+index e03ba8e80781a..d4d7f4d52b152 100644
+--- a/include/net/if_inet6.h
++++ b/include/net/if_inet6.h
+@@ -22,10 +22,6 @@
+ #define IF_RS_SENT	0x10
+ #define IF_READY	0x80000000
+ 
+-/* prefix flags */
+-#define IF_PREFIX_ONLINK	0x01
+-#define IF_PREFIX_AUTOCONF	0x02
+-
+ enum {
+ 	INET6_IFADDR_STATE_PREDAD,
+ 	INET6_IFADDR_STATE_DAD,
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 193e5f2757330..79787a1f5ab34 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -6034,11 +6034,7 @@ static int inet6_fill_prefix(struct sk_buff *skb, struct inet6_dev *idev,
+ 	pmsg->prefix_len = pinfo->prefix_len;
+ 	pmsg->prefix_type = pinfo->type;
+ 	pmsg->prefix_pad3 = 0;
+-	pmsg->prefix_flags = 0;
+-	if (pinfo->onlink)
+-		pmsg->prefix_flags |= IF_PREFIX_ONLINK;
+-	if (pinfo->autoconf)
+-		pmsg->prefix_flags |= IF_PREFIX_AUTOCONF;
++	pmsg->prefix_flags = pinfo->flags;
+ 
+ 	if (nla_put(skb, PREFIX_ADDRESS, sizeof(pinfo->prefix), &pinfo->prefix))
+ 		goto nla_put_failure;
 -- 
 2.43.0
 
