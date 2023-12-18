@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-7104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3EB28170F3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A198817229
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 442681F22F6D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B86FC28344A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52041D122;
-	Mon, 18 Dec 2023 13:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1179A5A86C;
+	Mon, 18 Dec 2023 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC32/4xZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3Mrn+4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4E9129EF7;
-	Mon, 18 Dec 2023 13:52:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD29C433C8;
-	Mon, 18 Dec 2023 13:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA35C3788B;
+	Mon, 18 Dec 2023 14:03:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506C2C433C8;
+	Mon, 18 Dec 2023 14:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907561;
-	bh=GOQjwq5y8UHeXyvJL7EeZknWiupj0zwCNH+fwu0xGR0=;
+	s=korg; t=1702908234;
+	bh=sF4u/+tDUzeE7lIvcW0E9Ra+DNyO9TYgZuNTqHsQuGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DC32/4xZd8zATq+ir6aBoqrgUVCN6kc2iG+jjGmiWFOvCsJ1xxYnSIsKDbB+G0rP6
-	 usI327SbnsWX5mMAEKKKtid1ssTO3l5lOJvHTqvttw7C8Nj6p/RPUTC0oNg5Nlrakl
-	 bM/a1tDdCf9/NC7AMTjSzSGEJt5Umsn1QqyRgnKc=
+	b=Z3Mrn+4xRIvaPPo1/rhgOstVaPE7N0AGvgtha0GvnJElCK5d+h2mZQ/4USKFUZTO6
+	 BtqvOyD6ZqQAtnVJqBmZ7gx7pJYmk6tr+5ONClk/PZ31f6qSFVRgCqIp0twfH4Ag3O
+	 oa0br901asUfQuUBt/UTeFD9GUrD54BVoAUAumyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 07/26] net/rose: Fix Use-After-Free in rose_ioctl
+Subject: [PATCH 6.6 103/166] LoongArch: Silence the boot warning about nokaslr
 Date: Mon, 18 Dec 2023 14:51:09 +0100
-Message-ID: <20231218135040.943044322@linuxfoundation.org>
+Message-ID: <20231218135109.611112589@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
+[ Upstream commit 902d75cdf0cf0a3fb58550089ee519abf12566f5 ]
 
-Because rose_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with rose_accept().
-A use-after-free for skb occurs with the following flow.
-```
-rose_ioctl() -> skb_peek()
-rose_accept() -> skb_dequeue() -> kfree_skb()
-```
-Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
+The kernel parameter 'nokaslr' is handled before start_kernel(), so we
+don't need early_param() to mark it technically. But it can cause a boot
+warning as follows:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Unknown kernel command line parameters "nokaslr", will be passed to user space.
+
+When we use 'init=/bin/bash', 'nokaslr' which passed to user space will
+even cause a kernel panic. So we use early_param() to mark 'nokaslr',
+simply print a notice and silence the boot warning (also fix a potential
+panic). This logic is similar to RISC-V.
+
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/relocate.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index ac2ea4ebf7c7c..04e5e01002ae0 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -1309,9 +1309,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	case TIOCINQ: {
- 		struct sk_buff *skb;
- 		long amount = 0L;
--		/* These two are safe on a single CPU system as only user tasks fiddle here */
-+
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
- 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
- 			amount = skb->len;
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		return put_user(amount, (unsigned int __user *) argp);
- 	}
+diff --git a/arch/loongarch/kernel/relocate.c b/arch/loongarch/kernel/relocate.c
+index 288b739ca88dd..1acfa704c8d09 100644
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -102,6 +102,14 @@ static inline __init unsigned long get_random_boot(void)
+ 	return hash;
+ }
  
++static int __init nokaslr(char *p)
++{
++	pr_info("KASLR is disabled.\n");
++
++	return 0; /* Print a notice and silence the boot warning */
++}
++early_param("nokaslr", nokaslr);
++
+ static inline __init bool kaslr_disabled(void)
+ {
+ 	char *str;
 -- 
 2.43.0
 
