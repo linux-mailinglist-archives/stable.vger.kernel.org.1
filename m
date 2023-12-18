@@ -1,141 +1,280 @@
-Return-Path: <stable+bounces-6995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0686A816DB7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:14:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAE47816E41
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D4491C22A19
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9EE61C24340
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4EF41C77;
-	Mon, 18 Dec 2023 12:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C17580E00;
+	Mon, 18 Dec 2023 12:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="fjYvkalR"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gglmYec9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877BE4B127
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 12:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6d7609cb6d2so282997b3a.1
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 04:12:54 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407077EFD9
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 12:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--alpic.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-db084a0a2e9so2863873276.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 04:43:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702901573; x=1703506373; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YaB1XQgj+pKNWhRQxhtAq1i3TL2AjLD+ofZITiJyJeI=;
-        b=fjYvkalRKUEiiQ8qdVewW6SOtNODOYOFUWaZnAfM9/HERVUb0NYF+5nX+NxbYLdjqW
-         S2y9sDLMF8nT39hbMgNLbz8cOTQsy2jmca7trOOkKAXvUDjiaQ5G/N1Rpr54RA3d3DMt
-         SQvD/8IV19ynO2PTPqKgUC/fgyc5sBzwipjoATGQN1wCJw5LqdehvsePMvXvVqyY6dkn
-         yyZKYOumVR6fWsDX/HdYQ51HG5WjGO8zIEKzf8VvdraROH2SkPmjBzKqQBGuerGFwgkI
-         92f5EYPTu+dTlJhYfY7BoHTl567vDmAIwkTaz9DYzLzkzSnCXzlTen56ch/HnJb7Dw2b
-         cGrA==
+        d=google.com; s=20230601; t=1702903436; x=1703508236; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SnWxA8lkTnP6794KoQ1RehtYycr6q6rCflxlfgb7k2M=;
+        b=gglmYec9omvD+nQgK6FSo5Ad1rPPV6dXrwNyXw+LjN+hLTYJIXau/617YamPWqcI42
+         AdeUav0I/ktkO42o7aMb4hK6fQNdCrf+JKzhYrPr8UUYan6yqfVY7zyARZRB2dudBh/u
+         PN+x5+JWKkWmqNd2cSeC1yhrx8s0S7MqzUC6wFUJIxVWDN0I3gkJVM/7pcxIguM6AEB/
+         VTPMBUe+Q6QBRwv9igCae7HqYEX2V/6ADFDZE81kAYmCUj9nrsKUmIJBcplurYHJ7kDV
+         /7CgPdtVtwMSS4X3VXspuXqfkHDTjBuRpxIPCyNCeyx3T58Q60r1dnzT/QJi4Mo6/Gk7
+         wvCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702901573; x=1703506373;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YaB1XQgj+pKNWhRQxhtAq1i3TL2AjLD+ofZITiJyJeI=;
-        b=E2+1Hl0xhkWYBetH7cPCT6Srw5ILw+1MqQXZ5SvWdtUutWtnA3vezPK9tvRtnGKgQl
-         7Pd76OOjyeTbYYHPVr9jkHsAyOMr61DaGzBtzMpI7wEg5Lhg4CrE2kw361hJmjp0lcj/
-         doNXBzhJhw26wxnjFeS/D+UniosLFnoivHCWp6E4dcreUsHOKkafh/cR7oVNNwwfmAKE
-         3gA6xRJB5nsMkDAt72NfxBkSYniWOAsvWaW6BQ0Vz5VLYFl/nIb6NLFM8uguCIQcjrtH
-         T6H4isw3SEJn53w/8kDJrq5sUVV0Pr+YfmxAy+kcqkWWhCDPLMN0mGFgu9ViyOSzbCVW
-         I+cA==
-X-Gm-Message-State: AOJu0Ywr49ku7k1YbvQCIUX3Sb0MFZARIKFFhFOk4QpNlN14Q5tHR+Bp
-	IPM7Xdmsvx9h+0tglHSUpO4pBpK1VWoRoS+Dk4k=
-X-Google-Smtp-Source: AGHT+IEva3vciui2qapFiNROyfZkq9SSzxWtKhfB66aj/EP2vPWy5D0OsNGp3ilwUwNq1YBpLxxgBQ==
-X-Received: by 2002:a05:6a00:10d3:b0:6c3:1b90:8552 with SMTP id d19-20020a056a0010d300b006c31b908552mr8039155pfu.17.1702901572887;
-        Mon, 18 Dec 2023 04:12:52 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id r3-20020aa79883000000b006cbb65edcbfsm18606498pfl.12.2023.12.18.04.12.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 04:12:52 -0800 (PST)
-Message-ID: <65803744.a70a0220.2219b.7666@mx.google.com>
-Date: Mon, 18 Dec 2023 04:12:52 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1702903436; x=1703508236;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SnWxA8lkTnP6794KoQ1RehtYycr6q6rCflxlfgb7k2M=;
+        b=vOMvuSXc7h7dAQqHTNkuys2R5lonfnYFQa9IhCchJNHX5fwAhgzBjTdiRfymcVmryK
+         h8xjGotN9iveHa9w3szx7uR/Uuq8jck7rMfk2ktcp9LauNt4rGrtSPxwIyqvc7S7HFXk
+         q2aOIFppSmVTckdIAoM12HZOzZgZryAaN3riLVxnTD6avMeQefjM/SeAYIc5i3UYxyVr
+         ROJc3ONxAJ9WETxxO7WDigutXTgfe0M71+6gFZvn2Ot/1p4pz+V54WvfQ36HO8K/ZR9U
+         Ft6G9rW3SaDtJ5RBftuXXOQ/+6BHGWa7TRLTOr6KaxWdTUmFhgPGze/ihNl3bvVk53IU
+         musg==
+X-Gm-Message-State: AOJu0YxDssD4SmlksD++U7sk57B+kKsW8fMtLOWbcg/2EFVfsFwe3nLu
+	aKqeACc9+480fYHfRBy5oHaAtOFIxQ==
+X-Google-Smtp-Source: AGHT+IGevKtw8rVm6Um9ZQIlJjJ6hmAdAMNjQH/Mm6/Whe39nb/b1rR8kS2aRNvGhj9+d1dBei22d2LfYg==
+X-Received: from alpic.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:1bf2])
+ (user=alpic job=sendgmr) by 2002:a05:6902:9:b0:db5:382f:3997 with SMTP id
+ l9-20020a056902000900b00db5382f3997mr1571712ybh.11.1702903436253; Mon, 18 Dec
+ 2023 04:43:56 -0800 (PST)
+Date: Mon, 18 Dec 2023 13:41:37 +0100
+In-Reply-To: <20230906102557.3432236-1-alpic@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v6.1.68-84-gb80fad87cf99e
-Subject: stable-rc/linux-6.1.y baseline: 113 runs,
- 1 regressions (v6.1.68-84-gb80fad87cf99e)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Mime-Version: 1.0
+References: <20230906102557.3432236-1-alpic@google.com>
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20231218124137.2476015-1-alpic@google.com>
+Subject: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
+From: Alfred Piccioni <alpic@google.com>
+To: Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Eric Paris <eparis@parisplace.org>
+Cc: stable@vger.kernel.org, selinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alfred Piccioni <alpic@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-stable-rc/linux-6.1.y baseline: 113 runs, 1 regressions (v6.1.68-84-gb80fad=
-87cf99e)
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
 
-Regressions Summary
--------------------
+However, if a 32-bit process is running on a 64-bit kernel, it emmits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
 
-platform           | arch  | lab         | compiler | defconfig | regressio=
-ns
--------------------+-------+-------------+----------+-----------+----------=
---
-kontron-pitx-imx8m | arm64 | lab-kontron | gcc-10   | defconfig | 1        =
-  =
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
 
+This patch introduces a new hook, security_file_ioctl_compat, that
+replaces security_file_ioctl if the CONFIG_COMPAT flag is on. All
+current LSMs have been changed to hook into the compat flag.
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
-el/v6.1.68-84-gb80fad87cf99e/plan/baseline/
+Reviewing the three places where we are currently using
+security_file_ioctl, it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-6.1.y
-  Describe: v6.1.68-84-gb80fad87cf99e
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      b80fad87cf99e36b4ad5e5352f647b7f7bce6f31 =
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Cc: stable@vger.kernel.org
+---
+ fs/ioctl.c                    |  3 +--
+ fs/overlayfs/inode.c          |  4 ++++
+ include/linux/lsm_hook_defs.h |  2 ++
+ include/linux/security.h      |  7 +++++++
+ security/security.c           | 17 +++++++++++++++++
+ security/selinux/hooks.c      | 26 ++++++++++++++++++++++++++
+ security/smack/smack_lsm.c    |  1 +
+ security/tomoyo/tomoyo.c      |  1 +
+ 8 files changed, 59 insertions(+), 2 deletions(-)
 
+diff --git a/fs/ioctl.c b/fs/ioctl.c
+index f5fd99d6b0d4..76cf22ac97d7 100644
+--- a/fs/ioctl.c
++++ b/fs/ioctl.c
+@@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
+ 	if (!f.file)
+ 		return -EBADF;
+ 
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out;
+ 
+diff --git a/fs/overlayfs/inode.c b/fs/overlayfs/inode.c
+index 83ef66644c21..170687b5985b 100644
+--- a/fs/overlayfs/inode.c
++++ b/fs/overlayfs/inode.c
+@@ -751,7 +751,11 @@ static int ovl_security_fileattr(const struct path *realpath, struct fileattr *f
+ 	else
+ 		cmd = fa->fsx_valid ? FS_IOC_FSGETXATTR : FS_IOC_GETFLAGS;
+ 
++#ifdef CONFIG_COMPAT
++	err = security_file_ioctl_compat(file, cmd, 0);
++# else
+ 	err = security_file_ioctl(file, cmd, 0);
++#endif
+ 	fput(file);
+ 
+ 	return err;
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index ac962c4cb44b..626aa8cf930d 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, struct file *file)
+ LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
+ LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
+ 	 unsigned long arg)
++LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
++	 unsigned long arg)
+ LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
+ LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
+ 	 unsigned long prot, unsigned long flags)
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 5f16eecde00b..22a82b7c59f1 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -389,6 +389,7 @@ int security_file_permission(struct file *file, int mask);
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -987,6 +988,12 @@ static inline int security_file_ioctl(struct file *file, unsigned int cmd,
+ 	return 0;
+ }
+ 
++static inline int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++				      unsigned long arg)
++{
++	return 0;
++}
++
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+ {
+diff --git a/security/security.c b/security/security.c
+index 23b129d482a7..5c16ffc99b1e 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2648,6 +2648,23 @@ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ }
+ EXPORT_SYMBOL_GPL(security_file_ioctl);
+ 
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in 32-bit compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit processes
++ * running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
++EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
++
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 2aa0e219d721..de96d156e6ea 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3731,6 +3731,31 @@ static int selinux_file_ioctl(struct file *file, unsigned int cmd,
+ 	return error;
+ }
+ 
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	// If we are in a 64-bit kernel running 32-bit userspace, we need to make
++	// sure we don't compare 32-bit flags to 64-bit flags.
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec __ro_after_init;
+ 
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -7036,6 +7061,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 65130a791f57..1f1ea8529421 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4973,6 +4973,7 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
+index 25006fddc964..298d182759c2 100644
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -568,6 +568,7 @@ static struct security_hook_list tomoyo_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
 
+base-commit: 196e95aa8305aecafc4e1857b7d3eff200d953b6
+-- 
+2.43.0.472.g3155946c3a-goog
 
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab         | compiler | defconfig | regressio=
-ns
--------------------+-------+-------------+----------+-----------+----------=
---
-kontron-pitx-imx8m | arm64 | lab-kontron | gcc-10   | defconfig | 1        =
-  =
-
-
-  Details:     https://kernelci.org/test/plan/id/658003d79d9ae6017ae13477
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.68-=
-84-gb80fad87cf99e/arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-=
-imx8m.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.68-=
-84-gb80fad87cf99e/arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-=
-imx8m.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/658003d79d9ae6017ae13=
-478
-        new failure (last pass: v6.1.68) =
-
- =20
 
