@@ -1,119 +1,141 @@
-Return-Path: <stable+bounces-6994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 886E3816D47
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:03:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0686A816DB7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283DE1F21FA8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:03:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D4491C22A19
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5511BDFB;
-	Mon, 18 Dec 2023 11:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4EF41C77;
+	Mon, 18 Dec 2023 12:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="TSegEniI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nDIsUvC/"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="fjYvkalR"
 X-Original-To: stable@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EEA22325;
-	Mon, 18 Dec 2023 11:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id D9B695C013A;
-	Mon, 18 Dec 2023 06:58:48 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 18 Dec 2023 06:58:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1702900728; x=1702987128; bh=zKKRT4nNcp
-	2+RkFPnMLe/cLtA7+ssJqRvH3Xq5HN52E=; b=TSegEniIQmiKtk6M/Y2pVurGLM
-	DD7BuWb5XsnjO8BSFFdvvI2pDGFGYtqpuKWqpGZ5DSdR/qhZ4t9RWeLw1nDOJI9Y
-	GJ3nEMOkJukScJ63liq/VOEediP3Komp8XQl77iTqoiq0+QQHTbH011mGwKxDOMU
-	8mDyPqn5F+glaMaFp0XmnZeW/ST+QBKoUe/rzhtFaBbQwLQVpav0xIYm0sLB8xZI
-	VCVkN+VdK77tYThfM74L/pN2UQYJOWQmrSW7lTgrtmSJmL2K+NYnlbs0ym8rsXFC
-	/z4kMcyWeuQq6J1Ax3cpekeMpMMr6Ru2cZNCBuSa+yt++3UaqfDdT4S38vVA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1702900728; x=1702987128; bh=zKKRT4nNcp2+RkFPnMLe/cLtA7+s
-	sJqRvH3Xq5HN52E=; b=nDIsUvC/XyJC77cncOR4tYXSn1iRudcv+DkLRqH6ZyON
-	rPSJrrWlrM6Bjq/jrkZws8d+TO0Klp8RAarXouFd2GD+pdWqL5qsgPsiNNSF/adZ
-	n6mCFlJifl+UBdQ7E0UlJnoOju9JwgmW5KgX3Fa2a3CvIUjjGH3+JSw6fPCBbpqS
-	OvDIgFcGH+g8TEHx2c+T1x1smxZ5FvVfMf44bw9Vxr9x9x5aFvBdNLT3hv5Vjkyc
-	/RIk2LZpcdAGers6qieQBB6kCiK0FsXS8h/D3/+ypwR3qZqWr+tWOnULK8jjr6Rm
-	YMkfm0XvvN8i5A74FNCVaXgN5sdW64+3HOpuZrF38Q==
-X-ME-Sender: <xms:-DOAZSqRUgqq7EJKhk3OM6WFZlhQp-v14TI-EXDAXMJnO-58mTk-0A>
-    <xme:-DOAZQqnQRoW-EBLdSMiAr9qaUBx8ZdTBvrlHinbWdLwewSDV-NpMX6stZ9EDU2K4
-    M9JBttwNxQz9w>
-X-ME-Received: <xmr:-DOAZXNzn8r9XzLW_NWKlR-NlzcZ6qRUVKZd59OpDkrAeKk90JZcVVnAeoMJsNJOmQx9YL9fqdLybbMGWvhu-9oyecI5HW1a3w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtkedgfeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:-DOAZR7mhPTTQRG2i7s1KxjrC0aHu37dV2lz-jHYrFawPrsWIC10Uw>
-    <xmx:-DOAZR6zQOfXzaaqtR-EP_d2GpJatEe5Y_bPW26DMa7-h3zT2TWR4w>
-    <xmx:-DOAZRjUBzy7OVGMvKWwkVodQu0oXFfdHmVxrQcrSsOa3H474bJjoA>
-    <xmx:-DOAZQQPyX8YP8Ri52Rdi67Dn6_0mqd78LK2mHNS9YxmRjszcTUprA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 18 Dec 2023 06:58:48 -0500 (EST)
-Date: Mon, 18 Dec 2023 12:58:46 +0100
-From: Greg KH <greg@kroah.com>
-To: Robert Kolchmeyer <rkolchmeyer@google.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	linux-integrity@vger.kernel.org, regressions@lists.linux.dev,
-	eric.snowberg@oracle.com, zohar@linux.ibm.com, jlayton@kernel.org
-Subject: Re: IMA performance regression in 5.10.194 when using overlayfs
-Message-ID: <2023121834-abiding-armory-e468@gregkh>
-References: <000000000000b505f3060c454a49@google.com>
- <ZXfBmiTHnm_SsM-n@sashalap>
- <CAJc0_fz4LEyNT2rB7KAsAZuym8TT3DZLEfFqSoBigs-316LNKQ@mail.gmail.com>
- <2023121848-filter-pacifier-c457@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877BE4B127
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 12:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6d7609cb6d2so282997b3a.1
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 04:12:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702901573; x=1703506373; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YaB1XQgj+pKNWhRQxhtAq1i3TL2AjLD+ofZITiJyJeI=;
+        b=fjYvkalRKUEiiQ8qdVewW6SOtNODOYOFUWaZnAfM9/HERVUb0NYF+5nX+NxbYLdjqW
+         S2y9sDLMF8nT39hbMgNLbz8cOTQsy2jmca7trOOkKAXvUDjiaQ5G/N1Rpr54RA3d3DMt
+         SQvD/8IV19ynO2PTPqKgUC/fgyc5sBzwipjoATGQN1wCJw5LqdehvsePMvXvVqyY6dkn
+         yyZKYOumVR6fWsDX/HdYQ51HG5WjGO8zIEKzf8VvdraROH2SkPmjBzKqQBGuerGFwgkI
+         92f5EYPTu+dTlJhYfY7BoHTl567vDmAIwkTaz9DYzLzkzSnCXzlTen56ch/HnJb7Dw2b
+         cGrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702901573; x=1703506373;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YaB1XQgj+pKNWhRQxhtAq1i3TL2AjLD+ofZITiJyJeI=;
+        b=E2+1Hl0xhkWYBetH7cPCT6Srw5ILw+1MqQXZ5SvWdtUutWtnA3vezPK9tvRtnGKgQl
+         7Pd76OOjyeTbYYHPVr9jkHsAyOMr61DaGzBtzMpI7wEg5Lhg4CrE2kw361hJmjp0lcj/
+         doNXBzhJhw26wxnjFeS/D+UniosLFnoivHCWp6E4dcreUsHOKkafh/cR7oVNNwwfmAKE
+         3gA6xRJB5nsMkDAt72NfxBkSYniWOAsvWaW6BQ0Vz5VLYFl/nIb6NLFM8uguCIQcjrtH
+         T6H4isw3SEJn53w/8kDJrq5sUVV0Pr+YfmxAy+kcqkWWhCDPLMN0mGFgu9ViyOSzbCVW
+         I+cA==
+X-Gm-Message-State: AOJu0Ywr49ku7k1YbvQCIUX3Sb0MFZARIKFFhFOk4QpNlN14Q5tHR+Bp
+	IPM7Xdmsvx9h+0tglHSUpO4pBpK1VWoRoS+Dk4k=
+X-Google-Smtp-Source: AGHT+IEva3vciui2qapFiNROyfZkq9SSzxWtKhfB66aj/EP2vPWy5D0OsNGp3ilwUwNq1YBpLxxgBQ==
+X-Received: by 2002:a05:6a00:10d3:b0:6c3:1b90:8552 with SMTP id d19-20020a056a0010d300b006c31b908552mr8039155pfu.17.1702901572887;
+        Mon, 18 Dec 2023 04:12:52 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id r3-20020aa79883000000b006cbb65edcbfsm18606498pfl.12.2023.12.18.04.12.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 04:12:52 -0800 (PST)
+Message-ID: <65803744.a70a0220.2219b.7666@mx.google.com>
+Date: Mon, 18 Dec 2023 04:12:52 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023121848-filter-pacifier-c457@gregkh>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.1.68-84-gb80fad87cf99e
+Subject: stable-rc/linux-6.1.y baseline: 113 runs,
+ 1 regressions (v6.1.68-84-gb80fad87cf99e)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Mon, Dec 18, 2023 at 12:57:20PM +0100, Greg KH wrote:
-> On Tue, Dec 12, 2023 at 04:37:31PM -0800, Robert Kolchmeyer wrote:
-> > > Looking at the dependencies you've identified, it probably makes sense
-> > > to just take them as is (as it's something we would have done if these
-> > > dependencies were identified explicitly).
-> > >
-> > > I'll plan to queue them up after the current round of releases is out.
-> > 
-> > Sounds great, thank you!
-> 
-> I've dropped them now as there are some reported bug fixes with just
-> that commit that do not seem to apply properly at all, and we can't add
-> new problems when we know we are doing so :)
-> 
-> So can you provide a working set of full backports for the relevant
-> kernels that include all fixes (specifically stuff like 8a924db2d7b5
-> ("fs: Pass AT_GETATTR_NOSEC flag to getattr interface function")) so
-> that we can properly queue them up then?
+stable-rc/linux-6.1.y baseline: 113 runs, 1 regressions (v6.1.68-84-gb80fad=
+87cf99e)
 
-Also don't forget 18b44bc5a672 ("ovl: Always reevaluate the file
-signature for IMA") either.  There might be more...
+Regressions Summary
+-------------------
 
-thanks,
+platform           | arch  | lab         | compiler | defconfig | regressio=
+ns
+-------------------+-------+-------------+----------+-----------+----------=
+--
+kontron-pitx-imx8m | arm64 | lab-kontron | gcc-10   | defconfig | 1        =
+  =
 
-greg k-h
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
+el/v6.1.68-84-gb80fad87cf99e/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.1.y
+  Describe: v6.1.68-84-gb80fad87cf99e
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      b80fad87cf99e36b4ad5e5352f647b7f7bce6f31 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform           | arch  | lab         | compiler | defconfig | regressio=
+ns
+-------------------+-------+-------------+----------+-----------+----------=
+--
+kontron-pitx-imx8m | arm64 | lab-kontron | gcc-10   | defconfig | 1        =
+  =
+
+
+  Details:     https://kernelci.org/test/plan/id/658003d79d9ae6017ae13477
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.68-=
+84-gb80fad87cf99e/arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-=
+imx8m.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.68-=
+84-gb80fad87cf99e/arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-=
+imx8m.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/658003d79d9ae6017ae13=
+478
+        new failure (last pass: v6.1.68) =
+
+ =20
 
