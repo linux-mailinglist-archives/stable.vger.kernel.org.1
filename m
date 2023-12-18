@@ -1,116 +1,104 @@
-Return-Path: <stable+bounces-7836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EC8817D71
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 23:52:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F4B817E3C
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 00:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 462701C22BE3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 22:52:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 003F1B2409F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 23:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144B976081;
-	Mon, 18 Dec 2023 22:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B739876909;
+	Mon, 18 Dec 2023 23:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="FdTlk4ZO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2F574E0F;
-	Mon, 18 Dec 2023 22:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6d9344e194bso18470b3a.3;
-        Mon, 18 Dec 2023 14:52:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A10B760AF
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 23:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6da2e360861so2010760a34.1
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:44:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1702943058; x=1703547858; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s38PvxZbBMTVGvQ0kbtSdyWDBrmSjvOO/03Z8xfaLco=;
+        b=FdTlk4ZOwiAaifg5lHVTamXACv8DPiF6EhrqN47ViXVGSStKlcLFl19VkLDWguzQDk
+         r4aOghAPLvojhZ6qWq/1lPTMfi43Qg+xLXFVCcfCCaZjidUxeAputYgEDrv+vEC/lgoY
+         aNz1XGDYscuWbfGaal/+iJn4Zg3KxqQEWZr28=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702939967; x=1703544767;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1702943058; x=1703547858;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dXmTcORL7MY38SoanT+OUSrIK5lzaglucptsGSQXywY=;
-        b=i/k9T4ReTK+2zZhKdEoEXtaLGBOf5TyxwOUi4Jfhi3c/ZZ5BRABDlK36UYOWQs3xBX
-         JxdfA4COTcllDKxCzlOPyVhgmy6aPxF+xR9Uak/YjlfMA9M8/28zdD3IyKfLFA894AiZ
-         jcbJ11zCaOVNlr7IVbMZrQBAfhifBgEu4zb5chuhQfNgzX0q9gaZ64sllLxoSRwjv7LK
-         cJQr33K3kR1CyQNt4oMUC9N9wlMLa/QaU+wbwpUQoE7p1Q6Lf2XCnlWnLfEowvj4mzOs
-         /7CdEO4Nx0s59IyfBSx3La20kaKOfEeYqlcNK5mNcihXWXLjJi4EWEynfmTVoENu7c+7
-         1EJQ==
-X-Gm-Message-State: AOJu0YyHse63wKy3hCTZ93XRK7kKuNv+v+9Mjnpw68C2/Ucez2AMCGjU
-	jZ7VkHzbkU7zZKwtVYa2TtAF7oBnEaA=
-X-Google-Smtp-Source: AGHT+IEdu9LTD0HLvdjrOgmqJil1T6pKntjoAvsskKecjH7QS9SJXuWzOZ2CkGSzu15Kxi6+V6em/Q==
-X-Received: by 2002:a05:6a00:2d98:b0:6d8:628c:93ef with SMTP id fb24-20020a056a002d9800b006d8628c93efmr1886016pfb.57.1702939966887;
-        Mon, 18 Dec 2023 14:52:46 -0800 (PST)
-Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:e67:7ba6:36a9:8cd5])
-        by smtp.gmail.com with ESMTPSA id h18-20020a056a00171200b006d45b47612csm4078329pfc.89.2023.12.18.14.52.45
+        bh=s38PvxZbBMTVGvQ0kbtSdyWDBrmSjvOO/03Z8xfaLco=;
+        b=RV0/PA0WYjM+lUoNGndqc1IRY7r26c3HgrEIcqxZSXVPXpIKWuytPFVncKQ5zuR9NO
+         g0xcgzBdFFM+Q2xrwumirm01vJMYw4uSScPflCShMMtzYcESVOh85lg1mqF6b3tmbG+j
+         +EoXSB7Nz/qMD8VckdmcuLsVOclynqeL5DEZ13oVw1QZUBn722/J7eqmQLMvUMZ+Hxvo
+         bL5p3ZkvPEnsxBcvGFJwTIBJbwCeJijVfyr7uCw+Y7eZp5id6og0u+mcO5zOYCuFP8A9
+         Yy9utjzya7TW00X8x2622jZQBB/ZEN2JMkOOHSirtklQFidVuRrc9xF5WmV5nZWFcRx2
+         o2XA==
+X-Gm-Message-State: AOJu0YyOdhqnt4fcS5TLQQAWvsJzFrf81JFPL6YuM3lIM/PHIEtxWbJ8
+	XATASsp4HN2jNpMCs5ekEtM4Bg==
+X-Google-Smtp-Source: AGHT+IGRv7a21r4zLDBsHKyuUtnKJGh7ThK4XMmPsNxiSeiENXirtAI6HZ3j/MXWq0z0MRxacOfwNA==
+X-Received: by 2002:a9d:6e08:0:b0:6d9:e61c:2c8a with SMTP id e8-20020a9d6e08000000b006d9e61c2c8amr69003otr.6.1702943058308;
+        Mon, 18 Dec 2023 15:44:18 -0800 (PST)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id t15-20020a9d66cf000000b006d7f41c7e11sm4792433otm.33.2023.12.18.15.44.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 14:52:46 -0800 (PST)
-From: Bart Van Assche <bvanassche@acm.org>
-To: "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org,
-	Bart Van Assche <bvanassche@acm.org>,
-	stable@vger.kernel.org,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	Stanley Jhu <chu.stanley@gmail.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Asutosh Das <quic_asutoshd@quicinc.com>,
-	Bean Huo <beanhuo@micron.com>,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Arthur Simchaev <Arthur.Simchaev@wdc.com>
-Subject: [PATCH 1/2] scsi: ufs: Simplify power management during async scan
-Date: Mon, 18 Dec 2023 14:52:14 -0800
-Message-ID: <20231218225229.2542156-2-bvanassche@acm.org>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-In-Reply-To: <20231218225229.2542156-1-bvanassche@acm.org>
-References: <20231218225229.2542156-1-bvanassche@acm.org>
+        Mon, 18 Dec 2023 15:44:17 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Mon, 18 Dec 2023 17:44:15 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/166] 6.6.8-rc1 review
+Message-ID: <ZYDZT1sLD1D9Kcjo@fedora64.linuxtx.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
 
-ufshcd_init() calls pm_runtime_get_sync() before it calls
-async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync()
-directly or indirectly from ufshcd_add_lus(). Simplify
-ufshcd_async_scan() by always calling pm_runtime_put_sync() from
-ufshcd_async_scan().
+On Mon, Dec 18, 2023 at 02:49:26PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.8 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/ufs/core/ufshcd.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index d6ae5d17892c..0ad8bde39cd1 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8711,7 +8711,6 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
- 
- 	ufs_bsg_probe(hba);
- 	scsi_scan_host(hba->host);
--	pm_runtime_put_sync(hba->dev);
- 
- out:
- 	return ret;
-@@ -8980,15 +8979,15 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
- 
- 	/* Probe and add UFS logical units  */
- 	ret = ufshcd_add_lus(hba);
-+
- out:
-+	pm_runtime_put_sync(hba->dev);
- 	/*
- 	 * If we failed to initialize the device or the device is not
- 	 * present, turn off the power/clocks etc.
- 	 */
--	if (ret) {
--		pm_runtime_put_sync(hba->dev);
-+	if (ret)
- 		ufshcd_hba_exit(hba);
--	}
- }
- 
- static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
