@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019718172A7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50992817270
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2078F1C24DFC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54FDEB20543
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BD842365;
-	Mon, 18 Dec 2023 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705394FF87;
+	Mon, 18 Dec 2023 14:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERHoanz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bte2Eh0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75FD1D14D;
-	Mon, 18 Dec 2023 14:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D2C6C433C7;
-	Mon, 18 Dec 2023 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D74FF6C;
+	Mon, 18 Dec 2023 14:06:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49ADC433C7;
+	Mon, 18 Dec 2023 14:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908530;
-	bh=HCCgYPGgJG/vwaszqmiu5RX9nJVb9tV0VCcLtCjHOz8=;
+	s=korg; t=1702908394;
+	bh=olmxT452tRyDakW6z7FuWjXR69W8UehPHoRXcZN3aqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERHoanz1BwFo2vXfcx2IS4R8vz3RU32taNvCTYl8en3L83g4RNWhpjmY7ItPk1BtD
-	 Nab9nsx2bfxIvoOlTF6UYti6l4Ex+GbJALZ68RPUuDsBXMmu9ICFxDW2QGZIC91/Vr
-	 bJbRGbE2enZpm8a80DUWRnoNfuqc0Yv60vdb+qCg=
+	b=bte2Eh0OSXV/FhHZ7SlrbrelLXV/ne0MoWaJ5oHz5phcB+IDnG7zumlgk1dspQhi/
+	 8c2njACILugvJYFQopBU8RswUFq5L9IiK7667jK1RsCF5IjeHR0fmp1htkQO20ZZgX
+	 z3ROlatoN5UEXZI+SVUFUhn6viGz7OLcuRyMVaek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 42/62] HID: hid-asus: reset the backlight brightness level on resume
-Date: Mon, 18 Dec 2023 14:52:06 +0100
-Message-ID: <20231218135048.117780262@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.6 161/166] ring-buffer: Fix writing to the buffer with max_data_size
+Date: Mon, 18 Dec 2023 14:52:07 +0100
+Message-ID: <20231218135112.321952802@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +55,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <benato.denis96@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
+commit b3ae7b67b87fed771fa5bf95389df06b0433603e upstream.
 
-Some devices managed by this driver automatically set brightness to 0
-before entering a suspended state and reset it back to a default
-brightness level after the resume:
-this has the effect of having the kernel report wrong brightness
-status after a sleep, and on some devices (like the Asus RC71L) that
-brightness is the intensity of LEDs directly facing the user.
+The maximum ring buffer data size is the maximum size of data that can be
+recorded on the ring buffer. Events must be smaller than the sub buffer
+data size minus any meta data. This size is checked before trying to
+allocate from the ring buffer because the allocation assumes that the size
+will fit on the sub buffer.
 
-Fix the above issue by setting back brightness to the level it had
-before entering a sleep state.
+The maximum size was calculated as the size of a sub buffer page (which is
+currently PAGE_SIZE minus the sub buffer header) minus the size of the
+meta data of an individual event. But it missed the possible adding of a
+time stamp for events that are added long enough apart that the event meta
+data can't hold the time delta.
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When an event is added that is greater than the current BUF_MAX_DATA_SIZE
+minus the size of a time stamp, but still less than or equal to
+BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
+for a page that can hold the event. Luckily, there's a check for this loop
+and after 1000 iterations and a warning is emitted and the ring buffer is
+disabled. But this should never happen.
+
+This can happen when a large event is added first, or after a long period
+where an absolute timestamp is prefixed to the event, increasing its size
+by 8 bytes. This passes the check and then goes into the algorithm that
+causes the infinite loop.
+
+For events that are the first event on the sub-buffer, it does not need to
+add a timestamp, because the sub-buffer itself contains an absolute
+timestamp, and adding one is redundant.
+
+The fix is to check if the event is to be the first event on the
+sub-buffer, and if it is, then do not add a timestamp.
+
+This also fixes 32 bit adding a timestamp when a read of before_stamp or
+write_stamp is interrupted. There's still no need to add that timestamp if
+the event is going to be the first event on the sub buffer.
+
+Also, if the buffer has "time_stamp_abs" set, then also check if the
+length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
+
+Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
+Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ kernel/trace/ring_buffer.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 6865cab33cf8a..52b0ef99bc955 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -901,6 +901,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
- 	return 0;
- }
- 
-+static int __maybe_unused asus_resume(struct hid_device *hdev) {
-+	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-+	int ret = 0;
-+
-+	if (drvdata->kbd_backlight) {
-+		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
-+				drvdata->kbd_backlight->cdev.brightness };
-+		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
-+		if (ret < 0) {
-+			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
-+			goto asus_resume_err;
-+		}
-+	}
-+
-+asus_resume_err:
-+	return ret;
-+}
-+
- static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
- {
- 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-@@ -1177,6 +1195,7 @@ static struct hid_driver asus_driver = {
- 	.input_configured       = asus_input_configured,
- #ifdef CONFIG_PM
- 	.reset_resume           = asus_reset_resume,
-+	.resume					= asus_resume,
- #endif
- 	.event			= asus_event,
- 	.raw_event		= asus_raw_event
--- 
-2.43.0
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3581,7 +3581,10 @@ __rb_reserve_next(struct ring_buffer_per
+ 		 * absolute timestamp.
+ 		 * Don't bother if this is the start of a new page (w == 0).
+ 		 */
+-		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
++		if (!w) {
++			/* Use the sub-buffer timestamp */
++			info->delta = 0;
++		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
+ 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
+ 			info->length += RB_LEN_TIME_EXTEND;
+ 		} else {
+@@ -3732,6 +3735,8 @@ rb_reserve_next_event(struct trace_buffe
+ 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
+ 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
+ 		info.length += RB_LEN_TIME_EXTEND;
++		if (info.length > BUF_MAX_DATA_SIZE)
++			goto out_fail;
+ 	} else {
+ 		add_ts_default = RB_ADD_STAMP_NONE;
+ 	}
 
 
 
