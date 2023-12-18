@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6702C81720A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9230081713B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1069B23868
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B189C1C2344F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1914FF6A;
-	Mon, 18 Dec 2023 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1F9101D4;
+	Mon, 18 Dec 2023 13:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFyQfmxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK6cuilt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAA8129EFB;
-	Mon, 18 Dec 2023 14:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3082BC433C8;
-	Mon, 18 Dec 2023 14:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92616129EC8;
+	Mon, 18 Dec 2023 13:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CD8C433C8;
+	Mon, 18 Dec 2023 13:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908160;
-	bh=Z4dmaTdmDWsY9nietSOPQXWIoy/ikZKFGdorlM+yUPs=;
+	s=korg; t=1702907736;
+	bh=Ivvs0CKuuVlvh/mF5UFrBT9TOnGVDOVMYX+wssODKRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFyQfmxJpSwJ2PQSWicb51DcK4T87G2DvmcwmY6YHmIWQBNIpzkYKv9aB1FEyIHRu
-	 ZFLfjEOG+sAozDL64yXLjUztYZX4nrI3Wj0PRgYCB5eSCdccbkfR5t3lsZzkFiNJaB
-	 YyK47kkGgPiJrIgwit+xRSxXtxWsEaE8xDslvU2Q=
+	b=hK6cuiltfT40SRGewhAeft1ZxfsQVZYkzMgSCrtYJSZL6RUqXxwucdjjcfzZYMs3f
+	 WMUVyKaJa4nnBhF+KYxhr5fTOrgUEp+narzVJoqgiEmaxTDkTID6IX7itY431/Q0uz
+	 5UWKkx4hgx06zfsB3UnTToSmduLxZyER71sqzxCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Michael Bottini <michael.a.bottini@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>
-Subject: [PATCH 6.6 075/166] PCI/ASPM: Add pci_enable_link_state_locked()
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/106] net/rose: Fix Use-After-Free in rose_ioctl
 Date: Mon, 18 Dec 2023 14:50:41 +0100
-Message-ID: <20231218135108.402889951@linuxfoundation.org>
+Message-ID: <20231218135056.096490912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,137 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 718ab8226636a1a3a7d281f5d6a7ad7c925efe5a upstream.
+[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
 
-Add pci_enable_link_state_locked() for enabling link states that can be
-used in contexts where a pci_bus_sem read lock is already held (e.g. from
-pci_walk_bus()).
+Because rose_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with rose_accept().
+A use-after-free for skb occurs with the following flow.
+```
+rose_ioctl() -> skb_peek()
+rose_accept() -> skb_dequeue() -> kfree_skb()
+```
+Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
 
-This helper will be used to fix a couple of potential deadlocks where
-the current helper is called with the lock already held, hence the CC
-stable tag.
-
-Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LTR")
-Link: https://lore.kernel.org/r/20231128081512.19387-2-johan+linaro@kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-[bhelgaas: include helper name in subject, commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org>	# 6.3
-Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
-Cc: David E. Box <david.e.box@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c |   53 ++++++++++++++++++++++++++++++++++++------------
- include/linux/pci.h     |    3 ++
- 2 files changed, 43 insertions(+), 13 deletions(-)
+ net/rose/af_rose.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1102,17 +1102,7 @@ int pci_disable_link_state(struct pci_de
- }
- EXPORT_SYMBOL(pci_disable_link_state);
- 
--/**
-- * pci_enable_link_state - Clear and set the default device link state so that
-- * the link may be allowed to enter the specified states. Note that if the
-- * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
-- * touch the LNKCTL register. Also note that this does not enable states
-- * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-- *
-- * @pdev: PCI device
-- * @state: Mask of ASPM link states to enable
-- */
--int pci_enable_link_state(struct pci_dev *pdev, int state)
-+static int __pci_enable_link_state(struct pci_dev *pdev, int state, bool locked)
- {
- 	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
- 
-@@ -1129,7 +1119,8 @@ int pci_enable_link_state(struct pci_dev
- 		return -EPERM;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index ca2b17f32670d..674937284b8d2 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -1315,9 +1315,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	case TIOCINQ: {
+ 		struct sk_buff *skb;
+ 		long amount = 0L;
+-		/* These two are safe on a single CPU system as only user tasks fiddle here */
++
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
+ 			amount = skb->len;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		return put_user(amount, (unsigned int __user *) argp);
  	}
  
--	down_read(&pci_bus_sem);
-+	if (!locked)
-+		down_read(&pci_bus_sem);
- 	mutex_lock(&aspm_lock);
- 	link->aspm_default = 0;
- 	if (state & PCIE_LINK_STATE_L0S)
-@@ -1150,12 +1141,48 @@ int pci_enable_link_state(struct pci_dev
- 	link->clkpm_default = (state & PCIE_LINK_STATE_CLKPM) ? 1 : 0;
- 	pcie_set_clkpm(link, policy_to_clkpm_state(link));
- 	mutex_unlock(&aspm_lock);
--	up_read(&pci_bus_sem);
-+	if (!locked)
-+		up_read(&pci_bus_sem);
- 
- 	return 0;
- }
-+
-+/**
-+ * pci_enable_link_state - Clear and set the default device link state so that
-+ * the link may be allowed to enter the specified states. Note that if the
-+ * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
-+ * touch the LNKCTL register. Also note that this does not enable states
-+ * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-+ *
-+ * @pdev: PCI device
-+ * @state: Mask of ASPM link states to enable
-+ */
-+int pci_enable_link_state(struct pci_dev *pdev, int state)
-+{
-+	return __pci_enable_link_state(pdev, state, false);
-+}
- EXPORT_SYMBOL(pci_enable_link_state);
- 
-+/**
-+ * pci_enable_link_state_locked - Clear and set the default device link state
-+ * so that the link may be allowed to enter the specified states. Note that if
-+ * the BIOS didn't grant ASPM control to the OS, this does nothing because we
-+ * can't touch the LNKCTL register. Also note that this does not enable states
-+ * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-+ *
-+ * @pdev: PCI device
-+ * @state: Mask of ASPM link states to enable
-+ *
-+ * Context: Caller holds pci_bus_sem read lock.
-+ */
-+int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
-+{
-+	lockdep_assert_held_read(&pci_bus_sem);
-+
-+	return __pci_enable_link_state(pdev, state, true);
-+}
-+EXPORT_SYMBOL(pci_enable_link_state_locked);
-+
- static int pcie_aspm_set_policy(const char *val,
- 				const struct kernel_param *kp)
- {
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1803,6 +1803,7 @@ extern bool pcie_ports_native;
- int pci_disable_link_state(struct pci_dev *pdev, int state);
- int pci_disable_link_state_locked(struct pci_dev *pdev, int state);
- int pci_enable_link_state(struct pci_dev *pdev, int state);
-+int pci_enable_link_state_locked(struct pci_dev *pdev, int state);
- void pcie_no_aspm(void);
- bool pcie_aspm_support_enabled(void);
- bool pcie_aspm_enabled(struct pci_dev *pdev);
-@@ -1813,6 +1814,8 @@ static inline int pci_disable_link_state
- { return 0; }
- static inline int pci_enable_link_state(struct pci_dev *pdev, int state)
- { return 0; }
-+static inline int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
-+{ return 0; }
- static inline void pcie_no_aspm(void) { }
- static inline bool pcie_aspm_support_enabled(void) { return false; }
- static inline bool pcie_aspm_enabled(struct pci_dev *pdev) { return false; }
+-- 
+2.43.0
+
 
 
 
