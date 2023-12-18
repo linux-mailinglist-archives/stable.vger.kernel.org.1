@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-7374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E17817243
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979AA817173
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3872280237
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E431F24A7F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294423A1D5;
-	Mon, 18 Dec 2023 14:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8337862;
+	Mon, 18 Dec 2023 13:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiRmRmhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaXkTRBm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44D63D563;
-	Mon, 18 Dec 2023 14:04:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E6DC433C7;
-	Mon, 18 Dec 2023 14:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DEC1D137;
+	Mon, 18 Dec 2023 13:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FD0C433C7;
+	Mon, 18 Dec 2023 13:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908297;
-	bh=uU/kijjPGuTjnrQhraDjskZt0UpFX2xAVWpQ3TOCwIY=;
+	s=korg; t=1702907873;
+	bh=LUatOEa6i4ORPZwgYMYsM4AjSbsKMbK54mSg89Snoz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiRmRmhL355gOiMQZNimcTWvYfYZOwkXcfH2jErsmKFEuglMZ9TlpUXB4Fh7wBkiY
-	 qgY4lodAGU51JdEDLUvjC6V0KhTZLY3MY7X8ipy/UiXDDDH3Ar61XzwON69UvpKdKm
-	 Q2No4BXeAtL6TaqvMbwAWp8qciQgNI3GSp8uH9jc=
+	b=SaXkTRBmflYDIKu7442Jca0JuWhSFxY1Zl3YTYrIFrc9yCk2RRGXZmwNwLL0JZQbM
+	 nWjXJ5SNbxyS0fx/HGyo8xEwRLRTHQ92K6YypEVhcfK42H5gFYtMKhMSI2Er1sYT3M
+	 hYLI5jsDv8a3ZU1TtlHMg13Di19MA9CpayH+kods=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Neal Gompa <neal@gompa.dev>,
 	Josef Bacik <josef@toxicpanda.com>,
 	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 126/166] btrfs: do not allow non subvolume root targets for snapshot
+Subject: [PATCH 6.1 078/106] btrfs: do not allow non subvolume root targets for snapshot
 Date: Mon, 18 Dec 2023 14:51:32 +0100
-Message-ID: <20231218135110.708146453@linuxfoundation.org>
+Message-ID: <20231218135058.409125035@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -81,7 +81,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/btrfs/ioctl.c
 +++ b/fs/btrfs/ioctl.c
-@@ -1290,6 +1290,15 @@ static noinline int __btrfs_ioctl_snap_c
+@@ -2182,6 +2182,15 @@ static noinline int __btrfs_ioctl_snap_c
  			 * are limited to own subvolumes only
  			 */
  			ret = -EPERM;
@@ -95,7 +95,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +			 */
 +			ret = -EINVAL;
  		} else {
- 			ret = btrfs_mksnapshot(&file->f_path, idmap,
+ 			ret = btrfs_mksnapshot(&file->f_path, mnt_userns,
  					       name, namelen,
 
 
