@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E143816702
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:06:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C10B816707
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325BA1F216AA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:06:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA6EB208B4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEE579C1;
-	Mon, 18 Dec 2023 07:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7494847F;
+	Mon, 18 Dec 2023 07:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVsbuHDF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIj+CUHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB94879C3
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EF7C433CD;
-	Mon, 18 Dec 2023 07:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8934F846E
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:06:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC08CC433C8;
+	Mon, 18 Dec 2023 07:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702883207;
-	bh=TnmGVCZ575jWETb+Q50tMxvrkgYAAzHhNchhEu55zJc=;
+	s=korg; t=1702883213;
+	bh=xxWV2FBkSyuGl9JRUOHoSWsviIjCPjai3h2HRb2wNNs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PVsbuHDFtmd9KBcJzcBf4BnRrjWRftlFaXRCaqiglOwPK7wdYr/1unOqnmeVFfpvr
-	 MIF0fyRZNtERAoNeXuwN+tw0WFx+GUuHnhkAqTzbsOKGO3cGwPaRxlTnqdbIR7ppQ6
-	 VasZAssJBUkMKvLW3qfNQNFyEhPpTc8WBivoE0R8=
-Subject: FAILED: patch "[PATCH] mm/damon/core: make damon_start() waits until kdamond_fn()" failed to apply to 6.6-stable tree
+	b=RIj+CUHETrfPoU50Lp26/8eXL5EJnm/ENztZbc/whikC4PfkQSLGxF2wvcIIfpFWI
+	 0r9qdKD9PkID2hKh6MWg1MQDDFBmfFrHWAEzg5g2KXQF+CEes3Wdp2cCQ066g5ORS2
+	 eLjLfPRw4HSswUMaTA9QVBXThHsriawLA+tUHrQk=
+Subject: FAILED: patch "[PATCH] mm/damon/core: make damon_start() waits until kdamond_fn()" failed to apply to 6.1-stable tree
 To: sj@kernel.org,acsjakub@amazon.de,akpm@linux-foundation.org,changbin.du@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Dec 2023 08:06:44 +0100
-Message-ID: <2023121843-pension-tactile-868b@gregkh>
+Date: Mon, 18 Dec 2023 08:06:50 +0100
+Message-ID: <2023121849-ambulance-violate-e5b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6376a824595607e99d032a39ba3394988b4fce96
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121843-pension-tactile-868b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121849-ambulance-violate-e5b2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 6376a8245956 ("mm/damon/core: make damon_start() waits until kdamond_fn() starts")
 4472edf63d66 ("mm/damon/core: use number of passed access sampling as a timer")
+2f5bef5a590b ("mm/damon/core: update monitoring results for new monitoring attributes")
 
 thanks,
 
