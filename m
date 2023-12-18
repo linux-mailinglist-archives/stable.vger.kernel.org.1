@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCCFD817123
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D44F8171E9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E571C22CBB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31A511C23E6A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:04:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D678F1D12F;
-	Mon, 18 Dec 2023 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E58D3A1D5;
+	Mon, 18 Dec 2023 14:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znxvP322"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3yU6NHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEB01D132;
-	Mon, 18 Dec 2023 13:54:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1DFC433C8;
-	Mon, 18 Dec 2023 13:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F664236E;
+	Mon, 18 Dec 2023 14:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AA0C433C7;
+	Mon, 18 Dec 2023 14:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907684;
-	bh=l9oVIQ7VDE3gf62dwR3zvfux84lqSDElHSZVwiJfPP0=;
+	s=korg; t=1702908089;
+	bh=6kSaOTwoPxMRpb4yqWDSimg721AZOG2xix0eD2FHE8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znxvP322Tri8Fki0nLedvSr03mAF6dl9jueadypwoGtFvhqJA/mutp4r2Rn2vcTjg
-	 pwP+rcnGwjL5v3dvo5dIvPaPaco3TGvP/PZTfwHk+E9Hkh6nsfDJAnBSj3ul4Da4iV
-	 BRFUHIHid1KWl3Zcgl3QU+Hm2FQ7z8VsF3xipyDU=
+	b=e3yU6NHoVAlxVLp329GThXvYAcFF5EJZrFaFqwnahZSLUkYDspKLQe62nSB2nD/BQ
+	 ZKxodXh90alLa2fkYPphNSt/tS27C24NiUJk5Zchk9j3633eyNBlhmcW7H13iDJBNa
+	 oWceJUHb4Lcz59XODlLFAgp8eeu8J/DoOzd87XQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH 6.1 001/106] perf/x86/uncore: Dont WARN_ON_ONCE() for a broken discovery table
+	Yusong Gao <a869920004@gmail.com>,
+	Juerg Haefliger <juerg.haefliger@canonical.com>,
+	David Howells <dhowells@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 049/166] sign-file: Fix incorrect return values check
 Date: Mon, 18 Dec 2023 14:50:15 +0100
-Message-ID: <20231218135055.075595459@linuxfoundation.org>
+Message-ID: <20231218135107.203894632@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +55,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Yusong Gao <a869920004@gmail.com>
 
-commit 5d515ee40cb57ea5331998f27df7946a69f14dc3 upstream.
+[ Upstream commit 829649443e78d85db0cff0c37cadb28fbb1a5f6f ]
 
-The kernel warning message is triggered, when SPR MCC is used.
+There are some wrong return values check in sign-file when call OpenSSL
+API. The ERR() check cond is wrong because of the program only check the
+return value is < 0 which ignored the return val is 0. For example:
+1. CMS_final() return 1 for success or 0 for failure.
+2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
+3. i2d_TYPEbio() return 1 for success and 0 for failure.
+4. BIO_free() return 1 for success and 0 for failure.
 
-[   17.945331] ------------[ cut here ]------------
-[   17.946305] WARNING: CPU: 65 PID: 1 at
-arch/x86/events/intel/uncore_discovery.c:184
-intel_uncore_has_discovery_tables+0x4c0/0x65c
-[   17.946305] Modules linked in:
-[   17.946305] CPU: 65 PID: 1 Comm: swapper/0 Not tainted
-5.4.17-2136.313.1-X10-2c+ #4
-
-It's caused by the broken discovery table of UPI.
-
-The discovery tables are from hardware. Except for dropping the broken
-information, there is nothing Linux can do. Using WARN_ON_ONCE() is
-overkilled.
-
-Use the pr_info() to replace WARN_ON_ONCE(), and specify what uncore unit
-is dropped and the reason.
-
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Michael Petlan <mpetlan@redhat.com>
-Link: https://lore.kernel.org/r/20230112200105.733466-6-kan.liang@linux.intel.com
-Cc: Mahmoud Adam <mngyadam@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://www.openssl.org/docs/manmaster/man3/
+Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
+Signed-off-by: Yusong Gao <a869920004@gmail.com>
+Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20231213024405.624692-1-a869920004@gmail.com/ # v5
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/uncore_discovery.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/arch/x86/events/intel/uncore_discovery.c
-+++ b/arch/x86/events/intel/uncore_discovery.c
-@@ -140,13 +140,21 @@ uncore_insert_box_info(struct uncore_uni
- 	unsigned int *box_offset, *ids;
- 	int i;
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 598ef5465f825..3edb156ae52c3 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+ 		    "CMS_final");
  
--	if (WARN_ON_ONCE(!unit->ctl || !unit->ctl_offset || !unit->ctr_offset))
-+	if (!unit->ctl || !unit->ctl_offset || !unit->ctr_offset) {
-+		pr_info("Invalid address is detected for uncore type %d box %d, "
-+			"Disable the uncore unit.\n",
-+			unit->box_type, unit->box_id);
- 		return;
-+	}
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
  
- 	if (parsed) {
- 		type = search_uncore_discovery_type(unit->box_type);
--		if (WARN_ON_ONCE(!type))
-+		if (!type) {
-+			pr_info("A spurious uncore type %d is detected, "
-+				"Disable the uncore type.\n",
-+				unit->box_type);
- 			return;
-+		}
- 		/* Store the first box of each die */
- 		if (!type->box_ctrl_die[die])
- 			type->box_ctrl_die[die] = unit->ctl;
-@@ -181,8 +189,12 @@ uncore_insert_box_info(struct uncore_uni
- 		ids[i] = type->ids[i];
- 		box_offset[i] = type->box_offset[i];
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
  
--		if (WARN_ON_ONCE(unit->box_id == ids[i]))
-+		if (unit->box_id == ids[i]) {
-+			pr_info("Duplicate uncore type %d box ID %d is detected, "
-+				"Drop the duplicate uncore unit.\n",
-+				unit->box_type, unit->box_id);
- 			goto free_ids;
-+		}
- 	}
- 	ids[i] = unit->box_id;
- 	box_offset[i] = unit->ctl - type->box_ctrl;
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) != 1, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
+-- 
+2.43.0
+
 
 
 
