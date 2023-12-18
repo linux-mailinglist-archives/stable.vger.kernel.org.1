@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE2781730D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8904C81716A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D77C1B21E1A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD051F24629
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47B37870;
-	Mon, 18 Dec 2023 14:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9169E129EC8;
+	Mon, 18 Dec 2023 13:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrTHRQz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ND7373fA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DFE3A1D0;
-	Mon, 18 Dec 2023 14:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA0AC433C8;
-	Mon, 18 Dec 2023 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5603E129EE3;
+	Mon, 18 Dec 2023 13:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC15FC433C7;
+	Mon, 18 Dec 2023 13:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908774;
-	bh=LUv6+ALJ+NtGCEoQpBrw0Z7v6a+TeNNFJJ1vUTk/lLI=;
+	s=korg; t=1702907854;
+	bh=7ZiNoldkiZ5/X8SWjqpga3gPDAFsuT5pZc1iWjW7D4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrTHRQz+VVMyKZ9ZFwIYaU6SrbEyYUOGPB7nzb9cJn/1H3iUSqIKaXCctHwXFA3gl
-	 DFpJIL6wCVXB/pXWx4IwPdfFMTPPvvGtU/U0Ueb4sUNsCQevfY/z5zhvn7N5GMjda/
-	 7Xzgn27v8Bqr13P5g+Lqj63fm/5B3j7YT7vrZ4b8=
+	b=ND7373fAbHFFfIUfNORdrXC/sDZk/DKIYU9RQnMRTuTNIFynkyCnPb3mi5OzLA8+S
+	 ag5NCaLQdqvaxAOlrxWaqApjZz8gfGBKpdUYMbl++ey0yITmUJIMPgCZSs6Wzk1ewz
+	 1Y5LwtZ2i7rufKeC6KiJ1HwtrVrpWpqu/xTXJfao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kelly Kane <kelly@hawknetworks.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/83] r8152: add vendor/device ID pair for ASUS USB-C2500
+Subject: [PATCH 6.1 071/106] HID: hid-asus: reset the backlight brightness level on resume
 Date: Mon, 18 Dec 2023 14:51:25 +0100
-Message-ID: <20231218135049.937547552@linuxfoundation.org>
+Message-ID: <20231218135058.086507890@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +54,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kelly Kane <kelly@hawknetworks.com>
+From: Denis Benato <benato.denis96@gmail.com>
 
-[ Upstream commit 7037d95a047cd89b1f680eed253c6ab586bef1ed ]
+[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
 
-The ASUS USB-C2500 is an RTL8156 based 2.5G Ethernet controller.
+Some devices managed by this driver automatically set brightness to 0
+before entering a suspended state and reset it back to a default
+brightness level after the resume:
+this has the effect of having the kernel report wrong brightness
+status after a sleep, and on some devices (like the Asus RC71L) that
+brightness is the intensity of LEDs directly facing the user.
 
-Add the vendor and product ID values to the driver. This makes Ethernet
-work with the adapter.
+Fix the above issue by setting back brightness to the level it had
+before entering a sleep state.
 
-Signed-off-by: Kelly Kane <kelly@hawknetworks.com>
-Link: https://lore.kernel.org/r/20231203011712.6314-1-kelly@hawknetworks.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c   | 1 +
- include/linux/usb/r8152.h | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/hid/hid-asus.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 1ad9f1b4bd92d..e64983d0898a0 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9881,6 +9881,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
- 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
- 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
-+	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
- 	{}
- };
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index d1094bb1aa429..88dfa688f560d 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1012,6 +1012,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
+ 	return 0;
+ }
  
-diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
-index 287e9d83fb8bc..33a4c146dc19c 100644
---- a/include/linux/usb/r8152.h
-+++ b/include/linux/usb/r8152.h
-@@ -30,6 +30,7 @@
- #define VENDOR_ID_NVIDIA		0x0955
- #define VENDOR_ID_TPLINK		0x2357
- #define VENDOR_ID_DLINK			0x2001
-+#define VENDOR_ID_ASUS			0x0b05
- 
- #if IS_REACHABLE(CONFIG_USB_RTL8152)
- extern u8 rtl8152_get_version(struct usb_interface *intf);
++static int __maybe_unused asus_resume(struct hid_device *hdev) {
++	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
++	int ret = 0;
++
++	if (drvdata->kbd_backlight) {
++		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
++				drvdata->kbd_backlight->cdev.brightness };
++		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
++		if (ret < 0) {
++			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
++			goto asus_resume_err;
++		}
++	}
++
++asus_resume_err:
++	return ret;
++}
++
+ static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
+ {
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
+@@ -1303,6 +1321,7 @@ static struct hid_driver asus_driver = {
+ 	.input_configured       = asus_input_configured,
+ #ifdef CONFIG_PM
+ 	.reset_resume           = asus_reset_resume,
++	.resume					= asus_resume,
+ #endif
+ 	.event			= asus_event,
+ 	.raw_event		= asus_raw_event
 -- 
 2.43.0
 
