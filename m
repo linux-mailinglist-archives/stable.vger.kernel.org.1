@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B34E8171E8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:04:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCFD817123
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B0F0B22D4F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:04:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0E571C22CBB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC8C42361;
-	Mon, 18 Dec 2023 14:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D678F1D12F;
+	Mon, 18 Dec 2023 13:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIFXVp5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znxvP322"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8578C3D576;
-	Mon, 18 Dec 2023 14:01:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ECDC433C8;
-	Mon, 18 Dec 2023 14:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEB01D132;
+	Mon, 18 Dec 2023 13:54:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1DFC433C8;
+	Mon, 18 Dec 2023 13:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908087;
-	bh=FqL4+sHx7F8Ge5zU8Ds6+oF41PGK/wKOxvWznFCn8VE=;
+	s=korg; t=1702907684;
+	bh=l9oVIQ7VDE3gf62dwR3zvfux84lqSDElHSZVwiJfPP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VIFXVp5l7Lop00B5Ho3a9Nsyv2YUfDZgEGZgdrvFT/GP9Poakg2Wpru8CQhgyQ54y
-	 xguRKdkUBrn87XqiZBGnk0bCMMOESQt9Q6an9KNT7g6lGyxXWNZRXV2JwMDLg1DWGN
-	 5E7Hsyb5YzGQuPpS6n1xqeWGJU1EHUl6TYRj4vLM=
+	b=znxvP322Tri8Fki0nLedvSr03mAF6dl9jueadypwoGtFvhqJA/mutp4r2Rn2vcTjg
+	 pwP+rcnGwjL5v3dvo5dIvPaPaco3TGvP/PZTfwHk+E9Hkh6nsfDJAnBSj3ul4Da4iV
+	 BRFUHIHid1KWl3Zcgl3QU+Hm2FQ7z8VsF3xipyDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Feiyang Chen <chenfeiyang@loongson.cn>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/166] stmmac: dwmac-loongson: Make sure MDIO is initialized before use
-Date: Mon, 18 Dec 2023 14:50:14 +0100
-Message-ID: <20231218135107.160939807@linuxfoundation.org>
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Mahmoud Adam <mngyadam@amazon.com>
+Subject: [PATCH 6.1 001/106] perf/x86/uncore: Dont WARN_ON_ONCE() for a broken discovery table
+Date: Mon, 18 Dec 2023 14:50:15 +0100
+Message-ID: <20231218135055.075595459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,58 +54,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanteng Si <siyanteng@loongson.cn>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit e87d3a1370ce9f04770d789bcf7cce44865d2e8d ]
+commit 5d515ee40cb57ea5331998f27df7946a69f14dc3 upstream.
 
-Generic code will use mdio. If it is not initialized before use,
-the kernel will Oops.
+The kernel warning message is triggered, when SPR MCC is used.
 
-Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Signed-off-by: Feiyang Chen <chenfeiyang@loongson.cn>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[   17.945331] ------------[ cut here ]------------
+[   17.946305] WARNING: CPU: 65 PID: 1 at
+arch/x86/events/intel/uncore_discovery.c:184
+intel_uncore_has_discovery_tables+0x4c0/0x65c
+[   17.946305] Modules linked in:
+[   17.946305] CPU: 65 PID: 1 Comm: swapper/0 Not tainted
+5.4.17-2136.313.1-X10-2c+ #4
+
+It's caused by the broken discovery table of UPI.
+
+The discovery tables are from hardware. Except for dropping the broken
+information, there is nothing Linux can do. Using WARN_ON_ONCE() is
+overkilled.
+
+Use the pr_info() to replace WARN_ON_ONCE(), and specify what uncore unit
+is dropped and the reason.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Michael Petlan <mpetlan@redhat.com>
+Link: https://lore.kernel.org/r/20230112200105.733466-6-kan.liang@linux.intel.com
+Cc: Mahmoud Adam <mngyadam@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/x86/events/intel/uncore_discovery.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index 2cd6fce5c9934..e7701326adc6a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -68,17 +68,15 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 	if (!plat)
- 		return -ENOMEM;
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -140,13 +140,21 @@ uncore_insert_box_info(struct uncore_uni
+ 	unsigned int *box_offset, *ids;
+ 	int i;
  
-+	plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
-+					   sizeof(*plat->mdio_bus_data),
-+					   GFP_KERNEL);
-+	if (!plat->mdio_bus_data)
-+		return -ENOMEM;
-+
- 	plat->mdio_node = of_get_child_by_name(np, "mdio");
- 	if (plat->mdio_node) {
- 		dev_info(&pdev->dev, "Found MDIO subnode\n");
--
--		plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
--						   sizeof(*plat->mdio_bus_data),
--						   GFP_KERNEL);
--		if (!plat->mdio_bus_data) {
--			ret = -ENOMEM;
--			goto err_put_node;
--		}
- 		plat->mdio_bus_data->needs_reset = true;
+-	if (WARN_ON_ONCE(!unit->ctl || !unit->ctl_offset || !unit->ctr_offset))
++	if (!unit->ctl || !unit->ctl_offset || !unit->ctr_offset) {
++		pr_info("Invalid address is detected for uncore type %d box %d, "
++			"Disable the uncore unit.\n",
++			unit->box_type, unit->box_id);
+ 		return;
++	}
+ 
+ 	if (parsed) {
+ 		type = search_uncore_discovery_type(unit->box_type);
+-		if (WARN_ON_ONCE(!type))
++		if (!type) {
++			pr_info("A spurious uncore type %d is detected, "
++				"Disable the uncore type.\n",
++				unit->box_type);
+ 			return;
++		}
+ 		/* Store the first box of each die */
+ 		if (!type->box_ctrl_die[die])
+ 			type->box_ctrl_die[die] = unit->ctl;
+@@ -181,8 +189,12 @@ uncore_insert_box_info(struct uncore_uni
+ 		ids[i] = type->ids[i];
+ 		box_offset[i] = type->box_offset[i];
+ 
+-		if (WARN_ON_ONCE(unit->box_id == ids[i]))
++		if (unit->box_id == ids[i]) {
++			pr_info("Duplicate uncore type %d box ID %d is detected, "
++				"Drop the duplicate uncore unit.\n",
++				unit->box_type, unit->box_id);
+ 			goto free_ids;
++		}
  	}
- 
--- 
-2.43.0
-
+ 	ids[i] = unit->box_id;
+ 	box_offset[i] = unit->ctl - type->box_ctrl;
 
 
 
