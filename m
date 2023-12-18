@@ -1,57 +1,50 @@
-Return-Path: <stable+bounces-7020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADAA816E9C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0DF5816E9F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD5271F22C61
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:52:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EF8D28CF30
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7CC5A870;
-	Mon, 18 Dec 2023 12:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93767138755;
+	Mon, 18 Dec 2023 12:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jgIubcIl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cv7Q5/Yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419445A86A;
-	Mon, 18 Dec 2023 12:45:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F83C433C7;
-	Mon, 18 Dec 2023 12:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA357D608;
+	Mon, 18 Dec 2023 12:45:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D8FC433C9;
+	Mon, 18 Dec 2023 12:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702903526;
-	bh=Zh0LAncxj/VWb9xRFNBIH9bMxkCXatxgxFtp7/ZQ1xs=;
+	s=k20201202; t=1702903528;
+	bh=32O12H46O+p7HOk1r1T8hU27L4BiaRZKm+mPel7JsB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgIubcIlvYm8dQANn3pdBWRuqehnzWJuX4OCxnbeuNTLegEbfWHx6mLJvz1Oa2Cof
-	 Egny50i0q70xmlVjN+bRRn6FcN1Kia55ObR/cRurGknEFoLCg527PztzAgpKExzndE
-	 zAJmi1YIrmrilTVv5RSdPYSp4saFhlgKUnSyPQT1SPs4wke3rb265ECg7kK+udlkx8
-	 C5LoZEO3rlUrNZIwyxMI+mKytT4mZpAhHU00GHZPAdnX3c9oZMPdYuKrU1y3EkKedy
-	 YRbc7/2qMfwhcOvgKQJZaKv2f3M2dvqOp85lQqZQaeZ5OQrdQVEJdborzbd04oO8BZ
-	 G1Hi/3/FN8sGQ==
+	b=cv7Q5/YoNjNwXImSkrJm/x4QaYNNoltRDyf1AvXPp2B+jSdKdIYvlOjYcbXgxb4zi
+	 3C7JY6XLsRbMqt9V88s55zT9SeK+7eBtpMMCeN00NtAcAIJ9Jz69ctEXQyRCgc3aFt
+	 Ov637XFmlqHFi+87W/EZSNmMoDsZ6Iz5e41j2xLMSp4xyxQ0abnF/vpI/bFIKgbLb2
+	 bOtLT4wbs77JZsxEhpMZGfi2bBszD19I+0yZ35+KTt0CE78Ng9V+71lK96ar6nIsww
+	 ijgDD1NUz0UND0XsknM14RSbeSTqUNIRQ5n6BUbLzyQYYjL9kVKNp64yYyyZnF9ubY
+	 XWalhL4067lbw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Judy Hsiao <judyhsiao@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Arnold Gozum <arngozum@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	martin.lau@kernel.org,
-	leon@kernel.org,
-	ja@ssi.bg,
-	haleyb.dev@gmail.com,
-	joel.granados@gmail.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 06/15] neighbour: Don't let neigh_forced_gc() disable preemption for long
-Date: Mon, 18 Dec 2023 07:44:53 -0500
-Message-ID: <20231218124513.1380056-6-sashal@kernel.org>
+	acelan.kao@canonical.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 07/15] platform/x86: intel-vbtn: Fix missing tablet-mode-switch events
+Date: Mon, 18 Dec 2023 07:44:54 -0500
+Message-ID: <20231218124513.1380056-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218124513.1380056-1-sashal@kernel.org>
 References: <20231218124513.1380056-1-sashal@kernel.org>
@@ -61,67 +54,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.68
 Content-Transfer-Encoding: 8bit
 
-From: Judy Hsiao <judyhsiao@chromium.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
+[ Upstream commit 14c200b7ca46b9a9f4af9e81d258a58274320b6f ]
 
-We are seeing cases where neigh_cleanup_and_release() is called by
-neigh_forced_gc() many times in a row with preemption turned off.
-When running on a low powered CPU at a low CPU frequency, this has
-been measured to keep preemption off for ~10 ms. That's not great on a
-system with HZ=1000 which expects tasks to be able to schedule in
-with ~1ms latency.
+2 issues have been reported on the Dell Inspiron 7352:
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+1. Sometimes the tablet-mode-switch stops reporting tablet-mode
+   change events.
+
+   Add a "VBDL" call to notify_handler() to work around this.
+
+2. Sometimes the tablet-mode is incorrect after suspend/resume
+
+   Add a detect_tablet_mode() to resume() to fix this.
+
+Reported-by: Arnold Gozum <arngozum@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/87271a74-c831-4eec-b7a4-1371d0e42471@gmail.com/
+Tested-by: Arnold Gozum <arngozum@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20231204150601.46976-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/vbtn.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 41daa47d03934..c842f150c3048 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -253,9 +253,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index c5e4e35c8d204..8e2b07ed2ce94 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -73,10 +73,10 @@ struct intel_vbtn_priv {
+ 	bool wakeup_mode;
+ };
+ 
+-static void detect_tablet_mode(struct platform_device *device)
++static void detect_tablet_mode(struct device *dev)
  {
- 	int max_clean = atomic_read(&tbl->gc_entries) -
- 			READ_ONCE(tbl->gc_thresh2);
-+	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-+	int loop = 0;
+-	struct intel_vbtn_priv *priv = dev_get_drvdata(&device->dev);
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	unsigned long long vgbs;
+ 	acpi_status status;
+ 	int m;
+@@ -89,6 +89,8 @@ static void detect_tablet_mode(struct platform_device *device)
+ 	input_report_switch(priv->switches_dev, SW_TABLET_MODE, m);
+ 	m = (vgbs & VGBS_DOCK_MODE_FLAG) ? 1 : 0;
+ 	input_report_switch(priv->switches_dev, SW_DOCK, m);
++
++	input_sync(priv->switches_dev);
+ }
  
- 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
+ /*
+@@ -134,7 +136,7 @@ static int intel_vbtn_input_setup(struct platform_device *device)
+ 	priv->switches_dev->id.bustype = BUS_HOST;
  
-@@ -278,11 +280,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 				shrunk++;
- 			if (shrunk >= max_clean)
- 				break;
-+			if (++loop == 16) {
-+				if (ktime_get_ns() > tmax)
-+					goto unlock;
-+				loop = 0;
-+			}
- 		}
- 	}
+ 	if (priv->has_switches) {
+-		detect_tablet_mode(device);
++		detect_tablet_mode(&device->dev);
  
- 	WRITE_ONCE(tbl->last_flush, jiffies);
--
-+unlock:
- 	write_unlock_bh(&tbl->lock);
+ 		ret = input_register_device(priv->switches_dev);
+ 		if (ret)
+@@ -198,6 +200,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
+ 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
  
- 	return shrunk;
+ 	sparse_keymap_report_event(input_dev, event, val, autorelease);
++
++	/* Some devices need this to report further events */
++	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
+ }
+ 
+ /*
+@@ -358,7 +363,13 @@ static void intel_vbtn_pm_complete(struct device *dev)
+ 
+ static int intel_vbtn_pm_resume(struct device *dev)
+ {
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++
+ 	intel_vbtn_pm_complete(dev);
++
++	if (priv->has_switches)
++		detect_tablet_mode(dev);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
