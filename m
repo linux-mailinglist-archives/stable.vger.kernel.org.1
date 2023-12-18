@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9410F81724B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE39D817302
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3170A1F24378
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 356F4B23047
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07B137864;
-	Mon, 18 Dec 2023 14:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C027F3A1C3;
+	Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRuhg8hI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOQRcPie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 975EB37883;
-	Mon, 18 Dec 2023 14:05:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDBCC433C8;
-	Mon, 18 Dec 2023 14:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FAC4988F;
+	Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941CDC433C7;
+	Mon, 18 Dec 2023 14:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908319;
-	bh=hEOgg5hc+x9KbQ8aB9+CABH2yPTUxd1t7cvHSODWjk8=;
+	s=korg; t=1702908746;
+	bh=8+7yavrTewCgVXNYj3c8XXgSHHrDrxuwtlnGNejCnVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRuhg8hIMVb27Gfd1ttPKA3kGev8my7SV/5hK2jOvHczzxol11nbOWNuiJc8tlPG4
-	 XijBjJYqJY6blnUKZTmqAkNuCoMVnNkH0PbaUt8XVG6i2pm1D1VAhM6vl/rEFkQ1gs
-	 MytH4szD4pndTRy4zpIWrPFuFO/28IoPmVm4jbcg=
+	b=tOQRcPie4pOG+irgijMpFaJh3Ae6xnPIKxEpWw9jt9aonQcGsAWShHJyzDeUDrzb3
+	 8BbSu1Lu8Gspe9jSp9i43JgzszpRtO/5ZQ94DzhGFgSFi1P9zp0b5Bhe6QMKawvZaX
+	 Xs+BrZpQT00SzsAD3tw2V48lY+Yl8sGo3hwU6kOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Lee <stuart.lee@mediatek.com>,
-	AngeloGioacchino DEl Regno <angelogioacchino.delregno@collabora.com>,
-	Macpaul Lin <macpaul.lin@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.6 134/166] drm/mediatek: Fix access violation in mtk_drm_crtc_dma_dev_get
+	Radu Bulie <radu-andrei.bulie@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 19/83] net: fec: correct queue selection
 Date: Mon, 18 Dec 2023 14:51:40 +0100
-Message-ID: <20231218135111.080041709@linuxfoundation.org>
+Message-ID: <20231218135050.601304960@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +54,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Lee <stuart.lee@mediatek.com>
+From: Radu Bulie <radu-andrei.bulie@nxp.com>
 
-commit b6961d187fcd138981b8707dac87b9fcdbfe75d1 upstream.
+[ Upstream commit 9fc95fe95c3e2a63ced8eeca4b256518ab204b63 ]
 
-Add error handling to check NULL input in
-mtk_drm_crtc_dma_dev_get function.
+The old implementation extracted VLAN TCI info from the payload
+before the VLAN tag has been pushed in the payload.
 
-While display path is not configured correctly, none of crtc is
-established. So the caller of mtk_drm_crtc_dma_dev_get may pass
-input parameter *crtc as NULL, Which may cause coredump when
-we try to get the container of NULL pointer.
+Another problem was that the VLAN TCI was extracted even if the
+packet did not have VLAN protocol header.
 
-Fixes: cb1d6bcca542 ("drm/mediatek: Add dma dev get function")
-Signed-off-by: Stuart Lee <stuart.lee@mediatek.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: AngeloGioacchino DEl Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Macpaul Lin <macpaul.lin@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231110012914.14884-2-stuart.lee@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This resulted in invalid VLAN TCI and as a consequence a random
+queue was computed.
+
+This patch fixes the above issues and use the VLAN TCI from the
+skb if it is present or VLAN TCI from payload if present. If no
+VLAN header is present queue 0 is selected.
+
+Fixes: 52c4a1a85f4b ("net: fec: add ndo_select_queue to fix TX bandwidth fluctuations")
+Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/fec_main.c | 27 +++++++++--------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -885,7 +885,14 @@ static int mtk_drm_crtc_init_comp_planes
- 
- struct device *mtk_drm_crtc_dma_dev_get(struct drm_crtc *crtc)
- {
--	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-+	struct mtk_drm_crtc *mtk_crtc = NULL;
-+
-+	if (!crtc)
-+		return NULL;
-+
-+	mtk_crtc = to_mtk_crtc(crtc);
-+	if (!mtk_crtc)
-+		return NULL;
- 
- 	return mtk_crtc->dma_dev;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index c0c96de7a9de4..717d4bc5bac63 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3436,31 +3436,26 @@ static int fec_set_features(struct net_device *netdev,
+ 	return 0;
  }
+ 
+-static u16 fec_enet_get_raw_vlan_tci(struct sk_buff *skb)
+-{
+-	struct vlan_ethhdr *vhdr;
+-	unsigned short vlan_TCI = 0;
+-
+-	if (skb->protocol == htons(ETH_P_ALL)) {
+-		vhdr = (struct vlan_ethhdr *)(skb->data);
+-		vlan_TCI = ntohs(vhdr->h_vlan_TCI);
+-	}
+-
+-	return vlan_TCI;
+-}
+-
+ static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
+ 				 struct net_device *sb_dev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	u16 vlan_tag;
++	u16 vlan_tag = 0;
+ 
+ 	if (!(fep->quirks & FEC_QUIRK_HAS_AVB))
+ 		return netdev_pick_tx(ndev, skb, NULL);
+ 
+-	vlan_tag = fec_enet_get_raw_vlan_tci(skb);
+-	if (!vlan_tag)
++	/* VLAN is present in the payload.*/
++	if (eth_type_vlan(skb->protocol)) {
++		struct vlan_ethhdr *vhdr = skb_vlan_eth_hdr(skb);
++
++		vlan_tag = ntohs(vhdr->h_vlan_TCI);
++	/*  VLAN is present in the skb but not yet pushed in the payload.*/
++	} else if (skb_vlan_tag_present(skb)) {
++		vlan_tag = skb->vlan_tci;
++	} else {
+ 		return vlan_tag;
++	}
+ 
+ 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
+ }
+-- 
+2.43.0
+
 
 
 
