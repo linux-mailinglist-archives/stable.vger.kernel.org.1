@@ -1,44 +1,48 @@
-Return-Path: <stable+bounces-7288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E788171DC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:04:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC078171EB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30D561F262FB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74D291C24068
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD953A1DC;
-	Mon, 18 Dec 2023 14:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D03C42388;
+	Mon, 18 Dec 2023 14:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XU5XNU95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyiA9A5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851111D158;
-	Mon, 18 Dec 2023 14:01:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF323C433C9;
-	Mon, 18 Dec 2023 14:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D38B1D159;
+	Mon, 18 Dec 2023 14:01:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1DEC433C8;
+	Mon, 18 Dec 2023 14:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908065;
-	bh=9dh2C9xyUme6VvmUsdy6jsEdh4G3kGMx82/BzjfRtTk=;
+	s=korg; t=1702908095;
+	bh=NCWPLqLCOFhTvew9IxOBayJ62A8vXGdJZQE/mVQI03Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XU5XNU95Y6SedeSi7ZSXkFBJhgZki6vFxeAGeC1Z3PFzDIt0GHaS5hmyAtvERbEZX
-	 TFQ+S3J3gsYc5AlvR37y/XDDdCfB002F52jHEBz2LrKM0Ds6qY2GoZyvDfyF2FkN47
-	 9vuw9XdL47KHDgPGaw81xXHPS5v6TU2uZ54ffnkc=
+	b=hyiA9A5WKRE+l2A6pKa75hYjKmOloGXbNG+czyekuXqXX05Zpj//cE0p4d4sx5eUr
+	 wfq9I4K7s2QskLS4mnQNU6saZx8q7c9nVEZVNj7viLclNwB1VJQs96Q8XZfFqyNL3F
+	 lFLmdGX5RwC3eTdVTvIRPlimOu+adR5R8FcqIWac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Ajit Khaparde <ajit.khaparde@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/166] qca_spi: Fix reset behavior
-Date: Mon, 18 Dec 2023 14:49:49 +0100
-Message-ID: <20231218135105.974305655@linuxfoundation.org>
+Subject: [PATCH 6.6 024/166] bnxt_en: Clear resource reservation during resume
+Date: Mon, 18 Dec 2023 14:49:50 +0100
+Message-ID: <20231218135106.016234558@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
 References: <20231218135104.927894164@linuxfoundation.org>
@@ -57,49 +61,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-[ Upstream commit 1057812d146dd658c9a9a96d869c2551150207b5 ]
+[ Upstream commit 9ef7c58f5abe41e6d91f37f28fe2d851ffedd92a ]
 
-In case of a reset triggered by the QCA7000 itself, the behavior of the
-qca_spi driver was not quite correct:
-- in case of a pending RX frame decoding the drop counter must be
-  incremented and decoding state machine reseted
-- also the reset counter must always be incremented regardless of sync
-  state
+We are issuing HWRM_FUNC_RESET cmd to reset the device including
+all reserved resources, but not clearing the reservations
+within the driver struct. As a result, when the driver re-initializes
+as part of resume, it believes that there is no need to do any
+resource reservation and goes ahead and tries to allocate rings
+which will eventually fail beyond a certain number pre-reserved by
+the firmware.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-4-wahrenst@gmx.net
+Fixes: 674f50a5b026 ("bnxt_en: Implement new method to reserve rings.")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Ajit Khaparde <ajit.khaparde@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20231208001658.14230-2-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_spi.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index b0fad69bb755f..5f3c11fb3fa27 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -620,11 +620,17 @@ qcaspi_spi_thread(void *data)
- 			if (intr_cause & SPI_INT_CPU_ON) {
- 				qcaspi_qca7k_sync(qca, QCASPI_EVENT_CPUON);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 7551aa8068f8f..4d2296f201adb 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -13897,6 +13897,8 @@ static int bnxt_resume(struct device *device)
+ 	if (rc)
+ 		goto resume_exit;
  
-+				/* Frame decoding in progress */
-+				if (qca->frm_handle.state != qca->frm_handle.init)
-+					qca->net_dev->stats.rx_dropped++;
++	bnxt_clear_reservations(bp, true);
 +
-+				qcafrm_fsm_init_spi(&qca->frm_handle);
-+				qca->stats.device_reset++;
-+
- 				/* not synced. */
- 				if (qca->sync != QCASPI_SYNC_READY)
- 					continue;
- 
--				qca->stats.device_reset++;
- 				netif_wake_queue(qca->net_dev);
- 				netif_carrier_on(qca->net_dev);
- 			}
+ 	if (bnxt_hwrm_func_drv_rgtr(bp, NULL, 0, false)) {
+ 		rc = -ENODEV;
+ 		goto resume_exit;
 -- 
 2.43.0
 
