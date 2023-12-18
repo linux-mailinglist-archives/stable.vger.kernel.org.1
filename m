@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7E981715E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB86E8170DD
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5BF2B209C5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FDD1C22EA0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C83B129EC8;
-	Mon, 18 Dec 2023 13:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DAB129EFB;
+	Mon, 18 Dec 2023 13:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUZK8Eyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OflUqTAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E2915AC0;
-	Mon, 18 Dec 2023 13:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A191C433C7;
-	Mon, 18 Dec 2023 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206A1D127;
+	Mon, 18 Dec 2023 13:51:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E527EC433C8;
+	Mon, 18 Dec 2023 13:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907823;
-	bh=GGENoZmRmt2FXxsFn3XckJyGN7E6gLynamzhKQ1Drt4=;
+	s=korg; t=1702907503;
+	bh=ox/dRuGvpISUM0253o+FM8lS916PpvRvcN+ul70yqoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUZK8EygQ5POdSAH2bhViU+ExNTJZfdk87b55oQ/XQ5FxE8V2RzaVfa7gtEx69Ej9
-	 TawZ4EK34Veg6LYlW5aRwgR9ZQ/5bxAULNWodaY4LQ0u5kPgd4wVxgcm6iug7tvXFW
-	 LzRxZyXZFlETrrxfEqgUrrM1spmyRYb0TC8praNE=
+	b=OflUqTAZHrPfbS1YeZh+xp/4iSaiORbDNg+UJKPjpiEYwa1T53Z4Brpo80mk7gQBp
+	 HQuf1hKmu+LIOAecUHTHGsY+OFqlgchwe+te0ZJ4EiUGLzrZ3nE0L7QEvxStk3c3Uj
+	 LSJrys0w16TQ2l+gJmez4lc4mf2+ErQshrNc2FgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/106] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+Subject: [PATCH 4.14 11/26] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
 Date: Mon, 18 Dec 2023 14:51:13 +0100
-Message-ID: <20231218135057.566496552@linuxfoundation.org>
+Message-ID: <20231218135041.096903885@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
+[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
 
-This patch adds code comments to bch_btree_node_get() and
-__bch_btree_node_alloc() that NULL pointer will not be returned and it
-is unnecessary to check NULL pointer by the callers of these routines.
+We need to do signed arithmetic if we expect condition
+`if (bytes < 0)` to be possible
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/vmw_vsock/virtio_transport_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index 05e3157fc7b4e..6a2f57ae0f3c2 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -974,6 +974,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
-  *
-  * The btree node will have either a read or a write lock held, depending on
-  * level and op->lock.
-+ *
-+ * Note: Only error code or btree pointer will be returned, it is unncessary
-+ *       for callers to check NULL pointer.
-  */
- struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
- 				 struct bkey *k, int level, bool write,
-@@ -1085,6 +1088,10 @@ static void btree_node_free(struct btree *b)
- 	mutex_unlock(&b->c->bucket_lock);
- }
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 9b8f592897ec5..df09ac4e35056 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -348,7 +348,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	s64 bytes;
  
-+/*
-+ * Only error code or btree pointer will be returned, it is unncessary for
-+ * callers to check NULL pointer.
-+ */
- struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
- 				     int level, bool wait,
- 				     struct btree *parent)
+-	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
++	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
+ 	if (bytes < 0)
+ 		bytes = 0;
+ 
 -- 
 2.43.0
 
