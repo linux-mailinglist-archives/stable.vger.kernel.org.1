@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E965D81730B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B848281718F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CEC7B23B83
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB151F2516E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1012C3D546;
-	Mon, 18 Dec 2023 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430701D158;
+	Mon, 18 Dec 2023 13:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nuat+/s+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xd4iS+9e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D0337864;
-	Mon, 18 Dec 2023 14:12:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DE4C433C7;
-	Mon, 18 Dec 2023 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090161D137;
+	Mon, 18 Dec 2023 13:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8239BC433C8;
+	Mon, 18 Dec 2023 13:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908768;
-	bh=4Dm8wbpjsj6Y8vM8E0ukMGqTAJJWp8Ac/NY27+nUIM4=;
+	s=korg; t=1702907936;
+	bh=1UF6TYxtyRwvCgf4QMSHs+jSNYL7r5AX+voZDxN1/ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nuat+/s+KyUDUz6f0vYyUGgof2Ii4uB/rkNmfQjACQO21AJ+rY4rsCCK32weUwNzG
-	 G0ShUs+vZuWnCnVmsOACH6ZH0uF43TYK9aDE8Zkhbt6Nysx6Z5NGvc5dFhYbUXVKC5
-	 IWZvnrJ0XsvhdTFlB+f3NaTPxLvE79KFLSW7hG8g=
+	b=Xd4iS+9eECX9aEPj8wYg78mYQMAU3gRii7q6mhfIiBj3QwbRKMRnniRc+W6T3yJEY
+	 cG4LJai6/RPB5z3hgORozjWU4Ex2z2OthvgDkRY4/mlL9TPJ0UnP4XleIjKJHgEqA+
+	 FR1bf4U+GAkFJEKCC4MqL9L43406x7lOL2KYVqpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/83] net: Remove acked SYN flag from packet in the transmit queue correctly
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 093/106] smb: client: fix NULL deref in asn1_ber_decoder()
 Date: Mon, 18 Dec 2023 14:51:47 +0100
-Message-ID: <20231218135050.897652438@linuxfoundation.org>
+Message-ID: <20231218135059.037243106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,115 +53,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
+commit 90d025c2e953c11974e76637977c473200593a46 upstream.
 
-syzkaller report:
+If server replied SMB2_NEGOTIATE with a zero SecurityBufferOffset,
+smb2_get_data_area() sets @len to non-zero but return NULL, so
+decode_negTokeninit() ends up being called with a NULL @security_blob:
 
- kernel BUG at net/core/skbuff.c:3452!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
- RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
- Call Trace:
- icmp_glue_bits (net/ipv4/icmp.c:357)
- __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
- ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
- icmp_push_reply (net/ipv4/icmp.c:370)
- __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
- ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
- __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
- ip_output (net/ipv4/ip_output.c:427)
- __ip_queue_xmit (net/ipv4/ip_output.c:535)
- __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
- __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
- tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
- tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
- tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 2 PID: 871 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  RIP: 0010:asn1_ber_decoder+0x173/0xc80
+  Code: 01 4c 39 2c 24 75 09 45 84 c9 0f 85 2f 03 00 00 48 8b 14 24 4c 29 ea 48 83 fa 01 0f 86 1e 07 00 00 48 8b 74 24 28 4d 8d 5d 01 <42> 0f b6 3c 2e 89 fa 40 88 7c 24 5c f7 d2 83 e2 1f 0f 84 3d 07 00
+  RSP: 0018:ffffc9000063f950 EFLAGS: 00010202
+  RAX: 0000000000000002 RBX: 0000000000000000 RCX: 000000000000004a
+  RDX: 000000000000004a RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000002 R11: 0000000000000001 R12: 0000000000000000
+  R13: 0000000000000000 R14: 000000000000004d R15: 0000000000000000
+  FS:  00007fce52b0fbc0(0000) GS:ffff88806ba00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000001ae64000 CR4: 0000000000750ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? __die+0x23/0x70
+   ? page_fault_oops+0x181/0x480
+   ? __stack_depot_save+0x1e6/0x480
+   ? exc_page_fault+0x6f/0x1c0
+   ? asm_exc_page_fault+0x26/0x30
+   ? asn1_ber_decoder+0x173/0xc80
+   ? check_object+0x40/0x340
+   decode_negTokenInit+0x1e/0x30 [cifs]
+   SMB2_negotiate+0xc99/0x17c0 [cifs]
+   ? smb2_negotiate+0x46/0x60 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   smb2_negotiate+0x46/0x60 [cifs]
+   cifs_negotiate_protocol+0xae/0x130 [cifs]
+   cifs_get_smb_ses+0x517/0x1040 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? queue_delayed_work_on+0x5d/0x90
+   cifs_mount_get_session+0x78/0x200 [cifs]
+   dfs_mount_share+0x13a/0x9f0 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lock_acquire+0xbf/0x2b0
+   ? find_nls+0x16/0x80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   cifs_mount+0x7e/0x350 [cifs]
+   cifs_smb3_do_mount+0x128/0x780 [cifs]
+   smb3_get_tree+0xd9/0x290 [cifs]
+   vfs_get_tree+0x2c/0x100
+   ? capable+0x37/0x70
+   path_mount+0x2d7/0xb80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? _raw_spin_unlock_irqrestore+0x44/0x60
+   __x64_sys_mount+0x11a/0x150
+   do_syscall_64+0x47/0xf0
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+  RIP: 0033:0x7fce52c2ab1e
 
-The panic issue was trigered by tcp simultaneous initiation.
-The initiation process is as follows:
+Fix this by setting @len to zero when @off == 0 so callers won't
+attempt to dereference non-existing data areas.
 
-      TCP A                                            TCP B
-
-  1.  CLOSED                                           CLOSED
-
-  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
-
-  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
-
-  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
-
-  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
-
-  // TCP B: not send challenge ack for ack limit or packet loss
-  // TCP A: close
-	tcp_close
-	   tcp_send_fin
-              if (!tskb && tcp_under_memory_pressure(sk))
-                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
-           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
-
-  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
-
-  // TCP B: send challenge ack to SYN_FIN_ACK
-
-  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
-
-  // TCP A:  <SND.UNA=101>
-
-  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
-
-	__tcp_retransmit_skb  //skb->len=0
-	    tcp_trim_head
-		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
-		    __pskb_trim_head
-			skb->data_len -= len // skb->len=-1, wrap around
-	    ... ...
-	    ip_fragment
-		icmp_glue_bits //BUG_ON
-
-If we use tcp_trim_head() to remove acked SYN from packet that contains data
-or other flags, skb->len will be incorrectly decremented. We can remove SYN
-flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
-can fix the problem mentioned above.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_output.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/smb/client/smb2misc.c |   26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 8032ccb69463e..d8817d6c7b96f 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -3171,7 +3171,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (skb_still_in_host_queue(sk, skb))
- 		return -EBUSY;
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -313,6 +313,9 @@ static const bool has_smb2_data_area[NUM
+ char *
+ smb2_get_data_area_len(int *off, int *len, struct smb2_hdr *shdr)
+ {
++	const int max_off = 4096;
++	const int max_len = 128 * 1024;
++
+ 	*off = 0;
+ 	*len = 0;
  
-+start:
- 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
-+		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
-+			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
-+			TCP_SKB_CB(skb)->seq++;
-+			goto start;
-+		}
- 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
- 			WARN_ON_ONCE(1);
- 			return -EINVAL;
--- 
-2.43.0
-
+@@ -384,29 +387,20 @@ smb2_get_data_area_len(int *off, int *le
+ 	 * Invalid length or offset probably means data area is invalid, but
+ 	 * we have little choice but to ignore the data area in this case.
+ 	 */
+-	if (*off > 4096) {
+-		cifs_dbg(VFS, "offset %d too large, data area ignored\n", *off);
+-		*len = 0;
+-		*off = 0;
+-	} else if (*off < 0) {
+-		cifs_dbg(VFS, "negative offset %d to data invalid ignore data area\n",
+-			 *off);
++	if (unlikely(*off < 0 || *off > max_off ||
++		     *len < 0 || *len > max_len)) {
++		cifs_dbg(VFS, "%s: invalid data area (off=%d len=%d)\n",
++			 __func__, *off, *len);
+ 		*off = 0;
+ 		*len = 0;
+-	} else if (*len < 0) {
+-		cifs_dbg(VFS, "negative data length %d invalid, data area ignored\n",
+-			 *len);
+-		*len = 0;
+-	} else if (*len > 128 * 1024) {
+-		cifs_dbg(VFS, "data area larger than 128K: %d\n", *len);
++	} else if (*off == 0) {
+ 		*len = 0;
+ 	}
+ 
+ 	/* return pointer to beginning of data area, ie offset from SMB start */
+-	if ((*off != 0) && (*len != 0))
++	if (*off > 0 && *len > 0)
+ 		return (char *)shdr + *off;
+-	else
+-		return NULL;
++	return NULL;
+ }
+ 
+ /*
 
 
 
