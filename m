@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000C281710C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15A08172FB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2443B1C2339A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61340288F92
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C481D123;
-	Mon, 18 Dec 2023 13:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B196342374;
+	Mon, 18 Dec 2023 14:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNvVwOiN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Up9ySHac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5F21D13B;
-	Mon, 18 Dec 2023 13:53:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F58C433C7;
-	Mon, 18 Dec 2023 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675413D566;
+	Mon, 18 Dec 2023 14:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933A3C433C7;
+	Mon, 18 Dec 2023 14:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907635;
-	bh=Vor2npV/17soOnKet2UWWJ3t5Eu2tCjYKnblLjz787g=;
+	s=korg; t=1702908738;
+	bh=Zajr8QMpuLH1fNivXUeXRPy7QaFPSLd7YvoOJpKZ/OE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNvVwOiNgPufQJ62QNr0xiezl1K6A3YclMSRZvobaF3/hdja4YpHG+yBfcneqd4sT
-	 8go9y7vL0iXS8UmAIfG1rMUzHrvGRMDi91eJ3AxYRlkTlOk70hqhuKq/oIzS3PX1AO
-	 Jwo4zoIfWnxUgcgeXODDpxLZsDYdBVtqoQ6tD4dM=
+	b=Up9ySHac81G4pHtnJZmPhuPHPAZbcGTS2PICm04KZ34VakNpO8or1Ej5iLQSBR3Br
+	 7iInBJcpa3PhUn316gqW6Pifq9BrRZTWd5xd77Q53PFAvlv+3G3Suljd5nS6KOPn1P
+	 JAd+ZIb+sIMnzfc107buxXlPvOgpkQmDfEDKpPb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 27/36] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+Subject: [PATCH 5.15 16/83] atm: solos-pci: Fix potential deadlock on &cli_queue_lock
 Date: Mon, 18 Dec 2023 14:51:37 +0100
-Message-ID: <20231218135042.812352499@linuxfoundation.org>
+Message-ID: <20231218135050.476512465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +51,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
+[ Upstream commit d5dba32b8f6cb39be708b726044ba30dbc088b30 ]
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
-from option driver.
-The proper configuration is:
+As &card->cli_queue_lock is acquired under softirq context along the
+following call chain from solos_bh(), other acquisition of the same
+lock inside process context should disable at least bh to avoid double
+lock.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+<deadlock #1>
+console_show()
+--> spin_lock(&card->cli_queue_lock)
+<interrupt>
+   --> solos_bh()
+   --> spin_lock(&card->cli_queue_lock)
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To prevent the potential deadlock, the patch uses spin_lock_bh()
+on the card->cli_queue_lock under process context code consistently
+to prevent the possible deadlock scenario.
+
+Fixes: 9c54004ea717 ("atm: Driver for Solos PCI ADSL2+ card.")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/atm/solos-pci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index aefa57e726954..f787b9a4f9a9e 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1250,6 +1250,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
-+	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
- 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
+diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
+index 94fbc3abe60e6..95f768b28a5e6 100644
+--- a/drivers/atm/solos-pci.c
++++ b/drivers/atm/solos-pci.c
+@@ -449,9 +449,9 @@ static ssize_t console_show(struct device *dev, struct device_attribute *attr,
+ 	struct sk_buff *skb;
+ 	unsigned int len;
+ 
+-	spin_lock(&card->cli_queue_lock);
++	spin_lock_bh(&card->cli_queue_lock);
+ 	skb = skb_dequeue(&card->cli_queue[SOLOS_CHAN(atmdev)]);
+-	spin_unlock(&card->cli_queue_lock);
++	spin_unlock_bh(&card->cli_queue_lock);
+ 	if(skb == NULL)
+ 		return sprintf(buf, "No data.\n");
+ 
 -- 
 2.43.0
 
