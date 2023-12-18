@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7358E8172B1
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 775EF81732C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 137C7B23BA8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DA9B23C6F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4F842392;
-	Mon, 18 Dec 2023 14:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BCB1D12F;
+	Mon, 18 Dec 2023 14:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQDO2FXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtRyPI4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAAC42391;
-	Mon, 18 Dec 2023 14:09:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F02C433C8;
-	Mon, 18 Dec 2023 14:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9937129ED2;
+	Mon, 18 Dec 2023 14:14:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4033DC433C8;
+	Mon, 18 Dec 2023 14:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908557;
-	bh=nyFees8tTvoFfO1ykMPBMswkWTCqbIF8mqEkPiYvslU=;
+	s=korg; t=1702908855;
+	bh=xtIpELvaLB2xAzwEN/VJW0yw/mu36jQQx0siD/KDN14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQDO2FXAHlA/u48JdzEB1YdRonSaRXczpbd7ZQfFoca6yGPwf8+qIglvLu4A+eBgL
-	 OVirxqKnYDxQhY/3f/hCWNGHNmoMdc3hsU8B5gLaGcLIWRjjC0SdjhvJx5utPKmX7P
-	 siIMqT5OfDpHgr/g+laclcFkZJvs0FR+tn7EYRPo=
+	b=JtRyPI4fat+DtgfF0ofe5ALwm51030dqir+zSrwcSsvRQMdepv1XdEDBOb3HsrfNN
+	 5XGqoZREfvM/RqdGaP/ebJhkH62YpbW0AIHhRv6tHOtukzhKZq1YvFWt3dw4k7au7i
+	 72vYU/5V1z55NqhQCOxAcYAb5R1m+u+SnbEZPnFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 54/62] ring-buffer: Have saved event hold the entire event
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 57/83] HID: hid-asus: reset the backlight brightness level on resume
 Date: Mon, 18 Dec 2023 14:52:18 +0100
-Message-ID: <20231218135048.622448843@linuxfoundation.org>
+Message-ID: <20231218135052.255310755@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,59 +54,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Denis Benato <benato.denis96@gmail.com>
 
-commit b049525855fdd0024881c9b14b8fbec61c3f53d3 upstream.
+[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
 
-For the ring buffer iterator (non-consuming read), the event needs to be
-copied into the iterator buffer to make sure that a writer does not
-overwrite it while the user is reading it. If a write happens during the
-copy, the buffer is simply discarded.
+Some devices managed by this driver automatically set brightness to 0
+before entering a suspended state and reset it back to a default
+brightness level after the resume:
+this has the effect of having the kernel report wrong brightness
+status after a sleep, and on some devices (like the Asus RC71L) that
+brightness is the intensity of LEDs directly facing the user.
 
-But the temp buffer itself was not big enough. The allocation of the
-buffer was only BUF_MAX_DATA_SIZE, which is the maximum data size that can
-be passed into the ring buffer and saved. But the temp buffer needs to
-hold the meta data as well. That would be BUF_PAGE_SIZE and not
-BUF_MAX_DATA_SIZE.
+Fix the above issue by setting back brightness to the level it had
+before entering a sleep state.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231212072558.61f76493@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 785888c544e04 ("ring-buffer: Have rb_iter_head_event() handle concurrent writer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hid/hid-asus.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2275,7 +2275,7 @@ rb_iter_head_event(struct ring_buffer_it
- 	 */
- 	barrier();
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 16832e79f6a87..8c16995105043 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1014,6 +1014,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
+ 	return 0;
+ }
  
--	if ((iter->head + length) > commit || length > BUF_MAX_DATA_SIZE)
-+	if ((iter->head + length) > commit || length > BUF_PAGE_SIZE)
- 		/* Writer corrupted the read? */
- 		goto reset;
- 
-@@ -4836,7 +4836,8 @@ ring_buffer_read_prepare(struct trace_bu
- 	if (!iter)
- 		return NULL;
- 
--	iter->event = kmalloc(BUF_MAX_DATA_SIZE, flags);
-+	/* Holds the entire event: data and meta data */
-+	iter->event = kmalloc(BUF_PAGE_SIZE, flags);
- 	if (!iter->event) {
- 		kfree(iter);
- 		return NULL;
++static int __maybe_unused asus_resume(struct hid_device *hdev) {
++	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
++	int ret = 0;
++
++	if (drvdata->kbd_backlight) {
++		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
++				drvdata->kbd_backlight->cdev.brightness };
++		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
++		if (ret < 0) {
++			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
++			goto asus_resume_err;
++		}
++	}
++
++asus_resume_err:
++	return ret;
++}
++
+ static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
+ {
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
+@@ -1305,6 +1323,7 @@ static struct hid_driver asus_driver = {
+ 	.input_configured       = asus_input_configured,
+ #ifdef CONFIG_PM
+ 	.reset_resume           = asus_reset_resume,
++	.resume					= asus_resume,
+ #endif
+ 	.event			= asus_event,
+ 	.raw_event		= asus_raw_event
+-- 
+2.43.0
+
 
 
 
