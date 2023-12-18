@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-7404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11096817267
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBAF817172
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9DF01F248AA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEB41C24145
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BA14FF65;
-	Mon, 18 Dec 2023 14:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B0B1D157;
+	Mon, 18 Dec 2023 13:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRLlEcSR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgDbbwQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A92498BC;
-	Mon, 18 Dec 2023 14:06:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BEFC433C9;
-	Mon, 18 Dec 2023 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E71D144;
+	Mon, 18 Dec 2023 13:57:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4557CC433C7;
+	Mon, 18 Dec 2023 13:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908374;
-	bh=tBT+lI24uOyp1aD3CNMMaZ+3U2aOAIrI8bsnWzRQi2E=;
+	s=korg; t=1702907870;
+	bh=4dE2VG8kpjT6JSoFEV4VIZjgnzToO2pRo2xgi76TcJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRLlEcSRgvz5RG840aibGUkH5UF2dKTV5B95+u18Op4wKVAbzsEvx7slGgDJegUjp
-	 F+0h6OeymTxYV5LWI2keOy6yhed+HqaJGWRF50E16gZttBUvDV6NWx5w1W8nDeS4Sk
-	 iI5C5ltslf4DdRZYq9S3TmFvP4JPdW8ygBRlbBbI=
+	b=ZgDbbwQ2bccoo2m5hLEqi+4yp5FzJ8ws3dGnOy9D/eakNkZcIz12TzGSoEMMo3Lkh
+	 Oowxdr7rG4XVb/kVPsbbtgMi1QmwfjcSckrxJAjNBeIzeD7hPXcD2Ra6QgOw+6h40h
+	 BKA80MLbFB6gUxkK3Q8LtNdjVIVB3Hz18zbT0kg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Pengfei Xu <pengfei.xu@intel.com>,
 	Mark Rutland <mark.rutland@arm.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.6 125/166] perf: Fix perf_event_validate_size() lockdep splat
+Subject: [PATCH 6.1 077/106] perf: Fix perf_event_validate_size() lockdep splat
 Date: Mon, 18 Dec 2023 14:51:31 +0100
-Message-ID: <20231218135110.658410572@linuxfoundation.org>
+Message-ID: <20231218135058.360417237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -94,7 +94,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/events/core.c
 +++ b/kernel/events/core.c
-@@ -1947,6 +1947,16 @@ static bool perf_event_validate_size(str
+@@ -1945,6 +1945,16 @@ static bool perf_event_validate_size(str
  				   group_leader->nr_siblings + 1) > 16*1024)
  		return false;
  
