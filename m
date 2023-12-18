@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BB48172DB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 829958172B3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF688B24179
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14EAFB22C5E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38F91D142;
-	Mon, 18 Dec 2023 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7918F42386;
+	Mon, 18 Dec 2023 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UlKGFEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHCxOdJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7021D127;
-	Mon, 18 Dec 2023 14:10:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408EBC433C8;
-	Mon, 18 Dec 2023 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF8A42372;
+	Mon, 18 Dec 2023 14:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C951C433C7;
+	Mon, 18 Dec 2023 14:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908645;
-	bh=cWxUGUuuZMzkn8hHEoJzz98rgibLQu9MabIwuOIrHEg=;
+	s=korg; t=1702908561;
+	bh=+6ieWC67UVUEYbzvenEJjybhLWQH7juDa81gTHno0H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UlKGFEx1JnWhxQgx0SjATwcUV/V7lJBFMqt2sboETP1A10llEp13DDoe/R9iZmaj
-	 PlwsAzSdfmA1gK0O7aicEboSZRsipKaHpZRWL6eN2nj22Y/iLVkfVygyb7E6VFrRj4
-	 Y7HpAjXMIZQoJ3ChNlpitOde+sd2eLIfnVpZXe14=
+	b=PHCxOdJhqz0JjytUAS7WrzCo8refY2lvEp3ks3ZyKiQQ7YaU0jofVun1Q4KLavuYA
+	 0z+4Jj314rDDJYSxP+Lu6v+lfkFKLr1payH8LE7N3tFvZy2NkBT4dKtfXBE8NTav4D
+	 dTZ5l+WZTxxHDlOPrD8hWeMgIE9DRwzIMwfEvnAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 23/40] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
-Date: Mon, 18 Dec 2023 14:52:18 +0100
-Message-ID: <20231218135043.560019644@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 5.10 55/62] ring-buffer: Fix writing to the buffer with max_data_size
+Date: Mon, 18 Dec 2023 14:52:19 +0100
+Message-ID: <20231218135048.660572741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +55,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
+commit b3ae7b67b87fed771fa5bf95389df06b0433603e upstream.
 
-This patch adds code comments to bch_btree_node_get() and
-__bch_btree_node_alloc() that NULL pointer will not be returned and it
-is unnecessary to check NULL pointer by the callers of these routines.
+The maximum ring buffer data size is the maximum size of data that can be
+recorded on the ring buffer. Events must be smaller than the sub buffer
+data size minus any meta data. This size is checked before trying to
+allocate from the ring buffer because the allocation assumes that the size
+will fit on the sub buffer.
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The maximum size was calculated as the size of a sub buffer page (which is
+currently PAGE_SIZE minus the sub buffer header) minus the size of the
+meta data of an individual event. But it missed the possible adding of a
+time stamp for events that are added long enough apart that the event meta
+data can't hold the time delta.
+
+When an event is added that is greater than the current BUF_MAX_DATA_SIZE
+minus the size of a time stamp, but still less than or equal to
+BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
+for a page that can hold the event. Luckily, there's a check for this loop
+and after 1000 iterations and a warning is emitted and the ring buffer is
+disabled. But this should never happen.
+
+This can happen when a large event is added first, or after a long period
+where an absolute timestamp is prefixed to the event, increasing its size
+by 8 bytes. This passes the check and then goes into the algorithm that
+causes the infinite loop.
+
+For events that are the first event on the sub-buffer, it does not need to
+add a timestamp, because the sub-buffer itself contains an absolute
+timestamp, and adding one is redundant.
+
+The fix is to check if the event is to be the first event on the
+sub-buffer, and if it is, then do not add a timestamp.
+
+This also fixes 32 bit adding a timestamp when a read of before_stamp or
+write_stamp is interrupted. There's still no need to add that timestamp if
+the event is going to be the first event on the sub buffer.
+
+Also, if the buffer has "time_stamp_abs" set, then also check if the
+length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
+
+Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
+Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ kernel/trace/ring_buffer.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index ad1faee2e186b..5db893d6a824e 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1020,6 +1020,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
-  *
-  * The btree node will have either a read or a write lock held, depending on
-  * level and op->lock.
-+ *
-+ * Note: Only error code or btree pointer will be returned, it is unncessary
-+ *       for callers to check NULL pointer.
-  */
- struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
- 				 struct bkey *k, int level, bool write,
-@@ -1132,6 +1135,10 @@ static void btree_node_free(struct btree *b)
- 	mutex_unlock(&b->c->bucket_lock);
- }
- 
-+/*
-+ * Only error code or btree pointer will be returned, it is unncessary for
-+ * callers to check NULL pointer.
-+ */
- struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
- 				     int level, bool wait,
- 				     struct btree *parent)
--- 
-2.43.0
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3301,7 +3301,10 @@ __rb_reserve_next(struct ring_buffer_per
+ 		 * absolute timestamp.
+ 		 * Don't bother if this is the start of a new page (w == 0).
+ 		 */
+-		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
++		if (!w) {
++			/* Use the sub-buffer timestamp */
++			info->delta = 0;
++		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
+ 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
+ 			info->length += RB_LEN_TIME_EXTEND;
+ 		} else {
+@@ -3456,6 +3459,8 @@ rb_reserve_next_event(struct trace_buffe
+ 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
+ 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
+ 		info.length += RB_LEN_TIME_EXTEND;
++		if (info.length > BUF_MAX_DATA_SIZE)
++			goto out_fail;
+ 	} else {
+ 		add_ts_default = RB_ADD_STAMP_NONE;
+ 	}
 
 
 
