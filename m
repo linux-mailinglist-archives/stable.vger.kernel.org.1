@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC8817196
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD51A8172CF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C149A1C24440
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E30FE1C24ECA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0EA1D148;
-	Mon, 18 Dec 2023 13:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D1E3A1CE;
+	Mon, 18 Dec 2023 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3f7714/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cuUxR5sC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97A41D137;
-	Mon, 18 Dec 2023 13:59:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F04C433C8;
-	Mon, 18 Dec 2023 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC9B1D15E;
+	Mon, 18 Dec 2023 14:10:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4454C433C7;
+	Mon, 18 Dec 2023 14:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907947;
-	bh=HWNnshOQ1+K8joMJ+XRcHpxTk+sKgS9TEZhkeY0GuYA=;
+	s=korg; t=1702908621;
+	bh=hlD/3eCzE6KYms743b1+SB8uqlWn+JkxQvAoI9gwgAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3f7714/Y+762uRpjuYf/ixtECI3whu5mOIUhu1MZ+2yaqM73EOJkz1UYg1nS6KYu
-	 IBZji+V/o3SftQAajYCxz33Yx9TFoxLjehk1pa400dCDes4LJ2t/P1gTaxhMD4/gyL
-	 Dip8YzKuv7xAdNl5kWbp8PcULC2ULmbXDER+7hFU=
+	b=cuUxR5sCHqBscpaHUHNpl0VCTOcB60UGmVCZgJV22d41M5KSTDetw2BMH9WqdjABL
+	 RXJ5OKwJ3DXDvNjAiJd19w2CxbV1vgt6JuUtQTxHOwp6WoZS6S8mPkCFfeA93PiVr+
+	 yYyU2Sui1iZbRcM3DSCEDmbhsxT4bvldyZxo9B8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hayes Wang <hayeswang@realtek.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 105/106] r8152: remove rtl_vendor_mode function
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 04/40] qca_debug: Fix ethtool -G iface tx behavior
 Date: Mon, 18 Dec 2023 14:51:59 +0100
-Message-ID: <20231218135059.558618285@linuxfoundation.org>
+Message-ID: <20231218135042.927757906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,81 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hayes Wang <hayeswang@realtek.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 95a4c1d617b92cdc4522297741b56e8f6cd01a1e upstream.
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-After commit ec51fbd1b8a2 ("r8152: add USB device driver for
-config selection"), the code about changing USB configuration
-in rtl_vendor_mode() wouldn't be run anymore. Therefore, the
-function could be removed.
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
+
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
+
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c |   39 +--------------------------------------
- 1 file changed, 1 insertion(+), 38 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -8288,43 +8288,6 @@ static bool rtl_check_vendor_ok(struct u
- 	return true;
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 4c6c1792fdc77..66229b300c5a4 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
+ 
+ #define QCASPI_MAX_REGS 0x20
+ 
++#define QCASPI_RX_MAX_FRAMES 4
++
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -249,9 +251,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
  }
  
--static bool rtl_vendor_mode(struct usb_interface *intf)
--{
--	struct usb_host_interface *alt = intf->cur_altsetting;
--	struct usb_device *udev;
--	struct usb_host_config *c;
--	int i, num_configs;
--
--	if (alt->desc.bInterfaceClass == USB_CLASS_VENDOR_SPEC)
--		return rtl_check_vendor_ok(intf);
--
--	/* The vendor mode is not always config #1, so to find it out. */
--	udev = interface_to_usbdev(intf);
--	c = udev->config;
--	num_configs = udev->descriptor.bNumConfigurations;
--	if (num_configs < 2)
--		return false;
--
--	for (i = 0; i < num_configs; (i++, c++)) {
--		struct usb_interface_descriptor	*desc = NULL;
--
--		if (c->desc.bNumInterfaces > 0)
--			desc = &c->intf_cache[0]->altsetting->desc;
--		else
--			continue;
--
--		if (desc->bInterfaceClass == USB_CLASS_VENDOR_SPEC) {
--			usb_driver_set_configuration(udev, c->desc.bConfigurationValue);
--			break;
--		}
--	}
--
--	if (i == num_configs)
--		dev_err(&intf->dev, "Unexpected Device\n");
--
--	return false;
--}
--
- static int rtl8152_pre_reset(struct usb_interface *intf)
+@@ -260,7 +262,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
  {
- 	struct r8152 *tp = usb_get_intfdata(intf);
-@@ -9686,7 +9649,7 @@ static int rtl8152_probe(struct usb_inte
- 	if (intf->cur_altsetting->desc.bInterfaceClass != USB_CLASS_VENDOR_SPEC)
- 		return -ENODEV;
+ 	struct qcaspi *qca = netdev_priv(dev);
  
--	if (!rtl_vendor_mode(intf))
-+	if (!rtl_check_vendor_ok(intf))
- 		return -ENODEV;
- 
- 	usb_reset_device(udev);
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+-- 
+2.43.0
+
 
 
 
