@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A497481715F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C2C81720E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB5711C23FE6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDB1A1C24D1F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41C61D126;
-	Mon, 18 Dec 2023 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE3B37868;
+	Mon, 18 Dec 2023 14:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3klO7Nd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAZHVh+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA53129EF7;
-	Mon, 18 Dec 2023 13:57:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F30C433C8;
-	Mon, 18 Dec 2023 13:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83956498A5;
+	Mon, 18 Dec 2023 14:02:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F90C433C9;
+	Mon, 18 Dec 2023 14:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907826;
-	bh=pQzU8pyGHu0Qv4CIe4v/kgIFsNn0uyHGF1IXApoz+Vw=;
+	s=korg; t=1702908177;
+	bh=t8s/MQ6K38Z2BBdrz6CHA8TiwwXIA2DvB6jHj/PW+rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3klO7NdUMX31HwgFmyeNiaRhpiOUg7uqFA9E5BruHM8f0FAV2WfK3VHrzZv18hay
-	 tSrShVM4X8IAivbfZ3D7KVyYaSo7WWII2/iYLGk3ziYz5HuwFCygrklVMThB+yTGWf
-	 obrD3MbttgwSKSq/7tdrRJsES54+BS9dM5r/ojn4=
+	b=KAZHVh+RTUzNHLu6voeF89wHSRoSKv+pdMUSu2MF+/oPDq4501iW6rei5CH7yWaCl
+	 JLQQ1UaAahuNwSXD+GxvAadzmjgtvR5CiRONwyyPHP5xLnZ7mcM+6PWKH8boYyo7Lq
+	 ETPyGhoirEMRDHu6fuLGkjY/61wFeMzC5yZh2vUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Kiyanovski <akiyano@amazon.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/106] net: ena: Fix xdp drops handling due to multibuf packets
+Subject: [PATCH 6.6 081/166] accel/ivpu/37xx: Fix interrupt_clear_with_0 WA initialization
 Date: Mon, 18 Dec 2023 14:50:47 +0100
-Message-ID: <20231218135056.450506129@linuxfoundation.org>
+Message-ID: <20231218135108.645369456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,79 +54,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Arinzon <darinzon@amazon.com>
+From: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
 
-[ Upstream commit 505b1a88d311ff6f8c44a34f94e3be21745cce6f ]
+[ Upstream commit 35c49cfc8b702eda7a0d3f05497b16f81b69e289 ]
 
-Current xdp code drops packets larger than ENA_XDP_MAX_MTU.
-This is an incorrect condition since the problem is not the
-size of the packet, rather the number of buffers it contains.
+Using PCI Device ID/Revision to initialize the interrupt_clear_with_0
+workaround is problematic - there are many pre-production
+steppings with different behavior, even with the same PCI ID/Revision
 
-This commit:
+Instead of checking for PCI Device ID/Revision, check the VPU
+buttress interrupt status register behavior - if this register
+is not zero after writing 1s it means there register is RW
+instead of RW1C and we need to enable the interrupt_clear_with_0
+workaround.
 
-1. Identifies and drops XDP multi-buffer packets at the
-   beginning of the function.
-2. Increases the xdp drop statistic when this drop occurs.
-3. Adds a one-time print that such drops are happening to
-   give better indication to the user.
-
-Fixes: 838c93dc5449 ("net: ena: implement XDP drop support")
-Signed-off-by: Arthur Kiyanovski <akiyano@amazon.com>
-Signed-off-by: David Arinzon <darinzon@amazon.com>
-Link: https://lore.kernel.org/r/20231211062801.27891-3-darinzon@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7f34e01f77f8 ("accel/ivpu: Clear specific interrupt status bits on C0")
+Signed-off-by: Andrzej Kacprowski <Andrzej.Kacprowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://lore.kernel.org/all/20231204122331.40560-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_netdev.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/accel/ivpu/ivpu_hw_37xx.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_netdev.c b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-index d7392dabde1e3..044b8afde69a0 100644
---- a/drivers/net/ethernet/amazon/ena/ena_netdev.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_netdev.c
-@@ -1618,20 +1618,23 @@ static void ena_set_rx_hash(struct ena_ring *rx_ring,
- 	}
- }
+diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
+index 2409ff0dda619..ddf03498fd4c1 100644
+--- a/drivers/accel/ivpu/ivpu_hw_37xx.c
++++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
+@@ -53,10 +53,12 @@
  
--static int ena_xdp_handle_buff(struct ena_ring *rx_ring, struct xdp_buff *xdp)
-+static int ena_xdp_handle_buff(struct ena_ring *rx_ring, struct xdp_buff *xdp, u16 num_descs)
- {
- 	struct ena_rx_buffer *rx_info;
- 	int ret;
+ #define ICB_0_1_IRQ_MASK ((((u64)ICB_1_IRQ_MASK) << 32) | ICB_0_IRQ_MASK)
  
-+	/* XDP multi-buffer packets not supported */
-+	if (unlikely(num_descs > 1)) {
-+		netdev_err_once(rx_ring->adapter->netdev,
-+				"xdp: dropped unsupported multi-buffer packets\n");
-+		ena_increase_stat(&rx_ring->rx_stats.xdp_drop, 1, &rx_ring->syncp);
-+		return ENA_XDP_DROP;
-+	}
+-#define BUTTRESS_IRQ_MASK ((REG_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, FREQ_CHANGE)) | \
+-			   (REG_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, ATS_ERR)) | \
++#define BUTTRESS_IRQ_MASK ((REG_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, ATS_ERR)) | \
+ 			   (REG_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, UFI_ERR)))
+ 
++#define BUTTRESS_ALL_IRQ_MASK (BUTTRESS_IRQ_MASK | \
++			       (REG_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, FREQ_CHANGE)))
 +
- 	rx_info = &rx_ring->rx_buffer_info[rx_ring->ena_bufs[0].req_id];
- 	xdp_prepare_buff(xdp, page_address(rx_info->page),
- 			 rx_info->page_offset,
- 			 rx_ring->ena_bufs[0].len, false);
--	/* If for some reason we received a bigger packet than
--	 * we expect, then we simply drop it
--	 */
--	if (unlikely(rx_ring->ena_bufs[0].len > ENA_XDP_MAX_MTU))
--		return ENA_XDP_DROP;
+ #define BUTTRESS_IRQ_ENABLE_MASK ((u32)~BUTTRESS_IRQ_MASK)
+ #define BUTTRESS_IRQ_DISABLE_MASK ((u32)-1)
  
- 	ret = ena_xdp_execute(rx_ring, xdp);
+@@ -102,8 +104,12 @@ static void ivpu_hw_wa_init(struct ivpu_device *vdev)
+ 	vdev->wa.clear_runtime_mem = false;
+ 	vdev->wa.d3hot_after_power_off = true;
  
-@@ -1700,7 +1703,7 @@ static int ena_clean_rx_irq(struct ena_ring *rx_ring, struct napi_struct *napi,
- 			  ena_rx_ctx.l4_proto, ena_rx_ctx.hash);
+-	if (ivpu_device_id(vdev) == PCI_DEVICE_ID_MTL && ivpu_revision(vdev) < 4)
++	REGB_WR32(VPU_37XX_BUTTRESS_INTERRUPT_STAT, BUTTRESS_ALL_IRQ_MASK);
++	if (REGB_RD32(VPU_37XX_BUTTRESS_INTERRUPT_STAT) == BUTTRESS_ALL_IRQ_MASK) {
++		/* Writing 1s does not clear the interrupt status register */
+ 		vdev->wa.interrupt_clear_with_0 = true;
++		REGB_WR32(VPU_37XX_BUTTRESS_INTERRUPT_STAT, 0x0);
++	}
  
- 		if (ena_xdp_present_ring(rx_ring))
--			xdp_verdict = ena_xdp_handle_buff(rx_ring, &xdp);
-+			xdp_verdict = ena_xdp_handle_buff(rx_ring, &xdp, ena_rx_ctx.descs);
- 
- 		/* allocate skb and fill it */
- 		if (xdp_verdict == ENA_XDP_PASS)
+ 	IVPU_PRINT_WA(punit_disabled);
+ 	IVPU_PRINT_WA(clear_runtime_mem);
 -- 
 2.43.0
 
