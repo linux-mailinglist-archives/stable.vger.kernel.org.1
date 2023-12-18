@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D88381714A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2504C81723B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 963FFB20CCF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1382B1C24DC4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D111D12B;
-	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11293A1C7;
+	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF6PC+DF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cj4i8DOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBACD129EE3;
-	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF9C433C8;
-	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FFA3789C;
+	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40290C433C8;
+	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907768;
-	bh=+As+zTfeU3RcmdZYc17zY7m8aA75mGc2tQqnNdYTYRw=;
+	s=korg; t=1702908278;
+	bh=zguJ9+2UmljHc937MQOWbRlFCXejv4Hef2xYE0It4RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pF6PC+DFlOP+7WZber1TqZfsjaMmHJ4/LZeEIXEWI6bLxdciKpymwdoBfZ0ttzlKx
-	 nz1hBfjGspCtcDYbAfpgkzf1AuDwCLrK7Ph5iyMVL89j4lTcYZYxH41OE9v/Hf3/KW
-	 mlkRo2gBtdxp3T0V7RC26+ksZLqAr1svbRaNft+U=
+	b=cj4i8DOKvprdMrrlCIJyD7M5nQKNkH+p3N82iVpvxJ0+m0oHP+MJFmAJ8s1GxVx3x
+	 JkK//voqxvCgwkaDlauNDYj4OZn4UqJXwFy4bIXx+hHGeuPUwnNJI4U3JmF5OhCqJq
+	 HU5nSUnZF4yzyP65BoT4rnDQP93qYPc8cIX59KwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/106] net: stmmac: Handle disabled MDIO busses from devicetree
-Date: Mon, 18 Dec 2023 14:50:54 +0100
-Message-ID: <20231218135056.738016806@linuxfoundation.org>
+Subject: [PATCH 6.6 089/166] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+Date: Mon, 18 Dec 2023 14:50:55 +0100
+Message-ID: <20231218135108.976861380@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit e23c0d21ce9234fbc31ece35663ababbb83f9347 ]
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-Many hardware configurations have the MDIO bus disabled, and are instead
-using some other MDIO bus to talk to the MAC's phy.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-of_mdiobus_register() returns -ENODEV in this case. Let's handle it
-gracefully instead of failing to probe the MAC.
+Fix the warning by adding rcu read lock.
 
-Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/20231212-b4-stmmac-handle-mdio-enodev-v2-1-600171acf79f@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ block/blk-throttle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index 5f177ea807258..379fc887ddf46 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -483,7 +483,11 @@ int stmmac_mdio_register(struct net_device *ndev)
- 	new_bus->parent = priv->device;
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 13e4377a8b286..16f5766620a41 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1320,6 +1320,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- 	err = of_mdiobus_register(new_bus, mdio_node);
--	if (err != 0) {
-+	if (err == -ENODEV) {
-+		err = 0;
-+		dev_info(dev, "MDIO bus is disabled\n");
-+		goto bus_register_fail;
-+	} else if (err) {
- 		dev_err_probe(dev, err, "Cannot register the MDIO bus\n");
- 		goto bus_register_fail;
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1347,6 +1348,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
  	}
++	rcu_read_unlock();
+ 
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
 -- 
 2.43.0
 
