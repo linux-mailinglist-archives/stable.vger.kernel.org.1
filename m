@@ -1,98 +1,109 @@
-Return-Path: <stable+bounces-7730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F358D8175FB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 018B7817663
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A864E1F25109
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:45:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB20F1F272D6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2077D72064;
-	Mon, 18 Dec 2023 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF03D557;
+	Mon, 18 Dec 2023 15:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWWjVbuq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNae4B2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE2E7204B;
-	Mon, 18 Dec 2023 15:40:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4953C433C7;
-	Mon, 18 Dec 2023 15:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699CB3A1D4;
+	Mon, 18 Dec 2023 15:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E99C433D9;
+	Mon, 18 Dec 2023 15:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702914047;
-	bh=kP0KzVP+wAVZYX6I0sfa2j1A+ARxXj0gJm7BlfSRTYU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iWWjVbuqzUtxKAYbEAcR07YOT+nimr5ntwxRnJE7ByDm2DYEFtTAxVfiYM5c/iAMq
-	 BdcywG+sg6Y6ZTe8SS4kY2ssI+yRjD7zCPQkFnJtEu2gXW3kT9/a/WbXI7Ev7czum/
-	 /wHEJDAospKTTWePuw3/uxxHStZrIJl7Il3R6hl2D0396o51bXcwOO4Xww6VAHl1ev
-	 LNjmVfYAwKrKTlccnjOvbfy3iQlXYbeBPSyO40yWN525mpI1pJzLyA7aA4OC8ITiIA
-	 /S0alap2P4PZF8E59YQWf+ziPbkF8peY9P/lLNt4OGU+rgNV5Okk6UpAkRlpOGuoAo
-	 rFM7qfH1ZKwWA==
-Date: Mon, 18 Dec 2023 21:10:32 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>, Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Manivannan Sadhasivam <mani@kernel.org>
-Subject: Re: [PATCH 1/3] ARM: dts: qcom: sdx55: fix pdc '#interrupt-cells'
-Message-ID: <20231218154032.GA50521@thinkpad>
-References: <20231213173131.29436-1-johan+linaro@kernel.org>
- <20231213173131.29436-2-johan+linaro@kernel.org>
+	s=k20201202; t=1702914867;
+	bh=GKFIpWALPPsypWUO/IOs6Dgt78iECnZDwfzIImnelqU=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=RNae4B2dUmZfMwRbgL0DJqjqU6qmEqnN8QRmkA9dP9DCsQ35vVFQeGN83szy/u+iW
+	 bYvAkY9Ng+B6tOkltNMN/SDhkg4qSV15rFZXnbIMScuhrlDd8rnkBM7CnTVfvIQZrd
+	 hK9eiMskFU/eUfeY+/IegwYVjCTJoOjVjnprTimUdW7OTsKN+vbQm5qPHYykLELNw4
+	 VvYGHk1XA8XhTM/meGi6b618sFzFFefX+r/MKDyh+uBWZOzaBxtHAgl5hbPt/6cT4b
+	 K66AiCn2TmnaODvAlrChZ83Yhu8Hsh175Rq6uc6AE9Nw6OliR9BMm4xOmS2QToTX91
+	 O6OJI6jNMSuoA==
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-59082c4aadaso2314790eaf.0;
+        Mon, 18 Dec 2023 07:54:26 -0800 (PST)
+X-Gm-Message-State: AOJu0YwGUU9baGChxQuJKcsUJ9ZpLTl/PmKOZIFeD5bD/eFO6Ep5NeVH
+	6+RBZu4AaIcjA2zs1tHhw0ualUPUM9wjvTn0sUo=
+X-Google-Smtp-Source: AGHT+IFdDKcJTP/alQPrvWNpW82WSR2W0KFM4YnjIeUQiPe5kgABXtCKcSkhCfejCwq/Pym+qF6wi73L/4jfAkBw3hs=
+X-Received: by 2002:a05:6820:1ca3:b0:590:83e9:290b with SMTP id
+ ct35-20020a0568201ca300b0059083e9290bmr14069473oob.9.1702914866225; Mon, 18
+ Dec 2023 07:54:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231213173131.29436-2-johan+linaro@kernel.org>
+Received: by 2002:ac9:7f88:0:b0:507:5de0:116e with HTTP; Mon, 18 Dec 2023
+ 07:54:25 -0800 (PST)
+In-Reply-To: <20231218135053.258325456@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org> <20231218135053.258325456@linuxfoundation.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Tue, 19 Dec 2023 00:54:25 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd952=Y54gwM4KBDca52ZFcg+yjJeuiy+6o3jG+zYYUF1w@mail.gmail.com>
+Message-ID: <CAKYAXd952=Y54gwM4KBDca52ZFcg+yjJeuiy+6o3jG+zYYUF1w@mail.gmail.com>
+Subject: Re: [PATCH 5.15 80/83] ksmbd: Mark as BROKEN in the 5.15.y kernel
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Steve French <sfrench@samba.org>, 
+	Hyunchul Lee <hyc.lee@gmail.com>, linux-cifs@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Dec 13, 2023 at 06:31:29PM +0100, Johan Hovold wrote:
-> The Qualcomm PDC interrupt controller binding expects two cells in
-> interrupt specifiers.
-> 
-> Fixes: 9d038b2e62de ("ARM: dts: qcom: Add SDX55 platform and MTP board support")
-> Cc: stable@vger.kernel.org      # 5.12
-> Cc: Manivannan Sadhasivam <mani@kernel.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+2023-12-18 22:52 GMT+09:00, Greg Kroah-Hartman <gregkh@linuxfoundation.org>:
+> 5.15-stable review patch.  If anyone has any objections, please let me
+> know.
+Hi Greg,
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+It took some time as there were a lot of backport patches and testing,
+but I just sent the patchset to you and stable list. Could you please
+remove this patch in your queue ?
 
-- Mani
-
+Thanks!
+>
+> ------------------
+>
+>
+> Due to many known bugfixes not being backported properly to the 5.15.y
+> kernel tree, the ksmbd code in this branch is just not safe to be used
+> at this point in time at all.  So mark it as BROKEN so it will not be
+> used.
+>
+> This can be changed in the future if all needed backports are made by
+> anyone who cares about this code in this stable kernel branch.
+>
+> Cc: Namjae Jeon <linkinjeon@kernel.org>
+> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+> Cc: Steve French <sfrench@samba.org>
+> Cc: Hyunchul Lee <hyc.lee@gmail.com>
+> Cc: linux-cifs@vger.kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > ---
->  arch/arm/boot/dts/qcom/qcom-sdx55.dtsi | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-> index e30dbf12990a..0864c99a3da1 100644
-> --- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-> +++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-> @@ -612,7 +612,7 @@ pdc: interrupt-controller@b210000 {
->  			compatible = "qcom,sdx55-pdc", "qcom,pdc";
->  			reg = <0x0b210000 0x30000>;
->  			qcom,pdc-ranges = <0 179 52>;
-> -			#interrupt-cells = <3>;
-> +			#interrupt-cells = <2>;
->  			interrupt-parent = <&intc>;
->  			interrupt-controller;
->  		};
-> -- 
-> 2.41.0
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+>  fs/ksmbd/Kconfig |    1 +
+>  1 file changed, 1 insertion(+)
+>
+> --- a/fs/ksmbd/Kconfig
+> +++ b/fs/ksmbd/Kconfig
+> @@ -3,6 +3,7 @@ config SMB_SERVER
+>  	depends on INET
+>  	depends on MULTIUSER
+>  	depends on FILE_LOCKING
+> +	depends on BROKEN
+>  	select NLS
+>  	select NLS_UTF8
+>  	select CRYPTO
+>
+>
+>
 
