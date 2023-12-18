@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865E581711D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B616817268
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327B728184C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B1F11C24DC8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530F31D158;
-	Mon, 18 Dec 2023 13:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6344FF7C;
+	Mon, 18 Dec 2023 14:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3eYMrvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLoXQret"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111F2129EFB;
-	Mon, 18 Dec 2023 13:54:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878AEC433C7;
-	Mon, 18 Dec 2023 13:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1578A4FF78;
+	Mon, 18 Dec 2023 14:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516CCC433C7;
+	Mon, 18 Dec 2023 14:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907670;
-	bh=LGfNujnTlIH6lAAeJ2uNqFV5vemreEgEg6oO89vZgI8=;
+	s=korg; t=1702908377;
+	bh=4qcJMFl3Yy7AUMFnBzhN7T3B/1nhDtMU5lmEfm8hpUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3eYMrvSCNirZlyhrmqSM+QDvZi9KBsKsAsrbC3aYPVNo+c9EYE4laoU2K3Zci0Tm
-	 eGgFmQ6/3rkd1SRceL9V82u3LqiXR6FyCh5msrGmWlqK+dILi+De/8MbtQ3/lh3e/i
-	 NrjDraF8ruyvlUqEveGizSHqJ4vMhfplmELEmQNY=
+	b=mLoXQrethFaovjEFiZ/RWkKtMInKZwBHFAwEz7+h13C5tFdAj0f1G7dOd6/P6i6yn
+	 ynjtdVAavr+cZPcF0icl85rukIVSElTHxdFYvSD/ex/meLeXQvpLA/mZn+n6fF1Oww
+	 lYEt9HArMKVSz9O1/zJnOsLQB1EuW1txwPCcTROk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 12/36] net: prevent mss overflow in skb_segment()
+Subject: [PATCH 6.6 116/166] scripts/checkstack.pl: match all stack sizes for s390
 Date: Mon, 18 Dec 2023 14:51:22 +0100
-Message-ID: <20231218135042.318331436@linuxfoundation.org>
+Message-ID: <20231218135110.227554906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,119 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 23d05d563b7e7b0314e65c8e882bc27eac2da8e7 ]
+[ Upstream commit aab1f809d7540def24498e81347740a7239a74d5 ]
 
-Once again syzbot is able to crash the kernel in skb_segment() [1]
+For some unknown reason the regular expression for checkstack only matches
+three digit numbers starting with the number "3", or any higher
+number. Which means that it skips any stack sizes smaller than 304
+bytes. This makes the checkstack script a bit less useful than it could be.
 
-GSO_BY_FRAGS is a forbidden value, but unfortunately the following
-computation in skb_segment() can reach it quite easily :
+Change the script to match any number. To be filtered out stack sizes
+can be configured with the min_stack variable, which omits any stack
+frame sizes smaller than 100 bytes by default.
 
-	mss = mss * partial_segs;
-
-65535 = 3 * 5 * 17 * 257, so many initial values of mss can lead to
-a bad final result.
-
-Make sure to limit segmentation so that the new mss value is smaller
-than GSO_BY_FRAGS.
-
-[1]
-
-general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 1 PID: 5079 Comm: syz-executor993 Not tainted 6.7.0-rc4-syzkaller-00141-g1ae4cd3cbdd0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
-Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
-RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
-RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
-RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
-R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
-R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
-FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-udp6_ufo_fragment+0xa0e/0xd00 net/ipv6/udp_offload.c:109
-ipv6_gso_segment+0x534/0x17e0 net/ipv6/ip6_offload.c:120
-skb_mac_gso_segment+0x290/0x610 net/core/gso.c:53
-__skb_gso_segment+0x339/0x710 net/core/gso.c:124
-skb_gso_segment include/net/gso.h:83 [inline]
-validate_xmit_skb+0x36c/0xeb0 net/core/dev.c:3626
-__dev_queue_xmit+0x6f3/0x3d60 net/core/dev.c:4338
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-packet_xmit+0x257/0x380 net/packet/af_packet.c:276
-packet_snd net/packet/af_packet.c:3087 [inline]
-packet_sendmsg+0x24c6/0x5220 net/packet/af_packet.c:3119
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg+0xd5/0x180 net/socket.c:745
-__sys_sendto+0x255/0x340 net/socket.c:2190
-__do_sys_sendto net/socket.c:2202 [inline]
-__se_sys_sendto net/socket.c:2198 [inline]
-__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7f8692032aa9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 d1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff8d685418 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8692032aa9
-RDX: 0000000000010048 RSI: 00000000200000c0 RDI: 0000000000000003
-RBP: 00000000000f4240 R08: 0000000020000540 R09: 0000000000000014
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8d685480
-R13: 0000000000000001 R14: 00007fff8d685480 R15: 0000000000000003
-</TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
-Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
-RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
-RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
-RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
-R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
-R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
-FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20231212164621.4131800-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/checkstack.pl | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index e03cd719b86b7..c93662512d02e 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -3625,8 +3625,9 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		/* GSO partial only requires that we trim off any excess that
- 		 * doesn't fit into an MSS sized block, so take care of that
- 		 * now.
-+		 * Cap len to not accidentally hit GSO_BY_FRAGS.
- 		 */
--		partial_segs = len / mss;
-+		partial_segs = min(len, GSO_BY_FRAGS - 1) / mss;
- 		if (partial_segs > 1)
- 			mss *= partial_segs;
- 		else
+diff --git a/scripts/checkstack.pl b/scripts/checkstack.pl
+index ac74f8629ceac..f27d552aec43f 100755
+--- a/scripts/checkstack.pl
++++ b/scripts/checkstack.pl
+@@ -97,8 +97,7 @@ my (@stack, $re, $dre, $sub, $x, $xs, $funcre, $min_stack);
+ 		#   11160:       a7 fb ff 60             aghi   %r15,-160
+ 		# or
+ 		#  100092:	 e3 f0 ff c8 ff 71	 lay	 %r15,-56(%r15)
+-		$re = qr/.*(?:lay|ag?hi).*\%r15,-(([0-9]{2}|[3-9])[0-9]{2})
+-		      (?:\(\%r15\))?$/ox;
++		$re = qr/.*(?:lay|ag?hi).*\%r15,-([0-9]+)(?:\(\%r15\))?$/o;
+ 	} elsif ($arch eq 'sparc' || $arch eq 'sparc64') {
+ 		# f0019d10:       9d e3 bf 90     save  %sp, -112, %sp
+ 		$re = qr/.*save.*%sp, -(([0-9]{2}|[3-9])[0-9]{2}), %sp/o;
 -- 
 2.43.0
 
