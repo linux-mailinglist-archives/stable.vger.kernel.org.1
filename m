@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-7400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BA9C817261
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754FA81729E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D600BB233B3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16E55286966
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE654989D;
-	Mon, 18 Dec 2023 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840E43A1D8;
+	Mon, 18 Dec 2023 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="osZ5iTCA"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="UxgpPSOo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0674988C
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB93814F63
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d3ac28ae81so11280915ad.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:06:03 -0800 (PST)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6d411636a95so1146674b3a.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 06:08:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702908363; x=1703513163; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702908504; x=1703513304; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ndjrj9ormxYeyGf0XezWVQj8PdurMdCkuiNJRm2vBRU=;
-        b=osZ5iTCAdn2y2mWAzhHvvO+K+hC/8A/3yJkeIkpPZgb71f10w6xiLxOYvM3inEASNV
-         TOMDrThaHF7piEN0b5gyOx30laL15kSPKfAFraK2uCmZQ1dsXh8otYziwDgDDvBX5+8z
-         Ia0+D7zLeGAWeH6OD+RU6XQa9JdN+mSJJ1bMRxGuIqxGL1XsejRm4oSw/nyq7cceL18Q
-         XSalqcB0ZotUGoxkCGxmQMxJQP8+RcygWex892Vf5mkX0nYAbhrikeFM6cUq+XvHyaxV
-         Y2hEcRPQrTH9t0HfN7BQWnQrOT9RaT34dOqy7Emn5mmQGPnEzzaRTvHcq0rnBgx1R0jo
-         AHww==
+        bh=wcMD2d+dqpE7HvHjXD40MERSZYDFTTl5IjlEXmZFjgI=;
+        b=UxgpPSOo5Py/LlDXfXpxf+VKRGLMzcIPJpnB+K8KetN/MO+vroy/rDtDpp9BUohLog
+         K1eRmYtHylW1cKzQ4D5xXbGYJ8lxbKgXZ3WWymWtVjQ3bMMZKjQOZICNSo6s/XkXIveS
+         PtUuIB7qV1e+HwQK1mnsYx1s/Yo8YfJjNTu1dVDfUi0a7HYbabiv6angKqnxFiHjUDPR
+         SQaQ9JTtIvEiV1n5e4bojWRmpXxPqo0UVNyqptdA0YGQhQ3ymATZRJyE9BKv+RJNYJYY
+         V5kaJMPSgrF8k9A0H9eSkc+jqj1fJZLQMV7QvLpicJuhTwdLoxQtalJrGHHITDukxCnj
+         s5Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702908363; x=1703513163;
+        d=1e100.net; s=20230601; t=1702908504; x=1703513304;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ndjrj9ormxYeyGf0XezWVQj8PdurMdCkuiNJRm2vBRU=;
-        b=FJpSdBuDotFZrO1H5OGbqD9dCtgBQeK6j4KtkhOz2SLj7s3ff/QxrrVnIDThiY0zsw
-         d3cpr4alik4wUvL/Zd18PwOhvsZgv4dA2pOudnxoUX9BxiXGANkjvFb1WNxnPYULpvXw
-         kKUuxwPunBmKZEYrm5TLQAq/9BmHhQ4WbY3xcbY6owkBl1+dFIy6xrvy/RoctGhYy1GJ
-         +3geZPYA4cR+CC8X95nVTRbPBen+EMMH8unmJlp0VpdZU+4guJ+tAY33KUEMzIuLQ4QN
-         4duOkp2KXMgl2e9qx8X9EDDWmAbfdK2Hp55Q/ArPpPV3LzGm4AqvZgu1sgEa5lxy+3Cy
-         Z8Sw==
-X-Gm-Message-State: AOJu0YwPzvuuzgBiFiiohFNH85xCTAXtFprw8BmCWoXKFl+aGD8zoQcb
-	tFsiv3dmq9mh2xB9Gc5YCr0Gk5bQMW5ar8KQeG0=
-X-Google-Smtp-Source: AGHT+IFdTh21yayxrjb4fZ4hd/tbma7mtN7Al05y03rKSL+ZDCFq+JOWsQ+ugSiywXdgYhgrHRMGGA==
-X-Received: by 2002:a17:902:a3c1:b0:1d3:a2b6:82aa with SMTP id q1-20020a170902a3c100b001d3a2b682aamr3304036plb.120.1702908362712;
-        Mon, 18 Dec 2023 06:06:02 -0800 (PST)
+        bh=wcMD2d+dqpE7HvHjXD40MERSZYDFTTl5IjlEXmZFjgI=;
+        b=tn7kkbu9mibKUF8PNWu4Hq3NTeAUMRNaTnd3KzCbZIYzD5keL1RwgxHKOY1uS+XlCm
+         LkAqMcMaGJGzGL2TGCm5WkYX3fbJ3cvkttO+CuhlECigPtYMes6tiN8V2eWfs1H2LEmE
+         6k1kX+BTi8tMOd6YMk73OW0ETmdG1NeN34unH46SZk7iLBvAtleMssvTjHxLkYoH3J93
+         qbqnnrML6pvWcH9jEwgNPKm103eU1vJCM4kf3YcDsFzuKYdY3zTFQeG5Swfg6WCrDimu
+         AlIhfaEokhpsfoGVdDLlZm7CKO39FG5XuUxmv+SuC3FuumUh7JJk0fcbfW7Siht0jx08
+         YBWw==
+X-Gm-Message-State: AOJu0Yyq6ma7/R3d+LCDvjl6NpqAwm30EjQUQJnyhVpDxY4V2onKn9pR
+	Gtb7MFhWOApKze5+XArJ1pUouIhakCF6aVxD/T8=
+X-Google-Smtp-Source: AGHT+IFNYOXvoCIB9GS6C46rwYocedWT4oy58UG4TKl/PPdwr9hMJCV7iqhz+XLasQIKr0grBpDk0g==
+X-Received: by 2002:a05:6a20:ba7:b0:18f:d9ed:fcda with SMTP id i39-20020a056a200ba700b0018fd9edfcdamr17633189pzh.13.1702908503654;
+        Mon, 18 Dec 2023 06:08:23 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id c1-20020a170903234100b001d3aafd228dsm2858433plh.75.2023.12.18.06.06.01
+        by smtp.gmail.com with ESMTPSA id r3-20020aa79883000000b006cbb65edcbfsm18792753pfl.12.2023.12.18.06.08.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 06:06:01 -0800 (PST)
-Message-ID: <658051c9.170a0220.684c2.67df@mx.google.com>
-Date: Mon, 18 Dec 2023 06:06:01 -0800 (PST)
+        Mon, 18 Dec 2023 06:08:23 -0800 (PST)
+Message-ID: <65805257.a70a0220.2219b.84de@mx.google.com>
+Date: Mon, 18 Dec 2023 06:08:23 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -66,213 +66,228 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.14
+X-Kernelci-Branch: queue/5.15
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.333-26-g4a7177a800c89
-Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.333-26-g4a7177a800c89)
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.15.143-84-g335ba9d04eedc
+Subject: stable-rc/queue/5.15 baseline: 86 runs,
+ 3 regressions (v5.15.143-84-g335ba9d04eedc)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
-.14.333-26-g4a7177a800c89)
+stable-rc/queue/5.15 baseline: 86 runs, 3 regressions (v5.15.143-84-g335ba9=
+d04eedc)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-4/kernel/v4.14.333-26-g4a7177a800c89/
+Regressions Summary
+-------------------
 
-Tree: stable-rc
-Branch: queue/4.14
-Git Describe: v4.14.333-26-g4a7177a800c89
-Git Commit: 4a7177a800c898b1c274667e915ddc2bf19c99b1
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
-Warnings Detected:
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
 
-Warnings summary:
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.15/ker=
+nel/v5.15.143-84-g335ba9d04eedc/plan/baseline/
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/5.15
+  Describe: v5.15.143-84-g335ba9d04eedc
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      335ba9d04eedc230553316f7068c0ab9f6123253 =
 
-Section mismatches summary:
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Test Regressions
+---------------- =
 
-Detailed per-defconfig build reports:
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
+  Details:     https://kernelci.org/test/plan/id/65801d06412362bbd9e134bd
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
+lcb.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
+lcb.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/65801d06412362bbd9e134c2
+        failing since 25 days (last pass: v5.15.114-13-g095e387c3889, first=
+ fail: v5.15.139-172-gb60494a37c0c)
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    2023-12-18T10:28:08.058988  / # #
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+    2023-12-18T10:28:08.161229  export SHELL=3D/bin/sh
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
+    2023-12-18T10:28:08.162011  #
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    2023-12-18T10:28:08.263446  / # export SHELL=3D/bin/sh. /lava-12301567/=
+environment
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+    2023-12-18T10:28:08.264149  =
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    2023-12-18T10:28:08.365653  / # . /lava-12301567/environment/lava-12301=
+567/bin/lava-test-runner /lava-12301567/1
 
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+    2023-12-18T10:28:08.366795  =
 
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
 
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
+    2023-12-18T10:28:08.383113  / # /lava-12301567/bin/lava-test-runner /la=
+va-12301567/1
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    2023-12-18T10:28:08.432691  + export 'TESTRUN_ID=3D1_bootrr'
 
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
+    2023-12-18T10:28:08.433198  + cd /lav<8>[   15.970683] <LAVA_SIGNAL_STA=
+RTRUN 1_bootrr 12301567_1.5.2.4.5>
+ =
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    ... (28 line(s) more)  =
 
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+ =
 
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
----
-For more info write to <info@kernelci.org>
+  Details:     https://kernelci.org/test/plan/id/65801cf5c40fe424a7e13478
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
+e-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
+e-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/65801cf5c40fe424a7e1347d
+        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
+t fail: v5.15.139-172-gb60494a37c0c)
+
+    2023-12-18T10:20:15.559466  / # #
+    2023-12-18T10:20:15.661070  export SHELL=3D/bin/sh
+    2023-12-18T10:20:15.661568  #
+    2023-12-18T10:20:15.762586  / # export SHELL=3D/bin/sh. /lava-448693/en=
+vironment
+    2023-12-18T10:20:15.763178  =
+
+    2023-12-18T10:20:15.864279  / # . /lava-448693/environment/lava-448693/=
+bin/lava-test-runner /lava-448693/1
+    2023-12-18T10:20:15.865294  =
+
+    2023-12-18T10:20:15.869573  / # /lava-448693/bin/lava-test-runner /lava=
+-448693/1
+    2023-12-18T10:20:15.901596  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-12-18T10:20:15.937540  + cd /lava-448693/<8>[   16.581853] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 448693_1.5.2.4.5> =
+
+    ... (10 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/65801d08b5e6224da4e134a7
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
+pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.143=
+-84-g335ba9d04eedc/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
+pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/65801d08b5e6224da4e134ac
+        failing since 25 days (last pass: v5.15.105-206-g4548859116b8, firs=
+t fail: v5.15.139-172-gb60494a37c0c)
+
+    2023-12-18T10:28:22.409107  / # #
+
+    2023-12-18T10:28:22.511290  export SHELL=3D/bin/sh
+
+    2023-12-18T10:28:22.512035  #
+
+    2023-12-18T10:28:22.613522  / # export SHELL=3D/bin/sh. /lava-12301575/=
+environment
+
+    2023-12-18T10:28:22.614277  =
+
+
+    2023-12-18T10:28:22.715762  / # . /lava-12301575/environment/lava-12301=
+575/bin/lava-test-runner /lava-12301575/1
+
+    2023-12-18T10:28:22.716986  =
+
+
+    2023-12-18T10:28:22.733333  / # /lava-12301575/bin/lava-test-runner /la=
+va-12301575/1
+
+    2023-12-18T10:28:22.792441  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-18T10:28:22.792955  + cd /lava-1230157<8>[   16.843227] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12301575_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
 
