@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B0A8170D9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:51:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B01817222
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E67D0283864
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:51:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28EC3283529
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2271D136;
-	Mon, 18 Dec 2023 13:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AC05BF9D;
+	Mon, 18 Dec 2023 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBeqFDaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8/XAFK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5694B129EF7;
-	Mon, 18 Dec 2023 13:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C10C433C8;
-	Mon, 18 Dec 2023 13:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892685BF93;
+	Mon, 18 Dec 2023 14:03:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BA6C433C8;
+	Mon, 18 Dec 2023 14:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907492;
-	bh=MBpoM3H3lX/EydImaLRu1cOTOGzRKFE049VrfEm9FEw=;
+	s=korg; t=1702908218;
+	bh=trbIOKhCetAVdmhf2FShdphHIJ7EeGCf3qsjRYZbPjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBeqFDaUDWlQt3MQiQJqrDmy1ERBAVHoU2skPnXMXHbEd9+OixnaphEXIDs+p332j
-	 8PSmjGNUSPi+GMAj9WszB1A0R9r7827gTt+6oXWvJDP02tB4MMskRsSTYQoJeV27Uu
-	 likQES+R+ce10jBxMNcrd3ipxtnYHJTA/MUDI70A=
+	b=F8/XAFK6CjTRs5eki4d1ZMdIGgVH/D/eNxXudnCSDgQiuyh+CTYbaVjzUeQ6vrwDH
+	 j36OoeG9HHkrCLu7WExaNMVqRna0Ur0BoYwJ3YYHcZRkb/b0oE74Nem1B9XwepIbgI
+	 27/7XSqleurXdCf+IPFM3Wiof6CtqOIyfZVMGP8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Li Nan <linan122@huawei.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 01/26] qca_debug: Prevent crash on TX ring changes
+Subject: [PATCH 6.6 097/166] nbd: fix null-ptr-dereference while accessing nbd->config
 Date: Mon, 18 Dec 2023 14:51:03 +0100
-Message-ID: <20231218135040.713232953@linuxfoundation.org>
+Message-ID: <20231218135109.325084543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,90 +52,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
+[ Upstream commit c2da049f419417808466c529999170f5c3ef7d3d ]
 
-The qca_spi driver stop and restart the SPI kernel thread
-(via ndo_stop & ndo_open) in case of TX ring changes. This is
-a big issue because it allows userspace to prevent restart of
-the SPI kernel thread (via signals). A subsequent change of
-TX ring wrongly assume a valid spi_thread pointer which result
-in a crash.
+Memory reordering may occur in nbd_genl_connect(), causing config_refs
+to be set to 1 while nbd->config is still empty. Opening nbd at this
+time will cause null-ptr-dereference.
 
-So prevent this by stopping the network traffic handling and
-temporary park the SPI thread.
+   T1                      T2
+   nbd_open
+    nbd_get_config_unlocked
+                 	   nbd_genl_connect
+                 	    nbd_alloc_and_init_config
+                 	     //memory reordered
+                  	     refcount_set(&nbd->config_refs, 1)  // 2
+     nbd->config
+      ->null point
+			     nbd->config = config  // 1
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix it by adding smp barrier to guarantee the execution sequence.
+
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://lore.kernel.org/r/20231116162316.1740402-4-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
- drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/block/nbd.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 92b6be9c44296..858c39cdae08a 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -275,7 +275,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- static int
- qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index daaf8805e876c..3f03cb3dc33cc 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -397,8 +397,16 @@ static u32 req_to_nbd_cmd_type(struct request *req)
+ 
+ static struct nbd_config *nbd_get_config_unlocked(struct nbd_device *nbd)
  {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct qcaspi *qca = netdev_priv(dev);
+-	if (refcount_inc_not_zero(&nbd->config_refs))
++	if (refcount_inc_not_zero(&nbd->config_refs)) {
++		/*
++		 * Add smp_mb__after_atomic to ensure that reading nbd->config_refs
++		 * and reading nbd->config is ordered. The pair is the barrier in
++		 * nbd_alloc_and_init_config(), avoid nbd->config_refs is set
++		 * before nbd->config.
++		 */
++		smp_mb__after_atomic();
+ 		return nbd->config;
++	}
  
- 	if ((ring->rx_pending) ||
-@@ -283,14 +282,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
- 
--	if (netif_running(dev))
--		ops->ndo_stop(dev);
-+	if (qca->spi_thread)
-+		kthread_park(qca->spi_thread);
- 
- 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
- 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
- 
--	if (netif_running(dev))
--		ops->ndo_open(dev);
-+	if (qca->spi_thread)
-+		kthread_unpark(qca->spi_thread);
+ 	return NULL;
+ }
+@@ -1559,7 +1567,15 @@ static int nbd_alloc_and_init_config(struct nbd_device *nbd)
+ 	init_waitqueue_head(&config->conn_wait);
+ 	config->blksize_bits = NBD_DEF_BLKSIZE_BITS;
+ 	atomic_set(&config->live_connections, 0);
++
+ 	nbd->config = config;
++	/*
++	 * Order refcount_set(&nbd->config_refs, 1) and nbd->config assignment,
++	 * its pair is the barrier in nbd_get_config_unlocked().
++	 * So nbd_get_config_unlocked() won't see nbd->config as null after
++	 * refcount_inc_not_zero() succeed.
++	 */
++	smp_mb__before_atomic();
+ 	refcount_set(&nbd->config_refs, 1);
  
  	return 0;
- }
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 0c454eeb3bd8e..4142554dc29e3 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -552,6 +552,18 @@ qcaspi_spi_thread(void *data)
- 	netdev_info(qca->net_dev, "SPI thread created\n");
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
-+		if (kthread_should_park()) {
-+			netif_tx_disable(qca->net_dev);
-+			netif_carrier_off(qca->net_dev);
-+			qcaspi_flush_tx_ring(qca);
-+			kthread_parkme();
-+			if (qca->sync == QCASPI_SYNC_READY) {
-+				netif_carrier_on(qca->net_dev);
-+				netif_wake_queue(qca->net_dev);
-+			}
-+			continue;
-+		}
-+
- 		if ((qca->intr_req == qca->intr_svc) &&
- 		    !qca->txr.skb[qca->txr.head])
- 			schedule();
 -- 
 2.43.0
 
