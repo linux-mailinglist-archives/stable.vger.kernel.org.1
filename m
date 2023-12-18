@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-7704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED1D8175E0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98BF68175E2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30EA71C2420C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC23B2294F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691E95BFAB;
-	Mon, 18 Dec 2023 15:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9372A5D74E;
+	Mon, 18 Dec 2023 15:39:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109E65D74E
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9893D549
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5cda3e35b26so433150a12.1
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:22 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d3c394c1f4so4317625ad.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913962; x=1703518762;
+        d=1e100.net; s=20230601; t=1702913966; x=1703518766;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1vloPmXnhSpFX6WXn/NAo2DqgJZyutUe3GClxk3ALTM=;
-        b=L0qwenqrLN0g/LvVk1WMr9KMRf6LQJl8KEZwaiLM+uKLo1X9ue1lYkZJ0iwz5k/6Ah
-         o7dMyM/5ZQx13Q3RqCScEEwp7BXgevnS6R90tjZslK7P5v60pt0KAIJGyfkcJk+igAML
-         ArifoQqqzrpZ53drnOHoctOODjg3kp/PoeTBwJ6pgSPH4z3NF+6SzHztC5qvMNBAT1UA
-         KERDZX12zbLIobU/+8Qij/hSW9iFM26Niasasd1fk/Hjw2eKC0Uqxww+GP76jwy+oiH8
-         ewEB0Gb0Q6Lr5d1leNDMoaJatHfEWXs/BGc4JtzK41F5+CTDusCQukyU42H+oAGAXl2N
-         J3+A==
-X-Gm-Message-State: AOJu0YzBSGjUoRafr0+yLPwCFstuhUw+9UhgAVT+DwHUALulhcGNrQSl
-	iWT4xpK3fQKjt39OKBWch+U=
-X-Google-Smtp-Source: AGHT+IGQ107ql1H9fzzFvqKAXX4gvW9p0j4UO+3I9rdj+9nXNOQMZySwq88guvSLqfusCDPktoK61Q==
-X-Received: by 2002:a17:90a:5ac4:b0:28b:7d4f:3109 with SMTP id n62-20020a17090a5ac400b0028b7d4f3109mr674102pji.66.1702913962372;
-        Mon, 18 Dec 2023 07:39:22 -0800 (PST)
+        bh=xw9tXho1DIJEjn4YIfcca3TZxKttf08OVeVkRDzk8lY=;
+        b=PQ3kRqefdQpkj8Rjjf385oXOgI4Xnwo87rpsDnutComsCgHrBxLpDtWkB7WBcMIPoP
+         J78i7faCRO1DqBmnMmVAv7WWT7lteEQn1D7EMpzDKhfTU6aCM+iNIQFaafpHhOjxaAkr
+         JonamTz3lxACg7IObGIV2hMilr9Q/sPW4MYnLcFLWEGsPFPjAHJiKNbMZCyC9W6elx51
+         JtXgdO9uRfbJ8CXPHpkwfxjBunkZzM4Nix68o7T2VHGr38OpArX0vGtn9mqTCQx1cn6G
+         v5seQ3PQQflCtTNhUqYrMx74Z/z8IImvFNclbBzSssh1mkyT7QCb7Eee3ovNIMo5JtUz
+         Tp/g==
+X-Gm-Message-State: AOJu0Yxf9juTXcmrYK50930coPDVFRTNIFWEcIVFtFpS4xb/a65C/2FV
+	DkuRYInDt9Z2zXuGpiVCbIw=
+X-Google-Smtp-Source: AGHT+IHWHIYM/KebPduy9XDFQfehnEQRaUM5nsrKxlhuxaShzXDpOYj0iXfBlbTtA5xgD3AI3baghw==
+X-Received: by 2002:a17:90b:3b87:b0:28b:7643:e65c with SMTP id pc7-20020a17090b3b8700b0028b7643e65cmr662494pjb.56.1702913965704;
+        Mon, 18 Dec 2023 07:39:25 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.20
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:39:21 -0800 (PST)
+        Mon, 18 Dec 2023 07:39:25 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 075/154] ksmbd: Fix spelling mistake "excceed" -> "exceeded"
-Date: Tue, 19 Dec 2023 00:33:35 +0900
-Message-Id: <20231218153454.8090-76-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 076/154] ksmbd: Fix parameter name and comment mismatch
+Date: Tue, 19 Dec 2023 00:33:36 +0900
+Message-Id: <20231218153454.8090-77-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -64,32 +66,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 7a17c61ee3b2683c40090179c273f4701fca9677 ]
+[ Upstream commit 63f09a9986eb58578ed6ad0e27a6e2c54e49f797 ]
 
-There is a spelling mistake in an error message. Fix it.
+fs/ksmbd/vfs.c:965: warning: Function parameter or member 'attr_value' not described in 'ksmbd_vfs_setxattr'.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3946
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/connection.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ksmbd/vfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/connection.c b/fs/ksmbd/connection.c
-index 9ed669d58742..ccb978f48e41 100644
---- a/fs/ksmbd/connection.c
-+++ b/fs/ksmbd/connection.c
-@@ -312,7 +312,7 @@ int ksmbd_conn_handler_loop(void *p)
- 			max_allowed_pdu_size = SMB3_MAX_MSGSIZE;
- 
- 		if (pdu_size > max_allowed_pdu_size) {
--			pr_err_ratelimited("PDU length(%u) excceed maximum allowed pdu size(%u) on connection(%d)\n",
-+			pr_err_ratelimited("PDU length(%u) exceeded maximum allowed pdu size(%u) on connection(%d)\n",
- 					pdu_size, max_allowed_pdu_size,
- 					conn->status);
- 			break;
+diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
+index d7814397764c..90f657f3b48f 100644
+--- a/fs/ksmbd/vfs.c
++++ b/fs/ksmbd/vfs.c
+@@ -950,9 +950,9 @@ ssize_t ksmbd_vfs_getxattr(struct user_namespace *user_ns,
+  * ksmbd_vfs_setxattr() - vfs helper for smb set extended attributes value
+  * @user_ns:	user namespace
+  * @dentry:	dentry to set XATTR at
+- * @name:	xattr name for setxattr
+- * @value:	xattr value to set
+- * @size:	size of xattr value
++ * @attr_name:	xattr name for setxattr
++ * @attr_value:	xattr value to set
++ * @attr_size:	size of xattr value
+  * @flags:	destination buffer length
+  *
+  * Return:	0 on success, otherwise error
 -- 
 2.25.1
 
