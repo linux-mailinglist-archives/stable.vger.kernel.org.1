@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2504C81723B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EA0817149
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1382B1C24DC4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C821C23EAB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11293A1C7;
-	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5FD1D127;
+	Mon, 18 Dec 2023 13:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cj4i8DOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzjZ4v9T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FFA3789C;
-	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40290C433C8;
-	Mon, 18 Dec 2023 14:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D271D145;
+	Mon, 18 Dec 2023 13:56:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3F0C433C7;
+	Mon, 18 Dec 2023 13:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908278;
-	bh=zguJ9+2UmljHc937MQOWbRlFCXejv4Hef2xYE0It4RA=;
+	s=korg; t=1702907771;
+	bh=LB5J9iCbOvvE6YHnxh2VpPPbCVT1ltyJEZWZ27l9fDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cj4i8DOKvprdMrrlCIJyD7M5nQKNkH+p3N82iVpvxJ0+m0oHP+MJFmAJ8s1GxVx3x
-	 JkK//voqxvCgwkaDlauNDYj4OZn4UqJXwFy4bIXx+hHGeuPUwnNJI4U3JmF5OhCqJq
-	 HU5nSUnZF4yzyP65BoT4rnDQP93qYPc8cIX59KwM=
+	b=UzjZ4v9TQ2eX2fDaC/k6/evtmF0UayU0/Q+N1yhahZnRX2fgjr0JVeVJDn6LAV8ZC
+	 /JPofeR+FGSOiKSrtTgIq/gNGHVMSOKDveROJu4J79/6xmnjXSShhlT1ro2bBrQDWj
+	 H4CDTtCqIGu4HJ/4DvY4pd8IEiQxT15HLIi7lhJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changhui Zhong <czhong@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/166] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+Subject: [PATCH 6.1 041/106] appletalk: Fix Use-After-Free in atalk_ioctl
 Date: Mon, 18 Dec 2023 14:50:55 +0100
-Message-ID: <20231218135108.976861380@linuxfoundation.org>
+Message-ID: <20231218135056.785401542@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
+[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
 
-Inside blkg_for_each_descendant_pre(), both
-css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
-and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
-is called.
+Because atalk_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with atalk_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+atalk_ioctl() -> skb_peek()
+atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
 
-Fix the warning by adding rcu read lock.
-
-Reported-by: Changhui Zhong <czhong@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/appletalk/ddp.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index 13e4377a8b286..16f5766620a41 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1320,6 +1320,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
- 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
- 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
- 
-+	rcu_read_lock();
- 	/*
- 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
- 	 * considered to have rules if either the tg itself or any of its
-@@ -1347,6 +1348,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
- 		this_tg->latency_target = max(this_tg->latency_target,
- 				parent_tg->latency_target);
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index a06f4d4a6f476..f67f14db16334 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1811,15 +1811,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		break;
  	}
-+	rcu_read_unlock();
+ 	case TIOCINQ: {
+-		/*
+-		 * These two are safe on a single CPU system as only
+-		 * user tasks fiddle here
+-		 */
+-		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
++		struct sk_buff *skb;
+ 		long amount = 0;
  
- 	/*
- 	 * We're already holding queue_lock and know @tg is valid.  Let's
++		spin_lock_irq(&sk->sk_receive_queue.lock);
++		skb = skb_peek(&sk->sk_receive_queue);
+ 		if (skb)
+ 			amount = skb->len - sizeof(struct ddpehdr);
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		rc = put_user(amount, (int __user *)argp);
+ 		break;
+ 	}
 -- 
 2.43.0
 
