@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C859A8172A6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CE781726C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1ED1C24B3A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F7051C24E30
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EE942362;
-	Mon, 18 Dec 2023 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073ED4FF76;
+	Mon, 18 Dec 2023 14:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5egd+/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSBW9rVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D00A129EF9;
-	Mon, 18 Dec 2023 14:08:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859A3C433C8;
-	Mon, 18 Dec 2023 14:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA654FF87;
+	Mon, 18 Dec 2023 14:06:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D7AC433C8;
+	Mon, 18 Dec 2023 14:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908527;
-	bh=SPNXNkSTO6GEG7WGAs2gAnpyLJTXj8SUA/TfjfU2BD0=;
+	s=korg; t=1702908388;
+	bh=P8m0oijNeg7b3CdZSlGkPTxfHs98qcBPvD9X+FK6GUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5egd+/o/q6tUwL/tlrlDk+5IRsO2CegsZ3m8Kzfd5Z2i8ppMBP2Uri3Ne8Kxccn8
-	 HQp44O16vYbC499/q1crln8+3st64IUfz90MyELY3VychJrNpr8z1Z2a9cd6pHU6z3
-	 Todc7fw7niQyOsQBBi3+jhl1SEL+3ouoWQ/2ytpU=
+	b=iSBW9rVm3pS1g2Vy0f1ZRAX0snqZgBFDqSbDM4S+EmBSRu3b5VUoCjzQ+a1sL6X0S
+	 uIZNzB3QBgomfkkkPPHm/WOgwBHz3WkHkjswwdFzgFLGkZqtUgtAkcjgbUvGNxZHkr
+	 EDuU3fVim6WdNZvWha0107Q1OceBYb+ndcQMhcHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 41/62] HID: add ALWAYS_POLL quirk for Apple kb
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 159/166] ring-buffer: Do not update before stamp when switching sub-buffers
 Date: Mon, 18 Dec 2023 14:52:05 +0100
-Message-ID: <20231218135048.068624687@linuxfoundation.org>
+Message-ID: <20231218135112.241471155@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +54,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
+commit 9e45e39dc249c970d99d2681f6bcb55736fd725c upstream.
 
-These devices disconnect if suspended without remote wakeup. They can operate
-with the standard driver.
+The ring buffer timestamps are synchronized by two timestamp placeholders.
+One is the "before_stamp" and the other is the "write_stamp" (sometimes
+referred to as the "after stamp" but only in the comments. These two
+stamps are key to knowing how to handle nested events coming in with a
+lockless system.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When moving across sub-buffers, the before stamp is updated but the write
+stamp is not. There's an effort to put back the before stamp to something
+that seems logical in case there's nested events. But as the current event
+is about to cross sub-buffers, and so will any new nested event that happens,
+updating the before stamp is useless, and could even introduce new race
+conditions.
+
+The first event on a sub-buffer simply uses the sub-buffer's timestamp
+and keeps a "delta" of zero. The "before_stamp" and "write_stamp" are not
+used in the algorithm in this case. There's no reason to try to fix the
+before_stamp when this happens.
+
+As a bonus, it removes a cmpxchg() when crossing sub-buffers!
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231211114420.36dde01b@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ring_buffer.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 787349f2de01d..1b3a83fa76168 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
--- 
-2.43.0
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3604,14 +3604,7 @@ __rb_reserve_next(struct ring_buffer_per
+ 
+ 	/* See if we shot pass the end of this buffer page */
+ 	if (unlikely(write > BUF_PAGE_SIZE)) {
+-		/* before and after may now different, fix it up*/
+-		b_ok = rb_time_read(&cpu_buffer->before_stamp, &info->before);
+-		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
+-		if (a_ok && b_ok && info->before != info->after)
+-			(void)rb_time_cmpxchg(&cpu_buffer->before_stamp,
+-					      info->before, info->after);
+-		if (a_ok && b_ok)
+-			check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
++		check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
+ 		return rb_move_tail(cpu_buffer, tail, info);
+ 	}
+ 
 
 
 
