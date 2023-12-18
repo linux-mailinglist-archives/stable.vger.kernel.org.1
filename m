@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-7255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C577F8171A2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AE7817124
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69344B21919
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97E24B21D7E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF49129ECD;
-	Mon, 18 Dec 2023 13:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DA71D13D;
+	Mon, 18 Dec 2023 13:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdtEhzQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAsW+sR8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687D129EF7;
-	Mon, 18 Dec 2023 13:59:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23DAC433C7;
-	Mon, 18 Dec 2023 13:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2BE1D122;
+	Mon, 18 Dec 2023 13:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8A0C433C8;
+	Mon, 18 Dec 2023 13:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907975;
-	bh=+ab/kW6/P5Po4KMjpLW/NHy/poFlg1ZUjQL3Ke2FrFI=;
+	s=korg; t=1702907679;
+	bh=6f85c8T7FLA1lQ9kguUUk7+MMAZZ/zyfxySdW97IRoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdtEhzQv0Sxuy49iglica1vufbwwFQZkLBz7ta3STgR/91IyQ1jG5LtZ1wioFyXDS
-	 KLXNtg/wQpHf2wn5cWQr3B+4Y0QGvLTG1nkfhITEQks9HXxuysgafldg1lt+s/ll31
-	 NF3nfF9jrVQzhFK8D012vdG9AS1RmmJv7VhJWlH0=
+	b=KAsW+sR8WmZvtt4QFwdG3feFVpFCmtrOF2Wk6b+aYmhklb8t2ZcEC9y1f5ZXvGX1M
+	 GzbCL/M8hXMFbzu/FMggzbjExw0lQr590tkGH1d+LeFo0vTd3NdpjXGzYu3hKurnN2
+	 jh1HPPV1xYz/9WnvYRaI1tM7phq/kts0Aa33yN1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 092/106] smb: client: fix OOB in receive_encrypted_standard()
+	Naveen N Rao <naveen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 4.19 36/36] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
 Date: Mon, 18 Dec 2023 14:51:46 +0100
-Message-ID: <20231218135058.995875170@linuxfoundation.org>
+Message-ID: <20231218135043.104321977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit eec04ea119691e65227a97ce53c0da6b9b74b0b7 upstream.
+commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
 
-Fix potential OOB in receive_encrypted_standard() if server returned a
-large shdr->NextCommand that would end up writing off the end of
-@next_buffer.
+Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
+stack unwind") added use of a new stack frame on ftrace entry to fix
+stack unwind. However, the commit missed updating the offset used while
+tearing down the ftrace stack when ftrace is disabled. Fix the same.
 
-Fixes: b24df3e30cbf ("cifs: update receive_encrypted_standard to handle compounded responses")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+In addition, the commit missed saving the correct stack pointer in
+pt_regs. Update the same.
+
+Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5065,6 +5065,7 @@ receive_encrypted_standard(struct TCP_Se
- 	struct smb2_hdr *shdr;
- 	unsigned int pdu_length = server->pdu_size;
- 	unsigned int buf_size;
-+	unsigned int next_cmd;
- 	struct mid_q_entry *mid_entry;
- 	int next_is_large;
- 	char *next_buffer = NULL;
-@@ -5093,14 +5094,15 @@ receive_encrypted_standard(struct TCP_Se
- 	next_is_large = server->large_buf;
- one_more:
- 	shdr = (struct smb2_hdr *)buf;
--	if (shdr->NextCommand) {
-+	next_cmd = le32_to_cpu(shdr->NextCommand);
-+	if (next_cmd) {
-+		if (WARN_ON_ONCE(next_cmd > pdu_length))
-+			return -1;
- 		if (next_is_large)
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
--		memcpy(next_buffer,
--		       buf + le32_to_cpu(shdr->NextCommand),
--		       pdu_length - le32_to_cpu(shdr->NextCommand));
-+		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
- 	}
+--- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
++++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+@@ -59,7 +59,7 @@ _GLOBAL(ftrace_regs_caller)
+ 	SAVE_10GPRS(22, r1)
  
- 	mid_entry = smb2_find_mid(server, buf);
-@@ -5124,8 +5126,8 @@ one_more:
- 	else
- 		ret = cifs_handle_standard(server, mid_entry);
+ 	/* Save previous stack pointer (r1) */
+-	addi	r8, r1, SWITCH_FRAME_SIZE
++	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 	std	r8, GPR1(r1)
  
--	if (ret == 0 && shdr->NextCommand) {
--		pdu_length -= le32_to_cpu(shdr->NextCommand);
-+	if (ret == 0 && next_cmd) {
-+		pdu_length -= next_cmd;
- 		server->large_buf = next_is_large;
- 		if (next_is_large)
- 			server->bigbuf = buf = next_buffer;
+ 	/* Load special regs for save below */
+@@ -154,7 +154,7 @@ ftrace_no_trace:
+ 	mflr	r3
+ 	mtctr	r3
+ 	REST_GPR(3, r1)
+-	addi	r1, r1, SWITCH_FRAME_SIZE
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 	mtlr	r0
+ 	bctr
+ 
 
 
 
