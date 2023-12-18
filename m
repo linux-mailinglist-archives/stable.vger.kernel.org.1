@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7263181716E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B9281725E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D0EF283589
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 293B21F24706
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56361D137;
-	Mon, 18 Dec 2023 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7747B498A0;
+	Mon, 18 Dec 2023 14:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpIjyWPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjdbARaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FC2129EE3;
-	Mon, 18 Dec 2023 13:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDCFC433C7;
-	Mon, 18 Dec 2023 13:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F7391D123;
+	Mon, 18 Dec 2023 14:06:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9806C433CB;
+	Mon, 18 Dec 2023 14:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907859;
-	bh=yyjhGixLjKR7QJGiu27SD/KTTaFdIgRMb1D6HklL1yE=;
+	s=korg; t=1702908364;
+	bh=pV/FRunrtj9xzQJquDa22qkn9zRevGGsRMYNNP0my7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpIjyWPvBSO2unLsvsM0sAVzP4M4ySmaeSINtr4ovSE3NKr5HA1FU3M4ncW3NsTG+
-	 93f/dc6Q1bN5z/FXCbmQuN3Oo0CFgp8yRwgK5V+8a/pvZRoMpA9qkgEaZlLPnnylIo
-	 mDRgHY8YvcjiTSzdTa8rT8z7H/GXGwcw5k2Obwmg=
+	b=SjdbARaUBGmaWu4mhn6a2x0KsJF28WuhrC55RjkC9U5GOfNXLNlK7oWakVFrzVDXB
+	 2gnAhE2bLBA57NrkgtjvIzcQHVBD+H4VdQ+tROIDBHoKA276raSmiY4rmncDo4NR8L
+	 ZBQ5ugG0rFziZIGtonfzwxPm3uWqp9nDoL2H8kf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/106] asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+Subject: [PATCH 6.6 121/166] smb: client: introduce ->parse_reparse_point()
 Date: Mon, 18 Dec 2023 14:51:27 +0100
-Message-ID: <20231218135058.183247129@linuxfoundation.org>
+Message-ID: <20231218135110.463997270@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +53,249 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 125b0bb95dd6bec81b806b997a4ccb026eeecf8f ]
+[ Upstream commit 539aad7f14dab7f947e5ab81901c0b20513a50db ]
 
-We really don't want to do atomic_read() or anything like that, since we
-already have the value, not the lock.  The whole point of this is that
-we've loaded the lock from memory, and we want to check whether the
-value we loaded was a locked one or not.
+Parse reparse point into cifs_open_info_data structure and feed it
+through cifs_open_info_to_fattr().
 
-The main use of this is the lockref code, which loads both the lock and
-the reference count in one atomic operation, and then works on that
-combined value.  With the atomic_read(), the compiler would pointlessly
-spill the value to the stack, in order to then be able to read it back
-"atomically".
-
-This is the qspinlock version of commit c6f4a9002252 ("asm-generic:
-ticket-lock: Optimize arch_spin_value_unlocked()") which fixed this same
-bug for ticket locks.
-
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/all/CAHk-=whNRv0v6kQiV5QO6DJhjH4KEL36vWQ6Re8Csrnh4zbRkQ@mail.gmail.com/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/qspinlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/cifsglob.h |  6 ++++--
+ fs/smb/client/inode.c    | 23 +++++++++++++---------
+ fs/smb/client/smb1ops.c  | 41 ++++++++++++++++++++++------------------
+ fs/smb/client/smb2ops.c  | 28 ++++++++++++++-------------
+ 4 files changed, 56 insertions(+), 42 deletions(-)
 
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index 995513fa26904..0655aa5b57b29 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -70,7 +70,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
-  */
- static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index b8d1c19f67714..7180b5713bea6 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -395,8 +395,7 @@ struct smb_version_operations {
+ 			     struct cifs_tcon *tcon,
+ 			     struct cifs_sb_info *cifs_sb,
+ 			     const char *full_path,
+-			     char **target_path,
+-			     struct kvec *rsp_iov);
++			     char **target_path);
+ 	/* open a file for non-posix mounts */
+ 	int (*open)(const unsigned int xid, struct cifs_open_parms *oparms, __u32 *oplock,
+ 		    void *buf);
+@@ -551,6 +550,9 @@ struct smb_version_operations {
+ 	bool (*is_status_io_timeout)(char *buf);
+ 	/* Check for STATUS_NETWORK_NAME_DELETED */
+ 	bool (*is_network_name_deleted)(char *buf, struct TCP_Server_Info *srv);
++	int (*parse_reparse_point)(struct cifs_sb_info *cifs_sb,
++				   struct kvec *rsp_iov,
++				   struct cifs_open_info_data *data);
+ };
+ 
+ struct smb_version_values {
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index d6aa5e474d5e7..7a2a013bb05ef 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -457,8 +457,7 @@ static int cifs_get_unix_fattr(const unsigned char *full_path,
+ 			return -EOPNOTSUPP;
+ 		rc = server->ops->query_symlink(xid, tcon,
+ 						cifs_sb, full_path,
+-						&fattr->cf_symlink_target,
+-						NULL);
++						&fattr->cf_symlink_target);
+ 		cifs_dbg(FYI, "%s: query_symlink: %d\n", __func__, rc);
+ 	}
+ 	return rc;
+@@ -1035,22 +1034,28 @@ static int reparse_info_to_fattr(struct cifs_open_info_data *data,
+ 		if (!rc)
+ 			iov = &rsp_iov;
+ 	}
++
++	rc = -EOPNOTSUPP;
+ 	switch ((data->reparse_tag = tag)) {
+ 	case 0: /* SMB1 symlink */
+-		iov = NULL;
+-		fallthrough;
+-	case IO_REPARSE_TAG_NFS:
+-	case IO_REPARSE_TAG_SYMLINK:
+-		if (!data->symlink_target && server->ops->query_symlink) {
++		if (server->ops->query_symlink) {
+ 			rc = server->ops->query_symlink(xid, tcon,
+ 							cifs_sb, full_path,
+-							&data->symlink_target,
+-							iov);
++							&data->symlink_target);
+ 		}
+ 		break;
+ 	case IO_REPARSE_TAG_MOUNT_POINT:
+ 		cifs_create_junction_fattr(fattr, sb);
++		rc = 0;
+ 		goto out;
++	default:
++		if (data->symlink_target) {
++			rc = 0;
++		} else if (server->ops->parse_reparse_point) {
++			rc = server->ops->parse_reparse_point(cifs_sb,
++							      iov, data);
++		}
++		break;
+ 	}
+ 
+ 	cifs_open_info_to_fattr(fattr, data, sb);
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index 6b4d8effa79df..0dd599004e042 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -976,32 +976,36 @@ static int cifs_query_symlink(const unsigned int xid,
+ 			      struct cifs_tcon *tcon,
+ 			      struct cifs_sb_info *cifs_sb,
+ 			      const char *full_path,
+-			      char **target_path,
+-			      struct kvec *rsp_iov)
++			      char **target_path)
  {
--	return !atomic_read(&lock.val);
-+	return !lock.val.counter;
+-	struct reparse_data_buffer *buf;
+-	TRANSACT_IOCTL_RSP *io = rsp_iov->iov_base;
+-	bool unicode = !!(io->hdr.Flags2 & SMBFLG2_UNICODE);
+-	u32 plen = le16_to_cpu(io->ByteCount);
+ 	int rc;
+ 
+ 	cifs_tcon_dbg(FYI, "%s: path=%s\n", __func__, full_path);
+ 
+-	/* Check for unix extensions */
+-	if (cap_unix(tcon->ses)) {
+-		rc = CIFSSMBUnixQuerySymLink(xid, tcon, full_path, target_path,
+-					     cifs_sb->local_nls,
+-					     cifs_remap(cifs_sb));
+-		if (rc == -EREMOTE)
+-			rc = cifs_unix_dfs_readlink(xid, tcon, full_path,
+-						    target_path,
+-						    cifs_sb->local_nls);
+-		return rc;
+-	}
++	if (!cap_unix(tcon->ses))
++		return -EOPNOTSUPP;
++
++	rc = CIFSSMBUnixQuerySymLink(xid, tcon, full_path, target_path,
++				     cifs_sb->local_nls, cifs_remap(cifs_sb));
++	if (rc == -EREMOTE)
++		rc = cifs_unix_dfs_readlink(xid, tcon, full_path,
++					    target_path, cifs_sb->local_nls);
++	return rc;
++}
++
++static int cifs_parse_reparse_point(struct cifs_sb_info *cifs_sb,
++				    struct kvec *rsp_iov,
++				    struct cifs_open_info_data *data)
++{
++	struct reparse_data_buffer *buf;
++	TRANSACT_IOCTL_RSP *io = rsp_iov->iov_base;
++	bool unicode = !!(io->hdr.Flags2 & SMBFLG2_UNICODE);
++	u32 plen = le16_to_cpu(io->ByteCount);
+ 
+ 	buf = (struct reparse_data_buffer *)((__u8 *)&io->hdr.Protocol +
+ 					     le32_to_cpu(io->DataOffset));
+-	return parse_reparse_point(buf, plen, cifs_sb, unicode, target_path);
++	return parse_reparse_point(buf, plen, cifs_sb, unicode,
++				   &data->symlink_target);
  }
  
- /**
+ static bool
+@@ -1200,6 +1204,7 @@ struct smb_version_operations smb1_operations = {
+ 	.rename = CIFSSMBRename,
+ 	.create_hardlink = CIFSCreateHardLink,
+ 	.query_symlink = cifs_query_symlink,
++	.parse_reparse_point = cifs_parse_reparse_point,
+ 	.open = cifs_open_file,
+ 	.set_fid = cifs_set_fid,
+ 	.close = cifs_close_file,
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index f1966ab9941cb..0390d7a801d18 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2949,6 +2949,12 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 		return parse_reparse_symlink(
+ 			(struct reparse_symlink_data_buffer *)buf,
+ 			plen, unicode, target_path, cifs_sb);
++	case IO_REPARSE_TAG_LX_SYMLINK:
++	case IO_REPARSE_TAG_AF_UNIX:
++	case IO_REPARSE_TAG_LX_FIFO:
++	case IO_REPARSE_TAG_LX_CHR:
++	case IO_REPARSE_TAG_LX_BLK:
++		return 0;
+ 	default:
+ 		cifs_dbg(VFS, "srv returned unknown symlink buffer tag:0x%08x\n",
+ 			 le32_to_cpu(buf->ReparseTag));
+@@ -2956,22 +2962,18 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 	}
+ }
+ 
+-static int smb2_query_symlink(const unsigned int xid,
+-			      struct cifs_tcon *tcon,
+-			      struct cifs_sb_info *cifs_sb,
+-			      const char *full_path,
+-			      char **target_path,
+-			      struct kvec *rsp_iov)
++static int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
++				    struct kvec *rsp_iov,
++				    struct cifs_open_info_data *data)
+ {
+ 	struct reparse_data_buffer *buf;
+ 	struct smb2_ioctl_rsp *io = rsp_iov->iov_base;
+ 	u32 plen = le32_to_cpu(io->OutputCount);
+ 
+-	cifs_tcon_dbg(FYI, "%s: path: %s\n", __func__, full_path);
+-
+ 	buf = (struct reparse_data_buffer *)((u8 *)io +
+ 					     le32_to_cpu(io->OutputOffset));
+-	return parse_reparse_point(buf, plen, cifs_sb, true, target_path);
++	return parse_reparse_point(buf, plen, cifs_sb,
++				   true, &data->symlink_target);
+ }
+ 
+ static int smb2_query_reparse_point(const unsigned int xid,
+@@ -5215,7 +5217,7 @@ struct smb_version_operations smb20_operations = {
+ 	.unlink = smb2_unlink,
+ 	.rename = smb2_rename_path,
+ 	.create_hardlink = smb2_create_hardlink,
+-	.query_symlink = smb2_query_symlink,
++	.parse_reparse_point = smb2_parse_reparse_point,
+ 	.query_mf_symlink = smb3_query_mf_symlink,
+ 	.create_mf_symlink = smb3_create_mf_symlink,
+ 	.open = smb2_open_file,
+@@ -5317,7 +5319,7 @@ struct smb_version_operations smb21_operations = {
+ 	.unlink = smb2_unlink,
+ 	.rename = smb2_rename_path,
+ 	.create_hardlink = smb2_create_hardlink,
+-	.query_symlink = smb2_query_symlink,
++	.parse_reparse_point = smb2_parse_reparse_point,
+ 	.query_mf_symlink = smb3_query_mf_symlink,
+ 	.create_mf_symlink = smb3_create_mf_symlink,
+ 	.open = smb2_open_file,
+@@ -5422,7 +5424,7 @@ struct smb_version_operations smb30_operations = {
+ 	.unlink = smb2_unlink,
+ 	.rename = smb2_rename_path,
+ 	.create_hardlink = smb2_create_hardlink,
+-	.query_symlink = smb2_query_symlink,
++	.parse_reparse_point = smb2_parse_reparse_point,
+ 	.query_mf_symlink = smb3_query_mf_symlink,
+ 	.create_mf_symlink = smb3_create_mf_symlink,
+ 	.open = smb2_open_file,
+@@ -5536,7 +5538,7 @@ struct smb_version_operations smb311_operations = {
+ 	.unlink = smb2_unlink,
+ 	.rename = smb2_rename_path,
+ 	.create_hardlink = smb2_create_hardlink,
+-	.query_symlink = smb2_query_symlink,
++	.parse_reparse_point = smb2_parse_reparse_point,
+ 	.query_mf_symlink = smb3_query_mf_symlink,
+ 	.create_mf_symlink = smb3_create_mf_symlink,
+ 	.open = smb2_open_file,
 -- 
 2.43.0
 
