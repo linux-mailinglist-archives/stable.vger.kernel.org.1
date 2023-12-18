@@ -1,165 +1,291 @@
-Return-Path: <stable+bounces-7792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96875817759
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:23:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0F281775B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404B51C25A46
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:23:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB8CC1C25A9A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5832D4FF82;
-	Mon, 18 Dec 2023 16:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7CC4239F;
+	Mon, 18 Dec 2023 16:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q0Y3+3YF"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="VxgsF7ty"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99967498B8;
-	Mon, 18 Dec 2023 16:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CFBAB1C0007;
-	Mon, 18 Dec 2023 16:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702916601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AoIlun1JjSNLq1gPPPffdSuDW5Li447GWbbWCncLmyA=;
-	b=Q0Y3+3YFcjvtmsjkkyZnggtOd0FqkiUMbcG+QkwGU86eOMWuPJCx1ZdkI0+78dZnUggJZ0
-	0st3qbEsedGVMjSWAxf1SMiDjjCWjjKkwSxGWB07hHjdqjTvhjbPcvribUtQg/VwW9/+aN
-	dcnxHY//gbVkfAdSrwV1I8n0qp9TXl07bcArDAAEHbkM2mWDrUW9wCVhAQLKJBeLSRrmKm
-	7Re+IMFCv44/OIEjDEog7WGjx5i+oKRJbC4uE96YYgDW3Z9RleP7xpsVwpmG5u8iOgb8xi
-	fkdQG8kxJmOF3gNP5nE0Vy41QhFEgrvxRU3QTFlrdjCG8KUzAThf4CS3ARNvaw==
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>
-Cc: Romain Gantois <romain.gantois@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Sylvain Girard <sylvain.girard@se.com>,
-	Pascal EBERHARD <pascal.eberhard@se.com>,
-	Richard Tresidder <rtresidd@electromag.com.au>,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking COE
-Date: Mon, 18 Dec 2023 17:23:23 +0100
-Message-ID: <20231218162326.173127-2-romain.gantois@bootlin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218162326.173127-1-romain.gantois@bootlin.com>
-References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A23F519
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 16:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d3cfb1568eso4371795ad.1
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 08:23:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702916617; x=1703521417; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jzEVxoM9RzTu8hbgHI8sTwflcaI3H2H+LvzpxT+pa3o=;
+        b=VxgsF7tyS8BzR1NwjSHUF3pvw4edCwxo0HD3/IISRqtfxCo6mzlIVLEiDhqRMKvLPF
+         WSer8V7fYKmTr5dcop2qWO3kfn121IbkXcY7DtEc1v90tAFSHmdjyM1Hmk1Tlp5Qg1UC
+         CPnPWPrd/Q0hCjl+T2ExzCkcU8+L5DBv85xqYvzQPsnlRLbIDX2oF0YuU9Ncltnturqt
+         Rc2a0/mCgRmiLDpubdam2sFJVejfXGV62EM7XhFRD7WLvvwH8tAjSBDbBZu/tFb/K0Tq
+         XP68T5dChpuGqD2CBW7SlNQNJDWvazvoX138Sg1mmIF29bL4AvBT3OwofBhbS+3EWPLl
+         Yklw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702916617; x=1703521417;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jzEVxoM9RzTu8hbgHI8sTwflcaI3H2H+LvzpxT+pa3o=;
+        b=hHliJsEmHtXse6Qq7O70utREluKaC0pKTK+q0QS+UUhY+pmL01QDVeaFIrCqr8OqOv
+         nQxZzv2/s0L3qDSphPHS/LEzJthj2sZ2FceFc5C/uVkuwpBN9Sy7NIr9PB8HwprhnCPD
+         sr3TTOwncwoufNweTXItHugmCT8Xmn21XnsWd0Rw04FfZpjYH15Dqy6A2W+s4WbI4irJ
+         xCJJlpBg7PeJId0Ufad6y+8GOZH0Y6aOJOYoqMs6W/6X66A311523uoAyuiIxHtSO+cw
+         kr+y7DCeCs2qZIGlIrcNS3+pOguXoE+AHB7nTFo2i1EDsUhhpatemD1cXJFkpuJXCtzM
+         Wj3A==
+X-Gm-Message-State: AOJu0YywVNlnYBlAYLfF4bzSR67QHhi1Kyje3B5106MKmQQiCZJTEGp1
+	FFjacqxGoMm5mTO0cI7Yna6kE0Y6BeGiUCCCRvM=
+X-Google-Smtp-Source: AGHT+IEO4OvbafuCLWSIFCpaFDugYMp8HLM2qKWJDlxlHcflJFJxK3JXuVDUkxes+PY4FmfWFI9DQg==
+X-Received: by 2002:a17:903:41d1:b0:1d3:d81c:795e with SMTP id u17-20020a17090341d100b001d3d81c795emr94927ple.106.1702916616928;
+        Mon, 18 Dec 2023 08:23:36 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 17-20020a17090a1a1100b0028b6e4ecc9asm3450302pjk.52.2023.12.18.08.23.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 08:23:36 -0800 (PST)
+Message-ID: <65807208.170a0220.76b56.8509@mx.google.com>
+Date: Mon, 18 Dec 2023 08:23:36 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: romain.gantois@bootlin.com
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.204-63-g17eb2653990e3
+Subject: stable-rc/linux-5.10.y build: 19 builds: 3 failed, 16 passed, 3 errors,
+ 11 warnings (v5.10.204-63-g17eb2653990e3)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Some stmmac cores have Checksum Offload Engines that cannot handle DSA tags
-properly. These cores find the IP/TCP headers on their own and end up
-computing an incorrect checksum when a DSA tag is inserted between the MAC
-header and IP header.
+stable-rc/linux-5.10.y build: 19 builds: 3 failed, 16 passed, 3 errors, 11 =
+warnings (v5.10.204-63-g17eb2653990e3)
 
-Add an additional check on stmmac link up so that COE is deactivated
-when the stmmac device is used as a DSA conduit.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.204-63-g17eb2653990e3/
 
-Add a new dma_feature flag to allow cores to signal that their COEs can't
-handle DSA tags on TX.
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.204-63-g17eb2653990e3
+Git Commit: 17eb2653990e369bcef47f69a554147997ac4dd3
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
-Cc: stable@vger.kernel.org
-Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
-Closes: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
-Reported-by: Romain Gantois <romain.gantois@bootlin.com>
-Closes: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
-Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+Build Failures Detected:
+
+arm64:
+    defconfig: (gcc-10) FAIL
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+arm:
+    multi_v7_defconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 1 error, 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 1 error, 2 warnings
+
+arm:
+    multi_v7_defconfig (gcc-10): 1 error, 2 warnings
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+Errors summary:
+
+    3    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declarat=
+ion of function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3D=
+implicit-function-declaration]
+
+Warnings summary:
+
+    3    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization =
+of =E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 mak=
+es pointer from integer without a cast [-Wint-conversion]
+    3    cc1: some warnings being treated as errors
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 section mi=
+smatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warni=
+ngs, 0 section mismatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 sec=
+tion mismatches
+
+Errors:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: error: implicit declaration o=
+f function =E2=80=98drm_atomic_get_old_crtc_state=E2=80=99 [-Werror=3Dimpli=
+cit-function-declaration]
+
+Warnings:
+    drivers/gpu/drm/sun4i/sun4i_crtc.c:63:37: warning: initialization of =
+=E2=80=98struct drm_crtc_state *=E2=80=99 from =E2=80=98int=E2=80=99 makes =
+pointer from integer without a cast [-Wint-conversion]
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h     |  1 +
- .../net/ethernet/stmicro/stmmac/dwmac1000_dma.c  |  1 +
- .../net/ethernet/stmicro/stmmac/stmmac_main.c    | 16 +++++++++++++++-
- 3 files changed, 17 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index a381dee8b52d..1469d95e77a0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -406,6 +406,7 @@ struct dma_features {
- 	unsigned int rx_coe_type1;
- 	unsigned int rx_coe_type2;
- 	unsigned int rxfifo_over_2048;
-+	unsigned int dsa_breaks_tx_coe;
- 	/* TX and RX number of channels */
- 	unsigned int number_rx_channel;
- 	unsigned int number_tx_channel;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-index daf79cdbd3ec..50686cdc3320 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
-@@ -264,6 +264,7 @@ static int dwmac1000_get_hw_feature(void __iomem *ioaddr,
- 	dma_cap->number_tx_channel = (hw_cap & DMA_HW_FEAT_TXCHCNT) >> 22;
- 	/* Alternate (enhanced) DESC mode */
- 	dma_cap->enh_desc = (hw_cap & DMA_HW_FEAT_ENHDESSEL) >> 24;
-+	dma_cap->dsa_breaks_tx_coe = 1;
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a9b6b383e863..733348c65e04 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -42,6 +42,7 @@
- #include <net/page_pool/helpers.h>
- #include <net/pkt_cls.h>
- #include <net/xdp_sock_drv.h>
-+#include <net/dsa.h>
- #include "stmmac_ptp.h"
- #include "stmmac.h"
- #include "stmmac_xdp.h"
-@@ -993,8 +994,11 @@ static void stmmac_mac_link_up(struct phylink_config *config,
- 			       int speed, int duplex,
- 			       bool tx_pause, bool rx_pause)
- {
--	struct stmmac_priv *priv = netdev_priv(to_net_dev(config->dev));
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct stmmac_priv *priv = netdev_priv(ndev);
-+	unsigned int tx_queue_cnt;
- 	u32 old_ctrl, ctrl;
-+	int queue;
- 
- 	if ((priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP) &&
- 	    priv->plat->serdes_powerup)
-@@ -1102,6 +1106,16 @@ static void stmmac_mac_link_up(struct phylink_config *config,
- 
- 	if (priv->plat->flags & STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY)
- 		stmmac_hwtstamp_correct_latency(priv, priv);
-+
-+	/* DSA tags break COEs on some cores. Disable TX checksum
-+	 * offloading on those cores if the netdevice is a DSA conduit.
-+	 */
-+	if (priv->dma_cap.dsa_breaks_tx_coe && netdev_uses_dsa(ndev)) {
-+		tx_queue_cnt = priv->plat->tx_queues_to_use;
-+		for (queue = 0; queue < tx_queue_cnt; queue++)
-+			priv->plat->tx_queues_cfg[queue].coe_unsupported = true;
-+	}
-+
- }
- 
- static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
--- 
-2.43.0
-
+For more info write to <info@kernelci.org>
 
