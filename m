@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C11817215
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 572DB817129
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7411C24D34
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC61C23471
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886E24FF9F;
-	Mon, 18 Dec 2023 14:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85561D12B;
+	Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gdz7iZf2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttVTXclV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C76C4FF98;
-	Mon, 18 Dec 2023 14:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4CCC433C7;
-	Mon, 18 Dec 2023 14:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA2129EFE;
+	Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03276C433C7;
+	Mon, 18 Dec 2023 13:54:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908199;
-	bh=gehmy+FL2U5QSnC6CJl3COLaQ5SE9BMc/77lmdX6bUg=;
+	s=korg; t=1702907695;
+	bh=JYtLqdliJEhCzoGJod7ZdC3ATdlp5U53zl1waBMsZqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gdz7iZf2/w5t1/o12/LvPw4ozbUZBvcpHRULVkRKZzqOSfFxLNLsVKh7TUV7KhnoD
-	 wpySJmx+YL0HIIYnnwPFTPd0FrLT1iocbBFQ18YbBeOYdUC6xH8qP3PITWwv/JExp+
-	 XmJ7E+I3iu+Qma18sLzw+jI0zt9ilB2Ud8J22ZI0=
+	b=ttVTXclVdxwI1pbJwlS+NjweP/WuZE85hIVC+tVRKZbv8AWPfcPvMPBp8Ecw7lfTu
+	 KXZ5U+2fsNEOSiXxPCIL5aR9Vl3FfrxzH1mTCwHpcV/o1A9jg0103hnWgt239iROks
+	 KjtUpzZD+4Ygv5x8itctTw6/TsDvaC41eaesyv5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Parschauer <s.parschauer@gmx.de>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 060/166] HID: Add quirk for Labtec/ODDOR/aikeec handbrake
-Date: Mon, 18 Dec 2023 14:50:26 +0100
-Message-ID: <20231218135107.733846113@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 013/106] qca_debug: Fix ethtool -G iface tx behavior
+Date: Mon, 18 Dec 2023 14:50:27 +0100
+Message-ID: <20231218135055.530018512@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Parschauer <s.parschauer@gmx.de>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 31e52523267faab5ed8569b9d5c22c9a2283872f upstream.
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-This device needs ALWAYS_POLL quirk, otherwise it keeps reconnecting
-indefinitely. It is a handbrake for sim racing detected as joystick.
-Reported and tested by GitHub user N0th1ngM4tt3rs.
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-Link: https://github.com/sriemer/fix-linux-mouse issue 22
-Signed-off-by: Sebastian Parschauer <s.parschauer@gmx.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
+
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
+
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    |    1 +
- drivers/hid/hid-quirks.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -744,6 +744,7 @@
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 250a4f91a7a84..a739c06ede4e7 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
  
- #define USB_VENDOR_ID_LABTEC		0x1020
- #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
-+#define USB_DEVICE_ID_LABTEC_ODDOR_HANDBRAKE	0x8888
+ #define QCASPI_MAX_REGS 0x20
  
- #define USB_VENDOR_ID_LCPOWER		0x1241
- #define USB_DEVICE_ID_LCPOWER_LC1000	0xf767
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -120,6 +120,7 @@ static const struct hid_device_id hid_qu
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_EASYPEN_M406XE), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_MOUSEPEN_I608X_V2), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_KYE, USB_DEVICE_ID_KYE_PENSKETCH_T609A), HID_QUIRK_MULTI_INPUT },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LABTEC, USB_DEVICE_ID_LABTEC_ODDOR_HANDBRAKE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_LENOVO, USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019), HID_QUIRK_ALWAYS_POLL },
++#define QCASPI_RX_MAX_FRAMES 4
++
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -252,9 +254,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
+ }
+ 
+@@ -265,7 +267,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+-- 
+2.43.0
+
 
 
 
