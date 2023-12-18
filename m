@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4C78170F7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85E1981722F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87635283B38
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2776AB23BF9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2453A1D127;
-	Mon, 18 Dec 2023 13:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27B75BFAD;
+	Mon, 18 Dec 2023 14:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvdMwR/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ly81DtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEBC14F63;
-	Mon, 18 Dec 2023 13:52:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EACA4C433C8;
-	Mon, 18 Dec 2023 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A053788B;
+	Mon, 18 Dec 2023 14:04:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF9FC433C8;
+	Mon, 18 Dec 2023 14:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907575;
-	bh=unkRAYOmofrF784Cxc/dwycALpLn8XVQsCyFQi0WftU=;
+	s=korg; t=1702908245;
+	bh=K6oGuZQBl+lh96tUfPP3lw0AOBj4T6cYAYkw0aoEUNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvdMwR/+sZ1DY9VWBAa2vZK5vKAuFqlqmuU981gn3sJDJ6iGgTvk9WIVtEahIGS1E
-	 r8ljjuR2/9d27Fznx6ZPP3h5yW/q7LuxhZMg1oVu6VzU/csYthV70euSDJpmurwHzh
-	 5eOmaT31jY+/m+OzqnUzuWWkB9N+fSzxwhLXdfQw=
+	b=0ly81DtGQMAcQeDOpnk2jACsnrcFPdAiS2EIrWKJvzfAVHH0LS747pzzV120O8kjI
+	 Cy6MW/IRMIcq1TxQ8wLqEdV5CKXh3j3Rf9tb9NTlFPHfyVJcEgRS3i0YQRNlwBiXpE
+	 oxCKBRydflV+17ot1zcTxWliXNTRGamIFlNoZfwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/36] qca_debug: Fix ethtool -G iface tx behavior
+Subject: [PATCH 6.6 106/166] platform/x86: intel_telemetry: Fix kernel doc descriptions
 Date: Mon, 18 Dec 2023 14:51:12 +0100
-Message-ID: <20231218135041.970361428@linuxfoundation.org>
+Message-ID: <20231218135109.761235075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +53,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
+[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
 
-After calling ethtool -g it was not possible to adjust the TX ring
-size again:
+LKP found issues with a kernel doc in the driver:
 
-  # ethtool -g eth1
-  Ring parameters for eth1:
-  Pre-set maximums:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  Current hardware settings:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  # ethtool -G eth1 tx 8
-  netlink error: Invalid argument
+core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
+core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
 
-The reason for this is that the readonly setting rx_pending get
-initialized and after that the range check in qcaspi_set_ringparam()
-fails regardless of the provided parameter. So fix this by accepting
-the exposed RX defaults. Instead of adding another magic number
-better use a new define here.
+It looks like it were copy'n'paste typos when these descriptions
+had been introduced. Fix the typos.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/platform/x86/intel/telemetry/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 26b0ca7a7b43d..b650b6a5e8718 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -30,6 +30,8 @@
- 
- #define QCASPI_MAX_REGS 0x20
- 
-+#define QCASPI_RX_MAX_FRAMES 4
-+
- static const u16 qcaspi_spi_regs[] = {
- 	SPI_REG_BFR_SIZE,
- 	SPI_REG_WRBUF_SPC_AVA,
-@@ -266,9 +268,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
- 	struct qcaspi *qca = netdev_priv(dev);
- 
--	ring->rx_max_pending = 4;
-+	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_max_pending = TX_RING_MAX_LEN;
--	ring->rx_pending = 4;
-+	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_pending = qca->txr.count;
- }
- 
-@@ -277,7 +279,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
- 	struct qcaspi *qca = netdev_priv(dev);
- 
--	if ((ring->rx_pending) ||
-+	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
- 	    (ring->rx_mini_pending) ||
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
+diff --git a/drivers/platform/x86/intel/telemetry/core.c b/drivers/platform/x86/intel/telemetry/core.c
+index fdf55b5d69480..e4be40f73eebf 100644
+--- a/drivers/platform/x86/intel/telemetry/core.c
++++ b/drivers/platform/x86/intel/telemetry/core.c
+@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
+ /**
+  * telemetry_update_events() - Update telemetry Configuration
+  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
+- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
++ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
+  *
+  * This API updates the IOSS & PSS Telemetry configuration. Old config
+  * is overwritten. Call telemetry_reset_events when logging is over
+@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
+ /**
+  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
+  * @pss_evtconfig: Pointer to PSS related configuration.
+- * @pss_evtconfig: Pointer to IOSS related configuration.
++ * @ioss_evtconfig: Pointer to IOSS related configuration.
+  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
+  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
+  *
 -- 
 2.43.0
 
