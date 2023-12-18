@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4270181717D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A687817111
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCD88B20B97
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 118291F2332F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8EA15AC0;
-	Mon, 18 Dec 2023 13:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567C71D123;
+	Mon, 18 Dec 2023 13:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNfjqvGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dl3zL+yj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6536129ED2;
-	Mon, 18 Dec 2023 13:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9D2C433C8;
-	Mon, 18 Dec 2023 13:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B899B1D127;
+	Mon, 18 Dec 2023 13:54:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A81C433C9;
+	Mon, 18 Dec 2023 13:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907900;
-	bh=SV0J3CCoA4Np0A6Hvy5ILqO+K4kvJEPVLZIwfWKuYWM=;
+	s=korg; t=1702907646;
+	bh=x++un3CT69lmn6HEujGzNIkWRlD2RIrTz2RnMSNTJfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNfjqvGzT+sVehjGW1u4EsVmzZNF6XX6DBm58UGGDQKQXwqpemouNLLXMf1dCY/0n
-	 LU8tahFF6carPaWWmG/rpuKjmA2rhORvfSBWcY5+XwlsgITs9eV1qZKCFYTTxpimke
-	 3/BI1Jefa/F889o0c8zv6M/WVxJtyZv2fU4QYCUQ=
+	b=dl3zL+yjCMSyi55+ebk1NSZ1RyS8ji8Ll8hlmZPDOGSJQ+R2rQfMJ/9w+qex28N80
+	 L4wrXHRNWenNZabMGT8KtH733A6SMBAEF7YiMzK3zWPvAiEBE+w2cMpiK+G+vFd2Do
+	 VfI7TIe0GO50S9nI5FI4ju8s8jngYbHa/iLxgFAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 087/106] btrfs: free qgroup reserve when ORDERED_IOERR is set
+	James Houghton <jthoughton@google.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 4.19 31/36] arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
 Date: Mon, 18 Dec 2023 14:51:41 +0100
-Message-ID: <20231218135058.794976771@linuxfoundation.org>
+Message-ID: <20231218135042.943369042@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: James Houghton <jthoughton@google.com>
 
-commit f63e1164b90b385cd832ff0fdfcfa76c3cc15436 upstream.
+commit 3c0696076aad60a2f04c019761921954579e1b0e upstream.
 
-An ordered extent completing is a critical moment in qgroup reserve
-handling, as the ownership of the reservation is handed off from the
-ordered extent to the delayed ref. In the happy path we release (unlock)
-but do not free (decrement counter) the reservation, and the delayed ref
-drives the free. However, on an error, we don't create a delayed ref,
-since there is no ref to add. Therefore, free on the error path.
+It is currently possible for a userspace application to enter an
+infinite page fault loop when using HugeTLB pages implemented with
+contiguous PTEs when HAFDBS is not available. This happens because:
 
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+1. The kernel may sometimes write PTEs that are sw-dirty but hw-clean
+   (PTE_DIRTY | PTE_RDONLY | PTE_WRITE).
+
+2. If, during a write, the CPU uses a sw-dirty, hw-clean PTE in handling
+   the memory access on a system without HAFDBS, we will get a page
+   fault.
+
+3. HugeTLB will check if it needs to update the dirty bits on the PTE.
+   For contiguous PTEs, it will check to see if the pgprot bits need
+   updating. In this case, HugeTLB wants to write a sequence of
+   sw-dirty, hw-dirty PTEs, but it finds that all the PTEs it is about
+   to overwrite are all pte_dirty() (pte_sw_dirty() => pte_dirty()),
+   so it thinks no update is necessary.
+
+We can get the kernel to write a sw-dirty, hw-clean PTE with the
+following steps (showing the relevant VMA flags and pgprot bits):
+
+i.   Create a valid, writable contiguous PTE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE
+
+ii.  mprotect the VMA to PROT_NONE.
+       VMA vmflags:     VM_SHARED
+       VMA pgprot bits: PTE_RDONLY
+       PTE pgprot bits: PTE_DIRTY | PTE_RDONLY
+
+iii. mprotect the VMA back to PROT_READ | PROT_WRITE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE | PTE_RDONLY
+
+Make it impossible to create a writeable sw-dirty, hw-clean PTE with
+pte_modify(). Such a PTE should be impossible to create, and there may
+be places that assume that pte_dirty() implies pte_hw_dirty().
+
+Signed-off-by: James Houghton <jthoughton@google.com>
+Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
+Cc: <stable@vger.kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20231204172646.2541916-3-jthoughton@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ordered-data.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/btrfs/ordered-data.c
-+++ b/fs/btrfs/ordered-data.c
-@@ -544,7 +544,9 @@ void btrfs_remove_ordered_extent(struct
- 			release = entry->disk_num_bytes;
- 		else
- 			release = entry->num_bytes;
--		btrfs_delalloc_release_metadata(btrfs_inode, release, false);
-+		btrfs_delalloc_release_metadata(btrfs_inode, release,
-+						test_bit(BTRFS_ORDERED_IOERR,
-+							 &entry->flags));
- 	}
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -595,6 +595,12 @@ static inline pte_t pte_modify(pte_t pte
+ 	if (pte_hw_dirty(pte))
+ 		pte = pte_mkdirty(pte);
+ 	pte_val(pte) = (pte_val(pte) & ~mask) | (pgprot_val(newprot) & mask);
++	/*
++	 * If we end up clearing hw dirtiness for a sw-dirty PTE, set hardware
++	 * dirtiness again.
++	 */
++	if (pte_sw_dirty(pte))
++		pte = pte_mkdirty(pte);
+ 	return pte;
+ }
  
- 	percpu_counter_add_batch(&fs_info->ordered_bytes, -entry->num_bytes,
 
 
 
