@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-7573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB88817323
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12ADD817272
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 261211F23580
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F372853D6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F453788E;
-	Mon, 18 Dec 2023 14:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE50A5A841;
+	Mon, 18 Dec 2023 14:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yh1EtWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFQ2oJ7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDE7129ED2;
-	Mon, 18 Dec 2023 14:13:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64ED3C433C7;
-	Mon, 18 Dec 2023 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807F73A1C6;
+	Mon, 18 Dec 2023 14:06:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB36C433C8;
+	Mon, 18 Dec 2023 14:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908833;
-	bh=4ElKjSIm3od4fYDo6hJ/KMVIvRFiqJxdpkyP9d6zS0g=;
+	s=korg; t=1702908405;
+	bh=3a85cNJlSC4iej43BJShFyHdQU8RTSX9ZrPYHk/sS1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Yh1EtWFQCDME1UtCe6PNHg7M0OJqd+2Tp+FNKHlf4SD+3RJVDYgtgkF5DMaWwneg
-	 PuZX9gEsP2+UGFpqdp7TtIC68hKl5erK+1D5jzwC5CYwfBgzV8/46uJeqx6vxNGDQ/
-	 9YZc50+LoIHPgzDD7LlH3Ms2c9hE+HPjTOImRPXs=
+	b=RFQ2oJ7W8TXRPGcWTDFvZkhADeX1auxv+3kDoHFzp1P4xl0TiP72RNcmxxEgRBc4q
+	 7A65N6Pd1skXaihlOScZzs7zTUv9lH3lyi/lRjzm9WQrHjAO0oNTD4KNUjqmU/1HgJ
+	 JX4kJlI5NnkSXoptEbJNmTr1ZZtot0AYgpZy4FkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
-	Coly Li <colyli@suse.de>,
-	Eric Wheeler <bcache@lists.ewheeler.net>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 50/83] bcache: avoid oversize memory allocation by small stripe_size
+	Fangrui Song <maskray@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.6 165/166] x86/speculation, objtool: Use absolute relocations for annotations
 Date: Mon, 18 Dec 2023 14:52:11 +0100
-Message-ID: <20231218135051.938556171@linuxfoundation.org>
+Message-ID: <20231218135112.502265588@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +55,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Fangrui Song <maskray@google.com>
 
-[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
+commit b8ec60e1186cdcfce41e7db4c827cb107e459002 upstream.
 
-Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
-used for dirty data writeback, their sizes are decided by backing device
-capacity and stripe size. Larger backing device capacity or smaller
-stripe size make these two arraies occupies more dynamic memory space.
+.discard.retpoline_safe sections do not have the SHF_ALLOC flag.  These
+sections referencing text sections' STT_SECTION symbols with PC-relative
+relocations like R_386_PC32 [0] is conceptually not suitable.  Newer
+LLD will report warnings for REL relocations even for relocatable links [1]:
 
-Currently bcache->stripe_size is directly inherited from
-queue->limits.io_opt of underlying storage device. For normal hard
-drives, its limits.io_opt is 0, and bcache sets the corresponding
-stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
-devices do declare value for queue->limits.io_opt, small stripe_size
-(comparing to 1TB) becomes an issue for oversize memory allocations of
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
-capacity of hard drives gets much larger in recent decade.
+    ld.lld: warning: vmlinux.a(drivers/i2c/busses/i2c-i801.o):(.discard.retpoline_safe+0x120): has non-ABS relocation R_386_PC32 against symbol ''
 
-For example a raid5 array assembled by three 20TB hardrives, the raid
-device capacity is 40TB with typical 512KB limits.io_opt. After the math
-calculation in bcache code, these two arraies will occupy 400MB dynamic
-memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
-declared on a new 2TB hard drive, then these two arraies request 2GB and
-512MB dynamic memory from kzalloc(). The result is that bcache device
-always fails to initialize on his system.
+Switch to absolute relocations instead, which indicate link-time
+addresses.  In a relocatable link, these addresses are also output
+section offsets, used by checks in tools/objtool/check.c.  When linking
+vmlinux, these .discard.* sections will be discarded, therefore it is
+not a problem that R_X86_64_32 cannot represent a kernel address.
 
-To avoid the oversize memory allocation, bcache->stripe_size should not
-directly inherited by queue->limits.io_opt from the underlying device.
-This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
-and set bcache device's stripe size against the declared limits.io_opt
-value from the underlying storage device,
-- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size directly by this limits.io_opt value.
-- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size by a value multiplying limits.io_opt and euqal or
-  large than BCH_MIN_STRIPE_SZ.
+Alternatively, we could set the SHF_ALLOC flag for .discard.* sections,
+but I think non-SHF_ALLOC for sections to be discarded makes more sense.
 
-Then the minimal stripe size of a bcache device will always be >= 4MB.
-For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
-in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
-by these two arraies will be 2.5MB in total.
+Note: if we decide to never support REL architectures (e.g. arm, i386),
+we can utilize R_*_NONE relocations (.reloc ., BFD_RELOC_NONE, sym),
+making .discard.* sections zero-sized.  That said, the section content
+waste is 4 bytes per entry, much smaller than sizeof(Elf{32,64}_Rel).
 
-Such mount of memory allocated for bcache->stripe_sectors_dirty and
-bcache->full_dirty_stripes is reasonable for most of storage devices.
+  [0] commit 1c0c1faf5692 ("objtool: Use relative pointers for annotations")
+  [1] https://github.com/ClangBuiltLinux/linux/issues/1937
 
-Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
-Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Fangrui Song <maskray@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20230920001728.1439947-1-maskray@google.com
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/bcache.h | 1 +
- drivers/md/bcache/super.c  | 2 ++
- 2 files changed, 3 insertions(+)
+ arch/x86/include/asm/alternative.h   |    4 ++--
+ arch/x86/include/asm/nospec-branch.h |    4 ++--
+ include/linux/objtool.h              |   10 +++++-----
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index 5fc989a6d4528..21344aaf1bdae 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -265,6 +265,7 @@ struct bcache_device {
- #define BCACHE_DEV_WB_RUNNING		3
- #define BCACHE_DEV_RATE_DW_RUNNING	4
- 	int			nr_stripes;
-+#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
- 	unsigned int		stripe_size;
- 	atomic_t		*stripe_sectors_dirty;
- 	unsigned long		*full_dirty_stripes;
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 9e7a6c3faa420..5ad83924d8e3b 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -909,6 +909,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -58,7 +58,7 @@
+ #define ANNOTATE_IGNORE_ALTERNATIVE				\
+ 	"999:\n\t"						\
+ 	".pushsection .discard.ignore_alts\n\t"			\
+-	".long 999b - .\n\t"					\
++	".long 999b\n\t"					\
+ 	".popsection\n\t"
  
- 	if (!d->stripe_size)
- 		d->stripe_size = 1 << 31;
-+	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
-+		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
+ /*
+@@ -352,7 +352,7 @@ static inline int alternatives_text_rese
+ .macro ANNOTATE_IGNORE_ALTERNATIVE
+ 	.Lannotate_\@:
+ 	.pushsection .discard.ignore_alts
+-	.long .Lannotate_\@ - .
++	.long .Lannotate_\@
+ 	.popsection
+ .endm
  
- 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
- 	if (!n || n > max_stripes) {
--- 
-2.43.0
-
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -196,7 +196,7 @@
+ .macro ANNOTATE_RETPOLINE_SAFE
+ .Lhere_\@:
+ 	.pushsection .discard.retpoline_safe
+-	.long .Lhere_\@ - .
++	.long .Lhere_\@
+ 	.popsection
+ .endm
+ 
+@@ -334,7 +334,7 @@
+ #define ANNOTATE_RETPOLINE_SAFE					\
+ 	"999:\n\t"						\
+ 	".pushsection .discard.retpoline_safe\n\t"		\
+-	".long 999b - .\n\t"					\
++	".long 999b\n\t"					\
+ 	".popsection\n\t"
+ 
+ typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -48,13 +48,13 @@
+ #define ANNOTATE_NOENDBR					\
+ 	"986: \n\t"						\
+ 	".pushsection .discard.noendbr\n\t"			\
+-	".long 986b - .\n\t"					\
++	".long 986b\n\t"					\
+ 	".popsection\n\t"
+ 
+ #define ASM_REACHABLE							\
+ 	"998:\n\t"							\
+ 	".pushsection .discard.reachable\n\t"				\
+-	".long 998b - .\n\t"						\
++	".long 998b\n\t"						\
+ 	".popsection\n\t"
+ 
+ #else /* __ASSEMBLY__ */
+@@ -66,7 +66,7 @@
+ #define ANNOTATE_INTRA_FUNCTION_CALL				\
+ 	999:							\
+ 	.pushsection .discard.intra_function_calls;		\
+-	.long 999b - .;						\
++	.long 999b;						\
+ 	.popsection;
+ 
+ /*
+@@ -118,7 +118,7 @@
+ .macro ANNOTATE_NOENDBR
+ .Lhere_\@:
+ 	.pushsection .discard.noendbr
+-	.long	.Lhere_\@ - .
++	.long	.Lhere_\@
+ 	.popsection
+ .endm
+ 
+@@ -142,7 +142,7 @@
+ .macro REACHABLE
+ .Lhere_\@:
+ 	.pushsection .discard.reachable
+-	.long	.Lhere_\@ - .
++	.long	.Lhere_\@
+ 	.popsection
+ .endm
+ 
 
 
 
