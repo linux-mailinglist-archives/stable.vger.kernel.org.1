@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-7306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA668171F4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0518E8171CF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2A9EB21E8E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5AFE283A50
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38423A1C8;
-	Mon, 18 Dec 2023 14:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACEC5BFB7;
+	Mon, 18 Dec 2023 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiZ0vUFp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDSskOqz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B8D1D146;
-	Mon, 18 Dec 2023 14:01:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05135C433C7;
-	Mon, 18 Dec 2023 14:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B663A1AA;
+	Mon, 18 Dec 2023 14:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68FD4C433CD;
+	Mon, 18 Dec 2023 14:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908114;
-	bh=2mNmtoVMjJvPReiMcK5JST0wKmVjKnJo0D4LFlCltTc=;
+	s=korg; t=1702908037;
+	bh=EvlhL0+KpFf3BPEXRZR3mTWwVz8HPKcZVyJ7C3Akcxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DiZ0vUFpylSDRzuCxQwqtiS8MUBj9HP241RhLeGD2WCW39SK9rTVivvO3gNv7elHk
-	 O/WPR4XhFxyH3o9rb8HrUEyfaJ0nrepfkFblSPzAAKO9mU8HIIxev7obGk0MPGROM6
-	 zkSKzRf1ORFwJ2SLnbi5NmQkBIWpq/dvOstHwH5k=
+	b=sDSskOqzEMwmBP31c+C/IT4x4J2YZ6pyTxKVdqZkYG2FLCCt1ybWol/g5VwnM3Dn/
+	 aoSJP30hgMVNhWgzpAsAKIjS7YXU9iTu7fj4x4jkNouoql/ajLgTzjMYgQ7LdjbDxB
+	 k355EQuec5Pse8/Iphzd+1lUq33DWOTSJSPaJYk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radu Bulie <radu-andrei.bulie@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/166] net: fec: correct queue selection
-Date: Mon, 18 Dec 2023 14:49:56 +0100
-Message-ID: <20231218135106.305015016@linuxfoundation.org>
+Subject: [PATCH 6.6 031/166] octeontx2-af: fix a use-after-free in rvu_nix_register_reporters
+Date: Mon, 18 Dec 2023 14:49:57 +0100
+Message-ID: <20231218135106.354738656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
 References: <20231218135104.927894164@linuxfoundation.org>
@@ -58,79 +57,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Radu Bulie <radu-andrei.bulie@nxp.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 9fc95fe95c3e2a63ced8eeca4b256518ab204b63 ]
+[ Upstream commit 28a7cb045ab700de5554193a1642917602787784 ]
 
-The old implementation extracted VLAN TCI info from the payload
-before the VLAN tag has been pushed in the payload.
+The rvu_dl will be freed in rvu_nix_health_reporters_destroy(rvu_dl)
+after the create_workqueue fails, and after that free, the rvu_dl will
+be translate back through the following call chain:
 
-Another problem was that the VLAN TCI was extracted even if the
-packet did not have VLAN protocol header.
+rvu_nix_health_reporters_destroy
+  |-> rvu_nix_health_reporters_create
+       |-> rvu_health_reporters_create
+             |-> rvu_register_dl (label err_dl_health)
 
-This resulted in invalid VLAN TCI and as a consequence a random
-queue was computed.
+Finally. in the err_dl_health label, rvu_dl being freed again in
+rvu_health_reporters_destroy(rvu) by rvu_nix_health_reporters_destroy.
+In the second calls of rvu_nix_health_reporters_destroy, however,
+it uses rvu_dl->rvu_nix_health_reporter, which is already freed at
+the end of rvu_nix_health_reporters_destroy in the first call.
 
-This patch fixes the above issues and use the VLAN TCI from the
-skb if it is present or VLAN TCI from payload if present. If no
-VLAN header is present queue 0 is selected.
+So this patch prevents the first destroy by instantly returning -ENONMEN
+when create_workqueue fails. In addition, since the failure of
+create_workqueue is the only entrence of label err, it has been
+integrated into the error-handling path of create_workqueue.
 
-Fixes: 52c4a1a85f4b ("net: fec: add ndo_select_queue to fix TX bandwidth fluctuations")
-Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 27 +++++++++--------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 77c8e9cfb4456..35c95f07fd6d7 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3710,31 +3710,26 @@ static int fec_set_features(struct net_device *netdev,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index 058f75dc4c8a5..bffe04e6d0254 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -642,7 +642,7 @@ static int rvu_nix_register_reporters(struct rvu_devlink *rvu_dl)
+ 
+ 	rvu_dl->devlink_wq = create_workqueue("rvu_devlink_wq");
+ 	if (!rvu_dl->devlink_wq)
+-		goto err;
++		return -ENOMEM;
+ 
+ 	INIT_WORK(&rvu_reporters->intr_work, rvu_nix_intr_work);
+ 	INIT_WORK(&rvu_reporters->gen_work, rvu_nix_gen_work);
+@@ -650,9 +650,6 @@ static int rvu_nix_register_reporters(struct rvu_devlink *rvu_dl)
+ 	INIT_WORK(&rvu_reporters->ras_work, rvu_nix_ras_work);
+ 
  	return 0;
+-err:
+-	rvu_nix_health_reporters_destroy(rvu_dl);
+-	return -ENOMEM;
  }
  
--static u16 fec_enet_get_raw_vlan_tci(struct sk_buff *skb)
--{
--	struct vlan_ethhdr *vhdr;
--	unsigned short vlan_TCI = 0;
--
--	if (skb->protocol == htons(ETH_P_ALL)) {
--		vhdr = (struct vlan_ethhdr *)(skb->data);
--		vlan_TCI = ntohs(vhdr->h_vlan_TCI);
--	}
--
--	return vlan_TCI;
--}
--
- static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
- 				 struct net_device *sb_dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	u16 vlan_tag;
-+	u16 vlan_tag = 0;
- 
- 	if (!(fep->quirks & FEC_QUIRK_HAS_AVB))
- 		return netdev_pick_tx(ndev, skb, NULL);
- 
--	vlan_tag = fec_enet_get_raw_vlan_tci(skb);
--	if (!vlan_tag)
-+	/* VLAN is present in the payload.*/
-+	if (eth_type_vlan(skb->protocol)) {
-+		struct vlan_ethhdr *vhdr = skb_vlan_eth_hdr(skb);
-+
-+		vlan_tag = ntohs(vhdr->h_vlan_TCI);
-+	/*  VLAN is present in the skb but not yet pushed in the payload.*/
-+	} else if (skb_vlan_tag_present(skb)) {
-+		vlan_tag = skb->vlan_tci;
-+	} else {
- 		return vlan_tag;
-+	}
- 
- 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
- }
+ static int rvu_nix_health_reporters_create(struct rvu_devlink *rvu_dl)
 -- 
 2.43.0
 
