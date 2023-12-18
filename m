@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-7150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572DB817129
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B6F817219
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC61C23471
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16C81C24D29
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85561D12B;
-	Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646D037871;
+	Mon, 18 Dec 2023 14:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttVTXclV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WI0cAqbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEA2129EFE;
-	Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03276C433C7;
-	Mon, 18 Dec 2023 13:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ED63787B;
+	Mon, 18 Dec 2023 14:03:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63261C433C8;
+	Mon, 18 Dec 2023 14:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907695;
-	bh=JYtLqdliJEhCzoGJod7ZdC3ATdlp5U53zl1waBMsZqs=;
+	s=korg; t=1702908201;
+	bh=O563ZjFazYgIHLKNvwPVMVNrDskgfJm7AuF8Nsf9X7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttVTXclVdxwI1pbJwlS+NjweP/WuZE85hIVC+tVRKZbv8AWPfcPvMPBp8Ecw7lfTu
-	 KXZ5U+2fsNEOSiXxPCIL5aR9Vl3FfrxzH1mTCwHpcV/o1A9jg0103hnWgt239iROks
-	 KjtUpzZD+4Ygv5x8itctTw6/TsDvaC41eaesyv5k=
+	b=WI0cAqbelghOtlO6Ri4qAmVrTfzR59Y/sKOeUR8pnZc8wURyW+izzZbGDQ3UIPlXc
+	 mADHb++CjPMIfDh09lbXGTcGvfd4qwI4SQGLph25r06p+3mbA3sDtZk4Pgptzwrm0r
+	 chODE+aG+pVIg/QglHjeK1ohcoLMPTHEqDULZ2Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/106] qca_debug: Fix ethtool -G iface tx behavior
+	Tyler Fanelli <tfanelli@redhat.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.6 061/166] fuse: Rename DIRECT_IO_RELAX to DIRECT_IO_ALLOW_MMAP
 Date: Mon, 18 Dec 2023 14:50:27 +0100
-Message-ID: <20231218135055.530018512@linuxfoundation.org>
+Message-ID: <20231218135107.781960134@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +52,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Tyler Fanelli <tfanelli@redhat.com>
 
-[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
+commit c55e0a55b165202f18cbc4a20650d2e1becd5507 upstream.
 
-After calling ethtool -g it was not possible to adjust the TX ring
-size again:
+Although DIRECT_IO_RELAX's initial usage is to allow shared mmap, its
+description indicates a purpose of reducing memory footprint. This
+may imply that it could be further used to relax other DIRECT_IO
+operations in the future.
 
-  # ethtool -g eth1
-  Ring parameters for eth1:
-  Pre-set maximums:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  Current hardware settings:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  # ethtool -G eth1 tx 8
-  netlink error: Invalid argument
+Replace it with a flag DIRECT_IO_ALLOW_MMAP which does only one thing,
+allow shared mmap of DIRECT_IO files while still bypassing the cache
+on regular reads and writes.
 
-The reason for this is that the readonly setting rx_pending get
-initialized and after that the range check in qcaspi_set_ringparam()
-fails regardless of the provided parameter. So fix this by accepting
-the exposed RX defaults. Instead of adding another magic number
-better use a new define here.
+[Miklos] Also Keep DIRECT_IO_RELAX definition for backward compatibility.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/fuse/file.c            |    6 +++---
+ fs/fuse/fuse_i.h          |    4 ++--
+ fs/fuse/inode.c           |    6 +++---
+ include/uapi/linux/fuse.h |   10 ++++++----
+ 4 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 250a4f91a7a84..a739c06ede4e7 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -30,6 +30,8 @@
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1448,7 +1448,7 @@ ssize_t fuse_direct_io(struct fuse_io_pr
+ 	if (!ia)
+ 		return -ENOMEM;
  
- #define QCASPI_MAX_REGS 0x20
+-	if (fopen_direct_io && fc->direct_io_relax) {
++	if (fopen_direct_io && fc->direct_io_allow_mmap) {
+ 		res = filemap_write_and_wait_range(mapping, pos, pos + count - 1);
+ 		if (res) {
+ 			fuse_io_free(ia);
+@@ -2466,9 +2466,9 @@ static int fuse_file_mmap(struct file *f
  
-+#define QCASPI_RX_MAX_FRAMES 4
+ 	if (ff->open_flags & FOPEN_DIRECT_IO) {
+ 		/* Can't provide the coherency needed for MAP_SHARED
+-		 * if FUSE_DIRECT_IO_RELAX isn't set.
++		 * if FUSE_DIRECT_IO_ALLOW_MMAP isn't set.
+ 		 */
+-		if ((vma->vm_flags & VM_MAYSHARE) && !fc->direct_io_relax)
++		if ((vma->vm_flags & VM_MAYSHARE) && !fc->direct_io_allow_mmap)
+ 			return -ENODEV;
+ 
+ 		invalidate_inode_pages2(file->f_mapping);
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -797,8 +797,8 @@ struct fuse_conn {
+ 	/* Is tmpfile not implemented by fs? */
+ 	unsigned int no_tmpfile:1;
+ 
+-	/* relax restrictions in FOPEN_DIRECT_IO mode */
+-	unsigned int direct_io_relax:1;
++	/* Relax restrictions to allow shared mmap in FOPEN_DIRECT_IO mode */
++	unsigned int direct_io_allow_mmap:1;
+ 
+ 	/* Is statx not implemented by fs? */
+ 	unsigned int no_statx:1;
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1232,8 +1232,8 @@ static void process_init_reply(struct fu
+ 				fc->init_security = 1;
+ 			if (flags & FUSE_CREATE_SUPP_GROUP)
+ 				fc->create_supp_group = 1;
+-			if (flags & FUSE_DIRECT_IO_RELAX)
+-				fc->direct_io_relax = 1;
++			if (flags & FUSE_DIRECT_IO_ALLOW_MMAP)
++				fc->direct_io_allow_mmap = 1;
+ 		} else {
+ 			ra_pages = fc->max_read / PAGE_SIZE;
+ 			fc->no_lock = 1;
+@@ -1280,7 +1280,7 @@ void fuse_send_init(struct fuse_mount *f
+ 		FUSE_NO_OPENDIR_SUPPORT | FUSE_EXPLICIT_INVAL_DATA |
+ 		FUSE_HANDLE_KILLPRIV_V2 | FUSE_SETXATTR_EXT | FUSE_INIT_EXT |
+ 		FUSE_SECURITY_CTX | FUSE_CREATE_SUPP_GROUP |
+-		FUSE_HAS_EXPIRE_ONLY | FUSE_DIRECT_IO_RELAX;
++		FUSE_HAS_EXPIRE_ONLY | FUSE_DIRECT_IO_ALLOW_MMAP;
+ #ifdef CONFIG_FUSE_DAX
+ 	if (fm->fc->dax)
+ 		flags |= FUSE_MAP_ALIGNMENT;
+--- a/include/uapi/linux/fuse.h
++++ b/include/uapi/linux/fuse.h
+@@ -209,7 +209,7 @@
+  *  - add FUSE_HAS_EXPIRE_ONLY
+  *
+  *  7.39
+- *  - add FUSE_DIRECT_IO_RELAX
++ *  - add FUSE_DIRECT_IO_ALLOW_MMAP
+  *  - add FUSE_STATX and related structures
+  */
+ 
+@@ -409,8 +409,7 @@ struct fuse_file_lock {
+  * FUSE_CREATE_SUPP_GROUP: add supplementary group info to create, mkdir,
+  *			symlink and mknod (single group that matches parent)
+  * FUSE_HAS_EXPIRE_ONLY: kernel supports expiry-only entry invalidation
+- * FUSE_DIRECT_IO_RELAX: relax restrictions in FOPEN_DIRECT_IO mode, for now
+- *                       allow shared mmap
++ * FUSE_DIRECT_IO_ALLOW_MMAP: allow shared mmap in FOPEN_DIRECT_IO mode.
+  */
+ #define FUSE_ASYNC_READ		(1 << 0)
+ #define FUSE_POSIX_LOCKS	(1 << 1)
+@@ -449,7 +448,10 @@ struct fuse_file_lock {
+ #define FUSE_HAS_INODE_DAX	(1ULL << 33)
+ #define FUSE_CREATE_SUPP_GROUP	(1ULL << 34)
+ #define FUSE_HAS_EXPIRE_ONLY	(1ULL << 35)
+-#define FUSE_DIRECT_IO_RELAX	(1ULL << 36)
++#define FUSE_DIRECT_IO_ALLOW_MMAP (1ULL << 36)
 +
- static const u16 qcaspi_spi_regs[] = {
- 	SPI_REG_BFR_SIZE,
- 	SPI_REG_WRBUF_SPC_AVA,
-@@ -252,9 +254,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
- {
- 	struct qcaspi *qca = netdev_priv(dev);
++/* Obsolete alias for FUSE_DIRECT_IO_ALLOW_MMAP */
++#define FUSE_DIRECT_IO_RELAX	FUSE_DIRECT_IO_ALLOW_MMAP
  
--	ring->rx_max_pending = 4;
-+	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_max_pending = TX_RING_MAX_LEN;
--	ring->rx_pending = 4;
-+	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_pending = qca->txr.count;
- }
- 
-@@ -265,7 +267,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
- {
- 	struct qcaspi *qca = netdev_priv(dev);
- 
--	if ((ring->rx_pending) ||
-+	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
- 	    (ring->rx_mini_pending) ||
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
--- 
-2.43.0
-
+ /**
+  * CUSE INIT request/reply flags
 
 
 
