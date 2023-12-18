@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40776817169
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D598170E1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66FC61C2402A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2A31F2313B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12631D127;
-	Mon, 18 Dec 2023 13:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B21D12F;
+	Mon, 18 Dec 2023 13:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+G/7ZA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pw7gid3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868B7129EE3;
-	Mon, 18 Dec 2023 13:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA32AC433C8;
-	Mon, 18 Dec 2023 13:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EE7129EFE;
+	Mon, 18 Dec 2023 13:51:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35193C433C7;
+	Mon, 18 Dec 2023 13:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907851;
-	bh=FIq4+gY5S8H81BakSUQH40Cwlk9K9tNdiE79vGfniWw=;
+	s=korg; t=1702907511;
+	bh=ZmzK/NeyK20zdoDZEPxFIw7EyY1zlvqtSq91O/fcpsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+G/7ZA0eWpbDHROJl9KoELLcwfoXrQYk4AcasI+1tu0sN6qFhqsRIoJTpOOevCI5
-	 19I2EZcFb5lA5mCEsvrzsuV12GC1vqE66Jon2VTNcAJcrPv3q6S7P5u70AtwoABogf
-	 KYUc7zvM3h+/pKox9p9JyQFgdEulgW30DsSPV8sg=
+	b=Pw7gid3f2D++1RkCjsZOFDRXTKLcVIaD7E1kU8DVjsYRNG7Yba3moDHmiOqeCTdJU
+	 jxVkf8DBzowvUhtozdgawQxTxOxDM/i/KdkeYaT1g7dEHpo6H88oVKUT+3IT/XCZqa
+	 wy2mkgnMc4IKBupvebBHgVRf9CeFtP5rqBkZjCjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark ODonovan <shiftee@posteo.net>,
-	Hannes Reinecke <hare@suse.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/106] nvme-auth: set explanation code for failure2 msgs
+Subject: [PATCH 4.14 14/26] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
 Date: Mon, 18 Dec 2023 14:51:16 +0100
-Message-ID: <20231218135057.706142378@linuxfoundation.org>
+Message-ID: <20231218135041.199566056@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,38 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark O'Donovan <shiftee@posteo.net>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 38ce1570e2c46e7e9af983aa337edd7e43723aa2 ]
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-Some error cases were not setting an auth-failure-reason-code-explanation.
-This means an AUTH_Failure2 message will be sent with an explanation value
-of 0 which is a reserved value.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fix the warning by adding rcu read lock.
+
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c |    2 ++
+ block/blk-throttle.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -834,6 +834,8 @@ static void nvme_queue_auth_work(struct
- 	}
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index fcbbe2e45a2bb..e52a9632993a7 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1391,6 +1391,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- fail2:
-+	if (chap->status == 0)
-+		chap->status = NVME_AUTH_DHCHAP_FAILURE_FAILED;
- 	dev_dbg(ctrl->device, "%s: qid %d send failure2, status %x\n",
- 		__func__, chap->qid, chap->status);
- 	tl = nvme_auth_set_dhchap_failure2_data(ctrl, chap);
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1418,6 +1419,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
+ 	}
++	rcu_read_unlock();
+ 
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
+-- 
+2.43.0
+
 
 
 
