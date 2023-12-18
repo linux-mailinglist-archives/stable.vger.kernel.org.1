@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-7586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317D0817330
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B1B81729B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0D6289251
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A2421F23E21
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BEF3786E;
-	Mon, 18 Dec 2023 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E491D144;
+	Mon, 18 Dec 2023 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se24t4CE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksfGNJQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED383129EF9;
-	Mon, 18 Dec 2023 14:14:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3D8C433C7;
-	Mon, 18 Dec 2023 14:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D87A129EF7;
+	Mon, 18 Dec 2023 14:08:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CAFC433C8;
+	Mon, 18 Dec 2023 14:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908869;
-	bh=mY7xpmMRn26KR9oIm1SLC7phoMtarcYtQDGtYAiVvnM=;
+	s=korg; t=1702908500;
+	bh=SVt5Q7GzbD+i0gyd2vQwX/vzlyNHOwaouS7MzWGhOQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=se24t4CE/atk7NmbosokT4Wsny8o51xNMsfDTp2HQ1mXW4kf5+kKfnQcGHUIGzXA6
-	 kXI8ddc4jq2vPV7aijnk5m6zuUK8LpOYKlKe6gVolMffH3FKGTU3fJBhUl5ICgpYC6
-	 XBxnUCDQTABfsm8pbqlnn9Y4ZNBG80y++kvMBEYM=
+	b=ksfGNJQoYYIgLg1gH/H3YDaPKcT8WERSWQ5kI901HQt1D8rAYOGptTc28QyQtzg07
+	 3Wz/n3dAvKHref3P2rlQJ8XTtjV5qjD0YRJG4jElv6ahIQ/drzRL4GqUPSpfI59yEM
+	 ZGDCWL8c13rM6YQxm8GUTWnESw6ZdZOjDCmvAnq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Halaney <ahalaney@redhat.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Fei Shao <fshao@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/83] net: stmmac: Handle disabled MDIO busses from devicetree
+Subject: [PATCH 5.10 32/62] drm/mediatek: Add spinlock for setting vblank event in atomic_begin
 Date: Mon, 18 Dec 2023 14:51:56 +0100
-Message-ID: <20231218135051.286306697@linuxfoundation.org>
+Message-ID: <20231218135047.698796144@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +57,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Halaney <ahalaney@redhat.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit e23c0d21ce9234fbc31ece35663ababbb83f9347 ]
+[ Upstream commit fe4c5f662097978b6c91c23a13c24ed92339a180 ]
 
-Many hardware configurations have the MDIO bus disabled, and are instead
-using some other MDIO bus to talk to the MAC's phy.
+Add spinlock protection to avoid race condition on vblank event
+between mtk_drm_crtc_atomic_begin() and mtk_drm_finish_page_flip().
 
-of_mdiobus_register() returns -ENODEV in this case. Let's handle it
-gracefully instead of failing to probe the MAC.
-
-Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
-Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/20231212-b4-stmmac-handle-mdio-enodev-v2-1-600171acf79f@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230920090658.31181-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-index 19694b3a1fb9e..94f731f1d936e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
-@@ -489,7 +489,11 @@ int stmmac_mdio_register(struct net_device *ndev)
- 	new_bus->parent = priv->device;
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index 380b0b52d2c7a..46ad9ce993f10 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -585,6 +585,7 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 									  crtc);
+ 	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
+ 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
++	unsigned long flags;
  
- 	err = of_mdiobus_register(new_bus, mdio_node);
--	if (err != 0) {
-+	if (err == -ENODEV) {
-+		err = 0;
-+		dev_info(dev, "MDIO bus is disabled\n");
-+		goto bus_register_fail;
-+	} else if (err) {
- 		dev_err_probe(dev, err, "Cannot register the MDIO bus\n");
- 		goto bus_register_fail;
+ 	if (mtk_crtc->event && mtk_crtc_state->base.event)
+ 		DRM_ERROR("new event while there is still a pending event\n");
+@@ -592,7 +593,11 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 	if (mtk_crtc_state->base.event) {
+ 		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
+ 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
++
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		mtk_crtc->event = mtk_crtc_state->base.event;
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
++
+ 		mtk_crtc_state->base.event = NULL;
  	}
+ }
 -- 
 2.43.0
 
