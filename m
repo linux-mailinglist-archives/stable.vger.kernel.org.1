@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D598170E1
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DAB1817233
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2A31F2313B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 327861F24F7B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B21D12F;
-	Mon, 18 Dec 2023 13:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EC5D720;
+	Mon, 18 Dec 2023 14:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pw7gid3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVRpm2Sw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EE7129EFE;
-	Mon, 18 Dec 2023 13:51:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35193C433C7;
-	Mon, 18 Dec 2023 13:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090EB3A1BA;
+	Mon, 18 Dec 2023 14:04:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ECEC433C8;
+	Mon, 18 Dec 2023 14:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907511;
-	bh=ZmzK/NeyK20zdoDZEPxFIw7EyY1zlvqtSq91O/fcpsQ=;
+	s=korg; t=1702908259;
+	bh=EsWleJ6W7GddGZilnoNbxrjnVmzcACZgG5BxC0doF28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pw7gid3f2D++1RkCjsZOFDRXTKLcVIaD7E1kU8DVjsYRNG7Yba3moDHmiOqeCTdJU
-	 jxVkf8DBzowvUhtozdgawQxTxOxDM/i/KdkeYaT1g7dEHpo6H88oVKUT+3IT/XCZqa
-	 wy2mkgnMc4IKBupvebBHgVRf9CeFtP5rqBkZjCjI=
+	b=xVRpm2SwR1pbKM2zrgGkBZT0NXO5nQ8cuGYxWCIeJbO+WVBEDhkA3louCJWSHl6c1
+	 yuvZh9oaRyCD72ldkbNVzjcv1wXsRJAnWZjpPQQBcehWa6UUwgJe8c4OPSxUkf1Khh
+	 gVrr6KekR3mPNi8+afAlSP1xZ9jW3vbnAp9yubzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Changhui Zhong <czhong@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 14/26] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
-Date: Mon, 18 Dec 2023 14:51:16 +0100
-Message-ID: <20231218135041.199566056@linuxfoundation.org>
+Subject: [PATCH 6.6 111/166] HID: add ALWAYS_POLL quirk for Apple kb
+Date: Mon, 18 Dec 2023 14:51:17 +0100
+Message-ID: <20231218135109.998174996@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +53,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
+[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
 
-Inside blkg_for_each_descendant_pre(), both
-css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
-and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
-is called.
+These devices disconnect if suspended without remote wakeup. They can operate
+with the standard driver.
 
-Fix the warning by adding rcu read lock.
-
-Reported-by: Changhui Zhong <czhong@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-throttle.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/block/blk-throttle.c b/block/blk-throttle.c
-index fcbbe2e45a2bb..e52a9632993a7 100644
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1391,6 +1391,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
- 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
- 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
- 
-+	rcu_read_lock();
- 	/*
- 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
- 	 * considered to have rules if either the tg itself or any of its
-@@ -1418,6 +1419,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
- 		this_tg->latency_target = max(this_tg->latency_target,
- 				parent_tg->latency_target);
- 	}
-+	rcu_read_unlock();
- 
- 	/*
- 	 * We're already holding queue_lock and know @tg is valid.  Let's
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 5a48fcaa32f00..ea472923fab07 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
 -- 
 2.43.0
 
