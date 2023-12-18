@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2587816748
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:20:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FC581674A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57EE0B20969
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:20:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77A251F22407
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2176879E2;
-	Mon, 18 Dec 2023 07:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B1C79E2;
+	Mon, 18 Dec 2023 07:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtHLKvEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImdLC/uP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF76879D2
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57014C433C7;
-	Mon, 18 Dec 2023 07:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D451E79D1
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06686C433C8;
+	Mon, 18 Dec 2023 07:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702884036;
-	bh=rsFR7OXZkKNFopN8sb14fft3CeF5VEjjN6rsm4yrDD8=;
+	s=korg; t=1702884063;
+	bh=HGhvF/2cqda2UfUQ84/weNN22Uu1MCP2cSI9FaGoO2Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gtHLKvEyu4ADKYjZFNwzRzU0ok178a6/4U/Gx0kLaY2hXVledx8Bf2KfsJGkXj77J
-	 /02zduzwFEvLjNcrhgjwFsOG8yxsUoiEHLfRQcWg2VDdorujvwwBfjXQ7Ju/DbmXnV
-	 8lyhOuqIQfGbeRlMlkumniu0CpIO/jw5RR6/CmkM=
-Subject: FAILED: patch "[PATCH] smb: client: fix potential OOBs in smb2_parse_contexts()" failed to apply to 6.1-stable tree
+	b=ImdLC/uPMg0QaIOQ0T8KdlYrqe7xpMEow2qCgj1maHQtIH8Vn2a8N7Fjj2bA8KmpJ
+	 GWIE+MrqyV0RxIHX8pyPeRcBZHN/JeKEYSYpCM7NkXfMBBqU8tGE4JF7OzgCvjrrlr
+	 NtO/zFF0o/A6cAOjuqCsRF8pGlSc0zLNIxBIAOAQ=
+Subject: FAILED: patch "[PATCH] smb: client: fix OOB in smb2_query_reparse_point()" failed to apply to 5.15-stable tree
 To: pc@manguebit.com,rtm@csail.mit.edu,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Dec 2023 08:20:34 +0100
-Message-ID: <2023121834-semisoft-snarl-49ad@gregkh>
+Date: Mon, 18 Dec 2023 08:21:00 +0100
+Message-ID: <2023121800-geometry-absolute-16a9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,36 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x af1689a9b7701d9907dfc84d2a4b57c4bc907144
+git cherry-pick -x 3a42709fa909e22b0be4bb1e2795aa04ada732a3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121834-semisoft-snarl-49ad@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121800-geometry-absolute-16a9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
-5c86919455c1 ("smb: client: fix use-after-free in smb2_query_info_compound()")
-81ba10959970 ("smb: client: prevent new fids from being removed by laundromat")
-e95f3f744650 ("smb: client: make laundromat a delayed worker")
-2da338ff752a ("smb3: do not start laundromat thread when dir leases  disabled")
-238b351d0935 ("smb3: allow controlling length of time directory entries are cached with dir leases")
-d14de8067e3f ("cifs: Add a laundromat thread for cached directories")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-be4fde79812f ("cifs: fix dentry lookups in directory handle cache")
-df57109bd50b ("cifs: use tcon allocation functions even for dummy tcon")
-8e843bf38f7b ("cifs: return a single-use cfid if we did not get a lease")
-66d45ca1350a ("cifs: Check the lease context if we actually got a lease")
-abdb1742a312 ("cifs: get rid of mount options string parsing")
-9fd29a5bae6e ("cifs: use fs_context for automounts")
+3a42709fa909 ("smb: client: fix OOB in smb2_query_reparse_point()")
 
 thanks,
 
@@ -82,39 +69,37 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From af1689a9b7701d9907dfc84d2a4b57c4bc907144 Mon Sep 17 00:00:00 2001
+From 3a42709fa909e22b0be4bb1e2795aa04ada732a3 Mon Sep 17 00:00:00 2001
 From: Paulo Alcantara <pc@manguebit.com>
-Date: Mon, 11 Dec 2023 10:26:41 -0300
-Subject: [PATCH] smb: client: fix potential OOBs in smb2_parse_contexts()
+Date: Mon, 11 Dec 2023 10:26:43 -0300
+Subject: [PATCH] smb: client: fix OOB in smb2_query_reparse_point()
 
-Validate offsets and lengths before dereferencing create contexts in
-smb2_parse_contexts().
+Validate @ioctl_rsp->OutputOffset and @ioctl_rsp->OutputCount so that
+their sum does not wrap to a number that is smaller than @reparse_buf
+and we end up with a wild pointer as follows:
 
-This fixes following oops when accessing invalid create contexts from
-server:
-
-  BUG: unable to handle page fault for address: ffff8881178d8cc3
+  BUG: unable to handle page fault for address: ffff88809c5cd45f
   #PF: supervisor read access in kernel mode
   #PF: error_code(0x0000) - not-present page
   PGD 4a01067 P4D 4a01067 PUD 0
   Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 3 PID: 1736 Comm: mount.cifs Not tainted 6.7.0-rc4 #1
+  CPU: 2 PID: 1260 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
   rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:smb2_parse_contexts+0xa0/0x3a0 [cifs]
-  Code: f8 10 75 13 48 b8 93 ad 25 50 9c b4 11 e7 49 39 06 0f 84 d2 00
-  00 00 8b 45 00 85 c0 74 61 41 29 c5 48 01 c5 41 83 fd 0f 76 55 <0f> b7
-  7d 04 0f b7 45 06 4c 8d 74 3d 00 66 83 f8 04 75 bc ba 04 00
-  RSP: 0018:ffffc900007939e0 EFLAGS: 00010216
-  RAX: ffffc90000793c78 RBX: ffff8880180cc000 RCX: ffffc90000793c90
-  RDX: ffffc90000793cc0 RSI: ffff8880178d8cc0 RDI: ffff8880180cc000
-  RBP: ffff8881178d8cbf R08: ffffc90000793c22 R09: 0000000000000000
-  R10: ffff8880180cc000 R11: 0000000000000024 R12: 0000000000000000
-  R13: 0000000000000020 R14: 0000000000000000 R15: ffffc90000793c22
-  FS: 00007f873753cbc0(0000) GS:ffff88806bc00000(0000)
+  RIP: 0010:smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
+  Code: ff ff e8 f3 51 fe ff 41 89 c6 58 5a 45 85 f6 0f 85 14 fe ff ff
+  49 8b 57 48 8b 42 60 44 8b 42 64 42 8d 0c 00 49 39 4f 50 72 40 <8b>
+  04 02 48 8b 9d f0 fe ff ff 49 8b 57 50 89 03 48 8b 9d e8 fe ff
+  RSP: 0018:ffffc90000347a90 EFLAGS: 00010212
+  RAX: 000000008000001f RBX: ffff88800ae11000 RCX: 00000000000000ec
+  RDX: ffff88801c5cd440 RSI: 0000000000000000 RDI: ffffffff82004aa4
+  RBP: ffffc90000347bb0 R08: 00000000800000cd R09: 0000000000000001
+  R10: 0000000000000000 R11: 0000000000000024 R12: ffff8880114d4100
+  R13: ffff8880114d4198 R14: 0000000000000000 R15: ffff8880114d4000
+  FS: 00007f02c07babc0(0000) GS:ffff88806ba00000(0000)
   knlGS:0000000000000000
   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff8881178d8cc3 CR3: 00000000181ca000 CR4: 0000000000750ef0
+  CR2: ffff88809c5cd45f CR3: 0000000011750000 CR4: 0000000000750ef0
   PKRU: 55555554
   Call Trace:
    <TASK>
@@ -124,13 +109,13 @@ server:
    ? srso_alias_return_thunk+0x5/0xfbef5
    ? exc_page_fault+0x1b6/0x1c0
    ? asm_exc_page_fault+0x26/0x30
-   ? smb2_parse_contexts+0xa0/0x3a0 [cifs]
-   SMB2_open+0x38d/0x5f0 [cifs]
-   ? smb2_is_path_accessible+0x138/0x260 [cifs]
-   smb2_is_path_accessible+0x138/0x260 [cifs]
-   cifs_is_path_remote+0x8d/0x230 [cifs]
-   cifs_mount+0x7e/0x350 [cifs]
-   cifs_smb3_do_mount+0x128/0x780 [cifs]
+   ? _raw_spin_unlock_irqrestore+0x44/0x60
+   ? smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
+   cifs_get_fattr+0x16e/0xa50 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lock_acquire+0xbf/0x2b0
+   cifs_root_iget+0x163/0x5f0 [cifs]
+   cifs_smb3_do_mount+0x5bd/0x780 [cifs]
    smb3_get_tree+0xd9/0x290 [cifs]
    vfs_get_tree+0x2c/0x100
    ? capable+0x37/0x70
@@ -140,202 +125,58 @@ server:
    __x64_sys_mount+0x11a/0x150
    do_syscall_64+0x47/0xf0
    entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7f8737657b1e
+  RIP: 0033:0x7f02c08d5b1e
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
+Fixes: 2e4564b31b64 ("smb3: add support for stat of WSL reparse points for special file types")
 Cc: stable@vger.kernel.org
+Reported-by: Robert Morris <rtm@csail.mit.edu>
 Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 59f6b8e32cc9..d64a306a414b 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -291,16 +291,23 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 	oparms.fid->mid = le64_to_cpu(o_rsp->hdr.MessageId);
- #endif /* CIFS_DEBUG2 */
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index a6f4948adcbb..8f6f0a38b886 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3003,7 +3003,7 @@ static int smb2_query_reparse_point(const unsigned int xid,
+ 	struct kvec *rsp_iov;
+ 	struct smb2_ioctl_rsp *ioctl_rsp;
+ 	struct reparse_data_buffer *reparse_buf;
+-	u32 plen;
++	u32 off, count, len;
  
--	rc = -EINVAL;
-+
- 	if (o_rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE) {
-+		spin_unlock(&cfids->cfid_list_lock);
-+		rc = -EINVAL;
-+		goto oshr_free;
-+	}
-+
-+	rc = smb2_parse_contexts(server, rsp_iov,
-+				 &oparms.fid->epoch,
-+				 oparms.fid->lease_key,
-+				 &oplock, NULL, NULL);
-+	if (rc) {
- 		spin_unlock(&cfids->cfid_list_lock);
- 		goto oshr_free;
- 	}
+ 	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
  
--	smb2_parse_contexts(server, o_rsp,
--			    &oparms.fid->epoch,
--			    oparms.fid->lease_key, &oplock,
--			    NULL, NULL);
-+	rc = -EINVAL;
- 	if (!(oplock & SMB2_LEASE_READ_CACHING_HE)) {
- 		spin_unlock(&cfids->cfid_list_lock);
- 		goto oshr_free;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 20634fc6d4f0..c571760ad39a 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2236,17 +2236,18 @@ parse_posix_ctxt(struct create_context *cc, struct smb2_file_all_info *info,
- 		 posix->nlink, posix->mode, posix->reparse_tag);
- }
- 
--void
--smb2_parse_contexts(struct TCP_Server_Info *server,
--		    struct smb2_create_rsp *rsp,
--		    unsigned int *epoch, char *lease_key, __u8 *oplock,
--		    struct smb2_file_all_info *buf,
--		    struct create_posix_rsp *posix)
-+int smb2_parse_contexts(struct TCP_Server_Info *server,
-+			struct kvec *rsp_iov,
-+			unsigned int *epoch,
-+			char *lease_key, __u8 *oplock,
-+			struct smb2_file_all_info *buf,
-+			struct create_posix_rsp *posix)
- {
--	char *data_offset;
-+	struct smb2_create_rsp *rsp = rsp_iov->iov_base;
- 	struct create_context *cc;
--	unsigned int next;
--	unsigned int remaining;
-+	size_t rem, off, len;
-+	size_t doff, dlen;
-+	size_t noff, nlen;
- 	char *name;
- 	static const char smb3_create_tag_posix[] = {
- 		0x93, 0xAD, 0x25, 0x50, 0x9C,
-@@ -2255,45 +2256,63 @@ smb2_parse_contexts(struct TCP_Server_Info *server,
- 	};
- 
- 	*oplock = 0;
--	data_offset = (char *)rsp + le32_to_cpu(rsp->CreateContextsOffset);
--	remaining = le32_to_cpu(rsp->CreateContextsLength);
--	cc = (struct create_context *)data_offset;
-+
-+	off = le32_to_cpu(rsp->CreateContextsOffset);
-+	rem = le32_to_cpu(rsp->CreateContextsLength);
-+	if (check_add_overflow(off, rem, &len) || len > rsp_iov->iov_len)
-+		return -EINVAL;
-+	cc = (struct create_context *)((u8 *)rsp + off);
- 
- 	/* Initialize inode number to 0 in case no valid data in qfid context */
- 	if (buf)
- 		buf->IndexNumber = 0;
- 
--	while (remaining >= sizeof(struct create_context)) {
--		name = le16_to_cpu(cc->NameOffset) + (char *)cc;
--		if (le16_to_cpu(cc->NameLength) == 4 &&
--		    strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4) == 0)
--			*oplock = server->ops->parse_lease_buf(cc, epoch,
--							   lease_key);
--		else if (buf && (le16_to_cpu(cc->NameLength) == 4) &&
--		    strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4) == 0)
--			parse_query_id_ctxt(cc, buf);
--		else if ((le16_to_cpu(cc->NameLength) == 16)) {
--			if (posix &&
--			    memcmp(name, smb3_create_tag_posix, 16) == 0)
--				parse_posix_ctxt(cc, buf, posix);
--		}
--		/* else {
--			cifs_dbg(FYI, "Context not matched with len %d\n",
--				le16_to_cpu(cc->NameLength));
--			cifs_dump_mem("Cctxt name: ", name, 4);
--		} */
-+	while (rem >= sizeof(*cc)) {
-+		doff = le16_to_cpu(cc->DataOffset);
-+		dlen = le32_to_cpu(cc->DataLength);
-+		if (check_add_overflow(doff, dlen, &len) || len > rem)
-+			return -EINVAL;
- 
--		next = le32_to_cpu(cc->Next);
--		if (!next)
-+		noff = le16_to_cpu(cc->NameOffset);
-+		nlen = le16_to_cpu(cc->NameLength);
-+		if (noff + nlen >= doff)
-+			return -EINVAL;
-+
-+		name = (char *)cc + noff;
-+		switch (nlen) {
-+		case 4:
-+			if (!strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4)) {
-+				*oplock = server->ops->parse_lease_buf(cc, epoch,
-+								       lease_key);
-+			} else if (buf &&
-+				   !strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4)) {
-+				parse_query_id_ctxt(cc, buf);
-+			}
- 			break;
--		remaining -= next;
--		cc = (struct create_context *)((char *)cc + next);
-+		case 16:
-+			if (posix && !memcmp(name, smb3_create_tag_posix, 16))
-+				parse_posix_ctxt(cc, buf, posix);
-+			break;
-+		default:
-+			cifs_dbg(FYI, "%s: unhandled context (nlen=%zu dlen=%zu)\n",
-+				 __func__, nlen, dlen);
-+			if (IS_ENABLED(CONFIG_CIFS_DEBUG2))
-+				cifs_dump_mem("context data: ", cc, dlen);
-+			break;
+@@ -3084,16 +3084,22 @@ static int smb2_query_reparse_point(const unsigned int xid,
+ 	 */
+ 	if (rc == 0) {
+ 		/* See MS-FSCC 2.3.23 */
++		off = le32_to_cpu(ioctl_rsp->OutputOffset);
++		count = le32_to_cpu(ioctl_rsp->OutputCount);
++		if (check_add_overflow(off, count, &len) ||
++		    len > rsp_iov[1].iov_len) {
++			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
++				      __func__, off, count);
++			rc = -EIO;
++			goto query_rp_exit;
 +		}
-+
-+		off = le32_to_cpu(cc->Next);
-+		if (!off)
-+			break;
-+		if (check_sub_overflow(rem, off, &rem))
-+			return -EINVAL;
-+		cc = (struct create_context *)((u8 *)cc + off);
- 	}
  
- 	if (rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE)
- 		*oplock = rsp->OplockLevel;
- 
--	return;
-+	return 0;
- }
- 
- static int
-@@ -3124,8 +3143,8 @@ SMB2_open(const unsigned int xid, struct cifs_open_parms *oparms, __le16 *path,
- 	}
- 
- 
--	smb2_parse_contexts(server, rsp, &oparms->fid->epoch,
--			    oparms->fid->lease_key, oplock, buf, posix);
-+	rc = smb2_parse_contexts(server, &rsp_iov, &oparms->fid->epoch,
-+				 oparms->fid->lease_key, oplock, buf, posix);
- creat_exit:
- 	SMB2_open_free(&rqst);
- 	free_rsp_buf(resp_buftype, rsp);
-diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
-index 46eff9ec302a..0e371f7e2854 100644
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -251,11 +251,13 @@ extern int smb3_validate_negotiate(const unsigned int, struct cifs_tcon *);
- 
- extern enum securityEnum smb2_select_sectype(struct TCP_Server_Info *,
- 					enum securityEnum);
--extern void smb2_parse_contexts(struct TCP_Server_Info *server,
--				struct smb2_create_rsp *rsp,
--				unsigned int *epoch, char *lease_key,
--				__u8 *oplock, struct smb2_file_all_info *buf,
--				struct create_posix_rsp *posix);
-+int smb2_parse_contexts(struct TCP_Server_Info *server,
-+			struct kvec *rsp_iov,
-+			unsigned int *epoch,
-+			char *lease_key, __u8 *oplock,
-+			struct smb2_file_all_info *buf,
-+			struct create_posix_rsp *posix);
-+
- extern int smb3_encryption_required(const struct cifs_tcon *tcon);
- extern int smb2_validate_iov(unsigned int offset, unsigned int buffer_length,
- 			     struct kvec *iov, unsigned int min_buf_size);
+-		reparse_buf = (struct reparse_data_buffer *)
+-			((char *)ioctl_rsp +
+-			 le32_to_cpu(ioctl_rsp->OutputOffset));
+-		plen = le32_to_cpu(ioctl_rsp->OutputCount);
+-
+-		if (plen + le32_to_cpu(ioctl_rsp->OutputOffset) >
+-		    rsp_iov[1].iov_len) {
+-			cifs_tcon_dbg(FYI, "srv returned invalid ioctl len: %d\n",
+-				 plen);
++		reparse_buf = (void *)((u8 *)ioctl_rsp + off);
++		len = sizeof(*reparse_buf);
++		if (count < len ||
++		    count < le16_to_cpu(reparse_buf->ReparseDataLength) + len) {
++			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
++				      __func__, off, count);
+ 			rc = -EIO;
+ 			goto query_rp_exit;
+ 		}
 
 
