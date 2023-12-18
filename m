@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B00E181710B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E7F817178
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D42901C23C29
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F489281997
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5391C1D136;
-	Mon, 18 Dec 2023 13:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77313129EE3;
+	Mon, 18 Dec 2023 13:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYR29Cyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1lfVvpGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CF9101D4;
-	Mon, 18 Dec 2023 13:53:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953C2C433C7;
-	Mon, 18 Dec 2023 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFED129EF7;
+	Mon, 18 Dec 2023 13:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA2C1C433C7;
+	Mon, 18 Dec 2023 13:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907632;
-	bh=BIirHJTe92mZizehvn8xgRsLkdUXsTGxUMuFdLKMrnA=;
+	s=korg; t=1702907887;
+	bh=/EVAQ2JPK+93EOHD6jfji7T4gSxiyekL0A8vEePour4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kYR29CyzaNChits+5C5Q7RVmIpP+KOnVBVgG+5tkmSGBTwMuVeqD0glghKrvyDGa8
-	 H2movBLhQHFNClWlzYb76Mo5TKkl7Eao8j3T1A1A8fn+Hfria9cScBugN3E+kYOXBT
-	 mSGLukTOiDbk8ZK4+LNpVhrMoVZIoY2Ssr/TkpJc=
+	b=1lfVvpGabRHG950zcPOT3A6GY8HPGPq8A0tfpNFbnkuW40dskB45mpddbwvj1JlU2
+	 cAtpxYnW2r1B5C5kz/aaC6rzScIW6I/xk382EeqzfX+0uCA6CUpXotkGq9Z9Jf5sCH
+	 uimWWiRt1IM81hegxSZvQz3nBFhiY2sKYIkoHgGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 26/36] asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+	Florent Revest <revest@chromium.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 082/106] team: Fix use-after-free when an option instance allocation fails
 Date: Mon, 18 Dec 2023 14:51:36 +0100
-Message-ID: <20231218135042.773759064@linuxfoundation.org>
+Message-ID: <20231218135058.562380681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,55 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit 125b0bb95dd6bec81b806b997a4ccb026eeecf8f ]
+commit c12296bbecc488623b7d1932080e394d08f3226b upstream.
 
-We really don't want to do atomic_read() or anything like that, since we
-already have the value, not the lock.  The whole point of this is that
-we've loaded the lock from memory, and we want to check whether the
-value we loaded was a locked one or not.
+In __team_options_register, team_options are allocated and appended to
+the team's option_list.
+If one option instance allocation fails, the "inst_rollback" cleanup
+path frees the previously allocated options but doesn't remove them from
+the team's option_list.
+This leaves dangling pointers that can be dereferenced later by other
+parts of the team driver that iterate over options.
 
-The main use of this is the lockref code, which loads both the lock and
-the reference count in one atomic operation, and then works on that
-combined value.  With the atomic_read(), the compiler would pointlessly
-spill the value to the stack, in order to then be able to read it back
-"atomically".
+This patch fixes the cleanup path to remove the dangling pointers from
+the list.
 
-This is the qspinlock version of commit c6f4a9002252 ("asm-generic:
-ticket-lock: Optimize arch_spin_value_unlocked()") which fixed this same
-bug for ticket locks.
+As far as I can tell, this uaf doesn't have much security implications
+since it would be fairly hard to exploit (an attacker would need to make
+the allocation of that specific small object fail) but it's still nice
+to fix.
 
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/all/CAHk-=whNRv0v6kQiV5QO6DJhjH4KEL36vWQ6Re8Csrnh4zbRkQ@mail.gmail.com/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 80f7c6683fe0 ("team: add support for per-port options")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231206123719.1963153-1-revest@chromium.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/asm-generic/qspinlock.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/team/team.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
-index 9cc457597ddf8..1a688e5b8b0b5 100644
---- a/include/asm-generic/qspinlock.h
-+++ b/include/asm-generic/qspinlock.h
-@@ -47,7 +47,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
-  */
- static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
- {
--	return !atomic_read(&lock.val);
-+	return !lock.val.counter;
- }
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -285,8 +285,10 @@ static int __team_options_register(struc
+ 	return 0;
  
- /**
--- 
-2.43.0
-
+ inst_rollback:
+-	for (i--; i >= 0; i--)
++	for (i--; i >= 0; i--) {
+ 		__team_option_inst_del_option(team, dst_opts[i]);
++		list_del(&dst_opts[i]->list);
++	}
+ 
+ 	i = option_count;
+ alloc_rollback:
 
 
 
