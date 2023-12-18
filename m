@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36B88172F4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FECC817120
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58DAA1F212EF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A54B2193D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B5842392;
-	Mon, 18 Dec 2023 14:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17ACF1D14F;
+	Mon, 18 Dec 2023 13:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4TZy6+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sC2DRMtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93383D566;
-	Mon, 18 Dec 2023 14:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDD9C433C8;
-	Mon, 18 Dec 2023 14:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA24E129EFE;
+	Mon, 18 Dec 2023 13:54:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A18C433C9;
+	Mon, 18 Dec 2023 13:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908719;
-	bh=mvOQP9c7sc0nCXYw0heHu1RLcfpU0/Ow9ErhVZRIN5U=;
+	s=korg; t=1702907673;
+	bh=oW4+LXlorb6SANWjhSkZElqQaUeJydqtlYOWVkRRsMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4TZy6+xUi13dLCGiZBSTTmLTL/tMISDBStakUVmrUJsHz1YpAHZISLE0biPBzXkA
-	 78jwFmgoD4QwNVOqayCjw/mW0Prm2NZDV86rP525AN1+aWf6J6j4mPQDl+4AXNxYyj
-	 ne7/IS9E9GKvhIJjFElYWc7HcGmwlXFWbp5vebnY=
+	b=sC2DRMtOtTyK37SqfTpiEWgogMlarzDJ04ixqSMSHuNq4/3XxHYMx/T5DrcdjyGdw
+	 OcOw2P/YTxH5viIN1xKUgZIh4vfYorSJioIDL+2KFzh/U4NVrOAxoVw+i57BaBWss3
+	 nhBvyL5QgZCxX2qJcqgw3Q/TZVELdzZWPXKTlE+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Michael Petlan <mpetlan@redhat.com>,
-	Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH 5.15 01/83] perf/x86/uncore: Dont WARN_ON_ONCE() for a broken discovery table
-Date: Mon, 18 Dec 2023 14:51:22 +0100
-Message-ID: <20231218135049.813574262@linuxfoundation.org>
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 13/36] net: stmmac: use dev_err_probe() for reporting mdio bus registration failure
+Date: Mon, 18 Dec 2023 14:51:23 +0100
+Message-ID: <20231218135042.347406314@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-commit 5d515ee40cb57ea5331998f27df7946a69f14dc3 upstream.
+[ Upstream commit 839612d23ffd933174db911ce56dc3f3ca883ec5 ]
 
-The kernel warning message is triggered, when SPR MCC is used.
+I have a board where these two lines are always printed during boot:
 
-[   17.945331] ------------[ cut here ]------------
-[   17.946305] WARNING: CPU: 65 PID: 1 at
-arch/x86/events/intel/uncore_discovery.c:184
-intel_uncore_has_discovery_tables+0x4c0/0x65c
-[   17.946305] Modules linked in:
-[   17.946305] CPU: 65 PID: 1 Comm: swapper/0 Not tainted
-5.4.17-2136.313.1-X10-2c+ #4
+   imx-dwmac 30bf0000.ethernet: Cannot register the MDIO bus
+   imx-dwmac 30bf0000.ethernet: stmmac_dvr_probe: MDIO bus (id: 1) registration failed
 
-It's caused by the broken discovery table of UPI.
+It's perfectly fine, and the device is successfully (and silently, as
+far as the console goes) probed later.
 
-The discovery tables are from hardware. Except for dropping the broken
-information, there is nothing Linux can do. Using WARN_ON_ONCE() is
-overkilled.
+Use dev_err_probe() instead, which will demote these messages to debug
+level (thus removing the alarming messages from the console) when the
+error is -EPROBE_DEFER, and also has the advantage of including the
+error code if/when it happens to be something other than -EPROBE_DEFER.
 
-Use the pr_info() to replace WARN_ON_ONCE(), and specify what uncore unit
-is dropped and the reason.
+While here, add the missing \n to one of the format strings.
 
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Michael Petlan <mpetlan@redhat.com>
-Link: https://lore.kernel.org/r/20230112200105.733466-6-kan.liang@linux.intel.com
-Cc: Mahmoud Adam <mngyadam@amazon.com>
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Link: https://lore.kernel.org/r/20220602074840.1143360-1-linux@rasmusvillemoes.dk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e23c0d21ce92 ("net: stmmac: Handle disabled MDIO busses from devicetree")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_discovery.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_discovery.c
-+++ b/arch/x86/events/intel/uncore_discovery.c
-@@ -140,13 +140,21 @@ uncore_insert_box_info(struct uncore_uni
- 	unsigned int *box_offset, *ids;
- 	int i;
- 
--	if (WARN_ON_ONCE(!unit->ctl || !unit->ctl_offset || !unit->ctr_offset))
-+	if (!unit->ctl || !unit->ctl_offset || !unit->ctr_offset) {
-+		pr_info("Invalid address is detected for uncore type %d box %d, "
-+			"Disable the uncore unit.\n",
-+			unit->box_type, unit->box_id);
- 		return;
-+	}
- 
- 	if (parsed) {
- 		type = search_uncore_discovery_type(unit->box_type);
--		if (WARN_ON_ONCE(!type))
-+		if (!type) {
-+			pr_info("A spurious uncore type %d is detected, "
-+				"Disable the uncore type.\n",
-+				unit->box_type);
- 			return;
-+		}
- 		/* Store the first box of each die */
- 		if (!type->box_ctrl_die[die])
- 			type->box_ctrl_die[die] = unit->ctl;
-@@ -181,8 +189,12 @@ uncore_insert_box_info(struct uncore_uni
- 		ids[i] = type->ids[i];
- 		box_offset[i] = type->box_offset[i];
- 
--		if (WARN_ON_ONCE(unit->box_id == ids[i]))
-+		if (unit->box_id == ids[i]) {
-+			pr_info("Duplicate uncore type %d box ID %d is detected, "
-+				"Drop the duplicate uncore unit.\n",
-+				unit->box_type, unit->box_id);
- 			goto free_ids;
-+		}
- 	}
- 	ids[i] = unit->box_id;
- 	box_offset[i] = unit->ctl - type->box_ctrl;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4428,7 +4428,7 @@ int stmmac_dvr_probe(struct device *devi
+ 		ret = stmmac_mdio_register(ndev);
+ 		if (ret < 0) {
+ 			dev_err(priv->device,
+-				"%s: MDIO bus (id: %d) registration failed",
++				"%s: MDIO bus (id: %d) registration failed\n",
+ 				__func__, priv->plat->bus_id);
+ 			goto error_mdio_register;
+ 		}
 
 
 
