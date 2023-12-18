@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993E381673E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:18:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA74581673F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5543F281D20
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7881928202B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AD479D9;
-	Mon, 18 Dec 2023 07:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DD379F1;
+	Mon, 18 Dec 2023 07:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgbYqq4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWAKsZVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7B5D513
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:17:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2EEC433C9;
-	Mon, 18 Dec 2023 07:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6220E79EB
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:17:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85286C433C7;
+	Mon, 18 Dec 2023 07:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702883868;
-	bh=5llRbrQ5Y/dlI2/rE2NY6CTZ2rRRZlGQS79FWh0sBOA=;
+	s=korg; t=1702883870;
+	bh=JeKRJ7DOkJknKiHHkqcmYHu+i1baZ5kMhN04fAlMx5I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VgbYqq4A3q62HyVhC4EDFvUMGVvn+/XwblUD296GgbmW94BwjKOCJyeyawqQjaCSe
-	 DlaviOJ/Tg37gBmjnDx8OMOGbUHoMpLvyMn5E0sXnxYWjAlMELIK9EvpuAjmMOqMah
-	 HpvjJIRsgkCoUbau1eGIS7Zi7l9nt99RQErq97gU=
-Subject: FAILED: patch "[PATCH] btrfs: free qgroup pertrans reserve on transaction abort" failed to apply to 6.1-stable tree
+	b=AWAKsZVGSt9JTLsLu4F6bI5yoSL2ekRHZT9yqMkBWG78ouXpi7XS0ubUwR6u/kyfI
+	 AplP240rTXfENgfFm+whvNfqO+1QJrmpUAwSSPMrukOUbPxpOeqg6Bt5wLFdKgw6xz
+	 wcFlbA7ZbIGf/1npi8uDW3f1USq/xlOUOFMRSuNM=
+Subject: FAILED: patch "[PATCH] btrfs: free qgroup pertrans reserve on transaction abort" failed to apply to 5.15-stable tree
 To: boris@bur.io,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Dec 2023 08:17:37 +0100
-Message-ID: <2023121837-juggling-vest-964c@gregkh>
+Date: Mon, 18 Dec 2023 08:17:38 +0100
+Message-ID: <2023121838-eggbeater-kooky-f770@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x b321a52cce062ec7ed385333a33905d22159ce36
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121837-juggling-vest-964c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121838-eggbeater-kooky-f770@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
