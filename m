@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DAB1817233
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BE7817115
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 327861F24F7B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F8A1C23CBE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511EC5D720;
-	Mon, 18 Dec 2023 14:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573F414F63;
+	Mon, 18 Dec 2023 13:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVRpm2Sw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOopV0CL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090EB3A1BA;
-	Mon, 18 Dec 2023 14:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41ECEC433C8;
-	Mon, 18 Dec 2023 14:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E74C1D139;
+	Mon, 18 Dec 2023 13:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6463FC433C7;
+	Mon, 18 Dec 2023 13:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908259;
-	bh=EsWleJ6W7GddGZilnoNbxrjnVmzcACZgG5BxC0doF28=;
+	s=korg; t=1702907654;
+	bh=5OoTVlK+b2RZnnA0gFY4q0yogKDpEDn1PbZJuTc8z+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVRpm2SwR1pbKM2zrgGkBZT0NXO5nQ8cuGYxWCIeJbO+WVBEDhkA3louCJWSHl6c1
-	 yuvZh9oaRyCD72ldkbNVzjcv1wXsRJAnWZjpPQQBcehWa6UUwgJe8c4OPSxUkf1Khh
-	 gVrr6KekR3mPNi8+afAlSP1xZ9jW3vbnAp9yubzw=
+	b=HOopV0CLeA/runnEEIgRnDSj8VDNoFM3bCnLIizOgyBsDaPTeea2CQmzVOnOpA6N0
+	 o2hxnbuVSl3hYPFAn6D/JhvQRPngIz1KDWDN1XGUpe0zhXZ57O/3E3uLhCXUPfu5nY
+	 SU8oQRG8Jrw2sz6Ex35Ve5QrnpALBeYvIucb8UX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/166] HID: add ALWAYS_POLL quirk for Apple kb
+Subject: [PATCH 4.19 07/36] net/rose: Fix Use-After-Free in rose_ioctl
 Date: Mon, 18 Dec 2023 14:51:17 +0100
-Message-ID: <20231218135109.998174996@linuxfoundation.org>
+Message-ID: <20231218135042.161469214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,36 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
+[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
 
-These devices disconnect if suspended without remote wakeup. They can operate
-with the standard driver.
+Because rose_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with rose_accept().
+A use-after-free for skb occurs with the following flow.
+```
+rose_ioctl() -> skb_peek()
+rose_accept() -> skb_dequeue() -> kfree_skb()
+```
+Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/rose/af_rose.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 5a48fcaa32f00..ea472923fab07 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 4edd127bb8928..d32fb40650a75 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -1308,9 +1308,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	case TIOCINQ: {
+ 		struct sk_buff *skb;
+ 		long amount = 0L;
+-		/* These two are safe on a single CPU system as only user tasks fiddle here */
++
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
+ 			amount = skb->len;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		return put_user(amount, (unsigned int __user *) argp);
+ 	}
+ 
 -- 
 2.43.0
 
