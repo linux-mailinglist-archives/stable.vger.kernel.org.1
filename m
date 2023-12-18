@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-7703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00AF38175DF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED1D8175E0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9ED4428361B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30EA71C2420C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48A95D755;
-	Mon, 18 Dec 2023 15:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691E95BFAB;
+	Mon, 18 Dec 2023 15:39:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9455D74E
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109E65D74E
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-28b400f08a4so2106602a91.1
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:19 -0800 (PST)
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5cda3e35b26so433150a12.1
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:22 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913959; x=1703518759;
+        d=1e100.net; s=20230601; t=1702913962; x=1703518762;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HL9EBtYSbs0e3YgtCmmEUktBCgI7xw/pxNer9ZhLoEQ=;
-        b=sJfEWO6529M0z24RsgwvKCIyVRZIgPaISSspRgT6rO0BMyEipLd4JVXQXzOe6nSJaj
-         qeQ1TV/wW0/SCaj9TXkHydja+98q0AG/GnVzgi4BMAr532K3hHhVnqe1TxSdaJH71PTO
-         0KrfjxsAY33yLkvu3aLWgeS2EvR4ILAKABEq6U9Br5TnWAS9ilgghZXXehJiRTcgbzZ4
-         Gfv6GKgVfAlbAEgcjg35z172r7qEzHcuOJ63wTsgI9qKVq8ObmE/MBNwqD0jMJ8GJpGo
-         ogHLjGHcPA+Z5zYvGe+fWImmsQ0G0NFA+aZzTcGDLrVfI4CLym1Pl6EZCThVx3yLvS+q
-         1DcQ==
-X-Gm-Message-State: AOJu0YwZ4t9CxuSs4d0wNDlqApaYCRwTp61pWcjRRwuvCpWRsZaeSNRl
-	6W0j5p2t8nVVV5HWImpn+zA=
-X-Google-Smtp-Source: AGHT+IEkj2M2GAGOa+WVvy4vj6hnonmyJ8K92u/tVCCJXvIR9AkgJIn2n/ow17miSbzcBZM2qQEEzA==
-X-Received: by 2002:a17:90b:194b:b0:28b:6e4f:44fe with SMTP id nk11-20020a17090b194b00b0028b6e4f44femr972501pjb.38.1702913959311;
-        Mon, 18 Dec 2023 07:39:19 -0800 (PST)
+        bh=1vloPmXnhSpFX6WXn/NAo2DqgJZyutUe3GClxk3ALTM=;
+        b=L0qwenqrLN0g/LvVk1WMr9KMRf6LQJl8KEZwaiLM+uKLo1X9ue1lYkZJ0iwz5k/6Ah
+         o7dMyM/5ZQx13Q3RqCScEEwp7BXgevnS6R90tjZslK7P5v60pt0KAIJGyfkcJk+igAML
+         ArifoQqqzrpZ53drnOHoctOODjg3kp/PoeTBwJ6pgSPH4z3NF+6SzHztC5qvMNBAT1UA
+         KERDZX12zbLIobU/+8Qij/hSW9iFM26Niasasd1fk/Hjw2eKC0Uqxww+GP76jwy+oiH8
+         ewEB0Gb0Q6Lr5d1leNDMoaJatHfEWXs/BGc4JtzK41F5+CTDusCQukyU42H+oAGAXl2N
+         J3+A==
+X-Gm-Message-State: AOJu0YzBSGjUoRafr0+yLPwCFstuhUw+9UhgAVT+DwHUALulhcGNrQSl
+	iWT4xpK3fQKjt39OKBWch+U=
+X-Google-Smtp-Source: AGHT+IGQ107ql1H9fzzFvqKAXX4gvW9p0j4UO+3I9rdj+9nXNOQMZySwq88guvSLqfusCDPktoK61Q==
+X-Received: by 2002:a17:90a:5ac4:b0:28b:7d4f:3109 with SMTP id n62-20020a17090a5ac400b0028b7d4f3109mr674102pji.66.1702913962372;
+        Mon, 18 Dec 2023 07:39:22 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.17
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:39:18 -0800 (PST)
+        Mon, 18 Dec 2023 07:39:21 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
-	Steve French <stfrench@microsoft.com>,
+	Colin Ian King <colin.i.king@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	David Howells <dhowells@redhat.com>
-Subject: [PATCH 5.15.y 074/154] ksmbd: update Kconfig to note Kerberos support and fix indentation
-Date: Tue, 19 Dec 2023 00:33:34 +0900
-Message-Id: <20231218153454.8090-75-linkinjeon@kernel.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15.y 075/154] ksmbd: Fix spelling mistake "excceed" -> "exceeded"
+Date: Tue, 19 Dec 2023 00:33:35 +0900
+Message-Id: <20231218153454.8090-76-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -64,55 +64,32 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Steve French <stfrench@microsoft.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit d280a958f8b2b62610c280ecdf35d780e7922620 ]
+[ Upstream commit 7a17c61ee3b2683c40090179c273f4701fca9677 ]
 
-Fix indentation of server config options, and also since
-support for very old, less secure, NTLM authentication was removed
-(and quite a while ago), remove the mention of that in Kconfig, but
-do note Kerberos (not just NTLMv2) which are supported and much
-more secure.
+There is a spelling mistake in an error message. Fix it.
 
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Acked-by: David Howells <dhowells@redhat.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/Kconfig | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ksmbd/connection.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/Kconfig b/fs/ksmbd/Kconfig
-index e1fe17747ed6..7055cb5d2880 100644
---- a/fs/ksmbd/Kconfig
-+++ b/fs/ksmbd/Kconfig
-@@ -33,14 +33,16 @@ config SMB_SERVER
- 	  in ksmbd-tools, available from
- 	  https://github.com/cifsd-team/ksmbd-tools.
- 	  More detail about how to run the ksmbd kernel server is
--	  available via README file
-+	  available via the README file
- 	  (https://github.com/cifsd-team/ksmbd-tools/blob/master/README).
+diff --git a/fs/ksmbd/connection.c b/fs/ksmbd/connection.c
+index 9ed669d58742..ccb978f48e41 100644
+--- a/fs/ksmbd/connection.c
++++ b/fs/ksmbd/connection.c
+@@ -312,7 +312,7 @@ int ksmbd_conn_handler_loop(void *p)
+ 			max_allowed_pdu_size = SMB3_MAX_MSGSIZE;
  
- 	  ksmbd kernel server includes support for auto-negotiation,
- 	  Secure negotiate, Pre-authentication integrity, oplock/lease,
- 	  compound requests, multi-credit, packet signing, RDMA(smbdirect),
- 	  smb3 encryption, copy-offload, secure per-user session
--	  establishment via NTLM or NTLMv2.
-+	  establishment via Kerberos or NTLMv2.
-+
-+if SMB_SERVER
- 
- config SMB_SERVER_SMBDIRECT
- 	bool "Support for SMB Direct protocol"
-@@ -54,6 +56,8 @@ config SMB_SERVER_SMBDIRECT
- 	  SMB Direct allows transferring SMB packets over RDMA. If unsure,
- 	  say N.
- 
-+endif
-+
- config SMB_SERVER_CHECK_CAP_NET_ADMIN
- 	bool "Enable check network administration capability"
- 	depends on SMB_SERVER
+ 		if (pdu_size > max_allowed_pdu_size) {
+-			pr_err_ratelimited("PDU length(%u) excceed maximum allowed pdu size(%u) on connection(%d)\n",
++			pr_err_ratelimited("PDU length(%u) exceeded maximum allowed pdu size(%u) on connection(%d)\n",
+ 					pdu_size, max_allowed_pdu_size,
+ 					conn->status);
+ 			break;
 -- 
 2.25.1
 
