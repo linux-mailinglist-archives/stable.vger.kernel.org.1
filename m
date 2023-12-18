@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-7167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4B881713D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B8D81720B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EBE1B209A0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C44282DAE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E854A1D123;
-	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E26C4FF89;
+	Mon, 18 Dec 2023 14:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3cuoF47"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1u83H/E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2183129EC8;
-	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3747CC433C7;
-	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E229542396;
+	Mon, 18 Dec 2023 14:02:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F91C433C8;
+	Mon, 18 Dec 2023 14:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907741;
-	bh=eZ3sPCG6Gq49iHLqxgZkEzrTvBbieTeXuCKoi06Vu1o=;
+	s=korg; t=1702908168;
+	bh=Rg9ExuYnb+aM7Su8YeskNJIp+V/wMNTBIrKKRWsEajA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3cuoF47gyuoMSSSPhrIEZE9MHNplEnkcP7G34shTgPWC2u/R3p5JKfrfB4wtUb8K
-	 0/INuwSVyfBLQS18oPg34d7tJKMHq4qry9wOvTLNiQuxPAk7jGl95SFEvJBkpE55qj
-	 bcoLd0di2Kq/KRFZvSJPGDqc6t4Oz8WSfbtN0poM=
+	b=t1u83H/E30jAugSoK2lXjoRaKy10Xgpl2EPRrVl3/awuyifVw3+mUWnkV2xOk1I+H
+	 fh22n+iqhqj949rvCHGhz3N6XmCpr8avS4NvGIHLYfzr0Qdnxtlp46IBHjlacglk5d
+	 t6T0tXRJeCA+MSCiUUfAnHdjE9casU6MkIU0nUQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Piotr Gardocki <piotrx.gardocki@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Ranganatha Rao <ranganatha.rao@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Michael Walle <mwalle@kernel.org>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/106] iavf: Handle ntuple on/off based on new state machines for flow director
-Date: Mon, 18 Dec 2023 14:50:43 +0100
-Message-ID: <20231218135056.184338401@linuxfoundation.org>
+Subject: [PATCH 6.6 078/166] drm/mediatek: fix kernel oops if no crtc is found
+Date: Mon, 18 Dec 2023 14:50:44 +0100
+Message-ID: <20231218135108.528906417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,134 +54,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Piotr Gardocki <piotrx.gardocki@intel.com>
+From: Michael Walle <mwalle@kernel.org>
 
-[ Upstream commit 09d23b8918f9ab0f8114f6b94f2faf8bde3fb52a ]
+[ Upstream commit 4662817aed5a9d6c695658d0105d8ff4b84ac6cb ]
 
-ntuple-filter feature on/off:
-Default is on. If turned off, the filters will be removed from both
-PF and iavf list. The removal is irrespective of current filter state.
+drm_crtc_from_index(0) might return NULL if there are no CRTCs
+registered at all which will lead to a kernel oops in
+mtk_drm_crtc_dma_dev_get(). Add the missing return value check.
 
-Steps to reproduce:
--------------------
-
-1. Ensure ntuple is on.
-
-ethtool -K enp8s0 ntuple-filters on
-
-2. Create a filter to receive the traffic into non-default rx-queue like 15
-and ensure traffic is flowing into queue into 15.
-Now, turn off ntuple. Traffic should not flow to configured queue 15.
-It should flow to default RX queue.
-
-Fixes: 0dbfbabb840d ("iavf: Add framework to enable ethtool ntuple filters")
-Signed-off-by: Piotr Gardocki <piotrx.gardocki@intel.com>
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Ranganatha Rao <ranganatha.rao@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 0d9eee9118b7 ("drm/mediatek: Add drm ovl_adaptor sub driver for MT8195")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: Eugen Hristev <eugen.hristev@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230905084922.3908121-1-mwalle@kernel.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 59 +++++++++++++++++++++
- 1 file changed, 59 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 3a155026d9a5f..b9c4b311cd625 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -4445,6 +4445,49 @@ static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 2d6a979afe8f9..cdd506c803733 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -421,6 +421,7 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 	struct mtk_drm_private *private = drm->dev_private;
+ 	struct mtk_drm_private *priv_n;
+ 	struct device *dma_dev = NULL;
++	struct drm_crtc *crtc;
+ 	int ret, i, j;
  
-+/**
-+ * iavf_disable_fdir - disable Flow Director and clear existing filters
-+ * @adapter: board private structure
-+ **/
-+static void iavf_disable_fdir(struct iavf_adapter *adapter)
-+{
-+	struct iavf_fdir_fltr *fdir, *fdirtmp;
-+	bool del_filters = false;
-+
-+	adapter->flags &= ~IAVF_FLAG_FDIR_ENABLED;
-+
-+	/* remove all Flow Director filters */
-+	spin_lock_bh(&adapter->fdir_fltr_lock);
-+	list_for_each_entry_safe(fdir, fdirtmp, &adapter->fdir_list_head,
-+				 list) {
-+		if (fdir->state == IAVF_FDIR_FLTR_ADD_REQUEST ||
-+		    fdir->state == IAVF_FDIR_FLTR_INACTIVE) {
-+			/* Delete filters not registered in PF */
-+			list_del(&fdir->list);
-+			kfree(fdir);
-+			adapter->fdir_active_fltr--;
-+		} else if (fdir->state == IAVF_FDIR_FLTR_ADD_PENDING ||
-+			   fdir->state == IAVF_FDIR_FLTR_DIS_REQUEST ||
-+			   fdir->state == IAVF_FDIR_FLTR_ACTIVE) {
-+			/* Filters registered in PF, schedule their deletion */
-+			fdir->state = IAVF_FDIR_FLTR_DEL_REQUEST;
-+			del_filters = true;
-+		} else if (fdir->state == IAVF_FDIR_FLTR_DIS_PENDING) {
-+			/* Request to delete filter already sent to PF, change
-+			 * state to DEL_PENDING to delete filter after PF's
-+			 * response, not set as INACTIVE
-+			 */
-+			fdir->state = IAVF_FDIR_FLTR_DEL_PENDING;
-+		}
-+	}
-+	spin_unlock_bh(&adapter->fdir_fltr_lock);
-+
-+	if (del_filters) {
-+		adapter->aq_required |= IAVF_FLAG_AQ_DEL_FDIR_FILTER;
-+		mod_delayed_work(adapter->wq, &adapter->watchdog_task, 0);
-+	}
-+}
-+
- #define NETIF_VLAN_OFFLOAD_FEATURES	(NETIF_F_HW_VLAN_CTAG_RX | \
- 					 NETIF_F_HW_VLAN_CTAG_TX | \
- 					 NETIF_F_HW_VLAN_STAG_RX | \
-@@ -4467,6 +4510,13 @@ static int iavf_set_features(struct net_device *netdev,
- 		iavf_set_vlan_offload_features(adapter, netdev->features,
- 					       features);
+ 	if (drm_firmware_drivers_only())
+@@ -495,7 +496,9 @@ static int mtk_drm_kms_init(struct drm_device *drm)
+ 	}
  
-+	if ((netdev->features & NETIF_F_NTUPLE) ^ (features & NETIF_F_NTUPLE)) {
-+		if (features & NETIF_F_NTUPLE)
-+			adapter->flags |= IAVF_FLAG_FDIR_ENABLED;
-+		else
-+			iavf_disable_fdir(adapter);
-+	}
-+
- 	return 0;
- }
- 
-@@ -4762,6 +4812,9 @@ static netdev_features_t iavf_fix_features(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 
-+	if (!FDIR_FLTR_SUPPORT(adapter))
-+		features &= ~NETIF_F_NTUPLE;
-+
- 	return iavf_fix_netdev_vlan_features(adapter, features);
- }
- 
-@@ -4879,6 +4932,12 @@ int iavf_process_config(struct iavf_adapter *adapter)
- 	if (vfres->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_VLAN)
- 		netdev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
- 
-+	if (FDIR_FLTR_SUPPORT(adapter)) {
-+		netdev->hw_features |= NETIF_F_NTUPLE;
-+		netdev->features |= NETIF_F_NTUPLE;
-+		adapter->flags |= IAVF_FLAG_FDIR_ENABLED;
-+	}
-+
- 	netdev->priv_flags |= IFF_UNICAST_FLT;
- 
- 	/* Do not turn on offloads when they are requested to be turned off.
+ 	/* Use OVL device for all DMA memory allocations */
+-	dma_dev = mtk_drm_crtc_dma_dev_get(drm_crtc_from_index(drm, 0));
++	crtc = drm_crtc_from_index(drm, 0);
++	if (crtc)
++		dma_dev = mtk_drm_crtc_dma_dev_get(crtc);
+ 	if (!dma_dev) {
+ 		ret = -ENODEV;
+ 		dev_err(drm->dev, "Need at least one OVL device\n");
 -- 
 2.43.0
 
