@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECFC8172E4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D11817334
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09528288964
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 917D1B22A51
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5073B37884;
-	Mon, 18 Dec 2023 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79E01D14B;
+	Mon, 18 Dec 2023 14:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yu3Wpn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FX1g8eb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C86129EF9;
-	Mon, 18 Dec 2023 14:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF3FC433C8;
-	Mon, 18 Dec 2023 14:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1451D136;
+	Mon, 18 Dec 2023 14:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02424C433C7;
+	Mon, 18 Dec 2023 14:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908675;
-	bh=Tk1ueKsIhiB6lYTAqFOkOlfjzY4EHyzzT3QW1beM39Q=;
+	s=korg; t=1702908880;
+	bh=U36Fmca3fYV7urzJy3WHYo/KFajkF8j68ZKIuZJP+mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Yu3Wpn46EzTcmwD5e1c6tVFM5KhMAEger/xci/jPK1Fr3WlBWMFqUorUyUt5br/b
-	 0iUdai6cW5LwNCxXdepftp+cDQKZpzs/+hzSkdugz4Bvg50sGEh9WiGrjN+przclJ7
-	 EVfmMUH24vifujfqcyUwupGdSW+9FleKpt/kT0uk=
+	b=FX1g8eb6Ox3gjKEl9ASn/Ly9CAFFqwzohmyozh0xz6s7CNHnLTOTYzAxWNE6JP9nq
+	 uQsSd7qHEhURmaIOiGY8bf7JUDgnqCCIH1goDYyDdHkgI9C5KX/kBaKVDSqTs84OZh
+	 8A7QYn8WT0ADSSGWUyStQ6wb0H9/w2nVK/iVLGvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.4 33/40] soundwire: stream: fix NULL pointer dereference for multi_link
-Date: Mon, 18 Dec 2023 14:52:28 +0100
-Message-ID: <20231218135044.004097116@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.15 68/83] drm/amdgpu/sdma5.2: add begin/end_use ring callbacks
+Date: Mon, 18 Dec 2023 14:52:29 +0100
+Message-ID: <20231218135052.736319722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +51,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit e199bf52ffda8f98f129728d57244a9cd9ad5623 upstream.
+commit ab4750332dbe535243def5dcebc24ca00c1f98ac upstream.
 
-If bus is marked as multi_link, but number of masters in the stream is
-not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
-bus->hw_sync_min_links), bank switching should not happen.  The first
-part of do_bank_switch() code properly takes these conditions into
-account, but second part (sdw_ml_sync_bank_switch()) relies purely on
-bus->multi_link property.  This is not balanced and leads to NULL
-pointer dereference:
+Add begin/end_use ring callbacks to disallow GFXOFF when
+SDMA work is submitted and allow it again afterward.
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  ...
-  Call trace:
-   wait_for_completion_timeout+0x124/0x1f0
-   do_bank_switch+0x370/0x6f8
-   sdw_prepare_stream+0x2d0/0x438
-   qcom_snd_sdw_prepare+0xa0/0x118
-   sm8450_snd_prepare+0x128/0x148
-   snd_soc_link_prepare+0x5c/0xe8
-   __soc_pcm_prepare+0x28/0x1ec
-   dpcm_be_dai_prepare+0x1e0/0x2c0
-   dpcm_fe_dai_prepare+0x108/0x28c
-   snd_pcm_do_prepare+0x44/0x68
-   snd_pcm_action_single+0x54/0xc0
-   snd_pcm_action_nonatomic+0xe4/0xec
-   snd_pcm_prepare+0xc4/0x114
-   snd_pcm_common_ioctl+0x1154/0x1cc0
-   snd_pcm_ioctl+0x54/0x74
+This should avoid corner cases where GFXOFF is erroneously
+entered when SDMA is still active.  For now just allow/disallow
+GFXOFF in the begin and end helpers until we root cause the
+issue.  This should not impact power as SDMA usage is pretty
+minimal and GFXOSS should not be active when SDMA is active
+anyway, this just makes it explicit.
 
-Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20231124180136.390621-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+v2: move everything into sdma5.2 code.  No reason for this
+to be generic at this point.
+v3: Add comments in new code
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2220
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
+Tested-by: Mario Limonciello <mario.limonciello@amd.com> (v1)
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 5.15+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/stream.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -709,14 +709,15 @@ error_1:
-  * sdw_ml_sync_bank_switch: Multilink register bank switch
-  *
-  * @bus: SDW bus instance
-+ * @multi_link: whether this is a multi-link stream with hardware-based sync
-  *
-  * Caller function should free the buffers on error
-  */
--static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
-+static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
- {
- 	unsigned long time_left;
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -1660,6 +1660,32 @@ static void sdma_v5_2_get_clockgating_st
+ 		*flags |= AMD_CG_SUPPORT_SDMA_LS;
+ }
  
--	if (!bus->multi_link)
-+	if (!multi_link)
- 		return 0;
- 
- 	/* Wait for completion of transfer */
-@@ -809,7 +810,7 @@ static int do_bank_switch(struct sdw_str
- 			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
- 
- 		/* Check if bank switch was successful */
--		ret = sdw_ml_sync_bank_switch(bus);
-+		ret = sdw_ml_sync_bank_switch(bus, multi_link);
- 		if (ret < 0) {
- 			dev_err(bus->dev,
- 				"multi link bank switch failed: %d\n", ret);
++static void sdma_v5_2_ring_begin_use(struct amdgpu_ring *ring)
++{
++	struct amdgpu_device *adev = ring->adev;
++
++	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
++	 * disallow GFXOFF in some cases leading to
++	 * hangs in SDMA.  Disallow GFXOFF while SDMA is active.
++	 * We can probably just limit this to 5.2.3,
++	 * but it shouldn't hurt for other parts since
++	 * this GFXOFF will be disallowed anyway when SDMA is
++	 * active, this just makes it explicit.
++	 */
++	amdgpu_gfx_off_ctrl(adev, false);
++}
++
++static void sdma_v5_2_ring_end_use(struct amdgpu_ring *ring)
++{
++	struct amdgpu_device *adev = ring->adev;
++
++	/* SDMA 5.2.3 (RMB) FW doesn't seem to properly
++	 * disallow GFXOFF in some cases leading to
++	 * hangs in SDMA.  Allow GFXOFF when SDMA is complete.
++	 */
++	amdgpu_gfx_off_ctrl(adev, true);
++}
++
+ const struct amd_ip_funcs sdma_v5_2_ip_funcs = {
+ 	.name = "sdma_v5_2",
+ 	.early_init = sdma_v5_2_early_init,
+@@ -1707,6 +1733,8 @@ static const struct amdgpu_ring_funcs sd
+ 	.test_ib = sdma_v5_2_ring_test_ib,
+ 	.insert_nop = sdma_v5_2_ring_insert_nop,
+ 	.pad_ib = sdma_v5_2_ring_pad_ib,
++	.begin_use = sdma_v5_2_ring_begin_use,
++	.end_use = sdma_v5_2_ring_end_use,
+ 	.emit_wreg = sdma_v5_2_ring_emit_wreg,
+ 	.emit_reg_wait = sdma_v5_2_ring_emit_reg_wait,
+ 	.emit_reg_write_reg_wait = sdma_v5_2_ring_emit_reg_write_reg_wait,
 
 
 
