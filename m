@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3317C8172AC
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88D99817307
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2641F23EAF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29CC9B22B6B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E6E42368;
-	Mon, 18 Dec 2023 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C373A1C7;
+	Mon, 18 Dec 2023 14:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLba52og"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1thWS3U2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5855015AC0;
-	Mon, 18 Dec 2023 14:09:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFEE9C433C8;
-	Mon, 18 Dec 2023 14:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A53A1A8;
+	Mon, 18 Dec 2023 14:12:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C01C433C8;
+	Mon, 18 Dec 2023 14:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908544;
-	bh=5oOMVTI2torLzBme2ePI1BAplD0k81qkbBEeRINmDcg=;
+	s=korg; t=1702908757;
+	bh=+mWfR5c+j3yySXC8UeU8Cttl2Qq3u2DGEiNashsDVnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLba52ogUoG45v6zJlBhBP9f/NhuCC6DZcdvIl2dptd6uEBkCAEQ+Ju50hqibUv7F
-	 JvuMBCzjkOgXRpVQgf/nNDYIjuNqIjAL2jvnsrwpE57vaKSZ0FIsZ2fAeT24Ea5Suj
-	 V2HUFYnV/l07R69l+XpDyv3GT1+rii4OdOAZ9sEE=
+	b=1thWS3U2/W8okcWZ8CwNr2b6yKpnYQbU6YosZX5P8MDLeLMV/bDo2+1Vu/BKY8J6g
+	 /dztrHdtY/xXs/bp6qNbfeYNVHCvQPDpbwQ8arLbzSo4kIJWgXKRKhYQV11mFFzxKb
+	 Xbi/8xT2jG8X7T6yGuQkXEAyHaonVg5tRn2sYCek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/62] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+Subject: [PATCH 5.15 22/83] octeontx2-af: Update RSS algorithm index
 Date: Mon, 18 Dec 2023 14:51:43 +0100
-Message-ID: <20231218135047.085140054@linuxfoundation.org>
+Message-ID: <20231218135050.721994341@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +54,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
+[ Upstream commit 570ba37898ecd9069beb58bf0b6cf84daba6e0fe ]
 
-We need to do signed arithmetic if we expect condition
-`if (bytes < 0)` to be possible
+The RSS flow algorithm is not set up correctly for promiscuous or all
+multi MCAM entries. This has an impact on flow distribution.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+This patch fixes the issue by updating flow algorithm index in above
+mentioned MCAM entries.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 55 +++++++++++++++----
+ 1 file changed, 44 insertions(+), 11 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index c9ee9259af48a..080e8f2bf9855 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -436,7 +436,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 	s64 bytes;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index a3fd20d26b942..8b16738e249f6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -664,6 +664,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
+ 	int blkaddr, ucast_idx, index;
+ 	struct nix_rx_action action = { 0 };
+ 	u64 relaxed_mask;
++	u8 flow_key_alg;
  
--	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
+ 	if (!hw->cap.nix_rx_multicast && is_cgx_vf(rvu, pcifunc))
+ 		return;
+@@ -694,6 +695,8 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
+ 		action.op = NIX_RX_ACTIONOP_UCAST;
+ 	}
  
++	flow_key_alg = action.flow_key_alg;
++
+ 	/* RX_ACTION set to MCAST for CGX PF's */
+ 	if (hw->cap.nix_rx_multicast && pfvf->use_mce_list &&
+ 	    is_pf_cgxmapped(rvu, rvu_get_pf(pcifunc))) {
+@@ -733,7 +736,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
+ 	req.vf = pcifunc;
+ 	req.index = action.index;
+ 	req.match_id = action.match_id;
+-	req.flow_key_alg = action.flow_key_alg;
++	req.flow_key_alg = flow_key_alg;
+ 
+ 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
+ }
+@@ -839,6 +842,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 	u8 mac_addr[ETH_ALEN] = { 0 };
+ 	struct nix_rx_action action = { 0 };
+ 	struct rvu_pfvf *pfvf;
++	u8 flow_key_alg;
+ 	u16 vf_func;
+ 
+ 	/* Only CGX PF/VF can add allmulticast entry */
+@@ -865,6 +869,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 		*(u64 *)&action = npc_get_mcam_action(rvu, mcam,
+ 							blkaddr, ucast_idx);
+ 
++	flow_key_alg = action.flow_key_alg;
+ 	if (action.op != NIX_RX_ACTIONOP_RSS) {
+ 		*(u64 *)&action = 0;
+ 		action.op = NIX_RX_ACTIONOP_UCAST;
+@@ -901,7 +906,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 	req.vf = pcifunc | vf_func;
+ 	req.index = action.index;
+ 	req.match_id = action.match_id;
+-	req.flow_key_alg = action.flow_key_alg;
++	req.flow_key_alg = flow_key_alg;
+ 
+ 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
+ }
+@@ -967,11 +972,38 @@ static void npc_update_vf_flow_entry(struct rvu *rvu, struct npc_mcam *mcam,
+ 	mutex_unlock(&mcam->lock);
+ }
+ 
++static void npc_update_rx_action_with_alg_idx(struct rvu *rvu, struct nix_rx_action action,
++					      struct rvu_pfvf *pfvf, int mcam_index, int blkaddr,
++					      int alg_idx)
++
++{
++	struct npc_mcam *mcam = &rvu->hw->mcam;
++	struct rvu_hwinfo *hw = rvu->hw;
++	int bank, op_rss;
++
++	if (!is_mcam_entry_enabled(rvu, mcam, blkaddr, mcam_index))
++		return;
++
++	op_rss = (!hw->cap.nix_rx_multicast || !pfvf->use_mce_list);
++
++	bank = npc_get_bank(mcam, mcam_index);
++	mcam_index &= (mcam->banksize - 1);
++
++	/* If Rx action is MCAST update only RSS algorithm index */
++	if (!op_rss) {
++		*(u64 *)&action = rvu_read64(rvu, blkaddr,
++				NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank));
++
++		action.flow_key_alg = alg_idx;
++	}
++	rvu_write64(rvu, blkaddr,
++		    NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank), *(u64 *)&action);
++}
++
+ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 				    int group, int alg_idx, int mcam_index)
+ {
+ 	struct npc_mcam *mcam = &rvu->hw->mcam;
+-	struct rvu_hwinfo *hw = rvu->hw;
+ 	struct nix_rx_action action;
+ 	int blkaddr, index, bank;
+ 	struct rvu_pfvf *pfvf;
+@@ -1027,15 +1059,16 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
+ 	/* If PF's promiscuous entry is enabled,
+ 	 * Set RSS action for that entry as well
+ 	 */
+-	if ((!hw->cap.nix_rx_multicast || !pfvf->use_mce_list) &&
+-	    is_mcam_entry_enabled(rvu, mcam, blkaddr, index)) {
+-		bank = npc_get_bank(mcam, index);
+-		index &= (mcam->banksize - 1);
++	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
++					  alg_idx);
+ 
+-		rvu_write64(rvu, blkaddr,
+-			    NPC_AF_MCAMEX_BANKX_ACTION(index, bank),
+-			    *(u64 *)&action);
+-	}
++	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
++					 nixlf, NIXLF_ALLMULTI_ENTRY);
++	/* If PF's allmulti  entry is enabled,
++	 * Set RSS action for that entry as well
++	 */
++	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
++					  alg_idx);
+ }
+ 
+ void npc_enadis_default_mce_entry(struct rvu *rvu, u16 pcifunc,
 -- 
 2.43.0
 
