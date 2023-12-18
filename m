@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12ADD817272
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B9A48172C2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6F372853D6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8541287A65
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE50A5A841;
-	Mon, 18 Dec 2023 14:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9057A37862;
+	Mon, 18 Dec 2023 14:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFQ2oJ7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVibD4F4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807F73A1C6;
-	Mon, 18 Dec 2023 14:06:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB36C433C8;
-	Mon, 18 Dec 2023 14:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599A2129EC7;
+	Mon, 18 Dec 2023 14:09:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0264C433C7;
+	Mon, 18 Dec 2023 14:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908405;
-	bh=3a85cNJlSC4iej43BJShFyHdQU8RTSX9ZrPYHk/sS1Y=;
+	s=korg; t=1702908591;
+	bh=v+kfDNWMiEp4qJDDmhXVc/mCnGAt+4f2HqS6jGRKXJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFQ2oJ7W8TXRPGcWTDFvZkhADeX1auxv+3kDoHFzp1P4xl0TiP72RNcmxxEgRBc4q
-	 7A65N6Pd1skXaihlOScZzs7zTUv9lH3lyi/lRjzm9WQrHjAO0oNTD4KNUjqmU/1HgJ
-	 JX4kJlI5NnkSXoptEbJNmTr1ZZtot0AYgpZy4FkQ=
+	b=xVibD4F4wx/bmUSek97WUtSzCOewCPB97mzTaCGh9NsY4m9M8Vwef7N4nktAmEsfx
+	 bQRezgk6NzuHXaAkUheSEAIspXuJgAJmzrNo5YW+fwyZjjD/QacwIQV/Z4LROF90Yi
+	 2xSrK/pGOlBFxdypAND3spD99r/MB2SeiS4U2mmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.6 165/166] x86/speculation, objtool: Use absolute relocations for annotations
-Date: Mon, 18 Dec 2023 14:52:11 +0100
-Message-ID: <20231218135112.502265588@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 48/62] soundwire: stream: fix NULL pointer dereference for multi_link
+Date: Mon, 18 Dec 2023 14:52:12 +0100
+Message-ID: <20231218135048.369726725@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,136 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangrui Song <maskray@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b8ec60e1186cdcfce41e7db4c827cb107e459002 upstream.
+commit e199bf52ffda8f98f129728d57244a9cd9ad5623 upstream.
 
-.discard.retpoline_safe sections do not have the SHF_ALLOC flag.  These
-sections referencing text sections' STT_SECTION symbols with PC-relative
-relocations like R_386_PC32 [0] is conceptually not suitable.  Newer
-LLD will report warnings for REL relocations even for relocatable links [1]:
+If bus is marked as multi_link, but number of masters in the stream is
+not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
+bus->hw_sync_min_links), bank switching should not happen.  The first
+part of do_bank_switch() code properly takes these conditions into
+account, but second part (sdw_ml_sync_bank_switch()) relies purely on
+bus->multi_link property.  This is not balanced and leads to NULL
+pointer dereference:
 
-    ld.lld: warning: vmlinux.a(drivers/i2c/busses/i2c-i801.o):(.discard.retpoline_safe+0x120): has non-ABS relocation R_386_PC32 against symbol ''
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  ...
+  Call trace:
+   wait_for_completion_timeout+0x124/0x1f0
+   do_bank_switch+0x370/0x6f8
+   sdw_prepare_stream+0x2d0/0x438
+   qcom_snd_sdw_prepare+0xa0/0x118
+   sm8450_snd_prepare+0x128/0x148
+   snd_soc_link_prepare+0x5c/0xe8
+   __soc_pcm_prepare+0x28/0x1ec
+   dpcm_be_dai_prepare+0x1e0/0x2c0
+   dpcm_fe_dai_prepare+0x108/0x28c
+   snd_pcm_do_prepare+0x44/0x68
+   snd_pcm_action_single+0x54/0xc0
+   snd_pcm_action_nonatomic+0xe4/0xec
+   snd_pcm_prepare+0xc4/0x114
+   snd_pcm_common_ioctl+0x1154/0x1cc0
+   snd_pcm_ioctl+0x54/0x74
 
-Switch to absolute relocations instead, which indicate link-time
-addresses.  In a relocatable link, these addresses are also output
-section offsets, used by checks in tools/objtool/check.c.  When linking
-vmlinux, these .discard.* sections will be discarded, therefore it is
-not a problem that R_X86_64_32 cannot represent a kernel address.
-
-Alternatively, we could set the SHF_ALLOC flag for .discard.* sections,
-but I think non-SHF_ALLOC for sections to be discarded makes more sense.
-
-Note: if we decide to never support REL architectures (e.g. arm, i386),
-we can utilize R_*_NONE relocations (.reloc ., BFD_RELOC_NONE, sym),
-making .discard.* sections zero-sized.  That said, the section content
-waste is 4 bytes per entry, much smaller than sizeof(Elf{32,64}_Rel).
-
-  [0] commit 1c0c1faf5692 ("objtool: Use relative pointers for annotations")
-  [1] https://github.com/ClangBuiltLinux/linux/issues/1937
-
-Signed-off-by: Fangrui Song <maskray@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20230920001728.1439947-1-maskray@google.com
-Cc: Nathan Chancellor <nathan@kernel.org>
+Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231124180136.390621-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/alternative.h   |    4 ++--
- arch/x86/include/asm/nospec-branch.h |    4 ++--
- include/linux/objtool.h              |   10 +++++-----
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/soundwire/stream.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -58,7 +58,7 @@
- #define ANNOTATE_IGNORE_ALTERNATIVE				\
- 	"999:\n\t"						\
- 	".pushsection .discard.ignore_alts\n\t"			\
--	".long 999b - .\n\t"					\
-+	".long 999b\n\t"					\
- 	".popsection\n\t"
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -724,14 +724,15 @@ error_1:
+  * sdw_ml_sync_bank_switch: Multilink register bank switch
+  *
+  * @bus: SDW bus instance
++ * @multi_link: whether this is a multi-link stream with hardware-based sync
+  *
+  * Caller function should free the buffers on error
+  */
+-static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
++static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
+ {
+ 	unsigned long time_left;
  
- /*
-@@ -352,7 +352,7 @@ static inline int alternatives_text_rese
- .macro ANNOTATE_IGNORE_ALTERNATIVE
- 	.Lannotate_\@:
- 	.pushsection .discard.ignore_alts
--	.long .Lannotate_\@ - .
-+	.long .Lannotate_\@
- 	.popsection
- .endm
+-	if (!bus->multi_link)
++	if (!multi_link)
+ 		return 0;
  
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -196,7 +196,7 @@
- .macro ANNOTATE_RETPOLINE_SAFE
- .Lhere_\@:
- 	.pushsection .discard.retpoline_safe
--	.long .Lhere_\@ - .
-+	.long .Lhere_\@
- 	.popsection
- .endm
+ 	/* Wait for completion of transfer */
+@@ -827,7 +828,7 @@ static int do_bank_switch(struct sdw_str
+ 			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
  
-@@ -334,7 +334,7 @@
- #define ANNOTATE_RETPOLINE_SAFE					\
- 	"999:\n\t"						\
- 	".pushsection .discard.retpoline_safe\n\t"		\
--	".long 999b - .\n\t"					\
-+	".long 999b\n\t"					\
- 	".popsection\n\t"
- 
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -48,13 +48,13 @@
- #define ANNOTATE_NOENDBR					\
- 	"986: \n\t"						\
- 	".pushsection .discard.noendbr\n\t"			\
--	".long 986b - .\n\t"					\
-+	".long 986b\n\t"					\
- 	".popsection\n\t"
- 
- #define ASM_REACHABLE							\
- 	"998:\n\t"							\
- 	".pushsection .discard.reachable\n\t"				\
--	".long 998b - .\n\t"						\
-+	".long 998b\n\t"						\
- 	".popsection\n\t"
- 
- #else /* __ASSEMBLY__ */
-@@ -66,7 +66,7 @@
- #define ANNOTATE_INTRA_FUNCTION_CALL				\
- 	999:							\
- 	.pushsection .discard.intra_function_calls;		\
--	.long 999b - .;						\
-+	.long 999b;						\
- 	.popsection;
- 
- /*
-@@ -118,7 +118,7 @@
- .macro ANNOTATE_NOENDBR
- .Lhere_\@:
- 	.pushsection .discard.noendbr
--	.long	.Lhere_\@ - .
-+	.long	.Lhere_\@
- 	.popsection
- .endm
- 
-@@ -142,7 +142,7 @@
- .macro REACHABLE
- .Lhere_\@:
- 	.pushsection .discard.reachable
--	.long	.Lhere_\@ - .
-+	.long	.Lhere_\@
- 	.popsection
- .endm
- 
+ 		/* Check if bank switch was successful */
+-		ret = sdw_ml_sync_bank_switch(bus);
++		ret = sdw_ml_sync_bank_switch(bus, multi_link);
+ 		if (ret < 0) {
+ 			dev_err(bus->dev,
+ 				"multi link bank switch failed: %d\n", ret);
 
 
 
