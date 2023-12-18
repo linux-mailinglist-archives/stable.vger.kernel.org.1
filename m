@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEAFC81735D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19F38172E3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90B21B236C7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816312889AD
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C9F3A1B6;
-	Mon, 18 Dec 2023 14:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5AF1D136;
+	Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KW+sZz0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmnWw/M4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5DC3A1AC;
-	Mon, 18 Dec 2023 14:15:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744D4C433C8;
-	Mon, 18 Dec 2023 14:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135E91D14F;
+	Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCA1C433C7;
+	Mon, 18 Dec 2023 14:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908942;
-	bh=nY89NZ4NO1qDjNTszcFsD0G9lPetWdrs8GuHMENuPbM=;
+	s=korg; t=1702908672;
+	bh=0TJ8fAu5e8DBeJFHjNKSaJaKSE3125SsKhdpVkpFMTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KW+sZz0n5RhfM2rtfEY5drEGgn2VmmyH156XJJHci4kEorGizlVaocFYG6L7MNOUk
-	 LSvKhXhSw/+5Hzx5k7iCQxQPaeTsTtwcn3cGiADYrAM5Gjcn21+qfNnsbhw3lfd3Rr
-	 idH03M7tVhsG/HVc9u1uXohbcPEEtaQuiE580zYU=
+	b=tmnWw/M405OKwsEgQblDiImlbpOrvetLroM2fXJjeGYaTgsZNVdfCGQXkFvBvka+N
+	 n4USRk8eyt5vjcTp1SewJjjCuQkSS2RiO7/m5QveO13MPpkGDdvM0onXYMDGVg3xiC
+	 GMtmAsSmDSRDYkhsMFB49NSl/Sz9QLfyAXIi9Xbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Houghton <jthoughton@google.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 66/83] arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.4 32/40] perf: Fix perf_event_validate_size() lockdep splat
 Date: Mon, 18 Dec 2023 14:52:27 +0100
-Message-ID: <20231218135052.648296084@linuxfoundation.org>
+Message-ID: <20231218135043.959659230@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Houghton <jthoughton@google.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 3c0696076aad60a2f04c019761921954579e1b0e upstream.
+commit 7e2c1e4b34f07d9aa8937fab88359d4a0fce468e upstream.
 
-It is currently possible for a userspace application to enter an
-infinite page fault loop when using HugeTLB pages implemented with
-contiguous PTEs when HAFDBS is not available. This happens because:
+When lockdep is enabled, the for_each_sibling_event(sibling, event)
+macro checks that event->ctx->mutex is held. When creating a new group
+leader event, we call perf_event_validate_size() on a partially
+initialized event where event->ctx is NULL, and so when
+for_each_sibling_event() attempts to check event->ctx->mutex, we get a
+splat, as reported by Lucas De Marchi:
 
-1. The kernel may sometimes write PTEs that are sw-dirty but hw-clean
-   (PTE_DIRTY | PTE_RDONLY | PTE_WRITE).
+  WARNING: CPU: 8 PID: 1471 at kernel/events/core.c:1950 __do_sys_perf_event_open+0xf37/0x1080
 
-2. If, during a write, the CPU uses a sw-dirty, hw-clean PTE in handling
-   the memory access on a system without HAFDBS, we will get a page
-   fault.
+This only happens for a new event which is its own group_leader, and in
+this case there cannot be any sibling events. Thus it's safe to skip the
+check for siblings, which avoids having to make invasive and ugly
+changes to for_each_sibling_event().
 
-3. HugeTLB will check if it needs to update the dirty bits on the PTE.
-   For contiguous PTEs, it will check to see if the pgprot bits need
-   updating. In this case, HugeTLB wants to write a sequence of
-   sw-dirty, hw-dirty PTEs, but it finds that all the PTEs it is about
-   to overwrite are all pte_dirty() (pte_sw_dirty() => pte_dirty()),
-   so it thinks no update is necessary.
+Avoid the splat by bailing out early when the new event is its own
+group_leader.
 
-We can get the kernel to write a sw-dirty, hw-clean PTE with the
-following steps (showing the relevant VMA flags and pgprot bits):
-
-i.   Create a valid, writable contiguous PTE.
-       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
-       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
-       PTE pgprot bits: PTE_DIRTY | PTE_WRITE
-
-ii.  mprotect the VMA to PROT_NONE.
-       VMA vmflags:     VM_SHARED
-       VMA pgprot bits: PTE_RDONLY
-       PTE pgprot bits: PTE_DIRTY | PTE_RDONLY
-
-iii. mprotect the VMA back to PROT_READ | PROT_WRITE.
-       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
-       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
-       PTE pgprot bits: PTE_DIRTY | PTE_WRITE | PTE_RDONLY
-
-Make it impossible to create a writeable sw-dirty, hw-clean PTE with
-pte_modify(). Such a PTE should be impossible to create, and there may
-be places that assume that pte_dirty() implies pte_hw_dirty().
-
-Signed-off-by: James Houghton <jthoughton@google.com>
-Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
-Cc: <stable@vger.kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20231204172646.2541916-3-jthoughton@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 382c27f4ed28f803 ("perf: Fix perf_event_validate_size()")
+Closes: https://lore.kernel.org/lkml/20231214000620.3081018-1-lucas.demarchi@intel.com/
+Closes: https://lore.kernel.org/lkml/ZXpm6gQ%2Fd59jGsuW@xpf.sh.intel.com/
+Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231215112450.3972309-1-mark.rutland@arm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/events/core.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -766,6 +766,12 @@ static inline pte_t pte_modify(pte_t pte
- 	if (pte_hw_dirty(pte))
- 		pte = pte_mkdirty(pte);
- 	pte_val(pte) = (pte_val(pte) & ~mask) | (pgprot_val(newprot) & mask);
-+	/*
-+	 * If we end up clearing hw dirtiness for a sw-dirty PTE, set hardware
-+	 * dirtiness again.
-+	 */
-+	if (pte_sw_dirty(pte))
-+		pte = pte_mkdirty(pte);
- 	return pte;
- }
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1835,6 +1835,16 @@ static bool perf_event_validate_size(str
+ 				   group_leader->nr_siblings + 1) > 16*1024)
+ 		return false;
  
++	/*
++	 * When creating a new group leader, group_leader->ctx is initialized
++	 * after the size has been validated, but we cannot safely use
++	 * for_each_sibling_event() until group_leader->ctx is set. A new group
++	 * leader cannot have any siblings yet, so we can safely skip checking
++	 * the non-existent siblings.
++	 */
++	if (event == group_leader)
++		return true;
++
+ 	for_each_sibling_event(sibling, group_leader) {
+ 		if (__perf_event_read_size(sibling->attr.read_format,
+ 					   group_leader->nr_siblings + 1) > 16*1024)
 
 
 
