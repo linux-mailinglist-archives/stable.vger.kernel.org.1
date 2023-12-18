@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD785817156
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0564D817225
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5761C23F50
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BDAB1C24D78
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE0E129EE3;
-	Mon, 18 Dec 2023 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469285BF96;
+	Mon, 18 Dec 2023 14:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qzs/akOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18uBl4VT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21471129EFB;
-	Mon, 18 Dec 2023 13:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA80C433C7;
-	Mon, 18 Dec 2023 13:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082A63789B;
+	Mon, 18 Dec 2023 14:03:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4091CC433C7;
+	Mon, 18 Dec 2023 14:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907805;
-	bh=rmGD10w/HI9EG1JKdlh6R8YqJU6r0SBxTax+JngkZeQ=;
+	s=korg; t=1702908226;
+	bh=x49PzkVlcrjPaE0CrNIrurVJV5Er+/Zad6hHjcePPq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qzs/akOS1pPhj3BA5Hcl6jrZtCrICSypRxeMrRU5LB4hgR/4RC2LtcB/2bP0Yu8QP
-	 P8g/GZ9z1iT1SVm/9a8sK1SMV2pRViM79vL6BXdKPDFlj7PkbUiZpPi8xg3O0oGQxe
-	 cuKBDnMEOJbve5Xa/TB4h2716PLjF439nHRyp3Pc=
+	b=18uBl4VTfbk4S/wjan/JbhbF7Fu1gqVQhyGMMV+/PYtBHO5HdsEGn+BiH7Rqb01bL
+	 tYh/h15z9qaL2ovhZG4n60PFBc0EPoUPpJATFHI6hBz9zYUCBA6CsYJqvwbE9h3ben
+	 JFelViCfyRbl+Sx01g2BE7bU6H2zC2ruWsQokz4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/106] x86/hyperv: Fix the detection of E820_TYPE_PRAM in a Gen2 VM
+Subject: [PATCH 6.6 100/166] selftests/bpf: fix bpf_loop_bench for new callback verification scheme
 Date: Mon, 18 Dec 2023 14:51:06 +0100
-Message-ID: <20231218135057.274600485@linuxfoundation.org>
+Message-ID: <20231218135109.472709516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,96 +52,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 7e8037b099c0bbe8f2109dc452dbcab8d400fc53 ]
+[ Upstream commit f40bfd1679446b22d321e64a1fa98b7d07d2be08 ]
 
-A Gen2 VM doesn't support legacy PCI/PCIe, so both raw_pci_ops and
-raw_pci_ext_ops are NULL, and pci_subsys_init() -> pcibios_init()
-doesn't call pcibios_resource_survey() -> e820__reserve_resources_late();
-as a result, any emulated persistent memory of E820_TYPE_PRAM (12) via
-the kernel parameter memmap=nn[KMG]!ss is not added into iomem_resource
-and hence can't be detected by register_e820_pmem().
+This is a preparatory change. A follow-up patch "bpf: verify callbacks
+as if they are called unknown number of times" changes logic for
+callbacks handling. While previously callbacks were verified as a
+single function call, new scheme takes into account that callbacks
+could be executed unknown number of times.
 
-Fix this by directly calling e820__reserve_resources_late() in
-hv_pci_init(), which is called from arch_initcall(pci_arch_init).
+This has dire implications for bpf_loop_bench:
 
-It's ok to move a Gen2 VM's e820__reserve_resources_late() from
-subsys_initcall(pci_subsys_init) to arch_initcall(pci_arch_init) because
-the code in-between doesn't depend on the E820 resources.
-e820__reserve_resources_late() depends on e820__reserve_resources(),
-which has been called earlier from setup_arch().
+    SEC("fentry/" SYS_PREFIX "sys_getpgid")
+    int benchmark(void *ctx)
+    {
+            for (int i = 0; i < 1000; i++) {
+                    bpf_loop(nr_loops, empty_callback, NULL, 0);
+                    __sync_add_and_fetch(&hits, nr_loops);
+            }
+            return 0;
+    }
 
-For a Gen-2 VM, the new hv_pci_init() also adds any memory of
-E820_TYPE_PMEM (7) into iomem_resource, and acpi_nfit_register_region() ->
-acpi_nfit_insert_resource() -> region_intersects() returns
-REGION_INTERSECTS, so the memory of E820_TYPE_PMEM won't get added twice.
+W/o callbacks change verifier sees it as a 1000 calls to
+empty_callback(). However, with callbacks change things become
+exponential:
+- i=0: state exploring empty_callback is scheduled with i=0 (a);
+- i=1: state exploring empty_callback is scheduled with i=1;
+  ...
+- i=999: state exploring empty_callback is scheduled with i=999;
+- state (a) is popped from stack;
+- i=1: state exploring empty_callback is scheduled with i=1;
+  ...
 
-Changed the local variable "int gen2vm" to "bool gen2vm".
+Avoid this issue by rewriting outer loop as bpf_loop().
+Unfortunately, this adds a function call to a loop at runtime, which
+negatively affects performance:
 
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1699691867-9827-1-git-send-email-ssengar@linux.microsoft.com>
+            throughput               latency
+   before:  149.919 ± 0.168 M ops/s, 6.670 ns/op
+   after :  137.040 ± 0.187 M ops/s, 7.297 ns/op
+
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_init.c | 25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/progs/bpf_loop_bench.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-index 189ae92de4d06..c18e5c764643b 100644
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -13,6 +13,7 @@
- #include <linux/io.h>
- #include <asm/apic.h>
- #include <asm/desc.h>
-+#include <asm/e820/api.h>
- #include <asm/sev.h>
- #include <asm/ibt.h>
- #include <asm/hypervisor.h>
-@@ -267,15 +268,31 @@ static int hv_cpu_die(unsigned int cpu)
+diff --git a/tools/testing/selftests/bpf/progs/bpf_loop_bench.c b/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
+index 4ce76eb064c41..d461746fd3c1e 100644
+--- a/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
++++ b/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
+@@ -15,13 +15,16 @@ static int empty_callback(__u32 index, void *data)
+ 	return 0;
+ }
  
- static int __init hv_pci_init(void)
++static int outer_loop(__u32 index, void *data)
++{
++	bpf_loop(nr_loops, empty_callback, NULL, 0);
++	__sync_add_and_fetch(&hits, nr_loops);
++	return 0;
++}
++
+ SEC("fentry/" SYS_PREFIX "sys_getpgid")
+ int benchmark(void *ctx)
  {
--	int gen2vm = efi_enabled(EFI_BOOT);
-+	bool gen2vm = efi_enabled(EFI_BOOT);
- 
- 	/*
--	 * For Generation-2 VM, we exit from pci_arch_init() by returning 0.
--	 * The purpose is to suppress the harmless warning:
-+	 * A Generation-2 VM doesn't support legacy PCI/PCIe, so both
-+	 * raw_pci_ops and raw_pci_ext_ops are NULL, and pci_subsys_init() ->
-+	 * pcibios_init() doesn't call pcibios_resource_survey() ->
-+	 * e820__reserve_resources_late(); as a result, any emulated persistent
-+	 * memory of E820_TYPE_PRAM (12) via the kernel parameter
-+	 * memmap=nn[KMG]!ss is not added into iomem_resource and hence can't be
-+	 * detected by register_e820_pmem(). Fix this by directly calling
-+	 * e820__reserve_resources_late() here: e820__reserve_resources_late()
-+	 * depends on e820__reserve_resources(), which has been called earlier
-+	 * from setup_arch(). Note: e820__reserve_resources_late() also adds
-+	 * any memory of E820_TYPE_PMEM (7) into iomem_resource, and
-+	 * acpi_nfit_register_region() -> acpi_nfit_insert_resource() ->
-+	 * region_intersects() returns REGION_INTERSECTS, so the memory of
-+	 * E820_TYPE_PMEM won't get added twice.
-+	 *
-+	 * We return 0 here so that pci_arch_init() won't print the warning:
- 	 * "PCI: Fatal: No config space access function found"
- 	 */
--	if (gen2vm)
-+	if (gen2vm) {
-+		e820__reserve_resources_late();
- 		return 0;
-+	}
- 
- 	/* For Generation-1 VM, we'll proceed in pci_arch_init().  */
- 	return 1;
+-	for (int i = 0; i < 1000; i++) {
+-		bpf_loop(nr_loops, empty_callback, NULL, 0);
+-
+-		__sync_add_and_fetch(&hits, nr_loops);
+-	}
++	bpf_loop(1000, outer_loop, NULL, 0);
+ 	return 0;
+ }
 -- 
 2.43.0
 
