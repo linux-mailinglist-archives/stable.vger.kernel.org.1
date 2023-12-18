@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BDAD817246
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 557B38172F9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B050F1F2474A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B5A288EDB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902203D57B;
-	Mon, 18 Dec 2023 14:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994537899;
+	Mon, 18 Dec 2023 14:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzZBI4tb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wK8JRL1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582FC3A1AC;
-	Mon, 18 Dec 2023 14:05:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF93C433C7;
-	Mon, 18 Dec 2023 14:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CE7129EC7;
+	Mon, 18 Dec 2023 14:12:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3672EC433C8;
+	Mon, 18 Dec 2023 14:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908305;
-	bh=5zDgYUz71PEcairtxQffB4yvTbeCfi3J1/CKITqztdU=;
+	s=korg; t=1702908733;
+	bh=EylXFISy4rGI93RIRU46J1eWNz0ZY1N5EOseK8/xG30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzZBI4tbTgZ6A7XNSY1VTm9fVN3Ae8nxGsiRJhcYVb+Mkg5C/Pqmhum5ffF/jUlDC
-	 M47BFPzyD3BfRdX3G9zn/f9VeKuhz/a/XJfx2oAgvy8bPOiFPmsgcdf6Qk1MCZzS8m
-	 k2d+FEf8NZg6Mu32l7mxg9j8ysSUcGW6HSi8Tqf8=
+	b=wK8JRL1ShzYfdCV1ZoRja0g4Gh9TQoOrrQoo6BfKYTxnamFgFUwa+dLhWM46udchP
+	 l9Sia8TpuOcEekvS2RRWQE4ic0Nw21vyjHhhLMf/9g+yeTV7mcNohNmlb9F0tV3Vj+
+	 JYP+ghXiUTwOkptXTZYuiuMFxvQfbUhIMeJctJMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 129/166] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 14/83] qca_debug: Fix ethtool -G iface tx behavior
 Date: Mon, 18 Dec 2023 14:51:35 +0100
-Message-ID: <20231218135110.854898401@linuxfoundation.org>
+Message-ID: <20231218135050.396722513@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,80 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-For files with logical blocks close to EXT_MAX_BLOCKS, the file size
-predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
-This can cause some blocks to be preallocated that will not be used.
-And after [Fixes], the following issue may be triggered:
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-=========================================================
- kernel BUG at fs/ext4/mballoc.c:4653!
- Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
- CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
- Hardware name: linux,dummy-virt (DT)
- pc : ext4_mb_use_inode_pa+0x148/0x208
- lr : ext4_mb_use_inode_pa+0x98/0x208
- Call trace:
-  ext4_mb_use_inode_pa+0x148/0x208
-  ext4_mb_new_inode_pa+0x240/0x4a8
-  ext4_mb_use_best_found+0x1d4/0x208
-  ext4_mb_try_best_found+0xc8/0x110
-  ext4_mb_regular_allocator+0x11c/0xf48
-  ext4_mb_new_blocks+0x790/0xaa8
-  ext4_ext_map_blocks+0x7cc/0xd20
-  ext4_map_blocks+0x170/0x600
-  ext4_iomap_begin+0x1c0/0x348
-=========================================================
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
 
-Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
 
-	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
-	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
-		goto adjust_bex;
-
-The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
-it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
-overflow to a very small value, which ultimately triggers a BUG_ON in
-ext4_mb_new_inode_pa() because pa->pa_free < len.
-
-The last logical block of an actual write request does not exceed
-EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
-the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
-
-The test case in [Link] can reproduce the above issue with 64k block size.
-
-Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
-Cc:  <stable@kernel.org> # 6.4
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4489,6 +4489,10 @@ ext4_mb_normalize_request(struct ext4_al
- 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
- 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 061b08b91d1be..8b61bebd96e4b 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
  
-+	/* avoid unnecessary preallocation that may trigger assertions */
-+	if (start + size > EXT_MAX_BLOCKS)
-+		size = EXT_MAX_BLOCKS - start;
+ #define QCASPI_MAX_REGS 0x20
+ 
++#define QCASPI_RX_MAX_FRAMES 4
 +
- 	/* don't cover already allocated blocks in selected range */
- 	if (ar->pleft && start <= ar->lleft) {
- 		size -= ar->lleft + 1 - start;
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -250,9 +252,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
+ }
+ 
+@@ -261,7 +263,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
+-- 
+2.43.0
+
 
 
 
