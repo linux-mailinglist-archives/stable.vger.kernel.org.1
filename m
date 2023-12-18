@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAE3817155
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C817E817224
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9AE1C23FCE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6944C283EEA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218871D123;
-	Mon, 18 Dec 2023 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2D5A873;
+	Mon, 18 Dec 2023 14:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMAxrqtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B12sIgPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2B4129EE3;
-	Mon, 18 Dec 2023 13:56:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D54C433C8;
-	Mon, 18 Dec 2023 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C3D3788E;
+	Mon, 18 Dec 2023 14:03:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89F5C433CA;
+	Mon, 18 Dec 2023 14:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907799;
-	bh=spvey3nqxYqu3vigM/nSMCx2Iq55FNrZTfgcyotEa+A=;
+	s=korg; t=1702908221;
+	bh=5PonOZEbqFusvDsDmWYyrtWokYqyi+SGV8R1OcC+2MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMAxrqtS72/4NmTMI5asEr/GB8yzGgar+ieG7hAF9UZFKwvdSODBRk4uriOR+A+GB
-	 KVJtBITW/fstDCCW28+u7P7ao3KfZLiyU9voEiPVRlrf6nKS8vO+woQ3bws1crs/Pp
-	 Cd/AHy0LhhnQ5DhoDRqor93irzhHJRCRN+o+rm8w=
+	b=B12sIgPbMWLv2a4E0Zp5vSoKB2aEmD2b1qwqTmAJ4DveTGAZHFnsgKvyC0L1svO5C
+	 Hxb3D94djq/UPhEi6Lwvol5h9te6lkP5CBbe5oWCzdu6QUaqdgB8l9prmbIFAzoqLl
+	 1kRym6Y5/VzLe0bl5EA6pn7nPt15BMhMpY5AePdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 050/106] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE
+	Mark ODonovan <shiftee@posteo.net>,
+	Hannes Reinecke <hare@suse.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 098/166] nvme-auth: set explanation code for failure2 msgs
 Date: Mon, 18 Dec 2023 14:51:04 +0100
-Message-ID: <20231218135057.191269366@linuxfoundation.org>
+Message-ID: <20231218135109.373243575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +55,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Mark O'Donovan <shiftee@posteo.net>
 
-commit 13736654481198e519059d4a2e2e3b20fa9fdb3e upstream.
+[ Upstream commit 38ce1570e2c46e7e9af983aa337edd7e43723aa2 ]
 
-MS confirm that "AISi" name of SMB2_CREATE_ALLOCATION_SIZE in MS-SMB2
-specification is a typo. cifs/ksmbd have been using this wrong name from
-MS-SMB2. It should be "AlSi". Also It will cause problem when running
-smb2.create.open test in smbtorture against ksmbd.
+Some error cases were not setting an auth-failure-reason-code-explanation.
+This means an AUTH_Failure2 message will be sent with an explanation value
+of 0 which is a reserved value.
 
-Cc: stable@vger.kernel.org
-Fixes: 12197a7fdda9 ("Clarify SMB2/SMB3 create context and add missing ones")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mark O'Donovan <shiftee@posteo.net>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/common/smb2pdu.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/auth.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -1116,7 +1116,7 @@ struct smb2_change_notify_rsp {
- #define SMB2_CREATE_SD_BUFFER			"SecD" /* security descriptor */
- #define SMB2_CREATE_DURABLE_HANDLE_REQUEST	"DHnQ"
- #define SMB2_CREATE_DURABLE_HANDLE_RECONNECT	"DHnC"
--#define SMB2_CREATE_ALLOCATION_SIZE		"AISi"
-+#define SMB2_CREATE_ALLOCATION_SIZE		"AlSi"
- #define SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST "MxAc"
- #define SMB2_CREATE_TIMEWARP_REQUEST		"TWrp"
- #define SMB2_CREATE_QUERY_ON_DISK_ID		"QFid"
+--- a/drivers/nvme/host/auth.c
++++ b/drivers/nvme/host/auth.c
+@@ -840,6 +840,8 @@ static void nvme_queue_auth_work(struct
+ 	}
+ 
+ fail2:
++	if (chap->status == 0)
++		chap->status = NVME_AUTH_DHCHAP_FAILURE_FAILED;
+ 	dev_dbg(ctrl->device, "%s: qid %d send failure2, status %x\n",
+ 		__func__, chap->qid, chap->status);
+ 	tl = nvme_auth_set_dhchap_failure2_data(ctrl, chap);
 
 
 
