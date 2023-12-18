@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-7419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31597817279
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DA8817331
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7EEDB21FF7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE271C24278
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3AF4FF9D;
-	Mon, 18 Dec 2023 14:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C653786B;
+	Mon, 18 Dec 2023 14:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVUug28n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9Frqohs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF86237889;
-	Mon, 18 Dec 2023 14:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CF4C433C8;
-	Mon, 18 Dec 2023 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5FD1D15F;
+	Mon, 18 Dec 2023 14:14:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB052C433C8;
+	Mon, 18 Dec 2023 14:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908415;
-	bh=jC8TOH0RaGJ7iH3pkZANn28B9XXZ6HWkMDdfVNb8wQk=;
+	s=korg; t=1702908872;
+	bh=9pQYsj76zi1/Qelpj7RjHCw1Kxug6L6Ih4KvqBrM1gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVUug28nRdVcRi7GEbjAhhjHA+5pYSFoiHcYjPekvblq+w7Evu6C86hkh7WlIUTTS
-	 bphlnnDlE6VNuu5RaiCBaPlPaKvWYF5SwNz+8MIrAVVfK40pqFB2GUHjIrNfJ+/1zS
-	 LDuSU6SOBmqibXTTz+6q6Yp5eVsool4Zaf+U//JE=
+	b=I9Frqohs1kX8u9BGAAtNoW4BBjMUrHuQ6ILlrL8Hnwivq4zlfmqvI44QWCYZTuK7j
+	 p//udyZVonx9P6yMdnigsavS5Giz+Q2bu2RYDXLyF+UdMMz6XeQyuH9TkOkSsXNmLg
+	 hmvHJoSlPwlY43oaJNTGwvoz+hBSVvfsFTUE0yxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 151/166] drm/i915: Fix intel_atomic_setup_scalers() plane_state handling
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 36/83] appletalk: Fix Use-After-Free in atalk_ioctl
 Date: Mon, 18 Dec 2023 14:51:57 +0100
-Message-ID: <20231218135111.882175037@linuxfoundation.org>
+Message-ID: <20231218135051.334981275@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +51,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit c3070f080f9ba18dea92eaa21730f7ab85b5c8f4 upstream.
+[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
 
-Since the plane_state variable is declared outside the scaler_users
-loop in intel_atomic_setup_scalers(), and it's never reset back to
-NULL inside the loop we may end up calling intel_atomic_setup_scaler()
-with a non-NULL plane state for the pipe scaling case. That is bad
-because intel_atomic_setup_scaler() determines whether we are doing
-plane scaling or pipe scaling based on plane_state!=NULL. The end
-result is that we may miscalculate the scaler mode for pipe scaling.
+Because atalk_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with atalk_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+atalk_ioctl() -> skb_peek()
+atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
 
-The hardware becomes somewhat upset if we end up in this situation
-when scanning out a planar format on a SDR plane. We end up
-programming the pipe scaler into planar mode as well, and the
-result is a screenfull of garbage.
-
-Fix the situation by making sure we pass the correct plane_state==NULL
-when calculating the scaler mode for pipe scaling.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231207193441.20206-2-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit e81144106e21271c619f0c722a09e27ccb8c043d)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/skl_scaler.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/appletalk/ddp.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/skl_scaler.c
-+++ b/drivers/gpu/drm/i915/display/skl_scaler.c
-@@ -504,7 +504,6 @@ int intel_atomic_setup_scalers(struct dr
- {
- 	struct drm_plane *plane = NULL;
- 	struct intel_plane *intel_plane;
--	struct intel_plane_state *plane_state = NULL;
- 	struct intel_crtc_scaler_state *scaler_state =
- 		&crtc_state->scaler_state;
- 	struct drm_atomic_state *drm_state = crtc_state->uapi.state;
-@@ -536,6 +535,7 @@ int intel_atomic_setup_scalers(struct dr
+diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
+index bf5736c1d4584..8daa3a1bfa4cd 100644
+--- a/net/appletalk/ddp.c
++++ b/net/appletalk/ddp.c
+@@ -1812,15 +1812,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 		break;
+ 	}
+ 	case TIOCINQ: {
+-		/*
+-		 * These two are safe on a single CPU system as only
+-		 * user tasks fiddle here
+-		 */
+-		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
++		struct sk_buff *skb;
+ 		long amount = 0;
  
- 	/* walkthrough scaler_users bits and start assigning scalers */
- 	for (i = 0; i < sizeof(scaler_state->scaler_users) * 8; i++) {
-+		struct intel_plane_state *plane_state = NULL;
- 		int *scaler_id;
- 		const char *name;
- 		int idx, ret;
++		spin_lock_irq(&sk->sk_receive_queue.lock);
++		skb = skb_peek(&sk->sk_receive_queue);
+ 		if (skb)
+ 			amount = skb->len - sizeof(struct ddpehdr);
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		rc = put_user(amount, (int __user *)argp);
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
