@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29CF8172B6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0712B817356
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39C5AB22D38
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BD31B24172
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAEC42381;
-	Mon, 18 Dec 2023 14:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BEE37881;
+	Mon, 18 Dec 2023 14:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NB6Oi3jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRgPNMiv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E3537881;
-	Mon, 18 Dec 2023 14:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F99C433C7;
-	Mon, 18 Dec 2023 14:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045231D122;
+	Mon, 18 Dec 2023 14:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785EFC433C8;
+	Mon, 18 Dec 2023 14:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908569;
-	bh=6nyrdkFmSz5tK3TJ/EBsHDbUdne/9ZtJdNl/nEA98m8=;
+	s=korg; t=1702908931;
+	bh=GSS1JOHsv0+xLN9WBOS85ACbj4cv9uXuPN6PPx/Z5PA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NB6Oi3jHfrsrN75hotZ7FtiHJaiKqx07+OT9+1H8Ss03DhCPVlp07jHoT+H2WZgzD
-	 mv1rXhq8QpziELDhmtlsXNclf4dBZlCbtTpmRvmXKzqESQm/cPN4lZVO2B+HySIxwE
-	 ECD9tj3UI1sbO69GKaqTQcVfd/nW/H+x/yU4oVZk=
+	b=cRgPNMivJIF/TTlMcmpkG8rQkaAb6otJxfXZ1iD5upWGW7MGShruB4baDSlh3qfs+
+	 HnvTrMH+/lPTAPdQnlKD9bMvOTjdBk96cH3eaNreLXbbh8RPaJAuACJZyd9u6s0Lnp
+	 cj/qP8PW91wyQICUpSHVz/He65v1rknMfcvh7Blg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Starke <daniel.starke@siemens.com>,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Subject: [PATCH 5.10 58/62] tty: n_gsm: fix tty registration before control channel open
-Date: Mon, 18 Dec 2023 14:52:22 +0100
-Message-ID: <20231218135048.764877681@linuxfoundation.org>
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 62/83] perf: Fix perf_event_validate_size() lockdep splat
+Date: Mon, 18 Dec 2023 14:52:23 +0100
+Message-ID: <20231218135052.459655072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,230 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 01aecd917114577c423f07cec0d186ad007d76fc upstream.
+commit 7e2c1e4b34f07d9aa8937fab88359d4a0fce468e upstream.
 
-The current implementation registers/deregisters the user ttys at mux
-attach/detach. That means that the user devices are available before any
-control channel is open. However, user channel initialization requires an
-open control channel. Furthermore, the user is not informed if the mux
-restarts due to configuration changes.
-Put the registration/deregistration procedure into separate function to
-improve readability.
-Move registration to mux activation and deregistration to mux cleanup to
-keep the user devices only open as long as a control channel exists. The
-user will be informed via the device driver if the mux was reconfigured in
-a way that required a mux re-activation.
-This makes it necessary to add T2 initialization to gsmld_open() for the
-ldisc open code path (not the reconfiguration code path) to avoid deletion
-of an uninitialized T2 at mux cleanup.
+When lockdep is enabled, the for_each_sibling_event(sibling, event)
+macro checks that event->ctx->mutex is held. When creating a new group
+leader event, we call perf_event_validate_size() on a partially
+initialized event where event->ctx is NULL, and so when
+for_each_sibling_event() attempts to check event->ctx->mutex, we get a
+splat, as reported by Lucas De Marchi:
 
-Fixes: d50f6dcaf22a ("tty: n_gsm: expose gsmtty device nodes at ldisc open time")
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20220701061652.39604-2-daniel.starke@siemens.com
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+  WARNING: CPU: 8 PID: 1471 at kernel/events/core.c:1950 __do_sys_perf_event_open+0xf37/0x1080
+
+This only happens for a new event which is its own group_leader, and in
+this case there cannot be any sibling events. Thus it's safe to skip the
+check for siblings, which avoids having to make invasive and ugly
+changes to for_each_sibling_event().
+
+Avoid the splat by bailing out early when the new event is its own
+group_leader.
+
+Fixes: 382c27f4ed28f803 ("perf: Fix perf_event_validate_size()")
+Closes: https://lore.kernel.org/lkml/20231214000620.3081018-1-lucas.demarchi@intel.com/
+Closes: https://lore.kernel.org/lkml/ZXpm6gQ%2Fd59jGsuW@xpf.sh.intel.com/
+Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231215112450.3972309-1-mark.rutland@arm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/n_gsm.c |  117 +++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 79 insertions(+), 38 deletions(-)
+ kernel/events/core.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -235,6 +235,7 @@ struct gsm_mux {
- 	struct gsm_dlci *dlci[NUM_DLCI];
- 	int old_c_iflag;		/* termios c_iflag value before attach */
- 	bool constipated;		/* Asked by remote to shut up */
-+	bool has_devices;		/* Devices were registered */
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -2032,6 +2032,16 @@ static bool perf_event_validate_size(str
+ 				   group_leader->nr_siblings + 1) > 16*1024)
+ 		return false;
  
- 	spinlock_t tx_lock;
- 	unsigned int tx_bytes;		/* TX data outstanding */
-@@ -465,6 +466,68 @@ static u8 gsm_encode_modem(const struct
- }
- 
- /**
-+ *	gsm_register_devices	-	register all tty devices for a given mux index
-+ *
-+ *	@driver: the tty driver that describes the tty devices
-+ *	@index:  the mux number is used to calculate the minor numbers of the
-+ *	         ttys for this mux and may differ from the position in the
-+ *	         mux array.
-+ */
-+static int gsm_register_devices(struct tty_driver *driver, unsigned int index)
-+{
-+	struct device *dev;
-+	int i;
-+	unsigned int base;
++	/*
++	 * When creating a new group leader, group_leader->ctx is initialized
++	 * after the size has been validated, but we cannot safely use
++	 * for_each_sibling_event() until group_leader->ctx is set. A new group
++	 * leader cannot have any siblings yet, so we can safely skip checking
++	 * the non-existent siblings.
++	 */
++	if (event == group_leader)
++		return true;
 +
-+	if (!driver || index >= MAX_MUX)
-+		return -EINVAL;
-+
-+	base = index * NUM_DLCI; /* first minor for this index */
-+	for (i = 1; i < NUM_DLCI; i++) {
-+		/* Don't register device 0 - this is the control channel
-+		 * and not a usable tty interface
-+		 */
-+		dev = tty_register_device(gsm_tty_driver, base + i, NULL);
-+		if (IS_ERR(dev)) {
-+			if (debug & 8)
-+				pr_info("%s failed to register device minor %u",
-+					__func__, base + i);
-+			for (i--; i >= 1; i--)
-+				tty_unregister_device(gsm_tty_driver, base + i);
-+			return PTR_ERR(dev);
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+/**
-+ *	gsm_unregister_devices	-	unregister all tty devices for a given mux index
-+ *
-+ *	@driver: the tty driver that describes the tty devices
-+ *	@index:  the mux number is used to calculate the minor numbers of the
-+ *	         ttys for this mux and may differ from the position in the
-+ *	         mux array.
-+ */
-+static void gsm_unregister_devices(struct tty_driver *driver,
-+				   unsigned int index)
-+{
-+	int i;
-+	unsigned int base;
-+
-+	if (!driver || index >= MAX_MUX)
-+		return;
-+
-+	base = index * NUM_DLCI; /* first minor for this index */
-+	for (i = 1; i < NUM_DLCI; i++) {
-+		/* Don't unregister device 0 - this is the control
-+		 * channel and not a usable tty interface
-+		 */
-+		tty_unregister_device(gsm_tty_driver, base + i);
-+	}
-+}
-+
-+/**
-  *	gsm_print_packet	-	display a frame for debug
-  *	@hdr: header to print before decode
-  *	@addr: address EA from the frame
-@@ -2178,6 +2241,10 @@ static void gsm_cleanup_mux(struct gsm_m
- 	del_timer_sync(&gsm->t2_timer);
- 
- 	/* Free up any link layer users and finally the control channel */
-+	if (gsm->has_devices) {
-+		gsm_unregister_devices(gsm_tty_driver, gsm->num);
-+		gsm->has_devices = false;
-+	}
- 	for (i = NUM_DLCI - 1; i >= 0; i--)
- 		if (gsm->dlci[i])
- 			gsm_dlci_release(gsm->dlci[i]);
-@@ -2201,15 +2268,21 @@ static void gsm_cleanup_mux(struct gsm_m
- static int gsm_activate_mux(struct gsm_mux *gsm)
- {
- 	struct gsm_dlci *dlci;
-+	int ret;
- 
- 	if (gsm->encoding == 0)
- 		gsm->receive = gsm0_receive;
- 	else
- 		gsm->receive = gsm1_receive;
- 
-+	ret = gsm_register_devices(gsm_tty_driver, gsm->num);
-+	if (ret)
-+		return ret;
-+
- 	dlci = gsm_dlci_alloc(gsm, 0);
- 	if (dlci == NULL)
- 		return -ENOMEM;
-+	gsm->has_devices = true;
- 	gsm->dead = false;		/* Tty opens are now permissible */
- 	return 0;
- }
-@@ -2475,39 +2548,14 @@ static int gsmld_output(struct gsm_mux *
-  *	will need moving to an ioctl path.
-  */
- 
--static int gsmld_attach_gsm(struct tty_struct *tty, struct gsm_mux *gsm)
-+static void gsmld_attach_gsm(struct tty_struct *tty, struct gsm_mux *gsm)
- {
--	unsigned int base;
--	int ret, i;
--
- 	gsm->tty = tty_kref_get(tty);
- 	/* Turn off tty XON/XOFF handling to handle it explicitly. */
- 	gsm->old_c_iflag = tty->termios.c_iflag;
- 	tty->termios.c_iflag &= (IXON | IXOFF);
--	ret =  gsm_activate_mux(gsm);
--	if (ret != 0)
--		tty_kref_put(gsm->tty);
--	else {
--		/* Don't register device 0 - this is the control channel and not
--		   a usable tty interface */
--		base = mux_num_to_base(gsm); /* Base for this MUX */
--		for (i = 1; i < NUM_DLCI; i++) {
--			struct device *dev;
--
--			dev = tty_register_device(gsm_tty_driver,
--							base + i, NULL);
--			if (IS_ERR(dev)) {
--				for (i--; i >= 1; i--)
--					tty_unregister_device(gsm_tty_driver,
--								base + i);
--				return PTR_ERR(dev);
--			}
--		}
--	}
--	return ret;
- }
- 
--
- /**
-  *	gsmld_detach_gsm	-	stop doing 0710 mux
-  *	@tty: tty attached to the mux
-@@ -2518,12 +2566,7 @@ static int gsmld_attach_gsm(struct tty_s
- 
- static void gsmld_detach_gsm(struct tty_struct *tty, struct gsm_mux *gsm)
- {
--	unsigned int base = mux_num_to_base(gsm); /* Base for this MUX */
--	int i;
--
- 	WARN_ON(tty != gsm->tty);
--	for (i = 1; i < NUM_DLCI; i++)
--		tty_unregister_device(gsm_tty_driver, base + i);
- 	/* Restore tty XON/XOFF handling. */
- 	gsm->tty->termios.c_iflag = gsm->old_c_iflag;
- 	tty_kref_put(gsm->tty);
-@@ -2619,7 +2662,6 @@ static void gsmld_close(struct tty_struc
- static int gsmld_open(struct tty_struct *tty)
- {
- 	struct gsm_mux *gsm;
--	int ret;
- 
- 	if (tty->ops->write == NULL)
- 		return -EINVAL;
-@@ -2635,12 +2677,11 @@ static int gsmld_open(struct tty_struct
- 	/* Attach the initial passive connection */
- 	gsm->encoding = 1;
- 
--	ret = gsmld_attach_gsm(tty, gsm);
--	if (ret != 0) {
--		gsm_cleanup_mux(gsm, false);
--		mux_put(gsm);
--	}
--	return ret;
-+	gsmld_attach_gsm(tty, gsm);
-+
-+	timer_setup(&gsm->t2_timer, gsm_control_retransmit, 0);
-+
-+	return 0;
- }
- 
- /**
+ 	for_each_sibling_event(sibling, group_leader) {
+ 		if (__perf_event_read_size(sibling->attr.read_format,
+ 					   group_leader->nr_siblings + 1) > 16*1024)
 
 
 
