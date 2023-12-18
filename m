@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E4081718B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 865E581711D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AEEB283BBD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327B728184C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ECB1D13B;
-	Mon, 18 Dec 2023 13:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530F31D158;
+	Mon, 18 Dec 2023 13:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TA4o6TJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3eYMrvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381BB1D158;
-	Mon, 18 Dec 2023 13:58:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01ACC433C7;
-	Mon, 18 Dec 2023 13:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111F2129EFB;
+	Mon, 18 Dec 2023 13:54:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878AEC433C7;
+	Mon, 18 Dec 2023 13:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907925;
-	bh=rpNQ0kRF6YRSazZ6hd41eAj9sGoSMFPrQdkwB3gwqPo=;
+	s=korg; t=1702907670;
+	bh=LGfNujnTlIH6lAAeJ2uNqFV5vemreEgEg6oO89vZgI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TA4o6TJDqfjQ1ZTyYbVzeO19Z3fR2hlRI3jK68TfBR2y8w/tLRQo8KShS8BXa3b4o
-	 z+A3szNq4ulbK2WsxBnWA/2vu6n/jngLU++FmqvbU7906UOSnsKrgOZjVqV83E4B1Q
-	 VqUIHcDHXho/Qk3ERdUjEep7y4RwdE1obSiIeusQ=
+	b=L3eYMrvSCNirZlyhrmqSM+QDvZi9KBsKsAsrbC3aYPVNo+c9EYE4laoU2K3Zci0Tm
+	 eGgFmQ6/3rkd1SRceL9V82u3LqiXR6FyCh5msrGmWlqK+dILi+De/8MbtQ3/lh3e/i
+	 NrjDraF8ruyvlUqEveGizSHqJ4vMhfplmELEmQNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Raye <braye@fastmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Eric Dumazet <edumazet@google.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/106] HID: glorious: fix Glorious Model I HID report
+Subject: [PATCH 4.19 12/36] net: prevent mss overflow in skb_segment()
 Date: Mon, 18 Dec 2023 14:51:22 +0100
-Message-ID: <20231218135057.966480104@linuxfoundation.org>
+Message-ID: <20231218135042.318331436@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,137 +55,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Raye <braye@fastmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a5e913c25b6b2b6ae02acef6d9400645ac03dfdf ]
+[ Upstream commit 23d05d563b7e7b0314e65c8e882bc27eac2da8e7 ]
 
-The Glorious Model I mouse has a buggy HID report descriptor for its
-keyboard endpoint (used for programmable buttons). For report ID 2, there
-is a mismatch between Logical Minimum and Usage Minimum in the array that
-reports keycodes.
+Once again syzbot is able to crash the kernel in skb_segment() [1]
 
-The offending portion of the descriptor: (from hid-decode)
+GSO_BY_FRAGS is a forbidden value, but unfortunately the following
+computation in skb_segment() can reach it quite easily :
 
-0x95, 0x05,                    //  Report Count (5)                   30
-0x75, 0x08,                    //  Report Size (8)                    32
-0x15, 0x00,                    //  Logical Minimum (0)                34
-0x25, 0x65,                    //  Logical Maximum (101)              36
-0x05, 0x07,                    //  Usage Page (Keyboard)              38
-0x19, 0x01,                    //  Usage Minimum (1)                  40
-0x29, 0x65,                    //  Usage Maximum (101)                42
-0x81, 0x00,                    //  Input (Data,Arr,Abs)               44
+	mss = mss * partial_segs;
 
-This bug shifts all programmed keycodes up by 1. Importantly, this causes
-"empty" array indexes of 0x00 to be interpreted as 0x01, ErrorRollOver.
-The presence of ErrorRollOver causes the system to ignore all keypresses
-from the endpoint and breaks the ability to use the programmable buttons.
+65535 = 3 * 5 * 17 * 257, so many initial values of mss can lead to
+a bad final result.
 
-Setting byte 41 to 0x00 fixes this, and causes keycodes to be interpreted
-correctly.
+Make sure to limit segmentation so that the new mss value is smaller
+than GSO_BY_FRAGS.
 
-Also, USB_VENDOR_ID_GLORIOUS is changed to USB_VENDOR_ID_SINOWEALTH,
-and a new ID for Laview Technology is added. Glorious seems to be
-white-labeling controller boards or mice from these vendors. There isn't a
-single canonical vendor ID for Glorious products.
+[1]
 
-Signed-off-by: Brett Raye <braye@fastmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 1 PID: 5079 Comm: syz-executor993 Not tainted 6.7.0-rc4-syzkaller-00141-g1ae4cd3cbdd0 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+udp6_ufo_fragment+0xa0e/0xd00 net/ipv6/udp_offload.c:109
+ipv6_gso_segment+0x534/0x17e0 net/ipv6/ip6_offload.c:120
+skb_mac_gso_segment+0x290/0x610 net/core/gso.c:53
+__skb_gso_segment+0x339/0x710 net/core/gso.c:124
+skb_gso_segment include/net/gso.h:83 [inline]
+validate_xmit_skb+0x36c/0xeb0 net/core/dev.c:3626
+__dev_queue_xmit+0x6f3/0x3d60 net/core/dev.c:4338
+dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3087 [inline]
+packet_sendmsg+0x24c6/0x5220 net/packet/af_packet.c:3119
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f8692032aa9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 d1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff8d685418 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8692032aa9
+RDX: 0000000000010048 RSI: 00000000200000c0 RDI: 0000000000000003
+RBP: 00000000000f4240 R08: 0000000020000540 R09: 0000000000000014
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8d685480
+R13: 0000000000000001 R14: 00007fff8d685480 R15: 0000000000000003
+</TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
+Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
+RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
+RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
+RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
+R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
+FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+
+Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231212164621.4131800-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-glorious.c | 16 ++++++++++++++--
- drivers/hid/hid-ids.h      | 11 +++++++----
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ net/core/skbuff.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
-index 558eb08c19ef9..281b3a7187cec 100644
---- a/drivers/hid/hid-glorious.c
-+++ b/drivers/hid/hid-glorious.c
-@@ -21,6 +21,10 @@ MODULE_DESCRIPTION("HID driver for Glorious PC Gaming Race mice");
-  * Glorious Model O and O- specify the const flag in the consumer input
-  * report descriptor, which leads to inputs being ignored. Fix this
-  * by patching the descriptor.
-+ *
-+ * Glorious Model I incorrectly specifes the Usage Minimum for its
-+ * keyboard HID report, causing keycodes to be misinterpreted.
-+ * Fix this by setting Usage Minimum to 0 in that report.
-  */
- static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		unsigned int *rsize)
-@@ -32,6 +36,10 @@ static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		rdesc[85] = rdesc[113] = rdesc[141] = \
- 			HID_MAIN_ITEM_VARIABLE | HID_MAIN_ITEM_RELATIVE;
- 	}
-+	if (*rsize == 156 && rdesc[41] == 1) {
-+		hid_info(hdev, "patching Glorious Model I keyboard report descriptor\n");
-+		rdesc[41] = 0;
-+	}
- 	return rdesc;
- }
- 
-@@ -44,6 +52,8 @@ static void glorious_update_name(struct hid_device *hdev)
- 		model = "Model O"; break;
- 	case USB_DEVICE_ID_GLORIOUS_MODEL_D:
- 		model = "Model D"; break;
-+	case USB_DEVICE_ID_GLORIOUS_MODEL_I:
-+		model = "Model I"; break;
- 	}
- 
- 	snprintf(hdev->name, sizeof(hdev->name), "%s %s", "Glorious", model);
-@@ -66,10 +76,12 @@ static int glorious_probe(struct hid_device *hdev,
- }
- 
- static const struct hid_device_id glorious_devices[] = {
--	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- 		USB_DEVICE_ID_GLORIOUS_MODEL_O) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
- 		USB_DEVICE_ID_GLORIOUS_MODEL_D) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
-+		USB_DEVICE_ID_GLORIOUS_MODEL_I) },
- 	{ }
- };
- MODULE_DEVICE_TABLE(hid, glorious_devices);
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 130fc5f341422..1be454bafcb91 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -503,10 +503,6 @@
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_010A 0x010a
- #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
- 
--#define USB_VENDOR_ID_GLORIOUS  0x258a
--#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
--#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
--
- #define I2C_VENDOR_ID_GOODIX		0x27c6
- #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
- 
-@@ -729,6 +725,9 @@
- #define USB_VENDOR_ID_LABTEC		0x1020
- #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
- 
-+#define USB_VENDOR_ID_LAVIEW		0x22D4
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_I	0x1503
-+
- #define USB_VENDOR_ID_LCPOWER		0x1241
- #define USB_DEVICE_ID_LCPOWER_LC1000	0xf767
- 
-@@ -1131,6 +1130,10 @@
- #define USB_VENDOR_ID_SIGMATEL		0x066F
- #define USB_DEVICE_ID_SIGMATEL_STMP3780	0x3780
- 
-+#define USB_VENDOR_ID_SINOWEALTH  0x258a
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
-+#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
-+
- #define USB_VENDOR_ID_SIS_TOUCH		0x0457
- #define USB_DEVICE_ID_SIS9200_TOUCH	0x9200
- #define USB_DEVICE_ID_SIS817_TOUCH	0x0817
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index e03cd719b86b7..c93662512d02e 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -3625,8 +3625,9 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 		/* GSO partial only requires that we trim off any excess that
+ 		 * doesn't fit into an MSS sized block, so take care of that
+ 		 * now.
++		 * Cap len to not accidentally hit GSO_BY_FRAGS.
+ 		 */
+-		partial_segs = len / mss;
++		partial_segs = min(len, GSO_BY_FRAGS - 1) / mss;
+ 		if (partial_segs > 1)
+ 			mss *= partial_segs;
+ 		else
 -- 
 2.43.0
 
