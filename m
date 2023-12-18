@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-7189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B570817157
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F95F817227
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B16EDB20D55
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E35E7B22AB0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D51D127;
-	Mon, 18 Dec 2023 13:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312265A874;
+	Mon, 18 Dec 2023 14:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va1mgqYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXpg4oFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBE8129EE3;
-	Mon, 18 Dec 2023 13:56:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC505C433C8;
-	Mon, 18 Dec 2023 13:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64011D13A;
+	Mon, 18 Dec 2023 14:03:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C457C433C9;
+	Mon, 18 Dec 2023 14:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907802;
-	bh=FIvWwxTxEC53vHnIHprns+l4ZcoAp4Cq4/5d0k16g/I=;
+	s=korg; t=1702908223;
+	bh=i0BxfCOp6SGJFRBkFEHn81FPZwtaB3LFnPJwyELgvI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Va1mgqYj3JSYYKkZVP3uoSBlgOl+49F3bzuKxwQC+ZyWhHl2bzpJMf42/6KwWQI6m
-	 vDfxdLD/gSftUEvw6R2raDnxHKrlEWJGxw0GZrsl7MDuAG8QC2z2mIdCp2kL6q/l16
-	 sj0+ogFD6CiayItF97fipTxmnwripcpi82DBisUI=
+	b=TXpg4oFJx9JSBTAAgjyaE5d7iOYveqKnyMSq00qmjCn+D5QFQD8UA8iKlrhQdskmx
+	 eeihSdioFoY/wuRXcV3oAodQnkN8Y1wawMm7UxDeunfFl002d0DziZ0Dy+jPXaUeT/
+	 X/OeFAYNdPlChKyKpvq8XoogFgrOXfcpL/SR5ZRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	Fei Shao <fshao@chromium.org>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/106] drm/mediatek: Add spinlock for setting vblank event in atomic_begin
+Subject: [PATCH 6.6 099/166] nvme: catch errors from nvme_configure_metadata()
 Date: Mon, 18 Dec 2023 14:51:05 +0100
-Message-ID: <20231218135057.223314694@linuxfoundation.org>
+Message-ID: <20231218135109.423422782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,56 +53,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit fe4c5f662097978b6c91c23a13c24ed92339a180 ]
+[ Upstream commit cd9aed606088d36a7ffff3e808db4e76b1854285 ]
 
-Add spinlock protection to avoid race condition on vblank event
-between mtk_drm_crtc_atomic_begin() and mtk_drm_finish_page_flip().
+nvme_configure_metadata() is issuing I/O, so we might incur an I/O
+error which will cause the connection to be reset.
+But in that case any further probing will race with reset and
+cause UAF errors.
+So return a status from nvme_configure_metadata() and abort
+probing if there was an I/O error.
 
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230920090658.31181-1-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/core.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-index 7fb52a573436e..558000db4a100 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -736,6 +736,7 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
- 									  crtc);
- 	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
- 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-+	unsigned long flags;
- 
- 	if (mtk_crtc->event && mtk_crtc_state->base.event)
- 		DRM_ERROR("new event while there is still a pending event\n");
-@@ -743,7 +744,11 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
- 	if (mtk_crtc_state->base.event) {
- 		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
- 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
-+
-+		spin_lock_irqsave(&crtc->dev->event_lock, flags);
- 		mtk_crtc->event = mtk_crtc_state->base.event;
-+		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
-+
- 		mtk_crtc_state->base.event = NULL;
- 	}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index c09048984a277..d5c8b0a08d494 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1813,16 +1813,18 @@ static int nvme_init_ms(struct nvme_ns *ns, struct nvme_id_ns *id)
+ 	return ret;
  }
+ 
+-static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
++static int nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
+ {
+ 	struct nvme_ctrl *ctrl = ns->ctrl;
++	int ret;
+ 
+-	if (nvme_init_ms(ns, id))
+-		return;
++	ret = nvme_init_ms(ns, id);
++	if (ret)
++		return ret;
+ 
+ 	ns->features &= ~(NVME_NS_METADATA_SUPPORTED | NVME_NS_EXT_LBAS);
+ 	if (!ns->ms || !(ctrl->ops->flags & NVME_F_METADATA_SUPPORTED))
+-		return;
++		return 0;
+ 
+ 	if (ctrl->ops->flags & NVME_F_FABRICS) {
+ 		/*
+@@ -1831,7 +1833,7 @@ static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
+ 		 * remap the separate metadata buffer from the block layer.
+ 		 */
+ 		if (WARN_ON_ONCE(!(id->flbas & NVME_NS_FLBAS_META_EXT)))
+-			return;
++			return 0;
+ 
+ 		ns->features |= NVME_NS_EXT_LBAS;
+ 
+@@ -1858,6 +1860,7 @@ static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
+ 		else
+ 			ns->features |= NVME_NS_METADATA_SUPPORTED;
+ 	}
++	return 0;
+ }
+ 
+ static void nvme_set_queue_limits(struct nvme_ctrl *ctrl,
+@@ -2038,7 +2041,11 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
+ 	ns->lba_shift = id->lbaf[lbaf].ds;
+ 	nvme_set_queue_limits(ns->ctrl, ns->queue);
+ 
+-	nvme_configure_metadata(ns, id);
++	ret = nvme_configure_metadata(ns, id);
++	if (ret < 0) {
++		blk_mq_unfreeze_queue(ns->disk->queue);
++		goto out;
++	}
+ 	nvme_set_chunk_sectors(ns, id);
+ 	nvme_update_disk_info(ns->disk, ns, id);
+ 
 -- 
 2.43.0
 
