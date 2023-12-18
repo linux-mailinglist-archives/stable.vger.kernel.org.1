@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C662817283
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CEF817264
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2FE285B07
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A336B21F7B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3053788C;
-	Mon, 18 Dec 2023 14:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E577449893;
+	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZEaYFxD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH0DJFsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8B1D13D;
-	Mon, 18 Dec 2023 14:07:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA97C433C7;
-	Mon, 18 Dec 2023 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB14D1D157;
+	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB36C433CA;
+	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908448;
-	bh=yAFq6zEYAXrQAmhT99SfJjKSKWmlpWa3TkyDnZC1xsE=;
+	s=korg; t=1702908369;
+	bh=1ic+Qo3CQswLxuk+eCxplyAE/vFVZS9xDX767h623x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RZEaYFxDsu7c08SXle8YTbNxQR8wD1f+i/qhqKZQ7LvoJhkGjO/3WZZJ6lGokY3bY
-	 xHxcudgvJ1bcdp1l0ADASsZU7IorSviBQRHxCW4ziJpT7sohbDkwQOk6KIHAv/K1aX
-	 WCj4/fJ1SXoh7SxRJvhoXszRpHGxLx+mj0eW3bGg=
+	b=VH0DJFsN6nMhG1XpZmTizYza+SFTcqMJbQf6L7iA9LiaX5CZ72OmAHzrasipfK5O+
+	 iDWd8gsChOApOXtJDDATD5E9Fz9AGy2YUlQgSmDAG5LJNiynnocUnRjiimdgdTd+Ko
+	 8bosihBeDoZOX5Hl9Z8m8fguMvFX9aHzfEQP/7Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	SImon Glass <sjg@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 05/62] qca_debug: Prevent crash on TX ring changes
+Subject: [PATCH 6.6 123/166] arm64: add dependency between vmlinuz.efi and Image
 Date: Mon, 18 Dec 2023 14:51:29 +0100
-Message-ID: <20231218135046.456685261@linuxfoundation.org>
+Message-ID: <20231218135110.565731867@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,88 +55,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
+[ Upstream commit c0a8574204054effad6ac83cc75c02576e2985fe ]
 
-The qca_spi driver stop and restart the SPI kernel thread
-(via ndo_stop & ndo_open) in case of TX ring changes. This is
-a big issue because it allows userspace to prevent restart of
-the SPI kernel thread (via signals). A subsequent change of
-TX ring wrongly assume a valid spi_thread pointer which result
-in a crash.
+A common issue in Makefile is a race in parallel building.
 
-So prevent this by stopping the network traffic handling and
-temporary park the SPI thread.
+You need to be careful to prevent multiple threads from writing to the
+same file simultaneously.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
+generate invalid images") addressed such a bad scenario.
+
+A similar symptom occurs with the following command:
+
+  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/arm64/boot/Image
+    OBJCOPY arch/arm64/boot/Image
+    AS      arch/arm64/boot/zboot-header.o
+    PAD     arch/arm64/boot/vmlinux.bin
+    GZIP    arch/arm64/boot/vmlinuz
+    OBJCOPY arch/arm64/boot/vmlinuz.o
+    LD      arch/arm64/boot/vmlinuz.efi.elf
+    OBJCOPY arch/arm64/boot/vmlinuz.efi
+
+The log "OBJCOPY arch/arm64/boot/Image" is displayed twice.
+
+It indicates that two threads simultaneously enter arch/arm64/boot/
+and write to arch/arm64/boot/Image.
+
+It occasionally leads to a build failure:
+
+  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/arm64/boot/Image
+    PAD     arch/arm64/boot/vmlinux.bin
+  truncate: Invalid number: 'arch/arm64/boot/vmlinux.bin'
+  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
+  arch/arm64/boot/vmlinux.bin] Error 1
+  make[2]: *** Deleting file 'arch/arm64/boot/vmlinux.bin'
+  make[1]: *** [arch/arm64/Makefile:163: vmlinuz.efi] Error 2
+  make[1]: *** Waiting for unfinished jobs....
+  make: *** [Makefile:234: __sub-make] Error 2
+
+vmlinuz.efi depends on Image, but such a dependency is not specified
+in arch/arm64/Makefile.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: SImon Glass <sjg@chromium.org>
+Link: https://lore.kernel.org/r/20231119053234.2367621-1-masahiroy@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
- drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ arch/arm64/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 702aa217a27ad..4c6c1792fdc77 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -258,7 +258,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- static int
- qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct qcaspi *qca = netdev_priv(dev);
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 2d49aea0ff67a..26b8c7630a214 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -158,7 +158,7 @@ endif
  
- 	if ((ring->rx_pending) ||
-@@ -266,14 +265,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
+ all:	$(notdir $(KBUILD_IMAGE))
  
--	if (netif_running(dev))
--		ops->ndo_stop(dev);
-+	if (qca->spi_thread)
-+		kthread_park(qca->spi_thread);
+-
++vmlinuz.efi: Image
+ Image vmlinuz.efi: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
  
- 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
- 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
- 
--	if (netif_running(dev))
--		ops->ndo_open(dev);
-+	if (qca->spi_thread)
-+		kthread_unpark(qca->spi_thread);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 44fa959ebcaa5..b08a4b2a6a996 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -573,6 +573,18 @@ qcaspi_spi_thread(void *data)
- 	netdev_info(qca->net_dev, "SPI thread created\n");
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
-+		if (kthread_should_park()) {
-+			netif_tx_disable(qca->net_dev);
-+			netif_carrier_off(qca->net_dev);
-+			qcaspi_flush_tx_ring(qca);
-+			kthread_parkme();
-+			if (qca->sync == QCASPI_SYNC_READY) {
-+				netif_carrier_on(qca->net_dev);
-+				netif_wake_queue(qca->net_dev);
-+			}
-+			continue;
-+		}
-+
- 		if ((qca->intr_req == qca->intr_svc) &&
- 		    !qca->txr.skb[qca->txr.head])
- 			schedule();
 -- 
 2.43.0
 
