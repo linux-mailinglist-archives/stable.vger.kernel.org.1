@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-7714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD24E8175EA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCC678175EB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D0228453D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F0D0284429
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6971449;
-	Mon, 18 Dec 2023 15:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED177144C;
+	Mon, 18 Dec 2023 15:39:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958DD4878F
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F9F4878F
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d3536cd414so27112505ad.2
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:54 -0800 (PST)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-28b012f93eeso1217190a91.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913994; x=1703518794;
+        d=1e100.net; s=20230601; t=1702913997; x=1703518797;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MX76N9rFJSV6AuOaG1D49pm7RdDSvRil/Bj2SNCDjm8=;
-        b=dW5LsW6pILwRcGK0z+sYyatHL6b4HMidkUb5jSYtKuq83TQ4NEl+0f+SW2J9WHSzW8
-         PLZ1SK7gbVO/vz7HvQKY39en8rFoQcm0rRQTuZc/Ruvggg4wGfCJwe/wXkqAJCwiNSmi
-         rGVPlhcCFYj31g4ZtF0Wbg/XsRHSMt99bcVcRtEMjdrfHjKDm+0DtR4QbASJvPZQ1mUa
-         twRW1/KyM7vtOiSoAoSf5X427XBKgUpMRiNZHgmOSMtqfnaxPUNnevI3X68qePllkZ4V
-         A0L+oS2OjzxKorc3ZqCGK8fZ1t5+lW7vxpX5pl/jN2lGnGey7iPkZbO85jhPtXrMgBBo
-         QRvg==
-X-Gm-Message-State: AOJu0Yx9xAymPpAS2UwgEOoeDfH+syi1j1hHRrAaRQz49+KJQUlmHAzJ
-	dL4Xo7wlNtSnVOXzQJNOGF0=
-X-Google-Smtp-Source: AGHT+IHZ0WIQErGxw79CR7q8g9UhEGh8ySAGWClKBDwf6q3YB/FLi5YQjMxUh0UHzWGbsFGoBuRokw==
-X-Received: by 2002:a17:90b:4d87:b0:28b:7a11:6e70 with SMTP id oj7-20020a17090b4d8700b0028b7a116e70mr950248pjb.76.1702913993865;
-        Mon, 18 Dec 2023 07:39:53 -0800 (PST)
+        bh=7ITqq+iokKxtTW3U3igcAllgzeqAvaw6fbwoM0JgK1g=;
+        b=Z5D7lrtS7rDUpGN4nKg0BrPngsYLLUUj8Db28BpxpX0pgjWWh+MI7NTjc25izPcNcK
+         eVzya3oHg2qaBbSEzE4ZaqX2feRHdo0Iku5102W5x4UHJWmTMeb3KBvHsz+w0rhWB9gk
+         B/1AvU63jdwCLnm12a3FibEkaa9ZTzhIt8OqnvR2kENoocbhkzoui5rVa80Y/eKUt8vP
+         +VPyo1TEVT2YTsITQv/hZPogdSh3r/UU6mZix6OS4RECncbtwaaB+gdMupLVv4CZoWbI
+         sEgH/Fh6/FDXbngkkgqG2rq/rlAiyN1wJE3uzxj1Qjlywk3nmiK16+jnrnmiWRAYoadm
+         Wwbw==
+X-Gm-Message-State: AOJu0YxL+hn7MygnFZjtLUdRE95Z6O8eNlxqEJ+Me0OGNqSiSPgxwzvG
+	ehSeiyWETvfNP0MN0RXy31Q=
+X-Google-Smtp-Source: AGHT+IHgg8n3465b8+ongEpEB6SM+FRo+zmvrvDnfr9F9HQzO+3/R9znXFDGmCUCKrmWwVVwxUWhlA==
+X-Received: by 2002:a17:90b:2356:b0:28b:729c:b9fb with SMTP id ms22-20020a17090b235600b0028b729cb9fbmr737453pjb.27.1702913996830;
+        Mon, 18 Dec 2023 07:39:56 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.51
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:39:53 -0800 (PST)
+        Mon, 18 Dec 2023 07:39:56 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
-	David Disseldorp <ddiss@suse.de>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 085/154] ksmbd: remove unused compression negotiate ctx packing
-Date: Tue, 19 Dec 2023 00:33:45 +0900
-Message-Id: <20231218153454.8090-86-linkinjeon@kernel.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 086/154] fs: introduce lock_rename_child() helper
+Date: Tue, 19 Dec 2023 00:33:46 +0900
+Message-Id: <20231218153454.8090-87-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -64,78 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Disseldorp <ddiss@suse.de>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit af36c51e0e111de4e908328d49cba49de758f66e ]
+[ Upstream commit 9bc37e04823b5280dd0f22b6680fc23fe81ca325 ]
 
-build_compression_ctxt() is currently unreachable due to
-conn.compress_algorithm remaining zero (SMB3_COMPRESS_NONE).
+Pass the dentry of a source file and the dentry of a destination directory
+to lock parent inodes for rename. As soon as this function returns,
+->d_parent of the source file dentry is stable and inodes are properly
+locked for calling vfs-rename. This helper is needed for ksmbd server.
+rename request of SMB protocol has to rename an opened file, no matter
+which directory it's in.
 
-It appears to have been broken in a couple of subtle ways over the
-years:
-- prior to d6c9ad23b421 ("ksmbd: use the common definitions for
-  NEGOTIATE_PROTOCOL") smb2_compression_ctx.DataLength was set to 8,
-  which didn't account for the single CompressionAlgorithms flexible
-  array member.
-- post d6c9ad23b421 smb2_compression_capabilities_context
-  CompressionAlgorithms is a three member array, while
-  CompressionAlgorithmCount is set to indicate only one member.
-  assemble_neg_contexts() ctxt_size is also incorrectly incremented by
-  sizeof(struct smb2_compression_capabilities_context) + 2, which
-  assumes one flexible array member.
-
-Signed-off-by: David Disseldorp <ddiss@suse.de>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/ksmbd/smb2pdu.c | 27 ++-------------------------
- 1 file changed, 2 insertions(+), 25 deletions(-)
+ fs/namei.c            | 68 ++++++++++++++++++++++++++++++++++++-------
+ include/linux/namei.h |  1 +
+ 2 files changed, 58 insertions(+), 11 deletions(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 06c184927d66..37cb9375eb62 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -787,19 +787,6 @@ static void build_encrypt_ctxt(struct smb2_encryption_neg_context *pneg_ctxt,
- 	pneg_ctxt->Ciphers[0] = cipher_type;
+diff --git a/fs/namei.c b/fs/namei.c
+index ea2785103376..2a6ce6cfb449 100644
+--- a/fs/namei.c
++++ b/fs/namei.c
+@@ -2956,20 +2956,10 @@ static inline int may_create(struct user_namespace *mnt_userns,
+ 	return inode_permission(mnt_userns, dir, MAY_WRITE | MAY_EXEC);
  }
  
--static void build_compression_ctxt(struct smb2_compression_ctx *pneg_ctxt,
--				   __le16 comp_algo)
--{
--	pneg_ctxt->ContextType = SMB2_COMPRESSION_CAPABILITIES;
--	pneg_ctxt->DataLength =
--		cpu_to_le16(sizeof(struct smb2_compression_ctx)
--			- sizeof(struct smb2_neg_context));
--	pneg_ctxt->Reserved = cpu_to_le32(0);
--	pneg_ctxt->CompressionAlgorithmCount = cpu_to_le16(1);
--	pneg_ctxt->Reserved1 = cpu_to_le32(0);
--	pneg_ctxt->CompressionAlgorithms[0] = comp_algo;
--}
--
- static void build_sign_cap_ctxt(struct smb2_signing_capabilities *pneg_ctxt,
- 				__le16 sign_algo)
+-/*
+- * p1 and p2 should be directories on the same fs.
+- */
+-struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
++static struct dentry *lock_two_directories(struct dentry *p1, struct dentry *p2)
  {
-@@ -862,18 +849,8 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
- 		neg_ctxt_cnt++;
- 		ctxt_size += sizeof(struct smb2_encryption_neg_context) + 2;
- 	}
--
--	if (conn->compress_algorithm) {
--		ctxt_size = round_up(ctxt_size, 8);
--		ksmbd_debug(SMB,
--			    "assemble SMB2_COMPRESSION_CAPABILITIES context\n");
--		/* Temporarily set to SMB3_COMPRESS_NONE */
--		build_compression_ctxt((struct smb2_compression_ctx *)
--				       (pneg_ctxt + ctxt_size),
--				       conn->compress_algorithm);
--		neg_ctxt_cnt++;
--		ctxt_size += sizeof(struct smb2_compression_ctx) + 2;
--	}
-+	/* compression context not yet supported */
-+	WARN_ON(conn->compress_algorithm != SMB3_COMPRESS_NONE);
+ 	struct dentry *p;
  
- 	if (conn->posix_ext_supported) {
- 		ctxt_size = round_up(ctxt_size, 8);
+-	if (p1 == p2) {
+-		inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
+-		return NULL;
+-	}
+-
+-	mutex_lock(&p1->d_sb->s_vfs_rename_mutex);
+-
+ 	p = d_ancestor(p2, p1);
+ 	if (p) {
+ 		inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
+@@ -2988,8 +2978,64 @@ struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
+ 			I_MUTEX_PARENT, I_MUTEX_PARENT2);
+ 	return NULL;
+ }
++
++/*
++ * p1 and p2 should be directories on the same fs.
++ */
++struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
++{
++	if (p1 == p2) {
++		inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
++		return NULL;
++	}
++
++	mutex_lock(&p1->d_sb->s_vfs_rename_mutex);
++	return lock_two_directories(p1, p2);
++}
+ EXPORT_SYMBOL(lock_rename);
+ 
++/*
++ * c1 and p2 should be on the same fs.
++ */
++struct dentry *lock_rename_child(struct dentry *c1, struct dentry *p2)
++{
++	if (READ_ONCE(c1->d_parent) == p2) {
++		/*
++		 * hopefully won't need to touch ->s_vfs_rename_mutex at all.
++		 */
++		inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
++		/*
++		 * now that p2 is locked, nobody can move in or out of it,
++		 * so the test below is safe.
++		 */
++		if (likely(c1->d_parent == p2))
++			return NULL;
++
++		/*
++		 * c1 got moved out of p2 while we'd been taking locks;
++		 * unlock and fall back to slow case.
++		 */
++		inode_unlock(p2->d_inode);
++	}
++
++	mutex_lock(&c1->d_sb->s_vfs_rename_mutex);
++	/*
++	 * nobody can move out of any directories on this fs.
++	 */
++	if (likely(c1->d_parent != p2))
++		return lock_two_directories(c1->d_parent, p2);
++
++	/*
++	 * c1 got moved into p2 while we were taking locks;
++	 * we need p2 locked and ->s_vfs_rename_mutex unlocked,
++	 * for consistency with lock_rename().
++	 */
++	inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
++	mutex_unlock(&c1->d_sb->s_vfs_rename_mutex);
++	return NULL;
++}
++EXPORT_SYMBOL(lock_rename_child);
++
+ void unlock_rename(struct dentry *p1, struct dentry *p2)
+ {
+ 	inode_unlock(p1->d_inode);
+diff --git a/include/linux/namei.h b/include/linux/namei.h
+index 40c693525f79..7868732cce24 100644
+--- a/include/linux/namei.h
++++ b/include/linux/namei.h
+@@ -83,6 +83,7 @@ extern int follow_down(struct path *);
+ extern int follow_up(struct path *);
+ 
+ extern struct dentry *lock_rename(struct dentry *, struct dentry *);
++extern struct dentry *lock_rename_child(struct dentry *, struct dentry *);
+ extern void unlock_rename(struct dentry *, struct dentry *);
+ 
+ extern int __must_check nd_jump_link(struct path *path);
 -- 
 2.25.1
 
