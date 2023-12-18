@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0745281735C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ECFC8172E4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F482896D8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09528288964
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E903A1BC;
-	Mon, 18 Dec 2023 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5073B37884;
+	Mon, 18 Dec 2023 14:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op85hASJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yu3Wpn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC43A1B2;
-	Mon, 18 Dec 2023 14:15:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF48C433C7;
-	Mon, 18 Dec 2023 14:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C86129EF9;
+	Mon, 18 Dec 2023 14:11:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF3FC433C8;
+	Mon, 18 Dec 2023 14:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908945;
-	bh=0wdJhzvpPRl5/zXBa3lTC7Z+/Vln0My8deBFQMCamXY=;
+	s=korg; t=1702908675;
+	bh=Tk1ueKsIhiB6lYTAqFOkOlfjzY4EHyzzT3QW1beM39Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Op85hASJaE6/9I4h7rTO1bw9j9+kc/tcI4DjJcINywcKZbmfAXsHuRejEgLzPq2Rt
-	 fYbqVexsBCm1IksgaQBcus/jeZK+HYwmKOlhh0Gr58D66yKeFOcTtzSWIeUIEHE5Cw
-	 +mOjVEUGHdKCF42wOKGxWM/HwTpC0maHoBzrJmi8=
+	b=2Yu3Wpn46EzTcmwD5e1c6tVFM5KhMAEger/xci/jPK1Fr3WlBWMFqUorUyUt5br/b
+	 0iUdai6cW5LwNCxXdepftp+cDQKZpzs/+hzSkdugz4Bvg50sGEh9WiGrjN+przclJ7
+	 EVfmMUH24vifujfqcyUwupGdSW+9FleKpt/kT0uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florent Revest <revest@chromium.org>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 67/83] team: Fix use-after-free when an option instance allocation fails
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 33/40] soundwire: stream: fix NULL pointer dereference for multi_link
 Date: Mon, 18 Dec 2023 14:52:28 +0100
-Message-ID: <20231218135052.697431569@linuxfoundation.org>
+Message-ID: <20231218135044.004097116@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c12296bbecc488623b7d1932080e394d08f3226b upstream.
+commit e199bf52ffda8f98f129728d57244a9cd9ad5623 upstream.
 
-In __team_options_register, team_options are allocated and appended to
-the team's option_list.
-If one option instance allocation fails, the "inst_rollback" cleanup
-path frees the previously allocated options but doesn't remove them from
-the team's option_list.
-This leaves dangling pointers that can be dereferenced later by other
-parts of the team driver that iterate over options.
+If bus is marked as multi_link, but number of masters in the stream is
+not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
+bus->hw_sync_min_links), bank switching should not happen.  The first
+part of do_bank_switch() code properly takes these conditions into
+account, but second part (sdw_ml_sync_bank_switch()) relies purely on
+bus->multi_link property.  This is not balanced and leads to NULL
+pointer dereference:
 
-This patch fixes the cleanup path to remove the dangling pointers from
-the list.
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  ...
+  Call trace:
+   wait_for_completion_timeout+0x124/0x1f0
+   do_bank_switch+0x370/0x6f8
+   sdw_prepare_stream+0x2d0/0x438
+   qcom_snd_sdw_prepare+0xa0/0x118
+   sm8450_snd_prepare+0x128/0x148
+   snd_soc_link_prepare+0x5c/0xe8
+   __soc_pcm_prepare+0x28/0x1ec
+   dpcm_be_dai_prepare+0x1e0/0x2c0
+   dpcm_fe_dai_prepare+0x108/0x28c
+   snd_pcm_do_prepare+0x44/0x68
+   snd_pcm_action_single+0x54/0xc0
+   snd_pcm_action_nonatomic+0xe4/0xec
+   snd_pcm_prepare+0xc4/0x114
+   snd_pcm_common_ioctl+0x1154/0x1cc0
+   snd_pcm_ioctl+0x54/0x74
 
-As far as I can tell, this uaf doesn't have much security implications
-since it would be fairly hard to exploit (an attacker would need to make
-the allocation of that specific small object fail) but it's still nice
-to fix.
-
+Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
 Cc: stable@vger.kernel.org
-Fixes: 80f7c6683fe0 ("team: add support for per-port options")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231206123719.1963153-1-revest@chromium.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231124180136.390621-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/team/team.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soundwire/stream.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -285,8 +285,10 @@ static int __team_options_register(struc
- 	return 0;
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -709,14 +709,15 @@ error_1:
+  * sdw_ml_sync_bank_switch: Multilink register bank switch
+  *
+  * @bus: SDW bus instance
++ * @multi_link: whether this is a multi-link stream with hardware-based sync
+  *
+  * Caller function should free the buffers on error
+  */
+-static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
++static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
+ {
+ 	unsigned long time_left;
  
- inst_rollback:
--	for (i--; i >= 0; i--)
-+	for (i--; i >= 0; i--) {
- 		__team_option_inst_del_option(team, dst_opts[i]);
-+		list_del(&dst_opts[i]->list);
-+	}
+-	if (!bus->multi_link)
++	if (!multi_link)
+ 		return 0;
  
- 	i = option_count;
- alloc_rollback:
+ 	/* Wait for completion of transfer */
+@@ -809,7 +810,7 @@ static int do_bank_switch(struct sdw_str
+ 			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
+ 
+ 		/* Check if bank switch was successful */
+-		ret = sdw_ml_sync_bank_switch(bus);
++		ret = sdw_ml_sync_bank_switch(bus, multi_link);
+ 		if (ret < 0) {
+ 			dev_err(bus->dev,
+ 				"multi link bank switch failed: %d\n", ret);
 
 
 
