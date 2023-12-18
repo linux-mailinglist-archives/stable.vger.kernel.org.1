@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-7530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63AD68172F3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DCA81731F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12896288D50
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809D2289601
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D25D42387;
-	Mon, 18 Dec 2023 14:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6504C3A1A9;
+	Mon, 18 Dec 2023 14:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0AYkXJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGD/Ublw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7C94988B;
-	Mon, 18 Dec 2023 14:11:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9518C433C8;
-	Mon, 18 Dec 2023 14:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8FD3788E;
+	Mon, 18 Dec 2023 14:13:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61918C433C8;
+	Mon, 18 Dec 2023 14:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908717;
-	bh=B8H/II7mwe67BSqBDnIOmXaQbE7rg4X7QnEla4L9ujs=;
+	s=korg; t=1702908825;
+	bh=gP8huWIXAV2Jw9Mxb8CN5AC+1Ghta9ZJssYXrRiAQLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0AYkXJj0TfJfgZNaaenlInv7jnxQcZSBEai3eyPibh7WIv6l0YapX2yzKOFTgawD
-	 m1voMfY4S1ULvz6rZOZOOQ0fzqXjPEcuIs7VwdGwwsrLnzr8q57wLelgItm6E5hrsf
-	 LZRndMqcnfTyxzWzCMFKs4o1PjJri8SuGOal+zeI=
+	b=eGD/UblwmhoM+bMxMizrUxocruvxeceT8X0edSi5UyqUmRb8Sgqb5WDY3c+dm5dFR
+	 2H/RUq4BC7NoUHcZmygzBRfed5O/uRJ8LwDFmld6plBnKbVYpJUVhjK4OvIdE24+hD
+	 bTD2xUQ3sn5AFPLVhwAn0lEdml1BFxCPKq7DByDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yusong Gao <a869920004@gmail.com>,
-	Juerg Haefliger <juerg.haefliger@canonical.com>,
-	David Howells <dhowells@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jean Delvare <jdelvare@suse.de>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/40] sign-file: Fix incorrect return values check
-Date: Mon, 18 Dec 2023 14:52:07 +0100
-Message-ID: <20231218135043.166653116@linuxfoundation.org>
+Subject: [PATCH 5.15 47/83] stmmac: dwmac-loongson: Add architecture dependency
+Date: Mon, 18 Dec 2023 14:52:08 +0100
+Message-ID: <20231218135051.817725970@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,81 +55,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yusong Gao <a869920004@gmail.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit 829649443e78d85db0cff0c37cadb28fbb1a5f6f ]
+[ Upstream commit 7fbd5fc2b35a8f559a6b380dfa9bcd964a758186 ]
 
-There are some wrong return values check in sign-file when call OpenSSL
-API. The ERR() check cond is wrong because of the program only check the
-return value is < 0 which ignored the return val is 0. For example:
-1. CMS_final() return 1 for success or 0 for failure.
-2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-3. i2d_TYPEbio() return 1 for success and 0 for failure.
-4. BIO_free() return 1 for success and 0 for failure.
+Only present the DWMAC_LOONGSON option on architectures where it can
+actually be used.
 
-Link: https://www.openssl.org/docs/manmaster/man3/
-Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
-Signed-off-by: Yusong Gao <a869920004@gmail.com>
-Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20231213024405.624692-1-a869920004@gmail.com/ # v5
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+This follows the same logic as the DWMAC_INTEL option.
+
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/sign-file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 7434e9ea926e2..12acc70e5a7a5 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -322,7 +322,7 @@ int main(int argc, char **argv)
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-+		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
- 		    "CMS_final");
- 
- #else
-@@ -341,10 +341,10 @@ int main(int argc, char **argv)
- 			b = BIO_new_file(sig_file_name, "wb");
- 			ERR(!b, "%s", sig_file_name);
- #ifndef USE_PKCS7
--			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-+			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
- 			    "%s", sig_file_name);
- #else
--			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-+			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
- 			    "%s", sig_file_name);
- #endif
- 			BIO_free(b);
-@@ -374,9 +374,9 @@ int main(int argc, char **argv)
- 
- 	if (!raw_sig) {
- #ifndef USE_PKCS7
--		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-+		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
- #else
--		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-+		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
- #endif
- 	} else {
- 		BIO *b;
-@@ -396,7 +396,7 @@ int main(int argc, char **argv)
- 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
- 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
- 
--	ERR(BIO_free(bd) < 0, "%s", dest_name);
-+	ERR(BIO_free(bd) != 1, "%s", dest_name);
- 
- 	/* Finally, if we're signing in place, replace the original. */
- 	if (replace_orig)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 929cfc22cd0cf..d19844be9fe50 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -253,7 +253,7 @@ config DWMAC_INTEL
+ config DWMAC_LOONGSON
+ 	tristate "Loongson PCI DWMAC support"
+ 	default MACH_LOONGSON64
+-	depends on STMMAC_ETH && PCI
++	depends on (MACH_LOONGSON64 || COMPILE_TEST) && STMMAC_ETH && PCI
+ 	depends on COMMON_CLK
+ 	help
+ 	  This selects the LOONGSON PCI bus support for the stmmac driver,
 -- 
 2.43.0
 
