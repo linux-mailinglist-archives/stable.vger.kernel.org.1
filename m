@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF2C8170F1
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C768817226
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D784B20D9D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C851C24D34
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4563A14F63;
-	Mon, 18 Dec 2023 13:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B214A37882;
+	Mon, 18 Dec 2023 14:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2kplZ4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTpl0DmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B766129ED2;
-	Mon, 18 Dec 2023 13:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7ABC433C7;
-	Mon, 18 Dec 2023 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7690B3788E;
+	Mon, 18 Dec 2023 14:03:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF51AC433CC;
+	Mon, 18 Dec 2023 14:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907555;
-	bh=H79vucaDcN2cN8yzJnL0xU4hGTsqsBeCmvDCVJebpX4=;
+	s=korg; t=1702908229;
+	bh=j1hvMF/KB1sgE0HVlb+F2tm67Vp7NP6dHJaF1yzSn94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2kplZ4w6mnAj+IoHIkVzEfaUQCyEePCGs19DCtHTmKUSUrZUNzLevW/UPZNjvvau
-	 m9zQnO4xk1LreHOtozXb5kyA5IpmG5Ikxcf6KL528OZ6xfdqA2b7eAwaCX2VFOdcPi
-	 t/uwQNjD+TQ58sd/SHqzBCYUbvHVeJEUBchcj7Ow=
+	b=HTpl0DmSxPZqLocoCbuIvoLaq4s3KPtXf3gEBc++dhQO+UrYNTpiCTv4422m6utOS
+	 bk2d56hac9R93Up1FtnFUAsMymbrHT7b23DZ1iMCJ57pCGoWScjPaJ7Pyv9OlUTODE
+	 PowDEIMoj+XqGyR++UR1eEgJ4OuCbbkpJCrib6oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 05/26] atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+Subject: [PATCH 6.6 101/166] LoongArch: Add dependency between vmlinuz.efi and vmlinux.efi
 Date: Mon, 18 Dec 2023 14:51:07 +0100
-Message-ID: <20231218135040.860983335@linuxfoundation.org>
+Message-ID: <20231218135109.521649902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +51,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 15319a4e8ee4b098118591c6ccbd17237f841613 ]
+[ Upstream commit d3ec75bc635cb0cb8185b63293d33a3d1b942d22 ]
 
-As &card->tx_queue_lock is acquired under softirq context along the
-following call chain from solos_bh(), other acquisition of the same
-lock inside process context should disable at least bh to avoid double
-lock.
+A common issue in Makefile is a race in parallel building.
 
-<deadlock #2>
-pclose()
---> spin_lock(&card->tx_queue_lock)
-<interrupt>
-   --> solos_bh()
-   --> fpga_tx()
-   --> spin_lock(&card->tx_queue_lock)
+You need to be careful to prevent multiple threads from writing to the
+same file simultaneously.
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
+Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
+generate invalid images") addressed such a bad scenario.
 
-To prevent the potential deadlock, the patch uses spin_lock_bh()
-on &card->tx_queue_lock under process context code consistently to
-prevent the possible deadlock scenario.
+A similar symptom occurs with the following command:
 
-Fixes: 213e85d38912 ("solos-pci: clean up pclose() function")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    PAD     arch/loongarch/boot/vmlinux.bin
+    GZIP    arch/loongarch/boot/vmlinuz
+    OBJCOPY arch/loongarch/boot/vmlinuz.o
+    LD      arch/loongarch/boot/vmlinuz.efi.elf
+    OBJCOPY arch/loongarch/boot/vmlinuz.efi
+
+The log "OBJCOPY arch/loongarch/boot/vmlinux.efi" is displayed twice.
+
+It indicates that two threads simultaneously enter arch/loongarch/boot/
+and write to arch/loongarch/boot/vmlinux.efi.
+
+It occasionally leads to a build failure:
+
+  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    PAD     arch/loongarch/boot/vmlinux.bin
+  truncate: Invalid number: ‘arch/loongarch/boot/vmlinux.bin’
+  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
+  arch/loongarch/boot/vmlinux.bin] Error 1
+  make[2]: *** Deleting file 'arch/loongarch/boot/vmlinux.bin'
+  make[1]: *** [arch/loongarch/Makefile:146: vmlinuz.efi] Error 2
+  make[1]: *** Waiting for unfinished jobs....
+  make: *** [Makefile:234: __sub-make] Error 2
+
+vmlinuz.efi depends on vmlinux.efi, but such a dependency is not
+specified in arch/loongarch/Makefile.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/solos-pci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/loongarch/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/atm/solos-pci.c b/drivers/atm/solos-pci.c
-index 3a115c7f224fb..07a136cc20ab5 100644
---- a/drivers/atm/solos-pci.c
-+++ b/drivers/atm/solos-pci.c
-@@ -968,14 +968,14 @@ static void pclose(struct atm_vcc *vcc)
- 	struct pkt_hdr *header;
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index fb0fada43197e..96747bfec1a10 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -142,6 +142,8 @@ vdso_install:
  
- 	/* Remove any yet-to-be-transmitted packets from the pending queue */
--	spin_lock(&card->tx_queue_lock);
-+	spin_lock_bh(&card->tx_queue_lock);
- 	skb_queue_walk_safe(&card->tx_queue[port], skb, tmpskb) {
- 		if (SKB_CB(skb)->vcc == vcc) {
- 			skb_unlink(skb, &card->tx_queue[port]);
- 			solos_pop(vcc, skb);
- 		}
- 	}
--	spin_unlock(&card->tx_queue_lock);
-+	spin_unlock_bh(&card->tx_queue_lock);
+ all:	$(notdir $(KBUILD_IMAGE))
  
- 	skb = alloc_skb(sizeof(*header), GFP_KERNEL);
- 	if (!skb) {
++vmlinuz.efi: vmlinux.efi
++
+ vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
+ 
 -- 
 2.43.0
 
