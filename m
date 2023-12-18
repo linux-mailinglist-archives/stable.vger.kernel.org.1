@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615C08172B5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396C9817357
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84CF81C24DDB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF3BAB23548
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B3942372;
-	Mon, 18 Dec 2023 14:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F19B3787B;
+	Mon, 18 Dec 2023 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOrv20aF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzAZj8KB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700383786D;
-	Mon, 18 Dec 2023 14:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F65C433C8;
-	Mon, 18 Dec 2023 14:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71041D148;
+	Mon, 18 Dec 2023 14:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A368C433C7;
+	Mon, 18 Dec 2023 14:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908572;
-	bh=cHVO6q3z83E4RLApUiWJsEMM5a/9kTbTBoVvenj1MxE=;
+	s=korg; t=1702908934;
+	bh=ZceK/LYpt7eg1DUTZH+1kPQ3Rrzzm0fLzGxjYEK/kPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOrv20aFwkHkiI2GHqEbm42+EK96fK/tDzVa7Rw9P377a2hvjWhjtuANXqQx66Yr0
-	 5/wNonvtQQFwHp2kITpP1P8h45YPMBVbg7lSd94hsbYdJ2gzNhQeMiaVEvIuwvT4gV
-	 FQQgGUibyhIUP1oTW3E1+ZtX6y/APuOsbqeoX1nk=
+	b=SzAZj8KBoB1kbZq946OzY+0Ptz0U51XLVJawSLfz6q0nSeeEW7c/yaG3gnhmWLZ4u
+	 BzIMVsI17BxZSJIbEpLPbIMA653BEFHy8lTnB+DOdl1E3q4LvK2MXiUH5T1SRzmyy2
+	 VPtS3oU4GJq6H5CYU9lkfW/w1+WTicySGHknCcYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jslaby@suse.cz>,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Subject: [PATCH 5.10 59/62] tty: n_gsm, remove duplicates of parameters
-Date: Mon, 18 Dec 2023 14:52:23 +0100
-Message-ID: <20231218135048.796377822@linuxfoundation.org>
+	Martin Michaelis <code@mgjm.de>,
+	Neal Gompa <neal@gompa.dev>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 63/83] btrfs: do not allow non subvolume root targets for snapshot
+Date: Mon, 18 Dec 2023 14:52:24 +0100
+Message-ID: <20231218135052.505523359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby <jslaby@suse.cz>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit b93db97e1ca08e500305bc46b08c72e2232c4be1 upstream.
+commit a8892fd71933126ebae3d60aec5918d4dceaae76 upstream.
 
-dp, f, and i are only duplicates of gsmld_receive_buf's parameters. Use
-the parameters directly (cp, fp, and count) and delete these local
-variables.
+Our btrfs subvolume snapshot <source> <destination> utility enforces
+that <source> is the root of the subvolume, however this isn't enforced
+in the kernel.  Update the kernel to also enforce this limitation to
+avoid problems with other users of this ioctl that don't have the
+appropriate checks in place.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Link: https://lore.kernel.org/r/20210302062214.29627-41-jslaby@suse.cz
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Reported-by: Martin Michaelis <code@mgjm.de>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/n_gsm.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ fs/btrfs/ioctl.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2577,27 +2577,24 @@ static void gsmld_receive_buf(struct tty
- 			      char *fp, int count)
- {
- 	struct gsm_mux *gsm = tty->disc_data;
--	const unsigned char *dp;
--	char *f;
--	int i;
- 	char flags = TTY_NORMAL;
- 
- 	if (debug & 4)
- 		print_hex_dump_bytes("gsmld_receive: ", DUMP_PREFIX_OFFSET,
- 				     cp, count);
- 
--	for (i = count, dp = cp, f = fp; i; i--, dp++) {
--		if (f)
--			flags = *f++;
-+	for (; count; count--, cp++) {
-+		if (fp)
-+			flags = *fp++;
- 		switch (flags) {
- 		case TTY_NORMAL:
--			gsm->receive(gsm, *dp);
-+			gsm->receive(gsm, *cp);
- 			break;
- 		case TTY_OVERRUN:
- 		case TTY_BREAK:
- 		case TTY_PARITY:
- 		case TTY_FRAME:
--			gsm_error(gsm, *dp, flags);
-+			gsm_error(gsm, *cp, flags);
- 			break;
- 		default:
- 			WARN_ONCE(1, "%s: unknown flag %d\n",
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -1855,6 +1855,15 @@ static noinline int __btrfs_ioctl_snap_c
+ 			 * are limited to own subvolumes only
+ 			 */
+ 			ret = -EPERM;
++		} else if (btrfs_ino(BTRFS_I(src_inode)) != BTRFS_FIRST_FREE_OBJECTID) {
++			/*
++			 * Snapshots must be made with the src_inode referring
++			 * to the subvolume inode, otherwise the permission
++			 * checking above is useless because we may have
++			 * permission on a lower directory but not the subvol
++			 * itself.
++			 */
++			ret = -EINVAL;
+ 		} else {
+ 			ret = btrfs_mksnapshot(&file->f_path, mnt_userns,
+ 					       name, namelen,
 
 
 
