@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC48C817303
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9938817112
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E31591C24FCE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5933A1F232A4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFF33A1AA;
-	Mon, 18 Dec 2023 14:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980B11D137;
+	Mon, 18 Dec 2023 13:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h66bqrEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/MFYMv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0EC43A1A8;
-	Mon, 18 Dec 2023 14:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3CFC433C7;
-	Mon, 18 Dec 2023 14:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E15D1D12F;
+	Mon, 18 Dec 2023 13:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12CEC433C9;
+	Mon, 18 Dec 2023 13:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908755;
-	bh=luz9Bq6fI2y6USpaODGVJQPOZi4tnyuvZo89xOKMcZc=;
+	s=korg; t=1702907649;
+	bh=oh/K+9iO45g54S/aWIC1ORaXGz3o9bW/ZMNt0uvDyDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h66bqrEhfzVN09hymJiZAjLlZG0rqvmLnaw8id2BZPNxE6aeUHV+dIwoc5KkJoEA9
-	 sZyewO4/avJv08LBZUJPOnmeskC5kiEeEVpro1J5WtEkFN0ifTKee2xgw914umFAaz
-	 5QXyTyrLPFdqAvpinv3bVKUUA+5vpo+KL8mAlYhA=
+	b=c/MFYMv2VZ1mGEdd+xBgFZLYJih6aWZny6/u4QDvTf1oTcFWnEMnSmp5ErALqIwB5
+	 ctvE5LYDp1FO1aVG4VQmBYgkRZoffT5ZlQRkq+dgRF84+1/Sadxc31Rv22070sfM30
+	 hZXoEfUBBrJY1XY1mxBxVRmNWuN4kYp42nbxO1co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 21/83] octeontx2-pf: Fix promisc mcam entry action
+	Florent Revest <revest@chromium.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 32/36] team: Fix use-after-free when an option instance allocation fails
 Date: Mon, 18 Dec 2023 14:51:42 +0100
-Message-ID: <20231218135050.681843907@linuxfoundation.org>
+Message-ID: <20231218135042.974040540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,88 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Florent Revest <revest@chromium.org>
 
-[ Upstream commit dbda436824ded8ef6a05bb82cd9baa8d42377a49 ]
+commit c12296bbecc488623b7d1932080e394d08f3226b upstream.
 
-Current implementation is such that, promisc mcam entry action
-is set as multicast even when there are no trusted VFs. multicast
-action causes the hardware to copy packet data, which reduces
-the performance.
+In __team_options_register, team_options are allocated and appended to
+the team's option_list.
+If one option instance allocation fails, the "inst_rollback" cleanup
+path frees the previously allocated options but doesn't remove them from
+the team's option_list.
+This leaves dangling pointers that can be dereferenced later by other
+parts of the team driver that iterate over options.
 
-This patch fixes this issue by setting the promisc mcam entry action to
-unicast instead of multicast when there are no trusted VFs. The same
-change is made for the 'allmulti' mcam entry action.
+This patch fixes the cleanup path to remove the dangling pointers from
+the list.
 
-Fixes: ffd2f89ad05c ("octeontx2-pf: Enable promisc/allmulti match MCAM entries.")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As far as I can tell, this uaf doesn't have much security implications
+since it would be fairly hard to exploit (an attacker would need to make
+the allocation of that specific small object fail) but it's still nice
+to fix.
+
+Cc: stable@vger.kernel.org
+Fixes: 80f7c6683fe0 ("team: add support for per-port options")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231206123719.1963153-1-revest@chromium.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 25 ++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/net/team/team.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 4eec574631c7e..f9bb0e9e73592 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1589,6 +1589,21 @@ static void otx2_free_hw_resources(struct otx2_nic *pf)
- 	mutex_unlock(&mbox->lock);
- }
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -291,8 +291,10 @@ static int __team_options_register(struc
+ 	return 0;
  
-+static bool otx2_promisc_use_mce_list(struct otx2_nic *pfvf)
-+{
-+	int vf;
-+
-+	/* The AF driver will determine whether to allow the VF netdev or not */
-+	if (is_otx2_vf(pfvf->pcifunc))
-+		return true;
-+
-+	/* check if there are any trusted VFs associated with the PF netdev */
-+	for (vf = 0; vf < pci_num_vf(pfvf->pdev); vf++)
-+		if (pfvf->vf_configs[vf].trusted)
-+			return true;
-+	return false;
-+}
-+
- static void otx2_do_set_rx_mode(struct otx2_nic *pf)
- {
- 	struct net_device *netdev = pf->netdev;
-@@ -1621,7 +1636,8 @@ static void otx2_do_set_rx_mode(struct otx2_nic *pf)
- 	if (netdev->flags & (IFF_ALLMULTI | IFF_MULTICAST))
- 		req->mode |= NIX_RX_MODE_ALLMULTI;
- 
--	req->mode |= NIX_RX_MODE_USE_MCE;
-+	if (otx2_promisc_use_mce_list(pf))
-+		req->mode |= NIX_RX_MODE_USE_MCE;
- 
- 	otx2_sync_mbox_msg(&pf->mbox);
- 	mutex_unlock(&pf->mbox.lock);
-@@ -2440,11 +2456,14 @@ static int otx2_ndo_set_vf_trust(struct net_device *netdev, int vf,
- 	pf->vf_configs[vf].trusted = enable;
- 	rc = otx2_set_vf_permissions(pf, vf, OTX2_TRUSTED_VF);
- 
--	if (rc)
-+	if (rc) {
- 		pf->vf_configs[vf].trusted = !enable;
--	else
-+	} else {
- 		netdev_info(pf->netdev, "VF %d is %strusted\n",
- 			    vf, enable ? "" : "not ");
-+		otx2_set_rx_mode(netdev);
+ inst_rollback:
+-	for (i--; i >= 0; i--)
++	for (i--; i >= 0; i--) {
+ 		__team_option_inst_del_option(team, dst_opts[i]);
++		list_del(&dst_opts[i]->list);
 +	}
-+
- 	return rc;
- }
  
--- 
-2.43.0
-
+ 	i = option_count;
+ alloc_rollback:
 
 
 
