@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E5A817159
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321F58170F2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A8891C23F03
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C75CA1F23189
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7D21D123;
-	Mon, 18 Dec 2023 13:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B751D122;
+	Mon, 18 Dec 2023 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvWbRlUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo1MjN2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759D6129EF7;
-	Mon, 18 Dec 2023 13:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC019C433C8;
-	Mon, 18 Dec 2023 13:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F519129ED2;
+	Mon, 18 Dec 2023 13:52:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F71C433C8;
+	Mon, 18 Dec 2023 13:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907810;
-	bh=Xt1H3+ORXzJnzm+EkbQoByru7Gpy8EgFEUtyS8hABGQ=;
+	s=korg; t=1702907558;
+	bh=YzVponcZ24teLN8wzxDvEplvgyub0tHMHn9Y0lv/vo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yvWbRlUWO+NDYtfcW1tLENGa/yuILmwAaZADJncsY5j1L0OnIqbJ5s9UZaD9fZJyk
-	 jGVHnGhDEAwEuJU4o0Q0EFEYx40o1nc4Ncg8H5KM4t4h+OmIZaU1gKDr+jeJVzsXkV
-	 fLfu4x4EFPNRHR+47yBBkSDs3NGwvX5WIDw5q1u8=
+	b=Xo1MjN2PCUkWFWMwYFUgbmRkPjIG0T9rtSKR1lHzIyu8s+ecKAP4UWGgmX/Ex4zLX
+	 YtdwJ8D9PDzFw52ZdIYEF1LrBb3p8jMI7Q5jn+iWzEba12Ngd3Kz801c50+vHEu/5v
+	 /lnrGSpRM0QS0hbaIzgG9MChPyaNxTHd2SvP3XU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Keguang Zhang <keguang.zhang@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/106] stmmac: dwmac-loongson: Add architecture dependency
+Subject: [PATCH 4.14 06/26] atm: Fix Use-After-Free in do_vcc_ioctl
 Date: Mon, 18 Dec 2023 14:51:08 +0100
-Message-ID: <20231218135057.370279292@linuxfoundation.org>
+Message-ID: <20231218135040.902192753@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit 7fbd5fc2b35a8f559a6b380dfa9bcd964a758186 ]
+[ Upstream commit 24e90b9e34f9e039f56b5f25f6e6eb92cdd8f4b3 ]
 
-Only present the DWMAC_LOONGSON option on architectures where it can
-actually be used.
+Because do_vcc_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with vcc_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+do_vcc_ioctl() -> skb_peek()
+vcc_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to do_vcc_ioctl() to fix this issue.
 
-This follows the same logic as the DWMAC_INTEL option.
-
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Cc: Keguang Zhang <keguang.zhang@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209094210.GA403126@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/atm/ioctl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 31ff351740342..58091ee2bfe60 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -256,7 +256,7 @@ config DWMAC_INTEL
- config DWMAC_LOONGSON
- 	tristate "Loongson PCI DWMAC support"
- 	default MACH_LOONGSON64
--	depends on STMMAC_ETH && PCI
-+	depends on (MACH_LOONGSON64 || COMPILE_TEST) && STMMAC_ETH && PCI
- 	depends on COMMON_CLK
- 	help
- 	  This selects the LOONGSON PCI bus support for the stmmac driver,
+diff --git a/net/atm/ioctl.c b/net/atm/ioctl.c
+index 2ff0e5e470e3d..38f7f164e4848 100644
+--- a/net/atm/ioctl.c
++++ b/net/atm/ioctl.c
+@@ -71,14 +71,17 @@ static int do_vcc_ioctl(struct socket *sock, unsigned int cmd,
+ 	case SIOCINQ:
+ 	{
+ 		struct sk_buff *skb;
++		int amount;
+ 
+ 		if (sock->state != SS_CONNECTED) {
+ 			error = -EINVAL;
+ 			goto done;
+ 		}
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		skb = skb_peek(&sk->sk_receive_queue);
+-		error = put_user(skb ? skb->len : 0,
+-				 (int __user *)argp) ? -EFAULT : 0;
++		amount = skb ? skb->len : 0;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
++		error = put_user(amount, (int __user *)argp) ? -EFAULT : 0;
+ 		goto done;
+ 	}
+ 	case SIOCGSTAMP: /* borrowed from IP */
 -- 
 2.43.0
 
