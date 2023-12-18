@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-7500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC978172D3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 314D381731B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ECCA28820A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4A911F20C27
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FDB3789C;
-	Mon, 18 Dec 2023 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF943A1B6;
+	Mon, 18 Dec 2023 14:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgQuWj3g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TA86yYrq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE6C37863;
-	Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D2FC433C7;
-	Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5563337869;
+	Mon, 18 Dec 2023 14:13:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFDEC433C7;
+	Mon, 18 Dec 2023 14:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908634;
-	bh=yomgrz1UbwqZjETNMp9silunL63KC8UzxrUHFZ6Qkbk=;
+	s=korg; t=1702908812;
+	bh=jHDMFs6Zc+v7DSqEyLpDsuzdOVLbtLL7S3btc7Z957I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sgQuWj3g1y9yFUG3MC6BbVdwdm9aJx3DlvBLpbSr5ir2pTfK28vFwRY0dkq3Vzf5I
-	 PT6EhcbXJ9ADV8oDGhXEOLIuA5TkQPU/kAIjE/WkNYKgVAX4RBJ22KgWZ+bPGyq6U8
-	 N9XVYWtaJ+LlmVxQUnpdP3rHUS/uB3EHuhhjh/SQ=
+	b=TA86yYrq6wHr283BfyKozvvxiGKjLlAGpR354Hc6fpluJhITSSaonLYpcHC4OoJqO
+	 UsMYXU6D0yziqvWamWauxphaNQr8MW2VXhTUnIgzQ14EqiN0SvST1XT5QY0x5MxqeT
+	 lWsYP8i7hI8eecey/fXbIpkOh/xRBCjiQsQoEEb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/40] net/rose: Fix Use-After-Free in rose_ioctl
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>
+Subject: [PATCH 5.15 43/83] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
 Date: Mon, 18 Dec 2023 14:52:04 +0100
-Message-ID: <20231218135043.081271730@linuxfoundation.org>
+Message-ID: <20231218135051.668131860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +56,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
+commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
 
-Because rose_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with rose_accept().
-A use-after-free for skb occurs with the following flow.
-```
-rose_ioctl() -> skb_peek()
-rose_accept() -> skb_dequeue() -> kfree_skb()
-```
-Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
+This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
+subsequent fix to it:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+
+40613da52b13 fixed a problem where hot-adding a device with large BARs
+failed if the bridge windows programmed by firmware were not large enough.
+
+cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
+only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
+of a device on a PCI root bus (common in the virt world) or firmware
+sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
+7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
+
+Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
+problems:
+
+  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
+    sometimes.
+
+  - Dongli reported a similar problem with hot-add of SCSI disks.
+
+  - Jonathan reported a console freeze during boot on bare metal due to an
+    error in radeon GPU initialization.
+
+Revert both patches to avoid adding these problems.  This means we will
+again see the problems with hot-adding devices with large BARs and the NULL
+pointer dereferences and suspend/resume issues that 40613da52b13 and
+cc22522fd55e were intended to fix.
+
+Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+Reported-by: Fiona Ebner <f.ebner@proxmox.com>
+Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
+Reported-by: Jonathan Woithe <jwoithe@just42.net>
+Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 6fb158172ddc2..fc9ef08788f73 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -1285,9 +1285,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 	case TIOCINQ: {
- 		struct sk_buff *skb;
- 		long amount = 0L;
--		/* These two are safe on a single CPU system as only user tasks fiddle here */
-+
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
- 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
- 			amount = skb->len;
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		return put_user(amount, (unsigned int __user *) argp);
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -503,15 +503,12 @@ static void enable_slot(struct acpiphp_s
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					if (pci_is_root_bus(bus))
+-						__pci_bus_size_bridges(dev->subordinate, &add_list);
++					__pci_bus_size_bridges(dev->subordinate,
++							       &add_list);
+ 				}
+ 			}
+ 		}
+-		if (pci_is_root_bus(bus))
+-			__pci_bus_assign_resources(bus, &add_list, NULL);
+-		else
+-			pci_assign_unassigned_bridge_resources(bus->self);
++		__pci_bus_assign_resources(bus, &add_list, NULL);
  	}
  
--- 
-2.43.0
-
+ 	acpiphp_sanitize_bus(bus);
 
 
 
