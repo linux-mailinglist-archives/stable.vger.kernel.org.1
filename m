@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487A9816745
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:19:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6018D816746
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC47E1F22432
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 160311F223F1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D7979EB;
-	Mon, 18 Dec 2023 07:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF7C79E2;
+	Mon, 18 Dec 2023 07:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUbmdhMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEFhEIvy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11C979D9
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:19:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0778FC433C8;
-	Mon, 18 Dec 2023 07:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA15279D1
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:19:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3EAC433C8;
+	Mon, 18 Dec 2023 07:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702883984;
-	bh=9W9HWWihUgSsJkiw+fLZg06wJqa8AEasutmNpAPf/d0=;
+	s=korg; t=1702883993;
+	bh=k9QRdMHCJZTf1Sd6y+Ot12hBypIv9AvsVf4rCQny79M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tUbmdhMx8Mz2jiutLsSKtugkimUYHF+AYYmzBHXrQ5G/wCvTgwnL7g52cAMjtgBjm
-	 dFx3JdfAwGjV07wEvmVTP1wMJA5beHX4TqhamGCPN+nbyys/obTynz1lXW9q8cKH8G
-	 QV9RXp/lrgeR/YYGdODwQTSNbQdiZvzT/BZv9Tss=
-Subject: FAILED: patch "[PATCH] drm/i915/edp: don't write to DP_LINK_BW_SET when using rate" failed to apply to 6.6-stable tree
+	b=PEFhEIvy+h7STpGwCQ+TuHpLh4K0PLGD+7QjBRiX4j9xfTwxsSybRLprzHiu3WRls
+	 HBWQdkT9SbqKbBNwG49aWTtWOLpiOgPDBPSinuWPD4zwBTC6aW3lDoGjMr3SxeGtuF
+	 V7JZ+3LEDgVCGvXa4Abhm5tUodWJnLcP1YjY2XJE=
+Subject: FAILED: patch "[PATCH] drm/i915/edp: don't write to DP_LINK_BW_SET when using rate" failed to apply to 6.1-stable tree
 To: jani.nikula@intel.com,animesh.manna@intel.com,uma.shankar@intel.com,ville.syrjala@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Dec 2023 08:19:41 +0100
-Message-ID: <2023121841-backspin-troubling-44cf@gregkh>
+Date: Mon, 18 Dec 2023 08:19:42 +0100
+Message-ID: <2023121842-qualm-bootie-5c96@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,42 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e6861d8264cd43c5eb20196e53df36fd71ec5698
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121841-backspin-troubling-44cf@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121842-qualm-bootie-5c96@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 e6861d8264cd ("drm/i915/edp: don't write to DP_LINK_BW_SET when using rate select")
 3072a24c778a ("drm/i915: Introduce crtc_state->enhanced_framing")
 3dfeb80b3088 ("drm/i915: Fix FEC state dump")
+f60500f31e99 ("drm/i915/display/dp: 128/132b LT requirement")
+23ef61946374 ("drm/i915/mtl/display: Implement DisplayPort sequences")
+51390cc0e00a ("drm/i915/mtl: Add Support for C10 PHY message bus and pll programming")
+a42e65f33c38 ("drm/i915/mtl: Create separate reg file for PICA registers")
+99cfbed19d06 ("drm/i915/vrr: Relocate VRR enable/disable")
+ecaeecea9263 ("drm/i915/vrr: Tell intel_crtc_update_active_timings() about VRR explicitly")
+fa9e4fce52ec ("drm/i915/vrr: Make delayed vblank operational in VRR mode on adl/dg2")
+b25e07419fee ("drm/i915/vrr: Eliminate redundant function arguments")
+6a9856075563 ("drm/i915: Generalize planes_{enabling,disabling}()")
+57b5482bff9e ("drm/i915: Introduce intel_csc_matrix struct")
+c5de248484af ("drm/i915/dpt: Add a modparam to disable DPT via the chicken bit")
+5a08585d38d6 ("drm/i915: Add PLANE_CHICKEN registers")
+1a324a40b452 ("i915/display/dp: SDP CRC16 for 128b132b link layer")
+b5202a93cd37 ("drm/i915: Extract intel_crtc_scanline_offset()")
+84f4ebe8c1ab ("drm/i915: Relocate intel_crtc_update_active_timings()")
+6e8acb6686d8 ("drm/i915: Add belts and suspenders locking for seamless M/N changes")
+8cb1f95cca68 ("drm/i915: Update vblank timestamping stuff on seamless M/N change")
 
 thanks,
 
