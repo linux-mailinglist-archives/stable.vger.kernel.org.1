@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8817281732D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E18817297
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D72B1F236D0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9378B23A03
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD781D144;
-	Mon, 18 Dec 2023 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AE53D54D;
+	Mon, 18 Dec 2023 14:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3y3MNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VffCo3X6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835641D157;
-	Mon, 18 Dec 2023 14:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1D5C433C8;
-	Mon, 18 Dec 2023 14:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1F3787E;
+	Mon, 18 Dec 2023 14:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07547C433C7;
+	Mon, 18 Dec 2023 14:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908861;
-	bh=LQKJ9yJfu68pQSGpPn0EnmC6CnaF2AhasHLCuoaVbHw=;
+	s=korg; t=1702908489;
+	bh=vM3LpWf9Rfre6VQp6EK8VmPGCMi4BGSfz2H4XpENRM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rG3y3MNZbCFHu9FAHBndcr/CKTUwzljQ5pqgha4NPvP8npYGAZ++lD1QZO/yUvmgq
-	 HVrtBGlurGL6oMVCj6rvCAfDtPxZwUtOh+e/06OcVa530rAJOtRAsp9V85un4sJrqD
-	 MEBc+mQEIJOPy+QUsw1VJYLn8pffHBQULEYExflY=
+	b=VffCo3X675wVlKzWs+wixhLLxAf4QwNlu7NkYIP3ExNN3quj9gPCaBiqe3fda8M0Q
+	 r67v/2j5IjvGuMq7+hOvcoCmn7xH342dqwIE4b87OsdaNn9VY2sMXDsx5/+raNd8sg
+	 bDxMZkFvzZaPORaRNUtcgO/7zutfCKRaF2MlKRHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 32/83] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 5.10 29/62] PCI: loongson: Limit MRRS to 256
 Date: Mon, 18 Dec 2023 14:51:53 +0100
-Message-ID: <20231218135051.154319650@linuxfoundation.org>
+Message-ID: <20231218135047.556740924@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +53,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
+commit ef61a0405742a9f7f6051bc6fd2f017d87d07911 upstream.
 
-We need to do signed arithmetic if we expect condition
-`if (bytes < 0)` to be possible
+This is a partial revert of 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS
+increases") for MIPS-based Loongson.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Some MIPS Loongson systems don't support arbitrary Max_Read_Request_Size
+(MRRS) settings.  8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS
+increases") worked around that by (1) assuming that firmware configured
+MRRS to the maximum supported value and (2) preventing the PCI core from
+increasing MRRS.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Unfortunately, some firmware doesn't set that maximum MRRS correctly, which
+results in devices not being initialized correctly.  One symptom, from the
+Debian report below, is this:
+
+  ata4.00: exception Emask 0x0 SAct 0x20000000 SErr 0x0 action 0x6 frozen
+  ata4.00: failed command: WRITE FPDMA QUEUED
+  ata4.00: cmd 61/20:e8:00:f0:e1/00:00:00:00:00/40 tag 29 ncq dma 16384 out
+           res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+  ata4.00: status: { DRDY }
+  ata4: hard resetting link
+
+Limit MRRS to 256 because MIPS Loongson with higher MRRS support is
+considered rare.
+
+This must be done at device enablement stage because the MRRS setting may
+get lost if PCI_COMMAND_MASTER on the parent bridge is cleared, and we are
+only sure parent bridge is enabled at this point.
+
+Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217680
+Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1035587
+Link: https://lore.kernel.org/r/20231201115028.84351-1-jiaxun.yang@flygoat.com
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pci-loongson.c |   46 ++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 5 deletions(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 3a12aee33e92f..00e8b60af0f8f 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -565,7 +565,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 	s64 bytes;
+--- a/drivers/pci/controller/pci-loongson.c
++++ b/drivers/pci/controller/pci-loongson.c
+@@ -65,13 +65,49 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LO
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+ 			DEV_LS7A_LPC, system_bus_quirk);
  
--	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
++/*
++ * Some Loongson PCIe ports have hardware limitations on their Maximum Read
++ * Request Size. They can't handle anything larger than this.  Sane
++ * firmware will set proper MRRS at boot, so we only need no_inc_mrrs for
++ * bridges. However, some MIPS Loongson firmware doesn't set MRRS properly,
++ * so we have to enforce maximum safe MRRS, which is 256 bytes.
++ */
++#ifdef CONFIG_MIPS
++static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
++{
++	struct pci_bus *bus = pdev->bus;
++	struct pci_dev *bridge;
++	static const struct pci_device_id bridge_devids[] = {
++		{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
++		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
++		{ 0, },
++	};
++
++	/* look for the matching bridge */
++	while (!pci_is_root_bus(bus)) {
++		bridge = bus->self;
++		bus = bus->parent;
++
++		if (pci_match_id(bridge_devids, bridge)) {
++			if (pcie_get_readrq(pdev) > 256) {
++				pci_info(pdev, "limiting MRRS to 256\n");
++				pcie_set_readrq(pdev, 256);
++			}
++			break;
++		}
++	}
++}
++DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_set_min_mrrs_quirk);
++#endif
++
+ static void loongson_mrrs_quirk(struct pci_dev *pdev)
+ {
+-	/*
+-	 * Some Loongson PCIe ports have h/w limitations of maximum read
+-	 * request size. They can't handle anything larger than this. So
+-	 * force this limit on any devices attached under these ports.
+-	 */
+ 	struct pci_host_bridge *bridge = pci_find_host_bridge(pdev->bus);
  
--- 
-2.43.0
-
+ 	bridge->no_inc_mrrs = 1;
 
 
 
