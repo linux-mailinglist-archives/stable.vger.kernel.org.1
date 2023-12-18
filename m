@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-7444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1226817296
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3974817258
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 560F2B23B83
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 799341F2394E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D333D57F;
-	Mon, 18 Dec 2023 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809F049884;
+	Mon, 18 Dec 2023 14:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAswZcwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLj3Xxd5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4391D142;
-	Mon, 18 Dec 2023 14:08:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596AC433C7;
-	Mon, 18 Dec 2023 14:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AF642399;
+	Mon, 18 Dec 2023 14:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C374AC433C7;
+	Mon, 18 Dec 2023 14:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908484;
-	bh=9I4TlRa0kCsKz/pFCfCrUtU/DvDvW8mZfhyP61JGr8M=;
+	s=korg; t=1702908353;
+	bh=JHboRZeNvG+HDIWvxLXdjx2gRnN4+QlKLU2V0bgiK7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAswZcwJlTxJAR4tv8RFKCKZehJb8pIHfzwTIQf6Dk6cEqe53Uc6Bn6Dyts3NDCAJ
-	 +1BaIcb/9oSwPgp/n3UVLvOt8Jhdnw8InFHlBtVXXNt3W/o7QqaxkGkG4ejxVWNGOn
-	 wKb05VXgVdox4U/dpi6FEq/6bt8JSLt3IJRWagZw=
+	b=yLj3Xxd5sMz3ES1mOI03D7oBCMVNevxsJrNGDDLNl69BRF1VRoFLB8At9S9Ba1Vy7
+	 EGKtnt32+AutBxC3vt74FfIrUGe/2YzebOm0ASnhOxjbNNr6aLAiSALrcpnr5iI6Zm
+	 JK/6+7iKGTF9mWRu3Sol2EUdvTmzX6nPHes/2OXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hartmut Knaack <knaack.h@gmx.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 27/62] ALSA: hda/realtek: Apply mute LED quirk for HP15-db
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 145/166] btrfs: dont clear qgroup reserved bit in release_folio
 Date: Mon, 18 Dec 2023 14:51:51 +0100
-Message-ID: <20231218135047.460021694@linuxfoundation.org>
+Message-ID: <20231218135111.613446757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hartmut Knaack <knaack.h@gmx.de>
+From: Boris Burkov <boris@bur.io>
 
-commit 9b726bf6ae11add6a7a52883a21f90ff9cbca916 upstream.
+commit a86805504b88f636a6458520d85afdf0634e3c6b upstream.
 
-The HP laptop 15-db0403ng uses the ALC236 codec and controls the mute
-LED using COEF 0x07 index 1.
-Sound card subsystem: Hewlett-Packard Company Device [103c:84ae]
+The EXTENT_QGROUP_RESERVED bit is used to "lock" regions of the file for
+duplicate reservations. That is two writes to that range in one
+transaction shouldn't create two reservations, as the reservation will
+only be freed once when the write finally goes down. Therefore, it is
+never OK to clear that bit without freeing the associated qgroup
+reserve. At this point, we don't want to be freeing the reserve, so mask
+off the bit.
 
-Use the existing quirk for this model.
-
-Signed-off-by: Hartmut Knaack <knaack.h@gmx.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/e61815d0-f1c7-b164-e49d-6ca84771476a@gmx.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/extent_io.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8986,6 +8986,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
-+	SND_PCI_QUIRK(0x103c, 0x84ae, "HP 15-db0403ng", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x84da, "HP OMEN dc0019-ur", ALC295_FIXUP_HP_OMEN),
- 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
- 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2303,7 +2303,8 @@ static int try_release_extent_state(stru
+ 		ret = 0;
+ 	} else {
+ 		u32 clear_bits = ~(EXTENT_LOCKED | EXTENT_NODATASUM |
+-				   EXTENT_DELALLOC_NEW | EXTENT_CTLBITS);
++				   EXTENT_DELALLOC_NEW | EXTENT_CTLBITS |
++				   EXTENT_QGROUP_RESERVED);
+ 
+ 		/*
+ 		 * At this point we can safely clear everything except the
 
 
 
