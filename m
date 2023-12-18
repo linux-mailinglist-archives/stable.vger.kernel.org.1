@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33438816741
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:18:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD92E816740
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDD3B1F22403
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:18:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAEF91C20A46
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A04B79D9;
-	Mon, 18 Dec 2023 07:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6599879E2;
+	Mon, 18 Dec 2023 07:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1KwRtGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ilnb7Gw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E989679D2
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AB6C433C7;
-	Mon, 18 Dec 2023 07:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDA579D7
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:18:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51996C433C7;
+	Mon, 18 Dec 2023 07:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702883928;
-	bh=TDF/5x2yxSPzcQWIiXm8uPU3pq0eZmx/KiAasZvp5SQ=;
+	s=korg; t=1702883919;
+	bh=jPFwM/ZNmBltOqmqhDzgdC0W8TuZeRFOa3gX6Wnf9j0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=b1KwRtGiGcuUslCqdwvA1Jcv1PitHKJo38xziDbDG6EzGx+b8rck+OmhrjYlAayiU
-	 Q4GrxBJS1g9xzY72tUcZ/rUR3pUuT7IrAUoed/zys1GO/s64G8FZc6R5geerh6f02U
-	 eLb8XBuigOKeOi3BgCayqPSJgRxL92I3LppDUyHQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fix hw rotated modes when PSR-SU is enabled" failed to apply to 6.1-stable tree
+	b=Ilnb7Gw7CoJkh7r+nPc/AgCoNYjgVj2We4dSAff6pksRpfHMA976kHPEruz1gLHTN
+	 UTeuNH3rZKu6CGzPlJOy5JVXNKzGDchWYYMgkajhWWHMJDPjhhb82jEGZYDcMvh2F6
+	 WbywAvfN8HlP1R0QyxZRFJpqmdYuxP30v7BEhrSE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: fix hw rotated modes when PSR-SU is enabled" failed to apply to 6.6-stable tree
 To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,binli@gnome.org,kai.heng.feng@canonical.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 18 Dec 2023 08:18:37 +0100
-Message-ID: <2023121837-coconut-national-ec7b@gregkh>
+Message-ID: <2023121836-mushy-duress-df24@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x f528ee145bd0076cd0ed7e7b2d435893e6329e98
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121837-coconut-national-ec7b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121836-mushy-duress-df24@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 f528ee145bd0 ("drm/amd/display: fix hw rotated modes when PSR-SU is enabled")
-30ebe41582d1 ("drm/amd/display: add FB_DAMAGE_CLIPS support")
 
 thanks,
 
