@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5C1817201
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF030817135
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5326B233E9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67960281FAE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34F04239A;
-	Mon, 18 Dec 2023 14:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7765129EFE;
+	Mon, 18 Dec 2023 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Zi+YO1X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K3bP5zoa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8858F4988C;
-	Mon, 18 Dec 2023 14:02:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09F8BC433C7;
-	Mon, 18 Dec 2023 14:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91477129EC8;
+	Mon, 18 Dec 2023 13:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161BDC433C7;
+	Mon, 18 Dec 2023 13:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908144;
-	bh=qLEH8d4xFJQ4x1A754AyiuwNkXmyIqZH/756St9gz9w=;
+	s=korg; t=1702907722;
+	bh=hyEZwe7+HbtP4qHJD2T2KMkUqP04asi9ZZlneR/tla0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Zi+YO1Xfk331jMVlT4NOz00wsuYnEoH4acLn3pk6wi5R9MARiQvkW2qCN7PuUYDm
-	 /g7cN8LlyizDmosFGPPpNvgBdqxh7UY0nxOasX7vNoGP1cHQ5VUUBo9YsrFv8ESzJ9
-	 O9z72BNPpMUFAGVTWsr8vHl/Lmlmt/IBnD64imYM=
+	b=K3bP5zoacesVo/UExWsQiF6eo0bPlZXBXG2ad1B+FUjNRc8bYZl2/9MqdJLUk5nAF
+	 Oh/qFTCAYqcmzWbG6zSqtWrLqAtVHvwsT6iaIcJO1+CA9ClgBBFKRDZG8cPROyYi5Y
+	 GjdhDBSRvznQWE/19q8r7k44AhsZUMtFxkjTz8j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 070/166] ALSA: hda/tas2781: handle missing EFI calibration data
+	Radu Bulie <radu-andrei.bulie@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 022/106] net: fec: correct queue selection
 Date: Mon, 18 Dec 2023 14:50:36 +0100
-Message-ID: <20231218135108.187493198@linuxfoundation.org>
+Message-ID: <20231218135055.890778874@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,58 +54,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Radu Bulie <radu-andrei.bulie@nxp.com>
 
-commit 33071422714a4c9587753b0ccc130ca59323bf42 upstream.
+[ Upstream commit 9fc95fe95c3e2a63ced8eeca4b256518ab204b63 ]
 
-The code does not properly check whether the calibration variable is
-available in the EFI. If it is not available, it causes a NULL pointer
-dereference.
+The old implementation extracted VLAN TCI info from the payload
+before the VLAN tag has been pushed in the payload.
 
-Check the return value of the first get_variable call also.
+Another problem was that the VLAN TCI was extracted even if the
+packet did not have VLAN protocol header.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- ? __die+0x23/0x70
- ? page_fault_oops+0x171/0x4e0
- ? srso_alias_return_thunk+0x5/0x7f
- ? schedule+0x5e/0xd0
- ? exc_page_fault+0x7f/0x180
- ? asm_exc_page_fault+0x26/0x30
- ? crc32_body+0x2c/0x120
- ? tas2781_save_calibration+0xe4/0x220 [snd_hda_scodec_tas2781_i2c]
- tasdev_fw_ready+0x1af/0x280 [snd_hda_scodec_tas2781_i2c]
- request_firmware_work_func+0x59/0xa0
+This resulted in invalid VLAN TCI and as a consequence a random
+queue was computed.
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/f1f6583bda918f78556f67d522ca7b3b91cebbd5.1702251102.git.soyer@irl.hu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fixes the above issues and use the VLAN TCI from the
+skb if it is present or VLAN TCI from payload if present. If no
+VLAN header is present queue 0 is selected.
+
+Fixes: 52c4a1a85f4b ("net: fec: add ndo_select_queue to fix TX bandwidth fluctuations")
+Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 27 +++++++++--------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -455,9 +455,9 @@ static int tas2781_save_calibration(stru
- 		status = efi.get_variable(efi_name, &efi_guid, &attr,
- 			&tas_priv->cali_data.total_sz,
- 			tas_priv->cali_data.data);
--		if (status != EFI_SUCCESS)
--			return -EINVAL;
- 	}
-+	if (status != EFI_SUCCESS)
-+		return -EINVAL;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 33226a22d8a4a..6d1b760022821 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -3541,31 +3541,26 @@ static int fec_set_features(struct net_device *netdev,
+ 	return 0;
+ }
  
- 	tmp_val = (unsigned int *)tas_priv->cali_data.data;
+-static u16 fec_enet_get_raw_vlan_tci(struct sk_buff *skb)
+-{
+-	struct vlan_ethhdr *vhdr;
+-	unsigned short vlan_TCI = 0;
+-
+-	if (skb->protocol == htons(ETH_P_ALL)) {
+-		vhdr = (struct vlan_ethhdr *)(skb->data);
+-		vlan_TCI = ntohs(vhdr->h_vlan_TCI);
+-	}
+-
+-	return vlan_TCI;
+-}
+-
+ static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
+ 				 struct net_device *sb_dev)
+ {
+ 	struct fec_enet_private *fep = netdev_priv(ndev);
+-	u16 vlan_tag;
++	u16 vlan_tag = 0;
  
+ 	if (!(fep->quirks & FEC_QUIRK_HAS_AVB))
+ 		return netdev_pick_tx(ndev, skb, NULL);
+ 
+-	vlan_tag = fec_enet_get_raw_vlan_tci(skb);
+-	if (!vlan_tag)
++	/* VLAN is present in the payload.*/
++	if (eth_type_vlan(skb->protocol)) {
++		struct vlan_ethhdr *vhdr = skb_vlan_eth_hdr(skb);
++
++		vlan_tag = ntohs(vhdr->h_vlan_TCI);
++	/*  VLAN is present in the skb but not yet pushed in the payload.*/
++	} else if (skb_vlan_tag_present(skb)) {
++		vlan_tag = skb->vlan_tci;
++	} else {
+ 		return vlan_tag;
++	}
+ 
+ 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
+ }
+-- 
+2.43.0
+
 
 
 
