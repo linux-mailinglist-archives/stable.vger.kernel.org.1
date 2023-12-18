@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-7490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5041B8172CA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BA5817275
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B885F1F2425E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 886741F24B4E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C126C4FF8A;
-	Mon, 18 Dec 2023 14:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9A15A84C;
+	Mon, 18 Dec 2023 14:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcB/D4hK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWhpKKaH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8449D3A1B0;
-	Mon, 18 Dec 2023 14:10:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C78CC433C7;
-	Mon, 18 Dec 2023 14:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA834FF8F;
+	Mon, 18 Dec 2023 14:06:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A271CC433C8;
+	Mon, 18 Dec 2023 14:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908607;
-	bh=v7uD/vcpkpRvW4sogzYtXj2dp9TE+fvoxIN0GxlIlNo=;
+	s=korg; t=1702908413;
+	bh=uolIH2HGiP60lKPeab0yNq3XViQSYEG0L2DKTIzUqNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcB/D4hKr3jzaPAGxiC6FkakiQ9MonyiZYazBoBjUjr80HVoMzKNl3SO0ouYEIKHP
-	 XXKTi9AUdhwQOoYa8hBqrYCheuDupdZ3L6OQK6/IJArwRZqgc1j/UYvkyybLfvMz7t
-	 aPuPNbEGlumzMBDsa0aw5ogVU9Jd0MZdxDEOpM7E=
+	b=FWhpKKaHxVXtni9hSwldEcJZeE9Kxs0SB3wgy0kbHZDNGThl9nXHU9xtKm6+ONxwg
+	 GIpcQmFfng2gAXfk7iw/nDRIbsPpyXkn8NaS9tHSkQWzk+pkJ0bJTFfnADAhJfr3Dp
+	 OvR+fHFx3CLv7XP6mjUtsQZeWhDDJ2f7l9Qfmv28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bill MacAllister <bill@ca-zephyr.org>,
-	Jeffrey E Altman <jaltman@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 01/40] afs: Fix refcount underflow from error handling race
+	Imre Deak <imre.deak@intel.com>,
+	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 150/166] drm/i915: Fix ADL+ tiled plane stride when the POT stride is smaller than the original
 Date: Mon, 18 Dec 2023 14:51:56 +0100
-Message-ID: <20231218135042.810886019@linuxfoundation.org>
+Message-ID: <20231218135111.830849686@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,153 +52,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 52bf9f6c09fca8c74388cd41cc24e5d1bff812a9 ]
+commit 324b70e997aab0a7deab8cb90711faccda4e98c8 upstream.
 
-If an AFS cell that has an unreachable (eg. ENETUNREACH) server listed (VL
-server or fileserver), an asynchronous probe to one of its addresses may
-fail immediately because sendmsg() returns an error.  When this happens, a
-refcount underflow can happen if certain events hit a very small window.
+plane_view_scanout_stride() currently assumes that we had to pad the
+mapping stride with dummy pages in order to align it. But that is not
+the case if the original fb stride exceeds the aligned stride used
+to populate the remapped view, which is calculated from the user
+specified framebuffer width rather than the user specified framebuffer
+stride.
 
-The way this occurs is:
+Ignore the original fb stride in this case and just stick to the POT
+aligned stride. Getting this wrong will cause the plane to fetch the
+wrong data, and can lead to fault errors if the page tables at the
+bogus location aren't even populated.
 
- (1) There are two levels of "call" object, the afs_call and the
-     rxrpc_call.  Each of them can be transitioned to a "completed" state
-     in the event of success or failure.
+TODO: figure out if this is OK for CCS, or if we should instead increase
+the width of the view to cover the entire user specified fb stride
+instead...
 
- (2) Asynchronous afs_calls are self-referential whilst they are active to
-     prevent them from evaporating when they're not being processed.  This
-     reference is disposed of when the afs_call is completed.
-
-     Note that an afs_call may only be completed once; once completed
-     completing it again will do nothing.
-
- (3) When a call transmission is made, the app-side rxrpc code queues a Tx
-     buffer for the rxrpc I/O thread to transmit.  The I/O thread invokes
-     sendmsg() to transmit it - and in the case of failure, it transitions
-     the rxrpc_call to the completed state.
-
- (4) When an rxrpc_call is completed, the app layer is notified.  In this
-     case, the app is kafs and it schedules a work item to process events
-     pertaining to an afs_call.
-
- (5) When the afs_call event processor is run, it goes down through the
-     RPC-specific handler to afs_extract_data() to retrieve data from rxrpc
-     - and, in this case, it picks up the error from the rxrpc_call and
-     returns it.
-
-     The error is then propagated to the afs_call and that is completed
-     too.  At this point the self-reference is released.
-
- (6) If the rxrpc I/O thread manages to complete the rxrpc_call within the
-     window between rxrpc_send_data() queuing the request packet and
-     checking for call completion on the way out, then
-     rxrpc_kernel_send_data() will return the error from sendmsg() to the
-     app.
-
- (7) Then afs_make_call() will see an error and will jump to the error
-     handling path which will attempt to clean up the afs_call.
-
- (8) The problem comes when the error handling path in afs_make_call()
-     tries to unconditionally drop an async afs_call's self-reference.
-     This self-reference, however, may already have been dropped by
-     afs_extract_data() completing the afs_call
-
- (9) The refcount underflows when we return to afs_do_probe_vlserver() and
-     that tries to drop its reference on the afs_call.
-
-Fix this by making afs_make_call() attempt to complete the afs_call rather
-than unconditionally putting it.  That way, if afs_extract_data() manages
-to complete the call first, afs_make_call() won't do anything.
-
-The bug can be forced by making do_udp_sendmsg() return -ENETUNREACH and
-sticking an msleep() in rxrpc_send_data() after the 'success:' label to
-widen the race window.
-
-The error message looks something like:
-
-    refcount_t: underflow; use-after-free.
-    WARNING: CPU: 3 PID: 720 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
-    ...
-    RIP: 0010:refcount_warn_saturate+0xba/0x110
-    ...
-    afs_put_call+0x1dc/0x1f0 [kafs]
-    afs_fs_get_capabilities+0x8b/0xe0 [kafs]
-    afs_fs_probe_fileserver+0x188/0x1e0 [kafs]
-    afs_lookup_server+0x3bf/0x3f0 [kafs]
-    afs_alloc_server_list+0x130/0x2e0 [kafs]
-    afs_create_volume+0x162/0x400 [kafs]
-    afs_get_tree+0x266/0x410 [kafs]
-    vfs_get_tree+0x25/0xc0
-    fc_mount+0xe/0x40
-    afs_d_automount+0x1b3/0x390 [kafs]
-    __traverse_mounts+0x8f/0x210
-    step_into+0x340/0x760
-    path_openat+0x13a/0x1260
-    do_filp_open+0xaf/0x160
-    do_sys_openat2+0xaf/0x170
-
-or something like:
-
-    refcount_t: underflow; use-after-free.
-    ...
-    RIP: 0010:refcount_warn_saturate+0x99/0xda
-    ...
-    afs_put_call+0x4a/0x175
-    afs_send_vl_probes+0x108/0x172
-    afs_select_vlserver+0xd6/0x311
-    afs_do_cell_detect_alias+0x5e/0x1e9
-    afs_cell_detect_alias+0x44/0x92
-    afs_validate_fc+0x9d/0x134
-    afs_get_tree+0x20/0x2e6
-    vfs_get_tree+0x1d/0xc9
-    fc_mount+0xe/0x33
-    afs_d_automount+0x48/0x9d
-    __traverse_mounts+0xe0/0x166
-    step_into+0x140/0x274
-    open_last_lookups+0x1c1/0x1df
-    path_openat+0x138/0x1c3
-    do_filp_open+0x55/0xb4
-    do_sys_openat2+0x6c/0xb6
-
-Fixes: 34fa47612bfe ("afs: Fix race in async call refcounting")
-Reported-by: Bill MacAllister <bill@ca-zephyr.org>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1052304
-Suggested-by: Jeffrey E Altman <jaltman@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/2633992.1702073229@warthog.procyon.org.uk/ # v1
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231204202443.31247-1-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+(cherry picked from commit 01a39f1c4f1220a4e6a25729fae87ff5794cbc52)
+Cc: stable@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/rxrpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_fb.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
-index 49fcce6529a60..30952f073fb41 100644
---- a/fs/afs/rxrpc.c
-+++ b/fs/afs/rxrpc.c
-@@ -490,7 +490,7 @@ void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
- 	if (call->async) {
- 		if (cancel_work_sync(&call->async_work))
- 			afs_put_call(call);
--		afs_put_call(call);
-+		afs_set_call_complete(call, ret, 0);
- 	}
+--- a/drivers/gpu/drm/i915/display/intel_fb.c
++++ b/drivers/gpu/drm/i915/display/intel_fb.c
+@@ -1370,7 +1370,8 @@ plane_view_scanout_stride(const struct i
+ 	struct drm_i915_private *i915 = to_i915(fb->base.dev);
+ 	unsigned int stride_tiles;
  
- 	ac->error = ret;
--- 
-2.43.0
-
+-	if (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14)
++	if ((IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14) &&
++	    src_stride_tiles < dst_stride_tiles)
+ 		stride_tiles = src_stride_tiles;
+ 	else
+ 		stride_tiles = dst_stride_tiles;
 
 
 
