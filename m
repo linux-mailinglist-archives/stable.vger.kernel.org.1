@@ -1,66 +1,89 @@
-Return-Path: <stable+bounces-6978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7566B816B37
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 11:32:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD22816B44
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 11:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30723282484
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 10:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9411F21B15
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 10:38:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620B614F63;
-	Mon, 18 Dec 2023 10:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0328A156C0;
+	Mon, 18 Dec 2023 10:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRIAklYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c5lkad8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F34F199C4;
-	Mon, 18 Dec 2023 10:31:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14496C433C7;
-	Mon, 18 Dec 2023 10:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C43515E8E;
+	Mon, 18 Dec 2023 10:37:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8454C433C7;
+	Mon, 18 Dec 2023 10:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702895511;
-	bh=lxVWYRHNMIauyDYUXT+4gP3LzQOKn4L8ClRI4XT8nrk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nRIAklYMFSEpLvvwm8jlqx/E5dbxEMBgL2nZ3KAIQuAuiG07P4+MvUJwYQw3iXE6x
-	 53fyEjIzxo+VYXAFpEGLt9WYe0HQgz1lZU+aT/H7JHNAofJoCiM6Hk8Jo8BvDeUbOY
-	 dcdobyFjplTeAPINhAVjvlmL7m/Vu/Ek+bIfT/NM=
-Date: Mon, 18 Dec 2023 11:31:48 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Mark O'Donovan <shiftee@posteo.net>
-Cc: Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org,
-	stable@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>
-Subject: Re: Patch "nvme-auth: unlock mutex in one place only" has been added
- to the 6.1-stable tree
-Message-ID: <2023121822-squiggly-septic-d950@gregkh>
-References: <20231216210540.1038298-1-sashal@kernel.org>
- <bfe2af35-b057-4335-ade9-8b8cf4d9532b@posteo.net>
+	s=korg; t=1702895877;
+	bh=ybyi1d3sA58qzNYwRDx5s0PVDcrLSSPeJQ7tCbKuzaQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=2c5lkad8kACJJJI37g5WeSrgyOFe/2iS/xgadTIM44wC2wEm3V0s1B/ONlsblIJB2
+	 cVkePsv2YI+js31FFg728oqULtItVPowhhMAK42Sk3/zo4dAM1Fr3yVvvPP6yVZysl
+	 LkJ/pOWCalyftakgJNnQNroHnr2OHIe3qTbLCUMg=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steve French <sfrench@samba.org>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH] ksmbd: Mark as BROKEN in the 5.15.y kernel
+Date: Mon, 18 Dec 2023 11:37:42 +0100
+Message-ID: <2023121841-register-nutshell-9d6d@gregkh>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bfe2af35-b057-4335-ade9-8b8cf4d9532b@posteo.net>
+Lines: 32
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1018; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=ybyi1d3sA58qzNYwRDx5s0PVDcrLSSPeJQ7tCbKuzaQ=; b=owGbwMvMwCRo6H6F97bub03G02pJDKkNCt//cFodfccw70tt3t72Kvvcf6vnR8U0V/72OVzqd s0vXfZZRywLgyATg6yYIsuXbTxH91ccUvQytD0NM4eVCWQIAxenAEyks4VhfjKbxM2L5xeK7Zg8 0+rIrejuX9NVLBjm6T6zZYqef3zfpG6tFSXxM1kC3dc6AQA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 
-On Sat, Dec 16, 2023 at 09:33:50PM +0000, Mark O'Donovan wrote:
-> This is wrong. This patch should not be applied to 6.1
+Due to many known bugfixes not being backported properly to the 5.15.y
+kernel tree, the ksmbd code in this branch is just not safe to be used
+at this point in time at all.  So mark it as BROKEN so it will not be
+used.
 
-But 6.6.y is ok?
+This can be changed in the future if all needed backports are made by
+anyone who cares about this code in this stable kernel branch.
 
-Why one and not both?
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Steve French <sfrench@samba.org>
+Cc: Hyunchul Lee <hyc.lee@gmail.com>
+Cc: linux-cifs@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/ksmbd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Actually why is this really needed?  I'll drop it from both trees now...
+diff --git a/fs/ksmbd/Kconfig b/fs/ksmbd/Kconfig
+index 6af339cfdc04..bc8b7fc8894d 100644
+--- a/fs/ksmbd/Kconfig
++++ b/fs/ksmbd/Kconfig
+@@ -3,6 +3,7 @@ config SMB_SERVER
+ 	depends on INET
+ 	depends on MULTIUSER
+ 	depends on FILE_LOCKING
++	depends on BROKEN
+ 	select NLS
+ 	select NLS_UTF8
+ 	select CRYPTO
+-- 
+2.43.0
 
-thanks,
-
-greg k-h
 
