@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19F38172E3
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0745281735C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:17:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 816312889AD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2F482896D8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5AF1D136;
-	Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E903A1BC;
+	Mon, 18 Dec 2023 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmnWw/M4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Op85hASJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135E91D14F;
-	Mon, 18 Dec 2023 14:11:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DCA1C433C7;
-	Mon, 18 Dec 2023 14:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAC43A1B2;
+	Mon, 18 Dec 2023 14:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF48C433C7;
+	Mon, 18 Dec 2023 14:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908672;
-	bh=0TJ8fAu5e8DBeJFHjNKSaJaKSE3125SsKhdpVkpFMTc=;
+	s=korg; t=1702908945;
+	bh=0wdJhzvpPRl5/zXBa3lTC7Z+/Vln0My8deBFQMCamXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmnWw/M405OKwsEgQblDiImlbpOrvetLroM2fXJjeGYaTgsZNVdfCGQXkFvBvka+N
-	 n4USRk8eyt5vjcTp1SewJjjCuQkSS2RiO7/m5QveO13MPpkGDdvM0onXYMDGVg3xiC
-	 GMtmAsSmDSRDYkhsMFB49NSl/Sz9QLfyAXIi9Xbw=
+	b=Op85hASJaE6/9I4h7rTO1bw9j9+kc/tcI4DjJcINywcKZbmfAXsHuRejEgLzPq2Rt
+	 fYbqVexsBCm1IksgaQBcus/jeZK+HYwmKOlhh0Gr58D66yKeFOcTtzSWIeUIEHE5Cw
+	 +mOjVEUGHdKCF42wOKGxWM/HwTpC0maHoBzrJmi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.4 32/40] perf: Fix perf_event_validate_size() lockdep splat
-Date: Mon, 18 Dec 2023 14:52:27 +0100
-Message-ID: <20231218135043.959659230@linuxfoundation.org>
+	Florent Revest <revest@chromium.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 67/83] team: Fix use-after-free when an option instance allocation fails
+Date: Mon, 18 Dec 2023 14:52:28 +0100
+Message-ID: <20231218135052.697431569@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Florent Revest <revest@chromium.org>
 
-commit 7e2c1e4b34f07d9aa8937fab88359d4a0fce468e upstream.
+commit c12296bbecc488623b7d1932080e394d08f3226b upstream.
 
-When lockdep is enabled, the for_each_sibling_event(sibling, event)
-macro checks that event->ctx->mutex is held. When creating a new group
-leader event, we call perf_event_validate_size() on a partially
-initialized event where event->ctx is NULL, and so when
-for_each_sibling_event() attempts to check event->ctx->mutex, we get a
-splat, as reported by Lucas De Marchi:
+In __team_options_register, team_options are allocated and appended to
+the team's option_list.
+If one option instance allocation fails, the "inst_rollback" cleanup
+path frees the previously allocated options but doesn't remove them from
+the team's option_list.
+This leaves dangling pointers that can be dereferenced later by other
+parts of the team driver that iterate over options.
 
-  WARNING: CPU: 8 PID: 1471 at kernel/events/core.c:1950 __do_sys_perf_event_open+0xf37/0x1080
+This patch fixes the cleanup path to remove the dangling pointers from
+the list.
 
-This only happens for a new event which is its own group_leader, and in
-this case there cannot be any sibling events. Thus it's safe to skip the
-check for siblings, which avoids having to make invasive and ugly
-changes to for_each_sibling_event().
+As far as I can tell, this uaf doesn't have much security implications
+since it would be fairly hard to exploit (an attacker would need to make
+the allocation of that specific small object fail) but it's still nice
+to fix.
 
-Avoid the splat by bailing out early when the new event is its own
-group_leader.
-
-Fixes: 382c27f4ed28f803 ("perf: Fix perf_event_validate_size()")
-Closes: https://lore.kernel.org/lkml/20231214000620.3081018-1-lucas.demarchi@intel.com/
-Closes: https://lore.kernel.org/lkml/ZXpm6gQ%2Fd59jGsuW@xpf.sh.intel.com/
-Reported-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231215112450.3972309-1-mark.rutland@arm.com
+Cc: stable@vger.kernel.org
+Fixes: 80f7c6683fe0 ("team: add support for per-port options")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231206123719.1963153-1-revest@chromium.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/team/team.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1835,6 +1835,16 @@ static bool perf_event_validate_size(str
- 				   group_leader->nr_siblings + 1) > 16*1024)
- 		return false;
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -285,8 +285,10 @@ static int __team_options_register(struc
+ 	return 0;
  
-+	/*
-+	 * When creating a new group leader, group_leader->ctx is initialized
-+	 * after the size has been validated, but we cannot safely use
-+	 * for_each_sibling_event() until group_leader->ctx is set. A new group
-+	 * leader cannot have any siblings yet, so we can safely skip checking
-+	 * the non-existent siblings.
-+	 */
-+	if (event == group_leader)
-+		return true;
-+
- 	for_each_sibling_event(sibling, group_leader) {
- 		if (__perf_event_read_size(sibling->attr.read_format,
- 					   group_leader->nr_siblings + 1) > 16*1024)
+ inst_rollback:
+-	for (i--; i >= 0; i--)
++	for (i--; i >= 0; i--) {
+ 		__team_option_inst_del_option(team, dst_opts[i]);
++		list_del(&dst_opts[i]->list);
++	}
+ 
+ 	i = option_count;
+ alloc_rollback:
 
 
 
