@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A478170F6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDB581722D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9F81F2301E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D83B280611
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F8415AC0;
-	Mon, 18 Dec 2023 13:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A705D740;
+	Mon, 18 Dec 2023 14:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fS4/qcww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGPMT5XY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C103C129EF7;
-	Mon, 18 Dec 2023 13:52:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B40C433C8;
-	Mon, 18 Dec 2023 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AF85BFBE;
+	Mon, 18 Dec 2023 14:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3F7C433CD;
+	Mon, 18 Dec 2023 14:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907572;
-	bh=kplAT9pAQPUsnLJWXUpnEDFxOUe4SGdYBftxCm5Ws8I=;
+	s=korg; t=1702908242;
+	bh=KQZzmAwb1+LDnObROPfRfVJuif9LlwqkSsMPi+NTaUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fS4/qcwwAsRhSW0H5RkFYYc64m92M8D7NnA0uvq1ch8FuShMNMRY2sYFerSxuTdsj
-	 sYJ8xs2fMmrlVGid5No5wTu/lScCock98TmOoRW7BzLQ0k0eG/uysqmT0YVOCbkKuw
-	 jpg1DiPDhRiD2IdkKAT31Ah7OiiVkJu91B8+vkVo=
+	b=GGPMT5XYbo9Z0Bpo5r0tjwph7EdTTZHQgJ5FbcdGIAIiQOiPYUxENOBeh32KFjTGY
+	 ZB6PCP9bLjjBcgBMNrCC7tgF1DUj4HYUKn44zB6mqYSHej1lEufh3qbc0g0EFEjNFG
+	 1nJN/aerzj0anbU2yP3ldyb6acuaP1VGb3nDo5t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	WANG Xuerui <git@xen0n.name>,
+	Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 01/36] qca_debug: Prevent crash on TX ring changes
+Subject: [PATCH 6.6 105/166] LoongArch: Implement constant timer shutdown interface
 Date: Mon, 18 Dec 2023 14:51:11 +0100
-Message-ID: <20231218135041.940809063@linuxfoundation.org>
+Message-ID: <20231218135109.715986205@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,88 +54,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
+[ Upstream commit d43f37b73468c172bc89ac4824a1511b411f0778 ]
 
-The qca_spi driver stop and restart the SPI kernel thread
-(via ndo_stop & ndo_open) in case of TX ring changes. This is
-a big issue because it allows userspace to prevent restart of
-the SPI kernel thread (via signals). A subsequent change of
-TX ring wrongly assume a valid spi_thread pointer which result
-in a crash.
+When a cpu is hot-unplugged, it is put in idle state and the function
+arch_cpu_idle_dead() is called. The timer interrupt for this processor
+should be disabled, otherwise there will be pending timer interrupt for
+the unplugged cpu, so that vcpu is prevented from giving up scheduling
+when system is running in vm mode.
 
-So prevent this by stopping the network traffic handling and
-temporary park the SPI thread.
+This patch implements the timer shutdown interface so that the constant
+timer will be properly disabled when a CPU is hot-unplugged.
 
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: WANG Xuerui <git@xen0n.name>
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
- drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ arch/loongarch/kernel/time.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 51d89c86e60f5..26b0ca7a7b43d 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -275,7 +275,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- static int
- qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct qcaspi *qca = netdev_priv(dev);
- 
- 	if ((ring->rx_pending) ||
-@@ -283,14 +282,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
- 
--	if (netif_running(dev))
--		ops->ndo_stop(dev);
-+	if (qca->spi_thread)
-+		kthread_park(qca->spi_thread);
- 
- 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
- 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
- 
--	if (netif_running(dev))
--		ops->ndo_open(dev);
-+	if (qca->spi_thread)
-+		kthread_unpark(qca->spi_thread);
- 
+diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.c
+index 3064af94db9c2..e7015f7b70e37 100644
+--- a/arch/loongarch/kernel/time.c
++++ b/arch/loongarch/kernel/time.c
+@@ -58,14 +58,16 @@ static int constant_set_state_oneshot(struct clock_event_device *evt)
  	return 0;
  }
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index 3e6095f0cb5f5..656e2955fb792 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -552,6 +552,18 @@ qcaspi_spi_thread(void *data)
- 	netdev_info(qca->net_dev, "SPI thread created\n");
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
-+		if (kthread_should_park()) {
-+			netif_tx_disable(qca->net_dev);
-+			netif_carrier_off(qca->net_dev);
-+			qcaspi_flush_tx_ring(qca);
-+			kthread_parkme();
-+			if (qca->sync == QCASPI_SYNC_READY) {
-+				netif_carrier_on(qca->net_dev);
-+				netif_wake_queue(qca->net_dev);
-+			}
-+			continue;
-+		}
-+
- 		if ((qca->intr_req == qca->intr_svc) &&
- 		    !qca->txr.skb[qca->txr.head])
- 			schedule();
+ 
+-static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
++static int constant_set_state_periodic(struct clock_event_device *evt)
+ {
++	unsigned long period;
+ 	unsigned long timer_config;
+ 
+ 	raw_spin_lock(&state_lock);
+ 
+-	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
+-	timer_config &= ~CSR_TCFG_EN;
++	period = const_clock_freq / HZ;
++	timer_config = period & CSR_TCFG_VAL;
++	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
+ 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
+ 
+ 	raw_spin_unlock(&state_lock);
+@@ -73,16 +75,14 @@ static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
+ 	return 0;
+ }
+ 
+-static int constant_set_state_periodic(struct clock_event_device *evt)
++static int constant_set_state_shutdown(struct clock_event_device *evt)
+ {
+-	unsigned long period;
+ 	unsigned long timer_config;
+ 
+ 	raw_spin_lock(&state_lock);
+ 
+-	period = const_clock_freq / HZ;
+-	timer_config = period & CSR_TCFG_VAL;
+-	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
++	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
++	timer_config &= ~CSR_TCFG_EN;
+ 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
+ 
+ 	raw_spin_unlock(&state_lock);
+@@ -90,11 +90,6 @@ static int constant_set_state_periodic(struct clock_event_device *evt)
+ 	return 0;
+ }
+ 
+-static int constant_set_state_shutdown(struct clock_event_device *evt)
+-{
+-	return 0;
+-}
+-
+ static int constant_timer_next_event(unsigned long delta, struct clock_event_device *evt)
+ {
+ 	unsigned long timer_config;
+@@ -161,7 +156,7 @@ int constant_clockevent_init(void)
+ 	cd->rating = 320;
+ 	cd->cpumask = cpumask_of(cpu);
+ 	cd->set_state_oneshot = constant_set_state_oneshot;
+-	cd->set_state_oneshot_stopped = constant_set_state_oneshot_stopped;
++	cd->set_state_oneshot_stopped = constant_set_state_shutdown;
+ 	cd->set_state_periodic = constant_set_state_periodic;
+ 	cd->set_state_shutdown = constant_set_state_shutdown;
+ 	cd->set_next_event = constant_timer_next_event;
 -- 
 2.43.0
 
