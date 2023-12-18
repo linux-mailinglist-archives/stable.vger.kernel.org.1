@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB89C817150
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6DA817220
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8041F283471
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E41B281D9F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450401D122;
-	Mon, 18 Dec 2023 13:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71CD22091;
+	Mon, 18 Dec 2023 14:03:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW4nyTQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BaC0THLc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B3129EE3;
-	Mon, 18 Dec 2023 13:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82854C433C8;
-	Mon, 18 Dec 2023 13:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3D5BF8F;
+	Mon, 18 Dec 2023 14:03:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332DC433C7;
+	Mon, 18 Dec 2023 14:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907785;
-	bh=BJb+1tQLhFxzG+AV8epkR+8bWKl/GavNtyZSFd8Vp8M=;
+	s=korg; t=1702908210;
+	bh=AzMo496lPGkgqUaGpXdqRW9BUkAQE2dWDuKKpkZqSj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LW4nyTQnSXR3wXOz4HA4/tbiai+aipfYC+TZVzXW/cpIk0zec10y5UAm8cCd7TdCY
-	 h8J7SOh7RlKmt78WjhTTuamG8sn3PzDZ47w9NoEms87HkkfepZcgTomizw2QkUH0l4
-	 3tT1fhA8dICX89jyBconcDhMoES86rdSMt1LaQuQ=
+	b=BaC0THLcBHfHsSWgFp35eCK6mKXTGxfNWYDotaeCvuemkTE7oYg5XxRzY9y/SP77H
+	 OAtPBNNVBohK6E2RCzIdA076RjytBxX8gQcyKbEDQXf+K6JF19h2VrJZfuazkVvIDX
+	 PCBGlEXoia58L86GT6n+KIjjE7SaP2Fg9NJZgBMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Saarinen <jani.saarinen@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 046/106] ALSA: hda/hdmi: add force-connect quirks for ASUSTeK Z170 variants
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/166] bcache: avoid NULL checking to c->root in run_cache_set()
 Date: Mon, 18 Dec 2023 14:51:00 +0100
-Message-ID: <20231218135056.992044475@linuxfoundation.org>
+Message-ID: <20231218135109.199908863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +51,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: Coly Li <colyli@suse.de>
 
-commit 924f5ca2975b2993ee81a7ecc3c809943a70f334 upstream.
+[ Upstream commit 3eba5e0b2422aec3c9e79822029599961fdcab97 ]
 
-On ASUSTeK Z170M PLUS and Z170 PRO GAMING systems, the display codec
-pins are not registered properly without the force-connect quirk. The
-codec will report only one pin as having external connectivity, but i915
-finds all three connectors on the system, so the two drivers are not
-in sync.
+In run_cache_set() after c->root returned from bch_btree_node_get(), it
+is checked by IS_ERR_OR_NULL(). Indeed it is unncessary to check NULL
+because bch_btree_node_get() will not return NULL pointer to caller.
 
-Issue found with DRM igt-gpu-tools test kms_hdmi_inject@inject-audio.
+This patch replaces IS_ERR_OR_NULL() by IS_ERR() for the above reason.
 
-Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9801
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Saarinen <jani.saarinen@intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231208132127.2438067-3-kai.vehmanen@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-11-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/bcache/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1993,6 +1993,8 @@ static const struct snd_pci_quirk force_
- 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
- 	SND_PCI_QUIRK(0x103c, 0x8715, "HP", 1),
-+	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
-+	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
- 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 93791e46b1e8f..1e677af385211 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -2017,7 +2017,7 @@ static int run_cache_set(struct cache_set *c)
+ 		c->root = bch_btree_node_get(c, NULL, k,
+ 					     j->btree_level,
+ 					     true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
+ 
+ 		list_del_init(&c->root->list);
+-- 
+2.43.0
+
 
 
 
