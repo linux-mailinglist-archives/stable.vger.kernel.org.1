@@ -1,178 +1,206 @@
-Return-Path: <stable+bounces-7344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95221817223
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C044D8170DA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 292B9B2122E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1281F23220
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BA65D749;
-	Mon, 18 Dec 2023 14:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6966C1D13A;
+	Mon, 18 Dec 2023 13:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5aqOYka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3DtA0nl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272205BF93;
-	Mon, 18 Dec 2023 14:03:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBDEC433C8;
-	Mon, 18 Dec 2023 14:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213431D12F;
+	Mon, 18 Dec 2023 13:51:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA44C433C8;
+	Mon, 18 Dec 2023 13:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908215;
-	bh=9eJPL2MXahTBbDNdFu/M6mOym9ESaVttYbGH/FADmds=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V5aqOYkamgjB/kR6IVZAEDJk+uiSM3N+xxgQltML6WOpuWP/5cUYywwO+zXsaVfB1
-	 SnaMNKDlgAAzhm7pNh4T/KAPmPhD7H1rvLUwwgd+mQShCCCt3lGjhJCVvYTIyD+SkN
-	 b9G8JgNCbdfnKCTjjv5Pw7fp+w+qmH4j0A0/HkDA=
+	s=korg; t=1702907495;
+	bh=eZKmGMJ7sIrZOFHe3BiyHmtwQb8aCdsQ155Btda4VcU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=J3DtA0nlwasLFxiVBY8KXWrSQwRb/VXkOf+RjrNe1dwDm0478d4CoW4oxbLvCvkSd
+	 H2wEfhKrxOClIKOxiPfy7LsDqgh5kX0MV1vg54cKXHAcF7Jl64Vwgy5/D1vYG5eZKG
+	 JxGLGmeBCt3e4x2cVyiqnK7jslpsO9bBWbKCuxAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/166] nbd: factor out a helper to get nbd_config without holding config_lock
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: [PATCH 4.14 00/26] 4.14.334-rc1 review
 Date: Mon, 18 Dec 2023 14:51:02 +0100
-Message-ID: <20231218135109.273368156@linuxfoundation.org>
+Message-ID: <20231218135040.665690087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.334-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-4.14.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 4.14.334-rc1
+X-KernelTest-Deadline: 2023-12-20T13:50+00:00
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 4.14.334 release.
+There are 26 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
+Anything received after that time might be too late.
 
-From: Li Nan <linan122@huawei.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.334-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+and the diffstat can be found below.
 
-[ Upstream commit 3123ac77923341774ca3ad1196ad20bb0732bf70 ]
+thanks,
 
-There are no functional changes, just to make code cleaner and prepare
-to fix null-ptr-dereference while accessing 'nbd->config'.
+greg k-h
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://lore.kernel.org/r/20231116162316.1740402-3-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/block/nbd.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 02f844832d912..daaf8805e876c 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -395,6 +395,14 @@ static u32 req_to_nbd_cmd_type(struct request *req)
- 	}
- }
- 
-+static struct nbd_config *nbd_get_config_unlocked(struct nbd_device *nbd)
-+{
-+	if (refcount_inc_not_zero(&nbd->config_refs))
-+		return nbd->config;
-+
-+	return NULL;
-+}
-+
- static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req)
- {
- 	struct nbd_cmd *cmd = blk_mq_rq_to_pdu(req);
-@@ -409,13 +417,13 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req)
- 		return BLK_EH_DONE;
- 	}
- 
--	if (!refcount_inc_not_zero(&nbd->config_refs)) {
-+	config = nbd_get_config_unlocked(nbd);
-+	if (!config) {
- 		cmd->status = BLK_STS_TIMEOUT;
- 		__clear_bit(NBD_CMD_INFLIGHT, &cmd->flags);
- 		mutex_unlock(&cmd->lock);
- 		goto done;
- 	}
--	config = nbd->config;
- 
- 	if (config->num_connections > 1 ||
- 	    (config->num_connections == 1 && nbd->tag_set.timeout)) {
-@@ -977,12 +985,12 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
- 	struct nbd_sock *nsock;
- 	int ret;
- 
--	if (!refcount_inc_not_zero(&nbd->config_refs)) {
-+	config = nbd_get_config_unlocked(nbd);
-+	if (!config) {
- 		dev_err_ratelimited(disk_to_dev(nbd->disk),
- 				    "Socks array is empty\n");
- 		return -EINVAL;
- 	}
--	config = nbd->config;
- 
- 	if (index >= config->num_connections) {
- 		dev_err_ratelimited(disk_to_dev(nbd->disk),
-@@ -1560,6 +1568,7 @@ static int nbd_alloc_and_init_config(struct nbd_device *nbd)
- static int nbd_open(struct gendisk *disk, blk_mode_t mode)
- {
- 	struct nbd_device *nbd;
-+	struct nbd_config *config;
- 	int ret = 0;
- 
- 	mutex_lock(&nbd_index_mutex);
-@@ -1572,7 +1581,9 @@ static int nbd_open(struct gendisk *disk, blk_mode_t mode)
- 		ret = -ENXIO;
- 		goto out;
- 	}
--	if (!refcount_inc_not_zero(&nbd->config_refs)) {
-+
-+	config = nbd_get_config_unlocked(nbd);
-+	if (!config) {
- 		mutex_lock(&nbd->config_lock);
- 		if (refcount_inc_not_zero(&nbd->config_refs)) {
- 			mutex_unlock(&nbd->config_lock);
-@@ -1588,7 +1599,7 @@ static int nbd_open(struct gendisk *disk, blk_mode_t mode)
- 		mutex_unlock(&nbd->config_lock);
- 		if (max_part)
- 			set_bit(GD_NEED_PART_SCAN, &disk->state);
--	} else if (nbd_disconnected(nbd->config)) {
-+	} else if (nbd_disconnected(config)) {
- 		if (max_part)
- 			set_bit(GD_NEED_PART_SCAN, &disk->state);
- 	}
-@@ -2205,7 +2216,8 @@ static int nbd_genl_reconfigure(struct sk_buff *skb, struct genl_info *info)
- 	}
- 	mutex_unlock(&nbd_index_mutex);
- 
--	if (!refcount_inc_not_zero(&nbd->config_refs)) {
-+	config = nbd_get_config_unlocked(nbd);
-+	if (!config) {
- 		dev_err(nbd_to_dev(nbd),
- 			"not configured, cannot reconfigure\n");
- 		nbd_put(nbd);
-@@ -2213,7 +2225,6 @@ static int nbd_genl_reconfigure(struct sk_buff *skb, struct genl_info *info)
- 	}
- 
- 	mutex_lock(&nbd->config_lock);
--	config = nbd->config;
- 	if (!test_bit(NBD_RT_BOUND, &config->runtime_flags) ||
- 	    !nbd->pid) {
- 		dev_err(nbd_to_dev(nbd),
--- 
-2.43.0
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 4.14.334-rc1
 
+Naveen N Rao <naveen@kernel.org>
+    powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+
+Naveen N Rao <naveen@kernel.org>
+    powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    ring-buffer: Fix memory leak of free page
+
+Florent Revest <revest@chromium.org>
+    team: Fix use-after-free when an option instance allocation fails
+
+Baokun Li <libaokun1@huawei.com>
+    ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+
+Denis Benato <benato.denis96@gmail.com>
+    HID: hid-asus: add const to read-only outgoing usb buffer
+
+Lech Perczak <lech.perczak@gmail.com>
+    net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+
+Aoba K <nexp_0x17@outlook.com>
+    HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
+
+Denis Benato <benato.denis96@gmail.com>
+    HID: hid-asus: reset the backlight brightness level on resume
+
+Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    platform/x86: intel_telemetry: Fix kernel doc descriptions
+
+Coly Li <colyli@suse.de>
+    bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+
+Ming Lei <ming.lei@redhat.com>
+    blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+
+Jens Axboe <axboe@kernel.dk>
+    cred: switch to using atomic_long_t
+
+Hyunwoo Kim <v4bel@theori.io>
+    appletalk: Fix Use-After-Free in atalk_ioctl
+
+Nikolay Kuratov <kniv@yandex-team.ru>
+    vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+
+Yusong Gao <a869920004@gmail.com>
+    sign-file: Fix incorrect return values check
+
+Dong Chenchen <dongchenchen2@huawei.com>
+    net: Remove acked SYN flag from packet in the transmit queue correctly
+
+Dinghao Liu <dinghao.liu@zju.edu.cn>
+    qed: Fix a potential use-after-free in qed_cxt_tables_alloc
+
+Hyunwoo Kim <v4bel@theori.io>
+    net/rose: Fix Use-After-Free in rose_ioctl
+
+Hyunwoo Kim <v4bel@theori.io>
+    atm: Fix Use-After-Free in do_vcc_ioctl
+
+Chengfeng Ye <dg573847474@gmail.com>
+    atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+
+Chengfeng Ye <dg573847474@gmail.com>
+    atm: solos-pci: Fix potential deadlock on &cli_queue_lock
+
+Stefan Wahren <wahrenst@gmx.net>
+    qca_spi: Fix reset behavior
+
+Stefan Wahren <wahrenst@gmx.net>
+    qca_debug: Fix ethtool -G iface tx behavior
+
+Stefan Wahren <wahrenst@gmx.net>
+    qca_debug: Prevent crash on TX ring changes
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                       |  4 +-
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S |  9 +++-
+ block/blk-throttle.c                           |  2 +
+ drivers/atm/solos-pci.c                        |  8 ++--
+ drivers/hid/hid-asus.c                         | 25 ++++++++--
+ drivers/hid/hid-multitouch.c                   |  5 ++
+ drivers/md/bcache/btree.c                      |  7 +++
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c      |  1 +
+ drivers/net/ethernet/qualcomm/qca_debug.c      | 17 +++----
+ drivers/net/ethernet/qualcomm/qca_spi.c        | 20 +++++++-
+ drivers/net/team/team.c                        |  4 +-
+ drivers/net/usb/qmi_wwan.c                     |  1 +
+ drivers/platform/x86/intel_telemetry_core.c    |  4 +-
+ fs/ext4/mballoc.c                              |  4 ++
+ include/asm-generic/qspinlock.h                |  2 +-
+ include/linux/cred.h                           |  6 +--
+ kernel/cred.c                                  | 66 +++++++++++++-------------
+ kernel/trace/ring_buffer.c                     |  2 +
+ net/appletalk/ddp.c                            |  9 ++--
+ net/atm/ioctl.c                                |  7 ++-
+ net/ipv4/tcp_output.c                          |  6 +++
+ net/rose/af_rose.c                             |  4 +-
+ net/vmw_vsock/virtio_transport_common.c        |  2 +-
+ scripts/sign-file.c                            | 12 ++---
+ 24 files changed, 152 insertions(+), 75 deletions(-)
 
 
 
