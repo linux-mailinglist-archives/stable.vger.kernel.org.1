@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CEF817264
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9586817103
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A336B21F7B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59CF51F22FE6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E577449893;
-	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BC91D126;
+	Mon, 18 Dec 2023 13:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH0DJFsN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkLeAqfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB14D1D157;
-	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB36C433CA;
-	Mon, 18 Dec 2023 14:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3EE129EFB;
+	Mon, 18 Dec 2023 13:53:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C262DC433C7;
+	Mon, 18 Dec 2023 13:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908369;
-	bh=1ic+Qo3CQswLxuk+eCxplyAE/vFVZS9xDX767h623x8=;
+	s=korg; t=1702907614;
+	bh=Ug/iPbtaeUV5YqnILRxmE2FXtSzCKyOfFSqK8F8uWCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VH0DJFsN6nMhG1XpZmTizYza+SFTcqMJbQf6L7iA9LiaX5CZ72OmAHzrasipfK5O+
-	 iDWd8gsChOApOXtJDDATD5E9Fz9AGy2YUlQgSmDAG5LJNiynnocUnRjiimdgdTd+Ko
-	 8bosihBeDoZOX5Hl9Z8m8fguMvFX9aHzfEQP/7Qk=
+	b=tkLeAqfkyaI55awO652UTHq6C2w1NC/3wI+nlvxH3VGfzXyto/dKnz9Y2pMdoOhld
+	 XcRcFp8mQZMvr1lJx4v6rLcD2laL0J60mBjJ4B1f4qh7l67bp0dcXZG8/PraLSEWGq
+	 LbYqMSvTOtDwteLAr2pZcsRZsv9iOemJ8dRMo4/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	SImon Glass <sjg@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/166] arm64: add dependency between vmlinuz.efi and Image
-Date: Mon, 18 Dec 2023 14:51:29 +0100
-Message-ID: <20231218135110.565731867@linuxfoundation.org>
+Subject: [PATCH 4.19 20/36] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+Date: Mon, 18 Dec 2023 14:51:30 +0100
+Message-ID: <20231218135042.558450988@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,82 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit c0a8574204054effad6ac83cc75c02576e2985fe ]
+[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
 
-A common issue in Makefile is a race in parallel building.
+This patch adds code comments to bch_btree_node_get() and
+__bch_btree_node_alloc() that NULL pointer will not be returned and it
+is unnecessary to check NULL pointer by the callers of these routines.
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
-
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
-
-A similar symptom occurs with the following command:
-
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    OBJCOPY arch/arm64/boot/Image
-    AS      arch/arm64/boot/zboot-header.o
-    PAD     arch/arm64/boot/vmlinux.bin
-    GZIP    arch/arm64/boot/vmlinuz
-    OBJCOPY arch/arm64/boot/vmlinuz.o
-    LD      arch/arm64/boot/vmlinuz.efi.elf
-    OBJCOPY arch/arm64/boot/vmlinuz.efi
-
-The log "OBJCOPY arch/arm64/boot/Image" is displayed twice.
-
-It indicates that two threads simultaneously enter arch/arm64/boot/
-and write to arch/arm64/boot/Image.
-
-It occasionally leads to a build failure:
-
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    PAD     arch/arm64/boot/vmlinux.bin
-  truncate: Invalid number: 'arch/arm64/boot/vmlinux.bin'
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/arm64/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/arm64/boot/vmlinux.bin'
-  make[1]: *** [arch/arm64/Makefile:163: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
-
-vmlinuz.efi depends on Image, but such a dependency is not specified
-in arch/arm64/Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: SImon Glass <sjg@chromium.org>
-Link: https://lore.kernel.org/r/20231119053234.2367621-1-masahiroy@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/bcache/btree.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 2d49aea0ff67a..26b8c7630a214 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -158,7 +158,7 @@ endif
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index 3518088d7ff1e..de1eb7961fe61 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1008,6 +1008,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
+  *
+  * The btree node will have either a read or a write lock held, depending on
+  * level and op->lock.
++ *
++ * Note: Only error code or btree pointer will be returned, it is unncessary
++ *       for callers to check NULL pointer.
+  */
+ struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
+ 				 struct bkey *k, int level, bool write,
+@@ -1120,6 +1123,10 @@ static void btree_node_free(struct btree *b)
+ 	mutex_unlock(&b->c->bucket_lock);
+ }
  
- all:	$(notdir $(KBUILD_IMAGE))
- 
--
-+vmlinuz.efi: Image
- Image vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
- 
++/*
++ * Only error code or btree pointer will be returned, it is unncessary for
++ * callers to check NULL pointer.
++ */
+ struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
+ 				     int level, bool wait,
+ 				     struct btree *parent)
 -- 
 2.43.0
 
