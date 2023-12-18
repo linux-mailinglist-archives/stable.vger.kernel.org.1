@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-7133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787BE817114
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F241F81717F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A9EBB20E9E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 237881C2415D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6485129EFE;
-	Mon, 18 Dec 2023 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627C415AC0;
+	Mon, 18 Dec 2023 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaO6UpKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKqg5MN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB611D157;
-	Mon, 18 Dec 2023 13:54:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 801D1C433C8;
-	Mon, 18 Dec 2023 13:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D96129EC8;
+	Mon, 18 Dec 2023 13:58:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1411C433C7;
+	Mon, 18 Dec 2023 13:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907651;
-	bh=jK1U0O97SnJn3HRjr+JoGsQBrE/n8fEs/ZkJEFYoyFA=;
+	s=korg; t=1702907906;
+	bh=BtDB6dSF3Mb4TJKjxalxFPIAV7YoPxTQfqQizzyUhH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaO6UpKEPNLgu97vcB8NbWGqqONbnaL+nOv6q7RyPQZMzCAmZn8uJoDzLQ7ovZH0/
-	 JMnRF6hz6p1f+CBFWMKIPUNBeU7RaaygypFJDVPXWfC5tkZJwU6mf9mKFLn6MM9OW4
-	 v6l9b+uvG1BB/enG1rvjTZKIpIViQ82JvEnKLdMI=
+	b=qKqg5MN2dj5x98WHReGJfy9zr0OAfHwqU6t4XV/5u2VRjL/csvKZtisu1vIaLtDVr
+	 BOFzSjPrpLCTNrjWVuIHPBJIHZ9ISImgayJsHck6LZji78yxEn1nq7BysWjxg3CYOh
+	 kx6SwDUXv0gsRXj9iFiYGcrOiG31PhV4FKEAlFhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 33/36] ring-buffer: Fix memory leak of free page
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 089/106] drm/amdgpu: fix tear down order in amdgpu_vm_pt_free
 Date: Mon, 18 Dec 2023 14:51:43 +0100
-Message-ID: <20231218135043.010564567@linuxfoundation.org>
+Message-ID: <20231218135058.882974768@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +50,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Christian König <christian.koenig@amd.com>
 
-commit 17d801758157bec93f26faaf5ff1a8b9a552d67a upstream.
+commit ceb9a321e7639700844aa3bf234a4e0884f13b77 upstream.
 
-Reading the ring buffer does a swap of a sub-buffer within the ring buffer
-with a empty sub-buffer. This allows the reader to have full access to the
-content of the sub-buffer that was swapped out without having to worry
-about contention with the writer.
+When freeing PD/PT with shadows it can happen that the shadow
+destruction races with detaching the PD/PT from the VM causing a NULL
+pointer dereference in the invalidation code.
 
-The readers call ring_buffer_alloc_read_page() to allocate a page that
-will be used to swap with the ring buffer. When the code is finished with
-the reader page, it calls ring_buffer_free_read_page(). Instead of freeing
-the page, it stores it as a spare. Then next call to
-ring_buffer_alloc_read_page() will return this spare instead of calling
-into the memory management system to allocate a new page.
+Fix this by detaching the the PD/PT from the VM first and then
+freeing the shadow instead.
 
-Unfortunately, on freeing of the ring buffer, this spare page is not
-freed, and causes a memory leak.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231210221250.7b9cc83c@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 73a757e63114d ("ring-buffer: Return reader page back into existing ring buffer")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: https://gitlab.freedesktop.org/drm/amd/-/issues/2867
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -1344,6 +1344,8 @@ static void rb_free_cpu_buffer(struct ri
- 		free_buffer_page(bpage);
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+@@ -631,13 +631,14 @@ static void amdgpu_vm_pt_free(struct amd
  
-+	free_page((unsigned long)cpu_buffer->free_page);
+ 	if (!entry->bo)
+ 		return;
 +
- 	kfree(cpu_buffer);
- }
++	entry->bo->vm_bo = NULL;
+ 	shadow = amdgpu_bo_shadowed(entry->bo);
+ 	if (shadow) {
+ 		ttm_bo_set_bulk_move(&shadow->tbo, NULL);
+ 		amdgpu_bo_unref(&shadow);
+ 	}
+ 	ttm_bo_set_bulk_move(&entry->bo->tbo, NULL);
+-	entry->bo->vm_bo = NULL;
  
+ 	spin_lock(&entry->vm->status_lock);
+ 	list_del(&entry->vm_status);
 
 
 
