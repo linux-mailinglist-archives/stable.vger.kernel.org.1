@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-6949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F7381673C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:17:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993E381673E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 08:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50CFFB211C6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5543F281D20
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 07:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C44979D7;
-	Mon, 18 Dec 2023 07:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AD479D9;
+	Mon, 18 Dec 2023 07:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E47cYngI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgbYqq4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADB37498
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E230C433C7;
-	Mon, 18 Dec 2023 07:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7B5D513
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:17:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2EEC433C9;
+	Mon, 18 Dec 2023 07:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702883859;
-	bh=/LFhNeom4zwGiWOMClBvU7PuiEN15W+M52SGDF0Hymk=;
+	s=korg; t=1702883868;
+	bh=5llRbrQ5Y/dlI2/rE2NY6CTZ2rRRZlGQS79FWh0sBOA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=E47cYngIgjSwsWDs+OOGAcYdTaWuKxJjlykK7qjQ8DI+KfkuDCjx4j7biba2YtxYO
-	 7/OYzR/XnKTB1RoIQcUN7L7zLmmekASJ6aWJSEwGQ3oc9KI2OKcVCfzWpgGIxMo6hU
-	 mx6rwT3CcCsDhdVkuPhyBLZ4kCqU61U6ZgJkAvpY=
-Subject: FAILED: patch "[PATCH] btrfs: free qgroup pertrans reserve on transaction abort" failed to apply to 6.6-stable tree
+	b=VgbYqq4A3q62HyVhC4EDFvUMGVvn+/XwblUD296GgbmW94BwjKOCJyeyawqQjaCSe
+	 DlaviOJ/Tg37gBmjnDx8OMOGbUHoMpLvyMn5E0sXnxYWjAlMELIK9EvpuAjmMOqMah
+	 HpvjJIRsgkCoUbau1eGIS7Zi7l9nt99RQErq97gU=
+Subject: FAILED: patch "[PATCH] btrfs: free qgroup pertrans reserve on transaction abort" failed to apply to 6.1-stable tree
 To: boris@bur.io,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 18 Dec 2023 08:17:36 +0100
-Message-ID: <2023121836-strike-backlit-ebd3@gregkh>
+Date: Mon, 18 Dec 2023 08:17:37 +0100
+Message-ID: <2023121837-juggling-vest-964c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b321a52cce062ec7ed385333a33905d22159ce36
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121836-strike-backlit-ebd3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121837-juggling-vest-964c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 b321a52cce06 ("btrfs: free qgroup pertrans reserve on transaction abort")
 091344508249 ("btrfs: qgroup: use qgroup_iterator in qgroup_convert_meta()")
+f880fe6e0b4b ("btrfs: don't hold an extra reference for redirtied buffers")
+c83b56d1dd87 ("btrfs: zero the buffer before marking it dirty in btrfs_redirty_list_add")
+921603c76246 ("btrfs: pass a btrfs_bio to btrfs_use_append")
+d5e4377d5051 ("btrfs: split zone append bios in btrfs_submit_bio")
+285599b6fe15 ("btrfs: remove the fs_info argument to btrfs_submit_bio")
+48253076c3a9 ("btrfs: open code submit_encoded_read_bio")
+30493ff49f81 ("btrfs: remove stripe boundary calculation for compressed I/O")
+2380220e1e13 ("btrfs: remove stripe boundary calculation for buffered I/O")
+67d669825090 ("btrfs: pass the iomap bio to btrfs_submit_bio")
+852eee62d31a ("btrfs: allow btrfs_submit_bio to split bios")
+69ccf3f4244a ("btrfs: handle recording of zoned writes in the storage layer")
+f8a53bb58ec7 ("btrfs: handle checksum generation in the storage layer")
+f8c44673e5a5 ("btrfs: simplify the btrfs_csum_one_bio calling convention")
+deb6216fa0b6 ("btrfs: open code the submit_bio_start helpers")
+295fe46ff19b ("btrfs: remove struct btrfs_bio::is_metadata flag")
+0d3acb25e70d ("btrfs: rename btrfs_bio::iter field")
+0571b6357c5e ("btrfs: remove the io_failure_record infrastructure")
+860c8c451661 ("btrfs: remove struct btrfs_bio::device field")
 
 thanks,
 
