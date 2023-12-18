@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F413A81717A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEE281710D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30B9283547
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F43C1F22B41
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270981D13A;
-	Mon, 18 Dec 2023 13:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B111D146;
+	Mon, 18 Dec 2023 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igi7kQL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4o6oH1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03A8101D4;
-	Mon, 18 Dec 2023 13:58:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1758BC433C7;
-	Mon, 18 Dec 2023 13:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ABE1D139;
+	Mon, 18 Dec 2023 13:53:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D4CC433C8;
+	Mon, 18 Dec 2023 13:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907892;
-	bh=rv0f392ADzGv4+tHISvNcSBxPP5h2yuT96wOaZiQbOs=;
+	s=korg; t=1702907638;
+	bh=jn9t9439oyLO5dZN5oWqfP2jVF2TEknFIZuN22eCEME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igi7kQL/jdv0zTfvGiJ1uaGrePdFNJKF75kKYxtEYItrfT9vK1Hhinyf3M20LtQj2
-	 pwPbEaxnEKqa/+3iPII7IK1BVpcqR5bz7Xnz22JGvs+k6JRd7DPCwH3xLKKm2LbTuv
-	 qveu4bWPKeECGVIP7uMPuNmjcnDb4A2/r6ppjfZc=
+	b=t4o6oH1M2DlfWWRrM4PKuqWnWBDWo9MfBSDzhCmXJF8hD26TTwLZ5R50vVpBb8wXu
+	 muPLmkD+9oM3rSAxRy288rD+q4SaMZ7zMkiXwuJ6GXOiaQg9K9pty/aExqdPUYiwqi
+	 cyLK0Os+e7aWXFzgdPh5VdqQoarX7zlsZtxG98+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	kernel test robot <lkp@intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 084/106] dmaengine: stm32-dma: avoid bitfield overflow assertion
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 28/36] HID: hid-asus: add const to read-only outgoing usb buffer
 Date: Mon, 18 Dec 2023 14:51:38 +0100
-Message-ID: <20231218135058.662094090@linuxfoundation.org>
+Message-ID: <20231218135042.849763341@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +54,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Denis Benato <benato.denis96@gmail.com>
 
-commit 54bed6bafa0f38daf9697af50e3aff5ff1354fe1 upstream.
+[ Upstream commit 06ae5afce8cc1f7621cc5c7751e449ce20d68af7 ]
 
-stm32_dma_get_burst() returns a negative error for invalid input, which
-gets turned into a large u32 value in stm32_dma_prep_dma_memcpy() that
-in turn triggers an assertion because it does not fit into a two-bit field:
-drivers/dma/stm32-dma.c: In function 'stm32_dma_prep_dma_memcpy':
-include/linux/compiler_types.h:354:38: error: call to '__compiletime_assert_282' declared with attribute error: FIELD_PREP: value too large for the field
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/compiler_types.h:335:4: note: in definition of macro '__compiletime_assert'
-       prefix ## suffix();    \
-       ^~~~~~
-   include/linux/compiler_types.h:354:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:68:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?  \
-      ^~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:114:3: note: in expansion of macro '__BF_FIELD_CHECK'
-      __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: "); \
-      ^~~~~~~~~~~~~~~~
-   drivers/dma/stm32-dma.c:1237:4: note: in expansion of macro 'FIELD_PREP'
-       FIELD_PREP(STM32_DMA_SCR_PBURST_MASK, dma_burst) |
-       ^~~~~~~~~~
+In the function asus_kbd_set_report the parameter buf is read-only
+as it gets copied in a memory portion suitable for USB transfer,
+but the parameter is not marked as const: add the missing const and mark
+const immutable buffers passed to that function.
 
-As an easy workaround, assume the error can happen, so try to handle this
-by failing stm32_dma_prep_dma_memcpy() before the assertion. It replicates
-what is done in stm32_dma_set_xfer_param() where stm32_dma_get_burst() is
-also used.
-
-Fixes: 1c32d6c37cc2 ("dmaengine: stm32-dma: use bitfield helpers")
-Fixes: a2b6103b7a8a ("dmaengine: stm32-dma: Improve memory burst management")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311060135.Q9eMnpCL-lkp@intel.com/
-Link: https://lore.kernel.org/r/20231106134832.1470305-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32-dma.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/hid/hid-asus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/stm32-dma.c
-+++ b/drivers/dma/stm32-dma.c
-@@ -1249,8 +1249,8 @@ static struct dma_async_tx_descriptor *s
- 	enum dma_slave_buswidth max_width;
- 	struct stm32_dma_desc *desc;
- 	size_t xfer_count, offset;
--	u32 num_sgs, best_burst, dma_burst, threshold;
--	int i;
-+	u32 num_sgs, best_burst, threshold;
-+	int dma_burst, i;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 12ad6493be8f4..0842d7bdcbc7e 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -252,7 +252,7 @@ static int asus_raw_event(struct hid_device *hdev,
+ 	return 0;
+ }
  
- 	num_sgs = DIV_ROUND_UP(len, STM32_DMA_ALIGNED_MAX_DATA_ITEMS);
- 	desc = kzalloc(struct_size(desc, sg_req, num_sgs), GFP_NOWAIT);
-@@ -1268,6 +1268,10 @@ static struct dma_async_tx_descriptor *s
- 		best_burst = stm32_dma_get_best_burst(len, STM32_DMA_MAX_BURST,
- 						      threshold, max_width);
- 		dma_burst = stm32_dma_get_burst(chan, best_burst);
-+		if (dma_burst < 0) {
-+			kfree(desc);
-+			return NULL;
-+		}
+-static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size)
++static int asus_kbd_set_report(struct hid_device *hdev, const u8 *buf, size_t buf_size)
+ {
+ 	unsigned char *dmabuf;
+ 	int ret;
+@@ -271,7 +271,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
  
- 		stm32_dma_clear_reg(&desc->sg_req[i].chan_reg);
- 		desc->sg_req[i].chan_reg.dma_scr =
+ static int asus_kbd_init(struct hid_device *hdev)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
+ 		     0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
+ 	int ret;
+ 
+@@ -285,7 +285,7 @@ static int asus_kbd_init(struct hid_device *hdev)
+ static int asus_kbd_get_functions(struct hid_device *hdev,
+ 				  unsigned char *kbd_func)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
+ 	u8 *readbuf;
+ 	int ret;
+ 
+-- 
+2.43.0
+
 
 
 
