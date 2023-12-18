@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6A281718D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C10A78170E9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C429AB20A00
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709A72838B0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247931D15C;
-	Mon, 18 Dec 2023 13:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044981D12F;
+	Mon, 18 Dec 2023 13:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArMCMmCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEwJMiAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B081D158;
-	Mon, 18 Dec 2023 13:58:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C3CC433C8;
-	Mon, 18 Dec 2023 13:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA690129EF7;
+	Mon, 18 Dec 2023 13:52:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA7DC433C8;
+	Mon, 18 Dec 2023 13:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907927;
-	bh=1/NnwY3qiHhQ7Ox96npd9g4162eHEB9KAHmpnDH6v8s=;
+	s=korg; t=1702907533;
+	bh=G48IOj/WQyBnh64T3K1NFZEOrf0ZpDpb++LtR3Vzdzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ArMCMmCJbU5PESSiu3BFuO68ZeEkdx5/vo9P4o7aHOMkhO8w3cKOz2VtALobIo1vG
-	 83XVHnnX6fs3a1JJDOz9qAIy0Q3F3+iZl9vxowz5i+vaUkJc+rMtAPs0qsaib3ol67
-	 aH5fHcAmMsrdn6UcojHBCWubE0GQSopKbTC9X3ck=
+	b=FEwJMiAr20s72oABoU7LymWTXpUsmIrYCLDPnO6cBxafE1lDeZRJ3gZE6HkPfWJps
+	 TFuJ0XO2X3F7ROA0uvEFTodn29NSTV4oelOWypDsfEEgZ5EPuKpAvW0nqqE0ITuB7/
+	 B8nsLvm0U3K9vaOxlvEWLfSI8yFI10aq/KSZn4Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
 	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/106] HID: add ALWAYS_POLL quirk for Apple kb
+Subject: [PATCH 4.14 21/26] HID: hid-asus: add const to read-only outgoing usb buffer
 Date: Mon, 18 Dec 2023 14:51:23 +0100
-Message-ID: <20231218135058.005314007@linuxfoundation.org>
+Message-ID: <20231218135041.466993397@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,36 +54,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Denis Benato <benato.denis96@gmail.com>
 
-[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
+[ Upstream commit 06ae5afce8cc1f7621cc5c7751e449ce20d68af7 ]
 
-These devices disconnect if suspended without remote wakeup. They can operate
-with the standard driver.
+In the function asus_kbd_set_report the parameter buf is read-only
+as it gets copied in a memory portion suitable for USB transfer,
+but the parameter is not marked as const: add the missing const and mark
+const immutable buffers passed to that function.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
 Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-asus.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 056bb32091285..60884066362a1 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 52f65d0f44cae..3094e75617dd3 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -232,7 +232,7 @@ static int asus_raw_event(struct hid_device *hdev,
+ 	return 0;
+ }
+ 
+-static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size)
++static int asus_kbd_set_report(struct hid_device *hdev, const u8 *buf, size_t buf_size)
+ {
+ 	unsigned char *dmabuf;
+ 	int ret;
+@@ -251,7 +251,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
+ 
+ static int asus_kbd_init(struct hid_device *hdev)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
+ 		     0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
+ 	int ret;
+ 
+@@ -265,7 +265,7 @@ static int asus_kbd_init(struct hid_device *hdev)
+ static int asus_kbd_get_functions(struct hid_device *hdev,
+ 				  unsigned char *kbd_func)
+ {
+-	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
++	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
+ 	u8 *readbuf;
+ 	int ret;
+ 
 -- 
 2.43.0
 
