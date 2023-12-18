@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758408172ED
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB88817323
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0BE1F23345
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 261211F23580
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA1F42364;
-	Mon, 18 Dec 2023 14:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F453788E;
+	Mon, 18 Dec 2023 14:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs+YuTwD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Yh1EtWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D76129EC8;
-	Mon, 18 Dec 2023 14:11:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FEDFC433C8;
-	Mon, 18 Dec 2023 14:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDE7129ED2;
+	Mon, 18 Dec 2023 14:13:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64ED3C433C7;
+	Mon, 18 Dec 2023 14:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908699;
-	bh=JTFnUlb+qZo57so8ow7I4wA4HKs90EW1EkyVoe8JCJo=;
+	s=korg; t=1702908833;
+	bh=4ElKjSIm3od4fYDo6hJ/KMVIvRFiqJxdpkyP9d6zS0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zs+YuTwD1Eluo3usrXWCAM79WJ+IpRBsZkEmDmgmGjEbN/oHJOQLmbczWq0WAMxp0
-	 sg4UoMT7Q8W9fkyvo7J+AnMg15mS1NtjcCwjXRvKny+lH7p/x/geZ0XuU/2gNIJdwx
-	 kqICti/6e8bhXNiO5BzI3K6ACV1y+Y4BFbFwU8Hw=
+	b=2Yh1EtWFQCDME1UtCe6PNHg7M0OJqd+2Tp+FNKHlf4SD+3RJVDYgtgkF5DMaWwneg
+	 PuZX9gEsP2+UGFpqdp7TtIC68hKl5erK+1D5jzwC5CYwfBgzV8/46uJeqx6vxNGDQ/
+	 9YZc50+LoIHPgzDD7LlH3Ms2c9hE+HPjTOImRPXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
+	Coly Li <colyli@suse.de>,
+	Eric Wheeler <bcache@lists.ewheeler.net>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/40] appletalk: Fix Use-After-Free in atalk_ioctl
+Subject: [PATCH 5.15 50/83] bcache: avoid oversize memory allocation by small stripe_size
 Date: Mon, 18 Dec 2023 14:52:11 +0100
-Message-ID: <20231218135043.295854801@linuxfoundation.org>
+Message-ID: <20231218135051.938556171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +55,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
+[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
 
-Because atalk_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with atalk_recvmsg().
-A use-after-free for skb occurs with the following flow.
-```
-atalk_ioctl() -> skb_peek()
-atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-```
-Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
+Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
+used for dirty data writeback, their sizes are decided by backing device
+capacity and stripe size. Larger backing device capacity or smaller
+stripe size make these two arraies occupies more dynamic memory space.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Currently bcache->stripe_size is directly inherited from
+queue->limits.io_opt of underlying storage device. For normal hard
+drives, its limits.io_opt is 0, and bcache sets the corresponding
+stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
+devices do declare value for queue->limits.io_opt, small stripe_size
+(comparing to 1TB) becomes an issue for oversize memory allocations of
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
+capacity of hard drives gets much larger in recent decade.
+
+For example a raid5 array assembled by three 20TB hardrives, the raid
+device capacity is 40TB with typical 512KB limits.io_opt. After the math
+calculation in bcache code, these two arraies will occupy 400MB dynamic
+memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
+declared on a new 2TB hard drive, then these two arraies request 2GB and
+512MB dynamic memory from kzalloc(). The result is that bcache device
+always fails to initialize on his system.
+
+To avoid the oversize memory allocation, bcache->stripe_size should not
+directly inherited by queue->limits.io_opt from the underlying device.
+This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
+and set bcache device's stripe size against the declared limits.io_opt
+value from the underlying storage device,
+- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size directly by this limits.io_opt value.
+- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size by a value multiplying limits.io_opt and euqal or
+  large than BCH_MIN_STRIPE_SZ.
+
+Then the minimal stripe size of a bcache device will always be >= 4MB.
+For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
+in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
+by these two arraies will be 2.5MB in total.
+
+Such mount of memory allocated for bcache->stripe_sectors_dirty and
+bcache->full_dirty_stripes is reasonable for most of storage devices.
+
+Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
+Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/appletalk/ddp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/md/bcache/bcache.h | 1 +
+ drivers/md/bcache/super.c  | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index 4610c352849bc..70cd5f55628d3 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -1803,15 +1803,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		break;
- 	}
- 	case TIOCINQ: {
--		/*
--		 * These two are safe on a single CPU system as only
--		 * user tasks fiddle here
--		 */
--		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
-+		struct sk_buff *skb;
- 		long amount = 0;
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index 5fc989a6d4528..21344aaf1bdae 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -265,6 +265,7 @@ struct bcache_device {
+ #define BCACHE_DEV_WB_RUNNING		3
+ #define BCACHE_DEV_RATE_DW_RUNNING	4
+ 	int			nr_stripes;
++#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
+ 	unsigned int		stripe_size;
+ 	atomic_t		*stripe_sectors_dirty;
+ 	unsigned long		*full_dirty_stripes;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 9e7a6c3faa420..5ad83924d8e3b 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -909,6 +909,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
  
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
-+		skb = skb_peek(&sk->sk_receive_queue);
- 		if (skb)
- 			amount = skb->len - sizeof(struct ddpehdr);
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		rc = put_user(amount, (int __user *)argp);
- 		break;
- 	}
+ 	if (!d->stripe_size)
+ 		d->stripe_size = 1 << 31;
++	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
++		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
+ 
+ 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
+ 	if (!n || n > max_stripes) {
 -- 
 2.43.0
 
