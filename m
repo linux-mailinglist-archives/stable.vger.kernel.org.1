@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-7227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F241F81717F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D8F81724F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 237881C2415D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A176280CA8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627C415AC0;
-	Mon, 18 Dec 2023 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7692D37866;
+	Mon, 18 Dec 2023 14:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKqg5MN2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtkObBux"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D96129EC8;
-	Mon, 18 Dec 2023 13:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1411C433C7;
-	Mon, 18 Dec 2023 13:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D35B1D12A;
+	Mon, 18 Dec 2023 14:05:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BF4C433C8;
+	Mon, 18 Dec 2023 14:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907906;
-	bh=BtDB6dSF3Mb4TJKjxalxFPIAV7YoPxTQfqQizzyUhH4=;
+	s=korg; t=1702908334;
+	bh=WxiZogETIYvaT89GSJCGshk3mZ6ygZ3SBZ0wPKB/eFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKqg5MN2dj5x98WHReGJfy9zr0OAfHwqU6t4XV/5u2VRjL/csvKZtisu1vIaLtDVr
-	 BOFzSjPrpLCTNrjWVuIHPBJIHZ9ISImgayJsHck6LZji78yxEn1nq7BysWjxg3CYOh
-	 kx6SwDUXv0gsRXj9iFiYGcrOiG31PhV4FKEAlFhk=
+	b=VtkObBux209tEYp3YCte2Lnb9Ug/4ThumLkqFiZOsr/JsBO5/vegQHwIgQUdZBGt5
+	 uYEHVBd1omlbAltsmlaj4jcGLRi3+uO+nga4a87o6s3Wmq1wkqVTxC0TJdVDUZdf/3
+	 ZNBzaVt0WIWDAnZJ/nYDIZ2uh4n6vZv8fMqvV9IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 089/106] drm/amdgpu: fix tear down order in amdgpu_vm_pt_free
-Date: Mon, 18 Dec 2023 14:51:43 +0100
-Message-ID: <20231218135058.882974768@linuxfoundation.org>
+	Yu Zhao <yuzhao@google.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 138/166] mm/mglru: try to stop at high watermarks
+Date: Mon, 18 Dec 2023 14:51:44 +0100
+Message-ID: <20231218135111.272358816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +56,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Yu Zhao <yuzhao@google.com>
 
-commit ceb9a321e7639700844aa3bf234a4e0884f13b77 upstream.
+commit 5095a2b23987d3c3c47dd16b3d4080e2733b8bb9 upstream.
 
-When freeing PD/PT with shadows it can happen that the shadow
-destruction races with detaching the PD/PT from the VM causing a NULL
-pointer dereference in the invalidation code.
+The initial MGLRU patchset didn't include the memcg LRU support, and it
+relied on should_abort_scan(), added by commit f76c83378851 ("mm:
+multi-gen LRU: optimize multiple memcgs"), to "backoff to avoid
+overshooting their aggregate reclaim target by too much".
 
-Fix this by detaching the the PD/PT from the VM first and then
-freeing the shadow instead.
+Later on when the memcg LRU was added, should_abort_scan() was deemed
+unnecessary, and the test results [1] showed no side effects after it was
+removed by commit a579086c99ed ("mm: multi-gen LRU: remove eviction
+fairness safeguard").
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: https://gitlab.freedesktop.org/drm/amd/-/issues/2867
+However, that test used memory.reclaim, which sets nr_to_reclaim to
+SWAP_CLUSTER_MAX.  So it can overshoot only by SWAP_CLUSTER_MAX-1 pages,
+i.e., from nr_reclaimed=nr_to_reclaim-1 to
+nr_reclaimed=nr_to_reclaim+SWAP_CLUSTER_MAX-1.  Compared with the batch
+size kswapd sets to nr_to_reclaim, SWAP_CLUSTER_MAX is tiny.  Therefore
+that test isn't able to reproduce the worst case scenario, i.e., kswapd
+overshooting GBs on large systems and "consuming 100% CPU" (see the Closes
+tag).
+
+Bring back a simplified version of should_abort_scan() on top of the memcg
+LRU, so that kswapd stops when all eligible zones are above their
+respective high watermarks plus a small delta to lower the chance of
+KSWAPD_HIGH_WMARK_HIT_QUICKLY.  Note that this only applies to order-0
+reclaim, meaning compaction-induced reclaim can still run wild (which is a
+different problem).
+
+On Android, launching 55 apps sequentially:
+           Before     After      Change
+  pgpgin   838377172  802955040  -4%
+  pgpgout  38037080   34336300   -10%
+
+[1] https://lore.kernel.org/20221222041905.2431096-1-yuzhao@google.com/
+
+Link: https://lkml.kernel.org/r/20231208061407.2125867-2-yuzhao@google.com
+Fixes: a579086c99ed ("mm: multi-gen LRU: remove eviction fairness safeguard")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Closes: https://lore.kernel.org/CAK8fFZ4DY+GtBA40Pm7Nn5xCHy+51w3sfxPqkqpqakSXYyX+Wg@mail.gmail.com/
+Tested-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Tested-by: Kalesh Singh <kaleshsingh@google.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: T.J. Mercier <tjmercier@google.com>
 Cc: <stable@vger.kernel.org>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/vmscan.c |   36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
-@@ -631,13 +631,14 @@ static void amdgpu_vm_pt_free(struct amd
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -5341,20 +5341,41 @@ static long get_nr_to_scan(struct lruvec
+ 	return try_to_inc_max_seq(lruvec, max_seq, sc, can_swap, false) ? -1 : 0;
+ }
  
- 	if (!entry->bo)
- 		return;
+-static unsigned long get_nr_to_reclaim(struct scan_control *sc)
++static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+ {
++	int i;
++	enum zone_watermarks mark;
 +
-+	entry->bo->vm_bo = NULL;
- 	shadow = amdgpu_bo_shadowed(entry->bo);
- 	if (shadow) {
- 		ttm_bo_set_bulk_move(&shadow->tbo, NULL);
- 		amdgpu_bo_unref(&shadow);
- 	}
- 	ttm_bo_set_bulk_move(&entry->bo->tbo, NULL);
--	entry->bo->vm_bo = NULL;
+ 	/* don't abort memcg reclaim to ensure fairness */
+ 	if (!root_reclaim(sc))
+-		return -1;
++		return false;
++
++	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
++		return true;
++
++	/* check the order to exclude compaction-induced reclaim */
++	if (!current_is_kswapd() || sc->order)
++		return false;
++
++	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
++	       WMARK_PROMO : WMARK_HIGH;
++
++	for (i = 0; i <= sc->reclaim_idx; i++) {
++		struct zone *zone = lruvec_pgdat(lruvec)->node_zones + i;
++		unsigned long size = wmark_pages(zone, mark) + MIN_LRU_BATCH;
++
++		if (managed_zone(zone) && !zone_watermark_ok(zone, 0, size, sc->reclaim_idx, 0))
++			return false;
++	}
  
- 	spin_lock(&entry->vm->status_lock);
- 	list_del(&entry->vm_status);
+-	return max(sc->nr_to_reclaim, compact_gap(sc->order));
++	/* kswapd should abort if all eligible zones are safe */
++	return true;
+ }
+ 
+ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	long nr_to_scan;
+ 	unsigned long scanned = 0;
+-	unsigned long nr_to_reclaim = get_nr_to_reclaim(sc);
+ 	int swappiness = get_swappiness(lruvec, sc);
+ 
+ 	/* clean file folios are more likely to exist */
+@@ -5376,7 +5397,7 @@ static bool try_to_shrink_lruvec(struct
+ 		if (scanned >= nr_to_scan)
+ 			break;
+ 
+-		if (sc->nr_reclaimed >= nr_to_reclaim)
++		if (should_abort_scan(lruvec, sc))
+ 			break;
+ 
+ 		cond_resched();
+@@ -5437,7 +5458,6 @@ static void shrink_many(struct pglist_da
+ 	struct lru_gen_folio *lrugen;
+ 	struct mem_cgroup *memcg;
+ 	const struct hlist_nulls_node *pos;
+-	unsigned long nr_to_reclaim = get_nr_to_reclaim(sc);
+ 
+ 	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
+ restart:
+@@ -5470,7 +5490,7 @@ restart:
+ 
+ 		rcu_read_lock();
+ 
+-		if (sc->nr_reclaimed >= nr_to_reclaim)
++		if (should_abort_scan(lruvec, sc))
+ 			break;
+ 	}
+ 
+@@ -5481,7 +5501,7 @@ restart:
+ 
+ 	mem_cgroup_put(memcg);
+ 
+-	if (sc->nr_reclaimed >= nr_to_reclaim)
++	if (!is_a_nulls(pos))
+ 		return;
+ 
+ 	/* restart if raced with lru_gen_rotate_memcg() */
 
 
 
