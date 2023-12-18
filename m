@@ -1,245 +1,118 @@
-Return-Path: <stable+bounces-7071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8A3816FEA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D864816FF5
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23738282CAF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:12:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F7D1F2337B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D1D74E35;
-	Mon, 18 Dec 2023 13:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4A129EFD;
+	Mon, 18 Dec 2023 13:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JDb1mVSt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sPmGrbRc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8B74E3F
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 13:03:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702904597;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D4BR8c8goPXlqieZxmccl7pcjPueJY1A6406IGvIqgM=;
-	b=JDb1mVStEf2u7XJLKgZrhJ8tiMR7TqBf/YUHakhSmGhhLHG0C9VX5WjMQ70owdeYoRX8+w
-	jrI6o7nHHcYsSHtjSHJN8iydfRyAE6Khj5FHndP9cpYXQqgYf3iMG8YXREbfzWdh/PgpJb
-	gfzC0RYWfdevwT2/7nyuSfwFOc3Rwcg=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-pTOZXZ4fNZ6PM2W3MIUFRw-1; Mon, 18 Dec 2023 08:03:14 -0500
-X-MC-Unique: pTOZXZ4fNZ6PM2W3MIUFRw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40c691ffb32so24602065e9.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 05:03:14 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9A7129EF3
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 13:05:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-55322dbabf6so1273515a12.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 05:05:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702904757; x=1703509557; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zf8GU1jucs6jTjct5l69bmCFz5L/L0QfZmLNB/CjUWs=;
+        b=sPmGrbRctPwUhob3NhJ2Mht4JSfRoOWJiM3V2sGnfRocTi/V+0JnGpJQmeCYs0O2xz
+         4Z0DvOjjeFAJeOqY3FABFmR+gjrdkuQbTsx8x+XOaKEqvq/5D7snTauMcdE9d/8CLWQq
+         XhNOVZI/1+ENS4JSD+5ZyluW3u6TLJzKsJD2641u6tJlkWsUAzAh3PFaLz16/6sGxDcj
+         rmvtkaxsvh5mqi91KxzUzFf/MdgtbAlVloHJ9jcUyqreSKWqwQEMb2G7id6kpP5TmGHa
+         WstSnwwkYbGvgBHz4rP5FfSkvKQgEv8wY3ZaENGHOyTYRcg4SD8k2VO6qMRA6iE/2FOh
+         l8Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702904593; x=1703509393;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D4BR8c8goPXlqieZxmccl7pcjPueJY1A6406IGvIqgM=;
-        b=kxSgL6NSsP+ed8oo8nrk04ayj20oWg9T0JutLB62BhxveaGP5zrBHUo1X47v8ovHW3
-         cyV3/oEhX0Z3QrgTLirf3jHA+OPqH6O5UPfODtKfEVLrHB1cD82c90G/UHXPWLKcr3JQ
-         iKzQjEgbBnpCMBRJETfAOVTRUmtqen5MdKSfnJpMJForZIF/Spb+apMj+A1ZokpiwYto
-         kdxv+0XxFq5l9jLuT7f9Rn4/xobJb/FrH0knEyxJM1x/GxoywNTKJD5MjipxgAfQ1D/L
-         ytjcO7z8cQOTzLKI86pwpH7OlHmjmdlAjLCL6GKLSEO7nHr4fNSj1GUxoxWLPjolApTb
-         KL9A==
-X-Gm-Message-State: AOJu0YzUXfUf7EbjlnrBI7UgAt9LnLUi11EWz2xeYY7doSJL4KTJ+1yr
-	QRYUc3NU7XW8TH4agUneI/3cPqFrIeCnsDCCv/E6n/wk6x91WAA4YKPYesUZLc6oX7rZjQz4SNn
-	oVrI5Wm4SW1JSaz0a
-X-Received: by 2002:a05:600c:829:b0:40b:5e21:c5aa with SMTP id k41-20020a05600c082900b0040b5e21c5aamr5328103wmp.120.1702904593423;
-        Mon, 18 Dec 2023 05:03:13 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGw6Lconji7VbC6NL33uohkatwRsNiFsQCnToxefrUdxxqBn5nrq+SfFSjMJ7N/ZyfjKhGuuQ==
-X-Received: by 2002:a05:600c:829:b0:40b:5e21:c5aa with SMTP id k41-20020a05600c082900b0040b5e21c5aamr5328097wmp.120.1702904593084;
-        Mon, 18 Dec 2023 05:03:13 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id p32-20020a05600c1da000b0040b360cc65csm42399843wms.0.2023.12.18.05.03.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Dec 2023 05:03:12 -0800 (PST)
-Message-ID: <beec3b5d-689a-4b25-be4b-9ff7532bb2e6@redhat.com>
-Date: Mon, 18 Dec 2023 14:03:11 +0100
+        d=1e100.net; s=20230601; t=1702904757; x=1703509557;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zf8GU1jucs6jTjct5l69bmCFz5L/L0QfZmLNB/CjUWs=;
+        b=JzZoA/gJWXbX4mQ55sI//V7iU0GWZK6/0dBCgT4eKitA61J339DeinlvEuUMpt1h/n
+         wS3p2XPl3P3ub4RkiY83H20FpYDakJSd8mKe+mb+ojEZSmHCrjsf9Ins2tS1Spk/noTP
+         xdyCFuyrd5FIOd2L4RH5QrRicrk9y5HW8msw5swD/xu/LezGQ4B9b1BZ/DOlbWY2vl8h
+         pVQn6UfR/dlC5heouCLihnz9qVuHN1NrNw/V3d8naCKcoGiYTb6AoPtGPSpVs6E3WHYH
+         ILut+SsutEhqOb71u3iYQLQ85PVWhcqcHEIsaWGxfht+PH1NtEs3/NNsVfRd5KtjZSGf
+         dDiA==
+X-Gm-Message-State: AOJu0YxlISdcNzBK47qYUy7I/8METEwSakykjZog+XN02SZc28erLs3J
+	BNKqSqSTJVqs2ZgAOoKWssP5XQ==
+X-Google-Smtp-Source: AGHT+IEdbcnRsIGQQTEEoVP0zaBZsY9T309dnnP5VQFvrOWCpgKybfRfxBuGkcwem1DLUb2bJvNoFw==
+X-Received: by 2002:a50:bb49:0:b0:54b:d16:4c4b with SMTP id y67-20020a50bb49000000b0054b0d164c4bmr8502094ede.19.1702904756948;
+        Mon, 18 Dec 2023 05:05:56 -0800 (PST)
+Received: from krzk-bin.. ([178.197.218.27])
+        by smtp.gmail.com with ESMTPSA id bt13-20020a0564020a4d00b00551d6d51401sm5943048edb.53.2023.12.18.05.05.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 05:05:56 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix path to header
+Date: Mon, 18 Dec 2023 14:05:53 +0100
+Message-Id: <20231218130553.45893-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/mgag200: Fix gamma lut not initialized for G200ER,
- G200EV, G200SE
-To: Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
- airlied@redhat.com, daniel@ffwll.ch, javierm@redhat.com
-Cc: Roger Sewell <roger.sewell@cantab.net>, stable@vger.kernel.org
-References: <20231214163849.359691-1-jfalempe@redhat.com>
- <641bc7e1-5c13-4af1-ae2e-8cdc58ee92a9@suse.de>
-Content-Language: en-US, fr
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <641bc7e1-5c13-4af1-ae2e-8cdc58ee92a9@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+Fix the path to bindings header in description.
 
+Fixes: e1c4c5436b4a ("dt-bindings: phy: qcom,qmp-usb3-dp: fix sc8280xp binding")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ .../bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml           | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 18/12/2023 12:31, Thomas Zimmermann wrote:
-> Hi
-> 
-> Am 14.12.23 um 17:38 schrieb Jocelyn Falempe:
->> When mgag200 switched from simple KMS to regular atomic helpers,
->> the initialization of the gamma settings was lost.
->> This leads to a black screen, if the bios/uefi doesn't use the same
->> pixel color depth.
->> This has been fixed with commit ad81e23426a6 ("drm/mgag200: Fix gamma
->> lut not initialized.") for most G200, but G200ER, G200EV, G200SE use
->> their own version of crtc_helper_atomic_enable() and need to be fixed
->> too.
->>
->> Fixes: 1baf9127c482 ("drm/mgag200: Replace simple-KMS with regular 
->> atomic helpers")
->> Cc: <stable@vger.kernel.org> #v6.1+
->> Reported-by: Roger Sewell <roger.sewell@cantab.net>
->> Suggested-by: Roger Sewell <roger.sewell@cantab.net>
->> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->> ---
->>   drivers/gpu/drm/mgag200/mgag200_drv.h    |  4 ++++
->>   drivers/gpu/drm/mgag200/mgag200_g200er.c |  2 ++
->>   drivers/gpu/drm/mgag200/mgag200_g200ev.c |  2 ++
->>   drivers/gpu/drm/mgag200/mgag200_g200se.c |  2 ++
->>   drivers/gpu/drm/mgag200/mgag200_mode.c   | 26 ++++++++++++++----------
->>   5 files changed, 25 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.h 
->> b/drivers/gpu/drm/mgag200/mgag200_drv.h
->> index 57c7edcab602..ed90a92b5fcd 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_drv.h
->> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.h
->> @@ -392,6 +392,10 @@ void 
->> mgag200_primary_plane_helper_atomic_disable(struct drm_plane *plane,
->>       .destroy = drm_plane_cleanup, \
->>       DRM_GEM_SHADOW_PLANE_FUNCS
->> +void mgag200_crtc_set_gamma(struct mga_device *mdev,
->> +                const struct drm_format_info *format,
->> +                struct drm_property_blob *gamma_lut);
->> +
->>   enum drm_mode_status mgag200_crtc_helper_mode_valid(struct drm_crtc 
->> *crtc,
->>                               const struct drm_display_mode *mode);
->>   int mgag200_crtc_helper_atomic_check(struct drm_crtc *crtc, struct 
->> drm_atomic_state *new_state);
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_g200er.c 
->> b/drivers/gpu/drm/mgag200/mgag200_g200er.c
->> index bce267e0f7de..38815cb94c61 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_g200er.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_g200er.c
->> @@ -202,6 +202,8 @@ static void 
->> mgag200_g200er_crtc_helper_atomic_enable(struct drm_crtc *crtc,
->>       mgag200_g200er_reset_tagfifo(mdev);
->> +    mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
->> +
->>       mgag200_enable_display(mdev);
->>       if (funcs->enable_vidrst)
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_g200ev.c 
->> b/drivers/gpu/drm/mgag200/mgag200_g200ev.c
->> index ac957f42abe1..e698a3a499bf 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_g200ev.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_g200ev.c
->> @@ -203,6 +203,8 @@ static void 
->> mgag200_g200ev_crtc_helper_atomic_enable(struct drm_crtc *crtc,
->>       mgag200_g200ev_set_hiprilvl(mdev);
->> +    mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
->> +
->>       mgag200_enable_display(mdev);
->>       if (funcs->enable_vidrst)
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_g200se.c 
->> b/drivers/gpu/drm/mgag200/mgag200_g200se.c
->> index bd6e573c9a1a..7e4ea0046a6b 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_g200se.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_g200se.c
->> @@ -334,6 +334,8 @@ static void 
->> mgag200_g200se_crtc_helper_atomic_enable(struct drm_crtc *crtc,
->>       mgag200_g200se_set_hiprilvl(mdev, adjusted_mode, format);
->> +    mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
->> +
->>       mgag200_enable_display(mdev);
->>       if (funcs->enable_vidrst)
->> diff --git a/drivers/gpu/drm/mgag200/mgag200_mode.c 
->> b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> index af3ce5a6a636..d2a04b317232 100644
->> --- a/drivers/gpu/drm/mgag200/mgag200_mode.c
->> +++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
->> @@ -65,9 +65,9 @@ static void mgag200_crtc_set_gamma_linear(struct 
->> mga_device *mdev,
->>       }
->>   }
->> -static void mgag200_crtc_set_gamma(struct mga_device *mdev,
->> -                   const struct drm_format_info *format,
->> -                   struct drm_color_lut *lut)
->> +static void mgag200_crtc_set_gamma_table(struct mga_device *mdev,
->> +                     const struct drm_format_info *format,
->> +                     struct drm_color_lut *lut)
->>   {
->>       int i;
->> @@ -103,6 +103,16 @@ static void mgag200_crtc_set_gamma(struct 
->> mga_device *mdev,
->>       }
->>   }
->> +void mgag200_crtc_set_gamma(struct mga_device *mdev,
->> +                const struct drm_format_info *format,
->> +                struct drm_property_blob *gamma_lut)
->> +{
->> +    if (gamma_lut)
->> +        mgag200_crtc_set_gamma_table(mdev, format, gamma_lut->data);
->> +    else
->> +        mgag200_crtc_set_gamma_linear(mdev, format);
->> +}
-> 
-> Please keep this open-coded its callers. With that changed
-> 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-Thanks for the review, yes I will change that.
-If no other comments, I will push it to drm-misc-fixes tomorrow.
-
+diff --git a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+index ae83cb8cb21f..59d34a2a2196 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+@@ -63,12 +63,12 @@ properties:
+   "#clock-cells":
+     const: 1
+     description:
+-      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
++      See include/dt-bindings/phy/phy-qcom-qmp.h
+ 
+   "#phy-cells":
+     const: 1
+     description:
+-      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
++      See include/dt-bindings/phy/phy-qcom-qmp.h
+ 
+   orientation-switch:
+     description:
 -- 
-
-Jocelyn
-> 
->> +
->>   static inline void mga_wait_vsync(struct mga_device *mdev)
->>   {
->>       unsigned long timeout = jiffies + HZ/10;
->> @@ -616,10 +626,7 @@ void mgag200_crtc_helper_atomic_flush(struct 
->> drm_crtc *crtc, struct drm_atomic_s
->>       if (crtc_state->enable && crtc_state->color_mgmt_changed) {
->>           const struct drm_format_info *format = 
->> mgag200_crtc_state->format;
->> -        if (crtc_state->gamma_lut)
->> -            mgag200_crtc_set_gamma(mdev, format, 
->> crtc_state->gamma_lut->data);
->> -        else
->> -            mgag200_crtc_set_gamma_linear(mdev, format);
->> +        mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
->>       }
->>   }
->> @@ -642,10 +649,7 @@ void mgag200_crtc_helper_atomic_enable(struct 
->> drm_crtc *crtc, struct drm_atomic_
->>       if (funcs->pixpllc_atomic_update)
->>           funcs->pixpllc_atomic_update(crtc, old_state);
->> -    if (crtc_state->gamma_lut)
->> -        mgag200_crtc_set_gamma(mdev, format, 
->> crtc_state->gamma_lut->data);
->> -    else
->> -        mgag200_crtc_set_gamma_linear(mdev, format);
->> +    mgag200_crtc_set_gamma(mdev, format, crtc_state->gamma_lut);
->>       mgag200_enable_display(mdev);
->>
->> base-commit: 6c9dbee84cd005bed5f9d07b3a2797ae6414b435
-> 
+2.34.1
 
 
