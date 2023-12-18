@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E18817297
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DE381719D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9378B23A03
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B2B02832F8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AE53D54D;
-	Mon, 18 Dec 2023 14:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1DA1D13B;
+	Mon, 18 Dec 2023 13:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VffCo3X6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4DzuFCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B1F3787E;
-	Mon, 18 Dec 2023 14:08:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07547C433C7;
-	Mon, 18 Dec 2023 14:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A3A101D4;
+	Mon, 18 Dec 2023 13:59:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE35C433C7;
+	Mon, 18 Dec 2023 13:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908489;
-	bh=vM3LpWf9Rfre6VQp6EK8VmPGCMi4BGSfz2H4XpENRM4=;
+	s=korg; t=1702907967;
+	bh=3V+k4ddL8JEsdUomZAe6sfJoOATv4iF/jdimPkVcCfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VffCo3X675wVlKzWs+wixhLLxAf4QwNlu7NkYIP3ExNN3quj9gPCaBiqe3fda8M0Q
-	 r67v/2j5IjvGuMq7+hOvcoCmn7xH342dqwIE4b87OsdaNn9VY2sMXDsx5/+raNd8sg
-	 bDxMZkFvzZaPORaRNUtcgO/7zutfCKRaF2MlKRHs=
+	b=q4DzuFCUknrsIcwElUWnLJpZOhay+KIhMmePdShBHh2S+Psf1Am3/s/y3QNzYu8k0
+	 PemILUU6iNtBLVwWCFdeNunJziS0wWQ58PYpOSLWb07tZQi369P78d+OXhvcktYl0z
+	 UqY2GQRnaE75UNtQwtgkOFBm8Wx22pb1GfRF1wMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 5.10 29/62] PCI: loongson: Limit MRRS to 256
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.1 099/106] ring-buffer: Fix writing to the buffer with max_data_size
 Date: Mon, 18 Dec 2023 14:51:53 +0100
-Message-ID: <20231218135047.556740924@linuxfoundation.org>
+Message-ID: <20231218135059.287999336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +55,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit ef61a0405742a9f7f6051bc6fd2f017d87d07911 upstream.
+commit b3ae7b67b87fed771fa5bf95389df06b0433603e upstream.
 
-This is a partial revert of 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS
-increases") for MIPS-based Loongson.
+The maximum ring buffer data size is the maximum size of data that can be
+recorded on the ring buffer. Events must be smaller than the sub buffer
+data size minus any meta data. This size is checked before trying to
+allocate from the ring buffer because the allocation assumes that the size
+will fit on the sub buffer.
 
-Some MIPS Loongson systems don't support arbitrary Max_Read_Request_Size
-(MRRS) settings.  8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS
-increases") worked around that by (1) assuming that firmware configured
-MRRS to the maximum supported value and (2) preventing the PCI core from
-increasing MRRS.
+The maximum size was calculated as the size of a sub buffer page (which is
+currently PAGE_SIZE minus the sub buffer header) minus the size of the
+meta data of an individual event. But it missed the possible adding of a
+time stamp for events that are added long enough apart that the event meta
+data can't hold the time delta.
 
-Unfortunately, some firmware doesn't set that maximum MRRS correctly, which
-results in devices not being initialized correctly.  One symptom, from the
-Debian report below, is this:
+When an event is added that is greater than the current BUF_MAX_DATA_SIZE
+minus the size of a time stamp, but still less than or equal to
+BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
+for a page that can hold the event. Luckily, there's a check for this loop
+and after 1000 iterations and a warning is emitted and the ring buffer is
+disabled. But this should never happen.
 
-  ata4.00: exception Emask 0x0 SAct 0x20000000 SErr 0x0 action 0x6 frozen
-  ata4.00: failed command: WRITE FPDMA QUEUED
-  ata4.00: cmd 61/20:e8:00:f0:e1/00:00:00:00:00/40 tag 29 ncq dma 16384 out
-           res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
-  ata4.00: status: { DRDY }
-  ata4: hard resetting link
+This can happen when a large event is added first, or after a long period
+where an absolute timestamp is prefixed to the event, increasing its size
+by 8 bytes. This passes the check and then goes into the algorithm that
+causes the infinite loop.
 
-Limit MRRS to 256 because MIPS Loongson with higher MRRS support is
-considered rare.
+For events that are the first event on the sub-buffer, it does not need to
+add a timestamp, because the sub-buffer itself contains an absolute
+timestamp, and adding one is redundant.
 
-This must be done at device enablement stage because the MRRS setting may
-get lost if PCI_COMMAND_MASTER on the parent bridge is cleared, and we are
-only sure parent bridge is enabled at this point.
+The fix is to check if the event is to be the first event on the
+sub-buffer, and if it is, then do not add a timestamp.
 
-Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217680
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1035587
-Link: https://lore.kernel.org/r/20231201115028.84351-1-jiaxun.yang@flygoat.com
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+This also fixes 32 bit adding a timestamp when a read of before_stamp or
+write_stamp is interrupted. There's still no need to add that timestamp if
+the event is going to be the first event on the sub buffer.
+
+Also, if the buffer has "time_stamp_abs" set, then also check if the
+length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
+
+Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
+Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
+
 Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
+Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pci-loongson.c |   46 ++++++++++++++++++++++++++++++----
- 1 file changed, 41 insertions(+), 5 deletions(-)
+ kernel/trace/ring_buffer.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pci-loongson.c
-+++ b/drivers/pci/controller/pci-loongson.c
-@@ -65,13 +65,49 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LO
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
- 			DEV_LS7A_LPC, system_bus_quirk);
- 
-+/*
-+ * Some Loongson PCIe ports have hardware limitations on their Maximum Read
-+ * Request Size. They can't handle anything larger than this.  Sane
-+ * firmware will set proper MRRS at boot, so we only need no_inc_mrrs for
-+ * bridges. However, some MIPS Loongson firmware doesn't set MRRS properly,
-+ * so we have to enforce maximum safe MRRS, which is 256 bytes.
-+ */
-+#ifdef CONFIG_MIPS
-+static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
-+{
-+	struct pci_bus *bus = pdev->bus;
-+	struct pci_dev *bridge;
-+	static const struct pci_device_id bridge_devids[] = {
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-+		{ 0, },
-+	};
-+
-+	/* look for the matching bridge */
-+	while (!pci_is_root_bus(bus)) {
-+		bridge = bus->self;
-+		bus = bus->parent;
-+
-+		if (pci_match_id(bridge_devids, bridge)) {
-+			if (pcie_get_readrq(pdev) > 256) {
-+				pci_info(pdev, "limiting MRRS to 256\n");
-+				pcie_set_readrq(pdev, 256);
-+			}
-+			break;
-+		}
-+	}
-+}
-+DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_set_min_mrrs_quirk);
-+#endif
-+
- static void loongson_mrrs_quirk(struct pci_dev *pdev)
- {
--	/*
--	 * Some Loongson PCIe ports have h/w limitations of maximum read
--	 * request size. They can't handle anything larger than this. So
--	 * force this limit on any devices attached under these ports.
--	 */
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(pdev->bus);
- 
- 	bridge->no_inc_mrrs = 1;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3578,7 +3578,10 @@ __rb_reserve_next(struct ring_buffer_per
+ 		 * absolute timestamp.
+ 		 * Don't bother if this is the start of a new page (w == 0).
+ 		 */
+-		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
++		if (!w) {
++			/* Use the sub-buffer timestamp */
++			info->delta = 0;
++		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
+ 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
+ 			info->length += RB_LEN_TIME_EXTEND;
+ 		} else {
+@@ -3729,6 +3732,8 @@ rb_reserve_next_event(struct trace_buffe
+ 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
+ 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
+ 		info.length += RB_LEN_TIME_EXTEND;
++		if (info.length > BUF_MAX_DATA_SIZE)
++			goto out_fail;
+ 	} else {
+ 		add_ts_default = RB_ADD_STAMP_NONE;
+ 	}
 
 
 
