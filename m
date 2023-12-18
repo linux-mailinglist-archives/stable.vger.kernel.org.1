@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9133E8172CD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05522817198
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67EC1C24EAE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A7C3B21049
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5493A1C0;
-	Mon, 18 Dec 2023 14:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B6537862;
+	Mon, 18 Dec 2023 13:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZOpS6+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6I1uvok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8335B3A1A8;
-	Mon, 18 Dec 2023 14:10:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071BDC433C8;
-	Mon, 18 Dec 2023 14:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330F51D14D;
+	Mon, 18 Dec 2023 13:59:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB90FC433C7;
+	Mon, 18 Dec 2023 13:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908618;
-	bh=Snf4VrL1pJJrqH8bQthvtTXJC7aApADSqW897w4Ky6M=;
+	s=korg; t=1702907945;
+	bh=u71E72QOnMHplzd+BmnNdmzhDTTsIHjHTISDXT8CfNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZOpS6+Sczlvfy9WOzfNrqQ4kksDug5bzn3LfCJ8WRia+VJlGwsDLTBu3nS/m/XOw
-	 JkzcTdqH5pNdK1gKWeLJ0C6IQNq/s4u1rlyJwJZBdvjqOC0326tV1Pt5WOLRbSaTGG
-	 dRWfiEFJj4hYKBDHXEXXl1BmPgiIrXg3dX2DT7JM=
+	b=f6I1uvokVNuGmwOOyYfr/PQP6S/1+WEwenzODWtWJiX9992rcCKkoGfBjIQNCA2kx
+	 geDusK9RxiuU6//aq9ifiJTxpbdC532StVB3oK4thgIHVV6a3rFjPJ5bQidLdO757z
+	 hWJe6IwlRh992kL2lQ7KXxRsPbf3rp+owouEpa54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 03/40] qca_debug: Prevent crash on TX ring changes
+	Hayes Wang <hayeswang@realtek.com>,
+	Simon Horman <simon.horman@corigine.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 104/106] r8152: avoid to change cfg for all devices
 Date: Mon, 18 Dec 2023 14:51:58 +0100
-Message-ID: <20231218135042.892561459@linuxfoundation.org>
+Message-ID: <20231218135059.509970487@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,91 +53,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
+commit 0d4cda805a183bbe523f2407edb5c14ade50b841 upstream.
 
-The qca_spi driver stop and restart the SPI kernel thread
-(via ndo_stop & ndo_open) in case of TX ring changes. This is
-a big issue because it allows userspace to prevent restart of
-the SPI kernel thread (via signals). A subsequent change of
-TX ring wrongly assume a valid spi_thread pointer which result
-in a crash.
+The rtl8152_cfgselector_probe() should set the USB configuration to the
+vendor mode only for the devices which the driver (r8152) supports.
+Otherwise, no driver would be used for such devices.
 
-So prevent this by stopping the network traffic handling and
-temporary park the SPI thread.
-
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
- drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ drivers/net/usb/r8152.c |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 702aa217a27ad..4c6c1792fdc77 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -258,7 +258,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- static int
- qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
--	const struct net_device_ops *ops = dev->netdev_ops;
- 	struct qcaspi *qca = netdev_priv(dev);
- 
- 	if ((ring->rx_pending) ||
-@@ -266,14 +265,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
- 
--	if (netif_running(dev))
--		ops->ndo_stop(dev);
-+	if (qca->spi_thread)
-+		kthread_park(qca->spi_thread);
- 
- 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
- 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
- 
--	if (netif_running(dev))
--		ops->ndo_open(dev);
-+	if (qca->spi_thread)
-+		kthread_unpark(qca->spi_thread);
- 
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9556,9 +9556,8 @@ static int rtl_fw_init(struct r8152 *tp)
  	return 0;
  }
-diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
-index db6817de24a14..04a7185e440db 100644
---- a/drivers/net/ethernet/qualcomm/qca_spi.c
-+++ b/drivers/net/ethernet/qualcomm/qca_spi.c
-@@ -573,6 +573,18 @@ qcaspi_spi_thread(void *data)
- 	netdev_info(qca->net_dev, "SPI thread created\n");
- 	while (!kthread_should_stop()) {
- 		set_current_state(TASK_INTERRUPTIBLE);
-+		if (kthread_should_park()) {
-+			netif_tx_disable(qca->net_dev);
-+			netif_carrier_off(qca->net_dev);
-+			qcaspi_flush_tx_ring(qca);
-+			kthread_parkme();
-+			if (qca->sync == QCASPI_SYNC_READY) {
-+				netif_carrier_on(qca->net_dev);
-+				netif_wake_queue(qca->net_dev);
-+			}
-+			continue;
-+		}
+ 
+-u8 rtl8152_get_version(struct usb_interface *intf)
++static u8 __rtl_get_hw_ver(struct usb_device *udev)
+ {
+-	struct usb_device *udev = interface_to_usbdev(intf);
+ 	u32 ocp_data = 0;
+ 	__le32 *tmp;
+ 	u8 version;
+@@ -9628,10 +9627,19 @@ u8 rtl8152_get_version(struct usb_interf
+ 		break;
+ 	default:
+ 		version = RTL_VER_UNKNOWN;
+-		dev_info(&intf->dev, "Unknown version 0x%04x\n", ocp_data);
++		dev_info(&udev->dev, "Unknown version 0x%04x\n", ocp_data);
+ 		break;
+ 	}
+ 
++	return version;
++}
 +
- 		if ((qca->intr_req == qca->intr_svc) &&
- 		    !qca->txr.skb[qca->txr.head])
- 			schedule();
--- 
-2.43.0
-
++u8 rtl8152_get_version(struct usb_interface *intf)
++{
++	u8 version;
++
++	version = __rtl_get_hw_ver(interface_to_usbdev(intf));
++
+ 	dev_dbg(&intf->dev, "Detected version 0x%04x\n", version);
+ 
+ 	return version;
+@@ -9933,6 +9941,12 @@ static int rtl8152_cfgselector_probe(str
+ 	struct usb_host_config *c;
+ 	int i, num_configs;
+ 
++	/* Switch the device to vendor mode, if and only if the vendor mode
++	 * driver supports it.
++	 */
++	if (__rtl_get_hw_ver(udev) == RTL_VER_UNKNOWN)
++		return 0;
++
+ 	/* The vendor mode is not always config #1, so to find it out. */
+ 	c = udev->config;
+ 	num_configs = udev->descriptor.bNumConfigurations;
 
 
 
