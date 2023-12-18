@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D383817321
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6392817271
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C70BF2892D2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5BF1C24E33
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74FEB3788B;
-	Mon, 18 Dec 2023 14:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70D14FF95;
+	Mon, 18 Dec 2023 14:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viR6Qb4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ei8dcHt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370443D54C;
-	Mon, 18 Dec 2023 14:13:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C32C433C7;
-	Mon, 18 Dec 2023 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10034FF62;
+	Mon, 18 Dec 2023 14:06:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8836C433C8;
+	Mon, 18 Dec 2023 14:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908831;
-	bh=Eyr0GeekwiFoCA5d7JyhAQOSuvAm/qhyED0WVbpMdQI=;
+	s=korg; t=1702908402;
+	bh=zOKn0uEcNi+m4+pyTuFi9hwIBm8FvQTMID/FNAhM7w4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viR6Qb4ZbtZ2pnoI9XO83FpcGtYXK2j+IjEmvB0dudkAqYJ77njHzHhNFVVocSWK7
-	 K51jQj8VrST+4SwGu9ZU5wCiPz7g654a8guY7DXUaSo4aWBu1Dh9/bDlWRHzexQZ5j
-	 X6iZxBAeZ2yrRaJurXBnLvMsr+0+9ZuoeTo3wcFI=
+	b=Ei8dcHt52TATioIz6BgRiSIZjzq8Jhb5DZBYeNld9WpgBJanL3A45ojnSC5applAH
+	 6S//fHyxKOmj7xf7kAn2sOGsB62CVo4toShQcnC+o31G1MrcDJAMJuK4svsPekYeWQ
+	 uKkYYMG0GNfO1Xgl0rKURdGSBHY8cKOfTec9U8Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/83] blk-cgroup: bypass blkcg_deactivate_policy after destroying
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 164/166] ring-buffer: Have rb_time_cmpxchg() set the msb counter too
 Date: Mon, 18 Dec 2023 14:52:10 +0100
-Message-ID: <20231218135051.898915592@linuxfoundation.org>
+Message-ID: <20231218135112.455808166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit e63a57303599b17290cd8bc48e6f20b24289a8bc ]
+commit 0aa0e5289cfe984a8a9fdd79ccf46ccf080151f7 upstream.
 
-blkcg_deactivate_policy() can be called after blkg_destroy_all()
-returns, and it isn't necessary since blkg_destroy_all has covered
-policy deactivation.
+The rb_time_cmpxchg() on 32-bit architectures requires setting three
+32-bit words to represent the 64-bit timestamp, with some salt for
+synchronization. Those are: msb, top, and bottom
 
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20231117023527.3188627-4-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue is, the rb_time_cmpxchg() did not properly salt the msb portion,
+and the msb that was written was stale.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231215084114.20899342@rorschach.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: f03f2abce4f39 ("ring-buffer: Have 32 bit time stamps use all 64 bits")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ kernel/trace/ring_buffer.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
-index 3ee4c1217b636..fd81a73708645 100644
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -425,6 +425,7 @@ static void blkg_destroy_all(struct request_queue *q)
- {
- 	struct blkcg_gq *blkg, *n;
- 	int count = BLKG_DESTROY_BATCH_SIZE;
-+	int i;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -722,10 +722,12 @@ static bool rb_time_cmpxchg(rb_time_t *t
+ 	 cnt2 = cnt + 1;
  
- restart:
- 	spin_lock_irq(&q->queue_lock);
-@@ -447,6 +448,18 @@ static void blkg_destroy_all(struct request_queue *q)
- 		}
- 	}
+ 	 rb_time_split(val, &top, &bottom, &msb);
++	 msb = rb_time_val_cnt(msb, cnt);
+ 	 top = rb_time_val_cnt(top, cnt);
+ 	 bottom = rb_time_val_cnt(bottom, cnt);
  
-+	/*
-+	 * Mark policy deactivated since policy offline has been done, and
-+	 * the free is scheduled, so future blkcg_deactivate_policy() can
-+	 * be bypassed
-+	 */
-+	for (i = 0; i < BLKCG_MAX_POLS; i++) {
-+		struct blkcg_policy *pol = blkcg_policy[i];
-+
-+		if (pol)
-+			__clear_bit(pol->plid, q->blkcg_pols);
-+	}
-+
- 	q->root_blkg = NULL;
- 	spin_unlock_irq(&q->queue_lock);
- }
--- 
-2.43.0
-
+ 	 rb_time_split(set, &top2, &bottom2, &msb2);
++	 msb2 = rb_time_val_cnt(msb2, cnt);
+ 	 top2 = rb_time_val_cnt(top2, cnt2);
+ 	 bottom2 = rb_time_val_cnt(bottom2, cnt2);
+ 
 
 
 
