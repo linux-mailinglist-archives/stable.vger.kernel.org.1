@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-7106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88CD8170F5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2722F8170DF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68629283B2B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8F93B21EEB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C50101D4;
-	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5133437864;
+	Mon, 18 Dec 2023 13:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uLlMEMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv8mXMTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2735129ED2;
-	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B62C433C7;
-	Mon, 18 Dec 2023 13:52:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B50F1D15F;
+	Mon, 18 Dec 2023 13:51:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4606FC433C7;
+	Mon, 18 Dec 2023 13:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907566;
-	bh=EG6kwFKSPsKZ46NZiZwDtp4u3ymSnCPaAnvSltuK1bU=;
+	s=korg; t=1702907500;
+	bh=YrS57CcnYZ48/ycUITLOlc7lHxsTNR5u7FztyjtikfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uLlMEMuOpznEloPQWN5lI/YQOKmyqr209itfYNf9fo5t8B+tl0CNfIgZ+z9e5blh
-	 TEteDnfidyhImwAM0J44z/73s7x+tlMoytgx/iVmD1yZ41PVHsrpuxqEpwNuZGQYo+
-	 JJs6p1iNEREsRXqb0N4Tv/nizXWV4QpYTyerwK1E=
+	b=jv8mXMTEXWfmfnfjA9bhSxbcI2olajFEVoh5X0wHMF9TIxNAQtpc2W5xWGaDkEnwy
+	 oeH9JjATxi1bA3CYy6c7k2BowR/yyu61Rzseb8lhQtA87M6gco3jt85O+g7mTSRCwP
+	 ABuKIPUjn+FkDSxt++02omDoFbyJENR1ErQ820nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yusong Gao <a869920004@gmail.com>,
+	Juerg Haefliger <juerg.haefliger@canonical.com>,
+	David Howells <dhowells@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 09/26] net: Remove acked SYN flag from packet in the transmit queue correctly
-Date: Mon, 18 Dec 2023 14:51:11 +0100
-Message-ID: <20231218135041.019056309@linuxfoundation.org>
+Subject: [PATCH 4.14 10/26] sign-file: Fix incorrect return values check
+Date: Mon, 18 Dec 2023 14:51:12 +0100
+Message-ID: <20231218135041.068371524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
 References: <20231218135040.665690087@linuxfoundation.org>
@@ -58,108 +59,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Yusong Gao <a869920004@gmail.com>
 
-[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
+[ Upstream commit 829649443e78d85db0cff0c37cadb28fbb1a5f6f ]
 
-syzkaller report:
+There are some wrong return values check in sign-file when call OpenSSL
+API. The ERR() check cond is wrong because of the program only check the
+return value is < 0 which ignored the return val is 0. For example:
+1. CMS_final() return 1 for success or 0 for failure.
+2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
+3. i2d_TYPEbio() return 1 for success and 0 for failure.
+4. BIO_free() return 1 for success and 0 for failure.
 
- kernel BUG at net/core/skbuff.c:3452!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
- RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
- Call Trace:
- icmp_glue_bits (net/ipv4/icmp.c:357)
- __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
- ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
- icmp_push_reply (net/ipv4/icmp.c:370)
- __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
- ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
- __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
- ip_output (net/ipv4/ip_output.c:427)
- __ip_queue_xmit (net/ipv4/ip_output.c:535)
- __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
- __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
- tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
- tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
- tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
-
-The panic issue was trigered by tcp simultaneous initiation.
-The initiation process is as follows:
-
-      TCP A                                            TCP B
-
-  1.  CLOSED                                           CLOSED
-
-  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
-
-  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
-
-  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
-
-  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
-
-  // TCP B: not send challenge ack for ack limit or packet loss
-  // TCP A: close
-	tcp_close
-	   tcp_send_fin
-              if (!tskb && tcp_under_memory_pressure(sk))
-                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
-           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
-
-  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
-
-  // TCP B: send challenge ack to SYN_FIN_ACK
-
-  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
-
-  // TCP A:  <SND.UNA=101>
-
-  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
-
-	__tcp_retransmit_skb  //skb->len=0
-	    tcp_trim_head
-		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
-		    __pskb_trim_head
-			skb->data_len -= len // skb->len=-1, wrap around
-	    ... ...
-	    ip_fragment
-		icmp_glue_bits //BUG_ON
-
-If we use tcp_trim_head() to remove acked SYN from packet that contains data
-or other flags, skb->len will be incorrectly decremented. We can remove SYN
-flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
-can fix the problem mentioned above.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://www.openssl.org/docs/manmaster/man3/
+Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
+Signed-off-by: Yusong Gao <a869920004@gmail.com>
+Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20231213024405.624692-1-a869920004@gmail.com/ # v5
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 67636017f275a..2a07a167124c4 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2883,7 +2883,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (skb_still_in_host_queue(sk, skb))
- 		return -EBUSY;
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 7434e9ea926e2..12acc70e5a7a5 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+ 		    "CMS_final");
  
-+start:
- 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
-+		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
-+			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
-+			TCP_SKB_CB(skb)->seq++;
-+			goto start;
-+		}
- 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
- 			WARN_ON_ONCE(1);
- 			return -EINVAL;
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ 
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) != 1, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
 -- 
 2.43.0
 
