@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E630F817140
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F5D8171F6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86C891F231EB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B256B23510
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C071D123;
-	Mon, 18 Dec 2023 13:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A354E37883;
+	Mon, 18 Dec 2023 14:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwgCGx1A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4M6k4Bq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB9B129EC8;
-	Mon, 18 Dec 2023 13:55:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459C9C433C7;
-	Mon, 18 Dec 2023 13:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E844238D;
+	Mon, 18 Dec 2023 14:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8069EC433C8;
+	Mon, 18 Dec 2023 14:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907749;
-	bh=qnN8yYCiaoJNi3WvGk56Yceza7OzlvPi12NfgunPNDo=;
+	s=korg; t=1702908119;
+	bh=ygLvFjM+KntVZKR/w5qzUGqhixh63c6R0QClg8vaQA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwgCGx1Azke0srjFALX1FRnN+Iuuk35oLzQ/r3uK5U61DRufLHPs7Osd74VMXE+GC
-	 LDXVBBDBY+X75N8b3KtKHbJZAXUSXYvzN05gk2A+xOJ90MR+p8eABdWRC1FUmGSKCM
-	 jhBilU6/qWqVXSWD+i2CzSMNFq69ao9uRm/Kl4AE=
+	b=e4M6k4BqrxJo99Mf7wfs4yL9sklQSmFhFG+92zzlPE9AwY7KGAYFTTYLkdNqkSkUU
+	 +sM3lLS0b3TRAwt7Nd1QRu9UlUWS/m+PjfI/A0D3QJ7dAU+VDHAzfm8RCy8IVzHGBU
+	 xJYvHdPvSWkSSwKRbTWkdZMqpQ7h1oZ7oAH81rEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Sneh Shah <quic_snehshah@quicinc.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/106] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+Subject: [PATCH 6.6 053/166] net: stmmac: dwmac-qcom-ethqos: Fix drops in 10M SGMII RX
 Date: Mon, 18 Dec 2023 14:50:19 +0100
-Message-ID: <20231218135055.236069818@linuxfoundation.org>
+Message-ID: <20231218135107.399297708@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Sneh Shah <quic_snehshah@quicinc.com>
 
-[ Upstream commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 ]
+[ Upstream commit 981d947bcd382c3950a593690e0e13d194d65b1c ]
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+In 10M SGMII mode all the packets are being dropped due to wrong Rx clock.
+SGMII 10MBPS mode needs RX clock divider programmed to avoid drops in Rx.
+Update configure SGMII function with Rx clk divider programming.
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
-
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
+Fixes: 463120c31c58 ("net: stmmac: dwmac-qcom-ethqos: add support for SGMII")
+Tested-by: Andrew Halaney <ahalaney@redhat.com>
+Signed-off-by: Sneh Shah <quic_snehshah@quicinc.com>
+Reviewed-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Link: https://lore.kernel.org/r/20231212092208.22393-1-quic_snehshah@quicinc.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace_mprofile.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/powerpc/kernel/trace/ftrace_mprofile.S b/arch/powerpc/kernel/trace/ftrace_mprofile.S
-index 6f9c2dea905b7..f4a72b38488f7 100644
---- a/arch/powerpc/kernel/trace/ftrace_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_mprofile.S
-@@ -62,7 +62,7 @@
- 	.endif
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+index d3bf42d0fceb6..31631e3f89d0a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+@@ -34,6 +34,7 @@
+ #define RGMII_CONFIG_LOOPBACK_EN		BIT(2)
+ #define RGMII_CONFIG_PROG_SWAP			BIT(1)
+ #define RGMII_CONFIG_DDR_MODE			BIT(0)
++#define RGMII_CONFIG_SGMII_CLK_DVDR		GENMASK(18, 10)
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	PPC_STL	r8, GPR1(r1)
+ /* SDCC_HC_REG_DLL_CONFIG fields */
+ #define SDCC_DLL_CONFIG_DLL_RST			BIT(30)
+@@ -78,6 +79,8 @@
+ #define ETHQOS_MAC_CTRL_SPEED_MODE		BIT(14)
+ #define ETHQOS_MAC_CTRL_PORT_SEL		BIT(15)
  
- 	.if \allregs == 1
-@@ -182,7 +182,7 @@ ftrace_no_trace:
- 	mflr	r3
- 	mtctr	r3
- 	REST_GPR(3, r1)
--	addi	r1, r1, SWITCH_FRAME_SIZE
-+	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	mtlr	r0
- 	bctr
- #endif
++#define SGMII_10M_RX_CLK_DVDR			0x31
++
+ struct ethqos_emac_por {
+ 	unsigned int offset;
+ 	unsigned int value;
+@@ -598,6 +601,9 @@ static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos)
+ 	return 0;
+ }
+ 
++/* On interface toggle MAC registers gets reset.
++ * Configure MAC block for SGMII on ethernet phy link up
++ */
+ static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos)
+ {
+ 	int val;
+@@ -617,6 +623,10 @@ static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos)
+ 	case SPEED_10:
+ 		val |= ETHQOS_MAC_CTRL_PORT_SEL;
+ 		val &= ~ETHQOS_MAC_CTRL_SPEED_MODE;
++		rgmii_updatel(ethqos, RGMII_CONFIG_SGMII_CLK_DVDR,
++			      FIELD_PREP(RGMII_CONFIG_SGMII_CLK_DVDR,
++					 SGMII_10M_RX_CLK_DVDR),
++			      RGMII_IO_MACRO_CONFIG);
+ 		break;
+ 	}
+ 
 -- 
 2.43.0
 
