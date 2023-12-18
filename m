@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-7092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121488170E6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B570817157
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B520A28397E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B16EDB20D55
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6451D132;
-	Mon, 18 Dec 2023 13:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47D51D127;
+	Mon, 18 Dec 2023 13:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3+LlcVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va1mgqYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F0F129EF7;
-	Mon, 18 Dec 2023 13:52:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F5CC433C7;
-	Mon, 18 Dec 2023 13:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BBE8129EE3;
+	Mon, 18 Dec 2023 13:56:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC505C433C8;
+	Mon, 18 Dec 2023 13:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907528;
-	bh=NQRYXf5cqNCEYT/+RaEhDyOD/tbMt6IXk4b3PJPMisI=;
+	s=korg; t=1702907802;
+	bh=FIvWwxTxEC53vHnIHprns+l4ZcoAp4Cq4/5d0k16g/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3+LlcVwMUNHbxz7Nyw1TiMyvRFRy9jiSg+V9ioUx1Bj0k3+YGZBAQUCkg+kO77yL
-	 WFNSSGIdFz9peEK3XK/Kxafd/Hd3RBLZO8JF9FLdqlTo2r9aCgULBY36uuBxM/2oez
-	 GAwcTPYVt5u49VRChMPHt649Zv0rfsG7QFAKq3z4=
+	b=Va1mgqYj3JSYYKkZVP3uoSBlgOl+49F3bzuKxwQC+ZyWhHl2bzpJMf42/6KwWQI6m
+	 vDfxdLD/gSftUEvw6R2raDnxHKrlEWJGxw0GZrsl7MDuAG8QC2z2mIdCp2kL6q/l16
+	 sj0+ogFD6CiayItF97fipTxmnwripcpi82DBisUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Fei Shao <fshao@chromium.org>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 02/26] qca_debug: Fix ethtool -G iface tx behavior
-Date: Mon, 18 Dec 2023 14:51:04 +0100
-Message-ID: <20231218135040.742748687@linuxfoundation.org>
+Subject: [PATCH 6.1 051/106] drm/mediatek: Add spinlock for setting vblank event in atomic_begin
+Date: Mon, 18 Dec 2023 14:51:05 +0100
+Message-ID: <20231218135057.223314694@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +57,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
+[ Upstream commit fe4c5f662097978b6c91c23a13c24ed92339a180 ]
 
-After calling ethtool -g it was not possible to adjust the TX ring
-size again:
+Add spinlock protection to avoid race condition on vblank event
+between mtk_drm_crtc_atomic_begin() and mtk_drm_finish_page_flip().
 
-  # ethtool -g eth1
-  Ring parameters for eth1:
-  Pre-set maximums:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  Current hardware settings:
-  RX:		4
-  RX Mini:	n/a
-  RX Jumbo:	n/a
-  TX:		10
-  # ethtool -G eth1 tx 8
-  netlink error: Invalid argument
-
-The reason for this is that the readonly setting rx_pending get
-initialized and after that the range check in qcaspi_set_ringparam()
-fails regardless of the provided parameter. So fix this by accepting
-the exposed RX defaults. Instead of adding another magic number
-better use a new define here.
-
-Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230920090658.31181-1-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
-index 858c39cdae08a..acb60721991d8 100644
---- a/drivers/net/ethernet/qualcomm/qca_debug.c
-+++ b/drivers/net/ethernet/qualcomm/qca_debug.c
-@@ -30,6 +30,8 @@
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index 7fb52a573436e..558000db4a100 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -736,6 +736,7 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 									  crtc);
+ 	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
+ 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
++	unsigned long flags;
  
- #define QCASPI_MAX_REGS 0x20
- 
-+#define QCASPI_RX_MAX_FRAMES 4
+ 	if (mtk_crtc->event && mtk_crtc_state->base.event)
+ 		DRM_ERROR("new event while there is still a pending event\n");
+@@ -743,7 +744,11 @@ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 	if (mtk_crtc_state->base.event) {
+ 		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
+ 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
 +
- static const u16 qcaspi_spi_regs[] = {
- 	SPI_REG_BFR_SIZE,
- 	SPI_REG_WRBUF_SPC_AVA,
-@@ -266,9 +268,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
- 	struct qcaspi *qca = netdev_priv(dev);
- 
--	ring->rx_max_pending = 4;
-+	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_max_pending = TX_RING_MAX_LEN;
--	ring->rx_pending = 4;
-+	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
- 	ring->tx_pending = qca->txr.count;
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		mtk_crtc->event = mtk_crtc_state->base.event;
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
++
+ 		mtk_crtc_state->base.event = NULL;
+ 	}
  }
- 
-@@ -277,7 +279,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
- {
- 	struct qcaspi *qca = netdev_priv(dev);
- 
--	if ((ring->rx_pending) ||
-+	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
- 	    (ring->rx_mini_pending) ||
- 	    (ring->rx_jumbo_pending))
- 		return -EINVAL;
 -- 
 2.43.0
 
