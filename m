@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32A88172D8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BEB817329
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B721F23C1E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28BF2B2325B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4522F37870;
-	Mon, 18 Dec 2023 14:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905BD37870;
+	Mon, 18 Dec 2023 14:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA58klrT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1u+mjPCv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4001D144;
-	Mon, 18 Dec 2023 14:10:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 858DAC433C7;
-	Mon, 18 Dec 2023 14:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59237129ED2;
+	Mon, 18 Dec 2023 14:14:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D513DC433C8;
+	Mon, 18 Dec 2023 14:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908642;
-	bh=Q3VoitlyE9SS/8pW3h8IHJsKaDC7EoIKNEr1bATgDW4=;
+	s=korg; t=1702908850;
+	bh=kpnDmTufWCCXf1KBGdgqMKWlwAzmMZv+2Pbwcz/qtFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AA58klrT1JBhghHFxA//np3hLMMswkX5S3Hk/5CLSXMosEeBApn87G9+HVSFfSwGi
-	 upfJGv9AN5kCCOZEAdWa5B1OfMXz/cgIYNxWVC0X5auiHGn8AIv6GyI8M3Ed2uMpSr
-	 I3SWT2bpNnZCES1vM2uOzeT3OLyPxxUEasZdD6sY=
+	b=1u+mjPCv9tUPxocNMrOSK9kj9jRGWoYOtr5k08TSZCokVJeyUgIVEbnMfw2j+MFAz
+	 qvKvL589FvKGiQv5E3sAROSxc/6rLnYHB5TGmP/Eou/xjV/ID9Lcv/prsOzDjgOJzo
+	 ZUUeMTIe8goZyGAQPAL7QtGiyUODpHftNMMqX+Jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
-	Coly Li <colyli@suse.de>,
-	Eric Wheeler <bcache@lists.ewheeler.net>,
-	Jens Axboe <axboe@kernel.dk>,
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 22/40] bcache: avoid oversize memory allocation by small stripe_size
+Subject: [PATCH 5.15 56/83] HID: add ALWAYS_POLL quirk for Apple kb
 Date: Mon, 18 Dec 2023 14:52:17 +0100
-Message-ID: <20231218135043.522049425@linuxfoundation.org>
+Message-ID: <20231218135052.204990897@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,92 +53,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
+[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
 
-Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
-used for dirty data writeback, their sizes are decided by backing device
-capacity and stripe size. Larger backing device capacity or smaller
-stripe size make these two arraies occupies more dynamic memory space.
+These devices disconnect if suspended without remote wakeup. They can operate
+with the standard driver.
 
-Currently bcache->stripe_size is directly inherited from
-queue->limits.io_opt of underlying storage device. For normal hard
-drives, its limits.io_opt is 0, and bcache sets the corresponding
-stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
-devices do declare value for queue->limits.io_opt, small stripe_size
-(comparing to 1TB) becomes an issue for oversize memory allocations of
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
-capacity of hard drives gets much larger in recent decade.
-
-For example a raid5 array assembled by three 20TB hardrives, the raid
-device capacity is 40TB with typical 512KB limits.io_opt. After the math
-calculation in bcache code, these two arraies will occupy 400MB dynamic
-memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
-declared on a new 2TB hard drive, then these two arraies request 2GB and
-512MB dynamic memory from kzalloc(). The result is that bcache device
-always fails to initialize on his system.
-
-To avoid the oversize memory allocation, bcache->stripe_size should not
-directly inherited by queue->limits.io_opt from the underlying device.
-This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
-and set bcache device's stripe size against the declared limits.io_opt
-value from the underlying storage device,
-- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size directly by this limits.io_opt value.
-- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size by a value multiplying limits.io_opt and euqal or
-  large than BCH_MIN_STRIPE_SZ.
-
-Then the minimal stripe size of a bcache device will always be >= 4MB.
-For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
-in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
-by these two arraies will be 2.5MB in total.
-
-Such mount of memory allocated for bcache->stripe_sectors_dirty and
-bcache->full_dirty_stripes is reasonable for most of storage devices.
-
-Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
-Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/bcache.h | 1 +
- drivers/md/bcache/super.c  | 2 ++
- 2 files changed, 3 insertions(+)
+ drivers/hid/hid-quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index 1dd9298cb0e02..7bce582788458 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -265,6 +265,7 @@ struct bcache_device {
- #define BCACHE_DEV_WB_RUNNING		3
- #define BCACHE_DEV_RATE_DW_RUNNING	4
- 	int			nr_stripes;
-+#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
- 	unsigned int		stripe_size;
- 	atomic_t		*stripe_sectors_dirty;
- 	unsigned long		*full_dirty_stripes;
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 6afaa5e852837..d5f57a9551dda 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -822,6 +822,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
- 
- 	if (!d->stripe_size)
- 		d->stripe_size = 1 << 31;
-+	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
-+		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
- 
- 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
- 	if (!n || n > max_stripes) {
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 225138a39d323..fbce6e892fc83 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
 -- 
 2.43.0
 
