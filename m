@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E28B817231
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9DA817160
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A363CB23CC8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8012833CE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00815BFB4;
-	Mon, 18 Dec 2023 14:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B047E1D127;
+	Mon, 18 Dec 2023 13:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8e+8EgH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvtFSlOV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F7437897;
-	Mon, 18 Dec 2023 14:04:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23B2C433C7;
-	Mon, 18 Dec 2023 14:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78596129EF7;
+	Mon, 18 Dec 2023 13:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5FFC433C7;
+	Mon, 18 Dec 2023 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908251;
-	bh=L4KdS2q/BQKJc2utAD2glC/wSpcsycSc7YM35kTRvcg=;
+	s=korg; t=1702907829;
+	bh=3oe6SyjOQjRGuAnPgtOhaNmPP4iMEX7I9xxBO4YPsgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8e+8EgH4/8owAq9tjgkEGvuYXTiD3gSBD/ekCocmZGnezRxQBtopl7ccRS78oiht
-	 yjs1HTrZQzuu4VXaPZ5BajiNleVMT8VzWGtJWnB8ec5IcqLzkE2E/sva/RntRA4/kw
-	 FE6Z/FoggN+x0gZaOlNahnfLtlsSWWeG8wdPlzjA=
+	b=SvtFSlOVhvivUgCZmnn/tLt2Iy3xUE6mUo6376LGGJYO3HJxRIQyy/owGsjmKpe5w
+	 8HwuwH3xyyiCjSp5aZ0rHyONJJCG1YoqYYZR8nNptqmzyZWkuowudXNj+QoN29mWZc
+	 Ls36unqzLAFH6KMTlPbSN/5+lkOMMEOrSNennDZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/166] HID: mcp2221: Allow IO to start during probe
+Subject: [PATCH 6.1 060/106] bcache: avoid NULL checking to c->root in run_cache_set()
 Date: Mon, 18 Dec 2023 14:51:14 +0100
-Message-ID: <20231218135109.860006601@linuxfoundation.org>
+Message-ID: <20231218135057.608740582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit 73ce9f1f2741a38f5d27393e627702ae2c46e6f2 ]
+[ Upstream commit 3eba5e0b2422aec3c9e79822029599961fdcab97 ]
 
-During the probe we add an I2C adapter and as soon as we add that adapter
-it may be used for a transfer (e.g via the code in i2cdetect()).
-Those transfers are not able to complete and time out. This is because the
-HID raw_event callback (mcp2221_raw_event) will not be invoked until the
-HID device's 'driver_input_lock' is marked up at the completion of the
-probe in hid_device_probe(). This starves the driver of the responses it
-is waiting for.
-In order to allow the I2C transfers to complete while we are still in the
-probe, start the IO once we have completed init of the HID device.
+In run_cache_set() after c->root returned from bch_btree_node_get(), it
+is checked by IS_ERR_OR_NULL(). Indeed it is unncessary to check NULL
+because bch_btree_node_get() will not return NULL pointer to caller.
 
-This issue seems to have been seen before and a patch was submitted but
-it seems it was never accepted. See:
-https://lore.kernel.org/all/20221103222714.21566-3-Enrik.Berkhan@inka.de/
+This patch replaces IS_ERR_OR_NULL() by IS_ERR() for the above reason.
 
-Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-11-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-mcp2221.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/bcache/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
-index b95f31cf0fa21..aef0785c91cc2 100644
---- a/drivers/hid/hid-mcp2221.c
-+++ b/drivers/hid/hid-mcp2221.c
-@@ -1142,6 +1142,8 @@ static int mcp2221_probe(struct hid_device *hdev,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 525871380f442..70e5bd8961d2f 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -2019,7 +2019,7 @@ static int run_cache_set(struct cache_set *c)
+ 		c->root = bch_btree_node_get(c, NULL, k,
+ 					     j->btree_level,
+ 					     true, NULL);
+-		if (IS_ERR_OR_NULL(c->root))
++		if (IS_ERR(c->root))
+ 			goto err;
  
-+	hid_device_io_start(hdev);
-+
- 	/* Set I2C bus clock diviser */
- 	if (i2c_clk_freq > 400)
- 		i2c_clk_freq = 400;
+ 		list_del_init(&c->root->list);
 -- 
 2.43.0
 
