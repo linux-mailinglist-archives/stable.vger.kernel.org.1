@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C370817186
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD681711B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54211F25048
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1B11B21A01
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5C7129ED2;
-	Mon, 18 Dec 2023 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509691D155;
+	Mon, 18 Dec 2023 13:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXQVtctR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBwou2Le"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056EC1D127;
-	Mon, 18 Dec 2023 13:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE22C433C8;
-	Mon, 18 Dec 2023 13:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175D237883;
+	Mon, 18 Dec 2023 13:54:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902A7C433C8;
+	Mon, 18 Dec 2023 13:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907916;
-	bh=aXjIL5Snv57/dQi/nT58X83ZGvLoL0urGLC0JP2ZYHY=;
+	s=korg; t=1702907662;
+	bh=fK9kymCr/3Op4PSjLzKMi3V7hR1rIls4BwXkMUTmddA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DXQVtctRPWHIgo0iw1p5VE44NYPLfRj1QonilstXWouXlxsHHgfdO/qSPXgfMAbYE
-	 HVyhbxttFywWfl8qMipOMSOaK6ZY8kiqGvqQFkZdB2J2utb60o/85ZRXSPbrZxyOFB
-	 4mqk3FWrKaMiKoT6/gShkMIicgWoQXhwmnZzIIi0=
+	b=EBwou2Le6TOtHK57uXMW1PhOxiesa90G8pQdzT5t0QnsZuyFmUp7n++7mG7eCC+Q1
+	 YkYNAxxKD10BE+tuhchne6eB1BJR7jsP1zXWLeTFtsOXIpy9BQa90kC6enweyL/mXS
+	 ruEx06ic1szCMW8CqCuxdFBfBqY/OakQdrW5Scls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/106] LoongArch: Add dependency between vmlinuz.efi and vmlinux.efi
+Subject: [PATCH 4.19 09/36] net: Remove acked SYN flag from packet in the transmit queue correctly
 Date: Mon, 18 Dec 2023 14:51:19 +0100
-Message-ID: <20231218135057.826944339@linuxfoundation.org>
+Message-ID: <20231218135042.230678246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +52,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit d3ec75bc635cb0cb8185b63293d33a3d1b942d22 ]
+[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
 
-A common issue in Makefile is a race in parallel building.
+syzkaller report:
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
+ kernel BUG at net/core/skbuff.c:3452!
+ invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
+ RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
+ Call Trace:
+ icmp_glue_bits (net/ipv4/icmp.c:357)
+ __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
+ ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
+ icmp_push_reply (net/ipv4/icmp.c:370)
+ __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
+ ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
+ __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
+ ip_output (net/ipv4/ip_output.c:427)
+ __ip_queue_xmit (net/ipv4/ip_output.c:535)
+ __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
+ __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
+ tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
+ tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
+ tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
 
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
+The panic issue was trigered by tcp simultaneous initiation.
+The initiation process is as follows:
 
-A similar symptom occurs with the following command:
+      TCP A                                            TCP B
 
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-    GZIP    arch/loongarch/boot/vmlinuz
-    OBJCOPY arch/loongarch/boot/vmlinuz.o
-    LD      arch/loongarch/boot/vmlinuz.efi.elf
-    OBJCOPY arch/loongarch/boot/vmlinuz.efi
+  1.  CLOSED                                           CLOSED
 
-The log "OBJCOPY arch/loongarch/boot/vmlinux.efi" is displayed twice.
+  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
 
-It indicates that two threads simultaneously enter arch/loongarch/boot/
-and write to arch/loongarch/boot/vmlinux.efi.
+  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
 
-It occasionally leads to a build failure:
+  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
 
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-  truncate: Invalid number: ‘arch/loongarch/boot/vmlinux.bin’
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/loongarch/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/loongarch/boot/vmlinux.bin'
-  make[1]: *** [arch/loongarch/Makefile:146: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
+  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
 
-vmlinuz.efi depends on vmlinux.efi, but such a dependency is not
-specified in arch/loongarch/Makefile.
+  // TCP B: not send challenge ack for ack limit or packet loss
+  // TCP A: close
+	tcp_close
+	   tcp_send_fin
+              if (!tskb && tcp_under_memory_pressure(sk))
+                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
+           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
+
+  // TCP B: send challenge ack to SYN_FIN_ACK
+
+  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
+
+  // TCP A:  <SND.UNA=101>
+
+  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
+
+	__tcp_retransmit_skb  //skb->len=0
+	    tcp_trim_head
+		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
+		    __pskb_trim_head
+			skb->data_len -= len // skb->len=-1, wrap around
+	    ... ...
+	    ip_fragment
+		icmp_glue_bits //BUG_ON
+
+If we use tcp_trim_head() to remove acked SYN from packet that contains data
+or other flags, skb->len will be incorrectly decremented. We can remove SYN
+flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
+can fix the problem mentioned above.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_output.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index 01b57b7263225..ed47a3a87768e 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -116,6 +116,8 @@ vdso_install:
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index a0875dc60e08f..670804d4c1690 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2890,7 +2890,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
+ 	if (skb_still_in_host_queue(sk, skb))
+ 		return -EBUSY;
  
- all:	$(notdir $(KBUILD_IMAGE))
- 
-+vmlinuz.efi: vmlinux.efi
-+
- vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
- 
++start:
+ 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
++		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
++			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
++			TCP_SKB_CB(skb)->seq++;
++			goto start;
++		}
+ 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
+ 			WARN_ON_ONCE(1);
+ 			return -EINVAL;
 -- 
 2.43.0
 
