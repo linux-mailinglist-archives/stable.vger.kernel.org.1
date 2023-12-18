@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE61F817185
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5952817308
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13791C23F38
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64DDA1F21167
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7AC1D13A;
-	Mon, 18 Dec 2023 13:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE593789C;
+	Mon, 18 Dec 2023 14:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sP+7YiUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaUgc091"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BAB1D12B;
-	Mon, 18 Dec 2023 13:58:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41DFC433C8;
-	Mon, 18 Dec 2023 13:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655FD1D15C;
+	Mon, 18 Dec 2023 14:12:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD80AC433C7;
+	Mon, 18 Dec 2023 14:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907914;
-	bh=7FeqhaqAhztYOUw/1mp3qy9yQOFbAxSQ3bGW3hLu9t4=;
+	s=korg; t=1702908763;
+	bh=Z6v0K0FcWn53BzdSesnj8EsBjOk5B4QbABeZt/0C6wY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sP+7YiUAWKSjkZg8lGxa/j8xLJEuwhAKec0m7C695TqcwRzkGWIcVMm6qjsYVlc9f
-	 SgXbooV3iSmTMIIP/u/aJhOOgRem0pB7luYY3mFOvb4W8TNzxoX8o4n0lThic4C8Bx
-	 uhJ7Fjf0TlXltHTZWLLsFrl4FW0vZVYkYs1MmO4M=
+	b=oaUgc091haB9wW5uuIToaAeJwlijlTJl9Hmkdzz5zjfF0SHDc2+M1DPJJDp6cKCC7
+	 Za1f86OtQjBP6s06a6ANPWkaCuC8xIX6xb/sWpVdcCFK5t9RjfUlDgM4ACbzX4hM/I
+	 IsMxwfHsfIpaC0N6/hr+2ldLrG2H1p9FiQY1DQIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 091/106] drm/i915: Fix remapped stride with CCS on ADL+
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 24/83] net/rose: Fix Use-After-Free in rose_ioctl
 Date: Mon, 18 Dec 2023 14:51:45 +0100
-Message-ID: <20231218135058.953583590@linuxfoundation.org>
+Message-ID: <20231218135050.811396659@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +51,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 0ccd963fe555451b1f84e6d14d2b3ef03dd5c947 upstream.
+[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
 
-On ADL+ the hardware automagically calculates the CCS AUX surface
-stride from the main surface stride, so when remapping we can't
-really play a lot of tricks with the main surface stride, or else
-the AUX surface stride would get miscalculated and no longer
-match the actual data layout in memory.
+Because rose_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with rose_accept().
+A use-after-free for skb occurs with the following flow.
+```
+rose_ioctl() -> skb_peek()
+rose_accept() -> skb_dequeue() -> kfree_skb()
+```
+Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
 
-Supposedly we could remap in 256 main surface tile units
-(AUX page(4096)/cachline(64)*4(4x1 main surface tiles per
-AUX cacheline)=256 main surface tiles), but the extra complexity
-is probably not worth the hassle.
-
-So let's just make sure our mapping stride is calculated from
-the full framebuffer stride (instead of the framebuffer width).
-This way the stride we program into PLANE_STRIDE will be the
-original framebuffer stride, and thus there will be no change
-to the AUX stride/layout.
-
-Cc: stable@vger.kernel.org
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231205180308.7505-1-ville.syrjala@linux.intel.com
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-(cherry picked from commit 2c12eb36f849256f5eb00ffaee9bf99396fd3814)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_fb.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ net/rose/af_rose.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb.c
-@@ -1441,8 +1441,20 @@ static u32 calc_plane_remap_info(const s
- 
- 			size += remap_info->size;
- 		} else {
--			unsigned int dst_stride = plane_view_dst_stride_tiles(fb, color_plane,
--									      remap_info->width);
-+			unsigned int dst_stride;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 86c93cf1744b0..b3e7a92f1ec19 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -1307,9 +1307,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	case TIOCINQ: {
+ 		struct sk_buff *skb;
+ 		long amount = 0L;
+-		/* These two are safe on a single CPU system as only user tasks fiddle here */
 +
-+			/*
-+			 * The hardware automagically calculates the CCS AUX surface
-+			 * stride from the main surface stride so can't really remap a
-+			 * smaller subset (unless we'd remap in whole AUX page units).
-+			 */
-+			if (intel_fb_needs_pot_stride_remap(fb) &&
-+			    intel_fb_is_ccs_modifier(fb->base.modifier))
-+				dst_stride = remap_info->src_stride;
-+			else
-+				dst_stride = remap_info->width;
-+
-+			dst_stride = plane_view_dst_stride_tiles(fb, color_plane, dst_stride);
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
+ 			amount = skb->len;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		return put_user(amount, (unsigned int __user *) argp);
+ 	}
  
- 			assign_chk_ovf(i915, remap_info->dst_stride, dst_stride);
- 			color_plane_info->mapping_stride = dst_stride *
+-- 
+2.43.0
+
 
 
 
