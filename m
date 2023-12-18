@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC73817310
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C662817283
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF1641C24FE2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2FE285B07
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5A81D123;
-	Mon, 18 Dec 2023 14:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3053788C;
+	Mon, 18 Dec 2023 14:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LctKSAl4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZEaYFxD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4208D1D12A;
-	Mon, 18 Dec 2023 14:13:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78284C433C7;
-	Mon, 18 Dec 2023 14:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8B1D13D;
+	Mon, 18 Dec 2023 14:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA97C433C7;
+	Mon, 18 Dec 2023 14:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908784;
-	bh=f9WIa8mG3SoGOUi/3g8J5zjBEmuI7UEZzIbPjZ+ksTw=;
+	s=korg; t=1702908448;
+	bh=yAFq6zEYAXrQAmhT99SfJjKSKWmlpWa3TkyDnZC1xsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LctKSAl4T4RT7zzo0d2pzoWQGfc2RCJLNenRs+yuUTicB/gW1l8YOon9T6zLQthzD
-	 gmgdQxB3xoHOGAYNSbbpRYupyp649rABVHmwVx+q3x38LtuNEzvOL/a0TiWuiAMOet
-	 sgv0pkOuV8ZzeRrKFksSUoymFEj0zmRYD9SDFgEg=
+	b=RZEaYFxDsu7c08SXle8YTbNxQR8wD1f+i/qhqKZQ7LvoJhkGjO/3WZZJ6lGokY3bY
+	 xHxcudgvJ1bcdp1l0ADASsZU7IorSviBQRHxCW4ziJpT7sohbDkwQOk6KIHAv/K1aX
+	 WCj4/fJ1SXoh7SxRJvhoXszRpHGxLx+mj0eW3bGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/83] MIPS: Loongson64: Handle more memory types passed from firmware
+Subject: [PATCH 5.10 05/62] qca_debug: Prevent crash on TX ring changes
 Date: Mon, 18 Dec 2023 14:51:29 +0100
-Message-ID: <20231218135050.134222120@linuxfoundation.org>
+Message-ID: <20231218135046.456685261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,117 +53,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit c7206e7bd214ebb3ca6fa474a4423662327d9beb ]
+[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
 
-There are many types of revsered memory passed from firmware
-that should be reserved in memblock, and UMA memory passed
-from firmware that should be added to system memory for system
-to use.
+The qca_spi driver stop and restart the SPI kernel thread
+(via ndo_stop & ndo_open) in case of TX ring changes. This is
+a big issue because it allows userspace to prevent restart of
+the SPI kernel thread (via signals). A subsequent change of
+TX ring wrongly assume a valid spi_thread pointer which result
+in a crash.
 
-Also for memblock there is no need to align those space into page,
-which actually cause problems.
+So prevent this by stopping the network traffic handling and
+temporary park the SPI thread.
 
-Handle them properly to prevent memory corruption on some systems.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../include/asm/mach-loongson64/boot_param.h  |  6 ++-
- arch/mips/loongson64/init.c                   | 42 ++++++++++++-------
- 2 files changed, 31 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
+ drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-index c454ef734c45c..e007edd6b60a7 100644
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -14,7 +14,11 @@
- #define ADAPTER_ROM		8
- #define ACPI_TABLE		9
- #define SMBIOS_TABLE		10
--#define MAX_MEMORY_TYPE		11
-+#define UMA_VIDEO_RAM		11
-+#define VUMA_VIDEO_RAM		12
-+#define MAX_MEMORY_TYPE		13
-+
-+#define MEM_SIZE_IS_IN_BYTES	(1 << 31)
- 
- #define LOONGSON3_BOOT_MEM_MAP_MAX 128
- struct efi_memory_map_loongson {
-diff --git a/arch/mips/loongson64/init.c b/arch/mips/loongson64/init.c
-index fc7a5c61d91d6..3d147de87d3f4 100644
---- a/arch/mips/loongson64/init.c
-+++ b/arch/mips/loongson64/init.c
-@@ -49,8 +49,7 @@ void virtual_early_config(void)
- void __init szmem(unsigned int node)
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 702aa217a27ad..4c6c1792fdc77 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -258,7 +258,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ static int
+ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
  {
- 	u32 i, mem_type;
--	static unsigned long num_physpages;
--	u64 node_id, node_psize, start_pfn, end_pfn, mem_start, mem_size;
-+	phys_addr_t node_id, mem_start, mem_size;
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	struct qcaspi *qca = netdev_priv(dev);
  
- 	/* Otherwise come from DTB */
- 	if (loongson_sysconf.fw_interface != LOONGSON_LEFI)
-@@ -64,27 +63,38 @@ void __init szmem(unsigned int node)
+ 	if ((ring->rx_pending) ||
+@@ -266,14 +265,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
  
- 		mem_type = loongson_memmap->map[i].mem_type;
- 		mem_size = loongson_memmap->map[i].mem_size;
--		mem_start = loongson_memmap->map[i].mem_start;
+-	if (netif_running(dev))
+-		ops->ndo_stop(dev);
++	if (qca->spi_thread)
++		kthread_park(qca->spi_thread);
+ 
+ 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
+ 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
+ 
+-	if (netif_running(dev))
+-		ops->ndo_open(dev);
++	if (qca->spi_thread)
++		kthread_unpark(qca->spi_thread);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 44fa959ebcaa5..b08a4b2a6a996 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -573,6 +573,18 @@ qcaspi_spi_thread(void *data)
+ 	netdev_info(qca->net_dev, "SPI thread created\n");
+ 	while (!kthread_should_stop()) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
++		if (kthread_should_park()) {
++			netif_tx_disable(qca->net_dev);
++			netif_carrier_off(qca->net_dev);
++			qcaspi_flush_tx_ring(qca);
++			kthread_parkme();
++			if (qca->sync == QCASPI_SYNC_READY) {
++				netif_carrier_on(qca->net_dev);
++				netif_wake_queue(qca->net_dev);
++			}
++			continue;
++		}
 +
-+		/* Memory size comes in MB if MEM_SIZE_IS_IN_BYTES not set */
-+		if (mem_size & MEM_SIZE_IS_IN_BYTES)
-+			mem_size &= ~MEM_SIZE_IS_IN_BYTES;
-+		else
-+			mem_size = mem_size << 20;
-+
-+		mem_start = (node_id << 44) | loongson_memmap->map[i].mem_start;
- 
- 		switch (mem_type) {
- 		case SYSTEM_RAM_LOW:
- 		case SYSTEM_RAM_HIGH:
--			start_pfn = ((node_id << 44) + mem_start) >> PAGE_SHIFT;
--			node_psize = (mem_size << 20) >> PAGE_SHIFT;
--			end_pfn  = start_pfn + node_psize;
--			num_physpages += node_psize;
--			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
--				(u32)node_id, mem_type, mem_start, mem_size);
--			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
--				start_pfn, end_pfn, num_physpages);
--			memblock_add_node(PFN_PHYS(start_pfn),
--					  PFN_PHYS(node_psize), node,
-+		case UMA_VIDEO_RAM:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes usable\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
-+			memblock_add_node(mem_start, mem_size, node,
- 					  MEMBLOCK_NONE);
- 			break;
- 		case SYSTEM_RAM_RESERVED:
--			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
--				(u32)node_id, mem_type, mem_start, mem_size);
--			memblock_reserve(((node_id << 44) + mem_start), mem_size << 20);
-+		case VIDEO_ROM:
-+		case ADAPTER_ROM:
-+		case ACPI_TABLE:
-+		case SMBIOS_TABLE:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes reserved\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
-+			memblock_reserve(mem_start, mem_size);
-+			break;
-+		/* We should not reserve VUMA_VIDEO_RAM as it overlaps with MMIO */
-+		case VUMA_VIDEO_RAM:
-+		default:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes unhandled\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
- 			break;
- 		}
- 	}
+ 		if ((qca->intr_req == qca->intr_svc) &&
+ 		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
 -- 
 2.43.0
 
