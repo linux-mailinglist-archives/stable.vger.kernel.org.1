@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F95F817227
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAB38170EF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E35E7B22AB0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCE1D283959
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312265A874;
-	Mon, 18 Dec 2023 14:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437151D12D;
+	Mon, 18 Dec 2023 13:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXpg4oFJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPNlOVrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64011D13A;
-	Mon, 18 Dec 2023 14:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C457C433C9;
-	Mon, 18 Dec 2023 14:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C79B129ED2;
+	Mon, 18 Dec 2023 13:52:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D68C433C8;
+	Mon, 18 Dec 2023 13:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908223;
-	bh=i0BxfCOp6SGJFRBkFEHn81FPZwtaB3LFnPJwyELgvI0=;
+	s=korg; t=1702907549;
+	bh=nrd24P3XkG4XpB80ROyM3Gr5HVMzCLsWZRyBAMnuZCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXpg4oFJx9JSBTAAgjyaE5d7iOYveqKnyMSq00qmjCn+D5QFQD8UA8iKlrhQdskmx
-	 eeihSdioFoY/wuRXcV3oAodQnkN8Y1wawMm7UxDeunfFl002d0DziZ0Dy+jPXaUeT/
-	 X/OeFAYNdPlChKyKpvq8XoogFgrOXfcpL/SR5ZRo=
+	b=IPNlOVrVpeK/LK3VaqnoLlfgAOOmQzkJgmXOzO7XLnzYfYYRAag+a3Hwmo+pwQqF0
+	 iceika/6wL9MRQpfjLHID1qMr+zc8rEwP2yVzHySQ5Qq7VZ1rGDWjygZEmanBZMJ26
+	 j1WuDf5g/E0Xz41UnMjPx36ArD3VU3fOtMbT/RLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/166] nvme: catch errors from nvme_configure_metadata()
+Subject: [PATCH 4.14 03/26] qca_spi: Fix reset behavior
 Date: Mon, 18 Dec 2023 14:51:05 +0100
-Message-ID: <20231218135109.423422782@linuxfoundation.org>
+Message-ID: <20231218135040.782213156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit cd9aed606088d36a7ffff3e808db4e76b1854285 ]
+[ Upstream commit 1057812d146dd658c9a9a96d869c2551150207b5 ]
 
-nvme_configure_metadata() is issuing I/O, so we might incur an I/O
-error which will cause the connection to be reset.
-But in that case any further probing will race with reset and
-cause UAF errors.
-So return a status from nvme_configure_metadata() and abort
-probing if there was an I/O error.
+In case of a reset triggered by the QCA7000 itself, the behavior of the
+qca_spi driver was not quite correct:
+- in case of a pending RX frame decoding the drop counter must be
+  incremented and decoding state machine reseted
+- also the reset counter must always be incremented regardless of sync
+  state
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-4-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_spi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index c09048984a277..d5c8b0a08d494 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1813,16 +1813,18 @@ static int nvme_init_ms(struct nvme_ns *ns, struct nvme_id_ns *id)
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 4142554dc29e3..201da9fba72a6 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -592,11 +592,17 @@ qcaspi_spi_thread(void *data)
+ 			if (intr_cause & SPI_INT_CPU_ON) {
+ 				qcaspi_qca7k_sync(qca, QCASPI_EVENT_CPUON);
  
--static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
-+static int nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
- {
- 	struct nvme_ctrl *ctrl = ns->ctrl;
-+	int ret;
++				/* Frame decoding in progress */
++				if (qca->frm_handle.state != qca->frm_handle.init)
++					qca->net_dev->stats.rx_dropped++;
++
++				qcafrm_fsm_init_spi(&qca->frm_handle);
++				qca->stats.device_reset++;
++
+ 				/* not synced. */
+ 				if (qca->sync != QCASPI_SYNC_READY)
+ 					continue;
  
--	if (nvme_init_ms(ns, id))
--		return;
-+	ret = nvme_init_ms(ns, id);
-+	if (ret)
-+		return ret;
- 
- 	ns->features &= ~(NVME_NS_METADATA_SUPPORTED | NVME_NS_EXT_LBAS);
- 	if (!ns->ms || !(ctrl->ops->flags & NVME_F_METADATA_SUPPORTED))
--		return;
-+		return 0;
- 
- 	if (ctrl->ops->flags & NVME_F_FABRICS) {
- 		/*
-@@ -1831,7 +1833,7 @@ static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
- 		 * remap the separate metadata buffer from the block layer.
- 		 */
- 		if (WARN_ON_ONCE(!(id->flbas & NVME_NS_FLBAS_META_EXT)))
--			return;
-+			return 0;
- 
- 		ns->features |= NVME_NS_EXT_LBAS;
- 
-@@ -1858,6 +1860,7 @@ static void nvme_configure_metadata(struct nvme_ns *ns, struct nvme_id_ns *id)
- 		else
- 			ns->features |= NVME_NS_METADATA_SUPPORTED;
- 	}
-+	return 0;
- }
- 
- static void nvme_set_queue_limits(struct nvme_ctrl *ctrl,
-@@ -2038,7 +2041,11 @@ static int nvme_update_ns_info_block(struct nvme_ns *ns,
- 	ns->lba_shift = id->lbaf[lbaf].ds;
- 	nvme_set_queue_limits(ns->ctrl, ns->queue);
- 
--	nvme_configure_metadata(ns, id);
-+	ret = nvme_configure_metadata(ns, id);
-+	if (ret < 0) {
-+		blk_mq_unfreeze_queue(ns->disk->queue);
-+		goto out;
-+	}
- 	nvme_set_chunk_sectors(ns, id);
- 	nvme_update_disk_info(ns->disk, ns, id);
- 
+-				qca->stats.device_reset++;
+ 				netif_wake_queue(qca->net_dev);
+ 				netif_carrier_on(qca->net_dev);
+ 			}
 -- 
 2.43.0
 
