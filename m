@@ -1,55 +1,47 @@
-Return-Path: <stable+bounces-7378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F2C817247
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CC081728E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08E141C24DE5
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49961F24B7A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB3C3D57D;
-	Mon, 18 Dec 2023 14:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBD25A86B;
+	Mon, 18 Dec 2023 14:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdxQDV6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G28OK3By"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FAD1D144;
-	Mon, 18 Dec 2023 14:05:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11867C433C8;
-	Mon, 18 Dec 2023 14:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369913A1BB;
+	Mon, 18 Dec 2023 14:07:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA00BC433C8;
+	Mon, 18 Dec 2023 14:07:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908308;
-	bh=Nd/Qcfb6t3n01FF75EhN+3C3omcOKjwbnQes0MmWABQ=;
+	s=korg; t=1702908465;
+	bh=D7l+T8Y/cY0zw5a7gnp+K3Y815ZpgBhYfPby/96KLO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdxQDV6O81SSDLPMant6Kr0HdrpngGEhR5sWRUhBxSlFV3NgezvPK6UtQDfnRWM2j
-	 f8K10tTWApwjnxdg9gyAOzh0L0q0ez33cPRZDaoFQCqDlr1TrNOfwu9GH7T6o3VQhd
-	 tRJQW61VfM6IPIdlyZXSuP4DjM1XOzYmr6rgJ2Ko=
+	b=G28OK3ByeW5HdTyhHByp8+3I75ZlfkIZwWuflgwDXM8ubAV/D+MBmrZsDRwRVHEBL
+	 YFos2AX7nLVWXJmwnni92YvgnDf4Iu4+5TNag/L8XvB9hD44xJ7/usW86wMoH/Vp/P
+	 J/5MOSZY5GoYRGABDt/xeWPvYz8a+yehFv5tgQds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Hubbard <jhubbard@nvidia.com>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	David Hildenbrand <david@redhat.com>,
-	Peter Xu <peterx@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Marcos Paulo de Souza <mpdesouza@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 130/166] Revert "selftests: error out if kernel header files are not yet built"
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 12/62] atm: Fix Use-After-Free in do_vcc_ioctl
 Date: Mon, 18 Dec 2023 14:51:36 +0100
-Message-ID: <20231218135110.903463130@linuxfoundation.org>
+Message-ID: <20231218135046.765183531@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 43e8832fed08438e2a27afed9bac21acd0ceffe5 upstream.
+[ Upstream commit 24e90b9e34f9e039f56b5f25f6e6eb92cdd8f4b3 ]
 
-This reverts commit 9fc96c7c19df ("selftests: error out if kernel header
-files are not yet built").
+Because do_vcc_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with vcc_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+do_vcc_ioctl() -> skb_peek()
+vcc_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to do_vcc_ioctl() to fix this issue.
 
-It turns out that requiring the kernel headers to be built as a
-prerequisite to building selftests, does not work in many cases. For
-example, Peter Zijlstra writes:
-
-"My biggest beef with the whole thing is that I simply do not want to use
-'make headers', it doesn't work for me.
-
-I have a ton of output directories and I don't care to build tools into
-the output dirs, in fact some of them flat out refuse to work that way
-(bpf comes to mind)." [1]
-
-Therefore, stop erroring out on the selftests build. Additional patches
-will be required in order to change over to not requiring the kernel
-headers.
-
-[1] https://lore.kernel.org/20231208221007.GO28727@noisy.programming.kicks-ass.net
-
-Link: https://lkml.kernel.org/r/20231209020144.244759-1-jhubbard@nvidia.com
-Fixes: 9fc96c7c19df ("selftests: error out if kernel header files are not yet built")
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Cc: Anders Roxell <anders.roxell@linaro.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Marcos Paulo de Souza <mpdesouza@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209094210.GA403126@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/Makefile |   21 --------------------
- tools/testing/selftests/lib.mk   |   40 ++-------------------------------------
- 2 files changed, 4 insertions(+), 57 deletions(-)
+ net/atm/ioctl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -152,12 +152,10 @@ ifneq ($(KBUILD_OUTPUT),)
-   abs_objtree := $(realpath $(abs_objtree))
-   BUILD := $(abs_objtree)/kselftest
-   KHDR_INCLUDES := -isystem ${abs_objtree}/usr/include
--  KHDR_DIR := ${abs_objtree}/usr/include
- else
-   BUILD := $(CURDIR)
-   abs_srctree := $(shell cd $(top_srcdir) && pwd)
-   KHDR_INCLUDES := -isystem ${abs_srctree}/usr/include
--  KHDR_DIR := ${abs_srctree}/usr/include
-   DEFAULT_INSTALL_HDR_PATH := 1
- endif
+diff --git a/net/atm/ioctl.c b/net/atm/ioctl.c
+index 838ebf0cabbfb..f81f8d56f5c0c 100644
+--- a/net/atm/ioctl.c
++++ b/net/atm/ioctl.c
+@@ -73,14 +73,17 @@ static int do_vcc_ioctl(struct socket *sock, unsigned int cmd,
+ 	case SIOCINQ:
+ 	{
+ 		struct sk_buff *skb;
++		int amount;
  
-@@ -171,7 +169,7 @@ export KHDR_INCLUDES
- # all isn't the first target in the file.
- .DEFAULT_GOAL := all
- 
--all: kernel_header_files
-+all:
- 	@ret=1;							\
- 	for TARGET in $(TARGETS); do				\
- 		BUILD_TARGET=$$BUILD/$$TARGET;			\
-@@ -182,23 +180,6 @@ all: kernel_header_files
- 		ret=$$((ret * $$?));				\
- 	done; exit $$ret;
- 
--kernel_header_files:
--	@ls $(KHDR_DIR)/linux/*.h >/dev/null 2>/dev/null;                          \
--	if [ $$? -ne 0 ]; then                                                     \
--            RED='\033[1;31m';                                                  \
--            NOCOLOR='\033[0m';                                                 \
--            echo;                                                              \
--            echo -e "$${RED}error$${NOCOLOR}: missing kernel header files.";   \
--            echo "Please run this and try again:";                             \
--            echo;                                                              \
--            echo "    cd $(top_srcdir)";                                       \
--            echo "    make headers";                                           \
--            echo;                                                              \
--	    exit 1;                                                                \
--	fi
--
--.PHONY: kernel_header_files
--
- run_tests: all
- 	@for TARGET in $(TARGETS); do \
- 		BUILD_TARGET=$$BUILD/$$TARGET;	\
---- a/tools/testing/selftests/lib.mk
-+++ b/tools/testing/selftests/lib.mk
-@@ -44,26 +44,10 @@ endif
- selfdir = $(realpath $(dir $(filter %/lib.mk,$(MAKEFILE_LIST))))
- top_srcdir = $(selfdir)/../../..
- 
--ifeq ("$(origin O)", "command line")
--  KBUILD_OUTPUT := $(O)
-+ifeq ($(KHDR_INCLUDES),)
-+KHDR_INCLUDES := -isystem $(top_srcdir)/usr/include
- endif
- 
--ifneq ($(KBUILD_OUTPUT),)
--  # Make's built-in functions such as $(abspath ...), $(realpath ...) cannot
--  # expand a shell special character '~'. We use a somewhat tedious way here.
--  abs_objtree := $(shell cd $(top_srcdir) && mkdir -p $(KBUILD_OUTPUT) && cd $(KBUILD_OUTPUT) && pwd)
--  $(if $(abs_objtree),, \
--    $(error failed to create output directory "$(KBUILD_OUTPUT)"))
--  # $(realpath ...) resolves symlinks
--  abs_objtree := $(realpath $(abs_objtree))
--  KHDR_DIR := ${abs_objtree}/usr/include
--else
--  abs_srctree := $(shell cd $(top_srcdir) && pwd)
--  KHDR_DIR := ${abs_srctree}/usr/include
--endif
--
--KHDR_INCLUDES := -isystem $(KHDR_DIR)
--
- # The following are built by lib.mk common compile rules.
- # TEST_CUSTOM_PROGS should be used by tests that require
- # custom build rule and prevent common build rule use.
-@@ -74,25 +58,7 @@ TEST_GEN_PROGS := $(patsubst %,$(OUTPUT)
- TEST_GEN_PROGS_EXTENDED := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_PROGS_EXTENDED))
- TEST_GEN_FILES := $(patsubst %,$(OUTPUT)/%,$(TEST_GEN_FILES))
- 
--all: kernel_header_files $(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED) \
--     $(TEST_GEN_FILES)
--
--kernel_header_files:
--	@ls $(KHDR_DIR)/linux/*.h >/dev/null 2>/dev/null;                      \
--	if [ $$? -ne 0 ]; then                                                 \
--            RED='\033[1;31m';                                                  \
--            NOCOLOR='\033[0m';                                                 \
--            echo;                                                              \
--            echo -e "$${RED}error$${NOCOLOR}: missing kernel header files.";   \
--            echo "Please run this and try again:";                             \
--            echo;                                                              \
--            echo "    cd $(top_srcdir)";                                       \
--            echo "    make headers";                                           \
--            echo;                                                              \
--	    exit 1; \
--	fi
--
--.PHONY: kernel_header_files
-+all: $(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED) $(TEST_GEN_FILES)
- 
- define RUN_TESTS
- 	BASE_DIR="$(selfdir)";			\
+ 		if (sock->state != SS_CONNECTED) {
+ 			error = -EINVAL;
+ 			goto done;
+ 		}
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		skb = skb_peek(&sk->sk_receive_queue);
+-		error = put_user(skb ? skb->len : 0,
+-				 (int __user *)argp) ? -EFAULT : 0;
++		amount = skb ? skb->len : 0;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
++		error = put_user(amount, (int __user *)argp) ? -EFAULT : 0;
+ 		goto done;
+ 	}
+ 	case ATM_SETSC:
+-- 
+2.43.0
+
 
 
 
