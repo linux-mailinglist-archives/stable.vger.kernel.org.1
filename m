@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-7814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FCC3817950
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:59:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E80C817951
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 19:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3547285ACA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:59:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF0A4285CE3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22DA5BFB9;
-	Mon, 18 Dec 2023 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCFE5D723;
+	Mon, 18 Dec 2023 18:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="af3Hxa9d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JbdYwCEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E9D5BFAC;
-	Mon, 18 Dec 2023 17:59:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA5BC433C7;
-	Mon, 18 Dec 2023 17:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D435BFB2;
+	Mon, 18 Dec 2023 18:00:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D54C433C7;
+	Mon, 18 Dec 2023 18:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702922387;
-	bh=HW0rFRw/3V2wzc7/MLynKB9I7xCfC8kQrI5KSqUBbn0=;
+	s=k20201202; t=1702922402;
+	bh=LzuQFZuOToTYP2V+5qmnHqtKbTLkIQfxAdwzBgY6S1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=af3Hxa9deN61S+e++3iF7OMFu7+bqT3nyZQVvTFd+nDD3Xf1eTnmoqtfRNPTMZels
-	 HIbizUDTpUyW8mER5GC4bs+QXRymvxvr6Nv96qxZEBI5aST94aQxsW84Q8r3sMV/7N
-	 vu5E2Sra1ciqcfEQ11xsQcfoVfQvAFaqfLuP04IW4gatG7rdVcsQKTsOwnJ6ZchN2a
-	 6qLoFCGb+qAdVS9BFqgmqDkgRZEw3i9N4Sfrri/0XviT7POYeOp7zDskJ2ctCJmnTX
-	 lKcXIeS2TCshp6RoaiSDBv4YuMN2qhZoSYIEMwgFRTo731CLvo6pzzdcg53mihMgHE
-	 Mu8zGMDJ3BAWA==
+	b=JbdYwCExYIdOY1mGmWfNBXg95sQUEk1oomHwpuLsIZebFoq18N486WPYzGBqDr1OG
+	 Rzji+J6VNYfUnRsTri/0uethWy/ehg2Pt0GUGvulH3LZ3K0aBb8lKidK8N3M+QFFqr
+	 T3pCfNoWGPqr0+dF6MSjyxOJYQ00K8CUBBxTSs5T9EUJmGwGbqu7DgcR9kjlKeAIY0
+	 JRyDrr7eN4P1J3IhmyBMX7MRBufUq53/nUfU9uI/2hAHiGvIVyGhcaBRS1S7EAqVW0
+	 9SCMib2QcbAwm5meqk2OoPuiz1SVsKJ1c80OLSFzxZK3FbobxzFW1YQS7fpJsKOe5f
+	 8A+K1v1a7zA7g==
 From: SeongJae Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: SeongJae Park <sj@kernel.org>,
@@ -39,12 +39,12 @@ Cc: SeongJae Park <sj@kernel.org>,
 	akpm@linux-foundation.org,
 	changbin.du@intel.com,
 	damon@lists.linux.dev
-Subject: [PATCH 6.1.y] mm/damon/core: make damon_start() waits until kdamond_fn() starts
-Date: Mon, 18 Dec 2023 17:59:39 +0000
-Message-Id: <20231218175939.99263-1-sj@kernel.org>
+Subject: [PATCH 6.6.y] mm/damon/core: make damon_start() waits until kdamond_fn() starts
+Date: Mon, 18 Dec 2023 17:59:59 +0000
+Message-Id: <20231218175959.99278-1-sj@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023121849-ambulance-violate-e5b2@gregkh>
-References: <2023121849-ambulance-violate-e5b2@gregkh>
+In-Reply-To: <2023121843-pension-tactile-868b@gregkh>
+References: <2023121843-pension-tactile-868b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,25 +76,16 @@ Cc: Jakub Acs <acsjakub@amazon.de>
 Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 6376a824595607e99d032a39ba3394988b4fce96)
-Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 3 +++
+ include/linux/damon.h | 2 ++
  mm/damon/core.c       | 7 +++++++
- 2 files changed, 10 insertions(+)
+ 2 files changed, 9 insertions(+)
 
 diff --git a/include/linux/damon.h b/include/linux/damon.h
-index b13be7ae2275..e6941b239f44 100644
+index c70cca8a839f..e9e8ed92567a 100644
 --- a/include/linux/damon.h
 +++ b/include/linux/damon.h
-@@ -8,6 +8,7 @@
- #ifndef _DAMON_H_
- #define _DAMON_H_
- 
-+#include <linux/completion.h>
- #include <linux/mutex.h>
- #include <linux/time64.h>
- #include <linux/types.h>
-@@ -452,6 +453,8 @@ struct damon_ctx {
+@@ -524,6 +524,8 @@ struct damon_ctx {
  /* private: internal use only */
  	struct timespec64 last_aggregation;
  	struct timespec64 last_ops_update;
@@ -104,10 +95,10 @@ index b13be7ae2275..e6941b239f44 100644
  /* public: */
  	struct task_struct *kdamond;
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 36d098d06c55..5db9bec8ae67 100644
+index fd5be73f699f..191bc87b2441 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -383,6 +383,8 @@ struct damon_ctx *damon_new_ctx(void)
+@@ -423,6 +423,8 @@ struct damon_ctx *damon_new_ctx(void)
  	if (!ctx)
  		return NULL;
  
@@ -116,7 +107,7 @@ index 36d098d06c55..5db9bec8ae67 100644
  	ctx->attrs.sample_interval = 5 * 1000;
  	ctx->attrs.aggr_interval = 100 * 1000;
  	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
-@@ -519,11 +521,14 @@ static int __damon_start(struct damon_ctx *ctx)
+@@ -626,11 +628,14 @@ static int __damon_start(struct damon_ctx *ctx)
  	mutex_lock(&ctx->kdamond_lock);
  	if (!ctx->kdamond) {
  		err = 0;
@@ -131,7 +122,7 @@ index 36d098d06c55..5db9bec8ae67 100644
  		}
  	}
  	mutex_unlock(&ctx->kdamond_lock);
-@@ -1147,6 +1152,8 @@ static int kdamond_fn(void *data)
+@@ -1370,6 +1375,8 @@ static int kdamond_fn(void *data)
  
  	pr_debug("kdamond (%d) starts\n", current->pid);
  
