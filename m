@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDDB581722D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C55281715C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D83B280611
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3DA11C23F6A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A705D740;
-	Mon, 18 Dec 2023 14:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A6C129EFB;
+	Mon, 18 Dec 2023 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGPMT5XY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KchKtxpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AF85BFBE;
-	Mon, 18 Dec 2023 14:04:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3F7C433CD;
-	Mon, 18 Dec 2023 14:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B25129EE3;
+	Mon, 18 Dec 2023 13:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252EBC433C8;
+	Mon, 18 Dec 2023 13:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908242;
-	bh=KQZzmAwb1+LDnObROPfRfVJuif9LlwqkSsMPi+NTaUw=;
+	s=korg; t=1702907818;
+	bh=OJaxzgsy4U586au1qE5Jo3IkbfoeIkstSJtw72mNYLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGPMT5XYbo9Z0Bpo5r0tjwph7EdTTZHQgJ5FbcdGIAIiQOiPYUxENOBeh32KFjTGY
-	 ZB6PCP9bLjjBcgBMNrCC7tgF1DUj4HYUKn44zB6mqYSHej1lEufh3qbc0g0EFEjNFG
-	 1nJN/aerzj0anbU2yP3ldyb6acuaP1VGb3nDo5t4=
+	b=KchKtxpPnkH5UomOUYBCSjnLyqDKxbg9MS1yaj7/cW0Lo3rbkE3RU+Nm5TGYmMsqs
+	 3wu67089iVKHghlW/NK22nw0kYM9Y1dYbGKQ4d9LJD6saakOfe/h0Yos3V8jfKf2Kd
+	 MdgtCtum1T9iy5OJy3yiKPtpNeSrufametDo1ptk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Xuerui <git@xen0n.name>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
+	Coly Li <colyli@suse.de>,
+	Eric Wheeler <bcache@lists.ewheeler.net>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/166] LoongArch: Implement constant timer shutdown interface
+Subject: [PATCH 6.1 057/106] bcache: avoid oversize memory allocation by small stripe_size
 Date: Mon, 18 Dec 2023 14:51:11 +0100
-Message-ID: <20231218135109.715986205@linuxfoundation.org>
+Message-ID: <20231218135057.491846856@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,96 +55,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit d43f37b73468c172bc89ac4824a1511b411f0778 ]
+[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
 
-When a cpu is hot-unplugged, it is put in idle state and the function
-arch_cpu_idle_dead() is called. The timer interrupt for this processor
-should be disabled, otherwise there will be pending timer interrupt for
-the unplugged cpu, so that vcpu is prevented from giving up scheduling
-when system is running in vm mode.
+Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
+used for dirty data writeback, their sizes are decided by backing device
+capacity and stripe size. Larger backing device capacity or smaller
+stripe size make these two arraies occupies more dynamic memory space.
 
-This patch implements the timer shutdown interface so that the constant
-timer will be properly disabled when a CPU is hot-unplugged.
+Currently bcache->stripe_size is directly inherited from
+queue->limits.io_opt of underlying storage device. For normal hard
+drives, its limits.io_opt is 0, and bcache sets the corresponding
+stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
+devices do declare value for queue->limits.io_opt, small stripe_size
+(comparing to 1TB) becomes an issue for oversize memory allocations of
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
+capacity of hard drives gets much larger in recent decade.
 
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+For example a raid5 array assembled by three 20TB hardrives, the raid
+device capacity is 40TB with typical 512KB limits.io_opt. After the math
+calculation in bcache code, these two arraies will occupy 400MB dynamic
+memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
+declared on a new 2TB hard drive, then these two arraies request 2GB and
+512MB dynamic memory from kzalloc(). The result is that bcache device
+always fails to initialize on his system.
+
+To avoid the oversize memory allocation, bcache->stripe_size should not
+directly inherited by queue->limits.io_opt from the underlying device.
+This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
+and set bcache device's stripe size against the declared limits.io_opt
+value from the underlying storage device,
+- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size directly by this limits.io_opt value.
+- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size by a value multiplying limits.io_opt and euqal or
+  large than BCH_MIN_STRIPE_SZ.
+
+Then the minimal stripe size of a bcache device will always be >= 4MB.
+For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
+in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
+by these two arraies will be 2.5MB in total.
+
+Such mount of memory allocated for bcache->stripe_sectors_dirty and
+bcache->full_dirty_stripes is reasonable for most of storage devices.
+
+Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
+Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/time.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/md/bcache/bcache.h | 1 +
+ drivers/md/bcache/super.c  | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.c
-index 3064af94db9c2..e7015f7b70e37 100644
---- a/arch/loongarch/kernel/time.c
-+++ b/arch/loongarch/kernel/time.c
-@@ -58,14 +58,16 @@ static int constant_set_state_oneshot(struct clock_event_device *evt)
- 	return 0;
- }
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index aebb7ef10e631..e86fa736dc4ee 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -265,6 +265,7 @@ struct bcache_device {
+ #define BCACHE_DEV_WB_RUNNING		3
+ #define BCACHE_DEV_RATE_DW_RUNNING	4
+ 	int			nr_stripes;
++#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
+ 	unsigned int		stripe_size;
+ 	atomic_t		*stripe_sectors_dirty;
+ 	unsigned long		*full_dirty_stripes;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 7660962e7b8b4..525871380f442 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -905,6 +905,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
  
--static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
-+static int constant_set_state_periodic(struct clock_event_device *evt)
- {
-+	unsigned long period;
- 	unsigned long timer_config;
+ 	if (!d->stripe_size)
+ 		d->stripe_size = 1 << 31;
++	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
++		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
  
- 	raw_spin_lock(&state_lock);
- 
--	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
--	timer_config &= ~CSR_TCFG_EN;
-+	period = const_clock_freq / HZ;
-+	timer_config = period & CSR_TCFG_VAL;
-+	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
- 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
- 
- 	raw_spin_unlock(&state_lock);
-@@ -73,16 +75,14 @@ static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
- 	return 0;
- }
- 
--static int constant_set_state_periodic(struct clock_event_device *evt)
-+static int constant_set_state_shutdown(struct clock_event_device *evt)
- {
--	unsigned long period;
- 	unsigned long timer_config;
- 
- 	raw_spin_lock(&state_lock);
- 
--	period = const_clock_freq / HZ;
--	timer_config = period & CSR_TCFG_VAL;
--	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
-+	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
-+	timer_config &= ~CSR_TCFG_EN;
- 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
- 
- 	raw_spin_unlock(&state_lock);
-@@ -90,11 +90,6 @@ static int constant_set_state_periodic(struct clock_event_device *evt)
- 	return 0;
- }
- 
--static int constant_set_state_shutdown(struct clock_event_device *evt)
--{
--	return 0;
--}
--
- static int constant_timer_next_event(unsigned long delta, struct clock_event_device *evt)
- {
- 	unsigned long timer_config;
-@@ -161,7 +156,7 @@ int constant_clockevent_init(void)
- 	cd->rating = 320;
- 	cd->cpumask = cpumask_of(cpu);
- 	cd->set_state_oneshot = constant_set_state_oneshot;
--	cd->set_state_oneshot_stopped = constant_set_state_oneshot_stopped;
-+	cd->set_state_oneshot_stopped = constant_set_state_shutdown;
- 	cd->set_state_periodic = constant_set_state_periodic;
- 	cd->set_state_shutdown = constant_set_state_shutdown;
- 	cd->set_next_event = constant_timer_next_event;
+ 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
+ 	if (!n || n > max_stripes) {
 -- 
 2.43.0
 
