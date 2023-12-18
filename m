@@ -1,120 +1,146 @@
-Return-Path: <stable+bounces-7819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C048179A0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 19:26:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCC3817950
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A79AB22D49
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3547285ACA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6CE5D73F;
-	Mon, 18 Dec 2023 18:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22DA5BFB9;
+	Mon, 18 Dec 2023 17:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="SAwSCi2D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="af3Hxa9d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AEF11DFDE
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 18:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.18] ([92.140.202.140])
-	by smtp.orange.fr with ESMTPA
-	id FHqmrffu2i8InFHqmryQ1N; Mon, 18 Dec 2023 18:56:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1702922181;
-	bh=ZJ2LCn3aYYC5eEXqWQDbKA00WL6uafWN8kRPVIHjk14=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SAwSCi2Dm5YgLIWhNdQxnDdf51kBmvtGSIsEWReGaCX1S+rI+Le3e6GO5TPxCAdKp
-	 AGXbcGCCdedCS1G3tX/UWr66Sv9T1FOGY4mWfrw/D7J5rdxAAqn1go3ba/5wcj+tch
-	 YCgzYKL0CADr3nVElbBF8vwZV45FhZHtTpT06lfdPJ3PyF1U3X6GZOeqO/oECjBPGY
-	 e5IwC3HiHhlM5ku+N2H4fKGSRql9wZyPnsX/1GpfAz9mZ+YaK7VzF5WfM9W7/6cAqJ
-	 wS/tpSldKY/cCdDgCCJrHyGs2F35WB3se7vgsC06EldL+JFGEtq5LqTncLgFGn6KKD
-	 2G/fDL4E8eaPg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 18 Dec 2023 18:56:21 +0100
-X-ME-IP: 92.140.202.140
-Message-ID: <4fb8f26e-cf8d-4ad8-bd44-ecd4198f8072@wanadoo.fr>
-Date: Mon, 18 Dec 2023 18:56:19 +0100
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E9D5BFAC;
+	Mon, 18 Dec 2023 17:59:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA5BC433C7;
+	Mon, 18 Dec 2023 17:59:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702922387;
+	bh=HW0rFRw/3V2wzc7/MLynKB9I7xCfC8kQrI5KSqUBbn0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=af3Hxa9deN61S+e++3iF7OMFu7+bqT3nyZQVvTFd+nDD3Xf1eTnmoqtfRNPTMZels
+	 HIbizUDTpUyW8mER5GC4bs+QXRymvxvr6Nv96qxZEBI5aST94aQxsW84Q8r3sMV/7N
+	 vu5E2Sra1ciqcfEQ11xsQcfoVfQvAFaqfLuP04IW4gatG7rdVcsQKTsOwnJ6ZchN2a
+	 6qLoFCGb+qAdVS9BFqgmqDkgRZEw3i9N4Sfrri/0XviT7POYeOp7zDskJ2ctCJmnTX
+	 lKcXIeS2TCshp6RoaiSDBv4YuMN2qhZoSYIEMwgFRTo731CLvo6pzzdcg53mihMgHE
+	 Mu8zGMDJ3BAWA==
+From: SeongJae Park <sj@kernel.org>
+To: stable@vger.kernel.org
+Cc: SeongJae Park <sj@kernel.org>,
+	acsjakub@amazon.de,
+	akpm@linux-foundation.org,
+	changbin.du@intel.com,
+	damon@lists.linux.dev
+Subject: [PATCH 6.1.y] mm/damon/core: make damon_start() waits until kdamond_fn() starts
+Date: Mon, 18 Dec 2023 17:59:39 +0000
+Message-Id: <20231218175939.99263-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023121849-ambulance-violate-e5b2@gregkh>
+References: <2023121849-ambulance-violate-e5b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15.y 003/154] ksmbd: Remove redundant
- 'flush_workqueue()' calls
-To: Namjae Jeon <linkinjeon@kernel.org>, gregkh@linuxfoundation.org,
- stable@vger.kernel.org
-Cc: smfrench@gmail.com, Steve French <stfrench@microsoft.com>
-References: <20231218153454.8090-1-linkinjeon@kernel.org>
- <20231218153454.8090-4-linkinjeon@kernel.org>
-Content-Language: fr, en-GB
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20231218153454.8090-4-linkinjeon@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi,
+The cleanup tasks of kdamond threads including reset of corresponding
+DAMON context's ->kdamond field and decrease of global nr_running_ctxs
+counter is supposed to be executed by kdamond_fn().  However, commit
+0f91d13366a4 ("mm/damon: simplify stop mechanism") made neither
+damon_start() nor damon_stop() ensure the corresponding kdamond has
+started the execution of kdamond_fn().
 
-unless explicitly needed because of other patches that rely on it, 
-patches 03, 28 and 42 / 154 don't look as good candidate for backport.
+As a result, the cleanup can be skipped if damon_stop() is called fast
+enough after the previous damon_start().  Especially the skipped reset
+of ->kdamond could cause a use-after-free.
 
-CJ
+Fix it by waiting for start of kdamond_fn() execution from
+damon_start().
 
+Link: https://lkml.kernel.org/r/20231208175018.63880-1-sj@kernel.org
+Fixes: 0f91d13366a4 ("mm/damon: simplify stop mechanism")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Jakub Acs <acsjakub@amazon.de>
+Cc: Changbin Du <changbin.du@intel.com>
+Cc: Jakub Acs <acsjakub@amazon.de>
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 6376a824595607e99d032a39ba3394988b4fce96)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/damon.h | 3 +++
+ mm/damon/core.c       | 7 +++++++
+ 2 files changed, 10 insertions(+)
 
-Le 18/12/2023 à 16:32, Namjae Jeon a écrit :
-> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->
-> [ Upstream commit e8d585b2f68c0b10c966ee55146de043429085a3 ]
->
-> 'destroy_workqueue()' already drains the queue before destroying it, so
-> there is no need to flush it explicitly.
->
-> Remove the redundant 'flush_workqueue()' calls.
->
-> This was generated with coccinelle:
->
-> @@
-> expression E;
-> @@
-> - 	flush_workqueue(E);
-> 	destroy_workqueue(E);
->
-> Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> ---
->   fs/ksmbd/ksmbd_work.c     | 1 -
->   fs/ksmbd/transport_rdma.c | 1 -
->   2 files changed, 2 deletions(-)
->
-> diff --git a/fs/ksmbd/ksmbd_work.c b/fs/ksmbd/ksmbd_work.c
-> index fd58eb4809f6..14b9caebf7a4 100644
-> --- a/fs/ksmbd/ksmbd_work.c
-> +++ b/fs/ksmbd/ksmbd_work.c
-> @@ -69,7 +69,6 @@ int ksmbd_workqueue_init(void)
->   
->   void ksmbd_workqueue_destroy(void)
->   {
-> -	flush_workqueue(ksmbd_wq);
->   	destroy_workqueue(ksmbd_wq);
->   	ksmbd_wq = NULL;
->   }
-> diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
-> index 9ca29cdb7898..86446742f4ad 100644
-> --- a/fs/ksmbd/transport_rdma.c
-> +++ b/fs/ksmbd/transport_rdma.c
-> @@ -2049,7 +2049,6 @@ int ksmbd_rdma_destroy(void)
->   	smb_direct_listener.cm_id = NULL;
->   
->   	if (smb_direct_wq) {
-> -		flush_workqueue(smb_direct_wq);
->   		destroy_workqueue(smb_direct_wq);
->   		smb_direct_wq = NULL;
->   	}
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index b13be7ae2275..e6941b239f44 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -8,6 +8,7 @@
+ #ifndef _DAMON_H_
+ #define _DAMON_H_
+ 
++#include <linux/completion.h>
+ #include <linux/mutex.h>
+ #include <linux/time64.h>
+ #include <linux/types.h>
+@@ -452,6 +453,8 @@ struct damon_ctx {
+ /* private: internal use only */
+ 	struct timespec64 last_aggregation;
+ 	struct timespec64 last_ops_update;
++	/* for waiting until the execution of the kdamond_fn is started */
++	struct completion kdamond_started;
+ 
+ /* public: */
+ 	struct task_struct *kdamond;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 36d098d06c55..5db9bec8ae67 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -383,6 +383,8 @@ struct damon_ctx *damon_new_ctx(void)
+ 	if (!ctx)
+ 		return NULL;
+ 
++	init_completion(&ctx->kdamond_started);
++
+ 	ctx->attrs.sample_interval = 5 * 1000;
+ 	ctx->attrs.aggr_interval = 100 * 1000;
+ 	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
+@@ -519,11 +521,14 @@ static int __damon_start(struct damon_ctx *ctx)
+ 	mutex_lock(&ctx->kdamond_lock);
+ 	if (!ctx->kdamond) {
+ 		err = 0;
++		reinit_completion(&ctx->kdamond_started);
+ 		ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
+ 				nr_running_ctxs);
+ 		if (IS_ERR(ctx->kdamond)) {
+ 			err = PTR_ERR(ctx->kdamond);
+ 			ctx->kdamond = NULL;
++		} else {
++			wait_for_completion(&ctx->kdamond_started);
+ 		}
+ 	}
+ 	mutex_unlock(&ctx->kdamond_lock);
+@@ -1147,6 +1152,8 @@ static int kdamond_fn(void *data)
+ 
+ 	pr_debug("kdamond (%d) starts\n", current->pid);
+ 
++	complete(&ctx->kdamond_started);
++
+ 	if (ctx->ops.init)
+ 		ctx->ops.init(ctx);
+ 	if (ctx->callback.before_start && ctx->callback.before_start(ctx))
+-- 
+2.34.1
+
 
