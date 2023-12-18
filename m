@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-7565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314D381731B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D4EC8172A3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4A911F20C27
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48922286B32
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF943A1B6;
-	Mon, 18 Dec 2023 14:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1063D550;
+	Mon, 18 Dec 2023 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TA86yYrq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcfljYsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5563337869;
-	Mon, 18 Dec 2023 14:13:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFDEC433C7;
-	Mon, 18 Dec 2023 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76078129EF9;
+	Mon, 18 Dec 2023 14:08:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBEEFC433C7;
+	Mon, 18 Dec 2023 14:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908812;
-	bh=jHDMFs6Zc+v7DSqEyLpDsuzdOVLbtLL7S3btc7Z957I=;
+	s=korg; t=1702908522;
+	bh=qTwkGSi+bPU7yR4qiQLYOK0H5ytWCBYP/BaT7JN4vjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TA86yYrq6wHr283BfyKozvvxiGKjLlAGpR354Hc6fpluJhITSSaonLYpcHC4OoJqO
-	 UsMYXU6D0yziqvWamWauxphaNQr8MW2VXhTUnIgzQ14EqiN0SvST1XT5QY0x5MxqeT
-	 lWsYP8i7hI8eecey/fXbIpkOh/xRBCjiQsQoEEb8=
+	b=QcfljYszw6EFSBHtFvoYeqZBA6mTou6vKYDILKuYiby2v6LDH06FcP3rdCLY8J1Pz
+	 1j1zX0qvlkH1y7Cu7Zr3hpKMvyYMQEpLdEdgflxq1HxkLbGvsEXHQnI7hkM2fMZ21T
+	 1kF7oGHQ9wgB1S7ul27RaZpXqDlbZzL4m71xQe54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH 5.15 43/83] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
+	Brett Raye <braye@fastmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 40/62] HID: glorious: fix Glorious Model I HID report
 Date: Mon, 18 Dec 2023 14:52:04 +0100
-Message-ID: <20231218135051.668131860@linuxfoundation.org>
+Message-ID: <20231218135048.030383290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,82 +53,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Brett Raye <braye@fastmail.com>
 
-commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
+[ Upstream commit a5e913c25b6b2b6ae02acef6d9400645ac03dfdf ]
 
-This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
-subsequent fix to it:
+The Glorious Model I mouse has a buggy HID report descriptor for its
+keyboard endpoint (used for programmable buttons). For report ID 2, there
+is a mismatch between Logical Minimum and Usage Minimum in the array that
+reports keycodes.
 
-  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+The offending portion of the descriptor: (from hid-decode)
 
-40613da52b13 fixed a problem where hot-adding a device with large BARs
-failed if the bridge windows programmed by firmware were not large enough.
+0x95, 0x05,                    //  Report Count (5)                   30
+0x75, 0x08,                    //  Report Size (8)                    32
+0x15, 0x00,                    //  Logical Minimum (0)                34
+0x25, 0x65,                    //  Logical Maximum (101)              36
+0x05, 0x07,                    //  Usage Page (Keyboard)              38
+0x19, 0x01,                    //  Usage Minimum (1)                  40
+0x29, 0x65,                    //  Usage Maximum (101)                42
+0x81, 0x00,                    //  Input (Data,Arr,Abs)               44
 
-cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
-only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
-of a device on a PCI root bus (common in the virt world) or firmware
-sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
-7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
+This bug shifts all programmed keycodes up by 1. Importantly, this causes
+"empty" array indexes of 0x00 to be interpreted as 0x01, ErrorRollOver.
+The presence of ErrorRollOver causes the system to ignore all keypresses
+from the endpoint and breaks the ability to use the programmable buttons.
 
-Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
-problems:
+Setting byte 41 to 0x00 fixes this, and causes keycodes to be interpreted
+correctly.
 
-  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
-    sometimes.
+Also, USB_VENDOR_ID_GLORIOUS is changed to USB_VENDOR_ID_SINOWEALTH,
+and a new ID for Laview Technology is added. Glorious seems to be
+white-labeling controller boards or mice from these vendors. There isn't a
+single canonical vendor ID for Glorious products.
 
-  - Dongli reported a similar problem with hot-add of SCSI disks.
-
-  - Jonathan reported a console freeze during boot on bare metal due to an
-    error in radeon GPU initialization.
-
-Revert both patches to avoid adding these problems.  This means we will
-again see the problems with hot-adding devices with large BARs and the NULL
-pointer dereferences and suspend/resume issues that 40613da52b13 and
-cc22522fd55e were intended to fix.
-
-Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
-Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
-Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
-Reported-by: Jonathan Woithe <jwoithe@just42.net>
-Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brett Raye <braye@fastmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/hid/hid-glorious.c | 16 ++++++++++++++--
+ drivers/hid/hid-ids.h      | 11 +++++++----
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -503,15 +503,12 @@ static void enable_slot(struct acpiphp_s
- 				if (pass && dev->subordinate) {
- 					check_hotplug_bridge(slot, dev);
- 					pcibios_resource_survey_bus(dev->subordinate);
--					if (pci_is_root_bus(bus))
--						__pci_bus_size_bridges(dev->subordinate, &add_list);
-+					__pci_bus_size_bridges(dev->subordinate,
-+							       &add_list);
- 				}
- 			}
- 		}
--		if (pci_is_root_bus(bus))
--			__pci_bus_assign_resources(bus, &add_list, NULL);
--		else
--			pci_assign_unassigned_bridge_resources(bus->self);
-+		__pci_bus_assign_resources(bus, &add_list, NULL);
+diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
+index 558eb08c19ef9..281b3a7187cec 100644
+--- a/drivers/hid/hid-glorious.c
++++ b/drivers/hid/hid-glorious.c
+@@ -21,6 +21,10 @@ MODULE_DESCRIPTION("HID driver for Glorious PC Gaming Race mice");
+  * Glorious Model O and O- specify the const flag in the consumer input
+  * report descriptor, which leads to inputs being ignored. Fix this
+  * by patching the descriptor.
++ *
++ * Glorious Model I incorrectly specifes the Usage Minimum for its
++ * keyboard HID report, causing keycodes to be misinterpreted.
++ * Fix this by setting Usage Minimum to 0 in that report.
+  */
+ static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		unsigned int *rsize)
+@@ -32,6 +36,10 @@ static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		rdesc[85] = rdesc[113] = rdesc[141] = \
+ 			HID_MAIN_ITEM_VARIABLE | HID_MAIN_ITEM_RELATIVE;
+ 	}
++	if (*rsize == 156 && rdesc[41] == 1) {
++		hid_info(hdev, "patching Glorious Model I keyboard report descriptor\n");
++		rdesc[41] = 0;
++	}
+ 	return rdesc;
+ }
+ 
+@@ -44,6 +52,8 @@ static void glorious_update_name(struct hid_device *hdev)
+ 		model = "Model O"; break;
+ 	case USB_DEVICE_ID_GLORIOUS_MODEL_D:
+ 		model = "Model D"; break;
++	case USB_DEVICE_ID_GLORIOUS_MODEL_I:
++		model = "Model I"; break;
  	}
  
- 	acpiphp_sanitize_bus(bus);
+ 	snprintf(hdev->name, sizeof(hdev->name), "%s %s", "Glorious", model);
+@@ -66,10 +76,12 @@ static int glorious_probe(struct hid_device *hdev,
+ }
+ 
+ static const struct hid_device_id glorious_devices[] = {
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
+ 		USB_DEVICE_ID_GLORIOUS_MODEL_O) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
+ 		USB_DEVICE_ID_GLORIOUS_MODEL_D) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
++		USB_DEVICE_ID_GLORIOUS_MODEL_I) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, glorious_devices);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 7c688d7f8ccff..6273ab615af89 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -471,10 +471,6 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_010A 0x010a
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+ 
+-#define USB_VENDOR_ID_GLORIOUS  0x258a
+-#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
+-#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
+-
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+ 
+@@ -697,6 +693,9 @@
+ #define USB_VENDOR_ID_LABTEC		0x1020
+ #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
+ 
++#define USB_VENDOR_ID_LAVIEW		0x22D4
++#define USB_DEVICE_ID_GLORIOUS_MODEL_I	0x1503
++
+ #define USB_VENDOR_ID_LCPOWER		0x1241
+ #define USB_DEVICE_ID_LCPOWER_LC1000	0xf767
+ 
+@@ -1068,6 +1067,10 @@
+ #define USB_VENDOR_ID_SIGMATEL		0x066F
+ #define USB_DEVICE_ID_SIGMATEL_STMP3780	0x3780
+ 
++#define USB_VENDOR_ID_SINOWEALTH  0x258a
++#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
++#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
++
+ #define USB_VENDOR_ID_SIS_TOUCH		0x0457
+ #define USB_DEVICE_ID_SIS9200_TOUCH	0x9200
+ #define USB_DEVICE_ID_SIS817_TOUCH	0x0817
+-- 
+2.43.0
+
 
 
 
