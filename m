@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-7362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFFF817234
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F7B8170E4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C151C24D7A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D8F41C22F81
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463491D137;
-	Mon, 18 Dec 2023 14:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EF31D139;
+	Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXAtuHvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/r5jJT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F5C3A1B4;
-	Mon, 18 Dec 2023 14:04:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A04C433C7;
-	Mon, 18 Dec 2023 14:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954CE1D13A;
+	Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02F5C433C8;
+	Mon, 18 Dec 2023 13:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908264;
-	bh=CJWkJm25RO6+sytaRvOKcJxR/NRTvBUrvs/AdehvZRs=;
+	s=korg; t=1702907520;
+	bh=+ICurODI+VRZSdGH0MJU40d5htC3lwzv9ncozgGtqY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXAtuHvgQOtlajWyhr7zXq543j90KHLsyjKMwsLLg1xGFbDCIepEfatNW7Kr4JEOj
-	 zgFSJjjTMK8adW+jFh/HEhdlaq2zxqCSkiad7wYY1TXEnByz5oimXT3kXyzn8fiXKc
-	 u21JpFOarTHzCup/vUvjysQbFzhJD4r8evcn+DOo=
+	b=M/r5jJT5ysHxqPkJYlA1IhD58DdHXBIGF9l70ghjusN9fLDENlk0fzJieceQkU5oM
+	 Y5d4HOomm+ZfUWXZqZJaheAoWsDWxL430INg4+vUNKCT8P0IU3y1SPXDp04CEOxN3l
+	 IIEFUAzoPZAJ56YA7tQeiwIaZBJOQ7saFlJF8orE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Luke D. Jones" <luke@ljones.dev>,
 	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/166] HID: hid-asus: reset the backlight brightness level on resume
+Subject: [PATCH 4.14 17/26] HID: hid-asus: reset the backlight brightness level on resume
 Date: Mon, 18 Dec 2023 14:51:19 +0100
-Message-ID: <20231218135110.086722129@linuxfoundation.org>
+Message-ID: <20231218135041.288794475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 19 insertions(+)
 
 diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index fd61dba882338..194a86cf30db4 100644
+index 7cdbde2b114b3..52f65d0f44cae 100644
 --- a/drivers/hid/hid-asus.c
 +++ b/drivers/hid/hid-asus.c
-@@ -1000,6 +1000,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
+@@ -592,6 +592,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
  	return 0;
  }
  
@@ -109,14 +109,14 @@ index fd61dba882338..194a86cf30db4 100644
  static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
  {
  	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-@@ -1294,6 +1312,7 @@ static struct hid_driver asus_driver = {
+@@ -768,6 +786,7 @@ static struct hid_driver asus_driver = {
  	.input_configured       = asus_input_configured,
  #ifdef CONFIG_PM
  	.reset_resume           = asus_reset_resume,
 +	.resume					= asus_resume,
  #endif
- 	.event			= asus_event,
  	.raw_event		= asus_raw_event
+ };
 -- 
 2.43.0
 
