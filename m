@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-7522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50CC8172EB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B84F817347
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73ECA288A75
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A34652896E9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:16:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE1C3D560;
-	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4B637885;
+	Mon, 18 Dec 2023 14:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waXI/Lo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH5++R5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4D3D549;
-	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6CFC433C7;
-	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F40498A9;
+	Mon, 18 Dec 2023 14:14:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18667C433C7;
+	Mon, 18 Dec 2023 14:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908694;
-	bh=4MFfC1LIqEC1Mcw8PP9n6GkjY56hIFy8QZ5j+TVcKZc=;
+	s=korg; t=1702908899;
+	bh=ru/oaNVhPmXYN51SN54fth0VDYPxftKEVbuxNm/BPgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=waXI/Lo60s/0IH4r6TGZq3NR7ZV9bUSP5hUkyGt38NgiWbQsP9gbEXKArqSl8A9BJ
-	 K6L3cAW35vCfc+cGnmB1tiAtIHsA6jVuD6W4+O7qtGyPeC6TvxxbMG/MsvMd8lPw5F
-	 b0l6qq8tinBN+f+2CM+Xp25t/qk4MxV8Hi0B1Tac=
+	b=UH5++R5eF6uqpq17oXDj7PKsdxLr+bLQrKXTaB8ks4DvNrR5D4hSxGQQJ1HpRd9vF
+	 MH7WiyxlYeEDmYxVPWftsidOiRzanR1Zm9/rpWEJLgAv4jt+L6Gnt8EriGiSF4e2ue
+	 tlWwEk4R3UEXa0Grw3HPPRPfhnZ8rTiTqudXGYI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.4 40/40] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
-Date: Mon, 18 Dec 2023 14:52:35 +0100
-Message-ID: <20231218135044.299460052@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 75/83] ring-buffer: Do not try to put back write_stamp
+Date: Mon, 18 Dec 2023 14:52:36 +0100
+Message-ID: <20231218135053.037922855@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +56,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
+commit dd939425707898da992e59ab0fcfae4652546910 upstream.
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+If an update to an event is interrupted by another event between the time
+the initial event allocated its buffer and where it wrote to the
+write_stamp, the code try to reset the write stamp back to the what it had
+just overwritten. It knows that it was overwritten via checking the
+before_stamp, and if it didn't match what it wrote to the before_stamp
+before it allocated its space, it knows it was overwritten.
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
+To put back the write_stamp, it uses the before_stamp it read. The problem
+here is that by writing the before_stamp to the write_stamp it makes the
+two equal again, which means that the write_stamp can be considered valid
+as the last timestamp written to the ring buffer. But this is not
+necessarily true. The event that interrupted the event could have been
+interrupted in a way that it was interrupted as well, and can end up
+leaving with an invalid write_stamp. But if this happens and returns to
+this context that uses the before_stamp to update the write_stamp again,
+it can possibly incorrectly make it valid, causing later events to have in
+correct time stamps.
 
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
+As it is OK to leave this function with an invalid write_stamp (one that
+doesn't match the before_stamp), there's no reason to try to make it valid
+again in this case. If this race happens, then just leave with the invalid
+write_stamp and the next event to come along will just add a absolute
+timestamp and validate everything again.
+
+Bonus points: This gets rid of another cmpxchg64!
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231214222921.193037a7@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Vincent Donnefort <vdonnefort@google.com>
+Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/trace/ftrace_64_mprofile.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c |   29 ++++++-----------------------
+ 1 file changed, 6 insertions(+), 23 deletions(-)
 
---- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-@@ -55,7 +55,7 @@ _GLOBAL(ftrace_regs_caller)
- 	SAVE_10GPRS(22, r1)
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3568,14 +3568,14 @@ __rb_reserve_next(struct ring_buffer_per
+ 	}
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	std	r8, GPR1(r1)
- 
- 	/* Load special regs for save below */
-@@ -150,7 +150,7 @@ ftrace_no_trace:
- 	mflr	r3
- 	mtctr	r3
- 	REST_GPR(3, r1)
--	addi	r1, r1, SWITCH_FRAME_SIZE
-+	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	mtlr	r0
- 	bctr
- 
+ 	if (likely(tail == w)) {
+-		u64 save_before;
+-		bool s_ok;
+-
+ 		/* Nothing interrupted us between A and C */
+  /*D*/		rb_time_set(&cpu_buffer->write_stamp, info->ts);
+-		barrier();
+- /*E*/		s_ok = rb_time_read(&cpu_buffer->before_stamp, &save_before);
+-		RB_WARN_ON(cpu_buffer, !s_ok);
++		/*
++		 * If something came in between C and D, the write stamp
++		 * may now not be in sync. But that's fine as the before_stamp
++		 * will be different and then next event will just be forced
++		 * to use an absolute timestamp.
++		 */
+ 		if (likely(!(info->add_timestamp &
+ 			     (RB_ADD_STAMP_FORCE | RB_ADD_STAMP_ABSOLUTE))))
+ 			/* This did not interrupt any time update */
+@@ -3583,24 +3583,7 @@ __rb_reserve_next(struct ring_buffer_per
+ 		else
+ 			/* Just use full timestamp for interrupting event */
+ 			info->delta = info->ts;
+-		barrier();
+ 		check_buffer(cpu_buffer, info, tail);
+-		if (unlikely(info->ts != save_before)) {
+-			/* SLOW PATH - Interrupted between C and E */
+-
+-			a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
+-			RB_WARN_ON(cpu_buffer, !a_ok);
+-
+-			/* Write stamp must only go forward */
+-			if (save_before > info->after) {
+-				/*
+-				 * We do not care about the result, only that
+-				 * it gets updated atomically.
+-				 */
+-				(void)rb_time_cmpxchg(&cpu_buffer->write_stamp,
+-						      info->after, save_before);
+-			}
+-		}
+ 	} else {
+ 		u64 ts;
+ 		/* SLOW PATH - Interrupted between A and C */
 
 
 
