@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD681711B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFFFF817234
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1B11B21A01
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6C151C24D7A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509691D155;
-	Mon, 18 Dec 2023 13:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463491D137;
+	Mon, 18 Dec 2023 14:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBwou2Le"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXAtuHvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175D237883;
-	Mon, 18 Dec 2023 13:54:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902A7C433C8;
-	Mon, 18 Dec 2023 13:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F5C3A1B4;
+	Mon, 18 Dec 2023 14:04:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A04C433C7;
+	Mon, 18 Dec 2023 14:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907662;
-	bh=fK9kymCr/3Op4PSjLzKMi3V7hR1rIls4BwXkMUTmddA=;
+	s=korg; t=1702908264;
+	bh=CJWkJm25RO6+sytaRvOKcJxR/NRTvBUrvs/AdehvZRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBwou2Le6TOtHK57uXMW1PhOxiesa90G8pQdzT5t0QnsZuyFmUp7n++7mG7eCC+Q1
-	 YkYNAxxKD10BE+tuhchne6eB1BJR7jsP1zXWLeTFtsOXIpy9BQa90kC6enweyL/mXS
-	 ruEx06ic1szCMW8CqCuxdFBfBqY/OakQdrW5Scls=
+	b=hXAtuHvgQOtlajWyhr7zXq543j90KHLsyjKMwsLLg1xGFbDCIepEfatNW7Kr4JEOj
+	 zgFSJjjTMK8adW+jFh/HEhdlaq2zxqCSkiad7wYY1TXEnByz5oimXT3kXyzn8fiXKc
+	 u21JpFOarTHzCup/vUvjysQbFzhJD4r8evcn+DOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Benato <benato.denis96@gmail.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/36] net: Remove acked SYN flag from packet in the transmit queue correctly
+Subject: [PATCH 6.6 113/166] HID: hid-asus: reset the backlight brightness level on resume
 Date: Mon, 18 Dec 2023 14:51:19 +0100
-Message-ID: <20231218135042.230678246@linuxfoundation.org>
+Message-ID: <20231218135110.086722129@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,112 +54,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Denis Benato <benato.denis96@gmail.com>
 
-[ Upstream commit f99cd56230f56c8b6b33713c5be4da5d6766be1f ]
+[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
 
-syzkaller report:
+Some devices managed by this driver automatically set brightness to 0
+before entering a suspended state and reset it back to a default
+brightness level after the resume:
+this has the effect of having the kernel report wrong brightness
+status after a sleep, and on some devices (like the Asus RC71L) that
+brightness is the intensity of LEDs directly facing the user.
 
- kernel BUG at net/core/skbuff.c:3452!
- invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc4-00009-gbee0e7762ad2-dirty #135
- RIP: 0010:skb_copy_and_csum_bits (net/core/skbuff.c:3452)
- Call Trace:
- icmp_glue_bits (net/ipv4/icmp.c:357)
- __ip_append_data.isra.0 (net/ipv4/ip_output.c:1165)
- ip_append_data (net/ipv4/ip_output.c:1362 net/ipv4/ip_output.c:1341)
- icmp_push_reply (net/ipv4/icmp.c:370)
- __icmp_send (./include/net/route.h:252 net/ipv4/icmp.c:772)
- ip_fragment.constprop.0 (./include/linux/skbuff.h:1234 net/ipv4/ip_output.c:592 net/ipv4/ip_output.c:577)
- __ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:295)
- ip_output (net/ipv4/ip_output.c:427)
- __ip_queue_xmit (net/ipv4/ip_output.c:535)
- __tcp_transmit_skb (net/ipv4/tcp_output.c:1462)
- __tcp_retransmit_skb (net/ipv4/tcp_output.c:3387)
- tcp_retransmit_skb (net/ipv4/tcp_output.c:3404)
- tcp_retransmit_timer (net/ipv4/tcp_timer.c:604)
- tcp_write_timer (./include/linux/spinlock.h:391 net/ipv4/tcp_timer.c:716)
+Fix the above issue by setting back brightness to the level it had
+before entering a sleep state.
 
-The panic issue was trigered by tcp simultaneous initiation.
-The initiation process is as follows:
-
-      TCP A                                            TCP B
-
-  1.  CLOSED                                           CLOSED
-
-  2.  SYN-SENT     --> <SEQ=100><CTL=SYN>              ...
-
-  3.  SYN-RECEIVED <-- <SEQ=300><CTL=SYN>              <-- SYN-SENT
-
-  4.               ... <SEQ=100><CTL=SYN>              --> SYN-RECEIVED
-
-  5.  SYN-RECEIVED --> <SEQ=100><ACK=301><CTL=SYN,ACK> ...
-
-  // TCP B: not send challenge ack for ack limit or packet loss
-  // TCP A: close
-	tcp_close
-	   tcp_send_fin
-              if (!tskb && tcp_under_memory_pressure(sk))
-                  tskb = skb_rb_last(&sk->tcp_rtx_queue); //pick SYN_ACK packet
-           TCP_SKB_CB(tskb)->tcp_flags |= TCPHDR_FIN;  // set FIN flag
-
-  6.  FIN_WAIT_1  --> <SEQ=100><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ...
-
-  // TCP B: send challenge ack to SYN_FIN_ACK
-
-  7.               ... <SEQ=301><ACK=101><CTL=ACK>   <-- SYN-RECEIVED //challenge ack
-
-  // TCP A:  <SND.UNA=101>
-
-  8.  FIN_WAIT_1 --> <SEQ=101><ACK=301><END_SEQ=102><CTL=SYN,FIN,ACK> ... // retransmit panic
-
-	__tcp_retransmit_skb  //skb->len=0
-	    tcp_trim_head
-		len = tp->snd_una - TCP_SKB_CB(skb)->seq // len=101-100
-		    __pskb_trim_head
-			skb->data_len -= len // skb->len=-1, wrap around
-	    ... ...
-	    ip_fragment
-		icmp_glue_bits //BUG_ON
-
-If we use tcp_trim_head() to remove acked SYN from packet that contains data
-or other flags, skb->len will be incorrectly decremented. We can remove SYN
-flag that has been acked from rtx_queue earlier than tcp_trim_head(), which
-can fix the problem mentioned above.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Link: https://lore.kernel.org/r/20231210020200.1539875-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/hid-asus.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index a0875dc60e08f..670804d4c1690 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2890,7 +2890,13 @@ int __tcp_retransmit_skb(struct sock *sk, struct sk_buff *skb, int segs)
- 	if (skb_still_in_host_queue(sk, skb))
- 		return -EBUSY;
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index fd61dba882338..194a86cf30db4 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -1000,6 +1000,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
+ 	return 0;
+ }
  
-+start:
- 	if (before(TCP_SKB_CB(skb)->seq, tp->snd_una)) {
-+		if (unlikely(TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN)) {
-+			TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_SYN;
-+			TCP_SKB_CB(skb)->seq++;
-+			goto start;
++static int __maybe_unused asus_resume(struct hid_device *hdev) {
++	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
++	int ret = 0;
++
++	if (drvdata->kbd_backlight) {
++		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
++				drvdata->kbd_backlight->cdev.brightness };
++		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
++		if (ret < 0) {
++			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
++			goto asus_resume_err;
 +		}
- 		if (unlikely(before(TCP_SKB_CB(skb)->end_seq, tp->snd_una))) {
- 			WARN_ON_ONCE(1);
- 			return -EINVAL;
++	}
++
++asus_resume_err:
++	return ret;
++}
++
+ static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
+ {
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
+@@ -1294,6 +1312,7 @@ static struct hid_driver asus_driver = {
+ 	.input_configured       = asus_input_configured,
+ #ifdef CONFIG_PM
+ 	.reset_resume           = asus_reset_resume,
++	.resume					= asus_resume,
+ #endif
+ 	.event			= asus_event,
+ 	.raw_event		= asus_raw_event
 -- 
 2.43.0
 
