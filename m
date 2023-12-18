@@ -1,50 +1,60 @@
-Return-Path: <stable+bounces-7254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726958171A0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71059817299
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA69E1F25507
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89AFF1C24B49
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6F515AC0;
-	Mon, 18 Dec 2023 13:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDF31D127;
+	Mon, 18 Dec 2023 14:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l380JhNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL5GIckT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C3E129ED2;
-	Mon, 18 Dec 2023 13:59:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1521DC433C7;
-	Mon, 18 Dec 2023 13:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E602D129EF7;
+	Mon, 18 Dec 2023 14:08:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE8EC433C7;
+	Mon, 18 Dec 2023 14:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907972;
-	bh=OGMoSj9IDg8MQODjlRbPqyG00K43Udy0dQaaelbaUdc=;
+	s=korg; t=1702908497;
+	bh=s7/hb4h5TNsN8mAb2xaitoeZhXtf1YSJIEQzaDU2n7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l380JhNcBgQnQTBdsQZ/oLhEvdFPSa4rbTNNnZx4aYBYuDS1xIIinsDVDkMlKGn8T
-	 D9jM1snWKck1/Kv9icvSGANVdouqeKCOGATmwx/UQSvsILR+hCw9ItrhX8gIsZ3MKJ
-	 WFKEF5h1A6S2nbSmtiZdOdlJ0DepStw/e0RTCxlE=
+	b=QL5GIckT//DblmX7GWQ4ZN6X14FYpvzXvVnEnT4ydRj4MWxDh2DORA56GcqWrbU0h
+	 zS2GmKRzq6qWK0GIGZDYLZLA5aeH0bh5Uh5MtJBWV8+V3ZHiBkooEtu6XZKjWbwOxx
+	 M90NtjWqBZuTVXRV4xfTKl9rbwXikAyyM3nZHrrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 101/106] ring-buffer: Do not try to put back write_stamp
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Maxime Ripard <maxime@cerno.tech>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	"James (Qian) Wang" <james.qian.wang@arm.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Mihail Atanassov <mihail.atanassov@arm.com>,
+	Brian Starkey <brian.starkey@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 31/62] drm: Use state helper instead of CRTC state pointer
 Date: Mon, 18 Dec 2023 14:51:55 +0100
-Message-ID: <20231218135059.372596696@linuxfoundation.org>
+Message-ID: <20231218135047.648422787@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,105 +64,373 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Maxime Ripard <maxime@cerno.tech>
 
-commit dd939425707898da992e59ab0fcfae4652546910 upstream.
+[ Upstream commit 253f28b6237264216b052ac0848fd7fc917b5259 ]
 
-If an update to an event is interrupted by another event between the time
-the initial event allocated its buffer and where it wrote to the
-write_stamp, the code try to reset the write stamp back to the what it had
-just overwritten. It knows that it was overwritten via checking the
-before_stamp, and if it didn't match what it wrote to the before_stamp
-before it allocated its space, it knows it was overwritten.
+Many drivers reference the crtc->pointer in order to get the current CRTC
+state in their atomic_begin or atomic_flush hooks, which would be the new
+CRTC state in the global atomic state since _swap_state happened when those
+hooks are run.
 
-To put back the write_stamp, it uses the before_stamp it read. The problem
-here is that by writing the before_stamp to the write_stamp it makes the
-two equal again, which means that the write_stamp can be considered valid
-as the last timestamp written to the ring buffer. But this is not
-necessarily true. The event that interrupted the event could have been
-interrupted in a way that it was interrupted as well, and can end up
-leaving with an invalid write_stamp. But if this happens and returns to
-this context that uses the before_stamp to update the write_stamp again,
-it can possibly incorrectly make it valid, causing later events to have in
-correct time stamps.
+Use the drm_atomic_get_new_crtc_state helper to get that state to make it
+more obvious.
 
-As it is OK to leave this function with an invalid write_stamp (one that
-doesn't match the before_stamp), there's no reason to try to make it valid
-again in this case. If this race happens, then just leave with the invalid
-write_stamp and the next event to come along will just add a absolute
-timestamp and validate everything again.
+This was made using the coccinelle script below:
 
-Bonus points: This gets rid of another cmpxchg64!
+@ crtc_atomic_func @
+identifier helpers;
+identifier func;
+@@
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231214222921.193037a7@gandalf.local.home
+(
+static struct drm_crtc_helper_funcs helpers = {
+	...,
+	.atomic_begin = func,
+	...,
+};
+|
+static struct drm_crtc_helper_funcs helpers = {
+	...,
+	.atomic_flush = func,
+	...,
+};
+)
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Vincent Donnefort <vdonnefort@google.com>
-Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+@@
+identifier crtc_atomic_func.func;
+identifier crtc, state;
+symbol crtc_state;
+expression e;
+@@
+
+  func(struct drm_crtc *crtc, struct drm_atomic_state *state) {
+  ...
+- struct tegra_dc_state *crtc_state = e;
++ struct tegra_dc_state *dc_state = e;
+  <+...
+-       crtc_state
++	dc_state
+  ...+>
+  }
+
+@@
+identifier crtc_atomic_func.func;
+identifier crtc, state;
+symbol crtc_state;
+expression e;
+@@
+
+  func(struct drm_crtc *crtc, struct drm_atomic_state *state) {
+  ...
+- struct mtk_crtc_state *crtc_state = e;
++ struct mtk_crtc_state *mtk_crtc_state = e;
+  <+...
+-       crtc_state
++	mtk_crtc_state
+  ...+>
+  }
+
+@ replaces_new_state @
+identifier crtc_atomic_func.func;
+identifier crtc, state, crtc_state;
+@@
+
+  func(struct drm_crtc *crtc, struct drm_atomic_state *state) {
+  ...
+- struct drm_crtc_state *crtc_state = crtc->state;
++ struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+  ...
+ }
+
+@@
+identifier crtc_atomic_func.func;
+identifier crtc, state, crtc_state;
+@@
+
+  func(struct drm_crtc *crtc, struct drm_atomic_state *state) {
+  struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+  ...
+- crtc->state
++ crtc_state
+  ...
+ }
+
+@ adds_new_state @
+identifier crtc_atomic_func.func;
+identifier crtc, state;
+@@
+
+  func(struct drm_crtc *crtc, struct drm_atomic_state *state) {
++ struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
+  ...
+- crtc->state
++ crtc_state
+  ...
+ }
+
+@ include depends on adds_new_state || replaces_new_state @
+@@
+
+ #include <drm/drm_atomic.h>
+
+@ no_include depends on !include && (adds_new_state || replaces_new_state) @
+@@
+
++ #include <drm/drm_atomic.h>
+  #include <drm/...>
+
+Suggested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Maxime Ripard <maxime@cerno.tech>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: "James (Qian) Wang" <james.qian.wang@arm.com>
+Cc: Liviu Dudau <liviu.dudau@arm.com>
+Cc: Mihail Atanassov <mihail.atanassov@arm.com>
+Cc: Brian Starkey <brian.starkey@arm.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Sandy Huang <hjc@rock-chips.com>
+Cc: "Heiko Stübner" <heiko@sntech.de>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20201105164518.392891-1-maxime@cerno.tech
+Stable-dep-of: fe4c5f662097 ("drm/mediatek: Add spinlock for setting vblank event in atomic_begin")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |   29 ++++++-----------------------
- 1 file changed, 6 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_crtc.c |  4 +++-
+ drivers/gpu/drm/armada/armada_crtc.c             |  8 ++++++--
+ drivers/gpu/drm/ast/ast_mode.c                   |  4 +++-
+ drivers/gpu/drm/ingenic/ingenic-drm-drv.c        |  7 +++++--
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c          | 15 +++++++++------
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c      |  6 ++++--
+ drivers/gpu/drm/tegra/dc.c                       |  8 +++++---
+ drivers/gpu/drm/virtio/virtgpu_display.c         |  4 +++-
+ 8 files changed, 38 insertions(+), 18 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3611,14 +3611,14 @@ __rb_reserve_next(struct ring_buffer_per
- 	}
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+index 3c77eeb0a7a0c..db995250cbff6 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+@@ -381,10 +381,12 @@ static void
+ komeda_crtc_atomic_flush(struct drm_crtc *crtc,
+ 			 struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct drm_crtc_state *old = drm_atomic_get_old_crtc_state(state,
+ 								   crtc);
+ 	/* commit with modeset will be handled in enable/disable */
+-	if (drm_atomic_crtc_needs_modeset(crtc->state))
++	if (drm_atomic_crtc_needs_modeset(crtc_state))
+ 		return;
  
- 	if (likely(tail == w)) {
--		u64 save_before;
--		bool s_ok;
--
- 		/* Nothing interrupted us between A and C */
-  /*D*/		rb_time_set(&cpu_buffer->write_stamp, info->ts);
--		barrier();
-- /*E*/		s_ok = rb_time_read(&cpu_buffer->before_stamp, &save_before);
--		RB_WARN_ON(cpu_buffer, !s_ok);
-+		/*
-+		 * If something came in between C and D, the write stamp
-+		 * may now not be in sync. But that's fine as the before_stamp
-+		 * will be different and then next event will just be forced
-+		 * to use an absolute timestamp.
-+		 */
- 		if (likely(!(info->add_timestamp &
- 			     (RB_ADD_STAMP_FORCE | RB_ADD_STAMP_ABSOLUTE))))
- 			/* This did not interrupt any time update */
-@@ -3626,24 +3626,7 @@ __rb_reserve_next(struct ring_buffer_per
- 		else
- 			/* Just use full timestamp for interrupting event */
- 			info->delta = info->ts;
--		barrier();
- 		check_buffer(cpu_buffer, info, tail);
--		if (unlikely(info->ts != save_before)) {
--			/* SLOW PATH - Interrupted between C and E */
--
--			a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
--			RB_WARN_ON(cpu_buffer, !a_ok);
--
--			/* Write stamp must only go forward */
--			if (save_before > info->after) {
--				/*
--				 * We do not care about the result, only that
--				 * it gets updated atomically.
--				 */
--				(void)rb_time_cmpxchg(&cpu_buffer->write_stamp,
--						      info->after, save_before);
--			}
--		}
- 	} else {
- 		u64 ts;
- 		/* SLOW PATH - Interrupted between A and C */
+ 	komeda_crtc_do_flush(crtc, old);
+diff --git a/drivers/gpu/drm/armada/armada_crtc.c b/drivers/gpu/drm/armada/armada_crtc.c
+index 13c7c474fb26e..8b7cc7bc81ee4 100644
+--- a/drivers/gpu/drm/armada/armada_crtc.c
++++ b/drivers/gpu/drm/armada/armada_crtc.c
+@@ -429,11 +429,13 @@ static int armada_drm_crtc_atomic_check(struct drm_crtc *crtc,
+ static void armada_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 					 struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct armada_crtc *dcrtc = drm_to_armada_crtc(crtc);
+ 
+ 	DRM_DEBUG_KMS("[CRTC:%d:%s]\n", crtc->base.id, crtc->name);
+ 
+-	if (crtc->state->color_mgmt_changed)
++	if (crtc_state->color_mgmt_changed)
+ 		armada_drm_update_gamma(crtc);
+ 
+ 	dcrtc->regs_idx = 0;
+@@ -443,6 +445,8 @@ static void armada_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ static void armada_drm_crtc_atomic_flush(struct drm_crtc *crtc,
+ 					 struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct armada_crtc *dcrtc = drm_to_armada_crtc(crtc);
+ 
+ 	DRM_DEBUG_KMS("[CRTC:%d:%s]\n", crtc->base.id, crtc->name);
+@@ -453,7 +457,7 @@ static void armada_drm_crtc_atomic_flush(struct drm_crtc *crtc,
+ 	 * If we aren't doing a full modeset, then we need to queue
+ 	 * the event here.
+ 	 */
+-	if (!drm_atomic_crtc_needs_modeset(crtc->state)) {
++	if (!drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 		dcrtc->update_pending = true;
+ 		armada_drm_crtc_queue_state_event(crtc);
+ 		spin_lock_irq(&dcrtc->irq_lock);
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 84c2e90d415f4..7f3f961035872 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -780,10 +780,12 @@ static void
+ ast_crtc_helper_atomic_flush(struct drm_crtc *crtc,
+ 			     struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state,
+ 									      crtc);
+ 	struct ast_private *ast = to_ast_private(crtc->dev);
+-	struct ast_crtc_state *ast_crtc_state = to_ast_crtc_state(crtc->state);
++	struct ast_crtc_state *ast_crtc_state = to_ast_crtc_state(crtc_state);
+ 	struct ast_crtc_state *old_ast_crtc_state = to_ast_crtc_state(old_crtc_state);
+ 
+ 	/*
+diff --git a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+index 6d56b701118da..784a91d32bd1e 100644
+--- a/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
++++ b/drivers/gpu/drm/ingenic/ingenic-drm-drv.c
+@@ -289,11 +289,13 @@ ingenic_drm_crtc_mode_valid(struct drm_crtc *crtc, const struct drm_display_mode
+ static void ingenic_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 					  struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct ingenic_drm *priv = drm_crtc_get_priv(crtc);
+ 	u32 ctrl = 0;
+ 
+ 	if (priv->soc_info->has_osd &&
+-	    drm_atomic_crtc_needs_modeset(crtc->state)) {
++	    drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 		/*
+ 		 * If IPU plane is enabled, enable IPU as source for the F1
+ 		 * plane; otherwise use regular DMA.
+@@ -310,7 +312,8 @@ static void ingenic_drm_crtc_atomic_flush(struct drm_crtc *crtc,
+ 					  struct drm_atomic_state *state)
+ {
+ 	struct ingenic_drm *priv = drm_crtc_get_priv(crtc);
+-	struct drm_crtc_state *crtc_state = crtc->state;
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct drm_pending_vblank_event *event = crtc_state->event;
+ 
+ 	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index 067b4dc39f4f0..380b0b52d2c7a 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -11,6 +11,7 @@
+ #include <asm/barrier.h>
+ #include <soc/mediatek/smi.h>
+ 
++#include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_plane_helper.h>
+ #include <drm/drm_probe_helper.h>
+@@ -580,17 +581,19 @@ static void mtk_drm_crtc_atomic_disable(struct drm_crtc *crtc,
+ static void mtk_drm_crtc_atomic_begin(struct drm_crtc *crtc,
+ 				      struct drm_atomic_state *state)
+ {
+-	struct mtk_crtc_state *crtc_state = to_mtk_crtc_state(crtc->state);
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
++	struct mtk_crtc_state *mtk_crtc_state = to_mtk_crtc_state(crtc_state);
+ 	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
+ 
+-	if (mtk_crtc->event && crtc_state->base.event)
++	if (mtk_crtc->event && mtk_crtc_state->base.event)
+ 		DRM_ERROR("new event while there is still a pending event\n");
+ 
+-	if (crtc_state->base.event) {
+-		crtc_state->base.event->pipe = drm_crtc_index(crtc);
++	if (mtk_crtc_state->base.event) {
++		mtk_crtc_state->base.event->pipe = drm_crtc_index(crtc);
+ 		WARN_ON(drm_crtc_vblank_get(crtc) != 0);
+-		mtk_crtc->event = crtc_state->base.event;
+-		crtc_state->base.event = NULL;
++		mtk_crtc->event = mtk_crtc_state->base.event;
++		mtk_crtc_state->base.event = NULL;
+ 	}
+ }
+ 
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index b7eeb3183aa94..0a20fe4200b3d 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1257,6 +1257,8 @@ static void vop_crtc_gamma_set(struct vop *vop, struct drm_crtc *crtc,
+ static void vop_crtc_atomic_begin(struct drm_crtc *crtc,
+ 				  struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct drm_crtc_state *old_crtc_state = drm_atomic_get_old_crtc_state(state,
+ 									      crtc);
+ 	struct vop *vop = to_vop(crtc);
+@@ -1265,8 +1267,8 @@ static void vop_crtc_atomic_begin(struct drm_crtc *crtc,
+ 	 * Only update GAMMA if the 'active' flag is not changed,
+ 	 * otherwise it's updated by .atomic_enable.
+ 	 */
+-	if (crtc->state->color_mgmt_changed &&
+-	    !crtc->state->active_changed)
++	if (crtc_state->color_mgmt_changed &&
++	    !crtc_state->active_changed)
+ 		vop_crtc_gamma_set(vop, crtc, old_crtc_state);
+ }
+ 
+diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+index f1e8951fa86c4..093ac01ac3d90 100644
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1945,15 +1945,17 @@ static void tegra_crtc_atomic_begin(struct drm_crtc *crtc,
+ static void tegra_crtc_atomic_flush(struct drm_crtc *crtc,
+ 				    struct drm_atomic_state *state)
+ {
+-	struct tegra_dc_state *crtc_state = to_dc_state(crtc->state);
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
++	struct tegra_dc_state *dc_state = to_dc_state(crtc_state);
+ 	struct tegra_dc *dc = to_tegra_dc(crtc);
+ 	u32 value;
+ 
+-	value = crtc_state->planes << 8 | GENERAL_UPDATE;
++	value = dc_state->planes << 8 | GENERAL_UPDATE;
+ 	tegra_dc_writel(dc, value, DC_CMD_STATE_CONTROL);
+ 	value = tegra_dc_readl(dc, DC_CMD_STATE_CONTROL);
+ 
+-	value = crtc_state->planes | GENERAL_ACT_REQ;
++	value = dc_state->planes | GENERAL_ACT_REQ;
+ 	tegra_dc_writel(dc, value, DC_CMD_STATE_CONTROL);
+ 	value = tegra_dc_readl(dc, DC_CMD_STATE_CONTROL);
+ }
+diff --git a/drivers/gpu/drm/virtio/virtgpu_display.c b/drivers/gpu/drm/virtio/virtgpu_display.c
+index fcbb0a6cdb173..9af912fc2426b 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_display.c
++++ b/drivers/gpu/drm/virtio/virtgpu_display.c
+@@ -119,6 +119,8 @@ static int virtio_gpu_crtc_atomic_check(struct drm_crtc *crtc,
+ static void virtio_gpu_crtc_atomic_flush(struct drm_crtc *crtc,
+ 					 struct drm_atomic_state *state)
+ {
++	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
++									  crtc);
+ 	struct virtio_gpu_output *output = drm_crtc_to_virtio_gpu_output(crtc);
+ 
+ 	/*
+@@ -127,7 +129,7 @@ static void virtio_gpu_crtc_atomic_flush(struct drm_crtc *crtc,
+ 	 * in the plane update callback, and here we just check
+ 	 * whenever we must force the modeset.
+ 	 */
+-	if (drm_atomic_crtc_needs_modeset(crtc->state)) {
++	if (drm_atomic_crtc_needs_modeset(crtc_state)) {
+ 		output->needs_modeset = true;
+ 	}
+ }
+-- 
+2.43.0
+
 
 
 
