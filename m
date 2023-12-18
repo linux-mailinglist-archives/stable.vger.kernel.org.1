@@ -1,189 +1,197 @@
-Return-Path: <stable+bounces-7636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D55817560
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:35:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46099817544
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:33:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15BFFB2230E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:35:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C4E9B2245A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D3142042;
-	Mon, 18 Dec 2023 15:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3FF49892;
+	Mon, 18 Dec 2023 15:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XIgEK3Jr";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vgGCrf2a";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KUk7fX+i";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="7fD5+Bgy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269E61D137
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d3470496e2so28289585ad.1
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:35:39 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913739; x=1703518539;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i/UEJLf4gc764SapxMU/d844wz2P9c3yBoh1Gs5lrjA=;
-        b=X//pfuL7dWPWfsXAHlchRU9Hp/G+7VVnKkkzoN513huyJUr45j0iObGXzFGUyJ67Cy
-         9yFHbCCJBkwDGxseW/Fo0U7ffM97gmwcSHgrMghQlprUwxot/DQorxywy9OwTR2yxfkS
-         QNqd2WI9YBIp8Pdi/GvMfE4w3I3SmtVqHcoEPPNHyZ6HklxJZxnvzZBNTPp7Mgf0Yz7d
-         K4AT76Pe5VV5fZ5iWBQsV1umy41TYNONpZ1g8yxfgc1I9sSgv/NfzuIqJjnQUXnxHJyf
-         mgqwQM6aCEzvgwD603TMtZXyFYhWAYUZeAqsCT5W90+Ez8TiaBhwGu0sl+Z9n32DpSop
-         LqJA==
-X-Gm-Message-State: AOJu0YyaKKJXUmItGPB7E1L4+9S32xjvBaCgkLLq1bhiYttvrcM2xMfy
-	c+AVH5eGJ9DbvH1w7FzpYH8=
-X-Google-Smtp-Source: AGHT+IG7jl7mM4m6Bs+i69QDfx8XsTJxMIG1wwC/uk9+X/YaHNyVCarGYxmDZ37VzZx2sV/G+S04tw==
-X-Received: by 2002:a17:90a:970b:b0:28b:3322:687 with SMTP id x11-20020a17090a970b00b0028b33220687mr2723559pjo.33.1702913739424;
-        Mon, 18 Dec 2023 07:35:39 -0800 (PST)
-Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.35.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:35:38 -0800 (PST)
-From: Namjae Jeon <linkinjeon@kernel.org>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: smfrench@gmail.com,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 007/154] ksmbd: change LeaseKey data type to u8 array
-Date: Tue, 19 Dec 2023 00:32:27 +0900
-Message-Id: <20231218153454.8090-8-linkinjeon@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
-References: <20231218153454.8090-1-linkinjeon@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F128E42387;
+	Mon, 18 Dec 2023 15:32:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D7FBD1FD49;
+	Mon, 18 Dec 2023 15:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1702913548; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
+	b=XIgEK3JrFDDqR8QAwqXnwaUTVADyWH/Kr7iuRdakeO18MAQx5mzKLwJA7+/PAiPQ4Ec4/0
+	NdZwewLHAYCTP5u33h3EVQ/vgRdJKSJVpTKIHJYVBUP+05wwlC3VilPxqmA5UqiLxhcStu
+	QtTUBCMaDl7YcsRuGQoPLApPKCjVkGY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1702913548;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
+	b=vgGCrf2a1l8GEw6DBR3FhOFD50FqRwVAJlYil3gMxTclWScu/ctFG4CYqg9giJppWqvYlp
+	oW65Lnzx5PLsS0Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1702913547; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
+	b=KUk7fX+izFMs4HurWN694iAICM8MvW/KNrBYqZUO+D5lEqTxralCp0+778c7OV1JnVHyg9
+	fgoiwMhL/GXWdmNrxU3hjw/8ETSUDZiBIl+ztI2H4SSTIgGCtVhw1RiU9xqgtpVJh8ahP3
+	TO4TSzRZfGdxMLmsfKUgnlHNICiOyt8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1702913547;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lDm4hg48PDFBg6xR++pjGHYcQnl+zm5vP7lgIIqjERU=;
+	b=7fD5+BgyrJSace8PYz5yajZ5/wG9SnT27qNRQFp3I1pJKbn/ZJskdMYeapFFsos593ujRn
+	TEdIzrevBo3WzzBw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C8CE313BC8;
+	Mon, 18 Dec 2023 15:32:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id MmwCMQtmgGWHfAAAn2gu4w
+	(envelope-from <jack@suse.cz>); Mon, 18 Dec 2023 15:32:27 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 5F147A07E0; Mon, 18 Dec 2023 16:32:27 +0100 (CET)
+Date: Mon, 18 Dec 2023 16:32:27 +0100
+From: Jan Kara <jack@suse.cz>
+To: Baokun Li <libaokun1@huawei.com>
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
+	jack@suse.cz, ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
+	yi.zhang@huawei.com, yangerkun@huawei.com, yukuai3@huawei.com,
+	Wei Chen <harperchen1110@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] ext4: fix double-free of blocks due to wrong extents
+ moved_len
+Message-ID: <20231218153227.x273h3c5t2dqgh76@quack3>
+References: <20231218141814.1477338-1-libaokun1@huawei.com>
+ <20231218141814.1477338-2-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231218141814.1477338-2-libaokun1@huawei.com>
+X-Spam-Level: **
+X-Spam-Level: 
+X-Spamd-Bar: /
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KUk7fX+i;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7fD5+Bgy
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [0.49 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.00)[10.49%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[13];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,dilger.ca,suse.cz,gmail.com,huawei.com];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Score: 0.49
+X-Rspamd-Queue-Id: D7FBD1FD49
+X-Spam-Flag: NO
 
-[ Upstream commit 2734b692f7b8167b93498dcd698067623d4267ca ]
+On Mon 18-12-23 22:18:11, Baokun Li wrote:
+> In ext4_move_extents(), moved_len is only updated when all moves are
+> successfully executed, and only discards orig_inode and donor_inode
+> preallocations when moved_len is not zero. When the loop fails to exit
+> after successfully moving some extents, moved_len is not updated and
+> remains at 0, so it does not discard the preallocations.
+> 
+> If the moved extents overlap with the preallocated extents, the
+> overlapped extents are freed twice in ext4_mb_release_inode_pa() and
+> ext4_process_freed_data() (as described in commit 94d7c16cbbbd), and
+> bb_free is incremented twice. Hence when trim is executed, a zero-division
+> bug is triggered in mb_update_avg_fragment_size() because bb_free is not
+> zero and bb_fragments is zero.
+> 
+> Therefore, update move_len after each extent move to avoid the issue.
+> 
+> Reported-by: Wei Chen <harperchen1110@gmail.com>
+> Reported-by: xingwei lee <xrivendell7@gmail.com>
+> Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
+> Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
+> CC: stable@vger.kernel.org # 3.18
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> ---
+>  fs/ext4/move_extent.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+> index 3aa57376d9c2..4b9b503c6346 100644
+> --- a/fs/ext4/move_extent.c
+> +++ b/fs/ext4/move_extent.c
+> @@ -672,7 +672,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+>  		 */
+>  		ext4_double_up_write_data_sem(orig_inode, donor_inode);
+>  		/* Swap original branches with new branches */
+> -		move_extent_per_page(o_filp, donor_inode,
+> +		*moved_len += move_extent_per_page(o_filp, donor_inode,
+>  				     orig_page_index, donor_page_index,
+>  				     offset_in_page, cur_len,
+>  				     unwritten, &ret);
 
-cifs define LeaseKey as u8 array in structure. To move lease structure
-to smbfs_common, ksmbd change LeaseKey data type to u8 array.
+Although this is currently fine, I think ext4_move_extents() should be
+careful and zero out *moved_len before it starts using it.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
----
- fs/ksmbd/oplock.c  | 24 +++++++++---------------
- fs/ksmbd/oplock.h  |  2 --
- fs/ksmbd/smb2pdu.h | 11 +++++------
- 3 files changed, 14 insertions(+), 23 deletions(-)
+> @@ -682,7 +682,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+>  		o_start += cur_len;
+>  		d_start += cur_len;
+>  	}
+> -	*moved_len = o_start - orig_blk;
+>  	if (*moved_len > len)
+>  		*moved_len = len;
 
-diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index e57b2aa71815..e1d854609195 100644
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -1336,19 +1336,16 @@ __u8 smb2_map_lease_to_oplock(__le32 lease_state)
-  */
- void create_lease_buf(u8 *rbuf, struct lease *lease)
- {
--	char *LeaseKey = (char *)&lease->lease_key;
--
- 	if (lease->version == 2) {
- 		struct create_lease_v2 *buf = (struct create_lease_v2 *)rbuf;
--		char *ParentLeaseKey = (char *)&lease->parent_lease_key;
- 
- 		memset(buf, 0, sizeof(struct create_lease_v2));
--		buf->lcontext.LeaseKeyLow = *((__le64 *)LeaseKey);
--		buf->lcontext.LeaseKeyHigh = *((__le64 *)(LeaseKey + 8));
-+		memcpy(buf->lcontext.LeaseKey, lease->lease_key,
-+		       SMB2_LEASE_KEY_SIZE);
- 		buf->lcontext.LeaseFlags = lease->flags;
- 		buf->lcontext.LeaseState = lease->state;
--		buf->lcontext.ParentLeaseKeyLow = *((__le64 *)ParentLeaseKey);
--		buf->lcontext.ParentLeaseKeyHigh = *((__le64 *)(ParentLeaseKey + 8));
-+		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
-+		       SMB2_LEASE_KEY_SIZE);
- 		buf->ccontext.DataOffset = cpu_to_le16(offsetof
- 				(struct create_lease_v2, lcontext));
- 		buf->ccontext.DataLength = cpu_to_le32(sizeof(struct lease_context_v2));
-@@ -1363,8 +1360,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
- 		struct create_lease *buf = (struct create_lease *)rbuf;
- 
- 		memset(buf, 0, sizeof(struct create_lease));
--		buf->lcontext.LeaseKeyLow = *((__le64 *)LeaseKey);
--		buf->lcontext.LeaseKeyHigh = *((__le64 *)(LeaseKey + 8));
-+		memcpy(buf->lcontext.LeaseKey, lease->lease_key, SMB2_LEASE_KEY_SIZE);
- 		buf->lcontext.LeaseFlags = lease->flags;
- 		buf->lcontext.LeaseState = lease->state;
- 		buf->ccontext.DataOffset = cpu_to_le16(offsetof
-@@ -1417,19 +1413,17 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
- 		if (sizeof(struct lease_context_v2) == le32_to_cpu(cc->DataLength)) {
- 			struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
- 
--			*((__le64 *)lreq->lease_key) = lc->lcontext.LeaseKeyLow;
--			*((__le64 *)(lreq->lease_key + 8)) = lc->lcontext.LeaseKeyHigh;
-+			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
- 			lreq->req_state = lc->lcontext.LeaseState;
- 			lreq->flags = lc->lcontext.LeaseFlags;
- 			lreq->duration = lc->lcontext.LeaseDuration;
--			*((__le64 *)lreq->parent_lease_key) = lc->lcontext.ParentLeaseKeyLow;
--			*((__le64 *)(lreq->parent_lease_key + 8)) = lc->lcontext.ParentLeaseKeyHigh;
-+			memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
-+			       SMB2_LEASE_KEY_SIZE);
- 			lreq->version = 2;
- 		} else {
- 			struct create_lease *lc = (struct create_lease *)cc;
- 
--			*((__le64 *)lreq->lease_key) = lc->lcontext.LeaseKeyLow;
--			*((__le64 *)(lreq->lease_key + 8)) = lc->lcontext.LeaseKeyHigh;
-+			memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
- 			lreq->req_state = lc->lcontext.LeaseState;
- 			lreq->flags = lc->lcontext.LeaseFlags;
- 			lreq->duration = lc->lcontext.LeaseDuration;
-diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
-index 2c4f4a0512b7..e1ba363b412a 100644
---- a/fs/ksmbd/oplock.h
-+++ b/fs/ksmbd/oplock.h
-@@ -28,8 +28,6 @@
- #define OPLOCK_WRITE_TO_NONE		0x04
- #define OPLOCK_READ_TO_NONE		0x08
- 
--#define SMB2_LEASE_KEY_SIZE		16
--
- struct lease_ctx_info {
- 	__u8			lease_key[SMB2_LEASE_KEY_SIZE];
- 	__le32			req_state;
-diff --git a/fs/ksmbd/smb2pdu.h b/fs/ksmbd/smb2pdu.h
-index 2175ab5fb557..3ae27ccfc20d 100644
---- a/fs/ksmbd/smb2pdu.h
-+++ b/fs/ksmbd/smb2pdu.h
-@@ -734,22 +734,21 @@ struct create_posix_rsp {
- 
- #define SMB2_LEASE_FLAG_BREAK_IN_PROGRESS_LE	cpu_to_le32(0x02)
- 
-+#define SMB2_LEASE_KEY_SIZE			16
-+
- struct lease_context {
--	__le64 LeaseKeyLow;
--	__le64 LeaseKeyHigh;
-+	__u8 LeaseKey[SMB2_LEASE_KEY_SIZE];
- 	__le32 LeaseState;
- 	__le32 LeaseFlags;
- 	__le64 LeaseDuration;
- } __packed;
- 
- struct lease_context_v2 {
--	__le64 LeaseKeyLow;
--	__le64 LeaseKeyHigh;
-+	__u8 LeaseKey[SMB2_LEASE_KEY_SIZE];
- 	__le32 LeaseState;
- 	__le32 LeaseFlags;
- 	__le64 LeaseDuration;
--	__le64 ParentLeaseKeyLow;
--	__le64 ParentLeaseKeyHigh;
-+	__u8 ParentLeaseKey[SMB2_LEASE_KEY_SIZE];
- 	__le16 Epoch;
- 	__le16 Reserved;
- } __packed;
+So I'm not sure the *moved_len > len condition can ever trigger but if it
+does, we'd need to check it whenever we are returning moved_len. So either
+I'd delete the condition or move it to the out label.
+
+								Honza
 -- 
-2.25.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
