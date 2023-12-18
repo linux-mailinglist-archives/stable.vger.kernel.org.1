@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900CF81718A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE9D817238
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 127FDB20E1B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41775B21E90
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06F641D148;
-	Mon, 18 Dec 2023 13:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CF11D148;
+	Mon, 18 Dec 2023 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0rZzT6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+z2A3T5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17B41D144;
-	Mon, 18 Dec 2023 13:58:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A04C433C8;
-	Mon, 18 Dec 2023 13:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E47A1D142;
+	Mon, 18 Dec 2023 14:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0093FC433C8;
+	Mon, 18 Dec 2023 14:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907919;
-	bh=3rjXSeeDIHDPhI1edmHgM2pj11NQ3Mw+eTXFU554vcM=;
+	s=korg; t=1702908270;
+	bh=yE5M9HXJJt5X8HbFfdE6PVujyWdGgMdkvWauiFXgQ5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0rZzT6gWoyW6FrO9YmuR6bDT2u0hIA8T0QZLPatOJa9rSfqJDLuIEayFJqBwd40U
-	 ovrIodQ4bchWr5lC3XsMFLxkNi7JF8cOEyf0CQXKRunaO6zg/bzUrLRu29zAYtR3so
-	 hptaTVCAiNgOz55mUHhdCZsPCb65kVIjxd/eL6/Q=
+	b=g+z2A3T5vWeNYjXguXrp1Rf8OnVwwghun1/Z8fO002L7/1G+L8FmZZDeRynGdwIM8
+	 LlDvstzx41W71AbGxckfZ4Q3slQaR70hshgozjVxYDWDoJEqVGwv+rB+y4wkYALWYl
+	 WFWBtKLLVd3/W6wzeiEWCvanlwpbgLZbHcbh8gjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WANG Xuerui <git@xen0n.name>,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Aoba K <nexp_0x17@outlook.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/106] LoongArch: Implement constant timer shutdown interface
+Subject: [PATCH 6.6 114/166] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
 Date: Mon, 18 Dec 2023 14:51:20 +0100
-Message-ID: <20231218135057.876021544@linuxfoundation.org>
+Message-ID: <20231218135110.133929176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,96 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Aoba K <nexp_0x17@outlook.com>
 
-[ Upstream commit d43f37b73468c172bc89ac4824a1511b411f0778 ]
+[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
 
-When a cpu is hot-unplugged, it is put in idle state and the function
-arch_cpu_idle_dead() is called. The timer interrupt for this processor
-should be disabled, otherwise there will be pending timer interrupt for
-the unplugged cpu, so that vcpu is prevented from giving up scheduling
-when system is running in vm mode.
+Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
+mode until the input mode feature is written by the host.  The touchpad do
+report the input mode at touchpad(3), while itself working under mouse mode. As
+a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
+feature in mt_set_input_mode for such device.
 
-This patch implements the timer shutdown interface so that the constant
-timer will be properly disabled when a CPU is hot-unplugged.
+The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
+information on the internel by this string at present.  As the serial number of
+the laptop is GLO-G52, while DMI info reports the laptop serial number as
+GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
 
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Aoba K <nexp_0x17@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/time.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.c
-index d2b7d5df132a9..150df6e17bb6a 100644
---- a/arch/loongarch/kernel/time.c
-+++ b/arch/loongarch/kernel/time.c
-@@ -58,14 +58,16 @@ static int constant_set_state_oneshot(struct clock_event_device *evt)
- 	return 0;
- }
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 8db4ae05febc8..5ec1f174127a3 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2048,6 +2048,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
+ 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
  
--static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
-+static int constant_set_state_periodic(struct clock_event_device *evt)
- {
-+	unsigned long period;
- 	unsigned long timer_config;
- 
- 	raw_spin_lock(&state_lock);
- 
--	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
--	timer_config &= ~CSR_TCFG_EN;
-+	period = const_clock_freq / HZ;
-+	timer_config = period & CSR_TCFG_VAL;
-+	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
- 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
- 
- 	raw_spin_unlock(&state_lock);
-@@ -73,16 +75,14 @@ static int constant_set_state_oneshot_stopped(struct clock_event_device *evt)
- 	return 0;
- }
- 
--static int constant_set_state_periodic(struct clock_event_device *evt)
-+static int constant_set_state_shutdown(struct clock_event_device *evt)
- {
--	unsigned long period;
- 	unsigned long timer_config;
- 
- 	raw_spin_lock(&state_lock);
- 
--	period = const_clock_freq / HZ;
--	timer_config = period & CSR_TCFG_VAL;
--	timer_config |= (CSR_TCFG_PERIOD | CSR_TCFG_EN);
-+	timer_config = csr_read64(LOONGARCH_CSR_TCFG);
-+	timer_config &= ~CSR_TCFG_EN;
- 	csr_write64(timer_config, LOONGARCH_CSR_TCFG);
- 
- 	raw_spin_unlock(&state_lock);
-@@ -90,11 +90,6 @@ static int constant_set_state_periodic(struct clock_event_device *evt)
- 	return 0;
- }
- 
--static int constant_set_state_shutdown(struct clock_event_device *evt)
--{
--	return 0;
--}
--
- static int constant_timer_next_event(unsigned long delta, struct clock_event_device *evt)
- {
- 	unsigned long timer_config;
-@@ -156,7 +151,7 @@ int constant_clockevent_init(void)
- 	cd->rating = 320;
- 	cd->cpumask = cpumask_of(cpu);
- 	cd->set_state_oneshot = constant_set_state_oneshot;
--	cd->set_state_oneshot_stopped = constant_set_state_oneshot_stopped;
-+	cd->set_state_oneshot_stopped = constant_set_state_shutdown;
- 	cd->set_state_periodic = constant_set_state_periodic;
- 	cd->set_state_shutdown = constant_set_state_shutdown;
- 	cd->set_next_event = constant_timer_next_event;
++	/* HONOR GLO-GXXX panel */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x347d, 0x7853) },
++
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
 -- 
 2.43.0
 
