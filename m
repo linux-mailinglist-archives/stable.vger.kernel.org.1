@@ -1,48 +1,52 @@
-Return-Path: <stable+bounces-7545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D99817307
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9940817251
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29CC9B22B6B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45C2CB23120
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C373A1C7;
-	Mon, 18 Dec 2023 14:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DCF4236C;
+	Mon, 18 Dec 2023 14:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1thWS3U2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qL4Ojyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A53A1A8;
-	Mon, 18 Dec 2023 14:12:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C01C433C8;
-	Mon, 18 Dec 2023 14:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4C537865;
+	Mon, 18 Dec 2023 14:05:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002DBC433C8;
+	Mon, 18 Dec 2023 14:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908757;
-	bh=+mWfR5c+j3yySXC8UeU8Cttl2Qq3u2DGEiNashsDVnI=;
+	s=korg; t=1702908331;
+	bh=q12v56DrD1mv3wcmW6Zfx6+SOm5/LM3vh0XtEnHI9NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1thWS3U2/W8okcWZ8CwNr2b6yKpnYQbU6YosZX5P8MDLeLMV/bDo2+1Vu/BKY8J6g
-	 /dztrHdtY/xXs/bp6qNbfeYNVHCvQPDpbwQ8arLbzSo4kIJWgXKRKhYQV11mFFzxKb
-	 Xbi/8xT2jG8X7T6yGuQkXEAyHaonVg5tRn2sYCek=
+	b=1qL4OjyggpUkcO1efi0AF763Iky1wpQDwcbwIst4c+9VjpQ1jh9kDV8KiQ1TPemXt
+	 keygq5DgrxHLmq5zTYoLxproDcnZNspNRS3XPpNl/OEXkwiKsgr3kgGiU5dVX6t8nI
+	 eXNo8Lyk5WN9MQQ3hGPyxjgZ31zTMqF3LXeevLTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 22/83] octeontx2-af: Update RSS algorithm index
+	Yu Zhao <yuzhao@google.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Kairui Song <ryncsn@gmail.com>,
+	Hillf Danton <hdanton@sina.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 137/166] mm/mglru: fix underprotected page cache
 Date: Mon, 18 Dec 2023 14:51:43 +0100
-Message-ID: <20231218135050.721994341@linuxfoundation.org>
+Message-ID: <20231218135111.222755975@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,152 +58,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Yu Zhao <yuzhao@google.com>
 
-[ Upstream commit 570ba37898ecd9069beb58bf0b6cf84daba6e0fe ]
+commit 081488051d28d32569ebb7c7a23572778b2e7d57 upstream.
 
-The RSS flow algorithm is not set up correctly for promiscuous or all
-multi MCAM entries. This has an impact on flow distribution.
+Unmapped folios accessed through file descriptors can be underprotected.
+Those folios are added to the oldest generation based on:
 
-This patch fixes the issue by updating flow algorithm index in above
-mentioned MCAM entries.
+1. The fact that they are less costly to reclaim (no need to walk the
+   rmap and flush the TLB) and have less impact on performance (don't
+   cause major PFs and can be non-blocking if needed again).
+2. The observation that they are likely to be single-use. E.g., for
+   client use cases like Android, its apps parse configuration files
+   and store the data in heap (anon); for server use cases like MySQL,
+   it reads from InnoDB files and holds the cached data for tables in
+   buffer pools (anon).
 
-Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the oldest generation can be very short lived, and if so, it
+doesn't provide the PID controller with enough time to respond to a surge
+of refaults.  (Note that the PID controller uses weighted refaults and
+those from evicted generations only take a half of the whole weight.) In
+other words, for a short lived generation, the moving average smooths out
+the spike quickly.
+
+To fix the problem:
+1. For folios that are already on LRU, if they can be beyond the
+   tracking range of tiers, i.e., five accesses through file
+   descriptors, move them to the second oldest generation to give them
+   more time to age. (Note that tiers are used by the PID controller
+   to statistically determine whether folios accessed multiple times
+   through file descriptors are worth protecting.)
+2. When adding unmapped folios to LRU, adjust the placement of them so
+   that they are not too close to the tail. The effect of this is
+   similar to the above.
+
+On Android, launching 55 apps sequentially:
+                           Before     After      Change
+  workingset_refault_anon  25641024   25598972   0%
+  workingset_refault_file  115016834  106178438  -8%
+
+Link: https://lkml.kernel.org/r/20231208061407.2125867-1-yuzhao@google.com
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Tested-by: Kalesh Singh <kaleshsingh@google.com>
+Cc: T.J. Mercier <tjmercier@google.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 55 +++++++++++++++----
- 1 file changed, 44 insertions(+), 11 deletions(-)
+ include/linux/mm_inline.h |   23 ++++++++++++++---------
+ mm/vmscan.c               |    2 +-
+ mm/workingset.c           |    6 +++---
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index a3fd20d26b942..8b16738e249f6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -664,6 +664,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
- 	int blkaddr, ucast_idx, index;
- 	struct nix_rx_action action = { 0 };
- 	u64 relaxed_mask;
-+	u8 flow_key_alg;
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -231,22 +231,27 @@ static inline bool lru_gen_add_folio(str
+ 	if (folio_test_unevictable(folio) || !lrugen->enabled)
+ 		return false;
+ 	/*
+-	 * There are three common cases for this page:
+-	 * 1. If it's hot, e.g., freshly faulted in or previously hot and
+-	 *    migrated, add it to the youngest generation.
+-	 * 2. If it's cold but can't be evicted immediately, i.e., an anon page
+-	 *    not in swapcache or a dirty page pending writeback, add it to the
+-	 *    second oldest generation.
+-	 * 3. Everything else (clean, cold) is added to the oldest generation.
++	 * There are four common cases for this page:
++	 * 1. If it's hot, i.e., freshly faulted in, add it to the youngest
++	 *    generation, and it's protected over the rest below.
++	 * 2. If it can't be evicted immediately, i.e., a dirty page pending
++	 *    writeback, add it to the second youngest generation.
++	 * 3. If it should be evicted first, e.g., cold and clean from
++	 *    folio_rotate_reclaimable(), add it to the oldest generation.
++	 * 4. Everything else falls between 2 & 3 above and is added to the
++	 *    second oldest generation if it's considered inactive, or the
++	 *    oldest generation otherwise. See lru_gen_is_active().
+ 	 */
+ 	if (folio_test_active(folio))
+ 		seq = lrugen->max_seq;
+ 	else if ((type == LRU_GEN_ANON && !folio_test_swapcache(folio)) ||
+ 		 (folio_test_reclaim(folio) &&
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+-		seq = lrugen->min_seq[type] + 1;
+-	else
++		seq = lrugen->max_seq - 1;
++	else if (reclaiming || lrugen->min_seq[type] + MIN_NR_GENS >= lrugen->max_seq)
+ 		seq = lrugen->min_seq[type];
++	else
++		seq = lrugen->min_seq[type] + 1;
  
- 	if (!hw->cap.nix_rx_multicast && is_cgx_vf(rvu, pcifunc))
- 		return;
-@@ -694,6 +695,8 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
- 		action.op = NIX_RX_ACTIONOP_UCAST;
+ 	gen = lru_gen_from_seq(seq);
+ 	flags = (gen + 1UL) << LRU_GEN_PGOFF;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4933,7 +4933,7 @@ static bool sort_folio(struct lruvec *lr
  	}
  
-+	flow_key_alg = action.flow_key_alg;
-+
- 	/* RX_ACTION set to MCAST for CGX PF's */
- 	if (hw->cap.nix_rx_multicast && pfvf->use_mce_list &&
- 	    is_pf_cgxmapped(rvu, rvu_get_pf(pcifunc))) {
-@@ -733,7 +736,7 @@ void rvu_npc_install_promisc_entry(struct rvu *rvu, u16 pcifunc,
- 	req.vf = pcifunc;
- 	req.index = action.index;
- 	req.match_id = action.match_id;
--	req.flow_key_alg = action.flow_key_alg;
-+	req.flow_key_alg = flow_key_alg;
+ 	/* protected */
+-	if (tier > tier_idx) {
++	if (tier > tier_idx || refs == BIT(LRU_REFS_WIDTH)) {
+ 		int hist = lru_hist_from_seq(lrugen->min_seq[type]);
  
- 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
- }
-@@ -839,6 +842,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	u8 mac_addr[ETH_ALEN] = { 0 };
- 	struct nix_rx_action action = { 0 };
- 	struct rvu_pfvf *pfvf;
-+	u8 flow_key_alg;
- 	u16 vf_func;
- 
- 	/* Only CGX PF/VF can add allmulticast entry */
-@@ -865,6 +869,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 		*(u64 *)&action = npc_get_mcam_action(rvu, mcam,
- 							blkaddr, ucast_idx);
- 
-+	flow_key_alg = action.flow_key_alg;
- 	if (action.op != NIX_RX_ACTIONOP_RSS) {
- 		*(u64 *)&action = 0;
- 		action.op = NIX_RX_ACTIONOP_UCAST;
-@@ -901,7 +906,7 @@ void rvu_npc_install_allmulti_entry(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	req.vf = pcifunc | vf_func;
- 	req.index = action.index;
- 	req.match_id = action.match_id;
--	req.flow_key_alg = action.flow_key_alg;
-+	req.flow_key_alg = flow_key_alg;
- 
- 	rvu_mbox_handler_npc_install_flow(rvu, &req, &rsp);
- }
-@@ -967,11 +972,38 @@ static void npc_update_vf_flow_entry(struct rvu *rvu, struct npc_mcam *mcam,
- 	mutex_unlock(&mcam->lock);
- }
- 
-+static void npc_update_rx_action_with_alg_idx(struct rvu *rvu, struct nix_rx_action action,
-+					      struct rvu_pfvf *pfvf, int mcam_index, int blkaddr,
-+					      int alg_idx)
-+
-+{
-+	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	struct rvu_hwinfo *hw = rvu->hw;
-+	int bank, op_rss;
-+
-+	if (!is_mcam_entry_enabled(rvu, mcam, blkaddr, mcam_index))
-+		return;
-+
-+	op_rss = (!hw->cap.nix_rx_multicast || !pfvf->use_mce_list);
-+
-+	bank = npc_get_bank(mcam, mcam_index);
-+	mcam_index &= (mcam->banksize - 1);
-+
-+	/* If Rx action is MCAST update only RSS algorithm index */
-+	if (!op_rss) {
-+		*(u64 *)&action = rvu_read64(rvu, blkaddr,
-+				NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank));
-+
-+		action.flow_key_alg = alg_idx;
-+	}
-+	rvu_write64(rvu, blkaddr,
-+		    NPC_AF_MCAMEX_BANKX_ACTION(mcam_index, bank), *(u64 *)&action);
-+}
-+
- void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
- 				    int group, int alg_idx, int mcam_index)
- {
- 	struct npc_mcam *mcam = &rvu->hw->mcam;
--	struct rvu_hwinfo *hw = rvu->hw;
- 	struct nix_rx_action action;
- 	int blkaddr, index, bank;
- 	struct rvu_pfvf *pfvf;
-@@ -1027,15 +1059,16 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
- 	/* If PF's promiscuous entry is enabled,
- 	 * Set RSS action for that entry as well
+ 		gen = folio_inc_gen(lruvec, folio, false);
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -313,10 +313,10 @@ static void lru_gen_refault(struct folio
+ 	 * 1. For pages accessed through page tables, hotter pages pushed out
+ 	 *    hot pages which refaulted immediately.
+ 	 * 2. For pages accessed multiple times through file descriptors,
+-	 *    numbers of accesses might have been out of the range.
++	 *    they would have been protected by sort_folio().
  	 */
--	if ((!hw->cap.nix_rx_multicast || !pfvf->use_mce_list) &&
--	    is_mcam_entry_enabled(rvu, mcam, blkaddr, index)) {
--		bank = npc_get_bank(mcam, index);
--		index &= (mcam->banksize - 1);
-+	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
-+					  alg_idx);
- 
--		rvu_write64(rvu, blkaddr,
--			    NPC_AF_MCAMEX_BANKX_ACTION(index, bank),
--			    *(u64 *)&action);
--	}
-+	index = npc_get_nixlf_mcam_index(mcam, pcifunc,
-+					 nixlf, NIXLF_ALLMULTI_ENTRY);
-+	/* If PF's allmulti  entry is enabled,
-+	 * Set RSS action for that entry as well
-+	 */
-+	npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index, blkaddr,
-+					  alg_idx);
- }
- 
- void npc_enadis_default_mce_entry(struct rvu *rvu, u16 pcifunc,
--- 
-2.43.0
-
+-	if (lru_gen_in_fault() || refs == BIT(LRU_REFS_WIDTH)) {
+-		folio_set_workingset(folio);
++	if (lru_gen_in_fault() || refs >= BIT(LRU_REFS_WIDTH) - 1) {
++		set_mask_bits(&folio->flags, 0, LRU_REFS_MASK | BIT(PG_workingset));
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	}
+ unlock:
 
 
 
