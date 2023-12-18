@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707C381727A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 996D381729F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2110D2856CB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0C1D1C24C7E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59F137885;
-	Mon, 18 Dec 2023 14:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4666037884;
+	Mon, 18 Dec 2023 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcnM//1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH3zEwU9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5151D13D;
-	Mon, 18 Dec 2023 14:07:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62E0C433C8;
-	Mon, 18 Dec 2023 14:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D928129EF9;
+	Mon, 18 Dec 2023 14:08:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B41C433C7;
+	Mon, 18 Dec 2023 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908421;
-	bh=omeTZ6uE+n/0+oxBogml4YcHM9L6C1EohKHtyDYOIf8=;
+	s=korg; t=1702908508;
+	bh=oY5+xR3Wkj6UpIfsYkpxiv0FXo8d6LnLJCd3B6Dacfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcnM//1PkdfIThjICmdNVZfSLd/D9pOpxAkO/I5nm8/pf/cw1kzEIpULTY7/6qdOX
-	 GYDvpIXREVJ1Ae8fjOR/4zDJn8t/VQgwGIOqe22BLLlM8PP/6SsFnc5R5HxCi/MbcH
-	 KjePu80WlbdgpxAWT/aBQ51zxVQQjWO6c6mDi9Oo=
+	b=zH3zEwU9z7tsMZDV7klWzkzNLwaMrI6ANwmHppCC1V2ICS8E4v+sfAMGSkD/V5gxf
+	 EiMkX8umz1zAFoMwZQiS1wBQAfmCCQ0pwlcvx0CtiazuH98Cqzjdc2Qn28yR6VJNOs
+	 HBxmfmUPEmBNyhOVSUaQJj4kOFXQpL/Vc/YadvSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 153/166] smb: client: fix OOB in receive_encrypted_standard()
+	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
+	Coly Li <colyli@suse.de>,
+	Eric Wheeler <bcache@lists.ewheeler.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 35/62] bcache: avoid oversize memory allocation by small stripe_size
 Date: Mon, 18 Dec 2023 14:51:59 +0100
-Message-ID: <20231218135111.974068748@linuxfoundation.org>
+Message-ID: <20231218135047.829998376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +55,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Coly Li <colyli@suse.de>
 
-commit eec04ea119691e65227a97ce53c0da6b9b74b0b7 upstream.
+[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
 
-Fix potential OOB in receive_encrypted_standard() if server returned a
-large shdr->NextCommand that would end up writing off the end of
-@next_buffer.
+Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
+used for dirty data writeback, their sizes are decided by backing device
+capacity and stripe size. Larger backing device capacity or smaller
+stripe size make these two arraies occupies more dynamic memory space.
 
-Fixes: b24df3e30cbf ("cifs: update receive_encrypted_standard to handle compounded responses")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently bcache->stripe_size is directly inherited from
+queue->limits.io_opt of underlying storage device. For normal hard
+drives, its limits.io_opt is 0, and bcache sets the corresponding
+stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
+devices do declare value for queue->limits.io_opt, small stripe_size
+(comparing to 1TB) becomes an issue for oversize memory allocations of
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
+capacity of hard drives gets much larger in recent decade.
+
+For example a raid5 array assembled by three 20TB hardrives, the raid
+device capacity is 40TB with typical 512KB limits.io_opt. After the math
+calculation in bcache code, these two arraies will occupy 400MB dynamic
+memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
+declared on a new 2TB hard drive, then these two arraies request 2GB and
+512MB dynamic memory from kzalloc(). The result is that bcache device
+always fails to initialize on his system.
+
+To avoid the oversize memory allocation, bcache->stripe_size should not
+directly inherited by queue->limits.io_opt from the underlying device.
+This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
+and set bcache device's stripe size against the declared limits.io_opt
+value from the underlying storage device,
+- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size directly by this limits.io_opt value.
+- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size by a value multiplying limits.io_opt and euqal or
+  large than BCH_MIN_STRIPE_SZ.
+
+Then the minimal stripe size of a bcache device will always be >= 4MB.
+For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
+in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
+by these two arraies will be 2.5MB in total.
+
+Such mount of memory allocated for bcache->stripe_sectors_dirty and
+bcache->full_dirty_stripes is reasonable for most of storage devices.
+
+Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
+Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/md/bcache/bcache.h | 1 +
+ drivers/md/bcache/super.c  | 2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -4941,6 +4941,7 @@ receive_encrypted_standard(struct TCP_Se
- 	struct smb2_hdr *shdr;
- 	unsigned int pdu_length = server->pdu_size;
- 	unsigned int buf_size;
-+	unsigned int next_cmd;
- 	struct mid_q_entry *mid_entry;
- 	int next_is_large;
- 	char *next_buffer = NULL;
-@@ -4969,14 +4970,15 @@ receive_encrypted_standard(struct TCP_Se
- 	next_is_large = server->large_buf;
- one_more:
- 	shdr = (struct smb2_hdr *)buf;
--	if (shdr->NextCommand) {
-+	next_cmd = le32_to_cpu(shdr->NextCommand);
-+	if (next_cmd) {
-+		if (WARN_ON_ONCE(next_cmd > pdu_length))
-+			return -1;
- 		if (next_is_large)
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
--		memcpy(next_buffer,
--		       buf + le32_to_cpu(shdr->NextCommand),
--		       pdu_length - le32_to_cpu(shdr->NextCommand));
-+		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
- 	}
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index e8bf4f752e8be..5804a8e6e215a 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -265,6 +265,7 @@ struct bcache_device {
+ #define BCACHE_DEV_WB_RUNNING		3
+ #define BCACHE_DEV_RATE_DW_RUNNING	4
+ 	int			nr_stripes;
++#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
+ 	unsigned int		stripe_size;
+ 	atomic_t		*stripe_sectors_dirty;
+ 	unsigned long		*full_dirty_stripes;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index e8c8077667f9e..9c3e1632568c3 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -917,6 +917,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
  
- 	mid_entry = smb2_find_mid(server, buf);
-@@ -5000,8 +5002,8 @@ one_more:
- 	else
- 		ret = cifs_handle_standard(server, mid_entry);
+ 	if (!d->stripe_size)
+ 		d->stripe_size = 1 << 31;
++	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
++		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
  
--	if (ret == 0 && shdr->NextCommand) {
--		pdu_length -= le32_to_cpu(shdr->NextCommand);
-+	if (ret == 0 && next_cmd) {
-+		pdu_length -= next_cmd;
- 		server->large_buf = next_is_large;
- 		if (next_is_large)
- 			server->bigbuf = buf = next_buffer;
+ 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
+ 	if (!n || n > max_stripes) {
+-- 
+2.43.0
+
 
 
 
