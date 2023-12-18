@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-7387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4D8F81724F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870A4817306
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A176280CA8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C4011F22BC4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7692D37866;
-	Mon, 18 Dec 2023 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52343A1BB;
+	Mon, 18 Dec 2023 14:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtkObBux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z51jdYMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D35B1D12A;
-	Mon, 18 Dec 2023 14:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BF4C433C8;
-	Mon, 18 Dec 2023 14:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE063A1AE;
+	Mon, 18 Dec 2023 14:12:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4E3C433C8;
+	Mon, 18 Dec 2023 14:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908334;
-	bh=WxiZogETIYvaT89GSJCGshk3mZ6ygZ3SBZ0wPKB/eFU=;
+	s=korg; t=1702908760;
+	bh=PEyFnVPwD6kp2WJZLTYFaHYQyuCVdFvsLisw1LxizLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtkObBux209tEYp3YCte2Lnb9Ug/4ThumLkqFiZOsr/JsBO5/vegQHwIgQUdZBGt5
-	 uYEHVBd1omlbAltsmlaj4jcGLRi3+uO+nga4a87o6s3Wmq1wkqVTxC0TJdVDUZdf/3
-	 ZNBzaVt0WIWDAnZJ/nYDIZ2uh4n6vZv8fMqvV9IM=
+	b=Z51jdYMqNakYCMBQRYEcpTjeNUz/0I643WC1Ia3W9nSkpGjdLqf1sSF7+Z9xfwve1
+	 ZchZzBrMiTSXAiz72dbjL5lpE20ZvQGW/1bAJvOJkg+0r6cQF1oS4a4tZmt2R9IcUA
+	 wu3XusAKwRFPFrQLemEUAwbw77RiXFfvE6WxZnHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Zhao <yuzhao@google.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 138/166] mm/mglru: try to stop at high watermarks
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 23/83] atm: Fix Use-After-Free in do_vcc_ioctl
 Date: Mon, 18 Dec 2023 14:51:44 +0100
-Message-ID: <20231218135111.272358816@linuxfoundation.org>
+Message-ID: <20231218135050.762300564@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,148 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Zhao <yuzhao@google.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 5095a2b23987d3c3c47dd16b3d4080e2733b8bb9 upstream.
+[ Upstream commit 24e90b9e34f9e039f56b5f25f6e6eb92cdd8f4b3 ]
 
-The initial MGLRU patchset didn't include the memcg LRU support, and it
-relied on should_abort_scan(), added by commit f76c83378851 ("mm:
-multi-gen LRU: optimize multiple memcgs"), to "backoff to avoid
-overshooting their aggregate reclaim target by too much".
+Because do_vcc_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with vcc_recvmsg().
+A use-after-free for skb occurs with the following flow.
+```
+do_vcc_ioctl() -> skb_peek()
+vcc_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+```
+Add sk->sk_receive_queue.lock to do_vcc_ioctl() to fix this issue.
 
-Later on when the memcg LRU was added, should_abort_scan() was deemed
-unnecessary, and the test results [1] showed no side effects after it was
-removed by commit a579086c99ed ("mm: multi-gen LRU: remove eviction
-fairness safeguard").
-
-However, that test used memory.reclaim, which sets nr_to_reclaim to
-SWAP_CLUSTER_MAX.  So it can overshoot only by SWAP_CLUSTER_MAX-1 pages,
-i.e., from nr_reclaimed=nr_to_reclaim-1 to
-nr_reclaimed=nr_to_reclaim+SWAP_CLUSTER_MAX-1.  Compared with the batch
-size kswapd sets to nr_to_reclaim, SWAP_CLUSTER_MAX is tiny.  Therefore
-that test isn't able to reproduce the worst case scenario, i.e., kswapd
-overshooting GBs on large systems and "consuming 100% CPU" (see the Closes
-tag).
-
-Bring back a simplified version of should_abort_scan() on top of the memcg
-LRU, so that kswapd stops when all eligible zones are above their
-respective high watermarks plus a small delta to lower the chance of
-KSWAPD_HIGH_WMARK_HIT_QUICKLY.  Note that this only applies to order-0
-reclaim, meaning compaction-induced reclaim can still run wild (which is a
-different problem).
-
-On Android, launching 55 apps sequentially:
-           Before     After      Change
-  pgpgin   838377172  802955040  -4%
-  pgpgout  38037080   34336300   -10%
-
-[1] https://lore.kernel.org/20221222041905.2431096-1-yuzhao@google.com/
-
-Link: https://lkml.kernel.org/r/20231208061407.2125867-2-yuzhao@google.com
-Fixes: a579086c99ed ("mm: multi-gen LRU: remove eviction fairness safeguard")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Closes: https://lore.kernel.org/CAK8fFZ4DY+GtBA40Pm7Nn5xCHy+51w3sfxPqkqpqakSXYyX+Wg@mail.gmail.com/
-Tested-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-Tested-by: Kalesh Singh <kaleshsingh@google.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Kairui Song <ryncsn@gmail.com>
-Cc: T.J. Mercier <tjmercier@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209094210.GA403126@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |   36 ++++++++++++++++++++++++++++--------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ net/atm/ioctl.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -5341,20 +5341,41 @@ static long get_nr_to_scan(struct lruvec
- 	return try_to_inc_max_seq(lruvec, max_seq, sc, can_swap, false) ? -1 : 0;
- }
+diff --git a/net/atm/ioctl.c b/net/atm/ioctl.c
+index 838ebf0cabbfb..f81f8d56f5c0c 100644
+--- a/net/atm/ioctl.c
++++ b/net/atm/ioctl.c
+@@ -73,14 +73,17 @@ static int do_vcc_ioctl(struct socket *sock, unsigned int cmd,
+ 	case SIOCINQ:
+ 	{
+ 		struct sk_buff *skb;
++		int amount;
  
--static unsigned long get_nr_to_reclaim(struct scan_control *sc)
-+static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
- {
-+	int i;
-+	enum zone_watermarks mark;
-+
- 	/* don't abort memcg reclaim to ensure fairness */
- 	if (!root_reclaim(sc))
--		return -1;
-+		return false;
-+
-+	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
-+		return true;
-+
-+	/* check the order to exclude compaction-induced reclaim */
-+	if (!current_is_kswapd() || sc->order)
-+		return false;
-+
-+	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
-+	       WMARK_PROMO : WMARK_HIGH;
-+
-+	for (i = 0; i <= sc->reclaim_idx; i++) {
-+		struct zone *zone = lruvec_pgdat(lruvec)->node_zones + i;
-+		unsigned long size = wmark_pages(zone, mark) + MIN_LRU_BATCH;
-+
-+		if (managed_zone(zone) && !zone_watermark_ok(zone, 0, size, sc->reclaim_idx, 0))
-+			return false;
-+	}
- 
--	return max(sc->nr_to_reclaim, compact_gap(sc->order));
-+	/* kswapd should abort if all eligible zones are safe */
-+	return true;
- }
- 
- static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- {
- 	long nr_to_scan;
- 	unsigned long scanned = 0;
--	unsigned long nr_to_reclaim = get_nr_to_reclaim(sc);
- 	int swappiness = get_swappiness(lruvec, sc);
- 
- 	/* clean file folios are more likely to exist */
-@@ -5376,7 +5397,7 @@ static bool try_to_shrink_lruvec(struct
- 		if (scanned >= nr_to_scan)
- 			break;
- 
--		if (sc->nr_reclaimed >= nr_to_reclaim)
-+		if (should_abort_scan(lruvec, sc))
- 			break;
- 
- 		cond_resched();
-@@ -5437,7 +5458,6 @@ static void shrink_many(struct pglist_da
- 	struct lru_gen_folio *lrugen;
- 	struct mem_cgroup *memcg;
- 	const struct hlist_nulls_node *pos;
--	unsigned long nr_to_reclaim = get_nr_to_reclaim(sc);
- 
- 	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
- restart:
-@@ -5470,7 +5490,7 @@ restart:
- 
- 		rcu_read_lock();
- 
--		if (sc->nr_reclaimed >= nr_to_reclaim)
-+		if (should_abort_scan(lruvec, sc))
- 			break;
+ 		if (sock->state != SS_CONNECTED) {
+ 			error = -EINVAL;
+ 			goto done;
+ 		}
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		skb = skb_peek(&sk->sk_receive_queue);
+-		error = put_user(skb ? skb->len : 0,
+-				 (int __user *)argp) ? -EFAULT : 0;
++		amount = skb ? skb->len : 0;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
++		error = put_user(amount, (int __user *)argp) ? -EFAULT : 0;
+ 		goto done;
  	}
- 
-@@ -5481,7 +5501,7 @@ restart:
- 
- 	mem_cgroup_put(memcg);
- 
--	if (sc->nr_reclaimed >= nr_to_reclaim)
-+	if (!is_a_nulls(pos))
- 		return;
- 
- 	/* restart if raced with lru_gen_rotate_memcg() */
+ 	case ATM_SETSC:
+-- 
+2.43.0
+
 
 
 
