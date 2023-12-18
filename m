@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-7366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D1F81723A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D88381714A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2633B1C24D67
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 963FFB20CCF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EEE83A1B0;
-	Mon, 18 Dec 2023 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D111D12B;
+	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JryDuWhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pF6PC+DF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F7A3789C;
-	Mon, 18 Dec 2023 14:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B366C433C8;
-	Mon, 18 Dec 2023 14:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBACD129EE3;
+	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF9C433C8;
+	Mon, 18 Dec 2023 13:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908275;
-	bh=12JU2qGxIsCVYa5CU7ihXZlf1Z40nsoKy2hh4Sh+Bh8=;
+	s=korg; t=1702907768;
+	bh=+As+zTfeU3RcmdZYc17zY7m8aA75mGc2tQqnNdYTYRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JryDuWhq84qWvKta+TwKZj8lEtqj8MqJAo8DcUoGT7/PbqxxR6mMPq+AkmmYwmYxM
-	 b4nwkuo4TCHtBDPUAVgP97XHYgb2zkgU5//DivFdh4s5oJjYbdBi0Kf59qYu7mfakA
-	 wmJsY768zaKAqiUiqf0/Gg47k+k4TpSf5xOUxmLM=
+	b=pF6PC+DFlOP+7WZber1TqZfsjaMmHJ4/LZeEIXEWI6bLxdciKpymwdoBfZ0ttzlKx
+	 nz1hBfjGspCtcDYbAfpgkzf1AuDwCLrK7Ph5iyMVL89j4lTcYZYxH41OE9v/Hf3/KW
+	 mlkRo2gBtdxp3T0V7RC26+ksZLqAr1svbRaNft+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/166] rxrpc: Fix some minor issues with bundle tracing
+Subject: [PATCH 6.1 040/106] net: stmmac: Handle disabled MDIO busses from devicetree
 Date: Mon, 18 Dec 2023 14:50:54 +0100
-Message-ID: <20231218135108.934698009@linuxfoundation.org>
+Message-ID: <20231218135056.738016806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,82 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 0c3bd086d12d185650d095a906662593ec607bd0 ]
+[ Upstream commit e23c0d21ce9234fbc31ece35663ababbb83f9347 ]
 
-Fix some superficial issues with the tracing of rxrpc_bundle structs,
-including:
+Many hardware configurations have the MDIO bus disabled, and are instead
+using some other MDIO bus to talk to the MAC's phy.
 
- (1) Set the debug_id when the bundle is allocated rather than when it is
-     set up so that the "NEW" trace line displays the correct bundle ID.
+of_mdiobus_register() returns -ENODEV in this case. Let's handle it
+gracefully instead of failing to probe the MAC.
 
- (2) Show the refcount when emitting the "FREE" traceline.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/20231212-b4-stmmac-handle-mdio-enodev-v2-1-600171acf79f@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_client.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/conn_client.c b/net/rxrpc/conn_client.c
-index 981ca5b98bcb9..1d95f8bc769fa 100644
---- a/net/rxrpc/conn_client.c
-+++ b/net/rxrpc/conn_client.c
-@@ -73,6 +73,7 @@ static void rxrpc_destroy_client_conn_ids(struct rxrpc_local *local)
- static struct rxrpc_bundle *rxrpc_alloc_bundle(struct rxrpc_call *call,
- 					       gfp_t gfp)
- {
-+	static atomic_t rxrpc_bundle_id;
- 	struct rxrpc_bundle *bundle;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+index 5f177ea807258..379fc887ddf46 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+@@ -483,7 +483,11 @@ int stmmac_mdio_register(struct net_device *ndev)
+ 	new_bus->parent = priv->device;
  
- 	bundle = kzalloc(sizeof(*bundle), gfp);
-@@ -85,6 +86,7 @@ static struct rxrpc_bundle *rxrpc_alloc_bundle(struct rxrpc_call *call,
- 		bundle->upgrade		= test_bit(RXRPC_CALL_UPGRADE, &call->flags);
- 		bundle->service_id	= call->dest_srx.srx_service;
- 		bundle->security_level	= call->security_level;
-+		bundle->debug_id	= atomic_inc_return(&rxrpc_bundle_id);
- 		refcount_set(&bundle->ref, 1);
- 		atomic_set(&bundle->active, 1);
- 		INIT_LIST_HEAD(&bundle->waiting_calls);
-@@ -105,7 +107,8 @@ struct rxrpc_bundle *rxrpc_get_bundle(struct rxrpc_bundle *bundle,
- 
- static void rxrpc_free_bundle(struct rxrpc_bundle *bundle)
- {
--	trace_rxrpc_bundle(bundle->debug_id, 1, rxrpc_bundle_free);
-+	trace_rxrpc_bundle(bundle->debug_id, refcount_read(&bundle->ref),
-+			   rxrpc_bundle_free);
- 	rxrpc_put_peer(bundle->peer, rxrpc_peer_put_bundle);
- 	key_put(bundle->key);
- 	kfree(bundle);
-@@ -239,7 +242,6 @@ static bool rxrpc_may_reuse_conn(struct rxrpc_connection *conn)
-  */
- int rxrpc_look_up_bundle(struct rxrpc_call *call, gfp_t gfp)
- {
--	static atomic_t rxrpc_bundle_id;
- 	struct rxrpc_bundle *bundle, *candidate;
- 	struct rxrpc_local *local = call->local;
- 	struct rb_node *p, **pp, *parent;
-@@ -306,7 +308,6 @@ int rxrpc_look_up_bundle(struct rxrpc_call *call, gfp_t gfp)
+ 	err = of_mdiobus_register(new_bus, mdio_node);
+-	if (err != 0) {
++	if (err == -ENODEV) {
++		err = 0;
++		dev_info(dev, "MDIO bus is disabled\n");
++		goto bus_register_fail;
++	} else if (err) {
+ 		dev_err_probe(dev, err, "Cannot register the MDIO bus\n");
+ 		goto bus_register_fail;
  	}
- 
- 	_debug("new bundle");
--	candidate->debug_id = atomic_inc_return(&rxrpc_bundle_id);
- 	rb_link_node(&candidate->local_node, parent, pp);
- 	rb_insert_color(&candidate->local_node, &local->client_bundles);
- 	call->bundle = rxrpc_get_bundle(candidate, rxrpc_bundle_get_client_call);
 -- 
 2.43.0
 
