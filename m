@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-7692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02B68175CE
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:43:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FF38175D3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C091C24E1C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:43:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06A5A2811F7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5845BF84;
-	Mon, 18 Dec 2023 15:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31145D735;
+	Mon, 18 Dec 2023 15:38:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6495BF87
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B6D5BF93
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5c66b093b86so3110200a12.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:38:45 -0800 (PST)
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-28b9460a9easo497790a91.3
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:38:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913925; x=1703518725;
+        d=1e100.net; s=20230601; t=1702913929; x=1703518729;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=09bPPLh6aQaOO6VHpdstRDB3C3njnuphX18BUXPVTW8=;
-        b=kQ3zmTJkRZxA7dqxxJsEfoqIR5UJNsaGxDxUAi8+4qrqDauPbwjLZnp+4dPCyFahFl
-         MBoPTmNKPYJ3PkcgG2P1AuWj44J3QVtDieOE6pUxw4v2cyrpHWpYy5BEMaelXx3W7qSj
-         h1B19Qk4cjYXyxBBd2izMOOUfYoxoQGUbuTMKXFWHAA+GfqgGBS3xdYLz1g3kjIcuR3A
-         fqXlFn98VIO4OQc2Pjl1v5/L6ERuYPuMFEm3Hrn8a+ZLCw0R7hHkYKI6XdIX2yyYCGJ+
-         t7bJttOL0cxYvyHtZv9W9dwzOZ6H9FFZwGAVYcwF5vFgycXTPTxWq/M/vz6LMWRaI0rB
-         rXdg==
-X-Gm-Message-State: AOJu0YwS2N/xEnVkwxcXuIvQfYnWaDac/duQAOI6uy6ZEX0j51EBIFp6
-	x9swkGoxrmXN9uWIQiixj9I=
-X-Google-Smtp-Source: AGHT+IEtZtZeZrgL2+B9lr/hr/ioV7Xe2LMsNKoJiXRA66RZlqVt7LVsyToMJVdb5KcAm5vY0Rfy5Q==
-X-Received: by 2002:a17:90a:6bc1:b0:28b:664a:807d with SMTP id w59-20020a17090a6bc100b0028b664a807dmr3942732pjj.25.1702913925449;
-        Mon, 18 Dec 2023 07:38:45 -0800 (PST)
+        bh=gMyaHB9b7w4v69pbzIL23RfnjWIeAex13I0dDtiLk/0=;
+        b=v46FYtMAmSCRt6J9n6CKD9PFd+Kp7AzAEn1DuD2YF0qvNYYR8Q2fFsVnDh85N42/mk
+         1UQdwewH1FpEsqa3NEdQBp+LC0Ss7+76W4ryQIkWjgbq3sz56+S2VO5C6hD92gRNe9In
+         XYy70IAg8I4JZnORnYetmRBtJRVd5RoEcs+HqW2DDHHoM2+PxeIWwa+kzYw8o14aaQo6
+         1DDfmAIebFB5lMpfqju1nbm4YcBwvCAjT6gjinayHzGLBVb2ngHcrYBiHAS5WXgwJB2g
+         oH8NoDTrX+VNr6b5cn49tbiN7OEgo9wRgpLuSQWndbm5MQmCifwayJ1RXRnO9kKNSltk
+         Hsgw==
+X-Gm-Message-State: AOJu0YyNzpoWp4gBLI6fSWoKD6inpFutwMD5ViBagV5wMMfwWC0v0yer
+	19/noJwTwQ5B6vSc4uqSkAI=
+X-Google-Smtp-Source: AGHT+IHIiXX03HRDLx232UdQRTU1IPxjoo6x20cslgF5gsUmM47xtMtkAL1Iug0hxCVUd4bK+3/7wQ==
+X-Received: by 2002:a17:90a:d3c7:b0:28a:d607:34dd with SMTP id d7-20020a17090ad3c700b0028ad60734ddmr4338440pjw.76.1702913928543;
+        Mon, 18 Dec 2023 07:38:48 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.38.43
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.38.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:38:45 -0800 (PST)
+        Mon, 18 Dec 2023 07:38:48 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
-	=?UTF-8?q?Atte=20Heikkil=C3=A4?= <atteh.mailbox@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 063/154] ksmbd: validate share name from share config response
-Date: Tue, 19 Dec 2023 00:33:23 +0900
-Message-Id: <20231218153454.8090-64-linkinjeon@kernel.org>
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15.y 064/154] ksmbd: replace one-element arrays with flexible-array members
+Date: Tue, 19 Dec 2023 00:33:24 +0900
+Message-Id: <20231218153454.8090-65-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -63,189 +63,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Atte Heikkilä <atteh.mailbox@gmail.com>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-[ Upstream commit f5ba1cdaf5eb380e148183bda06d4844b457d095 ]
+[ Upstream commit d272e01fa0a2f15c5c331a37cd99c6875c7b7186 ]
 
-Share config response may contain the share name without casefolding as
-it is known to the user space daemon. When it is present, casefold and
-compare it to the share name the share config request was made with. If
-they differ, we have a share config which is incompatible with the way
-share config caching is done. This is the case when CONFIG_UNICODE is
-not set, the share name contains non-ASCII characters, and those non-
-ASCII characters do not match those in the share name known to user
-space. In other words, when CONFIG_UNICODE is not set, UTF-8 share
-names now work but are only case-insensitive in the ASCII range.
+One-element arrays are deprecated, and we are replacing them with flexible
+array members instead. So, replace one-element arrays with flexible-array
+members in multiple structs in fs/ksmbd/smb_common.h and one in
+fs/ksmbd/smb2pdu.h.
 
-Signed-off-by: Atte Heikkilä <atteh.mailbox@gmail.com>
-Acked-by: Tom Talpey <tom@talpey.com>
+Important to mention is that doing a build before/after this patch results
+in no binary output differences.
+
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE routines
+on memcpy() and help us make progress towards globally enabling
+-fstrict-flex-arrays=3 [1].
+
+Link: https://github.com/KSPP/linux/issues/242
+Link: https://github.com/KSPP/linux/issues/79
+Link: https://gcc.gnu.org/pipermail/gcc-patches/2022-October/602902.html [1]
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/Y3OxronfaPYv9qGP@work
 ---
- fs/ksmbd/ksmbd_netlink.h     |  3 ++-
- fs/ksmbd/mgmt/share_config.c | 22 +++++++++++++++++++---
- fs/ksmbd/mgmt/share_config.h |  4 +++-
- fs/ksmbd/mgmt/tree_connect.c |  4 ++--
- fs/ksmbd/misc.c              |  4 ++--
- fs/ksmbd/misc.h              |  1 +
- 6 files changed, 29 insertions(+), 9 deletions(-)
+ fs/ksmbd/smb2pdu.c    |  4 ++--
+ fs/ksmbd/smb2pdu.h    |  2 +-
+ fs/ksmbd/smb_common.h | 12 ++++++------
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ksmbd/ksmbd_netlink.h b/fs/ksmbd/ksmbd_netlink.h
-index 17ad22808ee3..dd760c78af7b 100644
---- a/fs/ksmbd/ksmbd_netlink.h
-+++ b/fs/ksmbd/ksmbd_netlink.h
-@@ -164,7 +164,8 @@ struct ksmbd_share_config_response {
- 	__u16	force_directory_mode;
- 	__u16	force_uid;
- 	__u16	force_gid;
--	__u32	reserved[128];		/* Reserved room */
-+	__s8	share_name[KSMBD_REQ_MAX_SHARE_NAME];
-+	__u32	reserved[112];		/* Reserved room */
- 	__u32	veto_list_sz;
- 	__s8	____payload[];
- };
-diff --git a/fs/ksmbd/mgmt/share_config.c b/fs/ksmbd/mgmt/share_config.c
-index 5d039704c23c..328a412259dc 100644
---- a/fs/ksmbd/mgmt/share_config.c
-+++ b/fs/ksmbd/mgmt/share_config.c
-@@ -16,6 +16,7 @@
- #include "user_config.h"
- #include "user_session.h"
- #include "../transport_ipc.h"
-+#include "../misc.h"
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 8151f7782329..5868dcbb8062 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -3486,7 +3486,7 @@ static int smb2_populate_readdir_entry(struct ksmbd_conn *conn, int info_level,
+ 		goto free_conv_name;
+ 	}
  
- #define SHARE_HASH_BITS		3
- static DEFINE_HASHTABLE(shares_table, SHARE_HASH_BITS);
-@@ -119,7 +120,8 @@ static int parse_veto_list(struct ksmbd_share_config *share,
- 	return 0;
- }
+-	struct_sz = readdir_info_level_struct_sz(info_level) - 1 + conv_len;
++	struct_sz = readdir_info_level_struct_sz(info_level) + conv_len;
+ 	next_entry_offset = ALIGN(struct_sz, KSMBD_DIR_INFO_ALIGNMENT);
+ 	d_info->last_entry_off_align = next_entry_offset - struct_sz;
  
--static struct ksmbd_share_config *share_config_request(const char *name)
-+static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
-+						       const char *name)
- {
- 	struct ksmbd_share_config_response *resp;
- 	struct ksmbd_share_config *share = NULL;
-@@ -133,6 +135,19 @@ static struct ksmbd_share_config *share_config_request(const char *name)
- 	if (resp->flags == KSMBD_SHARE_FLAG_INVALID)
- 		goto out;
+@@ -3737,7 +3737,7 @@ static int reserve_populate_dentry(struct ksmbd_dir_info *d_info,
+ 		return -EOPNOTSUPP;
  
-+	if (*resp->share_name) {
-+		char *cf_resp_name;
-+		bool equal;
-+
-+		cf_resp_name = ksmbd_casefold_sharename(um, resp->share_name);
-+		if (IS_ERR(cf_resp_name))
-+			goto out;
-+		equal = !strcmp(cf_resp_name, name);
-+		kfree(cf_resp_name);
-+		if (!equal)
-+			goto out;
-+	}
-+
- 	share = kzalloc(sizeof(struct ksmbd_share_config), GFP_KERNEL);
- 	if (!share)
- 		goto out;
-@@ -190,7 +205,8 @@ static struct ksmbd_share_config *share_config_request(const char *name)
- 	return share;
- }
+ 	conv_len = (d_info->name_len + 1) * 2;
+-	next_entry_offset = ALIGN(struct_sz - 1 + conv_len,
++	next_entry_offset = ALIGN(struct_sz + conv_len,
+ 				  KSMBD_DIR_INFO_ALIGNMENT);
  
--struct ksmbd_share_config *ksmbd_share_config_get(const char *name)
-+struct ksmbd_share_config *ksmbd_share_config_get(struct unicode_map *um,
-+						  const char *name)
- {
- 	struct ksmbd_share_config *share;
+ 	if (next_entry_offset > d_info->out_buf_len) {
+diff --git a/fs/ksmbd/smb2pdu.h b/fs/ksmbd/smb2pdu.h
+index e20d4d707f1b..77d226fee060 100644
+--- a/fs/ksmbd/smb2pdu.h
++++ b/fs/ksmbd/smb2pdu.h
+@@ -1621,7 +1621,7 @@ struct smb2_posix_info {
+ 	/* SidBuffer contain two sids (UNIX user sid(16), UNIX group sid(16)) */
+ 	u8 SidBuffer[32];
+ 	__le32 name_len;
+-	u8 name[1];
++	u8 name[];
+ 	/*
+ 	 * var sized owner SID
+ 	 * var sized group SID
+diff --git a/fs/ksmbd/smb_common.h b/fs/ksmbd/smb_common.h
+index ceb3cacaef1b..1ea1f746fa42 100644
+--- a/fs/ksmbd/smb_common.h
++++ b/fs/ksmbd/smb_common.h
+@@ -310,14 +310,14 @@ struct file_directory_info {
+ 	__le64 AllocationSize;
+ 	__le32 ExtFileAttributes;
+ 	__le32 FileNameLength;
+-	char FileName[1];
++	char FileName[];
+ } __packed;   /* level 0x101 FF resp data */
  
-@@ -202,7 +218,7 @@ struct ksmbd_share_config *ksmbd_share_config_get(const char *name)
+ struct file_names_info {
+ 	__le32 NextEntryOffset;
+ 	__u32 FileIndex;
+ 	__le32 FileNameLength;
+-	char FileName[1];
++	char FileName[];
+ } __packed;   /* level 0xc FF resp data */
  
- 	if (share)
- 		return share;
--	return share_config_request(name);
-+	return share_config_request(um, name);
- }
+ struct file_full_directory_info {
+@@ -332,7 +332,7 @@ struct file_full_directory_info {
+ 	__le32 ExtFileAttributes;
+ 	__le32 FileNameLength;
+ 	__le32 EaSize;
+-	char FileName[1];
++	char FileName[];
+ } __packed; /* level 0x102 FF resp */
  
- bool ksmbd_share_veto_filename(struct ksmbd_share_config *share,
-diff --git a/fs/ksmbd/mgmt/share_config.h b/fs/ksmbd/mgmt/share_config.h
-index 7f7e89ecfe61..3fd338293942 100644
---- a/fs/ksmbd/mgmt/share_config.h
-+++ b/fs/ksmbd/mgmt/share_config.h
-@@ -9,6 +9,7 @@
- #include <linux/workqueue.h>
- #include <linux/hashtable.h>
- #include <linux/path.h>
-+#include <linux/unicode.h>
+ struct file_both_directory_info {
+@@ -350,7 +350,7 @@ struct file_both_directory_info {
+ 	__u8   ShortNameLength;
+ 	__u8   Reserved;
+ 	__u8   ShortName[24];
+-	char FileName[1];
++	char FileName[];
+ } __packed; /* level 0x104 FFrsp data */
  
- struct ksmbd_share_config {
- 	char			*name;
-@@ -74,7 +75,8 @@ static inline void ksmbd_share_config_put(struct ksmbd_share_config *share)
- 	__ksmbd_share_config_put(share);
- }
+ struct file_id_both_directory_info {
+@@ -370,7 +370,7 @@ struct file_id_both_directory_info {
+ 	__u8   ShortName[24];
+ 	__le16 Reserved2;
+ 	__le64 UniqueId;
+-	char FileName[1];
++	char FileName[];
+ } __packed;
  
--struct ksmbd_share_config *ksmbd_share_config_get(const char *name);
-+struct ksmbd_share_config *ksmbd_share_config_get(struct unicode_map *um,
-+						  const char *name);
- bool ksmbd_share_veto_filename(struct ksmbd_share_config *share,
- 			       const char *filename);
- #endif /* __SHARE_CONFIG_MANAGEMENT_H__ */
-diff --git a/fs/ksmbd/mgmt/tree_connect.c b/fs/ksmbd/mgmt/tree_connect.c
-index 867c0286b901..8ce17b3fb8da 100644
---- a/fs/ksmbd/mgmt/tree_connect.c
-+++ b/fs/ksmbd/mgmt/tree_connect.c
-@@ -26,7 +26,7 @@ ksmbd_tree_conn_connect(struct ksmbd_conn *conn, struct ksmbd_session *sess,
- 	struct sockaddr *peer_addr;
- 	int ret;
+ struct file_id_full_dir_info {
+@@ -387,7 +387,7 @@ struct file_id_full_dir_info {
+ 	__le32 EaSize; /* EA size */
+ 	__le32 Reserved;
+ 	__le64 UniqueId; /* inode num - le since Samba puts ino in low 32 bit*/
+-	char FileName[1];
++	char FileName[];
+ } __packed; /* level 0x105 FF rsp data */
  
--	sc = ksmbd_share_config_get(share_name);
-+	sc = ksmbd_share_config_get(conn->um, share_name);
- 	if (!sc)
- 		return status;
- 
-@@ -61,7 +61,7 @@ ksmbd_tree_conn_connect(struct ksmbd_conn *conn, struct ksmbd_session *sess,
- 		struct ksmbd_share_config *new_sc;
- 
- 		ksmbd_share_config_del(sc);
--		new_sc = ksmbd_share_config_get(share_name);
-+		new_sc = ksmbd_share_config_get(conn->um, share_name);
- 		if (!new_sc) {
- 			pr_err("Failed to update stale share config\n");
- 			status.ret = -ESTALE;
-diff --git a/fs/ksmbd/misc.c b/fs/ksmbd/misc.c
-index 28459b1efaa8..9e8afaa686e3 100644
---- a/fs/ksmbd/misc.c
-+++ b/fs/ksmbd/misc.c
-@@ -227,7 +227,7 @@ void ksmbd_conv_path_to_windows(char *path)
- 	strreplace(path, '/', '\\');
- }
- 
--static char *casefold_sharename(struct unicode_map *um, const char *name)
-+char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name)
- {
- 	char *cf_name;
- 	int cf_len;
-@@ -273,7 +273,7 @@ char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename)
- 		name = (pos + 1);
- 
- 	/* caller has to free the memory */
--	return casefold_sharename(um, name);
-+	return ksmbd_casefold_sharename(um, name);
- }
- 
- /**
-diff --git a/fs/ksmbd/misc.h b/fs/ksmbd/misc.h
-index cc72f4e6baf2..1facfcd21200 100644
---- a/fs/ksmbd/misc.h
-+++ b/fs/ksmbd/misc.h
-@@ -20,6 +20,7 @@ int get_nlink(struct kstat *st);
- void ksmbd_conv_path_to_unix(char *path);
- void ksmbd_strip_last_slash(char *path);
- void ksmbd_conv_path_to_windows(char *path);
-+char *ksmbd_casefold_sharename(struct unicode_map *um, const char *name);
- char *ksmbd_extract_sharename(struct unicode_map *um, const char *treename);
- char *convert_to_unix_name(struct ksmbd_share_config *share, const char *name);
- 
+ struct smb_version_values {
 -- 
 2.25.1
 
