@@ -1,46 +1,64 @@
-Return-Path: <stable+bounces-7098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392878170ED
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A378481730E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA12B20C82
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B32B1F21E23
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3444115AC0;
-	Mon, 18 Dec 2023 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57913D54D;
+	Mon, 18 Dec 2023 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPcDjVPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/Gd7aDd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07F6129EFB;
-	Mon, 18 Dec 2023 13:52:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA21C433C8;
-	Mon, 18 Dec 2023 13:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E893A1CD;
+	Mon, 18 Dec 2023 14:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07632C433C7;
+	Mon, 18 Dec 2023 14:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907544;
-	bh=I9IIdpzQrdyxmr0ZaIHzhF++kcvY4cIbmqZbph0xyHw=;
+	s=korg; t=1702908779;
+	bh=0tN1aTYg83dKsuf5k85G6TRH3e4EBhsxIJ9BMHVV5RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPcDjVPE9fGzSs68aGDWUqBQbJdBJGVrJzBefslDkleUuwrlnn1N8yF/tJiNQ0EbX
-	 BtscP86oBPxrNMk38hy5PvWenhmPs6+6nQ621GnDJLSJWyEF51f4scTO1VFob+ggRP
-	 G/dP1eyfDYKXtHKIvw2A/TBkms1ao1oZodtVcxyk=
+	b=W/Gd7aDd6ewBHPFLjxZz7mIiZkOxzgW5RZvmYBDUNr4U1fObsATijDAf+J13UWDeC
+	 lsj9BY8WuDU1zjCmPLJI82FVZcKQxEZrdP249B6upR+DE6R2xrHgV3oFjRg/ieDuA9
+	 lsTNVm+S1//k5LPhrgBxvFKKC77DqMHv0ZoLi4/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 4.14 25/26] powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Jianyong Wu <Jianyong.Wu@arm.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@de.ibm.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Shahab Vahedi <shahab@synopsys.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 06/83] mm/memory_hotplug: handle memblock_add_node() failures in add_memory_resource()
 Date: Mon, 18 Dec 2023 14:51:27 +0100
-Message-ID: <20231218135041.599580301@linuxfoundation.org>
+Message-ID: <20231218135050.029727472@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,111 +70,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit 41a506ef71eb38d94fe133f565c87c3e06ccc072 upstream.
+[ Upstream commit 53d38316ab2017a7c0d733765b521700aa357ec9 ]
 
-With ppc64 -mprofile-kernel and ppc32 -pg, profiling instructions to
-call into ftrace are emitted right at function entry. The instruction
-sequence used is minimal to reduce overhead. Crucially, a stackframe is
-not created for the function being traced. This breaks stack unwinding
-since the function being traced does not have a stackframe for itself.
-As such, it never shows up in the backtrace:
+Patch series "mm/memory_hotplug: full support for add_memory_driver_managed() with CONFIG_ARCH_KEEP_MEMBLOCK", v2.
 
-/sys/kernel/debug/tracing # echo 1 > /proc/sys/kernel/stack_tracer_enabled
-/sys/kernel/debug/tracing # cat stack_trace
-        Depth    Size   Location    (17 entries)
-        -----    ----   --------
-  0)     4144      32   ftrace_call+0x4/0x44
-  1)     4112     432   get_page_from_freelist+0x26c/0x1ad0
-  2)     3680     496   __alloc_pages+0x290/0x1280
-  3)     3184     336   __folio_alloc+0x34/0x90
-  4)     2848     176   vma_alloc_folio+0xd8/0x540
-  5)     2672     272   __handle_mm_fault+0x700/0x1cc0
-  6)     2400     208   handle_mm_fault+0xf0/0x3f0
-  7)     2192      80   ___do_page_fault+0x3e4/0xbe0
-  8)     2112     160   do_page_fault+0x30/0xc0
-  9)     1952     256   data_access_common_virt+0x210/0x220
- 10)     1696     400   0xc00000000f16b100
- 11)     1296     384   load_elf_binary+0x804/0x1b80
- 12)      912     208   bprm_execve+0x2d8/0x7e0
- 13)      704      64   do_execveat_common+0x1d0/0x2f0
- 14)      640     160   sys_execve+0x54/0x70
- 15)      480      64   system_call_exception+0x138/0x350
- 16)      416     416   system_call_common+0x160/0x2c4
+Architectures that require CONFIG_ARCH_KEEP_MEMBLOCK=y, such as arm64,
+don't cleanly support add_memory_driver_managed() yet.  Most
+prominently, kexec_file can still end up placing kexec images on such
+driver-managed memory, resulting in undesired behavior, for example,
+having kexec images located on memory not part of the firmware-provided
+memory map.
 
-Fix this by having ftrace create a dummy stackframe for the function
-being traced. With this, backtraces now capture the function being
-traced:
+Teaching kexec to not place images on driver-managed memory is
+especially relevant for virtio-mem.  Details can be found in commit
+7b7b27214bba ("mm/memory_hotplug: introduce
+add_memory_driver_managed()").
 
-/sys/kernel/debug/tracing # cat stack_trace
-        Depth    Size   Location    (17 entries)
-        -----    ----   --------
-  0)     3888      32   _raw_spin_trylock+0x8/0x70
-  1)     3856     576   get_page_from_freelist+0x26c/0x1ad0
-  2)     3280      64   __alloc_pages+0x290/0x1280
-  3)     3216     336   __folio_alloc+0x34/0x90
-  4)     2880     176   vma_alloc_folio+0xd8/0x540
-  5)     2704     416   __handle_mm_fault+0x700/0x1cc0
-  6)     2288      96   handle_mm_fault+0xf0/0x3f0
-  7)     2192      48   ___do_page_fault+0x3e4/0xbe0
-  8)     2144     192   do_page_fault+0x30/0xc0
-  9)     1952     608   data_access_common_virt+0x210/0x220
- 10)     1344      16   0xc0000000334bbb50
- 11)     1328     416   load_elf_binary+0x804/0x1b80
- 12)      912      64   bprm_execve+0x2d8/0x7e0
- 13)      848     176   do_execveat_common+0x1d0/0x2f0
- 14)      672     192   sys_execve+0x54/0x70
- 15)      480      64   system_call_exception+0x138/0x350
- 16)      416     416   system_call_common+0x160/0x2c4
+Extend memblock with a new flag and set it from memory hotplug code when
+applicable.  This is required to fully support virtio-mem on arm64,
+making also kexec_file behave like on x86-64.
 
-This results in two additional stores in the ftrace entry code, but
-produces reliable backtraces.
+This patch (of 2):
 
-Fixes: 153086644fd1 ("powerpc/ftrace: Add support for -mprofile-kernel ftrace ABI")
-Cc: stable@vger.kernel.org
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230621051349.759567-1-naveen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If memblock_add_node() fails, we're most probably running out of memory.
+While this is unlikely to happen, it can happen and having memory added
+without a memblock can be problematic for architectures that use
+memblock to detect valid memory.  Let's fail in a nice way instead of
+silently ignoring the error.
+
+Link: https://lkml.kernel.org/r/20211004093605.5830-1-david@redhat.com
+Link: https://lkml.kernel.org/r/20211004093605.5830-2-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Jianyong Wu <Jianyong.Wu@arm.com>
+Cc: "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>
+Cc: Vineet Gupta <vgupta@kernel.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@de.ibm.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Shahab Vahedi <shahab@synopsys.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Stable-dep-of: c7206e7bd214 ("MIPS: Loongson64: Handle more memory types passed from firmware")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/trace/ftrace_64_mprofile.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/memory_hotplug.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-+++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
-@@ -41,6 +41,9 @@ _GLOBAL(ftrace_caller)
- 	/* Save the original return address in A's stack frame */
- 	std	r0,LRSAVE(r1)
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index bf611c55fc66b..bc52a9d201ea6 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1384,8 +1384,11 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
  
-+	/* Create a minimal stack frame for representing B */
-+	stdu	r1, -STACK_FRAME_MIN_SIZE(r1)
-+
- 	/* Create our stack frame + pt_regs */
- 	stdu	r1,-SWITCH_FRAME_SIZE(r1)
+ 	mem_hotplug_begin();
  
-@@ -64,6 +67,8 @@ _GLOBAL(ftrace_caller)
- 	mflr	r7
- 	/* Save it as pt_regs->nip */
- 	std     r7, _NIP(r1)
-+	/* Also save it in B's stackframe header for proper unwind */
-+	std	r7, LRSAVE+SWITCH_FRAME_SIZE(r1)
- 	/* Save the read LR in pt_regs->link */
- 	std     r0, _LINK(r1)
+-	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
+-		memblock_add_node(start, size, nid);
++	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK)) {
++		ret = memblock_add_node(start, size, nid);
++		if (ret)
++			goto error_mem_hotplug_end;
++	}
  
-@@ -146,7 +151,7 @@ ftrace_call:
- 	ld	r2, 24(r1)
- 
- 	/* Pop our stack frame */
--	addi r1, r1, SWITCH_FRAME_SIZE
-+	addi r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 
- #ifdef CONFIG_LIVEPATCH
-         /*
+ 	ret = __try_online_node(nid, false);
+ 	if (ret < 0)
+@@ -1458,6 +1461,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 		rollback_node_hotadd(nid);
+ 	if (IS_ENABLED(CONFIG_ARCH_KEEP_MEMBLOCK))
+ 		memblock_remove(start, size);
++error_mem_hotplug_end:
+ 	mem_hotplug_done();
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
