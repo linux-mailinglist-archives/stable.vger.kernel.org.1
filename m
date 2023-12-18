@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE39D817302
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D1A81710F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 356F4B23047
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDF7A1F22986
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C027F3A1C3;
-	Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87731D15F;
+	Mon, 18 Dec 2023 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOQRcPie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rqJf+yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FAC4988F;
-	Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941CDC433C7;
-	Mon, 18 Dec 2023 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0717215AC0;
+	Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E56C433C7;
+	Mon, 18 Dec 2023 13:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908746;
-	bh=8+7yavrTewCgVXNYj3c8XXgSHHrDrxuwtlnGNejCnVo=;
+	s=korg; t=1702907643;
+	bh=jPqNNIaVBIseiHooJpVp7tWvV7+lO/OzJwDEX6FRJ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOQRcPie4pOG+irgijMpFaJh3Ae6xnPIKxEpWw9jt9aonQcGsAWShHJyzDeUDrzb3
-	 8BbSu1Lu8Gspe9jSp9i43JgzszpRtO/5ZQ94DzhGFgSFi1P9zp0b5Bhe6QMKawvZaX
-	 Xs+BrZpQT00SzsAD3tw2V48lY+Yl8sGo3hwU6kOs=
+	b=1rqJf+yQZE00IMlQJxAqN4WXso7If+StY3qKxgAG7LQ8Vr+bVt57N6JxUuI0ZrjhV
+	 eap4qKpZZ4QTiVwxesWvblkV0J2r38505+ExCzXuSbOSYEqFLaFhX5o4bA03JOKQJ7
+	 GDUsLVT7M2Qf4gYRvyV8kwU+bgJrvE1opDtBQtcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radu Bulie <radu-andrei.bulie@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/83] net: fec: correct queue selection
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 4.19 30/36] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
 Date: Mon, 18 Dec 2023 14:51:40 +0100
-Message-ID: <20231218135050.601304960@linuxfoundation.org>
+Message-ID: <20231218135042.908823420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,86 +54,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Bulie <radu-andrei.bulie@nxp.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 9fc95fe95c3e2a63ced8eeca4b256518ab204b63 ]
+commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
 
-The old implementation extracted VLAN TCI info from the payload
-before the VLAN tag has been pushed in the payload.
+For files with logical blocks close to EXT_MAX_BLOCKS, the file size
+predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
+This can cause some blocks to be preallocated that will not be used.
+And after [Fixes], the following issue may be triggered:
 
-Another problem was that the VLAN TCI was extracted even if the
-packet did not have VLAN protocol header.
+=========================================================
+ kernel BUG at fs/ext4/mballoc.c:4653!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
+ Hardware name: linux,dummy-virt (DT)
+ pc : ext4_mb_use_inode_pa+0x148/0x208
+ lr : ext4_mb_use_inode_pa+0x98/0x208
+ Call trace:
+  ext4_mb_use_inode_pa+0x148/0x208
+  ext4_mb_new_inode_pa+0x240/0x4a8
+  ext4_mb_use_best_found+0x1d4/0x208
+  ext4_mb_try_best_found+0xc8/0x110
+  ext4_mb_regular_allocator+0x11c/0xf48
+  ext4_mb_new_blocks+0x790/0xaa8
+  ext4_ext_map_blocks+0x7cc/0xd20
+  ext4_map_blocks+0x170/0x600
+  ext4_iomap_begin+0x1c0/0x348
+=========================================================
 
-This resulted in invalid VLAN TCI and as a consequence a random
-queue was computed.
+Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
 
-This patch fixes the above issues and use the VLAN TCI from the
-skb if it is present or VLAN TCI from payload if present. If no
-VLAN header is present queue 0 is selected.
+	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
+	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
+		goto adjust_bex;
 
-Fixes: 52c4a1a85f4b ("net: fec: add ndo_select_queue to fix TX bandwidth fluctuations")
-Signed-off-by: Radu Bulie <radu-andrei.bulie@nxp.com>
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
+it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
+overflow to a very small value, which ultimately triggers a BUG_ON in
+ext4_mb_new_inode_pa() because pa->pa_free < len.
+
+The last logical block of an actual write request does not exceed
+EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
+the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
+
+The test case in [Link] can reproduce the above issue with 64k block size.
+
+Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
+Cc:  <stable@kernel.org> # 6.4
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 27 +++++++++--------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ fs/ext4/mballoc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index c0c96de7a9de4..717d4bc5bac63 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -3436,31 +3436,26 @@ static int fec_set_features(struct net_device *netdev,
- 	return 0;
- }
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3181,6 +3181,10 @@ ext4_mb_normalize_request(struct ext4_al
+ 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
+ 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
  
--static u16 fec_enet_get_raw_vlan_tci(struct sk_buff *skb)
--{
--	struct vlan_ethhdr *vhdr;
--	unsigned short vlan_TCI = 0;
--
--	if (skb->protocol == htons(ETH_P_ALL)) {
--		vhdr = (struct vlan_ethhdr *)(skb->data);
--		vlan_TCI = ntohs(vhdr->h_vlan_TCI);
--	}
--
--	return vlan_TCI;
--}
--
- static u16 fec_enet_select_queue(struct net_device *ndev, struct sk_buff *skb,
- 				 struct net_device *sb_dev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	u16 vlan_tag;
-+	u16 vlan_tag = 0;
- 
- 	if (!(fep->quirks & FEC_QUIRK_HAS_AVB))
- 		return netdev_pick_tx(ndev, skb, NULL);
- 
--	vlan_tag = fec_enet_get_raw_vlan_tci(skb);
--	if (!vlan_tag)
-+	/* VLAN is present in the payload.*/
-+	if (eth_type_vlan(skb->protocol)) {
-+		struct vlan_ethhdr *vhdr = skb_vlan_eth_hdr(skb);
++	/* avoid unnecessary preallocation that may trigger assertions */
++	if (start + size > EXT_MAX_BLOCKS)
++		size = EXT_MAX_BLOCKS - start;
 +
-+		vlan_tag = ntohs(vhdr->h_vlan_TCI);
-+	/*  VLAN is present in the skb but not yet pushed in the payload.*/
-+	} else if (skb_vlan_tag_present(skb)) {
-+		vlan_tag = skb->vlan_tci;
-+	} else {
- 		return vlan_tag;
-+	}
- 
- 	return fec_enet_vlan_pri_to_queue[vlan_tag >> 13];
- }
--- 
-2.43.0
-
+ 	/* don't cover already allocated blocks in selected range */
+ 	if (ar->pleft && start <= ar->lleft) {
+ 		size -= ar->lleft + 1 - start;
 
 
 
