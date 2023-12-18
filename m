@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-7428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E98D817281
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D26481730C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2457F1F24C77
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3CF51C24FE0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04C25A854;
-	Mon, 18 Dec 2023 14:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955623D561;
+	Mon, 18 Dec 2023 14:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNKs3yCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5yvDeoW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629143A1AF;
-	Mon, 18 Dec 2023 14:07:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3016C433C7;
-	Mon, 18 Dec 2023 14:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5A414F63;
+	Mon, 18 Dec 2023 14:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795D0C433C7;
+	Mon, 18 Dec 2023 14:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908440;
-	bh=8AWkbRW1YSAnb4q9/CSvAMwc+vpKhn2dVpHlBqboIkg=;
+	s=korg; t=1702908776;
+	bh=MnOTRwtmUrYup380UuAnj13vSehLpo7OZvNNdoQzOxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNKs3yCzDxFH1sTXH7FC75mRDzVyQ7FO1gi33beCQFdjx5XELbl1zY4ih+NLQC27l
-	 86XlCabkvyCRkn+bfbhdQnxU/rKN9YP6gbc7DkGqYIHY+iVOyz4TNOKJdzwQJ9403e
-	 KzsYIOHkQCU8K/3fFnYs5L7tcCLjxsQIj6oBw3po=
+	b=I5yvDeoWoD7ZqUH+RLLo1/OoGHSi4tF+4dMovEf5eoKgPsG0aOKe/dpLWENdrTBmn
+	 9cE5A+4FNBHd+mscdG75Xx1p/mvtB6tXeGxXi8+wZpPqrYzyLjsn1Nz2E4t9NwKWAV
+	 CEEutIiRYobCJmL6JUD7e4e9da9T+BXbK+kdnPBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bill MacAllister <bill@ca-zephyr.org>,
-	Jeffrey E Altman <jaltman@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 02/62] afs: Fix refcount underflow from error handling race
+Subject: [PATCH 5.15 05/83] netfilter: nf_tables: fix exist matching on bigendian arches
 Date: Mon, 18 Dec 2023 14:51:26 +0100
-Message-ID: <20231218135046.279081936@linuxfoundation.org>
+Message-ID: <20231218135049.989536347@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,150 +53,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 52bf9f6c09fca8c74388cd41cc24e5d1bff812a9 ]
+[ Upstream commit 63331e37fb227e796894b31d713697612c8dee7f ]
 
-If an AFS cell that has an unreachable (eg. ENETUNREACH) server listed (VL
-server or fileserver), an asynchronous probe to one of its addresses may
-fail immediately because sendmsg() returns an error.  When this happens, a
-refcount underflow can happen if certain events hit a very small window.
+Maze reports "tcp option fastopen exists" fails to match on
+OpenWrt 22.03.5, r20134-5f15225c1e (5.10.176) router.
 
-The way this occurs is:
+"tcp option fastopen exists" translates to:
+inet
+  [ exthdr load tcpopt 1b @ 34 + 0 present => reg 1 ]
+  [ cmp eq reg 1 0x00000001 ]
 
- (1) There are two levels of "call" object, the afs_call and the
-     rxrpc_call.  Each of them can be transitioned to a "completed" state
-     in the event of success or failure.
+.. but existing nft userspace generates a 1-byte compare.
 
- (2) Asynchronous afs_calls are self-referential whilst they are active to
-     prevent them from evaporating when they're not being processed.  This
-     reference is disposed of when the afs_call is completed.
+On LSB (x86), "*reg32 = 1" is identical to nft_reg_store8(reg32, 1), but
+not on MSB, which will place the 1 last. IOW, on bigendian aches the cmp8
+is awalys false.
 
-     Note that an afs_call may only be completed once; once completed
-     completing it again will do nothing.
+Make sure we store this in a consistent fashion, so existing userspace
+will also work on MSB (bigendian).
 
- (3) When a call transmission is made, the app-side rxrpc code queues a Tx
-     buffer for the rxrpc I/O thread to transmit.  The I/O thread invokes
-     sendmsg() to transmit it - and in the case of failure, it transitions
-     the rxrpc_call to the completed state.
+Regardless of this patch we can also change nft userspace to generate
+'reg32 == 0' and 'reg32 != 0' instead of u8 == 0 // u8 == 1 when
+adding 'option x missing/exists' expressions as well.
 
- (4) When an rxrpc_call is completed, the app layer is notified.  In this
-     case, the app is kafs and it schedules a work item to process events
-     pertaining to an afs_call.
-
- (5) When the afs_call event processor is run, it goes down through the
-     RPC-specific handler to afs_extract_data() to retrieve data from rxrpc
-     - and, in this case, it picks up the error from the rxrpc_call and
-     returns it.
-
-     The error is then propagated to the afs_call and that is completed
-     too.  At this point the self-reference is released.
-
- (6) If the rxrpc I/O thread manages to complete the rxrpc_call within the
-     window between rxrpc_send_data() queuing the request packet and
-     checking for call completion on the way out, then
-     rxrpc_kernel_send_data() will return the error from sendmsg() to the
-     app.
-
- (7) Then afs_make_call() will see an error and will jump to the error
-     handling path which will attempt to clean up the afs_call.
-
- (8) The problem comes when the error handling path in afs_make_call()
-     tries to unconditionally drop an async afs_call's self-reference.
-     This self-reference, however, may already have been dropped by
-     afs_extract_data() completing the afs_call
-
- (9) The refcount underflows when we return to afs_do_probe_vlserver() and
-     that tries to drop its reference on the afs_call.
-
-Fix this by making afs_make_call() attempt to complete the afs_call rather
-than unconditionally putting it.  That way, if afs_extract_data() manages
-to complete the call first, afs_make_call() won't do anything.
-
-The bug can be forced by making do_udp_sendmsg() return -ENETUNREACH and
-sticking an msleep() in rxrpc_send_data() after the 'success:' label to
-widen the race window.
-
-The error message looks something like:
-
-    refcount_t: underflow; use-after-free.
-    WARNING: CPU: 3 PID: 720 at lib/refcount.c:28 refcount_warn_saturate+0xba/0x110
-    ...
-    RIP: 0010:refcount_warn_saturate+0xba/0x110
-    ...
-    afs_put_call+0x1dc/0x1f0 [kafs]
-    afs_fs_get_capabilities+0x8b/0xe0 [kafs]
-    afs_fs_probe_fileserver+0x188/0x1e0 [kafs]
-    afs_lookup_server+0x3bf/0x3f0 [kafs]
-    afs_alloc_server_list+0x130/0x2e0 [kafs]
-    afs_create_volume+0x162/0x400 [kafs]
-    afs_get_tree+0x266/0x410 [kafs]
-    vfs_get_tree+0x25/0xc0
-    fc_mount+0xe/0x40
-    afs_d_automount+0x1b3/0x390 [kafs]
-    __traverse_mounts+0x8f/0x210
-    step_into+0x340/0x760
-    path_openat+0x13a/0x1260
-    do_filp_open+0xaf/0x160
-    do_sys_openat2+0xaf/0x170
-
-or something like:
-
-    refcount_t: underflow; use-after-free.
-    ...
-    RIP: 0010:refcount_warn_saturate+0x99/0xda
-    ...
-    afs_put_call+0x4a/0x175
-    afs_send_vl_probes+0x108/0x172
-    afs_select_vlserver+0xd6/0x311
-    afs_do_cell_detect_alias+0x5e/0x1e9
-    afs_cell_detect_alias+0x44/0x92
-    afs_validate_fc+0x9d/0x134
-    afs_get_tree+0x20/0x2e6
-    vfs_get_tree+0x1d/0xc9
-    fc_mount+0xe/0x33
-    afs_d_automount+0x48/0x9d
-    __traverse_mounts+0xe0/0x166
-    step_into+0x140/0x274
-    open_last_lookups+0x1c1/0x1df
-    path_openat+0x138/0x1c3
-    do_filp_open+0x55/0xb4
-    do_sys_openat2+0x6c/0xb6
-
-Fixes: 34fa47612bfe ("afs: Fix race in async call refcounting")
-Reported-by: Bill MacAllister <bill@ca-zephyr.org>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1052304
-Suggested-by: Jeffrey E Altman <jaltman@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/2633992.1702073229@warthog.procyon.org.uk/ # v1
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 3c1fece8819e ("netfilter: nft_exthdr: Allow checking TCP option presence, too")
+Fixes: b9f9a485fb0e ("netfilter: nft_exthdr: add boolean DCCP option matching")
+Fixes: 055c4b34b94f ("netfilter: nft_fib: Support existence check")
+Reported-by: Maciej Żenczykowski <zenczykowski@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/CAHo-OozyEqHUjL2-ntATzeZOiuftLWZ_HU6TOM_js4qLfDEAJg@mail.gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Acked-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/rxrpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_exthdr.c | 2 +-
+ net/netfilter/nft_fib.c    | 8 ++++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
-index 535d28b44bca3..1820b53657a6c 100644
---- a/fs/afs/rxrpc.c
-+++ b/fs/afs/rxrpc.c
-@@ -491,7 +491,7 @@ void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
- 	if (call->async) {
- 		if (cancel_work_sync(&call->async_work))
- 			afs_put_call(call);
--		afs_put_call(call);
-+		afs_set_call_complete(call, ret, 0);
- 	}
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index daee46cf62abb..d1dcf5b2e92e1 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -214,7 +214,7 @@ static void nft_exthdr_tcp_eval(const struct nft_expr *expr,
  
- 	ac->error = ret;
+ 		offset = i + priv->offset;
+ 		if (priv->flags & NFT_EXTHDR_F_PRESENT) {
+-			*dest = 1;
++			nft_reg_store8(dest, 1);
+ 		} else {
+ 			if (priv->len % NFT_REG32_SIZE)
+ 				dest[priv->len / NFT_REG32_SIZE] = 0;
+diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
+index b10ce732b337c..1fd4b2054e8f7 100644
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -140,11 +140,15 @@ void nft_fib_store_result(void *reg, const struct nft_fib *priv,
+ 	switch (priv->result) {
+ 	case NFT_FIB_RESULT_OIF:
+ 		index = dev ? dev->ifindex : 0;
+-		*dreg = (priv->flags & NFTA_FIB_F_PRESENT) ? !!index : index;
++		if (priv->flags & NFTA_FIB_F_PRESENT)
++			nft_reg_store8(dreg, !!index);
++		else
++			*dreg = index;
++
+ 		break;
+ 	case NFT_FIB_RESULT_OIFNAME:
+ 		if (priv->flags & NFTA_FIB_F_PRESENT)
+-			*dreg = !!dev;
++			nft_reg_store8(dreg, !!dev);
+ 		else
+ 			strncpy(reg, dev ? dev->name : "", IFNAMSIZ);
+ 		break;
 -- 
 2.43.0
 
