@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50992817270
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5578172C9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54FDEB20543
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FE9D1C24EB8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705394FF87;
-	Mon, 18 Dec 2023 14:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296864FF85;
+	Mon, 18 Dec 2023 14:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bte2Eh0O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4tFSslK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380D74FF6C;
-	Mon, 18 Dec 2023 14:06:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49ADC433C7;
-	Mon, 18 Dec 2023 14:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7581D148;
+	Mon, 18 Dec 2023 14:10:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D49C433C7;
+	Mon, 18 Dec 2023 14:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908394;
-	bh=olmxT452tRyDakW6z7FuWjXR69W8UehPHoRXcZN3aqs=;
+	s=korg; t=1702908604;
+	bh=+5nOFu2w0l02YFR2/4OUNRgoH1ClEALYuP+yhAUegjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bte2Eh0OSXV/FhHZ7SlrbrelLXV/ne0MoWaJ5oHz5phcB+IDnG7zumlgk1dspQhi/
-	 8c2njACILugvJYFQopBU8RswUFq5L9IiK7667jK1RsCF5IjeHR0fmp1htkQO20ZZgX
-	 z3ROlatoN5UEXZI+SVUFUhn6viGz7OLcuRyMVaek=
+	b=d4tFSslKIOKS9bQKfF1nKYHl6uOwrKPncrhpTI246m9yZA66alHA1v0onJKrw+uE1
+	 IEC4fYdptng64lkgtrhNgMtB+/Q1gpdGPUgDW7jnnmYiOAiI0YDUQ2d15oM2ALQfzT
+	 WaSg0k3cGtLizCk/tCt06LCNLA1miotB9OUhmjA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.6 161/166] ring-buffer: Fix writing to the buffer with max_data_size
+	Aoba K <nexp_0x17@outlook.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 43/62] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
 Date: Mon, 18 Dec 2023 14:52:07 +0100
-Message-ID: <20231218135112.321952802@linuxfoundation.org>
+Message-ID: <20231218135048.168514047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,92 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Aoba K <nexp_0x17@outlook.com>
 
-commit b3ae7b67b87fed771fa5bf95389df06b0433603e upstream.
+[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
 
-The maximum ring buffer data size is the maximum size of data that can be
-recorded on the ring buffer. Events must be smaller than the sub buffer
-data size minus any meta data. This size is checked before trying to
-allocate from the ring buffer because the allocation assumes that the size
-will fit on the sub buffer.
+Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
+mode until the input mode feature is written by the host.  The touchpad do
+report the input mode at touchpad(3), while itself working under mouse mode. As
+a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
+feature in mt_set_input_mode for such device.
 
-The maximum size was calculated as the size of a sub buffer page (which is
-currently PAGE_SIZE minus the sub buffer header) minus the size of the
-meta data of an individual event. But it missed the possible adding of a
-time stamp for events that are added long enough apart that the event meta
-data can't hold the time delta.
+The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
+information on the internel by this string at present.  As the serial number of
+the laptop is GLO-G52, while DMI info reports the laptop serial number as
+GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
 
-When an event is added that is greater than the current BUF_MAX_DATA_SIZE
-minus the size of a time stamp, but still less than or equal to
-BUF_MAX_DATA_SIZE, the ring buffer would go into an infinite loop, looking
-for a page that can hold the event. Luckily, there's a check for this loop
-and after 1000 iterations and a warning is emitted and the ring buffer is
-disabled. But this should never happen.
-
-This can happen when a large event is added first, or after a long period
-where an absolute timestamp is prefixed to the event, increasing its size
-by 8 bytes. This passes the check and then goes into the algorithm that
-causes the infinite loop.
-
-For events that are the first event on the sub-buffer, it does not need to
-add a timestamp, because the sub-buffer itself contains an absolute
-timestamp, and adding one is redundant.
-
-The fix is to check if the event is to be the first event on the
-sub-buffer, and if it is, then do not add a timestamp.
-
-This also fixes 32 bit adding a timestamp when a read of before_stamp or
-write_stamp is interrupted. There's still no need to add that timestamp if
-the event is going to be the first event on the sub buffer.
-
-Also, if the buffer has "time_stamp_abs" set, then also check if the
-length plus the timestamp is greater than the BUF_MAX_DATA_SIZE.
-
-Link: https://lore.kernel.org/all/20231212104549.58863438@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20231212071837.5fdd6c13@gandalf.local.home
-Link: https://lore.kernel.org/linux-trace-kernel/20231212111617.39e02849@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: a4543a2fa9ef3 ("ring-buffer: Get timestamp after event is allocated")
-Fixes: 58fbc3c63275c ("ring-buffer: Consolidate add_timestamp to remove some branches")
-Reported-by: Kent Overstreet <kent.overstreet@linux.dev> # (on IRC)
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Aoba K <nexp_0x17@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hid/hid-multitouch.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3581,7 +3581,10 @@ __rb_reserve_next(struct ring_buffer_per
- 		 * absolute timestamp.
- 		 * Don't bother if this is the start of a new page (w == 0).
- 		 */
--		if (unlikely(!a_ok || !b_ok || (info->before != info->after && w))) {
-+		if (!w) {
-+			/* Use the sub-buffer timestamp */
-+			info->delta = 0;
-+		} else if (unlikely(!a_ok || !b_ok || info->before != info->after)) {
- 			info->add_timestamp |= RB_ADD_STAMP_FORCE | RB_ADD_STAMP_EXTEND;
- 			info->length += RB_LEN_TIME_EXTEND;
- 		} else {
-@@ -3732,6 +3735,8 @@ rb_reserve_next_event(struct trace_buffe
- 	if (ring_buffer_time_stamp_abs(cpu_buffer->buffer)) {
- 		add_ts_default = RB_ADD_STAMP_ABSOLUTE;
- 		info.length += RB_LEN_TIME_EXTEND;
-+		if (info.length > BUF_MAX_DATA_SIZE)
-+			goto out_fail;
- 	} else {
- 		add_ts_default = RB_ADD_STAMP_NONE;
- 	}
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 84b12599eaf69..7d43d62df2409 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1962,6 +1962,11 @@ static const struct hid_device_id mt_devices[] = {
+ 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
+ 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
+ 
++	/* HONOR GLO-GXXX panel */
++	{ .driver_data = MT_CLS_VTL,
++		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
++			0x347d, 0x7853) },
++
+ 	/* Ilitek dual touch panel */
+ 	{  .driver_data = MT_CLS_NSMU,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+-- 
+2.43.0
+
 
 
 
