@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BF95817324
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142AA8172C3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A62E11C21846
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4491F246AA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E9A3A1C5;
-	Mon, 18 Dec 2023 14:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B64537892;
+	Mon, 18 Dec 2023 14:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfcrS7pt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WytSvEq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D2E3A1B2;
-	Mon, 18 Dec 2023 14:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1ECFC433C7;
-	Mon, 18 Dec 2023 14:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101E0129EC7;
+	Mon, 18 Dec 2023 14:09:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8987FC433C9;
+	Mon, 18 Dec 2023 14:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908839;
-	bh=Kn92dy126nra5QGuxW6Wpm10AJxXE+tRAzYkmIp4/xk=;
+	s=korg; t=1702908593;
+	bh=A76cJPndXkgu028zJmtUO7H9Yt80WGxffuGiAOCfY5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfcrS7pt6+XnEpLKTwR5FobRqHeeJscON8E+xi0Dqotlgysm3PoaaSSPIqnQ50px8
-	 xg605HDWfI3v4aKVWGwkbMy/cSHkkqLsz/vgiAAUYLaUq6utjw47RRKtOd9//vFhw8
-	 h0l2gvxyHLRc9xzfkHv4J71Jp8nLpuk4/SEMahRA=
+	b=WytSvEq1OdO1m7ui0Jm4s0RsfREP8YkNRAZjEAb8IKC4NAeDsGa8OQGkrUnss87gP
+	 wurTDFrQDlK73+kXaHMWQjXh97hMwJiEkrZGl52YgL/GadW2utgVl4jWGCEQxW8xqN
+	 x0hAJgmHPiDMxVUsbSwFfvupk8nYTt1v/HoRakV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 52/83] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.10 49/62] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
 Date: Mon, 18 Dec 2023 14:52:13 +0100
-Message-ID: <20231218135052.025703544@linuxfoundation.org>
+Message-ID: <20231218135048.409304893@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +54,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
+commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
 
-This patch adds code comments to bch_btree_node_get() and
-__bch_btree_node_alloc() that NULL pointer will not be returned and it
-is unnecessary to check NULL pointer by the callers of these routines.
+For files with logical blocks close to EXT_MAX_BLOCKS, the file size
+predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
+This can cause some blocks to be preallocated that will not be used.
+And after [Fixes], the following issue may be triggered:
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+=========================================================
+ kernel BUG at fs/ext4/mballoc.c:4653!
+ Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+ CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
+ Hardware name: linux,dummy-virt (DT)
+ pc : ext4_mb_use_inode_pa+0x148/0x208
+ lr : ext4_mb_use_inode_pa+0x98/0x208
+ Call trace:
+  ext4_mb_use_inode_pa+0x148/0x208
+  ext4_mb_new_inode_pa+0x240/0x4a8
+  ext4_mb_use_best_found+0x1d4/0x208
+  ext4_mb_try_best_found+0xc8/0x110
+  ext4_mb_regular_allocator+0x11c/0xf48
+  ext4_mb_new_blocks+0x790/0xaa8
+  ext4_ext_map_blocks+0x7cc/0xd20
+  ext4_map_blocks+0x170/0x600
+  ext4_iomap_begin+0x1c0/0x348
+=========================================================
+
+Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
+
+	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
+	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
+		goto adjust_bex;
+
+The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
+it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
+overflow to a very small value, which ultimately triggers a BUG_ON in
+ext4_mb_new_inode_pa() because pa->pa_free < len.
+
+The last logical block of an actual write request does not exceed
+EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
+the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
+
+The test case in [Link] can reproduce the above issue with 64k block size.
+
+Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
+Cc:  <stable@kernel.org> # 6.4
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ext4/mballoc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index c7878ba35f3cc..e22dfcf1ed6d8 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -974,6 +974,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
-  *
-  * The btree node will have either a read or a write lock held, depending on
-  * level and op->lock.
-+ *
-+ * Note: Only error code or btree pointer will be returned, it is unncessary
-+ *       for callers to check NULL pointer.
-  */
- struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
- 				 struct bkey *k, int level, bool write,
-@@ -1085,6 +1088,10 @@ static void btree_node_free(struct btree *b)
- 	mutex_unlock(&b->c->bucket_lock);
- }
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3603,6 +3603,10 @@ ext4_mb_normalize_request(struct ext4_al
+ 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
+ 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
  
-+/*
-+ * Only error code or btree pointer will be returned, it is unncessary for
-+ * callers to check NULL pointer.
-+ */
- struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
- 				     int level, bool wait,
- 				     struct btree *parent)
--- 
-2.43.0
-
++	/* avoid unnecessary preallocation that may trigger assertions */
++	if (start + size > EXT_MAX_BLOCKS)
++		size = EXT_MAX_BLOCKS - start;
++
+ 	/* don't cover already allocated blocks in selected range */
+ 	if (ar->pleft && start <= ar->lleft) {
+ 		size -= ar->lleft + 1 - start;
 
 
 
