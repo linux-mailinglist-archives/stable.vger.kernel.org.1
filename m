@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-7454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996D381729F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC8817196
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0C1D1C24C7E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C149A1C24440
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4666037884;
-	Mon, 18 Dec 2023 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0EA1D148;
+	Mon, 18 Dec 2023 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zH3zEwU9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3f7714/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D928129EF9;
-	Mon, 18 Dec 2023 14:08:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B41C433C7;
-	Mon, 18 Dec 2023 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97A41D137;
+	Mon, 18 Dec 2023 13:59:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F04C433C8;
+	Mon, 18 Dec 2023 13:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908508;
-	bh=oY5+xR3Wkj6UpIfsYkpxiv0FXo8d6LnLJCd3B6Dacfs=;
+	s=korg; t=1702907947;
+	bh=HWNnshOQ1+K8joMJ+XRcHpxTk+sKgS9TEZhkeY0GuYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zH3zEwU9z7tsMZDV7klWzkzNLwaMrI6ANwmHppCC1V2ICS8E4v+sfAMGSkD/V5gxf
-	 EiMkX8umz1zAFoMwZQiS1wBQAfmCCQ0pwlcvx0CtiazuH98Cqzjdc2Qn28yR6VJNOs
-	 HBxmfmUPEmBNyhOVSUaQJj4kOFXQpL/Vc/YadvSc=
+	b=B3f7714/Y+762uRpjuYf/ixtECI3whu5mOIUhu1MZ+2yaqM73EOJkz1UYg1nS6KYu
+	 IBZji+V/o3SftQAajYCxz33Yx9TFoxLjehk1pa400dCDes4LJ2t/P1gTaxhMD4/gyL
+	 Dip8YzKuv7xAdNl5kWbp8PcULC2ULmbXDER+7hFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
-	Coly Li <colyli@suse.de>,
-	Eric Wheeler <bcache@lists.ewheeler.net>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 35/62] bcache: avoid oversize memory allocation by small stripe_size
+	Hayes Wang <hayeswang@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 105/106] r8152: remove rtl_vendor_mode function
 Date: Mon, 18 Dec 2023 14:51:59 +0100
-Message-ID: <20231218135047.829998376@linuxfoundation.org>
+Message-ID: <20231218135059.558618285@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +52,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Hayes Wang <hayeswang@realtek.com>
 
-[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
+commit 95a4c1d617b92cdc4522297741b56e8f6cd01a1e upstream.
 
-Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
-used for dirty data writeback, their sizes are decided by backing device
-capacity and stripe size. Larger backing device capacity or smaller
-stripe size make these two arraies occupies more dynamic memory space.
+After commit ec51fbd1b8a2 ("r8152: add USB device driver for
+config selection"), the code about changing USB configuration
+in rtl_vendor_mode() wouldn't be run anymore. Therefore, the
+function could be removed.
 
-Currently bcache->stripe_size is directly inherited from
-queue->limits.io_opt of underlying storage device. For normal hard
-drives, its limits.io_opt is 0, and bcache sets the corresponding
-stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
-devices do declare value for queue->limits.io_opt, small stripe_size
-(comparing to 1TB) becomes an issue for oversize memory allocations of
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
-capacity of hard drives gets much larger in recent decade.
-
-For example a raid5 array assembled by three 20TB hardrives, the raid
-device capacity is 40TB with typical 512KB limits.io_opt. After the math
-calculation in bcache code, these two arraies will occupy 400MB dynamic
-memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
-declared on a new 2TB hard drive, then these two arraies request 2GB and
-512MB dynamic memory from kzalloc(). The result is that bcache device
-always fails to initialize on his system.
-
-To avoid the oversize memory allocation, bcache->stripe_size should not
-directly inherited by queue->limits.io_opt from the underlying device.
-This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
-and set bcache device's stripe size against the declared limits.io_opt
-value from the underlying storage device,
-- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size directly by this limits.io_opt value.
-- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
-  set its stripe size by a value multiplying limits.io_opt and euqal or
-  large than BCH_MIN_STRIPE_SZ.
-
-Then the minimal stripe size of a bcache device will always be >= 4MB.
-For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
-bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
-in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
-by these two arraies will be 2.5MB in total.
-
-Such mount of memory allocated for bcache->stripe_sectors_dirty and
-bcache->full_dirty_stripes is reasonable for most of storage devices.
-
-Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
-Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/bcache.h | 1 +
- drivers/md/bcache/super.c  | 2 ++
- 2 files changed, 3 insertions(+)
+ drivers/net/usb/r8152.c |   39 +--------------------------------------
+ 1 file changed, 1 insertion(+), 38 deletions(-)
 
-diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
-index e8bf4f752e8be..5804a8e6e215a 100644
---- a/drivers/md/bcache/bcache.h
-+++ b/drivers/md/bcache/bcache.h
-@@ -265,6 +265,7 @@ struct bcache_device {
- #define BCACHE_DEV_WB_RUNNING		3
- #define BCACHE_DEV_RATE_DW_RUNNING	4
- 	int			nr_stripes;
-+#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
- 	unsigned int		stripe_size;
- 	atomic_t		*stripe_sectors_dirty;
- 	unsigned long		*full_dirty_stripes;
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index e8c8077667f9e..9c3e1632568c3 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -917,6 +917,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -8288,43 +8288,6 @@ static bool rtl_check_vendor_ok(struct u
+ 	return true;
+ }
  
- 	if (!d->stripe_size)
- 		d->stripe_size = 1 << 31;
-+	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
-+		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
+-static bool rtl_vendor_mode(struct usb_interface *intf)
+-{
+-	struct usb_host_interface *alt = intf->cur_altsetting;
+-	struct usb_device *udev;
+-	struct usb_host_config *c;
+-	int i, num_configs;
+-
+-	if (alt->desc.bInterfaceClass == USB_CLASS_VENDOR_SPEC)
+-		return rtl_check_vendor_ok(intf);
+-
+-	/* The vendor mode is not always config #1, so to find it out. */
+-	udev = interface_to_usbdev(intf);
+-	c = udev->config;
+-	num_configs = udev->descriptor.bNumConfigurations;
+-	if (num_configs < 2)
+-		return false;
+-
+-	for (i = 0; i < num_configs; (i++, c++)) {
+-		struct usb_interface_descriptor	*desc = NULL;
+-
+-		if (c->desc.bNumInterfaces > 0)
+-			desc = &c->intf_cache[0]->altsetting->desc;
+-		else
+-			continue;
+-
+-		if (desc->bInterfaceClass == USB_CLASS_VENDOR_SPEC) {
+-			usb_driver_set_configuration(udev, c->desc.bConfigurationValue);
+-			break;
+-		}
+-	}
+-
+-	if (i == num_configs)
+-		dev_err(&intf->dev, "Unexpected Device\n");
+-
+-	return false;
+-}
+-
+ static int rtl8152_pre_reset(struct usb_interface *intf)
+ {
+ 	struct r8152 *tp = usb_get_intfdata(intf);
+@@ -9686,7 +9649,7 @@ static int rtl8152_probe(struct usb_inte
+ 	if (intf->cur_altsetting->desc.bInterfaceClass != USB_CLASS_VENDOR_SPEC)
+ 		return -ENODEV;
  
- 	n = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
- 	if (!n || n > max_stripes) {
--- 
-2.43.0
-
+-	if (!rtl_vendor_mode(intf))
++	if (!rtl_check_vendor_ok(intf))
+ 		return -ENODEV;
+ 
+ 	usb_reset_device(udev);
 
 
 
