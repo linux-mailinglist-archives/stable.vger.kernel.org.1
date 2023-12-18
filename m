@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-7325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CEB817209
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F4B881713D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C26F128378D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EBE1B209A0
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21024FF80;
-	Mon, 18 Dec 2023 14:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E854A1D123;
+	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmZS/0Bf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3cuoF47"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A1B4FF7B;
-	Mon, 18 Dec 2023 14:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A984AC433C8;
-	Mon, 18 Dec 2023 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2183129EC8;
+	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3747CC433C7;
+	Mon, 18 Dec 2023 13:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908166;
-	bh=e1hDEaP4ud1tjf7gNWmjw/dJVt//ty/k2fmV0Xc4D5k=;
+	s=korg; t=1702907741;
+	bh=eZ3sPCG6Gq49iHLqxgZkEzrTvBbieTeXuCKoi06Vu1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmZS/0Bfr3e8g9gUNFq4nHYTo5BX70K5bp1kg8RYP5SzDVgvIRqpYXayiHFte7Td9
-	 ZLkZXliQooYm78VOyS+WpZ5UiZGqqUObIqeU3JaTglar5F0WX0mgNpgdEFRbNhAHBy
-	 YMYTTZVr3qMCoL7H8V7wP9lOj1BI0MUWaFjAqs4Y=
+	b=P3cuoF47gyuoMSSSPhrIEZE9MHNplEnkcP7G34shTgPWC2u/R3p5JKfrfB4wtUb8K
+	 0/INuwSVyfBLQS18oPg34d7tJKMHq4qry9wOvTLNiQuxPAk7jGl95SFEvJBkpE55qj
+	 bcoLd0di2Kq/KRFZvSJPGDqc6t4Oz8WSfbtN0poM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Michael Bottini <michael.a.bottini@linux.intel.com>,
-	"David E. Box" <david.e.box@linux.intel.com>
-Subject: [PATCH 6.6 077/166] PCI: vmd: Fix potential deadlock when enabling ASPM
+	Piotr Gardocki <piotrx.gardocki@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Ranganatha Rao <ranganatha.rao@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/106] iavf: Handle ntuple on/off based on new state machines for flow director
 Date: Mon, 18 Dec 2023 14:50:43 +0100
-Message-ID: <20231218135108.481814039@linuxfoundation.org>
+Message-ID: <20231218135056.184338401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +56,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Piotr Gardocki <piotrx.gardocki@intel.com>
 
-commit 49de0dc87965079a8e2803ee4b39f9d946259423 upstream.
+[ Upstream commit 09d23b8918f9ab0f8114f6b94f2faf8bde3fb52a ]
 
-The vmd_pm_enable_quirk() helper is called from pci_walk_bus() during
-probe to enable ASPM for controllers with VMD_FEAT_BIOS_PM_QUIRK set.
+ntuple-filter feature on/off:
+Default is on. If turned off, the filters will be removed from both
+PF and iavf list. The removal is irrespective of current filter state.
 
-Since pci_walk_bus() already holds a pci_bus_sem read lock, use
-pci_enable_link_state_locked() to enable link states in order to avoid a
-potential deadlock (e.g. in case someone takes a write lock before
-reacquiring the read lock).
+Steps to reproduce:
+-------------------
 
-Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LTR")
-Link: https://lore.kernel.org/r/20231128081512.19387-3-johan+linaro@kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-[bhelgaas: add "potential" in subject since the deadlock has only been
-reported by lockdep, include helper name in commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org>	# 6.3
-Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
-Cc: David E. Box <david.e.box@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. Ensure ntuple is on.
+
+ethtool -K enp8s0 ntuple-filters on
+
+2. Create a filter to receive the traffic into non-default rx-queue like 15
+and ensure traffic is flowing into queue into 15.
+Now, turn off ntuple. Traffic should not flow to configured queue 15.
+It should flow to default RX queue.
+
+Fixes: 0dbfbabb840d ("iavf: Add framework to enable ethtool ntuple filters")
+Signed-off-by: Piotr Gardocki <piotrx.gardocki@intel.com>
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Ranganatha Rao <ranganatha.rao@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 59 +++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 94ba61fe1c44..0452cbc362ee 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -751,7 +751,7 @@ static int vmd_pm_enable_quirk(struct pci_dev *pdev, void *userdata)
- 	if (!(features & VMD_FEAT_BIOS_PM_QUIRK))
- 		return 0;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 3a155026d9a5f..b9c4b311cd625 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -4445,6 +4445,49 @@ static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
+ 	return ret;
+ }
  
--	pci_enable_link_state(pdev, PCIE_LINK_STATE_ALL);
-+	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
++/**
++ * iavf_disable_fdir - disable Flow Director and clear existing filters
++ * @adapter: board private structure
++ **/
++static void iavf_disable_fdir(struct iavf_adapter *adapter)
++{
++	struct iavf_fdir_fltr *fdir, *fdirtmp;
++	bool del_filters = false;
++
++	adapter->flags &= ~IAVF_FLAG_FDIR_ENABLED;
++
++	/* remove all Flow Director filters */
++	spin_lock_bh(&adapter->fdir_fltr_lock);
++	list_for_each_entry_safe(fdir, fdirtmp, &adapter->fdir_list_head,
++				 list) {
++		if (fdir->state == IAVF_FDIR_FLTR_ADD_REQUEST ||
++		    fdir->state == IAVF_FDIR_FLTR_INACTIVE) {
++			/* Delete filters not registered in PF */
++			list_del(&fdir->list);
++			kfree(fdir);
++			adapter->fdir_active_fltr--;
++		} else if (fdir->state == IAVF_FDIR_FLTR_ADD_PENDING ||
++			   fdir->state == IAVF_FDIR_FLTR_DIS_REQUEST ||
++			   fdir->state == IAVF_FDIR_FLTR_ACTIVE) {
++			/* Filters registered in PF, schedule their deletion */
++			fdir->state = IAVF_FDIR_FLTR_DEL_REQUEST;
++			del_filters = true;
++		} else if (fdir->state == IAVF_FDIR_FLTR_DIS_PENDING) {
++			/* Request to delete filter already sent to PF, change
++			 * state to DEL_PENDING to delete filter after PF's
++			 * response, not set as INACTIVE
++			 */
++			fdir->state = IAVF_FDIR_FLTR_DEL_PENDING;
++		}
++	}
++	spin_unlock_bh(&adapter->fdir_fltr_lock);
++
++	if (del_filters) {
++		adapter->aq_required |= IAVF_FLAG_AQ_DEL_FDIR_FILTER;
++		mod_delayed_work(adapter->wq, &adapter->watchdog_task, 0);
++	}
++}
++
+ #define NETIF_VLAN_OFFLOAD_FEATURES	(NETIF_F_HW_VLAN_CTAG_RX | \
+ 					 NETIF_F_HW_VLAN_CTAG_TX | \
+ 					 NETIF_F_HW_VLAN_STAG_RX | \
+@@ -4467,6 +4510,13 @@ static int iavf_set_features(struct net_device *netdev,
+ 		iavf_set_vlan_offload_features(adapter, netdev->features,
+ 					       features);
  
- 	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_LTR);
- 	if (!pos)
++	if ((netdev->features & NETIF_F_NTUPLE) ^ (features & NETIF_F_NTUPLE)) {
++		if (features & NETIF_F_NTUPLE)
++			adapter->flags |= IAVF_FLAG_FDIR_ENABLED;
++		else
++			iavf_disable_fdir(adapter);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -4762,6 +4812,9 @@ static netdev_features_t iavf_fix_features(struct net_device *netdev,
+ {
+ 	struct iavf_adapter *adapter = netdev_priv(netdev);
+ 
++	if (!FDIR_FLTR_SUPPORT(adapter))
++		features &= ~NETIF_F_NTUPLE;
++
+ 	return iavf_fix_netdev_vlan_features(adapter, features);
+ }
+ 
+@@ -4879,6 +4932,12 @@ int iavf_process_config(struct iavf_adapter *adapter)
+ 	if (vfres->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_VLAN)
+ 		netdev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+ 
++	if (FDIR_FLTR_SUPPORT(adapter)) {
++		netdev->hw_features |= NETIF_F_NTUPLE;
++		netdev->features |= NETIF_F_NTUPLE;
++		adapter->flags |= IAVF_FLAG_FDIR_ENABLED;
++	}
++
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 
+ 	/* Do not turn on offloads when they are requested to be turned off.
 -- 
 2.43.0
 
