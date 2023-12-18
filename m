@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A64B817119
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:54:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C370817186
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2AE9B21789
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D54211F25048
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC861D12B;
-	Mon, 18 Dec 2023 13:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5C7129ED2;
+	Mon, 18 Dec 2023 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDhGUXUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXQVtctR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563641D123;
-	Mon, 18 Dec 2023 13:54:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF033C433C9;
-	Mon, 18 Dec 2023 13:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056EC1D127;
+	Mon, 18 Dec 2023 13:58:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE22C433C8;
+	Mon, 18 Dec 2023 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907660;
-	bh=RnUOZrzHt//jooUR9Wyp/4ROQLdR523jXmCSCZYu2Ns=;
+	s=korg; t=1702907916;
+	bh=aXjIL5Snv57/dQi/nT58X83ZGvLoL0urGLC0JP2ZYHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDhGUXUeTpMGjFss7icd4E0CXuRilIxmUYYDLTKNOLdVK6EjRrR//m4IP/Gprfy1N
-	 Gou0KYeZ8kBDiwtSbj9onC+/dS5MOZXzinO8oa5bJY9RX111JJvj2OdeDVQIXo0Sjp
-	 VH+SPmANy0HxutHmD24wHHee6/U+EOnasn5M9VY0=
+	b=DXQVtctRPWHIgo0iw1p5VE44NYPLfRj1QonilstXWouXlxsHHgfdO/qSPXgfMAbYE
+	 HVyhbxttFywWfl8qMipOMSOaK6ZY8kiqGvqQFkZdB2J2utb60o/85ZRXSPbrZxyOFB
+	 4mqk3FWrKaMiKoT6/gShkMIicgWoQXhwmnZzIIi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/36] qed: Fix a potential use-after-free in qed_cxt_tables_alloc
-Date: Mon, 18 Dec 2023 14:51:18 +0100
-Message-ID: <20231218135042.200586475@linuxfoundation.org>
+Subject: [PATCH 6.1 065/106] LoongArch: Add dependency between vmlinuz.efi and vmlinux.efi
+Date: Mon, 18 Dec 2023 14:51:19 +0100
+Message-ID: <20231218135057.826944339@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
-References: <20231218135041.876499958@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +51,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit b65d52ac9c085c0c52dee012a210d4e2f352611b ]
+[ Upstream commit d3ec75bc635cb0cb8185b63293d33a3d1b942d22 ]
 
-qed_ilt_shadow_alloc() will call qed_ilt_shadow_free() to
-free p_hwfn->p_cxt_mngr->ilt_shadow on error. However,
-qed_cxt_tables_alloc() accesses the freed pointer on failure
-of qed_ilt_shadow_alloc() through calling qed_cxt_mngr_free(),
-which may lead to use-after-free. Fix this issue by setting
-p_mngr->ilt_shadow to NULL in qed_ilt_shadow_free().
+A common issue in Makefile is a race in parallel building.
 
-Fixes: fe56b9e6a8d9 ("qed: Add module with basic common support")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231210045255.21383-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+You need to be careful to prevent multiple threads from writing to the
+same file simultaneously.
+
+Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
+generate invalid images") addressed such a bad scenario.
+
+A similar symptom occurs with the following command:
+
+  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    PAD     arch/loongarch/boot/vmlinux.bin
+    GZIP    arch/loongarch/boot/vmlinuz
+    OBJCOPY arch/loongarch/boot/vmlinuz.o
+    LD      arch/loongarch/boot/vmlinuz.efi.elf
+    OBJCOPY arch/loongarch/boot/vmlinuz.efi
+
+The log "OBJCOPY arch/loongarch/boot/vmlinux.efi" is displayed twice.
+
+It indicates that two threads simultaneously enter arch/loongarch/boot/
+and write to arch/loongarch/boot/vmlinux.efi.
+
+It occasionally leads to a build failure:
+
+  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
+    [ snip ]
+    SORTTAB vmlinux
+    OBJCOPY arch/loongarch/boot/vmlinux.efi
+    PAD     arch/loongarch/boot/vmlinux.bin
+  truncate: Invalid number: ‘arch/loongarch/boot/vmlinux.bin’
+  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
+  arch/loongarch/boot/vmlinux.bin] Error 1
+  make[2]: *** Deleting file 'arch/loongarch/boot/vmlinux.bin'
+  make[1]: *** [arch/loongarch/Makefile:146: vmlinuz.efi] Error 2
+  make[1]: *** Waiting for unfinished jobs....
+  make: *** [Makefile:234: __sub-make] Error 2
+
+vmlinuz.efi depends on vmlinux.efi, but such a dependency is not
+specified in arch/loongarch/Makefile.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_cxt.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-index 734462f8d881c..88232a6a4584d 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1024,6 +1024,7 @@ static void qed_ilt_shadow_free(struct qed_hwfn *p_hwfn)
- 		p_dma->p_virt = NULL;
- 	}
- 	kfree(p_mngr->ilt_shadow);
-+	p_mngr->ilt_shadow = NULL;
- }
+diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
+index 01b57b7263225..ed47a3a87768e 100644
+--- a/arch/loongarch/Makefile
++++ b/arch/loongarch/Makefile
+@@ -116,6 +116,8 @@ vdso_install:
  
- static int qed_ilt_blk_alloc(struct qed_hwfn *p_hwfn,
+ all:	$(notdir $(KBUILD_IMAGE))
+ 
++vmlinuz.efi: vmlinux.efi
++
+ vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
+ 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
+ 
 -- 
 2.43.0
 
