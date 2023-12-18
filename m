@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB86E8170DD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF4D81722E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FDD1C22EA0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DEA283CA4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DAB129EFB;
-	Mon, 18 Dec 2023 13:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34D13A1AF;
+	Mon, 18 Dec 2023 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OflUqTAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuXq4oN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206A1D127;
-	Mon, 18 Dec 2023 13:51:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E527EC433C8;
-	Mon, 18 Dec 2023 13:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D941D137;
+	Mon, 18 Dec 2023 14:04:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB2F0C433C7;
+	Mon, 18 Dec 2023 14:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907503;
-	bh=ox/dRuGvpISUM0253o+FM8lS916PpvRvcN+ul70yqoo=;
+	s=korg; t=1702908248;
+	bh=0nCuLDes+MM7CLZ2OwszjSyoYu4jjOJ9oMAVMyVQk68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OflUqTAZHrPfbS1YeZh+xp/4iSaiORbDNg+UJKPjpiEYwa1T53Z4Brpo80mk7gQBp
-	 HQuf1hKmu+LIOAecUHTHGsY+OFqlgchwe+te0ZJ4EiUGLzrZ3nE0L7QEvxStk3c3Uj
-	 LSJrys0w16TQ2l+gJmez4lc4mf2+ErQshrNc2FgQ=
+	b=OuXq4oN0+sEOUDJis0CtnD0cQtqAurBbwBCn8mzVlxdSzJUSADPK/1y3oISvetJqF
+	 EZ6yh1rjtqIX8aSBUO49ycrhg2eX5PjLop+UwXFCgM+8qAoSUXTBG40wja/Lo9VA8e
+	 xQJO8JPscfwexqo1uWn4OHN9EU5wLbMVF1vM+wmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 11/26] vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+Subject: [PATCH 6.6 107/166] HID: mcp2221: Set driver data before I2C adapter add
 Date: Mon, 18 Dec 2023 14:51:13 +0100
-Message-ID: <20231218135041.096903885@linuxfoundation.org>
+Message-ID: <20231218135109.810276930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
 
-[ Upstream commit 60316d7f10b17a7ebb1ead0642fee8710e1560e0 ]
+[ Upstream commit f2d4a5834638bbc967371b9168c0b481519f7c5e ]
 
-We need to do signed arithmetic if we expect condition
-`if (bytes < 0)` to be possible
+The process of adding an I2C adapter can invoke I2C accesses on that new
+adapter (see i2c_detect()).
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Ensure we have set the adapter's driver data to avoid null pointer
+dereferences in the xfer functions during the adapter add.
 
-Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231211162317.4116625-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This has been noted in the past and the same fix proposed but not
+completed. See:
+https://lore.kernel.org/lkml/ef597e73-ed71-168e-52af-0d19b03734ac@vigem.de/
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 2 +-
+ drivers/hid/hid-mcp2221.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9b8f592897ec5..df09ac4e35056 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -348,7 +348,7 @@ static s64 virtio_transport_has_space(struct vsock_sock *vsk)
- 	struct virtio_vsock_sock *vvs = vsk->trans;
- 	s64 bytes;
+diff --git a/drivers/hid/hid-mcp2221.c b/drivers/hid/hid-mcp2221.c
+index 72883e0ce7575..b95f31cf0fa21 100644
+--- a/drivers/hid/hid-mcp2221.c
++++ b/drivers/hid/hid-mcp2221.c
+@@ -1157,12 +1157,12 @@ static int mcp2221_probe(struct hid_device *hdev,
+ 	snprintf(mcp->adapter.name, sizeof(mcp->adapter.name),
+ 			"MCP2221 usb-i2c bridge");
  
--	bytes = vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
-+	bytes = (s64)vvs->peer_buf_alloc - (vvs->tx_cnt - vvs->peer_fwd_cnt);
- 	if (bytes < 0)
- 		bytes = 0;
++	i2c_set_adapdata(&mcp->adapter, mcp);
+ 	ret = devm_i2c_add_adapter(&hdev->dev, &mcp->adapter);
+ 	if (ret) {
+ 		hid_err(hdev, "can't add usb-i2c adapter: %d\n", ret);
+ 		return ret;
+ 	}
+-	i2c_set_adapdata(&mcp->adapter, mcp);
  
+ #if IS_REACHABLE(CONFIG_GPIOLIB)
+ 	/* Setup GPIO chip */
 -- 
 2.43.0
 
