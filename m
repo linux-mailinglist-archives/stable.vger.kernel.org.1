@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFC68175E6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1D78175E7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94DEA1F24D58
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D0ED28407C
 	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462703D556;
-	Mon, 18 Dec 2023 15:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B715D72F;
+	Mon, 18 Dec 2023 15:39:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1DB3D549
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC1171446
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1d3c394c1f4so4324465ad.2
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:44 -0800 (PST)
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-28b9460a9easo498933a91.3
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:39:48 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913984; x=1703518784;
+        d=1e100.net; s=20230601; t=1702913988; x=1703518788;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Q98lfexs5uyhMbU3vhRxRkbL+zMRykxpgdMBJs5XJDQ=;
-        b=md6Hc2O9B9UHGTZNeqOVbkx5dxw5974twiGX+i7LcpYXhXi7b8jnMm515MXqFiFXxR
-         n4H7fOqS0kxjRxbsopVQKOzJoPiAVnZHvrctq/iyZqgooe7ol8KzbjxhMHE64B3VVnDd
-         UCLnqoBlXl2KRusDzBSIkL+6a+gUJhO/yAwuJG8TdQ463pVQWR55uPlflMzwfdj+iPa8
-         izjW7NXuYk4yKrWBDoe8outBManuS53/PNKHJ8Yi8bxr7xL0/+fVqIFTZabCA0H/yXSn
-         szY5BAxOGWuYYO25cTx8UgyD88nwKO/FrB3G97zoB8CPJ9cob37iPr5/s6bZWBp+P7zV
-         ZrGQ==
-X-Gm-Message-State: AOJu0Yxkv64dxB+CEebJY5Srbli77RKZN7O0pqgRa/bB7701XStTI+PN
-	isYfcmRl1kbAEWetEICuR8I=
-X-Google-Smtp-Source: AGHT+IGjKNmMg6tSSP+qX03iFhkLJhkczvrFTf8nXMWuvpi2fLgAP+WV4TKbF81kLc2Yu1jkP1aTnQ==
-X-Received: by 2002:a17:90b:4c81:b0:28b:263a:cd40 with SMTP id my1-20020a17090b4c8100b0028b263acd40mr2203009pjb.89.1702913984262;
-        Mon, 18 Dec 2023 07:39:44 -0800 (PST)
+        bh=E1PbRt6iAqPIycg58fpuBssryL3nUXYhHeP+fbMI0CM=;
+        b=n0TNpyL9SD31CW4HLaRwvOIJgsVi9EYDLceDSbP4AMsFNiWvHfh8MWHXVR9pPxU+1I
+         BVWxEXh+8RtQKOxu9JONrJYIjEyltctpQyLWMGKYMaYv2NfvqO1Aqk9Wg6WUVrZV8d+E
+         EahDYARpjOyoQPL0QHBSVUGXA8BFhhzkXeq24Fvn2Z1fJOJCtZn/1U1WTwAec9uml9d6
+         B30hHXwbOEqcUKOPWJ6owSZytti4D2VYmvQs66Pnv/Ajb5WoOr+a/j0iDm1rM1C1zRMc
+         Gy6pQUbCxAUFc5VU2p8ENX/drh3pf1VFsufyqhOKmm8hwAMv7kSqv2+GPgku2ThrMyU5
+         g1tg==
+X-Gm-Message-State: AOJu0Yz6rupSe2PpfHjA6iHeZtMTZypCmNibc8HQmP/IJrw4tWbfG1b5
+	IB6nPK2ryo4HJcFmW5EqDRTmVE7NRK0=
+X-Google-Smtp-Source: AGHT+IFMusY9PBihfQcqruU0HWglFHjt+NcRIx/iaepJC4H/KzOixe9zZRJRC2QrMiYVQy4Aj+k2xw==
+X-Received: by 2002:a17:90b:397:b0:28b:a896:9ef1 with SMTP id ga23-20020a17090b039700b0028ba8969ef1mr346685pjb.86.1702913987487;
+        Mon, 18 Dec 2023 07:39:47 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.42
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.39.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:39:43 -0800 (PST)
+        Mon, 18 Dec 2023 07:39:47 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: smfrench@gmail.com,
 	David Disseldorp <ddiss@suse.de>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 082/154] ksmbd: avoid out of bounds access in decode_preauth_ctxt()
-Date: Tue, 19 Dec 2023 00:33:42 +0900
-Message-Id: <20231218153454.8090-83-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 083/154] ksmbd: set NegotiateContextCount once instead of every inc
+Date: Tue, 19 Dec 2023 00:33:43 +0900
+Message-Id: <20231218153454.8090-84-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -66,68 +66,70 @@ Content-Transfer-Encoding: 8bit
 
 From: David Disseldorp <ddiss@suse.de>
 
-[ Upstream commit e7067a446264a7514fa1cfaa4052cdb6803bc6a2 ]
+[ Upstream commit 34e8ccf9ce24b6b2e275bbe35cd392e18fbbd369 ]
 
-Confirm that the accessed pneg_ctxt->HashAlgorithms address sits within
-the SMB request boundary; deassemble_neg_contexts() only checks that the
-eight byte smb2_neg_context header + (client controlled) DataLength are
-within the packet boundary, which is insufficient.
-
-Checking for sizeof(struct smb2_preauth_neg_context) is overkill given
-that the type currently assumes SMB311_SALT_SIZE bytes of trailing Salt.
+There are no early returns, so marshalling the incremented
+NegotiateContextCount with every context is unnecessary.
 
 Signed-off-by: David Disseldorp <ddiss@suse.de>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Cc: <stable@vger.kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/smb2pdu.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+ fs/ksmbd/smb2pdu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 92fa2090ac54..472aa5fa0d10 100644
+index 472aa5fa0d10..d8985fe42ac6 100644
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -907,17 +907,21 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+@@ -848,7 +848,6 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+ 		    "assemble SMB2_PREAUTH_INTEGRITY_CAPABILITIES context\n");
+ 	build_preauth_ctxt((struct smb2_preauth_neg_context *)pneg_ctxt,
+ 			   conn->preauth_info->Preauth_HashId);
+-	rsp->NegotiateContextCount = cpu_to_le16(neg_ctxt_cnt);
+ 	inc_rfc1001_len(smb2_buf_len, AUTH_GSS_PADDING);
+ 	ctxt_size = sizeof(struct smb2_preauth_neg_context);
+ 	/* Round to 8 byte boundary */
+@@ -860,7 +859,7 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+ 			    "assemble SMB2_ENCRYPTION_CAPABILITIES context\n");
+ 		build_encrypt_ctxt((struct smb2_encryption_neg_context *)pneg_ctxt,
+ 				   conn->cipher_type);
+-		rsp->NegotiateContextCount = cpu_to_le16(++neg_ctxt_cnt);
++		neg_ctxt_cnt++;
+ 		ctxt_size += sizeof(struct smb2_encryption_neg_context) + 2;
+ 		/* Round to 8 byte boundary */
+ 		pneg_ctxt +=
+@@ -875,7 +874,7 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+ 		/* Temporarily set to SMB3_COMPRESS_NONE */
+ 		build_compression_ctxt((struct smb2_compression_ctx *)pneg_ctxt,
+ 				       conn->compress_algorithm);
+-		rsp->NegotiateContextCount = cpu_to_le16(++neg_ctxt_cnt);
++		neg_ctxt_cnt++;
+ 		ctxt_size += sizeof(struct smb2_compression_ctx) + 2;
+ 		/* Round to 8 byte boundary */
+ 		pneg_ctxt += round_up(sizeof(struct smb2_compression_ctx) + 2,
+@@ -887,7 +886,7 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+ 		ksmbd_debug(SMB,
+ 			    "assemble SMB2_POSIX_EXTENSIONS_AVAILABLE context\n");
+ 		build_posix_ctxt((struct smb2_posix_neg_context *)pneg_ctxt);
+-		rsp->NegotiateContextCount = cpu_to_le16(++neg_ctxt_cnt);
++		neg_ctxt_cnt++;
+ 		ctxt_size += sizeof(struct smb2_posix_neg_context);
+ 		/* Round to 8 byte boundary */
+ 		pneg_ctxt += round_up(sizeof(struct smb2_posix_neg_context), 8);
+@@ -899,10 +898,11 @@ static void assemble_neg_contexts(struct ksmbd_conn *conn,
+ 			    "assemble SMB2_SIGNING_CAPABILITIES context\n");
+ 		build_sign_cap_ctxt((struct smb2_signing_capabilities *)pneg_ctxt,
+ 				    conn->signing_algorithm);
+-		rsp->NegotiateContextCount = cpu_to_le16(++neg_ctxt_cnt);
++		neg_ctxt_cnt++;
+ 		ctxt_size += sizeof(struct smb2_signing_capabilities) + 2;
+ 	}
+ 
++	rsp->NegotiateContextCount = cpu_to_le16(neg_ctxt_cnt);
+ 	inc_rfc1001_len(smb2_buf_len, ctxt_size);
  }
  
- static __le32 decode_preauth_ctxt(struct ksmbd_conn *conn,
--				  struct smb2_preauth_neg_context *pneg_ctxt)
-+				  struct smb2_preauth_neg_context *pneg_ctxt,
-+				  int len_of_ctxts)
- {
--	__le32 err = STATUS_NO_PREAUTH_INTEGRITY_HASH_OVERLAP;
-+	/*
-+	 * sizeof(smb2_preauth_neg_context) assumes SMB311_SALT_SIZE Salt,
-+	 * which may not be present. Only check for used HashAlgorithms[1].
-+	 */
-+	if (len_of_ctxts < 6)
-+		return STATUS_INVALID_PARAMETER;
- 
--	if (pneg_ctxt->HashAlgorithms == SMB2_PREAUTH_INTEGRITY_SHA512) {
--		conn->preauth_info->Preauth_HashId =
--			SMB2_PREAUTH_INTEGRITY_SHA512;
--		err = STATUS_SUCCESS;
--	}
-+	if (pneg_ctxt->HashAlgorithms != SMB2_PREAUTH_INTEGRITY_SHA512)
-+		return STATUS_NO_PREAUTH_INTEGRITY_HASH_OVERLAP;
- 
--	return err;
-+	conn->preauth_info->Preauth_HashId = SMB2_PREAUTH_INTEGRITY_SHA512;
-+	return STATUS_SUCCESS;
- }
- 
- static void decode_encrypt_ctxt(struct ksmbd_conn *conn,
-@@ -1045,7 +1049,8 @@ static __le32 deassemble_neg_contexts(struct ksmbd_conn *conn,
- 				break;
- 
- 			status = decode_preauth_ctxt(conn,
--						     (struct smb2_preauth_neg_context *)pctx);
-+						     (struct smb2_preauth_neg_context *)pctx,
-+						     len_of_ctxts);
- 			if (status != STATUS_SUCCESS)
- 				break;
- 		} else if (pctx->ContextType == SMB2_ENCRYPTION_CAPABILITIES) {
 -- 
 2.25.1
 
