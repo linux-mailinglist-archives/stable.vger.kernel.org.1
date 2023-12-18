@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-7057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DCB816F42
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:02:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD47816F45
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 274BC1F234C9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:02:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43F87B224CF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2B912721B;
-	Mon, 18 Dec 2023 12:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EBD012799D;
+	Mon, 18 Dec 2023 12:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d16fI5Lk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMPmv5J7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF3D12720F;
-	Mon, 18 Dec 2023 12:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DCAC433C8;
-	Mon, 18 Dec 2023 12:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D380812799F;
+	Mon, 18 Dec 2023 12:47:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683C0C433C7;
+	Mon, 18 Dec 2023 12:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702903631;
-	bh=UQpx4WtzUsfwEVitexmM74jcEdxORfgte+9P1HAPvOg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d16fI5LknWGNYZLzw+9dQEqIe5l02WTSjooRtOHRIb17WobXhCkRIVzQNZI5Y6LvT
-	 NbpNtz5EQOGKPoGsoKHzS1BdOVGg58dulpPAnSgqBrkkI7ZE6H6EW11SiLlPdTuxEZ
-	 Awn3Yvoc+pBP32k3M/zqXpV2G8C/zJJsrqwPUlktGwgilajHOzlGHE3/AgvQmQtwvP
-	 p+4YVVhotuAdhNc588vzSMMBaf8oEDtX1ycn4Ae6asEkD6di1evhAGU/SjgO3T+2+D
-	 yuWp0SIrEgPBkrxKrHOGnL2JttV/w7E0bkq5lpQbiDwYfgsxXQFb1H3UT14Q/rpB/Y
-	 OJA4TkG5xe0Ew==
+	s=k20201202; t=1702903636;
+	bh=yfdKqtgUNhva9eueXhUO7jCdMI5f55TNeHU8zKTb9Kw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fMPmv5J7NflZbej29aGkVEURHxG/eNiMVW34EtM/HI6qeWZ+VwFZvHA9BNWtHlEVV
+	 VB7QiMfKPK/2oeFBQod6CbTBLFC7azuIAXodZMX/4da6kramuZHBnZdBXpDUAsBhMb
+	 AmyVCwJg2IT15FoeIkc7HMlbGMLKor/rX5+DWVM+d5lWcVCBqq88+iEm1R3ss7MMkl
+	 9LiyMjAu4Xhn84+yJVBxwaJKybA9nZM5oiC03BFiMZls+nnIo3XaLVwlTjMWCBDmQx
+	 ZDqOve2to1BuTC3AuZGvU1Uym7yNuS5OmswXNiSZMmycowCaZmVYT/rDKQvlwyVVAj
+	 0st3B2uzqhAIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+Cc: Weihao Li <cn.liweihao@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 7/7] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
-Date: Mon, 18 Dec 2023 07:46:52 -0500
-Message-ID: <20231218124656.1381949-7-sashal@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 4.19 1/6] clk: rockchip: rk3128: Fix HCLK_OTG gate register
+Date: Mon, 18 Dec 2023 07:47:06 -0500
+Message-ID: <20231218124713.1382373-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218124656.1381949-1-sashal@kernel.org>
-References: <20231218124656.1381949-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,45 +55,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.264
+X-stable-base: Linux 4.19.302
 Content-Transfer-Encoding: 8bit
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Weihao Li <cn.liweihao@gmail.com>
 
-[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
+[ Upstream commit c6c5a5580dcb6631aa6369dabe12ef3ce784d1d2 ]
 
-As the ring buffer recording requires cmpxchg() to work, if the
-architecture does not support cmpxchg in NMI, then do not do any recording
-within an NMI.
+The HCLK_OTG gate control is in CRU_CLKGATE5_CON, not CRU_CLKGATE3_CON.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Weihao Li <cn.liweihao@gmail.com>
+Link: https://lore.kernel.org/r/20231031111816.8777-1-cn.liweihao@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clk/rockchip/clk-rk3128.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 9d6ba38791961..983fc4475c273 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2969,6 +2969,12 @@ rb_reserve_next_event(struct ring_buffer *buffer,
- 	int nr_loops = 0;
- 	u64 diff;
- 
-+	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
-+	    (unlikely(in_nmi()))) {
-+		return NULL;
-+	}
-+
- 	rb_start_commit(cpu_buffer);
- 
- #ifdef CONFIG_RING_BUFFER_ALLOW_SWAP
+diff --git a/drivers/clk/rockchip/clk-rk3128.c b/drivers/clk/rockchip/clk-rk3128.c
+index 5970a50671b9a..83c7eb18321f4 100644
+--- a/drivers/clk/rockchip/clk-rk3128.c
++++ b/drivers/clk/rockchip/clk-rk3128.c
+@@ -497,7 +497,7 @@ static struct rockchip_clk_branch common_clk_branches[] __initdata = {
+ 	GATE(HCLK_I2S_2CH, "hclk_i2s_2ch", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 2, GFLAGS),
+ 	GATE(0, "hclk_usb_peri", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 13, GFLAGS),
+ 	GATE(HCLK_HOST2, "hclk_host2", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 3, GFLAGS),
+-	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(3), 13, GFLAGS),
++	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(5), 13, GFLAGS),
+ 	GATE(0, "hclk_peri_ahb", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 14, GFLAGS),
+ 	GATE(HCLK_SPDIF, "hclk_spdif", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 9, GFLAGS),
+ 	GATE(HCLK_TSP, "hclk_tsp", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 12, GFLAGS),
 -- 
 2.43.0
 
