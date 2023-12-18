@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A645E8170E8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D36B88172F4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52873283AF8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58DAA1F212EF
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EB415AC0;
-	Mon, 18 Dec 2023 13:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B5842392;
+	Mon, 18 Dec 2023 14:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eXstDKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4TZy6+x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D18F129EFE;
-	Mon, 18 Dec 2023 13:52:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDCBC433C8;
-	Mon, 18 Dec 2023 13:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93383D566;
+	Mon, 18 Dec 2023 14:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDD9C433C8;
+	Mon, 18 Dec 2023 14:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907530;
-	bh=bGUztfR660oGge2ycD4uZmqiIJDLmOPXHJxkIeAk1JY=;
+	s=korg; t=1702908719;
+	bh=mvOQP9c7sc0nCXYw0heHu1RLcfpU0/Ow9ErhVZRIN5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eXstDKDDAhEpNxx5I8vipDw1Mras+yZGpk5/tmUx3a1IAPM2K82WaJ5QhzhIUQgw
-	 L8uJUXiZiUWyg2PrWouMkxpsyxhDJC9ckBBYVwW7J0+TVEl+qOKCGw7i0aw0FzrIL7
-	 jbSJxXaP+Ygf1kE2ksc1QnBpJMNipVe1tSkG6cJQ=
+	b=x4TZy6+xUi13dLCGiZBSTTmLTL/tMISDBStakUVmrUJsHz1YpAHZISLE0biPBzXkA
+	 78jwFmgoD4QwNVOqayCjw/mW0Prm2NZDV86rP525AN1+aWf6J6j4mPQDl+4AXNxYyj
+	 ne7/IS9E9GKvhIJjFElYWc7HcGmwlXFWbp5vebnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 20/26] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Mahmoud Adam <mngyadam@amazon.com>
+Subject: [PATCH 5.15 01/83] perf/x86/uncore: Dont WARN_ON_ONCE() for a broken discovery table
 Date: Mon, 18 Dec 2023 14:51:22 +0100
-Message-ID: <20231218135041.438323926@linuxfoundation.org>
+Message-ID: <20231218135049.813574262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
-References: <20231218135040.665690087@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,73 +52,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
+commit 5d515ee40cb57ea5331998f27df7946a69f14dc3 upstream.
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
-from option driver.
-The proper configuration is:
+The kernel warning message is triggered, when SPR MCC is used.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+[   17.945331] ------------[ cut here ]------------
+[   17.946305] WARNING: CPU: 65 PID: 1 at
+arch/x86/events/intel/uncore_discovery.c:184
+intel_uncore_has_discovery_tables+0x4c0/0x65c
+[   17.946305] Modules linked in:
+[   17.946305] CPU: 65 PID: 1 Comm: swapper/0 Not tainted
+5.4.17-2136.313.1-X10-2c+ #4
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+It's caused by the broken discovery table of UPI.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The discovery tables are from hardware. Except for dropping the broken
+information, there is nothing Linux can do. Using WARN_ON_ONCE() is
+overkilled.
+
+Use the pr_info() to replace WARN_ON_ONCE(), and specify what uncore unit
+is dropped and the reason.
+
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Michael Petlan <mpetlan@redhat.com>
+Link: https://lore.kernel.org/r/20230112200105.733466-6-kan.liang@linux.intel.com
+Cc: Mahmoud Adam <mngyadam@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/events/intel/uncore_discovery.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 880aa7f6a779c..c6a1129d6274e 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1242,6 +1242,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
-+	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
- 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
--- 
-2.43.0
-
+--- a/arch/x86/events/intel/uncore_discovery.c
++++ b/arch/x86/events/intel/uncore_discovery.c
+@@ -140,13 +140,21 @@ uncore_insert_box_info(struct uncore_uni
+ 	unsigned int *box_offset, *ids;
+ 	int i;
+ 
+-	if (WARN_ON_ONCE(!unit->ctl || !unit->ctl_offset || !unit->ctr_offset))
++	if (!unit->ctl || !unit->ctl_offset || !unit->ctr_offset) {
++		pr_info("Invalid address is detected for uncore type %d box %d, "
++			"Disable the uncore unit.\n",
++			unit->box_type, unit->box_id);
+ 		return;
++	}
+ 
+ 	if (parsed) {
+ 		type = search_uncore_discovery_type(unit->box_type);
+-		if (WARN_ON_ONCE(!type))
++		if (!type) {
++			pr_info("A spurious uncore type %d is detected, "
++				"Disable the uncore type.\n",
++				unit->box_type);
+ 			return;
++		}
+ 		/* Store the first box of each die */
+ 		if (!type->box_ctrl_die[die])
+ 			type->box_ctrl_die[die] = unit->ctl;
+@@ -181,8 +189,12 @@ uncore_insert_box_info(struct uncore_uni
+ 		ids[i] = type->ids[i];
+ 		box_offset[i] = type->box_offset[i];
+ 
+-		if (WARN_ON_ONCE(unit->box_id == ids[i]))
++		if (unit->box_id == ids[i]) {
++			pr_info("Duplicate uncore type %d box ID %d is detected, "
++				"Drop the duplicate uncore unit.\n",
++				unit->box_type, unit->box_id);
+ 			goto free_ids;
++		}
+ 	}
+ 	ids[i] = unit->box_id;
+ 	box_offset[i] = unit->ctl - type->box_ctrl;
 
 
 
