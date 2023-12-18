@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-7519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D170A8172E7
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04F4817338
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810E0288ACD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD6E11C23053
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B7A37888;
-	Mon, 18 Dec 2023 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0373789E;
+	Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2D7ILA2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFIa7Uvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5871D14F;
-	Mon, 18 Dec 2023 14:11:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16516C433C8;
-	Mon, 18 Dec 2023 14:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143E37884;
+	Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FDCC433C7;
+	Mon, 18 Dec 2023 14:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908686;
-	bh=Aneo/Tg1CoZGr2a/8lEvfjmtF9fi2HXi5xrcfX6Q+iA=;
+	s=korg; t=1702908888;
+	bh=prgDe56YUWHzhH9nuLFTU1wqgV/rZh9wMG0AmkwgOrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l2D7ILA20dgekC9NG2eFG/ctExhHfiU0pEHj+0QZuseoglfuNyUS0EVz8e8NlR87M
-	 IDOCemOk4aP8BipWWnuXrcycIV4rk0FOuWKrX457mMkpOMT6JvA6EkR2zA0twLcH5g
-	 0FX750ZN34QJFc9iAxPPw3dDXjefjGNBnnhsN+6s=
+	b=TFIa7UvvD+uqH3BPlw/kr+cWYN+ahQL9mUySh3UQryR6mIQZUDi3gA2A62Al3Zp/2
+	 V2GbMnQ9HDAM4GaUgHyw/Jd8iR+0cIK1RwJVSPKsXptLxsDbuOAcucrhmFd64rjfqL
+	 3aYcIA2gS8FYLVeVVFaqWash5PKA3yXigEV2dcEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.4 37/40] ring-buffer: Fix memory leak of free page
+Subject: [PATCH 5.15 71/83] ring-buffer: Do not update before stamp when switching sub-buffers
 Date: Mon, 18 Dec 2023 14:52:32 +0100
-Message-ID: <20231218135044.166150764@linuxfoundation.org>
+Message-ID: <20231218135052.853165048@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +54,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 17d801758157bec93f26faaf5ff1a8b9a552d67a upstream.
+commit 9e45e39dc249c970d99d2681f6bcb55736fd725c upstream.
 
-Reading the ring buffer does a swap of a sub-buffer within the ring buffer
-with a empty sub-buffer. This allows the reader to have full access to the
-content of the sub-buffer that was swapped out without having to worry
-about contention with the writer.
+The ring buffer timestamps are synchronized by two timestamp placeholders.
+One is the "before_stamp" and the other is the "write_stamp" (sometimes
+referred to as the "after stamp" but only in the comments. These two
+stamps are key to knowing how to handle nested events coming in with a
+lockless system.
 
-The readers call ring_buffer_alloc_read_page() to allocate a page that
-will be used to swap with the ring buffer. When the code is finished with
-the reader page, it calls ring_buffer_free_read_page(). Instead of freeing
-the page, it stores it as a spare. Then next call to
-ring_buffer_alloc_read_page() will return this spare instead of calling
-into the memory management system to allocate a new page.
+When moving across sub-buffers, the before stamp is updated but the write
+stamp is not. There's an effort to put back the before stamp to something
+that seems logical in case there's nested events. But as the current event
+is about to cross sub-buffers, and so will any new nested event that happens,
+updating the before stamp is useless, and could even introduce new race
+conditions.
 
-Unfortunately, on freeing of the ring buffer, this spare page is not
-freed, and causes a memory leak.
+The first event on a sub-buffer simply uses the sub-buffer's timestamp
+and keeps a "delta" of zero. The "before_stamp" and "write_stamp" are not
+used in the algorithm in this case. There's no reason to try to fix the
+before_stamp when this happens.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231210221250.7b9cc83c@rorschach.local.home
+As a bonus, it removes a cmpxchg() when crossing sub-buffers!
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231211114420.36dde01b@gandalf.local.home
 
 Cc: stable@vger.kernel.org
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: 73a757e63114d ("ring-buffer: Return reader page back into existing ring buffer")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/ring_buffer.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
 --- a/kernel/trace/ring_buffer.c
 +++ b/kernel/trace/ring_buffer.c
-@@ -1414,6 +1414,8 @@ static void rb_free_cpu_buffer(struct ri
- 		free_buffer_page(bpage);
- 	}
+@@ -3558,14 +3558,7 @@ __rb_reserve_next(struct ring_buffer_per
  
-+	free_page((unsigned long)cpu_buffer->free_page);
-+
- 	kfree(cpu_buffer);
- }
+ 	/* See if we shot pass the end of this buffer page */
+ 	if (unlikely(write > BUF_PAGE_SIZE)) {
+-		/* before and after may now different, fix it up*/
+-		b_ok = rb_time_read(&cpu_buffer->before_stamp, &info->before);
+-		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
+-		if (a_ok && b_ok && info->before != info->after)
+-			(void)rb_time_cmpxchg(&cpu_buffer->before_stamp,
+-					      info->before, info->after);
+-		if (a_ok && b_ok)
+-			check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
++		check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
+ 		return rb_move_tail(cpu_buffer, tail, info);
+ 	}
  
 
 
