@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-7253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A86281719F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A97817274
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C491F2550B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56CF71F24B0F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258441D12D;
-	Mon, 18 Dec 2023 13:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D695A844;
+	Mon, 18 Dec 2023 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0c0jvCx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFPm3o6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60B21D12B;
-	Mon, 18 Dec 2023 13:59:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D465C433C8;
-	Mon, 18 Dec 2023 13:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784CF4FF9A;
+	Mon, 18 Dec 2023 14:06:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A97C433C8;
+	Mon, 18 Dec 2023 14:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907969;
-	bh=bmv9Yj7nNj/i690w6lQveLxSg/jqxLw9nAUIXfAeT/s=;
+	s=korg; t=1702908410;
+	bh=WFLY8T00Ck8YBdZbjoZlYuA5y4H87XksrtX4eHmFlCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g0c0jvCxrpF2DGe84bf/ftoUIYFx2YxgB2t9unbBFoEzgD53ywrM3nwfmJMlf2Ryw
-	 oxZ8wPUURE/NH7KD5bhwRtcLWTpS85v5dGCSsz8Y1+zxSRY+e6wRwDcOTg+8J4jouD
-	 qTtj61IGaC4fmbvkqjr2i7qYv1ui4CDPMhjZd7Ec=
+	b=pFPm3o6BeNw8IYVEwri70rsVTPs2BO8OxkuaUejuD1x3YOwidpG0GN9vxniUiNsqq
+	 vuBtSUPivI9TLIZooYRDQOy7wE7kOsbcS9CZmU6FnfCWlIj+Vxl2xxvdJc6wfj3s+u
+	 zm6TT/zdpvpAtzw74NTmKODukvCPe3QEhPpkD8DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 100/106] ring-buffer: Fix a race in rb_time_cmpxchg() for 32 bit archs
-Date: Mon, 18 Dec 2023 14:51:54 +0100
-Message-ID: <20231218135059.335798770@linuxfoundation.org>
+	aaron.ma@canonical.com,
+	binli@gnome.org,
+	Marc Rossi <Marc.Rossi@amd.com>,
+	Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>
+Subject: [PATCH 6.6 149/166] drm/amd/display: Disable PSR-SU on Parade 0803 TCON again
+Date: Mon, 18 Dec 2023 14:51:55 +0100
+Message-ID: <20231218135111.785054550@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,79 +57,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit fff88fa0fbc7067ba46dde570912d63da42c59a9 upstream.
+commit e7ab758741672acb21c5d841a9f0309d30e48a06 upstream.
 
-Mathieu Desnoyers pointed out an issue in the rb_time_cmpxchg() for 32 bit
-architectures. That is:
+When screen brightness is rapidly changed and PSR-SU is enabled the
+display hangs on panels with this TCON even on the latest DCN 3.1.4
+microcode (0x8002a81 at this time).
 
- static bool rb_time_cmpxchg(rb_time_t *t, u64 expect, u64 set)
- {
-	unsigned long cnt, top, bottom, msb;
-	unsigned long cnt2, top2, bottom2, msb2;
-	u64 val;
+This was disabled previously as commit 072030b17830 ("drm/amd: Disable
+PSR-SU on Parade 0803 TCON") but reverted as commit 1e66a17ce546 ("Revert
+"drm/amd: Disable PSR-SU on Parade 0803 TCON"") in favor of testing for
+a new enough microcode (commit cd2e31a9ab93 ("drm/amd/display: Set minimum
+requirement for using PSR-SU on Phoenix")).
 
-	/* The cmpxchg always fails if it interrupted an update */
-	 if (!__rb_time_read(t, &val, &cnt2))
-		 return false;
-
-	 if (val != expect)
-		 return false;
-
-<<<< interrupted here!
-
-	 cnt = local_read(&t->cnt);
-
-The problem is that the synchronization counter in the rb_time_t is read
-*after* the value of the timestamp is read. That means if an interrupt
-were to come in between the value being read and the counter being read,
-it can change the value and the counter and the interrupted process would
-be clueless about it!
-
-The counter needs to be read first and then the value. That way it is easy
-to tell if the value is stale or not. If the counter hasn't been updated,
-then the value is still good.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231211201324.652870-1-mathieu.desnoyers@efficios.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20231212115301.7a9c9a64@gandalf.local.home
+As hangs are still happening specifically with this TCON, disable PSR-SU
+again for it until it can be root caused.
 
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 10464b4aa605e ("ring-buffer: Add rb_time_t 64 bit operations for speeding up 32 bit")
-Reported-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: aaron.ma@canonical.com
+Cc: binli@gnome.org
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2046131
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -711,6 +711,9 @@ static int rb_time_cmpxchg(rb_time_t *t,
- 	unsigned long cnt2, top2, bottom2, msb2;
- 	u64 val;
- 
-+	/* Any interruptions in this function should cause a failure */
-+	cnt = local_read(&t->cnt);
-+
- 	/* The cmpxchg always fails if it interrupted an update */
- 	 if (!__rb_time_read(t, &val, &cnt2))
- 		 return false;
-@@ -718,7 +721,6 @@ static int rb_time_cmpxchg(rb_time_t *t,
- 	 if (val != expect)
- 		 return false;
- 
--	 cnt = local_read(&t->cnt);
- 	 if ((cnt & 3) != cnt2)
- 		 return false;
- 
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -839,6 +839,8 @@ bool is_psr_su_specific_panel(struct dc_
+ 				((dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x08) ||
+ 				(dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x07)))
+ 				isPSRSUSupported = false;
++			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
++				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
+ 		}
 
 
 
