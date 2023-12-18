@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EE88171FF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202B9817137
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2A741C24CE6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2C9528176A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E92337866;
-	Mon, 18 Dec 2023 14:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257C615AC0;
+	Mon, 18 Dec 2023 13:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqXzmt5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJyRuKUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F141D126;
-	Mon, 18 Dec 2023 14:02:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD1DEC433C8;
-	Mon, 18 Dec 2023 14:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08BA129EE3;
+	Mon, 18 Dec 2023 13:55:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6542AC433C7;
+	Mon, 18 Dec 2023 13:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908147;
-	bh=NpvnboC432ERCy5ckJUH256PvjfiuCJ5lF8fseGGps8=;
+	s=korg; t=1702907727;
+	bh=t96KsVuLM1wGf+WYIGauakb1ERC43+2O/d8d548EX/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqXzmt5qPA4+crQdEqac3JIxUFnr7rNXA2k1FMFFHYBWO9SSVWg93ZjGxa8eo9f8X
-	 Q8oM7pZoPezJobKIMw+2tCSCLpzVrpX9xfFhCxnBhPaCw/Y0YZaZgXDtjBncWotjjF
-	 6W+sEMUrJ8/9z/ceopo6omVi/kKB2rR4dH8sDVFg=
+	b=pJyRuKUFeveKxn5LQoeGrLaZFveIdl5nHwb+mD4ynGvnF9dF2LXg24CcCrSRkgW+Z
+	 EViRVbRSP47s56IhNKRtj6uUsTa0i7MxJk3JCEfHiODkq867bCAWUr9XmsXs8w10Ux
+	 TTPStWHWnwBMO9KEPRMpLhJcB7CCkevKl6Nx1+Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 071/166] ALSA: hda/tas2781: call cleanup functions only once
-Date: Mon, 18 Dec 2023 14:50:37 +0100
-Message-ID: <20231218135108.238577220@linuxfoundation.org>
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 024/106] octeontx2-pf: Fix promisc mcam entry action
+Date: Mon, 18 Dec 2023 14:50:38 +0100
+Message-ID: <20231218135055.976721726@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-commit 6c6fa2641402e8e753262fb61ed9a15a7cb225ad upstream.
+[ Upstream commit dbda436824ded8ef6a05bb82cd9baa8d42377a49 ]
 
-If the module can load the RCA but not the firmware binary, it will call
-the cleanup functions. Then unloading the module causes general
-protection fault due to double free.
+Current implementation is such that, promisc mcam entry action
+is set as multicast even when there are no trusted VFs. multicast
+action causes the hardware to copy packet data, which reduces
+the performance.
 
-Do not call the cleanup functions in tasdev_fw_ready.
+This patch fixes this issue by setting the promisc mcam entry action to
+unicast instead of multicast when there are no trusted VFs. The same
+change is made for the 'allmulti' mcam entry action.
 
-general protection fault, probably for non-canonical address
-0x6f2b8a2bff4c8fec: 0000 [#1] PREEMPT SMP NOPTI
-Call Trace:
- <TASK>
- ? die_addr+0x36/0x90
- ? exc_general_protection+0x1c5/0x430
- ? asm_exc_general_protection+0x26/0x30
- ? tasdevice_config_info_remove+0x6d/0xd0 [snd_soc_tas2781_fmwlib]
- tas2781_hda_unbind+0xaa/0x100 [snd_hda_scodec_tas2781_i2c]
- component_unbind+0x2e/0x50
- component_unbind_all+0x92/0xa0
- component_del+0xa8/0x140
- tas2781_hda_remove.isra.0+0x32/0x60 [snd_hda_scodec_tas2781_i2c]
- i2c_device_remove+0x26/0xb0
-
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/1a0885c424bb21172702d254655882b59ef6477a.1702510018.git.soyer@irl.hu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ffd2f89ad05c ("octeontx2-pf: Enable promisc/allmulti match MCAM entries.")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c | 5 -----
- 1 file changed, 5 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 25 ++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index d3dafc9d150b..c8ee5f809c38 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -550,11 +550,6 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
- 	tas2781_save_calibration(tas_priv);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 55807e2043edf..a2d8ac6204054 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1638,6 +1638,21 @@ static void otx2_free_hw_resources(struct otx2_nic *pf)
+ 	mutex_unlock(&mbox->lock);
+ }
  
- out:
--	if (tas_priv->fw_state == TASDEVICE_DSP_FW_FAIL) {
--		/*If DSP FW fail, kcontrol won't be created */
--		tasdevice_config_info_remove(tas_priv);
--		tasdevice_dsp_remove(tas_priv);
--	}
- 	mutex_unlock(&tas_priv->codec_lock);
- 	if (fmw)
- 		release_firmware(fmw);
++static bool otx2_promisc_use_mce_list(struct otx2_nic *pfvf)
++{
++	int vf;
++
++	/* The AF driver will determine whether to allow the VF netdev or not */
++	if (is_otx2_vf(pfvf->pcifunc))
++		return true;
++
++	/* check if there are any trusted VFs associated with the PF netdev */
++	for (vf = 0; vf < pci_num_vf(pfvf->pdev); vf++)
++		if (pfvf->vf_configs[vf].trusted)
++			return true;
++	return false;
++}
++
+ static void otx2_do_set_rx_mode(struct otx2_nic *pf)
+ {
+ 	struct net_device *netdev = pf->netdev;
+@@ -1670,7 +1685,8 @@ static void otx2_do_set_rx_mode(struct otx2_nic *pf)
+ 	if (netdev->flags & (IFF_ALLMULTI | IFF_MULTICAST))
+ 		req->mode |= NIX_RX_MODE_ALLMULTI;
+ 
+-	req->mode |= NIX_RX_MODE_USE_MCE;
++	if (otx2_promisc_use_mce_list(pf))
++		req->mode |= NIX_RX_MODE_USE_MCE;
+ 
+ 	otx2_sync_mbox_msg(&pf->mbox);
+ 	mutex_unlock(&pf->mbox.lock);
+@@ -2634,11 +2650,14 @@ static int otx2_ndo_set_vf_trust(struct net_device *netdev, int vf,
+ 	pf->vf_configs[vf].trusted = enable;
+ 	rc = otx2_set_vf_permissions(pf, vf, OTX2_TRUSTED_VF);
+ 
+-	if (rc)
++	if (rc) {
+ 		pf->vf_configs[vf].trusted = !enable;
+-	else
++	} else {
+ 		netdev_info(pf->netdev, "VF %d is %strusted\n",
+ 			    vf, enable ? "" : "not ");
++		otx2_set_rx_mode(netdev);
++	}
++
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
