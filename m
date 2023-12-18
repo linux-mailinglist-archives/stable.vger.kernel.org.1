@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-7475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307748172B4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 793BC8172DC
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B55FAB22DB2
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEA862885D7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB10B37879;
-	Mon, 18 Dec 2023 14:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E4337866;
+	Mon, 18 Dec 2023 14:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE/Bc9sG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW3hK++r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930B91D122;
-	Mon, 18 Dec 2023 14:09:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A724C433C7;
-	Mon, 18 Dec 2023 14:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5179129ECF;
+	Mon, 18 Dec 2023 14:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5913BC433C7;
+	Mon, 18 Dec 2023 14:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908566;
-	bh=usnmf4l9PMLFLwaXl+K8R7On1t/Sh/79Wx9dgu6RQrM=;
+	s=korg; t=1702908653;
+	bh=/6Q+VK804OfFmcEC+oBkWOCyER/k421SlIJByGHbohA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cE/Bc9sGh2Scdhft0p9Oi+S2zIjpagCxtw6+4KpF23Lw8i9Wyct+gg4FdhDDgDllv
-	 8dCfoXMWGPHip6VhfGAw/A8SjpRTyFRXdK6tVZqx/XONPa+aN5AetmFR+Sk1rtHliY
-	 Q/ejKpGArgK5nUjKYiiqK4V6YElgBw0ZRDgUk4gw=
+	b=uW3hK++rUnR8KyHF9fotu62lX6DYUVh1KSAMKrj6iS8LPa7NupDlXfr+Wg/Uo8H66
+	 leyV0JRhSp3kfOW6/9xqf0IQ22WNBmvPwd264nXZaX5yvBHug/b0jYFaRu1dWzgSR7
+	 uDctQMXH/ZfdVAGsMoRq0sRiCHZRmU8WW2yGLMiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Luo <royluo@google.com>
-Subject: [PATCH 5.10 57/62] USB: gadget: core: adjust uevent timing on gadget unbind
+	Oliver Neukum <oneukum@suse.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 26/40] HID: add ALWAYS_POLL quirk for Apple kb
 Date: Mon, 18 Dec 2023 14:52:21 +0100
-Message-ID: <20231218135048.734995339@linuxfoundation.org>
+Message-ID: <20231218135043.689556466@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +53,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Luo <royluo@google.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 73ea73affe8622bdf292de898da869d441da6a9d upstream.
+[ Upstream commit c55092187d9ad7b2f8f5a8645286fa03997d442f ]
 
-The KOBJ_CHANGE uevent is sent before gadget unbind is actually
-executed, resulting in inaccurate uevent emitted at incorrect timing
-(the uevent would have USB_UDC_DRIVER variable set while it would
-soon be removed).
-Move the KOBJ_CHANGE uevent to the end of the unbind function so that
-uevent is sent only after the change has been made.
+These devices disconnect if suspended without remote wakeup. They can operate
+with the standard driver.
 
-Fixes: 2ccea03a8f7e ("usb: gadget: introduce UDC Class")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roy Luo <royluo@google.com>
-Link: https://lore.kernel.org/r/20231128221756.2591158-1-royluo@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-quirks.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1353,8 +1353,6 @@ static void usb_gadget_remove_driver(str
- 	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
- 			udc->driver->function);
- 
--	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
--
- 	usb_gadget_disconnect(udc->gadget);
- 	if (udc->gadget->irq)
- 		synchronize_irq(udc->gadget->irq);
-@@ -1363,6 +1361,8 @@ static void usb_gadget_remove_driver(str
- 
- 	udc->driver = NULL;
- 	udc->gadget->dev.driver = NULL;
-+
-+	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- }
- 
- /**
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index fae784df084d5..fd84661df5fa7 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -33,6 +33,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AKAI, USB_DEVICE_ID_AKAI_MPKMINI2), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ALPS, USB_DEVICE_ID_IBM_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AMI, USB_DEVICE_ID_AMI_VIRT_KEYBOARD_AND_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_ALU_REVB_ANSI), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_2PORTKVM), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVMC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ATEN, USB_DEVICE_ID_ATEN_4PORTKVM), HID_QUIRK_NOGET },
+-- 
+2.43.0
+
 
 
 
