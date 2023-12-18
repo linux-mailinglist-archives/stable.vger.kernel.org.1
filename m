@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-7331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB30817210
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE65B817163
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F00B7283F63
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F0171C23FE8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0830A4FF84;
-	Mon, 18 Dec 2023 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F5115AC0;
+	Mon, 18 Dec 2023 13:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pU52n9Z9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUI6kxCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07FA4FF7B;
-	Mon, 18 Dec 2023 14:03:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42994C433C8;
-	Mon, 18 Dec 2023 14:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6B4129EC8;
+	Mon, 18 Dec 2023 13:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4139EC433C8;
+	Mon, 18 Dec 2023 13:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908182;
-	bh=1/fCXDYGMSqljdjQNBlKY/gKtK6mqzIdlMjrcE0EAB0=;
+	s=korg; t=1702907834;
+	bh=eNyj66gX066jB/dJiawrOowG6euyfmsRQYRle+3gojs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pU52n9Z9hTJpPj83ZpjxtPGaiqliqvuSre+Tstj0EAIVT2b0X6FzFerw3c9qSy/ck
-	 k842ndgG8v81L0GYDxXSRbBOxNNIQiGn5CyXh9VD+YL6JRaFJbovbT3yk2SZdx1z/X
-	 1fYQoBTKwOJ8iJld+xUgwriEc7P/t0M60/Qz0lzU=
+	b=VUI6kxCuE/DQBqT7yli9y1laTLjnoI0bOu8RxqRuIm+AR38ZJCxXjPCxgFk9rXo0j
+	 W72qBG5Vk6iEXwo6e5IOOgALtpuGo9cM6QnD/HvGXCbssSptBi6tVsPJ0YpoFE4Rvc
+	 E+r4F3mKi0OBBj3QKPRHXBW1RxoKOOUoNjeub+lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Feiyang Chen <chenfeiyang@loongson.cn>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/166] drm/i915/selftests: Fix engine reset count storage for multi-tile
-Date: Mon, 18 Dec 2023 14:50:48 +0100
-Message-ID: <20231218135108.677163505@linuxfoundation.org>
+Subject: [PATCH 6.1 035/106] stmmac: dwmac-loongson: Make sure MDIO is initialized before use
+Date: Mon, 18 Dec 2023 14:50:49 +0100
+Message-ID: <20231218135056.539273642@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,90 +55,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+From: Yanteng Si <siyanteng@loongson.cn>
 
-[ Upstream commit 7c7c863bf89c5f76d8c7fda177a81559b61dc15b ]
+[ Upstream commit e87d3a1370ce9f04770d789bcf7cce44865d2e8d ]
 
-Engine->id namespace is per-tile so struct igt_live_test->reset_engine[]
-needs to be two-dimensional so engine reset counts from all tiles can be
-stored with no aliasing. With aliasing, if we had a real multi-tile
-platform, the reset counts would be incorrect for same engine instance on
-different tiles.
+Generic code will use mdio. If it is not initialized before use,
+the kernel will Oops.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Fixes: 0c29efa23f5c ("drm/i915/selftests: Consider multi-gt instead of to_gt()")
-Reported-by: Alan Previn Teres Alexis <alan.previn.teres.alexis@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231201122109.729006-1-tvrtko.ursulin@linux.intel.com
-(cherry picked from commit 0647ece3819b018cb62a71c3bcb7c2c3243e78ac)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 30bba69d7db4 ("stmmac: pci: Add dwmac support for Loongson")
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+Signed-off-by: Feiyang Chen <chenfeiyang@loongson.cn>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/selftests/igt_live_test.c | 9 +++++----
- drivers/gpu/drm/i915/selftests/igt_live_test.h | 3 ++-
- 2 files changed, 7 insertions(+), 5 deletions(-)
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/selftests/igt_live_test.c b/drivers/gpu/drm/i915/selftests/igt_live_test.c
-index 4ddc6d902752a..7d41874a49c58 100644
---- a/drivers/gpu/drm/i915/selftests/igt_live_test.c
-+++ b/drivers/gpu/drm/i915/selftests/igt_live_test.c
-@@ -37,8 +37,9 @@ int igt_live_test_begin(struct igt_live_test *t,
- 		}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+index a25c187d31853..49c7aa86faaa8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -68,17 +68,15 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
+ 	if (!plat)
+ 		return -ENOMEM;
  
- 		for_each_engine(engine, gt, id)
--			t->reset_engine[id] =
--			i915_reset_engine_count(&i915->gpu_error, engine);
-+			t->reset_engine[i][id] =
-+				i915_reset_engine_count(&i915->gpu_error,
-+							engine);
++	plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
++					   sizeof(*plat->mdio_bus_data),
++					   GFP_KERNEL);
++	if (!plat->mdio_bus_data)
++		return -ENOMEM;
++
+ 	plat->mdio_node = of_get_child_by_name(np, "mdio");
+ 	if (plat->mdio_node) {
+ 		dev_info(&pdev->dev, "Found MDIO subnode\n");
+-
+-		plat->mdio_bus_data = devm_kzalloc(&pdev->dev,
+-						   sizeof(*plat->mdio_bus_data),
+-						   GFP_KERNEL);
+-		if (!plat->mdio_bus_data) {
+-			ret = -ENOMEM;
+-			goto err_put_node;
+-		}
+ 		plat->mdio_bus_data->needs_reset = true;
  	}
  
- 	t->reset_global = i915_reset_count(&i915->gpu_error);
-@@ -66,14 +67,14 @@ int igt_live_test_end(struct igt_live_test *t)
- 
- 	for_each_gt(gt, i915, i) {
- 		for_each_engine(engine, gt, id) {
--			if (t->reset_engine[id] ==
-+			if (t->reset_engine[i][id] ==
- 			    i915_reset_engine_count(&i915->gpu_error, engine))
- 				continue;
- 
- 			gt_err(gt, "%s(%s): engine '%s' was reset %d times!\n",
- 			       t->func, t->name, engine->name,
- 			       i915_reset_engine_count(&i915->gpu_error, engine) -
--			       t->reset_engine[id]);
-+			       t->reset_engine[i][id]);
- 			return -EIO;
- 		}
- 	}
-diff --git a/drivers/gpu/drm/i915/selftests/igt_live_test.h b/drivers/gpu/drm/i915/selftests/igt_live_test.h
-index 36ed42736c521..83e3ad430922f 100644
---- a/drivers/gpu/drm/i915/selftests/igt_live_test.h
-+++ b/drivers/gpu/drm/i915/selftests/igt_live_test.h
-@@ -7,6 +7,7 @@
- #ifndef IGT_LIVE_TEST_H
- #define IGT_LIVE_TEST_H
- 
-+#include "gt/intel_gt_defines.h" /* for I915_MAX_GT */
- #include "gt/intel_engine.h" /* for I915_NUM_ENGINES */
- 
- struct drm_i915_private;
-@@ -17,7 +18,7 @@ struct igt_live_test {
- 	const char *name;
- 
- 	unsigned int reset_global;
--	unsigned int reset_engine[I915_NUM_ENGINES];
-+	unsigned int reset_engine[I915_MAX_GT][I915_NUM_ENGINES];
- };
- 
- /*
 -- 
 2.43.0
 
