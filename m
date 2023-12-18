@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-7349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C768817226
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:06:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E5A817159
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C851C24D34
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:06:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A8891C23F03
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B214A37882;
-	Mon, 18 Dec 2023 14:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7D21D123;
+	Mon, 18 Dec 2023 13:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTpl0DmS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvWbRlUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7690B3788E;
-	Mon, 18 Dec 2023 14:03:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF51AC433CC;
-	Mon, 18 Dec 2023 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759D6129EF7;
+	Mon, 18 Dec 2023 13:56:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC019C433C8;
+	Mon, 18 Dec 2023 13:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908229;
-	bh=j1hvMF/KB1sgE0HVlb+F2tm67Vp7NP6dHJaF1yzSn94=;
+	s=korg; t=1702907810;
+	bh=Xt1H3+ORXzJnzm+EkbQoByru7Gpy8EgFEUtyS8hABGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTpl0DmSxPZqLocoCbuIvoLaq4s3KPtXf3gEBc++dhQO+UrYNTpiCTv4422m6utOS
-	 bk2d56hac9R93Up1FtnFUAsMymbrHT7b23DZ1iMCJ57pCGoWScjPaJ7Pyv9OlUTODE
-	 PowDEIMoj+XqGyR++UR1eEgJ4OuCbbkpJCrib6oU=
+	b=yvWbRlUWO+NDYtfcW1tLENGa/yuILmwAaZADJncsY5j1L0OnIqbJ5s9UZaD9fZJyk
+	 jGVHnGhDEAwEuJU4o0Q0EFEYx40o1nc4Ncg8H5KM4t4h+OmIZaU1gKDr+jeJVzsXkV
+	 fLfu4x4EFPNRHR+47yBBkSDs3NGwvX5WIDw5q1u8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Jean Delvare <jdelvare@suse.de>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/166] LoongArch: Add dependency between vmlinuz.efi and vmlinux.efi
-Date: Mon, 18 Dec 2023 14:51:07 +0100
-Message-ID: <20231218135109.521649902@linuxfoundation.org>
+Subject: [PATCH 6.1 054/106] stmmac: dwmac-loongson: Add architecture dependency
+Date: Mon, 18 Dec 2023 14:51:08 +0100
+Message-ID: <20231218135057.370279292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +53,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit d3ec75bc635cb0cb8185b63293d33a3d1b942d22 ]
+[ Upstream commit 7fbd5fc2b35a8f559a6b380dfa9bcd964a758186 ]
 
-A common issue in Makefile is a race in parallel building.
+Only present the DWMAC_LOONGSON option on architectures where it can
+actually be used.
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
+This follows the same logic as the DWMAC_INTEL option.
 
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
-
-A similar symptom occurs with the following command:
-
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-    GZIP    arch/loongarch/boot/vmlinuz
-    OBJCOPY arch/loongarch/boot/vmlinuz.o
-    LD      arch/loongarch/boot/vmlinuz.efi.elf
-    OBJCOPY arch/loongarch/boot/vmlinuz.efi
-
-The log "OBJCOPY arch/loongarch/boot/vmlinux.efi" is displayed twice.
-
-It indicates that two threads simultaneously enter arch/loongarch/boot/
-and write to arch/loongarch/boot/vmlinux.efi.
-
-It occasionally leads to a build failure:
-
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-  truncate: Invalid number: ‘arch/loongarch/boot/vmlinux.bin’
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/loongarch/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/loongarch/boot/vmlinux.bin'
-  make[1]: *** [arch/loongarch/Makefile:146: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
-
-vmlinuz.efi depends on vmlinux.efi, but such a dependency is not
-specified in arch/loongarch/Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index fb0fada43197e..96747bfec1a10 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -142,6 +142,8 @@ vdso_install:
- 
- all:	$(notdir $(KBUILD_IMAGE))
- 
-+vmlinuz.efi: vmlinux.efi
-+
- vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
- 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 31ff351740342..58091ee2bfe60 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -256,7 +256,7 @@ config DWMAC_INTEL
+ config DWMAC_LOONGSON
+ 	tristate "Loongson PCI DWMAC support"
+ 	default MACH_LOONGSON64
+-	depends on STMMAC_ETH && PCI
++	depends on (MACH_LOONGSON64 || COMPILE_TEST) && STMMAC_ETH && PCI
+ 	depends on COMMON_CLK
+ 	help
+ 	  This selects the LOONGSON PCI bus support for the stmmac driver,
 -- 
 2.43.0
 
