@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-7178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EA0817149
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C2B81723C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C821C23EAB
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47DA31C24DB7
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5FD1D127;
-	Mon, 18 Dec 2023 13:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A103A1CE;
+	Mon, 18 Dec 2023 14:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UzjZ4v9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQdJbVLN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D271D145;
-	Mon, 18 Dec 2023 13:56:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3F0C433C7;
-	Mon, 18 Dec 2023 13:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB3C3789C;
+	Mon, 18 Dec 2023 14:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBB2C433C8;
+	Mon, 18 Dec 2023 14:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907771;
-	bh=LB5J9iCbOvvE6YHnxh2VpPPbCVT1ltyJEZWZ27l9fDc=;
+	s=korg; t=1702908281;
+	bh=2W8ho8PuLzdDBEWZi5SkpSW6JJwFo7KMITzA/78bB5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzjZ4v9TQ2eX2fDaC/k6/evtmF0UayU0/Q+N1yhahZnRX2fgjr0JVeVJDn6LAV8ZC
-	 /JPofeR+FGSOiKSrtTgIq/gNGHVMSOKDveROJu4J79/6xmnjXSShhlT1ro2bBrQDWj
-	 H4CDTtCqIGu4HJ/4DvY4pd8IEiQxT15HLIi7lhJo=
+	b=yQdJbVLN4uHMBGMfyTMW0nxfSSU4PORjFYUswaOhijG4g24n/ZmQZZgrXJbF0c/sc
+	 +TuqDc9TCTRG++PFb6Gfg5Tas6YLQMgxTAAM+OKkNVK6cdtst0iKR0MnEHuxVBQDI5
+	 ajKNfvfAYsdhUofnaeQq1h7D25LwHK5Q4Oqu8wVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/106] appletalk: Fix Use-After-Free in atalk_ioctl
-Date: Mon, 18 Dec 2023 14:50:55 +0100
-Message-ID: <20231218135056.785401542@linuxfoundation.org>
+Subject: [PATCH 6.6 090/166] blk-cgroup: bypass blkcg_deactivate_policy after destroying
+Date: Mon, 18 Dec 2023 14:50:56 +0100
+Message-ID: <20231218135109.011829939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 189ff16722ee36ced4d2a2469d4ab65a8fee4198 ]
+[ Upstream commit e63a57303599b17290cd8bc48e6f20b24289a8bc ]
 
-Because atalk_ioctl() accesses sk->sk_receive_queue
-without holding a sk->sk_receive_queue.lock, it can
-cause a race with atalk_recvmsg().
-A use-after-free for skb occurs with the following flow.
-```
-atalk_ioctl() -> skb_peek()
-atalk_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-```
-Add sk->sk_receive_queue.lock to atalk_ioctl() to fix this issue.
+blkcg_deactivate_policy() can be called after blkg_destroy_all()
+returns, and it isn't necessary since blkg_destroy_all has covered
+policy deactivation.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Link: https://lore.kernel.org/r/20231213041056.GA519680@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-4-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/appletalk/ddp.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ block/blk-cgroup.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/appletalk/ddp.c b/net/appletalk/ddp.c
-index a06f4d4a6f476..f67f14db16334 100644
---- a/net/appletalk/ddp.c
-+++ b/net/appletalk/ddp.c
-@@ -1811,15 +1811,14 @@ static int atalk_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		break;
- 	}
- 	case TIOCINQ: {
--		/*
--		 * These two are safe on a single CPU system as only
--		 * user tasks fiddle here
--		 */
--		struct sk_buff *skb = skb_peek(&sk->sk_receive_queue);
-+		struct sk_buff *skb;
- 		long amount = 0;
+diff --git a/block/blk-cgroup.c b/block/blk-cgroup.c
+index 4a42ea2972ad8..4b48c2c440981 100644
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -577,6 +577,7 @@ static void blkg_destroy_all(struct gendisk *disk)
+ 	struct request_queue *q = disk->queue;
+ 	struct blkcg_gq *blkg, *n;
+ 	int count = BLKG_DESTROY_BATCH_SIZE;
++	int i;
  
-+		spin_lock_irq(&sk->sk_receive_queue.lock);
-+		skb = skb_peek(&sk->sk_receive_queue);
- 		if (skb)
- 			amount = skb->len - sizeof(struct ddpehdr);
-+		spin_unlock_irq(&sk->sk_receive_queue.lock);
- 		rc = put_user(amount, (int __user *)argp);
- 		break;
+ restart:
+ 	spin_lock_irq(&q->queue_lock);
+@@ -602,6 +603,18 @@ static void blkg_destroy_all(struct gendisk *disk)
+ 		}
  	}
+ 
++	/*
++	 * Mark policy deactivated since policy offline has been done, and
++	 * the free is scheduled, so future blkcg_deactivate_policy() can
++	 * be bypassed
++	 */
++	for (i = 0; i < BLKCG_MAX_POLS; i++) {
++		struct blkcg_policy *pol = blkcg_policy[i];
++
++		if (pol)
++			__clear_bit(pol->plid, q->blkcg_pols);
++	}
++
+ 	q->root_blkg = NULL;
+ 	spin_unlock_irq(&q->queue_lock);
+ }
 -- 
 2.43.0
 
