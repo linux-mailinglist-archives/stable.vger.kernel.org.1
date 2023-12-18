@@ -1,151 +1,116 @@
-Return-Path: <stable+bounces-7829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8962B817B98
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 21:12:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E207D817BD1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 21:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC69B1C227A8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 20:12:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F260B212A2
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 20:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5200B72047;
-	Mon, 18 Dec 2023 20:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01CBF72053;
+	Mon, 18 Dec 2023 20:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="mb/useEv";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="LF1Xkp2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKmhIaq3"
 X-Original-To: stable@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9BD495DE;
-	Mon, 18 Dec 2023 20:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id B69CA5C020B;
-	Mon, 18 Dec 2023 15:12:25 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 18 Dec 2023 15:12:25 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1702930345;
-	 x=1703016745; bh=LWYyWkDsY/Zi8FphFf+H4zFoydBDiorSz1khQkPdMEE=; b=
-	mb/useEvR5Rr6NLotqJE7xJWNLJ+871ZGy2/uYtuW2wQXO4yYeUTVbM0SsBzoj0r
-	CzGNA7FvC0317zUMQnG6wLHyTcPZdpmpSSHQCi7sEgM1nTWuk8DpTkQSrtUrwfz2
-	Ih7R0NjNdsj8fZ2CT0HzxSuaqNB2a/9Z5IwFFR5lJIm4TZHt7WpRbqupcfWk+flg
-	hLIzRnHovyAEpOu9WtoLABYKqYR7Y0CXXqmZIldqSaRaTix89BeZTc8sxEWnjycc
-	Szx0VnfX3lvp9K9yPvWFh5v0nX5cFfN8FrvZ3x8fAspjwEm2u/6gURTjdQix3Z6w
-	6FJnphYvBziTP5qGbFYYaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1702930345; x=
-	1703016745; bh=LWYyWkDsY/Zi8FphFf+H4zFoydBDiorSz1khQkPdMEE=; b=L
-	F1Xkp2vIwgqV/4OdisyCGMQFVTW5IFoaaqJj3kCayBQNrYZM9ndbo+Y9cmAmjwcx
-	pbbFhfdrnZqf/fzmntpD/WaxjdiGgE8nMhJbjvvzVnmJl4ijveL5KGerpFgWMNJU
-	Are/Hdy33E1sKsJ0S4ythvV85FNpLYyD8n5+bp4mW7zFAOKZBEe824d0YIuYXtgQ
-	0ChzimvOs/bpWkN+6D/6YZymwuFEBu+yLOcsFZ0JVCAEapToQ0FETVfpOKt+utHM
-	WmEwpFVZ6QkZMZEy8TptfwHDwJf0XtfeC1Ejti5cCaoJc3wMZ013i+NlGX2A8oea
-	gB9EEedZVnqrgai433oBQ==
-X-ME-Sender: <xms:qaeAZVNU9jc9V7p_xXLit5xJB7G8mRHv_3ZA2nCGZ8ny4ifmovULOA>
-    <xme:qaeAZX-VHiIKbDAN6kZVWW-E3xDR5_-vJ0q5PiabrgANmOeI8F7J8ioFwWK5ic3Y8
-    dKU3hDueUpu6XH2Ip4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvddtkedgudefvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
-    grthhtvghrnhepgfekueelgeeigefhudduledtkeefffejueelheelfedutedttdfgveeu
-    feefieegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:qaeAZUQZyuvtnu9jG9ZCE373jnslc6O9xHM9fgvua2oHX0tj1zoerA>
-    <xmx:qaeAZRtGU3-JqMbkcdE_Qxt1dyMekmGFHGzqJQwMY9vDqDT-YNVqOw>
-    <xmx:qaeAZdffmE7gyHKDv0fAB6a4Heq0I1HVzJOhzTQ4MCVo2OS1d_C1ag>
-    <xmx:qaeAZXt95DbkWPruTOYNUd6HK2gC3gt8H4Pw8fmCaN_8MTgdIqvU2A>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 2CAD3B6008D; Mon, 18 Dec 2023 15:12:25 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1283-g327e3ec917-fm-20231207.002-g327e3ec9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CB348784;
+	Mon, 18 Dec 2023 20:25:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1E2C433C8;
+	Mon, 18 Dec 2023 20:25:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702931105;
+	bh=aNcZ8KCjQ4wTA3LAgkU+9PTng+8ysyMp8kqdwJLg4TY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DKmhIaq3UNnEUf+MSprOgUlHYZe3L1heaVCV9khnZR5Rn4MiNcWXh6QXfq4Hu3Ava
+	 /4mgdH9O8Yxc5xV+jzquXW/UtTXf/1QFu2PYkLtvpPfXeAimaaMf5vZYHlTHut+aRk
+	 AVUjBQe3DbKd4zvg6+pYSJ8v+2/HS0sxmTgmlUYA=
+Date: Mon, 18 Dec 2023 21:25:02 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 4.19 13/36] net: stmmac: use dev_err_probe() for
+ reporting mdio bus registration failure
+Message-ID: <2023121847-surfacing-hardhead-78ab@gregkh>
+References: <20231218135041.876499958@linuxfoundation.org>
+ <20231218135042.347406314@linuxfoundation.org>
+ <6299a661-5ae5-4f7c-9fa7-96c4e7ae39eb@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <0877a767-dea5-4c49-8125-d1995ef55407@app.fastmail.com>
-In-Reply-To: <20231218-net-skbuff-build-bug-v1-1-eefc2fb0a7d3@weissschuh.net>
-References: <20231218-net-skbuff-build-bug-v1-1-eefc2fb0a7d3@weissschuh.net>
-Date: Mon, 18 Dec 2023 20:12:07 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>
-Cc: Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
- "kernel test robot" <lkp@intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] net: avoid build bug in skb extension length calculation
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6299a661-5ae5-4f7c-9fa7-96c4e7ae39eb@linaro.org>
 
-On Mon, Dec 18, 2023, at 17:06, Thomas Wei=C3=9Fschuh wrote:
-> GCC seems to incorrectly fail to evaluate skb_ext_total_length() at
-> compile time under certain conditions.
->
-> The issue even occurs if all values in skb_ext_type_len[] are "0",
-> ruling out the possibility of an actual overflow.
->
-> As the patch has been in mainline since v6.6 without triggering the
-> problem it seems to be a very uncommon occurrence.
->
-> As the issue only occurs when -fno-tree-loop-im is specified as part of
-> CFLAGS_GCOV, disable the BUILD_BUG_ON() only when building with covera=
-ge
-> reporting enabled.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes:=20
-> https://lore.kernel.org/oe-kbuild-all/202312171924.4FozI5FG-lkp@intel.=
-com/
-> Suggested-by: Arnd Bergmann <arnd@arndb.de>
-> Link:=20
-> https://lore.kernel.org/lkml/487cfd35-fe68-416f-9bfd-6bb417f98304@app.=
-fastmail.com/
-> Fixes: 5d21d0a65b57 ("net: generalize calculation of skb extensions=20
-> length")
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+On Mon, Dec 18, 2023 at 12:45:42PM -0600, Daniel Díaz wrote:
+> Hello!
+> 
+> On 18/12/23 7:51 a. m., Greg Kroah-Hartman wrote:
+> > 4.19-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > 
+> > [ Upstream commit 839612d23ffd933174db911ce56dc3f3ca883ec5 ]
+> > 
+> > I have a board where these two lines are always printed during boot:
+> > 
+> >     imx-dwmac 30bf0000.ethernet: Cannot register the MDIO bus
+> >     imx-dwmac 30bf0000.ethernet: stmmac_dvr_probe: MDIO bus (id: 1) registration failed
+> > 
+> > It's perfectly fine, and the device is successfully (and silently, as
+> > far as the console goes) probed later.
+> > 
+> > Use dev_err_probe() instead, which will demote these messages to debug
+> > level (thus removing the alarming messages from the console) when the
+> > error is -EPROBE_DEFER, and also has the advantage of including the
+> > error code if/when it happens to be something other than -EPROBE_DEFER.
+> > 
+> > While here, add the missing \n to one of the format strings.
+> > 
+> > Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+> > Link: https://lore.kernel.org/r/20220602074840.1143360-1-linux@rasmusvillemoes.dk
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > Stable-dep-of: e23c0d21ce92 ("net: stmmac: Handle disabled MDIO busses from devicetree")
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >   drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -4428,7 +4428,7 @@ int stmmac_dvr_probe(struct device *devi
+> >   		ret = stmmac_mdio_register(ndev);
+> >   		if (ret < 0) {
+> >   			dev_err(priv->device,
+> > -				"%s: MDIO bus (id: %d) registration failed",
+> > +				"%s: MDIO bus (id: %d) registration failed\n",
+> >   				__func__, priv->plat->bus_id);
+> >   			goto error_mdio_register;
+> >   		}
+> 
+> This patch doesn't do what it says it does.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Hah, it really doesn't, good catch.  I removed dev_err_probe() from the
+4.19 tree as it didn't make sense to backport it so late in the release
+cycle of it (and it required many other follow-on fixes.)  and so I
+fixed up this commit to build properly, but I didn't realize that all I
+did was properly add a \n to the string, the rest of the commit faded
+away.
 
-> ---
->  net/core/skbuff.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 83af8aaeb893..94cc40a6f797 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -4825,7 +4825,9 @@ static __always_inline unsigned int=20
-> skb_ext_total_length(void)
->  static void skb_extensions_init(void)
->  {
->  	BUILD_BUG_ON(SKB_EXT_NUM >=3D 8);
-> +#if !IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL)
->  	BUILD_BUG_ON(skb_ext_total_length() > 255);
-> +#endif
+I'll just go drop this entirely, thanks for the review!
 
-The way I would write this is
-
-BUILD_BUG_ON(!IS_ENABLED(CONFIG_KCOV_INSTRUMENT_ALL) &&
-             skb_ext_total_length() > 255);
-
-but of course the effect is the same.
-
-     Arnd
+greg k-h
 
