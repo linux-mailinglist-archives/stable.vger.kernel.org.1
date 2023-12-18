@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-7598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB132817343
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50CC8172EB
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E5ADB23E08
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73ECA288A75
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143BC3D54E;
-	Mon, 18 Dec 2023 14:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE1C3D560;
+	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x06Jn/BT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waXI/Lo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2093A1CF;
-	Mon, 18 Dec 2023 14:14:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55069C433C8;
-	Mon, 18 Dec 2023 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F4D3D549;
+	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6CFC433C7;
+	Mon, 18 Dec 2023 14:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908896;
-	bh=mzyGjVSwkma9ZOoOzaV7LX7hge8g8aMWAsk2A5yTdNY=;
+	s=korg; t=1702908694;
+	bh=4MFfC1LIqEC1Mcw8PP9n6GkjY56hIFy8QZ5j+TVcKZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x06Jn/BToGWABjtIhR18dP6W+1tEqZkSnvIncKHLOVV+V5c/91AnhmM6xnM2bMRaI
-	 DIIvASKSTciC7YOlb/MG6CsjMGbpHr2a6udzB/Xml+auknU+y4cqvhZ8yGhUxovMc2
-	 BrJiUbopjzlhIjvTP5OnK0aEdTBlzwMT/UM+iRo0=
+	b=waXI/Lo60s/0IH4r6TGZq3NR7ZV9bUSP5hUkyGt38NgiWbQsP9gbEXKArqSl8A9BJ
+	 K6L3cAW35vCfc+cGnmB1tiAtIHsA6jVuD6W4+O7qtGyPeC6TvxxbMG/MsvMd8lPw5F
+	 b0l6qq8tinBN+f+2CM+Xp25t/qk4MxV8Hi0B1Tac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 74/83] ring-buffer: Fix a race in rb_time_cmpxchg() for 32 bit archs
+	Naveen N Rao <naveen@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 40/40] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
 Date: Mon, 18 Dec 2023 14:52:35 +0100
-Message-ID: <20231218135052.989558835@linuxfoundation.org>
+Message-ID: <20231218135044.299460052@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +52,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit fff88fa0fbc7067ba46dde570912d63da42c59a9 upstream.
+commit 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 upstream.
 
-Mathieu Desnoyers pointed out an issue in the rb_time_cmpxchg() for 32 bit
-architectures. That is:
+Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
+stack unwind") added use of a new stack frame on ftrace entry to fix
+stack unwind. However, the commit missed updating the offset used while
+tearing down the ftrace stack when ftrace is disabled. Fix the same.
 
- static bool rb_time_cmpxchg(rb_time_t *t, u64 expect, u64 set)
- {
-	unsigned long cnt, top, bottom, msb;
-	unsigned long cnt2, top2, bottom2, msb2;
-	u64 val;
+In addition, the commit missed saving the correct stack pointer in
+pt_regs. Update the same.
 
-	/* The cmpxchg always fails if it interrupted an update */
-	 if (!__rb_time_read(t, &val, &cnt2))
-		 return false;
-
-	 if (val != expect)
-		 return false;
-
-<<<< interrupted here!
-
-	 cnt = local_read(&t->cnt);
-
-The problem is that the synchronization counter in the rb_time_t is read
-*after* the value of the timestamp is read. That means if an interrupt
-were to come in between the value being read and the counter being read,
-it can change the value and the counter and the interrupted process would
-be clueless about it!
-
-The counter needs to be read first and then the value. That way it is easy
-to tell if the value is stale or not. If the counter hasn't been updated,
-then the value is still good.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231211201324.652870-1-mathieu.desnoyers@efficios.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20231212115301.7a9c9a64@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 10464b4aa605e ("ring-buffer: Add rb_time_t 64 bit operations for speeding up 32 bit")
-Reported-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
+Cc: stable@vger.kernel.org # v6.5+
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -697,6 +697,9 @@ static int rb_time_cmpxchg(rb_time_t *t,
- 	unsigned long cnt2, top2, bottom2;
- 	u64 val;
+--- a/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
++++ b/arch/powerpc/kernel/trace/ftrace_64_mprofile.S
+@@ -55,7 +55,7 @@ _GLOBAL(ftrace_regs_caller)
+ 	SAVE_10GPRS(22, r1)
  
-+	/* Any interruptions in this function should cause a failure */
-+	cnt = local_read(&t->cnt);
-+
- 	/* The cmpxchg always fails if it interrupted an update */
- 	 if (!__rb_time_read(t, &val, &cnt2))
- 		 return false;
-@@ -704,7 +707,6 @@ static int rb_time_cmpxchg(rb_time_t *t,
- 	 if (val != expect)
- 		 return false;
+ 	/* Save previous stack pointer (r1) */
+-	addi	r8, r1, SWITCH_FRAME_SIZE
++	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 	std	r8, GPR1(r1)
  
--	 cnt = local_read(&t->cnt);
- 	 if ((cnt & 3) != cnt2)
- 		 return false;
+ 	/* Load special regs for save below */
+@@ -150,7 +150,7 @@ ftrace_no_trace:
+ 	mflr	r3
+ 	mtctr	r3
+ 	REST_GPR(3, r1)
+-	addi	r1, r1, SWITCH_FRAME_SIZE
++	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
+ 	mtlr	r0
+ 	bctr
  
 
 
