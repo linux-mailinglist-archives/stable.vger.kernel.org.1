@@ -1,92 +1,92 @@
-Return-Path: <stable+bounces-7803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5BA8178AD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:28:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 133828178BC
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAC3B1F24526
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC7F51F23123
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D75E5D740;
-	Mon, 18 Dec 2023 17:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9A95A85A;
+	Mon, 18 Dec 2023 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oz6bp6e6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/SqjF/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86855D733;
-	Mon, 18 Dec 2023 17:28:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57042C433C9;
-	Mon, 18 Dec 2023 17:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADE25A853;
+	Mon, 18 Dec 2023 17:29:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC39EC433C8;
+	Mon, 18 Dec 2023 17:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702920498;
-	bh=BwWLjWBOPW4u2jx0dHRvkSUVQlMbXSzwnRbz6jImvxU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=oz6bp6e6cpAfbiAQRa/VnRD/neVdCXOBwk/XYA3lqfFpgOsIQKJUwf2fn9L+jy9a7
-	 wgCFqah8ZPjTAJqJA5gYpECYTYcw43eJM8CgyuLDO3jiA2v0mO0OiFRoeqi4xGuWL6
-	 DbW0GuX1eD80F00M1QIsK2TXl+GyvFT7pa8LgxJS1r3DHOIJZRWiSuX/dDaizP+LcN
-	 RCJTQ5P9GEZgYd7/TPcLyYKDlFXwn9JN4ztad67Hnrh1sdFps+8HT8cinVy2u6gryr
-	 wl7ozIgL+e78/HV3krvtX04195kM8u0EQfXHpb9rE54xJ4lXyDifgXc3wAXTO6u/8H
-	 Ga4oa2vKa3vSQ==
-From: Mark Brown <broonie@kernel.org>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>, 
- Baojun Xu <baojun.xu@ti.com>, Liam Girdwood <lgirdwood@gmail.com>, 
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
- Gergo Koteles <soyer@irl.hu>
-Cc: linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org, 
- stable@vger.kernel.org
-In-Reply-To: <98d4ee4e01e834af72a1a0bea6736facf43582e0.1702513517.git.soyer@irl.hu>
-References: <98d4ee4e01e834af72a1a0bea6736facf43582e0.1702513517.git.soyer@irl.hu>
-Subject: Re: [PATCH] ASoC: tas2781: add support for FW version 0x0503
-Message-Id: <170292049608.89121.12171534337983645112.b4-ty@kernel.org>
-Date: Mon, 18 Dec 2023 17:28:16 +0000
+	s=k20201202; t=1702920578;
+	bh=fcfjjD/2CnHv1DNQBqv8DhO1CWdn7HChK7DcEpQLsos=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q/SqjF/TC9Z3xUcpTFQ2eJvNV1Id3rwck8om8bVmsnjqzyCSW+eqHZj7RFsHgCIMy
+	 kRSZWIzG27WZ8jyae3odiZy+/lOe0DKBlWWbPpxBU4bpIrNipIicdUZfWVppZ66dZX
+	 WgUW/0D7SVjxktH1vZRWCjQ51QlGm4nOoAcDQBtOM6WQXPIf7D6oIasq8Iekpvke2r
+	 P45ClmrLxsCZCEyKisjm8UJNN36RfO7RSnPIG9VFnLqEXe//2izgKs2Ovl8NPw8aT2
+	 W7aBOWbMoGzLAW18o0Uo4c9jqykQw6cAK6sUZiV/en6bQxlXZodVvplzAv3BE2yv7Z
+	 vnDFG205DXEag==
+Date: Mon, 18 Dec 2023 17:29:32 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/106] 6.1.69-rc1 review
+Message-ID: <20231218-payment-childlike-249c6824f1ca@spud>
+References: <20231218135055.005497074@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-5c066
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="CeZHakRwR6rO9YeJ"
+Content-Disposition: inline
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
 
-On Thu, 14 Dec 2023 01:25:39 +0100, Gergo Koteles wrote:
-> Layout of FW version 0x0503 is compatible with 0x0502.
-> Already supported by TI's tas2781-linux-driver tree.
-> https://git.ti.com/cgit/tas2781-linux-drivers/tas2781-linux-driver/
-> 
-> 
 
-Applied to
+--CeZHakRwR6rO9YeJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+On Mon, Dec 18, 2023 at 02:50:14PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.69 release.
+> There are 106 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
+> Anything received after that time might be too late.
 
-Thanks!
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-[1/1] ASoC: tas2781: add support for FW version 0x0503
-      commit: ee00330a5b78e2acf4b3aac32913da43e2c12a26
+Cheers,
+Conor.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+--CeZHakRwR6rO9YeJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+-----BEGIN PGP SIGNATURE-----
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZYCBfAAKCRB4tDGHoIJi
+0mAuAP4v+GMZg5j0OHMBdtB46oJEw6qSuP3I7OI2TFKCuA+TOQD/QtWbxlTcaBEH
+OFLhqBa91OWi9UgA6QbMWZaFlVcgzAs=
+=Kx+d
+-----END PGP SIGNATURE-----
 
-Thanks,
-Mark
-
+--CeZHakRwR6rO9YeJ--
 
