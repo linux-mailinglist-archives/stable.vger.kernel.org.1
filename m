@@ -1,109 +1,87 @@
-Return-Path: <stable+bounces-7785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018B7817663
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:54:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B0881766C
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB20F1F272D6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:54:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD20C284499
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AF03D557;
-	Mon, 18 Dec 2023 15:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7C6101DB;
+	Mon, 18 Dec 2023 15:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RNae4B2d"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="n5cqUAHy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699CB3A1D4;
-	Mon, 18 Dec 2023 15:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E99C433D9;
-	Mon, 18 Dec 2023 15:54:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702914867;
-	bh=GKFIpWALPPsypWUO/IOs6Dgt78iECnZDwfzIImnelqU=;
-	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-	b=RNae4B2dUmZfMwRbgL0DJqjqU6qmEqnN8QRmkA9dP9DCsQ35vVFQeGN83szy/u+iW
-	 bYvAkY9Ng+B6tOkltNMN/SDhkg4qSV15rFZXnbIMScuhrlDd8rnkBM7CnTVfvIQZrd
-	 hK9eiMskFU/eUfeY+/IegwYVjCTJoOjVjnprTimUdW7OTsKN+vbQm5qPHYykLELNw4
-	 VvYGHk1XA8XhTM/meGi6b618sFzFFefX+r/MKDyh+uBWZOzaBxtHAgl5hbPt/6cT4b
-	 K66AiCn2TmnaODvAlrChZ83Yhu8Hsh175Rq6uc6AE9Nw6OliR9BMm4xOmS2QToTX91
-	 O6OJI6jNMSuoA==
-Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-59082c4aadaso2314790eaf.0;
-        Mon, 18 Dec 2023 07:54:26 -0800 (PST)
-X-Gm-Message-State: AOJu0YwGUU9baGChxQuJKcsUJ9ZpLTl/PmKOZIFeD5bD/eFO6Ep5NeVH
-	6+RBZu4AaIcjA2zs1tHhw0ualUPUM9wjvTn0sUo=
-X-Google-Smtp-Source: AGHT+IFdDKcJTP/alQPrvWNpW82WSR2W0KFM4YnjIeUQiPe5kgABXtCKcSkhCfejCwq/Pym+qF6wi73L/4jfAkBw3hs=
-X-Received: by 2002:a05:6820:1ca3:b0:590:83e9:290b with SMTP id
- ct35-20020a0568201ca300b0059083e9290bmr14069473oob.9.1702914866225; Mon, 18
- Dec 2023 07:54:26 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AC43D57D;
+	Mon, 18 Dec 2023 15:56:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1702915007; x=1703519807; i=rwarsow@gmx.de;
+	bh=VUAgalJo6l3NW0AO6ROoScbPspEfKIlzpzWkSvc/f3Y=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=n5cqUAHyvaUfggHwS8LOV6nuftVokmkUXBqAAoXqjHO0cU/N8+cjgTYaqKwU7qMH
+	 77pWgBZqS67sZCthMkfpZwNva/DVojdXyGE7Jg6gAJN5lHhKA8ZgwHBOGoYpJheCr
+	 5E4yedTFDJ7+cle14vXQ4VfnTGNUq/KbP3N+O5E6IVxMrvVELcbjqjIIWDNX7lR5Y
+	 KpvBl79Km0RqzLgxJzQoc0CJtXBIcgLreSD0MD9kiLwqrgCVxIR341YtAiPY61Mp4
+	 hB6pKggEcuTNpNAyc2vTHAEIIF2mYr6cr2Px044vMI+Hp7K8MvvvBvkwHASAe0hwS
+	 A5R8P+2L7V/jWxWZZQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mnaof-1qqL5G0mvN-00jYU7; Mon, 18
+ Dec 2023 16:56:47 +0100
+Message-ID: <10e85703-5eb2-44a8-81b8-dc9dec102833@gmx.de>
+Date: Mon, 18 Dec 2023 16:56:46 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: by 2002:ac9:7f88:0:b0:507:5de0:116e with HTTP; Mon, 18 Dec 2023
- 07:54:25 -0800 (PST)
-In-Reply-To: <20231218135053.258325456@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org> <20231218135053.258325456@linuxfoundation.org>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Tue, 19 Dec 2023 00:54:25 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd952=Y54gwM4KBDca52ZFcg+yjJeuiy+6o3jG+zYYUF1w@mail.gmail.com>
-Message-ID: <CAKYAXd952=Y54gwM4KBDca52ZFcg+yjJeuiy+6o3jG+zYYUF1w@mail.gmail.com>
-Subject: Re: [PATCH 5.15 80/83] ksmbd: Mark as BROKEN in the 5.15.y kernel
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Steve French <sfrench@samba.org>, 
-	Hyunchul Lee <hyc.lee@gmail.com>, linux-cifs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.6 000/166] 6.6.8-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:H5DLEfnojbYinGpYGsDDqe096Clyx9aNq8MqnNImWS+nialr+qC
+ QGcSnxU3a2KpEa+LdpzVoYSJe4dQbKvHAIKyvWOAMMYFpm6UCGzQtsn+BGlojVytKBkDNcY
+ f+fL8SzRlsNTFM3u4wdtk/Webr62G3Dv6Io9EIsTCLGv6vLSKO0KT61eA4JekML7JIMqCPf
+ qIN7KIw9i9JoE/NWzHqzw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:LvLkXBV7ZpA=;1W0+zbWxsrLH0Ub6LaI0plit/jh
+ vuyTVPQPfYUWu1WpZE73BaKy3l9fJstwwn4LpEkTsHrKyVJ9Tq99sBr8hSOwi2budyfSzpRc4
+ gGpeP1yETwjL7Sbl5SHcUh7WMpBi8lKKBSb+xmymwnnmw4kUsrEf+QxoZRdzYcS9ybwgi8Bpi
+ Bapm/rrNjxcqVb8r7YiQ53PEJx7jVNZF9RS/5RuWqrp/h73oYKfEGVxtf2aR5lVzSQ2gprROW
+ SS5yM76Bt9z6Vpp6FTdRV8VrlJnTOOsx63/xnPbg1UsaXWrjeTNrev1Ff+GyoG2+lcBW5jtdN
+ SXV+FUXqF+oUDWREbHOlotib6eYjIrBSgnN5LLXnRgVSEa6DutMIkrbNFUY2EiWAf+073WTVY
+ fuTJqxD89WFgQmUTajNF1y5EGQjyi4G8QBt5ULF5H6fGOf0WMP3lxlCQI0ydYIquMgl7jQKv4
+ X1xooXzEgtJK9wXO3+gV4QrO0xw2R06FbO6Yr5/vH5n9lUCh2mdV7Pr9/skJfAdNskqqLIt0V
+ Es+yfK6ignoI4gEEXGOyLap3D55jM+qGzuQO3HXveAAGlYE01kIq7oPOKb9fQHilOQUR/ouyZ
+ vxoJ8HM7josmFBmqrtloGd+JvErk4ZnoN+lTwH5vagC244OgSRiyJ38P8emwU17IGvLXKndPf
+ 61eEQXI4N6Czi0EqoP+i36j+4vBJUIP5QpGcaEX2EgOSKfNm0/GrZ9CpYI2e5g7b/RuvdtYSx
+ FXXpISYA7RyMnGEg39/GsqrUmv2fNE57FYBrvveN82gRRDq5mMPRsNUDvS6O02it3C9X9JKfp
+ aLw3mf4ANxP4uRfQQypSuTrWdJs7YiYZwJZv65CjN0TDAYSZZ3zpH4eUKsNIlMGP2cuD9ugND
+ 3KXAxglqug+ykHvMfgL7gHK7t0jgzM6WMP9ZvNkh0KkPh/XeGy1DKhvdIqYC2aMZGtKXweiAe
+ FwkqxQ==
 
-2023-12-18 22:52 GMT+09:00, Greg Kroah-Hartman <gregkh@linuxfoundation.org>:
-> 5.15-stable review patch.  If anyone has any objections, please let me
-> know.
-Hi Greg,
+Hi Greg
 
-It took some time as there were a lot of backport patches and testing,
-but I just sent the patchset to you and stable list. Could you please
-remove this patch in your queue ?
+6.6.8-rc1
 
-Thanks!
->
-> ------------------
->
->
-> Due to many known bugfixes not being backported properly to the 5.15.y
-> kernel tree, the ksmbd code in this branch is just not safe to be used
-> at this point in time at all.  So mark it as BROKEN so it will not be
-> used.
->
-> This can be changed in the future if all needed backports are made by
-> anyone who cares about this code in this stable kernel branch.
->
-> Cc: Namjae Jeon <linkinjeon@kernel.org>
-> Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-> Cc: Steve French <sfrench@samba.org>
-> Cc: Hyunchul Lee <hyc.lee@gmail.com>
-> Cc: linux-cifs@vger.kernel.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  fs/ksmbd/Kconfig |    1 +
->  1 file changed, 1 insertion(+)
->
-> --- a/fs/ksmbd/Kconfig
-> +++ b/fs/ksmbd/Kconfig
-> @@ -3,6 +3,7 @@ config SMB_SERVER
->  	depends on INET
->  	depends on MULTIUSER
->  	depends on FILE_LOCKING
-> +	depends on BROKEN
->  	select NLS
->  	select NLS_UTF8
->  	select CRYPTO
->
->
->
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake: i5-11400)
+
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
