@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-7426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB32581727F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE2781730D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA4401C24A10
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D77C1B21E1A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8FC37896;
-	Mon, 18 Dec 2023 14:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47B37870;
+	Mon, 18 Dec 2023 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01Q43qhi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrTHRQz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29AC5A854;
-	Mon, 18 Dec 2023 14:07:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8FBC433C8;
-	Mon, 18 Dec 2023 14:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DFE3A1D0;
+	Mon, 18 Dec 2023 14:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA0AC433C8;
+	Mon, 18 Dec 2023 14:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908434;
-	bh=DlVm4pU5kLJjbSbrOjucZe7uSkLleJ3zjVSLWOJzUvg=;
+	s=korg; t=1702908774;
+	bh=LUv6+ALJ+NtGCEoQpBrw0Z7v6a+TeNNFJJ1vUTk/lLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01Q43qhijVIeTajbZaWcKdjqQPMWJ9ny83ftfeJA/sj8v+gLu+oJQeRdURhxrObes
-	 z5Wdz5Oa+Z9xd/UHE5VS5dQM8Mxq+uPb1Wf3MmIcB1ziU6XOussGVoecSQFwoZNQFM
-	 4hUE3mjMJfeC8lP8JA/ihOXylVzTpmTYCC8wPLEM=
+	b=nrTHRQz+VVMyKZ9ZFwIYaU6SrbEyYUOGPB7nzb9cJn/1H3iUSqIKaXCctHwXFA3gl
+	 DFpJIL6wCVXB/pXWx4IwPdfFMTPPvvGtU/U0Ueb4sUNsCQevfY/z5zhvn7N5GMjda/
+	 7Xzgn27v8Bqr13P5g+Lqj63fm/5B3j7YT7vrZ4b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kelly Kane <kelly@hawknetworks.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/62] netfilter: nf_tables: fix exist matching on bigendian arches
+Subject: [PATCH 5.15 04/83] r8152: add vendor/device ID pair for ASUS USB-C2500
 Date: Mon, 18 Dec 2023 14:51:25 +0100
-Message-ID: <20231218135046.240252074@linuxfoundation.org>
+Message-ID: <20231218135049.937547552@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +51,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kelly Kane <kelly@hawknetworks.com>
 
-[ Upstream commit 63331e37fb227e796894b31d713697612c8dee7f ]
+[ Upstream commit 7037d95a047cd89b1f680eed253c6ab586bef1ed ]
 
-Maze reports "tcp option fastopen exists" fails to match on
-OpenWrt 22.03.5, r20134-5f15225c1e (5.10.176) router.
+The ASUS USB-C2500 is an RTL8156 based 2.5G Ethernet controller.
 
-"tcp option fastopen exists" translates to:
-inet
-  [ exthdr load tcpopt 1b @ 34 + 0 present => reg 1 ]
-  [ cmp eq reg 1 0x00000001 ]
+Add the vendor and product ID values to the driver. This makes Ethernet
+work with the adapter.
 
-.. but existing nft userspace generates a 1-byte compare.
-
-On LSB (x86), "*reg32 = 1" is identical to nft_reg_store8(reg32, 1), but
-not on MSB, which will place the 1 last. IOW, on bigendian aches the cmp8
-is awalys false.
-
-Make sure we store this in a consistent fashion, so existing userspace
-will also work on MSB (bigendian).
-
-Regardless of this patch we can also change nft userspace to generate
-'reg32 == 0' and 'reg32 != 0' instead of u8 == 0 // u8 == 1 when
-adding 'option x missing/exists' expressions as well.
-
-Fixes: 3c1fece8819e ("netfilter: nft_exthdr: Allow checking TCP option presence, too")
-Fixes: b9f9a485fb0e ("netfilter: nft_exthdr: add boolean DCCP option matching")
-Fixes: 055c4b34b94f ("netfilter: nft_fib: Support existence check")
-Reported-by: Maciej Żenczykowski <zenczykowski@gmail.com>
-Closes: https://lore.kernel.org/netfilter-devel/CAHo-OozyEqHUjL2-ntATzeZOiuftLWZ_HU6TOM_js4qLfDEAJg@mail.gmail.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Acked-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Kelly Kane <kelly@hawknetworks.com>
+Link: https://lore.kernel.org/r/20231203011712.6314-1-kelly@hawknetworks.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_exthdr.c | 2 +-
- net/netfilter/nft_fib.c    | 8 ++++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/usb/r8152.c   | 1 +
+ include/linux/usb/r8152.h | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
-index cb69a299f10c5..c9f89f035ccff 100644
---- a/net/netfilter/nft_exthdr.c
-+++ b/net/netfilter/nft_exthdr.c
-@@ -214,7 +214,7 @@ static void nft_exthdr_tcp_eval(const struct nft_expr *expr,
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 1ad9f1b4bd92d..e64983d0898a0 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9881,6 +9881,7 @@ static const struct usb_device_id rtl8152_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
+ 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
+ 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
++	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
+ 	{}
+ };
  
- 		offset = i + priv->offset;
- 		if (priv->flags & NFT_EXTHDR_F_PRESENT) {
--			*dest = 1;
-+			nft_reg_store8(dest, 1);
- 		} else {
- 			if (priv->len % NFT_REG32_SIZE)
- 				dest[priv->len / NFT_REG32_SIZE] = 0;
-diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
-index b10ce732b337c..1fd4b2054e8f7 100644
---- a/net/netfilter/nft_fib.c
-+++ b/net/netfilter/nft_fib.c
-@@ -140,11 +140,15 @@ void nft_fib_store_result(void *reg, const struct nft_fib *priv,
- 	switch (priv->result) {
- 	case NFT_FIB_RESULT_OIF:
- 		index = dev ? dev->ifindex : 0;
--		*dreg = (priv->flags & NFTA_FIB_F_PRESENT) ? !!index : index;
-+		if (priv->flags & NFTA_FIB_F_PRESENT)
-+			nft_reg_store8(dreg, !!index);
-+		else
-+			*dreg = index;
-+
- 		break;
- 	case NFT_FIB_RESULT_OIFNAME:
- 		if (priv->flags & NFTA_FIB_F_PRESENT)
--			*dreg = !!dev;
-+			nft_reg_store8(dreg, !!dev);
- 		else
- 			strncpy(reg, dev ? dev->name : "", IFNAMSIZ);
- 		break;
+diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
+index 287e9d83fb8bc..33a4c146dc19c 100644
+--- a/include/linux/usb/r8152.h
++++ b/include/linux/usb/r8152.h
+@@ -30,6 +30,7 @@
+ #define VENDOR_ID_NVIDIA		0x0955
+ #define VENDOR_ID_TPLINK		0x2357
+ #define VENDOR_ID_DLINK			0x2001
++#define VENDOR_ID_ASUS			0x0b05
+ 
+ #if IS_REACHABLE(CONFIG_USB_RTL8152)
+ extern u8 rtl8152_get_version(struct usb_interface *intf);
 -- 
 2.43.0
 
