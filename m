@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-7268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CBD8171BF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:02:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62738171F3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45DA01F25E50
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026731C23F6D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D947C4FF6A;
-	Mon, 18 Dec 2023 14:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3C8101D4;
+	Mon, 18 Dec 2023 14:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kMa9MdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmvhYSpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4594FF94;
-	Mon, 18 Dec 2023 14:00:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21B2CC433C7;
-	Mon, 18 Dec 2023 14:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F4942370;
+	Mon, 18 Dec 2023 14:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74EBC433C8;
+	Mon, 18 Dec 2023 14:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908010;
-	bh=FLoKPZz+YHlpNg7eri2OZjVhqb3/dnJ2RskbMRnk0x4=;
+	s=korg; t=1702908117;
+	bh=vBd00NsT9Y9JW1R3lGNBy0+5jgkYbA/LcLjwswKmweE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kMa9MdXTs8B5aB6l8Pmta8xHT7mkIJ6YTPIWITxjPkPie3szuyzRZG9qw0Hlx2kJ
-	 xYeKmyMznDGLEg0Qn2hft0EOHDuIKGQH7/JdGjO9BE/NyqH0RAXtfEWnQ9oC+Awl/Y
-	 lquzYJHozQbnpBuYhySqTA/sCbHQBwtHLK/f1S6w=
+	b=QmvhYSpuFFhzZ+piDRsepPsSHkAxQ/aWwSEph4PjqHFzuqWE6vBYzqq/aIyoUVofX
+	 CZJnhgDffh8OgXh2Xv9W98uxWfm6LbO2Gxi+LTpVb01zSNXa2I1SeF/j6Bi3XEWUek
+	 VVEhEhjni9OrTp82ZVwObsYQnjHh8u10pBF8kSfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/166] net: ipv6: support reporting otherwise unknown prefix flags in RTM_NEWPREFIX
-Date: Mon, 18 Dec 2023 14:49:46 +0100
-Message-ID: <20231218135105.840712260@linuxfoundation.org>
+Subject: [PATCH 6.6 021/166] qca_debug: Prevent crash on TX ring changes
+Date: Mon, 18 Dec 2023 14:49:47 +0100
+Message-ID: <20231218135105.879749852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
 References: <20231218135104.927894164@linuxfoundation.org>
@@ -53,115 +51,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <maze@google.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit bd4a816752bab609dd6d65ae021387beb9e2ddbd ]
+[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
 
-Lorenzo points out that we effectively clear all unknown
-flags from PIO when copying them to userspace in the netlink
-RTM_NEWPREFIX notification.
+The qca_spi driver stop and restart the SPI kernel thread
+(via ndo_stop & ndo_open) in case of TX ring changes. This is
+a big issue because it allows userspace to prevent restart of
+the SPI kernel thread (via signals). A subsequent change of
+TX ring wrongly assume a valid spi_thread pointer which result
+in a crash.
 
-We could fix this one at a time as new flags are defined,
-or in one fell swoop - I choose the latter.
+So prevent this by stopping the network traffic handling and
+temporary park the SPI thread.
 
-We could either define 6 new reserved flags (reserved1..6) and handle
-them individually (and rename them as new flags are defined), or we
-could simply copy the entire unmodified byte over - I choose the latter.
-
-This unfortunately requires some anonymous union/struct magic,
-so we add a static assert on the struct size for a little extra safety.
-
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/addrconf.h | 12 ++++++++++--
- include/net/if_inet6.h |  4 ----
- net/ipv6/addrconf.c    |  6 +-----
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
+ drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/addrconf.h b/include/net/addrconf.h
-index 82da55101b5a3..61ebe723ee4d5 100644
---- a/include/net/addrconf.h
-+++ b/include/net/addrconf.h
-@@ -31,17 +31,22 @@ struct prefix_info {
- 	__u8			length;
- 	__u8			prefix_len;
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 6f2fa2a42770a..a5445252b0c4d 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -263,7 +263,6 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
+ 		     struct kernel_ethtool_ringparam *kernel_ring,
+ 		     struct netlink_ext_ack *extack)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	struct qcaspi *qca = netdev_priv(dev);
  
-+	union __packed {
-+		__u8		flags;
-+		struct __packed {
- #if defined(__BIG_ENDIAN_BITFIELD)
--	__u8			onlink : 1,
-+			__u8	onlink : 1,
- 			 	autoconf : 1,
- 				reserved : 6;
- #elif defined(__LITTLE_ENDIAN_BITFIELD)
--	__u8			reserved : 6,
-+			__u8	reserved : 6,
- 				autoconf : 1,
- 				onlink : 1;
- #else
- #error "Please fix <asm/byteorder.h>"
- #endif
-+		};
-+	};
- 	__be32			valid;
- 	__be32			prefered;
- 	__be32			reserved2;
-@@ -49,6 +54,9 @@ struct prefix_info {
- 	struct in6_addr		prefix;
- };
+ 	if ((ring->rx_pending) ||
+@@ -271,14 +270,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring,
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
  
-+/* rfc4861 4.6.2: IPv6 PIO is 32 bytes in size */
-+static_assert(sizeof(struct prefix_info) == 32);
+-	if (netif_running(dev))
+-		ops->ndo_stop(dev);
++	if (qca->spi_thread)
++		kthread_park(qca->spi_thread);
+ 
+ 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
+ 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
+ 
+-	if (netif_running(dev))
+-		ops->ndo_open(dev);
++	if (qca->spi_thread)
++		kthread_unpark(qca->spi_thread);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index bec723028e96c..b0fad69bb755f 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -580,6 +580,18 @@ qcaspi_spi_thread(void *data)
+ 	netdev_info(qca->net_dev, "SPI thread created\n");
+ 	while (!kthread_should_stop()) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
++		if (kthread_should_park()) {
++			netif_tx_disable(qca->net_dev);
++			netif_carrier_off(qca->net_dev);
++			qcaspi_flush_tx_ring(qca);
++			kthread_parkme();
++			if (qca->sync == QCASPI_SYNC_READY) {
++				netif_carrier_on(qca->net_dev);
++				netif_wake_queue(qca->net_dev);
++			}
++			continue;
++		}
 +
- #include <linux/ipv6.h>
- #include <linux/netdevice.h>
- #include <net/if_inet6.h>
-diff --git a/include/net/if_inet6.h b/include/net/if_inet6.h
-index c8490729b4aea..31bf475eca762 100644
---- a/include/net/if_inet6.h
-+++ b/include/net/if_inet6.h
-@@ -22,10 +22,6 @@
- #define IF_RS_SENT	0x10
- #define IF_READY	0x80000000
- 
--/* prefix flags */
--#define IF_PREFIX_ONLINK	0x01
--#define IF_PREFIX_AUTOCONF	0x02
--
- enum {
- 	INET6_IFADDR_STATE_PREDAD,
- 	INET6_IFADDR_STATE_DAD,
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0b6ee962c84e2..b007d098ffe2e 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -6137,11 +6137,7 @@ static int inet6_fill_prefix(struct sk_buff *skb, struct inet6_dev *idev,
- 	pmsg->prefix_len = pinfo->prefix_len;
- 	pmsg->prefix_type = pinfo->type;
- 	pmsg->prefix_pad3 = 0;
--	pmsg->prefix_flags = 0;
--	if (pinfo->onlink)
--		pmsg->prefix_flags |= IF_PREFIX_ONLINK;
--	if (pinfo->autoconf)
--		pmsg->prefix_flags |= IF_PREFIX_AUTOCONF;
-+	pmsg->prefix_flags = pinfo->flags;
- 
- 	if (nla_put(skb, PREFIX_ADDRESS, sizeof(pinfo->prefix), &pinfo->prefix))
- 		goto nla_put_failure;
+ 		if ((qca->intr_req == qca->intr_svc) &&
+ 		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
 -- 
 2.43.0
 
