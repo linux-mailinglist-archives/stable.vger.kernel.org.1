@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-7441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F69817294
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5424817254
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CC50B23AE6
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6276028355A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504ED3D561;
-	Mon, 18 Dec 2023 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C363942384;
+	Mon, 18 Dec 2023 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjCfswJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc9PW+BL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175231D142;
-	Mon, 18 Dec 2023 14:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F1DC433C8;
-	Mon, 18 Dec 2023 14:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2AD37860;
+	Mon, 18 Dec 2023 14:05:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB516C433C7;
+	Mon, 18 Dec 2023 14:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908475;
-	bh=QGGHuGRgIauT87B7vSk0VJDLFb5CRTXGX9aPfjVZRTE=;
+	s=korg; t=1702908345;
+	bh=JXLGUQ/Fxw1p+M3nYT0Wjsc8QimF82Rq7ARfb/z3/bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vjCfswJ+G/kFrlA6D1FRFFT4hbKZ9Mcj0pHKsG0f4l6NYRW2v/CtwEu9UAiKnQZl8
-	 c6XSHX8OZxSQWNkhkZWTD5IyrSoMAw8xIqYyIbS2jscU/tew7/0+RuZ1xS6WE8lsC/
-	 V1oQh89w3sxdmA+GaPiRk2NDnVCjv5Ka8yPtNZzU=
+	b=tc9PW+BLFJLTnatTgRDtPwciZH3ahPOtRvt85ek5kqh+XKJQ7uPtIqD2tnTE7oV/1
+	 zNQpde0zfGDqYwGtnIHv1FAyidsr3cMlFgIv77yLENPk+UrraGo5wjNGv0gzBLb5v9
+	 G0D9BacWP47aeqgDs1GWWyWZu6upCkSkemEUehjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 24/62] cred: switch to using atomic_long_t
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Baoquan He <bhe@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 142/166] kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
 Date: Mon, 18 Dec 2023 14:51:48 +0100
-Message-ID: <20231218135047.320614606@linuxfoundation.org>
+Message-ID: <20231218135111.465433417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,251 +54,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-commit f8fa5d76925991976b3e7076f9d1052515ec1fca upstream.
+commit c41bd2514184d75db087fe4c1221237fb7922875 upstream.
 
-There are multiple ways to grab references to credentials, and the only
-protection we have against overflowing it is the memory required to do
-so.
+In commit f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for
+CRASH_DUMP") we tried to fix a config regression, where CONFIG_CRASH_DUMP
+required CONFIG_KEXEC.
 
-With memory sizes only moving in one direction, let's bump the reference
-count to 64-bit and move it outside the realm of feasibly overflowing.
+However, it was not enough at least for arm64 platforms.  While further
+testing the patch with our arm64 config I noticed that CONFIG_CRASH_DUMP
+is unavailable in menuconfig.  This is because CONFIG_CRASH_DUMP still
+depends on the new CONFIG_ARCH_SUPPORTS_KEXEC introduced in commit
+91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec") and on
+arm64 CONFIG_ARCH_SUPPORTS_KEXEC requires CONFIG_PM_SLEEP_SMP=y, which in
+turn requires either CONFIG_SUSPEND=y or CONFIG_HIBERNATION=y neither of
+which are set in our config.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Given that we already established that CONFIG_KEXEC (which is a switch for
+kexec system call itself) is not required for CONFIG_CRASH_DUMP drop
+CONFIG_ARCH_SUPPORTS_KEXEC dependency as well.  The arm64 kernel builds
+just fine with CONFIG_CRASH_DUMP=y and with both CONFIG_KEXEC=n and
+CONFIG_KEXEC_FILE=n after f8ff23429c62 ("kernel/Kconfig.kexec: drop select
+of KEXEC for CRASH_DUMP") and this patch are applied given that the
+necessary shared bits are included via CONFIG_KEXEC_CORE dependency.
+
+[bhe@redhat.com: don't export some symbols when CONFIG_MMU=n]
+  Link: https://lkml.kernel.org/r/ZW03ODUKGGhP1ZGU@MiWiFi-R3L-srv
+[bhe@redhat.com: riscv, kexec: fix dependency of two items]
+  Link: https://lkml.kernel.org/r/ZW04G/SKnhbE5mnX@MiWiFi-R3L-srv
+Link: https://lkml.kernel.org/r/20231129220409.55006-1-ignat@cloudflare.com
+Fixes: 91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec")
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: <stable@vger.kernel.org> # 6.6+: f8ff234: kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP
+Cc: <stable@vger.kernel.org> # 6.6+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cred.h |    8 +++---
- kernel/cred.c        |   64 +++++++++++++++++++++++++--------------------------
- 2 files changed, 36 insertions(+), 36 deletions(-)
+ arch/riscv/Kconfig             |    4 ++--
+ arch/riscv/kernel/crash_core.c |    4 +++-
+ kernel/Kconfig.kexec           |    1 -
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/include/linux/cred.h
-+++ b/include/linux/cred.h
-@@ -109,7 +109,7 @@ static inline int groups_search(const st
-  * same context as task->real_cred.
-  */
- struct cred {
--	atomic_t	usage;
-+	atomic_long_t	usage;
- #ifdef CONFIG_DEBUG_CREDENTIALS
- 	atomic_t	subscribers;	/* number of processes subscribed */
- 	void		*put_addr;
-@@ -227,7 +227,7 @@ static inline bool cap_ambient_invariant
-  */
- static inline struct cred *get_new_cred(struct cred *cred)
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -669,7 +669,7 @@ config RISCV_BOOT_SPINWAIT
+ 	  If unsure what to do here, say N.
+ 
+ config ARCH_SUPPORTS_KEXEC
+-	def_bool MMU
++	def_bool y
+ 
+ config ARCH_SELECTS_KEXEC
+ 	def_bool y
+@@ -677,7 +677,7 @@ config ARCH_SELECTS_KEXEC
+ 	select HOTPLUG_CPU if SMP
+ 
+ config ARCH_SUPPORTS_KEXEC_FILE
+-	def_bool 64BIT && MMU
++	def_bool 64BIT
+ 
+ config ARCH_SELECTS_KEXEC_FILE
+ 	def_bool y
+--- a/arch/riscv/kernel/crash_core.c
++++ b/arch/riscv/kernel/crash_core.c
+@@ -5,18 +5,20 @@
+ 
+ void arch_crash_save_vmcoreinfo(void)
  {
--	atomic_inc(&cred->usage);
-+	atomic_long_inc(&cred->usage);
- 	return cred;
- }
+-	VMCOREINFO_NUMBER(VA_BITS);
+ 	VMCOREINFO_NUMBER(phys_ram_base);
  
-@@ -259,7 +259,7 @@ static inline const struct cred *get_cre
- 	struct cred *nonconst_cred = (struct cred *) cred;
- 	if (!cred)
- 		return NULL;
--	if (!atomic_inc_not_zero(&nonconst_cred->usage))
-+	if (!atomic_long_inc_not_zero(&nonconst_cred->usage))
- 		return NULL;
- 	validate_creds(cred);
- 	nonconst_cred->non_rcu = 0;
-@@ -283,7 +283,7 @@ static inline void put_cred(const struct
- 
- 	if (cred) {
- 		validate_creds(cred);
--		if (atomic_dec_and_test(&(cred)->usage))
-+		if (atomic_long_dec_and_test(&(cred)->usage))
- 			__put_cred(cred);
- 	}
- }
---- a/kernel/cred.c
-+++ b/kernel/cred.c
-@@ -98,17 +98,17 @@ static void put_cred_rcu(struct rcu_head
- 
- #ifdef CONFIG_DEBUG_CREDENTIALS
- 	if (cred->magic != CRED_MAGIC_DEAD ||
--	    atomic_read(&cred->usage) != 0 ||
-+	    atomic_long_read(&cred->usage) != 0 ||
- 	    read_cred_subscribers(cred) != 0)
- 		panic("CRED: put_cred_rcu() sees %p with"
--		      " mag %x, put %p, usage %d, subscr %d\n",
-+		      " mag %x, put %p, usage %ld, subscr %d\n",
- 		      cred, cred->magic, cred->put_addr,
--		      atomic_read(&cred->usage),
-+		      atomic_long_read(&cred->usage),
- 		      read_cred_subscribers(cred));
- #else
--	if (atomic_read(&cred->usage) != 0)
--		panic("CRED: put_cred_rcu() sees %p with usage %d\n",
--		      cred, atomic_read(&cred->usage));
-+	if (atomic_long_read(&cred->usage) != 0)
-+		panic("CRED: put_cred_rcu() sees %p with usage %ld\n",
-+		      cred, atomic_long_read(&cred->usage));
+ 	vmcoreinfo_append_str("NUMBER(PAGE_OFFSET)=0x%lx\n", PAGE_OFFSET);
+ 	vmcoreinfo_append_str("NUMBER(VMALLOC_START)=0x%lx\n", VMALLOC_START);
+ 	vmcoreinfo_append_str("NUMBER(VMALLOC_END)=0x%lx\n", VMALLOC_END);
++#ifdef CONFIG_MMU
++	VMCOREINFO_NUMBER(VA_BITS);
+ 	vmcoreinfo_append_str("NUMBER(VMEMMAP_START)=0x%lx\n", VMEMMAP_START);
+ 	vmcoreinfo_append_str("NUMBER(VMEMMAP_END)=0x%lx\n", VMEMMAP_END);
+ #ifdef CONFIG_64BIT
+ 	vmcoreinfo_append_str("NUMBER(MODULES_VADDR)=0x%lx\n", MODULES_VADDR);
+ 	vmcoreinfo_append_str("NUMBER(MODULES_END)=0x%lx\n", MODULES_END);
  #endif
- 
- 	security_cred_free(cred);
-@@ -131,11 +131,11 @@ static void put_cred_rcu(struct rcu_head
-  */
- void __put_cred(struct cred *cred)
- {
--	kdebug("__put_cred(%p{%d,%d})", cred,
--	       atomic_read(&cred->usage),
-+	kdebug("__put_cred(%p{%ld,%d})", cred,
-+	       atomic_long_read(&cred->usage),
- 	       read_cred_subscribers(cred));
- 
--	BUG_ON(atomic_read(&cred->usage) != 0);
-+	BUG_ON(atomic_long_read(&cred->usage) != 0);
- #ifdef CONFIG_DEBUG_CREDENTIALS
- 	BUG_ON(read_cred_subscribers(cred) != 0);
- 	cred->magic = CRED_MAGIC_DEAD;
-@@ -158,8 +158,8 @@ void exit_creds(struct task_struct *tsk)
- {
- 	struct cred *cred;
- 
--	kdebug("exit_creds(%u,%p,%p,{%d,%d})", tsk->pid, tsk->real_cred, tsk->cred,
--	       atomic_read(&tsk->cred->usage),
-+	kdebug("exit_creds(%u,%p,%p,{%ld,%d})", tsk->pid, tsk->real_cred, tsk->cred,
-+	       atomic_long_read(&tsk->cred->usage),
- 	       read_cred_subscribers(tsk->cred));
- 
- 	cred = (struct cred *) tsk->real_cred;
-@@ -218,7 +218,7 @@ struct cred *cred_alloc_blank(void)
- 	if (!new)
- 		return NULL;
- 
--	atomic_set(&new->usage, 1);
-+	atomic_long_set(&new->usage, 1);
- #ifdef CONFIG_DEBUG_CREDENTIALS
- 	new->magic = CRED_MAGIC;
- #endif
-@@ -265,7 +265,7 @@ struct cred *prepare_creds(void)
- 	memcpy(new, old, sizeof(struct cred));
- 
- 	new->non_rcu = 0;
--	atomic_set(&new->usage, 1);
-+	atomic_long_set(&new->usage, 1);
- 	set_cred_subscribers(new, 0);
- 	get_group_info(new->group_info);
- 	get_uid(new->user);
-@@ -348,8 +348,8 @@ int copy_creds(struct task_struct *p, un
- 		p->real_cred = get_cred(p->cred);
- 		get_cred(p->cred);
- 		alter_cred_subscribers(p->cred, 2);
--		kdebug("share_creds(%p{%d,%d})",
--		       p->cred, atomic_read(&p->cred->usage),
-+		kdebug("share_creds(%p{%ld,%d})",
-+		       p->cred, atomic_long_read(&p->cred->usage),
- 		       read_cred_subscribers(p->cred));
- 		atomic_inc(&p->cred->user->processes);
- 		return 0;
-@@ -439,8 +439,8 @@ int commit_creds(struct cred *new)
- 	struct task_struct *task = current;
- 	const struct cred *old = task->real_cred;
- 
--	kdebug("commit_creds(%p{%d,%d})", new,
--	       atomic_read(&new->usage),
-+	kdebug("commit_creds(%p{%ld,%d})", new,
-+	       atomic_long_read(&new->usage),
- 	       read_cred_subscribers(new));
- 
- 	BUG_ON(task->cred != old);
-@@ -449,7 +449,7 @@ int commit_creds(struct cred *new)
- 	validate_creds(old);
- 	validate_creds(new);
- #endif
--	BUG_ON(atomic_read(&new->usage) < 1);
-+	BUG_ON(atomic_long_read(&new->usage) < 1);
- 
- 	get_cred(new); /* we will require a ref for the subj creds too */
- 
-@@ -522,14 +522,14 @@ EXPORT_SYMBOL(commit_creds);
-  */
- void abort_creds(struct cred *new)
- {
--	kdebug("abort_creds(%p{%d,%d})", new,
--	       atomic_read(&new->usage),
-+	kdebug("abort_creds(%p{%ld,%d})", new,
-+	       atomic_long_read(&new->usage),
- 	       read_cred_subscribers(new));
- 
- #ifdef CONFIG_DEBUG_CREDENTIALS
- 	BUG_ON(read_cred_subscribers(new) != 0);
- #endif
--	BUG_ON(atomic_read(&new->usage) < 1);
-+	BUG_ON(atomic_long_read(&new->usage) < 1);
- 	put_cred(new);
- }
- EXPORT_SYMBOL(abort_creds);
-@@ -545,8 +545,8 @@ const struct cred *override_creds(const
- {
- 	const struct cred *old = current->cred;
- 
--	kdebug("override_creds(%p{%d,%d})", new,
--	       atomic_read(&new->usage),
-+	kdebug("override_creds(%p{%ld,%d})", new,
-+	       atomic_long_read(&new->usage),
- 	       read_cred_subscribers(new));
- 
- 	validate_creds(old);
-@@ -568,8 +568,8 @@ const struct cred *override_creds(const
- 	rcu_assign_pointer(current->cred, new);
- 	alter_cred_subscribers(old, -1);
- 
--	kdebug("override_creds() = %p{%d,%d}", old,
--	       atomic_read(&old->usage),
-+	kdebug("override_creds() = %p{%ld,%d}", old,
-+	       atomic_long_read(&old->usage),
- 	       read_cred_subscribers(old));
- 	return old;
- }
-@@ -586,8 +586,8 @@ void revert_creds(const struct cred *old
- {
- 	const struct cred *override = current->cred;
- 
--	kdebug("revert_creds(%p{%d,%d})", old,
--	       atomic_read(&old->usage),
-+	kdebug("revert_creds(%p{%ld,%d})", old,
-+	       atomic_long_read(&old->usage),
- 	       read_cred_subscribers(old));
- 
- 	validate_creds(old);
-@@ -699,7 +699,7 @@ struct cred *prepare_kernel_cred(struct
- 
- 	*new = *old;
- 	new->non_rcu = 0;
--	atomic_set(&new->usage, 1);
-+	atomic_long_set(&new->usage, 1);
- 	set_cred_subscribers(new, 0);
- 	get_uid(new->user);
- 	get_user_ns(new->user_ns);
-@@ -809,8 +809,8 @@ static void dump_invalid_creds(const str
- 	       cred == tsk->cred ? "[eff]" : "");
- 	printk(KERN_ERR "CRED: ->magic=%x, put_addr=%p\n",
- 	       cred->magic, cred->put_addr);
--	printk(KERN_ERR "CRED: ->usage=%d, subscr=%d\n",
--	       atomic_read(&cred->usage),
-+	printk(KERN_ERR "CRED: ->usage=%ld, subscr=%d\n",
-+	       atomic_long_read(&cred->usage),
- 	       read_cred_subscribers(cred));
- 	printk(KERN_ERR "CRED: ->*uid = { %d,%d,%d,%d }\n",
- 		from_kuid_munged(&init_user_ns, cred->uid),
-@@ -882,9 +882,9 @@ EXPORT_SYMBOL(__validate_process_creds);
-  */
- void validate_creds_for_do_exit(struct task_struct *tsk)
- {
--	kdebug("validate_creds_for_do_exit(%p,%p{%d,%d})",
-+	kdebug("validate_creds_for_do_exit(%p,%p{%ld,%d})",
- 	       tsk->real_cred, tsk->cred,
--	       atomic_read(&tsk->cred->usage),
-+	       atomic_long_read(&tsk->cred->usage),
- 	       read_cred_subscribers(tsk->cred));
- 
- 	__validate_process_creds(tsk, __FILE__, __LINE__);
++#endif
+ 	vmcoreinfo_append_str("NUMBER(KERNEL_LINK_ADDR)=0x%lx\n", KERNEL_LINK_ADDR);
+ 	vmcoreinfo_append_str("NUMBER(va_kernel_pa_offset)=0x%lx\n",
+ 						kernel_map.va_kernel_pa_offset);
+--- a/kernel/Kconfig.kexec
++++ b/kernel/Kconfig.kexec
+@@ -94,7 +94,6 @@ config KEXEC_JUMP
+ config CRASH_DUMP
+ 	bool "kernel crash dumps"
+ 	depends on ARCH_SUPPORTS_CRASH_DUMP
+-	depends on ARCH_SUPPORTS_KEXEC
+ 	select CRASH_CORE
+ 	select KEXEC_CORE
+ 	help
 
 
 
