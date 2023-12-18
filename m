@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-7458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B019C8172A4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D533C81731A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4366AB2152D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0C271C23E81
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F182D3D563;
-	Mon, 18 Dec 2023 14:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD9A37887;
+	Mon, 18 Dec 2023 14:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mouAK/KX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T+87SS3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87F8129EF9;
-	Mon, 18 Dec 2023 14:08:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EA4C433C7;
-	Mon, 18 Dec 2023 14:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AB0129EC8;
+	Mon, 18 Dec 2023 14:13:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1893FC433C9;
+	Mon, 18 Dec 2023 14:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908519;
-	bh=0/varNSMxS/gF2Y+w5FYdiFL2DSwpNyT2O8ZJV4fVA0=;
+	s=korg; t=1702908809;
+	bh=Dg4SLEdRybwfy7HZCT0amhNKcnBgb3kWUByyPSIRGOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mouAK/KXdvlDtDR8uFqPbAX5QtKOb4fMDPyfB5DLNP8dmTjgRwSCoNQAS7XrvGG+M
-	 3CKKCt4w2oj3lWfESkPruVjeCTGLJ4oRRMzRMK1S1tl1Q0Dav6cSD+y3f6ClhS1QJr
-	 oyVEQ+8Pxtg6ydqBplRfE33fSepGUP6B8Yfplok0=
+	b=0T+87SS3gifFx3WMaZFSYIXWbQ7X+T/GWGwjaQcLNctcHSvlJ0eqjhTcV83aYBg5u
+	 f5mPq7YrvOTvoW1FMD370xYvypMcEUHcLpWMUSU6GRr4QnqwScRBfI9+yW2gEqy2KP
+	 LITIoBVCTfTV936Im5/axX1wUCkOlMxduBzvw4J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 39/62] platform/x86: intel_telemetry: Fix kernel doc descriptions
+	Hartmut Knaack <knaack.h@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 42/83] ALSA: hda/realtek: Apply mute LED quirk for HP15-db
 Date: Mon, 18 Dec 2023 14:52:03 +0100
-Message-ID: <20231218135047.983375281@linuxfoundation.org>
+Message-ID: <20231218135051.617223317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +50,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Hartmut Knaack <knaack.h@gmx.de>
 
-[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
+commit 9b726bf6ae11add6a7a52883a21f90ff9cbca916 upstream.
 
-LKP found issues with a kernel doc in the driver:
+The HP laptop 15-db0403ng uses the ALC236 codec and controls the mute
+LED using COEF 0x07 index 1.
+Sound card subsystem: Hewlett-Packard Company Device [103c:84ae]
 
-core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
-core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
+Use the existing quirk for this model.
 
-It looks like it were copy'n'paste typos when these descriptions
-had been introduced. Fix the typos.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
-Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hartmut Knaack <knaack.h@gmx.de>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/e61815d0-f1c7-b164-e49d-6ca84771476a@gmx.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel_telemetry_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/intel_telemetry_core.c b/drivers/platform/x86/intel_telemetry_core.c
-index fdf55b5d69480..e4be40f73eebf 100644
---- a/drivers/platform/x86/intel_telemetry_core.c
-+++ b/drivers/platform/x86/intel_telemetry_core.c
-@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
- /**
-  * telemetry_update_events() - Update telemetry Configuration
-  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
-- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
-+ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
-  *
-  * This API updates the IOSS & PSS Telemetry configuration. Old config
-  * is overwritten. Call telemetry_reset_events when logging is over
-@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
- /**
-  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
-  * @pss_evtconfig: Pointer to PSS related configuration.
-- * @pss_evtconfig: Pointer to IOSS related configuration.
-+ * @ioss_evtconfig: Pointer to IOSS related configuration.
-  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
-  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
-  *
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9050,6 +9050,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x83b9, "HP Spectre x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x841c, "HP Pavilion 15-CK0xx", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8497, "HP Envy x360", ALC269_FIXUP_HP_MUTE_LED_MIC3),
++	SND_PCI_QUIRK(0x103c, 0x84ae, "HP 15-db0403ng", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x84da, "HP OMEN dc0019-ur", ALC295_FIXUP_HP_OMEN),
+ 	SND_PCI_QUIRK(0x103c, 0x84e7, "HP Pavilion 15", ALC269_FIXUP_HP_MUTE_LED_MIC3),
+ 	SND_PCI_QUIRK(0x103c, 0x8519, "HP Spectre x360 15-df0xxx", ALC285_FIXUP_HP_SPECTRE_X360),
 
 
 
