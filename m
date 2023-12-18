@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57ED8172C4
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8257817327
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F111C24E6F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C42CB1C23F06
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159553A1AD;
-	Mon, 18 Dec 2023 14:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622FA1D158;
+	Mon, 18 Dec 2023 14:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFCyzZo3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNEqVFsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A741D148;
-	Mon, 18 Dec 2023 14:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B99C433C7;
-	Mon, 18 Dec 2023 14:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 260CD1D14B;
+	Mon, 18 Dec 2023 14:14:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F5BC433C7;
+	Mon, 18 Dec 2023 14:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908596;
-	bh=BlXFZoDKz3PvDFbUAukcwOxObe04u9OxJUIbQ7X4RfE=;
+	s=korg; t=1702908844;
+	bh=TMiyv4s7PEhFsoWZGKvf8JwxeZt8udDbatYyjeueOaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XFCyzZo3YyCSiaCcZluNI/kgk/3zxWlW4f9tJ5zjd8SCd8VWmdX4LqivcW/ffR2oN
-	 rD1bBZ9hps5s2UVlo6pIfMvXm1mmG+NogWovNtd/Wh9pYovLO9cg7VrmrXDwGJ+4KA
-	 VWBceyBV0ImD1gpJ4Yfykka1dtJQhk2GTCnVWY38=
+	b=iNEqVFsdf3fl3L+RYQU4D7uEUDf0t9LRlV6xwNXlaD4sDZrUM/QMK1a/oWgrUgJOE
+	 1eLRED9DAa1mvTmcB8SwCdgh+zw7qu0CQNeRT5iDdJfqEvly93jsAZu8EKl8it+Htg
+	 our6n+Z+ZcHTgDThrw62D7Rb7bBZZDFoG8V+AzcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Houghton <jthoughton@google.com>,
-	Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.10 50/62] arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
-Date: Mon, 18 Dec 2023 14:52:14 +0100
-Message-ID: <20231218135048.459906779@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 54/83] platform/x86: intel_telemetry: Fix kernel doc descriptions
+Date: Mon, 18 Dec 2023 14:52:15 +0100
+Message-ID: <20231218135052.105930593@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,83 +53,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Houghton <jthoughton@google.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 3c0696076aad60a2f04c019761921954579e1b0e upstream.
+[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
 
-It is currently possible for a userspace application to enter an
-infinite page fault loop when using HugeTLB pages implemented with
-contiguous PTEs when HAFDBS is not available. This happens because:
+LKP found issues with a kernel doc in the driver:
 
-1. The kernel may sometimes write PTEs that are sw-dirty but hw-clean
-   (PTE_DIRTY | PTE_RDONLY | PTE_WRITE).
+core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
+core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
 
-2. If, during a write, the CPU uses a sw-dirty, hw-clean PTE in handling
-   the memory access on a system without HAFDBS, we will get a page
-   fault.
+It looks like it were copy'n'paste typos when these descriptions
+had been introduced. Fix the typos.
 
-3. HugeTLB will check if it needs to update the dirty bits on the PTE.
-   For contiguous PTEs, it will check to see if the pgprot bits need
-   updating. In this case, HugeTLB wants to write a sequence of
-   sw-dirty, hw-dirty PTEs, but it finds that all the PTEs it is about
-   to overwrite are all pte_dirty() (pte_sw_dirty() => pte_dirty()),
-   so it thinks no update is necessary.
-
-We can get the kernel to write a sw-dirty, hw-clean PTE with the
-following steps (showing the relevant VMA flags and pgprot bits):
-
-i.   Create a valid, writable contiguous PTE.
-       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
-       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
-       PTE pgprot bits: PTE_DIRTY | PTE_WRITE
-
-ii.  mprotect the VMA to PROT_NONE.
-       VMA vmflags:     VM_SHARED
-       VMA pgprot bits: PTE_RDONLY
-       PTE pgprot bits: PTE_DIRTY | PTE_RDONLY
-
-iii. mprotect the VMA back to PROT_READ | PROT_WRITE.
-       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
-       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
-       PTE pgprot bits: PTE_DIRTY | PTE_WRITE | PTE_RDONLY
-
-Make it impossible to create a writeable sw-dirty, hw-clean PTE with
-pte_modify(). Such a PTE should be impossible to create, and there may
-be places that assume that pte_dirty() implies pte_hw_dirty().
-
-Signed-off-by: James Houghton <jthoughton@google.com>
-Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
-Cc: <stable@vger.kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20231204172646.2541916-3-jthoughton@google.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/intel/telemetry/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -744,6 +744,12 @@ static inline pte_t pte_modify(pte_t pte
- 	if (pte_hw_dirty(pte))
- 		pte = pte_mkdirty(pte);
- 	pte_val(pte) = (pte_val(pte) & ~mask) | (pgprot_val(newprot) & mask);
-+	/*
-+	 * If we end up clearing hw dirtiness for a sw-dirty PTE, set hardware
-+	 * dirtiness again.
-+	 */
-+	if (pte_sw_dirty(pte))
-+		pte = pte_mkdirty(pte);
- 	return pte;
- }
- 
+diff --git a/drivers/platform/x86/intel/telemetry/core.c b/drivers/platform/x86/intel/telemetry/core.c
+index fdf55b5d69480..e4be40f73eebf 100644
+--- a/drivers/platform/x86/intel/telemetry/core.c
++++ b/drivers/platform/x86/intel/telemetry/core.c
+@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
+ /**
+  * telemetry_update_events() - Update telemetry Configuration
+  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
+- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
++ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
+  *
+  * This API updates the IOSS & PSS Telemetry configuration. Old config
+  * is overwritten. Call telemetry_reset_events when logging is over
+@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
+ /**
+  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
+  * @pss_evtconfig: Pointer to PSS related configuration.
+- * @pss_evtconfig: Pointer to IOSS related configuration.
++ * @ioss_evtconfig: Pointer to IOSS related configuration.
+  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
+  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
+  *
+-- 
+2.43.0
+
 
 
 
