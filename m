@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-7228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9952B817183
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0203C8172AD
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EB828371D
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292BD1C24E3A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA3B1D15F;
-	Mon, 18 Dec 2023 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0873787D;
+	Mon, 18 Dec 2023 14:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8ZaNEFZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnYPCHGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2CD1D157;
-	Mon, 18 Dec 2023 13:58:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D863C433CD;
-	Mon, 18 Dec 2023 13:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395A42377;
+	Mon, 18 Dec 2023 14:09:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E56FC433C8;
+	Mon, 18 Dec 2023 14:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907908;
-	bh=fTH1acTvrKYJSd8eDEB1k+kOfNAWBTQDOoiJjhVueb0=;
+	s=korg; t=1702908546;
+	bh=m5XzBC+Ixgucdl3BdsVfo/uPRuiRQuWDGbev37uwegU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8ZaNEFZ0ywWMoWiaSF5ewrarPyzfFC46jzbUUOBo64Ve5VDccO4m5fitN++Yya9l
-	 anBFhe1lL+bEQ8QtC6aEJj+ppJzXTC9RvPBcMzv1mBLGIOLlLD5VNkIA5Tqum5DDKR
-	 ItoauiDRYCLGKocwVmHe73CMuTdQQ45yWV0moj+U=
+	b=GnYPCHGiU26GjZbdp4hd8e50qHLNxEhGuKi/KpIL/XeN23GMJSEKKgcudLKrVFQwR
+	 p3Q/UC+xHLYd6OsNkzhyBf4Xxk61rLIlEWGCOGwMMviuPB7yUSMkKIY65GyKPslolw
+	 hUPOyOAQycZ2GSjwky/ivGVHHmjBPNwZt2Asx810=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	aaron.ma@canonical.com,
-	binli@gnome.org,
-	Marc Rossi <Marc.Rossi@amd.com>,
-	Hamza Mahfooz <Hamza.Mahfooz@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>
-Subject: [PATCH 6.1 090/106] drm/amd/display: Disable PSR-SU on Parade 0803 TCON again
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 20/62] net: stmmac: use dev_err_probe() for reporting mdio bus registration failure
 Date: Mon, 18 Dec 2023 14:51:44 +0100
-Message-ID: <20231218135058.922019610@linuxfoundation.org>
+Message-ID: <20231218135047.123727189@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,53 +53,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
 
-commit e7ab758741672acb21c5d841a9f0309d30e48a06 upstream.
+[ Upstream commit 839612d23ffd933174db911ce56dc3f3ca883ec5 ]
 
-When screen brightness is rapidly changed and PSR-SU is enabled the
-display hangs on panels with this TCON even on the latest DCN 3.1.4
-microcode (0x8002a81 at this time).
+I have a board where these two lines are always printed during boot:
 
-This was disabled previously as commit 072030b17830 ("drm/amd: Disable
-PSR-SU on Parade 0803 TCON") but reverted as commit 1e66a17ce546 ("Revert
-"drm/amd: Disable PSR-SU on Parade 0803 TCON"") in favor of testing for
-a new enough microcode (commit cd2e31a9ab93 ("drm/amd/display: Set minimum
-requirement for using PSR-SU on Phoenix")).
+   imx-dwmac 30bf0000.ethernet: Cannot register the MDIO bus
+   imx-dwmac 30bf0000.ethernet: stmmac_dvr_probe: MDIO bus (id: 1) registration failed
 
-As hangs are still happening specifically with this TCON, disable PSR-SU
-again for it until it can be root caused.
+It's perfectly fine, and the device is successfully (and silently, as
+far as the console goes) probed later.
 
-Cc: stable@vger.kernel.org
-Cc: aaron.ma@canonical.com
-Cc: binli@gnome.org
-Cc: Marc Rossi <Marc.Rossi@amd.com>
-Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2046131
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use dev_err_probe() instead, which will demote these messages to debug
+level (thus removing the alarming messages from the console) when the
+error is -EPROBE_DEFER, and also has the advantage of including the
+error code if/when it happens to be something other than -EPROBE_DEFER.
+
+While here, add the missing \n to one of the format strings.
+
+Signed-off-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Link: https://lore.kernel.org/r/20220602074840.1143360-1-linux@rasmusvillemoes.dk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: e23c0d21ce92 ("net: stmmac: Handle disabled MDIO busses from devicetree")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 6 +++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-+++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-@@ -816,6 +816,8 @@ bool is_psr_su_specific_panel(struct dc_
- 				((dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x08) ||
- 				(dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x07)))
- 				isPSRSUSupported = false;
-+			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
-+				isPSRSUSupported = false;
- 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
- 				isPSRSUSupported = true;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 709bd81fde2a8..8416a186cd7f3 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5187,9 +5187,9 @@ int stmmac_dvr_probe(struct device *device,
+ 		/* MDIO bus Registration */
+ 		ret = stmmac_mdio_register(ndev);
+ 		if (ret < 0) {
+-			dev_err(priv->device,
+-				"%s: MDIO bus (id: %d) registration failed",
+-				__func__, priv->plat->bus_id);
++			dev_err_probe(priv->device, ret,
++				      "%s: MDIO bus (id: %d) registration failed\n",
++				      __func__, priv->plat->bus_id);
+ 			goto error_mdio_register;
  		}
+ 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+index 7c1a14b256da3..ecc7f4842f849 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+@@ -460,7 +460,7 @@ int stmmac_mdio_register(struct net_device *ndev)
+ 
+ 	err = of_mdiobus_register(new_bus, mdio_node);
+ 	if (err != 0) {
+-		dev_err(dev, "Cannot register the MDIO bus\n");
++		dev_err_probe(dev, err, "Cannot register the MDIO bus\n");
+ 		goto bus_register_fail;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
