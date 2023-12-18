@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27C381726B
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC978172D3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8FA71C24E11
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ECCA28820A
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CEF54FF7F;
-	Mon, 18 Dec 2023 14:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FDB3789C;
+	Mon, 18 Dec 2023 14:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3OD8OUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sgQuWj3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218C03A1C6;
-	Mon, 18 Dec 2023 14:06:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97706C433C7;
-	Mon, 18 Dec 2023 14:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE6C37863;
+	Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D2FC433C7;
+	Mon, 18 Dec 2023 14:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908386;
-	bh=84gnHMe22GWEzLDFE7GCaxHeFyu6GHYb5WathKQnD2w=;
+	s=korg; t=1702908634;
+	bh=yomgrz1UbwqZjETNMp9silunL63KC8UzxrUHFZ6Qkbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3OD8OUd0enx+lFcANsfwvfToNW0+w5N8Nbc0hY0Fl5F5kS4U2xTeP0D+vdTqltI0
-	 R/3Rp4H/y+e9/IvRlZkQ7c963gAPGeSR0qw1ued5rxA2NBjlLmkSzo8w37cDwJP2H4
-	 jeNQbqk1Tf9HGxSKk1CPGJSxm3VSAEICv5TraSO0=
+	b=sgQuWj3g1y9yFUG3MC6BbVdwdm9aJx3DlvBLpbSr5ir2pTfK28vFwRY0dkq3Vzf5I
+	 PT6EhcbXJ9ADV8oDGhXEOLIuA5TkQPU/kAIjE/WkNYKgVAX4RBJ22KgWZ+bPGyq6U8
+	 N9XVYWtaJ+LlmVxQUnpdP3rHUS/uB3EHuhhjh/SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 158/166] tracing: Update snapshot buffer on resize if it is allocated
+	Hyunwoo Kim <v4bel@theori.io>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 09/40] net/rose: Fix Use-After-Free in rose_ioctl
 Date: Mon, 18 Dec 2023 14:52:04 +0100
-Message-ID: <20231218135112.207833209@linuxfoundation.org>
+Message-ID: <20231218135043.081271730@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit d06aff1cb13d2a0d52b48e605462518149c98c81 upstream.
+[ Upstream commit 810c38a369a0a0ce625b5c12169abce1dd9ccd53 ]
 
-The snapshot buffer is to mimic the main buffer so that when a snapshot is
-needed, the snapshot and main buffer are swapped. When the snapshot buffer
-is allocated, it is set to the minimal size that the ring buffer may be at
-and still functional. When it is allocated it becomes the same size as the
-main ring buffer, and when the main ring buffer changes in size, it should
-do.
+Because rose_ioctl() accesses sk->sk_receive_queue
+without holding a sk->sk_receive_queue.lock, it can
+cause a race with rose_accept().
+A use-after-free for skb occurs with the following flow.
+```
+rose_ioctl() -> skb_peek()
+rose_accept() -> skb_dequeue() -> kfree_skb()
+```
+Add sk->sk_receive_queue.lock to rose_ioctl() to fix this issue.
 
-Currently, the resize only updates the snapshot buffer if it's used by the
-current tracer (ie. the preemptirqsoff tracer). But it needs to be updated
-anytime it is allocated.
-
-When changing the size of the main buffer, instead of looking to see if
-the current tracer is utilizing the snapshot buffer, just check if it is
-allocated to know if it should be updated or not.
-
-Also fix typo in comment just above the code change.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231210225447.48476a6a@rorschach.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: ad909e21bbe69 ("tracing: Add internal tracing_snapshot() functions")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Link: https://lore.kernel.org/r/20231209100538.GA407321@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/rose/af_rose.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6352,7 +6352,7 @@ static int __tracing_resize_ring_buffer(
- 	if (!tr->array_buffer.buffer)
- 		return 0;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 6fb158172ddc2..fc9ef08788f73 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -1285,9 +1285,11 @@ static int rose_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
+ 	case TIOCINQ: {
+ 		struct sk_buff *skb;
+ 		long amount = 0L;
+-		/* These two are safe on a single CPU system as only user tasks fiddle here */
++
++		spin_lock_irq(&sk->sk_receive_queue.lock);
+ 		if ((skb = skb_peek(&sk->sk_receive_queue)) != NULL)
+ 			amount = skb->len;
++		spin_unlock_irq(&sk->sk_receive_queue.lock);
+ 		return put_user(amount, (unsigned int __user *) argp);
+ 	}
  
--	/* Do not allow tracing while resizng ring buffer */
-+	/* Do not allow tracing while resizing ring buffer */
- 	tracing_stop_tr(tr);
- 
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
-@@ -6360,7 +6360,7 @@ static int __tracing_resize_ring_buffer(
- 		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!tr->current_trace->use_max_tr)
-+	if (!tr->allocated_snapshot)
- 		goto out;
- 
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+-- 
+2.43.0
+
 
 
 
