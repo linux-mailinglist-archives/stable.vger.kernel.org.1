@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-7403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9AD817262
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC885817170
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C374284434
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F03C2827D8
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6599498A9;
-	Mon, 18 Dec 2023 14:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72948129EF7;
+	Mon, 18 Dec 2023 13:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG0oDB2S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM1/YbvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F00B498A1;
-	Mon, 18 Dec 2023 14:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AFCC433C8;
-	Mon, 18 Dec 2023 14:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F33129ED2;
+	Mon, 18 Dec 2023 13:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804B8C433C7;
+	Mon, 18 Dec 2023 13:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908372;
-	bh=KfDizt6C6Dk/bCj8B3QtneKCRqTKG0ux8rXhLPCVUsw=;
+	s=korg; t=1702907867;
+	bh=I54AW+8eh4V8rVprzAEdCmdxVbH6VfIkwRI4ehU9U7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UG0oDB2SHzzs3lEV4uxuBP97rqEGDKK/6hqc/xL7nSicfQqldw8CQxvjyUCkHjDvr
-	 ImSF1MMk0Bhsu9KEgRN6hY1aWN4jFffEMGEY2+tg5yQr7Swq409NamwPsgq+CBD9wK
-	 4wupUkBensYLKozPjA/z95MscK51aB5XlIMrrgqY=
+	b=zM1/YbvFw9EliHGZisLcJm630MtiwdIjZwYbhHUdA5apZI0Ap5cxeUZC0dQCYwkIx
+	 LZnDQLTJqvm57KRtWpgTQN0/kzciKNB4srEHxl56AvABz4/r2LoAqaHM3RpzCBBE3M
+	 nPFuVM+UK/bUhsj4m6yiJAKTp8ic9sDfsCyA1jIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,12 +37,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Luke D. Jones" <luke@ljones.dev>,
 	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/166] HID: hid-asus: add const to read-only outgoing usb buffer
+Subject: [PATCH 6.1 076/106] HID: hid-asus: add const to read-only outgoing usb buffer
 Date: Mon, 18 Dec 2023 14:51:30 +0100
-Message-ID: <20231218135110.615943904@linuxfoundation.org>
+Message-ID: <20231218135058.323092544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -76,10 +76,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 194a86cf30db4..78cdfb8b9a7ae 100644
+index 88dfa688f560d..220d6b2af4d3f 100644
 --- a/drivers/hid/hid-asus.c
 +++ b/drivers/hid/hid-asus.c
-@@ -381,7 +381,7 @@ static int asus_raw_event(struct hid_device *hdev,
+@@ -380,7 +380,7 @@ static int asus_raw_event(struct hid_device *hdev,
  	return 0;
  }
  
@@ -88,7 +88,7 @@ index 194a86cf30db4..78cdfb8b9a7ae 100644
  {
  	unsigned char *dmabuf;
  	int ret;
-@@ -404,7 +404,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
+@@ -403,7 +403,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
  
  static int asus_kbd_init(struct hid_device *hdev)
  {
@@ -97,7 +97,7 @@ index 194a86cf30db4..78cdfb8b9a7ae 100644
  		     0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
  	int ret;
  
-@@ -418,7 +418,7 @@ static int asus_kbd_init(struct hid_device *hdev)
+@@ -417,7 +417,7 @@ static int asus_kbd_init(struct hid_device *hdev)
  static int asus_kbd_get_functions(struct hid_device *hdev,
  				  unsigned char *kbd_func)
  {
@@ -106,7 +106,7 @@ index 194a86cf30db4..78cdfb8b9a7ae 100644
  	u8 *readbuf;
  	int ret;
  
-@@ -449,7 +449,7 @@ static int asus_kbd_get_functions(struct hid_device *hdev,
+@@ -448,7 +448,7 @@ static int asus_kbd_get_functions(struct hid_device *hdev,
  
  static int rog_nkey_led_init(struct hid_device *hdev)
  {
