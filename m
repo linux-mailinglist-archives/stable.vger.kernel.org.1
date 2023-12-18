@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-7653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625A1817598
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:41:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1277E81759B
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 16:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB3801F23963
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:41:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A51B9B22C7D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A9D74095;
-	Mon, 18 Dec 2023 15:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3866774E03;
+	Mon, 18 Dec 2023 15:36:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379827408C
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A656740A1
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 15:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d3ab37d0d1so5701805ad.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:36:38 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d3ac28ae81so12285795ad.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 07:36:42 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702913798; x=1703518598;
+        d=1e100.net; s=20230601; t=1702913801; x=1703518601;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=F2L0LvyrFKofiric/Fy+UcRiqkiZCnCCTw5CpngV+EQ=;
-        b=V0QicNjAJXRGyD7Qixd0fvA7YRzvsGShbArqm1HhPrYYSYc/QstfWPpvLs/xH3qc5j
-         IFb99Ym9XA3o5wUtRXPpvkjW4Tp0OTQ2uKQQEwNbrcgkaWSLY9vwBHRDUiJQmT4u3Kmu
-         duXXVhn2Bhtq6usMMmBLP6IcnwVKTvFkrP2WMDm46nwhIkzX7tVrFtfE45lZ/wm5cBOY
-         Jsq28FT/mKkp0OKnZ6dG23OATNzdv5aBZRUz2/KhXFRCyAlTBnP0zXvWvvJMmuu1MG9x
-         akLujUP89c4DaxjOXhPwZi9ujfhMyfVuH0jT5mx6j3WGCIzqy53zGxz58mU8XCKHHAG+
-         YW3Q==
-X-Gm-Message-State: AOJu0YwrvdzK5tI6NCogSLpS/PGR7d4j5PQZ7CXAcSRhH0Df4bQpF6kV
-	+K7ZramaTiGxdryE79qDysENYk8Wg1k=
-X-Google-Smtp-Source: AGHT+IHJn8iMuSBgZEKRdgCjCifFtbFXeSHmPxQLDt0K2r3hULSfp0yUhN4oorMnqm6SiD3mWfjsbQ==
-X-Received: by 2002:a17:902:7c8c:b0:1d0:6ffd:f230 with SMTP id y12-20020a1709027c8c00b001d06ffdf230mr8099751pll.134.1702913798357;
-        Mon, 18 Dec 2023 07:36:38 -0800 (PST)
+        bh=zn886VlaZ+IsOpHxOxkQ4p0F/OGkWHSEgf9dzTIIexM=;
+        b=TrD2RhZX1WR3pjPQXh0WSPpcFURFYPE8Rit0rGCMFsUrmp/j6wZLSBs28Ob7Mdvkrz
+         yeUZde7ZWr1atYvrA18tdXxOcy3tZ3TDZsrDODLQTD86XlJwohyy/Lb6b9mAJ8Z8QLby
+         eElUb2NwZ3UsCi6MCCt24krhkjcTm6gaWZPGWxQ7B8ck4tPuW+Od6UYJrrSLHAMpqIkE
+         wa5A2sVrZyt6kPg5bUiH3fZ6ng6SFYAyHzFys4wWdTP6u7bTe5l5bwy2T3qYmKPxaB9V
+         jjkY+jw1VBhbuJIU4xIBR78zMG7gVOjl2UdIUBihorEcHvvMeMiQh1xJMrKn3Eh5aqRM
+         VY0w==
+X-Gm-Message-State: AOJu0Yyn1aJmXkYH2hxZ/3axat/sfutl9+1aHyuQOIJ0roof59VnRAwj
+	6X8XYD3flC+vAmPAAvV7tvA=
+X-Google-Smtp-Source: AGHT+IHUSC+mjsgUqfD9pcZyC87Js95u4M0rJ51nOwF6dov+/t7LziLRvcuXW4lAhcHeVY0BrjeMJQ==
+X-Received: by 2002:a17:90a:6d88:b0:286:6cc1:3f17 with SMTP id a8-20020a17090a6d8800b002866cc13f17mr11967630pjk.78.1702913801622;
+        Mon, 18 Dec 2023 07:36:41 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.36.36
+        by smtp.gmail.com with ESMTPSA id fs7-20020a17090af28700b00286ed94466dsm5613041pjb.32.2023.12.18.07.36.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 07:36:37 -0800 (PST)
+        Mon, 18 Dec 2023 07:36:41 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
+	Tobias Klauser <tklauser@distanz.ch>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 024/154] ksmbd: add support for key exchange
-Date: Tue, 19 Dec 2023 00:32:44 +0900
-Message-Id: <20231218153454.8090-25-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 025/154] ksmbd: use netif_is_bridge_port
+Date: Tue, 19 Dec 2023 00:32:45 +0900
+Message-Id: <20231218153454.8090-26-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
 References: <20231218153454.8090-1-linkinjeon@kernel.org>
@@ -63,76 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit f9929ef6a2a55f03aac61248c6a3a987b8546f2a ]
+From: Tobias Klauser <tklauser@distanz.ch>
 
-When mounting cifs client, can see the following warning message.
+[ Upstream commit 1b699bf3a8786f7d41eebd9f6ba673185fa5b6bd ]
 
-CIFS: decode_ntlmssp_challenge: authentication has been weakened as server
-does not support key exchange
+Use netif_is_bridge_port defined in <linux/netdevice.h> instead of
+open-coding it.
 
-To remove this warning message, Add support for key exchange feature to
-ksmbd. This patch decrypts 16-byte ciphertext value sent by the client
-using RC4 with session key. The decrypted value is the recovered secondary
-key that will use instead of the session key for signing and sealing.
-
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/auth.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ fs/ksmbd/transport_tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index 33cb94ed6f66..2048e0546116 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -29,6 +29,7 @@
- #include "mgmt/user_config.h"
- #include "crypto_ctx.h"
- #include "transport_ipc.h"
-+#include "../smbfs_common/arc4.h"
+diff --git a/fs/ksmbd/transport_tcp.c b/fs/ksmbd/transport_tcp.c
+index d1d7954368a5..4995f74fb21c 100644
+--- a/fs/ksmbd/transport_tcp.c
++++ b/fs/ksmbd/transport_tcp.c
+@@ -505,7 +505,7 @@ static int ksmbd_netdev_event(struct notifier_block *nb, unsigned long event,
  
- /*
-  * Fixed format data defining GSS header and fixed string
-@@ -342,6 +343,29 @@ int ksmbd_decode_ntlmssp_auth_blob(struct authenticate_message *authblob,
- 				nt_len - CIFS_ENCPWD_SIZE,
- 				domain_name, conn->ntlmssp.cryptkey);
- 	kfree(domain_name);
-+
-+	/* The recovered secondary session key */
-+	if (conn->ntlmssp.client_flags & NTLMSSP_NEGOTIATE_KEY_XCH) {
-+		struct arc4_ctx *ctx_arc4;
-+		unsigned int sess_key_off, sess_key_len;
-+
-+		sess_key_off = le32_to_cpu(authblob->SessionKey.BufferOffset);
-+		sess_key_len = le16_to_cpu(authblob->SessionKey.Length);
-+
-+		if (blob_len < (u64)sess_key_off + sess_key_len)
-+			return -EINVAL;
-+
-+		ctx_arc4 = kmalloc(sizeof(*ctx_arc4), GFP_KERNEL);
-+		if (!ctx_arc4)
-+			return -ENOMEM;
-+
-+		cifs_arc4_setkey(ctx_arc4, sess->sess_key,
-+				 SMB2_NTLMV2_SESSKEY_SIZE);
-+		cifs_arc4_crypt(ctx_arc4, sess->sess_key,
-+				(char *)authblob + sess_key_off, sess_key_len);
-+		kfree_sensitive(ctx_arc4);
-+	}
-+
- 	return ret;
- }
+ 	switch (event) {
+ 	case NETDEV_UP:
+-		if (netdev->priv_flags & IFF_BRIDGE_PORT)
++		if (netif_is_bridge_port(netdev))
+ 			return NOTIFY_OK;
  
-@@ -414,6 +438,9 @@ ksmbd_build_ntlmssp_challenge_blob(struct challenge_message *chgblob,
- 	    (cflags & NTLMSSP_NEGOTIATE_EXTENDED_SEC))
- 		flags |= NTLMSSP_NEGOTIATE_EXTENDED_SEC;
+ 		list_for_each_entry(iface, &iface_list, entry) {
+@@ -614,7 +614,7 @@ int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz)
  
-+	if (cflags & NTLMSSP_NEGOTIATE_KEY_XCH)
-+		flags |= NTLMSSP_NEGOTIATE_KEY_XCH;
-+
- 	chgblob->NegotiateFlags = cpu_to_le32(flags);
- 	len = strlen(ksmbd_netbios_name());
- 	name = kmalloc(2 + UNICODE_LEN(len), GFP_KERNEL);
+ 		rtnl_lock();
+ 		for_each_netdev(&init_net, netdev) {
+-			if (netdev->priv_flags & IFF_BRIDGE_PORT)
++			if (netif_is_bridge_port(netdev))
+ 				continue;
+ 			if (!alloc_iface(kstrdup(netdev->name, GFP_KERNEL)))
+ 				return -ENOMEM;
 -- 
 2.25.1
 
