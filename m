@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46DB81725A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB32581727F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627B9283D37
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA4401C24A10
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4B349885;
-	Mon, 18 Dec 2023 14:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8FC37896;
+	Mon, 18 Dec 2023 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLCQ3y5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01Q43qhi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE4C42387;
-	Mon, 18 Dec 2023 14:05:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822B6C433C8;
-	Mon, 18 Dec 2023 14:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29AC5A854;
+	Mon, 18 Dec 2023 14:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8FBC433C8;
+	Mon, 18 Dec 2023 14:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908355;
-	bh=6hTBAX3uM8T3ZSOzMHVZVTonmzPVHcj03HDdMAR19wU=;
+	s=korg; t=1702908434;
+	bh=DlVm4pU5kLJjbSbrOjucZe7uSkLleJ3zjVSLWOJzUvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLCQ3y5S9hov8ja7+kEbSjVv+jCXyV/f0Ik+PZ4SH/tCeI9HPoA4liD4U1lmxIcPY
-	 RLMPTADofmfhwpJC3AQUO0brMCwOPhO808n+GIVbDKTboQN0mPqYlfYbhj6rdcABxm
-	 BTQSuqC53Ek4P14JaSy43u5VUwbZi+QuvlosUrnw=
+	b=01Q43qhijVIeTajbZaWcKdjqQPMWJ9ny83ftfeJA/sj8v+gLu+oJQeRdURhxrObes
+	 z5Wdz5Oa+Z9xd/UHE5VS5dQM8Mxq+uPb1Wf3MmIcB1ziU6XOussGVoecSQFwoZNQFM
+	 4hUE3mjMJfeC8lP8JA/ihOXylVzTpmTYCC8wPLEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/166] net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+Subject: [PATCH 5.10 01/62] netfilter: nf_tables: fix exist matching on bigendian arches
 Date: Mon, 18 Dec 2023 14:51:25 +0100
-Message-ID: <20231218135110.363488566@linuxfoundation.org>
+Message-ID: <20231218135046.240252074@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,67 +56,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 99360d9620f09fb8bc15548d855011bbb198c680 ]
+[ Upstream commit 63331e37fb227e796894b31d713697612c8dee7f ]
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Rebind it to qmi_wwan after freeing it up
-from option driver.
-The proper configuration is:
+Maze reports "tcp option fastopen exists" fails to match on
+OpenWrt 22.03.5, r20134-5f15225c1e (5.10.176) router.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+"tcp option fastopen exists" translates to:
+inet
+  [ exthdr load tcpopt 1b @ 34 + 0 present => reg 1 ]
+  [ cmp eq reg 1 0x00000001 ]
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+.. but existing nft userspace generates a 1-byte compare.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Link: https://lore.kernel.org/r/20231117231918.100278-3-lech.perczak@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+On LSB (x86), "*reg32 = 1" is identical to nft_reg_store8(reg32, 1), but
+not on MSB, which will place the 1 last. IOW, on bigendian aches the cmp8
+is awalys false.
+
+Make sure we store this in a consistent fashion, so existing userspace
+will also work on MSB (bigendian).
+
+Regardless of this patch we can also change nft userspace to generate
+'reg32 == 0' and 'reg32 != 0' instead of u8 == 0 // u8 == 1 when
+adding 'option x missing/exists' expressions as well.
+
+Fixes: 3c1fece8819e ("netfilter: nft_exthdr: Allow checking TCP option presence, too")
+Fixes: b9f9a485fb0e ("netfilter: nft_exthdr: add boolean DCCP option matching")
+Fixes: 055c4b34b94f ("netfilter: nft_fib: Support existence check")
+Reported-by: Maciej Żenczykowski <zenczykowski@gmail.com>
+Closes: https://lore.kernel.org/netfilter-devel/CAHo-OozyEqHUjL2-ntATzeZOiuftLWZ_HU6TOM_js4qLfDEAJg@mail.gmail.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Acked-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_exthdr.c | 2 +-
+ net/netfilter/nft_fib.c    | 8 ++++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 344af3c5c8366..e2e181378f412 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1289,6 +1289,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_FIXED_INTF(0x19d2, 0x0168, 4)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0176, 3)},
- 	{QMI_FIXED_INTF(0x19d2, 0x0178, 3)},
-+	{QMI_FIXED_INTF(0x19d2, 0x0189, 4)},    /* ZTE MF290 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0191, 4)},	/* ZTE EuFi890 */
- 	{QMI_FIXED_INTF(0x19d2, 0x0199, 1)},	/* ZTE MF820S */
- 	{QMI_FIXED_INTF(0x19d2, 0x0200, 1)},
+diff --git a/net/netfilter/nft_exthdr.c b/net/netfilter/nft_exthdr.c
+index cb69a299f10c5..c9f89f035ccff 100644
+--- a/net/netfilter/nft_exthdr.c
++++ b/net/netfilter/nft_exthdr.c
+@@ -214,7 +214,7 @@ static void nft_exthdr_tcp_eval(const struct nft_expr *expr,
+ 
+ 		offset = i + priv->offset;
+ 		if (priv->flags & NFT_EXTHDR_F_PRESENT) {
+-			*dest = 1;
++			nft_reg_store8(dest, 1);
+ 		} else {
+ 			if (priv->len % NFT_REG32_SIZE)
+ 				dest[priv->len / NFT_REG32_SIZE] = 0;
+diff --git a/net/netfilter/nft_fib.c b/net/netfilter/nft_fib.c
+index b10ce732b337c..1fd4b2054e8f7 100644
+--- a/net/netfilter/nft_fib.c
++++ b/net/netfilter/nft_fib.c
+@@ -140,11 +140,15 @@ void nft_fib_store_result(void *reg, const struct nft_fib *priv,
+ 	switch (priv->result) {
+ 	case NFT_FIB_RESULT_OIF:
+ 		index = dev ? dev->ifindex : 0;
+-		*dreg = (priv->flags & NFTA_FIB_F_PRESENT) ? !!index : index;
++		if (priv->flags & NFTA_FIB_F_PRESENT)
++			nft_reg_store8(dreg, !!index);
++		else
++			*dreg = index;
++
+ 		break;
+ 	case NFT_FIB_RESULT_OIFNAME:
+ 		if (priv->flags & NFTA_FIB_F_PRESENT)
+-			*dreg = !!dev;
++			nft_reg_store8(dreg, !!dev);
+ 		else
+ 			strncpy(reg, dev ? dev->name : "", IFNAMSIZ);
+ 		break;
 -- 
 2.43.0
 
