@@ -1,130 +1,243 @@
-Return-Path: <stable+bounces-7807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965538178DD
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:36:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975CA817927
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 18:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35AF41F23006
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:36:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F24228641D
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 17:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95F25BF8A;
-	Mon, 18 Dec 2023 17:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7727974E23;
+	Mon, 18 Dec 2023 17:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhAv2Xdc"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="tAqce6I+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809AC498B4;
-	Mon, 18 Dec 2023 17:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6d728c75240so1305194b3a.1;
-        Mon, 18 Dec 2023 09:36:43 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D129474E06
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 17:48:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6d66a0d10dcso826760b3a.0
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 09:48:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702921003; x=1703525803; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RGhfp7gmzYvPgDOx9Jk6h3Gpd+Z4OEn2fO5WRaWtC6k=;
-        b=AhAv2Xdc+RBU4LGn15IqaYkr78pCY8shKY1loH70HSN2htGPHkzleb8DtI9ogxwmbI
-         H6K7uqHI+24oUapebnv/y1JHdQ9haA6lUE87bmogoN0r5oto6xxvdGBADV7UysjvxnTM
-         wp5dJ4HKE/R2G0LlxFUj+ZOa7mVQpVDFJOduTCxqdaHuPBfHyTD2NcCK3vskACezUXwY
-         CZNCeBVZIL507bvCMmj4yFoGNck7W5t6z07XQ7x9MbURg+h5/mAF2kSgVKmf9x/3Te8K
-         b0lnJ7r9+zfUBwgbw6c1AsQxkP9Klwz8TwLAim5x7MoOAWzEqoYuJSCuNre4GWGjNb84
-         IKUw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702921691; x=1703526491; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SU1InmGnqb7V5CYVAXmYM+4X+3tQ13c3ApZlsa9tf5Q=;
+        b=tAqce6I+Qmze2CvqWaP10FsrHrgOCd9vKsVzagOVAYRPE2wvxo6nNVwiyYCkMkSeXO
+         HMKEGGrU1vNJNqsHuQeetxCu0LuUfJksPnovBMbbryoYfWxSv03QMeSBZLeu8SYWiByv
+         WzaDLApbgw5YWxxNZR1/fTFBQmfE/pe/htQHDgVTorzAxr1PlAEUIiVd8svwPYEwJO5N
+         RVfLzsyjR78OyCi+gKbSloDIpg89631f1woplYb8KDOi61ygkrAO8xZs9TTHWPIGlHmY
+         kxRKYE+DVttaX0nTy5jYipBcTYR1DV6bV6UTB4b3LUlam3x2M+aj8e7IQSy5tJIBH8Er
+         u8yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702921003; x=1703525803;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RGhfp7gmzYvPgDOx9Jk6h3Gpd+Z4OEn2fO5WRaWtC6k=;
-        b=TjC0i01QuWnxJMkSamk3wgpUsEMUZOu7XmiySgJIHIXH3INDSHUT8Xtv77ukfMSxgK
-         UqrPV4RHmCVHxjuvCJtkVDJ0HtL/IbT/Qz30m/656Rmg4WmXjrxNOGvRuBVYQO3EJo7t
-         o7XDrSeTRoN1dhCE8dqdA1avXSTrq83dg7iSLhsyzbNhyixUUwzB+tJzN62Ya5eF9IrI
-         PDIb6GdVicbl+rPW5OwudRMmXyVas1A2uksDPP2csVseDt3w2fWdCLClnARApmk9eqe7
-         /gj05urTgY39HiXqzASvkGyTnWO4aBcdPAjpUUJlCADNFqw7kfnTt7NUdJoHPEXntWFp
-         Pwsw==
-X-Gm-Message-State: AOJu0Yw4GoGbmbErtAYrzbe6k+hDflxo0NdevkKszWPO4HwrtjGv2Rc5
-	iVf/PMCmtaV3csht3N5usAvYeFRP9fNXR+Jcgbk=
-X-Google-Smtp-Source: AGHT+IGFH6NC/VbWIOxGeQzth4/JK4wPgKzplt2ExS/F9myqeh5kM+roWD0j9O0HcbBzlhjNDDPTuJ+qyRy/ey3vUIg=
-X-Received: by 2002:a05:6a21:a58e:b0:194:967f:3213 with SMTP id
- gd14-20020a056a21a58e00b00194967f3213mr47225pzc.73.1702921002664; Mon, 18 Dec
- 2023 09:36:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1702921691; x=1703526491;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SU1InmGnqb7V5CYVAXmYM+4X+3tQ13c3ApZlsa9tf5Q=;
+        b=GgFRqAeAkxKsi6IghLU3CV9Xdv948XzDXHG1i2/c5/URiskyllGzBIK8cgG1V9xy7y
+         8zxX6gV35HX7eqQgbvFpOUB2Ho8QBLdPVkCGCHARiu23NjBPu+/XY1jrEVIhcIOFw+Hh
+         Urls3JhdFfIoOEC/XjSqoJyZZuVbVXDC8a+nYIWn+DeczAjsSSU8djUcMJ9MYS5J8M6e
+         ymoRDmEAO6x/BjOoaE4Uh1NO3QMpOxNWBkoFBE0fS//0pOUab+r6gbVB7iUoOudA6RVx
+         xz0uJe76d2NHwDknsHUGlMZLK4gRyntsUG+g8/41G/j5FtkBneJVjAr9e95B9rgBWIAk
+         R9aw==
+X-Gm-Message-State: AOJu0YyhCsRoRMeIc+CNquK+fmPc+q6wjv/3DQRhKKurqFL5lLScAgyN
+	x4458n46RtG/1LH/36eOggCixlsCX9CshJ7Smd8=
+X-Google-Smtp-Source: AGHT+IHfZCQqAKfH6tDpFfQMv6fYXMhNswy/pGMk89/6/Mx9wy3p5PtDyLdV9KNDLCe1RMCc9e2cEQ==
+X-Received: by 2002:a05:6a00:1406:b0:6d5:5801:a34c with SMTP id l6-20020a056a00140600b006d55801a34cmr1329375pfu.52.1702921691380;
+        Mon, 18 Dec 2023 09:48:11 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g22-20020a62e316000000b006d273997cd5sm4726553pfh.91.2023.12.18.09.48.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 09:48:10 -0800 (PST)
+Message-ID: <658085da.620a0220.42206.ad34@mx.google.com>
+Date: Mon, 18 Dec 2023 09:48:10 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231218141645.2548743-1-alpic@google.com> <6dce3020-14f0-471b-9b6a-c9dc761cfa19@schaufler-ca.com>
-In-Reply-To: <6dce3020-14f0-471b-9b6a-c9dc761cfa19@schaufler-ca.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Mon, 18 Dec 2023 12:36:31 -0500
-Message-ID: <CAEjxPJ4tZAvch50i7Ve_7dPYUzCXK8ckDtmhwq81vjCf7pweQw@mail.gmail.com>
-Subject: Re: [PATCH] SELinux: Introduce security_file_ioctl_compat hook
-To: Casey Schaufler <casey@schaufler-ca.com>
-Cc: Alfred Piccioni <alpic@google.com>, Paul Moore <paul@paul-moore.com>, 
-	Eric Paris <eparis@parisplace.org>, stable@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.143-84-g2d628f368ca8a
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.143-84-g2d628f368ca8a)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Mon, Dec 18, 2023 at 12:11=E2=80=AFPM Casey Schaufler <casey@schaufler-c=
-a.com> wrote:
->
-> On 12/18/2023 6:16 AM, Alfred Piccioni wrote:
->
-> > Some ioctl commands do not require ioctl permission, but are routed to
-> > other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
-> > done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
-> >
-> > However, if a 32-bit process is running on a 64-bit kernel, it emits
-> > 32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
-> > being checked erroneously, which leads to these ioctl operations being
-> > routed to the ioctl permission, rather than the correct file
-> > permissions.
-> >
-> > This was also noted in a RED-PEN finding from a while back -
-> > "/* RED-PEN how should LSM module know it's handling 32bit? */".
-> >
-> > This patch introduces a new hook, security_file_ioctl_compat, that is
-> > called from the compat ioctl syscal. All current LSMs have been changed
-> > to support this hook.
-> >
-> > Reviewing the three places where we are currently using
-> > security_file_ioctl, it appears that only SELinux needs a dedicated
-> > compat change; TOMOYO and SMACK appear to be functional without any
-> > change.
-> >
-> > Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
-> > Signed-off-by: Alfred Piccioni <alpic@google.com>
-> > Cc: stable@vger.kernel.org
->
-> This *really* needs to go the the LSM email list:
->         linux-security-module@vger.kernel.org
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.143-84-g2d628f368ca8a)
 
-Yep, pointed that out a little earlier in this thread.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.143-84-g2d628f368ca8a/
 
-> > ---
-> > diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_def=
-s.h
-> > index ac962c4cb44b..626aa8cf930d 100644
-> > --- a/include/linux/lsm_hook_defs.h
-> > +++ b/include/linux/lsm_hook_defs.h
-> > @@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, struct file *=
-file)
-> >  LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
-> >  LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
-> >        unsigned long arg)
-> > +LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cm=
-d,
-> > +      unsigned long arg)
->
-> Please add a flags parameter to file_ioctl() rather than a new hook.
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.143-84-g2d628f368ca8a
+Git Commit: 2d628f368ca8aad32fc680e377c3bff3e508f47b
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Paul told him the opposite earlier.
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
 
