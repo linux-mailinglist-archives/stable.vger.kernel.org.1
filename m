@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-7247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3632781719A
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F69817294
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA126B20E9E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CC50B23AE6
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6998A1D146;
-	Mon, 18 Dec 2023 13:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504ED3D561;
+	Mon, 18 Dec 2023 14:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4+HFTOV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjCfswJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3224E129EFB;
-	Mon, 18 Dec 2023 13:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC041C433C8;
-	Mon, 18 Dec 2023 13:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175231D142;
+	Mon, 18 Dec 2023 14:07:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F1DC433C8;
+	Mon, 18 Dec 2023 14:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907953;
-	bh=DFqmw3OzKp0TOZmJjfcViSYFnn0vpgcruYP3EzEzFCE=;
+	s=korg; t=1702908475;
+	bh=QGGHuGRgIauT87B7vSk0VJDLFb5CRTXGX9aPfjVZRTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4+HFTOVxC+r/EgZB4rEEhB8b22myzipfx4UUb9kS/lKOZZVriB3yTiJz/vWawmPv
-	 5tPpZgpm5DBDQ3zm4el07ZiP392bZRks30HA4Nq5az0//Hf8iAvq6ghCYoOvRijV3i
-	 5AJ7JiEELxEJYrLk4puI5Lecs7lao2jb9gUBkl04=
+	b=vjCfswJ+G/kFrlA6D1FRFFT4hbKZ9Mcj0pHKsG0f4l6NYRW2v/CtwEu9UAiKnQZl8
+	 c6XSHX8OZxSQWNkhkZWTD5IyrSoMAw8xIqYyIbS2jscU/tew7/0+RuZ1xS6WE8lsC/
+	 V1oQh89w3sxdmA+GaPiRk2NDnVCjv5Ka8yPtNZzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 094/106] smb: client: fix OOB in smb2_query_reparse_point()
+	Jens Axboe <axboe@kernel.dk>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 24/62] cred: switch to using atomic_long_t
 Date: Mon, 18 Dec 2023 14:51:48 +0100
-Message-ID: <20231218135059.084151345@linuxfoundation.org>
+Message-ID: <20231218135047.320614606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,120 +52,251 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 3a42709fa909e22b0be4bb1e2795aa04ada732a3 upstream.
+commit f8fa5d76925991976b3e7076f9d1052515ec1fca upstream.
 
-Validate @ioctl_rsp->OutputOffset and @ioctl_rsp->OutputCount so that
-their sum does not wrap to a number that is smaller than @reparse_buf
-and we end up with a wild pointer as follows:
+There are multiple ways to grab references to credentials, and the only
+protection we have against overflowing it is the memory required to do
+so.
 
-  BUG: unable to handle page fault for address: ffff88809c5cd45f
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 4a01067 P4D 4a01067 PUD 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 2 PID: 1260 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
-  Code: ff ff e8 f3 51 fe ff 41 89 c6 58 5a 45 85 f6 0f 85 14 fe ff ff
-  49 8b 57 48 8b 42 60 44 8b 42 64 42 8d 0c 00 49 39 4f 50 72 40 <8b>
-  04 02 48 8b 9d f0 fe ff ff 49 8b 57 50 89 03 48 8b 9d e8 fe ff
-  RSP: 0018:ffffc90000347a90 EFLAGS: 00010212
-  RAX: 000000008000001f RBX: ffff88800ae11000 RCX: 00000000000000ec
-  RDX: ffff88801c5cd440 RSI: 0000000000000000 RDI: ffffffff82004aa4
-  RBP: ffffc90000347bb0 R08: 00000000800000cd R09: 0000000000000001
-  R10: 0000000000000000 R11: 0000000000000024 R12: ffff8880114d4100
-  R13: ffff8880114d4198 R14: 0000000000000000 R15: ffff8880114d4000
-  FS: 00007f02c07babc0(0000) GS:ffff88806ba00000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff88809c5cd45f CR3: 0000000011750000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? search_module_extables+0x19/0x60
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? exc_page_fault+0x1b6/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   ? smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
-   cifs_get_fattr+0x16e/0xa50 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0xbf/0x2b0
-   cifs_root_iget+0x163/0x5f0 [cifs]
-   cifs_smb3_do_mount+0x5bd/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7f02c08d5b1e
+With memory sizes only moving in one direction, let's bump the reference
+count to 64-bit and move it outside the realm of feasibly overflowing.
 
-Fixes: 2e4564b31b64 ("smb3: add support for stat of WSL reparse points for special file types")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ include/linux/cred.h |    8 +++---
+ kernel/cred.c        |   64 +++++++++++++++++++++++++--------------------------
+ 2 files changed, 36 insertions(+), 36 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3122,7 +3122,7 @@ smb2_query_reparse_tag(const unsigned in
- 	struct kvec close_iov[1];
- 	struct smb2_ioctl_rsp *ioctl_rsp;
- 	struct reparse_data_buffer *reparse_buf;
--	u32 plen;
-+	u32 off, count, len;
+--- a/include/linux/cred.h
++++ b/include/linux/cred.h
+@@ -109,7 +109,7 @@ static inline int groups_search(const st
+  * same context as task->real_cred.
+  */
+ struct cred {
+-	atomic_t	usage;
++	atomic_long_t	usage;
+ #ifdef CONFIG_DEBUG_CREDENTIALS
+ 	atomic_t	subscribers;	/* number of processes subscribed */
+ 	void		*put_addr;
+@@ -227,7 +227,7 @@ static inline bool cap_ambient_invariant
+  */
+ static inline struct cred *get_new_cred(struct cred *cred)
+ {
+-	atomic_inc(&cred->usage);
++	atomic_long_inc(&cred->usage);
+ 	return cred;
+ }
  
- 	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
+@@ -259,7 +259,7 @@ static inline const struct cred *get_cre
+ 	struct cred *nonconst_cred = (struct cred *) cred;
+ 	if (!cred)
+ 		return NULL;
+-	if (!atomic_inc_not_zero(&nonconst_cred->usage))
++	if (!atomic_long_inc_not_zero(&nonconst_cred->usage))
+ 		return NULL;
+ 	validate_creds(cred);
+ 	nonconst_cred->non_rcu = 0;
+@@ -283,7 +283,7 @@ static inline void put_cred(const struct
  
-@@ -3202,16 +3202,22 @@ smb2_query_reparse_tag(const unsigned in
- 	 */
- 	if (rc == 0) {
- 		/* See MS-FSCC 2.3.23 */
-+		off = le32_to_cpu(ioctl_rsp->OutputOffset);
-+		count = le32_to_cpu(ioctl_rsp->OutputCount);
-+		if (check_add_overflow(off, count, &len) ||
-+		    len > rsp_iov[1].iov_len) {
-+			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
-+				      __func__, off, count);
-+			rc = -EIO;
-+			goto query_rp_exit;
-+		}
+ 	if (cred) {
+ 		validate_creds(cred);
+-		if (atomic_dec_and_test(&(cred)->usage))
++		if (atomic_long_dec_and_test(&(cred)->usage))
+ 			__put_cred(cred);
+ 	}
+ }
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -98,17 +98,17 @@ static void put_cred_rcu(struct rcu_head
  
--		reparse_buf = (struct reparse_data_buffer *)
--			((char *)ioctl_rsp +
--			 le32_to_cpu(ioctl_rsp->OutputOffset));
--		plen = le32_to_cpu(ioctl_rsp->OutputCount);
--
--		if (plen + le32_to_cpu(ioctl_rsp->OutputOffset) >
--		    rsp_iov[1].iov_len) {
--			cifs_tcon_dbg(FYI, "srv returned invalid ioctl len: %d\n",
--				 plen);
-+		reparse_buf = (void *)((u8 *)ioctl_rsp + off);
-+		len = sizeof(*reparse_buf);
-+		if (count < len ||
-+		    count < le16_to_cpu(reparse_buf->ReparseDataLength) + len) {
-+			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
-+				      __func__, off, count);
- 			rc = -EIO;
- 			goto query_rp_exit;
- 		}
+ #ifdef CONFIG_DEBUG_CREDENTIALS
+ 	if (cred->magic != CRED_MAGIC_DEAD ||
+-	    atomic_read(&cred->usage) != 0 ||
++	    atomic_long_read(&cred->usage) != 0 ||
+ 	    read_cred_subscribers(cred) != 0)
+ 		panic("CRED: put_cred_rcu() sees %p with"
+-		      " mag %x, put %p, usage %d, subscr %d\n",
++		      " mag %x, put %p, usage %ld, subscr %d\n",
+ 		      cred, cred->magic, cred->put_addr,
+-		      atomic_read(&cred->usage),
++		      atomic_long_read(&cred->usage),
+ 		      read_cred_subscribers(cred));
+ #else
+-	if (atomic_read(&cred->usage) != 0)
+-		panic("CRED: put_cred_rcu() sees %p with usage %d\n",
+-		      cred, atomic_read(&cred->usage));
++	if (atomic_long_read(&cred->usage) != 0)
++		panic("CRED: put_cred_rcu() sees %p with usage %ld\n",
++		      cred, atomic_long_read(&cred->usage));
+ #endif
+ 
+ 	security_cred_free(cred);
+@@ -131,11 +131,11 @@ static void put_cred_rcu(struct rcu_head
+  */
+ void __put_cred(struct cred *cred)
+ {
+-	kdebug("__put_cred(%p{%d,%d})", cred,
+-	       atomic_read(&cred->usage),
++	kdebug("__put_cred(%p{%ld,%d})", cred,
++	       atomic_long_read(&cred->usage),
+ 	       read_cred_subscribers(cred));
+ 
+-	BUG_ON(atomic_read(&cred->usage) != 0);
++	BUG_ON(atomic_long_read(&cred->usage) != 0);
+ #ifdef CONFIG_DEBUG_CREDENTIALS
+ 	BUG_ON(read_cred_subscribers(cred) != 0);
+ 	cred->magic = CRED_MAGIC_DEAD;
+@@ -158,8 +158,8 @@ void exit_creds(struct task_struct *tsk)
+ {
+ 	struct cred *cred;
+ 
+-	kdebug("exit_creds(%u,%p,%p,{%d,%d})", tsk->pid, tsk->real_cred, tsk->cred,
+-	       atomic_read(&tsk->cred->usage),
++	kdebug("exit_creds(%u,%p,%p,{%ld,%d})", tsk->pid, tsk->real_cred, tsk->cred,
++	       atomic_long_read(&tsk->cred->usage),
+ 	       read_cred_subscribers(tsk->cred));
+ 
+ 	cred = (struct cred *) tsk->real_cred;
+@@ -218,7 +218,7 @@ struct cred *cred_alloc_blank(void)
+ 	if (!new)
+ 		return NULL;
+ 
+-	atomic_set(&new->usage, 1);
++	atomic_long_set(&new->usage, 1);
+ #ifdef CONFIG_DEBUG_CREDENTIALS
+ 	new->magic = CRED_MAGIC;
+ #endif
+@@ -265,7 +265,7 @@ struct cred *prepare_creds(void)
+ 	memcpy(new, old, sizeof(struct cred));
+ 
+ 	new->non_rcu = 0;
+-	atomic_set(&new->usage, 1);
++	atomic_long_set(&new->usage, 1);
+ 	set_cred_subscribers(new, 0);
+ 	get_group_info(new->group_info);
+ 	get_uid(new->user);
+@@ -348,8 +348,8 @@ int copy_creds(struct task_struct *p, un
+ 		p->real_cred = get_cred(p->cred);
+ 		get_cred(p->cred);
+ 		alter_cred_subscribers(p->cred, 2);
+-		kdebug("share_creds(%p{%d,%d})",
+-		       p->cred, atomic_read(&p->cred->usage),
++		kdebug("share_creds(%p{%ld,%d})",
++		       p->cred, atomic_long_read(&p->cred->usage),
+ 		       read_cred_subscribers(p->cred));
+ 		atomic_inc(&p->cred->user->processes);
+ 		return 0;
+@@ -439,8 +439,8 @@ int commit_creds(struct cred *new)
+ 	struct task_struct *task = current;
+ 	const struct cred *old = task->real_cred;
+ 
+-	kdebug("commit_creds(%p{%d,%d})", new,
+-	       atomic_read(&new->usage),
++	kdebug("commit_creds(%p{%ld,%d})", new,
++	       atomic_long_read(&new->usage),
+ 	       read_cred_subscribers(new));
+ 
+ 	BUG_ON(task->cred != old);
+@@ -449,7 +449,7 @@ int commit_creds(struct cred *new)
+ 	validate_creds(old);
+ 	validate_creds(new);
+ #endif
+-	BUG_ON(atomic_read(&new->usage) < 1);
++	BUG_ON(atomic_long_read(&new->usage) < 1);
+ 
+ 	get_cred(new); /* we will require a ref for the subj creds too */
+ 
+@@ -522,14 +522,14 @@ EXPORT_SYMBOL(commit_creds);
+  */
+ void abort_creds(struct cred *new)
+ {
+-	kdebug("abort_creds(%p{%d,%d})", new,
+-	       atomic_read(&new->usage),
++	kdebug("abort_creds(%p{%ld,%d})", new,
++	       atomic_long_read(&new->usage),
+ 	       read_cred_subscribers(new));
+ 
+ #ifdef CONFIG_DEBUG_CREDENTIALS
+ 	BUG_ON(read_cred_subscribers(new) != 0);
+ #endif
+-	BUG_ON(atomic_read(&new->usage) < 1);
++	BUG_ON(atomic_long_read(&new->usage) < 1);
+ 	put_cred(new);
+ }
+ EXPORT_SYMBOL(abort_creds);
+@@ -545,8 +545,8 @@ const struct cred *override_creds(const
+ {
+ 	const struct cred *old = current->cred;
+ 
+-	kdebug("override_creds(%p{%d,%d})", new,
+-	       atomic_read(&new->usage),
++	kdebug("override_creds(%p{%ld,%d})", new,
++	       atomic_long_read(&new->usage),
+ 	       read_cred_subscribers(new));
+ 
+ 	validate_creds(old);
+@@ -568,8 +568,8 @@ const struct cred *override_creds(const
+ 	rcu_assign_pointer(current->cred, new);
+ 	alter_cred_subscribers(old, -1);
+ 
+-	kdebug("override_creds() = %p{%d,%d}", old,
+-	       atomic_read(&old->usage),
++	kdebug("override_creds() = %p{%ld,%d}", old,
++	       atomic_long_read(&old->usage),
+ 	       read_cred_subscribers(old));
+ 	return old;
+ }
+@@ -586,8 +586,8 @@ void revert_creds(const struct cred *old
+ {
+ 	const struct cred *override = current->cred;
+ 
+-	kdebug("revert_creds(%p{%d,%d})", old,
+-	       atomic_read(&old->usage),
++	kdebug("revert_creds(%p{%ld,%d})", old,
++	       atomic_long_read(&old->usage),
+ 	       read_cred_subscribers(old));
+ 
+ 	validate_creds(old);
+@@ -699,7 +699,7 @@ struct cred *prepare_kernel_cred(struct
+ 
+ 	*new = *old;
+ 	new->non_rcu = 0;
+-	atomic_set(&new->usage, 1);
++	atomic_long_set(&new->usage, 1);
+ 	set_cred_subscribers(new, 0);
+ 	get_uid(new->user);
+ 	get_user_ns(new->user_ns);
+@@ -809,8 +809,8 @@ static void dump_invalid_creds(const str
+ 	       cred == tsk->cred ? "[eff]" : "");
+ 	printk(KERN_ERR "CRED: ->magic=%x, put_addr=%p\n",
+ 	       cred->magic, cred->put_addr);
+-	printk(KERN_ERR "CRED: ->usage=%d, subscr=%d\n",
+-	       atomic_read(&cred->usage),
++	printk(KERN_ERR "CRED: ->usage=%ld, subscr=%d\n",
++	       atomic_long_read(&cred->usage),
+ 	       read_cred_subscribers(cred));
+ 	printk(KERN_ERR "CRED: ->*uid = { %d,%d,%d,%d }\n",
+ 		from_kuid_munged(&init_user_ns, cred->uid),
+@@ -882,9 +882,9 @@ EXPORT_SYMBOL(__validate_process_creds);
+  */
+ void validate_creds_for_do_exit(struct task_struct *tsk)
+ {
+-	kdebug("validate_creds_for_do_exit(%p,%p{%d,%d})",
++	kdebug("validate_creds_for_do_exit(%p,%p{%ld,%d})",
+ 	       tsk->real_cred, tsk->cred,
+-	       atomic_read(&tsk->cred->usage),
++	       atomic_long_read(&tsk->cred->usage),
+ 	       read_cred_subscribers(tsk->cred));
+ 
+ 	__validate_process_creds(tsk, __FILE__, __LINE__);
 
 
 
