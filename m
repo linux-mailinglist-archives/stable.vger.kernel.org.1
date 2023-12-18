@@ -1,161 +1,121 @@
-Return-Path: <stable+bounces-6989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD024816C19
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:22:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDE8816C27
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 12:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3BCD1C23199
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 11:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B957D284359
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 11:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5857F19458;
-	Mon, 18 Dec 2023 11:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209D199B2;
+	Mon, 18 Dec 2023 11:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="dwvihh5T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijIhSvOQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3662199BF
-	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 11:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5cd82917ecfso1308080a12.0
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 03:22:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702898520; x=1703503320; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5mJrrgKkKl/1iDMJNYkAFkR4277123PfvU2U2DIy2k8=;
-        b=dwvihh5TYPmIu/ndlj/y3plowCFHgl0WZa6QIUw+CMNOisTMTwa2fGowItQm1wUfNn
-         /umR36A7I0HM+Tdc8L92VmhGU7d3lJNMtE+wz+6n4J8kroAQuxTlObboS0HGhpP7uCop
-         XRZlnug/uqtf3dv3FbS1baLUdLof+p5sTO1TC5Znbej34a/ljp6y7k3wL2iFLCRTA9cv
-         dlRUjY+jDQTVDlrtObLgOP9Y2nr56EaFi0+mQrfb6BsvI5WXiYbnt3+zNEeN4Vf1rz4R
-         ms/9DMXHMrWYt9UppodRVRwOCia/qHXXIMqFVNEL7v6uEhBvOLV9DN2fRVaw0/9DRNw2
-         HrgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702898520; x=1703503320;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5mJrrgKkKl/1iDMJNYkAFkR4277123PfvU2U2DIy2k8=;
-        b=e14K4L09laItDQUsrnHaeOhIr50HN6UXcq/bdEQESIum4gr78GpQ0V/pFUAdeFGpyf
-         Fkl82PCuhMCJ12Mcp9D8CcSUZUzzSDQQSJ7r4wVK+AaqO8QFXsUSAizLnbpWPBpvvO/y
-         MbHdpFbUQdjNGallb4paKJPC6QGm27A33M8pCvUWO8S3s9Wc3jWdjRGaXXHBZWifyG8J
-         HcZsxv+sWaM90CwdA61ZhH1lgjHmTrhUlFdGovXk2Zwd538ywcSoJfjwc6GCzM4FyFbm
-         jYuArH+VPlQPnQaDRKyL62FsMX74sA/Eq3w3EMfUGXR2HVIzcg/22yZgimPKQxa6MzTg
-         Rwqw==
-X-Gm-Message-State: AOJu0YyTr3MgA9+OlkUltCDEfG0LgsJlY84cEAolW618+l5OMlF0fPUa
-	oj8fu7YuLBs2sRBUknpXzyyyb/WGoaI/qtmfP80=
-X-Google-Smtp-Source: AGHT+IFVRlDvvapStG6bDo//OgxCSJ8pFObZ7sA1PI0c8TjgUJRNBr9Xx19mBLZ8tunUBQ1HQTWANQ==
-X-Received: by 2002:a17:903:1205:b0:1d0:af43:9354 with SMTP id l5-20020a170903120500b001d0af439354mr18429086plh.100.1702898520520;
-        Mon, 18 Dec 2023 03:22:00 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v21-20020a17090a899500b0028b73564d7dsm2457806pjn.24.2023.12.18.03.21.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 03:22:00 -0800 (PST)
-Message-ID: <65802b58.170a0220.c4717.4a45@mx.google.com>
-Date: Mon, 18 Dec 2023 03:22:00 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5FF1947A
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 11:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282F0C433CB
+	for <stable@vger.kernel.org>; Mon, 18 Dec 2023 11:28:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702898899;
+	bh=a5QCKu0p5TFbLqzmhsr4nWE9+TEPieatl5v1eS6h9Rg=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=ijIhSvOQsBrZS5nqNf0jjyPw87P0qfT764wTyFTrCMC87jaOSQH6FS+eZNjYjBpbs
+	 Nco16MBuA+MnYdYSjXIz6ELdoOaZmjUQZq/tHbj4wlN25MxwU9DkZ2G6bbXyx6bR3/
+	 nE8FMdPxm/p4QYr4e5qWGq7spTVs/9jkhAdup7jLVf/wylABWKkkNKo1R8Xx7124nt
+	 FqZielYn80Geok+XJWmuwNJUEbW349s/9AOLTCkJSbVaRtAA7vnJvSULR4evXyt32W
+	 5ELcSX0MF0s8rCEglHm+Eg5yqZuD10ScG1r4XpshXmOz3CGZxuFvS7D0+AgEc3R6yA
+	 ibkOYETlIc+Zw==
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-58d18c224c7so1871600eaf.2
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 03:28:19 -0800 (PST)
+X-Gm-Message-State: AOJu0Yw0k/qKfPm8lcnTaOC9rSGuClbZrS/7GYSRuA4L2eOT2XTQSERM
+	yAas9ZLOD6cECQYyl2186/clAy5mozLFX7jttmI=
+X-Google-Smtp-Source: AGHT+IEDbDznjUXrA9DEwD7sBeaWJZuFN6z7sZVCJn20CmFIbDrmQ+pRMGD1qUl2hfsVsH4ZTMDDnYma9OhTs+nNJjo=
+X-Received: by 2002:a4a:e821:0:b0:591:6970:2cd8 with SMTP id
+ d1-20020a4ae821000000b0059169702cd8mr4473666ood.14.1702898898363; Mon, 18 Dec
+ 2023 03:28:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v4.19.302-32-gb2fab883a7817
-Subject: stable-rc/linux-4.19.y baseline: 94 runs,
- 1 regressions (v4.19.302-32-gb2fab883a7817)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Received: by 2002:ac9:7f88:0:b0:507:5de0:116e with HTTP; Mon, 18 Dec 2023
+ 03:28:17 -0800 (PST)
+In-Reply-To: <2023121813-compactor-lettuce-4ced@gregkh>
+References: <20231212184745.2245187-1-paul.gortmaker@windriver.com>
+ <20231212184745.2245187-2-paul.gortmaker@windriver.com> <2023121813-compactor-lettuce-4ced@gregkh>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Mon, 18 Dec 2023 20:28:17 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9mNgB_HyiZVFDP0rXaPukqtzYsdtTyLLO77SHmW_YuKQ@mail.gmail.com>
+Message-ID: <CAKYAXd9mNgB_HyiZVFDP0rXaPukqtzYsdtTyLLO77SHmW_YuKQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] ksmbd: check the validation of pdu_size in ksmbd_conn_handler_loop
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: paul.gortmaker@windriver.com, Steve French <stfrench@microsoft.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-stable-rc/linux-4.19.y baseline: 94 runs, 1 regressions (v4.19.302-32-gb2fa=
-b883a7817)
+2023-12-18 19:38 GMT+09:00, Greg KH <gregkh@linuxfoundation.org>:
+> On Tue, Dec 12, 2023 at 01:47:45PM -0500, paul.gortmaker@windriver.com
+> wrote:
+>> From: Namjae Jeon <linkinjeon@kernel.org>
+>>
+>> commit 368ba06881c395f1c9a7ba22203cf8d78b4addc0 upstream.
+>>
+>> The length field of netbios header must be greater than the SMB header
+>> sizes(smb1 or smb2 header), otherwise the packet is an invalid SMB
+>> packet.
+>>
+>> If `pdu_size` is 0, ksmbd allocates a 4 bytes chunk to
+>> `conn->request_buf`.
+>> In the function `get_smb2_cmd_val` ksmbd will read cmd from
+>> `rcv_hdr->Command`, which is `conn->request_buf + 12`, causing the KASAN
+>> detector to print the following error message:
+>>
+>> [    7.205018] BUG: KASAN: slab-out-of-bounds in
+>> get_smb2_cmd_val+0x45/0x60
+>> [    7.205423] Read of size 2 at addr ffff8880062d8b50 by task
+>> ksmbd:42632/248
+>> ...
+>> [    7.207125]  <TASK>
+>> [    7.209191]  get_smb2_cmd_val+0x45/0x60
+>> [    7.209426]  ksmbd_conn_enqueue_request+0x3a/0x100
+>> [    7.209712]  ksmbd_server_process_request+0x72/0x160
+>> [    7.210295]  ksmbd_conn_handler_loop+0x30c/0x550
+>> [    7.212280]  kthread+0x160/0x190
+>> [    7.212762]  ret_from_fork+0x1f/0x30
+>> [    7.212981]  </TASK>
+>>
+>> Cc: stable@vger.kernel.org
+>> Reported-by: Chih-Yen Chang <cc85nod@gmail.com>
+>> Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+>> Signed-off-by: Steve French <stfrench@microsoft.com>
+>> [PG: fs/smb/server/connection.c --> fs/ksmbd/connection.c for v5.15.
+>>  Also no smb2_get_msg() as no +4 from cb4517201b8a in v5.15 baseline.]
+>> Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+>> ---
+>>  fs/ksmbd/connection.c | 12 ++++++++++++
+>>  1 file changed, 12 insertions(+)
+>
+> Now queued up, thanks.
+Could you please remove this patch in your queue ?
+This patches in my ksmbd backport queue and Since I have backported
+all patches(between 5.16 ~ 6.7-rc1), I included original patch that do
+not need to be changed unlike this patch.
 
-Regressions Summary
--------------------
+https://github.com/namjaejeon/stable-linux-5.15-ksmbd
 
-platform      | arch | lab         | compiler | defconfig          | regres=
-sions
---------------+------+-------------+----------+--------------------+-------=
------
-at91sam9g20ek | arm  | lab-broonie | gcc-10   | multi_v5_defconfig | 1     =
-     =
+I am testing them before sending it. I plan to send all patches within
+this week.
 
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
-nel/v4.19.302-32-gb2fab883a7817/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-4.19.y
-  Describe: v4.19.302-32-gb2fab883a7817
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      b2fab883a7817921e05d3919787ef3d00196948c =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform      | arch | lab         | compiler | defconfig          | regres=
-sions
---------------+------+-------------+----------+--------------------+-------=
------
-at91sam9g20ek | arm  | lab-broonie | gcc-10   | multi_v5_defconfig | 1     =
-     =
-
-
-  Details:     https://kernelci.org/test/plan/id/657ffa2af1b48003cce13493
-
-  Results:     42 PASS, 9 FAIL, 1 SKIP
-  Full config: multi_v5_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-02-32-gb2fab883a7817/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
-1sam9g20ek.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
-02-32-gb2fab883a7817/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
-1sam9g20ek.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657ffa2af1b48003cce134c5
-        failing since 20 days (last pass: v4.19.299-93-g263cae4d5493f, firs=
-t fail: v4.19.299-93-gc66845304b463)
-
-    2023-12-18T07:51:31.684299  + set +x
-    2023-12-18T07:51:31.684755  <8><LAVA_SIGNAL_ENDRUN 0_dmesg 366511_1.5.2=
-.4.1>
-    2023-12-18T07:51:31.797134  / # #
-    2023-12-18T07:51:31.900063  export SHELL=3D/bin/sh
-    2023-12-18T07:51:31.900952  #
-    2023-12-18T07:51:32.003033  / # export SHELL=3D/bin/sh. /lava-366511/en=
-vironment
-    2023-12-18T07:51:32.003895  =
-
-    2023-12-18T07:51:32.105964  / # . /lava-366511/environment/lava-366511/=
-bin/lava-test-runner /lava-366511/1
-    2023-12-18T07:51:32.107404  =
-
-    2023-12-18T07:51:32.111018  / # /lava-366511/bin/lava-test-runner /lava=
--366511/1 =
-
-    ... (12 line(s) more)  =
-
- =20
+Thanks.
+>
+> greg k-h
+>
 
