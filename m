@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B04F4817338
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:15:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726BB8172EA
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD6E11C23053
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:15:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 137D2B22BF4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0373789E;
-	Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812E41D14F;
+	Mon, 18 Dec 2023 14:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFIa7Uvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIOxhIJp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143E37884;
-	Mon, 18 Dec 2023 14:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FDCC433C7;
-	Mon, 18 Dec 2023 14:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5691D122;
+	Mon, 18 Dec 2023 14:11:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0080C433C7;
+	Mon, 18 Dec 2023 14:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908888;
-	bh=prgDe56YUWHzhH9nuLFTU1wqgV/rZh9wMG0AmkwgOrQ=;
+	s=korg; t=1702908689;
+	bh=7FRUCdXn/Hy8VPYagjtNnp7jUnbQIXHjlzTpob+ogWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFIa7UvvD+uqH3BPlw/kr+cWYN+ahQL9mUySh3UQryR6mIQZUDi3gA2A62Al3Zp/2
-	 V2GbMnQ9HDAM4GaUgHyw/Jd8iR+0cIK1RwJVSPKsXptLxsDbuOAcucrhmFd64rjfqL
-	 3aYcIA2gS8FYLVeVVFaqWash5PKA3yXigEV2dcEE=
+	b=pIOxhIJpvmi0OnAghCINeMflIZpa90JNr85TEPKJyx8rKx/Y2cyUlebV1I7QYQJvZ
+	 E3hMeKLiGXa4ftKJE1oGZHrJOIzx1u+IjHJUHkr2izaeHesO/FEitoIKTEeE335wo8
+	 1Tugv+xcRfjTv2u0Zc3JQum/DYCW59gxBqwpLEd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 71/83] ring-buffer: Do not update before stamp when switching sub-buffers
-Date: Mon, 18 Dec 2023 14:52:32 +0100
-Message-ID: <20231218135052.853165048@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 38/40] mmc: block: Be sure to wait while busy in CQE error recovery
+Date: Mon, 18 Dec 2023 14:52:33 +0100
+Message-ID: <20231218135044.217362346@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +54,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 9e45e39dc249c970d99d2681f6bcb55736fd725c upstream.
+commit c616696a902987352426fdaeec1b0b3240949e6b upstream.
 
-The ring buffer timestamps are synchronized by two timestamp placeholders.
-One is the "before_stamp" and the other is the "write_stamp" (sometimes
-referred to as the "after stamp" but only in the comments. These two
-stamps are key to knowing how to handle nested events coming in with a
-lockless system.
+STOP command does not guarantee to wait while busy, but subsequent command
+MMC_CMDQ_TASK_MGMT to discard the queue will fail if the card is busy, so
+be sure to wait by employing mmc_poll_for_busy().
 
-When moving across sub-buffers, the before stamp is updated but the write
-stamp is not. There's an effort to put back the before stamp to something
-that seems logical in case there's nested events. But as the current event
-is about to cross sub-buffers, and so will any new nested event that happens,
-updating the before stamp is useless, and could even introduce new race
-conditions.
-
-The first event on a sub-buffer simply uses the sub-buffer's timestamp
-and keeps a "delta" of zero. The "before_stamp" and "write_stamp" are not
-used in the algorithm in this case. There's no reason to try to fix the
-before_stamp when this happens.
-
-As a bonus, it removes a cmpxchg() when crossing sub-buffers!
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231211114420.36dde01b@gandalf.local.home
-
+Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
 Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: a389d86f7fd09 ("ring-buffer: Have nested events still record running time stamp")
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-4-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/mmc/core/core.c    |    2 ++
+ drivers/mmc/core/mmc_ops.c |    5 +++--
+ drivers/mmc/core/mmc_ops.h |    2 ++
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3558,14 +3558,7 @@ __rb_reserve_next(struct ring_buffer_per
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -570,6 +570,8 @@ int mmc_cqe_recovery(struct mmc_host *ho
+ 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+ 	mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
  
- 	/* See if we shot pass the end of this buffer page */
- 	if (unlikely(write > BUF_PAGE_SIZE)) {
--		/* before and after may now different, fix it up*/
--		b_ok = rb_time_read(&cpu_buffer->before_stamp, &info->before);
--		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
--		if (a_ok && b_ok && info->before != info->after)
--			(void)rb_time_cmpxchg(&cpu_buffer->before_stamp,
--					      info->before, info->after);
--		if (a_ok && b_ok)
--			check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
-+		check_buffer(cpu_buffer, info, CHECK_FULL_PAGE);
- 		return rb_move_tail(cpu_buffer, tail, info);
- 	}
++	mmc_poll_for_busy(host->card, MMC_CQE_RECOVERY_TIMEOUT, true, true);
++
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.opcode       = MMC_CMDQ_TASK_MGMT;
+ 	cmd.arg          = 1; /* Discard entire queue */
+--- a/drivers/mmc/core/mmc_ops.c
++++ b/drivers/mmc/core/mmc_ops.c
+@@ -450,8 +450,8 @@ int mmc_switch_status(struct mmc_card *c
+ 	return __mmc_switch_status(card, true);
+ }
  
+-static int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
+-			bool send_status, bool retry_crc_err)
++int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
++		      bool send_status, bool retry_crc_err)
+ {
+ 	struct mmc_host *host = card->host;
+ 	int err;
+@@ -504,6 +504,7 @@ static int mmc_poll_for_busy(struct mmc_
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(mmc_poll_for_busy);
+ 
+ /**
+  *	__mmc_switch - modify EXT_CSD register
+--- a/drivers/mmc/core/mmc_ops.h
++++ b/drivers/mmc/core/mmc_ops.h
+@@ -31,6 +31,8 @@ int mmc_can_ext_csd(struct mmc_card *car
+ int mmc_get_ext_csd(struct mmc_card *card, u8 **new_ext_csd);
+ int mmc_switch_status(struct mmc_card *card);
+ int __mmc_switch_status(struct mmc_card *card, bool crc_err_fatal);
++int mmc_poll_for_busy(struct mmc_card *card, unsigned int timeout_ms,
++		      bool send_status, bool retry_crc_err);
+ int __mmc_switch(struct mmc_card *card, u8 set, u8 index, u8 value,
+ 		unsigned int timeout_ms, unsigned char timing,
+ 		bool use_busy_signal, bool send_status,	bool retry_crc_err);
 
 
 
