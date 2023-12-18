@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81C781727E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:09:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96827817318
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D8EDB22E35
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45A7B2886DC
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D98A25A84F;
-	Mon, 18 Dec 2023 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED7237897;
+	Mon, 18 Dec 2023 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWXfCWIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRn+SDLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21A22091;
-	Mon, 18 Dec 2023 14:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24DB5C433C8;
-	Mon, 18 Dec 2023 14:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B143A1B6;
+	Mon, 18 Dec 2023 14:13:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D1BC433C9;
+	Mon, 18 Dec 2023 14:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908429;
-	bh=YrZRqOBj/5hqLs3ebV3FBIhQiYIRiAYXHYn5BpP/HRI=;
+	s=korg; t=1702908806;
+	bh=eu7riSRBUmryAb/1cdQj0+rJ347yWqkHhZqop5ZmUng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWXfCWIovk2i5j0Hz5Op+uVnO55rEhs+xcGFdUuk/CPmXzlCyoj+3euA+9N/4WVpL
-	 dB5fxJoxs2vlUgD8zVNMt49SJzxjw2CTjChNJhBKxnHE/2CoXaHqtHXsWXi3KRbJ1R
-	 /AHSXCvpbtmge5eFI8zuwdkIad6byIoU7gZNIIhE=
+	b=eRn+SDLxv2mYHVCyyNW76TzPPyZhxZA8KxC0ZAgXTR9qO3GYrvUMrjajCQlKYFBL9
+	 qpS47V4hlysh4BGwoCcvoU9Ry/hLwz0vAslXS4icL1/A28eL4N689OFrrQbF2dfMTS
+	 rcjXiU3UiilKZRqwnVsSuclz/NSGg2u9HMeYJOCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 156/166] smb: client: fix OOB in smb2_query_reparse_point()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Saarinen <jani.saarinen@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 41/83] ALSA: hda/hdmi: add force-connect quirks for ASUSTeK Z170 variants
 Date: Mon, 18 Dec 2023 14:52:02 +0100
-Message-ID: <20231218135112.119290205@linuxfoundation.org>
+Message-ID: <20231218135051.569781061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
+References: <20231218135049.738602288@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,122 +52,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-commit 3a42709fa909e22b0be4bb1e2795aa04ada732a3 upstream.
+commit 924f5ca2975b2993ee81a7ecc3c809943a70f334 upstream.
 
-Validate @ioctl_rsp->OutputOffset and @ioctl_rsp->OutputCount so that
-their sum does not wrap to a number that is smaller than @reparse_buf
-and we end up with a wild pointer as follows:
+On ASUSTeK Z170M PLUS and Z170 PRO GAMING systems, the display codec
+pins are not registered properly without the force-connect quirk. The
+codec will report only one pin as having external connectivity, but i915
+finds all three connectors on the system, so the two drivers are not
+in sync.
 
-  BUG: unable to handle page fault for address: ffff88809c5cd45f
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 4a01067 P4D 4a01067 PUD 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 2 PID: 1260 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
-  Code: ff ff e8 f3 51 fe ff 41 89 c6 58 5a 45 85 f6 0f 85 14 fe ff ff
-  49 8b 57 48 8b 42 60 44 8b 42 64 42 8d 0c 00 49 39 4f 50 72 40 <8b>
-  04 02 48 8b 9d f0 fe ff ff 49 8b 57 50 89 03 48 8b 9d e8 fe ff
-  RSP: 0018:ffffc90000347a90 EFLAGS: 00010212
-  RAX: 000000008000001f RBX: ffff88800ae11000 RCX: 00000000000000ec
-  RDX: ffff88801c5cd440 RSI: 0000000000000000 RDI: ffffffff82004aa4
-  RBP: ffffc90000347bb0 R08: 00000000800000cd R09: 0000000000000001
-  R10: 0000000000000000 R11: 0000000000000024 R12: ffff8880114d4100
-  R13: ffff8880114d4198 R14: 0000000000000000 R15: ffff8880114d4000
-  FS: 00007f02c07babc0(0000) GS:ffff88806ba00000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff88809c5cd45f CR3: 0000000011750000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? search_module_extables+0x19/0x60
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? exc_page_fault+0x1b6/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   ? smb2_query_reparse_point+0x3e0/0x4c0 [cifs]
-   cifs_get_fattr+0x16e/0xa50 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0xbf/0x2b0
-   cifs_root_iget+0x163/0x5f0 [cifs]
-   cifs_smb3_do_mount+0x5bd/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7f02c08d5b1e
+Issue found with DRM igt-gpu-tools test kms_hdmi_inject@inject-audio.
 
-Fixes: 2e4564b31b64 ("smb3: add support for stat of WSL reparse points for special file types")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://gitlab.freedesktop.org/drm/intel/-/issues/9801
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Saarinen <jani.saarinen@intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231208132127.2438067-3-kai.vehmanen@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ sound/pci/hda/patch_hdmi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3001,7 +3001,7 @@ static int smb2_query_reparse_point(cons
- 	struct kvec *rsp_iov;
- 	struct smb2_ioctl_rsp *ioctl_rsp;
- 	struct reparse_data_buffer *reparse_buf;
--	u32 plen;
-+	u32 off, count, len;
- 
- 	cifs_dbg(FYI, "%s: path: %s\n", __func__, full_path);
- 
-@@ -3082,16 +3082,22 @@ static int smb2_query_reparse_point(cons
- 	 */
- 	if (rc == 0) {
- 		/* See MS-FSCC 2.3.23 */
-+		off = le32_to_cpu(ioctl_rsp->OutputOffset);
-+		count = le32_to_cpu(ioctl_rsp->OutputCount);
-+		if (check_add_overflow(off, count, &len) ||
-+		    len > rsp_iov[1].iov_len) {
-+			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
-+				      __func__, off, count);
-+			rc = -EIO;
-+			goto query_rp_exit;
-+		}
- 
--		reparse_buf = (struct reparse_data_buffer *)
--			((char *)ioctl_rsp +
--			 le32_to_cpu(ioctl_rsp->OutputOffset));
--		plen = le32_to_cpu(ioctl_rsp->OutputCount);
--
--		if (plen + le32_to_cpu(ioctl_rsp->OutputOffset) >
--		    rsp_iov[1].iov_len) {
--			cifs_tcon_dbg(FYI, "srv returned invalid ioctl len: %d\n",
--				 plen);
-+		reparse_buf = (void *)((u8 *)ioctl_rsp + off);
-+		len = sizeof(*reparse_buf);
-+		if (count < len ||
-+		    count < le16_to_cpu(reparse_buf->ReparseDataLength) + len) {
-+			cifs_tcon_dbg(VFS, "%s: invalid ioctl: off=%d count=%d\n",
-+				      __func__, off, count);
- 			rc = -EIO;
- 			goto query_rp_exit;
- 		}
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1964,6 +1964,8 @@ static const struct snd_pci_quirk force_
+ 	SND_PCI_QUIRK(0x103c, 0x871a, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8715, "HP", 1),
++	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
++	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
 
 
 
