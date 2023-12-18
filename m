@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-7212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BE281716F
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D58817102
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71395283481
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA52A1C22DF9
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA241D146;
-	Mon, 18 Dec 2023 13:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F5F1D123;
+	Mon, 18 Dec 2023 13:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcqzTpeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0X54UY2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A7E1D127;
-	Mon, 18 Dec 2023 13:57:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E1DC433C7;
-	Mon, 18 Dec 2023 13:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C08B14F63;
+	Mon, 18 Dec 2023 13:53:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F89AC433C8;
+	Mon, 18 Dec 2023 13:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907865;
-	bh=NkDxstMdZ8qr8IOELe3OtjbaqV2oazNIzJnNAz7r7iA=;
+	s=korg; t=1702907611;
+	bh=Vr8Hg21nclFthbK9PXL19BZ2j853ZwhD1P8zBx15T70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RcqzTpeUnRWem9REAI2vwakiVVK+EKeMLI+nDu/p728NkAxDp2bkoKd7HBTgy1jsH
-	 iUNrPQrrjOlRKbUPWpH4xuupVSeDDgYelOp/iHqF1rx7AlRrdXKREjJL/ayHaXEtx5
-	 xf49m9RG9E9QuPlMrV6FK0ZkEOiJ+e4guuaj1qfc=
+	b=L0X54UY2wwz3SE4yMvAaLjfZeW78N8/zL4/xcbvfD5KQOIpj59TrDlqzCrH40xylJ
+	 YG6OJnPVEQEyqRjQc+FPgF4NUhPm3O+dar10THJI0e6C7p5hvocpaU7ThK7gvxih/D
+	 MIMeddvS+qDIgDM7UDmbrksnIzQURIf2n8bMklsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	SImon Glass <sjg@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>,
+	Coly Li <colyli@suse.de>,
+	Eric Wheeler <bcache@lists.ewheeler.net>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/106] arm64: add dependency between vmlinuz.efi and Image
+Subject: [PATCH 4.19 19/36] bcache: avoid oversize memory allocation by small stripe_size
 Date: Mon, 18 Dec 2023 14:51:29 +0100
-Message-ID: <20231218135058.272174921@linuxfoundation.org>
+Message-ID: <20231218135042.529383681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,81 +55,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit c0a8574204054effad6ac83cc75c02576e2985fe ]
+[ Upstream commit baf8fb7e0e5ec54ea0839f0c534f2cdcd79bea9c ]
 
-A common issue in Makefile is a race in parallel building.
+Arraies bcache->stripe_sectors_dirty and bcache->full_dirty_stripes are
+used for dirty data writeback, their sizes are decided by backing device
+capacity and stripe size. Larger backing device capacity or smaller
+stripe size make these two arraies occupies more dynamic memory space.
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
+Currently bcache->stripe_size is directly inherited from
+queue->limits.io_opt of underlying storage device. For normal hard
+drives, its limits.io_opt is 0, and bcache sets the corresponding
+stripe_size to 1TB (1<<31 sectors), it works fine 10+ years. But for
+devices do declare value for queue->limits.io_opt, small stripe_size
+(comparing to 1TB) becomes an issue for oversize memory allocations of
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes, while the
+capacity of hard drives gets much larger in recent decade.
 
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
+For example a raid5 array assembled by three 20TB hardrives, the raid
+device capacity is 40TB with typical 512KB limits.io_opt. After the math
+calculation in bcache code, these two arraies will occupy 400MB dynamic
+memory. Even worse Andrea Tomassetti reports that a 4KB limits.io_opt is
+declared on a new 2TB hard drive, then these two arraies request 2GB and
+512MB dynamic memory from kzalloc(). The result is that bcache device
+always fails to initialize on his system.
 
-A similar symptom occurs with the following command:
+To avoid the oversize memory allocation, bcache->stripe_size should not
+directly inherited by queue->limits.io_opt from the underlying device.
+This patch defines BCH_MIN_STRIPE_SZ (4MB) as minimal bcache stripe size
+and set bcache device's stripe size against the declared limits.io_opt
+value from the underlying storage device,
+- If the declared limits.io_opt > BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size directly by this limits.io_opt value.
+- If the declared limits.io_opt < BCH_MIN_STRIPE_SZ, bcache device will
+  set its stripe size by a value multiplying limits.io_opt and euqal or
+  large than BCH_MIN_STRIPE_SZ.
 
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    OBJCOPY arch/arm64/boot/Image
-    AS      arch/arm64/boot/zboot-header.o
-    PAD     arch/arm64/boot/vmlinux.bin
-    GZIP    arch/arm64/boot/vmlinuz
-    OBJCOPY arch/arm64/boot/vmlinuz.o
-    LD      arch/arm64/boot/vmlinuz.efi.elf
-    OBJCOPY arch/arm64/boot/vmlinuz.efi
+Then the minimal stripe size of a bcache device will always be >= 4MB.
+For a 40TB raid5 device with 512KB limits.io_opt, memory occupied by
+bcache->stripe_sectors_dirty and bcache->full_dirty_stripes will be 50MB
+in total. For a 2TB hard drive with 4KB limits.io_opt, memory occupied
+by these two arraies will be 2.5MB in total.
 
-The log "OBJCOPY arch/arm64/boot/Image" is displayed twice.
+Such mount of memory allocated for bcache->stripe_sectors_dirty and
+bcache->full_dirty_stripes is reasonable for most of storage devices.
 
-It indicates that two threads simultaneously enter arch/arm64/boot/
-and write to arch/arm64/boot/Image.
-
-It occasionally leads to a build failure:
-
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    PAD     arch/arm64/boot/vmlinux.bin
-  truncate: Invalid number: 'arch/arm64/boot/vmlinux.bin'
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/arm64/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/arm64/boot/vmlinux.bin'
-  make[1]: *** [arch/arm64/Makefile:163: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
-
-vmlinuz.efi depends on Image, but such a dependency is not specified
-in arch/arm64/Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: SImon Glass <sjg@chromium.org>
-Link: https://lore.kernel.org/r/20231119053234.2367621-1-masahiroy@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Andrea Tomassetti <andrea.tomassetti-opensource@devo.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reviewed-by: Eric Wheeler <bcache@lists.ewheeler.net>
+Link: https://lore.kernel.org/r/20231120052503.6122-2-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/bcache/bcache.h | 1 +
+ drivers/md/bcache/super.c  | 2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 5e56d26a22398..c9496539c3351 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -157,7 +157,7 @@ endif
+diff --git a/drivers/md/bcache/bcache.h b/drivers/md/bcache/bcache.h
+index e81d783109847..d0311e3065caf 100644
+--- a/drivers/md/bcache/bcache.h
++++ b/drivers/md/bcache/bcache.h
+@@ -265,6 +265,7 @@ struct bcache_device {
+ #define BCACHE_DEV_WB_RUNNING		3
+ #define BCACHE_DEV_RATE_DW_RUNNING	4
+ 	int			nr_stripes;
++#define BCH_MIN_STRIPE_SZ		((4 << 20) >> SECTOR_SHIFT)
+ 	unsigned int		stripe_size;
+ 	atomic_t		*stripe_sectors_dirty;
+ 	unsigned long		*full_dirty_stripes;
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 4b076f7f184be..8b4a2bd6b57c9 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -807,6 +807,8 @@ static int bcache_device_init(struct bcache_device *d, unsigned int block_size,
  
- all:	$(notdir $(KBUILD_IMAGE))
+ 	if (!d->stripe_size)
+ 		d->stripe_size = 1 << 31;
++	else if (d->stripe_size < BCH_MIN_STRIPE_SZ)
++		d->stripe_size = roundup(BCH_MIN_STRIPE_SZ, d->stripe_size);
  
--
-+vmlinuz.efi: Image
- Image vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+ 	d->nr_stripes = DIV_ROUND_UP_ULL(sectors, d->stripe_size);
  
 -- 
 2.43.0
