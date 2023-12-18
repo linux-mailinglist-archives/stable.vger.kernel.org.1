@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-7371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0186081723E
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C9681714E
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A27DA280E70
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3F2283583
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01233D546;
-	Mon, 18 Dec 2023 14:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1151D15E;
+	Mon, 18 Dec 2023 13:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pEo2oN77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/Jn2MyD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9772F3A1D8;
-	Mon, 18 Dec 2023 14:04:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EE3C433C8;
-	Mon, 18 Dec 2023 14:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D411D150;
+	Mon, 18 Dec 2023 13:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD99C433C7;
+	Mon, 18 Dec 2023 13:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908289;
-	bh=I/pIuodFpSYiiZo7K0+8Ylb5kANmWTXczUAL/ZH+Sig=;
+	s=korg; t=1702907783;
+	bh=4IJn61JuwPiZCoTTD+VF3dzzZ4bCO/YDRIc1sFpIlzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pEo2oN77Bn1elKGBJQ2wgUBMHLnVdgBL2p0bW9GnXV7C+0aSLc8f9Hl6XtZb48fcJ
-	 AEgsXw1Y6SxNe0dZx/fvIH2Q6QZv8eaJv6f1n8DlqLksJVhD4QVJj/vO1tpS9khSu0
-	 jmMf4TWqt7geixip3s/3yxQkLKRPCmFFAVtzn/KU=
+	b=p/Jn2MyDAip4HUympu3A2IafspmsIIdGXMF+8iWyesk6tRuJJvAXlUnpoIASo0gEC
+	 QtYJq4dgB5UWEoQTdVX4jirx49skWTU2DFN5cFvGtmVbrEnzg73uPWfIwdyQPQQxVj
+	 w5ppZNK0YRVT0f8JRuLRPwqVuALG6spzbSHtqY4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/166] bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Saarinen <jani.saarinen@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 045/106] ALSA: hda/hdmi: add force-connect quirk for NUC5CPYB
 Date: Mon, 18 Dec 2023 14:50:59 +0100
-Message-ID: <20231218135109.145333684@linuxfoundation.org>
+Message-ID: <20231218135056.946182738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit 31f5b956a197d4ec25c8a07cb3a2ab69d0c0b82f ]
+commit 3b1ff57e24a7bcd2e2a8426dd2013a80d1fa96eb upstream.
 
-This patch adds code comments to bch_btree_node_get() and
-__bch_btree_node_alloc() that NULL pointer will not be returned and it
-is unnecessary to check NULL pointer by the callers of these routines.
+Add one more older NUC model that requires quirk to force all pins to be
+connected. The display codec pins are not registered properly without
+the force-connect quirk. The codec will report only one pin as having
+external connectivity, but i915 finds all three connectors on the
+system, so the two drivers are not in sync.
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-10-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Issue found with DRM igt-gpu-tools test kms_hdmi_inject@inject-audio.
+
+Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/3
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Saarinen <jani.saarinen@intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231208132127.2438067-2-kai.vehmanen@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/hda/patch_hdmi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index 3084c57248f69..b709c2fde782a 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -995,6 +995,9 @@ static struct btree *mca_alloc(struct cache_set *c, struct btree_op *op,
-  *
-  * The btree node will have either a read or a write lock held, depending on
-  * level and op->lock.
-+ *
-+ * Note: Only error code or btree pointer will be returned, it is unncessary
-+ *       for callers to check NULL pointer.
-  */
- struct btree *bch_btree_node_get(struct cache_set *c, struct btree_op *op,
- 				 struct bkey *k, int level, bool write,
-@@ -1106,6 +1109,10 @@ static void btree_node_free(struct btree *b)
- 	mutex_unlock(&b->c->bucket_lock);
- }
- 
-+/*
-+ * Only error code or btree pointer will be returned, it is unncessary for
-+ * callers to check NULL pointer.
-+ */
- struct btree *__bch_btree_node_alloc(struct cache_set *c, struct btree_op *op,
- 				     int level, bool wait,
- 				     struct btree *parent)
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1994,6 +1994,7 @@ static const struct snd_pci_quirk force_
+ 	SND_PCI_QUIRK(0x103c, 0x8711, "HP", 1),
+ 	SND_PCI_QUIRK(0x103c, 0x8715, "HP", 1),
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
+ };
 
 
 
