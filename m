@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AADC817175
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA5817245
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FDA283569
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1F311C24DD1
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413711D127;
-	Mon, 18 Dec 2023 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CA75A867;
+	Mon, 18 Dec 2023 14:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ2Pu3fL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdxWli82"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060D5129EC8;
-	Mon, 18 Dec 2023 13:57:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB95C433C7;
-	Mon, 18 Dec 2023 13:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5C742366;
+	Mon, 18 Dec 2023 14:05:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61B1C433C7;
+	Mon, 18 Dec 2023 14:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907878;
-	bh=10UncFFhK69rKroDb+8MjGXFC0vVUlhZV8ajIaAQ2pU=;
+	s=korg; t=1702908303;
+	bh=GuERUbGj7NuhNZz4euKiq6D2uiCq+EvcIF2cuwean1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJ2Pu3fLQx2xDdUIjflpm7nX2NuSyvA+SUOTsr0iSLLlnmue+spq5PgmOFhpuhFEI
-	 Sqm2c54SWsqr0DzvuOBIID0nmt63BQsTWxmBAvmoB2DEMRehsmwZpxlUjPQW7qhcIb
-	 eORTuvn3oG4q8virGxWgeaM9HCVvu6L1kpfWzLBY=
+	b=KdxWli82L5ApxBeM6iraI89ZDmkCZ4OXMtUB3Mow/GksrryqTqpi+uehKFh6dUm9M
+	 6Oeic9wjX+eDeSmDD/cktuoBShMRJ3K9WoNIlbqEXlmxjj40Ywyi6B2qSVR0UO1t0X
+	 d0IantvMtoAjOZsG3a7k9o1OgAfMpvp7CfEzCkfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 080/106] ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 128/166] soundwire: stream: fix NULL pointer dereference for multi_link
 Date: Mon, 18 Dec 2023 14:51:34 +0100
-Message-ID: <20231218135058.489389353@linuxfoundation.org>
+Message-ID: <20231218135110.806856369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
+References: <20231218135104.927894164@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,80 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 2dcf5fde6dffb312a4bfb8ef940cea2d1f402e32 upstream.
+commit e199bf52ffda8f98f129728d57244a9cd9ad5623 upstream.
 
-For files with logical blocks close to EXT_MAX_BLOCKS, the file size
-predicted in ext4_mb_normalize_request() may exceed EXT_MAX_BLOCKS.
-This can cause some blocks to be preallocated that will not be used.
-And after [Fixes], the following issue may be triggered:
+If bus is marked as multi_link, but number of masters in the stream is
+not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
+bus->hw_sync_min_links), bank switching should not happen.  The first
+part of do_bank_switch() code properly takes these conditions into
+account, but second part (sdw_ml_sync_bank_switch()) relies purely on
+bus->multi_link property.  This is not balanced and leads to NULL
+pointer dereference:
 
-=========================================================
- kernel BUG at fs/ext4/mballoc.c:4653!
- Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
- CPU: 1 PID: 2357 Comm: xfs_io 6.7.0-rc2-00195-g0f5cc96c367f
- Hardware name: linux,dummy-virt (DT)
- pc : ext4_mb_use_inode_pa+0x148/0x208
- lr : ext4_mb_use_inode_pa+0x98/0x208
- Call trace:
-  ext4_mb_use_inode_pa+0x148/0x208
-  ext4_mb_new_inode_pa+0x240/0x4a8
-  ext4_mb_use_best_found+0x1d4/0x208
-  ext4_mb_try_best_found+0xc8/0x110
-  ext4_mb_regular_allocator+0x11c/0xf48
-  ext4_mb_new_blocks+0x790/0xaa8
-  ext4_ext_map_blocks+0x7cc/0xd20
-  ext4_map_blocks+0x170/0x600
-  ext4_iomap_begin+0x1c0/0x348
-=========================================================
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+  ...
+  Call trace:
+   wait_for_completion_timeout+0x124/0x1f0
+   do_bank_switch+0x370/0x6f8
+   sdw_prepare_stream+0x2d0/0x438
+   qcom_snd_sdw_prepare+0xa0/0x118
+   sm8450_snd_prepare+0x128/0x148
+   snd_soc_link_prepare+0x5c/0xe8
+   __soc_pcm_prepare+0x28/0x1ec
+   dpcm_be_dai_prepare+0x1e0/0x2c0
+   dpcm_fe_dai_prepare+0x108/0x28c
+   snd_pcm_do_prepare+0x44/0x68
+   snd_pcm_action_single+0x54/0xc0
+   snd_pcm_action_nonatomic+0xe4/0xec
+   snd_pcm_prepare+0xc4/0x114
+   snd_pcm_common_ioctl+0x1154/0x1cc0
+   snd_pcm_ioctl+0x54/0x74
 
-Here is a calculation when adjusting ac_b_ex in ext4_mb_new_inode_pa():
-
-	ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
-	if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
-		goto adjust_bex;
-
-The problem is that when orig_goal_end is subtracted from ac_b_ex.fe_len
-it is still greater than EXT_MAX_BLOCKS, which causes ex.fe_logical to
-overflow to a very small value, which ultimately triggers a BUG_ON in
-ext4_mb_new_inode_pa() because pa->pa_free < len.
-
-The last logical block of an actual write request does not exceed
-EXT_MAX_BLOCKS, so in ext4_mb_normalize_request() also avoids normalizing
-the last logical block to exceed EXT_MAX_BLOCKS to avoid the above issue.
-
-The test case in [Link] can reproduce the above issue with 64k block size.
-
-Link: https://patchwork.kernel.org/project/fstests/list/?series=804003
-Cc:  <stable@kernel.org> # 6.4
-Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231127063313.3734294-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231124180136.390621-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soundwire/stream.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4110,6 +4110,10 @@ ext4_mb_normalize_request(struct ext4_al
- 	start = max(start, rounddown(ac->ac_o_ex.fe_logical,
- 			(ext4_lblk_t)EXT4_BLOCKS_PER_GROUP(ac->ac_sb)));
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -742,14 +742,15 @@ error_1:
+  * sdw_ml_sync_bank_switch: Multilink register bank switch
+  *
+  * @bus: SDW bus instance
++ * @multi_link: whether this is a multi-link stream with hardware-based sync
+  *
+  * Caller function should free the buffers on error
+  */
+-static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
++static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
+ {
+ 	unsigned long time_left;
  
-+	/* avoid unnecessary preallocation that may trigger assertions */
-+	if (start + size > EXT_MAX_BLOCKS)
-+		size = EXT_MAX_BLOCKS - start;
-+
- 	/* don't cover already allocated blocks in selected range */
- 	if (ar->pleft && start <= ar->lleft) {
- 		size -= ar->lleft + 1 - start;
+-	if (!bus->multi_link)
++	if (!multi_link)
+ 		return 0;
+ 
+ 	/* Wait for completion of transfer */
+@@ -847,7 +848,7 @@ static int do_bank_switch(struct sdw_str
+ 			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
+ 
+ 		/* Check if bank switch was successful */
+-		ret = sdw_ml_sync_bank_switch(bus);
++		ret = sdw_ml_sync_bank_switch(bus, multi_link);
+ 		if (ret < 0) {
+ 			dev_err(bus->dev,
+ 				"multi link bank switch failed: %d\n", ret);
 
 
 
