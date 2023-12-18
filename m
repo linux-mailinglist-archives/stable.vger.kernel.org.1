@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-7559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DC9817316
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:14:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9133E8172CD
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF5E4B223AF
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:14:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B67EC1C24EAE
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F353A1D0;
-	Mon, 18 Dec 2023 14:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5493A1C0;
+	Mon, 18 Dec 2023 14:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOSQpgWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZOpS6+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB2637884;
-	Mon, 18 Dec 2023 14:13:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D91C433C8;
-	Mon, 18 Dec 2023 14:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8335B3A1A8;
+	Mon, 18 Dec 2023 14:10:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071BDC433C8;
+	Mon, 18 Dec 2023 14:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908795;
-	bh=d3Iu5H+jAW8V/g0yZsvMPtgAo3EA3QtEycMXmEkDavE=;
+	s=korg; t=1702908618;
+	bh=Snf4VrL1pJJrqH8bQthvtTXJC7aApADSqW897w4Ky6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOSQpgWVEjSXtywaHtq3K7JXqpRq+3aXgrqQYWLGfDM1OAyiR6XbpQY8UtKZ8Y7EX
-	 e6+NnNvw4+5ztKNv+cY9flv2smCEuP75k7R8w7UGuyF3VRQVSrwtugTrhnB10sxZmm
-	 IZSdQYi4fM9vNpRyf7KMT4q/m1TzeYyhQSsJzm6U=
+	b=nZOpS6+Sczlvfy9WOzfNrqQ4kksDug5bzn3LfCJ8WRia+VJlGwsDLTBu3nS/m/XOw
+	 JkzcTdqH5pNdK1gKWeLJ0C6IQNq/s4u1rlyJwJZBdvjqOC0326tV1Pt5WOLRbSaTGG
+	 dRWfiEFJj4hYKBDHXEXXl1BmPgiIrXg3dX2DT7JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Igor Russkikh <irusskikh@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/83] net: atlantic: fix double free in ring reinit logic
+Subject: [PATCH 5.4 03/40] qca_debug: Prevent crash on TX ring changes
 Date: Mon, 18 Dec 2023 14:51:58 +0100
-Message-ID: <20231218135051.382476600@linuxfoundation.org>
+Message-ID: <20231218135042.892561459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135049.738602288@linuxfoundation.org>
-References: <20231218135049.738602288@linuxfoundation.org>
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+References: <20231218135042.748715259@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +53,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Russkikh <irusskikh@marvell.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 7bb26ea74aa86fdf894b7dbd8c5712c5b4187da7 ]
+[ Upstream commit f4e6064c97c050bd9904925ff7d53d0c9954fc7b ]
 
-Driver has a logic leak in ring data allocation/free,
-where double free may happen in aq_ring_free if system is under
-stress and driver init/deinit is happening.
+The qca_spi driver stop and restart the SPI kernel thread
+(via ndo_stop & ndo_open) in case of TX ring changes. This is
+a big issue because it allows userspace to prevent restart of
+the SPI kernel thread (via signals). A subsequent change of
+TX ring wrongly assume a valid spi_thread pointer which result
+in a crash.
 
-The probability is higher to get this during suspend/resume cycle.
+So prevent this by stopping the network traffic handling and
+temporary park the SPI thread.
 
-Verification was done simulating same conditions with
-
-    stress -m 2000 --vm-bytes 20M --vm-hang 10 --backoff 1000
-    while true; do sudo ifconfig enp1s0 down; sudo ifconfig enp1s0 up; done
-
-Fixed by explicitly clearing pointers to NULL on deallocation
-
-Fixes: 018423e90bee ("net: ethernet: aquantia: Add ring support code")
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/netdev/CAHk-=wiZZi7FcvqVSUirHBjx0bBUZ4dFrMDVLc3+3HCrtq0rBA@mail.gmail.com/
-Signed-off-by: Igor Russkikh <irusskikh@marvell.com>
-Link: https://lore.kernel.org/r/20231213094044.22988-1-irusskikh@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c |  9 ++++-----
+ drivers/net/ethernet/qualcomm/qca_spi.c   | 12 ++++++++++++
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-index e9c6f1fa0b1a7..98e8997f80366 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
-@@ -577,11 +577,14 @@ void aq_ring_free(struct aq_ring_s *self)
- 		return;
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 702aa217a27ad..4c6c1792fdc77 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -258,7 +258,6 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ static int
+ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+-	const struct net_device_ops *ops = dev->netdev_ops;
+ 	struct qcaspi *qca = netdev_priv(dev);
  
- 	kfree(self->buff_ring);
-+	self->buff_ring = NULL;
+ 	if ((ring->rx_pending) ||
+@@ -266,14 +265,14 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
  
--	if (self->dx_ring)
-+	if (self->dx_ring) {
- 		dma_free_coherent(aq_nic_get_dev(self->aq_nic),
- 				  self->size * self->dx_size, self->dx_ring,
- 				  self->dx_ring_pa);
-+		self->dx_ring = NULL;
-+	}
+-	if (netif_running(dev))
+-		ops->ndo_stop(dev);
++	if (qca->spi_thread)
++		kthread_park(qca->spi_thread);
+ 
+ 	qca->txr.count = max_t(u32, ring->tx_pending, TX_RING_MIN_LEN);
+ 	qca->txr.count = min_t(u16, qca->txr.count, TX_RING_MAX_LEN);
+ 
+-	if (netif_running(dev))
+-		ops->ndo_open(dev);
++	if (qca->spi_thread)
++		kthread_unpark(qca->spi_thread);
+ 
+ 	return 0;
  }
- 
- unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data)
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index db6817de24a14..04a7185e440db 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -573,6 +573,18 @@ qcaspi_spi_thread(void *data)
+ 	netdev_info(qca->net_dev, "SPI thread created\n");
+ 	while (!kthread_should_stop()) {
+ 		set_current_state(TASK_INTERRUPTIBLE);
++		if (kthread_should_park()) {
++			netif_tx_disable(qca->net_dev);
++			netif_carrier_off(qca->net_dev);
++			qcaspi_flush_tx_ring(qca);
++			kthread_parkme();
++			if (qca->sync == QCASPI_SYNC_READY) {
++				netif_carrier_on(qca->net_dev);
++				netif_wake_queue(qca->net_dev);
++			}
++			continue;
++		}
++
+ 		if ((qca->intr_req == qca->intr_svc) &&
+ 		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
 -- 
 2.43.0
 
