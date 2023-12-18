@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-7229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F5B817187
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:58:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5093A8170E3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C73C7B2084C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:58:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013E5283B58
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105DC1D137;
-	Mon, 18 Dec 2023 13:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B561D13B;
+	Mon, 18 Dec 2023 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvcJbzJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKcSQc/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAE6101D4;
-	Mon, 18 Dec 2023 13:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12463C433C8;
-	Mon, 18 Dec 2023 13:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50A11D126;
+	Mon, 18 Dec 2023 13:51:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2115C433C8;
+	Mon, 18 Dec 2023 13:51:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907911;
-	bh=XC/MHePzhWvDchayA8T9D3ZGOEe0d88NLs06X3vlzuQ=;
+	s=korg; t=1702907517;
+	bh=hlkFBeN0IKnfZ5tGOhLZDm5rxX7ecK9wkg8kjZOLDoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvcJbzJ8Ue0wbkfuwAhH0NL1mTGY547f7bbhDgcNMM11K8JFz8acclVbdfsqNalmN
-	 oglqSA7mhMVwPztrXaVSVHsQ7OqyMnhkPyvOiXcJuOb7Y+XewLxo7s4hbfP9Wb12bA
-	 19B7eIAKibXvzcKC7jvQ7Akq5GktnaZcfD9aTC/o=
+	b=RKcSQc/9yegoPwpdqCr6C7VMcjaOacmrTJvPAMeudb0r4M4eAx+ZCyKUR7iBz5pMA
+	 rb27E5XBnhAaDSDQpnYZWFBMNzucxPvcDBTrP/bAw/cb3puR39cytCCGNhfgXA0MAo
+	 KnC4LRYixPFYWMiy/H4F8x7JQcW2PvIMPrpog1eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/106] selftests/bpf: fix bpf_loop_bench for new callback verification scheme
+Subject: [PATCH 4.14 16/26] platform/x86: intel_telemetry: Fix kernel doc descriptions
 Date: Mon, 18 Dec 2023 14:51:18 +0100
-Message-ID: <20231218135057.787712268@linuxfoundation.org>
+Message-ID: <20231218135041.258632145@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135040.665690087@linuxfoundation.org>
+References: <20231218135040.665690087@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,86 +56,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f40bfd1679446b22d321e64a1fa98b7d07d2be08 ]
+[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
 
-This is a preparatory change. A follow-up patch "bpf: verify callbacks
-as if they are called unknown number of times" changes logic for
-callbacks handling. While previously callbacks were verified as a
-single function call, new scheme takes into account that callbacks
-could be executed unknown number of times.
+LKP found issues with a kernel doc in the driver:
 
-This has dire implications for bpf_loop_bench:
+core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
+core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
 
-    SEC("fentry/" SYS_PREFIX "sys_getpgid")
-    int benchmark(void *ctx)
-    {
-            for (int i = 0; i < 1000; i++) {
-                    bpf_loop(nr_loops, empty_callback, NULL, 0);
-                    __sync_add_and_fetch(&hits, nr_loops);
-            }
-            return 0;
-    }
+It looks like it were copy'n'paste typos when these descriptions
+had been introduced. Fix the typos.
 
-W/o callbacks change verifier sees it as a 1000 calls to
-empty_callback(). However, with callbacks change things become
-exponential:
-- i=0: state exploring empty_callback is scheduled with i=0 (a);
-- i=1: state exploring empty_callback is scheduled with i=1;
-  ...
-- i=999: state exploring empty_callback is scheduled with i=999;
-- state (a) is popped from stack;
-- i=1: state exploring empty_callback is scheduled with i=1;
-  ...
-
-Avoid this issue by rewriting outer loop as bpf_loop().
-Unfortunately, this adds a function call to a loop at runtime, which
-negatively affects performance:
-
-            throughput               latency
-   before:  149.919 ± 0.168 M ops/s, 6.670 ns/op
-   after :  137.040 ± 0.187 M ops/s, 7.297 ns/op
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231121020701.26440-4-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
+Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/bpf_loop_bench.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel_telemetry_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/bpf_loop_bench.c b/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
-index 4ce76eb064c41..d461746fd3c1e 100644
---- a/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
-+++ b/tools/testing/selftests/bpf/progs/bpf_loop_bench.c
-@@ -15,13 +15,16 @@ static int empty_callback(__u32 index, void *data)
- 	return 0;
- }
- 
-+static int outer_loop(__u32 index, void *data)
-+{
-+	bpf_loop(nr_loops, empty_callback, NULL, 0);
-+	__sync_add_and_fetch(&hits, nr_loops);
-+	return 0;
-+}
-+
- SEC("fentry/" SYS_PREFIX "sys_getpgid")
- int benchmark(void *ctx)
- {
--	for (int i = 0; i < 1000; i++) {
--		bpf_loop(nr_loops, empty_callback, NULL, 0);
--
--		__sync_add_and_fetch(&hits, nr_loops);
--	}
-+	bpf_loop(1000, outer_loop, NULL, 0);
- 	return 0;
- }
+diff --git a/drivers/platform/x86/intel_telemetry_core.c b/drivers/platform/x86/intel_telemetry_core.c
+index 0d4c3808a6d89..a0595fcd945ea 100644
+--- a/drivers/platform/x86/intel_telemetry_core.c
++++ b/drivers/platform/x86/intel_telemetry_core.c
+@@ -111,7 +111,7 @@ static const struct telemetry_core_ops telm_defpltops = {
+ /**
+  * telemetry_update_events() - Update telemetry Configuration
+  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
+- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
++ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
+  *
+  * This API updates the IOSS & PSS Telemetry configuration. Old config
+  * is overwritten. Call telemetry_reset_events when logging is over
+@@ -185,7 +185,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
+ /**
+  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
+  * @pss_evtconfig: Pointer to PSS related configuration.
+- * @pss_evtconfig: Pointer to IOSS related configuration.
++ * @ioss_evtconfig: Pointer to IOSS related configuration.
+  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
+  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
+  *
 -- 
 2.43.0
 
