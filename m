@@ -1,206 +1,137 @@
-Return-Path: <stable+bounces-7081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C044D8170DA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:51:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223E4817152
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1281F23220
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:51:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 479F01C23F10
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6966C1D13A;
-	Mon, 18 Dec 2023 13:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2271D127;
+	Mon, 18 Dec 2023 13:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3DtA0nl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgkF0vg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213431D12F;
-	Mon, 18 Dec 2023 13:51:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA44C433C8;
-	Mon, 18 Dec 2023 13:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7961129EFB;
+	Mon, 18 Dec 2023 13:56:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03095C433C7;
+	Mon, 18 Dec 2023 13:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907495;
-	bh=eZKmGMJ7sIrZOFHe3BiyHmtwQb8aCdsQ155Btda4VcU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=J3DtA0nlwasLFxiVBY8KXWrSQwRb/VXkOf+RjrNe1dwDm0478d4CoW4oxbLvCvkSd
-	 H2wEfhKrxOClIKOxiPfy7LsDqgh5kX0MV1vg54cKXHAcF7Jl64Vwgy5/D1vYG5eZKG
-	 JxGLGmeBCt3e4x2cVyiqnK7jslpsO9bBWbKCuxAM=
+	s=korg; t=1702907791;
+	bh=/7WYOIyOSmLK4Vjl0FPZ+wnKUxLJT9N4dY/5m41mU9E=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fgkF0vg4cqdkk5cYQaOINctHvwQWU9zpOOf5DTyoG3YtMSkpEknBeR6Uh0ZlCLNlZ
+	 46oO3hCtrmCHGPqWj/7tutciKOPYdfvMbcf0/lKHRJ4+0Stk7ouhnbSBtxjPyEuonh
+	 rVlGcATuKGZLAey0fq1EfKVyd3Cbj0hyMVU3+o1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 4.14 00/26] 4.14.334-rc1 review
+	Fiona Ebner <f.ebner@proxmox.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jonathan Woithe <jwoithe@just42.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Igor Mammedov <imammedo@redhat.com>
+Subject: [PATCH 6.1 048/106] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
 Date: Mon, 18 Dec 2023 14:51:02 +0100
-Message-ID: <20231218135040.665690087@linuxfoundation.org>
+Message-ID: <20231218135057.093153125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
+References: <20231218135055.005497074@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.334-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.14.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.14.334-rc1
-X-KernelTest-Deadline: 2023-12-20T13:50+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 4.14.334 release.
-There are 26 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.334-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
-and the diffstat can be found below.
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-thanks,
+commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
 
-greg k-h
+This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
+subsequent fix to it:
 
--------------
-Pseudo-Shortlog of commits:
+  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.14.334-rc1
+40613da52b13 fixed a problem where hot-adding a device with large BARs
+failed if the bridge windows programmed by firmware were not large enough.
 
-Naveen N Rao <naveen@kernel.org>
-    powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
+only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
+of a device on a PCI root bus (common in the virt world) or firmware
+sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
+7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
 
-Naveen N Rao <naveen@kernel.org>
-    powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
+problems:
 
-Steven Rostedt (Google) <rostedt@goodmis.org>
-    ring-buffer: Fix memory leak of free page
+  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
+    sometimes.
 
-Florent Revest <revest@chromium.org>
-    team: Fix use-after-free when an option instance allocation fails
+  - Dongli reported a similar problem with hot-add of SCSI disks.
 
-Baokun Li <libaokun1@huawei.com>
-    ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+  - Jonathan reported a console freeze during boot on bare metal due to an
+    error in radeon GPU initialization.
 
-Denis Benato <benato.denis96@gmail.com>
-    HID: hid-asus: add const to read-only outgoing usb buffer
+Revert both patches to avoid adding these problems.  This means we will
+again see the problems with hot-adding devices with large BARs and the NULL
+pointer dereferences and suspend/resume issues that 40613da52b13 and
+cc22522fd55e were intended to fix.
 
-Lech Perczak <lech.perczak@gmail.com>
-    net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
+Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+Reported-by: Fiona Ebner <f.ebner@proxmox.com>
+Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
+Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
+Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
+Reported-by: Jonathan Woithe <jwoithe@just42.net>
+Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-Linus Torvalds <torvalds@linux-foundation.org>
-    asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
-
-Aoba K <nexp_0x17@outlook.com>
-    HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
-
-Denis Benato <benato.denis96@gmail.com>
-    HID: hid-asus: reset the backlight brightness level on resume
-
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-    platform/x86: intel_telemetry: Fix kernel doc descriptions
-
-Coly Li <colyli@suse.de>
-    bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
-
-Ming Lei <ming.lei@redhat.com>
-    blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
-
-Jens Axboe <axboe@kernel.dk>
-    cred: switch to using atomic_long_t
-
-Hyunwoo Kim <v4bel@theori.io>
-    appletalk: Fix Use-After-Free in atalk_ioctl
-
-Nikolay Kuratov <kniv@yandex-team.ru>
-    vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
-
-Yusong Gao <a869920004@gmail.com>
-    sign-file: Fix incorrect return values check
-
-Dong Chenchen <dongchenchen2@huawei.com>
-    net: Remove acked SYN flag from packet in the transmit queue correctly
-
-Dinghao Liu <dinghao.liu@zju.edu.cn>
-    qed: Fix a potential use-after-free in qed_cxt_tables_alloc
-
-Hyunwoo Kim <v4bel@theori.io>
-    net/rose: Fix Use-After-Free in rose_ioctl
-
-Hyunwoo Kim <v4bel@theori.io>
-    atm: Fix Use-After-Free in do_vcc_ioctl
-
-Chengfeng Ye <dg573847474@gmail.com>
-    atm: solos-pci: Fix potential deadlock on &tx_queue_lock
-
-Chengfeng Ye <dg573847474@gmail.com>
-    atm: solos-pci: Fix potential deadlock on &cli_queue_lock
-
-Stefan Wahren <wahrenst@gmx.net>
-    qca_spi: Fix reset behavior
-
-Stefan Wahren <wahrenst@gmx.net>
-    qca_debug: Fix ethtool -G iface tx behavior
-
-Stefan Wahren <wahrenst@gmx.net>
-    qca_debug: Prevent crash on TX ring changes
-
-
--------------
-
-Diffstat:
-
- Makefile                                       |  4 +-
- arch/powerpc/kernel/trace/ftrace_64_mprofile.S |  9 +++-
- block/blk-throttle.c                           |  2 +
- drivers/atm/solos-pci.c                        |  8 ++--
- drivers/hid/hid-asus.c                         | 25 ++++++++--
- drivers/hid/hid-multitouch.c                   |  5 ++
- drivers/md/bcache/btree.c                      |  7 +++
- drivers/net/ethernet/qlogic/qed/qed_cxt.c      |  1 +
- drivers/net/ethernet/qualcomm/qca_debug.c      | 17 +++----
- drivers/net/ethernet/qualcomm/qca_spi.c        | 20 +++++++-
- drivers/net/team/team.c                        |  4 +-
- drivers/net/usb/qmi_wwan.c                     |  1 +
- drivers/platform/x86/intel_telemetry_core.c    |  4 +-
- fs/ext4/mballoc.c                              |  4 ++
- include/asm-generic/qspinlock.h                |  2 +-
- include/linux/cred.h                           |  6 +--
- kernel/cred.c                                  | 66 +++++++++++++-------------
- kernel/trace/ring_buffer.c                     |  2 +
- net/appletalk/ddp.c                            |  9 ++--
- net/atm/ioctl.c                                |  7 ++-
- net/ipv4/tcp_output.c                          |  6 +++
- net/rose/af_rose.c                             |  4 +-
- net/vmw_vsock/virtio_transport_common.c        |  2 +-
- scripts/sign-file.c                            | 12 ++---
- 24 files changed, 152 insertions(+), 75 deletions(-)
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -504,15 +504,12 @@ static void enable_slot(struct acpiphp_s
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					if (pci_is_root_bus(bus))
+-						__pci_bus_size_bridges(dev->subordinate, &add_list);
++					__pci_bus_size_bridges(dev->subordinate,
++							       &add_list);
+ 				}
+ 			}
+ 		}
+-		if (pci_is_root_bus(bus))
+-			__pci_bus_assign_resources(bus, &add_list, NULL);
+-		else
+-			pci_assign_unassigned_bridge_resources(bus->self);
++		__pci_bus_assign_resources(bus, &add_list, NULL);
+ 	}
+ 
+ 	acpiphp_sanitize_bus(bus);
 
 
 
