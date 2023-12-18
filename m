@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-7236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F54381718C
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:59:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F198170FC
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1958E1C242AA
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC6091F232D3
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272F337860;
-	Mon, 18 Dec 2023 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C04A1D123;
+	Mon, 18 Dec 2023 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohTx+hJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X8AgjWJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5E51D14F;
-	Mon, 18 Dec 2023 13:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8E5C433C7;
-	Mon, 18 Dec 2023 13:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61496129ED2;
+	Mon, 18 Dec 2023 13:53:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA19C433C7;
+	Mon, 18 Dec 2023 13:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907930;
-	bh=qBIj06KYRWNeXX8eKC3B3uUUTCDGQwt2BtEqHD/4VYc=;
+	s=korg; t=1702907586;
+	bh=98jXUuRixcb6rFI/nKOr1YGSM/bQUxNE/Qt+AAdJMtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohTx+hJlNnnN52rHsZjrc2B5fy1gi0Z6hnTY9NpVS9DhBEQuHm3eyHXPtdOcgCoNZ
-	 SdjMarzrwgmfL/MyOJDhHHRGnQtSKWf5XWki1xUSMyPpVT+WJ13Da3qXYU19dPooPX
-	 c7XJ/mNDdTZYRZWzgDTrVbP7WPxNUQk5XEfyx2Xo=
+	b=X8AgjWJA93eCkdeJiHXskBcWXvLnEn5AXA6KulysHYZ6qQZ5byDgeGGHCCD9pUvtR
+	 HRQBsS8hli0HCZoZsDIxHHXlgss6gp5917d3JnWl5BIKPQVJ85m9hxE+JfEVF+EZu9
+	 tzw5IRD37C58GW/oSUaEim8Gy3JKc4THVkTsAqnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/106] nbd: pass nbd_sock to nbd_read_reply() instead of index
+Subject: [PATCH 4.19 14/36] net: stmmac: Handle disabled MDIO busses from devicetree
 Date: Mon, 18 Dec 2023 14:51:24 +0100
-Message-ID: <20231218135058.046358475@linuxfoundation.org>
+Message-ID: <20231218135042.376149443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135041.876499958@linuxfoundation.org>
+References: <20231218135041.876499958@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,222 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Andrew Halaney <ahalaney@redhat.com>
 
-[ Upstream commit 98c598afc22d4e43c2ad91860b65996d0c099a5d ]
+[ Upstream commit e23c0d21ce9234fbc31ece35663ababbb83f9347 ]
 
-If a socket is processing ioctl 'NBD_SET_SOCK', config->socks might be
-krealloc in nbd_add_socket(), and a garbage request is received now, a UAF
-may occurs.
+Many hardware configurations have the MDIO bus disabled, and are instead
+using some other MDIO bus to talk to the MAC's phy.
 
-  T1
-  nbd_ioctl
-   __nbd_ioctl
-    nbd_add_socket
-     blk_mq_freeze_queue
-				T2
-  				recv_work
-  				 nbd_read_reply
-  				  sock_xmit
-     krealloc config->socks
-				   def config->socks
+of_mdiobus_register() returns -ENODEV in this case. Let's handle it
+gracefully instead of failing to probe the MAC.
 
-Pass nbd_sock to nbd_read_reply(). And introduce a new function
-sock_xmit_recv(), which differs from sock_xmit only in the way it get
-socket.
-
-==================================================================
-BUG: KASAN: use-after-free in sock_xmit+0x525/0x550
-Read of size 8 at addr ffff8880188ec428 by task kworker/u12:1/18779
-
-Workqueue: knbd4-recv recv_work
-Call Trace:
- __dump_stack
- dump_stack+0xbe/0xfd
- print_address_description.constprop.0+0x19/0x170
- __kasan_report.cold+0x6c/0x84
- kasan_report+0x3a/0x50
- sock_xmit+0x525/0x550
- nbd_read_reply+0xfe/0x2c0
- recv_work+0x1c2/0x750
- process_one_work+0x6b6/0xf10
- worker_thread+0xdd/0xd80
- kthread+0x30a/0x410
- ret_from_fork+0x22/0x30
-
-Allocated by task 18784:
- kasan_save_stack+0x1b/0x40
- kasan_set_track
- set_alloc_info
- __kasan_kmalloc
- __kasan_kmalloc.constprop.0+0xf0/0x130
- slab_post_alloc_hook
- slab_alloc_node
- slab_alloc
- __kmalloc_track_caller+0x157/0x550
- __do_krealloc
- krealloc+0x37/0xb0
- nbd_add_socket
- +0x2d3/0x880
- __nbd_ioctl
- nbd_ioctl+0x584/0x8e0
- __blkdev_driver_ioctl
- blkdev_ioctl+0x2a0/0x6e0
- block_ioctl+0xee/0x130
- vfs_ioctl
- __do_sys_ioctl
- __se_sys_ioctl+0x138/0x190
- do_syscall_64+0x33/0x40
- entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-Freed by task 18784:
- kasan_save_stack+0x1b/0x40
- kasan_set_track+0x1c/0x30
- kasan_set_free_info+0x20/0x40
- __kasan_slab_free.part.0+0x13f/0x1b0
- slab_free_hook
- slab_free_freelist_hook
- slab_free
- kfree+0xcb/0x6c0
- krealloc+0x56/0xb0
- nbd_add_socket+0x2d3/0x880
- __nbd_ioctl
- nbd_ioctl+0x584/0x8e0
- __blkdev_driver_ioctl
- blkdev_ioctl+0x2a0/0x6e0
- block_ioctl+0xee/0x130
- vfs_ioctl
- __do_sys_ioctl
- __se_sys_ioctl+0x138/0x190
- do_syscall_64+0x33/0x40
- entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20230911023308.3467802-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
+Signed-off-by: Andrew Halaney <ahalaney@redhat.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/20231212-b4-stmmac-handle-mdio-enodev-v2-1-600171acf79f@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index e70733c76e884..8037aaefeb2ed 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -67,6 +67,7 @@ struct nbd_sock {
- struct recv_thread_args {
- 	struct work_struct work;
- 	struct nbd_device *nbd;
-+	struct nbd_sock *nsock;
- 	int index;
- };
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+@@ -360,7 +360,11 @@ int stmmac_mdio_register(struct net_devi
+ 	new_bus->parent = priv->device;
  
-@@ -489,15 +490,9 @@ static enum blk_eh_timer_return nbd_xmit_timeout(struct request *req)
- 	return BLK_EH_DONE;
- }
- 
--/*
-- *  Send or receive packet. Return a positive value on success and
-- *  negtive value on failue, and never return 0.
-- */
--static int sock_xmit(struct nbd_device *nbd, int index, int send,
--		     struct iov_iter *iter, int msg_flags, int *sent)
-+static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
-+		       struct iov_iter *iter, int msg_flags, int *sent)
- {
--	struct nbd_config *config = nbd->config;
--	struct socket *sock = config->socks[index]->sock;
- 	int result;
- 	struct msghdr msg;
- 	unsigned int noreclaim_flag;
-@@ -539,6 +534,19 @@ static int sock_xmit(struct nbd_device *nbd, int index, int send,
- 	return result;
- }
- 
-+/*
-+ *  Send or receive packet. Return a positive value on success and
-+ *  negtive value on failure, and never return 0.
-+ */
-+static int sock_xmit(struct nbd_device *nbd, int index, int send,
-+		     struct iov_iter *iter, int msg_flags, int *sent)
-+{
-+	struct nbd_config *config = nbd->config;
-+	struct socket *sock = config->socks[index]->sock;
-+
-+	return __sock_xmit(nbd, sock, send, iter, msg_flags, sent);
-+}
-+
- /*
-  * Different settings for sk->sk_sndtimeo can result in different return values
-  * if there is a signal pending when we enter sendmsg, because reasons?
-@@ -695,7 +703,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
- 	return 0;
- }
- 
--static int nbd_read_reply(struct nbd_device *nbd, int index,
-+static int nbd_read_reply(struct nbd_device *nbd, struct socket *sock,
- 			  struct nbd_reply *reply)
- {
- 	struct kvec iov = {.iov_base = reply, .iov_len = sizeof(*reply)};
-@@ -704,7 +712,7 @@ static int nbd_read_reply(struct nbd_device *nbd, int index,
- 
- 	reply->magic = 0;
- 	iov_iter_kvec(&to, ITER_DEST, &iov, 1, sizeof(*reply));
--	result = sock_xmit(nbd, index, 0, &to, MSG_WAITALL, NULL);
-+	result = __sock_xmit(nbd, sock, 0, &to, MSG_WAITALL, NULL);
- 	if (result < 0) {
- 		if (!nbd_disconnected(nbd->config))
- 			dev_err(disk_to_dev(nbd->disk),
-@@ -828,14 +836,14 @@ static void recv_work(struct work_struct *work)
- 	struct nbd_device *nbd = args->nbd;
- 	struct nbd_config *config = nbd->config;
- 	struct request_queue *q = nbd->disk->queue;
--	struct nbd_sock *nsock;
-+	struct nbd_sock *nsock = args->nsock;
- 	struct nbd_cmd *cmd;
- 	struct request *rq;
- 
- 	while (1) {
- 		struct nbd_reply reply;
- 
--		if (nbd_read_reply(nbd, args->index, &reply))
-+		if (nbd_read_reply(nbd, nsock->sock, &reply))
- 			break;
- 
- 		/*
-@@ -870,7 +878,6 @@ static void recv_work(struct work_struct *work)
- 		percpu_ref_put(&q->q_usage_counter);
+ 	err = of_mdiobus_register(new_bus, mdio_node);
+-	if (err != 0) {
++	if (err == -ENODEV) {
++		err = 0;
++		dev_info(dev, "MDIO bus is disabled\n");
++		goto bus_register_fail;
++	} else if (err) {
+ 		dev_err(dev, "Cannot register the MDIO bus\n");
+ 		goto bus_register_fail;
  	}
- 
--	nsock = config->socks[args->index];
- 	mutex_lock(&nsock->tx_lock);
- 	nbd_mark_nsock_dead(nbd, nsock, 1);
- 	mutex_unlock(&nsock->tx_lock);
-@@ -1214,6 +1221,7 @@ static int nbd_reconnect_socket(struct nbd_device *nbd, unsigned long arg)
- 		INIT_WORK(&args->work, recv_work);
- 		args->index = i;
- 		args->nbd = nbd;
-+		args->nsock = nsock;
- 		nsock->cookie++;
- 		mutex_unlock(&nsock->tx_lock);
- 		sockfd_put(old);
-@@ -1396,6 +1404,7 @@ static int nbd_start_device(struct nbd_device *nbd)
- 		refcount_inc(&nbd->config_refs);
- 		INIT_WORK(&args->work, recv_work);
- 		args->nbd = nbd;
-+		args->nsock = config->socks[i];
- 		args->index = i;
- 		queue_work(nbd->recv_workq, &args->work);
- 	}
--- 
-2.43.0
-
 
 
 
