@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-7213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC885817170
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:57:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A45817287
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F03C2827D8
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 13:57:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AA901C22D02
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72948129EF7;
-	Mon, 18 Dec 2023 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9225A85B;
+	Mon, 18 Dec 2023 14:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM1/YbvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejnQlbwX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F33129ED2;
-	Mon, 18 Dec 2023 13:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804B8C433C7;
-	Mon, 18 Dec 2023 13:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744985A851;
+	Mon, 18 Dec 2023 14:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC10AC433C8;
+	Mon, 18 Dec 2023 14:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702907867;
-	bh=I54AW+8eh4V8rVprzAEdCmdxVbH6VfIkwRI4ehU9U7g=;
+	s=korg; t=1702908451;
+	bh=qrdodgPn/T4aRxlOyB2ruOR1+WTO8ORrQgUtlV594Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zM1/YbvFw9EliHGZisLcJm630MtiwdIjZwYbhHUdA5apZI0Ap5cxeUZC0dQCYwkIx
-	 LZnDQLTJqvm57KRtWpgTQN0/kzciKNB4srEHxl56AvABz4/r2LoAqaHM3RpzCBBE3M
-	 nPFuVM+UK/bUhsj4m6yiJAKTp8ic9sDfsCyA1jIk=
+	b=ejnQlbwXhpdfAa9NSNWsmJtmolujyK1Zq6vew+1PHgwKx3TL2ZKcZ9xctsfmUkW60
+	 cfk04vgimcs9g9CYibm4IAABK20xRZOmFtBMGQLnWvFociR2n3yf4VR+rQAyi2BG3S
+	 Ey9DQPRISU0qsosac0IZruLLUVLvre4ROX/smgwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Benato <benato.denis96@gmail.com>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/106] HID: hid-asus: add const to read-only outgoing usb buffer
+Subject: [PATCH 5.10 06/62] qca_debug: Fix ethtool -G iface tx behavior
 Date: Mon, 18 Dec 2023 14:51:30 +0100
-Message-ID: <20231218135058.323092544@linuxfoundation.org>
+Message-ID: <20231218135046.502666877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-References: <20231218135055.005497074@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Benato <benato.denis96@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 06ae5afce8cc1f7621cc5c7751e449ce20d68af7 ]
+[ Upstream commit 96a7e861d9e04d07febd3011c30cd84cd141d81f ]
 
-In the function asus_kbd_set_report the parameter buf is read-only
-as it gets copied in a memory portion suitable for USB transfer,
-but the parameter is not marked as const: add the missing const and mark
-const immutable buffers passed to that function.
+After calling ethtool -g it was not possible to adjust the TX ring
+size again:
 
-Signed-off-by: Denis Benato <benato.denis96@gmail.com>
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+  # ethtool -g eth1
+  Ring parameters for eth1:
+  Pre-set maximums:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  Current hardware settings:
+  RX:		4
+  RX Mini:	n/a
+  RX Jumbo:	n/a
+  TX:		10
+  # ethtool -G eth1 tx 8
+  netlink error: Invalid argument
+
+The reason for this is that the readonly setting rx_pending get
+initialized and after that the range check in qcaspi_set_ringparam()
+fails regardless of the provided parameter. So fix this by accepting
+the exposed RX defaults. Instead of adding another magic number
+better use a new define here.
+
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231206141222.52029-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 88dfa688f560d..220d6b2af4d3f 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -380,7 +380,7 @@ static int asus_raw_event(struct hid_device *hdev,
- 	return 0;
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index 4c6c1792fdc77..66229b300c5a4 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -30,6 +30,8 @@
+ 
+ #define QCASPI_MAX_REGS 0x20
+ 
++#define QCASPI_RX_MAX_FRAMES 4
++
+ static const u16 qcaspi_spi_regs[] = {
+ 	SPI_REG_BFR_SIZE,
+ 	SPI_REG_WRBUF_SPC_AVA,
+@@ -249,9 +251,9 @@ qcaspi_get_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
+ {
+ 	struct qcaspi *qca = netdev_priv(dev);
+ 
+-	ring->rx_max_pending = 4;
++	ring->rx_max_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_max_pending = TX_RING_MAX_LEN;
+-	ring->rx_pending = 4;
++	ring->rx_pending = QCASPI_RX_MAX_FRAMES;
+ 	ring->tx_pending = qca->txr.count;
  }
  
--static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size)
-+static int asus_kbd_set_report(struct hid_device *hdev, const u8 *buf, size_t buf_size)
+@@ -260,7 +262,7 @@ qcaspi_set_ringparam(struct net_device *dev, struct ethtool_ringparam *ring)
  {
- 	unsigned char *dmabuf;
- 	int ret;
-@@ -403,7 +403,7 @@ static int asus_kbd_set_report(struct hid_device *hdev, u8 *buf, size_t buf_size
+ 	struct qcaspi *qca = netdev_priv(dev);
  
- static int asus_kbd_init(struct hid_device *hdev)
- {
--	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
-+	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x41, 0x53, 0x55, 0x53, 0x20, 0x54,
- 		     0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
- 	int ret;
- 
-@@ -417,7 +417,7 @@ static int asus_kbd_init(struct hid_device *hdev)
- static int asus_kbd_get_functions(struct hid_device *hdev,
- 				  unsigned char *kbd_func)
- {
--	u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
-+	const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0x05, 0x20, 0x31, 0x00, 0x08 };
- 	u8 *readbuf;
- 	int ret;
- 
-@@ -448,7 +448,7 @@ static int asus_kbd_get_functions(struct hid_device *hdev,
- 
- static int rog_nkey_led_init(struct hid_device *hdev)
- {
--	u8 buf_init_start[] = { FEATURE_KBD_LED_REPORT_ID1, 0xB9 };
-+	const u8 buf_init_start[] = { FEATURE_KBD_LED_REPORT_ID1, 0xB9 };
- 	u8 buf_init2[] = { FEATURE_KBD_LED_REPORT_ID1, 0x41, 0x53, 0x55, 0x53, 0x20,
- 				0x54, 0x65, 0x63, 0x68, 0x2e, 0x49, 0x6e, 0x63, 0x2e, 0x00 };
- 	u8 buf_init3[] = { FEATURE_KBD_LED_REPORT_ID1,
+-	if ((ring->rx_pending) ||
++	if (ring->rx_pending != QCASPI_RX_MAX_FRAMES ||
+ 	    (ring->rx_mini_pending) ||
+ 	    (ring->rx_jumbo_pending))
+ 		return -EINVAL;
 -- 
 2.43.0
 
