@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-7527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66868172F0
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:13:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57ED8172C4
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 15:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66167288CA9
-	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:13:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F111C24E6F
+	for <lists+stable@lfdr.de>; Mon, 18 Dec 2023 14:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595FB3D545;
-	Mon, 18 Dec 2023 14:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159553A1AD;
+	Mon, 18 Dec 2023 14:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg2UoC4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFCyzZo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EB8129EC8;
-	Mon, 18 Dec 2023 14:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F94C433C8;
-	Mon, 18 Dec 2023 14:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A741D148;
+	Mon, 18 Dec 2023 14:09:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B99C433C7;
+	Mon, 18 Dec 2023 14:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702908709;
-	bh=gc5/VSEXLM2363bviogqr11x8b3GCoKpoVNUAqMmF+s=;
+	s=korg; t=1702908596;
+	bh=BlXFZoDKz3PvDFbUAukcwOxObe04u9OxJUIbQ7X4RfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cg2UoC4N/CPTROCdcQEWCeb53o/aiMM7BQ6BGHb8u9k/MJCYF9io02+xIGLNY9H3I
-	 tjA97ez4ExVPN+omCTsiO2pUeF+MP+l3ov012nMaHEX9JIy4hA60STM61l7Tkcwl3X
-	 km8NVG+/d8f2Ia7oAUQMeWy62nQTWeHxut0ki7MM=
+	b=XFCyzZo3YyCSiaCcZluNI/kgk/3zxWlW4f9tJ5zjd8SCd8VWmdX4LqivcW/ffR2oN
+	 rD1bBZ9hps5s2UVlo6pIfMvXm1mmG+NogWovNtd/Wh9pYovLO9cg7VrmrXDwGJ+4KA
+	 VWBceyBV0ImD1gpJ4Yfykka1dtJQhk2GTCnVWY38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Ebner <f.ebner@proxmox.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jonathan Woithe <jwoithe@just42.net>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Igor Mammedov <imammedo@redhat.com>
-Subject: [PATCH 5.4 19/40] Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
+	James Houghton <jthoughton@google.com>,
+	Will Deacon <will@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.10 50/62] arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
 Date: Mon, 18 Dec 2023 14:52:14 +0100
-Message-ID: <20231218135043.408995873@linuxfoundation.org>
+Message-ID: <20231218135048.459906779@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
-References: <20231218135042.748715259@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,82 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: James Houghton <jthoughton@google.com>
 
-commit 5df12742b7e3aae2594a30a9d14d5d6e9e7699f4 upstream.
+commit 3c0696076aad60a2f04c019761921954579e1b0e upstream.
 
-This reverts commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 and the
-subsequent fix to it:
+It is currently possible for a userspace application to enter an
+infinite page fault loop when using HugeTLB pages implemented with
+contiguous PTEs when HAFDBS is not available. This happens because:
 
-  cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
+1. The kernel may sometimes write PTEs that are sw-dirty but hw-clean
+   (PTE_DIRTY | PTE_RDONLY | PTE_WRITE).
 
-40613da52b13 fixed a problem where hot-adding a device with large BARs
-failed if the bridge windows programmed by firmware were not large enough.
+2. If, during a write, the CPU uses a sw-dirty, hw-clean PTE in handling
+   the memory access on a system without HAFDBS, we will get a page
+   fault.
 
-cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources()
-only for non-root bus") fixed a problem with 40613da52b13: an ACPI hot-add
-of a device on a PCI root bus (common in the virt world) or firmware
-sending ACPI Bus Check to non-existent Root Ports (e.g., on Dell Inspiron
-7352/0W6WV0) caused a NULL pointer dereference and suspend/resume hangs.
+3. HugeTLB will check if it needs to update the dirty bits on the PTE.
+   For contiguous PTEs, it will check to see if the pgprot bits need
+   updating. In this case, HugeTLB wants to write a sequence of
+   sw-dirty, hw-dirty PTEs, but it finds that all the PTEs it is about
+   to overwrite are all pte_dirty() (pte_sw_dirty() => pte_dirty()),
+   so it thinks no update is necessary.
 
-Unfortunately the combination of 40613da52b13 and cc22522fd55e caused other
-problems:
+We can get the kernel to write a sw-dirty, hw-clean PTE with the
+following steps (showing the relevant VMA flags and pgprot bits):
 
-  - Fiona reported that hot-add of SCSI disks in QEMU virtual machine fails
-    sometimes.
+i.   Create a valid, writable contiguous PTE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE
 
-  - Dongli reported a similar problem with hot-add of SCSI disks.
+ii.  mprotect the VMA to PROT_NONE.
+       VMA vmflags:     VM_SHARED
+       VMA pgprot bits: PTE_RDONLY
+       PTE pgprot bits: PTE_DIRTY | PTE_RDONLY
 
-  - Jonathan reported a console freeze during boot on bare metal due to an
-    error in radeon GPU initialization.
+iii. mprotect the VMA back to PROT_READ | PROT_WRITE.
+       VMA vmflags:     VM_SHARED | VM_READ | VM_WRITE
+       VMA pgprot bits: PTE_RDONLY | PTE_WRITE
+       PTE pgprot bits: PTE_DIRTY | PTE_WRITE | PTE_RDONLY
 
-Revert both patches to avoid adding these problems.  This means we will
-again see the problems with hot-adding devices with large BARs and the NULL
-pointer dereferences and suspend/resume issues that 40613da52b13 and
-cc22522fd55e were intended to fix.
+Make it impossible to create a writeable sw-dirty, hw-clean PTE with
+pte_modify(). Such a PTE should be impossible to create, and there may
+be places that assume that pte_dirty() implies pte_hw_dirty().
 
-Fixes: 40613da52b13 ("PCI: acpiphp: Reassign resources on bridge if necessary")
-Fixes: cc22522fd55e ("PCI: acpiphp: Use pci_assign_unassigned_bridge_resources() only for non-root bus")
-Reported-by: Fiona Ebner <f.ebner@proxmox.com>
-Closes: https://lore.kernel.org/r/9eb669c0-d8f2-431d-a700-6da13053ae54@proxmox.com
-Reported-by: Dongli Zhang <dongli.zhang@oracle.com>
-Closes: https://lore.kernel.org/r/3c4a446a-b167-11b8-f36f-d3c1b49b42e9@oracle.com
-Reported-by: Jonathan Woithe <jwoithe@just42.net>
-Closes: https://lore.kernel.org/r/ZXpaNCLiDM+Kv38H@marvin.atrad.com.au
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: James Houghton <jthoughton@google.com>
+Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
 Cc: <stable@vger.kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20231204172646.2541916-3-jthoughton@google.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/hotplug/acpiphp_glue.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/arm64/include/asm/pgtable.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -510,15 +510,12 @@ static void enable_slot(struct acpiphp_s
- 				if (pass && dev->subordinate) {
- 					check_hotplug_bridge(slot, dev);
- 					pcibios_resource_survey_bus(dev->subordinate);
--					if (pci_is_root_bus(bus))
--						__pci_bus_size_bridges(dev->subordinate, &add_list);
-+					__pci_bus_size_bridges(dev->subordinate,
-+							       &add_list);
- 				}
- 			}
- 		}
--		if (pci_is_root_bus(bus))
--			__pci_bus_assign_resources(bus, &add_list, NULL);
--		else
--			pci_assign_unassigned_bridge_resources(bus->self);
-+		__pci_bus_assign_resources(bus, &add_list, NULL);
- 	}
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -744,6 +744,12 @@ static inline pte_t pte_modify(pte_t pte
+ 	if (pte_hw_dirty(pte))
+ 		pte = pte_mkdirty(pte);
+ 	pte_val(pte) = (pte_val(pte) & ~mask) | (pgprot_val(newprot) & mask);
++	/*
++	 * If we end up clearing hw dirtiness for a sw-dirty PTE, set hardware
++	 * dirtiness again.
++	 */
++	if (pte_sw_dirty(pte))
++		pte = pte_mkdirty(pte);
+ 	return pte;
+ }
  
- 	acpiphp_sanitize_bus(bus);
 
 
 
