@@ -1,169 +1,144 @@
-Return-Path: <stable+bounces-7948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8874781913D
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 21:17:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437AC8191BB
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 21:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B12561C23D3C
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 20:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 687C11C24E8F
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 20:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FF639AE1;
-	Tue, 19 Dec 2023 20:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A7539AEB;
+	Tue, 19 Dec 2023 20:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c0J1B+vP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gpemV9K0"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8039AC2
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 20:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703017053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=01FhvVCGrz9P2bb0tXUNI0bFaaBVoUDAD7MiFwv5MeQ=;
-	b=c0J1B+vPmOR0MHu82ztL+KNluQW3BouA7EYD0CwDsOP4FofLXLmmMUQoCynuzdhSuzHwF8
-	M81ztiGfhOp8mL4W2sNtKz0ReHGfZo/F7/W6F96n1tLjTrX6D2/59qnh64zslBnXkheBxN
-	cn8PRCpTDPNyQGqv3oanx2TMoqCiQ5c=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-zR7GIT9iP0SKCMMmAjc2xw-1; Tue,
- 19 Dec 2023 15:17:27 -0500
-X-MC-Unique: zR7GIT9iP0SKCMMmAjc2xw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A7B7D3C025D2;
-	Tue, 19 Dec 2023 20:17:25 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.165])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 67C6D1121306;
-	Tue, 19 Dec 2023 20:17:23 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: masahiroy@kernel.org
-Cc: dcavalca@meta.com,
-	jtornosm@redhat.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	stable@vger.kernel.org
-Subject: [PATCH v4] rpm-pkg: simplify installkernel %post
-Date: Tue, 19 Dec 2023 21:17:19 +0100
-Message-ID: <20231219201719.1967948-1-jtornosm@redhat.com>
-In-Reply-To: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
-References: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974CF3C46F;
+	Tue, 19 Dec 2023 20:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-42785ffba01so606681cf.1;
+        Tue, 19 Dec 2023 12:52:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703019156; x=1703623956; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4lbJZ7B2KOssQv+6mBJ3nCOMWraLLQjAxsQoYSAdGR8=;
+        b=gpemV9K0wLvxhRIgOribgCLB4ChCpPk9kEuRMAv865lESeJ6/RmR2F3MtgAatccynt
+         yu/zMZmx9jhPHtm0AI3Zn1zRGf3UY7ssv+3vArf/gmm5v8qr9p1if6WvY88jYX9hQ4Ku
+         sxQ+UCtS718zREciY/wEszfQOJpC9uXZGZrlD9DQCPO0ErrmBB8YGBzuuuJ979o3mI/4
+         rVYGRaUPM9PErMZQ2bZEvEY0mbtiA8bKCEK5oppC0glIxDZwubE5K9yBJwGIEJrf83af
+         dQLFLdNkUYvpPid3sR3mtnzbyGHAThwyV1Vm1lCCL+L/HlgVqAzokwGDXBBnZlFZ70OR
+         QBHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703019156; x=1703623956;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4lbJZ7B2KOssQv+6mBJ3nCOMWraLLQjAxsQoYSAdGR8=;
+        b=RQcR51CiMWN8evPnV6TxSJrJugAYT02CV02VbRPQGlblkYzdhx1ENjBjCFkUBKuqzh
+         9MSCnCx4Mmm8me594OSWqaOXQKkeNJVFz6GDyggTkHMUXdZF/VuKZ0A6IZzV+RHXXkc5
+         G5BEwa41tmyyjZQTRj1gNaAgTbHGIiQMXRM8pfm9jCgzb8WF9RrJ1Ed3/gCE1eqtTBjL
+         VMNofkPpJug7kZryDsDsKfivlx1QyQIOGro2S0+ZYW2l3ViKzChiiMIM4OJVxqkef+2X
+         nsuAdsBpMg/HYZIgappyjvRs9FS6hBtxZPWDWOk6az04d6b1P8sp+0Y9L+orOELrNuud
+         2ucg==
+X-Gm-Message-State: AOJu0Yx2wXaGwJoc9ib3mAQJ4Fkqx2QCzzdS5TSGt6JGujkFwg82wwYi
+	knArwDsxSkwHKSORe5//ovk=
+X-Google-Smtp-Source: AGHT+IEFX1HJd43QY3I1AzWkzprjJSnjXhPiO6k9HivsXK23E9QiOmIY3kKuuGUyQmFEJr8sN+OM6A==
+X-Received: by 2002:a05:622a:40f:b0:425:4043:29fd with SMTP id n15-20020a05622a040f00b00425404329fdmr21635651qtx.120.1703019156331;
+        Tue, 19 Dec 2023 12:52:36 -0800 (PST)
+Received: from [192.168.159.133] ([37.175.73.215])
+        by smtp.gmail.com with ESMTPSA id f17-20020ac84651000000b0042545901450sm10524426qto.72.2023.12.19.12.52.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 19 Dec 2023 12:52:35 -0800 (PST)
+Message-ID: <36cec5f9-50bf-4f61-bf95-bd46ecdc7898@gmail.com>
+Date: Tue, 19 Dec 2023 21:52:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 00/40] 5.4.265-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20231218135042.748715259@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20231218135042.748715259@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The new installkernel application that is now included in systemd-udev
-package allows installation although destination files are already present
-in the boot directory of the kernel package, but is failing with the
-implemented workaround for the old installkernel application from grubby
-package.
 
-For the new installkernel application, as Davide says:
-<<The %post currently does a shuffling dance before calling installkernel.
-This isn't actually necessary afaict, and the current implementation
-ends up triggering downstream issues such as
-https://github.com/systemd/systemd/issues/29568
-This commit simplifies the logic to remove the shuffling. For reference,
-the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-section to create initramfs and grub hooks").>>
 
-But we need to keep the old behavior as well, because the old installkernel
-application from grubby package, does not allow this simplification and
-we need to be backward compatible to avoid issues with the different
-packages.
+On 12/18/2023 2:51 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.265 release.
+> There are 40 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.265-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Mimic Fedora shipping process and store vmlinuz, config amd System.map
-in the module directory instead of the boot directory. In this way, we will
-avoid the commented problem for all the cases, because the new destination
-files are not going to exist in the boot directory of the kernel package.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Replace installkernel tool with kernel-install tool, because the latter is
-more complete. Suitable manual actions are added as a default if tool is not
-present (unusual).
-
-cc: stable@vger.kernel.org
-Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-V1 -> V2:
-- Complete to be backward compatible with the previous installkernel
-application.
-V2 -> V3:
-- Follow the suggestions from Masahiro Yamada and change the installation
-V3 -> V4:
-- Make the patch applicable to linux-kbuild/for-next (ia64 support was
-already removed).
-
- scripts/package/kernel.spec | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
-
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 89298983a169..17e7196c9be1 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
- %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
- 
- %install
--mkdir -p %{buildroot}/boot
--cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
-+mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
- %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
- %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
--cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
--cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-+cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
- ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
- %if %{with_devel}
- %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
-@@ -70,12 +70,12 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- rm -rf %{buildroot}
- 
- %post
--if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
--cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
--cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
--/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
-+if [ -x /usr/bin/kernel-install ]; then
-+kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
-+else
-+cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
-+cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELRELEASE}
-+cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
- fi
- 
- %preun
-@@ -94,7 +94,6 @@ fi
- %defattr (-, root, root)
- /lib/modules/%{KERNELRELEASE}
- %exclude /lib/modules/%{KERNELRELEASE}/build
--/boot/*
- 
- %files headers
- %defattr (-, root, root)
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.0
-
+Florian
 
