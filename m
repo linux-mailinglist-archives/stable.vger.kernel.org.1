@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-7873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9178182C8
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:59:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FE88182DC
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:01:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123A61F27674
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 07:59:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 858B8B212CA
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B6DDC8;
-	Tue, 19 Dec 2023 07:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FD3C8C2;
+	Tue, 19 Dec 2023 07:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcTLxKdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K90K5608"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A31171C
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 07:58:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181BDC433C8;
-	Tue, 19 Dec 2023 07:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAD01429E
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 07:59:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC36C433C8;
+	Tue, 19 Dec 2023 07:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702972702;
-	bh=alcUEUjme+bNxynfPwnC0hfmCisMW1LMNJEjIkoKzCw=;
+	s=korg; t=1702972789;
+	bh=Y/FoWFLrq64u10X7jS4s/VBYNWNFIuCrD3nZOM1Tufw=;
 	h=Subject:To:From:Date:From;
-	b=XcTLxKdRpOS0m9XxKrdbNKi5EfKmHlR8dBE6k6Jy7KudCbhsAQh9qBVaGa3z5m7fk
-	 iMYZw5QGTksqt267ht9T+EbgSHPRglKUpTHP6rI5KFhYV9umhLT+OlUO1/Qkmv/geE
-	 KE2iKEHdji5VAnynMw22dw6mQOqJulDmZe2/gDDs=
-Subject: patch "bus: mhi: host: Drop chan lock before queuing buffers" added to char-misc-testing
+	b=K90K5608R5mopiaXryvn4dxhLR+DEkYG1U+Njc4cYW0aVSdvCtrHHpE6+EipNRm7v
+	 RKRfzPiYGzC95Gr3T/YE/9NUrlpBu01zFGSDYgek0uH0S0ZpGRoowOSsHGg6ZqJ/Xr
+	 DiyEzj5PjyWtmju/6opopiR6Xtjd2RtBPALaDSdY=
+Subject: patch "bus: mhi: host: Drop chan lock before queuing buffers" added to char-misc-next
 To: quic_qianyu@quicinc.com,manivannan.sadhasivam@linaro.org,quic_jhugo@quicinc.com,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 19 Dec 2023 08:57:42 +0100
-Message-ID: <2023121942-frill-hypnotism-3b60@gregkh>
+Date: Tue, 19 Dec 2023 08:59:06 +0100
+Message-ID: <2023121906-usable-pardon-5ca6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
