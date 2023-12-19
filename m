@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-7894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E56818512
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 11:11:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B029D818513
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 11:11:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFD31C239E5
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64E041F225E9
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E859A14286;
-	Tue, 19 Dec 2023 10:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2798014281;
+	Tue, 19 Dec 2023 10:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TV+BHioG"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P4BprnG+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5653A14281
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 10:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9169014273
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 10:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6d9d4193d94so3332576a34.3
-        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 02:11:31 -0800 (PST)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6d741fb7c8eso2030087b3a.2
+        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 02:11:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1702980690; x=1703585490; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1702980694; x=1703585494; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QxrjSGjdVe4hzqaLk50QydqH8NsxG4Dqi4lPOq55wEA=;
-        b=TV+BHioGCErETgfzqHPAu+xgXYJlArA12SZoXWtL7amIVm0tUOPoQ+mEtO/Tj7lb6i
-         0nHxm1+r/3vpSGzAEbcYEoNExIPSXJ18KqN6sdGkINtw2creByF2ciD1QNvYIM4TjBhU
-         5OyNy3jzKARv2iISdUD+Xmdejm355ul3qxu46oWBDC4tV0N5GBbePTFS1YohY+VoklKt
-         47CfyXZi/cmHKNtfLR+Bgzl3rV9G65XCRm8tQhhukBXsmrLk2onL4Ynt/9qB0nO+FIw2
-         FCoUBZnF2EZg+gjZsmWNt0RzPz/ggO0YZurUByyALyodj5pDIe50h2KQQzIh5qegZZGE
-         GKUg==
+        bh=lpa0cPeIq5k6EtBKbQ60Cd5skaYCx6iwUurnvO4vgeg=;
+        b=P4BprnG+1Q0ecGVufD8IEaMT2kX71YEcM7f4l9Xi2l7yrYwARqGeNGj/Fpfqoe9CqF
+         zb0Ff4g4N/v/rDVOh1AKfOGOMlFp41eX0feO8gUhaeeAUBG0iSt2bx+Gfna41Q+4FXoF
+         W61ZcRjG3mOfrC3DpRFfaRE83V2Bx+K3RaMGYNJFrKS7kcKBhNUtLPnIsYk/Cox9tHW9
+         SRRq0j2ets6wW15Qc8RP7pDBmOuixWDMFIr1Z2creKBIlBx24Vy2yHU3rB3aWvvqrBLg
+         FVYr8X+BCTVBGW9r65BlIWoTmUPFh4DUgvOXLgVedeV4EmyPGrggD2GzgXW2tW5gT3V6
+         ol/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702980690; x=1703585490;
+        d=1e100.net; s=20230601; t=1702980694; x=1703585494;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QxrjSGjdVe4hzqaLk50QydqH8NsxG4Dqi4lPOq55wEA=;
-        b=eVUdhIoX7vcMEC6u9m+bAmQTiHCB8M3M7+F7ohqSSTX0Qlp6aP8aIo+3r4jnCV+R+j
-         UN6Mj8Nbh4MIMBaAybPod5UtJTOxSwHgYu+EuJfV12DR97qWnJ/HfjwEep7n2FoK8kua
-         3hBOc+N2nwi7HoxCtsxNziv2/3qWQ3L3POtqfUw5yFEJEu/l6NQVcKsrkbPYZxWqp6ms
-         UG5qjN+cJVoKhnorPY/aWppcr6QJWGcN5M8FhpiFO+b1NfYxDCC4K2N4UrcI5rZZGqTR
-         gvkdcaE8XhHahiQ9c5PCrLHez3KRC1i7fuH48QYMKQQa1i+vFvrxfH0zYltxX5CUSc66
-         s41A==
-X-Gm-Message-State: AOJu0YwNyDYnGkqEQzQY4bcxuKd8yQ7HiZq2p4TPB7sRSJw3bhi6Q1VD
-	TWivLQDbll/gAMDNyyHClsdr9Q==
-X-Google-Smtp-Source: AGHT+IH9aOGHnRnZVMNYMb6/biPrkWwXZp5w6gkNirsxBgweTcIQ/+D39fK3EBZJ+DFZABkBHgmk3w==
-X-Received: by 2002:a05:6830:1185:b0:6da:5218:46e8 with SMTP id u5-20020a056830118500b006da521846e8mr7681126otq.58.1702980690419;
-        Tue, 19 Dec 2023 02:11:30 -0800 (PST)
+        bh=lpa0cPeIq5k6EtBKbQ60Cd5skaYCx6iwUurnvO4vgeg=;
+        b=lfPvwdmShfWxbcwBpWy7tZQws+EE1mHIqFaLmy9OERIswycZkDIR87drmhlWG+BL6H
+         ZYcGzYSk/+nnks+yYtwSa2R8joS2GhNOwbkgBlnALUdZcHEo1eoVicZS8ciFqmzBUYtc
+         +j/4SiJK2z6eakEa4lOe2YZr54pEZdeay91dRx2pYZuzuXmufwPZOWDTVOAn0counEKP
+         38iQqqOn2tkbWFlQW5Lh7UiPsTAOrbUxRJVYbCMaDtlhgvf5GV9NDcf8krWjpJjsT4uW
+         9SwSqv9CH8yjC4ioy4QOyRtF1s43/sxq37/5Of2TbBGVMcpFhJueydNMhLOvAJRE6aiS
+         ZOmg==
+X-Gm-Message-State: AOJu0Yyif87h/Vh6BdpDKWcDY2f5/p+98ZiAfEHiaOwRr0GnC0a5tMGT
+	wtxp9wOMT+dDrxaxoK3SYOftew==
+X-Google-Smtp-Source: AGHT+IEoHQs1/cmJfxKAJVANGfkEJeym2LM3D4d7W/vB2LdRUG9bVCj8gjFRxBVW/5bjQtF7YhEgwA==
+X-Received: by 2002:a05:6a20:244d:b0:190:9181:7d6d with SMTP id t13-20020a056a20244d00b0019091817d6dmr21521255pzc.83.1702980693791;
+        Tue, 19 Dec 2023 02:11:33 -0800 (PST)
 Received: from x-wing.lan ([2406:7400:50:3c7b:ab4:a0e:d8f5:e647])
-        by smtp.gmail.com with ESMTPSA id n31-20020a056a000d5f00b006d5723e9a0dsm4388989pfv.74.2023.12.19.02.11.27
+        by smtp.gmail.com with ESMTPSA id n31-20020a056a000d5f00b006d5723e9a0dsm4388989pfv.74.2023.12.19.02.11.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 02:11:29 -0800 (PST)
+        Tue, 19 Dec 2023 02:11:33 -0800 (PST)
 From: Amit Pundir <amit.pundir@linaro.org>
 To: Greg KH <gregkh@linuxfoundation.org>,
 	Stable <stable@vger.kernel.org>,
 	Sasha Levin <sashal@kernel.org>
 Cc: Maxime Ripard <maxime@cerno.tech>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH for-5.15.y 2/3] Revert "drm/bridge: lt9611uxc: Register and attach our DSI device at probe"
-Date: Tue, 19 Dec 2023 15:41:17 +0530
-Message-Id: <20231219101118.965996-3-amit.pundir@linaro.org>
+Subject: [PATCH for-5.15.y 3/3] Revert "drm/bridge: lt9611uxc: Switch to devm MIPI-DSI helpers"
+Date: Tue, 19 Dec 2023 15:41:18 +0530
+Message-Id: <20231219101118.965996-4-amit.pundir@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231219101118.965996-1-amit.pundir@linaro.org>
 References: <20231219101118.965996-1-amit.pundir@linaro.org>
@@ -77,66 +77,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reverts commit 29aba28ea195182f547cd8dac1b80eed51b6b73d.
+This reverts commit f53a045793289483b3c2930007fc52c7f1f642d5.
 
 This and the dependent fixes broke display on RB5.
 
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 31 +++++++++-------------
- 1 file changed, 12 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 38 +++++++++++++++++-----
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-index 1e33b3150bdc..b58842f69fff 100644
+index b58842f69fff..c4454d0f6cad 100644
 --- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
 +++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
-@@ -367,6 +367,18 @@ static int lt9611uxc_bridge_attach(struct drm_bridge *bridge,
- 			return ret;
+@@ -258,18 +258,17 @@ static struct mipi_dsi_device *lt9611uxc_attach_dsi(struct lt9611uxc *lt9611uxc,
+ 	const struct mipi_dsi_device_info info = { "lt9611uxc", 0, NULL };
+ 	struct mipi_dsi_device *dsi;
+ 	struct mipi_dsi_host *host;
+-	struct device *dev = lt9611uxc->dev;
+ 	int ret;
+ 
+ 	host = of_find_mipi_dsi_host_by_node(dsi_node);
+ 	if (!host) {
+-		dev_err(dev, "failed to find dsi host\n");
++		dev_err(lt9611uxc->dev, "failed to find dsi host\n");
+ 		return ERR_PTR(-EPROBE_DEFER);
  	}
  
-+	/* Attach primary DSI */
-+	lt9611uxc->dsi0 = lt9611uxc_attach_dsi(lt9611uxc, lt9611uxc->dsi0_node);
-+	if (IS_ERR(lt9611uxc->dsi0))
-+		return PTR_ERR(lt9611uxc->dsi0);
-+
-+	/* Attach secondary DSI, if specified */
-+	if (lt9611uxc->dsi1_node) {
-+		lt9611uxc->dsi1 = lt9611uxc_attach_dsi(lt9611uxc, lt9611uxc->dsi1_node);
-+		if (IS_ERR(lt9611uxc->dsi1))
-+			return PTR_ERR(lt9611uxc->dsi1);
-+	}
-+
- 	return 0;
+-	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
++	dsi = mipi_dsi_device_register_full(host, &info);
+ 	if (IS_ERR(dsi)) {
+-		dev_err(dev, "failed to create dsi device\n");
++		dev_err(lt9611uxc->dev, "failed to create dsi device\n");
+ 		return dsi;
+ 	}
+ 
+@@ -278,9 +277,10 @@ static struct mipi_dsi_device *lt9611uxc_attach_dsi(struct lt9611uxc *lt9611uxc,
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 			  MIPI_DSI_MODE_VIDEO_HSE;
+ 
+-	ret = devm_mipi_dsi_attach(dev, dsi);
++	ret = mipi_dsi_attach(dsi);
+ 	if (ret < 0) {
+-		dev_err(dev, "failed to attach dsi to host\n");
++		dev_err(lt9611uxc->dev, "failed to attach dsi to host\n");
++		mipi_dsi_device_unregister(dsi);
+ 		return ERR_PTR(ret);
+ 	}
+ 
+@@ -355,6 +355,19 @@ static int lt9611uxc_connector_init(struct drm_bridge *bridge, struct lt9611uxc
+ 	return drm_connector_attach_encoder(&lt9611uxc->connector, bridge->encoder);
  }
  
-@@ -946,27 +958,8 @@ static int lt9611uxc_probe(struct i2c_client *client,
++static void lt9611uxc_bridge_detach(struct drm_bridge *bridge)
++{
++	struct lt9611uxc *lt9611uxc = bridge_to_lt9611uxc(bridge);
++
++	if (lt9611uxc->dsi1) {
++		mipi_dsi_detach(lt9611uxc->dsi1);
++		mipi_dsi_device_unregister(lt9611uxc->dsi1);
++	}
++
++	mipi_dsi_detach(lt9611uxc->dsi0);
++	mipi_dsi_device_unregister(lt9611uxc->dsi0);
++}
++
+ static int lt9611uxc_bridge_attach(struct drm_bridge *bridge,
+ 				   enum drm_bridge_attach_flags flags)
+ {
+@@ -375,11 +388,19 @@ static int lt9611uxc_bridge_attach(struct drm_bridge *bridge,
+ 	/* Attach secondary DSI, if specified */
+ 	if (lt9611uxc->dsi1_node) {
+ 		lt9611uxc->dsi1 = lt9611uxc_attach_dsi(lt9611uxc, lt9611uxc->dsi1_node);
+-		if (IS_ERR(lt9611uxc->dsi1))
+-			return PTR_ERR(lt9611uxc->dsi1);
++		if (IS_ERR(lt9611uxc->dsi1)) {
++			ret = PTR_ERR(lt9611uxc->dsi1);
++			goto err_unregister_dsi0;
++		}
+ 	}
  
- 	drm_bridge_add(&lt9611uxc->bridge);
+ 	return 0;
++
++err_unregister_dsi0:
++	mipi_dsi_detach(lt9611uxc->dsi0);
++	mipi_dsi_device_unregister(lt9611uxc->dsi0);
++
++	return ret;
+ }
  
--	/* Attach primary DSI */
--	lt9611uxc->dsi0 = lt9611uxc_attach_dsi(lt9611uxc, lt9611uxc->dsi0_node);
--	if (IS_ERR(lt9611uxc->dsi0)) {
--		ret = PTR_ERR(lt9611uxc->dsi0);
--		goto err_remove_bridge;
--	}
--
--	/* Attach secondary DSI, if specified */
--	if (lt9611uxc->dsi1_node) {
--		lt9611uxc->dsi1 = lt9611uxc_attach_dsi(lt9611uxc, lt9611uxc->dsi1_node);
--		if (IS_ERR(lt9611uxc->dsi1)) {
--			ret = PTR_ERR(lt9611uxc->dsi1);
--			goto err_remove_bridge;
--		}
--	}
--
- 	return lt9611uxc_audio_init(dev, lt9611uxc);
+ static enum drm_mode_status
+@@ -523,6 +544,7 @@ static struct edid *lt9611uxc_bridge_get_edid(struct drm_bridge *bridge,
  
--err_remove_bridge:
--	drm_bridge_remove(&lt9611uxc->bridge);
--
- err_disable_regulators:
- 	regulator_bulk_disable(ARRAY_SIZE(lt9611uxc->supplies), lt9611uxc->supplies);
- 
+ static const struct drm_bridge_funcs lt9611uxc_bridge_funcs = {
+ 	.attach = lt9611uxc_bridge_attach,
++	.detach = lt9611uxc_bridge_detach,
+ 	.mode_valid = lt9611uxc_bridge_mode_valid,
+ 	.mode_set = lt9611uxc_bridge_mode_set,
+ 	.detect = lt9611uxc_bridge_detect,
 -- 
 2.25.1
 
