@@ -1,202 +1,145 @@
-Return-Path: <stable+bounces-7855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F34818049
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 04:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC08C8180CB
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 06:05:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C6E28379B
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 03:49:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 657E4285828
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 05:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E385232;
-	Tue, 19 Dec 2023 03:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BD9441B;
+	Tue, 19 Dec 2023 05:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bwb3WbRM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Gg/imrXx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E2B4C78
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 03:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6d728c75240so1766047b3a.1
-        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 19:49:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702957746; x=1703562546; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pERubsIjgtvk4k/S/uzOvEKgYu9butClOv9J1KGQh98=;
-        b=bwb3WbRMQsjzhtETnQchDJPL7oALPIR4v2+smtFD/fanM0VpiY5e7YDD0pSgPPpK73
-         6+lq0HWVlhqp0Hs3kLFZvkV+sfmEuE2bB9c4YFvezEvk7kyqmf62/ZUSfDjs1Ij8UV2V
-         EMaGszWtcLg02loweTIIQ8+ybYNUjjYHa6ZMniiCg/7v/5gP+lQa0mu/MxsyaEsp2I4x
-         SrtgB3ZQdVz3vth7yBU36SA2DbX1wHNGz7y8U/z/lCqDdvJ1BL5FMQOpuxaISpWn/rSf
-         qIUXf9C9EuIYRuE7Eey/DI4YaA/Q1ZxATT10V7dNzrOH9gRSSoa7gXlQmHX8X7gNRlr/
-         PbWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702957746; x=1703562546;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pERubsIjgtvk4k/S/uzOvEKgYu9butClOv9J1KGQh98=;
-        b=kuyDydAHbv55s6+2nfMTH/8YLwwX+QWm5VPhNWY5UZaNx/q4MzleOtB0wOZ1YBs2lR
-         M7ZlemVJgWTLkO4MztGj5VBOJ8VhDJ6DPSAo16TtimLxvrf3GaUUIaet2LHiWIim8MpR
-         rlvriIXYBl1TR07uWY+uxPkncWm5vE4FNssP/VjJlVNjhOLc8sITxIQ5P4gPgz9LORaV
-         8hcKjaEJC2HL4/LNXWku5MGme9yAfCNrxwQdmmQy79Cg2vUeH+iqr7QAR3WM/es31phA
-         P1XydCOyUMeIby4YamC2GRtK1GMtLJa1eJErC47dvk/CjfWg2+VTZ5aZp7+RloBp3HpD
-         N/Aw==
-X-Gm-Message-State: AOJu0YzlWutXd+oeSOcqCY1gZSak7Ey8K52UYfWFkzsjpMg6PoyO9b3Z
-	y+Prj3WP5CI5Nqh+xPdPO9yIfv7nX4Gbq/ArvcA=
-X-Google-Smtp-Source: AGHT+IG6WyU7RZAfkM+Pjk7pdq8OzuxtibWEnmmhMCT9xhWBBBVNyAuQcxCOqPRHWOdCVIu/nET2yQ==
-X-Received: by 2002:a05:6a20:3942:b0:18d:b43:78ea with SMTP id r2-20020a056a20394200b0018d0b4378eamr23081362pzg.43.1702957746466;
-        Mon, 18 Dec 2023 19:49:06 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id h16-20020a056a00219000b006d5d74cbcf9sm3479213pfi.58.2023.12.18.19.49.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Dec 2023 19:49:05 -0800 (PST)
-Message-ID: <658112b1.050a0220.fa1f1.8cdd@mx.google.com>
-Date: Mon, 18 Dec 2023 19:49:05 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA748BE6;
+	Tue, 19 Dec 2023 05:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BJ4lv2C025193;
+	Tue, 19 Dec 2023 05:04:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=dVTS67fnPeIyokXdraxPjIHcZetDlo6a/vjiKyFZpho=; b=Gg
+	/imrXxsMI9q0lKUHnSe1YFSRIIIXQQ4cqKRfrlu43CHUVzY6m4wrvM9fFjNcolvw
+	uptAE9Ggam/tWc4avPBc7bYR1KbHXf+/U+dWK3f+/OsrmIWT8zH5uY4PKMZNn3Wc
+	aS7D26VnoTSRi2it+H5K1/9pu5d/MBIFFmpTdkQG9Ki8iXwTE9+MUAVRwm4Kjo0t
+	LTrw0JRD8G+4E50hEkP/KT2AJK2S++gLg/KeRa8iSuwB8TDoHGE7i2RW1OigMwTd
+	T+I00nycBgg4B0s/Zb/BzkrCDBORDtKptu38/YRQkspMAwqbasqYuM49SjHnCQIu
+	UI6YtqId6Ejp83XC5bAw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v2nxsa594-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Dec 2023 05:04:51 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BJ54obI007250
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Dec 2023 05:04:50 GMT
+Received: from [10.253.12.246] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 18 Dec
+ 2023 21:04:47 -0800
+Message-ID: <46b8e4b7-8fc9-4cc0-a37c-80553c34c14a@quicinc.com>
+Date: Tue, 19 Dec 2023 13:04:44 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.6
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.6.7-166-g6a5518dcff6f
-Subject: stable-rc/queue/6.6 build: 20 builds: 0 failed,
- 20 passed (v6.6.7-166-g6a5518dcff6f)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] scsi: ufs: Simplify power management during async
+ scan
+To: Bart Van Assche <bvanassche@acm.org>,
+        "Martin K . Petersen"
+	<martin.petersen@oracle.com>
+CC: <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>,
+        "James E.J.
+ Bottomley" <jejb@linux.ibm.com>,
+        Stanley Jhu <chu.stanley@gmail.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Asutosh Das
+	<quic_asutoshd@quicinc.com>,
+        Bean Huo <beanhuo@micron.com>,
+        "Bao D. Nguyen"
+	<quic_nguyenb@quicinc.com>,
+        Arthur Simchaev <Arthur.Simchaev@wdc.com>
+References: <20231218225229.2542156-1-bvanassche@acm.org>
+ <20231218225229.2542156-2-bvanassche@acm.org>
+Content-Language: en-US
+From: Can Guo <quic_cang@quicinc.com>
+In-Reply-To: <20231218225229.2542156-2-bvanassche@acm.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: edaYRKPxUw804XtZ30tVg7M72mO25bu_
+X-Proofpoint-ORIG-GUID: edaYRKPxUw804XtZ30tVg7M72mO25bu_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 bulkscore=0 phishscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 clxscore=1011 suspectscore=0
+ adultscore=0 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2311290000 definitions=main-2312190034
 
-stable-rc/queue/6.6 build: 20 builds: 0 failed, 20 passed (v6.6.7-166-g6a55=
-18dcff6f)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.6=
-/kernel/v6.6.7-166-g6a5518dcff6f/
 
-Tree: stable-rc
-Branch: queue/6.6
-Git Describe: v6.6.7-166-g6a5518dcff6f
-Git Commit: 6a5518dcff6f8d059d613bf4850c3ea0fecbceec
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+On 12/19/2023 6:52 AM, Bart Van Assche wrote:
+> ufshcd_init() calls pm_runtime_get_sync() before it calls
+> async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync()
+> directly or indirectly from ufshcd_add_lus(). Simplify
+> ufshcd_async_scan() by always calling pm_runtime_put_sync() from
+> ufshcd_async_scan().
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>   drivers/ufs/core/ufshcd.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index d6ae5d17892c..0ad8bde39cd1 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -8711,7 +8711,6 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
+>   
+>   	ufs_bsg_probe(hba);
+>   	scsi_scan_host(hba->host);
+> -	pm_runtime_put_sync(hba->dev);
+>   
+>   out:
+>   	return ret;
+> @@ -8980,15 +8979,15 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
+>   
+>   	/* Probe and add UFS logical units  */
+>   	ret = ufshcd_add_lus(hba);
+> +
+>   out:
+> +	pm_runtime_put_sync(hba->dev);
+>   	/*
+>   	 * If we failed to initialize the device or the device is not
+>   	 * present, turn off the power/clocks etc.
+>   	 */
+> -	if (ret) {
+> -		pm_runtime_put_sync(hba->dev);
+> +	if (ret)
+>   		ufshcd_hba_exit(hba);
+> -	}
+>   }
+>   
+>   static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
 
