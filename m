@@ -1,102 +1,90 @@
-Return-Path: <stable+bounces-7877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ABC981833B
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:20:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E38818345
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D41281E27
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:20:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8419B235CD
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A535107B7;
-	Tue, 19 Dec 2023 08:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0C81119A;
+	Tue, 19 Dec 2023 08:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="DHZsk6dY";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="S2k5tAzp"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e+xmivTp"
 X-Original-To: stable@vger.kernel.org
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f43.google.com (mail-vs1-f43.google.com [209.85.217.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6B0134A6;
-	Tue, 19 Dec 2023 08:20:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 38ECFC009; Tue, 19 Dec 2023 09:20:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1702974019; bh=z/0FZrN0KqpDTOtDkKzEnxjxxsSs9NJtKvNMljVBU6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DHZsk6dYVkCuGAfg73U/7JGESnqXaJRFTh5IOmR2a+X2HKorebe4L1ZVbOjvHmUX2
-	 9+poD/+bjeC3FXGVOKklio6Tcq5EO+I+8nyvzhgRhpuTnOApSAoSSTdO7ZET3Lech5
-	 ZtbCtQMMU22PU+ADdVGn511/NLsMRME6wu5KvGJl0I8Z6oZmSx46o22pUCLZRkdE5E
-	 ELdZVJUVe71V5hBwP+3TU0qy9rzgczxAVO8SSyOjjjAJZKPV2U3ofCl+Qj8/Ziv3Sz
-	 BBzw2gGYO7X3DZPZ+OqhTc60GU/hkiP/Wd1G9Nfy62tewWFPBRDvOko2xpt8oUhkd1
-	 HU7qd7QR+CnNQ==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id 64155C009;
-	Tue, 19 Dec 2023 09:20:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1702974017; bh=z/0FZrN0KqpDTOtDkKzEnxjxxsSs9NJtKvNMljVBU6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2k5tAzpfmqBy5YsRNL/cI7AFAiOPa0MevxEEL0OZ8vSWBShaFKONeCMVYtUiiXzC
-	 8StKuIgvxK3KFd8i4AhqSUHKF6voUCyzPvR3tOM8aXPIIkNpwci1v/nKRwhKUjiWsx
-	 xcprPNMLL4G/Y1422LSQwwI499kOhIyP1OwaeU8HfR7kEIF1ltK06KIXVNqaVo3Vfy
-	 7sjXnigpfi0rZr5xoKuEnayRAKzECxZq4M56WM66G+3/7nEe0H1jeCeWA9dwNHeQBC
-	 45pqT/+X1HKa4Q5LYg6r4U3kyZr8D19Xd9jg9IocKb6x6X8GgHUDFzmM0vT0/POWTB
-	 froJeqIZvMlBA==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id d050cb09;
-	Tue, 19 Dec 2023 08:20:09 +0000 (UTC)
-Date: Tue, 19 Dec 2023 17:19:54 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.10 00/60] 5.10.205-rc2 review
-Message-ID: <ZYFSKmbQbvPhoFbm@codewreck.org>
-References: <20231219074407.947984749@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7C113AC2
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 08:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f43.google.com with SMTP id ada2fe7eead31-4669068a20bso430631137.1
+        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 00:25:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702974336; x=1703579136; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4L5uD1RdT2mZbPJoxL2cSkqgphm3L8KHRjyes+Q2wMc=;
+        b=e+xmivTp1j6Un+61OZT/K7Kyu2xfdtTpZNCzR63Fylesd54ZSzerI4rSIXXs6ioldl
+         tDwrfSY4tHQmCewsSuPxEMfhr6PXeg8f0prNZiK2GthD/ZWEqNkSgieCGKF7C/9JmAhW
+         igLcqb3Nsu6SD1948smV/OsXd92iDqVN8tMxFHr0h5wEQN97j40tb2Yin4OrsoBA3oTl
+         w6T9NQ7SBTnDG/0CFCCk2mnKkRXhKFsp/ZLddrgtwkV32O+6mXOqIffThUNA0o3URinN
+         Ea07EFgR8Vaseqc/c7J/VIxxz+3MqIkWqo55kxOsXNCksuyibcoG+MlOMBGbPALj4Hm/
+         DtsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702974336; x=1703579136;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4L5uD1RdT2mZbPJoxL2cSkqgphm3L8KHRjyes+Q2wMc=;
+        b=GLXGdn7/zg+8hcdELnPtkPHyM7QHaH/N8Su/FXKehGV/cI2VjEZdjDfHUWnMDPaPU4
+         XXejPVmzeKRlc/270BY42XiajxMFEyv2nE3/AgsAZPrmxa3ohL7aAs8dlTcvA1H98UKd
+         FGszupjeBPsnbwcQn+n9h3A2Kg4KquvEaQeZaLm/BNz0ieD0Ek9O2GAaOEP9B3kDR45e
+         FlMNHC6van2qo2ZispMTQOafu004xrigEyVnHIsMvr3TLkRrnx1gnm4Jlm6neVYK1Gno
+         UhAasRoqbOc2sDGxrBeZFAwSGEGWp9maL7hDtNiYUXb5LBiCWfKkiELZBhO5Nvfr6WoI
+         4Eqw==
+X-Gm-Message-State: AOJu0YymZ0+EhT8WMNlS+vk7BZn3UrptcbDgW9MFbPsl+wqN0NB+U8un
+	a9bZwOAliPKS6vhTRHLQSZABGOuLMXmqlK8VuGbnmA==
+X-Google-Smtp-Source: AGHT+IEoZup6yhtDhNP4uUzwHAwiSTvqSmHFmiBSIYpEeIts/4I+mxLVOYAh9bpLEOhsG+nKCN20jI4NWNIkFfh6Ki8=
+X-Received: by 2002:a67:fe01:0:b0:464:9c52:d69 with SMTP id
+ l1-20020a67fe01000000b004649c520d69mr10043645vsr.70.1702974335762; Tue, 19
+ Dec 2023 00:25:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231219074407.947984749@linuxfoundation.org>
+From: Amit Pundir <amit.pundir@linaro.org>
+Date: Tue, 19 Dec 2023 13:54:59 +0530
+Message-ID: <CAMi1Hd2jWZpZn8O1eP5qCZ2HfLbvBAEJsM5FwZxp-rC3q-V7KQ@mail.gmail.com>
+Subject: Request to revert lt9611uxc fixes from v5.15.y
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: Maxime Ripard <maxime@cerno.tech>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+	stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Greg Kroah-Hartman wrote on Tue, Dec 19, 2023 at 08:53:19AM +0100:
-> This is the start of the stable review cycle for the 5.10.205 release.
-> There are 60 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 21 Dec 2023 07:43:52 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.205-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+Hi Greg,
 
-Tested 163d4e782432 ("Linux 5.10.205-rc2") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+The following lt9611uxc fixes in v5.15.139 broke display on RB5 devboard.
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+drm/bridge: lt9611uxc: fix the race in the error path
+drm/bridge: lt9611uxc: Register and attach our DSI device at probe
+drm/bridge: lt9611uxc: Switch to devm MIPI-DSI helpers
 
+Reverting them (git revert -s d0d01bb4a560 29aba28ea195 f53a04579328
+#5.15 SHA Ids) fix the following errors on RB5 and get the display
+working again on v5.15.143.
 
-Thanks for the rebase of the drm/mediatek spinlock patch!
--- 
-Dominique
+lt9611uxc 5-002b: LT9611 revision: 0x17.04.93
+lt9611uxc 5-002b: LT9611 version: 0x43
+lt9611uxc 5-002b: failed to find dsi host
+msm ae00000.mdss: bound ae01000.mdp (ops dpu_ops [msm])
+msm_dsi_manager_register: failed to register mipi dsi host for DSI 0: -517
+
+Regards,
+Amit Pundir
 
