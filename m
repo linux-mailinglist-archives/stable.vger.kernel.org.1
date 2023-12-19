@@ -1,123 +1,149 @@
-Return-Path: <stable+bounces-7955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0585C81936B
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 23:19:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FE88193C7
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 23:46:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56B91F232A6
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 22:19:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9343D1C24CB4
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 22:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4BA3C6A4;
-	Tue, 19 Dec 2023 22:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4BD39AF3;
+	Tue, 19 Dec 2023 22:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="uuWjB7BL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UzVyITlm"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D93CE3B2BB
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 22:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
-	by cmsmtp with ESMTPS
-	id FWtRrwDFBhqFdFiR4roPXB; Tue, 19 Dec 2023 22:19:34 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id FiR3rv4hhkUbtFiR3r0AL3; Tue, 19 Dec 2023 22:19:33 +0000
-X-Authority-Analysis: v=2.4 cv=WpU4jPTv c=1 sm=1 tr=0 ts=658216f5
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=7i6jQBsDwpSr8TU23jQ8sQBZIk5tH7uhMXJxPtQ0VF4=; b=uuWjB7BLccvnHXB7COsDti99se
-	Zv8bmOhqW8DrOolH5wdbGLcPGCmgagcGtt0baehEEM30LNo65JaofheTxxmk1zBQU9cGtAnhXUppH
-	rql5fUANvL5RaPzS6UkvlgG/OHKaI78kWkq8GepaDcFR2uhD2Wy1Zt/nKe1ZN5rXlV5SVY9LFgT5I
-	p1FDgP1OM2y7b4rRHec7bKyoLJH8cYZAyhqP7l3xIlaazo+A0HO8NULSonYeHbPaSqpdNNsz7Knxt
-	lQonwh+7BZdHMPtVua2Rn+UMfJhgSbnWUYcKK4gwCeYhZ+N+5pbvo3S15D/qtPHTm3bSxhzoEHV9H
-	tmxliYug==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:60640 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rFiR0-0044oU-29;
-	Tue, 19 Dec 2023 15:19:30 -0700
-Subject: Re: [PATCH 6.1 000/106] 6.1.69-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231218135055.005497074@linuxfoundation.org>
-In-Reply-To: <20231218135055.005497074@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <c05cdde6-cf05-9af4-13af-4b38511de0d5@w6rz.net>
-Date: Tue, 19 Dec 2023 14:19:28 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BDE3EA78;
+	Tue, 19 Dec 2023 22:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-40c580ba223so63805065e9.3;
+        Tue, 19 Dec 2023 14:46:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703025979; x=1703630779; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qg8naDClSZMfxKq9xF+hunOpmcdJyE6zAX983XcttK0=;
+        b=UzVyITlmC13N8QI4H9HqA4XlR8GzyqZ7kzvVQMd/yvr6Vfh/G317S+X+WLNe0VhR+/
+         LT1eaQtmWjkuruUJC/XhQU21Z5XIEBBL4IpwqnXozSIwk79HsP1WZFh0eB0lVm/Xqrnj
+         tXChnRU1xPClns/0sbxXK/v5xBRnoXFc11dQydATUdo+NOOpoBNdV+dSGF0hHn+MDrI8
+         EhjJWy1YQn2M7Zo+yeOTRllXf0C+tOaEWmZqkecgiLP7L3kr2Zv9G31HTjS6JyjDAyf+
+         8zq/tq3klhBMpFKpNqvdCmBHZ1V/YP/HKT0Cnby9dtzfRsz74hx8Pm7tp6+VWTYPkQCG
+         rrmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703025979; x=1703630779;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qg8naDClSZMfxKq9xF+hunOpmcdJyE6zAX983XcttK0=;
+        b=kmV5vrpwIoAHOFD/pjNnPAWDN5dWsJY9019lt21sCj1NUOnDifWROysNmhlX1GtPd+
+         77E0yw6PzRGP59H2NHKX5aTVtufNJ0YoWVRmVoZay4XgoQWQewJmxqRswF/j85QhoymB
+         xbzUCuWDXcglzcTjzTUhokLd5jKs1ISQN7o0qraxwJGWwrfxq0GONBTXJUE/9Rmj3cvX
+         wUn8ylO40KWBGyxnfpF8jAwTpljzKWSZ86ifiAeXrHxdix56WCp7tIuPMzT8OL/X4Gqu
+         1Rc7vf8M0BinB0MdKZ5BsT1MljkPSTZuqzUGYAEiKzLk/q6jab4hSceLIrwYP2CLE3hx
+         ljew==
+X-Gm-Message-State: AOJu0YwU2GjhQAkywDWWtVfgPdTsBQLaN+D67nm60WcJcWIPiIk/C+cx
+	UZXfIuv3YvCjz7tDbKIiFQTx/uHZV1C0Dw==
+X-Google-Smtp-Source: AGHT+IGcgvfUPN5TljD09oQYCBLLUpvwhpt8PdFBlzZTpDiRyi8Oaqxf6OmPKHIRW2R0zoOHHV5cxA==
+X-Received: by 2002:a05:600c:1e0c:b0:40d:1c37:c4fd with SMTP id ay12-20020a05600c1e0c00b0040d1c37c4fdmr1690636wmb.175.1703025979338;
+        Tue, 19 Dec 2023 14:46:19 -0800 (PST)
+Received: from skbuf ([188.27.185.68])
+        by smtp.gmail.com with ESMTPSA id ll9-20020a170907190900b00a1cbb289a7csm15832885ejc.183.2023.12.19.14.46.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Dec 2023 14:46:19 -0800 (PST)
+Date: Wed, 20 Dec 2023 00:46:16 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sylvain Girard <sylvain.girard@se.com>,
+	Pascal EBERHARD <pascal.eberhard@se.com>,
+	Richard Tresidder <rtresidd@electromag.com.au>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking COE
+Message-ID: <20231219224616.pw32w5eq2dbuja5i@skbuf>
+References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+ <20231218162326.173127-2-romain.gantois@bootlin.com>
+ <20231219122034.pg2djgrosa4irubh@skbuf>
+ <20231219140754.7a7a8dbd@device-28.home>
+ <CACRpkdaxy9u=1-rQ+f+1tb8xyV-GYOuq52xhb4_SRPk9-LpnUA@mail.gmail.com>
+ <20231219172932.13f4b0c3@device-28.home>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rFiR0-0044oU-29
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:60640
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfC4/wGXLpIe2GFFpedlomXedsKflEdIc44xZD/pJKXfAs/j3EzohF5RXhe02zApoE50/h/6ofi9ZurMsCfCHxxDry7t7GM7G2WOQ1KhQJSwXcVwpfNcH
- WGQ+dpa7Q0aagCFubRT/U5epLmvHzq6snaFGon7ATMQoGRj8F+E3c3iGu/bBomPPO07EvTKqnnrcLw==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231219172932.13f4b0c3@device-28.home>
 
-On 12/18/23 5:50 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.69 release.
-> There are 106 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.69-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Tue, Dec 19, 2023 at 05:29:32PM +0100, Maxime Chevallier wrote:
+> Hi Linus,
+> 
+> On Tue, 19 Dec 2023 15:19:45 +0100
+> Linus Walleij <linus.walleij@linaro.org> wrote:
+> 
+> > On Tue, Dec 19, 2023 at 2:07 PM Maxime Chevallier
+> > <maxime.chevallier@bootlin.com> wrote:
+> > 
+> > > So it looks like an acceptable solution would be something along the
+> > > lines of what Linus is suggesting here :
+> > >
+> > > https://lore.kernel.org/netdev/20231216-new-gemini-ethernet-regression-v2-2-64c269413dfa@linaro.org/
+> > >
+> > > If so, maybe it's worth adding a new helper for that check ?  
+> > 
+> > Yeah it's a bit annoying when skb->protocol is not == ethertype of buffer.
+> > 
+> > I can certainly add a helper such as skb_eth_raw_ethertype()
+> > to <linux/if_ether.h> that will inspect the actual ethertype in
+> > skb->data.
+> > 
+> > It's the most straight-forward approach.
+> 
+> Agreed :)
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+If you rewrite that patch to use skb_vlan_eth_hdr() to get a struct
+vlan_ethhdr pointer through which h_vlan_proto and h_vlan_encapsulated_proto
+are accessible, I don't see much value in writing that helper. It is
+going to beg the question how generic should it be - should it also
+treat ETH_P_8021AD, should it treat nested VLANs?
 
-Tested-by: Ron Economos <re@w6rz.net>
+At the end of the day, you are trying to cover in software the cases for
+which the hardware engine can perform TX checksum offloading. That is
+going to be hardware specific.
 
+> > We could also add something like bool custom_ethertype; to
+> > struct sk_buff and set that to true if the tagger adds a custom
+> > ethertype. But I don't know how the network developers feel about
+> > that.
+> 
+> I don't think this would be OK, first because sk_buff is pretty
+> sensitive when it comes to cache alignment, adding things for this kind
+> of use-cases isn't necessarily a good idea. Moreover, populating this
+> flag isn't going to be straightforward as well. I guess some ethertype
+> would be compatible with checksum engines, while other wouldn't, so
+> probably what 'custom_ethertype' means will depend on the MAC driver.
+> 
+> From my point of view the first approach would indeed be better.
+
+I guess we should first try to answer the questions "what does
+skb->protocol represent?" and "does DSA use it correctly?" before
+even thinking about adding yet another fuzzy layer on top it.
 
