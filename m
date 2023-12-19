@@ -1,139 +1,127 @@
-Return-Path: <stable+bounces-7930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CB8818DC9
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 18:18:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8327818DD7
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 18:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6951C24ED5
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 17:18:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EABAD1C24EF4
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 17:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AA02D609;
-	Tue, 19 Dec 2023 17:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC7B31A63;
+	Tue, 19 Dec 2023 17:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDhmM2wW"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="M23ZXpdK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF782D7A6;
-	Tue, 19 Dec 2023 17:18:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC7CC433C9;
-	Tue, 19 Dec 2023 17:18:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703006304;
-	bh=Rbbi3bdXZpPeMfvZ8EXC5cjsGqmRUe5g0GaIMT4Ia+0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CDhmM2wWIG/1DeafIJBUkpCGfcZshWLfuFWRfarG75sYFkd5gi9lryaZnOt3+n6nZ
-	 oCDbK4lJcdC896QpbEGLJ0Jv8e3tGTvC+8XdsyBs9WWC2E1X5+MvL4APdat9/cqBOY
-	 V7YuxuEZz2FfnOsAzcCaS9R9RRByJOrdzuKIVxXNGm1ah+VaazcKXmKPumTDAQtx7N
-	 eem5F2ne2mPJvuXEKLngJw5xXhkxS+NFGgr2XtRMiAaT8V09AfAUDJA4IbOEgXVj3c
-	 8/6UGm04sOEoZT4XxHOhNkhJqchB0X9zUFLmbgf7bhpKyVgquMb7rpukI2cDohqGeG
-	 8kJtuNDK3f9ow==
-Date: Tue, 19 Dec 2023 17:18:19 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Conor Dooley <conor.dooley@microchip.com>
-Cc: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, geert+renesas@glider.be,
-	Atish Patra <atishp@rivosinc.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>, apatel@ventanamicro.com,
-	alexghiti@rivosinc.com, Bjorn Topel <bjorn@rivosinc.com>,
-	suagrfillet@gmail.com, jeeheng.sia@starfivetech.com,
-	petrtesarik@huaweicloud.com, linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	prabhakar.mahadev-lad.rj@bp.renesas.com
-Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
- OpenSBI's PMP protected regions
-Message-ID: <20231219-fernlike-device-4d7186aa4deb@spud>
-References: <20230810-crewless-pampers-6f51aafb8cff@wendy>
- <mhng-550dee8b-a2fb-485b-ad4d-2763e94191b4@palmer-ri-x1c9>
- <20231206-precut-serotonin-2eecee4ab6af@spud>
- <CA+V-a8s3MjvpD8gAE7-mOUc6PEytbPOR6x_PHuw0J0hOLkaz-w@mail.gmail.com>
- <20231207-buffalo-varmint-de843c8a12bb@wendy>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5B63714B;
+	Tue, 19 Dec 2023 17:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=dhOqiUDo6hWsxc+Eqa46nTmCA1Ktb3a/vQZ2WSiGGX4=; b=M23ZXpdKMsedpAYQeE1rlM1NqN
+	eNC/VKIIK9P391JSVFHBlDFSDlvRY8Iyaw/hiGb2GJT8n6ROJIyv15xlet510U4EKkq/hKvLuIpx7
+	0yzhvZ4aLmxNQ5YoprkkXtMfX/j7LNJN8Kf1Bwl9C4+jWRrS/un1Wfen9CbIqyF6MMWk=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:40128 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rFdkJ-0007Ao-AQ; Tue, 19 Dec 2023 12:19:07 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	jringle@gridpoint.com,
+	kubakici@wp.pl,
+	phil@raspberrypi.org,
+	bo.svangard@embeddedart.se
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	hugo@hugovil.com,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	stable@vger.kernel.org
+Date: Tue, 19 Dec 2023 12:18:45 -0500
+Message-Id: <20231219171903.3530985-2-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231219171903.3530985-1-hugo@hugovil.com>
+References: <20231219171903.3530985-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Y0vuaG6s5+IsNzDE"
-Content-Disposition: inline
-In-Reply-To: <20231207-buffalo-varmint-de843c8a12bb@wendy>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+Subject: [PATCH 01/18] serial: sc16is7xx: fix segfault when removing driver
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
---Y0vuaG6s5+IsNzDE
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+If a problem with a device occurs during probing, and we subsequently
+try to remove the driver, we get the following error:
 
-Hey,
+$ rmmod sc16is7xx
+[   62.783166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000040
+[   62.994226] Call trace:
+[   62.996672]  serial_core_unregister_port+0x58/0x2b0
+[   63.001558]  serial_ctrl_unregister_port+0x18/0x30
+[   63.006354]  uart_remove_one_port+0x18/0x30
+[   63.010542]  sc16is7xx_spi_remove+0xc0/0x190 [sc16is7xx]
+Segmentation fault
 
-On Thu, Dec 07, 2023 at 01:11:23PM +0000, Conor Dooley wrote:
-> On Thu, Dec 07, 2023 at 01:02:00PM +0000, Lad, Prabhakar wrote:
-> > On Wed, Dec 6, 2023 at 2:26=E2=80=AFPM Conor Dooley <conor@kernel.org> =
-wrote:
-> > > On Wed, Dec 06, 2023 at 04:52:11AM -0800, Palmer Dabbelt wrote:
-> > > > On Thu, 10 Aug 2023 02:07:10 PDT (-0700), Conor Dooley wrote:
->=20
-> > > > > I'm perfectly happy to drop this series though, if people general=
-ly are
-> > > > > of the opinion that this sort of firmware workaround is ill-advis=
-ed.
-> > > > > We are unaffected by it, so I certainly have no pressure to have
-> > > > > something working here. It's my desire not to be user-hostile that
-> > > > > motivated this patch.
-> > > >
-> > > > IIUC you guys and Reneas are the only ones who have hardware that m=
-ight be
-> > > > in a spot where users aren't able to update the firmware (ie, it's =
-out in
-> > > > production somewhere).
-> > >
-> > > I dunno if we can really keep thinking like that though. In terms of
-> > > people who have devicetrees in the kernel and stuff available in west=
-ern
-> > > catalog distribution, sure.
-> > > I don't think we can assume that that covers all users though, certai=
-nly
-> > > the syntacore folks pop up every now and then, and I sure hope that
-> > > Andes etc have larger customer bases than the in-kernel users would
-> > > suggest.
-> > >
-> > > > So I'm adding Geert, though he probably saw this
-> > > > months ago...
-> > >
-> > > Prabhakar might be a good call on that front. I'm not sure if the
-> > > Renesas stuff works on affected versions of OpenSBI though, guess it
-> > > depends on the sequencing of the support for the non-coherent stuff a=
-nd
-> > > when this bug was fixed.
-> > >
-> > ATM, I dont think there are any users who are using the upstream
-> > kernel + OpenSBI (apart from me and Geert!). Currently the customers
-> > are using the BSP releases.
->=20
-> That doesn't really answer whether or not you (and your customers) are
-> using an affected version of the vendor OpenSBI?
-> The affected range for OpenSBI itself is [v0.8 to v1.3).
+Tested on a custom board with two SC16IS742 ICs, and by simulating a fault
+when probing channel (port) B of the second device.
 
-Did you perhaps miss this mail Prabhakar?
+The reason is that uart_remove_one_port() has already been called during
+probe in the out_ports: error path, and is called again in
+sc16is7xx_remove().
 
-Cheers,
-Conor.
+Fix the problem by clearing the device drvdata in probe error path to
+indicate that all resources have been deallocated. And only deallocate
+resources in sc16is7xx_remove() if device drvdata is non-null.
 
---Y0vuaG6s5+IsNzDE
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+---
+ drivers/tty/serial/sc16is7xx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index e40e4a99277e..b585663c1e6e 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1663,6 +1663,8 @@ static int sc16is7xx_probe(struct device *dev,
+ out_clk:
+ 	clk_disable_unprepare(s->clk);
+ 
++	dev_set_drvdata(dev, NULL);
++
+ 	return ret;
+ }
+ 
+@@ -1671,6 +1673,9 @@ static void sc16is7xx_remove(struct device *dev)
+ 	struct sc16is7xx_port *s = dev_get_drvdata(dev);
+ 	int i;
+ 
++	if (!s)
++		return;
++
+ #ifdef CONFIG_GPIOLIB
+ 	if (s->gpio_valid_mask)
+ 		gpiochip_remove(&s->gpio);
+-- 
+2.39.2
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZYHQWwAKCRB4tDGHoIJi
-0qC/AQDhdNlr9kHILIKz2xZ2WYD3SYxAiUhSXQD5sQ628Xbt2wD+Ln3DFaA1ILE1
-XDHWGjSnaEkAkeVg8Q8Dz5D/SwDYFAo=
-=Fz5n
------END PGP SIGNATURE-----
-
---Y0vuaG6s5+IsNzDE--
 
