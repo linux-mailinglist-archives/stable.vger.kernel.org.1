@@ -1,129 +1,237 @@
-Return-Path: <stable+bounces-7887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D784081842A
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:11:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91079818432
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:11:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72DCA281993
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB20281D1F
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B02012B7D;
-	Tue, 19 Dec 2023 09:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B377E134CE;
+	Tue, 19 Dec 2023 09:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X1pFzzzt"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ezKc+g1x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9825F13FED
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 09:11:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3365b5d6f0eso2625148f8f.3
-        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 01:11:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA727134A5
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 09:11:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d075392ff6so29313425ad.1
+        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 01:11:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702977075; x=1703581875; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=b00Z9YbA6rA199UjNKAF7p+NcpYYH9RXLvnxhrRldNs=;
-        b=X1pFzzztdUHd8mHSLNiqNr22PmncTgH96U9IX1GIIm9lu2g1qGZ9lfK+O26M71UvRk
-         CV0Xt9rHsGklH5GdElwV5PU155Oq8CiPC/f2mmNWnE189AnpOlKbcPuqet0v+Nw+GXxr
-         eI4z6PYuoJK2Zf42y63Yt+SG90zvJNoTkeCJTwOzcCeZLAFE7zoXaiHdJfYjG3nOtWpB
-         ubvp2v0pm92Ejzx5qwCXVkcomEbezlSOxoev9TPrgbxAu+r6JaaFgKZZnCigXvvX97Ya
-         eiARN/GVQXRN8yAS/1LtqhF1xCthWJyxZEqd/dCOU0TmsdSetpp9mfrwKQBrU4xEPiI1
-         BJZA==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702977091; x=1703581891; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=VPw3Us4WbJYOiwmAr+/UEfDacmpEZPB0wpHe+EipyDs=;
+        b=ezKc+g1xoYL9+gNUVEQN9D3HBfAZqpZ3OPYd8xoW+r5HT4TSbCQIahZXL+MKnqXnUL
+         8Hap/6PEDs9HMehrTPidAFMRoaRr73/d++L9ihH3qCzfQMaZo4tzNvbY3sm7IWqKYBGg
+         UtOmsetaaeAbonnzhYwzSmBq4AyB82piqx34dV935LUq3VkFTTjYbmiwkV+5e2NpqwoX
+         ieCs9rm5ukxH702LQ5WS2O6ozLrwD9xJi6pke0BOfgPyzJVLDXk+X7o2r5VFykSsXrTl
+         uamEWHQ+btDuWLfPGtUqdfQvduFk3CjscpVtmssIltvVln9NhucAi9QkSsfN96HgarGv
+         93aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702977075; x=1703581875;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1702977091; x=1703581891;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=b00Z9YbA6rA199UjNKAF7p+NcpYYH9RXLvnxhrRldNs=;
-        b=aq+eh7VpyOA4fo9C5lQmI1dDt6JYgA05Lppq5jmm1DhvSTGVweoqH+KABffozhtSXD
-         YAJB3YgVzURt9KQzQSY9eyQFVYlvgHB2hi5ZS+DTeOB60S6t5ABZdDeyYLGmw+s4n0wb
-         HnKUghIA1meWT5yb5/sTcUw0yMQGjaysb1KhpI/xDlxabpO9gMHSsmDwHB1IJTlSF0Fe
-         L6uvHeaqC85ZQvqeA+GMdAgCnvHH1cSXbzeumb29mC7svbIst6nABB/MOKFjP4mkpYo7
-         pvXJGxiiHWtaXmlvjnkPudkhL8SkjSYtM2R4/FMRMgZ+Jl6SAGQ08yEA+1yNQ1HWmVQl
-         6VYQ==
-X-Gm-Message-State: AOJu0Yx3sJCpDI5m9O2fIvCC5fy1CSxg6JGrd5ISIj4lLcQ9oOcDwPva
-	M4FauRLM6k0B+/f3TkGXiiSW/vIxTOouEsrRvK41Xw==
-X-Google-Smtp-Source: AGHT+IHBN+SxeU8QRO6kS1FBHfpO8CEQfmp6QyuSnc615l3P4Ta6UdKOSrjrsDDe4ic5UQrYQTMsVdAjXxR7CTKeNoI=
-X-Received: by 2002:adf:ea4c:0:b0:336:6690:6d3 with SMTP id
- j12-20020adfea4c000000b00336669006d3mr1693620wrn.29.1702977074695; Tue, 19
- Dec 2023 01:11:14 -0800 (PST)
+        bh=VPw3Us4WbJYOiwmAr+/UEfDacmpEZPB0wpHe+EipyDs=;
+        b=Z13XHpv0vz3pykbarqb7835sRzz4R9YdWNj6kfflfa416MNYRpCt8q+uoRv73Jzf9F
+         JdIGQwOoWAu7xwlQ94nByyN5/Ec+23pfBfSESEKK1wnomIQRxyHWUkLaYtKBZMMJVr+S
+         7KRsTnw51R18l/ayaLfBHNwpktQIPUdO5Ehk1qBx+4ue1ztLgOD6zGLcXnvX/12h2O/n
+         0Y2/r8CjaiBuMJwb6tkjKFAUDgdLzTOqwHYQBpsRI4y38jjlGC84aloXQpUG+WV7/vHt
+         KXNLYdJ0/PxqNvVZyeu9zok/thRC6yLKkWIqbAqdP4yeRQSs8PvigDZc4yRv9p73c2SV
+         xFMQ==
+X-Gm-Message-State: AOJu0YzU2k9a59IMupvBKkG3seiBGxU1mp3M6W0Pi0rOnbHf8boNeydJ
+	HlUa2Xp2UtJspYfbOHVuFRAcBJ0M5M4fN5ehoYM=
+X-Google-Smtp-Source: AGHT+IEepUyuSFq2k3+6Q0/S49+QOrQ/BMvM9wTKA/sbmm/m3M02r4IUr0HVBuf52yauRIpInEP8mg==
+X-Received: by 2002:a17:902:d485:b0:1d3:8032:ccc0 with SMTP id c5-20020a170902d48500b001d38032ccc0mr976334plg.14.1702977091541;
+        Tue, 19 Dec 2023 01:11:31 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jh19-20020a170903329300b001d397998b8asm6024954plb.290.2023.12.19.01.11.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Dec 2023 01:11:30 -0800 (PST)
+Message-ID: <65815e42.170a0220.4e0da.ee82@mx.google.com>
+Date: Tue, 19 Dec 2023 01:11:30 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230906102557.3432236-1-alpic@google.com> <20231219090909.2827497-1-alpic@google.com>
-In-Reply-To: <20231219090909.2827497-1-alpic@google.com>
-From: Alfred Piccioni <alpic@google.com>
-Date: Tue, 19 Dec 2023 10:10:38 +0100
-Message-ID: <CALcwBGC9LzzdJeq3SWy9F3g5A32s5uSvJZae4j+rwNQqqLHCKg@mail.gmail.com>
-Subject: Re: [PATCH] security: new security_file_ioctl_compat() hook
-To: Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Eric Paris <eparis@parisplace.org>
-Cc: linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	stable@vger.kernel.org, selinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.204-60-g55a7662a657f
+Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.204-60-g55a7662a657f)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Thanks for taking the time to review! Apologies for the number of
-small mistakes.
+stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
+10.204-60-g55a7662a657f)
 
-> s/syscal/syscall/
-> Might to consider checking using codespell to catch such things
-> although it is imperfect.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.204-60-g55a7662a657f/
 
-Fixed, loaded codespell.
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.204-60-g55a7662a657f
+Git Commit: 55a7662a657ff853af91cde3dd39e2200d958ac9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-> Paul doesn't like C++-style comments so rewrite using kernel coding
-> style for multi-line comments or drop.
-> I don't think kernel coding style strictly prohibits use for
-> single-line comments and it isn't detected by checkpatch.pl but he has
-> previously
-> raised this on other patches. I actually like the C++-style comments
-> for one-liners especially for comments at the end of a line of code
-> but Paul is the maintainer so he gets the final word.
+Warnings Detected:
 
-Changed to /**/ style comments. No particular preference on my side
-for comment structure, just used to C++/Java style.
+arc:
 
-> Sorry, missed this the first time but cut-and-paste error above:
-> s/GETFLAGS/SETFLAGS/
+arm64:
 
-Egads. Fixed.
+arm:
 
-> Also, IIRC, Paul prefers putting a pair of parentheses after function
-> names to distinguish them, so in the subject line
-> and description it should be security_file_ioctl_compat() and
-> security_file_ioctl(), and you should put a patch version
-> in the [PATCH] prefix e.g. [PATCH v3] to make clear that it is a later
-> version, and usually one doesn't capitalize SELinux
-> or the leading verb in the subject line (just "selinux: introduce").
+i386:
 
-Changed title to lower-case, prefixed with security, changed slightly
-to fit in summary with new parentheses. Added [PATCH V3] to the
-subject.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-> Actually, since this spans more than just SELinux, the prefix likely
-> needs to reflect that (e.g. security: introduce ...)
-> and the patch should go to the linux-security-module mailing list too
-> and perhaps linux-fsdevel for the ioctl change.
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
-Added cc 'selinux@vger.kernel.org' and cc
-'linux-kernel@vger.kernel.org'. Thanks!
+x86_64:
 
-> I didn't do an audit but does anything need to be updated for the BPF
-> LSM or does it auto-magically pick up new hooks?
 
-I'm unsure. I looked through the BPF LSM and I can't see any way it's
-picking up the file_ioctl hook to begin with. It appears to me
-skimming through the code that it automagically picks it up, but I'm
-not willing to bet the kernel on it.
+Warnings summary:
 
-Do you know who would be a good person to ask about this to make sure?
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
