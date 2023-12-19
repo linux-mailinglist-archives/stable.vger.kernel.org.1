@@ -1,156 +1,199 @@
-Return-Path: <stable+bounces-7911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E5281866E
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 12:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983D6818747
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 13:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B73A1C23BF9
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 11:33:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E553A2856F8
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 12:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7774E15AED;
-	Tue, 19 Dec 2023 11:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F67B17757;
+	Tue, 19 Dec 2023 12:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kCI96506"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ew76LuJ4"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1331802A;
-	Tue, 19 Dec 2023 11:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NhlGB1FDeRBwDS2L968oHziCH8i7ZRZ4+aemZVQnvczq6xj7sUwNqr/8dSxob+yeGz/q03jCG6rIGsabxOMWL8yZmJ33VdEnMd5pWUDSxDLHwLUyaOBAlWUIDk5OpU2GOGPs72LWCO7BlagANx4nX5VG0EfatrlGqh6uKDYMTAhFh86A1EhdKGdptdJG29PBli1HrAP+GVEiQYVx2vp20F8JxyjnYmb6B87Yyk3jWPu8leHqJew2XC5VPZlf4zc6ZdAti+CvvWRorXwHr9U5/art4V7jduh+c+ZgjwcS0q1nQ7AnWz5VfrsECNslLgpV6Rym4shGZABrQ+sgAQU8mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k31RBGlNX7U3ZABGKo9YD0vwR4InI0xEA6s64n4Uj+s=;
- b=d4ESN5V32TA9eUwRnqQkB6dmGsFkN3C2M6Ur+/776Oh0WOmmN6IHbTYF7NW1336pkFkPgDiZdfOZdPYsfdyhrsGjbbaAn6c0044oZsPpT+YQT/hyTYT12vTBtba9g68WMa8mD4/PJCXr+MkzGiqgAnC03PQr/v1dw4M6ngab0tG1VIVvOfHNshtIZncQj287hjzUXd2CN6OrdEtxTZs2LJtVMvb5azgnb7BHRd3U568ob7iN6vpN+Gsl9doxk8VYaTPfd0dZUaoEgxvkdgXj7OAvH8pAgM7MsyHPpXCvMdCrF0h+2DiJrY5hCYlkHBRYi7COnpdgd+x0NZZTnXDXyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=k31RBGlNX7U3ZABGKo9YD0vwR4InI0xEA6s64n4Uj+s=;
- b=kCI96506FdeUCOusB2bMiRRuzzhkGL94mAkEtDvQq1gonh85cdn6xZfy76EaU6Q1KMToDNFZckGsDLnIKPQvrtEerO9d9S/DoaJDy23f/eNEvR6KJcxCzG93CWK0z/aSYHaTkaIvgUwk7koaY8XYRc3WtwznIx4jnyV9YQqCracuRnd5u3lLmN5t6rI+Zksc9CzrMAxxEzTYCh+V7crsouHgoA8Yv9Sl4EEEiOFFYWESU7+Jio1W1BX3ndQuUk0QBGw5UZj/M4Rv1555gd0GMGD5XQxtMLPsvc3QmSNW8Jz4bp2/uTeXipiv4R9t+2vzLLyTj4BvcVJUDS5JqDQnwA==
-Received: from CYZPR17CA0016.namprd17.prod.outlook.com (2603:10b6:930:8c::25)
- by BL0PR12MB4930.namprd12.prod.outlook.com (2603:10b6:208:1c8::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38; Tue, 19 Dec
- 2023 11:33:03 +0000
-Received: from CY4PEPF0000E9CF.namprd03.prod.outlook.com
- (2603:10b6:930:8c:cafe::3f) by CYZPR17CA0016.outlook.office365.com
- (2603:10b6:930:8c::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.38 via Frontend
- Transport; Tue, 19 Dec 2023 11:33:03 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000E9CF.mail.protection.outlook.com (10.167.241.142) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7113.14 via Frontend Transport; Tue, 19 Dec 2023 11:33:03 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 19 Dec
- 2023 03:32:49 -0800
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 19 Dec
- 2023 03:32:49 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Tue, 19 Dec 2023 03:32:49 -0800
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.6 000/166] 6.6.8-rc1 review
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-References: <20231218135104.927894164@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4BD1802D;
+	Tue, 19 Dec 2023 12:20:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2340c803c6so317307966b.0;
+        Tue, 19 Dec 2023 04:20:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702988437; x=1703593237; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=l6TxmZzSrla4vvXDQC7Cn74njvru9m/j+6El3HghLS4=;
+        b=Ew76LuJ4whOny86D5q8FcStaWDAWlWbWeASoT3VZRE0jCGZhc3RmcN8Y1cagCHVwZp
+         zFbkWs4VtdLwC63WMXXomtVvXkK4c5nuvG1hih8FXzH25DPmdIsPPpgK2L9uC9qdx1ma
+         Wo0gjsPvLA0SNGEMF3c84O9DkifBSypf7IM4hF7WMsKwOV6N1kvbldTSOunPL6F/hzmt
+         79PHchHebXMJpHSk3A8pxXxfgsTUAngdzBdXmyL5X1BaEg9bX7re3/792To+NustZZZY
+         JH8ZzJy57lcSVXpt3joCqOhXJoAMvAEqW3dvtXSSb9CWy5/9X9Q0caJR6q5QK+sQEOWe
+         ao+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702988437; x=1703593237;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l6TxmZzSrla4vvXDQC7Cn74njvru9m/j+6El3HghLS4=;
+        b=wex245zs0S6J8HJFymv2Z7oIe6SuhawGnTSdis0tGGUHOxVeulhaA3FRKjzaKyUYpq
+         iAEEUP7FNes0Qadklxm+LCGbKErUsgbQFHcf5uw/c0ovoZr/DGSL1XeTj5XTtuKOCnQF
+         3keTEERkx5X6j6dc5psKqG0YxTibZKaIxBexiMqP5YjhaE0Y+Hc7q6HHhLKeNzw7EC5G
+         0i566ZoZMRrcMmA/Pwc+ErX7YcsILhG0jxh25OrVhZfxtfiGLU1FWyM+rjmpbLt4os4o
+         wLxNjPK4JYM+OUMwhP5pgGRZsxED4JWpkWTeeN3ZSUAJtNUhd+HqeSnwuC3UYLesD/tJ
+         EwNA==
+X-Gm-Message-State: AOJu0YyZUa6dMswQ6O8ItfCiY4CEpI7RaYGuSeEXhRydj6vWa3qtziDM
+	59+4BVPLs1iXXA0Jyr6yrNU=
+X-Google-Smtp-Source: AGHT+IEF85zDgPhfMUFpTsLoXGcLUVBLjiYkSXZm9jyM0zEWCF6zNqlV9cTbyQPPvo84zRJXC5qRFg==
+X-Received: by 2002:a17:906:b0d4:b0:a1d:7792:cdbe with SMTP id bk20-20020a170906b0d400b00a1d7792cdbemr7007558ejb.146.1702988437094;
+        Tue, 19 Dec 2023 04:20:37 -0800 (PST)
+Received: from skbuf ([188.27.185.68])
+        by smtp.gmail.com with ESMTPSA id lm11-20020a17090718cb00b00a1cf3fce937sm15284866ejc.162.2023.12.19.04.20.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Dec 2023 04:20:36 -0800 (PST)
+Date: Tue, 19 Dec 2023 14:20:34 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Sylvain Girard <sylvain.girard@se.com>,
+	Pascal EBERHARD <pascal.eberhard@se.com>,
+	Richard Tresidder <rtresidd@electromag.com.au>,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking COE
+Message-ID: <20231219122034.pg2djgrosa4irubh@skbuf>
+References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+ <20231218162326.173127-2-romain.gantois@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <65fece32-70ac-4289-a0de-4aaa1a9ae6f0@rnnvmail204.nvidia.com>
-Date: Tue, 19 Dec 2023 03:32:49 -0800
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CF:EE_|BL0PR12MB4930:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2cbe7ba1-c670-4c98-e9ec-08dc00864356
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	XPpaXKVhJdInAMSNxp0zSnde1lzIj6Qzt0dYa8tCA4c5M0959jqqTws5wVByO+aC9q9cyK3IBN296y01tQS1XWsTOOqKo7lhitsZEcbxBpTgyRcmuJ16RDx0ERT1LB1ZNkxMVwsAyd+uPb/D4kyXUoa6VY06cOEdOXakBEIf9Uj3Ru7l/cMFK6UdrD4HPJsRomh4Iod1HcMWaIXU05CE5fvDvRn85poIMCqv1YYwKIDVtNw8Z8jBGXq1xCT2BeYMnVHRdJRTSPljdXRloGQl+Ao75LB7C2u+2cTa2Pv9wAxkmrjJyrxcgqDRVholEh2DpADYx4+VKscwkkQ9B/T/TQOFMDD7qznAnqBKQJrVhJa7f6ob624LZ3s/UiQ0/zyL1nLdWQjNX2F9aeGZT0lcFwvwlLuRfSEThutyc6a5CvllQPF0QYDJcF2AdO3+rntu9xi/q+V/lk6D8WM5jRRo5+QXRrSCX+11I7AhwF9Qt9SL20vhCsPMps94z7/A96Izvxe5G3pB2sNx1nybNVBNc1tn27+MwEohhpnNmf0AyzhJ41KkkGY1e/kjH/FZ2QEUzaFSF8tL/0UefDlykYfAVtPpYjDy6+ZfzBVb/sMlOcV8kyqAm7RQCevM8mDJLqaCpJOP1wTLwTBfdwvVDyZzMPvvULRliVf9Pk254EWIotLelnSTfL3cSXgQY0FbtKxBLRxd0BsENKpvC/5JsVLs4W3G0YXAneM3ub2f0r1KctW814Uldqi/Dg/MF2r8390FubsHL+5eQtcmz5ZCRC8PxXUD4Su7Z64YWS5qJ9FB7eM=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(39860400002)(346002)(136003)(376002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(82310400011)(46966006)(36840700001)(40470700004)(966005)(7416002)(478600001)(26005)(426003)(336012)(82740400003)(356005)(41300700001)(36860700001)(7636003)(31696002)(86362001)(47076005)(2906002)(40480700001)(70586007)(70206006)(54906003)(6916009)(316002)(4326008)(8676002)(8936002)(31686004)(5660300002)(40460700003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Dec 2023 11:33:03.3748
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2cbe7ba1-c670-4c98-e9ec-08dc00864356
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9CF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL0PR12MB4930
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231218162326.173127-2-romain.gantois@bootlin.com>
 
-On Mon, 18 Dec 2023 14:49:26 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.8 release.
-> There are 166 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Romain,
+
+On Mon, Dec 18, 2023 at 05:23:23PM +0100, Romain Gantois wrote:
+> Some stmmac cores have Checksum Offload Engines that cannot handle DSA tags
+> properly. These cores find the IP/TCP headers on their own and end up
+> computing an incorrect checksum when a DSA tag is inserted between the MAC
+> header and IP header.
 > 
-> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
-> Anything received after that time might be too late.
+> Add an additional check on stmmac link up so that COE is deactivated
+> when the stmmac device is used as a DSA conduit.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> Add a new dma_feature flag to allow cores to signal that their COEs can't
+> handle DSA tags on TX.
 > 
-> thanks,
+> Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
+> Cc: stable@vger.kernel.org
+> Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+> Closes: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
+> Reported-by: Romain Gantois <romain.gantois@bootlin.com>
+> Closes: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
+> Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+> ---
+
+DSA_TAG_PROTO_LAN9303, DSA_TAG_PROTO_SJA1105 and DSA_TAG_PROTO_SJA1110
+construct tags with ETH_P_8021Q as EtherType. Do you still think it
+would be correct to say that all DSA tags break COE on the stmmac, as
+this patch assumes?
+
+The NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM convention is not about
+statically checking whether the interface using DSA, but about looking
+at each packet before deciding whether to use the offload engine or to
+call skb_checksum_help().
+
+You can experiment with any tagging protocol on the stmmac driver, and
+thus with the controller's response to any kind of traffic, even if the
+port is not attached to a hardware switch. You need to enable the
+CONFIG_NET_DSA_LOOP option, edit the return value of dsa_loop_get_protocol()
+and the "netdev" field of dsa_loop_pdata. The packets need to be
+analyzed on the link partner with a packet analysis tool, since there is
+no switch to strip the DSA tag.
+
+>  drivers/net/ethernet/stmicro/stmmac/common.h     |  1 +
+>  .../net/ethernet/stmicro/stmmac/dwmac1000_dma.c  |  1 +
+>  .../net/ethernet/stmicro/stmmac/stmmac_main.c    | 16 +++++++++++++++-
+>  3 files changed, 17 insertions(+), 1 deletion(-)
 > 
-> greg k-h
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+> index daf79cdbd3ec..50686cdc3320 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_dma.c
+> @@ -264,6 +264,7 @@ static int dwmac1000_get_hw_feature(void __iomem *ioaddr,
+>  	dma_cap->number_tx_channel = (hw_cap & DMA_HW_FEAT_TXCHCNT) >> 22;
+>  	/* Alternate (enhanced) DESC mode */
+>  	dma_cap->enh_desc = (hw_cap & DMA_HW_FEAT_ENHDESSEL) >> 24;
+> +	dma_cap->dsa_breaks_tx_coe = 1;
+>  
+>  	return 0;
+>  }
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index a9b6b383e863..733348c65e04 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -42,6 +42,7 @@
+>  #include <net/page_pool/helpers.h>
+>  #include <net/pkt_cls.h>
+>  #include <net/xdp_sock_drv.h>
+> +#include <net/dsa.h>
+>  #include "stmmac_ptp.h"
+>  #include "stmmac.h"
+>  #include "stmmac_xdp.h"
+> @@ -993,8 +994,11 @@ static void stmmac_mac_link_up(struct phylink_config *config,
+>  			       int speed, int duplex,
+>  			       bool tx_pause, bool rx_pause)
+>  {
+> -	struct stmmac_priv *priv = netdev_priv(to_net_dev(config->dev));
+> +	struct net_device *ndev = to_net_dev(config->dev);
+> +	struct stmmac_priv *priv = netdev_priv(ndev);
+> +	unsigned int tx_queue_cnt;
+>  	u32 old_ctrl, ctrl;
+> +	int queue;
+>  
+>  	if ((priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP) &&
+>  	    priv->plat->serdes_powerup)
+> @@ -1102,6 +1106,16 @@ static void stmmac_mac_link_up(struct phylink_config *config,
+>  
+>  	if (priv->plat->flags & STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY)
+>  		stmmac_hwtstamp_correct_latency(priv, priv);
+> +
+> +	/* DSA tags break COEs on some cores. Disable TX checksum
+> +	 * offloading on those cores if the netdevice is a DSA conduit.
+> +	 */
+> +	if (priv->dma_cap.dsa_breaks_tx_coe && netdev_uses_dsa(ndev)) {
+> +		tx_queue_cnt = priv->plat->tx_queues_to_use;
+> +		for (queue = 0; queue < tx_queue_cnt; queue++)
+> +			priv->plat->tx_queues_cfg[queue].coe_unsupported = true;
+> +	}
+> +
 
-All tests passing for Tegra ...
+The DSA switch driver can load after stmmac_mac_link_up() runs.
+This implementation is racy anyway.
 
-Test results for stable-v6.6:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+>  }
+>  
+>  static const struct phylink_mac_ops stmmac_phylink_mac_ops = {
+> -- 
+> 2.43.0
+> 
+> 
 
-Linux version:	6.6.8-rc1-gaa90f2b75bff
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
+pw-bot: cr
 
