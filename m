@@ -1,118 +1,160 @@
-Return-Path: <stable+bounces-7928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 121AA818CE3
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 17:50:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E311C818CE8
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 17:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39CEE1C21ECE
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 16:50:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14A401C243D8
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 16:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D4E1F605;
-	Tue, 19 Dec 2023 16:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guAAzcAz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E95D20B2F;
+	Tue, 19 Dec 2023 16:50:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E552C23769;
-	Tue, 19 Dec 2023 16:49:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8369C433C7;
-	Tue, 19 Dec 2023 16:49:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703004589;
-	bh=R4UK43hZlwabAzzEBuvlrt8StIK7OiOPqq5J59SVXhs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=guAAzcAzwt3lyO3MlGj8pUpuMNSJHEcAwMNE3V34NOkp2QHOIkD+/Td9E6Rk9MdL5
-	 x0x65A3tVJ9XFPP8tzWyPyOTbBVSEbtVIHgXX38PXbuIEDu+LjDOdEXDpNLlfftkdm
-	 6b5SVkmA+Cod18DxDykF4HJyKkCKIqp0MKo0ZHjb4ZETdFlXjgcQ52wtReUQEbMJoQ
-	 S8NeJg75jcSmzCo2YopfmTP2zkGMYGyK3r0Y+f4CwEwpmgjJ4aGFt0v80nm0sqo01G
-	 uFGW+zX7iAuOETcoCGeDFP3Ht0MqqQmiSlft85auD0VqhXzVibLirDZXlx95aIV262
-	 RE6fTHk2HMAWw==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-20335dcec64so3194180fac.3;
-        Tue, 19 Dec 2023 08:49:49 -0800 (PST)
-X-Gm-Message-State: AOJu0YzqWWGVbWJXWJRiIihssoh6HEd5xFcsE7i+a1Q3O+3v7juZ/Q3D
-	lbqhNapAVUMi/eLoLSrpyHPc25oO/y6idqODYx4=
-X-Google-Smtp-Source: AGHT+IEWhtbbGW2BVJtAybpYwxfOzJcvIfYfBcmKnkMkewuOuXlu5bMduy3fh4kxvistnBA5hrCUUPH8OX7WJ4CsRlg=
-X-Received: by 2002:a05:6870:a40d:b0:1fb:75a:6d45 with SMTP id
- m13-20020a056870a40d00b001fb075a6d45mr23293575oal.108.1703004589143; Tue, 19
- Dec 2023 08:49:49 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E922234CEB;
+	Tue, 19 Dec 2023 16:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4SvjL721hwz6K9Hf;
+	Wed, 20 Dec 2023 00:47:59 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 185C4140F8A;
+	Wed, 20 Dec 2023 00:49:43 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 19 Dec
+ 2023 16:49:30 +0000
+Date: Tue, 19 Dec 2023 16:49:28 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dan Williams <dan.j.williams@intel.com>
+CC: <linux-cxl@vger.kernel.org>, <stable@vger.kernel.org>, Alison Schofield
+	<alison.schofield@intel.com>, Dave Jiang <dave.jiang@intel.com>, Ira Weiny
+	<ira.weiny@intel.com>
+Subject: Re: [PATCH] cxl/hdm: Fix dpa translation locking
+Message-ID: <20231219164928.00000e6f@Huawei.com>
+In-Reply-To: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
+References: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK7LNATu-4TSSWpyFyVQYrkS++fUQbfp2tVjEpf3oZBV8ihq8w@mail.gmail.com>
- <20231219155659.1591792-1-jtornosm@redhat.com>
-In-Reply-To: <20231219155659.1591792-1-jtornosm@redhat.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 20 Dec 2023 01:49:12 +0900
-X-Gmail-Original-Message-ID: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
-Message-ID: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
-Subject: Re: [PATCH v3] rpm-pkg: simplify installkernel %post
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nathan@kernel.org, ndesaulniers@google.com, 
-	nicolas@fjasle.eu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, Dec 20, 2023 at 12:57=E2=80=AFAM Jose Ignacio Tornos Martinez
-<jtornosm@redhat.com> wrote:
->
-> The new installkernel application that is now included in systemd-udev
-> package allows installation although destination files are already presen=
-t
-> in the boot directory of the kernel package, but is failing with the
-> implemented workaround for the old installkernel application from grubby
-> package.
->
-> For the new installkernel application, as Davide says:
-> <<The %post currently does a shuffling dance before calling installkernel=
-.
-> This isn't actually necessary afaict, and the current implementation
-> ends up triggering downstream issues such as
-> https://github.com/systemd/systemd/issues/29568
-> This commit simplifies the logic to remove the shuffling. For reference,
-> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-> section to create initramfs and grub hooks").>>
->
-> But we need to keep the old behavior as well, because the old installkern=
-el
-> application from grubby package, does not allow this simplification and
-> we need to be backward compatible to avoid issues with the different
-> packages.
->
-> Mimic Fedora shipping process and store vmlinuz, config amd System.map
-> in the module directory instead of the boot directory. In this way, we wi=
-ll
-> avoid the commented problem for all the cases, because the new destinatio=
-n
-> files are not going to exist in the boot directory of the kernel package.
->
-> Replace installkernel tool with kernel-install tool, because the latter i=
-s
-> more complete. Suitable manual actions are added as a default if tool is =
-not
-> present (unusual).
->
-> Special installation case for discontinued architecture ia64 has been
-> removed.
+On Wed, 06 Dec 2023 19:57:06 -0800
+Dan Williams <dan.j.williams@intel.com> wrote:
 
+> The helper, cxl_dpa_resource_start(), snapshots the dpa-address of an
+> endpoint-decoder after acquiring the cxl_dpa_rwsem. However, it is
+> sufficient to assert that cxl_dpa_rwsem is held rather than acquire it
+> in the helper. Otherwise, it triggers multiple lockdep reports:
+> 
+> 1/ Tracing callbacks are in an atomic context that can not acquire sleeping
+> locks:
+> 
+>     BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1525
+>     in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1288, name: bash
+>     preempt_count: 2, expected: 0
+>     RCU nest depth: 0, expected: 0
+>     [..]
+>     Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc38 05/24/2023
+>     Call Trace:
+>      <TASK>
+>      dump_stack_lvl+0x71/0x90
+>      __might_resched+0x1b2/0x2c0
+>      down_read+0x1a/0x190
+>      cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+>      cxl_trace_hpa+0x122/0x300 [cxl_core]
+>      trace_event_raw_event_cxl_poison+0x1c9/0x2d0 [cxl_core]
+> 
+> 2/ The rwsem is already held in the inject poison path:
+> 
+>     WARNING: possible recursive locking detected
+>     6.7.0-rc2+ #12 Tainted: G        W  OE    N
+>     --------------------------------------------
+>     bash/1288 is trying to acquire lock:
+>     ffffffffc05f73d0 (cxl_dpa_rwsem){++++}-{3:3}, at: cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+> 
+>     but task is already holding lock:
+>     ffffffffc05f73d0 (cxl_dpa_rwsem){++++}-{3:3}, at: cxl_inject_poison+0x7d/0x1e0 [cxl_core]
+>     [..]
+>     Call Trace:
+>      <TASK>
+>      dump_stack_lvl+0x71/0x90
+>      __might_resched+0x1b2/0x2c0
+>      down_read+0x1a/0x190
+>      cxl_dpa_resource_start+0x15/0x50 [cxl_core]
+>      cxl_trace_hpa+0x122/0x300 [cxl_core]
+>      trace_event_raw_event_cxl_poison+0x1c9/0x2d0 [cxl_core]
+>      __traceiter_cxl_poison+0x5c/0x80 [cxl_core]
+>      cxl_inject_poison+0x1bc/0x1e0 [cxl_core]
+> 
+> This appears to have been an issue since the initial implementation and
+> uncovered by the new cxl-poison.sh test [1]. That test is now passing with
+> these changes.
+> 
+> Fixes: 28a3ae4ff66c ("cxl/trace: Add an HPA to cxl_poison trace events")
+> Link: http://lore.kernel.org/r/e4f2716646918135ddbadf4146e92abb659de734.1700615159.git.alison.schofield@intel.com [1]
+> Cc: <stable@vger.kernel.org>
+> Cc: Alison Schofield <alison.schofield@intel.com>
+> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Cc: Dave Jiang <dave.jiang@intel.com>
+> Cc: Ira Weiny <ira.weiny@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Seems good other than %#pa being more appropriate for the printk.
+I'm guessing you already tidied that up though.
 
-This code does not exist any more.
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-A patch applicable to linux-kbuild would be appreciated.
+> ---
+>  drivers/cxl/core/hdm.c  |    3 +--
+>  drivers/cxl/core/port.c |    4 ++--
+>  2 files changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+> index 529baa8a1759..7d97790b893d 100644
+> --- a/drivers/cxl/core/hdm.c
+> +++ b/drivers/cxl/core/hdm.c
+> @@ -363,10 +363,9 @@ resource_size_t cxl_dpa_resource_start(struct cxl_endpoint_decoder *cxled)
+>  {
+>  	resource_size_t base = -1;
+>  
+> -	down_read(&cxl_dpa_rwsem);
+> +	lockdep_assert_held(&cxl_dpa_rwsem);
+>  	if (cxled->dpa_res)
+>  		base = cxled->dpa_res->start;
+> -	up_read(&cxl_dpa_rwsem);
+>  
+>  	return base;
+>  }
+> diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+> index 38441634e4c6..f6e9b2986a9a 100644
+> --- a/drivers/cxl/core/port.c
+> +++ b/drivers/cxl/core/port.c
+> @@ -226,9 +226,9 @@ static ssize_t dpa_resource_show(struct device *dev, struct device_attribute *at
+>  			    char *buf)
+>  {
+>  	struct cxl_endpoint_decoder *cxled = to_cxl_endpoint_decoder(dev);
+> -	u64 base = cxl_dpa_resource_start(cxled);
+>  
+> -	return sysfs_emit(buf, "%#llx\n", base);
+> +	guard(rwsem_read)(&cxl_dpa_rwsem);
+> +	return sysfs_emit(buf, "%#llx\n", cxl_dpa_resource_start(cxled));
+>  }
+>  static DEVICE_ATTR_RO(dpa_resource);
+>  
+> 
 
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
 
