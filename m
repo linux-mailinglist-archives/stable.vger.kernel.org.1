@@ -1,144 +1,195 @@
-Return-Path: <stable+bounces-7848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5838F817FC6
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 03:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C5BB817FF9
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 03:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDEA61F23CC2
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 02:29:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C79611F23FC0
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 02:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734EB1FB6;
-	Tue, 19 Dec 2023 02:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446F017F3;
+	Tue, 19 Dec 2023 02:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="3MLiC30q"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06554409;
-	Tue, 19 Dec 2023 02:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4SvLHB6Mh1zMnyZ;
-	Tue, 19 Dec 2023 10:29:10 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8085814068C;
-	Tue, 19 Dec 2023 10:29:09 +0800 (CST)
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 19 Dec 2023 10:29:08 +0800
-Message-ID: <7e0f5796-99eb-867d-8885-8df553de8df9@huawei.com>
-Date: Tue, 19 Dec 2023 10:29:08 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1A84409
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 02:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d337dc9697so32563925ad.3
+        for <stable@vger.kernel.org>; Mon, 18 Dec 2023 18:57:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702954646; x=1703559446; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iDgRocHnFzkgz3rLJz/AKj28UCMcNVlErimsdsi6kzA=;
+        b=3MLiC30qIxg6ItsPOhdEyeYvvjcZAiP1iIIlg0a2+23FZobkv4bbGWsQpfDoIbxCTB
+         Eb3BaMZE8VJ2TODIjHNno3ICKgd3sqC7qaV2peXvywEjrPEKaFBmvzQeabOI7n+l8BXA
+         KYSTjf7RYk3LM51XG7nQDu39NMCvrmYWI1cx1CUlSBiGAF47wIN0oUImZIBsqf33PIVp
+         TvHAi6fbIdAKgwyN9Sc0bVkvbRQ17wLwOQuSp6DWxdiaxfoD66spaw8BZ94kEaOX2Q8O
+         M6vXc86ENcB2GB+NKkbf6PQWzpY+Hxs1WP2+nHBxmlMsKFAeNgBufDc9I2fQ+9pF+rZK
+         aqvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702954646; x=1703559446;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iDgRocHnFzkgz3rLJz/AKj28UCMcNVlErimsdsi6kzA=;
+        b=bJjulemoDHCStJtcN2xb3oZJsfIKzUAI1dnTcDqnhhS1/ALTs4DtlqwM08YUAqh8Nn
+         n9ZNh9MAGTd3/STHuOfGS1jSi/O9cR55yjpZXjkGNosIqM/R7Q72G7RngIZ5JyHkuWkG
+         ZeIl5gibOgDFs4SR/HjHXo7UjF2uUgVNElbMB35PKKfHZAVsB+WtebpYSELSbkE9qJdm
+         GtPGJBdsgHXz3MW+or53lN5wnh0tF8yNRtwrk93SJFnfvtHRIolVsgpGMotLZBow1W2O
+         IE9jFCdRW7sZoMzebKV7P5+bSqbk1cyRrhwAP30GbNlpehuICCBfogmXeoGNkEZkYwbT
+         prvQ==
+X-Gm-Message-State: AOJu0Yxa8pYdFgTdTSN/XtB3IZ2fa8BdQELtqKne05XU1SKmG2FVbW+D
+	LUHzG8z2VhsLEZ68UcTlJ0P27FmY9MvVhU8S62s=
+X-Google-Smtp-Source: AGHT+IGGwTrJAlp/CpWsdyk0zKTEBoPs3qFgFOvqpYrPDuUgVyAWEjSEWs4K5Ra3eT77RUD6iWU4IA==
+X-Received: by 2002:a17:902:bd88:b0:1d0:4706:60fc with SMTP id q8-20020a170902bd8800b001d0470660fcmr16900995pls.17.1702954646399;
+        Mon, 18 Dec 2023 18:57:26 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id q3-20020a170902f78300b001d083fed5f3sm19893014pln.60.2023.12.18.18.57.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Dec 2023 18:57:25 -0800 (PST)
+Message-ID: <65810695.170a0220.5fb71.b97c@mx.google.com>
+Date: Mon, 18 Dec 2023 18:57:25 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.1.2
-Subject: Re: [PATCH 3/4] ext4: avoid bb_free and bb_fragments inconsistency in
- mb_free_blocks()
-Content-Language: en-US
-To: Jan Kara <jack@suse.cz>, Theodore Ts'o <tytso@mit.edu>
-CC: <linux-ext4@vger.kernel.org>, <adilger.kernel@dilger.ca>,
-	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
-	<stable@vger.kernel.org>, Baokun Li <libaokun1@huawei.com>
-References: <20231218141814.1477338-1-libaokun1@huawei.com>
- <20231218141814.1477338-4-libaokun1@huawei.com>
- <20231218151455.yqph44iz4ihsujz5@quack3>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <20231218151455.yqph44iz4ihsujz5@quack3>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.6.y
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.6.7
+Subject: stable/linux-6.6.y build: 19 builds: 0 failed, 19 passed (v6.6.7)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On 2023/12/18 23:14, Jan Kara wrote:
-> On Mon 18-12-23 22:18:13, Baokun Li wrote:
->> After updating bb_free in mb_free_blocks, it is possible to return without
->> updating bb_fragments because the block being freed is found to have
->> already been freed, which leads to inconsistency between bb_free and
->> bb_fragments.
->>
->> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
->> to problems such as dividing by zero when calculating the average fragment
->> length. Therefore, to ensure consistency, move the update of bb_free to
->> after the block double-free check.
->>
->> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
->> CC: stable@vger.kernel.org # 3.10
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> I agree there's no point in updating the allocation info if the bitmap is
-> corrupted. We will not try to allocate (or free) blocks in that group
-> anymore. I'm just a bit unsure about the EXT4_FC_REPLAY state where we
-> don't mark the bitmap as corrupted although some blocks were already marked
-> as freed. So in this case the free space statistics tracking will go
-> permanently wrong. I'm kind of wondering in which case does fast-commit
-> free already freed blocks. Ted, any idea?
->
-> 								Honza
-Some additional information, this judgment was introduced in
-commit 8016e29f4362 ("ext4: fast commit recovery path") in v5.10-rc1,
-at which point mb_regenerate_buddy() was called to regenerate the
-buddy when it was found to be freeing a block that had already been
-freed, so there was no problem. Until v5.11-rc1 commit 6bd97bf273bd
-("ext4: remove redundant mb_regenerate_buddy()") removes the logic
-to regenerate the buddy, it looks like the free space statistics will
-remain wrong. If this normal scenario exists, perhaps buddy should
-be regenerated here?
+stable/linux-6.6.y build: 19 builds: 0 failed, 19 passed (v6.6.7)
 
-Thanks,
-Baokun
->> ---
->>   fs/ext4/mballoc.c | 13 ++++++-------
->>   1 file changed, 6 insertions(+), 7 deletions(-)
->>
->> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
->> index a95fa6e2b0f9..2fbee0f0f5c3 100644
->> --- a/fs/ext4/mballoc.c
->> +++ b/fs/ext4/mballoc.c
->> @@ -1892,11 +1892,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
->>   	mb_check_buddy(e4b);
->>   	mb_free_blocks_double(inode, e4b, first, count);
->>   
->> -	this_cpu_inc(discard_pa_seq);
->> -	e4b->bd_info->bb_free += count;
->> -	if (first < e4b->bd_info->bb_first_free)
->> -		e4b->bd_info->bb_first_free = first;
->> -
->>   	/* access memory sequentially: check left neighbour,
->>   	 * clear range and then check right neighbour
->>   	 */
->> @@ -1922,9 +1917,14 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
->>   				sb, e4b->bd_group,
->>   				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
->>   		}
->> -		goto done;
->> +		return;
->>   	}
->>   
->> +	this_cpu_inc(discard_pa_seq);
->> +	e4b->bd_info->bb_free += count;
->> +	if (first < e4b->bd_info->bb_first_free)
->> +		e4b->bd_info->bb_first_free = first;
->> +
->>   	/* let's maintain fragments counter */
->>   	if (left_is_free && right_is_free)
->>   		e4b->bd_info->bb_fragments--;
->> @@ -1949,7 +1949,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
->>   	if (first <= last)
->>   		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
->>   
->> -done:
->>   	mb_set_largest_free_order(sb, e4b->bd_info);
->>   	mb_update_avg_fragment_size(sb, e4b->bd_info);
->>   	mb_check_buddy(e4b);
->> -- 
->> 2.31.1
->>
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.6.y/ke=
+rnel/v6.6.7/
+
+Tree: stable
+Branch: linux-6.6.y
+Git Describe: v6.6.7
+Git Commit: ac25535242acb0d0042b920e5232b10e76ad169b
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
