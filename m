@@ -1,112 +1,114 @@
-Return-Path: <stable+bounces-7876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF84D8182F4
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 09:04:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9178182C8
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F134B212B2
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 08:04:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123A61F27674
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 07:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AAFC8DB;
-	Tue, 19 Dec 2023 08:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B6DDC8;
+	Tue, 19 Dec 2023 07:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcTLxKdR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.emlix.com (mx1.emlix.com [178.63.209.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB742125A6
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 08:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=emlix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=emlix.com
-Received: from mailer.emlix.com (cr-emlix.sta.goetel.net [81.20.112.87])
-	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.emlix.com (Postfix) with ESMTPS id 8ADFB5F865
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 08:57:49 +0100 (CET)
-From: Fabian Godehardt <fg@emlix.com>
-To: stable@vger.kernel.org
-Subject: [4.19] please include b65ba0c362be665192381cc59e3ac3ef6f0dd1e1
-Date: Tue, 19 Dec 2023 08:56:41 +0100
-Message-Id: <20231219075640.163128-1-fg@emlix.com>
-X-Mailer: git-send-email 2.30.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A31171C
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 07:58:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181BDC433C8;
+	Tue, 19 Dec 2023 07:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702972702;
+	bh=alcUEUjme+bNxynfPwnC0hfmCisMW1LMNJEjIkoKzCw=;
+	h=Subject:To:From:Date:From;
+	b=XcTLxKdRpOS0m9XxKrdbNKi5EfKmHlR8dBE6k6Jy7KudCbhsAQh9qBVaGa3z5m7fk
+	 iMYZw5QGTksqt267ht9T+EbgSHPRglKUpTHP6rI5KFhYV9umhLT+OlUO1/Qkmv/geE
+	 KE2iKEHdji5VAnynMw22dw6mQOqJulDmZe2/gDDs=
+Subject: patch "bus: mhi: host: Drop chan lock before queuing buffers" added to char-misc-testing
+To: quic_qianyu@quicinc.com,manivannan.sadhasivam@linaro.org,quic_jhugo@quicinc.com,stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 19 Dec 2023 08:57:42 +0100
+Message-ID: <2023121942-frill-hypnotism-3b60@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-Hi all,
 
-please include b65ba0c362be665192381cc59e3ac3ef6f0dd1e1 also on the
-stable-trees up to v5.10 (i think v5.13 was the first fixed tree).
+This is a note to let you know that I've just added the patch titled
 
-Serial gadget on AM335X is also affected, breaks with NULL pointer
-references and needs this patch. Here is the patch for the v4.19
-tree, cherry picked and manually applied from original commit
-b65ba0c362be665192381cc59e3ac3ef6f0dd1e1:
+    bus: mhi: host: Drop chan lock before queuing buffers
 
-From 483d904168b08cf1497c73516c432bde9ae94055 Mon Sep 17 00:00:00 2001
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Fri, 28 May 2021 16:04:46 +0200
-Subject: [PATCH] usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling
+to my char-misc git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
+in the char-misc-testing branch.
 
-In commit 92af4fc6ec33 ("usb: musb: Fix suspend with devices
-connected for a64"), the logic to support the
-MUSB_QUIRK_B_DISCONNECT_99 quirk was modified to only conditionally
-schedule the musb->irq_work delayed work.
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-This commit badly breaks ECM Gadget on AM335X. Indeed, with this
-commit, one can observe massive packet loss:
+The patch will be merged to the char-misc-next branch sometime soon,
+after it passes testing, and the merge window is open.
 
-$ ping 192.168.0.100
-...
-15 packets transmitted, 3 received, 80% packet loss, time 14316ms
+If you have any questions about this process, please let me know.
 
-Reverting this commit brings back a properly functioning ECM
-Gadget. An analysis of the commit seems to indicate that a mistake was
-made: the previous code was not falling through into the
-MUSB_QUIRK_B_INVALID_VBUS_91, but now it is, unless the condition is
-taken.
 
-Changing the logic to be as it was before the problematic commit *and*
-only conditionally scheduling musb->irq_work resolves the regression:
+From 01bd694ac2f682fb8017e16148b928482bc8fa4b Mon Sep 17 00:00:00 2001
+From: Qiang Yu <quic_qianyu@quicinc.com>
+Date: Mon, 11 Dec 2023 14:42:52 +0800
+Subject: bus: mhi: host: Drop chan lock before queuing buffers
 
-$ ping 192.168.0.100
-...
-64 packets transmitted, 64 received, 0% packet loss, time 64475ms
+Ensure read and write locks for the channel are not taken in succession by
+dropping the read lock from parse_xfer_event() such that a callback given
+to client can potentially queue buffers and acquire the write lock in that
+process. Any queueing of buffers should be done without channel read lock
+acquired as it can result in multiple locks and a soft lockup.
 
-Fixes: 92af4fc6ec33 ("usb: musb: Fix suspend with devices connected for a64")
-Cc: stable@vger.kernel.org
-Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Tested-by: Drew Fustini <drew@beagleboard.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Link: https://lore.kernel.org/r/20210528140446.278076-1-thomas.petazzoni@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org> # 5.7
+Fixes: 1d3173a3bae7 ("bus: mhi: core: Add support for processing events from client device")
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1702276972-41296-3-git-send-email-quic_qianyu@quicinc.com
+[mani: added fixes tag and cc'ed stable]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/usb/musb/musb_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/bus/mhi/host/main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-index 2a874058dff1..4d2de9ce03f9 100644
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -1873,9 +1873,8 @@ static void musb_pm_runtime_check_session(struct musb *musb)
- 			schedule_delayed_work(&musb->irq_work,
- 					      msecs_to_jiffies(1000));
- 			musb->quirk_retries--;
--			break;
+diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+index ad7807e4b523..abb561db9ae1 100644
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -644,6 +644,8 @@ static int parse_xfer_event(struct mhi_controller *mhi_cntrl,
+ 			mhi_del_ring_element(mhi_cntrl, tre_ring);
+ 			local_rp = tre_ring->rp;
+ 
++			read_unlock_bh(&mhi_chan->lock);
++
+ 			/* notify client */
+ 			mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
+ 
+@@ -669,6 +671,8 @@ static int parse_xfer_event(struct mhi_controller *mhi_cntrl,
+ 					kfree(buf_info->cb_buf);
+ 				}
+ 			}
++
++			read_lock_bh(&mhi_chan->lock);
  		}
--		/* fall through */
-+		break;
- 	case MUSB_QUIRK_B_INVALID_VBUS_91:
- 		if (musb->quirk_retries && !musb->flush_irq_work) {
- 			musb_dbg(musb,
+ 		break;
+ 	} /* CC_EOT */
 -- 
-2.30.2
+2.43.0
+
 
 
