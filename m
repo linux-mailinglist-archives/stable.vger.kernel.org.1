@@ -1,176 +1,117 @@
-Return-Path: <stable+bounces-7926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE21818BAB
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 16:57:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C2A818C3A
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 17:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15FE1C24925
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 15:57:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71572846C9
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 16:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDF71CF9B;
-	Tue, 19 Dec 2023 15:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3BB1D556;
+	Tue, 19 Dec 2023 16:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SD7jof4r"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RCHicHBz"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8DE1D130
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 15:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703001435;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0692032A;
+	Tue, 19 Dec 2023 16:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F2335FF80E;
+	Tue, 19 Dec 2023 16:29:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1703003377;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7bA0rWbgQnctRs+jPodqQaIsJ8wyX5O5TT/EwQR+FiA=;
-	b=SD7jof4r5VsQaTffABS8C42RulA07FyhYePFsRjyCf7H/iRMQzBt0oczd3B8YYWLkNDV3T
-	do7ThBOjHek0kRVaxRjKKhpdn2WIvR+aGp55yvqX72glLD6Wu7nKgPiGSGoyo/J0KBKc7U
-	Mn9WU6CqdInxlz3MI2EywZV8H03BQ5s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-WLlpUzjFNi-2Mn7jzOTcKA-1; Tue, 19 Dec 2023 10:57:12 -0500
-X-MC-Unique: WLlpUzjFNi-2Mn7jzOTcKA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA6338A67E0;
-	Tue, 19 Dec 2023 15:57:11 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.165])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 2FD66C1596E;
-	Tue, 19 Dec 2023 15:57:08 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: masahiroy@kernel.org
-Cc: dcavalca@meta.com,
-	jtornosm@redhat.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	stable@vger.kernel.org
-Subject: [PATCH v3] rpm-pkg: simplify installkernel %post
-Date: Tue, 19 Dec 2023 16:56:59 +0100
-Message-ID: <20231219155659.1591792-1-jtornosm@redhat.com>
-In-Reply-To: <CAK7LNATu-4TSSWpyFyVQYrkS++fUQbfp2tVjEpf3oZBV8ihq8w@mail.gmail.com>
-References: <CAK7LNATu-4TSSWpyFyVQYrkS++fUQbfp2tVjEpf3oZBV8ihq8w@mail.gmail.com>
+	bh=Mydg9L5el80VY7v9/6lf4HQRiOoVruSebSkvtjIIK5k=;
+	b=RCHicHBzkk3ecasHwejetnetySEUJUky9lvEoJtH/vUPUx6Yn9tNxp/18WFnh09muHFpYi
+	SQTiKFzzBN7pXkJFKD1bgvWojqGdmEP1rLtncaH6q5pZL9Z6gBz4jIQB07QVIL7gmwWCiP
+	cJFtcT8KfMkZr+pKueN9wHOeUEFleE9XHkV9zezXFOJ6meDmK01+ajJ7HIZrRuOXr5LOdn
+	0QHM8U6yKMRvmoOoXCnGHEOo9v0aH80DkeRjvbg7WL/PaR6+br7nzCuAeq3Xb80BuRPcXt
+	9l07cd2tSKDMseQ+TXsT01bpXVEKNUwWqCMimiD+VinTn5Ls8MljFBiBscv7BQ==
+Date: Tue, 19 Dec 2023 17:29:32 +0100
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: Vladimir Oltean <olteanv@gmail.com>, Romain Gantois
+ <romain.gantois@bootlin.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Sylvain Girard <sylvain.girard@se.com>, Pascal
+ EBERHARD <pascal.eberhard@se.com>, Richard Tresidder
+ <rtresidd@electromag.com.au>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking COE
+Message-ID: <20231219172932.13f4b0c3@device-28.home>
+In-Reply-To: <CACRpkdaxy9u=1-rQ+f+1tb8xyV-GYOuq52xhb4_SRPk9-LpnUA@mail.gmail.com>
+References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+	<20231218162326.173127-2-romain.gantois@bootlin.com>
+	<20231219122034.pg2djgrosa4irubh@skbuf>
+	<20231219140754.7a7a8dbd@device-28.home>
+	<CACRpkdaxy9u=1-rQ+f+1tb8xyV-GYOuq52xhb4_SRPk9-LpnUA@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.8
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: maxime.chevallier@bootlin.com
 
-The new installkernel application that is now included in systemd-udev
-package allows installation although destination files are already present
-in the boot directory of the kernel package, but is failing with the
-implemented workaround for the old installkernel application from grubby
-package.
+Hi Linus,
 
-For the new installkernel application, as Davide says:
-<<The %post currently does a shuffling dance before calling installkernel.
-This isn't actually necessary afaict, and the current implementation
-ends up triggering downstream issues such as
-https://github.com/systemd/systemd/issues/29568
-This commit simplifies the logic to remove the shuffling. For reference,
-the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-section to create initramfs and grub hooks").>>
+On Tue, 19 Dec 2023 15:19:45 +0100
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-But we need to keep the old behavior as well, because the old installkernel
-application from grubby package, does not allow this simplification and
-we need to be backward compatible to avoid issues with the different
-packages.
+> On Tue, Dec 19, 2023 at 2:07=E2=80=AFPM Maxime Chevallier
+> <maxime.chevallier@bootlin.com> wrote:
+>=20
+> > So it looks like an acceptable solution would be something along the
+> > lines of what Linus is suggesting here :
+> >
+> > https://lore.kernel.org/netdev/20231216-new-gemini-ethernet-regression-=
+v2-2-64c269413dfa@linaro.org/
+> >
+> > If so, maybe it's worth adding a new helper for that check ? =20
+>=20
+> Yeah it's a bit annoying when skb->protocol is not =3D=3D ethertype of bu=
+ffer.
+>=20
+> I can certainly add a helper such as skb_eth_raw_ethertype()
+> to <linux/if_ether.h> that will inspect the actual ethertype in
+> skb->data.
+>=20
+> It's the most straight-forward approach.
 
-Mimic Fedora shipping process and store vmlinuz, config amd System.map
-in the module directory instead of the boot directory. In this way, we will
-avoid the commented problem for all the cases, because the new destination
-files are not going to exist in the boot directory of the kernel package.
+Agreed :)
 
-Replace installkernel tool with kernel-install tool, because the latter is
-more complete. Suitable manual actions are added as a default if tool is not
-present (unusual).
+> We could also add something like bool custom_ethertype; to
+> struct sk_buff and set that to true if the tagger adds a custom
+> ethertype. But I don't know how the network developers feel about
+> that.
 
-Special installation case for discontinued architecture ia64 has been
-removed.
+I don't think this would be OK, first because sk_buff is pretty
+sensitive when it comes to cache alignment, adding things for this kind
+of use-cases isn't necessarily a good idea. Moreover, populating this
+flag isn't going to be straightforward as well. I guess some ethertype
+would be compatible with checksum engines, while other wouldn't, so
+probably what 'custom_ethertype' means will depend on the MAC driver.
 
-cc: stable@vger.kernel.org
-Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-V1 -> V2:
-- Complete to be backward compatible with the previous installkernel
-application.
-V2 -> V3:
-- Follow the suggestions from Masahiro Yamada and change the installation
-destination to avoid problems instead of checking the package.
+=46rom my point of view the first approach would indeed be better.
 
- scripts/package/kernel.spec | 27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+Thanks,
 
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 3eee0143e0c5..17e7196c9be1 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -55,18 +55,12 @@ patch -p1 < %{SOURCE2}
- %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
- 
- %install
--mkdir -p %{buildroot}/boot
--%ifarch ia64
--mkdir -p %{buildroot}/boot/efi
--cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/efi/vmlinuz-%{KERNELRELEASE}
--ln -s efi/vmlinuz-%{KERNELRELEASE} %{buildroot}/boot/
--%else
--cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
--%endif
-+mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
- %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
- %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
--cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
--cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-+cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}
- ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
- %if %{with_devel}
- %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
-@@ -76,12 +70,12 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- rm -rf %{buildroot}
- 
- %post
--if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
--cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
--cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
--/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
-+if [ -x /usr/bin/kernel-install ]; then
-+kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
-+else
-+cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
-+cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELRELEASE}
-+cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
- fi
- 
- %preun
-@@ -100,7 +94,6 @@ fi
- %defattr (-, root, root)
- /lib/modules/%{KERNELRELEASE}
- %exclude /lib/modules/%{KERNELRELEASE}/build
--/boot/*
- 
- %files headers
- %defattr (-, root, root)
--- 
-2.43.0
-
+Maxime
 
