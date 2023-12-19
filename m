@@ -1,123 +1,105 @@
-Return-Path: <stable+bounces-7896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BBB818516
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 11:12:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B20818525
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 11:14:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED976B2285B
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2266C1C23A12
+	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 10:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D0E14A81;
-	Tue, 19 Dec 2023 10:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C47E14281;
+	Tue, 19 Dec 2023 10:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="PZLwEv67"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VGV+tTUz"
 X-Original-To: stable@vger.kernel.org
-Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703A014297
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 10:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id FSc2rvO9EhqFdFX50rhxcG; Tue, 19 Dec 2023 10:12:02 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id FX4zr7D3W0xkrFX50rlTwN; Tue, 19 Dec 2023 10:12:02 +0000
-X-Authority-Analysis: v=2.4 cv=N7U6qkxB c=1 sm=1 tr=0 ts=65816c72
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ek58/Dn/yOlYHhx/8tFxJz3CawUYMzo0ZHTISftznQ4=; b=PZLwEv67a52YclfUBV0Fmut43G
-	L5mZZ+fw58wd0Yrgup485awPwCnb2n2Qsdim0zwMpeYXsBLdY2UCu23tx7DHSKk9+RNOevEJsxI43
-	5TJe5ZsQEAowdfJ9QlR0OzJqN0zXvBHpNiNaXLQ8wuT4S+aqNuj+v6IQSUt7GES7fQssJrKEXe6wV
-	LJ7K7xHxbITCI1hnZxetuhCiaeEfM8nSlYnp9h9Q9mahLex9tNj8Vg7Sv0DgpEEjvt8b39+4nJgDr
-	+jUa/Vetpf3r/DsZnUYuj+ttLFR5Cha23aZyJl7tqN8c+6/pRJYErLCIVmHsqVf5mcvgrl7hG30RW
-	0G8VmdGA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:60502 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rFX4x-003xcJ-1R;
-	Tue, 19 Dec 2023 03:11:59 -0700
-Subject: Re: [PATCH 6.6 000/166] 6.6.8-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231218135104.927894164@linuxfoundation.org>
-In-Reply-To: <20231218135104.927894164@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <75c03579-ddd2-5e7f-7370-499f077a1dd5@w6rz.net>
-Date: Tue, 19 Dec 2023 02:11:52 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A090A14A81
+	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 10:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-1ef36a04931so2827119fac.2
+        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 02:14:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1702980890; x=1703585690; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8yrPXmCzj3IK29PcmUElaCFsOsyUAhOpZihuRJ+N2u8=;
+        b=VGV+tTUzNsxh3bz9O7XguXN8AmkviwErLfNTeN0xm85aC5qGqD/taQYSSFcD+7heFJ
+         zoL7k7cG7iWRMUtIucJnVRju321XzsKY3ipREO1trRqZf/Kws8Rq9VA3GCqO9j8JKyca
+         ekb5ymkvLJcydSVVoqxxTp2r7DDm6uWKVXrtiX45m8jJovUCH6bZcq8wS3ka/iM11jff
+         FeMsrD7Ia/g3Yqjv6LTbNWUq2RiotQ0V0e5NYIcvUsFl+tSKwp78Pd0oGXpbXw9g3vtw
+         aM8vGYulnd1+f5mOijwUmBQ6Un810QoOYTgNvfXcjV5PW6+hxbbo9cH/6XQKTxhDDZsD
+         kgTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702980890; x=1703585690;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8yrPXmCzj3IK29PcmUElaCFsOsyUAhOpZihuRJ+N2u8=;
+        b=i12n/c1Fb+AQ010C9biLyN5A7kqvfMNDLISY4VNJ7mF8CxNaEbrPMYDb1bV1TnJooW
+         TBBjI4Ov6Q3Ek/4Z3Hnt0sANFczPRbSCfbTtquDbMKLtUxTb/QUIs5gsgOQMeYuPoHp6
+         4D+BI7BMuQWRi67kCHfRNHFXi64xrHky4cZvHOjKpWx+cWC3cxupe78hD+tlaUg8n7cs
+         6dD0VbfwP4s9Lz6dC5qgt/nHG3WXWrunoqHmPQfmo/bh5kYYTm9+e22LlZ0/a/gqfq5n
+         5ys8GOwYgfsVG55w9eDTXKPu0PoE0k1FwK0Pjll5z89YbzxXRnnJLWyYwEMWqPDbulV5
+         282g==
+X-Gm-Message-State: AOJu0YxVfSWUiZUany070/0FT1bTsYo0yhrhiWYDrmX1BbcAYaxFrS3b
+	c9c/PmCwv03BF1XqxprUXcFjtVKS6v2AzNVKTpbIPA==
+X-Google-Smtp-Source: AGHT+IF227arYzhltAYmPaxaoo7UcGrw4GIP/dK50ngrQPEImbc/thS+6U06OrNZpvsWM230OFryhrfTPCW6wYSklfA=
+X-Received: by 2002:a05:6870:7e0b:b0:203:b60d:8536 with SMTP id
+ wx11-20020a0568707e0b00b00203b60d8536mr2784582oab.88.1702980890680; Tue, 19
+ Dec 2023 02:14:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rFX4x-003xcJ-1R
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:60502
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfG9kfXxRW+2nsq7B3PIJpiqk1g1DuSue1FyH68ghs+MvZUtSZH5rs+7cPS8Iv5Ysq/BJIKmiSyXrdxjSzgFg0Y5GIg14ZyJs4ugcXspXPGgqzITSLMY1
- mFj4X8T0I4W5WI5+tudeRg2tM73aJzHVTxdghHJAKiw3UGDuASbOsEt6yYUYAWm/H5ljLsn0GI3NTA==
+References: <20231219101118.965996-1-amit.pundir@linaro.org>
+In-Reply-To: <20231219101118.965996-1-amit.pundir@linaro.org>
+From: Amit Pundir <amit.pundir@linaro.org>
+Date: Tue, 19 Dec 2023 15:44:14 +0530
+Message-ID: <CAMi1Hd3-kYAfSOS7SBR2=ZLZ0sbvDWgyPm=t0KALzGpdomQGSw@mail.gmail.com>
+Subject: Re: [PATCH for-5.15.y 0/3] Revert lt9611uxc fixes which broke
+To: Greg KH <gregkh@linuxfoundation.org>, Stable <stable@vger.kernel.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: Maxime Ripard <maxime@cerno.tech>, Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/18/23 5:49 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.8 release.
-> There are 166 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Apologies for the half-baked subject line. I don't know what went
+wrong there. I meant "Revert lt9611uxc fixes which broke display on
+RB5".
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Regards,
+Amit Pundir
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+On Tue, 19 Dec 2023 at 15:41, Amit Pundir <amit.pundir@linaro.org> wrote:
+>
+> Recent lt9611uxc fixes in v5.15.139 broke display on RB5
+> devboard with following errors:
+>
+>   lt9611uxc 5-002b: LT9611 revision: 0x17.04.93
+>   lt9611uxc 5-002b: LT9611 version: 0x43
+>   lt9611uxc 5-002b: failed to find dsi host
+>   msm ae00000.mdss: bound ae01000.mdp (ops dpu_ops [msm])
+>   msm_dsi_manager_register: failed to register mipi dsi host for DSI 0: -517
+>
+> Reverting these fixes get the display working again.
+>
+> Amit Pundir (3):
+>   Revert "drm/bridge: lt9611uxc: fix the race in the error path"
+>   Revert "drm/bridge: lt9611uxc: Register and attach our DSI device at
+>     probe"
+>   Revert "drm/bridge: lt9611uxc: Switch to devm MIPI-DSI helpers"
+>
+>  drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 75 +++++++++++++---------
+>  1 file changed, 44 insertions(+), 31 deletions(-)
+>
+> --
+> 2.25.1
+>
 
