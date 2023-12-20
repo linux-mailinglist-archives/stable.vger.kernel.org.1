@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-7981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C52181A151
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:43:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F269781A167
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:48:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E979B20BBD
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9234F1F22F11
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891193D397;
-	Wed, 20 Dec 2023 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312C23C07B;
+	Wed, 20 Dec 2023 14:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmXjZZHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g0nKqWSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5652F24B3E
-	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 14:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B2FC433C7;
-	Wed, 20 Dec 2023 14:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15E43D960
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 14:47:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240EAC433C9;
+	Wed, 20 Dec 2023 14:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703083414;
-	bh=Mu4hZfoRNoh1a8Rph22C2Hap+ZvsOZb4QiAIn3F/GFU=;
+	s=korg; t=1703083674;
+	bh=+WwgLQB3v/ngwwCDgMSp5Awgf/vC3Z7RAAx+tWmS2VQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AmXjZZHRJEQqjcW219h9CEcWa+kOny89eer+0oc4PqCgannPFqT0htIKuv+UMr8tZ
-	 teCosbOeU8lMLeJXqllQiFbnTD49kG4hCoPGLmltmcHe+0tT2Q/FZrtZy1+sxrUGFF
-	 qz3neqWf7Jglp0Ue52Vz+Scf+daSTxhSXWheM33Q=
-Date: Wed, 20 Dec 2023 15:43:31 +0100
+	b=g0nKqWSYlFDn89QCRpWPwgPGIvdwVDtU8944P5y7LM/mE8afdRCk+FC4HCOqocX0/
+	 kQPK/iBimUF5JXNa4F/Eh8xVuIkpXspsl47yvZahVSkfMaeT5zl8vyBrZUsjj13wmT
+	 +K6jBmSI0XfBQhjySSYRP7TGPfu+liaxHR3Md42s=
+Date: Wed, 20 Dec 2023 15:47:51 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Amit Pundir <amit.pundir@linaro.org>
-Cc: Stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
-	Maxime Ripard <maxime@cerno.tech>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: Re: [PATCH for-5.15.y 0/3] Revert lt9611uxc fixes which broke
-Message-ID: <2023122026-improving-circular-bc52@gregkh>
-References: <20231219101118.965996-1-amit.pundir@linaro.org>
- <CAMi1Hd3-kYAfSOS7SBR2=ZLZ0sbvDWgyPm=t0KALzGpdomQGSw@mail.gmail.com>
- <2023121933-trapping-snazzy-1c69@gregkh>
+To: Francis Laniel <flaniel@linux.microsoft.com>
+Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>, Christoph Hellwig <hch@lst.de>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH 5.15.y v2 1/2] kallsyms: Make kallsyms_on_each_symbol
+ generally available
+Message-ID: <2023122042-jacket-gnat-f1f0@gregkh>
+References: <20231205185749.130183-1-flaniel@linux.microsoft.com>
+ <20231205185749.130183-2-flaniel@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,18 +48,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2023121933-trapping-snazzy-1c69@gregkh>
+In-Reply-To: <20231205185749.130183-2-flaniel@linux.microsoft.com>
 
-On Tue, Dec 19, 2023 at 11:52:52AM +0100, Greg KH wrote:
-> On Tue, Dec 19, 2023 at 03:44:14PM +0530, Amit Pundir wrote:
-> > Apologies for the half-baked subject line. I don't know what went
-> > wrong there. I meant "Revert lt9611uxc fixes which broke display on
-> > RB5".
+On Tue, Dec 05, 2023 at 07:57:48PM +0100, Francis Laniel wrote:
+> From: Jiri Olsa <jolsa@kernel.org>
 > 
-> Thanks, will queue these up after the latest -rc releases are done in a
-> few days.
+> Commit d721def7392a7348ffb9f3583b264239cbd3702c upstream.
 
-All now queued up, thanks.
+This is already in the 5.15.143 release.
+
+thanks,
 
 greg k-h
 
