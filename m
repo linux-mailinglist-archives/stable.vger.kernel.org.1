@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-8051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC8381A448
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:18:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA4D81A44C
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1456F28B8E5
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:18:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F15B1F269A7
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980B54B126;
-	Wed, 20 Dec 2023 16:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB3B4CB53;
+	Wed, 20 Dec 2023 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvHXVMon"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hb58E7vD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEC04A9B9;
-	Wed, 20 Dec 2023 16:12:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6160C433C8;
-	Wed, 20 Dec 2023 16:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045EC4CB49;
+	Wed, 20 Dec 2023 16:12:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C785C433C7;
+	Wed, 20 Dec 2023 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088774;
-	bh=eaRUTaisZQf2NcOeACVxlBJeYDKyvC0cJTg6zvkEIaQ=;
+	s=korg; t=1703088776;
+	bh=oIO+Lo+KMmHnpXjeTIPctpJnCctaxsxedpaKefw74Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvHXVMondGErSz2cWbZMbj+keZv3DlrPirj/TwO01zf06FUFeNEVIKj7yCFuXQesL
-	 DfMHTi51tr8/99DKme+9Bg5EGyHd2P/7XtiofQbb1wD6yoh9WBsUHR3KM5mYQ1KMoZ
-	 Lw5b87JToQRq1Y6OcC+qV32NCsgFEoagoEV450TQ=
+	b=Hb58E7vDhKJla//ZYEQcxUmRfpfyhmXEcmb7BPuu6NlTLc1cth8iIFF3ef+Bn/H+i
+	 aWBoohObYnEOr1DwbQGhr5rhJDOPB+SBYIwA0BNm8FSGRJZAUFjbrOURULkXMJUnRX
+	 pVqlsySqtsHAvDvPVDz6fz5Y3WtDZd2BJ2RSKyDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 053/159] ksmbd: change security id to the one samba used for posix extension
-Date: Wed, 20 Dec 2023 17:08:38 +0100
-Message-ID: <20231220160933.809330880@linuxfoundation.org>
+Subject: [PATCH 5.15 054/159] ksmbd: set file permission mode to match Samba server posix extension behavior
+Date: Wed, 20 Dec 2023 17:08:39 +0100
+Message-ID: <20231220160933.858952040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -58,100 +58,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 5609bdd9ffdccd83f9003511b1801584b703baa5 ]
+[ Upstream commit f6c2b201da7588f7f7688ddc99b7bb000609129c ]
 
-Samba set SIDOWNER and SIDUNIX_GROUP in create posix context and
-set SIDUNIX_USER/GROUP in other sids for posix extension.
-This patch change security id to the one samba used.
+Set file permission mode to match Samba server posix extension behavior.
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/oplock.c  |   17 ++++++++++++++---
- fs/ksmbd/smb2pdu.c |    9 +++++++--
- fs/ksmbd/smb2pdu.h |    6 ++++--
- 3 files changed, 25 insertions(+), 7 deletions(-)
+ fs/ksmbd/oplock.c  |    2 +-
+ fs/ksmbd/smb2pdu.c |    4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 --- a/fs/ksmbd/oplock.c
 +++ b/fs/ksmbd/oplock.c
-@@ -1615,7 +1615,11 @@ void create_posix_rsp_buf(char *cc, stru
- 	memset(buf, 0, sizeof(struct create_posix_rsp));
- 	buf->ccontext.DataOffset = cpu_to_le16(offsetof
- 			(struct create_posix_rsp, nlink));
--	buf->ccontext.DataLength = cpu_to_le32(52);
-+	/*
-+	 * DataLength = nlink(4) + reparse_tag(4) + mode(4) +
-+	 * domain sid(28) + unix group sid(16).
-+	 */
-+	buf->ccontext.DataLength = cpu_to_le32(56);
- 	buf->ccontext.NameOffset = cpu_to_le16(offsetof
- 			(struct create_posix_rsp, Name));
- 	buf->ccontext.NameLength = cpu_to_le16(POSIX_CTXT_DATA_LEN);
-@@ -1640,12 +1644,19 @@ void create_posix_rsp_buf(char *cc, stru
+@@ -1643,7 +1643,7 @@ void create_posix_rsp_buf(char *cc, stru
+ 
  	buf->nlink = cpu_to_le32(inode->i_nlink);
  	buf->reparse_tag = cpu_to_le32(fp->volatile_id);
- 	buf->mode = cpu_to_le32(inode->i_mode);
-+	/*
-+	 * SidBuffer(44) contain two sids(Domain sid(28), UNIX group sid(16)).
-+	 * Domain sid(28) = revision(1) + num_subauth(1) + authority(6) +
-+	 *		    sub_auth(4 * 4(num_subauth)) + RID(4).
-+	 * UNIX group id(16) = revision(1) + num_subauth(1) + authority(6) +
-+	 *		       sub_auth(4 * 1(num_subauth)) + RID(4).
-+	 */
- 	id_to_sid(from_kuid_munged(&init_user_ns,
- 				   i_uid_into_mnt(user_ns, inode)),
--		  SIDNFS_USER, (struct smb_sid *)&buf->SidBuffer[0]);
-+		  SIDOWNER, (struct smb_sid *)&buf->SidBuffer[0]);
- 	id_to_sid(from_kgid_munged(&init_user_ns,
- 				   i_gid_into_mnt(user_ns, inode)),
--		  SIDNFS_GROUP, (struct smb_sid *)&buf->SidBuffer[20]);
-+		  SIDUNIX_GROUP, (struct smb_sid *)&buf->SidBuffer[28]);
- }
- 
- /*
+-	buf->mode = cpu_to_le32(inode->i_mode);
++	buf->mode = cpu_to_le32(inode->i_mode & 0777);
+ 	/*
+ 	 * SidBuffer(44) contain two sids(Domain sid(28), UNIX group sid(16)).
+ 	 * Domain sid(28) = revision(1) + num_subauth(1) + authority(6) +
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -3619,10 +3619,15 @@ static int smb2_populate_readdir_entry(s
+@@ -3613,7 +3613,7 @@ static int smb2_populate_readdir_entry(s
+ 		posix_info->AllocationSize = cpu_to_le64(ksmbd_kstat->kstat->blocks << 9);
+ 		posix_info->DeviceId = cpu_to_le32(ksmbd_kstat->kstat->rdev);
+ 		posix_info->HardLinks = cpu_to_le32(ksmbd_kstat->kstat->nlink);
+-		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode);
++		posix_info->Mode = cpu_to_le32(ksmbd_kstat->kstat->mode & 0777);
+ 		posix_info->Inode = cpu_to_le64(ksmbd_kstat->kstat->ino);
+ 		posix_info->DosAttributes =
  			S_ISDIR(ksmbd_kstat->kstat->mode) ? ATTR_DIRECTORY_LE : ATTR_ARCHIVE_LE;
- 		if (d_info->hide_dot_file && d_info->name[0] == '.')
- 			posix_info->DosAttributes |= ATTR_HIDDEN_LE;
-+		/*
-+		 * SidBuffer(32) contain two sids(Domain sid(16), UNIX group sid(16)).
-+		 * UNIX sid(16) = revision(1) + num_subauth(1) + authority(6) +
-+		 *		  sub_auth(4 * 1(num_subauth)) + RID(4).
-+		 */
- 		id_to_sid(from_kuid_munged(&init_user_ns, ksmbd_kstat->kstat->uid),
--			  SIDNFS_USER, (struct smb_sid *)&posix_info->SidBuffer[0]);
-+			  SIDUNIX_USER, (struct smb_sid *)&posix_info->SidBuffer[0]);
- 		id_to_sid(from_kgid_munged(&init_user_ns, ksmbd_kstat->kstat->gid),
--			  SIDNFS_GROUP, (struct smb_sid *)&posix_info->SidBuffer[20]);
-+			  SIDUNIX_GROUP, (struct smb_sid *)&posix_info->SidBuffer[16]);
- 		memcpy(posix_info->name, conv_name, conv_len);
- 		posix_info->name_len = cpu_to_le32(conv_len);
- 		posix_info->NextEntryOffset = cpu_to_le32(next_entry_offset);
---- a/fs/ksmbd/smb2pdu.h
-+++ b/fs/ksmbd/smb2pdu.h
-@@ -724,7 +724,8 @@ struct create_posix_rsp {
- 	__le32 nlink;
- 	__le32 reparse_tag;
- 	__le32 mode;
--	u8 SidBuffer[40];
-+	/* SidBuffer contain two sids(Domain sid(28), UNIX group sid(16)) */
-+	u8 SidBuffer[44];
- } __packed;
- 
- #define SMB2_LEASE_NONE_LE			cpu_to_le32(0x00)
-@@ -1617,7 +1618,8 @@ struct smb2_posix_info {
- 	__le32 HardLinks;
- 	__le32 ReparseTag;
- 	__le32 Mode;
--	u8 SidBuffer[40];
-+	/* SidBuffer contain two sids (UNIX user sid(16), UNIX group sid(16)) */
-+	u8 SidBuffer[32];
- 	__le32 name_len;
- 	u8 name[1];
- 	/*
+@@ -4769,7 +4769,7 @@ static int find_file_posix_info(struct s
+ 	file_info->EndOfFile = cpu_to_le64(inode->i_size);
+ 	file_info->AllocationSize = cpu_to_le64(inode->i_blocks << 9);
+ 	file_info->HardLinks = cpu_to_le32(inode->i_nlink);
+-	file_info->Mode = cpu_to_le32(inode->i_mode);
++	file_info->Mode = cpu_to_le32(inode->i_mode & 0777);
+ 	file_info->DeviceId = cpu_to_le32(inode->i_rdev);
+ 	rsp->OutputBufferLength =
+ 		cpu_to_le32(sizeof(struct smb311_posix_qinfo));
 
 
 
