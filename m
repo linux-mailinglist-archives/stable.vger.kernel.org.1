@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-8016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE11A81A410
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:15:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38F081A413
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA7692894F4
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:15:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791F61F26870
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA3E47F5F;
-	Wed, 20 Dec 2023 16:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0102481C3;
+	Wed, 20 Dec 2023 16:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hleexT0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzY67/xI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A284B47A7F;
-	Wed, 20 Dec 2023 16:11:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32DFC433C7;
-	Wed, 20 Dec 2023 16:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B866847F7D;
+	Wed, 20 Dec 2023 16:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D03FC433C8;
+	Wed, 20 Dec 2023 16:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088678;
-	bh=/FOHTC83D3NFIa1P6KXJOiKiUjwEp3xDjR7utunOvys=;
+	s=korg; t=1703088683;
+	bh=danh6PGY61sic5jqsqjnsMdgcy5JAW0wq/KedbjuVoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hleexT0d7b2Gw3IP6doLFV9cwtSPljVjgRhDJ90uVvUfFhx8AgPCmAgZi2FGW/ZQF
-	 Kmfo9ZPZG2VkqJCZWINMyEcdsRK5kdTUrHGV0SGjw90FrI+OjJ7dbrjRWPjFQcXQo5
-	 1I6MUVOGAbp0IL+QzEU3hVRe6j2Nl/vSkSimPwiQ=
+	b=bzY67/xId2qGw5BkR4AFEM0A6KzyEP5B+qlCnN//Uy5iOBbVa1ihoNkvPno5qNnb3
+	 YxG98XZHZxx4QDxh23DfvpDUZN+KJovjG5chLdAc0NCzhncJoM5uNTvk9YShK16he7
+	 qi11WQ8GQB0NTBt2WA8gKXTmfoQ8a5ZsSmxjFYL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Hyunchul Lee <hyc.lee@gmail.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 019/159] ksmbd: smbd: create MR pool
-Date: Wed, 20 Dec 2023 17:08:04 +0100
-Message-ID: <20231220160932.175980500@linuxfoundation.org>
+Subject: [PATCH 5.15 020/159] ksmbd: smbd: change the default maximum read/write, receive size
+Date: Wed, 20 Dec 2023 17:08:05 +0100
+Message-ID: <20231220160932.216682837@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -59,73 +59,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Hyunchul Lee <hyc.lee@gmail.com>
 
-[ Upstream commit c9f189271cff85d5d735e25dfa4bc95952ec12d8 ]
+[ Upstream commit 4d02c4fdc0e256b493f9a3b604c7ff18f0019f17 ]
 
-Create a memory region pool because rdma_rw_ctx_init()
-uses memory registration if memory registration yields
-better performance than using multiple SGE entries.
+Due to restriction that cannot handle multiple
+buffer descriptor structures, decrease the maximum
+read/write size for Windows clients.
+
+And set the maximum fragmented receive size
+in consideration of the receive queue size.
 
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Hyunchul Lee <hyc.lee@gmail.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_rdma.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ fs/ksmbd/transport_rdma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 --- a/fs/ksmbd/transport_rdma.c
 +++ b/fs/ksmbd/transport_rdma.c
-@@ -434,6 +434,7 @@ static void free_transport(struct smb_di
+@@ -1914,7 +1914,9 @@ static int smb_direct_prepare(struct ksm
+ 	st->max_send_size = min_t(int, st->max_send_size,
+ 				  le32_to_cpu(req->max_receive_size));
+ 	st->max_fragmented_send_size =
+-			le32_to_cpu(req->max_fragmented_size);
++		le32_to_cpu(req->max_fragmented_size);
++	st->max_fragmented_recv_size =
++		(st->recv_credit_max * st->max_recv_size) / 2;
  
- 	if (t->qp) {
- 		ib_drain_qp(t->qp);
-+		ib_mr_pool_destroy(t->qp, &t->qp->rdma_mrs);
- 		ib_destroy_qp(t->qp);
- 	}
- 
-@@ -1714,7 +1715,9 @@ static int smb_direct_init_params(struct
- 	cap->max_send_sge = SMB_DIRECT_MAX_SEND_SGES;
- 	cap->max_recv_sge = SMB_DIRECT_MAX_RECV_SGES;
- 	cap->max_inline_data = 0;
--	cap->max_rdma_ctxs = 0;
-+	cap->max_rdma_ctxs =
-+		rdma_rw_mr_factor(device, t->cm_id->port_num, max_pages) *
-+		smb_direct_max_outstanding_rw_ops;
- 	return 0;
- }
- 
-@@ -1796,6 +1799,7 @@ static int smb_direct_create_qpair(struc
- {
- 	int ret;
- 	struct ib_qp_init_attr qp_attr;
-+	int pages_per_rw;
- 
- 	t->pd = ib_alloc_pd(t->cm_id->device, 0);
- 	if (IS_ERR(t->pd)) {
-@@ -1843,6 +1847,23 @@ static int smb_direct_create_qpair(struc
- 	t->qp = t->cm_id->qp;
- 	t->cm_id->event_handler = smb_direct_cm_handler;
- 
-+	pages_per_rw = DIV_ROUND_UP(t->max_rdma_rw_size, PAGE_SIZE) + 1;
-+	if (pages_per_rw > t->cm_id->device->attrs.max_sgl_rd) {
-+		int pages_per_mr, mr_count;
-+
-+		pages_per_mr = min_t(int, pages_per_rw,
-+				     t->cm_id->device->attrs.max_fast_reg_page_list_len);
-+		mr_count = DIV_ROUND_UP(pages_per_rw, pages_per_mr) *
-+			atomic_read(&t->rw_avail_ops);
-+		ret = ib_mr_pool_init(t->qp, &t->qp->rdma_mrs, mr_count,
-+				      IB_MR_TYPE_MEM_REG, pages_per_mr, 0);
-+		if (ret) {
-+			pr_err("failed to init mr pool count %d pages %d\n",
-+			       mr_count, pages_per_mr);
-+			goto err;
-+		}
-+	}
-+
- 	return 0;
- err:
- 	if (t->qp) {
+ 	ret = smb_direct_send_negotiate_response(st, ret);
+ out:
 
 
 
