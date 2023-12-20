@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-8044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A3581A43E
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:18:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E484181A455
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D52601C25991
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:18:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22EFB1C21705
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5353E4C625;
-	Wed, 20 Dec 2023 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708BB4D12D;
+	Wed, 20 Dec 2023 16:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FH2LKEVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi4aaREY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D44C623;
-	Wed, 20 Dec 2023 16:12:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E78C433C8;
-	Wed, 20 Dec 2023 16:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B064CDFF;
+	Wed, 20 Dec 2023 16:13:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDC2C433C8;
+	Wed, 20 Dec 2023 16:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088754;
-	bh=l8LfDieN5XQVolirVdw76eygsHiSP/OP7FWJ7bsUsGI=;
+	s=korg; t=1703088785;
+	bh=va8NEhlxSXzjr0lnzHX/UWE0OROpB7RXquHz7vsmah4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FH2LKEVdwrnaCrWKZcqXLJNkdxYuwwhmR2EIhrXN6VxWrm0QRFJe4ZV38/24srS0U
-	 HB6UauejBHZHh8Ran4DeeiqaFz04dWNxDuM298G0P05Kxexfj/S4mp8okyU3/QPlW5
-	 0tgJzXAfDG5tINJ52zMBd4QgIgyjctznxGGNbRT0=
+	b=zi4aaREYHF6TfaRL/gFc+ohUkTwa/1rcXX1WOMPQlyCR2IPi6ArFQEmzDF/BzCDBK
+	 gI1BELEPOhHkeclhXvADFCdLLzHpPDYdPypoEJYKGgKI2TEsOjQU8lA1/sNc0KmtUX
+	 fG9JKtF5zkLX8MmN9KdnDp4n1P0XFM7g5Bn24GRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakob Koschel <jakobkoschel@gmail.com>,
-	Hyunchul Lee <hyc.lee@gmail.com>,
+	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 029/159] ksmbd: replace usage of found with dedicated list iterator variable
-Date: Wed, 20 Dec 2023 17:08:14 +0100
-Message-ID: <20231220160932.638163907@linuxfoundation.org>
+Subject: [PATCH 5.15 030/159] smb3: fix ksmbd bigendian bug in oplock break, and move its struct to smbfs_common
+Date: Wed, 20 Dec 2023 17:08:15 +0100
+Message-ID: <20231220160932.687857226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -58,97 +57,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakob Koschel <jakobkoschel@gmail.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit edf5f0548fbb77e20b898460dc25281b0f4d974d ]
+[ Upstream commit c7803b05f74bc3941b127f3155671e1944f632ae ]
 
-To move the list iterator variable into the list_for_each_entry_*()
-macro in the future it should be avoided to use the list iterator
-variable after the loop body.
+Fix an endian bug in ksmbd for one remaining use of
+Persistent/VolatileFid that unnecessarily converted it (it is an
+opaque endian field that does not need to be and should not
+be converted) in oplock_break for ksmbd, and move the definitions
+for the oplock and lease break protocol requests and responses
+to fs/smbfs_common/smb2pdu.h
 
-To *never* use the list iterator variable after the loop it was
-concluded to use a separate iterator variable instead of a
-found boolean [1].
+Also move a few more definitions for various protocol requests
+that were duplicated (in fs/cifs/smb2pdu.h and fs/ksmbd/smb2pdu.h)
+into fs/smbfs_common/smb2pdu.h including:
 
-This removes the need to use a found variable and simply checking if
-the variable was set, can determine if the break/goto was hit.
+- various ioctls and reparse structures
+- validate negotiate request and response structs
+- duplicate extents structs
 
-Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/
-Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
-Reviewed-by: Hyunchul Lee <hyc.lee@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |   21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ fs/ksmbd/oplock.c  |    4 ++--
+ fs/ksmbd/smb2pdu.c |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
+--- a/fs/ksmbd/oplock.c
++++ b/fs/ksmbd/oplock.c
+@@ -657,8 +657,8 @@ static void __smb2_oplock_break_noti(str
+ 		rsp->OplockLevel = SMB2_OPLOCK_LEVEL_NONE;
+ 	rsp->Reserved = 0;
+ 	rsp->Reserved2 = 0;
+-	rsp->PersistentFid = cpu_to_le64(fp->persistent_id);
+-	rsp->VolatileFid = cpu_to_le64(fp->volatile_id);
++	rsp->PersistentFid = fp->persistent_id;
++	rsp->VolatileFid = fp->volatile_id;
+ 
+ 	inc_rfc1001_len(work->response_buf, 24);
+ 
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -6691,8 +6691,7 @@ int smb2_cancel(struct ksmbd_work *work)
- 	struct ksmbd_conn *conn = work->conn;
- 	struct smb2_hdr *hdr = smb2_get_msg(work->request_buf);
- 	struct smb2_hdr *chdr;
--	struct ksmbd_work *cancel_work = NULL;
--	int canceled = 0;
-+	struct ksmbd_work *cancel_work = NULL, *iter;
- 	struct list_head *command_list;
+@@ -7996,8 +7996,8 @@ static void smb20_oplock_break_ack(struc
+ 	char req_oplevel = 0, rsp_oplevel = 0;
+ 	unsigned int oplock_change_type;
  
- 	ksmbd_debug(SMB, "smb2 cancel called on mid %llu, async flags 0x%x\n",
-@@ -6702,11 +6701,11 @@ int smb2_cancel(struct ksmbd_work *work)
- 		command_list = &conn->async_requests;
+-	volatile_id = le64_to_cpu(req->VolatileFid);
+-	persistent_id = le64_to_cpu(req->PersistentFid);
++	volatile_id = req->VolatileFid;
++	persistent_id = req->PersistentFid;
+ 	req_oplevel = req->OplockLevel;
+ 	ksmbd_debug(OPLOCK, "v_id %llu, p_id %llu request oplock level %d\n",
+ 		    volatile_id, persistent_id, req_oplevel);
+@@ -8092,8 +8092,8 @@ static void smb20_oplock_break_ack(struc
+ 	rsp->OplockLevel = rsp_oplevel;
+ 	rsp->Reserved = 0;
+ 	rsp->Reserved2 = 0;
+-	rsp->VolatileFid = cpu_to_le64(volatile_id);
+-	rsp->PersistentFid = cpu_to_le64(persistent_id);
++	rsp->VolatileFid = volatile_id;
++	rsp->PersistentFid = persistent_id;
+ 	inc_rfc1001_len(work->response_buf, 24);
+ 	return;
  
- 		spin_lock(&conn->request_lock);
--		list_for_each_entry(cancel_work, command_list,
-+		list_for_each_entry(iter, command_list,
- 				    async_request_entry) {
--			chdr = smb2_get_msg(cancel_work->request_buf);
-+			chdr = smb2_get_msg(iter->request_buf);
- 
--			if (cancel_work->async_id !=
-+			if (iter->async_id !=
- 			    le64_to_cpu(hdr->Id.AsyncId))
- 				continue;
- 
-@@ -6714,7 +6713,7 @@ int smb2_cancel(struct ksmbd_work *work)
- 				    "smb2 with AsyncId %llu cancelled command = 0x%x\n",
- 				    le64_to_cpu(hdr->Id.AsyncId),
- 				    le16_to_cpu(chdr->Command));
--			canceled = 1;
-+			cancel_work = iter;
- 			break;
- 		}
- 		spin_unlock(&conn->request_lock);
-@@ -6722,24 +6721,24 @@ int smb2_cancel(struct ksmbd_work *work)
- 		command_list = &conn->requests;
- 
- 		spin_lock(&conn->request_lock);
--		list_for_each_entry(cancel_work, command_list, request_entry) {
--			chdr = smb2_get_msg(cancel_work->request_buf);
-+		list_for_each_entry(iter, command_list, request_entry) {
-+			chdr = smb2_get_msg(iter->request_buf);
- 
- 			if (chdr->MessageId != hdr->MessageId ||
--			    cancel_work == work)
-+			    iter == work)
- 				continue;
- 
- 			ksmbd_debug(SMB,
- 				    "smb2 with mid %llu cancelled command = 0x%x\n",
- 				    le64_to_cpu(hdr->MessageId),
- 				    le16_to_cpu(chdr->Command));
--			canceled = 1;
-+			cancel_work = iter;
- 			break;
- 		}
- 		spin_unlock(&conn->request_lock);
- 	}
- 
--	if (canceled) {
-+	if (cancel_work) {
- 		cancel_work->state = KSMBD_WORK_CANCELLED;
- 		if (cancel_work->cancel_fn)
- 			cancel_work->cancel_fn(cancel_work->cancel_argv);
 
 
 
