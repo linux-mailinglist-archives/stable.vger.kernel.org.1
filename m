@@ -1,43 +1,44 @@
-Return-Path: <stable+bounces-8118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81C9081A499
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:21:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE3581A4A0
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FE8528C500
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:21:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAF14B21EC6
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711AD4779E;
-	Wed, 20 Dec 2023 16:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFBC47A7F;
+	Wed, 20 Dec 2023 16:16:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuHjqq7o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnZpOKKL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE9B47A61;
-	Wed, 20 Dec 2023 16:15:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57176C433C8;
-	Wed, 20 Dec 2023 16:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E40482D8;
+	Wed, 20 Dec 2023 16:16:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED862C433C8;
+	Wed, 20 Dec 2023 16:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088958;
-	bh=R3g2WNwbYwSoq7GjvBurSYWRyttSuKK50QwkI1jxcRY=;
+	s=korg; t=1703088969;
+	bh=l7daXHErDSDO7JmzF/uwqCgD/JdPcjZUDQkqFHtjxdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuHjqq7oxq103vsDkZgrdfiJ+jmevKyoBDM4cOhDhtRMBGIFxNoBd/Y+97aTEwf6B
-	 NwVBIPOrjQnO+lwVMc/EjcGkehjd2XDzEbOSV4lKAN1Oz430U7FKKxQ38/U3kxUuLh
-	 GvrCSNJtPIQkTxFO+xdk742ej7lzvQKiIaeNRxpM=
+	b=cnZpOKKLpd2e7bH8JQ7SMSgDH+lXweXSz4iuRR3z+R4H1RJ4hhcqQCbhBOrfzftqC
+	 It/Y3/BOpsekDCrmEgQKMeT36zLHDqLvgAnTRnvh+e6sRJJNmvvosBs68IlCdzNVpg
+	 ebnNQhhdnpRjzQKqeODy1aaB2fCvo5nPy63Z93Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?Atte=20Heikkil=C3=A4?= <atteh.mailbox@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 120/159] ksmbd: fix wrong interim response on compound
-Date: Wed, 20 Dec 2023 17:09:45 +0100
-Message-ID: <20231220160936.943025991@linuxfoundation.org>
+Subject: [PATCH 5.15 121/159] ksmbd: fix `force create mode and `force directory mode
+Date: Wed, 20 Dec 2023 17:09:46 +0100
+Message-ID: <20231220160936.982868446@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -50,160 +51,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Atte Heikkilä <atteh.mailbox@gmail.com>
 
-[ Upstream commit 041bba4414cda37d00063952c9bff9c3d5812a19 ]
+[ Upstream commit 65656f5242e500dcfeffa6a0a1519eae14724f86 ]
 
-If smb2_lock or smb2_open request is compound, ksmbd could send wrong
-interim response to client. ksmbd allocate new interim buffer instead of
-using resonse buffer to support compound request.
+`force create mode' and `force directory mode' should be bitwise ORed
+with the perms after `create mask' and `directory mask' have been
+applied, respectively.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Atte Heikkilä <atteh.mailbox@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/ksmbd_work.c |   10 ++++++----
- fs/ksmbd/ksmbd_work.h |    2 +-
- fs/ksmbd/oplock.c     |   14 ++------------
- fs/ksmbd/smb2pdu.c    |   26 +++++++++++++++++---------
- 4 files changed, 26 insertions(+), 26 deletions(-)
+ fs/ksmbd/mgmt/share_config.h |   29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
---- a/fs/ksmbd/ksmbd_work.c
-+++ b/fs/ksmbd/ksmbd_work.c
-@@ -160,9 +160,11 @@ int ksmbd_iov_pin_rsp_read(struct ksmbd_
- 	return __ksmbd_iov_pin_rsp(work, ib, len, aux_buf, aux_size);
- }
+--- a/fs/ksmbd/mgmt/share_config.h
++++ b/fs/ksmbd/mgmt/share_config.h
+@@ -34,29 +34,22 @@ struct ksmbd_share_config {
+ #define KSMBD_SHARE_INVALID_UID	((__u16)-1)
+ #define KSMBD_SHARE_INVALID_GID	((__u16)-1)
  
--void ksmbd_iov_reset(struct ksmbd_work *work)
-+int allocate_interim_rsp_buf(struct ksmbd_work *work)
+-static inline int share_config_create_mode(struct ksmbd_share_config *share,
+-					   umode_t posix_mode)
++static inline umode_t
++share_config_create_mode(struct ksmbd_share_config *share,
++			 umode_t posix_mode)
  {
--	work->iov_idx = 0;
--	work->iov_cnt = 0;
--	*(__be32 *)work->iov[0].iov_base = 0;
-+	work->response_buf = kzalloc(MAX_CIFS_SMALL_BUFFER_SIZE, GFP_KERNEL);
-+	if (!work->response_buf)
-+		return -ENOMEM;
-+	work->response_sz = MAX_CIFS_SMALL_BUFFER_SIZE;
-+	return 0;
- }
---- a/fs/ksmbd/ksmbd_work.h
-+++ b/fs/ksmbd/ksmbd_work.h
-@@ -131,5 +131,5 @@ bool ksmbd_queue_work(struct ksmbd_work
- int ksmbd_iov_pin_rsp_read(struct ksmbd_work *work, void *ib, int len,
- 			   void *aux_buf, unsigned int aux_size);
- int ksmbd_iov_pin_rsp(struct ksmbd_work *work, void *ib, int len);
--void ksmbd_iov_reset(struct ksmbd_work *work);
-+int allocate_interim_rsp_buf(struct ksmbd_work *work);
- #endif /* __KSMBD_WORK_H__ */
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -616,15 +616,6 @@ static int oplock_break_pending(struct o
- 	return 0;
+-	if (!share->force_create_mode) {
+-		if (!posix_mode)
+-			return share->create_mask;
+-		else
+-			return posix_mode & share->create_mask;
+-	}
+-	return share->force_create_mode & share->create_mask;
++	umode_t mode = (posix_mode ?: (umode_t)-1) & share->create_mask;
++
++	return mode | share->force_create_mode;
  }
  
--static inline int allocate_oplock_break_buf(struct ksmbd_work *work)
--{
--	work->response_buf = kzalloc(MAX_CIFS_SMALL_BUFFER_SIZE, GFP_KERNEL);
--	if (!work->response_buf)
--		return -ENOMEM;
--	work->response_sz = MAX_CIFS_SMALL_BUFFER_SIZE;
--	return 0;
--}
--
- /**
-  * __smb2_oplock_break_noti() - send smb2 oplock break cmd from conn
-  * to client
-@@ -647,7 +638,7 @@ static void __smb2_oplock_break_noti(str
- 	if (!fp)
- 		goto out;
- 
--	if (allocate_oplock_break_buf(work)) {
-+	if (allocate_interim_rsp_buf(work)) {
- 		pr_err("smb2_allocate_rsp_buf failed! ");
- 		ksmbd_fd_put(work, fp);
- 		goto out;
-@@ -752,7 +743,7 @@ static void __smb2_lease_break_noti(stru
- 	struct lease_break_info *br_info = work->request_buf;
- 	struct smb2_hdr *rsp_hdr;
- 
--	if (allocate_oplock_break_buf(work)) {
-+	if (allocate_interim_rsp_buf(work)) {
- 		ksmbd_debug(OPLOCK, "smb2_allocate_rsp_buf failed! ");
- 		goto out;
- 	}
-@@ -843,7 +834,6 @@ static int smb2_lease_break_noti(struct
- 			setup_async_work(in_work, NULL, NULL);
- 			smb2_send_interim_resp(in_work, STATUS_PENDING);
- 			list_del(&in_work->interim_entry);
--			ksmbd_iov_reset(in_work);
- 		}
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -153,8 +153,8 @@ void smb2_set_err_rsp(struct ksmbd_work
- 		err_rsp->ByteCount = 0;
- 		err_rsp->ErrorData[0] = 0;
- 		err = ksmbd_iov_pin_rsp(work, (void *)err_rsp,
--				  work->conn->vals->header_size +
--				  SMB2_ERROR_STRUCTURE_SIZE2);
-+					__SMB2_HEADER_STRUCTURE_SIZE +
-+						SMB2_ERROR_STRUCTURE_SIZE2);
- 		if (err)
- 			work->send_no_response = 1;
- 	}
-@@ -710,13 +710,24 @@ void release_async_work(struct ksmbd_wor
- void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
+-static inline int share_config_directory_mode(struct ksmbd_share_config *share,
+-					      umode_t posix_mode)
++static inline umode_t
++share_config_directory_mode(struct ksmbd_share_config *share,
++			    umode_t posix_mode)
  {
- 	struct smb2_hdr *rsp_hdr;
-+	struct ksmbd_work *in_work = ksmbd_alloc_work_struct();
+-	if (!share->force_directory_mode) {
+-		if (!posix_mode)
+-			return share->directory_mask;
+-		else
+-			return posix_mode & share->directory_mask;
+-	}
++	umode_t mode = (posix_mode ?: (umode_t)-1) & share->directory_mask;
  
--	rsp_hdr = ksmbd_resp_buf_next(work);
--	smb2_set_err_rsp(work);
-+	if (allocate_interim_rsp_buf(in_work)) {
-+		pr_err("smb_allocate_rsp_buf failed!\n");
-+		ksmbd_free_work_struct(in_work);
-+		return;
-+	}
-+
-+	in_work->conn = work->conn;
-+	memcpy(smb2_get_msg(in_work->response_buf), ksmbd_resp_buf_next(work),
-+	       __SMB2_HEADER_STRUCTURE_SIZE);
-+
-+	rsp_hdr = smb2_get_msg(in_work->response_buf);
-+	smb2_set_err_rsp(in_work);
- 	rsp_hdr->Status = status;
- 
--	ksmbd_conn_write(work);
--	rsp_hdr->Status = 0;
-+	ksmbd_conn_write(in_work);
-+	ksmbd_free_work_struct(in_work);
+-	return share->force_directory_mode & share->directory_mask;
++	return mode | share->force_directory_mode;
  }
  
- static __le32 smb2_get_reparse_tag_special_file(umode_t mode)
-@@ -7052,8 +7063,6 @@ skip:
- 				list_del(&work->fp_entry);
- 				spin_unlock(&fp->f_lock);
- 
--				ksmbd_iov_reset(work);
--
- 				if (work->state != KSMBD_WORK_ACTIVE) {
- 					list_del(&smb_lock->llist);
- 					spin_lock(&work->conn->llist_lock);
-@@ -7071,7 +7080,6 @@ skip:
- 						goto out;
- 					}
- 
--					init_smb2_rsp_hdr(work);
- 					rsp->hdr.Status =
- 						STATUS_RANGE_NOT_LOCKED;
- 					kfree(smb_lock);
+ static inline int test_share_config_flag(struct ksmbd_share_config *share,
 
 
 
