@@ -1,43 +1,42 @@
-Return-Path: <stable+bounces-8165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E4C81A4D3
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A235281A4CE
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5121F242D5
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:24:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55D961F263B8
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13CC4C608;
-	Wed, 20 Dec 2023 16:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BAF4C607;
+	Wed, 20 Dec 2023 16:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf5Z+kNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9qExJ6M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BA64A997;
-	Wed, 20 Dec 2023 16:18:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B848C433C8;
-	Wed, 20 Dec 2023 16:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4984482F2;
+	Wed, 20 Dec 2023 16:18:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1AFC433C8;
+	Wed, 20 Dec 2023 16:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703089094;
-	bh=JwMo3pMBlgaRIvoB55hVGBZt4ibfkM6pU2JY6teda70=;
+	s=korg; t=1703089080;
+	bh=atVqQjV4/bJZuIS5xUaLwXZFOy0ycqYvHKYg3ClAWNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf5Z+kNgBvP3G7e7fL53m8hXXIr9cdMBqM83K+Besg2OfSL0YU3KvBnkdWj+HF5Pf
-	 PR1HJUM9QSlxWhF46REdQSmRw76L177iFgidED26oejaf7TG57efaZNcAqhDm8iyU2
-	 UYoMkD1LD33ltGWiiRQvJ8WfV6A0asa5dHxPj7bU=
+	b=R9qExJ6MzN6CsSjFyRCXlXval4S/k3I9HkPIZ0rE4rtbtQlorqAFYyH7A03McLBnB
+	 Oq/b7Cl7dfSocxgjEGCs2iZmtEWGe/SmorKmj5WYt0jls5hjDS1LMyUXScldT7wZkm
+	 69VtOUvC3cdCLkICNMAnyq+WQCDqlfa9yFhb+4ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 154/159] ksmbd: dont update ->op_state as OPLOCK_STATE_NONE on error
-Date: Wed, 20 Dec 2023 17:10:19 +0100
-Message-ID: <20231220160938.500792910@linuxfoundation.org>
+	Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 5.15 155/159] Revert "drm/bridge: lt9611uxc: fix the race in the error path"
+Date: Wed, 20 Dec 2023 17:10:20 +0100
+Message-ID: <20231220160938.544132917@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -56,31 +55,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Amit Pundir <amit.pundir@linaro.org>
 
-[ Upstream commit cd80ce7e68f1624ac29cd0a6b057789d1236641e ]
+This reverts commit d0d01bb4a56093fa214c0949e9e7ccb9fb437795.
 
-ksmbd set ->op_state as OPLOCK_STATE_NONE on lease break ack error.
-op_state of lease should not be updated because client can send lease
-break ack again. This patch fix smb2.lease.breaking2 test failure.
+This and the dependent fixes broke display on RB5.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -8237,7 +8237,6 @@ static void smb21_lease_break_ack(struct
- 		return;
+--- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+@@ -927,9 +927,9 @@ retry:
+ 	init_waitqueue_head(&lt9611uxc->wq);
+ 	INIT_WORK(&lt9611uxc->work, lt9611uxc_hpd_work);
  
- err_out:
--	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
+-	ret = request_threaded_irq(client->irq, NULL,
+-				   lt9611uxc_irq_thread_handler,
+-				   IRQF_ONESHOT, "lt9611uxc", lt9611uxc);
++	ret = devm_request_threaded_irq(dev, client->irq, NULL,
++					lt9611uxc_irq_thread_handler,
++					IRQF_ONESHOT, "lt9611uxc", lt9611uxc);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request irq\n");
+ 		goto err_disable_regulators;
+@@ -965,8 +965,6 @@ retry:
+ 	return lt9611uxc_audio_init(dev, lt9611uxc);
+ 
+ err_remove_bridge:
+-	free_irq(client->irq, lt9611uxc);
+-	cancel_work_sync(&lt9611uxc->work);
+ 	drm_bridge_remove(&lt9611uxc->bridge);
+ 
+ err_disable_regulators:
+@@ -983,7 +981,7 @@ static int lt9611uxc_remove(struct i2c_c
+ {
+ 	struct lt9611uxc *lt9611uxc = i2c_get_clientdata(client);
+ 
+-	free_irq(client->irq, lt9611uxc);
++	disable_irq(client->irq);
+ 	cancel_work_sync(&lt9611uxc->work);
+ 	lt9611uxc_audio_exit(lt9611uxc);
+ 	drm_bridge_remove(&lt9611uxc->bridge);
 
 
 
