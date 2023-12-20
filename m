@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-8129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AC281A4AA
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:22:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4111081A4B5
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9CA41F22245
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:22:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4578B2633C
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7D9495C8;
-	Wed, 20 Dec 2023 16:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42754498BF;
+	Wed, 20 Dec 2023 16:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txNyu1pZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2j8LSuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA20048CD8;
-	Wed, 20 Dec 2023 16:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA49C433C7;
-	Wed, 20 Dec 2023 16:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06DAD40C04;
+	Wed, 20 Dec 2023 16:17:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD7BC433C8;
+	Wed, 20 Dec 2023 16:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088993;
-	bh=WW4ERD4nF59xrl1kF0xi8dKv2i7UPCp0ZoV5hRM3aoc=;
+	s=korg; t=1703089025;
+	bh=EOqxbYtLfC0EjIrhVf1EhE2vgCmkPqIeCh8XsFtk1kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=txNyu1pZWxq+YW8RI5HGihMBC2apMxQyhqTbD667d/AIYrHNNcNYor4y1YD789w+L
-	 dDUL9okbYd5TMXQ9e7QNMjRVfOaET+NFq/zNkLB6yq7tiFCZrmHZt3fD7n7Tfu+6Tb
-	 LRzRB/2XRRC4cdzXExwYzJ7Timkz9EhGPVWXsgUY=
+	b=m2j8LSuZumnoNslTfmKGg0sKrHfj/6/Lvt1QDBa3SBqCkjlHpHuEH8ejz8HNIuozD
+	 HMUK2OvhgtfMNcb16wn/Ls8F8haKp/x3SlhXn8/DTg+n8+0mFinhACZnNs/HUkNDPV
+	 6YX4arDvr27sAxvYEmMTOMb1h/sXozYFLJ1hMbes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 5.15 124/159] ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
-Date: Wed, 20 Dec 2023 17:09:49 +0100
-Message-ID: <20231220160937.108774701@linuxfoundation.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 125/159] ksmbd: add missing calling smb2_set_err_rsp() on error
+Date: Wed, 20 Dec 2023 17:09:50 +0100
+Message-ID: <20231220160937.147819432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -59,33 +58,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 4b081ce0d830b684fdf967abc3696d1261387254 ]
+[ Upstream commit 0e2378eaa2b3a663726cf740d4aaa8a801e2cb31 ]
 
-If authblob->SessionKey.Length is bigger than session key
-size(CIFS_KEY_SIZE), slub overflow can happen in key exchange codes.
-cifs_arc4_crypt copy to session key array from SessionKey from client.
+If some error happen on smb2_sess_setup(), Need to call
+smb2_set_err_rsp() to set error response.
+This patch add missing calling smb2_set_err_rsp() on error.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21940
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/auth.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ksmbd/smb2pdu.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -355,6 +355,9 @@ int ksmbd_decode_ntlmssp_auth_blob(struc
- 		if (blob_len < (u64)sess_key_off + sess_key_len)
- 			return -EINVAL;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1904,6 +1904,7 @@ out_err:
+ 				ksmbd_conn_set_need_negotiate(conn);
+ 			}
+ 		}
++		smb2_set_err_rsp(work);
+ 	} else {
+ 		unsigned int iov_len;
  
-+		if (sess_key_len > CIFS_KEY_SIZE)
-+			return -EINVAL;
-+
- 		ctx_arc4 = kmalloc(sizeof(*ctx_arc4), GFP_KERNEL);
- 		if (!ctx_arc4)
- 			return -ENOMEM;
 
 
 
