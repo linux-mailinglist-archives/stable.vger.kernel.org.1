@@ -1,134 +1,81 @@
-Return-Path: <stable+bounces-8196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9603981A8A4
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 22:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCC481A8AC
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 23:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1C228BE75
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 21:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D0BA2854F6
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 22:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D364A997;
-	Wed, 20 Dec 2023 21:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C500482DC;
+	Wed, 20 Dec 2023 22:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="iTFri0zQ"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="YgKbrUHT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001ae601.pphosted.com (mx0a-001ae601.pphosted.com [67.231.149.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6123A495CA;
-	Wed, 20 Dec 2023 21:47:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB22C433C9;
-	Wed, 20 Dec 2023 21:47:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1703108839;
-	bh=KSfMKhPrVKCg9uPTPFF4G2QkRhVKQbqYFnSNB8NQX7M=;
-	h=Date:To:From:Subject:From;
-	b=iTFri0zQx3edDhbLf3Mu1uFsSvDhZ99irEzg5F8wp142firbTUlBSUwCD0J/+3cED
-	 h86XwAyEjbSEilaywfA0B97/m76YTb44fCHPYDwSPl1wa6mJDOVy3B0ThKRVqaQJXe
-	 vbrwQhXYCP49225BtGohZyumGjGy3KgDJm4NOa40=
-Date: Wed, 20 Dec 2023 13:47:18 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,n-horiguchi@ah.jp.nec.com,dan.j.williams@intel.com,willy@infradead.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory-failure-cast-index-to-loff_t-before-shifting-it.patch removed from -mm tree
-Message-Id: <20231220214719.2BB22C433C9@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9CE495D0
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 22:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=opensource.cirrus.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=opensource.cirrus.com
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+	by mx0a-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BKFAweF013284
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 15:59:55 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	message-id:date:mime-version:to:from:subject:content-type
+	:content-transfer-encoding; s=PODMain02222019; bh=FurrxAABdb61qc
+	7XCbr1SNaw4K1CB2QdumOKIGbHerA=; b=YgKbrUHTbwwDiMVx8KFmQC3pciGdn4
+	samxCJlCqdJNxz6XQSy964cBTsYtCaZIkcHpJcSiRR2FKogCSbSiL9utg/M8mOlm
+	2kRuZHit8y34RgcfvlfriwecArfE+r9aXVr1eYNe0+EEvCJu19vY6EgfgBfdhg2p
+	VQ5KDErPlFGEInRzTcXoblw6zPXWb2sc9bJp9O2M99FZmVKcubQCpx7Hb1RiwB98
+	vVT/BUBjsSpyqWsQFn57Ty3iz8U7iGezEH2QD/3QnMUxMJYg+j2esYXElgQqU8Ub
+	0dycoJ9jsv5qKVXLhwM1+42xAFBIyJaFigXbojUN7tkb8fzhN4/fQTMA==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0a-001ae601.pphosted.com (PPS) with ESMTPS id 3v1a6266st-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 15:59:55 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 20 Dec
+ 2023 21:59:53 +0000
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1118.40 via Frontend Transport; Wed, 20 Dec 2023 21:59:53 +0000
+Received: from [198.61.65.136] (unknown [198.61.65.136])
+	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 1AA3C11D1
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 21:59:53 +0000 (UTC)
+Message-ID: <61b58cd6-987b-4c55-a293-1d713b741849@opensource.cirrus.com>
+Date: Wed, 20 Dec 2023 21:59:52 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Stable <stable@vger.kernel.org>
+From: Vitaly Rodionov <vitalyr@opensource.cirrus.com>
+Subject: stable/6.2, stable/6.3: backport commit 99bf5b0baac9 ("ALSA:
+ hda/cirrus: Fix broken audio on hardware with two CS42L42 codecs.")
+Organization: Cirrus Logic
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: J7sJIIoGU8E0wlKI_9CpbACMwoiWKt6l
+X-Proofpoint-ORIG-GUID: J7sJIIoGU8E0wlKI_9CpbACMwoiWKt6l
+X-Proofpoint-Spam-Reason: safe
 
+commit 99bf5b0baac941176a6a3d5cef7705b29808de34 upstream
 
-The quilt patch titled
-     Subject: mm/memory-failure: cast index to loff_t before shifting it
-has been removed from the -mm tree.  Its filename was
-     mm-memory-failure-cast-index-to-loff_t-before-shifting-it.patch
+Please backport to 6.2 and 6.3
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Ubuntu 22.04.3 LTS, is released with the Linux kernel 6.2, and we need to
+backport this patch to prevent regression for HW with 2 Cirrus Logic 
+CS42L42 codecs.
 
-------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: mm/memory-failure: cast index to loff_t before shifting it
-Date: Mon, 18 Dec 2023 13:58:37 +0000
-
-On 32-bit systems, we'll lose the top bits of index because arithmetic
-will be performed in unsigned long instead of unsigned long long.  This
-affects files over 4GB in size.
-
-Link: https://lkml.kernel.org/r/20231218135837.3310403-4-willy@infradead.org
-Fixes: 6100e34b2526 ("mm, memory_failure: Teach memory_failure() about dev_pagemap pages")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory-failure.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/memory-failure.c~mm-memory-failure-cast-index-to-loff_t-before-shifting-it
-+++ a/mm/memory-failure.c
-@@ -1704,7 +1704,7 @@ static void unmap_and_kill(struct list_h
- 		 * mapping being torn down is communicated in siginfo, see
- 		 * kill_proc()
- 		 */
--		loff_t start = (index << PAGE_SHIFT) & ~(size - 1);
-+		loff_t start = ((loff_t)index << PAGE_SHIFT) & ~(size - 1);
- 
- 		unmap_mapping_range(mapping, start, size, 0);
- 	}
-_
-
-Patches currently in -mm which might be from willy@infradead.org are
-
-buffer-return-bool-from-grow_dev_folio.patch
-buffer-calculate-block-number-inside-folio_init_buffers.patch
-buffer-fix-grow_buffers-for-block-size-page_size.patch
-buffer-cast-block-to-loff_t-before-shifting-it.patch
-buffer-fix-various-functions-for-block-size-page_size.patch
-buffer-handle-large-folios-in-__block_write_begin_int.patch
-buffer-fix-more-functions-for-block-size-page_size.patch
-mm-convert-ksm_might_need_to_copy-to-work-on-folios.patch
-mm-convert-ksm_might_need_to_copy-to-work-on-folios-fix.patch
-mm-remove-pageanonexclusive-assertions-in-unuse_pte.patch
-mm-convert-unuse_pte-to-use-a-folio-throughout.patch
-mm-remove-some-calls-to-page_add_new_anon_rmap.patch
-mm-remove-stale-example-from-comment.patch
-mm-remove-references-to-page_add_new_anon_rmap-in-comments.patch
-mm-convert-migrate_vma_insert_page-to-use-a-folio.patch
-mm-convert-collapse_huge_page-to-use-a-folio.patch
-mm-remove-page_add_new_anon_rmap-and-lru_cache_add_inactive_or_unevictable.patch
-mm-return-the-folio-from-__read_swap_cache_async.patch
-mm-pass-a-folio-to-__swap_writepage.patch
-mm-pass-a-folio-to-swap_writepage_fs.patch
-mm-pass-a-folio-to-swap_writepage_bdev_sync.patch
-mm-pass-a-folio-to-swap_writepage_bdev_async.patch
-mm-pass-a-folio-to-swap_readpage_fs.patch
-mm-pass-a-folio-to-swap_readpage_bdev_sync.patch
-mm-pass-a-folio-to-swap_readpage_bdev_async.patch
-mm-convert-swap_page_sector-to-swap_folio_sector.patch
-mm-convert-swap_readpage-to-swap_read_folio.patch
-mm-remove-page_swap_info.patch
-mm-return-a-folio-from-read_swap_cache_async.patch
-mm-convert-swap_cluster_readahead-and-swap_vma_readahead-to-return-a-folio.patch
-mm-convert-swap_cluster_readahead-and-swap_vma_readahead-to-return-a-folio-fix.patch
-fs-remove-clean_page_buffers.patch
-fs-convert-clean_buffers-to-take-a-folio.patch
-fs-reduce-stack-usage-in-__mpage_writepage.patch
-fs-reduce-stack-usage-in-do_mpage_readpage.patch
-adfs-remove-writepage-implementation.patch
-bfs-remove-writepage-implementation.patch
-hfs-really-remove-hfs_writepage.patch
-hfsplus-really-remove-hfsplus_writepage.patch
-minix-remove-writepage-implementation.patch
-ocfs2-remove-writepage-implementation.patch
-sysv-remove-writepage-implementation.patch
-ufs-remove-writepage-implementation.patch
-fs-convert-block_write_full_page-to-block_write_full_folio.patch
-fs-remove-the-bh_end_io-argument-from-__block_write_full_folio.patch
-
+These patch went into the 6.4 release.
 
