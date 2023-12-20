@@ -1,99 +1,130 @@
-Return-Path: <stable+bounces-7974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B52D819F7C
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:06:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A1681A00A
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:44:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15FF92872F5
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 13:06:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166D61F286FB
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 13:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69A524B2C;
-	Wed, 20 Dec 2023 13:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QLWp91ie"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F24434CD6;
+	Wed, 20 Dec 2023 13:43:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1707636AF0
-	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 13:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703077595;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JcDrbjyjMazetuP2IXFq19+KBQ/5Rh6HiivXC6HpT8A=;
-	b=QLWp91iev6Qa/la6/Yj6I7bobn1xUV9HSE21UmMuqCby6Qzg/OpCd7GxjlkPUnsiWL+G0i
-	i8lrnRrkhm3npTv13sgvw/o7EIhgoPb6btb3Z9EVn94GG2xFikUEzR489nKtTsK8g0Oxyt
-	Ciw8EGfdgAcSdT8uZxRMuOSqUJFyTxE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-zrJie5wXPBaZgiDutnlC4w-1; Wed, 20 Dec 2023 08:06:33 -0500
-X-MC-Unique: zrJie5wXPBaZgiDutnlC4w-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40d39bbe215so1553445e9.1
-        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 05:06:33 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703077592; x=1703682392;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JcDrbjyjMazetuP2IXFq19+KBQ/5Rh6HiivXC6HpT8A=;
-        b=pSIre4f39jGWUW1Lc1L1+E9gGuMNbRkSc6/+juQsbsLB4Un4GjEMoz+PZaAlAva7pb
-         pCDZgAayaIxvXJMAIvRHzOnDItekqOY5UJy3TebSqqsg1iUQ5dnKR+hHdjTmGGm+slv6
-         xKY4al8MrmrZskfLHjID5H10Cp7cTiHvshdb4l2h3qnWvU4gWT0rmHZx2eM/PhhR6Wm3
-         mQ2HFzMAZA5DwYzAuSS3gcxc3E62pYcQLZQG3revjDlxSv6qx3OlJXT8Ky7xxQf274Bq
-         uU68p1d3Vj3U3IsdmW8OI7/PHPDCLBbam4VDxQOWf7YCKeCke8Xge5o7HZNDWGrRnruU
-         UGAg==
-X-Gm-Message-State: AOJu0Ywg7fVUrhivmMK7rPqG8779iLLP0Ns62gIDCUT8EIlSjzg9Mnoh
-	eOXyInYa1FXjZKQHS/nm0kvkZU4NizR04ih8kwW2Hi5HyGmrWEEDv0/LvS1ckA2UMVJtYeazwY3
-	/01J5gohLrPM9LNtO
-X-Received: by 2002:a05:600c:35c5:b0:40d:2399:e8ab with SMTP id r5-20020a05600c35c500b0040d2399e8abmr1373985wmq.119.1703077592267;
-        Wed, 20 Dec 2023 05:06:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFRoNwYKhAj9t3QDcijJmqblCCgPo565UJi8JqwdyfEV+aS8fatsnVqDe5IgX5UWy1Iu5IsxQ==
-X-Received: by 2002:a05:600c:35c5:b0:40d:2399:e8ab with SMTP id r5-20020a05600c35c500b0040d2399e8abmr1373972wmq.119.1703077591912;
-        Wed, 20 Dec 2023 05:06:31 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id m1-20020a05600c4f4100b0040c03c3289bsm7180907wmq.37.2023.12.20.05.06.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Dec 2023 05:06:31 -0800 (PST)
-Message-ID: <3b2fbb7f-3243-4f98-90bc-edb1b4db2bb4@redhat.com>
-Date: Wed, 20 Dec 2023 14:06:30 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB7538DDF;
+	Wed, 20 Dec 2023 13:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4SwFBn673FzsSWt;
+	Wed, 20 Dec 2023 21:43:29 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 149001402DE;
+	Wed, 20 Dec 2023 21:43:47 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 20 Dec 2023 21:43:46 +0800
+Message-ID: <253f741f-7ec8-1adb-1efe-a93d33ec6e12@huawei.com>
+Date: Wed, 20 Dec 2023 21:43:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/mgag200: Fix gamma lut not initialized for G200ER,
- G200EV, G200SE
-Content-Language: en-US, fr
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Thomas Zimmermann <tzimmermann@suse.de>, dri-devel@lists.freedesktop.org,
- airlied@redhat.com, daniel@ffwll.ch, javierm@redhat.com
-Cc: Roger Sewell <roger.sewell@cantab.net>, stable@vger.kernel.org
-References: <20231214163849.359691-1-jfalempe@redhat.com>
- <641bc7e1-5c13-4af1-ae2e-8cdc58ee92a9@suse.de>
- <beec3b5d-689a-4b25-be4b-9ff7532bb2e6@redhat.com>
-In-Reply-To: <beec3b5d-689a-4b25-be4b-9ff7532bb2e6@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH 4/4] ext4: avoid dividing by 0 in
+ mb_update_avg_fragment_size() when block bitmap corrupt
+Content-Language: en-US
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
+	<stable@vger.kernel.org>, Baokun Li <libaokun1@huawei.com>
+References: <20231218141814.1477338-1-libaokun1@huawei.com>
+ <20231218141814.1477338-5-libaokun1@huawei.com>
+ <20231218144342.2we3j2dtyedulfga@quack3>
+ <20231218150905.llu5tgjgen4nxthq@quack3>
+ <9db31834-cbd3-c60a-3048-ef57143d8e55@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <9db31834-cbd3-c60a-3048-ef57143d8e55@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-I just merged it to drm-misc-fixes:
+On 2023/12/19 16:02, Baokun Li wrote:
+> On 2023/12/18 23:09, Jan Kara wrote:
+>> On Mon 18-12-23 15:43:42, Jan Kara wrote:
+>>> On Mon 18-12-23 22:18:14, Baokun Li wrote:
+>>>> When bb_free is not 0 but bb_fragments is 0, return directly to avoid
+>>>> system crash due to division by zero.
+>>> How could this possibly happen? bb_fragments is the number of free 
+>>> space
+>>> extents and bb_free is the number of free blocks. No free space 
+>>> extents =>
+>>> no free blocks seems pretty obvious? You can see the logic in
+>>> ext4_mb_generate_buddy()...
+>> Oh, I see. This is probably about "bitmap corrupted case". But still 
+>> both
+>> allocation and freeing of blocks shouldn't operate on bitmaps marked as
+>> corrupted so this should not happen?
+>>
+>>                                 Honza
+> Yes, we should make sure that we don't allocate or free blocks in
+> groups where the block bitmap has been marked as corrupt, but
+> there are still some issues here:
+>
+> 1. When a block bitmap is found to be corrupted, ext4_grp_locked_error()
+> is always called first, and only after that the block bitmap of the group
+> is marked as corrupted. In ext4_grp_locked_error(), the group may
+> be unlocked, and then other processes may be able to access the
+> corrupted bitmap. In this case, we can just put the marking of
+> corruption before ext4_grp_locked_error().
+>
+> 2. ext4_free_blocks() finds a corrupt bitmap can just return and do
+> nothing, because there is no problem with not freeing an exception
+> block. But mb_mark_used() has no logic for determining if a block
+> bitmap is corrupt, and its caller has no error handling logic, so
+> mb_mark_used() needs its caller to make sure that it doesn't allocate
+> blocks in a group with a corrupted block bitmap (which is why it
+> added the judgment in patch 2). However, it is possible to unlock group
+> between determining whether the group is corrupt and actually calling
+> mb_mark_used() to use those blocks. For example, when calling
+> mb_mark_used() in ext4_mb_try_best_found(), we are determining
+> whether the group's block bitmap is corrupted or not in the previous
+> ext4_mb_good_group(), but we are not determining it again when using
+> the blocks in ext4_mb_try_best_found(), at which point we may be
+> modifying the corrupted block bitmap.
+>
+> 3. Determine if a block bitmap is corrupted outside of a group lock
+> in ext4_mb_find_by_goal().
+>
+> 4. In ext4_mb_check_limits(), it may be possible to use the ac_b_ex
+> found in group 0 while holding a lock in group 1.
 
-https://cgit.freedesktop.org/drm/drm-misc/commit/?h=drm-misc-fixes&id=11f9eb899ecc8c02b769cf8d2532ba12786a7af7
+I'm very sorry that the fourth point was wrong, I read "||" as "&&" in
+ext4_mb_check_limits() ：
 
-Thanks,
+  if (finish_group || ac->ac_found > sbi->s_mb_min_to_scan)
 
+>
+> In addition to the above, there may be some corner cases that cause
+> inconsistencies, so here we determine if bb_fragments is 0 to avoid a
+> crash due to division by zero. Perhaps we could just replace
+> grp->bb_free == 0 with grp->bb_fragments == 0, which wouldn't look
+> so strange.
+
+Thanks!
 -- 
-
-Jocelyn
-
+With Best Regards,
+Baokun Li
+.
 
