@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-8174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E90281A668
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 18:32:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F7981A675
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 18:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF6F61C255EA
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654B51C257DE
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A8747A66;
-	Wed, 20 Dec 2023 17:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCBF4777F;
+	Wed, 20 Dec 2023 17:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdCtrY7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6QGjwz1"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D067447A46
-	for <Stable@vger.kernel.org>; Wed, 20 Dec 2023 17:32:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08663C433C8;
-	Wed, 20 Dec 2023 17:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52CF482CB
+	for <Stable@vger.kernel.org>; Wed, 20 Dec 2023 17:36:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4D5C433C7;
+	Wed, 20 Dec 2023 17:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703093543;
-	bh=eZvT0UGKqwmbVWUGTABLWk05k6fjz4IehLB1masIfCY=;
+	s=korg; t=1703093771;
+	bh=c9LsYkTMvMzAHuof4HNSALb09CTsOylzrziN5owztiQ=;
 	h=Subject:To:From:Date:From;
-	b=BdCtrY7ly+aobD4Oi3XpSgIHuWxwobWhj8KJZR5yReHjFtQi68iWPtIVoricH6VQA
-	 77Xm6mbFAj8V0HKVuzHAQDCovi0dxnqpDgjwQHgRRa1dOszzcuKWlWZ+ihRVl/3brz
-	 XWJBb+JIJ5Pc7qI+SCwdb5Qx0OUe0E67E2nrxCPk=
-Subject: patch "iio: adc: ad7091r: Pass iio_dev to event handler" added to char-misc-testing
+	b=u6QGjwz1GM3+y7FD4pEjsQg+/ZDdIvwVO2Td+rWTSjh/GWUhtJ73ZARQbEXnWvEYQ
+	 T2BlgQw+kdqGiyy8w8zRLQ0QUd1ujUIb0PkpOzKkBzjRM9+CS//nneFZvhMLaNWTMP
+	 Qabe7M9Cw9RW5o9oDhgAys7IBJCHHd6U0/0yC/P8=
+Subject: patch "iio: adc: ad7091r: Pass iio_dev to event handler" added to char-misc-next
 To: marcelo.schmitt@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 20 Dec 2023 17:15:21 +0100
-Message-ID: <2023122021-crummy-tameness-f6f7@gregkh>
+Date: Wed, 20 Dec 2023 17:19:33 +0100
+Message-ID: <2023122033-camping-glitter-55b5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-testing branch.
+in the char-misc-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the char-misc-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
