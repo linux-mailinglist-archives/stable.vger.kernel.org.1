@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-8139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB72E81A4B4
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:22:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932C181A4B8
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D1511F2147A
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:22:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B01DB2715C
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A41495EC;
-	Wed, 20 Dec 2023 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44DCE4BA95;
+	Wed, 20 Dec 2023 16:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNNs+A5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRqO49NR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD4340C04;
-	Wed, 20 Dec 2023 16:17:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB6AC433C8;
-	Wed, 20 Dec 2023 16:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E88E4BA8D;
+	Wed, 20 Dec 2023 16:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3883AC433C7;
+	Wed, 20 Dec 2023 16:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703089023;
-	bh=CK+nBUD13F4+2J2y1eWBNsIiiUit3wvStVF45G7wfh0=;
+	s=korg; t=1703089028;
+	bh=IaWYuvK8NY1J64K5VdfLt1nFbzDaeWERZWhYl780HaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNNs+A5MCrk7oFIub2EfgQMzovnrhILXTUbPiCIfg3kMhGoRxbXXxXT10AaHr27ZK
-	 400yChuma1RZedjcBEcFaoDSpBLjJuF0bHwgqpWqvEZME4ZvH3bgpChOZcQazB3Jan
-	 wU1o1pe5HMknlk9MGwZnF9TxQ652veYk6NhEgN1M=
+	b=LRqO49NRE2TOTJ4MwTOeRbo11I3C8NS4Y/XiFySRVctRxnuVJJenklI7H6M6x79s4
+	 vykDlC71eIDl4zXCOrXbh9Sc3mzAYegZkAi/CO4ZIlT8SFKEHzQryt27PA+q9mkgcS
+	 sB7Ll/kKhM6dQHEjHkG6d8gNp21kTzbc97S2Z6Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
+	Kangjing Huang <huangkangjing@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 142/159] ksmbd: fix recursive locking in vfs helpers
-Date: Wed, 20 Dec 2023 17:10:07 +0100
-Message-ID: <20231220160937.946573884@linuxfoundation.org>
+Subject: [PATCH 5.15 143/159] ksmbd: fix missing RDMA-capable flag for IPoIB device in ksmbd_rdma_capable_netdev()
+Date: Wed, 20 Dec 2023 17:10:08 +0100
+Message-ID: <20231220160937.994631645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -57,141 +58,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Kangjing Huang <huangkangjing@gmail.com>
 
-[ Upstream commit 807252f028c59b9a3bac4d62ad84761548c10f11 ]
+[ Upstream commit ecce70cf17d91c3dd87a0c4ea00b2d1387729701 ]
 
-Running smb2.rename test from Samba smbtorture suite against a kernel built
-with lockdep triggers a "possible recursive locking detected" warning.
+Physical ib_device does not have an underlying net_device, thus its
+association with IPoIB net_device cannot be retrieved via
+ops.get_netdev() or ib_device_get_by_netdev(). ksmbd reads physical
+ib_device port GUID from the lower 16 bytes of the hardware addresses on
+IPoIB net_device and match its underlying ib_device using ib_find_gid()
 
-This is because mnt_want_write() is called twice with no mnt_drop_write()
-in between:
-  -> ksmbd_vfs_mkdir()
-    -> ksmbd_vfs_kern_path_create()
-       -> kern_path_create()
-          -> filename_create()
-            -> mnt_want_write()
-       -> mnt_want_write()
-
-Fix this by removing the mnt_want_write/mnt_drop_write calls from vfs
-helpers that call kern_path_create().
-
-Full lockdep trace below:
-
-============================================
-WARNING: possible recursive locking detected
-6.6.0-rc5 #775 Not tainted
---------------------------------------------
-kworker/1:1/32 is trying to acquire lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: ksmbd_vfs_mkdir+0xe1/0x410
-
-but task is already holding lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(sb_writers#5);
-  lock(sb_writers#5);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by kworker/1:1/32:
- #0: ffff8880064e4138 ((wq_completion)ksmbd-io){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #1: ffff888005b0fdd0 ((work_completion)(&work->work)){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #2: ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
- #3: ffff8880057ce760 (&type->i_mutex_dir_key#3/1){+.+.}-{3:3}, at: filename_create+0x123/0x260
-
-Cc: stable@vger.kernel.org
-Fixes: 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Signed-off-by: Kangjing Huang <huangkangjing@gmail.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/vfs.c |   23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ fs/ksmbd/transport_rdma.c |   42 +++++++++++++++++++++++++++++++-----------
+ 1 file changed, 31 insertions(+), 11 deletions(-)
 
---- a/fs/ksmbd/vfs.c
-+++ b/fs/ksmbd/vfs.c
-@@ -173,10 +173,6 @@ int ksmbd_vfs_create(struct ksmbd_work *
- 		return err;
- 	}
+--- a/fs/ksmbd/transport_rdma.c
++++ b/fs/ksmbd/transport_rdma.c
+@@ -2140,8 +2140,7 @@ static int smb_direct_ib_client_add(stru
+ 	if (ib_dev->node_type != RDMA_NODE_IB_CA)
+ 		smb_direct_port = SMB_DIRECT_PORT_IWARP;
  
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err;
+-	if (!ib_dev->ops.get_netdev ||
+-	    !rdma_frwr_is_supported(&ib_dev->attrs))
++	if (!rdma_frwr_is_supported(&ib_dev->attrs))
+ 		return 0;
+ 
+ 	smb_dev = kzalloc(sizeof(*smb_dev), GFP_KERNEL);
+@@ -2241,17 +2240,38 @@ bool ksmbd_rdma_capable_netdev(struct ne
+ 		for (i = 0; i < smb_dev->ib_dev->phys_port_cnt; i++) {
+ 			struct net_device *ndev;
+ 
+-			ndev = smb_dev->ib_dev->ops.get_netdev(smb_dev->ib_dev,
+-							       i + 1);
+-			if (!ndev)
+-				continue;
 -
- 	mode |= S_IFREG;
- 	err = vfs_create(mnt_user_ns(path.mnt), d_inode(path.dentry),
- 			 dentry, mode, true);
-@@ -186,9 +182,7 @@ int ksmbd_vfs_create(struct ksmbd_work *
- 	} else {
- 		pr_err("File(%s): creation failed (err:%d)\n", name, err);
- 	}
--	mnt_drop_write(path.mnt);
- 
--out_err:
- 	done_path_create(&path, dentry);
- 	return err;
- }
-@@ -219,10 +213,6 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
- 		return err;
- 	}
- 
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err2;
--
- 	user_ns = mnt_user_ns(path.mnt);
- 	mode |= S_IFDIR;
- 	err = vfs_mkdir(user_ns, d_inode(path.dentry), dentry, mode);
-@@ -233,21 +223,19 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
- 			       dentry->d_name.len);
- 		if (IS_ERR(d)) {
- 			err = PTR_ERR(d);
--			goto out_err1;
-+			goto out_err;
+-			if (ndev == netdev) {
++			if (smb_dev->ib_dev->ops.get_netdev) {
++				ndev = smb_dev->ib_dev->ops.get_netdev(
++					smb_dev->ib_dev, i + 1);
++				if (!ndev)
++					continue;
++
++				if (ndev == netdev) {
++					dev_put(ndev);
++					rdma_capable = true;
++					goto out;
++				}
+ 				dev_put(ndev);
+-				rdma_capable = true;
+-				goto out;
++			/* if ib_dev does not implement ops.get_netdev
++			 * check for matching infiniband GUID in hw_addr
++			 */
++			} else if (netdev->type == ARPHRD_INFINIBAND) {
++				struct netdev_hw_addr *ha;
++				union ib_gid gid;
++				u32 port_num;
++				int ret;
++
++				netdev_hw_addr_list_for_each(
++					ha, &netdev->dev_addrs) {
++					memcpy(&gid, ha->addr + 4, sizeof(gid));
++					ret = ib_find_gid(smb_dev->ib_dev, &gid,
++							  &port_num, NULL);
++					if (!ret) {
++						rdma_capable = true;
++						goto out;
++					}
++				}
+ 			}
+-			dev_put(ndev);
  		}
- 		if (unlikely(d_is_negative(d))) {
- 			dput(d);
- 			err = -ENOENT;
--			goto out_err1;
-+			goto out_err;
- 		}
- 
- 		ksmbd_vfs_inherit_owner(work, d_inode(path.dentry), d_inode(d));
- 		dput(d);
  	}
- 
--out_err1:
--	mnt_drop_write(path.mnt);
--out_err2:
-+out_err:
- 	done_path_create(&path, dentry);
- 	if (err)
- 		pr_err("mkdir(%s): creation failed (err:%d)\n", name, err);
-@@ -665,16 +653,11 @@ int ksmbd_vfs_link(struct ksmbd_work *wo
- 		goto out3;
- 	}
- 
--	err = mnt_want_write(newpath.mnt);
--	if (err)
--		goto out3;
--
- 	err = vfs_link(oldpath.dentry, mnt_user_ns(newpath.mnt),
- 		       d_inode(newpath.dentry),
- 		       dentry, NULL);
- 	if (err)
- 		ksmbd_debug(VFS, "vfs_link failed err %d\n", err);
--	mnt_drop_write(newpath.mnt);
- 
- out3:
- 	done_path_create(&newpath, dentry);
+ out:
 
 
 
