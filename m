@@ -1,118 +1,65 @@
-Return-Path: <stable+bounces-7980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7464881A14E
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:43:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C52181A151
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131B51F22C90
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:43:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E979B20BBD
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1443D397;
-	Wed, 20 Dec 2023 14:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891193D397;
+	Wed, 20 Dec 2023 14:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecDhaeOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AmXjZZHR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364F03B1BB;
-	Wed, 20 Dec 2023 14:42:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEC1C433C9;
-	Wed, 20 Dec 2023 14:42:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703083375;
-	bh=iQr3A3idlvsBQRAD/6AlJxk9PKUXNWI6mN+6Ps3D9sI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5652F24B3E
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 14:43:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B2FC433C7;
+	Wed, 20 Dec 2023 14:43:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1703083414;
+	bh=Mu4hZfoRNoh1a8Rph22C2Hap+ZvsOZb4QiAIn3F/GFU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ecDhaeOUI7xet5HrGaaO7WZWWA5fud6rmc/07FIW0iVPMjfvC6es7liINO//zx9v0
-	 +w5ghfRrSSzc30vC4gNAcixBE3pCiIPBAyqhV0yThPqiJVcpBPZ6klaN4MSE5M0XMs
-	 w0qN3eYh6qJs8RUMFaSWrlRCBVH6gAStdRYfDtC/OF++VJxgiPRC6DTsafKbEnjvc1
-	 P5PuzEJPXGIeNftrLHLzs6SukrObZyBuwcPi05Dw4N1hn07eOXSBGkx52QqsmIzEcv
-	 iKzXZN4rzZr1Lv8ElJXNZGKbqTLBKb75xs8yR2a7zbidWhM55pe5+8/3XNRmBxB55Z
-	 +99xCKV6KR16A==
-Date: Wed, 20 Dec 2023 20:12:41 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	Stanley Jhu <chu.stanley@gmail.com>,
-	Can Guo <quic_cang@quicinc.com>,
-	Asutosh Das <quic_asutoshd@quicinc.com>,
-	Bean Huo <beanhuo@micron.com>,
-	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
-	Arthur Simchaev <Arthur.Simchaev@wdc.com>
-Subject: Re: [PATCH 1/2] scsi: ufs: Simplify power management during async
- scan
-Message-ID: <20231220144241.GG3544@thinkpad>
-References: <20231218225229.2542156-1-bvanassche@acm.org>
- <20231218225229.2542156-2-bvanassche@acm.org>
+	b=AmXjZZHRJEQqjcW219h9CEcWa+kOny89eer+0oc4PqCgannPFqT0htIKuv+UMr8tZ
+	 teCosbOeU8lMLeJXqllQiFbnTD49kG4hCoPGLmltmcHe+0tT2Q/FZrtZy1+sxrUGFF
+	 qz3neqWf7Jglp0Ue52Vz+Scf+daSTxhSXWheM33Q=
+Date: Wed, 20 Dec 2023 15:43:31 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Amit Pundir <amit.pundir@linaro.org>
+Cc: Stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Maxime Ripard <maxime@cerno.tech>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: Re: [PATCH for-5.15.y 0/3] Revert lt9611uxc fixes which broke
+Message-ID: <2023122026-improving-circular-bc52@gregkh>
+References: <20231219101118.965996-1-amit.pundir@linaro.org>
+ <CAMi1Hd3-kYAfSOS7SBR2=ZLZ0sbvDWgyPm=t0KALzGpdomQGSw@mail.gmail.com>
+ <2023121933-trapping-snazzy-1c69@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231218225229.2542156-2-bvanassche@acm.org>
+In-Reply-To: <2023121933-trapping-snazzy-1c69@gregkh>
 
-On Mon, Dec 18, 2023 at 02:52:14PM -0800, Bart Van Assche wrote:
-> ufshcd_init() calls pm_runtime_get_sync() before it calls
-> async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync()
-> directly or indirectly from ufshcd_add_lus(). Simplify
-> ufshcd_async_scan() by always calling pm_runtime_put_sync() from
-> ufshcd_async_scan().
+On Tue, Dec 19, 2023 at 11:52:52AM +0100, Greg KH wrote:
+> On Tue, Dec 19, 2023 at 03:44:14PM +0530, Amit Pundir wrote:
+> > Apologies for the half-baked subject line. I don't know what went
+> > wrong there. I meant "Revert lt9611uxc fixes which broke display on
+> > RB5".
 > 
-> Cc: stable@vger.kernel.org
+> Thanks, will queue these up after the latest -rc releases are done in a
+> few days.
 
-No fixes tag?
+All now queued up, thanks.
 
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-
-- Mani
-
-> ---
->  drivers/ufs/core/ufshcd.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index d6ae5d17892c..0ad8bde39cd1 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -8711,7 +8711,6 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
->  
->  	ufs_bsg_probe(hba);
->  	scsi_scan_host(hba->host);
-> -	pm_runtime_put_sync(hba->dev);
->  
->  out:
->  	return ret;
-> @@ -8980,15 +8979,15 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
->  
->  	/* Probe and add UFS logical units  */
->  	ret = ufshcd_add_lus(hba);
-> +
->  out:
-> +	pm_runtime_put_sync(hba->dev);
->  	/*
->  	 * If we failed to initialize the device or the device is not
->  	 * present, turn off the power/clocks etc.
->  	 */
-> -	if (ret) {
-> -		pm_runtime_put_sync(hba->dev);
-> +	if (ret)
->  		ufshcd_hba_exit(hba);
-> -	}
->  }
->  
->  static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
-
--- 
-மணிவண்ணன் சதாசிவம்
+greg k-h
 
