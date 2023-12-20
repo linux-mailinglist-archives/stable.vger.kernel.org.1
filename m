@@ -1,97 +1,202 @@
-Return-Path: <stable+bounces-7957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54817819448
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 00:03:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0EF8195D1
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 01:44:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94139B22C64
-	for <lists+stable@lfdr.de>; Tue, 19 Dec 2023 23:03:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BFAD1C20F7E
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 00:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F85C3D0B6;
-	Tue, 19 Dec 2023 23:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB46A1FC6;
+	Wed, 20 Dec 2023 00:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="e8wWZKA3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t+ujJgUB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2DA3D0AB
-	for <stable@vger.kernel.org>; Tue, 19 Dec 2023 23:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50e0d1f9fe6so6227143e87.1
-        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 15:03:46 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301D923B8
+	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 00:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5e6c8b70766so24310837b3.3
+        for <stable@vger.kernel.org>; Tue, 19 Dec 2023 16:44:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1703027025; x=1703631825; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:in-reply-to:subject
-         :cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KqTdt56TrQAvwvOhyDEFpAKiAooVjdqOxCiCnFgMXM8=;
-        b=e8wWZKA34mNLep4AFkY/hFlwtBrX1+52DbLHTM4zQeoqBcX7HLSth9bYlCJ+PyERHc
-         59aIE5UuvSs+pwZhTp+2LGsdwrXbJsyCVI64cV0ZWDjgiba+5Elw5lzM6DGarRC21Av1
-         7NvPTlKUmgX/4vS+oWh0bzNIOTgkD12zhb77waYh1bnoBq7j7B2xs+Bp90VW+kgO0R4i
-         xNgS+1pDPtZyUuRt/JYAXE1P+K5ny7DtphBzJXrQEWQnmGz7IxttR62TBZ9DqCe1yLPW
-         gnI3fU0f7iqo16Cq/7GOPQbf6AlKEMnvzzJLsDJ5S12Dj4sZFTQA/9andfOXFY6UF382
-         iwaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703027025; x=1703631825;
-        h=mime-version:user-agent:references:message-id:in-reply-to:subject
-         :cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1703033047; x=1703637847; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KqTdt56TrQAvwvOhyDEFpAKiAooVjdqOxCiCnFgMXM8=;
-        b=TacnsI6DhS4FotGBd+gpb93PdLlwlYSJ983HL2pd3qRQwvN7L67nCHR+F1a3BX4HeG
-         wdx1XHF/Y/cLIElSUbjuu6Mb024PV2oU5V4wtGLF++cAgXWYovUR6WMYGdqTEuaBKIJ5
-         knagGpbDK6JEZHzksG0uoOJgO/11l7mZM/CP9MoOHKbEvKrxr6tqGm7Doe+y+XWoZvjD
-         zXJqxSQ+B41ebjBfSxu6groORZaTNVj9B5aJqC3uXp4ce7Kwx+xJXFh7ldoel45+/f0p
-         CHlu9UmGdtsU0jmQf6aDMUd/b5KNnXEi31THU+OyKEAbg+KRv7sqxf8WlMd/9dVvgMZv
-         EeRw==
-X-Gm-Message-State: AOJu0YxtO/N22im+o5HZ3VSKAQvyGvp5VQnvt+zi7SvZzT+ub4yT69mK
-	xG4tTxmHBI5vkzzZMg6vQGUziQ==
-X-Google-Smtp-Source: AGHT+IFeBWpJYs09SdBy3CD0jvYvP6KBJwOfUgp/+rhoNZ/0Oj/QgYgVjrK7dPDSO/gC9KhsWtBHNg==
-X-Received: by 2002:a05:6512:158c:b0:50e:3e7c:c039 with SMTP id bp12-20020a056512158c00b0050e3e7cc039mr2077091lfb.115.1703027024897;
-        Tue, 19 Dec 2023 15:03:44 -0800 (PST)
-Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id mj16-20020a170906af9000b00a2368de9471sm2045964ejb.202.2023.12.19.15.03.44
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 19 Dec 2023 15:03:44 -0800 (PST)
-From: Jiri Kosina <jkosina@suse.com>
-X-Google-Original-From: Jiri Kosina <jikos@kernel.org>
-Date: Wed, 20 Dec 2023 00:03:45 +0100 (CET)
-To: "Gerecke, Jason" <killertofu@gmail.com>
-cc: linux-input@vger.kernel.org, 
-    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    Aaron Skomra <aaron.skomra@wacom.com>, 
-    Jason Gerecke <jason.gerecke@wacom.com>, 
-    Joshua Dickens <joshua.dickens@wacom.com>, 
-    Ping Cheng <ping.cheng@wacom.com>, 
-    Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>, 
-    Aaron Armstrong Skomra <skomra@gmail.com>, 
-    Joshua Dickens <joshua@joshua-dickens.com>, 
-    Ping Cheng <pinglinux@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] HID: wacom: Correct behavior when processing some
- confidence == false touches
-In-Reply-To: <20231219213344.38434-1-jason.gerecke@wacom.com>
-Message-ID: <nycvar.YFH.7.76.2312200003260.24250@cbobk.fhfr.pm>
-References: <20231219213344.38434-1-jason.gerecke@wacom.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        bh=fHFIJdfC1F3WiR/Vnayo6aNrm4aYziDKRtE7fbhaxaQ=;
+        b=t+ujJgUBAwhkpLV4qhwm1U8JCq9KtjU1ZO+zZAXcK23EpcC17QFuXKE1yOdXKvpZxd
+         yZFrAwZznyfM7J6HQMOuVZOZr26FjGE33fg0mmflO4CMpm4PubwG6jvBcmLNTQGBvSsh
+         Puvs+LJZsVueDZlRhYjKzIHLjMRlRGhIvnYDyJdGxT7hQ9XqpcCRS5JNou/8CwOsfi8L
+         /pBdza8Kf/j5z/vLP6b+PKT/SF476986M4ORlf6NmZ9YVn0j4Yx/kdICfSdXv1bZuJ7M
+         qbHIKIxIEeiPqNu51DDEbcWsQXum69zCWlSB9ZvD904C456lCu1G5vmRdvzigIDAad8u
+         tY6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703033047; x=1703637847;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fHFIJdfC1F3WiR/Vnayo6aNrm4aYziDKRtE7fbhaxaQ=;
+        b=tbzX0BqoWjvSMwRnqSoFVZ1BxubRbvrRZRehsqCZ1Y7G2qOoncZX9v2nMhBGiXUTAU
+         3cuwEc0sF8nYCJudgtRJnSbhwMsQ8NMq2Vf/B9C5VNBwR1GMDJlJy49fTx/iKoq9TTTX
+         uiVE/poTA+dP2yU31t/dHM5gUUSNkjgZ3kfvcvV2dxTcKcz/1A81f12ZpHO9U7Z2ogEi
+         FmjFVI9BLLAdy6T1Ia0b7CgyNkmjRnXcQh241kdMh4WdlmqUg7PqCWTDeT3tWTDvU5D6
+         /qn8xeXi1w6F4sD5Pib+FxjGYo7dqllE/7MQJybaQqtQ8cylMQK8xC8YoRk6XtSLabxE
+         anWg==
+X-Gm-Message-State: AOJu0YwDsGDOOnxHI5M8Ww8r2/WzUN+TbpvbcBQWdoCX42PAyivA/Hvf
+	0HwezhVwVFkK0FZdif4OnM9tEYfgDDHBffmldgeU3Q==
+X-Google-Smtp-Source: AGHT+IG+ixtxewnu1cb68kdIkUKSdsH/iLjkp1nBvDHO9fUtWQsDe9ljgkei76vM2wkLx5Q5IraaBDWc0qx7qL1caz8=
+X-Received: by 2002:a0d:d646:0:b0:5e7:ea97:5bdc with SMTP id
+ y67-20020a0dd646000000b005e7ea975bdcmr1416662ywd.79.1703033046955; Tue, 19
+ Dec 2023 16:44:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <20231218162326.173127-1-romain.gantois@bootlin.com>
+ <20231218162326.173127-2-romain.gantois@bootlin.com> <20231219122034.pg2djgrosa4irubh@skbuf>
+ <20231219140754.7a7a8dbd@device-28.home> <CACRpkdaxy9u=1-rQ+f+1tb8xyV-GYOuq52xhb4_SRPk9-LpnUA@mail.gmail.com>
+ <20231219172932.13f4b0c3@device-28.home> <20231219224616.pw32w5eq2dbuja5i@skbuf>
+In-Reply-To: <20231219224616.pw32w5eq2dbuja5i@skbuf>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 20 Dec 2023 01:43:55 +0100
+Message-ID: <CACRpkdbo=Oem4PCOtSV6iWJoojRetTgZhx7J91uecTa-DQA8iQ@mail.gmail.com>
+Subject: Re: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking COE
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+	Romain Gantois <romain.gantois@bootlin.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Sylvain Girard <sylvain.girard@se.com>, Pascal EBERHARD <pascal.eberhard@se.com>, 
+	Richard Tresidder <rtresidd@electromag.com.au>, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jason,
+On Tue, Dec 19, 2023 at 11:46=E2=80=AFPM Vladimir Oltean <olteanv@gmail.com=
+> wrote:
+> On Tue, Dec 19, 2023 at 05:29:32PM +0100, Maxime Chevallier wrote:
 
-both patches applied to hid.git#for-6.8/wacom.
+> > > I can certainly add a helper such as skb_eth_raw_ethertype()
+> > > to <linux/if_ether.h> that will inspect the actual ethertype in
+> > > skb->data.
+> > >
+> > > It's the most straight-forward approach.
+> >
+> > Agreed :)
+>
+> If you rewrite that patch to use skb_vlan_eth_hdr() to get a struct
+> vlan_ethhdr pointer through which h_vlan_proto and h_vlan_encapsulated_pr=
+oto
+> are accessible, I don't see much value in writing that helper. It is
+> going to beg the question how generic should it be - should it also
+> treat ETH_P_8021AD, should it treat nested VLANs?
 
-Thanks,
+I guess I should just post the patches inline. (It came from both
+Erics and Maximes suggestion really.)
 
--- 
-Jiri Kosina
-SUSE Labs
+Actually I wrote two helpers, one to get the ethertype from the
+ethernet frame which is pretty straight-forward.
 
+include/linux/if_ether.h
+
++/* This determines the ethertype incoded into the skb data without
++ * relying on skb->protocol which is not always identical.
++ */
++static inline u16 skb_eth_raw_ethertype(const struct sk_buff *skb)
++{
++       struct ethhdr *hdr;
++
++       /* If we can't extract a header, return invalid type */
++       if (!skb_pointer_if_linear(skb, 0, ETH_HLEN))
++               return 0x0000U;
++
++       hdr =3D skb_eth_hdr(skb);
++
++       return ntohs(hdr->h_proto);
++}
+
+Then for *this* driver I need to check for the ethertype
+ETH_P_8021Q what is inside it, one level down, and that is a
+separate helper. And I named it skb_vlan_raw_inner_ethertype()
+It will retrieve the inner type no matter
+
+include/linux/if_vlan.h
+
++/* This determines the inner ethertype incoded into the skb data without
++ * relying on skb->protocol which is not always identical.
++ */
++static inline u16 skb_vlan_raw_inner_ethertype(const struct sk_buff *skb)
++{
++       struct vlan_ethhdr *vhdr;
++
++       if (!skb_pointer_if_linear(skb, 0, VLAN_ETH_HLEN))
++               return 0x0000U;
++
++       vhdr =3D vlan_eth_hdr(skb);
++       return ntohs(vhdr->h_vlan_encapsulated_proto);
++}
+
+(We can bikeshed the name of the function. *_inner_protocol maybe.)
+
+It does not handle nested VLANs and I don't see why it should since
+the immediate siblings in if_vlan.h does not, i.e.
+vlan_eth_hdr(), skb_vlan_eth_hdr(). It's pretty clear these helpers
+all go just one level down. (We can add a *_descend_*()
+helper the day someone needs that.)
+
+> At the end of the day, you are trying to cover in software the cases for
+> which the hardware engine can perform TX checksum offloading. That is
+> going to be hardware specific.
+
+Yeps and I am happy to fold these helpers inside of my driver if
+they are not helpful to anyone else, or if that is the best idea for someth=
+ing
+intended for a fix, i.e. an -rc kernel.
+
+> I guess we should first try to answer the questions "what does
+> skb->protocol represent?" and "does DSA use it correctly?" before
+> even thinking about adding yet another fuzzy layer on top it.
+
+Fair point! Let's take a step back. The kerneldoc says:
+
+ *      @protocol: Packet protocol from driver
+
+That's a bit vague and it was in the first commit in git history :/
+
+But Eric probably knows the right way to use protocol.
+
+But we know for sure that VLAN uses this for the outermost protocol
+ETH_P_8021Q (etc).
+
+I wonder how the network stack reacts if we set the skb->protocol
+to whatever DSA taggers put at the position of the ethertype.
+
+For RTL taggers probably this works because they use an elaborate
+custom ethertype, but e.g. net/dsa/tag_mtk.c will just put in
+"ethertype" 0x0000, 0x0001 or 0x0002, the two latter which are
+formally ETH_P_802_3 and ETH_P_AX25 which I think is maybe
+not so good to put into skb->protocol.
+
+Another option is to set it to the ETH_P_DSA ethertype, currently
+unused in the kernel.
+
+Now this kind of thinking makes me insecure because:
+git grep '\->protocol' net/
+
+There is just sooooo much code inspecting ->protocol in the generic
+network stack that this seems like inviting disaster.
+
+Yours,
+Linus Walleij
 
