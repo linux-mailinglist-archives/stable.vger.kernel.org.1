@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-8075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557CE81A46D
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC63981A46F
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11A4C28C49D
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:20:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890AA28BE6A
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A84B5D1;
-	Wed, 20 Dec 2023 16:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F164B5DC;
+	Wed, 20 Dec 2023 16:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wzwfhkh7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9PqSB3J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1579B48788;
-	Wed, 20 Dec 2023 16:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55958C433C8;
-	Wed, 20 Dec 2023 16:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF0C4B5D8;
+	Wed, 20 Dec 2023 16:14:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D437FC433C7;
+	Wed, 20 Dec 2023 16:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088839;
-	bh=lDwjWk81w3q6Ts9nrifdAKbaAlO7QZ3msDlCjBpiwjk=;
+	s=korg; t=1703088845;
+	bh=wYNmEUGGhNrz14mG0lyFrXp5CTOL+X1ZQAYHAQETSmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wzwfhkh7uxrmrvuKVJAXzrPvSKUaIMHBEj3WTXMKlsfCw2kOvDm12mKDUBQLfbchl
-	 vdGTmX7/NAIxu8D549eS/7EA9Qu5GJEhpByP08dai0A0c29rdPVagroWohiEGqNPpA
-	 OCuySPgBu0laqiFsZw/sp65CoZ+OH6dxS2x5vAtk=
+	b=Y9PqSB3JLtfnO/LNvL19co4W+88dMAg40D6bgiHJxAZigDGapwX7MC0rU33fRhR2A
+	 DTQwmZZgyF/YHpC4YY4D8RyMRCFpRUySTftiK3Y6Mbssw8xoS8wXo7BImdR7+gHQH7
+	 LlW3dTPevJ2VQz20GEVIqgaDxfX8kdN6eGBMRsHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Lihua <441884205@qq.com>,
+	Tom Rix <trix@redhat.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 078/159] ksmbd: fix wrong signingkey creation when encryption is AES256
-Date: Wed, 20 Dec 2023 17:09:03 +0100
-Message-ID: <20231220160935.012171393@linuxfoundation.org>
+Subject: [PATCH 5.15 079/159] ksmbd: remove unused is_char_allowed function
+Date: Wed, 20 Dec 2023 17:09:04 +0100
+Message-ID: <20231220160935.062059551@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -57,43 +58,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Tom Rix <trix@redhat.com>
 
-[ Upstream commit 7a891d4b62d62566323676cb0e922ded4f37afe1 ]
+[ Upstream commit 2824861773eb512b37547516d81ef78108032cb2 ]
 
-MacOS and Win11 support AES256 encrytion and it is included in the cipher
-array of encryption context. Especially on macOS, The most preferred
-cipher is AES256. Connecting to ksmbd fails on newer MacOS clients that
-support AES256 encryption. MacOS send disconnect request after receiving
-final session setup response from ksmbd. Because final session setup is
-signed with signing key was generated incorrectly.
-For signging key, 'L' value should be initialized to 128 if key size is
-16bytes.
+clang with W=1 reports
+fs/ksmbd/unicode.c:122:19: error: unused function
+  'is_char_allowed' [-Werror,-Wunused-function]
+static inline int is_char_allowed(char *ch)
+                  ^
+This function is not used so remove it.
 
-Cc: stable@vger.kernel.org
-Reported-by: Miao Lihua <441884205@qq.com>
-Tested-by: Miao Lihua <441884205@qq.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/auth.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ksmbd/unicode.c |   18 ------------------
+ 1 file changed, 18 deletions(-)
 
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -730,8 +730,9 @@ static int generate_key(struct ksmbd_con
- 		goto smb3signkey_ret;
- 	}
+--- a/fs/ksmbd/unicode.c
++++ b/fs/ksmbd/unicode.c
+@@ -114,24 +114,6 @@ cp_convert:
+ }
  
--	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
--	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM)
-+	if (key_size == SMB3_ENC_DEC_KEY_SIZE &&
-+	    (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
-+	     conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM))
- 		rc = crypto_shash_update(CRYPTO_HMACSHA256(ctx), L256, 4);
- 	else
- 		rc = crypto_shash_update(CRYPTO_HMACSHA256(ctx), L128, 4);
+ /*
+- * is_char_allowed() - check for valid character
+- * @ch:		input character to be checked
+- *
+- * Return:	1 if char is allowed, otherwise 0
+- */
+-static inline int is_char_allowed(char *ch)
+-{
+-	/* check for control chars, wildcards etc. */
+-	if (!(*ch & 0x80) &&
+-	    (*ch <= 0x1f ||
+-	     *ch == '?' || *ch == '"' || *ch == '<' ||
+-	     *ch == '>' || *ch == '|'))
+-		return 0;
+-
+-	return 1;
+-}
+-
+-/*
+  * smb_from_utf16() - convert utf16le string to local charset
+  * @to:		destination buffer
+  * @from:	source buffer
 
 
 
