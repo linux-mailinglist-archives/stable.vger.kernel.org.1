@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-8150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40DAE81A4C0
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:23:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF6481A4C3
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:23:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9DD1F212CA
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:23:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DDB928C610
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0544C3A8;
-	Wed, 20 Dec 2023 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D87C4C3AE;
+	Wed, 20 Dec 2023 16:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1SItEly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVaPynQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AF74A9A4;
-	Wed, 20 Dec 2023 16:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD75DC433C8;
-	Wed, 20 Dec 2023 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E78482F2;
+	Wed, 20 Dec 2023 16:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897FAC433C7;
+	Wed, 20 Dec 2023 16:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703089053;
-	bh=7xWqTpPEDca5IUPAKW+cjbnkxYlp3yHARHxQa9gw3A4=;
+	s=korg; t=1703089058;
+	bh=KBypevKOLh+m6MDjBJt3FR+a3zC0UOI/DdONEyhd+UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1SItElyOwrMcXbHEFwrmpyCA7u+jKihAm/JD8KGDd/DRGtvQjejJDXiUdbfV00qR
-	 N54X6HFEWLz+oJy6zS0VbPkdlqFzjWwAuSnEY1hhRY3ZG087q8emYi6RM5Ge80KvJ4
-	 Bob+9IXRLrK2kUphDDlUThSJPeTBoT8B0sgrmGZU=
+	b=PVaPynQcC95FG7iiNhZWNHYJjqoTOqDY5ZNyBZaRxbeMvu3BaepMz/PZqvx+ZO4bK
+	 BpYnym77PGYvDCVo/vknhS3xf6aWdZQblRwUZnBfQV+T4oEo5jAh9lmeZl1y1Zr9ph
+	 E8HL2xiNppoORMx5ZS4YHCxIHk+4kEgYhQJJke6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 152/159] ksmbd: release interim response after sending status pending response
-Date: Wed, 20 Dec 2023 17:10:17 +0100
-Message-ID: <20231220160938.408907473@linuxfoundation.org>
+Subject: [PATCH 5.15 153/159] ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
+Date: Wed, 20 Dec 2023 17:10:18 +0100
+Message-ID: <20231220160938.457122484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -58,43 +58,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 2a3f7857ec742e212d6cee7fbbf7b0e2ae7f5161 ]
+[ Upstream commit 9ac45ac7cf65b0623ceeab9b28b307a08efa22dc ]
 
-Add missing release async id and delete interim response entry after
-sending status pending response. This only cause when smb2 lease is enable.
+Directly set SMB2_FLAGS_ASYNC_COMMAND flags and AsyncId in smb2 header of
+interim response instead of current response header.
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/ksmbd_work.c |    3 +++
- fs/ksmbd/oplock.c     |    3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/fs/ksmbd/ksmbd_work.c
-+++ b/fs/ksmbd/ksmbd_work.c
-@@ -56,6 +56,9 @@ void ksmbd_free_work_struct(struct ksmbd
- 	kfree(work->tr_buf);
- 	kvfree(work->request_buf);
- 	kfree(work->iov);
-+	if (!list_empty(&work->interim_entry))
-+		list_del(&work->interim_entry);
-+
- 	if (work->async_id)
- 		ksmbd_release_id(&work->conn->async_ida, work->async_id);
- 	kmem_cache_free(work_cache, work);
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -833,7 +833,8 @@ static int smb2_lease_break_noti(struct
- 					     interim_entry);
- 			setup_async_work(in_work, NULL, NULL);
- 			smb2_send_interim_resp(in_work, STATUS_PENDING);
--			list_del(&in_work->interim_entry);
-+			list_del_init(&in_work->interim_entry);
-+			release_async_work(in_work);
- 		}
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -658,13 +658,9 @@ smb2_get_name(const char *src, const int
+ 
+ int setup_async_work(struct ksmbd_work *work, void (*fn)(void **), void **arg)
+ {
+-	struct smb2_hdr *rsp_hdr;
+ 	struct ksmbd_conn *conn = work->conn;
+ 	int id;
+ 
+-	rsp_hdr = ksmbd_resp_buf_next(work);
+-	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
+-
+ 	id = ksmbd_acquire_async_msg_id(&conn->async_ida);
+ 	if (id < 0) {
+ 		pr_err("Failed to alloc async message id\n");
+@@ -672,7 +668,6 @@ int setup_async_work(struct ksmbd_work *
+ 	}
+ 	work->asynchronous = true;
+ 	work->async_id = id;
+-	rsp_hdr->Id.AsyncId = cpu_to_le64(id);
+ 
+ 	ksmbd_debug(SMB,
+ 		    "Send interim Response to inform async request id : %d\n",
+@@ -724,6 +719,8 @@ void smb2_send_interim_resp(struct ksmbd
+ 	       __SMB2_HEADER_STRUCTURE_SIZE);
+ 
+ 	rsp_hdr = smb2_get_msg(in_work->response_buf);
++	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
++	rsp_hdr->Id.AsyncId = cpu_to_le64(work->async_id);
+ 	smb2_set_err_rsp(in_work);
+ 	rsp_hdr->Status = status;
+ 
 
 
 
