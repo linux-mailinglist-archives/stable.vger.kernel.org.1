@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-8031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4589781A427
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:16:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D9A81A409
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:15:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790C91C2598F
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:16:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7AF3B2642D
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0FC482E9;
-	Wed, 20 Dec 2023 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5679A47764;
+	Wed, 20 Dec 2023 16:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyZ9H1TC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcPudXp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CF449F7F;
-	Wed, 20 Dec 2023 16:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7E6C433C7;
-	Wed, 20 Dec 2023 16:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE0F40BFC;
+	Wed, 20 Dec 2023 16:10:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2244FC433C9;
+	Wed, 20 Dec 2023 16:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088719;
-	bh=Fjc1u5SCEWLnhAoKOfiYFOmPGvaLRfhAV4e04GE8FMc=;
+	s=korg; t=1703088653;
+	bh=ImBiG/QNSLDj44Sw7pP36cvFXKUchnSgcNxhb7DVb9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyZ9H1TC6GZxgR9gtxl+WbtQOio0jPyM+f6XaU+tRO6WB9CoSBRr1YBTnHmFKwluy
-	 5QikuOn5dhItRmaILF378kzMZi2BCS44S0I+/Bt5qRZvwuwEBunDj1j1iGlKigYBAb
-	 6laY5XiFCuMLRQHAFK1wtn5fTWJtLD0Tbo8wiZ4Y=
+	b=mcPudXp32UajTLoO5a7bIIZL2eIOSNxywoMa/7DYt54SI073/nJXUuXEFApfeS6PX
+	 Foi47NIk2XML24gdgKidtat4vRnttdb/6u2coJNvu6wmQXPp4r97cxNSHEfAAlpE3F
+	 qqxp8C+bDQn6PmbEZ7JLv6dVo8mW9uxT+m1SsCs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Marios Makassikis <mmakassikis@freebox.fr>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 009/159] ksmbd: Remove unused parameter from smb2_get_name()
-Date: Wed, 20 Dec 2023 17:07:54 +0100
-Message-ID: <20231220160931.724336802@linuxfoundation.org>
+Subject: [PATCH 5.15 010/159] ksmbd: Remove unused fields from ksmbd_file struct definition
+Date: Wed, 20 Dec 2023 17:07:55 +0100
+Message-ID: <20231220160931.765061169@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -59,70 +59,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit 80917f17e3f99027661a45262c310139e53a9faa ]
+[ Upstream commit 305f8bda15ebbe4004681286a5c67d0dc296c771 ]
 
-The 'share' parameter is no longer used by smb2_get_name() since
-commit 265fd1991c1d ("ksmbd: use LOOKUP_BENEATH to prevent the out of
-share access").
+These fields are remnants of the not upstreamed SMB1 code.
 
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ fs/ksmbd/vfs_cache.h |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -651,7 +651,6 @@ static void destroy_previous_session(str
+--- a/fs/ksmbd/vfs_cache.h
++++ b/fs/ksmbd/vfs_cache.h
+@@ -96,16 +96,6 @@ struct ksmbd_file {
  
- /**
-  * smb2_get_name() - get filename string from on the wire smb format
-- * @share:	ksmbd_share_config pointer
-  * @src:	source buffer
-  * @maxlen:	maxlen of source string
-  * @nls_table:	nls_table pointer
-@@ -659,8 +658,7 @@ static void destroy_previous_session(str
-  * Return:      matching converted filename on success, otherwise error ptr
-  */
- static char *
--smb2_get_name(struct ksmbd_share_config *share, const char *src,
--	      const int maxlen, struct nls_table *local_nls)
-+smb2_get_name(const char *src, const int maxlen, struct nls_table *local_nls)
- {
- 	char *name;
+ 	int				durable_timeout;
  
-@@ -2604,8 +2602,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out1;
- 		}
- 
--		name = smb2_get_name(share,
--				     req->Buffer,
-+		name = smb2_get_name(req->Buffer,
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
-@@ -5481,8 +5478,7 @@ static int smb2_rename(struct ksmbd_work
- 		goto out;
- 	}
- 
--	new_name = smb2_get_name(share,
--				 file_info->FileName,
-+	new_name = smb2_get_name(file_info->FileName,
- 				 le32_to_cpu(file_info->FileNameLength),
- 				 local_nls);
- 	if (IS_ERR(new_name)) {
-@@ -5593,8 +5589,7 @@ static int smb2_create_link(struct ksmbd
- 	if (!pathname)
- 		return -ENOMEM;
- 
--	link_name = smb2_get_name(share,
--				  file_info->FileName,
-+	link_name = smb2_get_name(file_info->FileName,
- 				  le32_to_cpu(file_info->FileNameLength),
- 				  local_nls);
- 	if (IS_ERR(link_name) || S_ISDIR(file_inode(filp)->i_mode)) {
+-	/* for SMB1 */
+-	int				pid;
+-
+-	/* conflict lock fail count for SMB1 */
+-	unsigned int			cflock_cnt;
+-	/* last lock failure start offset for SMB1 */
+-	unsigned long long		llock_fstart;
+-
+-	int				dirent_offset;
+-
+ 	/* if ls is happening on directory, below is valid*/
+ 	struct ksmbd_readdir_data	readdir_data;
+ 	int				dot_dotdot[2];
 
 
 
