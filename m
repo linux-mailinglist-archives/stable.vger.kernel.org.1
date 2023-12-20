@@ -1,157 +1,131 @@
-Return-Path: <stable+bounces-7960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3CA8196C3
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 03:20:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586EC8196F6
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 03:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14E541F23E2D
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 02:20:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC378B253FB
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 02:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD468801;
-	Wed, 20 Dec 2023 02:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E063E7486;
+	Wed, 20 Dec 2023 02:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQdRoJR+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BbBb+ARD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1372D79D8;
-	Wed, 20 Dec 2023 02:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-5c875ee4f10so5390937b3.1;
-        Tue, 19 Dec 2023 18:20:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703038811; x=1703643611; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=7wnJmKZPNq4/mxy+en/Y2MYRkaPw7M3y1oFd6Iwnst4=;
-        b=ZQdRoJR+41K5vYT+28aU2T3Vj3iH26G5IfA4rP3Pem5lKged7I3pI/91KlSHaaqB9X
-         Nq3nRL2dTKFFudVtdwuhzob6PoJnyMIqZbFcUDSAQmn35WzajjgxtY0wbXmKUHjdnabk
-         B2Q9dGbBwp+1KTOiFcFbwM9fNYASepvfSU+Qjan2ExeoZ9G2UY1dlZm2HnAU35hXjPLL
-         7uUMcwW3yc+dCJAMdW7xH6jmmvL8vMjFyA7eU6H8J1m/BEW7Ua3Z/GS/kS84jlYPj+N1
-         gKaJ5PGZkL5Vqv1Q5V21czBQF4GpEVLrMhVg9U4QcMr6zIUXXfPozKSfBweSly2l8W2H
-         adjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703038811; x=1703643611;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7wnJmKZPNq4/mxy+en/Y2MYRkaPw7M3y1oFd6Iwnst4=;
-        b=CIHi62kMZ2yjWfWRw4w3I3yTS2Iv11jjy40RggaV6Dchz9PTdPiOGD8mgRHDg9Ysbk
-         x7MdiJRWT8camuzpaDVUWCb0OxXR1BBtiQZA4atfAF5V4t2EcrPeJqkyY71kILZETegh
-         +vowD3SDs/xFyRzoFQnjAS6f9uRulVVoMfNXHKAPu7Utco6rAwiZCdu5hrLqY19RcL5+
-         Z8HRTrgYRkfyLgkihJ4lw/8guM5X+NoDDjUw/clqeYln6PKh7hwKeP4EZ6OVQhMDG9BS
-         5sqWHIscBww0ynBRdZhcKWQdbXozDcqxQVGbfY15UYgXk4EZHfMAmTFVR1J+1aDD2uYl
-         dlHw==
-X-Gm-Message-State: AOJu0YyOgQHD04WCdiaA3gncCGBbXmZ7+vNlFiGYisR1JMV/XGSJAeOF
-	cflE1G3t3DSw50T3h859IrF/BUhPrYhXnsYlSOwLH4Dqw38TGA==
-X-Google-Smtp-Source: AGHT+IFLy/FjAO+dVGqTImgUyEFZTWld45sPwQ8hSeCfhu5lLyEFKFfMpq56I71Eb41GD3pjoC4Bg/VgJpTGXfppOlI=
-X-Received: by 2002:a25:d111:0:b0:dbd:7407:21f4 with SMTP id
- i17-20020a25d111000000b00dbd740721f4mr1699573ybg.0.1703038810881; Tue, 19 Dec
- 2023 18:20:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB3E547;
+	Wed, 20 Dec 2023 02:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BK2DZBu003473;
+	Wed, 20 Dec 2023 02:52:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=Lu8QLKD3BJTpy8KehDX+u4mswZLOmdQldksIflIVy0I=; b=Bb
+	Bb+ARDXCfE2a2Js4aD1mhYzTmA/D+TCMRdbeIOXANVo7g7o+/BVlSNDbrQ1J/stE
+	1CEmrwkVBf3RvUpzjgLOoPABhdGi5UMfprMe+21t8tpIJZalBSm9ItOEeCau3oDo
+	49tE4xHWj/6dTqHfxn0uDRlDc+EjFHPEwuqcNpTCCKNTciXbKp6ldikeRwmWchlt
+	klp6GxipcolrfLX7mmaeI5M4795AFkCLhfM+FwyA7cy3aPJ53KlQf4/rpX2o04Du
+	kAUxuGWID7rHaryUxJAskPJcoF7wE2az6MbC86xy49j3cJAqAETv9Rj31DvRRtmh
+	A+qAJZyay4SVEuWQZbcA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v35x7jq9q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Dec 2023 02:52:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BK2qqwF001449
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Dec 2023 02:52:52 GMT
+Received: from [10.216.23.215] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 19 Dec
+ 2023 18:52:49 -0800
+Message-ID: <ab0fa643-8c6b-d7b7-6d21-066e27469b9e@quicinc.com>
+Date: Wed, 20 Dec 2023 08:22:46 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Askar Safin <safinaskar@gmail.com>
-Date: Wed, 20 Dec 2023 05:19:25 +0300
-Message-ID: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
-To: stefanb@linux.ibm.com
-Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rob@landley.net, stable@vger.kernel.org, 
-	zohar@linux.ibm.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: + mm-migrate-high-order-folios-in-swap-cache-correctly.patch
+ added to mm-hotfixes-unstable branch
+To: Andrew Morton <akpm@linux-foundation.org>, <mm-commits@vger.kernel.org>,
+        <willy@infradead.org>, <stable@vger.kernel.org>, <shakeelb@google.com>,
+        <n-horiguchi@ah.jp.nec.com>, <kirill.shutemov@linux.intel.com>,
+        <hannes@cmpxchg.org>, <david@redhat.com>
+References: <20231214221150.7EC0DC433C9@smtp.kernel.org>
+Content-Language: en-US
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <20231214221150.7EC0DC433C9@smtp.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 3zMrtp3iG33xerWCGxZAj3rwfkHy2gG7
+X-Proofpoint-ORIG-GUID: 3zMrtp3iG33xerWCGxZAj3rwfkHy2gG7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ mlxscore=0 phishscore=0 malwarescore=0 suspectscore=0 mlxlogscore=847
+ lowpriorityscore=0 spamscore=0 clxscore=1011 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312200017
 
-On Sun, Nov 19, 2023 at 08:12:48PM -0500, Stefan Berger wrote:
-> Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
->
->   If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
->   default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
->   line.
->
-> This currently does not work when root= is provided since then
-> saved_root_name contains a string and rootfstype= is ignored. Therefore,
-> ramfs is currently always chosen when root= is provided.
+Hi Andrew,
 
-Maybe it is a good idea to just fully remove ramfs? initramfs will
-always be tmpfs. And tmpfs will always be enabled.
+On 12/15/2023 3:41 AM, Andrew Morton wrote:
+> Large folios occupy N consecutive entries in the swap cache instead of
+> using multi-index entries like the page cache.  However, if a large folio
+> is re-added to the LRU list, it can be migrated.  The migration code was
+> not aware of the difference between the swap cache and the page cache and
+> assumed that a single xas_store() would be sufficient.
+> 
+> This leaves potentially many stale pointers to the now-migrated folio in
+> the swap cache, which can lead to almost arbitrary data corruption in the
+> future.  This can also manifest as infinite loops with the RCU read lock
+> held.
+> 
+> [willy@infradead.org: modifications to the changelog & tweaked the fix]
+> Fixes: 3417013e0d183be ("mm/migrate: Add folio_migrate_mapping()")
+> Link: https://lkml.kernel.org/r/20231214045841.961776-1-willy@infradead.org
+> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+>   Closes: https://lkml.kernel.org/r/1700569840-17327-1-git-send-email-quic_charante@quicinc.com
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+> Cc: Shakeel Butt <shakeelb@google.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-As well as I understand, ramfs was originally introduced, because
-tmpfs seemed too big. So, it seemed to be a good idea to have small fs
-(ramfs), which is always enabled.
+Errors were reported from checkpatch.pl.
 
-I just did an experiment. I compiled the kernel with a very small
-config. And without TMPFS and SHMEM. I got 1059440 bytes image. Then I
-enabled TMPFS and SHMEM, and I got 1072976 bytes. So tmpfs adds 13536
-bytes, i. e. 14k, which is a very small amount. It adds 1.3 % to the
-kernel even with very small config.
+1) Seems we have used 15chars of sha1.
+2) space before Closes:
 
-So I propose to remove ramfs and always enable tmpfs. This will
-decrease complexity.
+Summary:
 
-Here are my configs (x86_64). Just enough to run busybox in "qemu -serial stdio"
-
-make KCONFIG_ALLCONFIG="$FILE" allnoconfig
-
-CONFIG_64BIT=y
-CONFIG_PRINTK=y
-CONFIG_SERIAL_8250=y
-CONFIG_TTY=y
-CONFIG_SERIAL_8250_CONSOLE=y
-CONFIG_BLK_DEV_INITRD=y
-CONFIG_RD_GZIP=y
-CONFIG_BINFMT_ELF=y
-CONFIG_EMBEDDED=y
-CONFIG_EXPERT=y
-CONFIG_TMPFS=n # Try to change this to "y"
-CONFIG_SHMEM=n # Try to change this to "y"
-
-Here is full docker reproducer:
-
-# Reproducible
-# 20230227 = 20230227T000000Z = 20230226T090712Z
-FROM debian:sid-20230227
-ENV LC_ALL C.UTF-8
-RUN sed -i 's~^URIs:.*$~URIs:
-http://snapshot.debian.org/archive/debian/20230226T090712Z~'
-/etc/apt/sources.list.d/debian.sources
-RUN echo 'Acquire::Check-Valid-Until "false";' >
-/etc/apt/apt.conf.d/02acquire-check-valid-until
-RUN apt-get update && apt-get install -y apt-utils whiptail
-RUN apt-get update && apt-get install -y busybox-static
-qemu-system-x86 make gcc git flex bison bc libelf-dev less nano cpio
-RUN git clone --depth=1 -b v6.2
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-RUN : > /.config
-# See Linux f8f0d06438e5c810d1e13b5f8c2fed501fe36e9c
-RUN echo 'CONFIG_64BIT=y' >> /.config
-RUN echo 'CONFIG_PRINTK=y' >> /.config
-RUN echo 'CONFIG_SERIAL_8250=y' >> /.config
-RUN echo 'CONFIG_TTY=y' >> /.config
-RUN echo 'CONFIG_SERIAL_8250_CONSOLE=y' >> /.config
-RUN echo 'CONFIG_BLK_DEV_INITRD=y' >> /.config
-RUN echo 'CONFIG_RD_GZIP=y' >> /.config
-RUN echo 'CONFIG_BINFMT_ELF=y' >> /.config
-RUN echo 'CONFIG_EMBEDDED=y' >> /.config
-RUN echo 'CONFIG_EXPERT=y' >> /.config
-RUN echo 'CONFIG_TMPFS=y' >> /.config # try "n"
-RUN echo 'CONFIG_SHMEM=y' >> /.config # try "n"
-RUN cd linux && make KCONFIG_ALLCONFIG=/.config allnoconfig
-RUN cd linux && make -j4
-RUN mkdir /initramfs && cp /bin/busybox /initramfs && cd /initramfs &&
-ln -s busybox sh && find . | cpio --create --format=newc --quiet |
-gzip > /initramfs.cpio.gz
-RUN echo "qemu-system-x86_64 -M microvm -m 64M -serial stdio -display
-none -kernel /linux/arch/x86/boot/bzImage -initrd /initramfs.cpio.gz
--append 'quiet console=ttyS0 earlyprintk=ttyS0 rdinit=/sh' -nodefaults
--no-user-config" > /root/.bash_history
-
--- 
-Askar Safin
+WARNING:BAD_FIXES_TAG: Please use correct Fixes: style 'Fixes: <12 chars
+of sha1> ("<title line>")' - ie: 'Fixes: 3417013e0d18 ("mm/migrate: Add
+folio_migrate_mapping()")'
+#21:
+--
+WARNING:BAD_REPORTED_BY_LINK: Reported-by: should be immediately
+followed by Closes: with a URL to the report
+#26:
 
