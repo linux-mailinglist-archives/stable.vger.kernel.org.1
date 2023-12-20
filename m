@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-8096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98F381A484
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:21:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F6081A461
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 497CB1F2192D
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:21:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D96F41F26AA5
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD0946B86;
-	Wed, 20 Dec 2023 16:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23294B5A1;
+	Wed, 20 Dec 2023 16:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWSpsn0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHJAyfuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF84645F;
-	Wed, 20 Dec 2023 16:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D97BC433C7;
-	Wed, 20 Dec 2023 16:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791EE48784;
+	Wed, 20 Dec 2023 16:13:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75D7C433C7;
+	Wed, 20 Dec 2023 16:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088898;
-	bh=uag8lbc0CViuzSJS0DLQl8z4TbWgRbnG7DSlA+f58e4=;
+	s=korg; t=1703088812;
+	bh=z6HQWmTt5jIgxkJF55hIeHWndO1OulG6QnnJALsQziY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWSpsn0H+gyo3yskz/55/0plbGXWobrC7nJnhhPxme6DDVvGDbMTamTKljaADuT92
-	 wWEOYHfOhPuTBNEV7nl/MBPIki2UHaDtv694+/YKXfvs6lbUJ1tt7VpPGpsipfIn4o
-	 NhzBy4oASidflllidxsfBTrpm1xnpT7SihRAy7oU=
+	b=mHJAyfuUaHpaqfQjBmn5tWj3jU9lxxsIZ7AvvM770qUjBpoYyi+GQlUULgEhr43cq
+	 c7CGyp/UG0zpiSOPRKZpEIYpAumzBlWygtK1w4C9F4L5nS+IQONEU6LcDL0lC4MrTh
+	 WHblIwmaVIbQFZXBgIBVPEVaeSXG1Ztvj4TXmb7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 059/159] ksmbd: reduce server smbdirect max send/receive segment sizes
-Date: Wed, 20 Dec 2023 17:08:44 +0100
-Message-ID: <20231220160934.096829727@linuxfoundation.org>
+Subject: [PATCH 5.15 060/159] ksmbd: hide socket error message when ipv6 config is disable
+Date: Wed, 20 Dec 2023 17:08:45 +0100
+Message-ID: <20231220160934.146099740@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -57,40 +57,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tom Talpey <tom@talpey.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 78af146e109bef5b3c411964141c6f8adbccd3b0 ]
+[ Upstream commit 5876e99611a91dfb2fb1f7af9d1ae5c017c8331c ]
 
-Reduce ksmbd smbdirect max segment send and receive size to 1364
-to match protocol norms. Larger buffers are unnecessary and add
-significant memory overhead.
+When ipv6 config is disable(CONFIG_IPV6 is not set), ksmbd fallback to
+create ipv4 socket. User reported that this error message lead to
+misunderstood some issue. Users have requested not to print this error
+message that occurs even though there is no problem.
 
-Signed-off-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Acked-by: Tom Talpey <tom@talpey.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/transport_rdma.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ksmbd/transport_tcp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -62,13 +62,13 @@ static int smb_direct_receive_credit_max
- static int smb_direct_send_credit_target = 255;
+--- a/fs/ksmbd/transport_tcp.c
++++ b/fs/ksmbd/transport_tcp.c
+@@ -428,7 +428,8 @@ static int create_socket(struct interfac
  
- /* The maximum single message size can be sent to remote peer */
--static int smb_direct_max_send_size = 8192;
-+static int smb_direct_max_send_size = 1364;
- 
- /*  The maximum fragmented upper-layer payload receive size supported */
- static int smb_direct_max_fragmented_recv_size = 1024 * 1024;
- 
- /*  The maximum single-message size which can be received */
--static int smb_direct_max_receive_size = 8192;
-+static int smb_direct_max_receive_size = 1364;
- 
- static int smb_direct_max_read_write_size = SMBD_DEFAULT_IOSIZE;
- 
+ 	ret = sock_create(PF_INET6, SOCK_STREAM, IPPROTO_TCP, &ksmbd_socket);
+ 	if (ret) {
+-		pr_err("Can't create socket for ipv6, try ipv4: %d\n", ret);
++		if (ret != -EAFNOSUPPORT)
++			pr_err("Can't create socket for ipv6, fallback to ipv4: %d\n", ret);
+ 		ret = sock_create(PF_INET, SOCK_STREAM, IPPROTO_TCP,
+ 				  &ksmbd_socket);
+ 		if (ret) {
 
 
 
