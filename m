@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-8119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6086881A49B
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:21:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6B881A4A1
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38171F21417
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:21:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A76228C541
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB59447A6F;
-	Wed, 20 Dec 2023 16:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B44482D9;
+	Wed, 20 Dec 2023 16:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="di6UEvt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVhsAEgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D4247A6B;
-	Wed, 20 Dec 2023 16:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29705C433C7;
-	Wed, 20 Dec 2023 16:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FEE482D4;
+	Wed, 20 Dec 2023 16:16:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633A9C433C7;
+	Wed, 20 Dec 2023 16:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088961;
-	bh=A7S1nWTBbJSqRnsPGrZmVKG160nofOpk5yWO8nwYfuc=;
+	s=korg; t=1703088974;
+	bh=AlUhzcAQv25XVPktrtoYbnZeYVSrFGXsXbicWmvP0hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=di6UEvt9PefwOPeI6xn3HJimadJtLx/opf3Ccdrk+grYo3whOfCgtYXkMxZI/NYDS
-	 xhnTuvtMivJ6S2HuKThpxl30XlQWTIJeViCTpcEuJSrM2Gx+JS0/k6ToJbGxWgYOOP
-	 1J7iMI1qnKfsYu82ebH6+qPqecqMdmgMDisoEh+0=
+	b=rVhsAEgktCuAYG8dv1FRwtWwQl0SwMILdP2HWDKyvXLgPHtuM+08CGON+3WRPpfio
+	 z8YySfYsGGcruOSQqA438ejosaHVwiC/MtMjgZs61LpxKQwQQP9bEtL6JleHZnWLKF
+	 JzqLeY/t1xDVuEmxjGc+aIB8xWQg0B8TufA92Dbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coverity Scan <scan-admin@coverity.com>,
+	Kuan-Ting Chen <h3xrabbit@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 094/159] ksmbd: fix uninitialized pointer read in smb2_create_link()
-Date: Wed, 20 Dec 2023 17:09:19 +0100
-Message-ID: <20231220160935.741476415@linuxfoundation.org>
+Subject: [PATCH 5.15 095/159] ksmbd: fix multiple out-of-bounds read during context decoding
+Date: Wed, 20 Dec 2023 17:09:20 +0100
+Message-ID: <20231220160935.780181039@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -57,45 +57,152 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Kuan-Ting Chen <h3xrabbit@gmail.com>
 
-[ Upstream commit df14afeed2e6c1bbadef7d2f9c46887bbd6d8d94 ]
+[ Upstream commit 0512a5f89e1fae74251fde6893ff634f1c96c6fb ]
 
-There is a case that file_present is true and path is uninitialized.
-This patch change file_present is set to false by default and set to
-true when patch is initialized.
+Check the remaining data length before accessing the context structure
+to ensure that the entire structure is contained within the packet.
+Additionally, since the context data length `ctxt_len` has already been
+checked against the total packet length `len_of_ctxts`, update the
+comparison to use `ctxt_len`.
 
-Fixes: 74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
-Reported-by: Coverity Scan <scan-admin@coverity.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Ting Chen <h3xrabbit@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/smb2pdu.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ksmbd/smb2pdu.c |   53 ++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 34 insertions(+), 19 deletions(-)
 
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -5529,7 +5529,7 @@ static int smb2_create_link(struct ksmbd
+@@ -879,13 +879,14 @@ static void assemble_neg_contexts(struct
+ 
+ static __le32 decode_preauth_ctxt(struct ksmbd_conn *conn,
+ 				  struct smb2_preauth_neg_context *pneg_ctxt,
+-				  int len_of_ctxts)
++				  int ctxt_len)
  {
- 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
- 	struct path path;
--	bool file_present = true;
-+	bool file_present = false;
- 	int rc;
+ 	/*
+ 	 * sizeof(smb2_preauth_neg_context) assumes SMB311_SALT_SIZE Salt,
+ 	 * which may not be present. Only check for used HashAlgorithms[1].
+ 	 */
+-	if (len_of_ctxts < 6)
++	if (ctxt_len <
++	    sizeof(struct smb2_neg_context) + 6)
+ 		return STATUS_INVALID_PARAMETER;
  
- 	if (buf_len < (u64)sizeof(struct smb2_file_link_info) +
-@@ -5562,8 +5562,8 @@ static int smb2_create_link(struct ksmbd
- 	if (rc) {
- 		if (rc != -ENOENT)
- 			goto out;
--		file_present = false;
--	}
-+	} else
-+		file_present = true;
+ 	if (pneg_ctxt->HashAlgorithms != SMB2_PREAUTH_INTEGRITY_SHA512)
+@@ -897,15 +898,23 @@ static __le32 decode_preauth_ctxt(struct
  
- 	if (file_info->ReplaceIfExists) {
- 		if (file_present) {
+ static void decode_encrypt_ctxt(struct ksmbd_conn *conn,
+ 				struct smb2_encryption_neg_context *pneg_ctxt,
+-				int len_of_ctxts)
++				int ctxt_len)
+ {
+-	int cph_cnt = le16_to_cpu(pneg_ctxt->CipherCount);
+-	int i, cphs_size = cph_cnt * sizeof(__le16);
++	int cph_cnt;
++	int i, cphs_size;
++
++	if (sizeof(struct smb2_encryption_neg_context) > ctxt_len) {
++		pr_err("Invalid SMB2_ENCRYPTION_CAPABILITIES context size\n");
++		return;
++	}
+ 
+ 	conn->cipher_type = 0;
+ 
++	cph_cnt = le16_to_cpu(pneg_ctxt->CipherCount);
++	cphs_size = cph_cnt * sizeof(__le16);
++
+ 	if (sizeof(struct smb2_encryption_neg_context) + cphs_size >
+-	    len_of_ctxts) {
++	    ctxt_len) {
+ 		pr_err("Invalid cipher count(%d)\n", cph_cnt);
+ 		return;
+ 	}
+@@ -953,15 +962,22 @@ static void decode_compress_ctxt(struct
+ 
+ static void decode_sign_cap_ctxt(struct ksmbd_conn *conn,
+ 				 struct smb2_signing_capabilities *pneg_ctxt,
+-				 int len_of_ctxts)
++				 int ctxt_len)
+ {
+-	int sign_algo_cnt = le16_to_cpu(pneg_ctxt->SigningAlgorithmCount);
+-	int i, sign_alos_size = sign_algo_cnt * sizeof(__le16);
++	int sign_algo_cnt;
++	int i, sign_alos_size;
++
++	if (sizeof(struct smb2_signing_capabilities) > ctxt_len) {
++		pr_err("Invalid SMB2_SIGNING_CAPABILITIES context length\n");
++		return;
++	}
+ 
+ 	conn->signing_negotiated = false;
++	sign_algo_cnt = le16_to_cpu(pneg_ctxt->SigningAlgorithmCount);
++	sign_alos_size = sign_algo_cnt * sizeof(__le16);
+ 
+ 	if (sizeof(struct smb2_signing_capabilities) + sign_alos_size >
+-	    len_of_ctxts) {
++	    ctxt_len) {
+ 		pr_err("Invalid signing algorithm count(%d)\n", sign_algo_cnt);
+ 		return;
+ 	}
+@@ -999,18 +1015,16 @@ static __le32 deassemble_neg_contexts(st
+ 	len_of_ctxts = len_of_smb - offset;
+ 
+ 	while (i++ < neg_ctxt_cnt) {
+-		int clen;
+-
+-		/* check that offset is not beyond end of SMB */
+-		if (len_of_ctxts == 0)
+-			break;
++		int clen, ctxt_len;
+ 
+ 		if (len_of_ctxts < sizeof(struct smb2_neg_context))
+ 			break;
+ 
+ 		pctx = (struct smb2_neg_context *)((char *)pctx + offset);
+ 		clen = le16_to_cpu(pctx->DataLength);
+-		if (clen + sizeof(struct smb2_neg_context) > len_of_ctxts)
++		ctxt_len = clen + sizeof(struct smb2_neg_context);
++
++		if (ctxt_len > len_of_ctxts)
+ 			break;
+ 
+ 		if (pctx->ContextType == SMB2_PREAUTH_INTEGRITY_CAPABILITIES) {
+@@ -1021,7 +1035,7 @@ static __le32 deassemble_neg_contexts(st
+ 
+ 			status = decode_preauth_ctxt(conn,
+ 						     (struct smb2_preauth_neg_context *)pctx,
+-						     len_of_ctxts);
++						     ctxt_len);
+ 			if (status != STATUS_SUCCESS)
+ 				break;
+ 		} else if (pctx->ContextType == SMB2_ENCRYPTION_CAPABILITIES) {
+@@ -1032,7 +1046,7 @@ static __le32 deassemble_neg_contexts(st
+ 
+ 			decode_encrypt_ctxt(conn,
+ 					    (struct smb2_encryption_neg_context *)pctx,
+-					    len_of_ctxts);
++					    ctxt_len);
+ 		} else if (pctx->ContextType == SMB2_COMPRESSION_CAPABILITIES) {
+ 			ksmbd_debug(SMB,
+ 				    "deassemble SMB2_COMPRESSION_CAPABILITIES context\n");
+@@ -1051,9 +1065,10 @@ static __le32 deassemble_neg_contexts(st
+ 		} else if (pctx->ContextType == SMB2_SIGNING_CAPABILITIES) {
+ 			ksmbd_debug(SMB,
+ 				    "deassemble SMB2_SIGNING_CAPABILITIES context\n");
++
+ 			decode_sign_cap_ctxt(conn,
+ 					     (struct smb2_signing_capabilities *)pctx,
+-					     len_of_ctxts);
++					     ctxt_len);
+ 		}
+ 
+ 		/* offsets must be 8 byte aligned */
 
 
 
