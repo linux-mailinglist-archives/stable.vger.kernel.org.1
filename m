@@ -1,97 +1,215 @@
-Return-Path: <stable+bounces-8023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C6A81A41B
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:16:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C384B81A3E6
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10371C2586C
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:16:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BBBB27110
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA3748CD8;
-	Wed, 20 Dec 2023 16:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B61481D8;
+	Wed, 20 Dec 2023 16:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJhjlhHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teeyColK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80B4482C2;
-	Wed, 20 Dec 2023 16:11:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5647C433C8;
-	Wed, 20 Dec 2023 16:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51C481B5;
+	Wed, 20 Dec 2023 16:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F509C433C7;
+	Wed, 20 Dec 2023 16:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088697;
-	bh=SZkJeYUPn+dqRpHaCczTTFvhnS4uGIHbvx5pA7uQvVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJhjlhHSr4kTe0JaQgxyIrPRr4V6/u0h4II606ZfFhZFaTGcHqulu26fGjrGPgCy7
-	 mKVTIa7noeJTfI0FY1RamWb1fI6s/Rn8XRhWMV8lYCRKoXb+ZLIHosZzWVNXg6IAmS
-	 FCw4Pqx167P6/H1tkvREZ8dD4G9PTiFCH83Ypsk8=
+	s=korg; t=1703088503;
+	bh=rA7CbZqba4vR8VQUOugtnU/MiYo2NdxrhUtTFMH86h4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=teeyColKNHhc1TUR7yHm1z1UcnHw5+BjXYmBb8WdxcbFBix7sA2MXGiwR/MU949eR
+	 mUEII8PJZ63n409OjXgMm03QJUDHeMT1gbGEyMfnouxq9+9H4wnqTuWuFT7/f8mQEc
+	 8R2fJCmp65jCrlCOfGeINvlemt4o/0JhG+StsJI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Tobias Klauser <tklauser@distanz.ch>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 025/159] ksmbd: use netif_is_bridge_port
-Date: Wed, 20 Dec 2023 17:08:10 +0100
-Message-ID: <20231220160932.449286845@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 5.4.265
+Date: Wed, 20 Dec 2023 17:08:11 +0100
+Message-ID: <2023122011-predict-stingray-95a4@gregkh>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
-References: <20231220160931.251686445@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+I'm announcing the release of the 5.4.265 kernel.
 
-------------------
+All users of the 5.4 kernel series must upgrade.
 
-From: Tobias Klauser <tklauser@distanz.ch>
+The updated 5.4.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.4.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-[ Upstream commit 1b699bf3a8786f7d41eebd9f6ba673185fa5b6bd ]
+thanks,
 
-Use netif_is_bridge_port defined in <linux/netdevice.h> instead of
-open-coding it.
+greg k-h
 
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/ksmbd/transport_tcp.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+------------
 
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -505,7 +505,7 @@ static int ksmbd_netdev_event(struct not
- 
- 	switch (event) {
- 	case NETDEV_UP:
--		if (netdev->priv_flags & IFF_BRIDGE_PORT)
-+		if (netif_is_bridge_port(netdev))
- 			return NOTIFY_OK;
- 
- 		list_for_each_entry(iface, &iface_list, entry) {
-@@ -614,7 +614,7 @@ int ksmbd_tcp_set_interfaces(char *ifc_l
- 
- 		rtnl_lock();
- 		for_each_netdev(&init_net, netdev) {
--			if (netdev->priv_flags & IFF_BRIDGE_PORT)
-+			if (netif_is_bridge_port(netdev))
- 				continue;
- 			if (!alloc_iface(kstrdup(netdev->name, GFP_KERNEL)))
- 				return -ENOMEM;
+ Makefile                                          |    2 
+ arch/arm64/include/asm/pgtable.h                  |    6 ++
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S    |   17 ++++-
+ block/blk-throttle.c                              |    2 
+ drivers/atm/solos-pci.c                           |    8 +-
+ drivers/hid/hid-asus.c                            |   25 +++++++-
+ drivers/hid/hid-multitouch.c                      |    5 +
+ drivers/hid/hid-quirks.c                          |    1 
+ drivers/md/bcache/bcache.h                        |    1 
+ drivers/md/bcache/btree.c                         |    7 ++
+ drivers/md/bcache/super.c                         |    4 +
+ drivers/mmc/core/core.c                           |    2 
+ drivers/mmc/core/mmc_ops.c                        |    5 +
+ drivers/mmc/core/mmc_ops.h                        |    2 
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c         |    1 
+ drivers/net/ethernet/qualcomm/qca_debug.c         |   17 +++--
+ drivers/net/ethernet/qualcomm/qca_spi.c           |   20 ++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    6 +-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c |    8 ++
+ drivers/net/team/team.c                           |    4 +
+ drivers/net/usb/aqc111.c                          |    8 +-
+ drivers/net/usb/qmi_wwan.c                        |    1 
+ drivers/pci/hotplug/acpiphp_glue.c                |    9 +--
+ drivers/platform/x86/intel_telemetry_core.c       |    4 -
+ drivers/soundwire/stream.c                        |    7 +-
+ fs/afs/rxrpc.c                                    |    2 
+ fs/ext4/mballoc.c                                 |    4 +
+ include/asm-generic/qspinlock.h                   |    2 
+ include/linux/cred.h                              |    8 +-
+ include/net/addrconf.h                            |   12 +++-
+ include/net/if_inet6.h                            |    4 -
+ kernel/cred.c                                     |   64 +++++++++++-----------
+ kernel/events/core.c                              |   10 +++
+ kernel/trace/ring_buffer.c                        |    2 
+ net/appletalk/ddp.c                               |    9 +--
+ net/atm/ioctl.c                                   |    7 +-
+ net/ipv4/tcp_output.c                             |    6 ++
+ net/ipv6/addrconf.c                               |    6 --
+ net/rose/af_rose.c                                |    4 +
+ net/vmw_vsock/virtio_transport_common.c           |    2 
+ scripts/sign-file.c                               |   12 ++--
+ sound/pci/hda/patch_hdmi.c                        |    2 
+ 42 files changed, 219 insertions(+), 109 deletions(-)
 
+Adrian Hunter (1):
+      mmc: block: Be sure to wait while busy in CQE error recovery
+
+Andrew Halaney (1):
+      net: stmmac: Handle disabled MDIO busses from devicetree
+
+Andy Shevchenko (1):
+      platform/x86: intel_telemetry: Fix kernel doc descriptions
+
+Aoba K (1):
+      HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
+
+Baokun Li (1):
+      ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+
+Bjorn Helgaas (1):
+      Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
+
+Chengfeng Ye (2):
+      atm: solos-pci: Fix potential deadlock on &cli_queue_lock
+      atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+
+Coly Li (3):
+      bcache: avoid oversize memory allocation by small stripe_size
+      bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+      bcache: avoid NULL checking to c->root in run_cache_set()
+
+David Howells (1):
+      afs: Fix refcount underflow from error handling race
+
+Denis Benato (2):
+      HID: hid-asus: reset the backlight brightness level on resume
+      HID: hid-asus: add const to read-only outgoing usb buffer
+
+Dinghao Liu (1):
+      qed: Fix a potential use-after-free in qed_cxt_tables_alloc
+
+Dong Chenchen (1):
+      net: Remove acked SYN flag from packet in the transmit queue correctly
+
+Florent Revest (1):
+      team: Fix use-after-free when an option instance allocation fails
+
+Greg Kroah-Hartman (1):
+      Linux 5.4.265
+
+Hyunwoo Kim (3):
+      atm: Fix Use-After-Free in do_vcc_ioctl
+      net/rose: Fix Use-After-Free in rose_ioctl
+      appletalk: Fix Use-After-Free in atalk_ioctl
+
+James Houghton (1):
+      arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
+
+Jens Axboe (1):
+      cred: switch to using atomic_long_t
+
+Kai Vehmanen (1):
+      ALSA: hda/hdmi: add force-connect quirks for ASUSTeK Z170 variants
+
+Krzysztof Kozlowski (1):
+      soundwire: stream: fix NULL pointer dereference for multi_link
+
+Lech Perczak (1):
+      net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+
+Linus Torvalds (1):
+      asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+
+Maciej Żenczykowski (1):
+      net: ipv6: support reporting otherwise unknown prefix flags in RTM_NEWPREFIX
+
+Mark Rutland (1):
+      perf: Fix perf_event_validate_size() lockdep splat
+
+Ming Lei (1):
+      blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+
+Naveen N Rao (2):
+      powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+      powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+
+Nikolay Kuratov (1):
+      vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+
+Oliver Neukum (2):
+      usb: aqc111: check packet for fixup for true limit
+      HID: add ALWAYS_POLL quirk for Apple kb
+
+Rasmus Villemoes (1):
+      net: stmmac: use dev_err_probe() for reporting mdio bus registration failure
+
+Stefan Wahren (3):
+      qca_debug: Prevent crash on TX ring changes
+      qca_debug: Fix ethtool -G iface tx behavior
+      qca_spi: Fix reset behavior
+
+Steven Rostedt (Google) (1):
+      ring-buffer: Fix memory leak of free page
+
+Yusong Gao (1):
+      sign-file: Fix incorrect return values check
 
 
