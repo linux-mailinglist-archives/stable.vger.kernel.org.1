@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-8097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38FEB81A485
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:21:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD8181A490
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52DC1F23248
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:21:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F0E28C54B
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED52946431;
-	Wed, 20 Dec 2023 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504ED46439;
+	Wed, 20 Dec 2023 16:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr/oXlZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjSYmVTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E343FB0B;
-	Wed, 20 Dec 2023 16:15:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4EEC433C8;
-	Wed, 20 Dec 2023 16:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3C740BF5;
+	Wed, 20 Dec 2023 16:15:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F24C433C8;
+	Wed, 20 Dec 2023 16:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088901;
-	bh=XYdAHVVMKjWAaNPfmofshOyx3w3CoK51g/QbhMn9FL0=;
+	s=korg; t=1703088930;
+	bh=KXy2jqle5TRpsDH5dnvqXAebxDqJ+8/JIB4pGaLTwPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qr/oXlZdzF86n0WQmOZl7WUpx9mOHTvPiTL6XJFiJXRXAFwnL+qfMVUnEkZb5ZEOY
-	 MiUe+P0d23uoOp1/P+GNonos1cHsk/7cbD2KSXO8KlA5HAJd+zuE25UmGwJCR4+cuX
-	 m85Gy2OcHB10gx7PzTol83GGwpzBdJm6XQWaEDu0=
+	b=pjSYmVTazVEIs1poFj47riUm9zurYQk+T2uynox9BeenB/a/mmpPT1pIw8e+hC5fr
+	 lbkQD/3H8uDT3cAFzrZiV8H+5oGnTg/XegFt2mNquSLS1SfgdRQccUfMYQAL6s769s
+	 G7+yKCGnKnc4Yrx46u0j7ixkBpi24r5XliATwIM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Coverity Scan <scan-admin@coverity.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 5.15 092/159] ksmbd: fix racy issue under cocurrent smb2 tree disconnect
-Date: Wed, 20 Dec 2023 17:09:17 +0100
-Message-ID: <20231220160935.666235852@linuxfoundation.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 093/159] ksmbd: fix uninitialized pointer read in ksmbd_vfs_rename()
+Date: Wed, 20 Dec 2023 17:09:18 +0100
+Message-ID: <20231220160935.701811489@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -59,77 +59,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 30210947a343b6b3ca13adc9bfc88e1543e16dd5 ]
+[ Upstream commit 48b47f0caaa8a9f05ed803cb4f335fa3a7bfc622 ]
 
-There is UAF issue under cocurrent smb2 tree disconnect.
-This patch introduce TREE_CONN_EXPIRE flags for tcon to avoid cocurrent
-access.
+Uninitialized rd.delegated_inode can be used in vfs_rename().
+Fix this by setting rd.delegated_inode to NULL to avoid the uninitialized
+read.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-20592
+Fixes: 74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
+Reported-by: Coverity Scan <scan-admin@coverity.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/mgmt/tree_connect.c |   10 +++++++++-
- fs/ksmbd/mgmt/tree_connect.h |    3 +++
- fs/ksmbd/smb2pdu.c           |    3 ++-
- 3 files changed, 14 insertions(+), 2 deletions(-)
+ fs/ksmbd/vfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ksmbd/mgmt/tree_connect.c
-+++ b/fs/ksmbd/mgmt/tree_connect.c
-@@ -109,7 +109,15 @@ int ksmbd_tree_conn_disconnect(struct ks
- struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
- 						  unsigned int id)
- {
--	return xa_load(&sess->tree_conns, id);
-+	struct ksmbd_tree_connect *tcon;
-+
-+	tcon = xa_load(&sess->tree_conns, id);
-+	if (tcon) {
-+		if (test_bit(TREE_CONN_EXPIRE, &tcon->status))
-+			tcon = NULL;
-+	}
-+
-+	return tcon;
- }
- 
- struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
---- a/fs/ksmbd/mgmt/tree_connect.h
-+++ b/fs/ksmbd/mgmt/tree_connect.h
-@@ -14,6 +14,8 @@ struct ksmbd_share_config;
- struct ksmbd_user;
- struct ksmbd_conn;
- 
-+#define TREE_CONN_EXPIRE		1
-+
- struct ksmbd_tree_connect {
- 	int				id;
- 
-@@ -25,6 +27,7 @@ struct ksmbd_tree_connect {
- 
- 	int				maximal_access;
- 	bool				posix_extensions;
-+	unsigned long			status;
- };
- 
- struct ksmbd_tree_conn_status {
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -2083,11 +2083,12 @@ int smb2_tree_disconnect(struct ksmbd_wo
- 
- 	ksmbd_debug(SMB, "request\n");
- 
--	if (!tcon) {
-+	if (!tcon || test_and_set_bit(TREE_CONN_EXPIRE, &tcon->status)) {
- 		struct smb2_tree_disconnect_req *req =
- 			smb2_get_msg(work->request_buf);
- 
- 		ksmbd_debug(SMB, "Invalid tid %d\n", req->hdr.Id.SyncId.TreeId);
-+
- 		rsp->hdr.Status = STATUS_NETWORK_NAME_DELETED;
- 		smb2_set_err_rsp(work);
- 		return 0;
+--- a/fs/ksmbd/vfs.c
++++ b/fs/ksmbd/vfs.c
+@@ -743,6 +743,7 @@ retry:
+ 	rd.new_dir		= new_path.dentry->d_inode,
+ 	rd.new_dentry		= new_dentry,
+ 	rd.flags		= flags,
++	rd.delegated_inode	= NULL,
+ 	err = vfs_rename(&rd);
+ 	if (err)
+ 		ksmbd_debug(VFS, "vfs_rename failed err %d\n", err);
 
 
 
