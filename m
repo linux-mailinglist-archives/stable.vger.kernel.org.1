@@ -1,300 +1,159 @@
-Return-Path: <stable+bounces-8189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D6181A807
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 22:23:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8962081A89E
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 22:47:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7931F23F34
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 21:23:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC3681C2187B
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 21:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5ED48CF3;
-	Wed, 20 Dec 2023 21:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6FA495EC;
+	Wed, 20 Dec 2023 21:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="kyqJfwQz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="gf/1O5Ha"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C564A985
-	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 21:22:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd8879ce18so91901a12.1
-        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 13:22:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703107375; x=1703712175; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pMtF9z1APWhyU8EWpEVpG+7JR/091sDd2KsXPQ0+9fo=;
-        b=kyqJfwQzx2PrkV2NpiMODnRyUpg/zqzS1tk47pOHAjFORxF05dBWA3kfGd7M6qEzJk
-         zz5j4LDWYFOsmOdXqWd0PWjdrQvqY1VHbBlWaCHX3Ptr5hR74ZpuFokjZ/9LGE0mF3ZQ
-         qccCfWiyVaox3wQcEbP6B5MDK9geZA/26z4dLH6IWfEkU9s0F+hH4SVf1kpK0XkeBkfR
-         KlGa3YIyuPmoyf4CH/P8o7F+cBaQ3Kr+HDc4ylt9psq/T2Eh3N1fmsydKNcoRYlY3MLt
-         zOtzKiEh8Y2I9rk1ksZkixm63SYg4OH1gX4C4eRA1eqKsaSq845yQ99ClpLHPXcSe8Ee
-         sy8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703107375; x=1703712175;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pMtF9z1APWhyU8EWpEVpG+7JR/091sDd2KsXPQ0+9fo=;
-        b=wzkqnAe/eLh82loHsYAkPVQ9eRhEnGN7ui596dLKjGVGQYz2smSNkeXaqxDmN1gcLU
-         b8ELq8/19CurKsTRqabFAe44BYcZ+giHA12s+XFot+GCp/aX+LcphEa+qaEL2Tpp34ad
-         MnvjDV/f0KbLlkLBQLix1NbEpReP9v2rOSSgOXQjiEGy79z0kMeaBeBuSOBdII2g5YrO
-         QhFUDsDubBE0Hdns9vmBixCx+VMZypdWlV2ph3sG4mfAewW1hK05F1y+u/GIamYFP3qr
-         MpsdU3iRx4+fXqyRFFY/jGfY/FI/LCcYMO6I51FrgjLyqSF4wY20CSIqxZTlnt3wc692
-         I/WQ==
-X-Gm-Message-State: AOJu0YzUYybNAak9ao6ehk5GTZkaKk47Az4clHVVRZcVd+Xj/FJYTMOr
-	D95mvPMCdjQ95tkotPdc8LcFYkkkluchOETUHwY=
-X-Google-Smtp-Source: AGHT+IGz2kDqgJjvSqoN1dXKliRCVjuM3FwguHTl26ijYeoz7CPGcsFrYyYGoCRYmHhyl7TflZxo1g==
-X-Received: by 2002:a05:6a20:7f97:b0:18f:20bf:d855 with SMTP id d23-20020a056a207f9700b0018f20bfd855mr346292pzj.1.1703107375001;
-        Wed, 20 Dec 2023 13:22:55 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id p23-20020a62ab17000000b006d5d74cbcf9sm221481pff.58.2023.12.20.13.22.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 13:22:53 -0800 (PST)
-Message-ID: <65835b2d.620a0220.8f727.1479@mx.google.com>
-Date: Wed, 20 Dec 2023 13:22:53 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2CF481C3;
+	Wed, 20 Dec 2023 21:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51FEC433C8;
+	Wed, 20 Dec 2023 21:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1703108833;
+	bh=YxQg0ayPzcJ9Oioh9/Gi7OjLWQNSoA7qvrbbxdqrCoc=;
+	h=Date:To:From:Subject:From;
+	b=gf/1O5HayrwdY0WSqR1HrDOdQdwgzvmegRpa+BCAhyUcWPnK54LRn07C6BptFcXhm
+	 XVVkrauE8drN4N7NN+YCwrMOaNeLfLXV5dBAEJDFxRruIFLlRym2+Ox2pu2vTc0KUK
+	 mhrXtNtntw/1C81ffkzoLZ9n3doTDryo5xFRGzi0=
+Date: Wed, 20 Dec 2023 13:47:13 -0800
+To: mm-commits@vger.kernel.org,yukuai3@huawei.com,yi.zhang@huawei.com,yangerkun@huawei.com,willy@infradead.org,tytso@mit.edu,stable@vger.kernel.org,ritesh.list@gmail.com,jack@suse.cz,hch@infradead.org,david@fromorbit.com,adilger.kernel@dilger.ca,libaokun1@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-filemap-avoid-buffered-read-write-race-to-read-inconsistent-data.patch removed from -mm tree
+Message-Id: <20231220214713.A51FEC433C8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.302-36-g2fba28e43c215
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.302-36-g2fba28e43c215)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
-v4.19.302-36-g2fba28e43c215)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.302-36-g2fba28e43c215/
-
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.302-36-g2fba28e43c215
-Git Commit: 2fba28e43c215b728400054b0f62c3c9024b541f
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
 
 
-Warnings summary:
+The quilt patch titled
+     Subject: mm/filemap: avoid buffered read/write race to read inconsistent data
+has been removed from the -mm tree.  Its filename was
+     mm-filemap-avoid-buffered-read-write-race-to-read-inconsistent-data.patch
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Section mismatches summary:
+------------------------------------------------------
+From: Baokun Li <libaokun1@huawei.com>
+Subject: mm/filemap: avoid buffered read/write race to read inconsistent data
+Date: Wed, 13 Dec 2023 14:23:24 +0800
 
-    4    WARNING: modpost: Found 1 section mismatch(es).
+The following concurrency may cause the data read to be inconsistent with
+the data on disk:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+             cpu1                           cpu2
+------------------------------|------------------------------
+                               // Buffered write 2048 from 0
+                               ext4_buffered_write_iter
+                                generic_perform_write
+                                 copy_page_from_iter_atomic
+                                 ext4_da_write_end
+                                  ext4_da_do_write_end
+                                   block_write_end
+                                    __block_commit_write
+                                     folio_mark_uptodate
+// Buffered read 4096 from 0          smp_wmb()
+ext4_file_read_iter                   set_bit(PG_uptodate, folio_flags)
+ generic_file_read_iter            i_size_write // 2048
+  filemap_read                     unlock_page(page)
+   filemap_get_pages
+    filemap_get_read_batch
+    folio_test_uptodate(folio)
+     ret = test_bit(PG_uptodate, folio_flags)
+     if (ret)
+      smp_rmb();
+      // Ensure that the data in page 0-2048 is up-to-date.
 
-Detailed per-defconfig build reports:
+                               // New buffered write 2048 from 2048
+                               ext4_buffered_write_iter
+                                generic_perform_write
+                                 copy_page_from_iter_atomic
+                                 ext4_da_write_end
+                                  ext4_da_do_write_end
+                                   block_write_end
+                                    __block_commit_write
+                                     folio_mark_uptodate
+                                      smp_wmb()
+                                      set_bit(PG_uptodate, folio_flags)
+                                   i_size_write // 4096
+                                   unlock_page(page)
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+   isize = i_size_read(inode) // 4096
+   // Read the latest isize 4096, but without smp_rmb(), there may be
+   // Load-Load disorder resulting in the data in the 2048-4096 range
+   // in the page is not up-to-date.
+   copy_page_to_iter
+   // copyout 4096
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
+In the concurrency above, we read the updated i_size, but there is no read
+barrier to ensure that the data in the page is the same as the i_size at
+this point, so we may copy the unsynchronized page out.  Hence adding the
+missing read memory barrier to fix this.
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+This is a Load-Load reordering issue, which only occurs on some weak
+mem-ordering architectures (e.g.  ARM64, ALPHA), but not on strong
+mem-ordering architectures (e.g.  X86).  And theoretically the problem
+doesn't only happen on ext4, filesystems that call filemap_read() but
+don't hold inode lock (e.g.  btrfs, f2fs, ubifs ...) will have this
+problem, while filesystems with inode lock (e.g.  xfs, nfs) won't have
+this problem.
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Link: https://lkml.kernel.org/r/20231213062324.739009-1-libaokun1@huawei.com
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: yangerkun <yangerkun@huawei.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Zhang Yi <yi.zhang@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-For more info write to <info@kernelci.org>
+
+ mm/filemap.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+--- a/mm/filemap.c~mm-filemap-avoid-buffered-read-write-race-to-read-inconsistent-data
++++ a/mm/filemap.c
+@@ -2608,6 +2608,15 @@ ssize_t filemap_read(struct kiocb *iocb,
+ 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
+ 
+ 		/*
++		 * Pairs with a barrier in
++		 * block_write_end()->mark_buffer_dirty() or other page
++		 * dirtying routines like iomap_write_end() to ensure
++		 * changes to page contents are visible before we see
++		 * increased inode size.
++		 */
++		smp_rmb();
++
++		/*
+ 		 * Once we start copying data, we don't want to be touching any
+ 		 * cachelines that might be contended:
+ 		 */
+_
+
+Patches currently in -mm which might be from libaokun1@huawei.com are
+
+
 
