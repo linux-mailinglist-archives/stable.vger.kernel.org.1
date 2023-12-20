@@ -1,43 +1,45 @@
-Return-Path: <stable+bounces-8064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35DC81A460
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:20:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B4681A42D
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7172B28C3AE
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:20:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9AF1F21FEB
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13324B15C;
-	Wed, 20 Dec 2023 16:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EE64BAA8;
+	Wed, 20 Dec 2023 16:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5dbZhcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BC4cVsdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857D4B146;
-	Wed, 20 Dec 2023 16:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6E8C433C8;
-	Wed, 20 Dec 2023 16:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3ED34BABA;
+	Wed, 20 Dec 2023 16:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58202C433C9;
+	Wed, 20 Dec 2023 16:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088809;
-	bh=xNTwZO1aDAn9l/G3m52HPoLILUZfKHPjYrmnJGtshi0=;
+	s=korg; t=1703088724;
+	bh=O4oNFCQTIjeMJsRYveslehHsqJJCg80e2HvvQqDvkn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5dbZhcPfFMrUpIdc3f/7IGxg/ZdKpSXaOX2V9/pPSikSMqy3HwVHbS0ROeleUg1V
-	 lJtFi+JMlmFH9dlDRS0k01a7bpLLgOffDrdfL0fBVszyzqblnYQxXa5RFZss4HwpPI
-	 Nnll1q3pXE27v8M79tErRGp65kzO7iJk4Wja4uDw=
+	b=BC4cVsdRgtoa9NzTY15GLuZqcuIeLvNhq5idXUz/wcgJp1ySMKaUdrip+m4c4AGtJ
+	 9PZw8A2R57Vk+bIQVikC6ZsV2KeDYf22w4hi+G7a4h0EK/RcPq6Yq7bO3ZvqDthYvY
+	 Fwsw7+F/PW0D17wMa/5ArZncmUjKKTibGm7qLqQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hyunchul Lee <hyc.lee@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 027/159] ksmbd: shorten experimental warning on loading the module
-Date: Wed, 20 Dec 2023 17:08:12 +0100
-Message-ID: <20231220160932.549126530@linuxfoundation.org>
+Subject: [PATCH 5.15 028/159] ksmbd: Remove a redundant zeroing of memory
+Date: Wed, 20 Dec 2023 17:08:13 +0100
+Message-ID: <20231220160932.589327550@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
 References: <20231220160931.251686445@linuxfoundation.org>
@@ -56,32 +58,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit adc32821409aef8d7f6d868c20a96f4901f48705 ]
+[ Upstream commit 56b401fb0c506120f25c1b4feeb96d9117efe171 ]
 
-ksmbd is continuing to improve.  Shorten the warning message
-logged the first time it is loaded to:
-   "The ksmbd server is experimental"
+fill_transform_hdr() has only one caller that already clears tr_buf (it is
+kzalloc'ed).
 
+So there is no need to clear it another time here.
+
+Remove the superfluous memset() and add a comment to remind that the caller
+must clear the buffer.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Hyunchul Lee <hyc.lee@gmail.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/server.c |    2 +-
+ fs/ksmbd/smb2pdu.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ksmbd/server.c
-+++ b/fs/ksmbd/server.c
-@@ -590,7 +590,7 @@ static int __init ksmbd_server_init(void
- 	if (ret)
- 		goto err_crypto_destroy;
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -8602,7 +8602,7 @@ static void fill_transform_hdr(void *tr_
+ 	struct smb2_hdr *hdr = smb2_get_msg(old_buf);
+ 	unsigned int orig_len = get_rfc1002_len(old_buf);
  
--	pr_warn_once("The ksmbd server is experimental, use at your own risk.\n");
-+	pr_warn_once("The ksmbd server is experimental\n");
- 
- 	return 0;
- 
+-	memset(tr_buf, 0, sizeof(struct smb2_transform_hdr) + 4);
++	/* tr_buf must be cleared by the caller */
+ 	tr_hdr->ProtocolId = SMB2_TRANSFORM_PROTO_NUM;
+ 	tr_hdr->OriginalMessageSize = cpu_to_le32(orig_len);
+ 	tr_hdr->Flags = cpu_to_le16(0x01);
 
 
 
