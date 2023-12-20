@@ -1,131 +1,194 @@
-Return-Path: <stable+bounces-7961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586EC8196F6
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 03:53:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504BB819700
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 03:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC378B253FB
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 02:53:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757F81C2566D
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 02:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E063E7486;
-	Wed, 20 Dec 2023 02:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FD6F9F1;
+	Wed, 20 Dec 2023 02:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BbBb+ARD"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="JdzZO7mg"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBB3E547;
-	Wed, 20 Dec 2023 02:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BK2DZBu003473;
-	Wed, 20 Dec 2023 02:52:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=Lu8QLKD3BJTpy8KehDX+u4mswZLOmdQldksIflIVy0I=; b=Bb
-	Bb+ARDXCfE2a2Js4aD1mhYzTmA/D+TCMRdbeIOXANVo7g7o+/BVlSNDbrQ1J/stE
-	1CEmrwkVBf3RvUpzjgLOoPABhdGi5UMfprMe+21t8tpIJZalBSm9ItOEeCau3oDo
-	49tE4xHWj/6dTqHfxn0uDRlDc+EjFHPEwuqcNpTCCKNTciXbKp6ldikeRwmWchlt
-	klp6GxipcolrfLX7mmaeI5M4795AFkCLhfM+FwyA7cy3aPJ53KlQf4/rpX2o04Du
-	kAUxuGWID7rHaryUxJAskPJcoF7wE2az6MbC86xy49j3cJAqAETv9Rj31DvRRtmh
-	A+qAJZyay4SVEuWQZbcA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v35x7jq9q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 02:52:53 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BK2qqwF001449
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 Dec 2023 02:52:52 GMT
-Received: from [10.216.23.215] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 19 Dec
- 2023 18:52:49 -0800
-Message-ID: <ab0fa643-8c6b-d7b7-6d21-066e27469b9e@quicinc.com>
-Date: Wed, 20 Dec 2023 08:22:46 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B4881F;
+	Wed, 20 Dec 2023 02:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: b13f2bc69ee311eea5db2bebc7c28f94-20231220
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=UuaEiQrOZqEYIrIdQpFz4PXcES/VN7uGDo+/eQ9bITI=;
+	b=JdzZO7mgthSOjs0OjUjjqz9BmaubqRqUqGXQ1ERmRAHSD0Rhv3vsIJnM45yOmbzmHvtmNB41nh5jL8SJUemFZbADju8Hboma6dYniO+LZuD7JrxNEufCZua3v2TL/x7v8iB2bUfOhArcc8rBLRiYd1LGTTB+Mx7lxcvagbJY0QE=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.35,REQID:660320a7-6806-4be6-8c86-927c5e66b55b,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:5d391d7,CLOUDID:5f5be117-1474-414b-9c9f-6d23a122e796,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+	NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: b13f2bc69ee311eea5db2bebc7c28f94-20231220
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <chunfeng.yun@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1610279839; Wed, 20 Dec 2023 10:58:46 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 20 Dec 2023 10:58:45 +0800
+Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 20 Dec 2023 10:58:44 +0800
+From: Chunfeng Yun <chunfeng.yun@mediatek.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>
+CC: Chunfeng Yun <chunfeng.yun@mediatek.com>, Conor Dooley
+	<conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, Mathias
+ Nyman <mathias.nyman@intel.com>, <linux-usb@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Eddie Hung
+	<eddie.hung@mediatek.com>, Macpaul Lin <macpaul.lin@mediatek.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v3 2/3] usb: xhci-mtk: fix a short packet issue of gen1 isoc-in transfer
+Date: Wed, 20 Dec 2023 10:58:41 +0800
+Message-ID: <20231220025842.7082-2-chunfeng.yun@mediatek.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20231220025842.7082-1-chunfeng.yun@mediatek.com>
+References: <20231220025842.7082-1-chunfeng.yun@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: + mm-migrate-high-order-folios-in-swap-cache-correctly.patch
- added to mm-hotfixes-unstable branch
-To: Andrew Morton <akpm@linux-foundation.org>, <mm-commits@vger.kernel.org>,
-        <willy@infradead.org>, <stable@vger.kernel.org>, <shakeelb@google.com>,
-        <n-horiguchi@ah.jp.nec.com>, <kirill.shutemov@linux.intel.com>,
-        <hannes@cmpxchg.org>, <david@redhat.com>
-References: <20231214221150.7EC0DC433C9@smtp.kernel.org>
-Content-Language: en-US
-From: Charan Teja Kalla <quic_charante@quicinc.com>
-In-Reply-To: <20231214221150.7EC0DC433C9@smtp.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3zMrtp3iG33xerWCGxZAj3rwfkHy2gG7
-X-Proofpoint-ORIG-GUID: 3zMrtp3iG33xerWCGxZAj3rwfkHy2gG7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- mlxscore=0 phishscore=0 malwarescore=0 suspectscore=0 mlxlogscore=847
- lowpriorityscore=0 spamscore=0 clxscore=1011 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2312200017
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
-Hi Andrew,
+For Gen1 isoc-in transfer, host still send out unexpected ACK after device
+finish the burst with a short packet, this will cause an exception on the
+connected device, such as, a usb 4k camera.
+It can be fixed by setting rxfifo depth less than 4k bytes, prefer to use
+3k here, the side-effect is that may cause performance drop about 10%,
+including bulk transfer.
 
-On 12/15/2023 3:41 AM, Andrew Morton wrote:
-> Large folios occupy N consecutive entries in the swap cache instead of
-> using multi-index entries like the page cache.  However, if a large folio
-> is re-added to the LRU list, it can be migrated.  The migration code was
-> not aware of the difference between the swap cache and the page cache and
-> assumed that a single xas_store() would be sufficient.
-> 
-> This leaves potentially many stale pointers to the now-migrated folio in
-> the swap cache, which can lead to almost arbitrary data corruption in the
-> future.  This can also manifest as infinite loops with the RCU read lock
-> held.
-> 
-> [willy@infradead.org: modifications to the changelog & tweaked the fix]
-> Fixes: 3417013e0d183be ("mm/migrate: Add folio_migrate_mapping()")
-> Link: https://lkml.kernel.org/r/20231214045841.961776-1-willy@infradead.org
-> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
->   Closes: https://lkml.kernel.org/r/1700569840-17327-1-git-send-email-quic_charante@quicinc.com
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-> Cc: Shakeel Butt <shakeelb@google.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 926d60ae64a6 ("usb: xhci-mtk: modify the SOF/ITP interval for mt8195")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chunfeng Yun <chunfeng.yun@mediatek.com>
+---
+v3:
+add Cc stable
+change @rxfifo_depth from int to u32, due to property's value range is changed
+v2:
+use 'rx-fifo-depth' property;
+add header file 'linux/bitfield.h' to avoid building error on some ARCH;
+---
+ drivers/usb/host/xhci-mtk.c | 37 +++++++++++++++++++++++++++++++++++--
+ drivers/usb/host/xhci-mtk.h |  2 ++
+ 2 files changed, 37 insertions(+), 2 deletions(-)
 
-Errors were reported from checkpatch.pl.
+diff --git a/drivers/usb/host/xhci-mtk.c b/drivers/usb/host/xhci-mtk.c
+index bbdf1b0b7be1..868793b82348 100644
+--- a/drivers/usb/host/xhci-mtk.c
++++ b/drivers/usb/host/xhci-mtk.c
+@@ -7,6 +7,7 @@
+  *  Chunfeng Yun <chunfeng.yun@mediatek.com>
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/dma-mapping.h>
+ #include <linux/iopoll.h>
+ #include <linux/kernel.h>
+@@ -73,6 +74,9 @@
+ #define FRMCNT_LEV1_RANG	(0x12b << 8)
+ #define FRMCNT_LEV1_RANG_MASK	GENMASK(19, 8)
+ 
++#define HSCH_CFG1		0x960
++#define SCH3_RXFIFO_DEPTH_MASK	GENMASK(21, 20)
++
+ #define SS_GEN2_EOF_CFG		0x990
+ #define SSG2EOF_OFFSET		0x3c
+ 
+@@ -165,6 +169,34 @@ static void xhci_mtk_set_frame_interval(struct xhci_hcd_mtk *mtk)
+ 	writel(value, hcd->regs + SS_GEN2_EOF_CFG);
+ }
+ 
++/*
++ * workaround: usb3.2 gen1 isoc rx hw issue
++ * host send out unexpected ACK afer device fininsh a burst transfer with
++ * a short packet.
++ */
++static void xhci_mtk_rxfifo_depth_set(struct xhci_hcd_mtk *mtk)
++{
++	struct usb_hcd *hcd = mtk->hcd;
++	u32 value;
++
++	if (!mtk->rxfifo_depth)
++		return;
++
++	value = readl(hcd->regs + HSCH_CFG1);
++	value &= ~SCH3_RXFIFO_DEPTH_MASK;
++	value |= FIELD_PREP(SCH3_RXFIFO_DEPTH_MASK, mtk->rxfifo_depth - 1);
++	writel(value, hcd->regs + HSCH_CFG1);
++}
++
++static void xhci_mtk_init_quirk(struct xhci_hcd_mtk *mtk)
++{
++	/* workaround only for mt8195 */
++	xhci_mtk_set_frame_interval(mtk);
++
++	/* workaround for SoCs using SSUSB about before IPM v1.6.0 */
++	xhci_mtk_rxfifo_depth_set(mtk);
++}
++
+ static int xhci_mtk_host_enable(struct xhci_hcd_mtk *mtk)
+ {
+ 	struct mu3c_ippc_regs __iomem *ippc = mtk->ippc_regs;
+@@ -448,8 +480,7 @@ static int xhci_mtk_setup(struct usb_hcd *hcd)
+ 		if (ret)
+ 			return ret;
+ 
+-		/* workaround only for mt8195 */
+-		xhci_mtk_set_frame_interval(mtk);
++		xhci_mtk_init_quirk(mtk);
+ 	}
+ 
+ 	ret = xhci_gen_setup(hcd, xhci_mtk_quirks);
+@@ -527,6 +558,8 @@ static int xhci_mtk_probe(struct platform_device *pdev)
+ 	of_property_read_u32(node, "mediatek,u2p-dis-msk",
+ 			     &mtk->u2p_dis_msk);
+ 
++	of_property_read_u32(node, "rx-fifo-depth", &mtk->rxfifo_depth);
++
+ 	ret = usb_wakeup_of_property_parse(mtk, node);
+ 	if (ret) {
+ 		dev_err(dev, "failed to parse uwk property\n");
+diff --git a/drivers/usb/host/xhci-mtk.h b/drivers/usb/host/xhci-mtk.h
+index 39f7ae7d3087..f5e2bd66bb1b 100644
+--- a/drivers/usb/host/xhci-mtk.h
++++ b/drivers/usb/host/xhci-mtk.h
+@@ -171,6 +171,8 @@ struct xhci_hcd_mtk {
+ 	struct regmap *uwk;
+ 	u32 uwk_reg_base;
+ 	u32 uwk_vers;
++	/* quirk */
++	u32 rxfifo_depth;
+ };
+ 
+ static inline struct xhci_hcd_mtk *hcd_to_mtk(struct usb_hcd *hcd)
+-- 
+2.18.0
 
-1) Seems we have used 15chars of sha1.
-2) space before Closes:
-
-Summary:
-
-WARNING:BAD_FIXES_TAG: Please use correct Fixes: style 'Fixes: <12 chars
-of sha1> ("<title line>")' - ie: 'Fixes: 3417013e0d18 ("mm/migrate: Add
-folio_migrate_mapping()")'
-#21:
---
-WARNING:BAD_REPORTED_BY_LINK: Reported-by: should be immediately
-followed by Closes: with a URL to the report
-#26:
 
