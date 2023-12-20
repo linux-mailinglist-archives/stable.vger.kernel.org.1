@@ -1,59 +1,118 @@
-Return-Path: <stable+bounces-7979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-7980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E481681A14D
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:42:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7464881A14E
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 15:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68C23B21C3A
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131B51F22C90
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 14:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E58F3D97F;
-	Wed, 20 Dec 2023 14:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1443D397;
+	Wed, 20 Dec 2023 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsSEJZCn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecDhaeOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0B13D966
-	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 14:41:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E153FC433AB;
-	Wed, 20 Dec 2023 14:41:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703083317;
-	bh=D4LOMoxBaj23V4eaa3ybTWr2HjE6HQAlBgZfc+K8kHI=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364F03B1BB;
+	Wed, 20 Dec 2023 14:42:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEC1C433C9;
+	Wed, 20 Dec 2023 14:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703083375;
+	bh=iQr3A3idlvsBQRAD/6AlJxk9PKUXNWI6mN+6Ps3D9sI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YsSEJZCniTTye2UWupK7CFgyIuMqgvwqDcuLMTA/ekfjNtHzJ9JSVcZInsjYrZP4d
-	 fxsfL5EuVFtxtpjM2dNXjOrWO2iwSoNH1dP/s1qxg7oprxbmxnRDXu/PYm4kO88SqB
-	 wPnAdz012yrCy63Q0t180Ie/RQDbJiyo1Ti/Mssc=
-Date: Wed, 20 Dec 2023 15:41:54 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: stable@vger.kernel.org, smfrench@gmail.com
-Subject: Re: [PATCH 5.15.y 000/154] ksmbd backport patches for 5.15.y
-Message-ID: <2023122045-snuggle-rocky-b3f8@gregkh>
-References: <20231218153454.8090-1-linkinjeon@kernel.org>
+	b=ecDhaeOUI7xet5HrGaaO7WZWWA5fud6rmc/07FIW0iVPMjfvC6es7liINO//zx9v0
+	 +w5ghfRrSSzc30vC4gNAcixBE3pCiIPBAyqhV0yThPqiJVcpBPZ6klaN4MSE5M0XMs
+	 w0qN3eYh6qJs8RUMFaSWrlRCBVH6gAStdRYfDtC/OF++VJxgiPRC6DTsafKbEnjvc1
+	 P5PuzEJPXGIeNftrLHLzs6SukrObZyBuwcPi05Dw4N1hn07eOXSBGkx52QqsmIzEcv
+	 iKzXZN4rzZr1Lv8ElJXNZGKbqTLBKb75xs8yR2a7zbidWhM55pe5+8/3XNRmBxB55Z
+	 +99xCKV6KR16A==
+Date: Wed, 20 Dec 2023 20:12:41 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org, stable@vger.kernel.org,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	Stanley Jhu <chu.stanley@gmail.com>,
+	Can Guo <quic_cang@quicinc.com>,
+	Asutosh Das <quic_asutoshd@quicinc.com>,
+	Bean Huo <beanhuo@micron.com>,
+	"Bao D. Nguyen" <quic_nguyenb@quicinc.com>,
+	Arthur Simchaev <Arthur.Simchaev@wdc.com>
+Subject: Re: [PATCH 1/2] scsi: ufs: Simplify power management during async
+ scan
+Message-ID: <20231220144241.GG3544@thinkpad>
+References: <20231218225229.2542156-1-bvanassche@acm.org>
+ <20231218225229.2542156-2-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231218153454.8090-1-linkinjeon@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231218225229.2542156-2-bvanassche@acm.org>
 
-On Tue, Dec 19, 2023 at 12:32:20AM +0900, Namjae Jeon wrote:
-> This patchset backport ksmbd patches between 5.16 and 6.7-rc5 kernel.
-> Bug fixes and CVE patches were not applied well due to clean-up and new
-> feautre patches. To facilitate backport, This patch-set included
-> clean-up patches and new feature patches of ksmbd for stable 5.15
-> kernel.
+On Mon, Dec 18, 2023 at 02:52:14PM -0800, Bart Van Assche wrote:
+> ufshcd_init() calls pm_runtime_get_sync() before it calls
+> async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync()
+> directly or indirectly from ufshcd_add_lus(). Simplify
+> ufshcd_async_scan() by always calling pm_runtime_put_sync() from
+> ufshcd_async_scan().
+> 
+> Cc: stable@vger.kernel.org
 
-All now queued up, thanks!
+No fixes tag?
 
-greg k-h
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+
+- Mani
+
+> ---
+>  drivers/ufs/core/ufshcd.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index d6ae5d17892c..0ad8bde39cd1 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -8711,7 +8711,6 @@ static int ufshcd_add_lus(struct ufs_hba *hba)
+>  
+>  	ufs_bsg_probe(hba);
+>  	scsi_scan_host(hba->host);
+> -	pm_runtime_put_sync(hba->dev);
+>  
+>  out:
+>  	return ret;
+> @@ -8980,15 +8979,15 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
+>  
+>  	/* Probe and add UFS logical units  */
+>  	ret = ufshcd_add_lus(hba);
+> +
+>  out:
+> +	pm_runtime_put_sync(hba->dev);
+>  	/*
+>  	 * If we failed to initialize the device or the device is not
+>  	 * present, turn off the power/clocks etc.
+>  	 */
+> -	if (ret) {
+> -		pm_runtime_put_sync(hba->dev);
+> +	if (ret)
+>  		ufshcd_hba_exit(hba);
+> -	}
+>  }
+>  
+>  static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
