@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-8034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CD781A42E
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:17:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C11581A3F1
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 17:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 042F71F238A0
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF28028820E
+	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 16:12:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269684BAB3;
-	Wed, 20 Dec 2023 16:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372994AF63;
+	Wed, 20 Dec 2023 16:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="om9+fXxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg9drN6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49094A99A;
-	Wed, 20 Dec 2023 16:12:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F13CC433C8;
-	Wed, 20 Dec 2023 16:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12174A9B9;
+	Wed, 20 Dec 2023 16:08:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB24C433C8;
+	Wed, 20 Dec 2023 16:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703088727;
-	bh=4tO9JCX4Bv8UzIYwOcDQ6bvF/Xy+Poe9RgeayFhGtMU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=om9+fXxabT1yZt1upZ7+40ZC5ckL3cael5gS0KQLlH6kFCt6M56nl82Ck63iryUeL
-	 4xrkmj1PkIMF89mt6oclZaSFKWjVFFogjYhXU3INTLOVanpqkhOngGiKN8yCdBeNeY
-	 Malc9kGr7h2IDhAV3udgc/mHbO7DNDLqP1672cJU=
+	s=korg; t=1703088517;
+	bh=zQDg7hNKedI6Ky2W005y/QJHmCM0yhbbSqDA6I+Uk14=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cg9drN6fOQdpqLNpBuTagBBlR6QFHKe6NJFccdRLBmmT55Plc8NPsURmhc7epVZmB
+	 hhUGSG9p8kAsyDQ/GVegqEUVF5jP6Oxmgo2iwODgjlAA3NsMPstPb4ht90pagN/S7N
+	 QDN1vChChOJdgsHck8mN6C3v1iZaEH3iipXrK9Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Hyunchul Lee <hyc.lee@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15 037/159] ksmbd: smbd: handle multiple Buffer descriptors
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.19.303
 Date: Wed, 20 Dec 2023 17:08:22 +0100
-Message-ID: <20231220160933.022859978@linuxfoundation.org>
+Message-ID: <2023122022-shifting-blasphemy-15a4@gregkh>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
-References: <20231220160931.251686445@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,264 +49,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+I'm announcing the release of the 4.19.303 kernel.
 
-------------------
+All users of the 4.19 kernel series must upgrade.
 
-From: Hyunchul Lee <hyc.lee@gmail.com>
+The updated 4.19.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.19.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-[ Upstream commit ee1b0558965909872775183dc237cdf9f8eddaba ]
+thanks,
 
-Make ksmbd handle multiple buffer descriptors
-when reading and writing files using SMB direct:
-Post the work requests of rdma_rw_ctx for
-RDMA read/write in smb_direct_rdma_xmit(), and
-the work request for the READ/WRITE response
-with a remote invalidation in smb_direct_writev().
+greg k-h
 
-Signed-off-by: Hyunchul Lee <hyc.lee@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/ksmbd/smb2pdu.c        |    5 -
- fs/ksmbd/transport_rdma.c |  164 +++++++++++++++++++++++++++++-----------------
- 2 files changed, 107 insertions(+), 62 deletions(-)
+------------
 
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -6210,11 +6210,8 @@ static int smb2_set_remote_key_for_rdma(
- 				le32_to_cpu(desc[i].length));
- 		}
- 	}
--	if (ch_count != 1) {
--		ksmbd_debug(RDMA, "RDMA multiple buffer descriptors %d are not supported yet\n",
--			    ch_count);
-+	if (!ch_count)
- 		return -EINVAL;
--	}
- 
- 	work->need_invalidate_rkey =
- 		(Channel == SMB2_CHANNEL_RDMA_V1_INVALIDATE);
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -206,7 +206,9 @@ struct smb_direct_recvmsg {
- struct smb_direct_rdma_rw_msg {
- 	struct smb_direct_transport	*t;
- 	struct ib_cqe		cqe;
-+	int			status;
- 	struct completion	*completion;
-+	struct list_head	list;
- 	struct rdma_rw_ctx	rw_ctx;
- 	struct sg_table		sgt;
- 	struct scatterlist	sg_list[0];
-@@ -1317,6 +1319,16 @@ done:
- 	return ret;
- }
- 
-+static void smb_direct_free_rdma_rw_msg(struct smb_direct_transport *t,
-+					struct smb_direct_rdma_rw_msg *msg,
-+					enum dma_data_direction dir)
-+{
-+	rdma_rw_ctx_destroy(&msg->rw_ctx, t->qp, t->qp->port,
-+			    msg->sgt.sgl, msg->sgt.nents, dir);
-+	sg_free_table_chained(&msg->sgt, SG_CHUNK_SIZE);
-+	kfree(msg);
-+}
-+
- static void read_write_done(struct ib_cq *cq, struct ib_wc *wc,
- 			    enum dma_data_direction dir)
- {
-@@ -1325,19 +1337,14 @@ static void read_write_done(struct ib_cq
- 	struct smb_direct_transport *t = msg->t;
- 
- 	if (wc->status != IB_WC_SUCCESS) {
-+		msg->status = -EIO;
- 		pr_err("read/write error. opcode = %d, status = %s(%d)\n",
- 		       wc->opcode, ib_wc_status_msg(wc->status), wc->status);
--		smb_direct_disconnect_rdma_connection(t);
-+		if (wc->status != IB_WC_WR_FLUSH_ERR)
-+			smb_direct_disconnect_rdma_connection(t);
- 	}
- 
--	if (atomic_inc_return(&t->rw_credits) > 0)
--		wake_up(&t->wait_rw_credits);
--
--	rdma_rw_ctx_destroy(&msg->rw_ctx, t->qp, t->qp->port,
--			    msg->sg_list, msg->sgt.nents, dir);
--	sg_free_table_chained(&msg->sgt, SG_CHUNK_SIZE);
- 	complete(msg->completion);
--	kfree(msg);
- }
- 
- static void read_done(struct ib_cq *cq, struct ib_wc *wc)
-@@ -1356,75 +1363,116 @@ static int smb_direct_rdma_xmit(struct s
- 				unsigned int desc_len,
- 				bool is_read)
- {
--	struct smb_direct_rdma_rw_msg *msg;
--	int ret;
-+	struct smb_direct_rdma_rw_msg *msg, *next_msg;
-+	int i, ret;
- 	DECLARE_COMPLETION_ONSTACK(completion);
--	struct ib_send_wr *first_wr = NULL;
--	u32 remote_key = le32_to_cpu(desc[0].token);
--	u64 remote_offset = le64_to_cpu(desc[0].offset);
-+	struct ib_send_wr *first_wr;
-+	LIST_HEAD(msg_list);
-+	char *desc_buf;
- 	int credits_needed;
-+	unsigned int desc_buf_len;
-+	size_t total_length = 0;
-+
-+	if (t->status != SMB_DIRECT_CS_CONNECTED)
-+		return -ENOTCONN;
-+
-+	/* calculate needed credits */
-+	credits_needed = 0;
-+	desc_buf = buf;
-+	for (i = 0; i < desc_len / sizeof(*desc); i++) {
-+		desc_buf_len = le32_to_cpu(desc[i].length);
-+
-+		credits_needed += calc_rw_credits(t, desc_buf, desc_buf_len);
-+		desc_buf += desc_buf_len;
-+		total_length += desc_buf_len;
-+		if (desc_buf_len == 0 || total_length > buf_len ||
-+		    total_length > t->max_rdma_rw_size)
-+			return -EINVAL;
-+	}
-+
-+	ksmbd_debug(RDMA, "RDMA %s, len %#x, needed credits %#x\n",
-+		    is_read ? "read" : "write", buf_len, credits_needed);
- 
--	credits_needed = calc_rw_credits(t, buf, buf_len);
- 	ret = wait_for_rw_credits(t, credits_needed);
- 	if (ret < 0)
- 		return ret;
- 
--	/* TODO: mempool */
--	msg = kmalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
--		      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
--	if (!msg) {
--		atomic_add(credits_needed, &t->rw_credits);
--		return -ENOMEM;
--	}
-+	/* build rdma_rw_ctx for each descriptor */
-+	desc_buf = buf;
-+	for (i = 0; i < desc_len / sizeof(*desc); i++) {
-+		msg = kzalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
-+			      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
-+		if (!msg) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
- 
--	msg->sgt.sgl = &msg->sg_list[0];
--	ret = sg_alloc_table_chained(&msg->sgt,
--				     get_buf_page_count(buf, buf_len),
--				     msg->sg_list, SG_CHUNK_SIZE);
--	if (ret) {
--		atomic_add(credits_needed, &t->rw_credits);
--		kfree(msg);
--		return -ENOMEM;
--	}
-+		desc_buf_len = le32_to_cpu(desc[i].length);
- 
--	ret = get_sg_list(buf, buf_len, msg->sgt.sgl, msg->sgt.orig_nents);
--	if (ret <= 0) {
--		pr_err("failed to get pages\n");
--		goto err;
--	}
-+		msg->t = t;
-+		msg->cqe.done = is_read ? read_done : write_done;
-+		msg->completion = &completion;
-+
-+		msg->sgt.sgl = &msg->sg_list[0];
-+		ret = sg_alloc_table_chained(&msg->sgt,
-+					     get_buf_page_count(desc_buf, desc_buf_len),
-+					     msg->sg_list, SG_CHUNK_SIZE);
-+		if (ret) {
-+			kfree(msg);
-+			ret = -ENOMEM;
-+			goto out;
-+		}
- 
--	ret = rdma_rw_ctx_init(&msg->rw_ctx, t->qp, t->qp->port,
--			       msg->sg_list, get_buf_page_count(buf, buf_len),
--			       0, remote_offset, remote_key,
--			       is_read ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
--	if (ret < 0) {
--		pr_err("failed to init rdma_rw_ctx: %d\n", ret);
--		goto err;
-+		ret = get_sg_list(desc_buf, desc_buf_len,
-+				  msg->sgt.sgl, msg->sgt.orig_nents);
-+		if (ret < 0) {
-+			sg_free_table_chained(&msg->sgt, SG_CHUNK_SIZE);
-+			kfree(msg);
-+			goto out;
-+		}
-+
-+		ret = rdma_rw_ctx_init(&msg->rw_ctx, t->qp, t->qp->port,
-+				       msg->sgt.sgl,
-+				       get_buf_page_count(desc_buf, desc_buf_len),
-+				       0,
-+				       le64_to_cpu(desc[i].offset),
-+				       le32_to_cpu(desc[i].token),
-+				       is_read ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
-+		if (ret < 0) {
-+			pr_err("failed to init rdma_rw_ctx: %d\n", ret);
-+			sg_free_table_chained(&msg->sgt, SG_CHUNK_SIZE);
-+			kfree(msg);
-+			goto out;
-+		}
-+
-+		list_add_tail(&msg->list, &msg_list);
-+		desc_buf += desc_buf_len;
- 	}
- 
--	msg->t = t;
--	msg->cqe.done = is_read ? read_done : write_done;
--	msg->completion = &completion;
--	first_wr = rdma_rw_ctx_wrs(&msg->rw_ctx, t->qp, t->qp->port,
--				   &msg->cqe, NULL);
-+	/* concatenate work requests of rdma_rw_ctxs */
-+	first_wr = NULL;
-+	list_for_each_entry_reverse(msg, &msg_list, list) {
-+		first_wr = rdma_rw_ctx_wrs(&msg->rw_ctx, t->qp, t->qp->port,
-+					   &msg->cqe, first_wr);
-+	}
- 
- 	ret = ib_post_send(t->qp, first_wr, NULL);
- 	if (ret) {
--		pr_err("failed to post send wr: %d\n", ret);
--		goto err;
-+		pr_err("failed to post send wr for RDMA R/W: %d\n", ret);
-+		goto out;
- 	}
- 
-+	msg = list_last_entry(&msg_list, struct smb_direct_rdma_rw_msg, list);
- 	wait_for_completion(&completion);
--	return 0;
--
--err:
-+	ret = msg->status;
-+out:
-+	list_for_each_entry_safe(msg, next_msg, &msg_list, list) {
-+		list_del(&msg->list);
-+		smb_direct_free_rdma_rw_msg(t, msg,
-+					    is_read ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
-+	}
- 	atomic_add(credits_needed, &t->rw_credits);
--	if (first_wr)
--		rdma_rw_ctx_destroy(&msg->rw_ctx, t->qp, t->qp->port,
--				    msg->sg_list, msg->sgt.nents,
--				    is_read ? DMA_FROM_DEVICE : DMA_TO_DEVICE);
--	sg_free_table_chained(&msg->sgt, SG_CHUNK_SIZE);
--	kfree(msg);
-+	wake_up(&t->wait_rw_credits);
- 	return ret;
- }
- 
+ Makefile                                          |    2 
+ arch/arm64/include/asm/pgtable.h                  |    6 ++
+ arch/powerpc/kernel/trace/ftrace_64_mprofile.S    |   17 ++++-
+ block/blk-throttle.c                              |    2 
+ drivers/atm/solos-pci.c                           |    8 +-
+ drivers/hid/hid-asus.c                            |   25 +++++++-
+ drivers/hid/hid-multitouch.c                      |    5 +
+ drivers/hid/hid-quirks.c                          |    1 
+ drivers/md/bcache/bcache.h                        |    1 
+ drivers/md/bcache/btree.c                         |    7 ++
+ drivers/md/bcache/super.c                         |    4 +
+ drivers/mmc/core/core.c                           |    2 
+ drivers/mmc/core/mmc_ops.c                        |    5 +
+ drivers/mmc/core/mmc_ops.h                        |    2 
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c         |    1 
+ drivers/net/ethernet/qualcomm/qca_debug.c         |   17 +++--
+ drivers/net/ethernet/qualcomm/qca_spi.c           |   20 ++++++
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c |    6 +-
+ drivers/net/team/team.c                           |    4 +
+ drivers/net/usb/qmi_wwan.c                        |    1 
+ drivers/pci/hotplug/acpiphp_glue.c                |    9 +--
+ drivers/platform/x86/intel_telemetry_core.c       |    4 -
+ fs/ext4/mballoc.c                                 |    4 +
+ include/asm-generic/qspinlock.h                   |    2 
+ include/linux/cred.h                              |    6 +-
+ kernel/cred.c                                     |   66 +++++++++++-----------
+ kernel/events/core.c                              |   10 +++
+ kernel/trace/ring_buffer.c                        |    2 
+ net/appletalk/ddp.c                               |    9 +--
+ net/atm/ioctl.c                                   |    7 +-
+ net/ipv4/tcp_output.c                             |    6 ++
+ net/rose/af_rose.c                                |    4 +
+ net/vmw_vsock/virtio_transport_common.c           |    2 
+ scripts/sign-file.c                               |   12 ++--
+ 34 files changed, 193 insertions(+), 86 deletions(-)
 
+Adrian Hunter (1):
+      mmc: block: Be sure to wait while busy in CQE error recovery
+
+Andrew Halaney (1):
+      net: stmmac: Handle disabled MDIO busses from devicetree
+
+Andy Shevchenko (1):
+      platform/x86: intel_telemetry: Fix kernel doc descriptions
+
+Aoba K (1):
+      HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
+
+Baokun Li (1):
+      ext4: prevent the normalized size from exceeding EXT_MAX_BLOCKS
+
+Bjorn Helgaas (1):
+      Revert "PCI: acpiphp: Reassign resources on bridge if necessary"
+
+Chengfeng Ye (2):
+      atm: solos-pci: Fix potential deadlock on &cli_queue_lock
+      atm: solos-pci: Fix potential deadlock on &tx_queue_lock
+
+Coly Li (3):
+      bcache: avoid oversize memory allocation by small stripe_size
+      bcache: add code comments for bch_btree_node_get() and __bch_btree_node_alloc()
+      bcache: avoid NULL checking to c->root in run_cache_set()
+
+Denis Benato (2):
+      HID: hid-asus: reset the backlight brightness level on resume
+      HID: hid-asus: add const to read-only outgoing usb buffer
+
+Dinghao Liu (1):
+      qed: Fix a potential use-after-free in qed_cxt_tables_alloc
+
+Dong Chenchen (1):
+      net: Remove acked SYN flag from packet in the transmit queue correctly
+
+Florent Revest (1):
+      team: Fix use-after-free when an option instance allocation fails
+
+Greg Kroah-Hartman (1):
+      Linux 4.19.303
+
+Hyunwoo Kim (3):
+      atm: Fix Use-After-Free in do_vcc_ioctl
+      net/rose: Fix Use-After-Free in rose_ioctl
+      appletalk: Fix Use-After-Free in atalk_ioctl
+
+James Houghton (1):
+      arm64: mm: Always make sw-dirty PTEs hw-dirty in pte_modify
+
+Jens Axboe (1):
+      cred: switch to using atomic_long_t
+
+Lech Perczak (1):
+      net: usb: qmi_wwan: claim interface 4 for ZTE MF290
+
+Linus Torvalds (1):
+      asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+
+Mark Rutland (1):
+      perf: Fix perf_event_validate_size() lockdep splat
+
+Ming Lei (1):
+      blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+
+Naveen N Rao (2):
+      powerpc/ftrace: Create a dummy stackframe to fix stack unwind
+      powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+
+Nikolay Kuratov (1):
+      vsock/virtio: Fix unsigned integer wrap around in virtio_transport_has_space()
+
+Oliver Neukum (1):
+      HID: add ALWAYS_POLL quirk for Apple kb
+
+Stefan Wahren (3):
+      qca_debug: Prevent crash on TX ring changes
+      qca_debug: Fix ethtool -G iface tx behavior
+      qca_spi: Fix reset behavior
+
+Steven Rostedt (Google) (1):
+      ring-buffer: Fix memory leak of free page
+
+Yusong Gao (1):
+      sign-file: Fix incorrect return values check
 
 
