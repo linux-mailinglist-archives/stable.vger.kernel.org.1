@@ -1,108 +1,249 @@
-Return-Path: <stable+bounces-8221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C6281AE26
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 05:52:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0CF81AE60
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 06:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7943287E3D
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 04:52:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 557281F247A8
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 05:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871C08C01;
-	Thu, 21 Dec 2023 04:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53D89474;
+	Thu, 21 Dec 2023 05:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWpQE0/Z"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="JFHYI2Cw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEA68F4F
-	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 04:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-2037ef59df0so52339fac.1
-        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 20:52:35 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B499467
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 05:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6dbb2403fa2so306099a34.2
+        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 21:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1703134354; x=1703739154; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bz5m5ul72l4RhCvdkAAZDejQ0Cy9sHzUwoLbrF+jVCs=;
-        b=KWpQE0/ZIZe0PHUnoHO0XzhADJujxKQGCrEEIiJcvvpuzPpkaJr2JxebOkM+Rrkopt
-         RoS6DfRdA4r66Rnwr3xcogsXp2tiMiBoRIeI5C8JK4wu70CGNx7s8NL7fRoqha/mrW9V
-         fr51hZ69Tj5k+x6qy1Bs9WDWZKe/e/1XhdBlo=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703136635; x=1703741435; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=+MtcJg6N0kTzIBbhV1f+6Yn3vPH+mCb1gO0wXXoY5cU=;
+        b=JFHYI2Cws+R2trW8C0WCzqW7IRiwc83H6j5i4ndJVE/fMxlsttllRc3OT5enOmAwSf
+         qixa0f5yhr6VFzf2i3TcDKMul4oDppdh9aLqF/FDcKEs6ACBG1vdBpeUY478CgWJhKUy
+         S8kgXFY8w72wCpKDVQbNo9xYI+miNeTcuxebn+iPrIL2/OnXEdU4l9kufQtCk+OAM741
+         zg9Aj48TxqBzrdh/Wjy2O+lKbTBP2OTreBcVoii9+O+Of5hkK6gttEdZpP6LLeIZHEAC
+         +rc/RIGuACcQjfVaHjqlWsC2OVvC6TpWqouwZKD3z/5j9tMv2AlRoMXlEbdWM8IPaYsS
+         ER5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703134354; x=1703739154;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bz5m5ul72l4RhCvdkAAZDejQ0Cy9sHzUwoLbrF+jVCs=;
-        b=DsgU3sDUS+afY9+v0jOAvtsgsYSWv3dClhWegK/MqUlwcFOYjhaK+IEGS0EfhsDUEx
-         MvWHAdvRrMVaJxE8MX4hBqtTDXmfzE2uyIs16pGLTeabItUgDCvxa2dSLfLa5TnbNNpk
-         EUcckAAIFCc/4FAfNNzZZazVP4afXPXm+mJHvKTbA5A/GaH2Fkjb3QQlcTKh1QHd0s5Q
-         63xTXVNEthWed1D6RFLzG97uDUwXRjm9c55EIVKDwUCw4SGIa+oaBk30CMv77CqhOCwE
-         /bQMYDE4liu8DqIlTUBnw3KJuQ7qBH+ljwyFhilojhA5a4aaUI4WqMc0vGYaFOVAvRDk
-         f7Zg==
-X-Gm-Message-State: AOJu0YwaSXdFjFgkDU+i4+tFJd6tHpQ4tNkrN2LmbMwrDVl/v4V/1wWP
-	XUp5v/SLjgBmEMglTxXEan080t9lUyKPUYD6B48=
-X-Google-Smtp-Source: AGHT+IFU6YIKltqtyRWS5Fq80oW1ZM2e2tj8nwLk0KoDFlFz6ocQhueT3KZ7ESKWk7sxooIZC+jWPA==
-X-Received: by 2002:a4a:a581:0:b0:591:cdc0:f28d with SMTP id d1-20020a4aa581000000b00591cdc0f28dmr12232023oom.0.1703134354564;
-        Wed, 20 Dec 2023 20:52:34 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id j12-20020a02a68c000000b0046b70c98d41sm289714jam.26.2023.12.20.20.52.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Dec 2023 20:52:33 -0800 (PST)
-Message-ID: <56301ac9-ca34-44fa-b18b-9c779fe9b24a@linuxfoundation.org>
-Date: Wed, 20 Dec 2023 21:52:32 -0700
+        d=1e100.net; s=20230601; t=1703136635; x=1703741435;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+MtcJg6N0kTzIBbhV1f+6Yn3vPH+mCb1gO0wXXoY5cU=;
+        b=w8WeYOnHWfhBy2FGkl/7r9yHKWx3ojFLMzAMC4nOYh5HjR/pU6UWiSuwPnUUW/e1c4
+         9QqkD4c6lNC79bYwJ4yTfJqkD+F4YTLYTVAvWpYv2Wz/BbysLJJRshgzfkuhjargKyOF
+         SHULMqyLGc3wO1PBOb8JdPbGaCCMmXIKzSwFP/EU3i48k1ltC4PtmKbqrw+Rhkc1UjI5
+         sRESlb5rK94v8jYJJ7QJ409Dvw0L8IM0PkgoVdf78pOJTf5/NKczwNegqhhjFHWfjdkB
+         Z8uD3l4/B8mougl9vo7GR+Sg5kDBloSTbhHQLBzn6k18zhDNumPqweSKqGyyS450Bw6d
+         A5yA==
+X-Gm-Message-State: AOJu0YyJlHCyboj2m62FhlvSUTYnBq4GnYOiem0Cjbe7UNCi61wZJNEH
+	xdrEUVm37JwhudtTG68uFRkNx3Kw4o2ZOJPY85Q=
+X-Google-Smtp-Source: AGHT+IH1jpARX0rL3ftu4deaUu6RMLhVt/d2b5XuqpuzoTHOiI7J2sqPlyI+ywiFtZMfdUdbHQ9Tsw==
+X-Received: by 2002:a9d:7a89:0:b0:6d9:d817:c1a with SMTP id l9-20020a9d7a89000000b006d9d8170c1amr21303942otn.46.1703136635653;
+        Wed, 20 Dec 2023 21:30:35 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id it27-20020a056a00459b00b006d96d9cb87dsm553927pfb.51.2023.12.20.21.30.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Dec 2023 21:30:34 -0800 (PST)
+Message-ID: <6583cd7a.050a0220.fc40d.1e2c@mx.google.com>
+Date: Wed, 20 Dec 2023 21:30:34 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/159] 5.15.145-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20231220160931.251686445@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.6
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.6.7-166-g4a769d77505ba
+Subject: stable-rc/queue/6.6 baseline: 109 runs,
+ 4 regressions (v6.6.7-166-g4a769d77505ba)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On 12/20/23 09:07, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.145 release.
-> There are 159 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 22 Dec 2023 16:08:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.145-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+stable-rc/queue/6.6 baseline: 109 runs, 4 regressions (v6.6.7-166-g4a769d77=
+505ba)
 
-Compiled and booted on my test system. No dmesg regressions.
+Regressions Summary
+-------------------
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+imx8mm-innocomm-wb15-evk     | arm64 | lab-pengutronix | gcc-10   | defconf=
+ig                  | 1          =
 
-thanks,
--- Shuah
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora   | gcc-10   | defconf=
+ig+arm64-chromebook | 1          =
+
+r8a779m1-ulcb                | arm64 | lab-collabora   | gcc-10   | defconf=
+ig                  | 1          =
+
+sun50i-h6-orangepi-one-plus  | arm64 | lab-clabbe      | gcc-10   | defconf=
+ig                  | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.6/kern=
+el/v6.6.7-166-g4a769d77505ba/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.6
+  Describe: v6.6.7-166-g4a769d77505ba
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      4a769d77505ba10cb662d41046158b31131e144f =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+imx8mm-innocomm-wb15-evk     | arm64 | lab-pengutronix | gcc-10   | defconf=
+ig                  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/658399d5a6a46cb0d0e13505
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-pengutronix/baseline-imx8mm-inno=
+comm-wb15-evk.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-pengutronix/baseline-imx8mm-inno=
+comm-wb15-evk.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/658399d5a6a46cb0d0e13=
+506
+        new failure (last pass: v6.6.7-166-g323633885756) =
+
+ =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+mt8183-kukui-...uniper-sku16 | arm64 | lab-collabora   | gcc-10   | defconf=
+ig+arm64-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/65839a7c8fd4fb502ae1349f
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8183-kukui-jacuzzi-juniper-sku16.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8183-kukui-jacuzzi-juniper-sku16.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/65839a7c8fd4fb502ae13=
+4a0
+        new failure (last pass: v6.6.7-166-g6a5518dcff6f) =
+
+ =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+r8a779m1-ulcb                | arm64 | lab-collabora   | gcc-10   | defconf=
+ig                  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/65839ad5b9b2c18fd5e135a7
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a779m1-ulcb=
+.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a779m1-ulcb=
+.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/65839ad5b9b2c18fd5e13=
+5a8
+        new failure (last pass: v6.6.7-166-g323633885756) =
+
+ =
+
+
+
+platform                     | arch  | lab             | compiler | defconf=
+ig                  | regressions
+-----------------------------+-------+-----------------+----------+--------=
+--------------------+------------
+sun50i-h6-orangepi-one-plus  | arm64 | lab-clabbe      | gcc-10   | defconf=
+ig                  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/65839acc76c482bde1e1354c
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-orange=
+pi-one-plus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-166=
+-g4a769d77505ba/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-orange=
+pi-one-plus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/65839acc76c482bde1e13=
+54d
+        new failure (last pass: v6.6.7-166-g323633885756) =
+
+ =20
 
