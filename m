@@ -1,122 +1,147 @@
-Return-Path: <stable+bounces-8255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3CE81BA21
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:04:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3455081BA4D
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:11:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51E028B5CC
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:04:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66AA91C23DC9
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBA85821F;
-	Thu, 21 Dec 2023 15:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820AD41840;
+	Thu, 21 Dec 2023 15:11:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021955E71;
-	Thu, 21 Dec 2023 15:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Swttc05bVzvSHn;
-	Thu, 21 Dec 2023 23:01:44 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id B490C180069;
-	Thu, 21 Dec 2023 23:02:39 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 21 Dec
- 2023 23:02:39 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <linux-ext4@vger.kernel.org>
-CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
-	<libaokun1@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2 4/8] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
-Date: Thu, 21 Dec 2023 23:05:54 +0800
-Message-ID: <20231221150558.2740823-5-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20231221150558.2740823-1-libaokun1@huawei.com>
-References: <20231221150558.2740823-1-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A47F539EC;
+	Thu, 21 Dec 2023 15:11:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF66C433CD;
+	Thu, 21 Dec 2023 15:11:29 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rGKiv-000000040Vo-3Vx0;
+	Thu, 21 Dec 2023 10:12:33 -0500
+Message-ID: <20231221151233.624191677@goodmis.org>
+User-Agent: quilt/0.67
+Date: Thu, 21 Dec 2023 10:09:24 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Hongyu Jin <hongyu.jin@unisoc.com>,
+ Dongliang Cui <cuidongliang390@gmail.com>
+Subject: [for-linus][PATCH 2/3] eventfs: Have event files and directories default to parent uid and
+ gid
+References: <20231221150922.017965539@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+Content-Type: text/plain; charset=UTF-8
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
+Dongliang reported:
 
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC: stable@vger.kernel.org # 3.10
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+  I found that in the latest version, the nodes of tracefs have been
+  changed to dynamically created.
+
+  This has caused me to encounter a problem where the gid I specified in
+  the mounting parameters cannot apply to all files, as in the following
+  situation:
+
+  /data/tmp/events # mount | grep tracefs
+  tracefs on /data/tmp type tracefs (rw,seclabel,relatime,gid=3012)
+
+  gid 3012 = readtracefs
+
+  /data/tmp # ls -lh
+  total 0
+  -r--r-----   1 root readtracefs 0 1970-01-01 08:00 README
+  -r--r-----   1 root readtracefs 0 1970-01-01 08:00 available_events
+
+  ums9621_1h10:/data/tmp/events # ls -lh
+  total 0
+  drwxr-xr-x 2 root root 0 2023-12-19 00:56 alarmtimer
+  drwxr-xr-x 2 root root 0 2023-12-19 00:56 asoc
+
+  It will prevent certain applications from accessing tracefs properly, I
+  try to avoid this issue by making the following modifications.
+
+To fix this, have the files created default to taking the ownership of
+the parent dentry unless the ownership was previously set by the user.
+
+Link: https://lore.kernel.org/linux-trace-kernel/1703063706-30539-1-git-send-email-dongliang.cui@unisoc.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20231220105017.1489d790@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Hongyu Jin  <hongyu.jin@unisoc.com>
+Fixes: 28e12c09f5aa0 ("eventfs: Save ownership and mode")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reported-by: Dongliang Cui <cuidongliang390@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- fs/ext4/mballoc.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ fs/tracefs/event_inode.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index f6131ba514c8..1f15774971d7 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1910,11 +1910,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 43e237864a42..2ccc849a5bda 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -148,7 +148,8 @@ static const struct file_operations eventfs_file_operations = {
+ 	.release	= eventfs_release,
+ };
  
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1941,10 +1936,16 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
- 		} else {
- 			mb_regenerate_buddy(e4b);
-+			goto check;
- 		}
--		goto done;
-+		return;
- 	}
+-static void update_inode_attr(struct inode *inode, struct eventfs_attr *attr, umode_t mode)
++static void update_inode_attr(struct dentry *dentry, struct inode *inode,
++			      struct eventfs_attr *attr, umode_t mode)
+ {
+ 	if (!attr) {
+ 		inode->i_mode = mode;
+@@ -162,9 +163,13 @@ static void update_inode_attr(struct inode *inode, struct eventfs_attr *attr, um
  
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1969,9 +1970,9 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
+ 	if (attr->mode & EVENTFS_SAVE_UID)
+ 		inode->i_uid = attr->uid;
++	else
++		inode->i_uid = d_inode(dentry->d_parent)->i_uid;
  
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
- 	mb_update_avg_fragment_size(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
+ 	if (attr->mode & EVENTFS_SAVE_GID)
+ 		inode->i_gid = attr->gid;
++	else
++		inode->i_gid = d_inode(dentry->d_parent)->i_gid;
  }
  
+ /**
+@@ -206,7 +211,7 @@ static struct dentry *create_file(const char *name, umode_t mode,
+ 		return eventfs_failed_creating(dentry);
+ 
+ 	/* If the user updated the directory's attributes, use them */
+-	update_inode_attr(inode, attr, mode);
++	update_inode_attr(dentry, inode, attr, mode);
+ 
+ 	inode->i_op = &eventfs_file_inode_operations;
+ 	inode->i_fop = fop;
+@@ -242,7 +247,8 @@ static struct dentry *create_dir(struct eventfs_inode *ei, struct dentry *parent
+ 		return eventfs_failed_creating(dentry);
+ 
+ 	/* If the user updated the directory's attributes, use them */
+-	update_inode_attr(inode, &ei->attr, S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
++	update_inode_attr(dentry, inode, &ei->attr,
++			  S_IFDIR | S_IRWXU | S_IRUGO | S_IXUGO);
+ 
+ 	inode->i_op = &eventfs_root_dir_inode_operations;
+ 	inode->i_fop = &eventfs_file_operations;
 -- 
-2.31.1
+2.42.0
+
 
 
