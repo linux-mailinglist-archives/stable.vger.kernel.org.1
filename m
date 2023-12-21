@@ -1,231 +1,182 @@
-Return-Path: <stable+bounces-8208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B684C81AB02
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 00:28:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AFC81AB86
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 01:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DCBB1F237A3
-	for <lists+stable@lfdr.de>; Wed, 20 Dec 2023 23:28:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9783A1F24367
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 00:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A794A9B4;
-	Wed, 20 Dec 2023 23:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E882918D;
+	Thu, 21 Dec 2023 00:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bSzmWeWi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QnUhll9O"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE5F4A986
-	for <stable@vger.kernel.org>; Wed, 20 Dec 2023 23:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-203349901d5so109566fac.0
-        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 15:28:36 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F41C635
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 00:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-28bcc273833so197024a91.1
+        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 16:07:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703114915; x=1703719715; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1jCWm0yx2F4qFVZLFCli46a4SMKZDI4YQRqEHjGOrYQ=;
-        b=bSzmWeWiCQEYBD73UUuMzxXg9C2cuKPNw/Pn/YUhYPz61pDe0tsGz/dmWlEz9GdZk0
-         XUqlJcyflsUa5jVjnEA3rWwphWTDTWhFpJbZbegB8GXF5sVvgvOZEm26iZd0TaMNGy8d
-         V/lNrZ4wgBbtL8eH6dCpQQtAaF+woKxIn1oBUKoN3Ylp0jfarR8pq0neUBU/V+sxJf4x
-         SA9Zd83LNVXdHC8HwcQTQ9aGZ+U5xVGTUcu4BcaWBLEvhQxjWlmA+pJKmlrogD5JvI8Z
-         Dp42NVvNLYSe9JUKtPKXEYaNH6glBJraD4M2E2m9WtDIX3fAI8/jivkHVrfuxNWSRbTK
-         jyag==
+        d=linaro.org; s=google; t=1703117224; x=1703722024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vCO4Pp9Hv1vq/Sea199yDKNS1oBm5R2ANtFp1asUthk=;
+        b=QnUhll9OHcxZNjIh/ShJkMVrAQ/Pq7saK8iSguDcAFCdpkg4DPpHfBW6yN+J0xsTKc
+         jW2f5DfALeZNTA2UhFyp/IXa/aD2LN6DhExHb5YchPda7/H4y/ovzXxjfdbXeGVljnaI
+         YjOrH8AdM8bRHcc7QACl7nkx1EykkvvUgue0A+DwKYJZnyIdD0zm6ugggSi/3djtlYRy
+         pDvIzRXz7wQi1eHJ6U6a6gLhg9om9cBuF9XrjLySUMfxIlr/YWqy7T1kDYq1FDK5FMRF
+         j4lGxLkffH7MnxWTAQD0FgpGiM8l1OKwsU4/XOSw5Xxt2OgrHptnWY0H6q1KMr194PEu
+         Ze7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703114915; x=1703719715;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1jCWm0yx2F4qFVZLFCli46a4SMKZDI4YQRqEHjGOrYQ=;
-        b=vwj02jfL6d1yXIdjhtZMJABQuReHKBUIq3HUMYhklr55s54UbrM8Uqgozm747tCC0x
-         PAD6YhIVOOCxX07vcn6wujkzn9/tFPkVCaBZY8xo+P+oU2scOGDmL6CM6VT7HxhDlfzr
-         /78E92YXxBuxYNC0GiX+3l+5SE7F+sP/EfSohgKYZ3ocsQb3lJFXqLn/b3FgqveFLscW
-         Fv9IKx0/DD0T/s93to/GR446OL/Wp7wvPovH50lk936SJ/aAfl6ePEX9dh8tJYi7qV5E
-         2N1/rMkzX5LXDCQ9iLzii/Z1f+lN1prxOX9cQE3aht2W93APYhVzDZQIMi5wLmZM8/k9
-         7Yxw==
-X-Gm-Message-State: AOJu0YxEjkm9yu2uTPmbopb535Ar1abxVopVE4hMszaL8PyRLkuqK5Ff
-	0KiHyOs6Y62CyM7fyhiVehBt36JGD3z6UKC33Uk=
-X-Google-Smtp-Source: AGHT+IEdzHGZQPxZ9v04H5eebRAJjZ6IbNesPNYyz4crTWBF+frERvffleWSL4lYv1XYJJ9Os6a/rQ==
-X-Received: by 2002:a05:6870:56a2:b0:1fb:75a:6d40 with SMTP id p34-20020a05687056a200b001fb075a6d40mr534960oao.103.1703114915664;
-        Wed, 20 Dec 2023 15:28:35 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id gq12-20020a17090b104c00b0028bbddc3932sm405077pjb.16.2023.12.20.15.28.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 15:28:35 -0800 (PST)
-Message-ID: <658378a3.170a0220.d5a12.1da7@mx.google.com>
-Date: Wed, 20 Dec 2023 15:28:35 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1703117224; x=1703722024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vCO4Pp9Hv1vq/Sea199yDKNS1oBm5R2ANtFp1asUthk=;
+        b=UlKgrvEaBZJOG+wLEP+tamRb1QOnrxxYsu/it5jJxBDogIs0sU//h//0Fyx338dK8s
+         IXpl5cBU8rSEGPY6zo7votg2qyMLGfWwo3DE6Ka0Tobg5KGoet7PUCSvCTF+UVAfilJm
+         aWpq7jdrfRMRBRYtlZEOf8lFfaR685wAyYblK90kL5I23+KIhVMLFAgC1TedvvxB9yAN
+         QJKDmimlFiQmbcZQ1BKKQQ48l21u/pzEI7V4Pv0yMpgaxAYj1Z86GOASuBdKLmQLcVGM
+         eHzknWbnnnJ2f+JyN32/zP32ODgyjr/SmEYe6ze1XMlTAJcl4gMn3ucdYGXg42crsOay
+         lxHA==
+X-Gm-Message-State: AOJu0YwIT5bkhzmty1QkiUaT5/9UNH5mw/S5MaRyuOGWrorcjm8NDXkJ
+	5KCof1wQncCyBsV+JrKB6uehEZdK/Au/LIf74Ud+Zg==
+X-Google-Smtp-Source: AGHT+IEF9JatrHcJU0i3PktIebldc4bkXVgmIXyCzxdZj/ms0x4sd99ap98mvw6cNJ7kyolz4sklZHuwCv/BZvWKoAg=
+X-Received: by 2002:a17:90a:de87:b0:28b:c820:958a with SMTP id
+ n7-20020a17090ade8700b0028bc820958amr2334850pjv.33.1703117224526; Wed, 20 Dec
+ 2023 16:07:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+ <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk> <CA+G9fYsbwWpDVR9KJXx8UO5MXsYT81uAJbLLNDnLianr8jmXUA@mail.gmail.com>
+ <63e92a6a-9cb7-4272-b524-ccaf997aceb3@sirena.org.uk>
+In-Reply-To: <63e92a6a-9cb7-4272-b524-ccaf997aceb3@sirena.org.uk>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Wed, 20 Dec 2023 18:06:53 -0600
+Message-ID: <CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
+Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
+To: Mark Brown <broonie@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.68-108-g5ec595eb8752d
-Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.68-108-g5ec595eb8752d)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
-68-108-g5ec595eb8752d)
+Hello!
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.68-108-g5ec595eb8752d/
+On Thu, 19 Oct 2023 at 11:26, Mark Brown <broonie@kernel.org> wrote:
+> On Thu, Oct 19, 2023 at 09:07:02PM +0530, Naresh Kamboju wrote:
+> > On Tue, 17 Oct 2023 at 17:52, Mark Brown <broonie@kernel.org> wrote:
+[...]
+> > > To confirm have you seen this on other stables as well or is this onl=
+y
+> > > v6.5?  For how long have you been seeing this?
+>
+> > This is only seen on 6.5.8-rc2 and seen only once.
+> > I have checked on mainline / next and other stable branches and this cr=
+ash
+> > is not seen anywhere else.
+>
+> > However, I will keep checking them on other branches and next and mainl=
+ine.
+>
+> I see.  If the bug has never been reproduced I don't think we can draw
+> any conclusion about which branches are affected, I would be a bit
+> surprised by something that affects v6.5 only.
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.68-108-g5ec595eb8752d
-Git Commit: 5ec595eb8752d3c550fc6be6a79772fc65ec8c54
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+We have been seeing this problem in other instances, specifically on
+the following kernels:
+* 5.15.132, 5.15.134-rc1, 5.15.135, 5.15.136-rc1, 5.15.142, 5.15.145-rc1
+* 6.1.42, 6.1.43, 6.1.51-rc1, 6.1.56-rc1, 6.1.59-rc1, 6.1.63
+* 6.3.10, 6.3.11
+* 6.4.7
+* 6.5.2, 6.5.10-rc2
 
-Warnings Detected:
+Most recent case is for the current 5.15 RC. Decoded stack trace is here:
+-----8<-----
+  <4>[   29.297166] ------------[ cut here ]------------
+  <4>[ 29.298039] WARNING: CPU: 1 PID: 220 at
+arch/arm64/kernel/fpsimd.c:950 do_sve_acc
+(/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
+  <4>[   29.300418] Modules linked in: fuse drm dm_mod ip_tables x_tables
+  <4>[   29.302720] CPU: 1 PID: 220 Comm: systemd-udevd Not tainted
+5.15.145-rc1 #1
+  <4>[   29.303601] Hardware name: linux,dummy-virt (DT)
+  <4>[   29.304804] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT
+-SSBS BTYPE=3D--)
+  <4>[ 29.305615] pc : do_sve_acc
+(/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
+  <4>[ 29.306499] lr : do_sve_acc
+(/builds/linux/arch/arm64/include/asm/jump_label.h:38
+/builds/linux/arch/arm64/include/asm/lse.h:24
+/builds/linux/arch/arm64/include/asm/atomic.h:86
+/builds/linux/include/linux/atomic/atomic-long.h:335
+/builds/linux/include/asm-generic/bitops/atomic.h:42
+/builds/linux/include/asm-generic/bitops/instrumented-atomic.h:71
+/builds/linux/include/linux/thread_info.h:108
+/builds/linux/arch/arm64/kernel/fpsimd.c:949)
+  <4>[   29.307466] sp : ffff8000083b3e60
+  <4>[   29.308447] x29: ffff8000083b3e60 x28: ffff0000c2f42000 x27:
+0000000000000000
+  <4>[   29.310500] x26: 0000000000000000 x25: 0000000000000000 x24:
+0000000000000000
+  <4>[   29.312034] x23: 0000000080001000 x22: 0000ffffb3c8a454 x21:
+00000000ffffffff
+  <4>[   29.313338] x20: 0000000064000000 x19: ffff0000c2f42000 x18:
+0000000000000000
+  <4>[   29.314636] x17: 0000000000000000 x16: 0000000000000000 x15:
+0000000000000000
+  <4>[   29.316090] x14: 0000000000000000 x13: 0000000000000000 x12:
+0000000000000000
+  <4>[   29.317096] x11: 0000000000000000 x10: 0000000000000000 x9 :
+ffffb047a36178f4
+  <4>[   29.318131] x8 : ffff0000c2c4d888 x7 : 0000000000000000 x6 :
+0000000000000200
+  <4>[   29.319171] x5 : ffffb047a5c6f260 x4 : 0000000000000200 x3 :
+0000000000000001
+  <4>[   29.320180] x2 : 0000000000000000 x1 : ffff4fb95a329000 x0 :
+0000000000800800
+  <4>[   29.321599] Call trace:
+  <4>[ 29.321996] do_sve_acc
+(/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
+  <4>[ 29.322674] el0_sve_acc
+(/builds/linux/arch/arm64/include/asm/daifflags.h:28
+/builds/linux/arch/arm64/kernel/entry-common.c:129
+/builds/linux/arch/arm64/kernel/entry-common.c:138
+/builds/linux/arch/arm64/kernel/entry-common.c:529)
+  <4>[ 29.323273] el0t_64_sync_handler
+(/builds/linux/arch/arm64/kernel/entry-common.c:639)
+  <4>[ 29.323951] el0t_64_sync (/builds/linux/arch/arm64/kernel/entry.S:584=
+)
+  <4>[   29.324598] ---[ end trace b31d3b95f436e1b5 ]---
+----->8-----
 
-arc:
+Complete log (and reproducer) here:
+  https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2ZoYpOR7=
+9EjlFiAuFHeOWN2rwC3
 
-arm64:
+Artifacts (including vmlinux and System.map) can be found here:
+  https://storage.tuxsuite.com/public/linaro/lkft/builds/2ZoYoIewSKk26jISEo=
+4QlNaOvVR/
 
-arm:
+Greetings!
 
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
 
