@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-8254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A1381BA17
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:03:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3CE81BA21
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:04:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E201C23EDA
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A51E028B5CC
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:04:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA85103A;
-	Thu, 21 Dec 2023 15:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBA85821F;
+	Thu, 21 Dec 2023 15:02:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D5B360B3;
-	Thu, 21 Dec 2023 15:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021955E71;
+	Thu, 21 Dec 2023 15:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4SwttC56mSz1fyYj;
-	Thu, 21 Dec 2023 23:01:23 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Swttc05bVzvSHn;
+	Thu, 21 Dec 2023 23:01:44 +0800 (CST)
 Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2BB591400DB;
-	Thu, 21 Dec 2023 23:02:38 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B490C180069;
+	Thu, 21 Dec 2023 23:02:39 +0800 (CST)
 Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
  (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 21 Dec
- 2023 23:02:37 +0800
+ 2023 23:02:39 +0800
 From: Baokun Li <libaokun1@huawei.com>
 To: <linux-ext4@vger.kernel.org>
 CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
 	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
 	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
-	<libaokun1@huawei.com>, Wei Chen <harperchen1110@gmail.com>, xingwei lee
-	<xrivendell7@gmail.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2 1/8] ext4: fix double-free of blocks due to wrong extents moved_len
-Date: Thu, 21 Dec 2023 23:05:51 +0800
-Message-ID: <20231221150558.2740823-2-libaokun1@huawei.com>
+	<libaokun1@huawei.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2 4/8] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
+Date: Thu, 21 Dec 2023 23:05:54 +0800
+Message-ID: <20231221150558.2740823-5-libaokun1@huawei.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20231221150558.2740823-1-libaokun1@huawei.com>
 References: <20231221150558.2740823-1-libaokun1@huawei.com>
@@ -54,63 +53,69 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
  dggpeml500021.china.huawei.com (7.185.36.21)
 
-In ext4_move_extents(), moved_len is only updated when all moves are
-successfully executed, and only discards orig_inode and donor_inode
-preallocations when moved_len is not zero. When the loop fails to exit
-after successfully moving some extents, moved_len is not updated and
-remains at 0, so it does not discard the preallocations.
+After updating bb_free in mb_free_blocks, it is possible to return without
+updating bb_fragments because the block being freed is found to have
+already been freed, which leads to inconsistency between bb_free and
+bb_fragments.
 
-If the moved extents overlap with the preallocated extents, the
-overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
-Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
-incremented twice. Hence when trim is executed, a zero-division bug is
-triggered in mb_update_avg_fragment_size() because bb_free is not zero
-and bb_fragments is zero.
+Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+to problems such as dividing by zero when calculating the average fragment
+length. Hence move the update of bb_free to after the block double-free
+check guarantees that the corresponding statistics are updated only after
+the core block bitmap is modified.
 
-Therefore, update move_len after each extent move to avoid the issue.
-
-Reported-by: Wei Chen <harperchen1110@gmail.com>
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-CC: stable@vger.kernel.org # 3.18
+Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+CC: stable@vger.kernel.org # 3.10
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 ---
- fs/ext4/move_extent.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ext4/mballoc.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index 3aa57376d9c2..391efa6d4c56 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -618,6 +618,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
- 		goto out;
- 	o_end = o_start + len;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index f6131ba514c8..1f15774971d7 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1910,11 +1910,6 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+ 	mb_check_buddy(e4b);
+ 	mb_free_blocks_double(inode, e4b, first, count);
  
-+	*moved_len = 0;
- 	while (o_start < o_end) {
- 		struct ext4_extent *ex;
- 		ext4_lblk_t cur_blk, next_blk;
-@@ -672,7 +673,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
- 		 */
- 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
- 		/* Swap original branches with new branches */
--		move_extent_per_page(o_filp, donor_inode,
-+		*moved_len += move_extent_per_page(o_filp, donor_inode,
- 				     orig_page_index, donor_page_index,
- 				     offset_in_page, cur_len,
- 				     unwritten, &ret);
-@@ -682,9 +683,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
- 		o_start += cur_len;
- 		d_start += cur_len;
+-	this_cpu_inc(discard_pa_seq);
+-	e4b->bd_info->bb_free += count;
+-	if (first < e4b->bd_info->bb_first_free)
+-		e4b->bd_info->bb_first_free = first;
+-
+ 	/* access memory sequentially: check left neighbour,
+ 	 * clear range and then check right neighbour
+ 	 */
+@@ -1941,10 +1936,16 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+ 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+ 		} else {
+ 			mb_regenerate_buddy(e4b);
++			goto check;
+ 		}
+-		goto done;
++		return;
  	}
--	*moved_len = o_start - orig_blk;
--	if (*moved_len > len)
--		*moved_len = len;
  
- out:
- 	if (*moved_len) {
++	this_cpu_inc(discard_pa_seq);
++	e4b->bd_info->bb_free += count;
++	if (first < e4b->bd_info->bb_first_free)
++		e4b->bd_info->bb_first_free = first;
++
+ 	/* let's maintain fragments counter */
+ 	if (left_is_free && right_is_free)
+ 		e4b->bd_info->bb_fragments--;
+@@ -1969,9 +1970,9 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+ 	if (first <= last)
+ 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
+ 
+-done:
+ 	mb_set_largest_free_order(sb, e4b->bd_info);
+ 	mb_update_avg_fragment_size(sb, e4b->bd_info);
++check:
+ 	mb_check_buddy(e4b);
+ }
+ 
 -- 
 2.31.1
 
