@@ -1,158 +1,105 @@
-Return-Path: <stable+bounces-8257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260CA81BA50
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:12:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E37381BB43
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D523B283BFE
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B18731F293EC
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EA853A1E;
-	Thu, 21 Dec 2023 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A38055E44;
+	Thu, 21 Dec 2023 15:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="foMQzB4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2C153A0F;
-	Thu, 21 Dec 2023 15:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4742DC433C7;
-	Thu, 21 Dec 2023 15:11:30 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@goodmis.org>)
-	id 1rGKiw-000000040WI-0VB9;
-	Thu, 21 Dec 2023 10:12:34 -0500
-Message-ID: <20231221151233.903914320@goodmis.org>
-User-Agent: quilt/0.67
-Date: Thu, 21 Dec 2023 10:09:25 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org,
- Tom Zanussi <zanussi@kernel.org>,
- Alexander Graf <graf@amazon.com>
-Subject: [for-linus][PATCH 3/3] tracing / synthetic: Disable events after testing in
- synth_event_gen_test_init()
-References: <20231221150922.017965539@goodmis.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40EE55E41;
+	Thu, 21 Dec 2023 15:47:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028E0C433C9;
+	Thu, 21 Dec 2023 15:47:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703173634;
+	bh=1VkNb9SSj6ijZ3M72NIaFsxAoNnYaBQ2VS47upbIECw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=foMQzB4VeCSYCK//dcfGdemiuC7dKk0zuG1BDQxCkZdTqaRrEwvgQCiJ0pXugK9Qa
+	 LlUugpTV6s3JWWoRtIg3kD00AvVPEJP5ILsdBTWtHMZDygSEHTpeduzLfOCjCD3mUD
+	 K3IOHDR4zp4rOF+qKjzuLt5nVJFScnxaGbvVMet34PxjkKCWbSg2cZHqJJI/e/AMc/
+	 /UaclkeRKp4EkIdtq18KfuTuwxLqSAFS+T4dthVtNZ1Tyl0Nwfu6r4+m9FZkW4q9rG
+	 X7uiwUiXnuQy4VWUUAkrbx6BAI1wIIVJ2ppeNoQPmqW7SH+zUe85KzXJjgyMQMwOfw
+	 FmXjWEdP3pzJQ==
+From: guoren@kernel.org
+To: linux-kernel@vger.kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	alexghiti@rivosinc.com,
+	charlie@rivosinc.com,
+	xiao.w.wang@intel.com,
+	guoren@kernel.org,
+	david@redhat.com,
+	panqinglin2020@iscas.ac.cn,
+	rick.p.edgecombe@intel.com,
+	willy@infradead.org,
+	bjorn@rivosinc.com,
+	conor.dooley@microchip.com,
+	cleger@rivosinc.com,
+	leobras@redhat.com
+Cc: linux-riscv@lists.infradead.org,
+	Guo Ren <guoren@linux.alibaba.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 1/4] riscv: mm: Fixup compat mode boot failure
+Date: Thu, 21 Dec 2023 10:46:58 -0500
+Message-Id: <20231221154702.2267684-2-guoren@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231221154702.2267684-1-guoren@kernel.org>
+References: <20231221154702.2267684-1-guoren@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-The synth_event_gen_test module can be built in, if someone wants to run
-the tests at boot up and not have to load them.
+In COMPAT mode, the STACK_TOP is 0x80000000, but the TASK_SIZE is
+0x7fff000. When the user stack is upon 0x7fff000, it will cause a user
+segment fault. Sometimes, it would cause boot failure when the whole
+rootfs is rv32.
 
-The synth_event_gen_test_init() function creates and enables the synthetic
-events and runs its tests.
-
-The synth_event_gen_test_exit() disables the events it created and
-destroys the events.
-
-If the module is builtin, the events are never disabled. The issue is, the
-events should be disable after the tests are run. This could be an issue
-if the rest of the boot up tests are enabled, as they expect the events to
-be in a known state before testing. That known state happens to be
-disabled.
-
-When CONFIG_SYNTH_EVENT_GEN_TEST=y and CONFIG_EVENT_TRACE_STARTUP_TEST=y
-a warning will trigger:
-
- Running tests on trace events:
- Testing event create_synth_test:
- Enabled event during self test!
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 1 at kernel/trace/trace_events.c:4150 event_trace_self_tests+0x1c2/0x480
- Modules linked in:
- CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc2-test-00031-gb803d7c664d5-dirty #276
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- RIP: 0010:event_trace_self_tests+0x1c2/0x480
- Code: bb e8 a2 ab 5d fc 48 8d 7b 48 e8 f9 3d 99 fc 48 8b 73 48 40 f6 c6 01 0f 84 d6 fe ff ff 48 c7 c7 20 b6 ad bb e8 7f ab 5d fc 90 <0f> 0b 90 48 89 df e8 d3 3d 99 fc 48 8b 1b 4c 39 f3 0f 85 2c ff ff
- RSP: 0000:ffffc9000001fdc0 EFLAGS: 00010246
- RAX: 0000000000000029 RBX: ffff88810399ca80 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffffffffb9f19478 RDI: ffff88823c734e64
- RBP: ffff88810399f300 R08: 0000000000000000 R09: fffffbfff79eb32a
- R10: ffffffffbcf59957 R11: 0000000000000001 R12: ffff888104068090
- R13: ffffffffbc89f0a0 R14: ffffffffbc8a0f08 R15: 0000000000000078
- FS:  0000000000000000(0000) GS:ffff88823c700000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001f6282001 CR4: 0000000000170ef0
- Call Trace:
-  <TASK>
-  ? __warn+0xa5/0x200
-  ? event_trace_self_tests+0x1c2/0x480
-  ? report_bug+0x1f6/0x220
-  ? handle_bug+0x6f/0x90
-  ? exc_invalid_op+0x17/0x50
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? tracer_preempt_on+0x78/0x1c0
-  ? event_trace_self_tests+0x1c2/0x480
-  ? __pfx_event_trace_self_tests_init+0x10/0x10
-  event_trace_self_tests_init+0x27/0xe0
-  do_one_initcall+0xd6/0x3c0
-  ? __pfx_do_one_initcall+0x10/0x10
-  ? kasan_set_track+0x25/0x30
-  ? rcu_is_watching+0x38/0x60
-  kernel_init_freeable+0x324/0x450
-  ? __pfx_kernel_init+0x10/0x10
-  kernel_init+0x1f/0x1e0
-  ? _raw_spin_unlock_irq+0x33/0x50
-  ret_from_fork+0x34/0x60
-  ? __pfx_kernel_init+0x10/0x10
-  ret_from_fork_asm+0x1b/0x30
-  </TASK>
-
-This is because the synth_event_gen_test_init() left the synthetic events
-that it created enabled. By having it disable them after testing, the
-other selftests will run fine.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231220111525.2f0f49b0@gandalf.local.home
+Freeing unused kernel image (initmem) memory: 2236K
+Run /sbin/init as init process
+Starting init: /sbin/init exists but couldn't execute it (error -14)
+Run /etc/init as init process
+...
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Fixes: 9fe41efaca084 ("tracing: Add synth event generation test module")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reported-by: Alexander Graf <graf@amazon.com>
-Tested-by: Alexander Graf <graf@amazon.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
 ---
- kernel/trace/synth_event_gen_test.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/synth_event_gen_test.c b/kernel/trace/synth_event_gen_test.c
-index 8dfe85499d4a..354c2117be43 100644
---- a/kernel/trace/synth_event_gen_test.c
-+++ b/kernel/trace/synth_event_gen_test.c
-@@ -477,6 +477,17 @@ static int __init synth_event_gen_test_init(void)
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index ab00235b018f..74ffb2178f54 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -881,7 +881,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+ #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
  
- 	ret = test_trace_synth_event();
- 	WARN_ON(ret);
-+
-+	/* Disable when done */
-+	trace_array_set_clr_event(gen_synth_test->tr,
-+				  "synthetic",
-+				  "gen_synth_test", false);
-+	trace_array_set_clr_event(empty_synth_test->tr,
-+				  "synthetic",
-+				  "empty_synth_test", false);
-+	trace_array_set_clr_event(create_synth_test->tr,
-+				  "synthetic",
-+				  "create_synth_test", false);
-  out:
- 	return ret;
- }
+ #ifdef CONFIG_COMPAT
+-#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
++#define TASK_SIZE_32	(_AC(0x80000000, UL))
+ #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
+ 			 TASK_SIZE_32 : TASK_SIZE_64)
+ #else
 -- 
-2.42.0
-
+2.40.1
 
 
