@@ -1,174 +1,218 @@
-Return-Path: <stable+bounces-8210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9106781ABC8
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 01:34:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3133281ABE5
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 01:52:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C409C1C22504
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 00:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC51228783B
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 00:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E387F0;
-	Thu, 21 Dec 2023 00:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52AA64F;
+	Thu, 21 Dec 2023 00:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khF2KoQH"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="3dknGsKz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A21710EB;
-	Thu, 21 Dec 2023 00:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6E0C433C7;
-	Thu, 21 Dec 2023 00:34:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703118887;
-	bh=iBBX7JrvE5c6etj+HPKaqOuXmJxPA0RAWYdmPd5igvY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=khF2KoQHa8tpe46/f6GzkGV2sspQ9qFZK67JOqx7kqwYMHaxat/IJCGJ0ZhRku8CG
-	 8E3EG2lgZ6U5KTbpR2XTtguWvXqnuLX9xWk66UN0avv/skUOb4cvE/AcK3rSshgfQ1
-	 X72I8Ow2PwcIwEvEAOfWKrGbObe47lb1mFn+CPY/gfrmNX5JHflApxSTFE51XFkPfD
-	 ecmHgAVqeEEjUvbeRQE1bsY8uaVtNnfCenoFDzI7cRFrNl0ZyeXA+INFoQGgleYxyr
-	 ZUhVobRNn94otdYHDJmB0eLHZUsR/6YluvBv5gdgjX55V6xoAsakOk3mzrmjdztZKR
-	 Qe50Z87CHFcCw==
-Date: Thu, 21 Dec 2023 09:34:42 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Daniel =?UTF-8?B?RMOtYXo=?= <daniel.diaz@linaro.org>
-Cc: Mark Brown <broonie@kernel.org>, Naresh Kamboju
- <naresh.kamboju@linaro.org>, Linux ARM
- <linux-arm-kernel@lists.infradead.org>, open list
- <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, linux-stable
- <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Marc Zyngier
- <maz@kernel.org>
-Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
-Message-Id: <20231221093442.3c4b84f0d39350f9deb4e51f@kernel.org>
-In-Reply-To: <CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
-References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
-	<ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
-	<CA+G9fYsbwWpDVR9KJXx8UO5MXsYT81uAJbLLNDnLianr8jmXUA@mail.gmail.com>
-	<63e92a6a-9cb7-4272-b524-ccaf997aceb3@sirena.org.uk>
-	<CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89612912
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 00:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7b7fdde8b56so14802539f.1
+        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 16:52:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703119920; x=1703724720; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jgqbvg3qTqKEpVmknKHDPC3PrF6RkmJPcOA9pi8liDY=;
+        b=3dknGsKzetqzWb9vJe7taaJnfpqFO+mKW+Rk1hc7OMQxAfouH6ITxfoEGkDkD/VB4P
+         M66g57+0nMfnwKe8beNuVnV9Ne9zalnELkJ2ltVn6Vn7fGUsB1BmCyzDyy2RykuSTE9L
+         rFtYEADHzPAPqM84sMW1xFdCBWwzjoxI5KdosAjRoUy3pneUL9CFVPuLDXUgZmrQA6X6
+         RzbzPwdlikk/96p1U9VndFfjqAUUIliAUk372LF0fo7iCzXMNAdobVJFjvUB0Y+I/Ki9
+         CUx848nmAHCoYIoUwHifzRj7mywBe3kPlsyWVnsc34s+Qexwpz21/FFCKtg6ItcrjQTF
+         K2Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703119920; x=1703724720;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jgqbvg3qTqKEpVmknKHDPC3PrF6RkmJPcOA9pi8liDY=;
+        b=eibGxVNmRUHQ6tQLhlcpp/12SlneRx+xP4lS2I9tIweacNPWwwvhWKjwSDpA9Lk3ad
+         7QQ0xiZMkQuOMdW7LunO8PArjHkixR+YEdl8bd9vYPkRUoI45hUghZpttDWOq07XXqmR
+         QjROiZ2IdKz4gYxckgifWl2bz8qp21bThV0toMnW/5OLmdNHUMgTzpgMmif1mha8wM85
+         0GffMSg3BSdeYT1oWAMGBGd4GbcYVUE5x0ZZV3MlNGoS8knjZ1mt5uZwgJqviZFvvYve
+         WR4Vfsk7VojiYSuKZkzpu+b56z6sYU2VMSnA284vmQQBcEgh+ZZ6hFeN5zT4ZGcClgz7
+         DnHQ==
+X-Gm-Message-State: AOJu0YyB/OPwBwEovPEW77HAuSAq0kTwOuWZWsGdNBaggp5laNU6oYi/
+	vpduGwxtqay++8QHVmRJGcqgZGp5t6zHX+JYmGE=
+X-Google-Smtp-Source: AGHT+IH5L6kktU1NMq7eoVc/LUqHTrREpZfIWuYZ3Pk8+3nUPPlgDkc6c5Wl/64hJIYdRuAQrk1pMA==
+X-Received: by 2002:a05:6e02:18c7:b0:35f:cb0b:d4ce with SMTP id s7-20020a056e0218c700b0035fcb0bd4cemr2294818ilu.123.1703119920302;
+        Wed, 20 Dec 2023 16:52:00 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id u1-20020a170902e5c100b001d3e2578e66sm313187plf.243.2023.12.20.16.51.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Dec 2023 16:51:59 -0800 (PST)
+Message-ID: <65838c2f.170a0220.3345c.1833@mx.google.com>
+Date: Wed, 20 Dec 2023 16:51:59 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v4.19.302-36-g2fba28e43c215
+Subject: stable-rc/linux-4.19.y baseline: 91 runs,
+ 2 regressions (v4.19.302-36-g2fba28e43c215)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hi Daniel,
+stable-rc/linux-4.19.y baseline: 91 runs, 2 regressions (v4.19.302-36-g2fba=
+28e43c215)
 
-Would you know what ftrace selftest testcase script is running when
-this crash happened? I think it depends on the selftest version but
-I don't know which one you run.
+Regressions Summary
+-------------------
 
-Thank you,
+platform         | arch | lab         | compiler | defconfig           | re=
+gressions
+-----------------+------+-------------+----------+---------------------+---=
+---------
+at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
+         =
 
-On Wed, 20 Dec 2023 18:06:53 -0600
-Daniel Díaz <daniel.diaz@linaro.org> wrote:
-
-> Hello!
-> 
-> On Thu, 19 Oct 2023 at 11:26, Mark Brown <broonie@kernel.org> wrote:
-> > On Thu, Oct 19, 2023 at 09:07:02PM +0530, Naresh Kamboju wrote:
-> > > On Tue, 17 Oct 2023 at 17:52, Mark Brown <broonie@kernel.org> wrote:
-> [...]
-> > > > To confirm have you seen this on other stables as well or is this only
-> > > > v6.5?  For how long have you been seeing this?
-> >
-> > > This is only seen on 6.5.8-rc2 and seen only once.
-> > > I have checked on mainline / next and other stable branches and this crash
-> > > is not seen anywhere else.
-> >
-> > > However, I will keep checking them on other branches and next and mainline.
-> >
-> > I see.  If the bug has never been reproduced I don't think we can draw
-> > any conclusion about which branches are affected, I would be a bit
-> > surprised by something that affects v6.5 only.
-> 
-> We have been seeing this problem in other instances, specifically on
-> the following kernels:
-> * 5.15.132, 5.15.134-rc1, 5.15.135, 5.15.136-rc1, 5.15.142, 5.15.145-rc1
-> * 6.1.42, 6.1.43, 6.1.51-rc1, 6.1.56-rc1, 6.1.59-rc1, 6.1.63
-> * 6.3.10, 6.3.11
-> * 6.4.7
-> * 6.5.2, 6.5.10-rc2
-> 
-> Most recent case is for the current 5.15 RC. Decoded stack trace is here:
-> -----8<-----
->   <4>[   29.297166] ------------[ cut here ]------------
->   <4>[ 29.298039] WARNING: CPU: 1 PID: 220 at
-> arch/arm64/kernel/fpsimd.c:950 do_sve_acc
-> (/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
->   <4>[   29.300418] Modules linked in: fuse drm dm_mod ip_tables x_tables
->   <4>[   29.302720] CPU: 1 PID: 220 Comm: systemd-udevd Not tainted
-> 5.15.145-rc1 #1
->   <4>[   29.303601] Hardware name: linux,dummy-virt (DT)
->   <4>[   29.304804] pstate: 40400009 (nZcv daif +PAN -UAO -TCO -DIT
-> -SSBS BTYPE=--)
->   <4>[ 29.305615] pc : do_sve_acc
-> (/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
->   <4>[ 29.306499] lr : do_sve_acc
-> (/builds/linux/arch/arm64/include/asm/jump_label.h:38
-> /builds/linux/arch/arm64/include/asm/lse.h:24
-> /builds/linux/arch/arm64/include/asm/atomic.h:86
-> /builds/linux/include/linux/atomic/atomic-long.h:335
-> /builds/linux/include/asm-generic/bitops/atomic.h:42
-> /builds/linux/include/asm-generic/bitops/instrumented-atomic.h:71
-> /builds/linux/include/linux/thread_info.h:108
-> /builds/linux/arch/arm64/kernel/fpsimd.c:949)
->   <4>[   29.307466] sp : ffff8000083b3e60
->   <4>[   29.308447] x29: ffff8000083b3e60 x28: ffff0000c2f42000 x27:
-> 0000000000000000
->   <4>[   29.310500] x26: 0000000000000000 x25: 0000000000000000 x24:
-> 0000000000000000
->   <4>[   29.312034] x23: 0000000080001000 x22: 0000ffffb3c8a454 x21:
-> 00000000ffffffff
->   <4>[   29.313338] x20: 0000000064000000 x19: ffff0000c2f42000 x18:
-> 0000000000000000
->   <4>[   29.314636] x17: 0000000000000000 x16: 0000000000000000 x15:
-> 0000000000000000
->   <4>[   29.316090] x14: 0000000000000000 x13: 0000000000000000 x12:
-> 0000000000000000
->   <4>[   29.317096] x11: 0000000000000000 x10: 0000000000000000 x9 :
-> ffffb047a36178f4
->   <4>[   29.318131] x8 : ffff0000c2c4d888 x7 : 0000000000000000 x6 :
-> 0000000000000200
->   <4>[   29.319171] x5 : ffffb047a5c6f260 x4 : 0000000000000200 x3 :
-> 0000000000000001
->   <4>[   29.320180] x2 : 0000000000000000 x1 : ffff4fb95a329000 x0 :
-> 0000000000800800
->   <4>[   29.321599] Call trace:
->   <4>[ 29.321996] do_sve_acc
-> (/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
->   <4>[ 29.322674] el0_sve_acc
-> (/builds/linux/arch/arm64/include/asm/daifflags.h:28
-> /builds/linux/arch/arm64/kernel/entry-common.c:129
-> /builds/linux/arch/arm64/kernel/entry-common.c:138
-> /builds/linux/arch/arm64/kernel/entry-common.c:529)
->   <4>[ 29.323273] el0t_64_sync_handler
-> (/builds/linux/arch/arm64/kernel/entry-common.c:639)
->   <4>[ 29.323951] el0t_64_sync (/builds/linux/arch/arm64/kernel/entry.S:584)
->   <4>[   29.324598] ---[ end trace b31d3b95f436e1b5 ]---
-> ----->8-----
-> 
-> Complete log (and reproducer) here:
->   https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2ZoYpOR79EjlFiAuFHeOWN2rwC3
-> 
-> Artifacts (including vmlinux and System.map) can be found here:
->   https://storage.tuxsuite.com/public/linaro/lkft/builds/2ZoYoIewSKk26jISEo4QlNaOvVR/
-> 
-> Greetings!
-> 
-> Daniel Díaz
-> daniel.diaz@linaro.org
+beaglebone-black | arm  | lab-broonie | gcc-10   | omap2plus_defconfig | 1 =
+         =
 
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
+nel/v4.19.302-36-g2fba28e43c215/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-4.19.y
+  Describe: v4.19.302-36-g2fba28e43c215
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      2fba28e43c215b728400054b0f62c3c9024b541f =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform         | arch | lab         | compiler | defconfig           | re=
+gressions
+-----------------+------+-------------+----------+---------------------+---=
+---------
+at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
+         =
+
+
+  Details:     https://kernelci.org/test/plan/id/65835a3f9a1d55cc8ee1349d
+
+  Results:     42 PASS, 9 FAIL, 1 SKIP
+  Full config: multi_v5_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
+02-36-g2fba28e43c215/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
+1sam9g20ek.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
+02-36-g2fba28e43c215/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at9=
+1sam9g20ek.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/65835a3f9a1d55cc8ee134cf
+        failing since 22 days (last pass: v4.19.299-93-g263cae4d5493f, firs=
+t fail: v4.19.299-93-gc66845304b463)
+
+    2023-12-20T21:18:15.463535  + set +x
+    2023-12-20T21:18:15.464056  <8><LAVA_SIGNAL_ENDRUN 0_dmesg 379349_1.5.2=
+.4.1>
+    2023-12-20T21:18:15.576201  / # #
+    2023-12-20T21:18:15.678910  export SHELL=3D/bin/sh
+    2023-12-20T21:18:15.679686  #
+    2023-12-20T21:18:15.781595  / # export SHELL=3D/bin/sh. /lava-379349/en=
+vironment
+    2023-12-20T21:18:15.782447  =
+
+    2023-12-20T21:18:15.884407  / # . /lava-379349/environment/lava-379349/=
+bin/lava-test-runner /lava-379349/1
+    2023-12-20T21:18:15.885719  =
+
+    2023-12-20T21:18:15.889340  / # /lava-379349/bin/lava-test-runner /lava=
+-379349/1 =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform         | arch | lab         | compiler | defconfig           | re=
+gressions
+-----------------+------+-------------+----------+---------------------+---=
+---------
+beaglebone-black | arm  | lab-broonie | gcc-10   | omap2plus_defconfig | 1 =
+         =
+
+
+  Details:     https://kernelci.org/test/plan/id/65835b8db7c8a5e9f1e13484
+
+  Results:     41 PASS, 10 FAIL, 1 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
+02-36-g2fba28e43c215/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-be=
+aglebone-black.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.3=
+02-36-g2fba28e43c215/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-be=
+aglebone-black.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/65835b8db7c8a5e9f1e134b6
+        failing since 2 days (last pass: v4.19.302-32-gb2fab883a7817, first=
+ fail: v4.19.302-37-gc6ac8872cc6c4)
+
+    2023-12-20T21:24:06.638482  + set +x<8>[   17.196179] <LAVA_SIGNAL_ENDR=
+UN 0_dmesg 379430_1.5.2.4.1>
+    2023-12-20T21:24:06.638907  =
+
+    2023-12-20T21:24:06.749109  / # #
+    2023-12-20T21:24:06.851635  export SHELL=3D/bin/sh
+    2023-12-20T21:24:06.852138  #
+    2023-12-20T21:24:06.954050  / # export SHELL=3D/bin/sh. /lava-379430/en=
+vironment
+    2023-12-20T21:24:06.954634  =
+
+    2023-12-20T21:24:07.056520  / # . /lava-379430/environment/lava-379430/=
+bin/lava-test-runner /lava-379430/1
+    2023-12-20T21:24:07.057254  =
+
+    2023-12-20T21:24:07.061931  / # /lava-379430/bin/lava-test-runner /lava=
+-379430/1 =
+
+    ... (12 line(s) more)  =
+
+ =20
 
