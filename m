@@ -1,139 +1,243 @@
-Return-Path: <stable+bounces-8212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A05381ABFD
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 02:06:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2FE81AC09
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 02:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 998C6284596
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 01:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C688E1F23E5E
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 01:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BDA10F7;
-	Thu, 21 Dec 2023 01:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E68D10EB;
+	Thu, 21 Dec 2023 01:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="opmQblqy"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="q+dbrhG1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E112567;
-	Thu, 21 Dec 2023 01:06:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEAFAC433C7;
-	Thu, 21 Dec 2023 01:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703120794;
-	bh=3q/je4lxiM88lpvgaF61zSPIgyprdo8v2CPqjz3q1IY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=opmQblqy1kblwTnTrw2H8sT3BN2wFlHh04CUp8N15C2cC233vLrCT8WAeW7yj8Esp
-	 0i9BVNrC1itAe3TiB8nYnjRs9WtaGYBCGuD91AjLYybX3o6AkaZzZ8F11jAG6dSK2X
-	 WYQLGuEi7FkbKBwxfu98I5LUmmf6c6P9mW4HdnZkJyCjlzo13nP5+0LvoAdEOqgIts
-	 q0KBCL4+4BiMPtgz38OHRNfj/mRtIyHrmDbCDkzeDWfXWx1Nc1yDtZN5/5Wpv89fMo
-	 TWn8oT+mrc0SKYfoFkROhvA0Gvjb37kDbdysQrWbpaHv5LnK75UoV3QvZl3CJL9K7K
-	 QXQIdT28O3sjQ==
-Date: Thu, 21 Dec 2023 01:06:28 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
-Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	lkft-triage@lists.linaro.org, linux-stable <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Marc Zyngier <maz@kernel.org>
-Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
-Message-ID: <b1b8cbdd-6d6c-4656-b17a-4d2dfb555f8a@sirena.org.uk>
-References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
- <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
- <CA+G9fYsbwWpDVR9KJXx8UO5MXsYT81uAJbLLNDnLianr8jmXUA@mail.gmail.com>
- <63e92a6a-9cb7-4272-b524-ccaf997aceb3@sirena.org.uk>
- <CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD5C15AE
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 01:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d3dc30ae01so2749165ad.0
+        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 17:13:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703121195; x=1703725995; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZSJQQRW0+klbSNLbm8IbaKRyKcfLsTtsj2dnjSpApng=;
+        b=q+dbrhG1mCP69zUUtexaK611lx1bFAHGD48wuiL/lMRg8PNP0gVTvSm2RUx0EdCbSU
+         YMY6l6aQXsDd83Odk0TRvBXE2GqtEoVXy0JZdN3u4hkoNy/uyUInC0TNfhFZ0yIi8vJQ
+         P9Z/cc1lmbc9+ng2Ca+iP+7wm2Ieo4DrOnoFHbNLKm0/fs1xxGP+YkrXtOeZ8KGPik29
+         YyClNJwd2z0JIFvM5rPsx5zPp8ao0z1mFwt+Gv6fidZF/Hl1Tosutm7zsxazG7Ii2yFT
+         VJ32dZe3JgZmmfInkWcfkrPuCfvJhaNGbD1znk0yzslSDgPMTFgrv0mGvzTu6gzrv9HP
+         hyDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703121195; x=1703725995;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZSJQQRW0+klbSNLbm8IbaKRyKcfLsTtsj2dnjSpApng=;
+        b=Q7hjLOC1f3lpsVVPIrG8gf5PLKOG6dyw/VuXVNDhfAsrRJa4xWrON/6bgdBtAhw8O9
+         sRhta4FTniQULnZIJmXqx9d66bOWUfm6JS+lMM8OxIU65vOnJOVmoSBwT/U+GW50r2r4
+         feAJe8kwZaM3syHKlPrc5lR39I1pm1l/tve9+H4ruzZde0v1JLGNPw9AbaZckZ4SAMiv
+         HanG1sM/YIKD5irYhDLSKoi30CZQOgFvyOJcbOAgyWyjj8kss1TWpCM/fG6nRiZ4k8Br
+         +QaBzBcjmCnad+gqc/Phq6fOv+aEbNSLVNTlBXCY9Lu77aMCDQa5Y88P+Zil5jDcy61+
+         UKnQ==
+X-Gm-Message-State: AOJu0YwO+JaG9JAk31wamoSRkBO3tF96xWVjJ1LdBFgbCmf4pe1WaO2S
+	Q2dq4WEhx84sysL1LxrLZDUFkUcMiHkpGbrRKKs=
+X-Google-Smtp-Source: AGHT+IFxzR646xFzrCn09gsedAyJlWbm654xRHzKQEKwhzae7WT+jY3yHr6t42tZK3dilXWtVcJ/xQ==
+X-Received: by 2002:a17:902:ea07:b0:1d3:c1a7:6ba1 with SMTP id s7-20020a170902ea0700b001d3c1a76ba1mr6326720plg.0.1703121195088;
+        Wed, 20 Dec 2023 17:13:15 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jv11-20020a170903058b00b001d08bbcf78bsm352330plb.74.2023.12.20.17.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Dec 2023 17:13:14 -0800 (PST)
+Message-ID: <6583912a.170a0220.46fec.1d37@mx.google.com>
+Date: Wed, 20 Dec 2023 17:13:14 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="gWCBnsT00SOVLyLa"
-Content-Disposition: inline
-In-Reply-To: <CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
-X-Cookie: bug, n:
-
-
---gWCBnsT00SOVLyLa
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.143-243-ge7911feb56b71
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.143-243-ge7911feb56b71)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Wed, Dec 20, 2023 at 06:06:53PM -0600, Daniel D=EDaz wrote:
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.143-243-ge7911feb56b71)
 
-> We have been seeing this problem in other instances, specifically on
-> the following kernels:
-> * 5.15.132, 5.15.134-rc1, 5.15.135, 5.15.136-rc1, 5.15.142, 5.15.145-rc1
-> * 6.1.42, 6.1.43, 6.1.51-rc1, 6.1.56-rc1, 6.1.59-rc1, 6.1.63
-> * 6.3.10, 6.3.11
-> * 6.4.7
-> * 6.5.2, 6.5.10-rc2
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.143-243-ge7911feb56b71/
 
-This is a huge range of kernels with some substantial reworkings of
-the FP code, and I do note that v5.15 appears to have backported only
-one change there (an incidental one related to ESR handling).  This
-makes me think this is likely to be something that's been sitting there
-for a very long time and is unrelated to those versions and any changes
-that went into them.  I see you're still testing back to v4.19 which
-suggests an issue introduced between v5.10 and v5.15, my change
-cccb78ce89c45a4 ("arm64/sve: Rework SVE access trap to convert state in
-registers") does jump out there though I don't immediately see what the
-issue would be.
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.143-243-ge7911feb56b71
+Git Commit: e7911feb56b718aa3149a2665b7c83a18b46efa7
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Looking at the list of versions you've posted the earliest is from the
-very end of June with others in July, was there something that changed
-in your test environment in broadly that time?  I see that the=20
-logs you and Naresh posted are both using a Debian 12/Bookworm based
-root filesystem and that was released a couple of weeks before this
-started appearing, Bookworm introduced glibc usage of SVE which makes
-usage much more common.  Is this perhaps tied to you upgrading your root
-filesystems to Bookworm or were you tracking testing before then?
+Warnings Detected:
 
-> Most recent case is for the current 5.15 RC. Decoded stack trace is here:
-> -----8<-----
->   <4>[   29.297166] ------------[ cut here ]------------
->   <4>[ 29.298039] WARNING: CPU: 1 PID: 220 at
-> arch/arm64/kernel/fpsimd.c:950 do_sve_acc
-> (/builds/linux/arch/arm64/kernel/fpsimd.c:950 (discriminator 1))
+arc:
 
-That's an assert that we shouldn't take a SVE trap when SVE is
-alreadly enabled for the thread.  The backtrace Naresh originally
-supplied was a NULL pointer dereference attempting to save SVE state=20
-(indicating that we think we're trying to save SVE state but don't have
-any storage allocated for it) during thread switch.  It's very plausible
-that the two are the same underlying issue but it's also not 100% a
-given.  Can you double check exactly how similar the various issues you
-are seeing are please?
+arm64:
 
-I have coincidentally been chasing some other stuff in the past week or
-two which might potentially be different manifestations of the same
-underlying issue with current code, broadly in the area of the register
-state and task state getting out of sync.
+arm:
 
---gWCBnsT00SOVLyLa
-Content-Type: application/pgp-signature; name="signature.asc"
+i386:
 
------BEGIN PGP SIGNATURE-----
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWDj5MACgkQJNaLcl1U
-h9D8yQf+O6aLYXO+eqsG/uShuVW2abRfdRrSWdr4CR8ZhbRnWwgeiNGH89O0lF1Z
-U8uswFHmqnDkFV3peRN0jmsU/TlxwaO45LRUT0s/puEYMnLkaCEfTVfYahbs/6c7
-DFO5/sNcBxO1/GaFrItZdOhJm9YIwbXsCAlPDIh2laOj4kpI6C/mO+rb4nFxyFJ4
-1B0y4PBfT7kO+wP6sYKXfn76fGi5jgONmsV696UcPTfJFyQUfvFmgDWB6SM1xWr0
-8n/62TCUwfxSgsnFVyvPJ+b2r5wObp3sV84nYHRPxom7WtXpwU9g6+t1At2UuRNV
-g4aIscLDEL8j4Bifd7OpoyBVlnAvFQ==
-=muue
------END PGP SIGNATURE-----
+riscv:
 
---gWCBnsT00SOVLyLa--
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
 
