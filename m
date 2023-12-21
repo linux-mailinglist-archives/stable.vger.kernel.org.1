@@ -1,221 +1,241 @@
-Return-Path: <stable+bounces-8246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5877081B4CA
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 12:19:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF6F81B922
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADD06B22E2B
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 11:19:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D53D1C25F39
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEF96BB34;
-	Thu, 21 Dec 2023 11:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="EpdFOly9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956E936093;
+	Thu, 21 Dec 2023 13:55:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220DA6BB24
-	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 11:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d307cf18fdso4215085ad.3
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 03:19:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703157588; x=1703762388; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=T7oqvqXIVRzrJApvSh0uldyHSrX9NYvqutXs1f44aXM=;
-        b=EpdFOly9kOS5f7sIBAJCwhcTH1FQffYoD2k68xXcCgFG7bY//dUjjzSlka6YBlgoSF
-         bfg9jYs+Y6al6pICC03Cn4SNKmDQvmj5yrYThqgj5rX7TV+iIdc+0nwBKX92NHtfLhkL
-         9wS1y8Ot6FwSdjCzJdgT/dcUoZu+dWu23HUTW2PE9M1eZd0Y2WggNRT5xrNwbqmeRjdo
-         EY9nkqfVdF2tugJ7ANyfFLDZEkP9+ZU1Uelx3uqIOVwdv2MH88oMbnlDqCRcJAkOlUC/
-         vxYf/56s/Qo74AbkkGS4MqN3fpNKhpi+KpRNMzYHxmyoo0atFDjbuaFD2lsCKg/07U0x
-         sFjw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9E236080;
+	Thu, 21 Dec 2023 13:55:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6dbb9d03b5eso95556a34.1;
+        Thu, 21 Dec 2023 05:55:45 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703157588; x=1703762388;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=T7oqvqXIVRzrJApvSh0uldyHSrX9NYvqutXs1f44aXM=;
-        b=E2yqSJpB1FDGbk/+9C5r6kSN8Ah3K4MI8w89OJJx2oPW80HkHOyszqxsciLLaQNd3+
-         JOfhNSHBzHbCnnr1E0br2H9FHZeHT4kftkjLMfxi5HM95aik4kLZFgxFr6ENonBPq1tx
-         W3Nbdizb1CpmvyAbi+1IxekehJyUSfymrR3tP6xscqzXr0cwTgIQWpCLcCM+b/3HeMSn
-         /vmJM9glrbgnt/GUPck8bXgQFU0GYUzS4MWXlfT7xR0KT/LCu5Sgded42EOBTZ62Qc4J
-         JBCDnDSh7rgb3n9IXH1f0GqQwJk/4VIc5kX3SBAzJUp9rIXkxoGbVQ56wmP8emWIBZH4
-         qOyA==
-X-Gm-Message-State: AOJu0Yw82L766UaBHrkdrKTb07Llj+Kbw+5SbjiWVbmfcs3qzV+c6Fcu
-	RCti4yO7Q6lE2/nOxdNJQgEHUEay5aDVcl/5qmw=
-X-Google-Smtp-Source: AGHT+IEofjVSEG+XiMlFgAZljgJX0TeTJQrIuNgHRAb3o3noRAAeJ2aaxw7rt3FIOTNZZUGbjbpdag==
-X-Received: by 2002:a17:903:1245:b0:1d0:9e84:6a93 with SMTP id u5-20020a170903124500b001d09e846a93mr13786047plh.81.1703157588100;
-        Thu, 21 Dec 2023 03:19:48 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jg13-20020a17090326cd00b001cf7bd9ade5sm1397876plb.3.2023.12.21.03.19.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 03:19:47 -0800 (PST)
-Message-ID: <65841f53.170a0220.2e4b1.34e7@mx.google.com>
-Date: Thu, 21 Dec 2023 03:19:47 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1703166945; x=1703771745;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tn1YpB9RSUb3kYqtYjrWXVkua1HlT1atP73EUz1/0nY=;
+        b=AP3Z9VeeKl3jB2MCKXBmdlCJrJacLeC9oYo684TxHCay2sVYpIcqCFpp6k4jBX7IP2
+         D45fRN2ex+QCUTENHS1Et7uG4qgLslwmy81OBO0ErDnwhIcg0+Nfw4voI6GJ8KMYTwOd
+         uK5h6Mh7MTfJsrQauGSYg8we6ehumpl4iHbnugIg2PPnx3MmnQ6RmTB7ZFzFpYpLRfe6
+         fceoVE+MhtRhsRJPvrvUlbT4EQ3N21MFzQ2ffLishVbxPBLM7+z/CQC/ef7Kpxs1ivoy
+         cqkz9esf2qc/8m1RvWZnGeR4e6axmw8mxZ4zEZG2QyvDHd6nOeWqGA0vMQ03XkGL4QU4
+         DMrQ==
+X-Gm-Message-State: AOJu0Yz3wEaZnXX6qGh5rDlL/oecy9zECauQiYDbOl60jdyq8NHfTJoJ
+	QEc3V5tmFxSg2OxRmDWYPfQbXND6NLOunFnSWPI=
+X-Google-Smtp-Source: AGHT+IGyDCjQzUrqeW1hQnA1vPHGjsH39gBljxA4HGmC4zmiOGkpax/gOnaTZ3Hp+uBUwVKFr9RB00v6d1OjIBF6qys=
+X-Received: by 2002:a4a:a581:0:b0:591:cdc0:f28d with SMTP id
+ d1-20020a4aa581000000b00591cdc0f28dmr13283358oom.0.1703166944879; Thu, 21 Dec
+ 2023 05:55:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com> <20231218064521.37324-2-xueshuai@linux.alibaba.com>
+In-Reply-To: <20231218064521.37324-2-xueshuai@linux.alibaba.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 21 Dec 2023 14:55:33 +0100
+Message-ID: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
+Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
+ MF_ACTION_REQUIRED on synchronous events
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: bp@alien8.de, rafael@kernel.org, wangkefeng.wang@huawei.com, 
+	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com, 
+	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
+	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org, 
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, linux-edac@vger.kernel.org, 
+	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org, 
+	x86@kernel.org, justin.he@arm.com, ardb@kernel.org, ying.huang@intel.com, 
+	ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de, 
+	mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com, 
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com, 
+	zhuo.song@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.68-109-g72c91a6aec84e
-Subject: stable-rc/queue/6.1 build: 18 builds: 0 failed, 18 passed,
- 1 warning (v6.1.68-109-g72c91a6aec84e)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 build: 18 builds: 0 failed, 18 passed, 1 warning (v6.1.=
-68-109-g72c91a6aec84e)
+On Mon, Dec 18, 2023 at 7:45=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
+om> wrote:
+>
+> There are two major types of uncorrected recoverable (UCR) errors :
+>
+> - Synchronous error: The error is detected and raised at the point of the
+>   consumption in the execution flow, e.g. when a CPU tries to access
+>   a poisoned cache line. The CPU will take a synchronous error exception
+>   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+>   Exception (MCE) on X86. OS requires to take action (for example, offlin=
+e
+>   failure page/kill failure thread) to recover this uncorrectable error.
+>
+> - Asynchronous error: The error is detected out of processor execution
+>   context, e.g. when an error is detected by a background scrubber. Some =
+data
+>   in the memory are corrupted. But the data have not been consumed. OS is
+>   optional to take action to recover this uncorrectable error.
+>
+> When APEI firmware first is enabled, a platform may describe one error
+> source for the handling of synchronous errors (e.g. MCE or SEA notificati=
+on
+> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
+> notification). In other words, we can distinguish synchronous errors by
+> APEI notification. For synchronous errors, kernel will kill the current
+> process which accessing the poisoned page by sending SIGBUS with
+> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify t=
+he
+> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO i=
+n
+> early kill mode. However, the GHES driver always sets mf_flags to 0 so th=
+at
+> all synchronous errors are handled as asynchronous errors in memory failu=
+re.
+>
+> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronou=
+s
+> events.
+>
+> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: James Morse <james.morse@arm.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.68-109-g72c91a6aec84e/
+Applied as 6.8 material.
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.68-109-g72c91a6aec84e
-Git Commit: 72c91a6aec84e00beb4efae0f0c87057a8702425
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+The other patches in the series still need to receive tags from the
+APEI designated reviewers (as per MAINTAINERS).
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
+Thanks!
 
 
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+> ---
+>  drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
+>  1 file changed, 23 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+> index 63ad0541db38..ab2a82cb1b0b 100644
+> --- a/drivers/acpi/apei/ghes.c
+> +++ b/drivers/acpi/apei/ghes.c
+> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct gh=
+es *ghes)
+>         return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_E=
+RROR_V2;
+>  }
+>
+> +/*
+> + * A platform may describe one error source for the handling of synchron=
+ous
+> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
+CI
+> + * or External Interrupt). On x86, the HEST notifications are always
+> + * asynchronous, so only SEA on ARM is delivered as a synchronous
+> + * notification.
+> + */
+> +static inline bool is_hest_sync_notify(struct ghes *ghes)
+> +{
+> +       u8 notify_type =3D ghes->generic->notify.type;
+> +
+> +       return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
+> +}
+> +
+>  /*
+>   * This driver isn't really modular, however for the time being,
+>   * continuing to use module_param is the easiest way to remain
+> @@ -489,7 +503,7 @@ static bool ghes_do_memory_failure(u64 physical_addr,=
+ int flags)
+>  }
+>
+>  static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gd=
+ata,
+> -                                      int sev)
+> +                                      int sev, bool sync)
+>  {
+>         int flags =3D -1;
+>         int sec_sev =3D ghes_severity(gdata->error_severity);
+> @@ -503,7 +517,7 @@ static bool ghes_handle_memory_failure(struct acpi_he=
+st_generic_data *gdata,
+>             (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+>                 flags =3D MF_SOFT_OFFLINE;
+>         if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_SEV_RE=
+COVERABLE)
+> -               flags =3D 0;
+> +               flags =3D sync ? MF_ACTION_REQUIRED : 0;
+>
+>         if (flags !=3D -1)
+>                 return ghes_do_memory_failure(mem_err->physical_addr, fla=
+gs);
+> @@ -511,9 +525,11 @@ static bool ghes_handle_memory_failure(struct acpi_h=
+est_generic_data *gdata,
+>         return false;
+>  }
+>
+> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
+a, int sev)
+> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
+a,
+> +                                      int sev, bool sync)
+>  {
+>         struct cper_sec_proc_arm *err =3D acpi_hest_get_payload(gdata);
+> +       int flags =3D sync ? MF_ACTION_REQUIRED : 0;
+>         bool queued =3D false;
+>         int sec_sev, i;
+>         char *p;
+> @@ -538,7 +554,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest=
+_generic_data *gdata, int s
+>                  * and don't filter out 'corrected' error here.
+>                  */
+>                 if (is_cache && has_pa) {
+> -                       queued =3D ghes_do_memory_failure(err_info->physi=
+cal_fault_addr, 0);
+> +                       queued =3D ghes_do_memory_failure(err_info->physi=
+cal_fault_addr, flags);
+>                         p +=3D err_info->length;
+>                         continue;
+>                 }
+> @@ -666,6 +682,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+>         const guid_t *fru_id =3D &guid_null;
+>         char *fru_text =3D "";
+>         bool queued =3D false;
+> +       bool sync =3D is_hest_sync_notify(ghes);
+>
+>         sev =3D ghes_severity(estatus->error_severity);
+>         apei_estatus_for_each_section(estatus, gdata) {
+> @@ -683,13 +700,13 @@ static bool ghes_do_proc(struct ghes *ghes,
+>                         atomic_notifier_call_chain(&ghes_report_chain, se=
+v, mem_err);
+>
+>                         arch_apei_report_mem_error(sev, mem_err);
+> -                       queued =3D ghes_handle_memory_failure(gdata, sev)=
+;
+> +                       queued =3D ghes_handle_memory_failure(gdata, sev,=
+ sync);
+>                 }
+>                 else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+>                         ghes_handle_aer(gdata);
+>                 }
+>                 else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+> -                       queued =3D ghes_handle_arm_hw_error(gdata, sev);
+> +                       queued =3D ghes_handle_arm_hw_error(gdata, sev, s=
+ync);
+>                 } else {
+>                         void *err =3D acpi_hest_get_payload(gdata);
+>
+> --
+> 2.39.3
+>
 
