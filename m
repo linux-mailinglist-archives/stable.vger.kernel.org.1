@@ -1,108 +1,117 @@
-Return-Path: <stable+bounces-8259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F6CA81BB45
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:47:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D820281BB50
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0571288923
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:47:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8956E1F29DFE
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E078855E79;
-	Thu, 21 Dec 2023 15:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2D953A10;
+	Thu, 21 Dec 2023 15:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cDlxg7WA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtpDeedu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A625455E41;
-	Thu, 21 Dec 2023 15:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8972C433C8;
-	Thu, 21 Dec 2023 15:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703173638;
-	bh=dOGyrLopRgWASgaIZLAx6CNRKKRLi1o/fzWOzw5hikY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDlxg7WA1eBIwKV7bwZmyHXskjpiO8H0zm7M2Ghzhr/xJdhhL6Xl5kRI6BWyYA5lD
-	 VBxAhJBQbB+9gO3Ag/gZJDFb+yKcYSbIwQNpD0ma517/zmjRtZImkNo7sEdHNxRaMo
-	 1gXtByNw8LvPKTENtE7Eyo0fI2WALLGGdtPJwJF36c/Jju3NFsv75uhnr92pS3Mkxz
-	 9QYAV4nD600gK2ZN6ikxvxtty6vjKnY3kXSgadf2i6U5AbJDy8ZsKxPN1iBVipFQBV
-	 fplnF8mxIeIWVezxJQwQjGSA/khdXnqsTghUjHSyjZpLYbroFFW3LkjSldkXwKqcCY
-	 8N6jkGpF6/EHQ==
-From: guoren@kernel.org
-To: linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	alexghiti@rivosinc.com,
-	charlie@rivosinc.com,
-	xiao.w.wang@intel.com,
-	guoren@kernel.org,
-	david@redhat.com,
-	panqinglin2020@iscas.ac.cn,
-	rick.p.edgecombe@intel.com,
-	willy@infradead.org,
-	bjorn@rivosinc.com,
-	conor.dooley@microchip.com,
-	cleger@rivosinc.com,
-	leobras@redhat.com
-Cc: linux-riscv@lists.infradead.org,
-	Guo Ren <guoren@linux.alibaba.com>,
-	stable@vger.kernel.org
-Subject: [PATCH V2 2/4] riscv: mm: Fixup compat arch_get_mmap_end
-Date: Thu, 21 Dec 2023 10:46:59 -0500
-Message-Id: <20231221154702.2267684-3-guoren@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231221154702.2267684-1-guoren@kernel.org>
-References: <20231221154702.2267684-1-guoren@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C4652F60
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 15:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-7b7117ca63eso11174239f.1
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 07:50:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1703173811; x=1703778611; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NkVEjRBzIQTEE4egLQy5RyshAsIpIupPiuBcwMoryU8=;
+        b=gtpDeedu5q6R9sTrckdOG2NLTw+qjdsqEZ4l1cJAXDDeSKH6hF9Qnmoz2ktgzSmzLn
+         sYMGdxfzHm8d+44DWxeaLUJor/Zx0Haq7UfnUqvWFb1Hbc4Ws98mQQ4/T0+GWuMgumNy
+         EOCGfEWAjtS3+5+MRtpD5AykkSQ7D02DEPcAs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703173811; x=1703778611;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NkVEjRBzIQTEE4egLQy5RyshAsIpIupPiuBcwMoryU8=;
+        b=i5OREqZnayb6d0DTpdo/pBVz8+wXH2aCEo/jwQEtBYn+Ugk4myn3S25mqMZ5Bpul1n
+         fpZmB2EnLOxlRvQU/lG1hFMhlXthAOp9tWzeVqlkoCB0yobuSDI/Np8HmWIiXwhTo4L4
+         aUnPBiijgsBHT7CWU4lXQ77eLUXyumYAGuSCuE9kIttX92XP0KUjlcb8jJXp07BxMFcG
+         465etSYLlUmJsdz7rTh1V/NJ7h3aCtMbSDvbYjySXvGFj6AXmUgdukS7D7FNP2IDx7Dk
+         l9pjq/G1+HS2BI3AQu0evgezydNa8O0kT/w1ETOPGECzuDdB4QjK5yPKp9hXjteIT9bF
+         HW1g==
+X-Gm-Message-State: AOJu0Yx28jaXM2WYGxNmTIqsV67J8+wx9TyzrIvhRfyuhVkhfsbYkH32
+	px4lTckrMv9JulzyNkrO2FLTHw==
+X-Google-Smtp-Source: AGHT+IFVNi9BbVx1KB3mgTWEm8/3cTNGstNT+75OJZKC4iACYQXE+kxs92l37WjcMq/56d6xaePE2w==
+X-Received: by 2002:a5e:c80a:0:b0:7ba:72d9:394e with SMTP id y10-20020a5ec80a000000b007ba72d9394emr5696085iol.0.1703173811464;
+        Thu, 21 Dec 2023 07:50:11 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id z26-20020a6be21a000000b007b3e44dc200sm553890ioc.42.2023.12.21.07.50.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 21 Dec 2023 07:50:11 -0800 (PST)
+Message-ID: <79edf3da-d8f6-4e26-8fc7-cde71fc7c82c@linuxfoundation.org>
+Date: Thu, 21 Dec 2023 08:50:10 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 00/62] 5.10.205-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20231218135046.178317233@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Guo Ren <guoren@linux.alibaba.com>
+On 12/18/23 06:51, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.205 release.
+> There are 62 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.205-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-directly.
+Still doesn't boot on my test system. I am getting closer to finding
+the problem. The combination of ZSTD config options and compressed
+amdgpu firmware seems to be the trigger. I did find null pointer
+deferenece in amdgpu_gfx_rlc_setup_cp_table() related to compressed
+mce2_fw when renoir_mec2.bin load fails.
 
-Cc: stable@vger.kernel.org
-Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
----
- arch/riscv/include/asm/processor.h | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+This fix will be in mainline - I still have to find why I don't see
+the null reference problem on mainline and all other stables. It could
+be that it is taking a different path to get to this point on 5.10
+when renoir_mec2.bin is compressed.
 
-diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-index f19f861cda54..1f538fc4448d 100644
---- a/arch/riscv/include/asm/processor.h
-+++ b/arch/riscv/include/asm/processor.h
-@@ -16,15 +16,13 @@
- 
- #ifdef CONFIG_64BIT
- #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
--#define STACK_TOP_MAX		TASK_SIZE_64
-+#define STACK_TOP_MAX		TASK_SIZE
- 
- #define arch_get_mmap_end(addr, len, flags)			\
- ({								\
- 	unsigned long mmap_end;					\
- 	typeof(addr) _addr = (addr);				\
--	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
--		mmap_end = STACK_TOP_MAX;			\
--	else if ((_addr) >= VA_USER_SV57)			\
-+	if ((_addr) == 0 || (_addr) >= VA_USER_SV57)		\
- 		mmap_end = STACK_TOP_MAX;			\
- 	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
- 		mmap_end = VA_USER_SV48;			\
--- 
-2.40.1
+I will keep you updated.
 
+thanks,
+-- Shuah
 
