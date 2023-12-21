@@ -1,122 +1,151 @@
-Return-Path: <stable+bounces-8275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B963081C205
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:37:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF6081C21A
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:49:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77754284FFB
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9103A1C245A6
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8158579485;
-	Thu, 21 Dec 2023 23:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFPfwwSq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162D379498;
+	Thu, 21 Dec 2023 23:49:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4018178E72;
-	Thu, 21 Dec 2023 23:37:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56196C433C8;
-	Thu, 21 Dec 2023 23:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703201867;
-	bh=nnpMukxOhsVF7BzbFrvuDgvY90F7VruqUihV1nw0oCw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFPfwwSqoJx11Au4847wkAJ57ApKlof/puk9gHkjRB8F97pnhvsazcmVz2tVDkEg1
-	 5xO/fkD9XyOMF28iCK2tR3UAgw4N32m3/DCN3Ul2WdYyxhgziwcVHnqq3ecaZNBjKD
-	 YaFdTQi/AE3I67fXFgfMeZlc4ztBb7Qp1ig27TeOYBkhe0PW6pJ4uvGXLxAiKhIZPO
-	 l0eJDGkS3ah/b+jtafvBxpBYBr/hqoepIpANuJiXLK6vFV+SR4vwUa7ugvrBzEdzvy
-	 8DQNbedMvCz9zg1Ge30JrXLLnMenDxontZajN9DSBlZVZcwaxA7gHN1qkNnr3rJB1m
-	 8cfVWx3yuYhXQ==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 5.15 000/159] 5.15.145-rc1 review
-Date: Thu, 21 Dec 2023 23:37:44 +0000
-Message-Id: <20231221233744.43299-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
-References: 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0879E78E9D;
+	Thu, 21 Dec 2023 23:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b681e3.dsl.pool.telekom.hu [::ffff:81.182.129.227])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 00000000000710DA.000000006584CEFF.0013B0FB; Fri, 22 Dec 2023 00:49:19 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+  Mark Brown <broonie@kernel.org>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
+  stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/tas2781: do not use regcache
+Date: Fri, 22 Dec 2023 00:48:56 +0100
+Message-ID: <491aeed0e2eecc3b704ec856f815db21bad3ba0e.1703202126.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-Hello,
+There are two problems with using regcache in this module.
 
+The amplifier has 3 addressing levels (BOOK, PAGE, REG). The firmware
+contains blocks that must be written to BOOK 0x8C. The regcache doesn't
+know anything about BOOK, so regcache_sync writes invalid values to the
+actual BOOK.
 
-On Wed, 20 Dec 2023 17:07:45 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+The module handles 2 or more separate amplifiers. The amplifiers have
+different register values, and the module uses only one regmap/regcache
+for all the amplifiers. The regcache_sync only writes the last amplifier
+used.
 
-> This is the start of the stable review cycle for the 5.15.145 release.
-> There are 159 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 22 Dec 2023 16:08:59 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.145-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
+The module successfully restores all the written register values (RC
+profile, program, configuration, calibration) without regcache.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Remove regcache functions and set regmap cache_type to REGCACHE_NONE.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+Link: https://lore.kernel.org/r/21a183b5a08cb23b193af78d4b1114cc59419272.1701906455.git.soyer@irl.hu/
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] e7911feb56b7 ("Linux 5.15.145-rc1")
-
-Thanks,
-SJ
-
-[...]
-
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
 ---
+ sound/pci/hda/tas2781_hda_i2c.c   | 17 +----------------
+ sound/soc/codecs/tas2781-comlib.c |  2 +-
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_i386_idle_flag.sh
-ok 13 selftests: damon-tests: build_i386_highpte.sh
-ok 14 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 2fb1a7037c82..e4c54b2a012c 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -717,8 +717,6 @@ static int tas2781_runtime_suspend(struct device *dev)
+ 		tas_priv->tasdevice[i].cur_conf = -1;
+ 	}
+ 
+-	regcache_cache_only(tas_priv->regmap, true);
+-	regcache_mark_dirty(tas_priv->regmap);
+ 
+ 	mutex_unlock(&tas_priv->codec_lock);
+ 
+@@ -730,20 +728,11 @@ static int tas2781_runtime_resume(struct device *dev)
+ 	struct tasdevice_priv *tas_priv = dev_get_drvdata(dev);
+ 	unsigned long calib_data_sz =
+ 		tas_priv->ndev * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
+-	int ret;
+ 
+ 	dev_dbg(tas_priv->dev, "Runtime Resume\n");
+ 
+ 	mutex_lock(&tas_priv->codec_lock);
+ 
+-	regcache_cache_only(tas_priv->regmap, false);
+-	ret = regcache_sync(tas_priv->regmap);
+-	if (ret) {
+-		dev_err(tas_priv->dev,
+-			"Failed to restore register cache: %d\n", ret);
+-		goto out;
+-	}
+-
+ 	tasdevice_prmg_load(tas_priv, tas_priv->cur_prog);
+ 
+ 	/* If calibrated data occurs error, dsp will still works with default
+@@ -752,10 +741,9 @@ static int tas2781_runtime_resume(struct device *dev)
+ 	if (tas_priv->cali_data.total_sz > calib_data_sz)
+ 		tas2781_apply_calib(tas_priv);
+ 
+-out:
+ 	mutex_unlock(&tas_priv->codec_lock);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int tas2781_system_suspend(struct device *dev)
+@@ -770,10 +758,7 @@ static int tas2781_system_suspend(struct device *dev)
+ 		return ret;
+ 
+ 	/* Shutdown chip before system suspend */
+-	regcache_cache_only(tas_priv->regmap, false);
+ 	tasdevice_tuning_switch(tas_priv, 1);
+-	regcache_cache_only(tas_priv->regmap, true);
+-	regcache_mark_dirty(tas_priv->regmap);
+ 
+ 	/*
+ 	 * Reset GPIO may be shared, so cannot reset here.
+diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
+index ffb26e4a7e2f..933cd008e9f5 100644
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -39,7 +39,7 @@ static const struct regmap_range_cfg tasdevice_ranges[] = {
+ static const struct regmap_config tasdevice_regmap = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+-	.cache_type = REGCACHE_RBTREE,
++	.cache_type = REGCACHE_NONE,
+ 	.ranges = tasdevice_ranges,
+ 	.num_ranges = ARRAY_SIZE(tasdevice_ranges),
+ 	.max_register = 256 * 128,
+
+base-commit: 916d051730ae48aef8b588fd096fefca4bc0590a
+-- 
+2.43.0
+
 
