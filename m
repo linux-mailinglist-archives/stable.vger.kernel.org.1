@@ -1,117 +1,111 @@
-Return-Path: <stable+bounces-8260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D820281BB50
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:50:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F0681BB64
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8956E1F29DFE
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81A7F1C245AD
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2D953A10;
-	Thu, 21 Dec 2023 15:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3AD155E46;
+	Thu, 21 Dec 2023 15:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtpDeedu"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="p8MjdsOc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C4652F60
-	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 15:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-7b7117ca63eso11174239f.1
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 07:50:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1703173811; x=1703778611; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=NkVEjRBzIQTEE4egLQy5RyshAsIpIupPiuBcwMoryU8=;
-        b=gtpDeedu5q6R9sTrckdOG2NLTw+qjdsqEZ4l1cJAXDDeSKH6hF9Qnmoz2ktgzSmzLn
-         sYMGdxfzHm8d+44DWxeaLUJor/Zx0Haq7UfnUqvWFb1Hbc4Ws98mQQ4/T0+GWuMgumNy
-         EOCGfEWAjtS3+5+MRtpD5AykkSQ7D02DEPcAs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703173811; x=1703778611;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NkVEjRBzIQTEE4egLQy5RyshAsIpIupPiuBcwMoryU8=;
-        b=i5OREqZnayb6d0DTpdo/pBVz8+wXH2aCEo/jwQEtBYn+Ugk4myn3S25mqMZ5Bpul1n
-         fpZmB2EnLOxlRvQU/lG1hFMhlXthAOp9tWzeVqlkoCB0yobuSDI/Np8HmWIiXwhTo4L4
-         aUnPBiijgsBHT7CWU4lXQ77eLUXyumYAGuSCuE9kIttX92XP0KUjlcb8jJXp07BxMFcG
-         465etSYLlUmJsdz7rTh1V/NJ7h3aCtMbSDvbYjySXvGFj6AXmUgdukS7D7FNP2IDx7Dk
-         l9pjq/G1+HS2BI3AQu0evgezydNa8O0kT/w1ETOPGECzuDdB4QjK5yPKp9hXjteIT9bF
-         HW1g==
-X-Gm-Message-State: AOJu0Yx28jaXM2WYGxNmTIqsV67J8+wx9TyzrIvhRfyuhVkhfsbYkH32
-	px4lTckrMv9JulzyNkrO2FLTHw==
-X-Google-Smtp-Source: AGHT+IFVNi9BbVx1KB3mgTWEm8/3cTNGstNT+75OJZKC4iACYQXE+kxs92l37WjcMq/56d6xaePE2w==
-X-Received: by 2002:a5e:c80a:0:b0:7ba:72d9:394e with SMTP id y10-20020a5ec80a000000b007ba72d9394emr5696085iol.0.1703173811464;
-        Thu, 21 Dec 2023 07:50:11 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id z26-20020a6be21a000000b007b3e44dc200sm553890ioc.42.2023.12.21.07.50.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Dec 2023 07:50:11 -0800 (PST)
-Message-ID: <79edf3da-d8f6-4e26-8fc7-cde71fc7c82c@linuxfoundation.org>
-Date: Thu, 21 Dec 2023 08:50:10 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B6B539FD;
+	Thu, 21 Dec 2023 15:56:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=JCLYMxeRwt5JrQfRfdHodCm2prGrLkM65PPIWmowE3A=; b=p8MjdsOcSA6R1jyYUyjMYwdd1/
+	9tgAI41l716pDbFL0Btga1Klf/Cp9g9+ttKFa2UCs45kM0l7qqWiz3VLtaMgPbPa1N+y1TIZBPeZk
+	9tNo5RX7PiQc5u3PWtxZaca2IBuyF5EAO182otm24gXTcxGqx//pjmQEanincCvqUtpE=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:49388 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rGLPb-0006IC-LX; Thu, 21 Dec 2023 10:56:40 -0500
+Date: Thu, 21 Dec 2023 10:56:39 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, jringle@gridpoint.com,
+ kubakici@wp.pl, phil@raspberrypi.org, bo.svangard@embeddedart.se,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, stable@vger.kernel.org, Yury Norov
+ <yury.norov@gmail.com>
+Message-Id: <20231221105639.17910de5e7d7a486834bd856@hugovil.com>
+In-Reply-To: <ZYMK-l03S86Nw19I@smile.fi.intel.com>
+References: <20231219171903.3530985-1-hugo@hugovil.com>
+	<20231219171903.3530985-3-hugo@hugovil.com>
+	<ZYMK-l03S86Nw19I@smile.fi.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 00/62] 5.10.205-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20231218135046.178317233@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20231218135046.178317233@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+	* -3.8 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 02/18] serial: sc16is7xx: fix invalid sc16is7xx_lines
+ bitfield in case of probe error
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On 12/18/23 06:51, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.205 release.
-> There are 62 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 20 Dec 2023 13:50:31 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.205-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Wed, 20 Dec 2023 17:40:42 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-Still doesn't boot on my test system. I am getting closer to finding
-the problem. The combination of ZSTD config options and compressed
-amdgpu firmware seems to be the trigger. I did find null pointer
-deferenece in amdgpu_gfx_rlc_setup_cp_table() related to compressed
-mce2_fw when renoir_mec2.bin load fails.
+> On Tue, Dec 19, 2023 at 12:18:46PM -0500, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > 
+> > If an error occurs during probing, the sc16is7xx_lines bitfield may be left
+> > in a state that doesn't represent the correct state of lines allocation.
+> > 
+> > For example, in a system with two SC16 devices, if an error occurs only
+> > during probing of channel (port) B of the second device, sc16is7xx_lines
+> > final state will be 00001011b instead of the expected 00000011b.
+> > 
+> > This is caused in part because of the "i--" in the for/loop located in
+> > the out_ports: error path.
+> > 
+> > Fix this by checking the return value of uart_add_one_port() and set line
+> > allocation bit only if this was successful. This allows the refactor of
+> > the obfuscated for(i--...) loop in the error path, and properly call
+> > uart_remove_one_port() only when needed, and properly unset line allocation
+> > bits.
+> > 
+> > Also use same mechanism in remove() when calling uart_remove_one_port().
+> 
+> Yes, this seems to be the correct one to fix the problem described in
+> the patch 1. I dunno why the patch 1 even exists.
 
-This fix will be in mainline - I still have to find why I don't see
-the null reference problem on mainline and all other stables. It could
-be that it is taking a different path to get to this point on 5.10
-when renoir_mec2.bin is compressed.
+Hi,
+this will indeed fix the problem described in patch 1.
 
-I will keep you updated.
+However, if I remove patch 1, and I simulate the same probe error as
+described in patch 1, now we get stuck forever when trying to 
+remove the driver. This is something that I observed before and
+that patch 1 also corrected.
 
-thanks,
--- Shuah
+The problem is caused in sc16is7xx_remove() when calling this function
+
+    kthread_flush_worker(&s->kworker);
+
+I am not sure how best to handle that without patch 1.
+
+Hugo Villeneuve
 
