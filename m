@@ -1,78 +1,101 @@
-Return-Path: <stable+bounces-8267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625E881BCC0
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 18:15:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D8981BF2C
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 20:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02CA41F254C9
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 17:15:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD1711C23991
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 19:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A8A5991A;
-	Thu, 21 Dec 2023 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0077A651B3;
+	Thu, 21 Dec 2023 19:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QdSCBCOb"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="pXihLVnJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D273858213;
-	Thu, 21 Dec 2023 17:15:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA09AC433C8;
-	Thu, 21 Dec 2023 17:15:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703178950;
-	bh=kvAImrMB2BLFEbE4tN+YXRJKctb+m1F/aV1dMuU9wzs=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=QdSCBCOb88u04vdEqFMyZzTa4QCQxPnjRPxuXFZARaGszL6Gi6Vg/x2zrEbL0i5iz
-	 4/6yTdiVUG+9T1snRTak9PfErpumLjVhEUoaotUbQhi/jWC3B9ziSs1LpdTNt5PXjD
-	 WzOGd/wVJk59C068xNmoSn+PHdlnF+WYgTR2ydbO17BelMyXIhbuwkM2PkpFDq/ZSm
-	 ZmCxNwE8jh/wk0b3wdciYnRdcNBScsoF2zuOAoVRkap4YDlAqvWwhKeiXxLxX4AnPx
-	 OSYFSA4c8J84anDOvN9twhA4XhvVQ1wDuo+/H8kDckKTApi8Kz5Czx/7jJkR6bliy8
-	 CmoC6R2a+fmdA==
-From: Vinod Koul <vkoul@kernel.org>
-To: Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Johan Hovold <johan+linaro@kernel.org>, 
- linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org
-In-Reply-To: <20231218130553.45893-1-krzysztof.kozlowski@linaro.org>
-References: <20231218130553.45893-1-krzysztof.kozlowski@linaro.org>
-Subject: Re: [PATCH] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix
- path to header
-Message-Id: <170317894553.712473.7175140339294979943.b4-ty@kernel.org>
-Date: Thu, 21 Dec 2023 22:45:45 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A1A33988;
+	Thu, 21 Dec 2023 19:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=vPc8thH3C7HWk4KTsdpmJPeYei58JpYABE0eXOWLITk=; b=pXihLVnJV0TtPIGJgQBjxclwAX
+	5Bb/jRQwN2oSZS2a+1T9sC0aWOcHeWzpzTn46B4/Kek2A5ADwbNIvEUY9wwI1Jwd2jacpt2mULHsw
+	jC89PIRAnPmOulL4ayxTfNxdNdJWMPMn5kW3HXc1hGpfA2iDzZZmzv5Euyp/b5oMpgdk=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:51258 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rGOpl-0000GN-VW; Thu, 21 Dec 2023 14:35:54 -0500
+Date: Thu, 21 Dec 2023 14:35:53 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, jringle@gridpoint.com,
+ kubakici@wp.pl, phil@raspberrypi.org, bo.svangard@embeddedart.se,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, stable@vger.kernel.org
+Message-Id: <20231221143553.57a180880d30b86257ee9b7c@hugovil.com>
+In-Reply-To: <ZYMPBz3BbOzSCEog@smile.fi.intel.com>
+References: <20231219171903.3530985-1-hugo@hugovil.com>
+	<20231219171903.3530985-16-hugo@hugovil.com>
+	<ZYMPBz3BbOzSCEog@smile.fi.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+	* -3.8 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 15/18] serial: sc16is7xx: pass R/W buffer in FIFO
+ functions
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
+On Wed, 20 Dec 2023 17:57:59 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
-On Mon, 18 Dec 2023 14:05:53 +0100, Krzysztof Kozlowski wrote:
-> Fix the path to bindings header in description.
+> On Tue, Dec 19, 2023 at 12:18:59PM -0500, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > 
+> > To simplify function by avoiding cast.
+> > 
+> > This is similar to what is done in max310x driver.
 > 
+> ...
 > 
+> > ---
+> > If deemed appropriate for stable kernel backporting:
+> 
+> I don't think it's eligible.
 
-Applied, thanks!
-
-[1/1] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix path to header
-      commit: 21a1d02579ae75fd45555b84d20ba55632a14a19
-
-Best regards,
--- 
-~Vinod
+No problem.
 
 
+> > ---
+> 
+> I don't see the necessity of the change, OTOH it's harmless.
+> The problem is that commit message is basically "Yeah, we
+> do cargo cult." Because I haven't seen what casting you are
+> talking about.
+
+I'll try to reword the commit message.
+
+And replace cast with something like "... to remove additional struct
+sc16is7xx_port variable..."
+
+Hugo Villeneuve
 
