@@ -1,177 +1,77 @@
-Return-Path: <stable+bounces-8249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA0081B9A2
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:34:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1775481B9B9
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E40D1F21DCB
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:34:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2E6728565A
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26557A5C;
-	Thu, 21 Dec 2023 14:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C811D6A9;
+	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ly2KnS5k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="atejqCvs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A4036089;
-	Thu, 21 Dec 2023 14:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE2C433C7;
-	Thu, 21 Dec 2023 14:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0441D69C;
+	Thu, 21 Dec 2023 14:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C6AC433C8;
+	Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703169270;
-	bh=AVm3a85Vz/dkmcLeGNufWQT9b61HwwEX8sYAWAbZ+rY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ly2KnS5kV4vXYDg5FR9TIlPhjrOWKlQYU3cwmH5lvyn6U29Csx1JtiV5TEdz4syMU
-	 aKnUR1+4S0GBTdRtRsmr0DrbT9VG8zFe2zYAKSOdD0GSS4MIxZCs+Y4iQ80lBz9qUn
-	 XqRxIMGEEVfcYYijkAJjtBkCKl9KZbcYHXqgbqY17UiKvwTDCQXqbC39t5+DB0PCM/
-	 6jiii/HPZLysgsvuMYvv6LiIJtz3Xy/BECcvq4jSuvHL8eqOxu/KUmVCcHivfYss96
-	 ysnMsMQ/ELasNLtowzHwrwvRe28CU9lkRpcqnQoA72MvtEpWvLOr34MRgD3MGl1nlw
-	 p5xVfHvznIHAA==
-Date: Thu, 21 Dec 2023 14:34:22 +0000
-From: Lee Jones <lee@kernel.org>
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
-	Yonghong Song <yonghong.song@linux.dev>, bpf@vger.kernel.org,
-	Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@chromium.org>,
-	Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
-	Xu Kuohai <xukuohai@huawei.com>, Will Deacon <will@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Pu Lehui <pulehui@huawei.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: Re: [PATCHv4 bpf 1/2] bpf: Fix prog_array_map_poke_run map poke
- update
-Message-ID: <20231221143422.GI10102@google.com>
-References: <20231206083041.1306660-1-jolsa@kernel.org>
- <20231206083041.1306660-2-jolsa@kernel.org>
- <20231221090745.GA431072@google.com>
- <2023122113-thirsting-county-ca67@gregkh>
- <20231221095522.GB10102@google.com>
- <2023122132-splashing-blip-ced4@gregkh>
- <20231221101744.GD10102@google.com>
- <ZYRE5dF6j63fEv8A@krava>
+	s=k20201202; t=1703169702;
+	bh=EVUMYl3rOlHtN/K6V9hi9IeUlzUhMbQYqoThI5xvNHg=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=atejqCvskyYhQxXzNXFV6zuf9UR1fIL0CqfG4VlLwRt6ReMNwXqKiEpjvy5Srdbjo
+	 aIAoXM7fxtWEgsF4Vl7SCvoXfWvWcgIGLlH6FHcrAHUQTxHWxnAhJfgAUZXFNmbTjH
+	 78KXRF43V6YN+eQQAqbsBn6hNVAwHSXDW/Mne5Q7swkujLyi+VRAOiAPJi7224VyXx
+	 tZDoTBwuXAuHy7bUAlP+5ZM6vjZj5lbjnQTTDoMXrCH43D9jAxvLp1irrd391jcA2N
+	 8cGw1UxMsDDlaNynY+mgmlw9gm7pjgel+C5JVXv2sKLoJvtoWB0LfBe2P2yBhK/fdn
+	 gjEa9yzYV5CkA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZYRE5dF6j63fEv8A@krava>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] wifi: mwifiex: fix uninitialized firmware_stat
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+References: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ briannorris@chromium.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+ David Lin <yu-hao.lin@nxp.com>, stable@vger.kernel.org,
+ kernel test robot <lkp@intel.com>, Dan Carpenter <error27@gmail.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170316969802.1243375.17807414549323669608.kvalo@kernel.org>
+Date: Thu, 21 Dec 2023 14:41:40 +0000 (UTC)
 
-On Thu, 21 Dec 2023, Jiri Olsa wrote:
+David Lin <yu-hao.lin@nxp.com> wrote:
 
-> On Thu, Dec 21, 2023 at 10:17:44AM +0000, Lee Jones wrote:
-> > On Thu, 21 Dec 2023, Greg KH wrote:
-> > 
-> > > On Thu, Dec 21, 2023 at 09:55:22AM +0000, Lee Jones wrote:
-> > > > On Thu, 21 Dec 2023, Greg KH wrote:
-> > > > 
-> > > > > On Thu, Dec 21, 2023 at 09:07:45AM +0000, Lee Jones wrote:
-> > > > > > Dear Stable,
-> > > > > > 
-> > > > > > > Lee pointed out issue found by syscaller [0] hitting BUG in prog array
-> > > > > > > map poke update in prog_array_map_poke_run function due to error value
-> > > > > > > returned from bpf_arch_text_poke function.
-> > > > > > > 
-> > > > > > > There's race window where bpf_arch_text_poke can fail due to missing
-> > > > > > > bpf program kallsym symbols, which is accounted for with check for
-> > > > > > > -EINVAL in that BUG_ON call.
-> > > > > > > 
-> > > > > > > The problem is that in such case we won't update the tail call jump
-> > > > > > > and cause imbalance for the next tail call update check which will
-> > > > > > > fail with -EBUSY in bpf_arch_text_poke.
-> > > > > > > 
-> > > > > > > I'm hitting following race during the program load:
-> > > > > > > 
-> > > > > > >   CPU 0                             CPU 1
-> > > > > > > 
-> > > > > > >   bpf_prog_load
-> > > > > > >     bpf_check
-> > > > > > >       do_misc_fixups
-> > > > > > >         prog_array_map_poke_track
-> > > > > > > 
-> > > > > > >                                     map_update_elem
-> > > > > > >                                       bpf_fd_array_map_update_elem
-> > > > > > >                                         prog_array_map_poke_run
-> > > > > > > 
-> > > > > > >                                           bpf_arch_text_poke returns -EINVAL
-> > > > > > > 
-> > > > > > >     bpf_prog_kallsyms_add
-> > > > > > > 
-> > > > > > > After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
-> > > > > > > poke update fails on expected jump instruction check in bpf_arch_text_poke
-> > > > > > > with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
-> > > > > > > 
-> > > > > > > Similar race exists on the program unload.
-> > > > > > > 
-> > > > > > > Fixing this by moving the update to bpf_arch_poke_desc_update function which
-> > > > > > > makes sure we call __bpf_arch_text_poke that skips the bpf address check.
-> > > > > > > 
-> > > > > > > Each architecture has slightly different approach wrt looking up bpf address
-> > > > > > > in bpf_arch_text_poke, so instead of splitting the function or adding new
-> > > > > > > 'checkip' argument in previous version, it seems best to move the whole
-> > > > > > > map_poke_run update as arch specific code.
-> > > > > > > 
-> > > > > > > [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
-> > > > > > > 
-> > > > > > > Cc: Lee Jones <lee@kernel.org>
-> > > > > > > Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> > > > > > > Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
-> > > > > > > Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
-> > > > > > > Acked-by: Yonghong Song <yonghong.song@linux.dev>
-> > > > > > > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> > > > > > > ---
-> > > > > > >  arch/x86/net/bpf_jit_comp.c | 46 +++++++++++++++++++++++++++++
-> > > > > > >  include/linux/bpf.h         |  3 ++
-> > > > > > >  kernel/bpf/arraymap.c       | 58 +++++++------------------------------
-> > > > > > >  3 files changed, 59 insertions(+), 48 deletions(-)
-> > > > > > 
-> > > > > > Please could we have this backported?
-> > > > > > 
-> > > > > > Guided by the Fixes: tag.
-> > > > > 
-> > > > > <formletter>
-> > > > > 
-> > > > > This is not the correct way to submit patches for inclusion in the
-> > > > > stable kernel tree.  Please read:
-> > > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > > > > for how to do this properly.
-> > > > > 
-> > > > > </formletter>
-> > > > 
-> > > > Apologies.
-> > > > 
-> > > > Commit ID: 4b7de801606e504e69689df71475d27e35336fb3
-> > > > Subject:   bpf: Fix prog_array_map_poke_run map poke update
-> > > > Reason:    Fixes a race condition in BPF.
-> > > > Versions:  linux-5.10.y+, as specified by the Fixes: tag above
-> > > 
-> > > Did not apply to 5.10.y or 5.15.y, so if you need/want it there, we will
-> > > need a working backport that has been tested.  Other trees it's now
-> > > queued up for.
-> > 
-> > Thank you.
+> Variable firmware_stat is possible to be used without initialization.
 > 
-> please let me know if you need any help with that, I can check on that
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+> Acked-by: Brian Norris <briannorris@chromium.org>
 
-I absolutely do.  I have no way to test BPF.
+Patch applied to wireless-next.git, thanks.
+
+3df95e265924 wifi: mwifiex: fix uninitialized firmware_stat
 
 -- 
-Lee Jones [李琼斯]
+https://patchwork.kernel.org/project/linux-wireless/patch/20231221015511.1032128-1-yu-hao.lin@nxp.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
