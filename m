@@ -1,130 +1,193 @@
-Return-Path: <stable+bounces-8269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672FF81C141
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:59:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4DD81C1B4
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0831CB24D16
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 22:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B2201C24DBD
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0C978E88;
-	Thu, 21 Dec 2023 22:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1291B7949C;
+	Thu, 21 Dec 2023 23:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eq0NOrt1"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="YZmyiQCH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC66A64A96;
-	Thu, 21 Dec 2023 22:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-5c875ee4f10so1708747b3.1;
-        Thu, 21 Dec 2023 14:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703199547; x=1703804347; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UA7JuCuRXrwN9iYkopGheqxmF3OuJypcH4hAT2fcOGs=;
-        b=Eq0NOrt13h719dfuflvAm+c+ELNuiZrJZq219WO/OrFF+QgVGhg5sU6cg+H9flj6oQ
-         U4C7oC4ZoJBhBtqqCYxxB4Zt/UxwQzmarU2hts8FnlpU6LeLsrPdswvNrVULK4BiPw9S
-         +w0N9J40iH/5/odFem+e928GGhzdN3VJY50NY75E37vckRXGJUMEklR25dRHN+pDDGfj
-         SKGFnHYqN50/41H8bGRCL8608NtPY+ThkL8ZvDvrCuU5Gy87a95o0PwcdTxG+zf2WD3Z
-         d+j7uir3c6ASpBW5DkCeSJdHmxJBiWUO7h8Elu2ErdB+M1c/TG88zb+XXVPZbCjla7om
-         59NA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703199547; x=1703804347;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UA7JuCuRXrwN9iYkopGheqxmF3OuJypcH4hAT2fcOGs=;
-        b=GIdU0BIZWPJY3eys7TVKhooGd53exkyN8T1y0zjetX8cHlHzfersik09gHfF1DYHEU
-         w0Z6E156lyqfUWU3zOiGB8LgU5cafIJtRCc/LyfOqejgdNXca68TiMQ+ObDjWWHOjWH+
-         qrISICPIxh8RvpC1rSgTSYr3BxHl7rSuE/XIPP0bBPhz2yMfhF0UE9DQasw48W2FJG1A
-         MvgGCS7ae1pYvYBWmy0rdonv+HjuhBjgJsqg582fUhfdND09th0mK79h7d2GpkolSNB6
-         qvsopTePs1GUqhbEbXG9l34KnbvXw/Z9sbKm20YC8kKyj0mv8AZIj3XlXQouqYadz7Zz
-         OpQg==
-X-Gm-Message-State: AOJu0YyTMBDGJ/l+yqvfgUgrcmkmUec5Gu6NsJ2IpszRCkI9DGPWQmM0
-	55M3BxTtUbaCv4CsxriNm3lWoGRWBGPfEUXlyhc=
-X-Google-Smtp-Source: AGHT+IH98aNguFQwmz6TS2UWL28qUf0QyxgdrvnDWZeVOiFqWSLsuadHupqh7HhLO7eOvuZyvpmJ7+0dyVMd1JKzxns=
-X-Received: by 2002:a25:df07:0:b0:dbd:5ad0:8a34 with SMTP id
- w7-20020a25df07000000b00dbd5ad08a34mr781405ybg.5.1703199546472; Thu, 21 Dec
- 2023 14:59:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B861078E8F;
+	Thu, 21 Dec 2023 23:18:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=zFCvSODRlDhyfhkyYaxqYDprC5OQrJQqCGo9MKePm3A=; b=YZmyiQCHE5e0ItphwBphKivjgL
+	nVggYMT39w3kM1I/N43fofJjfKo4DXFbuQjJgZEqHiBEJ4R+CfdrCY8onz3tqcghDErcE0V5v1LWs
+	lAlxUVMKR3FmJgkdZ4qcg0kkG+CEe6KmW108t33MEu3/gUzf7wmfZNfKiajkRFYHmni0=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:52484 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rGSJF-00025W-G7; Thu, 21 Dec 2023 18:18:34 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	kubakici@wp.pl,
+	indrakanti_ram@hotmail.com,
+	phil@raspberrypi.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	hugo@hugovil.com,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	stable@vger.kernel.org,
+	Yury Norov <yury.norov@gmail.com>
+Date: Thu, 21 Dec 2023 18:18:08 -0500
+Message-Id: <20231221231823.2327894-2-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231221231823.2327894-1-hugo@hugovil.com>
+References: <20231221231823.2327894-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
- <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
-In-Reply-To: <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Fri, 22 Dec 2023 01:58:19 +0300
-Message-ID: <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
-To: Rob Landley <rob@landley.net>, stefanb@linux.ibm.com
-Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, zohar@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+Subject: [PATCH v2 01/16] serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of probe error
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-Hi, Rob. And Stefan.
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-First of all, this patch got to linux-next (
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=
-=3Dauthor&q=3DStefan+Berger
-), so it seems it soon will be in mainline.
+If an error occurs during probing, the sc16is7xx_lines bitfield may be left
+in a state that doesn't represent the correct state of lines allocation.
 
-On Thu, Dec 21, 2023 at 12:24=E2=80=AFPM Rob Landley <rob@landley.net> wrot=
-e:
-> Can you build tmpfs on a nommu system? Last I checked the plumbing expect=
-s swap,
-> but it's been a while...
-Okay, I agree, let's not remove ramfs.
+For example, in a system with two SC16 devices, if an error occurs only
+during probing of channel (port) B of the second device, sc16is7xx_lines
+final state will be 00001011b instead of the expected 00000011b.
 
-Still, I don't like this (already applied) patch. init=3D and rdinit=3D
-are two different options, and this is good. So, I think we should
-have two different options. Analogously they should be rootfstype=3D and
-rdrootfstype=3D. rootfstype=3D should be read by kernel when deciding how
-to mount real root (i. e. not initramfs or initrd) only and
-rdrootfstype=3D when deciding how to mount initramfs only. This will
-make everything cleaner. Also note that userspace tools read
-rootfstype=3D and assume that it always applies to real root. For
-example, this is Debian's rdinit:
+This is caused in part because of the "i--" in the for/loop located in
+the out_ports: error path.
 
-https://salsa.debian.org/kernel-team/initramfs-tools/-/blob/cf964bfb4362019=
-fd7fba1e839e403ff950dca8e/init#L103
+Fix this by checking the return value of uart_add_one_port() and set line
+allocation bit only if this was successful. This allows the refactor of
+the obfuscated for(i--...) loop in the error path, and properly call
+uart_remove_one_port() only when needed, and properly unset line allocation
+bits.
 
-As you can see, this shell script parses /proc/cmdline and assumes
-that rootfstype=3D always applies to real root. So, if someone sets
-rootfstype=3D to tmpfs or ramfs, this will likely break this script.
+Also use same mechanism in remove() when calling uart_remove_one_port().
 
-So, I think the code should look so:
+Fixes: c64349722d14 ("sc16is7xx: support multiple devices")
+Cc: stable@vger.kernel.org
+Cc: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+---
+ drivers/tty/serial/sc16is7xx.c | 44 ++++++++++++++--------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
-+if (IS_ENABLED(CONFIG_TMPFS)) {
-+        if (!rd_root_fs_names) // We assume rd_root_fs_names is set
-by rdrootfstype=3D
-+                is_tmpfs =3D true; // Use tmpfs if rdrootfstype=3D is not
-set. To get all tmpfs benefits
-+        else if (rd_root_fs_names && !!strstr(rd_root_fs_names, "tmpfs"))
-+                is_tmpfs =3D true;
-+}
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index e40e4a99277e..17b90f971f96 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -407,19 +407,6 @@ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+ 	regmap_update_bits(one->regmap, reg, mask, val);
+ }
+ 
+-static int sc16is7xx_alloc_line(void)
+-{
+-	int i;
+-
+-	BUILD_BUG_ON(SC16IS7XX_MAX_DEVS > BITS_PER_LONG);
+-
+-	for (i = 0; i < SC16IS7XX_MAX_DEVS; i++)
+-		if (!test_and_set_bit(i, &sc16is7xx_lines))
+-			break;
+-
+-	return i;
+-}
+-
+ static void sc16is7xx_power(struct uart_port *port, int on)
+ {
+ 	sc16is7xx_port_update(port, SC16IS7XX_IER_REG,
+@@ -1550,6 +1537,13 @@ static int sc16is7xx_probe(struct device *dev,
+ 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+ 
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
++		s->p[i].port.line = find_first_zero_bit(&sc16is7xx_lines,
++							SC16IS7XX_MAX_DEVS);
++		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
++			ret = -ERANGE;
++			goto out_ports;
++		}
++
+ 		/* Initialize port data */
+ 		s->p[i].port.dev	= dev;
+ 		s->p[i].port.irq	= irq;
+@@ -1569,14 +1563,8 @@ static int sc16is7xx_probe(struct device *dev,
+ 		s->p[i].port.rs485_supported = sc16is7xx_rs485_supported;
+ 		s->p[i].port.ops	= &sc16is7xx_ops;
+ 		s->p[i].old_mctrl	= 0;
+-		s->p[i].port.line	= sc16is7xx_alloc_line();
+ 		s->p[i].regmap		= regmaps[i];
+ 
+-		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
+-			ret = -ENOMEM;
+-			goto out_ports;
+-		}
+-
+ 		mutex_init(&s->p[i].efr_lock);
+ 
+ 		ret = uart_get_rs485_mode(&s->p[i].port);
+@@ -1594,8 +1582,13 @@ static int sc16is7xx_probe(struct device *dev,
+ 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
+ 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
+ 		kthread_init_delayed_work(&s->p[i].ms_work, sc16is7xx_ms_proc);
++
+ 		/* Register port */
+-		uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
++		ret = uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
++		if (ret)
++			goto out_ports;
++
++		set_bit(s->p[i].port.line, &sc16is7xx_lines);
+ 
+ 		/* Enable EFR */
+ 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
+@@ -1653,10 +1646,9 @@ static int sc16is7xx_probe(struct device *dev,
+ #endif
+ 
+ out_ports:
+-	for (i--; i >= 0; i--) {
+-		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+-		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
+-	}
++	for (i = 0; i < devtype->nr_uart; i++)
++		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
++			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+ 
+ 	kthread_stop(s->kworker_task);
+ 
+@@ -1678,8 +1670,8 @@ static void sc16is7xx_remove(struct device *dev)
+ 
+ 	for (i = 0; i < s->devtype->nr_uart; i++) {
+ 		kthread_cancel_delayed_work_sync(&s->p[i].ms_work);
+-		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+-		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
++		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
++			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+ 		sc16is7xx_power(&s->p[i].port, 0);
+ 	}
+ 
+-- 
+2.39.2
 
-Yes, this will slightly break compatibility. I. e. this will make
-Linux always choose tmpfs if rdrootfstype=3D is not present. But I think
-there is nothing wrong with it. If a user cares, he will set
-rdrootfstype=3D . And early boot code will become a lot more clean and
-logical.
-
-Rob, do you agree? Stefan, do you agree? Then I will write a patch,
-with doc changes (currently I use gmail web interface, of course I
-will use git send-email when I sent actual patch)
-
---=20
-Askar Safin
 
