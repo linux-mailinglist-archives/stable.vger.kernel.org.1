@@ -1,106 +1,117 @@
-Return-Path: <stable+bounces-8253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB70A81BA03
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:58:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A1381BA17
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:03:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C2B01F24E14
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:58:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72E201C23EDA
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802A63608F;
-	Thu, 21 Dec 2023 14:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UMdi7jfv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA85103A;
+	Thu, 21 Dec 2023 15:02:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1045E37168;
-	Thu, 21 Dec 2023 14:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d3dee5f534so14457555ad.1;
-        Thu, 21 Dec 2023 06:57:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703170662; x=1703775462; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i3USUl9WO2gcOQwDnVCeaBX3q/QuTE9UFOGfxgimai4=;
-        b=UMdi7jfvHUDGhSCeuYvG2KETN9NFclrIBzSKrD3MEhny89Zmjm1MNEj4wOFQtLRzNH
-         RmeLpmxrO/rMv0usruXt9DWqrgu026crXC628T34xCRR9iWPnbBmuZ3MalQuUcFePQLk
-         J1DRXKZeUAiIdtKk8tcyX+t/jQwgm0B/0kIXa7QD6uJ7ItLFh5NGd0IYENq6SoE0iYyX
-         9+PrhAaQiZE2QNGjLt9hLCoOwPEcCLbeWLssc0hL/72U9umq0ZDJdA1rsOh5Vt8w5xxb
-         g0SciyQ26Epux4gby/XwUWvzVvdhHi/spoz7KRa84dVQnCWn33PAIs1u5Wzohn3JnMcA
-         9MEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703170662; x=1703775462;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i3USUl9WO2gcOQwDnVCeaBX3q/QuTE9UFOGfxgimai4=;
-        b=KXhjBK5FS0gq1grFnfOYpfF2k3FCZ3NBwsfFpIqADDd3nRuNYi9bIWZpQIgy2v+epp
-         EuGyc2c9aLe3GujsA/llCc44izClO8ZySVGg3j8RKOW1Etpw+5GDZ7dwAy5Q8wEkG45s
-         yiCnwu6cGBFRmN3UVtO7Dplf8Rk7y4ZHwLZRwAIVbh7T+y2qcwXi9hPlYMIdCVG0ba3T
-         QWW6BDPuHQxi9h/754G0+YShCl7aGOO1xd4isiHJylSf/TOnPUv42v6k1NiK93qrna1/
-         slEaMC/tYQyLlq6mxRTNMQ7UPDF0x/NUQ4y6IeW7icjTIfTU/x+2ceQvPqJNRrLH9TWf
-         7zrw==
-X-Gm-Message-State: AOJu0Yzjww0Iuk3nC6JaoFAN2VBWeg36Po5j0v4REHWCEDpd7WLyJWoc
-	IjIgzMbSd09avoRf/jQz7vY=
-X-Google-Smtp-Source: AGHT+IE5wFdUULiCY8ELFxZqWGyGPK5/+XMGldnySVulFribOOOrmtJkIkISv8i7aleKcpl8MtnXpw==
-X-Received: by 2002:a17:903:22cf:b0:1d3:cc75:63a4 with SMTP id y15-20020a17090322cf00b001d3cc7563a4mr973865plg.21.1703170662197;
-        Thu, 21 Dec 2023 06:57:42 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d5-20020a170902cec500b001d07ebef623sm1750024plg.69.2023.12.21.06.57.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 06:57:41 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 21 Dec 2023 06:57:40 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 5.15 000/159] 5.15.145-rc1 review
-Message-ID: <9307d019-b0ea-41ed-a559-2fb14022295d@roeck-us.net>
-References: <20231220160931.251686445@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D5B360B3;
+	Thu, 21 Dec 2023 15:02:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4SwttC56mSz1fyYj;
+	Thu, 21 Dec 2023 23:01:23 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2BB591400DB;
+	Thu, 21 Dec 2023 23:02:38 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Thu, 21 Dec
+ 2023 23:02:37 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <linux-ext4@vger.kernel.org>
+CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
+	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
+	<libaokun1@huawei.com>, Wei Chen <harperchen1110@gmail.com>, xingwei lee
+	<xrivendell7@gmail.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2 1/8] ext4: fix double-free of blocks due to wrong extents moved_len
+Date: Thu, 21 Dec 2023 23:05:51 +0800
+Message-ID: <20231221150558.2740823-2-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20231221150558.2740823-1-libaokun1@huawei.com>
+References: <20231221150558.2740823-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Wed, Dec 20, 2023 at 05:07:45PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.145 release.
-> There are 159 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 22 Dec 2023 16:08:59 +0000.
-> Anything received after that time might be too late.
-> 
+In ext4_move_extents(), moved_len is only updated when all moves are
+successfully executed, and only discards orig_inode and donor_inode
+preallocations when moved_len is not zero. When the loop fails to exit
+after successfully moving some extents, moved_len is not updated and
+remains at 0, so it does not discard the preallocations.
 
-Build results:
-	total: 158 pass: 158 fail: 0
-Qemu test results:
-	total: 525 pass: 525 fail: 0
+If the moved extents overlap with the preallocated extents, the
+overlapped extents are freed twice in ext4_mb_release_inode_pa() and
+ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
+Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
+incremented twice. Hence when trim is executed, a zero-division bug is
+triggered in mb_update_avg_fragment_size() because bb_free is not zero
+and bb_fragments is zero.
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Therefore, update move_len after each extent move to avoid the issue.
 
-As you may have noticed, the two day response time isn't enough
-for my testbed, especially if all releases have to be built and
-if there are multiple release candidates.
+Reported-by: Wei Chen <harperchen1110@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
+Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
+CC: stable@vger.kernel.org # 3.18
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/ext4/move_extent.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Guenter
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 3aa57376d9c2..391efa6d4c56 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -618,6 +618,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		goto out;
+ 	o_end = o_start + len;
+ 
++	*moved_len = 0;
+ 	while (o_start < o_end) {
+ 		struct ext4_extent *ex;
+ 		ext4_lblk_t cur_blk, next_blk;
+@@ -672,7 +673,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		 */
+ 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
+ 		/* Swap original branches with new branches */
+-		move_extent_per_page(o_filp, donor_inode,
++		*moved_len += move_extent_per_page(o_filp, donor_inode,
+ 				     orig_page_index, donor_page_index,
+ 				     offset_in_page, cur_len,
+ 				     unwritten, &ret);
+@@ -682,9 +683,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+ 	}
+-	*moved_len = o_start - orig_blk;
+-	if (*moved_len > len)
+-		*moved_len = len;
+ 
+ out:
+ 	if (*moved_len) {
+-- 
+2.31.1
+
 
