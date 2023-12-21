@@ -1,54 +1,64 @@
-Return-Path: <stable+bounces-8273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A276281C1C2
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:19:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B963081C205
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CB3B1F21FB6
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:19:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77754284FFB
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7042078E9B;
-	Thu, 21 Dec 2023 23:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8158579485;
+	Thu, 21 Dec 2023 23:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="sPTaPtqJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFPfwwSq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABE179463;
-	Thu, 21 Dec 2023 23:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=5Gtw+pSsdTFBBEqkupr/ySyhkeLR1vqxZ7FoqKXHAhE=; b=sPTaPtqJ0JI+NyxFj1ERZNv0zR
-	VtAPq/GUzUMACkE7kRBQhBHT5HdUSa/U9j5e2wYa5qBaKdKmeAWUXG24n5rPogH+ibh2vYI/+gpEh
-	50SbHLlRNKe4pjaqOgXW1UQvkVyFmRafWXtvNAtGs3I5dyDg+Pf//Pis0A+w2UXs8uJc=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:52484 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rGSJK-00025W-3w; Thu, 21 Dec 2023 18:18:38 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	kubakici@wp.pl,
-	indrakanti_ram@hotmail.com,
-	phil@raspberrypi.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org,
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 21 Dec 2023 18:18:12 -0500
-Message-Id: <20231221231823.2327894-6-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231221231823.2327894-1-hugo@hugovil.com>
-References: <20231221231823.2327894-1-hugo@hugovil.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4018178E72;
+	Thu, 21 Dec 2023 23:37:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56196C433C8;
+	Thu, 21 Dec 2023 23:37:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703201867;
+	bh=nnpMukxOhsVF7BzbFrvuDgvY90F7VruqUihV1nw0oCw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IFPfwwSqoJx11Au4847wkAJ57ApKlof/puk9gHkjRB8F97pnhvsazcmVz2tVDkEg1
+	 5xO/fkD9XyOMF28iCK2tR3UAgw4N32m3/DCN3Ul2WdYyxhgziwcVHnqq3ecaZNBjKD
+	 YaFdTQi/AE3I67fXFgfMeZlc4ztBb7Qp1ig27TeOYBkhe0PW6pJ4uvGXLxAiKhIZPO
+	 l0eJDGkS3ah/b+jtafvBxpBYBr/hqoepIpANuJiXLK6vFV+SR4vwUa7ugvrBzEdzvy
+	 8DQNbedMvCz9zg1Ge30JrXLLnMenDxontZajN9DSBlZVZcwaxA7gHN1qkNnr3rJB1m
+	 8cfVWx3yuYhXQ==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 5.15 000/159] 5.15.145-rc1 review
+Date: Thu, 21 Dec 2023 23:37:44 +0000
+Message-Id: <20231221233744.43299-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231220160931.251686445@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,59 +66,57 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-Subject: [PATCH v2 05/16] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Hello,
 
-Simplify and improve readability by replacing while(1) loop with
-do {} while, and by using the keep_polling variable as the exit
-condition, making it more explicit.
 
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
-Cc: stable@vger.kernel.org
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On Wed, 20 Dec 2023 17:07:45 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 5.15.145 release.
+> There are 159 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 22 Dec 2023 16:08:59 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.145-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] e7911feb56b7 ("Linux 5.15.145-rc1")
+
+Thanks,
+SJ
+
+[...]
+
 ---
- drivers/tty/serial/sc16is7xx.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 44a11c89c949..8d257208cbf3 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -783,17 +783,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
- 
- static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
- {
-+	bool keep_polling;
-+
- 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
- 
--	while (1) {
--		bool keep_polling = false;
-+	do {
- 		int i;
- 
-+		keep_polling = false;
-+
- 		for (i = 0; i < s->devtype->nr_uart; ++i)
- 			keep_polling |= sc16is7xx_port_irq(s, i);
--		if (!keep_polling)
--			break;
--	}
-+	} while (keep_polling);
- 
- 	return IRQ_HANDLED;
- }
--- 
-2.39.2
-
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_i386_idle_flag.sh
+ok 13 selftests: damon-tests: build_i386_highpte.sh
+ok 14 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
