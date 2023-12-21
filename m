@@ -1,202 +1,89 @@
-Return-Path: <stable+bounces-8218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A0081AC78
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 03:01:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090F981ACB1
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 03:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F3202826FE
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 02:01:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4556B23C46
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 02:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5683E17D9;
-	Thu, 21 Dec 2023 02:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDB32187E;
+	Thu, 21 Dec 2023 02:38:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="WehNkLpu"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ian7/FeH"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992C5AD21
-	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 02:01:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d3536cd414so2805925ad.2
-        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 18:01:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2784419
+	for <stable@vger.kernel.org>; Thu, 21 Dec 2023 02:38:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5cdc7e18152so272097a12.3
+        for <stable@vger.kernel.org>; Wed, 20 Dec 2023 18:38:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703124087; x=1703728887; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nC/S36i2aSU4xpq44KXkLd2QXwNK3n7uzEST3ZgUeso=;
-        b=WehNkLpuioOlgjUf73ZKfjtA2qbi/ksLOZqXsZ/EtQT9hgK76f+YbGvu+7XbkbS6g5
-         8pjeuT6T1Bpu3lXuVlYWq9Sp6YRQUGDBlKwcZvMaOO3Rd6NS15hNAgpd0BSKvfN68z0t
-         YWNsVi56Xrs53nsJeBmYMBvLC5gRmxWAiJUesEkHvfJRD3SD0me5HdULYolqJ8q4c3jf
-         TClGcpAlTKyx/xyRW0/7QVOwR7T3TKPQFdksAXS1zKXl7CQ9skxKWlpqR0GOPl0Dh8m7
-         VrwgiHJaq9HCtoADhvo9gMetXzoA/ziflsjSBmo3tDkFGOwiEW4SrJnP1vILC6LBB8k6
-         n3BA==
+        d=chromium.org; s=google; t=1703126321; x=1703731121; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1vJGbIHxG2ZsYy3EApEYIrka9GfydAEUv+b6Hz8AzfM=;
+        b=ian7/FeHw6NJNiqpPaz4eJcj6EU8bgem2UJ6Uw5zy37pldCXYlh7dA6axpDnAJNZ6v
+         QYxNrDbChc0c1RUMOOUAQpNYaOj3mGBkAjj2UlhL8BFgt9g9Abu/lt03COzRvYkY1f76
+         gathwJDmWev4kvIPr4U5WYpW+BpJihYY0t0uQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703124087; x=1703728887;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nC/S36i2aSU4xpq44KXkLd2QXwNK3n7uzEST3ZgUeso=;
-        b=JBh0PuPMbCsCttJWj/FoA7blkF4bEtyttjDssMqgY/zNJDlRTgpGknrCmTUKt9w13M
-         KHcg5F7UJFkV5MQ4ZXOawg2ioqYcWDJJsRAVE12sXqPwNq9PMxjLITrgcz8tkBxY9PMc
-         0uSVTKa/jjd4KudkDbJgahIXu/RaVRrIBVi/h5KhQNofOEA+0BMrVSxo8YcLE5eAqI2l
-         TNWO9t8pRcyHYIRyICoY2N92WqBUdafWm+q4NYMJYZ2Rvzq4YAN25g1lbQpSEymH/oo7
-         t8lGwjPJWWfDSMdETt/bVQbyDEvcHSCzVANsIPyIVJP++alcYgD/TgMZ3TdDB/M4vTeN
-         vi4A==
-X-Gm-Message-State: AOJu0Yz8NFdcAjlwy0w1HobSBWB0k/FOsPM0fYrWoGOUXdqjQeoMHNOK
-	hvYBI2IfARyy1S9gnY59vC414+78cksoN5ytfm8=
-X-Google-Smtp-Source: AGHT+IFPHoutfv6D+wswHhe1PU/LIE5JxnJu1etJ1AYQ2/VaoAZFM39IkD3IpgJZKu9GqxRJYOWXKQ==
-X-Received: by 2002:a17:903:41c4:b0:1d3:fcac:fced with SMTP id u4-20020a17090341c400b001d3fcacfcedmr1216250ple.8.1703124087396;
-        Wed, 20 Dec 2023 18:01:27 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id ju22-20020a170903429600b001d1cd7e4acesm394434plb.68.2023.12.20.18.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Dec 2023 18:01:26 -0800 (PST)
-Message-ID: <65839c76.170a0220.881d0.1c04@mx.google.com>
-Date: Wed, 20 Dec 2023 18:01:26 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1703126321; x=1703731121;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1vJGbIHxG2ZsYy3EApEYIrka9GfydAEUv+b6Hz8AzfM=;
+        b=sf1ieDXCyScQHallnw+5Frb+Pm4JD1ht6z4VIghaTdlrs68kSVx+V1xcQNduzP6r0g
+         dF4TVoY2OomBNzONkofp7aNAVPU2kN6/pz+h0lKLVGTvefgKk+rxZjuzDyM8R5lK0NgR
+         ZLd+M3SuX2oEzmFanobL5V/4oDFBse+IP+YLbjUyyka/56Ulm0M4bd2JnKbkZkXmMawz
+         qSMHgRohawFuN1iCeIc5idXcqjWUGKhsYf5E0fim8a8W8/3xfsP00iBlzuzu6bzEAqXi
+         3y8utYj4J6XCGGBtwDEd2JZ9gL+cDwJ7RvpFKLBNw7e97QwQGvNZ5fFVDVaQ5ObmsG/O
+         C3tA==
+X-Gm-Message-State: AOJu0YzUjN6BwirEcK/Se7ShyU75gb+OZEuUhAuxUlm41QVTN70zcx62
+	WC7vT0vgMdD5jT2Gu1EZkXpO3g==
+X-Google-Smtp-Source: AGHT+IFZTzHJljAEY9dBckgyqNlZpe7i9t37+5ZwyzFVa+SsJmG4tRtrmgdjSlzgL/JHtsz/d7gP0A==
+X-Received: by 2002:a05:6a21:6d99:b0:194:d254:301a with SMTP id wl25-20020a056a216d9900b00194d254301amr735237pzb.119.1703126320783;
+        Wed, 20 Dec 2023 18:38:40 -0800 (PST)
+Received: from localhost ([2620:15c:9d:2:dc4e:6304:4aae:aecc])
+        by smtp.gmail.com with UTF8SMTPSA id w128-20020a626286000000b006d8840a5923sm471801pfb.166.2023.12.20.18.38.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Dec 2023 18:38:40 -0800 (PST)
+Date: Wed, 20 Dec 2023 18:38:37 -0800
+From: Brian Norris <briannorris@chromium.org>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvalo@kernel.org, francesco@dolcini.it, tsung-hsien.hsieh@nxp.com,
+	stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>
+Subject: Re: [PATCH v2] wifi: mwifiex: fix uninitialized firmware_stat
+Message-ID: <ZYOlLanvv6DTGSw1@google.com>
+References: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.6
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.6.7-166-g4a769d77505ba
-Subject: stable-rc/queue/6.6 build: 20 builds: 0 failed,
- 20 passed (v6.6.7-166-g4a769d77505ba)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231221015511.1032128-1-yu-hao.lin@nxp.com>
 
-stable-rc/queue/6.6 build: 20 builds: 0 failed, 20 passed (v6.6.7-166-g4a76=
-9d77505ba)
+On Thu, Dec 21, 2023 at 09:55:11AM +0800, David Lin wrote:
+> Variable firmware_stat is possible to be used without initialization.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <error27@gmail.com>
+> Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.6=
-/kernel/v6.6.7-166-g4a769d77505ba/
+Repeating:
 
-Tree: stable-rc
-Branch: queue/6.6
-Git Describe: v6.6.7-166-g4a769d77505ba
-Git Commit: 4a769d77505ba10cb662d41046158b31131e144f
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Acked-by: Brian Norris <briannorris@chromium.org>
 
