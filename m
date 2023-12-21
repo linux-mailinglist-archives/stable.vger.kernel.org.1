@@ -1,88 +1,100 @@
-Return-Path: <stable+bounces-8262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6788281BB80
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 17:08:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBB081BBAA
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 17:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06BA71F23E3F
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:08:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 932CE1C23C01
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 16:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B0855E56;
-	Thu, 21 Dec 2023 16:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAF862802;
+	Thu, 21 Dec 2023 16:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fW2oFWnM"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="k26iM+Dx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4EE539F3;
-	Thu, 21 Dec 2023 16:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703174915; x=1734710915;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ht2da222gkdrScCbMu4NEKmjUDgWThAi8y/EPds7Zrs=;
-  b=fW2oFWnMqAHHsxNkZDzRKrGxu3EGAjupGf3pFEmiV27gLX3j/b1cQ5nj
-   pSxC2UB6jZ2iid0Z4cj+o6Q1k3BjFBcPCrcKfApWkQS6VHSChZR7cBfep
-   IKqL2AvDoKSFw/Zqn69y/YUdnLUx6WlSM+ZMCOZJq3bKuBkmMIT1SXdrp
-   kBlNL/IphiW7IOjvsF/CEICqw1gjzNUZNso2oLB9adsLnqRY8huErZDA+
-   m/KIoELTVxQBSEh+XP1bU7pMHxkfvcBeiIvDWo6iXMLkgIuNZQfRH+AqN
-   ePw/MBIJ3496Leu3gENkHTjjqoc2OXzBZNeg8yZqj3LKvXDbBeThGvZrY
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="2827900"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; 
-   d="scan'208";a="2827900"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2023 08:08:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10931"; a="1023900990"
-X-IronPort-AV: E=Sophos;i="6.04,293,1695711600"; 
-   d="scan'208";a="1023900990"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Dec 2023 08:08:20 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1rGLY2-00000007tEd-2Dpc;
-	Thu, 21 Dec 2023 18:05:22 +0200
-Date: Thu, 21 Dec 2023 18:05:22 +0200
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E350627FB;
+	Thu, 21 Dec 2023 16:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=w58q1EZLNvdrYMtYLHciABWJyucaztQhQ1k0qWMzqJc=; b=k26iM+DxO+STVASN/voeZEecT/
+	oic5XSBzoiCRdjBIu2fQ09ZZGfOCRFIsxJLCQ8qTkhj3AwnD95SwCzfhT0rluAjDDZxXg7/WVM3s1
+	WqeUYruGFdANef/q6GM8kMtYGXmTRXdEdiqHQqQGFAb4QWBqP+8punhkVxom/UAqN5pI=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:56104 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rGLg2-0006VT-3M; Thu, 21 Dec 2023 11:13:38 -0500
+Date: Thu, 21 Dec 2023 11:13:37 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
 To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, jringle@gridpoint.com,
-	kubakici@wp.pl, phil@raspberrypi.org, bo.svangard@embeddedart.se,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
-	Yury Norov <yury.norov@gmail.com>
-Subject: Re: [PATCH 02/18] serial: sc16is7xx: fix invalid sc16is7xx_lines
- bitfield in case of probe error
-Message-ID: <ZYRiQpt56IVYhwOg@smile.fi.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
+ gregkh@linuxfoundation.org, jirislaby@kernel.org, jringle@gridpoint.com,
+ kubakici@wp.pl, phil@raspberrypi.org, bo.svangard@embeddedart.se,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, Hugo Villeneuve
+ <hvilleneuve@dimonoff.com>, stable@vger.kernel.org, Yury Norov
+ <yury.norov@gmail.com>
+Message-Id: <20231221111337.2c1af5bbe4920268dac25e8f@hugovil.com>
+In-Reply-To: <20231221105639.17910de5e7d7a486834bd856@hugovil.com>
 References: <20231219171903.3530985-1-hugo@hugovil.com>
- <20231219171903.3530985-3-hugo@hugovil.com>
- <ZYMK-l03S86Nw19I@smile.fi.intel.com>
- <20231221105639.17910de5e7d7a486834bd856@hugovil.com>
+	<20231219171903.3530985-3-hugo@hugovil.com>
+	<ZYMK-l03S86Nw19I@smile.fi.intel.com>
+	<20231221105639.17910de5e7d7a486834bd856@hugovil.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231221105639.17910de5e7d7a486834bd856@hugovil.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+	* -3.8 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 02/18] serial: sc16is7xx: fix invalid sc16is7xx_lines
+ bitfield in case of probe error
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Thu, Dec 21, 2023 at 10:56:39AM -0500, Hugo Villeneuve wrote:
+On Thu, 21 Dec 2023 10:56:39 -0500
+Hugo Villeneuve <hugo@hugovil.com> wrote:
+
 > On Wed, 20 Dec 2023 17:40:42 +0200
 > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> 
 > > On Tue, Dec 19, 2023 at 12:18:46PM -0500, Hugo Villeneuve wrote:
-
-...
-
+> > > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > > 
+> > > If an error occurs during probing, the sc16is7xx_lines bitfield may be left
+> > > in a state that doesn't represent the correct state of lines allocation.
+> > > 
+> > > For example, in a system with two SC16 devices, if an error occurs only
+> > > during probing of channel (port) B of the second device, sc16is7xx_lines
+> > > final state will be 00001011b instead of the expected 00000011b.
+> > > 
+> > > This is caused in part because of the "i--" in the for/loop located in
+> > > the out_ports: error path.
+> > > 
+> > > Fix this by checking the return value of uart_add_one_port() and set line
+> > > allocation bit only if this was successful. This allows the refactor of
+> > > the obfuscated for(i--...) loop in the error path, and properly call
+> > > uart_remove_one_port() only when needed, and properly unset line allocation
+> > > bits.
+> > > 
+> > > Also use same mechanism in remove() when calling uart_remove_one_port().
+> > 
 > > Yes, this seems to be the correct one to fix the problem described in
 > > the patch 1. I dunno why the patch 1 even exists.
 > 
@@ -100,12 +112,23 @@ On Thu, Dec 21, 2023 at 10:56:39AM -0500, Hugo Villeneuve wrote:
 > 
 > I am not sure how best to handle that without patch 1.
 
-So, it means we need to root cause this issue. Because patch 1 looks
-really bogus.
+Also, if we manage to get past kthread_flush_worker() and 
+kthread_stop() (commented out for testing purposes), we get another bug:
 
--- 
-With Best Regards,
-Andy Shevchenko
+# rmmod sc16is7xx
+...
+crystal-duart-24m already disabled
+WARNING: CPU: 2 PID: 340 at drivers/clk/clk.c:1090
+clk_core_disable+0x1b0/0x1e0
+...
+Call trace:
+clk_core_disable+0x1b0/0x1e0
+clk_disable+0x38/0x60
+sc16is7xx_remove+0x1e4/0x240 [sc16is7xx]
 
+This one is caused by calling clk_disable_unprepare(). But
+clk_disable_unprepare() has already been called in probe error handling
+code. Patch 1 also fixed this...
 
+Hugo Villeneuve
 
