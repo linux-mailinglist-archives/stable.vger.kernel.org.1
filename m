@@ -1,151 +1,131 @@
-Return-Path: <stable+bounces-8265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4AB081BCAD
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 18:12:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4A281BCB9
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 18:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C8FE287567
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 17:12:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50B781C25D26
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 17:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6365990D;
-	Thu, 21 Dec 2023 17:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF40059917;
+	Thu, 21 Dec 2023 17:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j+K2IkfW"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="HJD9yBYP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7229E62803;
-	Thu, 21 Dec 2023 17:11:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5613FC433C8;
-	Thu, 21 Dec 2023 17:11:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703178712;
-	bh=wGxfU3cYAyfRf9pobVG8mBWcniCrAKbyXU8GosW2aNQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+K2IkfW54ig2qFYEJPu/Fn+/lf43RAmGp6Or8UlxVjKHDqEZiI5FqdLpBiGXTBmN
-	 62PO470CPM7K6KWbwi8GBgT1dtxtiAj319Fz4ZtU8IJcuTkaJghhY53JbnfYrS5kkF
-	 ZH3fFb26FEEl9++CH5at5Hmvdmi8o7VeHq4bHMdfEaMAnZgALNvmTKj2KZs+XeD8SG
-	 xzkyyP9xrM0KJODfWrBNtG/y+NxZkql+gj5aTBX4VBKRpp6Pj7t2xC+8h0o/EvKTsn
-	 FmmNNZyHrfzHM1ihwE5pNU/OQ/OVobsECvqckkTaV5FazZ/zlPONBnEnjtxYXATVhV
-	 yqxoKW2poMjlA==
-From: SeongJae Park <sj@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: gregkh@linuxfoundation.org,
-	stable-commits@vger.kernel.org,
-	sj@kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	damon@lists.linux.dev
-Subject: Re: Patch "mm/damon/core: use number of passed access sampling as a timer" has been added to the 6.6-stable tree
-Date: Thu, 21 Dec 2023 17:11:50 +0000
-Message-Id: <20231221171150.45526-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231221145301.1548807-1-sashal@kernel.org>
-References: 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B295822F;
+	Thu, 21 Dec 2023 17:13:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=248JVgGyRvCA5szqZVI4DtrGSxFHLc+06wLR7mZzUgw=; b=HJD9yBYPkAx1lcfslO8XmfanRu
+	EUDSmzPVea8xvPCxexKhDR+0nnQWZiERB9AKjbqWVV+Wms4loMDsUORbkhbPHFR61q3UkJvKUxkru
+	UYjBYHq1P70oHavw/ld3qm+lSF+RMyQ96wWmdZ01ZkVoZKBx42UvFCQIkuKLT+jjtuNM=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:45918 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rGMc6-0007Fu-7K; Thu, 21 Dec 2023 12:13:38 -0500
+Date: Thu, 21 Dec 2023 12:13:37 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, jringle@gridpoint.com,
+ kubakici@wp.pl, phil@raspberrypi.org, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ stable@vger.kernel.org, Yury Norov <yury.norov@gmail.com>
+Message-Id: <20231221121337.8d56a89ece7c341f9f36bf6b@hugovil.com>
+In-Reply-To: <ZYRk6NpuUJvVEmOZ@smile.fi.intel.com>
+References: <20231219171903.3530985-1-hugo@hugovil.com>
+	<20231219171903.3530985-3-hugo@hugovil.com>
+	<ZYMK-l03S86Nw19I@smile.fi.intel.com>
+	<20231221105639.17910de5e7d7a486834bd856@hugovil.com>
+	<20231221111337.2c1af5bbe4920268dac25e8f@hugovil.com>
+	<ZYRk6NpuUJvVEmOZ@smile.fi.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+	* -3.8 NICE_REPLY_A Looks like a legit reply (A)
+Subject: Re: [PATCH 02/18] serial: sc16is7xx: fix invalid sc16is7xx_lines
+ bitfield in case of probe error
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-Hi Sasha,
+On Thu, 21 Dec 2023 18:16:40 +0200
+Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
 
+> On Thu, Dec 21, 2023 at 11:13:37AM -0500, Hugo Villeneuve wrote:
+> > On Thu, 21 Dec 2023 10:56:39 -0500
+> > Hugo Villeneuve <hugo@hugovil.com> wrote:
+> > > On Wed, 20 Dec 2023 17:40:42 +0200
+> > > Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+> 
+> ...
+> 
+> > > this will indeed fix the problem described in patch 1.
+> > > 
+> > > However, if I remove patch 1, and I simulate the same probe error as
+> > > described in patch 1, now we get stuck forever when trying to 
+> > > remove the driver. This is something that I observed before and
+> > > that patch 1 also corrected.
+> > > 
+> > > The problem is caused in sc16is7xx_remove() when calling this function
+> > > 
+> > >     kthread_flush_worker(&s->kworker);
+> > > 
+> > > I am not sure how best to handle that without patch 1.
+> > 
+> > Also, if we manage to get past kthread_flush_worker() and 
+> > kthread_stop() (commented out for testing purposes), we get another bug:
+> > 
+> > # rmmod sc16is7xx
+> > ...
+> > crystal-duart-24m already disabled
+> > WARNING: CPU: 2 PID: 340 at drivers/clk/clk.c:1090
+> > clk_core_disable+0x1b0/0x1e0
+> > ...
+> > Call trace:
+> > clk_core_disable+0x1b0/0x1e0
+> > clk_disable+0x38/0x60
+> > sc16is7xx_remove+0x1e4/0x240 [sc16is7xx]
+> > 
+> > This one is caused by calling clk_disable_unprepare(). But
+> > clk_disable_unprepare() has already been called in probe error handling
+> > code. Patch 1 also fixed this...
+> 
+> Word "fixed" is incorrect. "Papered over" is what it did.
 
-Thank you for picking this patch.
+Hi,
+I just found the problem, and it was in my bug simulation, not the
+driver itself. When I simulated the bug, I forgot to set "ret" to an
+error code, and thus I returned 0 at the end of sc16is7xx_probe(). This
+is why sc16is7xx_remove() was called when unloading driver, but
+shouldn't have.
 
-On Thu, 21 Dec 2023 09:53:01 -0500 Sasha Levin <sashal@kernel.org> wrote:
+If I simulate my probe error and return "-EINVAL" at the end of
+sc16is7xx_probe(), sc16is7xx_remove() is not called when
+unloading the driver.
 
-> This is a note to let you know that I've just added the patch titled
-> 
->     mm/damon/core: use number of passed access sampling as a timer
-> 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      mm-damon-core-use-number-of-passed-access-sampling-a.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit dfda8d41e94ee98ebd2ad78c7cb49625a8c92474
-> Author: SeongJae Park <sj@kernel.org>
-> Date:   Thu Sep 14 02:15:23 2023 +0000
-> 
->     mm/damon/core: use number of passed access sampling as a timer
-> 
->     [ Upstream commit 4472edf63d6630e6cf65e205b4fc8c3c94d0afe5 ]
-> 
->     DAMON sleeps for sampling interval after each sampling, and check if the
->     aggregation interval and the ops update interval have passed using
->     ktime_get_coarse_ts64() and baseline timestamps for the intervals.  That
->     design is for making the operations occur at deterministic timing
->     regardless of the time that spend for each work.  However, it turned out
->     it is not that useful, and incur not-that-intuitive results.
-> 
->     After all, timer functions, and especially sleep functions that DAMON uses
->     to wait for specific timing, are not necessarily strictly accurate.  It is
->     legal design, so no problem.  However, depending on such inaccuracies, the
->     nr_accesses can be larger than aggregation interval divided by sampling
->     interval.  For example, with the default setting (5 ms sampling interval
->     and 100 ms aggregation interval) we frequently show regions having
->     nr_accesses larger than 20.  Also, if the execution of a DAMOS scheme
->     takes a long time, next aggregation could happen before enough number of
->     samples are collected.  This is not what usual users would intuitively
->     expect.
-> 
->     Since access check sampling is the smallest unit work of DAMON, using the
->     number of passed sampling intervals as the DAMON-internal timer can easily
->     avoid these problems.  That is, convert aggregation and ops update
->     intervals to numbers of sampling intervals that need to be passed before
->     those operations be executed, count the number of passed sampling
->     intervals, and invoke the operations as soon as the specific amount of
->     sampling intervals passed.  Make the change.
-> 
->     Note that this could make a behavioral change to settings that using
->     intervals that not aligned by the sampling interval.  For example, if the
->     sampling interval is 5 ms and the aggregation interval is 12 ms, DAMON
->     effectively uses 15 ms as its aggregation interval, because it checks
->     whether the aggregation interval after sleeping the sampling interval.
->     This change will make DAMON to effectively use 10 ms as aggregation
->     interval, since it uses 'aggregation interval / sampling interval *
->     sampling interval' as the effective aggregation interval, and we don't use
->     floating point types.  Usual users would have used aligned intervals, so
->     this behavioral change is not expected to make any meaningful impact, so
->     just make this change.
-> 
->     Link: https://lkml.kernel.org/r/20230914021523.60649-1-sj@kernel.org
->     Signed-off-by: SeongJae Park <sj@kernel.org>
->     Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->     Stable-dep-of: 6376a8245956 ("mm/damon/core: make damon_start() waits until kdamond_fn() starts")
+Sorry for the noise, so I will drop patch 1 and leave patch "fix invalid
+sc16is7xx_lines bitfield in case of probe error" as it is, and
+simply remove comments about Yury's patch.
 
-I think adding this patch on 6.6.y has no problem.  Nonetheless, Greg notified
-me the patch that depends on this ("mm/damon/core: make damon_start() waits
-until kdamond_fn() starts") cannot cleanly applied on 6.1.y and 6.6.y[1,2], and
-hence I sent conflict-resolved patches for those[3,4] before.
-
-Hence this patch might not really required, but I also think adding this now
-might help merging future fixes.  I don't have strong opinion on whether this
-patch should be added to 6.6.y or not.  I hope you to select a way that better
-for minimizing stable kernels maintenance overhead.
-
-[1] https://lore.kernel.org/stable/2023121849-ambulance-violate-e5b2@gregkh/
-[2] https://lore.kernel.org/stable/2023121843-pension-tactile-868b@gregkh/
-[3] https://lore.kernel.org/r/20231218175939.99263-1-sj@kernel.org
-[4] https://lore.kernel.org/r/20231218175959.99278-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
+Hugo.
 
