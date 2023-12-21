@@ -1,241 +1,206 @@
-Return-Path: <stable+bounces-8247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF6F81B922
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:03:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5654881B93E
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 15:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D53D1C25F39
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:03:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9AA91F27F88
+	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 14:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956E936093;
-	Thu, 21 Dec 2023 13:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E0A6D6F9;
+	Thu, 21 Dec 2023 14:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hI9EF/Qi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9E236080;
-	Thu, 21 Dec 2023 13:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8706D6EF;
+	Thu, 21 Dec 2023 14:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6dbb9d03b5eso95556a34.1;
-        Thu, 21 Dec 2023 05:55:45 -0800 (PST)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-33687627ad0so621892f8f.2;
+        Thu, 21 Dec 2023 06:00:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703167209; x=1703772009; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ExPiPxzB83kaxWbsFLRy5OgpiLlfDkyamfeCPS9DReU=;
+        b=hI9EF/Qi+v9sH4LjIFUNVzNYdeNIHyKen2IuPcZAlWh/u4jEcL9mseZDB6vmnpUd6x
+         fMG4G/AcikZNuaMV14vJfZsOQOT9tbV2KffLHRmeO9zUeBwS0lAEb1DLxd/d1dU1Z0xJ
+         u2+Eb99A3z8IbaLCBzLZprV3fL0q1chntClfaKVEIJVvPwhMB8OSPnWQi7QDx1xup0c/
+         Fn+nF6htIVvEa1k2qLTNDP3/XQ6tXtUEyJ+1EotXJEzE+Sddgig2jSANWnbzFYqjzzEh
+         T2heUAtMLqDsGQyMWO+dAI6XsjEdJgHo4cFwTvRxJN+/ZZX7IWciQWxFZ3ixWMAsebuz
+         6Wmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703166945; x=1703771745;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tn1YpB9RSUb3kYqtYjrWXVkua1HlT1atP73EUz1/0nY=;
-        b=AP3Z9VeeKl3jB2MCKXBmdlCJrJacLeC9oYo684TxHCay2sVYpIcqCFpp6k4jBX7IP2
-         D45fRN2ex+QCUTENHS1Et7uG4qgLslwmy81OBO0ErDnwhIcg0+Nfw4voI6GJ8KMYTwOd
-         uK5h6Mh7MTfJsrQauGSYg8we6ehumpl4iHbnugIg2PPnx3MmnQ6RmTB7ZFzFpYpLRfe6
-         fceoVE+MhtRhsRJPvrvUlbT4EQ3N21MFzQ2ffLishVbxPBLM7+z/CQC/ef7Kpxs1ivoy
-         cqkz9esf2qc/8m1RvWZnGeR4e6axmw8mxZ4zEZG2QyvDHd6nOeWqGA0vMQ03XkGL4QU4
-         DMrQ==
-X-Gm-Message-State: AOJu0Yz3wEaZnXX6qGh5rDlL/oecy9zECauQiYDbOl60jdyq8NHfTJoJ
-	QEc3V5tmFxSg2OxRmDWYPfQbXND6NLOunFnSWPI=
-X-Google-Smtp-Source: AGHT+IGyDCjQzUrqeW1hQnA1vPHGjsH39gBljxA4HGmC4zmiOGkpax/gOnaTZ3Hp+uBUwVKFr9RB00v6d1OjIBF6qys=
-X-Received: by 2002:a4a:a581:0:b0:591:cdc0:f28d with SMTP id
- d1-20020a4aa581000000b00591cdc0f28dmr13283358oom.0.1703166944879; Thu, 21 Dec
- 2023 05:55:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703167209; x=1703772009;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ExPiPxzB83kaxWbsFLRy5OgpiLlfDkyamfeCPS9DReU=;
+        b=MlbzET/oEkd3ihuX9RLFiHCulNLEN12lJfkvLpBwo2pKG5k4+Gk8n/806LF3Rqy2uL
+         TVEmEt8nPKuzoih3D/S1p3ek3VrLcZRzAhSwbWP7y8l6UIu+9dp5fu3mI36AvZXyT4no
+         5IsiRAWz1ek6VNtw8sDrMKBdwFV9yCY+sa6s+JGEvbDltxPDwSiUDgQ2MkC+shNAz3dU
+         IlKsq+Mm9ZkQRR3AvTMv9pYTi/y8/KbXLJggtLtNA1GTFNYPgJd1w89+J749LduO7fds
+         eqSG5TRTuQJvf7b3G1Mlwd86pV0bj51IzdDCrpIG60hKmfsIz6oXLEDNS7w8GNgrXhG8
+         p5tQ==
+X-Gm-Message-State: AOJu0Yzx3BOSXlGwL3KLeYLeKl5bK68CbPg2X2HjrUP944676mzQQPS5
+	Qad8dMussgy5aqqJHBL5t+0=
+X-Google-Smtp-Source: AGHT+IHp3WVv6z3Ss0ro24ugXupertKkAHhY0uQMCPuYsb0qIURuCsnhRgztvQ3HHOAu79lykpB1lg==
+X-Received: by 2002:a5d:44c4:0:b0:336:60e9:483 with SMTP id z4-20020a5d44c4000000b0033660e90483mr766521wrr.125.1703167208831;
+        Thu, 21 Dec 2023 06:00:08 -0800 (PST)
+Received: from krava (cst-prg-25-205.cust.vodafone.cz. [46.135.25.205])
+        by smtp.gmail.com with ESMTPSA id e14-20020a5d530e000000b0033668ac65ddsm2107333wrv.25.2023.12.21.06.00.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 06:00:08 -0800 (PST)
+From: Jiri Olsa <olsajiri@gmail.com>
+X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
+Date: Thu, 21 Dec 2023 15:00:05 +0100
+To: Lee Jones <lee@kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
+	Yonghong Song <yonghong.song@linux.dev>, bpf@vger.kernel.org,
+	Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+	Yonghong Song <yhs@fb.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@chromium.org>,
+	Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
+	Xu Kuohai <xukuohai@huawei.com>, Will Deacon <will@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: Re: [PATCHv4 bpf 1/2] bpf: Fix prog_array_map_poke_run map poke
+ update
+Message-ID: <ZYRE5dF6j63fEv8A@krava>
+References: <20231206083041.1306660-1-jolsa@kernel.org>
+ <20231206083041.1306660-2-jolsa@kernel.org>
+ <20231221090745.GA431072@google.com>
+ <2023122113-thirsting-county-ca67@gregkh>
+ <20231221095522.GB10102@google.com>
+ <2023122132-splashing-blip-ced4@gregkh>
+ <20231221101744.GD10102@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com> <20231218064521.37324-2-xueshuai@linux.alibaba.com>
-In-Reply-To: <20231218064521.37324-2-xueshuai@linux.alibaba.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 21 Dec 2023 14:55:33 +0100
-Message-ID: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
-Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: bp@alien8.de, rafael@kernel.org, wangkefeng.wang@huawei.com, 
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com, 
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com, james.morse@arm.com, 
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org, 
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	akpm@linux-foundation.org, linux-edac@vger.kernel.org, 
-	acpica-devel@lists.linuxfoundation.org, stable@vger.kernel.org, 
-	x86@kernel.org, justin.he@arm.com, ardb@kernel.org, ying.huang@intel.com, 
-	ashish.kalra@amd.com, baolin.wang@linux.alibaba.com, tglx@linutronix.de, 
-	mingo@redhat.com, dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com, 
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com, 
-	zhuo.song@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231221101744.GD10102@google.com>
 
-On Mon, Dec 18, 2023 at 7:45=E2=80=AFAM Shuai Xue <xueshuai@linux.alibaba.c=
-om> wrote:
->
-> There are two major types of uncorrected recoverable (UCR) errors :
->
-> - Synchronous error: The error is detected and raised at the point of the
->   consumption in the execution flow, e.g. when a CPU tries to access
->   a poisoned cache line. The CPU will take a synchronous error exception
->   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->   Exception (MCE) on X86. OS requires to take action (for example, offlin=
-e
->   failure page/kill failure thread) to recover this uncorrectable error.
->
-> - Asynchronous error: The error is detected out of processor execution
->   context, e.g. when an error is detected by a background scrubber. Some =
-data
->   in the memory are corrupted. But the data have not been consumed. OS is
->   optional to take action to recover this uncorrectable error.
->
-> When APEI firmware first is enabled, a platform may describe one error
-> source for the handling of synchronous errors (e.g. MCE or SEA notificati=
-on
-> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
-> notification). In other words, we can distinguish synchronous errors by
-> APEI notification. For synchronous errors, kernel will kill the current
-> process which accessing the poisoned page by sending SIGBUS with
-> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify t=
-he
-> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO i=
-n
-> early kill mode. However, the GHES driver always sets mf_flags to 0 so th=
-at
-> all synchronous errors are handled as asynchronous errors in memory failu=
-re.
->
-> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronou=
-s
-> events.
->
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: James Morse <james.morse@arm.com>
+On Thu, Dec 21, 2023 at 10:17:44AM +0000, Lee Jones wrote:
+> On Thu, 21 Dec 2023, Greg KH wrote:
+> 
+> > On Thu, Dec 21, 2023 at 09:55:22AM +0000, Lee Jones wrote:
+> > > On Thu, 21 Dec 2023, Greg KH wrote:
+> > > 
+> > > > On Thu, Dec 21, 2023 at 09:07:45AM +0000, Lee Jones wrote:
+> > > > > Dear Stable,
+> > > > > 
+> > > > > > Lee pointed out issue found by syscaller [0] hitting BUG in prog array
+> > > > > > map poke update in prog_array_map_poke_run function due to error value
+> > > > > > returned from bpf_arch_text_poke function.
+> > > > > > 
+> > > > > > There's race window where bpf_arch_text_poke can fail due to missing
+> > > > > > bpf program kallsym symbols, which is accounted for with check for
+> > > > > > -EINVAL in that BUG_ON call.
+> > > > > > 
+> > > > > > The problem is that in such case we won't update the tail call jump
+> > > > > > and cause imbalance for the next tail call update check which will
+> > > > > > fail with -EBUSY in bpf_arch_text_poke.
+> > > > > > 
+> > > > > > I'm hitting following race during the program load:
+> > > > > > 
+> > > > > >   CPU 0                             CPU 1
+> > > > > > 
+> > > > > >   bpf_prog_load
+> > > > > >     bpf_check
+> > > > > >       do_misc_fixups
+> > > > > >         prog_array_map_poke_track
+> > > > > > 
+> > > > > >                                     map_update_elem
+> > > > > >                                       bpf_fd_array_map_update_elem
+> > > > > >                                         prog_array_map_poke_run
+> > > > > > 
+> > > > > >                                           bpf_arch_text_poke returns -EINVAL
+> > > > > > 
+> > > > > >     bpf_prog_kallsyms_add
+> > > > > > 
+> > > > > > After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
+> > > > > > poke update fails on expected jump instruction check in bpf_arch_text_poke
+> > > > > > with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
+> > > > > > 
+> > > > > > Similar race exists on the program unload.
+> > > > > > 
+> > > > > > Fixing this by moving the update to bpf_arch_poke_desc_update function which
+> > > > > > makes sure we call __bpf_arch_text_poke that skips the bpf address check.
+> > > > > > 
+> > > > > > Each architecture has slightly different approach wrt looking up bpf address
+> > > > > > in bpf_arch_text_poke, so instead of splitting the function or adding new
+> > > > > > 'checkip' argument in previous version, it seems best to move the whole
+> > > > > > map_poke_run update as arch specific code.
+> > > > > > 
+> > > > > > [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
+> > > > > > 
+> > > > > > Cc: Lee Jones <lee@kernel.org>
+> > > > > > Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+> > > > > > Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
+> > > > > > Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
+> > > > > > Acked-by: Yonghong Song <yonghong.song@linux.dev>
+> > > > > > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> > > > > > ---
+> > > > > >  arch/x86/net/bpf_jit_comp.c | 46 +++++++++++++++++++++++++++++
+> > > > > >  include/linux/bpf.h         |  3 ++
+> > > > > >  kernel/bpf/arraymap.c       | 58 +++++++------------------------------
+> > > > > >  3 files changed, 59 insertions(+), 48 deletions(-)
+> > > > > 
+> > > > > Please could we have this backported?
+> > > > > 
+> > > > > Guided by the Fixes: tag.
+> > > > 
+> > > > <formletter>
+> > > > 
+> > > > This is not the correct way to submit patches for inclusion in the
+> > > > stable kernel tree.  Please read:
+> > > >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> > > > for how to do this properly.
+> > > > 
+> > > > </formletter>
+> > > 
+> > > Apologies.
+> > > 
+> > > Commit ID: 4b7de801606e504e69689df71475d27e35336fb3
+> > > Subject:   bpf: Fix prog_array_map_poke_run map poke update
+> > > Reason:    Fixes a race condition in BPF.
+> > > Versions:  linux-5.10.y+, as specified by the Fixes: tag above
+> > 
+> > Did not apply to 5.10.y or 5.15.y, so if you need/want it there, we will
+> > need a working backport that has been tested.  Other trees it's now
+> > queued up for.
+> 
+> Thank you.
 
-Applied as 6.8 material.
+please let me know if you need any help with that, I can check on that
 
-The other patches in the series still need to receive tags from the
-APEI designated reviewers (as per MAINTAINERS).
+jirka
 
-Thanks!
-
-
-> ---
->  drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
->  1 file changed, 23 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-> index 63ad0541db38..ab2a82cb1b0b 100644
-> --- a/drivers/acpi/apei/ghes.c
-> +++ b/drivers/acpi/apei/ghes.c
-> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct gh=
-es *ghes)
->         return ghes->generic->header.type =3D=3D ACPI_HEST_TYPE_GENERIC_E=
-RROR_V2;
->  }
->
-> +/*
-> + * A platform may describe one error source for the handling of synchron=
-ous
-> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. S=
-CI
-> + * or External Interrupt). On x86, the HEST notifications are always
-> + * asynchronous, so only SEA on ARM is delivered as a synchronous
-> + * notification.
-> + */
-> +static inline bool is_hest_sync_notify(struct ghes *ghes)
-> +{
-> +       u8 notify_type =3D ghes->generic->notify.type;
-> +
-> +       return notify_type =3D=3D ACPI_HEST_NOTIFY_SEA;
-> +}
-> +
->  /*
->   * This driver isn't really modular, however for the time being,
->   * continuing to use module_param is the easiest way to remain
-> @@ -489,7 +503,7 @@ static bool ghes_do_memory_failure(u64 physical_addr,=
- int flags)
->  }
->
->  static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gd=
-ata,
-> -                                      int sev)
-> +                                      int sev, bool sync)
->  {
->         int flags =3D -1;
->         int sec_sev =3D ghes_severity(gdata->error_severity);
-> @@ -503,7 +517,7 @@ static bool ghes_handle_memory_failure(struct acpi_he=
-st_generic_data *gdata,
->             (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
->                 flags =3D MF_SOFT_OFFLINE;
->         if (sev =3D=3D GHES_SEV_RECOVERABLE && sec_sev =3D=3D GHES_SEV_RE=
-COVERABLE)
-> -               flags =3D 0;
-> +               flags =3D sync ? MF_ACTION_REQUIRED : 0;
->
->         if (flags !=3D -1)
->                 return ghes_do_memory_failure(mem_err->physical_addr, fla=
-gs);
-> @@ -511,9 +525,11 @@ static bool ghes_handle_memory_failure(struct acpi_h=
-est_generic_data *gdata,
->         return false;
->  }
->
-> -static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
-a, int sev)
-> +static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdat=
-a,
-> +                                      int sev, bool sync)
->  {
->         struct cper_sec_proc_arm *err =3D acpi_hest_get_payload(gdata);
-> +       int flags =3D sync ? MF_ACTION_REQUIRED : 0;
->         bool queued =3D false;
->         int sec_sev, i;
->         char *p;
-> @@ -538,7 +554,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest=
-_generic_data *gdata, int s
->                  * and don't filter out 'corrected' error here.
->                  */
->                 if (is_cache && has_pa) {
-> -                       queued =3D ghes_do_memory_failure(err_info->physi=
-cal_fault_addr, 0);
-> +                       queued =3D ghes_do_memory_failure(err_info->physi=
-cal_fault_addr, flags);
->                         p +=3D err_info->length;
->                         continue;
->                 }
-> @@ -666,6 +682,7 @@ static bool ghes_do_proc(struct ghes *ghes,
->         const guid_t *fru_id =3D &guid_null;
->         char *fru_text =3D "";
->         bool queued =3D false;
-> +       bool sync =3D is_hest_sync_notify(ghes);
->
->         sev =3D ghes_severity(estatus->error_severity);
->         apei_estatus_for_each_section(estatus, gdata) {
-> @@ -683,13 +700,13 @@ static bool ghes_do_proc(struct ghes *ghes,
->                         atomic_notifier_call_chain(&ghes_report_chain, se=
-v, mem_err);
->
->                         arch_apei_report_mem_error(sev, mem_err);
-> -                       queued =3D ghes_handle_memory_failure(gdata, sev)=
-;
-> +                       queued =3D ghes_handle_memory_failure(gdata, sev,=
- sync);
->                 }
->                 else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
->                         ghes_handle_aer(gdata);
->                 }
->                 else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
-> -                       queued =3D ghes_handle_arm_hw_error(gdata, sev);
-> +                       queued =3D ghes_handle_arm_hw_error(gdata, sev, s=
-ync);
->                 } else {
->                         void *err =3D acpi_hest_get_payload(gdata);
->
-> --
-> 2.39.3
->
+> 
+> > BPF developers, please remember, just adding a "Fixes:" tag does NOT
+> > guarantee that any patch will be backported to any stable kernel, you
+> > MUST add a "cc: stable@..." tag to the patch if you wish to have it
+> > automatically backported.
+> 
+> -- 
+> Lee Jones [李琼斯]
 
