@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-8324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D165C81C8AD
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 12:02:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18BA81C8B5
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 12:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D33028938B
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3A81F22A1A
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A25C14F97;
-	Fri, 22 Dec 2023 11:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8FB156C4;
+	Fri, 22 Dec 2023 11:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkPBiSPr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZLd86w9h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0D168A2;
-	Fri, 22 Dec 2023 11:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4875DF42;
+	Fri, 22 Dec 2023 11:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd51c0e8ebso971771a12.3;
-        Fri, 22 Dec 2023 03:01:54 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d427518d52so1262685ad.0;
+        Fri, 22 Dec 2023 03:04:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703242914; x=1703847714; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703243048; x=1703847848; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IAuF7bFZaiA2XgfkF48tUoumueRVHVxfhhibupkaPcE=;
-        b=FkPBiSPreOWWTFUZUP3B9r+2blYmQXxWdqU6UG+uvl8doUBB3vReRQTUhKM4j1/9y6
-         DYNW70wMnd1S3/iBs9hRVujQQN1XHM8h0m1GjAmnhQqTC0F5TGC0Bqc6M1yHJ+GeVdVG
-         /m0pwojzlrqzEBeA0j9dKnq0zyISrDEYDfLHJRGAuBakRNXUwsWneFMZsPX9nQUmpb7U
-         5Cwe5VqoyxEgKF2yxy2mdjbXugpTOmDFizrp3+wYLATpKDhzsqbbTyo3MRWrS4Hjim9s
-         Kw5UM1fg4eNauQIUqT35Te3JSa62zwfg9QhpVOJpcaWvZsWXBTf4etkAycbSvzqfk6ZO
-         AKOg==
+        bh=ccwKVzWPangyqXrlucZn9H9/x6STLFmmKbiFlyVdJGs=;
+        b=ZLd86w9hCqxRTlT8aKrVQSN7jssjxmDlyYysTWgu/65tHZURyJCFSKh2iLjDUVq5uW
+         68Jyco1wwvTxbVvz7k0SfMRs+aTjPxGUIaylZKsCBvSS/COwOWpQOHJc/NxwZrVYKI+H
+         JNsqdsxitawQrdrZQtge8UW5Tr3P2TFNadSHU+A0qeD4jEPY6K5mCKXbaNxvV6fU9dsH
+         ZZI/2uxMLYw8YbmYR7RiOVVvBlm6CJGwQVTUGGZX2n+rm1JIYBuv9XFscLJp/WZqI+g6
+         WGyHtFAFJIN7KVJkVCXdJq5pmqo1oYDu9Z64N2vzMMqEfKWRLZPCixVK2M+vUTZnDp3K
+         5MYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703242914; x=1703847714;
+        d=1e100.net; s=20230601; t=1703243048; x=1703847848;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=IAuF7bFZaiA2XgfkF48tUoumueRVHVxfhhibupkaPcE=;
-        b=sYPBZG5zvOGT4Xu3OmatRlb62x23Ct3Y5/PVZqju94MgVi6iZ150YaAsUUA31Tdqbl
-         oN7pbag3z0S6J8A8fDvjl9/OX8gfw5eUw1/3Hc7KSUNxQ2CAuM/s3uNfSfic1rXyOxS1
-         6IPOPxBN/JjwPkvquPCucsG+vR6yW/ton/PMgJL6ha9Rlu1Keq57vG14enBviT836aRO
-         aMBx4cgb4KHSCDI6rnZzAptkIh7/s53medwn+OXDudfkK4LdDHRNXAgWl+64rZkGGI44
-         dUjINoL8fs1Eo1ZIwI8tL2tBOzyqdcRaVTU51iNn9+ikaA+WzfikQLKlq22Ktr1bCMe4
-         biXw==
-X-Gm-Message-State: AOJu0YzSuwe+/CZKtXyF9CZkeo7jWU+ogSvlfefAlwTdf+w+hXFOm2fZ
-	s+/k8YnDYXXsakbSN2tktKuMFrxA11btFOKd
-X-Google-Smtp-Source: AGHT+IGwKRk5cIFGwcfMmCHRCZJ5u2/TGeT2skB+XpOxjvTt5B3dQo5FdTCh/6LAlHckbVdTG8BIig==
-X-Received: by 2002:a05:6a20:8f24:b0:195:1511:b29c with SMTP id b36-20020a056a208f2400b001951511b29cmr835290pzk.50.1703242913789;
-        Fri, 22 Dec 2023 03:01:53 -0800 (PST)
+        bh=ccwKVzWPangyqXrlucZn9H9/x6STLFmmKbiFlyVdJGs=;
+        b=BokwkiMi817uTbZeMFJbUvn3GQPQ8jZrsLM6Qhdz+9I/izKFl76Wq4fPDh7j2LLdyO
+         JExhC8G+9Tv7PFK1yCSse6Gho1xvGREGFJAgDzchgkGVMM8UHSIn8HM4GRE1ZS41x7mC
+         H8A2OGhxgenh8AI2ReZq+wItgG7B+ZMJV1UllnCd/VACJzu7W9SkisPos1GCYQwe77uk
+         /HivkVFM2g0voh9MxYrl/N9doVoUV3cZZy+bY/IqyC5+NALeOmYOwB6onqyjoKAd3UeP
+         gkdb8VNzJOlf2KxTxvd/+ZUPQpEAWMmxc47ld8esRbU/npjh0BpSSIQSAZVX5j3WjKJr
+         CBFw==
+X-Gm-Message-State: AOJu0Ywj2kjpiXBlUF9VqalgD6CzivHxQeMB/+ff4pX310OHGm85v6SU
+	Z/y3Lwy+9Bp3h5zlzSwKrBs=
+X-Google-Smtp-Source: AGHT+IH0QZ9c+a8el4NSx+nwOrLhNLgEABgRjYUvxscb3xEa88e+Dung4gsE9CtAvyyU3mXQWWfm8g==
+X-Received: by 2002:a17:903:2344:b0:1d4:8a6:831f with SMTP id c4-20020a170903234400b001d408a6831fmr2961028plh.6.1703243048181;
+        Fri, 22 Dec 2023 03:04:08 -0800 (PST)
 Received: from g2039B650.. ([2001:da8:203:a502:3221:f470:cca0:93b2])
-        by smtp.gmail.com with ESMTPSA id jc14-20020a17090325ce00b001d07d83fdd0sm3204283plb.238.2023.12.22.03.01.51
+        by smtp.gmail.com with ESMTPSA id ju15-20020a170903428f00b001d3ff083d58sm3187596plb.254.2023.12.22.03.04.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 03:01:53 -0800 (PST)
+        Fri, 22 Dec 2023 03:04:07 -0800 (PST)
 From: Gui-Dong Han <2045gemini@gmail.com>
 To: marcel@holtmann.org,
 	johan.hedberg@gmail.com,
@@ -66,9 +66,9 @@ Cc: linux-bluetooth@vger.kernel.org,
 	Gui-Dong Han <2045gemini@gmail.com>,
 	stable@vger.kernel.org,
 	BassCheck <bass@buaa.edu.cn>
-Subject: [PATCH] Bluetooth: Fix atomicity violation in sniff_{min,max}_interval_set
-Date: Fri, 22 Dec 2023 19:01:47 +0800
-Message-Id: <20231222110147.9287-1-2045gemini@gmail.com>
+Subject: [PATCH] Bluetooth: Fix atomicity violation in conn_info_{min,max}_age_set
+Date: Fri, 22 Dec 2023 19:04:01 +0800
+Message-Id: <20231222110401.9322-1-2045gemini@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,18 +78,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In sniff_min_interval_set():
-	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
+In conn_info_min_age_set():
+	if (val == 0 || val > hdev->conn_info_max_age)
 		return -EINVAL;
 	hci_dev_lock(hdev);
-	hdev->sniff_min_interval = val;
+	hdev->conn_info_min_age = val;
 	hci_dev_unlock(hdev);
 
-In sniff_max_interval_set():
-	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
+In conn_info_max_age_set():
+	if (val == 0 || val < hdev->conn_info_min_age)
 		return -EINVAL;
 	hci_dev_lock(hdev);
-	hdev->sniff_max_interval = val;
+	hdev->conn_info_max_age = val;
 	hci_dev_unlock(hdev);
 
 The atomicity violation occurs due to concurrent execution of set_min and
@@ -118,7 +118,7 @@ verify it according to the code logic.
 
 [1] https://sites.google.com/view/basscheck/
 
-Fixes: 71c3b60ec6d28 ("Bluetooth: Move BR/EDR debugfs file creation ...")
+Fixes: 40ce72b1951c5 ("Bluetooth: Move common debugfs file creation ...")
 Cc: stable@vger.kernel.org
 Reported-by: BassCheck <bass@buaa.edu.cn>
 Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
@@ -127,41 +127,41 @@ Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
  1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-index 6b7741f6e95b..f032fdf8f481 100644
+index 6b7741f6e95b..d4ce2769c939 100644
 --- a/net/bluetooth/hci_debugfs.c
 +++ b/net/bluetooth/hci_debugfs.c
-@@ -566,11 +566,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(idle_timeout_fops, idle_timeout_get,
- static int sniff_min_interval_set(void *data, u64 val)
+@@ -217,11 +217,13 @@ DEFINE_SHOW_ATTRIBUTE(remote_oob);
+ static int conn_info_min_age_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
+-	if (val == 0 || val > hdev->conn_info_max_age)
 +	
 +	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
++	if (val == 0 || val > hdev->conn_info_max_age) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->sniff_min_interval = val;
+ 	hdev->conn_info_min_age = val;
  	hci_dev_unlock(hdev);
  
-@@ -594,11 +596,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(sniff_min_interval_fops, sniff_min_interval_get,
- static int sniff_max_interval_set(void *data, u64 val)
+@@ -245,11 +247,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(conn_info_min_age_fops, conn_info_min_age_get,
+ static int conn_info_max_age_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
+-	if (val == 0 || val < hdev->conn_info_min_age)
 +	
 +	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
++	if (val == 0 || val < hdev->conn_info_min_age) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->sniff_max_interval = val;
+ 	hdev->conn_info_max_age = val;
  	hci_dev_unlock(hdev);
  
 -- 
