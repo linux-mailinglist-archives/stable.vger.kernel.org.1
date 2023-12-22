@@ -1,118 +1,107 @@
-Return-Path: <stable+bounces-8330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1B081C94F
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 12:41:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A68481C975
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 12:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F275B2375E
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:41:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BEFF1C24791
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E1C1773B;
-	Fri, 22 Dec 2023 11:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB181799E;
+	Fri, 22 Dec 2023 11:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9qp0VEO"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8753A17985
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 11:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-403-EcondNBpNcmFjLxr1RqcUQ-1; Fri, 22 Dec 2023 11:41:24 +0000
-X-MC-Unique: EcondNBpNcmFjLxr1RqcUQ-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Fri, 22 Dec
- 2023 11:41:09 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Fri, 22 Dec 2023 11:41:09 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Gui-Dong Han' <2045gemini@gmail.com>, "marcel@holtmann.org"
-	<marcel@holtmann.org>, "johan.hedberg@gmail.com" <johan.hedberg@gmail.com>,
-	"luiz.dentz@gmail.com" <luiz.dentz@gmail.com>
-CC: "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"baijiaju1990@outlook.com" <baijiaju1990@outlook.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, BassCheck
-	<bass@buaa.edu.cn>
-Subject: RE: [PATCH] Bluetooth: Fix atomicity violation in
- {conn,adv}_{min,max}_interval_set
-Thread-Topic: [PATCH] Bluetooth: Fix atomicity violation in
- {conn,adv}_{min,max}_interval_set
-Thread-Index: AQHaNMVjcf/fSWdBLky9VyA+zJFtpLC1LJZg
-Date: Fri, 22 Dec 2023 11:41:09 +0000
-Message-ID: <0565eabbd25141fab9f3206db4e86196@AcuMS.aculab.com>
-References: <20231222105526.9208-1-2045gemini@gmail.com>
-In-Reply-To: <20231222105526.9208-1-2045gemini@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6451F17985;
+	Fri, 22 Dec 2023 11:57:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7F8C433C8;
+	Fri, 22 Dec 2023 11:57:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703246245;
+	bh=OMHoJ47sH8QL4h4TQhZ+b4gxch9yOK4WdYt6lzVlcv4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b9qp0VEOGkrFAhxqIe4d6Y9gIs4x6sOfZwhGePIfwsqsVInwDYDn9xyPy0D6jHDf8
+	 l80dp1DCIjiaIdq+5PnC7VMWBk1I1MVo2Kvz3lRX0lS+aStpiAEZpUTJ8a+nK6Cisq
+	 NPYiyqFkNnPd8iWk2opA3z9L0YWxKnMqBqifWtQZIoRcJt3hQZ5/8BdK20/JycOtV9
+	 Vbu+Nf5bLXqImKx4F3uGjyRTiWakhBpnEd8OBDrR5Ky3U9rAjZcwI9w4n3wFEDlAUO
+	 JZQPQG3kpw5ZQVC2kAlMqOCLgqXJ97JXpA6tIzhx/yl2RMQQcSH9BYkEJx/5wHioZL
+	 HHbRAb8qWlz/w==
+From: guoren@kernel.org
+To: linux-kernel@vger.kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	alexghiti@rivosinc.com,
+	charlie@rivosinc.com,
+	xiao.w.wang@intel.com,
+	guoren@kernel.org,
+	david@redhat.com,
+	panqinglin2020@iscas.ac.cn,
+	rick.p.edgecombe@intel.com,
+	willy@infradead.org,
+	bjorn@rivosinc.com,
+	conor.dooley@microchip.com,
+	cleger@rivosinc.com,
+	leobras@redhat.com
+Cc: linux-riscv@lists.infradead.org,
+	Guo Ren <guoren@linux.alibaba.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V3 1/4] riscv: mm: Fixup compat mode boot failure
+Date: Fri, 22 Dec 2023 06:57:00 -0500
+Message-Id: <20231222115703.2404036-2-guoren@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231222115703.2404036-1-guoren@kernel.org>
+References: <20231222115703.2404036-1-guoren@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-From: Gui-Dong Han
-> Sent: 22 December 2023 10:55
->=20
-> In {conn,adv}_min_interval_set():
-> =09if (val < ... || val > ... || val > hdev->le_{conn,adv}_max_interval)
-> =09=09return -EINVAL;
-> =09hci_dev_lock(hdev);
-> =09hdev->le_{conn,adv}_min_interval =3D val;
-> =09hci_dev_unlock(hdev);
->=20
-> In {conn,adv}_max_interval_set():
-> =09if (val < ... || val > ... || val < hdev->le_{conn,adv}_min_interval)
-> =09=09return -EINVAL;
-> =09hci_dev_lock(hdev);
-> =09hdev->le_{conn,adv}_max_interval
-> =09hci_dev_unlock(hdev);
->=20
-> The atomicity violation occurs due to concurrent execution of set_min and
-> set_max funcs which may lead to inconsistent reads and writes of the min
-> value and the max value. The checks for value validity are ineffective as
-> the min/max values could change immediately after being checked, raising
-> the risk of the min value being greater than the max value and causing
-> invalid settings.
->=20
-> This possible bug is found by an experimental static analysis tool
-> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-> to extract function pairs that can be concurrently executed, and then
-> analyzes the instructions in the paired functions to identify possible
-> concurrency bugs including data races and atomicity violations. The above
-> possible bug is reported when our tool analyzes the source code of
-> Linux 5.17.
+From: Guo Ren <guoren@linux.alibaba.com>
 
-Your static analysis tool is basically broken.
+In COMPAT mode, the STACK_TOP is DEFAULT_MAP_WINDOW (0x80000000), but
+the TASK_SIZE is 0x7fff000. When the user stack is upon 0x7fff000, it
+will cause a user segment fault. Sometimes, it would cause boot
+failure when the whole rootfs is rv32.
 
-The only possible issues are if the accesses aren't atomic.
-In practise they always will be but using READ_ONCE() and
-WRITE_ONCE() would make that certain.
+Freeing unused kernel image (initmem) memory: 2236K
+Run /sbin/init as init process
+Starting init: /sbin/init exists but couldn't execute it (error -14)
+Run /etc/init as init process
+...
 
-The lock sequence:
-> =09hci_dev_lock(hdev);
->  =09hdev->le_conn_min_interval =3D val;
->  =09hci_dev_unlock(hdev);
-is pretty pointless - is doesn't 'lock' two+ things together.
+Increase the TASK_SIZE to cover STACK_TOP.
 
-=09David
+Cc: stable@vger.kernel.org
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+---
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index ab00235b018f..74ffb2178f54 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -881,7 +881,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+ #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
+ 
+ #ifdef CONFIG_COMPAT
+-#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
++#define TASK_SIZE_32	(_AC(0x80000000, UL))
+ #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
+ 			 TASK_SIZE_32 : TASK_SIZE_64)
+ #else
+-- 
+2.40.1
 
 
