@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-8341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457D681CC94
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 17:13:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8701081CD0C
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 17:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9951F22C55
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 16:13:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEC9281200
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 16:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C051241FA;
-	Fri, 22 Dec 2023 16:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD972249EB;
+	Fri, 22 Dec 2023 16:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aVOJVDHk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zj2yIKSs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8198241E9;
-	Fri, 22 Dec 2023 16:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4CF41AA3;
+	Fri, 22 Dec 2023 16:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6d940d14d69so1475798b3a.1;
-        Fri, 22 Dec 2023 08:13:27 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d3eabe9321so13961115ad.2;
+        Fri, 22 Dec 2023 08:23:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703261607; x=1703866407; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703262209; x=1703867009; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=99ULCHmMQPW0CJChnGzwhjBgSh5TwQvmsncOdf4G9Yo=;
-        b=aVOJVDHkM2Aj8HOpA329YBBUjQAN2tSLsQ7C26/BbVeqm0IhzlFA1YfB7WsZ5meYCO
-         VCaIPvaRwC73UEOsZ4RSt9U//NqhoteblNVLEAXTbPWprMh9USxIWybgPkrXWzQurF3f
-         lpri9zokPKgXnasHISvfrClYwEqJuJ+PO9jIfDlKzl6ABhPSzu/sIEmtH0MoyKZkuDW4
-         Xtygm8iUYoAmj4SECtYBNWjST60ZbLh/3hQkl4LRs03M0PEqt+1BwYFIwvEn8QU3RxV0
-         Y+V+wG5K/tQ9aRUW0CQgUinDk+XWUAi2T+g6nK0Qsi3aMImjQHa7m3G9QKbNWmvNrTJp
-         MPmw==
+        bh=d6rOctl0yz+TrOI/he0cOkWKN+3TOYc+MuASu10g+3c=;
+        b=Zj2yIKSsgBxrrMjQJOph/BbSbZnZB9WUtvhYkl0/++Fs0Y/mgA4Bi5Wcl39hH8bVO+
+         T4PDrwGeZv6KzMflf7rbRj7ckBp/CJcS8EBno90nhBYel7PQGvvwm2YWtLq52r+KWC/X
+         gh1ydartl43IwlYf1RrspJ467DeF/oo/JVA+EociWJiavrJFJZ7KVXK9O64lAMAxu0f/
+         VlNL9Af3v/7fdtQGuOlsGEt08tGsWV72tBgeAETXKmvS+KRJ5SHteKBaUVq0a0jGJCV1
+         n60Bl8x/dUxuwyZRpmAvF+aAhTeNU0R5Yh+YBO7yPUPuf/R0ozZ46WpEfGyfIwTwTJ6p
+         WODw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703261607; x=1703866407;
+        d=1e100.net; s=20230601; t=1703262209; x=1703867009;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=99ULCHmMQPW0CJChnGzwhjBgSh5TwQvmsncOdf4G9Yo=;
-        b=CImq8TodsOZ/9MFkbv2yNhczhL8bMVLUShlu4izNKH25qcFO8oQLcbZRw5b3B6VQQm
-         7GslewgZPo/+ut52rE5Yb2asoy1d3IZciMALqu6v0ITnmGhizftTSvF70IN1rYSV7Ed+
-         dxDO+sl5Om85CNQdizxQMV0Wpq0rRnzjvj64oY4IWoujhmTJWZZ3sjtTqlRqZeaTjYhJ
-         m75qhhIx3olgbW++f2vOD6uFYts2V1ncDU0ju9RWgrvRL/uKGuBSjOolCMEFldNsTiOh
-         u2/i1Oj3ZQ+x56e2vEjPN1LXuO1nA5D8ySXfYm676h4O89emdp0pTAajBFaKWAlWTINE
-         ZZqQ==
-X-Gm-Message-State: AOJu0Yya4jvPhu1CLhLIgwUFeupGV0TdbHfeGD3FdlRlyAtEVoM2ECuM
-	OAqAbNi0FxyTcRqFY+pjfKc=
-X-Google-Smtp-Source: AGHT+IGf1WzsGnUTBjMhkiwhnO4g/ZvIzi3vOEBoXqKsjY3F927muD2KAaLHUzw2CzoFiiSViJ8VTA==
-X-Received: by 2002:a05:6a00:1b44:b0:6d9:6577:904 with SMTP id o4-20020a056a001b4400b006d965770904mr1147883pfv.41.1703261606852;
-        Fri, 22 Dec 2023 08:13:26 -0800 (PST)
+        bh=d6rOctl0yz+TrOI/he0cOkWKN+3TOYc+MuASu10g+3c=;
+        b=u1MjEOpq1I47W7Kx0p6gFJ8D9kvhvBATJl0rpDImwOLyMzv9IvG9qm+jC2ujfcESOj
+         gXgXja3HBL3+/tsfPwNy5Kw+/006Oyq6DArXhsMM8AYvHpandamczVXKWGlXAsF3ZWO1
+         +toH6Qo03qQSEb1xsjIjg842ItqZN04leHl5rgCDNUcaS6y/5TBFcfdoZ8muzCjCbN5j
+         gbe2Vb095n7yT3rJlHzM0Pf+I8XTxNHCvc8tAk5/f4O8U1bDJZ/9aGPG/BaEnaT3cfKq
+         zcpWXr9T0zTBljM8mswaRiw2NUTEYjKmK6WLIVYxg9n9GAUgHvyUYVqCf5Qr52w6lced
+         ROHA==
+X-Gm-Message-State: AOJu0YwxhL3oejdsyyz2ZnonPClq61ktGurAi/BkExqCa3x4s58PdXrD
+	rHhKwZbNKGdv5dd3LCv3oOI=
+X-Google-Smtp-Source: AGHT+IFJeShx7ay4cJiYK/PnE9DgKekhrDyZ0yeKWvlTdXkdQtnmmHPu291CJWQEqC0OgEf2ZXcnjw==
+X-Received: by 2002:a17:903:2601:b0:1cf:5760:43f9 with SMTP id jd1-20020a170903260100b001cf576043f9mr1316332plb.64.1703262209526;
+        Fri, 22 Dec 2023 08:23:29 -0800 (PST)
 Received: from g2039B650.. ([106.39.42.144])
-        by smtp.gmail.com with ESMTPSA id fb22-20020a056a002d9600b006ce50876c37sm3570561pfb.100.2023.12.22.08.13.23
+        by smtp.gmail.com with ESMTPSA id g5-20020a170902868500b001d096757ac1sm3609327plo.47.2023.12.22.08.23.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 08:13:26 -0800 (PST)
+        Fri, 22 Dec 2023 08:23:29 -0800 (PST)
 From: Gui-Dong Han <2045gemini@gmail.com>
 To: marcel@holtmann.org,
 	johan.hedberg@gmail.com,
@@ -65,9 +65,9 @@ Cc: linux-bluetooth@vger.kernel.org,
 	baijiaju1990@outlook.com,
 	Gui-Dong Han <2045gemini@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] Bluetooth: Fix atomicity violation in {conn,adv}_{min,max}_interval_set
-Date: Sat, 23 Dec 2023 00:13:17 +0800
-Message-Id: <20231222161317.6255-1-2045gemini@gmail.com>
+Subject: [PATCH v2] Bluetooth: Fix atomicity violation in conn_info_{min,max}_age_set
+Date: Sat, 23 Dec 2023 00:23:10 +0800
+Message-Id: <20231222162310.6461-1-2045gemini@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,22 +77,22 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In {conn,adv}_min_interval_set():
-    if (val < ... || val > ... || val > hdev->le_{conn,adv}_max_interval)
+In conn_info_min_age_set():
+    if (val == 0 || val > hdev->conn_info_max_age)
         return -EINVAL;
     hci_dev_lock(hdev);
-    hdev->le_{conn,adv}_min_interval = val;
+    hdev->conn_info_min_age = val;
     hci_dev_unlock(hdev);
 
-In {conn,adv}_max_interval_set():
-    if (val < ... || val > ... || val < hdev->le_{conn,adv}_min_interval)
+In conn_info_max_age_set():
+    if (val == 0 || val < hdev->conn_info_min_age)
         return -EINVAL;
     hci_dev_lock(hdev);
-    hdev->le_{conn,adv}_max_interval
+    hdev->conn_info_max_age = val;
     hci_dev_unlock(hdev);
 
 The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs. Consider a scenario where setmin writes a new, valid 'min'
+set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
 value, and concurrently, setmax writes a value that is greater than the
 old 'min' but smaller than the new 'min'. In this case, setmax might check
 against the old 'min' value (before acquiring the lock) but write its
@@ -119,84 +119,52 @@ verify it according to the code logic.
 
 [1] https://sites.google.com/view/basscheck/
 
-Fixes: 3a5c82b78fd2 ("Bluetooth: Move LE debugfs file creation into ...")
+Fixes: 40ce72b1951c ("Bluetooth: Move common debugfs file creation ...")
 Cc: stable@vger.kernel.org
 Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
 ---
 v2:
 * Adjust the format to pass the CI.
 ---
- net/bluetooth/hci_debugfs.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ net/bluetooth/hci_debugfs.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-index 6b7741f6e95b..6fdda807f2cf 100644
+index 6b7741f6e95b..d4ce2769c939 100644
 --- a/net/bluetooth/hci_debugfs.c
 +++ b/net/bluetooth/hci_debugfs.c
-@@ -849,11 +849,13 @@ DEFINE_SHOW_ATTRIBUTE(long_term_keys);
- static int conn_min_interval_set(void *data, u64 val)
+@@ -217,11 +217,13 @@ DEFINE_SHOW_ATTRIBUTE(remote_oob);
+ static int conn_info_min_age_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval)
+-	if (val == 0 || val > hdev->conn_info_max_age)
 +
 +	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval) {
++	if (val == 0 || val > hdev->conn_info_max_age) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->le_conn_min_interval = val;
+ 	hdev->conn_info_min_age = val;
  	hci_dev_unlock(hdev);
  
-@@ -877,11 +879,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(conn_min_interval_fops, conn_min_interval_get,
- static int conn_max_interval_set(void *data, u64 val)
+@@ -245,11 +247,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(conn_info_min_age_fops, conn_info_min_age_get,
+ static int conn_info_max_age_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval)
+-	if (val == 0 || val < hdev->conn_info_min_age)
 +
 +	hci_dev_lock(hdev);
-+	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval) {
++	if (val == 0 || val < hdev->conn_info_min_age) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->le_conn_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -989,11 +993,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(adv_channel_map_fops, adv_channel_map_get,
- static int adv_min_interval_set(void *data, u64 val)
- {
- 	struct hci_dev *hdev = data;
--
--	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval)
-+
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1018,10 +1024,12 @@ static int adv_max_interval_set(void *data, u64 val)
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval)
-+	hci_dev_lock(hdev);
-+	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_adv_max_interval = val;
+ 	hdev->conn_info_max_age = val;
  	hci_dev_unlock(hdev);
  
 -- 
