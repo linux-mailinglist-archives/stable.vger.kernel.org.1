@@ -1,241 +1,156 @@
-Return-Path: <stable+bounces-8304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF60E81C4B5
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 06:42:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C9281C4C9
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 06:51:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D951C24B07
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:42:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D7571C24EF9
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BD746A8;
-	Fri, 22 Dec 2023 05:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BC16132;
+	Fri, 22 Dec 2023 05:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="uSq/xtFj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ulf31DKf"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3FD5390
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 05:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd86e3a9afso1050191a12.1
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 21:42:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC1E6120;
+	Fri, 22 Dec 2023 05:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd8e2988ddso775647a12.3;
+        Thu, 21 Dec 2023 21:50:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703223729; x=1703828529; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tshARWagRRHxlEAjYIN29OCOP9SHjMXaawfRGNvVCMk=;
-        b=uSq/xtFjp1MZW/GQolvTeipl2Zd/m1GFoUGqs2XglaT8rUx+ljR8e33CVwCGCHzEx4
-         z8kYMlfZwUl+VhC85gz+Ku4jPEtsdrody8Qlhe9TJSBgjBzjytl1VSDbWSLoPFnuNLk8
-         EjjxLHXsdYeNvhPcWZsD/73scShRP/ykW/svFoGreaYjFFUmljHekpTJrUIV3rkel19N
-         osTruUbqCQGRL6mApXJ5s/Q/oBrtyWQ+Jo4pcWZhbIspy9TKnYzzfYBT+1tMVP03vtrL
-         /7HmVFDxTvyQTSLEg3NJwrEauhc6lDiWRsK4rBVFi8Oz25v8UZ4WRb/ssyyZDCyfg8vp
-         NEaA==
+        d=gmail.com; s=20230601; t=1703224252; x=1703829052; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hRvRZykoJN1NoOnmO83DscFYZk386QocmmGOF7bdSo4=;
+        b=Ulf31DKf22AAHNMuGX3ZcNKvSsQN9jhOZiPNcaKBkVKFw/q04X2ir0gh6/5IAyCaiG
+         qn9P2vMzDWiEXEH3TFnFG41Omn6SuUV1zoPHjBNU4sJGXkKPCcOnUoVAWotZbL6Ec4B7
+         Ew1h/YHCDHes2KFGVOnDvPH/0SJ8zLvCkAwq0D7fpfVSQikAv8IREbSy/Me45yJ2Uw6w
+         QMaHilLrKdK8l1a8x+b+LoObFYKc3HPZUrOW6mJ1sVbZrQl8S+EIfay6gZ9+MLez4vXX
+         AT1khKVWYVDgmZ/uXwGMyo2BM5R54tu7ohXvzn3pQsWb9gkZdRJFiJddo1nzeDK69Mdm
+         IUyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703223729; x=1703828529;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tshARWagRRHxlEAjYIN29OCOP9SHjMXaawfRGNvVCMk=;
-        b=a1ss2Rlzy5NHr6MWhoHqj94KXgW/fB+j9jRywbLFPx/uKivUTJoPXC+pDokOHYF0nP
-         k9SqdihcL0sonvn7XJrcz375ygTgVdZ1hVhJKWrfbHenS/pVpvBPaYdGKxlQzXaTSFzn
-         IN4CzbrCZ1SCieO6yT2zN9P6Diq3TpYPiGokG5qeahiygzmlaar5Mejx9Oyu+qApDSJE
-         /n17mh2zrZVSKvKSWrFNy0uYxczGxrmu/bvm+s6OuBb80uJWbcomZ5F0pCsQ6ySAanM6
-         OY84PndE7ZYipx2+RsO0Ob/p7uyaJJ+ivuLYjLyNN3c/5E36kZWy/cpQQZwcznN5FryR
-         ej4A==
-X-Gm-Message-State: AOJu0YzOkACx8s2e3fPX0YxKbFxeJcKhFcBMm9QBRBnLURP1z6q2MuoT
-	5gA5Kk6H+W/bkw+HSC9vv5AsE/YahBeszA==
-X-Google-Smtp-Source: AGHT+IFPYN93FpZrSP6JEuX0E8+Rz/2HUmp3SPiiY3k73uCyVJqHwo4hbyYd5MYmWGrJPBD7tMIC/A==
-X-Received: by 2002:a05:6a20:8404:b0:194:7c07:5f55 with SMTP id c4-20020a056a20840400b001947c075f55mr958883pzd.54.1703223729146;
-        Thu, 21 Dec 2023 21:42:09 -0800 (PST)
-Received: from ghost ([2601:647:5700:6860:f06:7450:7dd4:fc1d])
-        by smtp.gmail.com with ESMTPSA id j26-20020aa78d1a000000b006d974fe1b0esm2127879pfe.7.2023.12.21.21.42.07
+        d=1e100.net; s=20230601; t=1703224252; x=1703829052;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hRvRZykoJN1NoOnmO83DscFYZk386QocmmGOF7bdSo4=;
+        b=b8x9FyXK8+jCU39wQ1G5dJElZyxg4DUY25Qqu6YFoCxneoBwaJD2OKvH0d5BdbZRgZ
+         KaSrCAOKysdfS7Id4/thRH4MKF0wNRn6e7C4SWhduVIEM0vrSyhB1Jn0uUZ6YoAoPENm
+         Iv1XtABmWEzhoHA2L616Exl5FKtUSVaDAHNBim3/kcX98oi+rj+i9ehMNLMR4vst7yD6
+         F5rzcRBJlHKZYLwnivsrv3qvXBZQ6xJLTMyF6ZtJ8uG92QiznyNFPv8Djvl80vAbuwzH
+         v+jo5spJLOGUgTH6VHOCjLnYmxPewTBo1dIzicfA4Rb8pOtrMO7MHQdpcaJT2gK2Edqp
+         OXXQ==
+X-Gm-Message-State: AOJu0YzhBJwq4TchJVyARvthgJHhduTxpk0aoVdZ15WxWF2yLGFoQIUH
+	i00qU7I6J5pjpEx6RCP9Yts=
+X-Google-Smtp-Source: AGHT+IFi32YovJZtv8sUPvSWvhc0jwApw94pEtvhvqvOcLHW6vipl+8TUyuOSkDSjSYyW5i6DeS8zA==
+X-Received: by 2002:a05:6a21:a5a1:b0:194:eabe:cc23 with SMTP id gd33-20020a056a21a5a100b00194eabecc23mr595681pzc.98.1703224251881;
+        Thu, 21 Dec 2023 21:50:51 -0800 (PST)
+Received: from g2039B650.. ([106.39.42.144])
+        by smtp.gmail.com with ESMTPSA id e12-20020a170902b78c00b001bb750189desm2567135pls.255.2023.12.21.21.50.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 21:42:08 -0800 (PST)
-Date: Thu, 21 Dec 2023 21:42:05 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Leonardo Bras <leobras@redhat.com>
-Cc: guoren@kernel.org, linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com,
-	alexghiti@rivosinc.com, xiao.w.wang@intel.com, david@redhat.com,
-	panqinglin2020@iscas.ac.cn, rick.p.edgecombe@intel.com,
-	willy@infradead.org, bjorn@rivosinc.com, conor.dooley@microchip.com,
-	cleger@rivosinc.com, linux-riscv@lists.infradead.org,
-	Guo Ren <guoren@linux.alibaba.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V2 2/4] riscv: mm: Fixup compat arch_get_mmap_end
-Message-ID: <ZYUhrTaXMqyRchyP@ghost>
-References: <20231221154702.2267684-1-guoren@kernel.org>
- <20231221154702.2267684-3-guoren@kernel.org>
- <ZYUD4C1aXWt2oFJo@LeoBras>
- <ZYUK2zUHjYBL0zO7@ghost>
- <ZYUPQIJ070BYDzJJ@LeoBras>
+        Thu, 21 Dec 2023 21:50:51 -0800 (PST)
+From: Gui-Dong Han <2045gemini@gmail.com>
+To: mchehab@kernel.org,
+	hverkuil-cisco@xs4all.nl,
+	mcgrof@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@outlook.com,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	stable@vger.kernel.org,
+	BassCheck <bass@buaa.edu.cn>
+Subject: [PATCH v2] [media] xc4000: Fix atomicity violation in xc4000_get_frequency
+Date: Fri, 22 Dec 2023 13:50:30 +0800
+Message-Id: <20231222055030.5237-1-2045gemini@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZYUPQIJ070BYDzJJ@LeoBras>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 22, 2023 at 01:23:29AM -0300, Leonardo Bras wrote:
-> On Thu, Dec 21, 2023 at 08:04:43PM -0800, Charlie Jenkins wrote:
-> > On Fri, Dec 22, 2023 at 12:34:56AM -0300, Leonardo Bras wrote:
-> > > On Thu, Dec 21, 2023 at 10:46:59AM -0500, guoren@kernel.org wrote:
-> > > > From: Guo Ren <guoren@linux.alibaba.com>
-> > > > 
-> > > > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-> > > > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-> > > > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-> > > > directly.
-> > > 
-> > > ok
-> > > 
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-> > > > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > > > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > > > ---
-> > > >  arch/riscv/include/asm/processor.h | 6 ++----
-> > > >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-> > > > index f19f861cda54..1f538fc4448d 100644
-> > > > --- a/arch/riscv/include/asm/processor.h
-> > > > +++ b/arch/riscv/include/asm/processor.h
-> > > > @@ -16,15 +16,13 @@
-> > > >  
-> > > >  #ifdef CONFIG_64BIT
-> > > >  #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
-> > > > -#define STACK_TOP_MAX		TASK_SIZE_64
-> > > > +#define STACK_TOP_MAX		TASK_SIZE
-> > > 
-> > > It means STACK_TOP_MAX will be in 64BIT:
-> > > - TASK_SIZE_32 if compat_mode=y
-> > > - TASK_SIZE_64 if compat_mode=n
-> > > 
-> > > Makes sense for me.
-> > > 
-> > > >  
-> > > >  #define arch_get_mmap_end(addr, len, flags)			\
-> > > >  ({								\
-> > > >  	unsigned long mmap_end;					\
-> > > >  	typeof(addr) _addr = (addr);				\
-> > > > -	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-> > > > -		mmap_end = STACK_TOP_MAX;			\
-> > > > -	else if ((_addr) >= VA_USER_SV57)			\
-> > > > +	if ((_addr) == 0 || (_addr) >= VA_USER_SV57)		\
-> > > >  		mmap_end = STACK_TOP_MAX;			\
-> > > >  	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
-> > > >  		mmap_end = VA_USER_SV48;			\
-> > > 
-> > > 
-> > > I don't think I got this change, or how it's connected to the commit msg.
-> > > 
-> > > Before:
-> > > - addr == 0, or addr > 2^57, or compat: mmap_end = STACK_TOP_MAX
-> > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > - 0 < addr < 2^48 : mmap_end = 2^39
-> > > 
-> > > Now:
-> > > - addr == 0, or addr > 2^57: mmap_end = STACK_TOP_MAX
-> > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > - 0 < addr < 2^48 : mmap_end = 2^39
-> > > 
-> > > IIUC compat mode addr will be < 2^32, so will always have mmap_end = 2^39 
-> > > if addr != 0. Is that desireable? 
-> > > (if not, above change is unneeded)
-> > 
-> > I agree, this change does not make sense for compat mode. Compat mode
-> > should never return an address that is greater than 2^32, but this
-> > change allows that.
-> > 
-> > > 
-> > > Also, unrelated to the change:
-> > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > Is the above correct?
-> > > It looks like it should be 2^57 instead, and a new if clause for 
-> > > 2^32 < addr < 2^48 should have mmap_end = 2^48.
-> > 
-> > That is not the case. I documented this behavior and reasoning in
-> > Documentation/arch/riscv/vm-layout.rst in the "Userspace VAs" section.
-> > 
-> > I can reiterate here though. The hint address to mmap (defined here as
-> > "addr") is the maximum userspace address that mmap should provide. What
-> > you are describing is a minimum. The purpose of this change was to allow
-> > applications that are not compatible with a larger virtual address (such
-> > as applications like Java that use the upper bits of the VA to store
-> > data) to have a consistent way of specifying how many bits they would
-> > like to be left free in the VA. This requires to take the next lowest
-> > address space to guaruntee that all of the most-significant bits left
-> > clear in hint address do not end up populated in the virtual address
-> > returned by mmap.
-> > 
-> > - Charlie
-> 
-> Hello Charlie, thank you for helping me understand!
-> 
-> Ok, that does make sense now! The addr value hints "don't allocate > addr"
-> and thus:
-> 
-> - 0 < addr < 2^48 : mmap_end = 2^39
-> - 2^48 < addr < 2^57: mmap_end = 2^48
-> 
-> Ok, but then
-> - addr > 2^57: mmap_end = 2^57
-> right?
-> 
-> I mean, probably STACK_TOP_MAX in non-compat mode means 2^57 already, but 
-> having it explicitly like:
-> 
->  else if ((_addr) >= VA_USER_SV57)                       \
->          mmap_end = VA_USER_SV57;                        \
-> 
-> would not be better for a future full 64-bit addressing?
-> (since it's already on a different if clause)
+In xc4000_get_frequency():
+	*freq = priv->freq_hz + priv->freq_offset;
+The code accesses priv->freq_hz and priv->freq_offset without holding any
+lock.
 
-I agree, that does make more sense.
+In xc4000_set_params():
+	// Code that updates priv->freq_hz and priv->freq_offset
+	...
 
-> 
-> I could add comment on top of the macro with a short version on your addr 
-> hint description above. Would that be ok?
+xc4000_get_frequency() and xc4000_set_params() may execute concurrently,
+risking inconsistent reads of priv->freq_hz and priv->freq_offset. Since
+these related data may update during reading, it can result in incorrect
+frequency calculation, leading to atomicity violations.
 
-Sure :)
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
 
-- Charlie
+To address this issue, it is proposed to add a mutex lock pair in
+xc4000_get_frequency() to ensure atomicity. With this patch applied, our
+tool no longer reports the possible bug, with the kernel configuration
+allyesconfig for x86_64. Due to the lack of associated hardware, we cannot
+test the patch in runtime testing, and just verify it according to the
+code logic.
 
-> 
-> Thanks!
-> Leo
-> 
-> 
-> 
-> 
-> 
-> > 
-> > > 
-> > > Do I get it wrong?
-> > > 
-> > > (I will send an RFC 'fixing' the code the way I am whinking it should look 
-> > > like)
-> > > 
-> > > Thanks, 
-> > > Leo
-> > > 
-> > > 
-> > > 
-> > > 
-> > > 
-> > > > -- 
-> > > > 2.40.1
-> > > > 
-> > > 
-> > 
-> 
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 4c07e32884ab6 ("[media] xc4000: Fix get_frequency()")
+Cc: stable@vger.kernel.org
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+---
+v2:
+* In this patch v2, we've added some information of the static analysis
+tool used, as per the researcher guidelines. Also, we've added a cc in the
+signed-off-by area, according to the stable-kernel-rules.
+  Thank Greg KH for helpful advice.
+---
+ drivers/media/tuners/xc4000.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/media/tuners/xc4000.c b/drivers/media/tuners/xc4000.c
+index 57ded9ff3f04..29bc63021c5a 100644
+--- a/drivers/media/tuners/xc4000.c
++++ b/drivers/media/tuners/xc4000.c
+@@ -1515,10 +1515,10 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ {
+ 	struct xc4000_priv *priv = fe->tuner_priv;
+ 
++	mutex_lock(&priv->lock);
+ 	*freq = priv->freq_hz + priv->freq_offset;
+ 
+ 	if (debug) {
+-		mutex_lock(&priv->lock);
+ 		if ((priv->cur_fw.type
+ 		     & (BASE | FM | DTV6 | DTV7 | DTV78 | DTV8)) == BASE) {
+ 			u16	snr = 0;
+@@ -1529,8 +1529,8 @@ static int xc4000_get_frequency(struct dvb_frontend *fe, u32 *freq)
+ 				return 0;
+ 			}
+ 		}
+-		mutex_unlock(&priv->lock);
+ 	}
++	mutex_unlock(&priv->lock);
+ 
+ 	dprintk(1, "%s()\n", __func__);
+ 
+-- 
+2.34.1
+
 
