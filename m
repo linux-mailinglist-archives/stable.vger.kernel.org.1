@@ -1,202 +1,117 @@
-Return-Path: <stable+bounces-8277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 367D081C235
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:08:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0803D81C23C
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3245281E42
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5221F25A93
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634EB199;
-	Fri, 22 Dec 2023 00:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE04199;
+	Fri, 22 Dec 2023 00:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="t5GZ2HQu"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="qdxhOv/M";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Wq41iKuy";
+	dkim=pass (2048-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="llRIkYwq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a3i634.smtp2go.com (a3i634.smtp2go.com [203.31.38.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD8191
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 00:08:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d3e05abcaeso9814235ad.1
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 16:08:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703203683; x=1703808483; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6MkwJ7FRK2kR2FGjY7P+fvgnWWv7rMj8+Y9ZLwM/jZY=;
-        b=t5GZ2HQuE/Qu+LTUsLafqnEOC6oM1prmYRudEwkjsKZpVtIGUoVeqVWhwHX0oOe0EN
-         rZlqMilTDfrFxNlkVkSUf/mLXGKnCH/9+0fxglfy/UdFeg7CiOm5/gH/z3FIBxyCHZ5a
-         SaXnuDI1V2ZjZemLvp3pHzdAzH4e6LmZYNTzoYdj6jSnECZRdnOjBEXZlUCXemrdCSkt
-         f8ZTEjqFVMjdttm7m1tQ20bMqkzOqdvY4asWRy2OuES6xcPG5qKYMwFctuJeB0jtV+kb
-         SK2Id0RvClv3bv9DfWTk/IjB7ibagNpf8rtaIZv6t9nrvBdxCscVgbnH3YbH05JEnGuH
-         EsNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703203683; x=1703808483;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6MkwJ7FRK2kR2FGjY7P+fvgnWWv7rMj8+Y9ZLwM/jZY=;
-        b=cd/yjDZUaGkyqqYgHkXMbOVf6so1wjizfaWWbhbFp97r3RLSZt+qjX2YTTGpyDUVPF
-         VHK6LqC7P8dArBwrqBKqlkEMv/kbNgHMU3NDgBCZ0hhsMd3kcG3wTMPRrgBST3IzWZPn
-         2u4z0ecENzeVsdI+QZYlwaVfLzJPx8n/qzak65mPSmtHtylWLpOBL8bLQD3J3VUjA674
-         9a+jxh7vfihOiRUvVEMS3K4NT0BLqCmZk2/icIC6C/EKp0QLOrAVn07JG8fX6nTWWE89
-         JQaNPAeDahsD39xe1DI0dyRCdchrupQldVW096RFI+trG29Cvkq5Pirv4jMD/0WWZOIJ
-         MmHA==
-X-Gm-Message-State: AOJu0Yy5FoS2Nv4UXTHAgpZo25ZLUT2Sj+qmRUvcvcpN+2Vo+SeD7sbv
-	Qk0Ixi75vu0ic8BYp9iSuP7J8XU61zWJw+LwyOCqUwJy8R0=
-X-Google-Smtp-Source: AGHT+IEQ0MvRQon6B/rB4PmlHGunIVxkkkcpdaav+svNQabs9D9+8DgELmjHsQCy3SVqbw3livWq8w==
-X-Received: by 2002:a17:903:298b:b0:1d3:a13a:e2b2 with SMTP id lm11-20020a170903298b00b001d3a13ae2b2mr374799plb.135.1703203683247;
-        Thu, 21 Dec 2023 16:08:03 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jm7-20020a17090304c700b001d3e6f58e5esm2191035plb.6.2023.12.21.16.08.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 16:08:02 -0800 (PST)
-Message-ID: <6584d362.170a0220.7f3c5.7ac8@mx.google.com>
-Date: Thu, 21 Dec 2023 16:08:02 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025B819C
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 00:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hatguy.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em868002.hatguy.io
+Received: from [10.149.244.204] (helo=hatguy.io)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96.1-S2G)
+	(envelope-from <a2brenna@hatguy.io>)
+	id 1rGTCG-ynliMF-0R
+	for stable@vger.kernel.org;
+	Fri, 22 Dec 2023 00:15:24 +0000
+Received: by hatguy.io (Postfix, from userid 1000)
+	id 8329B60C54; Thu, 21 Dec 2023 19:15:22 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hatguy.io; s=201907;
+	t=1703204122; bh=q50PPnyO6KUJypvqIvmW7eL4xLpcJG10thR/G3ZNeFM=;
+	h=Date:From:To:Subject:From;
+	b=qdxhOv/MNhEZ+DLW+bg+CfvmANpbqly1yz5vfN4Ba5XHGlHg46eQyxm4iiS9JWpjh
+	 ihIZnEVCTiofv/KYnYtr9Ttl3HJ+0JznAoLLoyRPscDHOhmetvR6qtx1C5VJ2itXjY
+	 xnA1AoQQlYSCxhyXfExGWR8X7kNsm/1Od/u/wkSqqELVb0pOblvFe74ydy32cmEYKw
+	 7XEEObXVMYhnlb3EQQoMswIP5dlpuXGVNKgVnmHT5Izpp5Cn2iN5yob/2uXAEmN1TK
+	 nulHAtjoqpvEEu9oQFaO8icCFYL6xACaNiSeuRwfLX1bRHvG8Z7HPVOQ1WKemP5uDz
+	 3KvZ8oXQQq6JQ==
+Date: Thu, 21 Dec 2023 19:15:22 -0500
+From: Anthony Brennan <a2brenna@hatguy.io>
+To: stable@vger.kernel.org
+Subject: [PATCH] netfs: Fix missing xas_retry() calls in xarray iteration
+Message-ID: <20231222001522.GA32730@hatguy.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.6
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.6.7-180-g89c7ea9a70938
-Subject: stable-rc/queue/6.6 build: 20 builds: 0 failed,
- 20 passed (v6.6.7-180-g89c7ea9a70938)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-smtpcorp-track: 1rGTCGyn_iuF0R.hDldi-IAxCu4y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1703204125; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe;
+ bh=Xtf6nJlGTm0FnOMrsbqM21LZZSdN2RESSZQGO3Dj8rk=;
+ b=Wq41iKuy6C4IO+0faMv6TMzw5gM8/9sCzeR7r++jsSpH2taujQiO62054Ry0fGEdLdDhF
+ 4Fzhgl5vrE20dGqXrK1Xb8U91ladhlvQ6FsLMdQf0l6doz7xFy/agu9oHUv4m/4povf4VaP
+ EsAwQ24J+rHqBidmk3TBmJFeKo/sp1AoMs2xzVldr38f+SQgOnOr7BApLvXdfGmzM7uzrp9
+ 5LeFaydubgoD0UdetUiPEHhuKRkfCCZhK8Z1LxZ/Lwx8fxStYVEHIrSvKISRLEYlC2k6MQs
+ uuurQTn8cNcuZ3nv3ZBdSdLr3zbr409eKguoF0KG/hkAoXUjdnpNg4V6nYnA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hatguy.io;
+ i=@hatguy.io; q=dns/txt; s=s868002; t=1703204125; h=from : subject :
+ to : message-id : date;
+ bh=Xtf6nJlGTm0FnOMrsbqM21LZZSdN2RESSZQGO3Dj8rk=;
+ b=llRIkYwqQbIGsHentsbQzfo53Cip+7U4dQHyhBTo2V/0ppV0V2f4lQpoZ9ib2ut4n8tn2
+ dsY7T7t991eXc+sLA/0ltrs0565b9XgRv+knLlWalXIhd7l/MjU2jab72z7TWFW1cPxGF4B
+ sI8ENVgEds4NDD7xQYis342gySWNOpIbXvBHYEU0PJckVf6tgAy3ScRgD1wX8onxifJcly5
+ FoKCPZ98n/+P2VK2za9EY/ZujPdury9x/cLt5WQOZXcY2rR2FfvzLTawoAVPpHsAribfIYE
+ sz9yY5ZmcAgdyAxrvv/Q4DRB0hdU0Gj77FS4iqnp1a2CrJq+eS9XKTbptgxQ==
 
-stable-rc/queue/6.6 build: 20 builds: 0 failed, 20 passed (v6.6.7-180-g89c7=
-ea9a70938)
+commit 59d0d52c30d4991ac4b329f049cc37118e00f5b0 upstream
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.6=
-/kernel/v6.6.7-180-g89c7ea9a70938/
+Stops kernel from crashing when encountering an XAS retry entry. Patch modified
+from upstream to work with pages instead of folios, and omits fixes to "dodgy
+maths" as unrelated to fixing the crash.
 
-Tree: stable-rc
-Branch: queue/6.6
-Git Describe: v6.6.7-180-g89c7ea9a70938
-Git Commit: 89c7ea9a70938038e9e759200a87b92b1f6d4a29
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
+Signed-off-by: Anthony Brennan <a2brenna@hatguy.io>
 ---
-For more info write to <info@kernelci.org>
+ fs/netfs/read_helper.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/fs/netfs/read_helper.c b/fs/netfs/read_helper.c
+index 242f8bcb34a4..4de15555bceb 100644
+--- a/fs/netfs/read_helper.c
++++ b/fs/netfs/read_helper.c
+@@ -248,6 +248,9 @@ static void netfs_rreq_unmark_after_write(struct netfs_read_request *rreq,
+ 		XA_STATE(xas, &rreq->mapping->i_pages, subreq->start / PAGE_SIZE);
+ 
+ 		xas_for_each(&xas, page, (subreq->start + subreq->len - 1) / PAGE_SIZE) {
++			if(xas_retry(&xas, page))
++				continue;
++
+ 			/* We might have multiple writes from the same huge
+ 			 * page, but we mustn't unlock a page more than once.
+ 			 */
+@@ -403,6 +406,9 @@ static void netfs_rreq_unlock(struct netfs_read_request *rreq)
+ 		unsigned int pgend = pgpos + thp_size(page);
+ 		bool pg_failed = false;
+ 
++		if(xas_retry(&xas, page))
++			continue;
++
+ 		for (;;) {
+ 			if (!subreq) {
+ 				pg_failed = true;
+-- 
+2.30.2
 
