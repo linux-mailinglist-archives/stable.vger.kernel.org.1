@@ -1,140 +1,202 @@
-Return-Path: <stable+bounces-8320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AB981C791
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 10:48:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B168781C894
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:55:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4FF21F256B1
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 09:48:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63274287525
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 10:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F72FBE2;
-	Fri, 22 Dec 2023 09:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDA4156C6;
+	Fri, 22 Dec 2023 10:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TiC7bqae"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z2vcC4p0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97F4FBE4;
-	Fri, 22 Dec 2023 09:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BM9ZuZc010230;
-	Fri, 22 Dec 2023 09:48:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=UukgpImPfM56bAgawI5Cs+EiVCWsaW6onrQ11fyKQoc=; b=Ti
-	C7bqaeRdpuv8QkzWEDhSoffFr/L179hO7BWF6V0jDVVI9xEkaaNihoFVcNkqcmPT
-	9cxRzH7QwJ7N7xL0Rrq4MHAPUJw7WWO+hOLkAACVtR42ohM9JYeeEtIxICQrg7Uf
-	OJ1s/urF2vsPIKz/LyXhUe2A6VLpogWHbmgwrWiLxfyU7bbfh8i1kf+kgMTRCbFM
-	ZRrga8yB/HP2WKLg9Gr7nVZ+6ZiYgNrES4MxM5opVAyvcThUWG1Rxq2tqnUd4CB6
-	jZSJuaZ6C0hpEdqyHJSQjMWxKlBPQuBg+X4v2lSuFUo4RpB/+tqlD2LA0m6U0ere
-	mT7T50dVchQ8RO4ODCKw==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v57xx01nw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Dec 2023 09:48:02 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BM9lW8Q021583
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 Dec 2023 09:47:32 GMT
-Received: from hu-uaggarwa-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Fri, 22 Dec 2023 01:47:29 -0800
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-To: <Thinh.Nguyen@synopsys.com>, <gregkh@linuxfoundation.org>
-CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Uttkarsh
- Aggarwal" <quic_uaggarwa@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
-Date: Fri, 22 Dec 2023 15:17:04 +0530
-Message-ID: <20231222094704.20276-1-quic_uaggarwa@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D38A14A86;
+	Fri, 22 Dec 2023 10:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d3eabe9321so11837855ad.2;
+        Fri, 22 Dec 2023 02:55:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1703242537; x=1703847337; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PCFzo++LI2ZwW1picHi8lLKPMVx69Hfp8vT3r27uSLU=;
+        b=Z2vcC4p0iN9YhUXwmEOEAXciYXu5OxPmfonMorliOWZ3iuOQHmeNEU74leuVez+rXD
+         qcNSw4R91D9ym1stU3WviPRnKP5Cs77uwA1PegNEClFYCcYArBr97iwDxX8dPK66OVoz
+         JYjiwnSbFZjUWwksoWT5m1MWXUsoGL8V/idH6945Ei7CgdvgcVZ6Tt+uTviy2SFu4Dog
+         JtquLv3hI1oyx1CAIhx+q0wr72K2WLJV9SolJDWaF8qd9m72qZnCYUl05dphTDz/agax
+         uwr214CyT62+sai7mcSnG9VymAtNmGzZoD9WEN7iwrB/fQT6WEnAUygWhAqDWs1kcbZ9
+         QsjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703242537; x=1703847337;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PCFzo++LI2ZwW1picHi8lLKPMVx69Hfp8vT3r27uSLU=;
+        b=wowr/ieKlQfPL8950avRtW6q8qxnERS3QnVDxPQ6KNpQ2hpqT3fmCQSxbjrUYb/Yjr
+         PKRTF4HVz+kZ/T19PGxOlZ0v/7op71zisv2gR6l8BCfKH7EKMjyJdEBAj70iUFz/wNp7
+         79djITocSyFBqMNBxItZgiBOvSLB2aU8IIuWY3vcDQnjv968RsgzeqUpdde77qJ/EuXn
+         /Ls2pVHRcmS8m5OMmQoiYTet8WRFKddf2I12xKK2A5FMLZK3lVrFNIBsvWMZmBAGkf1y
+         GaNDaSQEa2ASAQTk/2Ztfuzv7UHNmtsvC7RnHdXIzwUtf6lAQeJ2aPn5ZPGOArsRQO05
+         e7XQ==
+X-Gm-Message-State: AOJu0YzOGdDtLkgT+YEH14J5o2ZkpDfNKDzwoFA3yOBYAcSn8kwL0uwo
+	qC/LCkDtVmp6nBYzOJpXF74=
+X-Google-Smtp-Source: AGHT+IHe/yw5h2GBRC0KOMQhoptWluh7P/8lB+AswpdPVFaFzGQTpTtUHnCgGULxsphbiJG7LbPimg==
+X-Received: by 2002:a17:902:680a:b0:1d4:19c8:582b with SMTP id h10-20020a170902680a00b001d419c8582bmr722741plk.121.1703242537386;
+        Fri, 22 Dec 2023 02:55:37 -0800 (PST)
+Received: from g2039B650.. ([106.39.42.144])
+        by smtp.gmail.com with ESMTPSA id jg11-20020a17090326cb00b001d3ef9edfa7sm3188497plb.58.2023.12.22.02.55.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Dec 2023 02:55:36 -0800 (PST)
+From: Gui-Dong Han <2045gemini@gmail.com>
+To: marcel@holtmann.org,
+	johan.hedberg@gmail.com,
+	luiz.dentz@gmail.com
+Cc: linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@outlook.com,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	stable@vger.kernel.org,
+	BassCheck <bass@buaa.edu.cn>
+Subject: [PATCH] Bluetooth: Fix atomicity violation in {conn,adv}_{min,max}_interval_set
+Date: Fri, 22 Dec 2023 18:55:26 +0800
+Message-Id: <20231222105526.9208-1-2045gemini@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: fxhOu5eQ9axRHmAj1z-0os44CrmXhTqV
-X-Proofpoint-ORIG-GUID: fxhOu5eQ9axRHmAj1z-0os44CrmXhTqV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- bulkscore=0 adultscore=0 mlxlogscore=801 suspectscore=0 malwarescore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2312220069
+Content-Transfer-Encoding: 8bit
 
-Current implementation blocks the running operations when Plug-out and
-Plug-In is performed continuously, process gets stuck in
-dwc3_thread_interrupt().
+In {conn,adv}_min_interval_set():
+	if (val < ... || val > ... || val > hdev->le_{conn,adv}_max_interval)
+		return -EINVAL;
+	hci_dev_lock(hdev);
+	hdev->le_{conn,adv}_min_interval = val;
+	hci_dev_unlock(hdev);
 
-Code Flow:
+In {conn,adv}_max_interval_set():
+	if (val < ... || val > ... || val < hdev->le_{conn,adv}_min_interval)
+		return -EINVAL;
+	hci_dev_lock(hdev);
+	hdev->le_{conn,adv}_max_interval
+	hci_dev_unlock(hdev);
 
-	CPU1
+The atomicity violation occurs due to concurrent execution of set_min and
+set_max funcs which may lead to inconsistent reads and writes of the min
+value and the max value. The checks for value validity are ineffective as
+the min/max values could change immediately after being checked, raising
+the risk of the min value being greater than the max value and causing
+invalid settings.
 
-	->Gadget_start
-	->dwc3_interrupt
-	->dwc3_thread_interrupt
-	->dwc3_process_event_buf
-	->dwc3_process_event_entry
-	->dwc3_endpoint_interrupt
-	->dwc3_ep0_interrupt
-	->dwc3_ep0_inspect_setup
-	->dwc3_ep0_stall_and_restart
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
 
-By this time if pending_list is not empty, it will get the next request
-on the given list and calls dwc3_gadget_giveback which will unmap request
-and call its complete() callback to notify upper layers that it has
-completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
-whereas it should be -ESHUTDOWN based on condition if not dwc->connected
-is true.
+To resolve this issue, it is suggested to encompass the validity checks
+within the locked sections in both set_min and set_max funcs. The
+modification ensures that the validation of 'val' against the
+current min/max values is atomic, thus maintaining the integrity of the
+settings. With this patch applied, our tool no longer reports the bug,
+with the kernel configuration allyesconfig for x86_64. Due to the lack of
+associated hardware, we cannot test the patch in runtime testing, and just
+verify it according to the code logic.
 
-Cc: <stable@vger.kernel.org>
-Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 3a5c82b78fd28 ("Bluetooth: Move LE debugfs file creation into ...")
+Cc: stable@vger.kernel.org
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
 ---
+ net/bluetooth/hci_debugfs.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-Changes in v2:
-Added dwc->connected check to set status either -ESHUTDOWN and -ECONNRESET 
-in dwc3_gadget_giveback.
-
-Link to v1:
-https://lore.kernel.org/all/20231122091127.3636-1-quic_uaggarwa@quicinc.com/T/#m28b011642024788c507d8b7eee4f7c5b0709d236
-
- drivers/usb/dwc3/ep0.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index b94243237293..816b8eea73d6 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -238,7 +238,10 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
- 		struct dwc3_request	*req;
+diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
+index 6b7741f6e95b..6fdda807f2cf 100644
+--- a/net/bluetooth/hci_debugfs.c
++++ b/net/bluetooth/hci_debugfs.c
+@@ -849,11 +849,13 @@ DEFINE_SHOW_ATTRIBUTE(long_term_keys);
+ static int conn_min_interval_set(void *data, u64 val)
+ {
+ 	struct hci_dev *hdev = data;
+-
+-	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval)
++	
++	hci_dev_lock(hdev);
++	if (val < 0x0006 || val > 0x0c80 || val > hdev->le_conn_max_interval) {
++		hci_dev_unlock(hdev);	
+ 		return -EINVAL;
++	}
  
- 		req = next_request(&dep->pending_list);
--		dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+		if (!dwc->connected)
-+			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
-+		else
-+			dwc3_gadget_giveback(dep, req, -ECONNRESET);
- 	}
+-	hci_dev_lock(hdev);
+ 	hdev->le_conn_min_interval = val;
+ 	hci_dev_unlock(hdev);
  
- 	dwc->eps[0]->trb_enqueue = 0;
+@@ -877,11 +879,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(conn_min_interval_fops, conn_min_interval_get,
+ static int conn_max_interval_set(void *data, u64 val)
+ {
+ 	struct hci_dev *hdev = data;
+-
+-	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval)
++	
++	hci_dev_lock(hdev);
++	if (val < 0x0006 || val > 0x0c80 || val < hdev->le_conn_min_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_conn_max_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -989,11 +993,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(adv_channel_map_fops, adv_channel_map_get,
+ static int adv_min_interval_set(void *data, u64 val)
+ {
+ 	struct hci_dev *hdev = data;
+-
+-	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval)
++	
++	hci_dev_lock(hdev);
++	if (val < 0x0020 || val > 0x4000 || val > hdev->le_adv_max_interval) {
++		hci_dev_unlock(hdev);	
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_adv_min_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -1018,10 +1024,12 @@ static int adv_max_interval_set(void *data, u64 val)
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval)
++	hci_dev_lock(hdev);
++	if (val < 0x0020 || val > 0x4000 || val < hdev->le_adv_min_interval) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_adv_max_interval = val;
+ 	hci_dev_unlock(hdev);
+ 
 -- 
-2.17.1
+2.34.1
 
 
