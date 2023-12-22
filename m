@@ -1,195 +1,439 @@
-Return-Path: <stable+bounces-8293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0C881C3BC
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:04:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9479581C3C6
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC2A91F257F4
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 04:04:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49C0528743D
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 04:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521DA185D;
-	Fri, 22 Dec 2023 04:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609EC1C06;
+	Fri, 22 Dec 2023 04:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="g5QKOqVi"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="xXNDXwAB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B7E63A7
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 04:04:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5942c83c97fso608727eaf.1
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 20:04:46 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513978F49
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 04:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6d9338bc11fso1397550b3a.1
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 20:15:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703217886; x=1703822686; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oMbuyICQl6nMe9y2KZW9tM4PAnxgLD1bGygk69Ul4qI=;
-        b=g5QKOqViMBUMoSnUGY6JKMgdzR3U/sqCDPGURtAoExF++rWUxnFTf+USoFYxklzUwK
-         0fbnXqg7WL9KQQXoeQ/iYR+Q8sveyGT917KTkEX7qpeTisjlcuBhj5FPYLA15SXvoieR
-         1PMbam61yIMw1NFGc/71tVbAlgO2maGZw5npimCNOv/LolX+S0FXQw8t9mLqluGwgdR8
-         xEml8jpAHN4197KV7ge38wyO6DuvBKBltWOsh/ASohiOCfbigkXzrG51e5ueMK+B/3h4
-         oGHzF+7SUN/PeRMtnnvMqC4k+VQu/03ADsoiY5k3atbOnYXqY5a58i2DsIMJc2dP9aJP
-         Ldqg==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703218545; x=1703823345; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ulLwKQKRnzsmDUe5R5h/ISTG2ybM+GAgmMEGQDMsj6o=;
+        b=xXNDXwAB/LrxbvUlTGXQmkRc85HlmGI0x6EU9zgfJoOeeyqAM46OTrIcm6UQmrVEi2
+         /7mZv+FFnzgAiQV08TtLU4KEhRzM3jbVzGm91T6DM8wD5TxuGNP7wiJz7ulsrtdnQjJx
+         6/eCp21836ZZhDqaKxxgknz5RTTg++RYer3sW92J7ClDbo/ymgD7dKZUwPY5CbGYsSlw
+         qQ/cV6VnzSOaYtwwWkYNYsREZozHlzTqrT2NhfN12YDKXocYg3JS3amtrgQxV33/G2Jm
+         3BkbyXM8CkD2cmWOe72g1YE4iM4tI7pQi/cov71w3mWLQa9IWIA+kqrBEognKyPNINbi
+         xDcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703217886; x=1703822686;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oMbuyICQl6nMe9y2KZW9tM4PAnxgLD1bGygk69Ul4qI=;
-        b=ZPD/40ZSDH1/kNwPJ+SF0gt5BSHVIgGnHD5czAZ867TUpeFlsLBUotQBFrw3/CEMH+
-         XLLIQerHTf2vqeulZ4V0EsKCdyAa9vW0w3Wr1HxpxoS+yq7nZW7KdHIdx/ckZP7ptlrZ
-         7nqPRKB8tckZ3aG39MMUjGWW4FfnwxAUqMEUYB8QqFCKpj7qKyRe1yLKaD0KIEGErbZ1
-         LYW3J6Vq8nQJuj7goKodIck+Haz1FmZevVirO+vbFq04x2yVGRUgsgZTkOQqwTIA4/QY
-         HFqsYrd3PRzUb+GGGhuHevzzcrhtK9S6dSkkedZ6/L+hXISD0i3WstunpZbhd/hSJU6G
-         ostA==
-X-Gm-Message-State: AOJu0YxmjjXA1qPgwTyFKIiEiFca5ZnivyImuYwLJcqq70Sk7jxH8UXu
-	bi9P0SU1ZFREQVyEZv1/KYBsQ/b9ueRCMQ==
-X-Google-Smtp-Source: AGHT+IHXq5Glvort/8zooZ1cONqbJxMUnI4QjEEM2kI4kr0xLRxYvX/XwiS3CJjJ1rCS66QRkiGFCQ==
-X-Received: by 2002:a05:6359:4c27:b0:170:c2d0:7236 with SMTP id kj39-20020a0563594c2700b00170c2d07236mr872470rwc.27.1703217885712;
-        Thu, 21 Dec 2023 20:04:45 -0800 (PST)
-Received: from ghost ([2601:647:5700:6860:9585:2e30:5aba:e80c])
-        by smtp.gmail.com with ESMTPSA id f7-20020a056a001ac700b006d7310a683dsm2356295pfv.80.2023.12.21.20.04.44
+        d=1e100.net; s=20230601; t=1703218545; x=1703823345;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ulLwKQKRnzsmDUe5R5h/ISTG2ybM+GAgmMEGQDMsj6o=;
+        b=vMAiMc/6kzbXubjVFiV/965mDkhcFm8zCWpX/5h9+KAGFQEjuIZoFMuuY7ZRRcijRw
+         IXp5y48Z0h5sdDpYxlDDTjS2FkhAeTsrYm2hrb8/aw4qO/QFBgJ3Uw4sjGIWSNQE7awE
+         rRD4a2ukIe2x/cI2nkW7vtR98seoXZqcoO8Xvjyt4Z8gEwihjQSaK95QnLSPEnHNuSM2
+         FP6VZ68WVcvf9gCoM5ewN4LDZ83+204DH6o0v4PJY0Z2mBBZiD7AmCN3V2SKxg6PGcLq
+         7ZsFUlRadt0C48Gq0lIM/iYgT/lcrJyl8TmKW2guq23NSmgbWMu/aokviYP6OlrCt44j
+         FVJQ==
+X-Gm-Message-State: AOJu0YwUcCtn6cMp2SundnVw2fHBnC4rEdx40KUI8sPdGg4qluhsiyWZ
+	awa4qObUFJSG/zVV+HYpVx5mnqiuY68yxrdahAIKfqQtuNI=
+X-Google-Smtp-Source: AGHT+IGNFFEmjtwBMWBFUz0uBzlMBoQnzS7PSnA7f6G7Bl6LOemv1u5S8qQoqU2IAOFrTXM6CtI7yw==
+X-Received: by 2002:a05:6a20:6d16:b0:190:50ec:e2e4 with SMTP id fv22-20020a056a206d1600b0019050ece2e4mr743300pzb.45.1703218545110;
+        Thu, 21 Dec 2023 20:15:45 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jb2-20020a170903258200b001cf6783fd41sm2455372plb.17.2023.12.21.20.15.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 20:04:45 -0800 (PST)
-Date: Thu, 21 Dec 2023 20:04:43 -0800
-From: Charlie Jenkins <charlie@rivosinc.com>
-To: Leonardo Bras <leobras@redhat.com>
-Cc: guoren@kernel.org, linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com, palmer@dabbelt.com,
-	alexghiti@rivosinc.com, xiao.w.wang@intel.com, david@redhat.com,
-	panqinglin2020@iscas.ac.cn, rick.p.edgecombe@intel.com,
-	willy@infradead.org, bjorn@rivosinc.com, conor.dooley@microchip.com,
-	cleger@rivosinc.com, linux-riscv@lists.infradead.org,
-	Guo Ren <guoren@linux.alibaba.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V2 2/4] riscv: mm: Fixup compat arch_get_mmap_end
-Message-ID: <ZYUK2zUHjYBL0zO7@ghost>
-References: <20231221154702.2267684-1-guoren@kernel.org>
- <20231221154702.2267684-3-guoren@kernel.org>
- <ZYUD4C1aXWt2oFJo@LeoBras>
+        Thu, 21 Dec 2023 20:15:44 -0800 (PST)
+Message-ID: <65850d70.170a0220.5e5a8.83d2@mx.google.com>
+Date: Thu, 21 Dec 2023 20:15:44 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZYUD4C1aXWt2oFJo@LeoBras>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.10.204-63-g5105b172a5e05
+Subject: stable-rc/queue/5.10 baseline: 99 runs,
+ 7 regressions (v5.10.204-63-g5105b172a5e05)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Fri, Dec 22, 2023 at 12:34:56AM -0300, Leonardo Bras wrote:
-> On Thu, Dec 21, 2023 at 10:46:59AM -0500, guoren@kernel.org wrote:
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> > 
-> > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-> > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-> > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-> > directly.
-> 
-> ok
-> 
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > ---
-> >  arch/riscv/include/asm/processor.h | 6 ++----
-> >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-> > index f19f861cda54..1f538fc4448d 100644
-> > --- a/arch/riscv/include/asm/processor.h
-> > +++ b/arch/riscv/include/asm/processor.h
-> > @@ -16,15 +16,13 @@
-> >  
-> >  #ifdef CONFIG_64BIT
-> >  #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
-> > -#define STACK_TOP_MAX		TASK_SIZE_64
-> > +#define STACK_TOP_MAX		TASK_SIZE
-> 
-> It means STACK_TOP_MAX will be in 64BIT:
-> - TASK_SIZE_32 if compat_mode=y
-> - TASK_SIZE_64 if compat_mode=n
-> 
-> Makes sense for me.
-> 
-> >  
-> >  #define arch_get_mmap_end(addr, len, flags)			\
-> >  ({								\
-> >  	unsigned long mmap_end;					\
-> >  	typeof(addr) _addr = (addr);				\
-> > -	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-> > -		mmap_end = STACK_TOP_MAX;			\
-> > -	else if ((_addr) >= VA_USER_SV57)			\
-> > +	if ((_addr) == 0 || (_addr) >= VA_USER_SV57)		\
-> >  		mmap_end = STACK_TOP_MAX;			\
-> >  	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
-> >  		mmap_end = VA_USER_SV48;			\
-> 
-> 
-> I don't think I got this change, or how it's connected to the commit msg.
-> 
-> Before:
-> - addr == 0, or addr > 2^57, or compat: mmap_end = STACK_TOP_MAX
-> - 2^48 < addr < 2^57: mmap_end = 2^48
-> - 0 < addr < 2^48 : mmap_end = 2^39
-> 
-> Now:
-> - addr == 0, or addr > 2^57: mmap_end = STACK_TOP_MAX
-> - 2^48 < addr < 2^57: mmap_end = 2^48
-> - 0 < addr < 2^48 : mmap_end = 2^39
-> 
-> IIUC compat mode addr will be < 2^32, so will always have mmap_end = 2^39 
-> if addr != 0. Is that desireable? 
-> (if not, above change is unneeded)
+stable-rc/queue/5.10 baseline: 99 runs, 7 regressions (v5.10.204-63-g5105b1=
+72a5e05)
 
-I agree, this change does not make sense for compat mode. Compat mode
-should never return an address that is greater than 2^32, but this
-change allows that.
+Regressions Summary
+-------------------
 
-> 
-> Also, unrelated to the change:
-> - 2^48 < addr < 2^57: mmap_end = 2^48
-> Is the above correct?
-> It looks like it should be 2^57 instead, and a new if clause for 
-> 2^32 < addr < 2^48 should have mmap_end = 2^48.
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+acer-R721T-grunt   | x86_64 | lab-collabora | gcc-10   | x86_64_defconfig+x=
+86-board | 1          =
 
-That is not the case. I documented this behavior and reasoning in
-Documentation/arch/riscv/vm-layout.rst in the "Userspace VAs" section.
+beaglebone-black   | arm    | lab-broonie   | gcc-10   | omap2plus_defconfi=
+g        | 1          =
 
-I can reiterate here though. The hint address to mmap (defined here as
-"addr") is the maximum userspace address that mmap should provide. What
-you are describing is a minimum. The purpose of this change was to allow
-applications that are not compatible with a larger virtual address (such
-as applications like Java that use the upper bits of the VA to store
-data) to have a consistent way of specifying how many bits they would
-like to be left free in the VA. This requires to take the next lowest
-address space to guaruntee that all of the most-significant bits left
-clear in hint address do not end up populated in the virtual address
-returned by mmap.
+r8a77960-ulcb      | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
 
-- Charlie
+rk3399-gru-kevin   | arm64  | lab-collabora | gcc-10   | defconfig+arm64-ch=
+romebook | 2          =
 
-> 
-> Do I get it wrong?
-> 
-> (I will send an RFC 'fixing' the code the way I am whinking it should look 
-> like)
-> 
-> Thanks, 
-> Leo
-> 
-> 
-> 
-> 
-> 
-> > -- 
-> > 2.40.1
-> > 
-> 
+sun50i-h6-pine-h64 | arm64  | lab-clabbe    | gcc-10   | defconfig         =
+         | 1          =
+
+sun50i-h6-pine-h64 | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.10/ker=
+nel/v5.10.204-63-g5105b172a5e05/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/5.10
+  Describe: v5.10.204-63-g5105b172a5e05
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      5105b172a5e05ddaa2cc9e7489e5a755b94256de =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+acer-R721T-grunt   | x86_64 | lab-collabora | gcc-10   | x86_64_defconfig+x=
+86-board | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584d938d977574d6ee135a7
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-board
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/x86_64/x86_64_defconfig+x86-board/gcc-10/lab-collabora/b=
+aseline-acer-R721T-grunt.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/x86_64/x86_64_defconfig+x86-board/gcc-10/lab-collabora/b=
+aseline-acer-R721T-grunt.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6584d938d977574d6ee13=
+5a8
+        new failure (last pass: v5.10.204-60-gbd6aa237ba9cb) =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+beaglebone-black   | arm    | lab-broonie   | gcc-10   | omap2plus_defconfi=
+g        | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584d987198988900be13615
+
+  Results:     51 PASS, 4 FAIL, 1 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
+lebone-black.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
+lebone-black.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6584d987198988900be1364a
+        failing since 311 days (last pass: v5.10.167-127-g921934d621e4, fir=
+st fail: v5.10.167-139-gf9519a5a1701)
+
+    2023-12-22T00:34:00.634141  <8>[   20.629202] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 383333_1.5.2.4.1>
+    2023-12-22T00:34:00.742830  / # #
+    2023-12-22T00:34:00.845135  export SHELL=3D/bin/sh
+    2023-12-22T00:34:00.845759  #
+    2023-12-22T00:34:00.947818  / # export SHELL=3D/bin/sh. /lava-383333/en=
+vironment
+    2023-12-22T00:34:00.948319  =
+
+    2023-12-22T00:34:01.049702  / # . /lava-383333/environment/lava-383333/=
+bin/lava-test-runner /lava-383333/1
+    2023-12-22T00:34:01.050448  =
+
+    2023-12-22T00:34:01.054374  / # /lava-383333/bin/lava-test-runner /lava=
+-383333/1
+    2023-12-22T00:34:01.161199  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+r8a77960-ulcb      | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584da25573bf75a55e134f9
+
+  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
+lcb.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
+lcb.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6584da25573bf75a55e134fe
+        failing since 29 days (last pass: v5.10.181-18-g1622068b57a4, first=
+ fail: v5.10.201-98-g6f84b6dba25c)
+
+    2023-12-22T00:44:17.536743  / # #
+
+    2023-12-22T00:44:17.638851  export SHELL=3D/bin/sh
+
+    2023-12-22T00:44:17.639626  #
+
+    2023-12-22T00:44:17.741044  / # export SHELL=3D/bin/sh. /lava-12345030/=
+environment
+
+    2023-12-22T00:44:17.741798  =
+
+
+    2023-12-22T00:44:17.843260  / # . /lava-12345030/environment/lava-12345=
+030/bin/lava-test-runner /lava-12345030/1
+
+    2023-12-22T00:44:17.844458  =
+
+
+    2023-12-22T00:44:17.860799  / # /lava-12345030/bin/lava-test-runner /la=
+va-12345030/1
+
+    2023-12-22T00:44:17.909911  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-22T00:44:17.910420  + cd /lav<8>[   16.451451] <LAVA_SIGNAL_STA=
+RTRUN 1_bootrr 12345030_1.5.2.4.5>
+ =
+
+    ... (28 line(s) more)  =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+rk3399-gru-kevin   | arm64  | lab-collabora | gcc-10   | defconfig+arm64-ch=
+romebook | 2          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584dad8d30dbce769e1356f
+
+  Results:     84 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/ba=
+seline-rk3399-gru-kevin.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/ba=
+seline-rk3399-gru-kevin.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.rockchip-usb2phy1-probed: https://kernelci.org/test/cas=
+e/id/6584dad8d30dbce769e13575
+        failing since 282 days (last pass: v5.10.172-529-g06956b9e9396, fir=
+st fail: v5.10.173-69-gfcbe6bd469ed)
+
+    2023-12-22T00:40:06.821490  /lava-12345078/1/../bin/lava-test-case
+   =
+
+
+  * baseline.bootrr.rockchip-usb2phy0-probed: https://kernelci.org/test/cas=
+e/id/6584dad8d30dbce769e13576
+        failing since 282 days (last pass: v5.10.172-529-g06956b9e9396, fir=
+st fail: v5.10.173-69-gfcbe6bd469ed)
+
+    2023-12-22T00:40:04.759656  <8>[   33.190670] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Drockchip-usb2phy-driver-present RESULT=3Dpass>
+
+    2023-12-22T00:40:05.785229  /lava-12345078/1/../bin/lava-test-case
+
+    2023-12-22T00:40:05.796412  <8>[   34.228089] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Drockchip-usb2phy0-probed RESULT=3Dfail>
+   =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+sun50i-h6-pine-h64 | arm64  | lab-clabbe    | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584da10c88ebdd67ce13484
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
+e-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
+e-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6584da10c88ebdd67ce13489
+        failing since 29 days (last pass: v5.10.176-241-ga0049fd9c865, firs=
+t fail: v5.10.201-98-g6f84b6dba25c)
+
+    2023-12-22T00:36:22.320809  <8>[   17.005724] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 449354_1.5.2.4.1>
+    2023-12-22T00:36:22.425745  / # #
+    2023-12-22T00:36:22.527286  export SHELL=3D/bin/sh
+    2023-12-22T00:36:22.527895  #
+    2023-12-22T00:36:22.628868  / # export SHELL=3D/bin/sh. /lava-449354/en=
+vironment
+    2023-12-22T00:36:22.629473  =
+
+    2023-12-22T00:36:22.730480  / # . /lava-449354/environment/lava-449354/=
+bin/lava-test-runner /lava-449354/1
+    2023-12-22T00:36:22.731309  =
+
+    2023-12-22T00:36:22.736017  / # /lava-449354/bin/lava-test-runner /lava=
+-449354/1
+    2023-12-22T00:36:22.802065  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+sun50i-h6-pine-h64 | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6584da3a9a92ba8811e134d1
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
+pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.10/v5.10.204=
+-63-g5105b172a5e05/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
+pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6584da3a9a92ba8811e134d6
+        failing since 29 days (last pass: v5.10.176-241-ga0049fd9c865, firs=
+t fail: v5.10.201-98-g6f84b6dba25c)
+
+    2023-12-22T00:44:31.327088  / # #
+
+    2023-12-22T00:44:31.429238  export SHELL=3D/bin/sh
+
+    2023-12-22T00:44:31.429935  #
+
+    2023-12-22T00:44:31.531317  / # export SHELL=3D/bin/sh. /lava-12345041/=
+environment
+
+    2023-12-22T00:44:31.532011  =
+
+
+    2023-12-22T00:44:31.633475  / # . /lava-12345041/environment/lava-12345=
+041/bin/lava-test-runner /lava-12345041/1
+
+    2023-12-22T00:44:31.634537  =
+
+
+    2023-12-22T00:44:31.651443  / # /lava-12345041/bin/lava-test-runner /la=
+va-12345041/1
+
+    2023-12-22T00:44:31.692924  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-22T00:44:31.710493  + cd /lava-1234504<8>[   18.169780] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12345041_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
 
