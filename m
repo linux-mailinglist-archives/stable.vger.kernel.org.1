@@ -1,272 +1,241 @@
-Return-Path: <stable+bounces-8303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C16E81C4A4
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 06:28:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF60E81C4B5
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 06:42:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B0AE1F21E15
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:28:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D951C24B07
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 05:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA792523C;
-	Fri, 22 Dec 2023 05:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BD746A8;
+	Fri, 22 Dec 2023 05:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GyGWHKKo"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="uSq/xtFj"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E6E524F
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 05:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703222890;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=plbNf5A3ZlhXI2Ez9cBVzJuxB5rEcG2G+xtFHu5+tss=;
-	b=GyGWHKKonKChrjQdesO04Q7vEMwtpb2OTsAGXDcQjUVaPg63V3mtPfO9f1ZyKPLGQUkZaC
-	hwY4MxXg8SPs9o3QpxJNE9NQVR7uohC7kSzj56Zx7IYU2yjf7fzOphRVWgT3NXgCuVSJYf
-	CcNZvSHfMRg/bEa72czu7MV1LzdLDuc=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-412-y0G41qA-PJ67WhHFv_vXGQ-1; Fri, 22 Dec 2023 00:28:09 -0500
-X-MC-Unique: y0G41qA-PJ67WhHFv_vXGQ-1
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-5cd61dccd77so858060a12.3
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 21:28:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3FD5390
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 05:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd86e3a9afso1050191a12.1
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 21:42:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703223729; x=1703828529; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tshARWagRRHxlEAjYIN29OCOP9SHjMXaawfRGNvVCMk=;
+        b=uSq/xtFjp1MZW/GQolvTeipl2Zd/m1GFoUGqs2XglaT8rUx+ljR8e33CVwCGCHzEx4
+         z8kYMlfZwUl+VhC85gz+Ku4jPEtsdrody8Qlhe9TJSBgjBzjytl1VSDbWSLoPFnuNLk8
+         EjjxLHXsdYeNvhPcWZsD/73scShRP/ykW/svFoGreaYjFFUmljHekpTJrUIV3rkel19N
+         osTruUbqCQGRL6mApXJ5s/Q/oBrtyWQ+Jo4pcWZhbIspy9TKnYzzfYBT+1tMVP03vtrL
+         /7HmVFDxTvyQTSLEg3NJwrEauhc6lDiWRsK4rBVFi8Oz25v8UZ4WRb/ssyyZDCyfg8vp
+         NEaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703222888; x=1703827688;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=plbNf5A3ZlhXI2Ez9cBVzJuxB5rEcG2G+xtFHu5+tss=;
-        b=YrS1STPwyBNqQOlFQJfbMXjs7w08Fcun6L7F6DcBUokVW0jIlzqeyNP4p1Zs6EF7jS
-         COmD6IpmO6tPsvnzKRKUO7rjYdNOVR3Po943VtznLOiA/xgDXi5JtXS9JCw9wJfonc3L
-         PpeNn5PVVodm2/iILAnf704+RVOVgcE/fxbzFF3E6kJW8C9RbHxn3wXyU83PkLgdg3Jn
-         BDdGgLeFQrrQdrYEZBoR7lJCmimH3KEFV2KVEia6AgAAkzeC0eilwjW9kQuFzPRatFeu
-         UiBUBH+1/n4brnclUS4EFezgws988+FLZxaa/OPIzrEzGy4Kcdz98fSZUVqL7PTkDVnH
-         xPAQ==
-X-Gm-Message-State: AOJu0YxjfUlv1/dlS5B7LBsKkd6Pq2YNtg+VekrTLeTeXa0s3gfBFRs4
-	11E3BunLnYHl0pLK5IrfFWgdIbdkHZ6Jc+JMHRdwUtm0T+QbMFXq2AWV3555ZLsEesCMGS20UdH
-	KFEFQdUtDK8mXjsPnzT2tjaWr
-X-Received: by 2002:a05:6a20:978c:b0:195:1e04:11dc with SMTP id hx12-20020a056a20978c00b001951e0411dcmr547873pzc.46.1703222887957;
-        Thu, 21 Dec 2023 21:28:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF0cwpsBTtkI4cK5DOCiGcyzFp7iDmxf1j7x1Nho4sQzNtuZJWgQbbH2SgdZd8zDpJwHBxAIQ==
-X-Received: by 2002:a05:6a20:978c:b0:195:1e04:11dc with SMTP id hx12-20020a056a20978c00b001951e0411dcmr547858pzc.46.1703222887605;
-        Thu, 21 Dec 2023 21:28:07 -0800 (PST)
-Received: from localhost.localdomain ([2804:1b3:a802:7496:88a7:1b1a:a837:bebf])
-        by smtp.gmail.com with ESMTPSA id bb5-20020a17090b008500b0028b0424a4bcsm129567pjb.54.2023.12.21.21.28.03
+        d=1e100.net; s=20230601; t=1703223729; x=1703828529;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tshARWagRRHxlEAjYIN29OCOP9SHjMXaawfRGNvVCMk=;
+        b=a1ss2Rlzy5NHr6MWhoHqj94KXgW/fB+j9jRywbLFPx/uKivUTJoPXC+pDokOHYF0nP
+         k9SqdihcL0sonvn7XJrcz375ygTgVdZ1hVhJKWrfbHenS/pVpvBPaYdGKxlQzXaTSFzn
+         IN4CzbrCZ1SCieO6yT2zN9P6Diq3TpYPiGokG5qeahiygzmlaar5Mejx9Oyu+qApDSJE
+         /n17mh2zrZVSKvKSWrFNy0uYxczGxrmu/bvm+s6OuBb80uJWbcomZ5F0pCsQ6ySAanM6
+         OY84PndE7ZYipx2+RsO0Ob/p7uyaJJ+ivuLYjLyNN3c/5E36kZWy/cpQQZwcznN5FryR
+         ej4A==
+X-Gm-Message-State: AOJu0YzOkACx8s2e3fPX0YxKbFxeJcKhFcBMm9QBRBnLURP1z6q2MuoT
+	5gA5Kk6H+W/bkw+HSC9vv5AsE/YahBeszA==
+X-Google-Smtp-Source: AGHT+IFPYN93FpZrSP6JEuX0E8+Rz/2HUmp3SPiiY3k73uCyVJqHwo4hbyYd5MYmWGrJPBD7tMIC/A==
+X-Received: by 2002:a05:6a20:8404:b0:194:7c07:5f55 with SMTP id c4-20020a056a20840400b001947c075f55mr958883pzd.54.1703223729146;
+        Thu, 21 Dec 2023 21:42:09 -0800 (PST)
+Received: from ghost ([2601:647:5700:6860:f06:7450:7dd4:fc1d])
+        by smtp.gmail.com with ESMTPSA id j26-20020aa78d1a000000b006d974fe1b0esm2127879pfe.7.2023.12.21.21.42.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 21:28:07 -0800 (PST)
-From: Leonardo Bras <leobras@redhat.com>
-To: Guo Ren <guoren@kernel.org>
-Cc: Leonardo Bras <leobras@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	alexghiti@rivosinc.com,
-	charlie@rivosinc.com,
-	xiao.w.wang@intel.com,
-	david@redhat.com,
-	panqinglin2020@iscas.ac.cn,
-	rick.p.edgecombe@intel.com,
-	willy@infradead.org,
-	bjorn@rivosinc.com,
-	conor.dooley@microchip.com,
-	cleger@rivosinc.com,
-	linux-riscv@lists.infradead.org,
-	Guo Ren <guoren@linux.alibaba.com>,
-	stable@vger.kernel.org
+        Thu, 21 Dec 2023 21:42:08 -0800 (PST)
+Date: Thu, 21 Dec 2023 21:42:05 -0800
+From: Charlie Jenkins <charlie@rivosinc.com>
+To: Leonardo Bras <leobras@redhat.com>
+Cc: guoren@kernel.org, linux-kernel@vger.kernel.org,
+	paul.walmsley@sifive.com, palmer@dabbelt.com,
+	alexghiti@rivosinc.com, xiao.w.wang@intel.com, david@redhat.com,
+	panqinglin2020@iscas.ac.cn, rick.p.edgecombe@intel.com,
+	willy@infradead.org, bjorn@rivosinc.com, conor.dooley@microchip.com,
+	cleger@rivosinc.com, linux-riscv@lists.infradead.org,
+	Guo Ren <guoren@linux.alibaba.com>, stable@vger.kernel.org
 Subject: Re: [PATCH V2 2/4] riscv: mm: Fixup compat arch_get_mmap_end
-Date: Fri, 22 Dec 2023 02:27:47 -0300
-Message-ID: <ZYUeU0URQvgw42jt@LeoBras>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJF2gTRptBZyYbnY-mjn-AuQwVnekQtGY8nAOV7KVWLCY1WBcw@mail.gmail.com>
-References: <20231221154702.2267684-1-guoren@kernel.org> <20231221154702.2267684-3-guoren@kernel.org> <ZYUD4C1aXWt2oFJo@LeoBras> <CAJF2gTSiaNWkXS6rc+3OSZfnFqG2d7btzjrd-L1mBgAVu3ym3A@mail.gmail.com> <ZYUT22KmGJ1tJSWx@LeoBras> <CAJF2gTRptBZyYbnY-mjn-AuQwVnekQtGY8nAOV7KVWLCY1WBcw@mail.gmail.com>
+Message-ID: <ZYUhrTaXMqyRchyP@ghost>
+References: <20231221154702.2267684-1-guoren@kernel.org>
+ <20231221154702.2267684-3-guoren@kernel.org>
+ <ZYUD4C1aXWt2oFJo@LeoBras>
+ <ZYUK2zUHjYBL0zO7@ghost>
+ <ZYUPQIJ070BYDzJJ@LeoBras>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZYUPQIJ070BYDzJJ@LeoBras>
 
-On Fri, Dec 22, 2023 at 12:50:44PM +0800, Guo Ren wrote:
-> On Fri, Dec 22, 2023 at 12:43 PM Leonardo Bras <leobras@redhat.com> wrote:
-> >
-> > On Fri, Dec 22, 2023 at 12:26:19PM +0800, Guo Ren wrote:
-> > > On Fri, Dec 22, 2023 at 11:35 AM Leonardo Bras <leobras@redhat.com> wrote:
-> > > >
-> > > > On Thu, Dec 21, 2023 at 10:46:59AM -0500, guoren@kernel.org wrote:
-> > > > > From: Guo Ren <guoren@linux.alibaba.com>
-> > > > >
-> > > > > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-> > > > > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-> > > > > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-> > > > > directly.
-> > > >
-> > > > ok
-> > > >
-> > > > >
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-> > > > > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > > > > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > > > > ---
-> > > > >  arch/riscv/include/asm/processor.h | 6 ++----
-> > > > >  1 file changed, 2 insertions(+), 4 deletions(-)
-> > > > >
-> > > > > diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
-> > > > > index f19f861cda54..1f538fc4448d 100644
-> > > > > --- a/arch/riscv/include/asm/processor.h
-> > > > > +++ b/arch/riscv/include/asm/processor.h
-> > > > > @@ -16,15 +16,13 @@
-> > > > >
-> > > > >  #ifdef CONFIG_64BIT
-> > > > >  #define DEFAULT_MAP_WINDOW   (UL(1) << (MMAP_VA_BITS - 1))
-> > > > > -#define STACK_TOP_MAX                TASK_SIZE_64
-> > > > > +#define STACK_TOP_MAX                TASK_SIZE
-> > > >
-> > > > It means STACK_TOP_MAX will be in 64BIT:
-> > > > - TASK_SIZE_32 if compat_mode=y
-> > > > - TASK_SIZE_64 if compat_mode=n
-> > > >
-> > > > Makes sense for me.
-> > > >
-> > > > >
-> > > > >  #define arch_get_mmap_end(addr, len, flags)                  \
-> > > > >  ({                                                           \
-> > > > >       unsigned long mmap_end;                                 \
-> > > > >       typeof(addr) _addr = (addr);                            \
-> > > > > -     if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-> > > > > -             mmap_end = STACK_TOP_MAX;                       \
-> > > > > -     else if ((_addr) >= VA_USER_SV57)                       \
-> > > > > +     if ((_addr) == 0 || (_addr) >= VA_USER_SV57)            \
-> > > > >               mmap_end = STACK_TOP_MAX;                       \
-> > > > >       else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
-> > > > >               mmap_end = VA_USER_SV48;                        \
-> > > >
-> > > >
-> > > > I don't think I got this change, or how it's connected to the commit msg.
-> > > The above is just code simplification; if STACK_TOP_MAX is TASK_SIZE, then
-> > >
-> > >      if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
-> > >              mmap_end = STACK_TOP_MAX;                       \
-> > >     else if ((_addr) >= VA_USER_SV57)                       \
-> > >
-> > > is equal to:
-> > >
-> > >      if ((_addr) == 0 || (_addr) >= VA_USER_SV57)            \
-> >
-> > I am failing to understand exactly how are they equal.
-> > I mean, what in your STACK_TOP_MAX change made them equal?
-> #define STACK_TOP_MAX TASK_SIZE
-> #define TASK_SIZE       (is_compat_task() ? TASK_SIZE_32 : TASK_SIZE_64)
+On Fri, Dec 22, 2023 at 01:23:29AM -0300, Leonardo Bras wrote:
+> On Thu, Dec 21, 2023 at 08:04:43PM -0800, Charlie Jenkins wrote:
+> > On Fri, Dec 22, 2023 at 12:34:56AM -0300, Leonardo Bras wrote:
+> > > On Thu, Dec 21, 2023 at 10:46:59AM -0500, guoren@kernel.org wrote:
+> > > > From: Guo Ren <guoren@linux.alibaba.com>
+> > > > 
+> > > > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
+> > > > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
+> > > > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
+> > > > directly.
+> > > 
+> > > ok
+> > > 
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+> > > > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > > > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > > > ---
+> > > >  arch/riscv/include/asm/processor.h | 6 ++----
+> > > >  1 file changed, 2 insertions(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+> > > > index f19f861cda54..1f538fc4448d 100644
+> > > > --- a/arch/riscv/include/asm/processor.h
+> > > > +++ b/arch/riscv/include/asm/processor.h
+> > > > @@ -16,15 +16,13 @@
+> > > >  
+> > > >  #ifdef CONFIG_64BIT
+> > > >  #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
+> > > > -#define STACK_TOP_MAX		TASK_SIZE_64
+> > > > +#define STACK_TOP_MAX		TASK_SIZE
+> > > 
+> > > It means STACK_TOP_MAX will be in 64BIT:
+> > > - TASK_SIZE_32 if compat_mode=y
+> > > - TASK_SIZE_64 if compat_mode=n
+> > > 
+> > > Makes sense for me.
+> > > 
+> > > >  
+> > > >  #define arch_get_mmap_end(addr, len, flags)			\
+> > > >  ({								\
+> > > >  	unsigned long mmap_end;					\
+> > > >  	typeof(addr) _addr = (addr);				\
+> > > > -	if ((_addr) == 0 || (IS_ENABLED(CONFIG_COMPAT) && is_compat_task())) \
+> > > > -		mmap_end = STACK_TOP_MAX;			\
+> > > > -	else if ((_addr) >= VA_USER_SV57)			\
+> > > > +	if ((_addr) == 0 || (_addr) >= VA_USER_SV57)		\
+> > > >  		mmap_end = STACK_TOP_MAX;			\
+> > > >  	else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) \
+> > > >  		mmap_end = VA_USER_SV48;			\
+> > > 
+> > > 
+> > > I don't think I got this change, or how it's connected to the commit msg.
+> > > 
+> > > Before:
+> > > - addr == 0, or addr > 2^57, or compat: mmap_end = STACK_TOP_MAX
+> > > - 2^48 < addr < 2^57: mmap_end = 2^48
+> > > - 0 < addr < 2^48 : mmap_end = 2^39
+> > > 
+> > > Now:
+> > > - addr == 0, or addr > 2^57: mmap_end = STACK_TOP_MAX
+> > > - 2^48 < addr < 2^57: mmap_end = 2^48
+> > > - 0 < addr < 2^48 : mmap_end = 2^39
+> > > 
+> > > IIUC compat mode addr will be < 2^32, so will always have mmap_end = 2^39 
+> > > if addr != 0. Is that desireable? 
+> > > (if not, above change is unneeded)
+> > 
+> > I agree, this change does not make sense for compat mode. Compat mode
+> > should never return an address that is greater than 2^32, but this
+> > change allows that.
+> > 
+> > > 
+> > > Also, unrelated to the change:
+> > > - 2^48 < addr < 2^57: mmap_end = 2^48
+> > > Is the above correct?
+> > > It looks like it should be 2^57 instead, and a new if clause for 
+> > > 2^32 < addr < 2^48 should have mmap_end = 2^48.
+> > 
+> > That is not the case. I documented this behavior and reasoning in
+> > Documentation/arch/riscv/vm-layout.rst in the "Userspace VAs" section.
+> > 
+> > I can reiterate here though. The hint address to mmap (defined here as
+> > "addr") is the maximum userspace address that mmap should provide. What
+> > you are describing is a minimum. The purpose of this change was to allow
+> > applications that are not compatible with a larger virtual address (such
+> > as applications like Java that use the upper bits of the VA to store
+> > data) to have a consistent way of specifying how many bits they would
+> > like to be left free in the VA. This requires to take the next lowest
+> > address space to guaruntee that all of the most-significant bits left
+> > clear in hint address do not end up populated in the virtual address
+> > returned by mmap.
+> > 
+> > - Charlie
 > 
-
-yes, I am aware. Let's do a simple test with the new code and
-addr = 2^27 (random 32-bit addr) and compat mode.
-
-if ((_addr) == 0 || (_addr) >= VA_USER_SV57)
-	// Evaluates to false: 2^27 != 0, and is < 2^57
-else if ((((_addr) >= VA_USER_SV48)) && (VA_BITS >= VA_BITS_SV48)) 
-	// Evaluates to false: 2^27 < 2^48
-else				
-	mmap_end = VA_USER_SV39;	
-
-mmap_end = VA_USER_SV39, even in compat_mode.
-
-We need the extra is_compat_task() if we want to return 2^32.
-
-Thanks!
-Leo
-
-
-> >
-> > See below, the behavior changed:
-> > >
-> > > >
-> > > > Before:
-> > > > - addr == 0, or addr > 2^57, or compat: mmap_end = STACK_TOP_MAX
-> > > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > > - 0 < addr < 2^48 : mmap_end = 2^39
-> > > >
-> > > > Now:
-> > > > - addr == 0, or addr > 2^57: mmap_end = STACK_TOP_MAX
-> > > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > > - 0 < addr < 2^48 : mmap_end = 2^39
-> > > >
-> > > > IIUC compat mode addr will be < 2^32, so will always have mmap_end = 2^39
-> > > > if addr != 0. Is that desireable?
-> > > > (if not, above change is unneeded)
-> > > >
-> >
-> > ^
-> >
-> > With your change on STACK_TOP_MAX only (not changing arch_get_mmap_end),
-> > you would have:
-> >
-> > - compat_mode & (0 < addr < 2^32)       -> mmap_end = 2^32
-> compat_mode      -> mmap_end = 2^32
+> Hello Charlie, thank you for helping me understand!
 > 
+> Ok, that does make sense now! The addr value hints "don't allocate > addr"
+> and thus:
+> 
+> - 0 < addr < 2^48 : mmap_end = 2^39
+> - 2^48 < addr < 2^57: mmap_end = 2^48
+> 
+> Ok, but then
+> - addr > 2^57: mmap_end = 2^57
+> right?
+> 
+> I mean, probably STACK_TOP_MAX in non-compat mode means 2^57 already, but 
+> having it explicitly like:
+> 
+>  else if ((_addr) >= VA_USER_SV57)                       \
+>          mmap_end = VA_USER_SV57;                        \
+> 
+> would not be better for a future full 64-bit addressing?
+> (since it's already on a different if clause)
 
-This is correct! 
-Yeah, since you changed STACK_TOP_MAX to be 2^32 in compat mode,
-any addr value < 2^32 with compat value will return 2^32.
-(without the change in arch_get_mmap_end(), that is.) 
+I agree, that does make more sense.
 
-> > - non-compat, addr == 0, or addr > 2^57 -> mmap_end = TASK_SIZE_64
-> > - non-compat, (2^48 < addr < 2^57)      -> mmap_end = 2^48
-> > - non-compat, (0 < addr < 2^48)         -> mmap_end = 2^39
-> >
-> > Which seems more likely, based on Charlie comments.
-> >
-> > Thanks,
-> > Leo
-> >
-> > > > Also, unrelated to the change:
-> > > > - 2^48 < addr < 2^57: mmap_end = 2^48
-> > > > Is the above correct?
-> > > > It looks like it should be 2^57 instead, and a new if clause for
-> > > > 2^32 < addr < 2^48 should have mmap_end = 2^48.
-> > > >
-> > > > Do I get it wrong?
-> > > Maybe I should move this into the optimization part.
-> > >
-> > > >
-> > > > (I will send an RFC 'fixing' the code the way I am whinking it should look
-> > > > like)
-> > > >
-> > > > Thanks,
-> > > > Leo
-> > > >
-> > > >
-> > > >
-> > > >
-> > > >
-> > > > > --
-> > > > > 2.40.1
-> > > > >
-> > > >
-> > >
-> > >
-> > > --
-> > > Best Regards
-> > >  Guo Ren
-> > >
-> >
+> 
+> I could add comment on top of the macro with a short version on your addr 
+> hint description above. Would that be ok?
+
+Sure :)
+
+- Charlie
+
+> 
+> Thanks!
+> Leo
 > 
 > 
-> -- 
-> Best Regards
->  Guo Ren
 > 
-
+> 
+> 
+> > 
+> > > 
+> > > Do I get it wrong?
+> > > 
+> > > (I will send an RFC 'fixing' the code the way I am whinking it should look 
+> > > like)
+> > > 
+> > > Thanks, 
+> > > Leo
+> > > 
+> > > 
+> > > 
+> > > 
+> > > 
+> > > > -- 
+> > > > 2.40.1
+> > > > 
+> > > 
+> > 
+> 
 
