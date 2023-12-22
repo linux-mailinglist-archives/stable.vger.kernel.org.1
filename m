@@ -1,243 +1,113 @@
-Return-Path: <stable+bounces-8281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED1381C267
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:46:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1863181C290
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 02:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D872A2848FA
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F75C1C2408C
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC44D39B;
-	Fri, 22 Dec 2023 00:46:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="pjxdtp6z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACBAEDF;
+	Fri, 22 Dec 2023 01:08:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190AAA31
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 00:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6d089e8b1b2so1013332b3a.3
-        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 16:46:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703206001; x=1703810801; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PMPxQweL+FWyi8vGO99PtQpR+ZYklK6aXUUV431aXzc=;
-        b=pjxdtp6z1UVrgV/A6CDXiSYwgIZrgAlf85AtXuSYBMVPX6t+d8NORH+VCmpSgb1CAI
-         xXFwmfNDYzgtjRCvG0PfSr6HbaVUafSayE3gMsr6088Io2rPsxojkb0aQjhZ1NvdhDou
-         mS7nzoWZ3NcHCYpdyHCGLflB+Uda6rdRXCVyVL6mHVa5gz8adkvxT9UvEgOPQm/x/l7/
-         YTE1OW1gF5zcR+Y7kLC4iCj2c9ACfR0L044DpzF944uI2l6DApUE0tkD/58hMp3H+sDP
-         smFBU2PSNDypHi1TwOuaKMjAFQ61js5YD4nCHHL3GbeTSUM6WmTGcShYxEOThZn4OFyp
-         tpfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703206001; x=1703810801;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PMPxQweL+FWyi8vGO99PtQpR+ZYklK6aXUUV431aXzc=;
-        b=cAmY1C0J8gjK3jjbT21id8Yngb5jIxU5n1iYoixuCIrh6j7k+LfEDJtGkTIZG8Ghf3
-         hii7fhnpXH4eucd4LpuakafU3IQZN1Jb9pSNzWZnQ3klkOfFxBJiVi2e4J15DYfOu//1
-         ffC9ItW71dUH1VL0vNgmWohdYWtY5SwjON0Vv7CR8lemEhNsPk6t5FT3XJbHySZap/tk
-         4cJX0ZTHqJ+5NIMhWar6Y/BIC2UEBHBTvAQP3HVQ+5zT6t6xuvt/U7UzhyYQl0Fhriiw
-         v3jFsWJ1QYKYT2gZSJEwJ3F64eByVaqI0N6pq6dvOcBCd6mJab09P+N+7zc0SB4VA2Gj
-         gmBA==
-X-Gm-Message-State: AOJu0YxbVhu2tifzwwKuqDmUhMT+24Pd3TQZwfrCvmlTukx0mVQ2ha/B
-	UEXO0H0btvQFKDJTmREw5PRjaza0gOZAnuUaBE2HMF60q5o=
-X-Google-Smtp-Source: AGHT+IEw+tA04EuYpHlb2+iX4LT0YnQwjISZP5qL2FQ7Zg62AWUgYija4vgP/IeiYT51vz48wvHm0Q==
-X-Received: by 2002:a05:6a20:3804:b0:194:f4f:f539 with SMTP id p4-20020a056a20380400b001940f4ff539mr398410pzf.110.1703206001639;
-        Thu, 21 Dec 2023 16:46:41 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id dj15-20020a17090ad2cf00b0028bbf4c0264sm5904481pjb.10.2023.12.21.16.46.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Dec 2023 16:46:40 -0800 (PST)
-Message-ID: <6584dc70.170a0220.946e6.31d6@mx.google.com>
-Date: Thu, 21 Dec 2023 16:46:40 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BDA31;
+	Fri, 22 Dec 2023 01:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vyz1YYc_1703207271;
+Received: from 30.240.112.165(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vyz1YYc_1703207271)
+          by smtp.aliyun-inc.com;
+          Fri, 22 Dec 2023 09:07:54 +0800
+Message-ID: <f8bff25f-714a-40ab-b450-5dee8d964463@linux.alibaba.com>
+Date: Fri, 22 Dec 2023 09:07:50 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.143-85-gef5e184bcb5f3
-Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.143-85-gef5e184bcb5f3)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
-15.143-85-gef5e184bcb5f3)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-5/kernel/v5.15.143-85-gef5e184bcb5f3/
-
-Tree: stable-rc
-Branch: queue/5.15
-Git Describe: v5.15.143-85-gef5e184bcb5f3
-Git Commit: ef5e184bcb5f3472f74fbc5ec2a19e99357ccc53
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-board (gcc-10): 1 warning
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
+ MF_ACTION_REQUIRED on synchronous events
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: bp@alien8.de, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
+ will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+ xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231218064521.37324-2-xueshuai@linux.alibaba.com>
+ <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
+Content-Language: en-US
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-Warnings summary:
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+On 2023/12/21 21:55, Rafael J. Wysocki wrote:
+> On Mon, Dec 18, 2023 at 7:45 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
+>>
+>> There are two major types of uncorrected recoverable (UCR) errors :
+>>
+>> - Synchronous error: The error is detected and raised at the point of the
+>>   consumption in the execution flow, e.g. when a CPU tries to access
+>>   a poisoned cache line. The CPU will take a synchronous error exception
+>>   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
+>>   Exception (MCE) on X86. OS requires to take action (for example, offline
+>>   failure page/kill failure thread) to recover this uncorrectable error.
+>>
+>> - Asynchronous error: The error is detected out of processor execution
+>>   context, e.g. when an error is detected by a background scrubber. Some data
+>>   in the memory are corrupted. But the data have not been consumed. OS is
+>>   optional to take action to recover this uncorrectable error.
+>>
+>> When APEI firmware first is enabled, a platform may describe one error
+>> source for the handling of synchronous errors (e.g. MCE or SEA notification
+>> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
+>> notification). In other words, we can distinguish synchronous errors by
+>> APEI notification. For synchronous errors, kernel will kill the current
+>> process which accessing the poisoned page by sending SIGBUS with
+>> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
+>> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
+>> early kill mode. However, the GHES driver always sets mf_flags to 0 so that
+>> all synchronous errors are handled as asynchronous errors in memory failure.
+>>
+>> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
+>> events.
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+>> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+>> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+>> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> Reviewed-by: James Morse <james.morse@arm.com>
+> 
+> Applied as 6.8 material.
+> 
+> The other patches in the series still need to receive tags from the
+> APEI designated reviewers (as per MAINTAINERS).
+> 
+> Thanks!
+> 
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Thank you :)
 
-Detailed per-defconfig build reports:
+I will wait more feedback of other patches from MAINTAINERS.
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
-ning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+Cheers,
+Shuai
 
