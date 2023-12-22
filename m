@@ -1,113 +1,308 @@
-Return-Path: <stable+bounces-8283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1863181C290
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 02:08:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B00F81C297
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 02:12:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F75C1C2408C
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:08:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C86EB22B3F
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACBAEDF;
-	Fri, 22 Dec 2023 01:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8346A65C;
+	Fri, 22 Dec 2023 01:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uN/MPZh1"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BDA31;
-	Fri, 22 Dec 2023 01:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vyz1YYc_1703207271;
-Received: from 30.240.112.165(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vyz1YYc_1703207271)
-          by smtp.aliyun-inc.com;
-          Fri, 22 Dec 2023 09:07:54 +0800
-Message-ID: <f8bff25f-714a-40ab-b450-5dee8d964463@linux.alibaba.com>
-Date: Fri, 22 Dec 2023 09:07:50 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D03A41
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 01:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d3ef33e68dso10060335ad.1
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 17:12:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703207558; x=1703812358; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OE5OLNGtDwSSvPeDsa6PxhJmPYwGE8Aw1/HAfcmNF1w=;
+        b=uN/MPZh1HbF8iHY9sxvhcdoKyPrBRebbsPFoivrJUVjqWZHd0V/j7HJGa0fStnfIm3
+         oBSq+ZWtMVsvOftqO7hMOjL2D/PdumiwQ4xnzTy3/1NaJoMRecKLNYZEwPS6PwxCWD05
+         4Txuai52U1PIZHQShsO7fn7w0SPSvHOenfF5SrHBsZ1sqBLqvdw/NPzLgCONMwca1Iva
+         WbHin5Q8aSrU4oe20FbqBFsxzg0CSkzvC7qgGKQk7t1brgL2EoL0EZ/ZedxwstANZd0M
+         vleLnikW4aiUZK/nA3QIT7EFTfx2NdoM8ytdH/Cj5hnyApPkY/BF/Ml5GhP5vXsWMGIM
+         PxLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703207558; x=1703812358;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OE5OLNGtDwSSvPeDsa6PxhJmPYwGE8Aw1/HAfcmNF1w=;
+        b=XsEQscAVhJNRubSpIFwSc9NZlMcANtaaUY/QDypUpdZNEiJlmVo1uJPY+gEUiuKoVh
+         197iU0JoZOSDJW6kWYl+YBm6aWjWop5Y8OpcaVxTmIKszvtZ48U5YjGOp6NDv4B8vSlC
+         da9VRQ2xaAEqs5rp5fyqsFTmIPtFq0fxdYrMc5heHYqc1n9CrevuD5zHmulzKFJ/gY1v
+         btaVpIvpH73YysSuUKLjyE4Kbcnz68ZG+5Xm/n4rBzN0hY4G8ZY4a+BHtAIyoacUpnFj
+         tlbyKcGUzFWIOu9CIEaCXgzAVkmoa+gcBiV7VYjcv3laRXL8sSTOrVk8Xryx86wSH9Vh
+         AEHg==
+X-Gm-Message-State: AOJu0Yy10OzWOpYeoljks0WL2o04SolLSKmeaLJHTvQNUSYO3OaLwAAB
+	UJ7rFq1PoHM12FM66rxmdxJ1YZ7sOmf7FYKgQ7iXSWnPsBM=
+X-Google-Smtp-Source: AGHT+IHMeLkB7al4kczZHJ2tP95I8lB9i3h2yxIDOt7B81d5QJI+TbdQobrW1SRc8+bBwYM3uSxEyg==
+X-Received: by 2002:a17:903:247:b0:1d3:efe3:a192 with SMTP id j7-20020a170903024700b001d3efe3a192mr733526plh.44.1703207558073;
+        Thu, 21 Dec 2023 17:12:38 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id be10-20020a170902aa0a00b001d3c3d486bfsm2234254plb.163.2023.12.21.17.12.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 17:12:37 -0800 (PST)
+Message-ID: <6584e285.170a0220.a25cc.7cf9@mx.google.com>
+Date: Thu, 21 Dec 2023 17:12:37 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 1/4] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: bp@alien8.de, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
- mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
- naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
- will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
- ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
- tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
- lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
- xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231218064521.37324-2-xueshuai@linux.alibaba.com>
- <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
-Content-Language: en-US
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <CAJZ5v0hnKP9S+5PfuO1EzvpSdHM09s0HidGjfinf491xkdop3g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.264-43-g75270c0d56719
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.264-43-g75270c0d56719)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
+
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.264-43-g75270c0d56719)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.264-43-g75270c0d56719/
+
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.264-43-g75270c0d56719
+Git Commit: 75270c0d567190bc24142214fe11828df8c08109
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
 
 
+Warnings summary:
 
-On 2023/12/21 21:55, Rafael J. Wysocki wrote:
-> On Mon, Dec 18, 2023 at 7:45 AM Shuai Xue <xueshuai@linux.alibaba.com> wrote:
->>
->> There are two major types of uncorrected recoverable (UCR) errors :
->>
->> - Synchronous error: The error is detected and raised at the point of the
->>   consumption in the execution flow, e.g. when a CPU tries to access
->>   a poisoned cache line. The CPU will take a synchronous error exception
->>   such as Synchronous External Abort (SEA) on Arm64 and Machine Check
->>   Exception (MCE) on X86. OS requires to take action (for example, offline
->>   failure page/kill failure thread) to recover this uncorrectable error.
->>
->> - Asynchronous error: The error is detected out of processor execution
->>   context, e.g. when an error is detected by a background scrubber. Some data
->>   in the memory are corrupted. But the data have not been consumed. OS is
->>   optional to take action to recover this uncorrectable error.
->>
->> When APEI firmware first is enabled, a platform may describe one error
->> source for the handling of synchronous errors (e.g. MCE or SEA notification
->> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
->> notification). In other words, we can distinguish synchronous errors by
->> APEI notification. For synchronous errors, kernel will kill the current
->> process which accessing the poisoned page by sending SIGBUS with
->> BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
->> process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
->> early kill mode. However, the GHES driver always sets mf_flags to 0 so that
->> all synchronous errors are handled as asynchronous errors in memory failure.
->>
->> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
->> events.
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> Tested-by: Ma Wupeng <mawupeng1@huawei.com>
->> Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
->> Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Reviewed-by: James Morse <james.morse@arm.com>
-> 
-> Applied as 6.8 material.
-> 
-> The other patches in the series still need to receive tags from the
-> APEI designated reviewers (as per MAINTAINERS).
-> 
-> Thanks!
-> 
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
 
-Thank you :)
+Section mismatches summary:
 
-I will wait more feedback of other patches from MAINTAINERS.
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
 
-Cheers,
-Shuai
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
