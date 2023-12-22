@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-8323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFAF81C8A2
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:59:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D165C81C8AD
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 12:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 084021F21A1F
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 10:59:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D33028938B
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 11:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94DA14F97;
-	Fri, 22 Dec 2023 10:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A25C14F97;
+	Fri, 22 Dec 2023 11:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kPtrCmhq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FkPBiSPr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108B617730;
-	Fri, 22 Dec 2023 10:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0D168A2;
+	Fri, 22 Dec 2023 11:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3b86f3cdca0so1250200b6e.3;
-        Fri, 22 Dec 2023 02:59:20 -0800 (PST)
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cd51c0e8ebso971771a12.3;
+        Fri, 22 Dec 2023 03:01:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703242760; x=1703847560; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1703242914; x=1703847714; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NpmaJRutT2X0CphAnurM2d5NRf7Tv9tPXlI+dm5PHac=;
-        b=kPtrCmhqWU0+2AS4xPlKkAbKa3z/3Wg4+O3bUCOfgNk54/kojbu2AXWv/D83cTPD7z
-         N0VadvkOcvTdaEgxQO1fdInDZMdslC1ZAk+2WJGYLfxHtWcoqlyn6PrVLu7q7Tvqfo6n
-         TUib9eZecCdWW++JK2bPN2PqDlVM4NYMRqyOjD3nUQnxgWLMrFu3pgaA83GZSRjlmfIf
-         CjbiFrXxaOtpsMRzbx+winJi9yYg5B4OBjRQrH12z38/MK+N0cobFiBh5xyF8UkzcWhD
-         7ihYkTMlMhyyaA/Bjwl5rVoiQ0tp/SYo5Aw0bPg7tEYams/ozIIeNRg55GEwnxmv8KIV
-         DjMw==
+        bh=IAuF7bFZaiA2XgfkF48tUoumueRVHVxfhhibupkaPcE=;
+        b=FkPBiSPreOWWTFUZUP3B9r+2blYmQXxWdqU6UG+uvl8doUBB3vReRQTUhKM4j1/9y6
+         DYNW70wMnd1S3/iBs9hRVujQQN1XHM8h0m1GjAmnhQqTC0F5TGC0Bqc6M1yHJ+GeVdVG
+         /m0pwojzlrqzEBeA0j9dKnq0zyISrDEYDfLHJRGAuBakRNXUwsWneFMZsPX9nQUmpb7U
+         5Cwe5VqoyxEgKF2yxy2mdjbXugpTOmDFizrp3+wYLATpKDhzsqbbTyo3MRWrS4Hjim9s
+         Kw5UM1fg4eNauQIUqT35Te3JSa62zwfg9QhpVOJpcaWvZsWXBTf4etkAycbSvzqfk6ZO
+         AKOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703242760; x=1703847560;
+        d=1e100.net; s=20230601; t=1703242914; x=1703847714;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NpmaJRutT2X0CphAnurM2d5NRf7Tv9tPXlI+dm5PHac=;
-        b=sFof91GwyRBxHNoLy/IiQMpRkVZogcbgIdSNsBiYU6Nr5DtjnvOfpHuAyKNWCBN+uf
-         wjXOGHSSdYq0Yx63tJzcK0RvHddr1eL/nLZTuNGFoKUo8NTNmNUvqW7Wu7iwYvDOoZZS
-         EXx/RI/Alk45FlUoRDaUq4Z9LGGbSQMLXLuEH4HmUpJgKyTstCI5hhSZCwY+Xkf2zNHi
-         6oPdOq/6QSVIpMjEY2YiQCHnlJMp3xXbfsbv4TLFdw6k+T1U45/DhGhTCv99SARdwYRK
-         q2i/tgThDZjfPEm7NN76svu9U5oDbEAcMFlchCOD6KbWBnLKJmvUbwPzKNtwtsSK4D6K
-         /rZg==
-X-Gm-Message-State: AOJu0YyT0KVj/sATDLDCr+8O1BN4+HPLK0MfLHnNShH5PVCxIMILa8r1
-	WE2DWQk7n0qSMY6hj0kKYGI=
-X-Google-Smtp-Source: AGHT+IGmoLx1hmp5eCag91kzrpqnxuTSLmQwlz6Yx32yVP+m8Rti93EKdN+VQU8F7fZhMUk6fdd7Kg==
-X-Received: by 2002:a05:6808:20a0:b0:3b8:b063:8243 with SMTP id s32-20020a05680820a000b003b8b0638243mr1368877oiw.69.1703242760003;
-        Fri, 22 Dec 2023 02:59:20 -0800 (PST)
-Received: from g2039B650.. ([106.39.42.144])
-        by smtp.gmail.com with ESMTPSA id x27-20020a056a000bdb00b006d9926b93dasm317437pfu.17.2023.12.22.02.59.15
+        bh=IAuF7bFZaiA2XgfkF48tUoumueRVHVxfhhibupkaPcE=;
+        b=sYPBZG5zvOGT4Xu3OmatRlb62x23Ct3Y5/PVZqju94MgVi6iZ150YaAsUUA31Tdqbl
+         oN7pbag3z0S6J8A8fDvjl9/OX8gfw5eUw1/3Hc7KSUNxQ2CAuM/s3uNfSfic1rXyOxS1
+         6IPOPxBN/JjwPkvquPCucsG+vR6yW/ton/PMgJL6ha9Rlu1Keq57vG14enBviT836aRO
+         aMBx4cgb4KHSCDI6rnZzAptkIh7/s53medwn+OXDudfkK4LdDHRNXAgWl+64rZkGGI44
+         dUjINoL8fs1Eo1ZIwI8tL2tBOzyqdcRaVTU51iNn9+ikaA+WzfikQLKlq22Ktr1bCMe4
+         biXw==
+X-Gm-Message-State: AOJu0YzSuwe+/CZKtXyF9CZkeo7jWU+ogSvlfefAlwTdf+w+hXFOm2fZ
+	s+/k8YnDYXXsakbSN2tktKuMFrxA11btFOKd
+X-Google-Smtp-Source: AGHT+IGwKRk5cIFGwcfMmCHRCZJ5u2/TGeT2skB+XpOxjvTt5B3dQo5FdTCh/6LAlHckbVdTG8BIig==
+X-Received: by 2002:a05:6a20:8f24:b0:195:1511:b29c with SMTP id b36-20020a056a208f2400b001951511b29cmr835290pzk.50.1703242913789;
+        Fri, 22 Dec 2023 03:01:53 -0800 (PST)
+Received: from g2039B650.. ([2001:da8:203:a502:3221:f470:cca0:93b2])
+        by smtp.gmail.com with ESMTPSA id jc14-20020a17090325ce00b001d07d83fdd0sm3204283plb.238.2023.12.22.03.01.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 02:59:19 -0800 (PST)
+        Fri, 22 Dec 2023 03:01:53 -0800 (PST)
 From: Gui-Dong Han <2045gemini@gmail.com>
 To: marcel@holtmann.org,
 	johan.hedberg@gmail.com,
@@ -66,9 +66,9 @@ Cc: linux-bluetooth@vger.kernel.org,
 	Gui-Dong Han <2045gemini@gmail.com>,
 	stable@vger.kernel.org,
 	BassCheck <bass@buaa.edu.cn>
-Subject: [PATCH] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
-Date: Fri, 22 Dec 2023 18:58:13 +0800
-Message-Id: <20231222105813.9245-1-2045gemini@gmail.com>
+Subject: [PATCH] Bluetooth: Fix atomicity violation in sniff_{min,max}_interval_set
+Date: Fri, 22 Dec 2023 19:01:47 +0800
+Message-Id: <20231222110147.9287-1-2045gemini@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -78,18 +78,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In min_key_size_set():
-	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
+In sniff_min_interval_set():
+	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
 		return -EINVAL;
 	hci_dev_lock(hdev);
-	hdev->le_min_key_size = val;
+	hdev->sniff_min_interval = val;
 	hci_dev_unlock(hdev);
 
-In max_key_size_set():
-	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
+In sniff_max_interval_set():
+	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
 		return -EINVAL;
 	hci_dev_lock(hdev);
-	hdev->le_max_key_size = val;
+	hdev->sniff_max_interval = val;
 	hci_dev_unlock(hdev);
 
 The atomicity violation occurs due to concurrent execution of set_min and
@@ -118,7 +118,7 @@ verify it according to the code logic.
 
 [1] https://sites.google.com/view/basscheck/
 
-Fixes: 18f81241b74fb ("Bluetooth: Move {min,max}_key_size debugfs ...")
+Fixes: 71c3b60ec6d28 ("Bluetooth: Move BR/EDR debugfs file creation ...")
 Cc: stable@vger.kernel.org
 Reported-by: BassCheck <bass@buaa.edu.cn>
 Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
@@ -127,41 +127,41 @@ Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
  1 file changed, 10 insertions(+), 6 deletions(-)
 
 diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-index 6b7741f6e95b..3ffbf3f25363 100644
+index 6b7741f6e95b..f032fdf8f481 100644
 --- a/net/bluetooth/hci_debugfs.c
 +++ b/net/bluetooth/hci_debugfs.c
-@@ -1045,11 +1045,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(adv_max_interval_fops, adv_max_interval_get,
- static int min_key_size_set(void *data, u64 val)
+@@ -566,11 +566,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(idle_timeout_fops, idle_timeout_get,
+ static int sniff_min_interval_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
+-	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
 +	
 +	hci_dev_lock(hdev);
-+	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
++	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->le_min_key_size = val;
+ 	hdev->sniff_min_interval = val;
  	hci_dev_unlock(hdev);
  
-@@ -1073,11 +1075,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(min_key_size_fops, min_key_size_get,
- static int max_key_size_set(void *data, u64 val)
+@@ -594,11 +596,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(sniff_min_interval_fops, sniff_min_interval_get,
+ static int sniff_max_interval_set(void *data, u64 val)
  {
  	struct hci_dev *hdev = data;
 -
--	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
+-	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
 +	
 +	hci_dev_lock(hdev);
-+	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
++	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
 +		hci_dev_unlock(hdev);
  		return -EINVAL;
 +	}
  
 -	hci_dev_lock(hdev);
- 	hdev->le_max_key_size = val;
+ 	hdev->sniff_max_interval = val;
  	hci_dev_unlock(hdev);
  
 -- 
