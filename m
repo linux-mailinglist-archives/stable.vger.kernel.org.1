@@ -1,114 +1,140 @@
-Return-Path: <stable+bounces-8319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C160C81C753
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 10:33:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23AB981C791
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 10:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C58C286FB5
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 09:33:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4FF21F256B1
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 09:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7498DDB5;
-	Fri, 22 Dec 2023 09:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F72FBE2;
+	Fri, 22 Dec 2023 09:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oWXbw1xB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TiC7bqae"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA2111704;
-	Fri, 22 Dec 2023 09:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9734C433CB;
-	Fri, 22 Dec 2023 09:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703237612;
-	bh=k2rXKI3XPOwdmCyThdzD0BJEHaTvbin4RkfhYTb2Kz8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oWXbw1xBlC41KDNUDLAbtUPkJhx4YGrQrbkTqrCv9GwBzZSFND2pZ4y8Opq/XBRIh
-	 6ZD8U9K8my/mYra8d5Rz+XAtkPjw2XjdOHthsDYSJl6Me7gSiTfcorwdud/2BIZGjf
-	 wgiEXOVyQCIjdf4h9m1I3RiyyLm2jGfRz+KJamNzNZNYWWfaCjKCJImsyTeeKnTrHQ
-	 mt48dWe78QlGYPVy0Jv0h+8szIhYquPW/Fr8bdil3Vrdaby9dYqfiK58jySB8Orwxi
-	 kvvpBrb1jqGiC2tHYgNhm22x9w0p4p8F70V+EYQ53Fh5X+wGHRqXE6g2TCn2A/KZd4
-	 L6KnxYOfI3P9g==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-552d39ac3ccso5011066a12.0;
-        Fri, 22 Dec 2023 01:33:32 -0800 (PST)
-X-Gm-Message-State: AOJu0YxRgtfsrjN6nUty5wV6Z3e+h8UpsoltCna4YEpWz3azQdO3SqJ5
-	sJF1hyLG6EMKQPPYNL5Kea4M3tO8dEzrnBB8sss=
-X-Google-Smtp-Source: AGHT+IFzoz5ao5zFeU83eM84CibLxsmg2zWb6TKQTbQ7Xkkm/CAVivGBsWaWuETebeaVVyCjmMgKNz2LQ3f8eizyt+M=
-X-Received: by 2002:a17:906:8404:b0:a23:5ea1:651d with SMTP id
- n4-20020a170906840400b00a235ea1651dmr2151343ejx.24.1703237611416; Fri, 22 Dec
- 2023 01:33:31 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97F4FBE4;
+	Fri, 22 Dec 2023 09:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BM9ZuZc010230;
+	Fri, 22 Dec 2023 09:48:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type; s=
+	qcppdkim1; bh=UukgpImPfM56bAgawI5Cs+EiVCWsaW6onrQ11fyKQoc=; b=Ti
+	C7bqaeRdpuv8QkzWEDhSoffFr/L179hO7BWF6V0jDVVI9xEkaaNihoFVcNkqcmPT
+	9cxRzH7QwJ7N7xL0Rrq4MHAPUJw7WWO+hOLkAACVtR42ohM9JYeeEtIxICQrg7Uf
+	OJ1s/urF2vsPIKz/LyXhUe2A6VLpogWHbmgwrWiLxfyU7bbfh8i1kf+kgMTRCbFM
+	ZRrga8yB/HP2WKLg9Gr7nVZ+6ZiYgNrES4MxM5opVAyvcThUWG1Rxq2tqnUd4CB6
+	jZSJuaZ6C0hpEdqyHJSQjMWxKlBPQuBg+X4v2lSuFUo4RpB/+tqlD2LA0m6U0ere
+	mT7T50dVchQ8RO4ODCKw==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v57xx01nw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Dec 2023 09:48:02 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BM9lW8Q021583
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Dec 2023 09:47:32 GMT
+Received: from hu-uaggarwa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Fri, 22 Dec 2023 01:47:29 -0800
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+To: <Thinh.Nguyen@synopsys.com>, <gregkh@linuxfoundation.org>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Uttkarsh
+ Aggarwal" <quic_uaggarwa@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
+Date: Fri, 22 Dec 2023 15:17:04 +0530
+Message-ID: <20231222094704.20276-1-quic_uaggarwa@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231221154702.2267684-1-guoren@kernel.org> <20231221154702.2267684-3-guoren@kernel.org>
- <367b05acb90d4a6e898dd34e4254b697@AcuMS.aculab.com>
-In-Reply-To: <367b05acb90d4a6e898dd34e4254b697@AcuMS.aculab.com>
-From: Guo Ren <guoren@kernel.org>
-Date: Fri, 22 Dec 2023 17:33:18 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTRF-e=7kC3bTnQRVLygcagjs5b1+x-8tTb4PkB+XQniKA@mail.gmail.com>
-Message-ID: <CAJF2gTRF-e=7kC3bTnQRVLygcagjs5b1+x-8tTb4PkB+XQniKA@mail.gmail.com>
-Subject: Re: [PATCH V2 2/4] riscv: mm: Fixup compat arch_get_mmap_end
-To: David Laight <David.Laight@aculab.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>, 
-	"alexghiti@rivosinc.com" <alexghiti@rivosinc.com>, "charlie@rivosinc.com" <charlie@rivosinc.com>, 
-	"xiao.w.wang@intel.com" <xiao.w.wang@intel.com>, "david@redhat.com" <david@redhat.com>, 
-	"panqinglin2020@iscas.ac.cn" <panqinglin2020@iscas.ac.cn>, 
-	"rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>, "willy@infradead.org" <willy@infradead.org>, 
-	"bjorn@rivosinc.com" <bjorn@rivosinc.com>, 
-	"conor.dooley@microchip.com" <conor.dooley@microchip.com>, "cleger@rivosinc.com" <cleger@rivosinc.com>, 
-	"leobras@redhat.com" <leobras@redhat.com>, 
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>, Guo Ren <guoren@linux.alibaba.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: fxhOu5eQ9axRHmAj1z-0os44CrmXhTqV
+X-Proofpoint-ORIG-GUID: fxhOu5eQ9axRHmAj1z-0os44CrmXhTqV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ impostorscore=0 mlxscore=0 lowpriorityscore=0 priorityscore=1501
+ bulkscore=0 adultscore=0 mlxlogscore=801 suspectscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2312220069
 
-On Fri, Dec 22, 2023 at 5:00=E2=80=AFPM David Laight <David.Laight@aculab.c=
-om> wrote:
->
-> From: guoren@kernel.org <guoren@kernel.org>
-> > Sent: 21 December 2023 15:47
-> >
-> > From: Guo Ren <guoren@linux.alibaba.com>
-> >
-> > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
-> > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
-> > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
-> > directly.
->
-> Why 2G ?
->
-> IIRC for 32-bit native x86 the limit is 3G, but in compat mode
-> it is (just under) 4G.
->
-> There is a special mmap option (for programs like wine) to
-> limit mmap() to 2G.
-The 2G address space seems enough for a small memory scenario, and I
-agree the compat mode could support 4G, but it should be another
-feature.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-We limited our rv32 applications to under 2GB because we want to leave
-more address space for the kernel side (Our s64ilp32 kernel needs
-vmmap stack, kasan ...).
+Code Flow:
 
+	CPU1
 
->
->         David
->
-> -
-> Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1=
- 1PT, UK
-> Registration No: 1397386 (Wales)
->
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
 
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
 
---=20
-Best Regards
- Guo Ren
+Cc: <stable@vger.kernel.org>
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+---
+
+Changes in v2:
+Added dwc->connected check to set status either -ESHUTDOWN and -ECONNRESET 
+in dwc3_gadget_giveback.
+
+Link to v1:
+https://lore.kernel.org/all/20231122091127.3636-1-quic_uaggarwa@quicinc.com/T/#m28b011642024788c507d8b7eee4f7c5b0709d236
+
+ drivers/usb/dwc3/ep0.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index b94243237293..816b8eea73d6 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -238,7 +238,10 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 		struct dwc3_request	*req;
+ 
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
+ 	}
+ 
+ 	dwc->eps[0]->trb_enqueue = 0;
+-- 
+2.17.1
+
 
