@@ -1,117 +1,105 @@
-Return-Path: <stable+bounces-8278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0803D81C23C
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:15:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FA781C25A
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5221F25A93
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E9A287584
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE04199;
-	Fri, 22 Dec 2023 00:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="qdxhOv/M";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Wq41iKuy";
-	dkim=pass (2048-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="llRIkYwq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB78623;
+	Fri, 22 Dec 2023 00:36:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from a3i634.smtp2go.com (a3i634.smtp2go.com [203.31.38.122])
+Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025B819C
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 00:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hatguy.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em868002.hatguy.io
-Received: from [10.149.244.204] (helo=hatguy.io)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96.1-S2G)
-	(envelope-from <a2brenna@hatguy.io>)
-	id 1rGTCG-ynliMF-0R
-	for stable@vger.kernel.org;
-	Fri, 22 Dec 2023 00:15:24 +0000
-Received: by hatguy.io (Postfix, from userid 1000)
-	id 8329B60C54; Thu, 21 Dec 2023 19:15:22 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hatguy.io; s=201907;
-	t=1703204122; bh=q50PPnyO6KUJypvqIvmW7eL4xLpcJG10thR/G3ZNeFM=;
-	h=Date:From:To:Subject:From;
-	b=qdxhOv/MNhEZ+DLW+bg+CfvmANpbqly1yz5vfN4Ba5XHGlHg46eQyxm4iiS9JWpjh
-	 ihIZnEVCTiofv/KYnYtr9Ttl3HJ+0JznAoLLoyRPscDHOhmetvR6qtx1C5VJ2itXjY
-	 xnA1AoQQlYSCxhyXfExGWR8X7kNsm/1Od/u/wkSqqELVb0pOblvFe74ydy32cmEYKw
-	 7XEEObXVMYhnlb3EQQoMswIP5dlpuXGVNKgVnmHT5Izpp5Cn2iN5yob/2uXAEmN1TK
-	 nulHAtjoqpvEEu9oQFaO8icCFYL6xACaNiSeuRwfLX1bRHvG8Z7HPVOQ1WKemP5uDz
-	 3KvZ8oXQQq6JQ==
-Date: Thu, 21 Dec 2023 19:15:22 -0500
-From: Anthony Brennan <a2brenna@hatguy.io>
-To: stable@vger.kernel.org
-Subject: [PATCH] netfs: Fix missing xas_retry() calls in xarray iteration
-Message-ID: <20231222001522.GA32730@hatguy.io>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41523A23;
+	Fri, 22 Dec 2023 00:36:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b681e3.dsl.pool.telekom.hu [::ffff:81.182.129.227])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 0000000000071EE7.000000006584DA06.0013B20D; Fri, 22 Dec 2023 01:36:22 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+  Mark Brown <broonie@kernel.org>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
+  stable@vger.kernel.org
+Subject: [PATCH 1/2] ALSA: hda/tas2781: move set_drv_data outside tasdevice_init
+Date: Fri, 22 Dec 2023 01:34:47 +0100
+Message-ID: <1398bd8bf3e935b1595a99128320e4a1913e210a.1703204848.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-smtpcorp-track: 1rGTCGyn_iuF0R.hDldi-IAxCu4y
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1703204125; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe;
- bh=Xtf6nJlGTm0FnOMrsbqM21LZZSdN2RESSZQGO3Dj8rk=;
- b=Wq41iKuy6C4IO+0faMv6TMzw5gM8/9sCzeR7r++jsSpH2taujQiO62054Ry0fGEdLdDhF
- 4Fzhgl5vrE20dGqXrK1Xb8U91ladhlvQ6FsLMdQf0l6doz7xFy/agu9oHUv4m/4povf4VaP
- EsAwQ24J+rHqBidmk3TBmJFeKo/sp1AoMs2xzVldr38f+SQgOnOr7BApLvXdfGmzM7uzrp9
- 5LeFaydubgoD0UdetUiPEHhuKRkfCCZhK8Z1LxZ/Lwx8fxStYVEHIrSvKISRLEYlC2k6MQs
- uuurQTn8cNcuZ3nv3ZBdSdLr3zbr409eKguoF0KG/hkAoXUjdnpNg4V6nYnA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hatguy.io;
- i=@hatguy.io; q=dns/txt; s=s868002; t=1703204125; h=from : subject :
- to : message-id : date;
- bh=Xtf6nJlGTm0FnOMrsbqM21LZZSdN2RESSZQGO3Dj8rk=;
- b=llRIkYwqQbIGsHentsbQzfo53Cip+7U4dQHyhBTo2V/0ppV0V2f4lQpoZ9ib2ut4n8tn2
- dsY7T7t991eXc+sLA/0ltrs0565b9XgRv+knLlWalXIhd7l/MjU2jab72z7TWFW1cPxGF4B
- sI8ENVgEds4NDD7xQYis342gySWNOpIbXvBHYEU0PJckVf6tgAy3ScRgD1wX8onxifJcly5
- FoKCPZ98n/+P2VK2za9EY/ZujPdury9x/cLt5WQOZXcY2rR2FfvzLTawoAVPpHsAribfIYE
- sz9yY5ZmcAgdyAxrvv/Q4DRB0hdU0Gj77FS4iqnp1a2CrJq+eS9XKTbptgxQ==
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-commit 59d0d52c30d4991ac4b329f049cc37118e00f5b0 upstream
+allow driver specific driver data in tas2781-hda-i2c and tas2781-i2c
 
-Stops kernel from crashing when encountering an XAS retry entry. Patch modified
-from upstream to work with pages instead of folios, and omits fixes to "dodgy
-maths" as unrelated to fixing the crash.
-
-Signed-off-by: Anthony Brennan <a2brenna@hatguy.io>
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
 ---
- fs/netfs/read_helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/pci/hda/tas2781_hda_i2c.c   | 2 ++
+ sound/soc/codecs/tas2781-comlib.c | 2 --
+ sound/soc/codecs/tas2781-i2c.c    | 2 ++
+ 3 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/netfs/read_helper.c b/fs/netfs/read_helper.c
-index 242f8bcb34a4..4de15555bceb 100644
---- a/fs/netfs/read_helper.c
-+++ b/fs/netfs/read_helper.c
-@@ -248,6 +248,9 @@ static void netfs_rreq_unmark_after_write(struct netfs_read_request *rreq,
- 		XA_STATE(xas, &rreq->mapping->i_pages, subreq->start / PAGE_SIZE);
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index e4c54b2a012c..769604375745 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -659,6 +659,8 @@ static int tas2781_hda_i2c_probe(struct i2c_client *clt)
+ 	if (!tas_priv)
+ 		return -ENOMEM;
  
- 		xas_for_each(&xas, page, (subreq->start + subreq->len - 1) / PAGE_SIZE) {
-+			if(xas_retry(&xas, page))
-+				continue;
++	dev_set_drvdata(&clt->dev, tas_priv);
 +
- 			/* We might have multiple writes from the same huge
- 			 * page, but we mustn't unlock a page more than once.
- 			 */
-@@ -403,6 +406,9 @@ static void netfs_rreq_unlock(struct netfs_read_request *rreq)
- 		unsigned int pgend = pgpos + thp_size(page);
- 		bool pg_failed = false;
+ 	tas_priv->irq_info.irq = clt->irq;
+ 	ret = tas2781_read_acpi(tas_priv, device_name);
+ 	if (ret)
+diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
+index 933cd008e9f5..00e35169ae49 100644
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -316,8 +316,6 @@ int tasdevice_init(struct tasdevice_priv *tas_priv)
+ 		tas_priv->tasdevice[i].cur_conf = -1;
+ 	}
  
-+		if(xas_retry(&xas, page))
-+			continue;
+-	dev_set_drvdata(tas_priv->dev, tas_priv);
+-
+ 	mutex_init(&tas_priv->codec_lock);
+ 
+ out:
+diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
+index 55cd5e3c23a5..917b1c15f71d 100644
+--- a/sound/soc/codecs/tas2781-i2c.c
++++ b/sound/soc/codecs/tas2781-i2c.c
+@@ -689,6 +689,8 @@ static int tasdevice_i2c_probe(struct i2c_client *i2c)
+ 	if (!tas_priv)
+ 		return -ENOMEM;
+ 
++	dev_set_drvdata(&i2c->dev, tas_priv);
 +
- 		for (;;) {
- 			if (!subreq) {
- 				pg_failed = true;
+ 	if (ACPI_HANDLE(&i2c->dev)) {
+ 		acpi_id = acpi_match_device(i2c->dev.driver->acpi_match_table,
+ 				&i2c->dev);
+
+base-commit: 916d051730ae48aef8b588fd096fefca4bc0590a
+prerequisite-patch-id: da39452ca686d78e5accad1c2c4aa22a5f5a6a65
 -- 
-2.30.2
+2.43.0
+
 
