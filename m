@@ -1,52 +1,93 @@
-Return-Path: <stable+bounces-8286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C38281C2BE
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 02:32:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B8081C2E3
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 02:51:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6A641F23368
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:32:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42761F24101
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B527A23;
-	Fri, 22 Dec 2023 01:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F090A53;
+	Fri, 22 Dec 2023 01:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="FAqbJl2J";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="Nnl1xuTu";
-	dkim=pass (2048-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="UYX71NuD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EDrvzrFi"
 X-Original-To: stable@vger.kernel.org
-Received: from a3i634.smtp2go.com (a3i634.smtp2go.com [203.31.38.122])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6536D4422
-	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 01:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hatguy.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em868002.hatguy.io
-Received: from [10.149.244.204] (helo=hatguy.io)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96.1-S2G)
-	(envelope-from <a2brenna@hatguy.io>)
-	id 1rGUOr-04o5eV-1U
-	for stable@vger.kernel.org;
-	Fri, 22 Dec 2023 01:32:29 +0000
-Received: by hatguy.io (Postfix, from userid 1000)
-	id 2473560C54; Thu, 21 Dec 2023 20:32:29 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hatguy.io; s=201907;
-	t=1703208749; bh=17Ta881lFppcobE23U09uxazlgMPpfhAXimDdMYaFWM=;
-	h=Date:From:To:Subject:From;
-	b=FAqbJl2JIhmGQpq5FaV6vkUOcMkZnpK67B9PUAo6Lc2wimT1bEv4yhjhq9q4a8eqt
-	 sx1T1PcBsUk7IlojbNkyAl1NpsTL0CIfyEKocKflUyahY2EGjbm/JrEiAcaUX1240u
-	 7FQ/+lwsMTxyr0ERI7OXdzYl4/CpdlPsahhs6MZlGxxGC8gVW6Ij5MYq8UlsHCrAbh
-	 s43nw7HRyUE99PSiKLK0JTR0Qob3vDt/OGKjnlvm7qfCH98WzgssrjbfVuJeh+NXOV
-	 tPPlaPZe57JdJsJLwLXpbGSxdP5KyVqDzD+gN+va8FnxUozLu66omlp/iNJ9AIV4xL
-	 BVLCNmBx9GFOQ==
-Date: Thu, 21 Dec 2023 20:32:29 -0500
-From: Anthony Brennan <a2brenna@hatguy.io>
-To: stable@vger.kernel.org
-Subject: [PATCH v2] netfs: Fix missing xas_retry() calls in xarray iteration
-Message-ID: <20231222013229.GA1202@hatguy.io>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16253A50
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 01:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703209887;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nN/8wghPJhB2Oh8gNGg0tlhxxcx+OK+Kvi1mD9v1Gs8=;
+	b=EDrvzrFi2h35zWLk4LR0dOBZM6wwKUPPMJt5RuL7dMke5op8nJu7l1Rq3zPgIrEMYBkmID
+	NsCYgZhTPml/+7zptttwNob9frPit0giHn/JlA1tGXcq8eBWdxEaQs5xXcpBIAp6DglODx
+	AZWir9ByP5we2JjcmS1O0awUWyqpOfA=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-5rHx5aGmPwy-PMlIsW4_aw-1; Thu, 21 Dec 2023 20:51:25 -0500
+X-MC-Unique: 5rHx5aGmPwy-PMlIsW4_aw-1
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1d32b4a8ea0so14570365ad.3
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 17:51:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703209884; x=1703814684;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nN/8wghPJhB2Oh8gNGg0tlhxxcx+OK+Kvi1mD9v1Gs8=;
+        b=apm73SI4IcBQlie0n1j89cc8OqdKTzZOu6CJWMyL6j/AX4fSpq66BU1eOsiiCqNmAS
+         46c54KI5aCFGM7T+KORJUocJBl+/jmNi3CgT2cQ9pevjYJGFrEFh8XMGNiVIbC3WizJx
+         wLjugF3it0+ciAAjSPsSSO48ZhW3HaMAxrZuy4TCeBEmkgQrq2vUwywRkKADQ8+3UKbX
+         J68cfqw+3awd7T7A39eKQkBkhFX5ZRF8p/r7aXJuf7QVURI7QfInx5oB8z9M2qPVMiQ1
+         YWsuBVDPGBmUaOFk1tKRuNyCVtl50i2HklZ51BskB89Icerhm9cGNRQTWkH3SPUDJ8RE
+         jo8Q==
+X-Gm-Message-State: AOJu0YwtvL1A1F6kKcr92NMmX56VTQU+PS+wZUpvake38xMCzNWQeAMW
+	v//wHm+J+6p4wfXdDfwi0w/KJKDsXlNrSfoha3+g1RLij9SpAlEZTU1RoSBVLEwL0nTRto1mA3d
+	GMZD522tBumym1mH1VSXSNeGH
+X-Received: by 2002:a17:903:1c9:b0:1d3:bc88:59af with SMTP id e9-20020a17090301c900b001d3bc8859afmr583106plh.136.1703209883996;
+        Thu, 21 Dec 2023 17:51:23 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEqK9sjO3boko2Euac1Jio1zRfdmiG73LJTSADdDmxStfdygllQ8qRIUhBvzNbygwsIwnluxA==
+X-Received: by 2002:a17:903:1c9:b0:1d3:bc88:59af with SMTP id e9-20020a17090301c900b001d3bc8859afmr583099plh.136.1703209883697;
+        Thu, 21 Dec 2023 17:51:23 -0800 (PST)
+Received: from localhost.localdomain ([2804:1b3:a802:7496:88a7:1b1a:a837:bebf])
+        by smtp.gmail.com with ESMTPSA id d5-20020a170903230500b001d3ebfb2006sm2285019plh.203.2023.12.21.17.51.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 17:51:22 -0800 (PST)
+From: Leonardo Bras <leobras@redhat.com>
+To: guoren@kernel.org
+Cc: Leonardo Bras <leobras@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	alexghiti@rivosinc.com,
+	charlie@rivosinc.com,
+	xiao.w.wang@intel.com,
+	david@redhat.com,
+	panqinglin2020@iscas.ac.cn,
+	rick.p.edgecombe@intel.com,
+	willy@infradead.org,
+	bjorn@rivosinc.com,
+	conor.dooley@microchip.com,
+	cleger@rivosinc.com,
+	linux-riscv@lists.infradead.org,
+	Guo Ren <guoren@linux.alibaba.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V2 1/4] riscv: mm: Fixup compat mode boot failure
+Date: Thu, 21 Dec 2023 22:51:04 -0300
+Message-ID: <ZYTriK9hjOFQou9Z@LeoBras>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231221154702.2267684-2-guoren@kernel.org>
+References: <20231221154702.2267684-1-guoren@kernel.org> <20231221154702.2267684-2-guoren@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,65 +96,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-smtpcorp-track: 1rGlOr04o5-V1l.hjcsidXeqHI0Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1703208751; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe;
- bh=jn2owgDB5JWp+yRPPciqyggblTvznSWOdVHvaCuhovU=;
- b=Nnl1xuTuQ8MGp3cBi06PWqGE+MOSOATlNdiV6SQOXb6xsY2ooOvQrseFSL1VprJTSmL30
- qajmu7ZhoGM0dLlZ84JcDSbgCZmaY/Q2jr7i7v06NeeTYfp8et9Ig84NNUVvoaQPv+mkIBI
- lD7wHQRtLJeEfouzFO/5sB051bwx0SuJl4LFbaD8xv4wC1kY451h7lMitim6X/+y2iDvNf7
- kbINlugKd+ywVOhxTgR1PEgWlZUd+cYixAbdj454pk4r4hrZrFE82MZrT69vlN+ctFBgcCo
- s9YN+4bmeZf7MWMYO6aF4+xeYmfDLIOTASgua3j3bIU7QlDvzlePZIsYNyhw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hatguy.io;
- i=@hatguy.io; q=dns/txt; s=s868002; t=1703208751; h=from : subject :
- to : message-id : date;
- bh=jn2owgDB5JWp+yRPPciqyggblTvznSWOdVHvaCuhovU=;
- b=UYX71NuDFVjuwPoT3hk9BUjqHgFVkTTURb8TA4mhSLzP3/Sx21sFe890u9b01qNRqmCSk
- ix6A/w1erGxzTcF7IWGTT8GyJpSTO9pQvzpDfJT3xCTe0ybQ2gBMjtvWMz1tchIf6wt2a3S
- ouOaPIEZSluBN2trqfqWFw1YkVo3aeolts6AonIm7E6+f1ZcLQDRoCvmHgp2Zw/cBdVU/P+
- dFbv4nqFvOx7+ugEI1x7oux9TjWhkdXqs/k7uC+6WB3iaTczZWuaChi9oyqySP92bpe3l0K
- j1ULHFqRyzy44AXiiqn5vuF0e9hqptrneDYGRHsQEXf9XAsAM8ygkB+V+gOA==
+Content-Transfer-Encoding: 8bit
 
-To be applied to linux-5.15.y.
+Hello Guo Ren,
 
-commit 59d0d52c30d4991ac4b329f049cc37118e00f5b0 upstream
+On Thu, Dec 21, 2023 at 10:46:58AM -0500, guoren@kernel.org wrote:
+> From: Guo Ren <guoren@linux.alibaba.com>
+> 
+> In COMPAT mode, the STACK_TOP is 0x80000000, but the TASK_SIZE is
+> 0x7fff000. When the user stack is upon 0x7fff000, it will cause a user
+> segment fault. Sometimes, it would cause boot failure when the whole
+> rootfs is rv32.
 
-Stops kernel from crashing when encountering an XAS retry entry. Patch
-modified from upstream to work with pages instead of folios. Also omits
-fixes to "dodgy maths" as unrelated to fixing the crash.
+Checking if I get the scenario:
 
-Signed-off-by: Anthony Brennan <a2brenna@hatguy.io>
----
- fs/netfs/read_helper.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+In pgtable.h:
+#ifdef CONFIG_64BIT
+#define TASK_SIZE_64    (PGDIR_SIZE * PTRS_PER_PGD / 2)
+#define TASK_SIZE_MIN   (PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
 
-diff --git a/fs/netfs/read_helper.c b/fs/netfs/read_helper.c
-index 242f8bcb34a4..4de15555bceb 100644
---- a/fs/netfs/read_helper.c
-+++ b/fs/netfs/read_helper.c
-@@ -248,6 +248,9 @@ static void netfs_rreq_unmark_after_write(struct netfs_read_request *rreq,
- 		XA_STATE(xas, &rreq->mapping->i_pages, subreq->start / PAGE_SIZE);
- 
- 		xas_for_each(&xas, page, (subreq->start + subreq->len - 1) / PAGE_SIZE) {
-+			if(xas_retry(&xas, page))
-+				continue;
-+
- 			/* We might have multiple writes from the same huge
- 			 * page, but we mustn't unlock a page more than once.
- 			 */
-@@ -403,6 +406,9 @@ static void netfs_rreq_unlock(struct netfs_read_request *rreq)
- 		unsigned int pgend = pgpos + thp_size(page);
- 		bool pg_failed = false;
- 
-+		if(xas_retry(&xas, page))
-+			continue;
-+
- 		for (;;) {
- 			if (!subreq) {
- 				pg_failed = true;
--- 
-2.30.2
+#ifdef CONFIG_COMPAT
+#define TASK_SIZE_32    (_AC(0x80000000, UL) - PAGE_SIZE)
+#define TASK_SIZE       (test_thread_flag(TIF_32BIT) ? \
+                         TASK_SIZE_32 : TASK_SIZE_64)
+#else
+[...]
+
+Meaning CONFIG_COMPAT is only available in CONFIG_64BIT, and TASK_SIZE in 
+compat mode is either TASK_SIZE_32 or TASK_SIZE_64 depending on the thread_flag.
+
+from processor.h:
+#ifdef CONFIG_64BIT
+#define DEFAULT_MAP_WINDOW      (UL(1) << (MMAP_VA_BITS - 1))
+#define STACK_TOP_MAX           TASK_SIZE_64
+[...]
+#define STACK_TOP               DEFAULT_MAP_WINDOW
+
+
+where:
+#define MMAP_VA_BITS (is_compat_task() ? VA_BITS_SV32 : MMAP_VA_BITS_64)
+with MMAP_VA_BITS_64 being either 48 or 37.
+
+In compat mode,
+STACK_TOP = 1 << (32 - 1) 	-> 0x80000000
+TASK_SIZE = 0x8000000 - 4k 	-> 0x7ffff000
+
+IIUC, your suggestion is to make TASK_SIZE = STACK_TOP in compat mode only.
+
+Then why not:
+#ifdef CONFIG_COMPAT
+#define TASK_SIZE_32    STACK_TOP
+
+With some comments explaining why there is no need to reserve a PAGE_SIZE 
+in the TASK_SIZE_32.
+
+Does that make sense?
+
+Thanks!
+Leo
+
+> 
+> Freeing unused kernel image (initmem) memory: 2236K
+> Run /sbin/init as init process
+> Starting init: /sbin/init exists but couldn't execute it (error -14)
+> Run /etc/init as init process
+> ...
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+> Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> Signed-off-by: Guo Ren <guoren@kernel.org>
+> ---
+>  arch/riscv/include/asm/pgtable.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index ab00235b018f..74ffb2178f54 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -881,7 +881,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>  #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
+>  
+>  #ifdef CONFIG_COMPAT
+> -#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
+> +#define TASK_SIZE_32	(_AC(0x80000000, UL))
+
+
+
+
+>  #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
+>  			 TASK_SIZE_32 : TASK_SIZE_64)
+>  #else
+> -- 
+> 2.40.1
+> 
+
 
