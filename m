@@ -1,173 +1,104 @@
-Return-Path: <stable+bounces-8343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B771A81CD16
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 17:31:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD3981CEED
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 20:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46C1D2822AA
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 16:31:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBA11F239AB
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 19:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25FB28DCB;
-	Fri, 22 Dec 2023 16:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A94F2E651;
+	Fri, 22 Dec 2023 19:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gfyo3f+T"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="X22y/UrF";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="NpP1rlyw";
+	dkim=pass (2048-bit key) header.d=hatguy.io header.i=@hatguy.io header.b="jl2/DO4l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from a3i634.smtp2go.com (a3i634.smtp2go.com [203.31.38.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BAA28DC3;
-	Fri, 22 Dec 2023 16:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d2f1cecf89so12070505ad.1;
-        Fri, 22 Dec 2023 08:29:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703262587; x=1703867387; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RbqJTx4YutVd115r4RHwitlguWbX65XpAS/E08N+Xtc=;
-        b=gfyo3f+TNSLHlenMq712cOlXJKJpESQt9gCAit67X7I7FgCPGWwTPv3+vb0wv+frY+
-         WLTZJ/4S9T/rt8+760INWX8gFVlin4xOZgKmL9BVROrzlzQU7dv31pRISEIUFoBJhkjb
-         /wRKe7wEU6YEBUUiKpaBOnPxLGUfNhV9eC/XrcBKUqpn2+EHWlwAD3PvgV+jmICMGlrG
-         XG/ItAMIW3VPtGNhu9xHd+tZcp1lrkrSCpfB/wR830QuUDiXqJCRjAg5sjsMI6ZxgQLl
-         bbCNQVhkN89j60Jsa6OpFs+I+kMH4YBg+s05USgVibtZaDVANYM4Cm+J419afmmMoIYI
-         SSBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703262587; x=1703867387;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RbqJTx4YutVd115r4RHwitlguWbX65XpAS/E08N+Xtc=;
-        b=cRwgoKcWHkj+Xlixtg/JkHJn55LDFUVPqdDF6KzHUx98vaJWyX28rqbc2Heps8cgLW
-         C76TD4bZGLcVShR6A5bEMN1Iq580//8kc/N3mbnZu1LlcFjWc1iyvIMxYJDLtIpJvHLk
-         gfDO8Ot445C9SVp86AEH7yFlmJ+hARIN9KVx9sGL7QvhGU6fIL5LeNqW6rfcfxTvegtP
-         g7DXtL7oDusVQgiagwE9KcYT5WTd93cKFI2B0SNqotKLe2aAZImnTQ60VAJcc00/IRap
-         VVDuQEMYq52wfgubBcIbCl2W7mekvG/y9/WTWgf/9UpxgZWT4CQt8KwJzMKdAQnhAmSr
-         /QXw==
-X-Gm-Message-State: AOJu0YxjBigq6YVYuZ1CxLWiQ2ZViF2H5qBoQapUp6M2iNZmXZp+stxy
-	Rw5Jt88eLWtn2ixd+t7bkVA6qWR8BI+7X3hQ
-X-Google-Smtp-Source: AGHT+IEu/UhjtH1FjQjtz59VUgRFFDMHCN1iOv7t9JbmakJH3DMDzc0tE+RqMvbwRUgIMCgwDdS81g==
-X-Received: by 2002:a17:902:eb8b:b0:1d3:2a94:cb33 with SMTP id q11-20020a170902eb8b00b001d32a94cb33mr1122049plg.8.1703262587285;
-        Fri, 22 Dec 2023 08:29:47 -0800 (PST)
-Received: from g2039B650.. ([106.39.42.144])
-        by smtp.gmail.com with ESMTPSA id iz11-20020a170902ef8b00b001d076c2e336sm3649546plb.100.2023.12.22.08.29.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 08:29:46 -0800 (PST)
-From: Gui-Dong Han <2045gemini@gmail.com>
-To: marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com
-Cc: linux-bluetooth@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@outlook.com,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] Bluetooth: Fix atomicity violation in sniff_{min,max}_interval_set
-Date: Sat, 23 Dec 2023 00:29:31 +0800
-Message-Id: <20231222162931.6553-1-2045gemini@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373182E648
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 19:51:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hatguy.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em868002.hatguy.io
+Received: from [10.149.244.204] (helo=hatguy.io)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96.1-S2G)
+	(envelope-from <a2brenna@hatguy.io>)
+	id 1rGlYn-ynpLyW-2f
+	for stable@vger.kernel.org;
+	Fri, 22 Dec 2023 19:51:54 +0000
+Received: by hatguy.io (Postfix, from userid 1000)
+	id 3A71A60B45; Fri, 22 Dec 2023 14:51:52 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hatguy.io; s=201907;
+	t=1703274712; bh=c7WdpiydgeDzIXLUYsm0D+DklbOEIyuRcRE00Om+fxM=;
+	h=Date:From:To:Subject:References:In-Reply-To:From;
+	b=X22y/UrFhiY2DQXlU1Y/nycx+QBtRZr8tAaGeZNRS9r1Am/okGTzROAAyjWFh0vHJ
+	 wk4EUpDN4+joOA4Uz49wWkoDnFMnvWI0l/IwjxluNmlDKYHhVYuTGrrGfK+BP4A2w8
+	 YKV4W7FWk3wl8KIJ5JQDJU7/LdhgY1hdzPro7CiIS/V1unvUVKeL/O/nq/6ij9jAV7
+	 bfCgcF1/pDFsceHSvBqS6DevTp7QR/LciDi9NwQ9zxhS4NAEFwTDMzyLJNF0Qw3BFi
+	 6qx2ESMID5fgAIT7HNIL/CiE2YuVdYcAcw8/rP++AvP3Bkdu/oqZtvUZ6tbEKBDdBD
+	 xKKvqwK1k/QxQ==
+Date: Fri, 22 Dec 2023 14:51:52 -0500
+From: Anthony Brennan <a2brenna@hatguy.io>
+To: stable@vger.kernel.org
+Subject: Re: [PATCH v2] netfs: Fix missing xas_retry() calls in xarray
+ iteration
+Message-ID: <20231222195152.GB8982@hatguy.io>
+References: <20231222013229.GA1202@hatguy.io>
+ <2023122200-outsell-renewal-525d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023122200-outsell-renewal-525d@gregkh>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-smtpcorp-track: 1rG_YnynpLyW2f.hQMYiNZ73MIR8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1703274715; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe;
+ bh=qReoceekiP7kBfddHbhTkAuuMEcqM/nfSjCN6uFZUms=;
+ b=NpP1rlywf7TauNxPUcoQ5hkS7gxwfUkaQtuoTjs1M9DOu30kOXIb0VCU4R81xqd+WWuZZ
+ xDpVSPwkRjYML9HmOX/HtyypFRBcU1+dCI/8oqz1MoLVJ4wR8U41NhYdN1Fb43+FxDPNzXU
+ b1yaXyLhp/Nl9ZFs2PvAXaifpe9djNUHCL7ZA1JQYazeGUVXNL2NTSWUN9x5azYCJsJHPk0
+ sZDk1aPsRD8X7pQTn8tLFXEIa6xbre27p/JsNfCL1XDPvZ2HJgsO9KgaqgZegxuVhqcyIgk
+ OS8Je/7Ud00VkLf+5I8Q3V1IVc4DL694Pf7bMMVvYM7DAmzb1QjO8bJBE2gQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hatguy.io;
+ i=@hatguy.io; q=dns/txt; s=s868002; t=1703274715; h=from : subject :
+ to : message-id : date;
+ bh=qReoceekiP7kBfddHbhTkAuuMEcqM/nfSjCN6uFZUms=;
+ b=jl2/DO4l1VacT1amDbPvp0u0IC19wiAvM4BjxpwYtRWyCy50STkF4Cx/HtQ4jJOrkc13i
+ ohVYKTEcxqyiWbFfK6MYCkRND+1peqqGyysjZ0Nsm8QEx74K2RpCP6BUh/99DOCU5JseBhJ
+ wWJBXnS1x3GaxbNDCOGlDv/splD6lrp3KTy4zuosCPYiRIVYxYUDQMaIcoG6JOLG8VNCye0
+ L4WiiF8fIOflAgGWymT8c46F6SVQhaVkmpdDJlRaLfaXf82MCQ9V8HR4zIuF43CCthPDN14
+ xsEmZmBjLGVYfC3eD/KGCYkOvVM5jJ+935iT4I1MJE7hOTEsj3BGWy4Ifz2w==
 
-In sniff_min_interval_set():
-    if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->sniff_min_interval = val;
-    hci_dev_unlock(hdev);
+On Fri, Dec 22, 2023 at 07:26:23AM +0100, Greg KH wrote:
+> On Thu, Dec 21, 2023 at 08:32:29PM -0500, Anthony Brennan wrote:
+> > To be applied to linux-5.15.y.
+> > 
+> > commit 59d0d52c30d4991ac4b329f049cc37118e00f5b0 upstream
+> 
+> That is not this commit at all :(
+> 
 
-In sniff_max_interval_set():
-    if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->sniff_max_interval = val;
-    hci_dev_unlock(hdev);
+Thank you for your time.
 
-The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs. Consider a scenario where setmin writes a new, valid 'min'
-value, and concurrently, setmax writes a value that is greater than the
-old 'min' but smaller than the new 'min'. In this case, setmax might check
-against the old 'min' value (before acquiring the lock) but write its
-value after the 'min' has been updated by setmin. This leads to a
-situation where the 'max' value ends up being smaller than the 'min'
-value, which is an inconsistency.
+From what I can tell, the upstream commit merged by Linus includes two
+unrelated sets of changes: handling xas_retry, and fixes to "dodgy
+maths".  I discarded the fixes to dodgy maths for two reasons, first the
+commit log says they solve a theoretical potential problem and the
+guidelines for submissions to the stable kernel say to avoid such
+patches, and second, I lack the expertise to be confident those fixes
+are correct when working with pages and not folios.
 
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
-
-To resolve this issue, it is suggested to encompass the validity checks
-within the locked sections in both set_min and set_max funcs. The
-modification ensures that the validation of 'val' against the
-current min/max values is atomic, thus maintaining the integrity of the
-settings. With this patch applied, our tool no longer reports the bug,
-with the kernel configuration allyesconfig for x86_64. Due to the lack of
-associated hardware, we cannot test the patch in runtime testing, and just
-verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 71c3b60ec6d2 ("Bluetooth: Move BR/EDR debugfs file creation ...")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
----
-v2:
-* Adjust the format to pass the CI.
----
- net/bluetooth/hci_debugfs.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/net/bluetooth/hci_debugfs.c b/net/bluetooth/hci_debugfs.c
-index 6b7741f6e95b..f032fdf8f481 100644
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -566,11 +566,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(idle_timeout_fops, idle_timeout_get,
- static int sniff_min_interval_set(void *data, u64 val)
- {
- 	struct hci_dev *hdev = data;
--
--	if (val == 0 || val % 2 || val > hdev->sniff_max_interval)
-+
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val > hdev->sniff_max_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_min_interval = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -594,11 +596,13 @@ DEFINE_DEBUGFS_ATTRIBUTE(sniff_min_interval_fops, sniff_min_interval_get,
- static int sniff_max_interval_set(void *data, u64 val)
- {
- 	struct hci_dev *hdev = data;
--
--	if (val == 0 || val % 2 || val < hdev->sniff_min_interval)
-+
-+	hci_dev_lock(hdev);
-+	if (val == 0 || val % 2 || val < hdev->sniff_min_interval) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->sniff_max_interval = val;
- 	hci_dev_unlock(hdev);
- 
--- 
-2.34.1
-
+Unsure what I should have done here.
 
