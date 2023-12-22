@@ -1,151 +1,202 @@
-Return-Path: <stable+bounces-8276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF6081C21A
-	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:49:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367D081C235
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 01:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9103A1C245A6
-	for <lists+stable@lfdr.de>; Thu, 21 Dec 2023 23:49:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3245281E42
+	for <lists+stable@lfdr.de>; Fri, 22 Dec 2023 00:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162D379498;
-	Thu, 21 Dec 2023 23:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634EB199;
+	Fri, 22 Dec 2023 00:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="t5GZ2HQu"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0879E78E9D;
-	Thu, 21 Dec 2023 23:49:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b681e3.dsl.pool.telekom.hu [::ffff:81.182.129.227])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 00000000000710DA.000000006584CEFF.0013B0FB; Fri, 22 Dec 2023 00:49:19 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/tas2781: do not use regcache
-Date: Fri, 22 Dec 2023 00:48:56 +0100
-Message-ID: <491aeed0e2eecc3b704ec856f815db21bad3ba0e.1703202126.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECD8191
+	for <stable@vger.kernel.org>; Fri, 22 Dec 2023 00:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d3e05abcaeso9814235ad.1
+        for <stable@vger.kernel.org>; Thu, 21 Dec 2023 16:08:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703203683; x=1703808483; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6MkwJ7FRK2kR2FGjY7P+fvgnWWv7rMj8+Y9ZLwM/jZY=;
+        b=t5GZ2HQuE/Qu+LTUsLafqnEOC6oM1prmYRudEwkjsKZpVtIGUoVeqVWhwHX0oOe0EN
+         rZlqMilTDfrFxNlkVkSUf/mLXGKnCH/9+0fxglfy/UdFeg7CiOm5/gH/z3FIBxyCHZ5a
+         SaXnuDI1V2ZjZemLvp3pHzdAzH4e6LmZYNTzoYdj6jSnECZRdnOjBEXZlUCXemrdCSkt
+         f8ZTEjqFVMjdttm7m1tQ20bMqkzOqdvY4asWRy2OuES6xcPG5qKYMwFctuJeB0jtV+kb
+         SK2Id0RvClv3bv9DfWTk/IjB7ibagNpf8rtaIZv6t9nrvBdxCscVgbnH3YbH05JEnGuH
+         EsNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703203683; x=1703808483;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6MkwJ7FRK2kR2FGjY7P+fvgnWWv7rMj8+Y9ZLwM/jZY=;
+        b=cd/yjDZUaGkyqqYgHkXMbOVf6so1wjizfaWWbhbFp97r3RLSZt+qjX2YTTGpyDUVPF
+         VHK6LqC7P8dArBwrqBKqlkEMv/kbNgHMU3NDgBCZ0hhsMd3kcG3wTMPRrgBST3IzWZPn
+         2u4z0ecENzeVsdI+QZYlwaVfLzJPx8n/qzak65mPSmtHtylWLpOBL8bLQD3J3VUjA674
+         9a+jxh7vfihOiRUvVEMS3K4NT0BLqCmZk2/icIC6C/EKp0QLOrAVn07JG8fX6nTWWE89
+         JQaNPAeDahsD39xe1DI0dyRCdchrupQldVW096RFI+trG29Cvkq5Pirv4jMD/0WWZOIJ
+         MmHA==
+X-Gm-Message-State: AOJu0Yy5FoS2Nv4UXTHAgpZo25ZLUT2Sj+qmRUvcvcpN+2Vo+SeD7sbv
+	Qk0Ixi75vu0ic8BYp9iSuP7J8XU61zWJw+LwyOCqUwJy8R0=
+X-Google-Smtp-Source: AGHT+IEQ0MvRQon6B/rB4PmlHGunIVxkkkcpdaav+svNQabs9D9+8DgELmjHsQCy3SVqbw3livWq8w==
+X-Received: by 2002:a17:903:298b:b0:1d3:a13a:e2b2 with SMTP id lm11-20020a170903298b00b001d3a13ae2b2mr374799plb.135.1703203683247;
+        Thu, 21 Dec 2023 16:08:03 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id jm7-20020a17090304c700b001d3e6f58e5esm2191035plb.6.2023.12.21.16.08.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Dec 2023 16:08:02 -0800 (PST)
+Message-ID: <6584d362.170a0220.7f3c5.7ac8@mx.google.com>
+Date: Thu, 21 Dec 2023 16:08:02 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.6
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.6.7-180-g89c7ea9a70938
+Subject: stable-rc/queue/6.6 build: 20 builds: 0 failed,
+ 20 passed (v6.6.7-180-g89c7ea9a70938)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-There are two problems with using regcache in this module.
+stable-rc/queue/6.6 build: 20 builds: 0 failed, 20 passed (v6.6.7-180-g89c7=
+ea9a70938)
 
-The amplifier has 3 addressing levels (BOOK, PAGE, REG). The firmware
-contains blocks that must be written to BOOK 0x8C. The regcache doesn't
-know anything about BOOK, so regcache_sync writes invalid values to the
-actual BOOK.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.6=
+/kernel/v6.6.7-180-g89c7ea9a70938/
 
-The module handles 2 or more separate amplifiers. The amplifiers have
-different register values, and the module uses only one regmap/regcache
-for all the amplifiers. The regcache_sync only writes the last amplifier
-used.
+Tree: stable-rc
+Branch: queue/6.6
+Git Describe: v6.6.7-180-g89c7ea9a70938
+Git Commit: 89c7ea9a70938038e9e759200a87b92b1f6d4a29
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-The module successfully restores all the written register values (RC
-profile, program, configuration, calibration) without regcache.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-Remove regcache functions and set regmap cache_type to REGCACHE_NONE.
+Detailed per-defconfig build reports:
 
-Link: https://lore.kernel.org/r/21a183b5a08cb23b193af78d4b1114cc59419272.1701906455.git.soyer@irl.hu/
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
 ---
- sound/pci/hda/tas2781_hda_i2c.c   | 17 +----------------
- sound/soc/codecs/tas2781-comlib.c |  2 +-
- 2 files changed, 2 insertions(+), 17 deletions(-)
-
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 2fb1a7037c82..e4c54b2a012c 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -717,8 +717,6 @@ static int tas2781_runtime_suspend(struct device *dev)
- 		tas_priv->tasdevice[i].cur_conf = -1;
- 	}
- 
--	regcache_cache_only(tas_priv->regmap, true);
--	regcache_mark_dirty(tas_priv->regmap);
- 
- 	mutex_unlock(&tas_priv->codec_lock);
- 
-@@ -730,20 +728,11 @@ static int tas2781_runtime_resume(struct device *dev)
- 	struct tasdevice_priv *tas_priv = dev_get_drvdata(dev);
- 	unsigned long calib_data_sz =
- 		tas_priv->ndev * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
--	int ret;
- 
- 	dev_dbg(tas_priv->dev, "Runtime Resume\n");
- 
- 	mutex_lock(&tas_priv->codec_lock);
- 
--	regcache_cache_only(tas_priv->regmap, false);
--	ret = regcache_sync(tas_priv->regmap);
--	if (ret) {
--		dev_err(tas_priv->dev,
--			"Failed to restore register cache: %d\n", ret);
--		goto out;
--	}
--
- 	tasdevice_prmg_load(tas_priv, tas_priv->cur_prog);
- 
- 	/* If calibrated data occurs error, dsp will still works with default
-@@ -752,10 +741,9 @@ static int tas2781_runtime_resume(struct device *dev)
- 	if (tas_priv->cali_data.total_sz > calib_data_sz)
- 		tas2781_apply_calib(tas_priv);
- 
--out:
- 	mutex_unlock(&tas_priv->codec_lock);
- 
--	return ret;
-+	return 0;
- }
- 
- static int tas2781_system_suspend(struct device *dev)
-@@ -770,10 +758,7 @@ static int tas2781_system_suspend(struct device *dev)
- 		return ret;
- 
- 	/* Shutdown chip before system suspend */
--	regcache_cache_only(tas_priv->regmap, false);
- 	tasdevice_tuning_switch(tas_priv, 1);
--	regcache_cache_only(tas_priv->regmap, true);
--	regcache_mark_dirty(tas_priv->regmap);
- 
- 	/*
- 	 * Reset GPIO may be shared, so cannot reset here.
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index ffb26e4a7e2f..933cd008e9f5 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -39,7 +39,7 @@ static const struct regmap_range_cfg tasdevice_ranges[] = {
- static const struct regmap_config tasdevice_regmap = {
- 	.reg_bits = 8,
- 	.val_bits = 8,
--	.cache_type = REGCACHE_RBTREE,
-+	.cache_type = REGCACHE_NONE,
- 	.ranges = tasdevice_ranges,
- 	.num_ranges = ARRAY_SIZE(tasdevice_ranges),
- 	.max_register = 256 * 128,
-
-base-commit: 916d051730ae48aef8b588fd096fefca4bc0590a
--- 
-2.43.0
-
+For more info write to <info@kernelci.org>
 
