@@ -1,164 +1,127 @@
-Return-Path: <stable+bounces-8366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E69281D1EC
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 04:36:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12D681D1ED
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 04:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60B721C22E6E
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 03:36:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F8231F23BAB
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 03:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86C8EC7;
-	Sat, 23 Dec 2023 03:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBE61368;
+	Sat, 23 Dec 2023 03:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="Coc+u9T/"
+	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="TGJrTWzc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A091368
-	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 03:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D271EC2
+	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 03:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3ba2e4ff6e1so1798690b6e.3
-        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 19:36:44 -0800 (PST)
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3bb8f9cadabso366084b6e.1
+        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 19:39:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703302603; x=1703907403; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Gk7B3KrzxZzeHiI8miK48fRulREz0I4yE9Agea2Gg9U=;
-        b=Coc+u9T/8dvxTivTI7N4X8SKFP7vBU/hLwhj/5BSA2rMCrwCxFsQsadSWePZQAY1Jg
-         hd9HhP/1Ram83s5KKtI+eUl1annLYEEDGjYLaVTyJuxWMljOYHGneuB9hvqfNwzR60rq
-         Jwix9xetr9sUQ72bfwMNEj7tC+4lMTrVr46xEuZOk9VAFeGumGGVT41AWZJnl8prBqm0
-         3SQUAetjAMFeiHXz6/R2KvppDz4cb2DwliCZv431gDo07KAPYhOH86+EXszpGtuFCSvc
-         PcJSGWMOWGyCQtNo8otyXwjZJ4M2FFF1ET1huWJgntHRhxPVsdPvlgSsqXcp08LuSRUR
-         X0UA==
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1703302751; x=1703907551; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vwj8L7hiOAWlB8RKprTbYnCxIbCpgFGamvNe/uB4uQU=;
+        b=TGJrTWzcYlaYtgwCVvS6ZXZWV2sovvpmjccxFqv/pHj90WQurTLDUETF1vUBpuSRG0
+         BEIAUY8R1kOb3xgdf2UtU5YYBiP1FzPmqXDsLlkSoIO6n0ERcgUoV5WC+uN81qmnRvx9
+         93zxleI7Qr03y+iiMUEFQUfVuKncMUbL5hdQHQ86Sn763r0gnUQKAmT4DTEVjGpSEYZ3
+         FNqzXZRBdLav0Ym4it5rrHz+WSKWVpdxgqDNoN61A8+mQJoUA8M7r/TVzonwvvRqITnZ
+         rpGbiB8Lm6KV0ULeyRPQp6h+v0Rt+N71fi5t3VgryR/mfiezbMrkgf8VUeNbY+8qvjBN
+         Kacg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703302603; x=1703907403;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gk7B3KrzxZzeHiI8miK48fRulREz0I4yE9Agea2Gg9U=;
-        b=t3TC+WbFlEc8/k1QJAGjCWgkww7g54dyHHsYAP6FABo2j3Mldo2JbJ7Yz4Etxh4D1g
-         qb/dphXWY3NXMe8FmB1yf162AnrSe+n6Pw3YfLHRmYASovUrRBG5684Hxin8wwBqoBrN
-         ersFksY2MVOQbGarSU0CXUJdfiZFTaL3ujcnGeI6V3kJRVgEUrbnhTHnw6b2syguAO/a
-         Fy5FT1QthnJarOAcguxrsIi9iBO723JUu337YXStqAo6HlFrVd3bDrm4L1QWNFgzKFjS
-         KcHMwbGge8/v7eIqhl8Y2O758Le7sMWXCxfSk3BXomHAMuxj/FVruYVwC92YQ06yKYGQ
-         FTjw==
-X-Gm-Message-State: AOJu0Yzb5pFpg6mvctublHf7z10nE2Q2sYiHAoi18zTe0ixVp1zz6y5v
-	Tsb1Yo7hpM+43kXVvearygzPPuokoB7M/g==
-X-Google-Smtp-Source: AGHT+IEO5Ec5EkwzWH54J3IM8DaQZHy+XPgAcqVlCFHOsQy9QN6dPasA91RGiJdI57DVf/XdxwNHFA==
-X-Received: by 2002:a05:6808:189d:b0:3b8:b063:9b52 with SMTP id bi29-20020a056808189d00b003b8b0639b52mr2825068oib.68.1703302603572;
-        Fri, 22 Dec 2023 19:36:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703302751; x=1703907551;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vwj8L7hiOAWlB8RKprTbYnCxIbCpgFGamvNe/uB4uQU=;
+        b=bsxhvu0o9KOgQ6VVeG1zcAftlMmSXY6AvNsMEpQt5elvGyb1YyfiY0rfnzKIl0aot7
+         yeSd+4Ssn1CPg2XobbSwrcdKDisc8hQEj1G373YDn/7PNYpipEEJXS1IYiNy0h4MarU2
+         nc40NqGY4StzMpQrAi4yCGhtBvt9J9EYvjL7LMfxSy9CkVNjGbhNjRqmpwPxRY8bzgb1
+         IVAtJwzmIzcepaiZ4GNsvVQxNvzmoyRn+0wSYKcJaCXS748LXGwMaKyUvqtS0Px+rqkl
+         /AaG7HYo3lenJU08QC6OMV4iZAT34ejZvWicFODkHMTxisla2lhGxlcnOtNR3U1BzhAg
+         eP/w==
+X-Gm-Message-State: AOJu0YyZRobr2bL9YNCEOKpBCpsS78zX2F8OFqNeAjdpJDkk4OvhWJeK
+	SGLeZRIAVx64eFpf/gbPgXgsDBCf417y7A==
+X-Google-Smtp-Source: AGHT+IGV7knx4f8lHnOC7V9FUkQIy8i9FV7aSDORB3Za7AEbrdfrH9pHxCNgo4060GBWclKCSX/g/g==
+X-Received: by 2002:a05:6808:1441:b0:3b8:b607:13dd with SMTP id x1-20020a056808144100b003b8b60713ddmr1470549oiv.50.1703302751505;
+        Fri, 22 Dec 2023 19:39:11 -0800 (PST)
 Received: from ghost ([156.39.10.100])
-        by smtp.gmail.com with ESMTPSA id cp15-20020a056808358f00b003b85bd22147sm806729oib.49.2023.12.22.19.36.41
+        by smtp.gmail.com with ESMTPSA id de7-20020a05687075c700b00203af6ff47esm1235776oab.42.2023.12.22.19.39.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Dec 2023 19:36:43 -0800 (PST)
-Date: Fri, 22 Dec 2023 19:36:39 -0800
+        Fri, 22 Dec 2023 19:39:11 -0800 (PST)
+Date: Fri, 22 Dec 2023 19:39:07 -0800
 From: Charlie Jenkins <charlie@rivosinc.com>
-To: Guo Ren <guoren@kernel.org>
-Cc: Leonardo Bras <leobras@redhat.com>, linux-kernel@vger.kernel.org,
+To: Leonardo Bras <leobras@redhat.com>
+Cc: guoren@kernel.org, linux-kernel@vger.kernel.org,
 	paul.walmsley@sifive.com, palmer@dabbelt.com,
 	alexghiti@rivosinc.com, xiao.w.wang@intel.com, david@redhat.com,
 	panqinglin2020@iscas.ac.cn, rick.p.edgecombe@intel.com,
 	willy@infradead.org, bjorn@rivosinc.com, conor.dooley@microchip.com,
 	cleger@rivosinc.com, linux-riscv@lists.infradead.org,
 	Guo Ren <guoren@linux.alibaba.com>, stable@vger.kernel.org
-Subject: Re: [PATCH V3 1/4] riscv: mm: Fixup compat mode boot failure
-Message-ID: <ZYZVx58W7f3inR7m@ghost>
+Subject: Re: [PATCH V3 2/4] riscv: mm: Fixup compat arch_get_mmap_end
+Message-ID: <ZYZWW3373Zk1PRGq@ghost>
 References: <20231222115703.2404036-1-guoren@kernel.org>
- <20231222115703.2404036-2-guoren@kernel.org>
- <ZYZMsgL9Bcz1J_Bd@LeoBras>
- <CAJF2gTR7VvHhm4QUpEkk8P=b__HqbXZ7ggW9DvkD1fUpoKPTew@mail.gmail.com>
+ <20231222115703.2404036-3-guoren@kernel.org>
+ <ZYZLRNlEpVXECyq9@LeoBras>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJF2gTR7VvHhm4QUpEkk8P=b__HqbXZ7ggW9DvkD1fUpoKPTew@mail.gmail.com>
+In-Reply-To: <ZYZLRNlEpVXECyq9@LeoBras>
 
-On Sat, Dec 23, 2023 at 11:07:29AM +0800, Guo Ren wrote:
-> On Sat, Dec 23, 2023 at 10:58 AM Leonardo Bras <leobras@redhat.com> wrote:
-> >
-> > On Fri, Dec 22, 2023 at 06:57:00AM -0500, guoren@kernel.org wrote:
-> > > From: Guo Ren <guoren@linux.alibaba.com>
-> > >
-> > > In COMPAT mode, the STACK_TOP is DEFAULT_MAP_WINDOW (0x80000000), but
-> > > the TASK_SIZE is 0x7fff000. When the user stack is upon 0x7fff000, it
-> > > will cause a user segment fault. Sometimes, it would cause boot
-> > > failure when the whole rootfs is rv32.
-> > >
-> > > Freeing unused kernel image (initmem) memory: 2236K
-> > > Run /sbin/init as init process
-> > > Starting init: /sbin/init exists but couldn't execute it (error -14)
-> > > Run /etc/init as init process
-> > > ...
-> > >
-> > > Increase the TASK_SIZE to cover STACK_TOP.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-> > > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-> > > Signed-off-by: Guo Ren <guoren@kernel.org>
-> > > ---
-> > >  arch/riscv/include/asm/pgtable.h | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-> > > index ab00235b018f..74ffb2178f54 100644
-> > > --- a/arch/riscv/include/asm/pgtable.h
-> > > +++ b/arch/riscv/include/asm/pgtable.h
-> > > @@ -881,7 +881,7 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
-> > >  #define TASK_SIZE_MIN        (PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
-> > >
-> > >  #ifdef CONFIG_COMPAT
-> > > -#define TASK_SIZE_32 (_AC(0x80000000, UL) - PAGE_SIZE)
-> > > +#define TASK_SIZE_32 (_AC(0x80000000, UL))
-> > >  #define TASK_SIZE    (test_thread_flag(TIF_32BIT) ? \
-> > >                        TASK_SIZE_32 : TASK_SIZE_64)
-> > >  #else
-> > > --
-> > > 2.40.1
-> > >
-> >
-> > I am not really involved in the issue this is solving, so I have no
-> > technical opinion on the solution.
-> >
-> > IIUC there should always be (TASK_SIZE >= STACK_TOP), so by itself this
-> > is fixing an issue.
-> >
-> > I have reviewed the code and it does exactly as stated into the commit
-> > message, so FWIW:
-> > Reviewed-by: Leonardo Bras <leobras@redhat.com>
-> Thx,
+On Fri, Dec 22, 2023 at 11:51:48PM -0300, Leonardo Bras wrote:
+> On Fri, Dec 22, 2023 at 06:57:01AM -0500, guoren@kernel.org wrote:
+> > From: Guo Ren <guoren@linux.alibaba.com>
+> > 
+> > When the task is in COMPAT mode, the arch_get_mmap_end should be 2GB,
+> > not TASK_SIZE_64. The TASK_SIZE has contained is_compat_mode()
+> > detection, so change the definition of STACK_TOP_MAX to TASK_SIZE
+> > directly.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+> > Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+> > Signed-off-by: Guo Ren <guoren@kernel.org>
+> > ---
+> >  arch/riscv/include/asm/processor.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+> > index f19f861cda54..e1944ff0757a 100644
+> > --- a/arch/riscv/include/asm/processor.h
+> > +++ b/arch/riscv/include/asm/processor.h
+> > @@ -16,7 +16,7 @@
+> >  
+> >  #ifdef CONFIG_64BIT
+> >  #define DEFAULT_MAP_WINDOW	(UL(1) << (MMAP_VA_BITS - 1))
+> > -#define STACK_TOP_MAX		TASK_SIZE_64
+> > +#define STACK_TOP_MAX		TASK_SIZE
+> >  
+> >  #define arch_get_mmap_end(addr, len, flags)			\
+> >  ({								\
+> > -- 
+> > 2.40.1
+> > 
 > 
-> I found this problem because it can't boot my rv32 buildroot-rootfs in
-> v6.6. But it's okay in v6.5. So I used git bisect and found commit:
-> add2cc6b6515 ("RISC-V: mm: Restrict address space for
-> sv39,sv48,sv57"), which caused that.
 > 
-> Ping Charlie, I hope it can be fixed in the v6.6 long-term version.
-
-I have looked at this more I do agree that this change makes sense. I
-was thinking that it was valid to have STACK_TOP that was greater than
-TASK_SIZE but I am no longer convinced that is true. Thank you for
-looking into this.
+> LGTM. 
+> 
+> FWIW:
+> Reviewed-by: Leonardo Bras <leobras@redhat.com>
 
 Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
 
 > 
-> >
-> 
-> 
-> 
-> --
-> Best Regards
->  Guo Ren
 
