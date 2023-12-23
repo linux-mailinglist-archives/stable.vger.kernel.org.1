@@ -1,90 +1,105 @@
-Return-Path: <stable+bounces-8386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC9381D4AF
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 15:42:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C94E81D4BA
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 15:57:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500E41C213EF
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 14:42:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0AC5B220BE
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 14:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2CEDF43;
-	Sat, 23 Dec 2023 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9008BDDA1;
+	Sat, 23 Dec 2023 14:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NrABJs4n"
 X-Original-To: stable@vger.kernel.org
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4775912E53;
-	Sat, 23 Dec 2023 14:41:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=I-love.SAKURA.ne.jp
-Received: from fsav311.sakura.ne.jp (fsav311.sakura.ne.jp [153.120.85.142])
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 3BNEfJRU010825;
-	Sat, 23 Dec 2023 23:41:19 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav311.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav311.sakura.ne.jp);
- Sat, 23 Dec 2023 23:41:19 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav311.sakura.ne.jp)
-Received: from [192.168.1.6] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-	(authenticated bits=0)
-	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 3BNEfIsK010821
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 23 Dec 2023 23:41:19 +0900 (JST)
-	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <57ee28a2-e626-4319-b3a3-cdca01499b13@I-love.SAKURA.ne.jp>
-Date: Sat, 23 Dec 2023 23:41:17 +0900
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0FC11C93
+	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 14:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703343430;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=556cidxl5UMk1OJZBL59R3nap5oo8emLN3+LeOkOKpw=;
+	b=NrABJs4nwwL/iNAUt82g/2ckEDHfFzxUaFv+0k6yHT/RI1865NHmt9R/ly6Z8Hq1R2DPXm
+	/aHwHKnVRTywa7JfaFsOYhossNmTo552zjMLiPIltZwMAER9YLjnaW2ZBHSYwFJNAkAq/a
+	bshEIPZXlZI74Pikwr0VVEUlmGHjUss=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-UIWOS5TBMKeijpq-DVYzkw-1; Sat, 23 Dec 2023 09:57:08 -0500
+X-MC-Unique: UIWOS5TBMKeijpq-DVYzkw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 93247185A780;
+	Sat, 23 Dec 2023 14:57:07 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.49])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9B82C2026D66;
+	Sat, 23 Dec 2023 14:57:06 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	linux-acpi@vger.kernel.org,
+	Luis Acuna <ldacuna@gmail.com>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	All applicable <stable@vger.kernel.org>
+Subject: [PATCH] ACPI: resource: At another DMI match for the TongFang GMxXGxx
+Date: Sat, 23 Dec 2023 15:57:06 +0100
+Message-ID: <20231223145706.26218-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] security: new security_file_ioctl_compat() hook
-Content-Language: en-US
-To: Alfred Piccioni <alpic@google.com>, Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>, bpf <bpf@vger.kernel.org>
-Cc: linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        stable@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230906102557.3432236-1-alpic@google.com>
- <20231219090909.2827497-1-alpic@google.com>
- <CALcwBGC9LzzdJeq3SWy9F3g5A32s5uSvJZae4j+rwNQqqLHCKg@mail.gmail.com>
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <CALcwBGC9LzzdJeq3SWy9F3g5A32s5uSvJZae4j+rwNQqqLHCKg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-Adding BPF.
+The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work,
+is also sold as the Eluktronics RP-15 which does not use the standard
+TongFang GMxXGxx DMI board_name.
 
-On 2023/12/19 18:10, Alfred Piccioni wrote:
->> I didn't do an audit but does anything need to be updated for the BPF
->> LSM or does it auto-magically pick up new hooks?
-> 
-> I'm unsure. I looked through the BPF LSM and I can't see any way it's
-> picking up the file_ioctl hook to begin with. It appears to me
-> skimming through the code that it automagically picks it up, but I'm
-> not willing to bet the kernel on it.
+Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
+table to make the internal keyboard functional.
 
-If BPF LSM silently picks up security_file_ioctl_compat() hook, I worry
-that some existing BPF programs which check ioctl() using BPF LSM fail to
-understand that such BPF programs need to be updated.
+Reported-by: Luis Acuna <ldacuna@gmail.com>
+Cc: Werner Sembach <wse@tuxedocomputers.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+Note reportedy by private email so not Closes tag
+---
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-We basically don't care about out-of-tree kernel code. But does that rule
-apply to BPF programs? Since BPF programs are out-of-tree, are BPF programs
-which depend on BPF LSM considered as "we don't care about" rule?
-Or is breakage of existing BPF programs considered as a regression?
-(Note that this patch is CC:ed for stable kernels.)
-
-Maybe BPF LSM should at least emit warning if the loaded BPF program defined
-security_file_ioctl() hook and did not define security_file_ioctl_compat() hook?
-
-We could use a struct where undefined hooks needs to be manually filled with
-a dummy pointer, so that we can catch erroneously undefined hooks (detected by
-being automatically filled with a NULL pointer) at load time?
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 9bd9f79cd409..c3536c236be9 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_edge_low_force_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
+ 		},
+ 	},
++	{
++		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
++		},
++	},
+ 	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
+-- 
+2.41.0
 
 
