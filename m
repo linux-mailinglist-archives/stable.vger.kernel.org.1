@@ -1,187 +1,231 @@
-Return-Path: <stable+bounces-8356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E9181D0E7
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 02:07:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFB481D0EB
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 02:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919C01F21FDF
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 01:07:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49D0B21389
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 01:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2648396;
-	Sat, 23 Dec 2023 01:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1504B644;
+	Sat, 23 Dec 2023 01:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="N4aKrnuL"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="vPXCuCs3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A26469E
-	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 01:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5eb06eacb2bso358307b3.2
-        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 17:07:50 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38970440C
+	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 01:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6d89f278cc9so1704605b3a.0
+        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 17:14:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1703293670; x=1703898470; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0JAu7/kbP8sA38uZvHKjtFhpd9VbwIgxoHvIN0GjsTU=;
-        b=N4aKrnuLtbQfCFFKdXsfWqcs/h5o9tV3XxmWtYbf7rveiRnPgCX/C0wKpJkvkRGizp
-         ADwu9R3RlyibWrQumDB0sbFTSh9IXOt/hghd82rtvZkUKsUgk1ejHPruQicXVlpa4Fpy
-         hj3rzmI+DDHxEagJyjUsBBkQ3a+l2qoTMHSzU=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703294073; x=1703898873; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=WUti6gXT90rz8VCteZh+1vydYtzdd8kpKHzRv4aEMyg=;
+        b=vPXCuCs3BhXS61qvkJvdszpXa3DvW9eOkt8s6OBts/PNMdPXh5pMY0cX+bzclMU6ej
+         lTLh9YZrPG4fpGTYvyNlEmqxbHqCjvx8wisk1WEnvtWxgOd6pyLT8W65zvK8jPe1hLKX
+         wk+Add0B4sxH34l577UXOjFIPH+lf7cHBswITHCeJS0RdJ9cgP/+BVpTTi/6DFSp9rri
+         xccneRazfzG+Luequq79vCPK/lHZ8fS/ryYn4QASI3OXOt0Ice1VpMgHa1lIUBsHVa/T
+         OJW23vD1YsapbWMe1AM0NycnS3rzUKlpweL0RtEqTRQd5iQWrNydoczrZH8ueh4W80YD
+         BxDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703293670; x=1703898470;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0JAu7/kbP8sA38uZvHKjtFhpd9VbwIgxoHvIN0GjsTU=;
-        b=wT5+/sT3NYyQUsNr30KET/f3xJNOQg7g4ZxvtUQiKD4bSoPT7rWCofjWHBx/lW72bx
-         TTUyKxvGFNR+KY3fImxdM6WqA4Z1QbN57KKqNdy/8RMHh6JhHR3V1HX1AZV85NNwIaeR
-         8pTN3SMh02I5AnXvm381u18o7Kl3c8CMQ6C3f7C8HERMDb2wQvMPudN++PxEHkgLQguO
-         Q9XqykHUYvSeJK3iN1jm8CjqYMLqID/5J+opCotoMSjXD8GHCR9OsbCsd/+7wT34+CWb
-         f2+RE4iH+IYlNDU1dafSPM6y2ybm/S7sdlQYAYWAOibJZrnXVy8z8UzDibNVKLP+B4EN
-         VAsg==
-X-Gm-Message-State: AOJu0Yx7/tZ5Pt34iQCKRrwyHkhZTpU6032nYomdPTtzpy6BRCd35RJC
-	MB7VOo4sCHkohiZcUYqsTZeoW+kfldrE/6FXB936qtSd6aX2
-X-Google-Smtp-Source: AGHT+IEwlKZa714nLbvZrGxPAdcK81MlcBvHMQ/IsHzEpZlcvBa3td4Cesk1zXENAMIIvXwQ3J2tLZHBUhNq9kkubDw=
-X-Received: by 2002:a25:aca2:0:b0:dbc:fbba:a2e0 with SMTP id
- x34-20020a25aca2000000b00dbcfbbaa2e0mr1545144ybi.104.1703293669741; Fri, 22
- Dec 2023 17:07:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703294073; x=1703898873;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WUti6gXT90rz8VCteZh+1vydYtzdd8kpKHzRv4aEMyg=;
+        b=VB//QPAWtxfYFlRYPAl2awW/kC4VvHTXkC4ZgOp4+66T4rXGcowYewvVHROJ61nx42
+         WXm72XFLFu7gNBbGfog9HVulq9kXN8/lNZHXMvR6qNdUZCynBov9bYNIagGsFqdUT+HE
+         MOPP+HQkmFYPzK4EhsnxnsYMgZGpwVyRkZ9GDS90idnGsoYfFyeWdLvRYvcoSxNwYAkq
+         mtliW1UALaE5B01wk9JVAgVS/2Wtt7uwQ46X3WsHpSTkg9MqhXHxcWKoQsopWOp2w75f
+         eZyVrntVorN2l3MsfUcb7xOuOigenjNrKknHNlD/HQLHVwaNagdQ+oAR1nYWqqJDSmDO
+         mnLg==
+X-Gm-Message-State: AOJu0Yy8WMUu5ycZaHCVmVdfAIpkooG8ETbtmrTPHABMsexPs8P6Mzul
+	sGM5PejVgNSCXmAPQFXg2DOuy8BwmFbLyUjGaMb5Zti2OEY=
+X-Google-Smtp-Source: AGHT+IG/2v8ReBjN73UvvltgfYUe3r3g7AS797zQUoq5LUFI/CTcAQymUxplgffdXk/cSKN1vDYGFg==
+X-Received: by 2002:a05:6a00:8788:b0:6d9:9761:c7bb with SMTP id hk8-20020a056a00878800b006d99761c7bbmr782824pfb.33.1703294072936;
+        Fri, 22 Dec 2023 17:14:32 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e12-20020a62aa0c000000b006d5c5282c86sm4047724pff.71.2023.12.22.17.14.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Dec 2023 17:14:32 -0800 (PST)
+Message-ID: <65863478.620a0220.3bcf4.dc74@mx.google.com>
+Date: Fri, 22 Dec 2023 17:14:32 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230928041355.737635-1-zack@kde.org> <db8ba4d9d99c946b4649ba64abaf20fed16a0bc6.camel@siemens.com>
-In-Reply-To: <db8ba4d9d99c946b4649ba64abaf20fed16a0bc6.camel@siemens.com>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Fri, 22 Dec 2023 20:07:39 -0500
-Message-ID: <CABQX2QP60W6HqZxUjCkRfM=nD+YvoKqMBh-YkCEVjFCtf-cSdA@mail.gmail.com>
-Subject: Re: [PATCH] drm/vmwgfx: Keep a gem reference to user bos in surfaces
-To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
-Cc: "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>, "zackr@vmware.com" <zackr@vmware.com>, 
-	"murray.mcallister@gmail.com" <murray.mcallister@gmail.com>, "krastevm@vmware.com" <krastevm@vmware.com>, 
-	"iforbes@vmware.com" <iforbes@vmware.com>, "mombasawalam@vmware.com" <mombasawalam@vmware.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.68-147-gd5d7086b58f64
+Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.68-147-gd5d7086b58f64)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Thu, Dec 21, 2023 at 5:54=E2=80=AFAM Sverdlin, Alexander
-<alexander.sverdlin@siemens.com> wrote:
->
-> Hi Zack,
->
-> thank you for the patch!
->
-> On Thu, 2023-09-28 at 00:13 -0400, Zack Rusin wrote:
-> > From: Zack Rusin <zackr@vmware.com>
-> >
-> > Surfaces can be backed (i.e. stored in) memory objects (mob's) which
-> > are created and managed by the userspace as GEM buffers. Surfaces
-> > grab only a ttm reference which means that the gem object can
-> > be deleted underneath us, especially in cases where prime buffer
-> > export is used.
-> >
-> > Make sure that all userspace surfaces which are backed by gem objects
-> > hold a gem reference to make sure they're not deleted before vmw
-> > surfaces are done with them, which fixes:
-> > ------------[ cut here ]------------
-> > refcount_t: underflow; use-after-free.
-> > WARNING: CPU: 2 PID: 2632 at lib/refcount.c:28 refcount_warn_saturate+0=
-xfb/0x150
-> > Modules linked in: overlay vsock_loopback vmw_vsock_virtio_transport_co=
-mmon vmw_vsock_vmci_transport vsock snd_ens1371 snd_ac97_codec ac97_bus snd=
-_pcm gameport>
-> > CPU: 2 PID: 2632 Comm: vmw_ref_count Not tainted 6.5.0-rc2-vmwgfx #1
-> > Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Refer=
-ence Platform, BIOS 6.00 11/12/2020
-> > RIP: 0010:refcount_warn_saturate+0xfb/0x150
-> > Code: eb 9e 0f b6 1d 8b 5b a6 01 80 fb 01 0f 87 ba e4 80 00 83 e3 01 75=
- 89 48 c7 c7 c0 3c f9 a3 c6 05 6f 5b a6 01 01 e8 15 81 98 ff <0f> 0b e9 6f =
-ff ff ff 0f b>
-> > RSP: 0018:ffffbdc34344bba0 EFLAGS: 00010286
-> > RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-> > RDX: ffff960475ea1548 RSI: 0000000000000001 RDI: ffff960475ea1540
-> > RBP: ffffbdc34344bba8 R08: 0000000000000003 R09: 65646e75203a745f
-> > R10: ffffffffa5b32b20 R11: 72657466612d6573 R12: ffff96037d6a6400
-> > R13: ffff9603484805b0 R14: 000000000000000b R15: ffff9603bed06060
-> > FS:  00007f5fd8520c40(0000) GS:ffff960475e80000(0000) knlGS:00000000000=
-00000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 00007f5fda755000 CR3: 000000010d012005 CR4: 00000000003706e0
-> > Call Trace:
-> >  <TASK>
-> >  ? show_regs+0x6e/0x80
-> >  ? refcount_warn_saturate+0xfb/0x150
-> >  ? __warn+0x91/0x150
-> >  ? refcount_warn_saturate+0xfb/0x150
-> >  ? report_bug+0x19d/0x1b0
-> >  ? handle_bug+0x46/0x80
-> >  ? exc_invalid_op+0x1d/0x80
-> >  ? asm_exc_invalid_op+0x1f/0x30
-> >  ? refcount_warn_saturate+0xfb/0x150
-> >  drm_gem_object_handle_put_unlocked+0xba/0x110 [drm]
-> >  drm_gem_object_release_handle+0x6e/0x80 [drm]
-> >  drm_gem_handle_delete+0x6a/0xc0 [drm]
-> >  ? __pfx_vmw_bo_unref_ioctl+0x10/0x10 [vmwgfx]
-> >  vmw_bo_unref_ioctl+0x33/0x40 [vmwgfx]
-> >  drm_ioctl_kernel+0xbc/0x160 [drm]
-> >  drm_ioctl+0x2d2/0x580 [drm]
-> >  ? __pfx_vmw_bo_unref_ioctl+0x10/0x10 [vmwgfx]
-> >  ? do_vmi_munmap+0xee/0x180
-> >  vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
-> >  vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
-> >  __x64_sys_ioctl+0x99/0xd0
-> >  do_syscall_64+0x5d/0x90
-> >  ? syscall_exit_to_user_mode+0x2a/0x50
-> >  ? do_syscall_64+0x6d/0x90
-> >  ? handle_mm_fault+0x16e/0x2f0
-> >  ? exit_to_user_mode_prepare+0x34/0x170
-> >  ? irqentry_exit_to_user_mode+0xd/0x20
-> >  ? irqentry_exit+0x3f/0x50
-> >  ? exc_page_fault+0x8e/0x190
-> >  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> > RIP: 0033:0x7f5fda51aaff
-> > Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89=
- 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41> 89 c0 3d =
-00 f0 ff ff 7>
-> > RSP: 002b:00007ffd536a4d30 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> > RAX: ffffffffffffffda RBX: 00007ffd536a4de0 RCX: 00007f5fda51aaff
-> > RDX: 00007ffd536a4de0 RSI: 0000000040086442 RDI: 0000000000000003
-> > RBP: 0000000040086442 R08: 000055fa603ada50 R09: 0000000000000000
-> > R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffd536a51b8
-> > R13: 0000000000000003 R14: 000055fa5ebb4c80 R15: 00007f5fda90f040
-> >  </TASK>
-> > ---[ end trace 0000000000000000 ]---
-> >
-> > A lot of the analyis on the bug was done by Murray McAllister and
-> > Ian Forbes.
-> >
-> > Reported-by: Murray McAllister <murray.mcallister@gmail.com>
-> > Cc: Ian Forbes <iforbes@vmware.com>
-> > Signed-off-by: Zack Rusin <zackr@vmware.com>
-> > Fixes: a950b989ea29 ("drm/vmwgfx: Do not drop the reference to the hand=
-le too soon")
-> > Cc: <stable@vger.kernel.org> # v6.2+
->
-> Do you remember the particular reason this was marked 6.2+?
+stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
+68-147-gd5d7086b58f64)
 
-That's because that's the kernel release where the commit this one is
-fixing first landed.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.68-147-gd5d7086b58f64/
 
-> We see this on Debian 6.1.67 (which at least has the mentioned
-> "drm/vmwgfx: Do not drop the reference to the handle too soon"):
+Tree: stable-rc
+Branch: queue/6.1
+Git Describe: v6.1.68-147-gd5d7086b58f64
+Git Commit: d5d7086b58f64a350a7c66cdbd4f97db7c2e1780
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-The original had to be backported there. I'll ask someone on my team
-to check the branches the original was backported to see if this
-change even applies on those and then we'll see what we can do. In the
-meantime if you know anyone on the Debian kernel team suggesting this
-as a cherry-pick might also be a good idea.
+Warnings Detected:
 
-z
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
