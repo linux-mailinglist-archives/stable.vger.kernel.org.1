@@ -1,231 +1,112 @@
-Return-Path: <stable+bounces-8401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578AB81D603
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 19:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D7E81D669
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 21:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63AF8B22E9C
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 18:34:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 753CB1C21782
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 20:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0247D261;
-	Sat, 23 Dec 2023 18:31:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="U1O69hA5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1E215481;
+	Sat, 23 Dec 2023 20:01:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CE02F4B
-	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 18:31:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7b7fe0ae57bso140854239f.0
-        for <stable@vger.kernel.org>; Sat, 23 Dec 2023 10:31:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703356312; x=1703961112; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lFeTeLpK0AoziBLAAmvle9Kq782GR8VvV3qHpuySEqw=;
-        b=U1O69hA5h8IB+j5ESDVMKkKFWT3y8e35lsfqn1CUAH+FC1wJSYtbbmPTGWE4zZfx0r
-         dE42NY8bWanWSav/XVlB4KQpq6DJrLTaYpv06pH3t5nNx205vsQsXdhyZYFIrq1ZoO6U
-         a/ctuqK5uxPmZ1aUZ7r6Y+mcON5e/VC3nh4HsWZJYVYndcbiFItIeMx1/MeqDq26ea7i
-         EDGUmvvePhqBUX4xnxzSIM0mrEhJKlJp5oXRMF40+3af8i4ntVeYK2lxiJGQEz63xfjq
-         JUcLbDP78+nVZsdAU7D+vh0/YRdHiVXw5E5pcGG1R2JhdTW920m1H486ezKgp+Nb3vNC
-         Bmpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703356312; x=1703961112;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lFeTeLpK0AoziBLAAmvle9Kq782GR8VvV3qHpuySEqw=;
-        b=LFG+syixdMNgo7Yho7j20daqL6jBWqTy58Wc3tO6xUadQYDBvxyRULKl71W/IbiTbB
-         w0Hu60HcskMFgnfU/ElDj2bZWhFRVrJyc7g3wDCyrSxJrTXXQaUax+qawGMMnuTTcRYN
-         qhJXSNW/++D3mkf/JOTscFrvX/MXw1olp3d3+OMENdzj5DQjJGf8iKIm7Xk4xyUmIZhi
-         Gyd4nPD7HaO+zw7FAYEC4C7gu9MMw44q8L5MuQy0oGAf3lUTl8KS8N4mOAzRg0M9HYhM
-         dgB5PJU3wFa72jyz0QdNY2mncKG/sJ3wlFIXftuBntqIcq/UZoXnOc/wzzAeCcPd1IZP
-         ZNNw==
-X-Gm-Message-State: AOJu0YxccJQJ7dE0xd4fj3cwH2s5lT0eqcKIaSKPv06nwifsy+8jH5dm
-	qirqSx1r8BdVHoaMAkMeg4mctbvFXx23X3lbiXieszPyQf0=
-X-Google-Smtp-Source: AGHT+IFpkEmCzWCDoghN8GHfTRiHq8poYKcM1OKfFmuLYkdA1ADNcFvqUDsJkJ9rZQvd2j5t0GwOdg==
-X-Received: by 2002:a5d:9718:0:b0:7ba:b7da:3cd8 with SMTP id h24-20020a5d9718000000b007bab7da3cd8mr1579699iol.17.1703356312662;
-        Sat, 23 Dec 2023 10:31:52 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v124-20020a626182000000b006d96d753ca0sm5481880pfb.38.2023.12.23.10.31.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Dec 2023 10:31:51 -0800 (PST)
-Message-ID: <65872797.620a0220.d7ac3.0ed1@mx.google.com>
-Date: Sat, 23 Dec 2023 10:31:51 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id E65572030D
+	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 20:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 63711 invoked by uid 1000); 23 Dec 2023 15:01:22 -0500
+Date: Sat, 23 Dec 2023 15:01:22 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+  linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: core: Add quirk for Logitech Rallybar
+Message-ID: <82bf432c-2a78-4b9c-88ab-ef4f0888e9aa@rowland.harvard.edu>
+References: <20231222-rallybar-v2-1-5849d62a9514@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.68-153-g6433185371d8
-Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.68-153-g6433185371d8)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231222-rallybar-v2-1-5849d62a9514@chromium.org>
 
-stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
-68-153-g6433185371d8)
+On Fri, Dec 22, 2023 at 10:55:49PM +0000, Ricardo Ribalda wrote:
+> Logitech Rallybar devices, despite behaving as UVC camera, they have a
+> different power management system than the rest of the other Logitech
+> cameras.
+> 
+> USB_QUIRK_RESET_RESUME causes undesired USB disconnects, that make the
+> device unusable.
+> 
+> These are the only two devices that have this behavior, and we do not
+> have the list of devices that require USB_QUIRK_RESET_RESUME, so lets
+> create a new lit for them that un-apply the USB_QUIRK_RESET_RESUME
+> quirk.
+> 
+> Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.68-153-g6433185371d8/
+Would it make more sense to do this inside the uvc driver instead of 
+creating a new single-purpose list in the core?
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.68-153-g6433185371d8
-Git Commit: 6433185371d86547d5279e6ccb95bae1d0bdad4e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Alan Stern
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+> Tested with a Rallybar Mini with an Acer Chromebook Spin 513
+> ---
+> Changes in v2:
+> - Add Fixes tag
+> - Add UVC maintainer as Cc
+> - Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
+> ---
+>  drivers/usb/core/quirks.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+> index 15e9bd180a1d..8fa8de50e7f0 100644
+> --- a/drivers/usb/core/quirks.c
+> +++ b/drivers/usb/core/quirks.c
+> @@ -553,6 +553,14 @@ static const struct usb_device_id usb_interface_quirk_list[] = {
+>  	{ }  /* terminating entry must be last */
+>  };
+>  
+> +static const struct usb_device_id usb_interface_unsupported_quirk_list[] = {
+> +	/* Logitech Rallybar VC systems*/
+> +	{ USB_DEVICE(0x046d, 0x089b), .driver_info = USB_QUIRK_RESET_RESUME },
+> +	{ USB_DEVICE(0x046d, 0x08d3), .driver_info = USB_QUIRK_RESET_RESUME },
+> +
+> +	{ }  /* terminating entry must be last */
+> +};
+> +
+>  static const struct usb_device_id usb_amd_resume_quirk_list[] = {
+>  	/* Lenovo Mouse with Pixart controller */
+>  	{ USB_DEVICE(0x17ef, 0x602e), .driver_info = USB_QUIRK_RESET_RESUME },
+> @@ -718,6 +726,8 @@ void usb_detect_interface_quirks(struct usb_device *udev)
+>  	u32 quirks;
+>  
+>  	quirks = usb_detect_static_quirks(udev, usb_interface_quirk_list);
+> +	quirks &= ~usb_detect_static_quirks(udev,
+> +					usb_interface_unsupported_quirk_list);
+>  	if (quirks == 0)
+>  		return;
+>  
+> 
+> ---
+> base-commit: c0f65a7c112b3cfa691cead54bcf24d6cc2182b5
+> change-id: 20231222-rallybar-19ce0c64d5e6
+> 
+> Best regards,
+> -- 
+> Ricardo Ribalda <ribalda@chromium.org>
+> 
 
