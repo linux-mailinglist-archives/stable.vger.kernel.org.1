@@ -1,305 +1,308 @@
-Return-Path: <stable+bounces-8359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E4781D0F2
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 02:23:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F2181D0F8
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 02:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30F121F22C2D
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 01:23:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B4CF1F229B2
+	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 01:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122D2A59;
-	Sat, 23 Dec 2023 01:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61F665B;
+	Sat, 23 Dec 2023 01:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="AWF1qJFX"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="JwzTT2dY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7183ECB
-	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 01:23:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7812275feccso130673085a.3
-        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 17:23:38 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046E47EE
+	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 01:38:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so1838378a12.1
+        for <stable@vger.kernel.org>; Fri, 22 Dec 2023 17:38:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1703294618; x=1703899418; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ol6F17s5HBzN1N/Ub4j2HKKOTRquCJcTyGe14n9oFhY=;
-        b=AWF1qJFXGGzkHdvxWZs3UNCxyQ760H2q64EQ5LXy8lm/4uvCeDI8eXBqQ2A6si96rq
-         K4BwQ3dbTCV3kAc1TGtZBCqgSwJWwBE38uA4vqoCeYYXZAt+k0eia92JI0T20LFPxl4p
-         ugJJp0oLi1t2IjCLqmiZuQeIrAOqHuYhq/6ScnM4ifpnh93SDJHreABg4tqqCJPFbQyk
-         FHwZGfYRaYioIDCA4Pr2vVbVCmHh2xYXpuDyP8H6Qbix+8nSTKNCXsCPWX5CYhPuFKYS
-         omqLfVgvdq4glfDCHflJFvIcEDLeMuZpmTNQ2Rr0IiM9wD6u0JAAzF5fuAYpXdEuhuUW
-         mqpQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703295523; x=1703900323; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LYrD7rEL7RRIDhHajmI4RfsNyvvK+gz26bYYI3KFR0w=;
+        b=JwzTT2dY1EFTil2N2VxooTjZPSHxSOCtzOMsnwLb3JQ6/D7mtQ8sZFBfA91JAYluGA
+         HmS1fc65aAQK8SMzaCdzRZ04of6liUB+znJTrWgcRiWi08JpGHYGDOtwWOb1DpMx3Ccs
+         BzCxubEmYewJnQeyGlUF8AQOg/Ojbzj3hDfLM4sOLx7scWenyfcS9UUprLtkH8hctQ6I
+         IUEgPNfL3mxlICY4p6wlqsdW7Tr3xHQqtHh8zv9MKxetupqhvS0q8U18YJANUhukPQlR
+         nR3Noa/60kKnf8mTV8wmfLgc7JKS/vIAYDoNHOUOWKTYQffKxmsc9FkH+HXqBXPo5Oy4
+         EWZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703294618; x=1703899418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ol6F17s5HBzN1N/Ub4j2HKKOTRquCJcTyGe14n9oFhY=;
-        b=Lgw/bTPvD2YGU45eQwLjXxzENCJjKzmMnhQfG67ynOkLx/AyTgo9T3TXPGMtTKR+VK
-         XzXv2Wp62nozXJ/CmHnw2pvIX2g8fGBFaJnLZ8GhaqRLrKZSkzK+mkXcQcra16VwHwL3
-         sedKAP0LQ8wx/VtCW2c8AdgafVICZX5ulCG9CkU8wSxJ/MXXuEVc9mPuqFCI90cOaEwO
-         5W+/RUjzcOgYuXuWzWWleqAJpNHFOslmQMgmsDLBKYuokdqr4+mR54aWzACO+E36T2kN
-         CFr6Io6WCwtsx9U/63UYCUH4wKtlBZFb0byJbzvb/kNiKoHaCYzVKQAs/yYVgCWkpWvN
-         dorg==
-X-Gm-Message-State: AOJu0YyQMKx9L2NFNGveGh4IsC6zXEmWDIABO2qTOM5PWamHcqM9Bk4L
-	+SeAUc94ePsarmeDQr8wJSX+XWnLPXSnzDuajNcH8DgzMQSi
-X-Google-Smtp-Source: AGHT+IHdoEKOJBo1f1Wlnf+MZivYuOxAH1/fQuZG8OdFTEkDHqeJLkyY9PJXkiAt4IkOyFmswuc5cBn3ygqrr+R6kLI=
-X-Received: by 2002:a05:620a:c19:b0:781:27bc:d0b9 with SMTP id
- l25-20020a05620a0c1900b0078127bcd0b9mr2435572qki.41.1703294617781; Fri, 22
- Dec 2023 17:23:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703295523; x=1703900323;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LYrD7rEL7RRIDhHajmI4RfsNyvvK+gz26bYYI3KFR0w=;
+        b=Z7/1tZmLH7gvWZqVnyTVn+Nc2fG7flBIoZlkf3APS0ef+jxYmTlcoRPo+2zlRcyS74
+         m0o30lNR5pacvuK/5vfyr8Y62l0chzk/kSmyqltbbMccuSnzqHtApfbWtPx6E072sJo6
+         ON5fJCBElDbiWbv2fRzqfBqh68ggC1ZGKwVZlqvA6LYLlll1IaxZNzNyq3+JXl8sWoz6
+         lAz4MIMhybIfdyEBLKOr7Sr4hgDRApHvpf4f4enRJgWKpedeOp7GbxfdikH81hgVwy0S
+         C5zUJXQ+T7rF4V/NA7LGJIiVRGfjBHrL3YtwAXasebEFs1Dxw+mn5BdXj3yctjiC+Hcw
+         F9vg==
+X-Gm-Message-State: AOJu0Yz5OLcpyLvnfWZ+vCHG0zO2dTAZ60P06owz+P48qg5RbGHQB4gM
+	xr4GNqPRJfmZba5TRPkK2LKx1+HKFoOF9Q/nCZxq7vfJCes=
+X-Google-Smtp-Source: AGHT+IGvZRNBTc7TM4pMM5WiaJv/bc6cQfoSUpPoZRebpEhCEkehrBMhu7dtt4u/HlH27n+ctdVR+w==
+X-Received: by 2002:a05:6a20:42a7:b0:194:c563:1011 with SMTP id o39-20020a056a2042a700b00194c5631011mr2895681pzj.69.1703295522713;
+        Fri, 22 Dec 2023 17:38:42 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id p26-20020a62ab1a000000b006d9415b769csm4031899pff.169.2023.12.22.17.38.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Dec 2023 17:38:41 -0800 (PST)
+Message-ID: <65863a21.620a0220.24b9a.d6dc@mx.google.com>
+Date: Fri, 22 Dec 2023 17:38:41 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230906102557.3432236-1-alpic@google.com> <20231219090909.2827497-1-alpic@google.com>
-In-Reply-To: <20231219090909.2827497-1-alpic@google.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 22 Dec 2023 20:23:26 -0500
-Message-ID: <CAHC9VhTpc7SD0t-5AJ49+b-FMTx1svDBQcR7j6c1rmREUNW7gg@mail.gmail.com>
-Subject: Re: [PATCH] security: new security_file_ioctl_compat() hook
-To: Alfred Piccioni <alpic@google.com>
-Cc: Stephen Smalley <stephen.smalley.work@gmail.com>, Eric Paris <eparis@parisplace.org>, 
-	linux-security-module@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	stable@vger.kernel.org, selinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Casey Schaufler <casey@schaufler-ca.com>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.264-60-g916cdb04c4900
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.264-60-g916cdb04c4900)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Tue, Dec 19, 2023 at 4:09=E2=80=AFAM Alfred Piccioni <alpic@google.com> =
-wrote:
->
-> Some ioctl commands do not require ioctl permission, but are routed to
-> other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
-> done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
->
-> However, if a 32-bit process is running on a 64-bit kernel, it emits
-> 32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
-> being checked erroneously, which leads to these ioctl operations being
-> routed to the ioctl permission, rather than the correct file
-> permissions.
->
-> This was also noted in a RED-PEN finding from a while back -
-> "/* RED-PEN how should LSM module know it's handling 32bit? */".
->
-> This patch introduces a new hook, security_file_ioctl_compat, that is
-> called from the compat ioctl syscall. All current LSMs have been changed
-> to support this hook.
->
-> Reviewing the three places where we are currently using
-> security_file_ioctl, it appears that only SELinux needs a dedicated
-> compat change; TOMOYO and SMACK appear to be functional without any
-> change.
->
-> Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
-> Signed-off-by: Alfred Piccioni <alpic@google.com>
-> Cc: stable@vger.kernel.org
-> ---
->  fs/ioctl.c                    |  3 +--
->  include/linux/lsm_hook_defs.h |  2 ++
->  include/linux/security.h      |  7 +++++++
->  security/security.c           | 17 +++++++++++++++++
->  security/selinux/hooks.c      | 28 ++++++++++++++++++++++++++++
->  security/smack/smack_lsm.c    |  1 +
->  security/tomoyo/tomoyo.c      |  1 +
->  7 files changed, 57 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/ioctl.c b/fs/ioctl.c
-> index f5fd99d6b0d4..76cf22ac97d7 100644
-> --- a/fs/ioctl.c
-> +++ b/fs/ioctl.c
-> @@ -920,8 +920,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsig=
-ned int, cmd,
->         if (!f.file)
->                 return -EBADF;
->
-> -       /* RED-PEN how should LSM module know it's handling 32bit? */
-> -       error =3D security_file_ioctl(f.file, cmd, arg);
-> +       error =3D security_file_ioctl_compat(f.file, cmd, arg);
->         if (error)
->                 goto out;
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.264-60-g916cdb04c4900)
 
-This is interesting ... if you look at the normal ioctl() syscall
-definition in the kernel you see 'ioctl(unsigned int fd, unsigned int
-cmd, unsigned long arg)' and if you look at the compat definition you
-see 'ioctl(unsigned int fd, unsigned int cmd, compat_ulong_t arg)'.  I
-was expecting the second parameter, @cmd, to be a long type in the
-normal definition, but it is an int type in both cases.  It looks like
-it has been that way long enough that it is correct, but I'm a little
-lost ...
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.264-60-g916cdb04c4900/
 
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.=
-h
-> index ac962c4cb44b..626aa8cf930d 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -171,6 +171,8 @@ LSM_HOOK(int, 0, file_alloc_security, struct file *fi=
-le)
->  LSM_HOOK(void, LSM_RET_VOID, file_free_security, struct file *file)
->  LSM_HOOK(int, 0, file_ioctl, struct file *file, unsigned int cmd,
->          unsigned long arg)
-> +LSM_HOOK(int, 0, file_ioctl_compat, struct file *file, unsigned int cmd,
-> +        unsigned long arg)
->  LSM_HOOK(int, 0, mmap_addr, unsigned long addr)
->  LSM_HOOK(int, 0, mmap_file, struct file *file, unsigned long reqprot,
->          unsigned long prot, unsigned long flags)
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 5f16eecde00b..22a82b7c59f1 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -389,6 +389,7 @@ int security_file_permission(struct file *file, int m=
-ask);
->  int security_file_alloc(struct file *file);
->  void security_file_free(struct file *file);
->  int security_file_ioctl(struct file *file, unsigned int cmd, unsigned lo=
-ng arg);
-> +int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsi=
-gned long arg);
->  int security_mmap_file(struct file *file, unsigned long prot,
->                         unsigned long flags);
->  int security_mmap_addr(unsigned long addr);
-> @@ -987,6 +988,12 @@ static inline int security_file_ioctl(struct file *f=
-ile, unsigned int cmd,
->         return 0;
->  }
->
-> +static inline int security_file_ioctl_compat(struct file *file, unsigned=
- int cmd,
-> +                                     unsigned long arg)
-> +{
-> +       return 0;
-> +}
-> +
->  static inline int security_mmap_file(struct file *file, unsigned long pr=
-ot,
->                                      unsigned long flags)
->  {
-> diff --git a/security/security.c b/security/security.c
-> index 23b129d482a7..5c16ffc99b1e 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -2648,6 +2648,23 @@ int security_file_ioctl(struct file *file, unsigne=
-d int cmd, unsigned long arg)
->  }
->  EXPORT_SYMBOL_GPL(security_file_ioctl);
->
-> +/**
-> + * security_file_ioctl_compat() - Check if an ioctl is allowed in 32-bit=
- compat mode
-> + * @file: associated file
-> + * @cmd: ioctl cmd
-> + * @arg: ioctl arguments
-> + *
-> + * Compat version of security_file_ioctl() that correctly handles 32-bit=
- processes
-> + * running on 64-bit kernels.
-> + *
-> + * Return: Returns 0 if permission is granted.
-> + */
-> +int security_file_ioctl_compat(struct file *file, unsigned int cmd, unsi=
-gned long arg)
-> +{
-> +       return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
-> +}
-> +EXPORT_SYMBOL_GPL(security_file_ioctl_compat);
-> +
->  static inline unsigned long mmap_prot(struct file *file, unsigned long p=
-rot)
->  {
->         /*
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 2aa0e219d721..c617ae21dba8 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -3731,6 +3731,33 @@ static int selinux_file_ioctl(struct file *file, u=
-nsigned int cmd,
->         return error;
->  }
->
-> +static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd=
-,
-> +                             unsigned long arg)
-> +{
-> +       /*
-> +        * If we are in a 64-bit kernel running 32-bit userspace, we need=
- to make
-> +        * sure we don't compare 32-bit flags to 64-bit flags.
-> +        */
-> +       switch (cmd) {
-> +       case FS_IOC32_GETFLAGS:
-> +               cmd =3D FS_IOC_GETFLAGS;
-> +               break;
-> +       case FS_IOC32_SETFLAGS:
-> +               cmd =3D FS_IOC_SETFLAGS;
-> +               break;
-> +       case FS_IOC32_GETVERSION:
-> +               cmd =3D FS_IOC_GETVERSION;
-> +               break;
-> +       case FS_IOC32_SETVERSION:
-> +               cmd =3D FS_IOC_SETVERSION;
-> +               break;
-> +       default:
-> +               break;
-> +       }
-> +
-> +       return selinux_file_ioctl(file, cmd, arg);
-> +}
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.264-60-g916cdb04c4900
+Git Commit: 916cdb04c490068318d9edc57354b936e786ddd9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Is it considered valid for a native 64-bit task to use 32-bit
-FS_IO32_XXX flags?  If not, do we want to remove the FS_IO32_XXX flag
-checks in selinux_file_ioctl()?
+Warnings Detected:
 
->  static int default_noexec __ro_after_init;
->
->  static int file_map_prot_check(struct file *file, unsigned long prot, in=
-t shared)
-> @@ -7036,6 +7063,7 @@ static struct security_hook_list selinux_hooks[] __=
-ro_after_init =3D {
->         LSM_HOOK_INIT(file_permission, selinux_file_permission),
->         LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
->         LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
-> +       LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
->         LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
->         LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
->         LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
-> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-> index 65130a791f57..1f1ea8529421 100644
-> --- a/security/smack/smack_lsm.c
-> +++ b/security/smack/smack_lsm.c
-> @@ -4973,6 +4973,7 @@ static struct security_hook_list smack_hooks[] __ro=
-_after_init =3D {
->
->         LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
->         LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
-> +       LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
->         LSM_HOOK_INIT(file_lock, smack_file_lock),
->         LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
->         LSM_HOOK_INIT(mmap_file, smack_mmap_file),
-> diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
-> index 25006fddc964..298d182759c2 100644
-> --- a/security/tomoyo/tomoyo.c
-> +++ b/security/tomoyo/tomoyo.c
-> @@ -568,6 +568,7 @@ static struct security_hook_list tomoyo_hooks[] __ro_=
-after_init =3D {
->         LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
->         LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
->         LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
-> +       LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
->         LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
->         LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
->         LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
+arc:
 
-I agree that it looks like Smack and TOMOYO should be fine, but I
-would like to hear from Casey and Tetsuo to confirm.
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
---=20
-paul-moore.com
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
