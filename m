@@ -1,109 +1,214 @@
-Return-Path: <stable+bounces-8427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D036581DC4B
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 21:10:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D384281DC5F
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 21:45:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03D9B1C21271
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 20:10:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6164A1F21643
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 20:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F0CDF57;
-	Sun, 24 Dec 2023 20:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D3CD2EE;
+	Sun, 24 Dec 2023 20:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="WBiU3PqA"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="KpZXWfhJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC565DDB6
-	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 20:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-4b71f735969so361971e0c.2
-        for <stable@vger.kernel.org>; Sun, 24 Dec 2023 12:09:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D59DFBE7
+	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 20:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-35fd9e40039so15671175ab.1
+        for <stable@vger.kernel.org>; Sun, 24 Dec 2023 12:45:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1703448597; x=1704053397; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Wwa4i2sQcNHaHPebPXB7JmpfvXbtVVdhZXHxe6sJ2Hg=;
-        b=WBiU3PqA4kSgs4Jgu7ud73YLfg6JpcE+TjZWk1JLra7NEKy8Sh634DouirgB7vioPf
-         UOGFWhg1/9VaRBDZ7GjKvdmWdiFSZKwiCZnPa/jsfNP/ZoLdqGtHTNbA9I6dVsM6AclD
-         8Lx7zOcDFcu9S5KqtF9Zj8Y8SLaE2pe7VWS2+53NQJhlpkYd/25UBUf2DHfevt/raA+Y
-         wJYI5bIbhulQjPGWohGZNHxamODmiyPb1y5Kd3Ynja7gYbm3/qJDlCl3VqEfoswRK69O
-         TwvdV3avFG9JqIkV6i3NxLmyrg6LcAN5ImBttqf/MC/ESxkOV2JpiNo6+5mPl4xbrYdE
-         NsUw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703450726; x=1704055526; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=M3Uy3bprJteVg+3lKvGZPZ//VyHJe2768FomErTqWyE=;
+        b=KpZXWfhJIpxb1SIBxq4+YMNBB+Tu9giNseVz0OUXfR8uZilpyPRptupHsyEh9eNcOh
+         D5rxjNG4h/PYxBtCeP3UC8jO1kYKjy22lXYJcGt7Tmkr/G6gvx5SOa2jE5ok8Ll9icMm
+         JSF1u0+SFCt1/BhD+Jz1wxNIJCXM7t5r7hLJeJiduBI9tJxjni7o+0z1+qxNOaPO8VJ3
+         6T0DcTXVD3BKxjXj9gDxKoilPCapkop9MeiNd1MHhAEf2ahmi7UfklDe/8YqHfyqcsxj
+         z4fDRTRCeYstHPNt7I/RwIlSkqlHHuXiMCPgwzIiUf2kILTZ32+fyYBaYLXNYNHUB5Ce
+         TRUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703448597; x=1704053397;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Wwa4i2sQcNHaHPebPXB7JmpfvXbtVVdhZXHxe6sJ2Hg=;
-        b=DlN32x3xC6t1E6ZevVM/Ylt0mnn147O7Cqv6dyRXrEUHaUHlb2AlCcJkr4b938m8pu
-         dhLBj+fTIYAg7UZzdIOKVCwSC8Iz25yhVNw5uL1DlG4AU2OMfm2hHZZ5pUKrXiuZkwP1
-         NvnWXQmrbW8HKIy/bp17b6P94ohTCQI3vJ1Ays1IbEpAdENMIVlgO2Gn+A/wCANQWZhp
-         hXySQX6jsPbKBOrOItC5N9SdSVMqKJ7ByZAVjYH0+tzjsdF/wAHJiywDqgnXxMLAi/sO
-         VsNSgpzJG28C27GY46u/8RrSVXqtLVu9UnNhm0Cm7Z51JCcFQw+x7oa69gOWWIEhTV2L
-         Mjdw==
-X-Gm-Message-State: AOJu0YwqCoBMOHYqPfz+fOdZP+pmsKIV4omPIbFNINcJiASLpzwWvT4D
-	JhhWzYbOzIEXG4eLCEVtQruH91Ls7ARkxUCuB9gM2wy+itkC
-X-Google-Smtp-Source: AGHT+IGauJFx9VUqFigiARR83mRm8QOMsq0OQC9u9Mv8DCQsBXCXvbj6mjeB+wom/UI6tOGYn6anKpU3EOHGDTbp31M=
-X-Received: by 2002:a05:6102:1501:b0:467:432:4ec0 with SMTP id
- f1-20020a056102150100b0046704324ec0mr28150vsv.54.1703448596766; Sun, 24 Dec
- 2023 12:09:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703450726; x=1704055526;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M3Uy3bprJteVg+3lKvGZPZ//VyHJe2768FomErTqWyE=;
+        b=BgcGV+kq+mtGlCb2VDw7m2Md07GCGK3o0nwGcPVhIFyEPeBaitjqs1YKTTiSOYIBzc
+         EiRghwFggBCSppJ397EnWrZczAdATMm2n+SwiOTA8/fIfaDt1YIQoLYAes8MN/9L1l4I
+         C+2iRAqN53vtOEQTeWNaCqV2rG6FG1XUU1b/LVzTdu3B6d54h67iKfRfp1pk/8yeMUuA
+         Cef6zHch4KjYkfCZhXqef5hl2ef79ysswVwyTASSXWJjzHRttZ7PedVQ7MZAa6Qeyeda
+         vZFI8iQgjxgG8K9OZRoX+oN/RojUCGQ7MmcK3ef1LZcvB4Q/ZQd9Zaxue16WFG5xKkba
+         1ucQ==
+X-Gm-Message-State: AOJu0YyATSX1/PJJd7bztZIbtK+HRauV3w6iZeYYOqKarjTmof12wxYo
+	OGJRwzQIxCLXXzxxZSVflNaAj4ZPU6xlw4Xt2JB8trE/JfM=
+X-Google-Smtp-Source: AGHT+IE7ZwZgG/ECC4sjx273cPUoG5whvDa/hIb6m8iGmH4AwGzhDFe+TFKzyp6i+Ei3TNWQkBQ2Gg==
+X-Received: by 2002:a05:6e02:1aa6:b0:35f:d2ae:3b2f with SMTP id l6-20020a056e021aa600b0035fd2ae3b2fmr8879034ilv.61.1703450726123;
+        Sun, 24 Dec 2023 12:45:26 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e12-20020a17090301cc00b001d052d1aaf2sm627427plh.101.2023.12.24.12.45.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Dec 2023 12:45:25 -0800 (PST)
+Message-ID: <65889865.170a0220.3e748.113b@mx.google.com>
+Date: Sun, 24 Dec 2023 12:45:25 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230906102557.3432236-1-alpic@google.com> <20231219090909.2827497-1-alpic@google.com>
- <CAHC9VhTpc7SD0t-5AJ49+b-FMTx1svDBQcR7j6c1rmREUNW7gg@mail.gmail.com>
- <20231223153411.GB901@quark.localdomain> <CAHC9VhRV9WN_pQgQUvkz7wb_oHO86JRV5r7twG6ropoJaR3Ujw@mail.gmail.com>
-In-Reply-To: <CAHC9VhRV9WN_pQgQUvkz7wb_oHO86JRV5r7twG6ropoJaR3Ujw@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Sun, 24 Dec 2023 15:09:45 -0500
-Message-ID: <CAHC9VhRgw+xphjO+vBUuf45DJMTau-PzRY_ZxqWxpg-K0u+pDA@mail.gmail.com>
-Subject: Re: [PATCH] security: new security_file_ioctl_compat() hook
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Alfred Piccioni <alpic@google.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Eric Paris <eparis@parisplace.org>, linux-security-module@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Casey Schaufler <casey@schaufler-ca.com>, Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.6
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.6.7-247-ga9715522c0820
+Subject: stable-rc/queue/6.6 baseline: 87 runs,
+ 3 regressions (v6.6.7-247-ga9715522c0820)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Sun, Dec 24, 2023 at 3:00=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
-> On Sat, Dec 23, 2023 at 10:34=E2=80=AFAM Eric Biggers <ebiggers@kernel.or=
-g> wrote:
-> > On Fri, Dec 22, 2023 at 08:23:26PM -0500, Paul Moore wrote:
-> > > Is it considered valid for a native 64-bit task to use 32-bit
-> > > FS_IO32_XXX flags?
-> >
-> > No, that's not valid.
->
-> Excellent, thank you.
->
-> > > If not, do we want to remove the FS_IO32_XXX flag
-> > > checks in selinux_file_ioctl()?
-> >
-> > I don't see any such flag checks in selinux_file_ioctl().
->
-> Neither do I ... I'm not sure what I was looking at when I made that
-> comment, I'm going to chalk that up to a bit of holiday fog.  Sorry
-> for the noise.
+stable-rc/queue/6.6 baseline: 87 runs, 3 regressions (v6.6.7-247-ga9715522c=
+0820)
 
-Ah ha, I think I found the problem - the tools I use to pull in
-patches for review seemed to have grabbed an old version of the patch
-that *did* as the 32-bit ioctl commands to selinux_file_ioctl().
+Regressions Summary
+-------------------
 
-https://lore.kernel.org/selinux/20230906102557.3432236-1-alpic@google.com/
+platform                    | arch  | lab           | compiler | defconfig =
+                 | regressions
+----------------------------+-------+---------------+----------+-----------=
+-----------------+------------
+mt8192-asurada-spherion-r0  | arm64 | lab-collabora | gcc-10   | defconfig+=
+arm64-chromebook | 1          =
 
---=20
-paul-moore.com
+mt8195-cherry-tomato-r2     | arm64 | lab-collabora | gcc-10   | defconfig+=
+arm64-chromebook | 1          =
+
+sun50i-h6-orangepi-one-plus | arm64 | lab-clabbe    | gcc-10   | defconfig =
+                 | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.6/kern=
+el/v6.6.7-247-ga9715522c0820/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.6
+  Describe: v6.6.7-247-ga9715522c0820
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      a9715522c08209efd55ae0f87268aedf54b78433 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform                    | arch  | lab           | compiler | defconfig =
+                 | regressions
+----------------------------+-------+---------------+----------+-----------=
+-----------------+------------
+mt8192-asurada-spherion-r0  | arm64 | lab-collabora | gcc-10   | defconfig+=
+arm64-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6588667813dae93e58e1361e
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8192-asurada-spherion-r0.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8192-asurada-spherion-r0.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6588667813dae93e58e13=
+61f
+        failing since 1 day (last pass: v6.6.7-236-g5f9f9b8ff175a, first fa=
+il: v6.6.7-236-g0ddffa163cd8) =
+
+ =
+
+
+
+platform                    | arch  | lab           | compiler | defconfig =
+                 | regressions
+----------------------------+-------+---------------+----------+-----------=
+-----------------+------------
+mt8195-cherry-tomato-r2     | arm64 | lab-collabora | gcc-10   | defconfig+=
+arm64-chromebook | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/658866361c01b37bc3e1379b
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+arm64-chromebook
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8195-cherry-tomato-r2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig+arm64-chromebook/gcc-10/lab-collabora/basel=
+ine-mt8195-cherry-tomato-r2.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/658866361c01b37bc3e13=
+79c
+        new failure (last pass: v6.6.7-246-g9ddf911049886) =
+
+ =
+
+
+
+platform                    | arch  | lab           | compiler | defconfig =
+                 | regressions
+----------------------------+-------+---------------+----------+-----------=
+-----------------+------------
+sun50i-h6-orangepi-one-plus | arm64 | lab-clabbe    | gcc-10   | defconfig =
+                 | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/65886569131c2185aae13475
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-orange=
+pi-one-plus.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.6/v6.6.7-247=
+-ga9715522c0820/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-orange=
+pi-one-plus.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/65886569131c2185aae13=
+476
+        new failure (last pass: v6.6.7-246-g9ddf911049886) =
+
+ =20
 
