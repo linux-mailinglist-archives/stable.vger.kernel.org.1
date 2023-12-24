@@ -1,190 +1,193 @@
-Return-Path: <stable+bounces-8409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EBA81D7FE
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 06:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BC981D8A7
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 11:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601932823EF
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 05:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBD22824BF
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 10:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBC2EC6;
-	Sun, 24 Dec 2023 05:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758261C29;
+	Sun, 24 Dec 2023 10:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fz6Iw3eo"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q/xDevEt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A18AEBC
-	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 05:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7811d1e68b0so249298285a.2
-        for <stable@vger.kernel.org>; Sat, 23 Dec 2023 21:29:07 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BE120F8
+	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 10:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40d4f5d902dso12705425e9.2
+        for <stable@vger.kernel.org>; Sun, 24 Dec 2023 02:11:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1703395747; x=1704000547; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ukn6wq48MkvO7qS7gVU86TrOCYSdxegt5caIV+L+HWQ=;
-        b=fz6Iw3eoeEuwjGNs5rDtbGBDS47ZFncSLd3lUSr9w9vbD+Xjl/VmnjWVjJERwnZmks
-         MlcRqf/oMdMXFfret4/VyKVNFzd2fY62KOp5RvWaeredFXIce1YVubQaP+RaB+QhTbXA
-         sEP48pRvFBsVSXmzs0OTnyON6u5TvppkevcWI=
+        d=linaro.org; s=google; t=1703412664; x=1704017464; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=wUc+VGzz0e0QDKg0efGo4jVLEcAKF7vo/7r2DSKdGbE=;
+        b=Q/xDevEtoDV30QWpJE0SMfHxFPbWgMNne7RaCLhhVep69xODpTeaivZk+4RPBrpHJU
+         bDEaJcuoyfx3Epr3lTkkgnn0jcGV3VLaxuxRwPfW4vYdNZe+BN16lGj6KylGAWw2CHCK
+         qew10FmSxEqn6mvrqeZtUMMIORTVK/AjPrMq/I7pU2GLYG0mH3OBdiOTnYTcqt2lVQpx
+         q87gy35yyYT+JElB3191YiJUp230fi/sStVP333WL4ArDJjl2UNoJBj2GFd1TT/bw0V6
+         KBmoeTtsdPlkNQabbe5LvFs5NPITECZb0kB3CnEpkoiY3C3ufZKQkvMlyuNPgnUPp+FH
+         V4nQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703395747; x=1704000547;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ukn6wq48MkvO7qS7gVU86TrOCYSdxegt5caIV+L+HWQ=;
-        b=BbOTUB7nZxcan0ovrfCtiR9S2aVMx8UkFsIVJePe+0oIY5Ak5OJ15nGhwBn47fTWEW
-         2FPNfzqBCA8ewnWhQNbEnmibM2l8I2VsftSl1rRSqEJcJvoXHWDTa+pECUJV4yQfk8uY
-         4ob11vWTgl+tX9WE1I7ewExnLoOGhg6cCKMVZVIYwYT1lxF/k1EOp6KaobQh+QRsE5ej
-         Q8BcFwTwPLYriAfwwAZNg7yRph++8ecNgxGnkpZ46CA6e7e0xR+XvGel+/UA/sEhgfrD
-         BB/03LEPiIjz0dFYoaaJiQaDW4XmNyRsVNO6LHxG5HoD3svhbYwUYCRXrErMAlfahOhg
-         Br2g==
-X-Gm-Message-State: AOJu0Ywe/T9NeoaI5nIg1ohOZv6B8OOFlfwQOE45vK4sNtID4Ui9fpAS
-	3y+w5jEqGqdQ2UgPwH3bqsTLPkYhWBCM
-X-Google-Smtp-Source: AGHT+IFSWxEmsXvZETHfzvnWJylc1kKnl1OFl+uBP8OXntgfB+IQK4PUNRRzcDD8iGRTIrV03qJ3dg==
-X-Received: by 2002:ae9:f80f:0:b0:77d:c2ef:9ecf with SMTP id x15-20020ae9f80f000000b0077dc2ef9ecfmr4578151qkh.51.1703395746813;
-        Sat, 23 Dec 2023 21:29:06 -0800 (PST)
-Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
-        by smtp.gmail.com with ESMTPSA id l25-20020a05620a0c1900b0077dc7a029bfsm2504529qki.100.2023.12.23.21.29.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Dec 2023 21:29:06 -0800 (PST)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Zack Rusin <zack.rusin@broadcom.com>,
-	Stefan Hoffmeister <stefan.hoffmeister@econos.de>,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: Unmap the surface before resetting it on a plane state
-Date: Sun, 24 Dec 2023 00:25:40 -0500
-Message-Id: <20231224052540.605040-1-zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.40.1
+        d=1e100.net; s=20230601; t=1703412664; x=1704017464;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wUc+VGzz0e0QDKg0efGo4jVLEcAKF7vo/7r2DSKdGbE=;
+        b=PMafpHsJIlqcQC2nPUz3a181hHL5ThDGTdjxP+LbH4dukUF9EsmG3l4wR7O8t3dPmf
+         TWdz2/SxdW2taXUvc+9VbtIGYC2xIwGp/n7XFXZkRyUU6APh4V8wyUY7DKgvhSLiFSTH
+         lHsU+s9Dpqd7y+CPq/or3S+7/Ug7GxkvktgND6ezZl6hl9N9Tnecbytgl8i3hEWnh6R7
+         s9sSh/RQ8RSl7BJ2crMTku13KVI4ieKgVsc4IH/Bh5UIm2lVF6AbQ+NKKQRFVm2LPvKG
+         L4wdLj/eTll4tcSckg5mHCqL3VZO970hS8JnBrTI7uG0GtVDRCxwY1Fkr25PIbEuUJU7
+         dtGQ==
+X-Gm-Message-State: AOJu0Yw/+P+88bmBp4lFiqLiy/u2DnLkcdCGkajmS4NQQCV3pKKYY3Kw
+	17QFSrKm2cE3w/U0PR5NG47LUD4KrmQgTw==
+X-Google-Smtp-Source: AGHT+IEn2GjtswEPW9gGypF7uYSa2XrydRyJvpI8CBOa06+jSFJK9r/jtx4YCtWCho2ru1s9ifkKfw==
+X-Received: by 2002:a05:600c:2218:b0:40d:3bed:d868 with SMTP id z24-20020a05600c221800b0040d3bedd868mr2444837wml.14.1703412663596;
+        Sun, 24 Dec 2023 02:11:03 -0800 (PST)
+Received: from [192.168.0.22] ([78.10.206.178])
+        by smtp.gmail.com with ESMTPSA id w25-20020a170906481900b00a26ac253486sm3191092ejq.134.2023.12.24.02.11.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 24 Dec 2023 02:11:03 -0800 (PST)
+Message-ID: <93da765f-44c8-4023-b416-eae617d5ed74@linaro.org>
+Date: Sun, 24 Dec 2023 11:11:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media:fimc-capture: Fix a possible data inconsistency due
+ to a data race in fimc_subdev_set_fmt()
+To: Tuo Li <islituo@gmail.com>, s.nawrocki@samsung.com, mchehab@kernel.org,
+ alim.akhtar@samsung.com
+Cc: linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ baijiaju1990@gmail.com, stable@vger.kernel.org, BassCheck <bass@buaa.edu.cn>
+References: <20231223164351.3521588-1-islituo@gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20231223164351.3521588-1-islituo@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Switch to a new plane state requires unreferencing of all held surfaces.
-In the work required for mob cursors the mapped surfaces started being
-cached but the variable indicating whether the surface is currently
-mapped was not being reset. This leads to crashes as the duplicated
-state, incorrectly, indicates the that surface is mapped even when
-no surface is present. That's because after unreferencing the surface
-it's perfectly possible for the plane to be backed by a bo instead of a
-surface.
+On 23/12/2023 17:43, Tuo Li wrote:
+> Accesses to ctx->s_frame.width and ctx->s_frame.height should be protected
+> by the lock fimc->lock to guarantee that width and height are consistent.
+> Here is an example in fimc_subdev_get_fmt():
+> 
+>   struct fimc_frame *ff = &ctx->s_frame; // Alias
+>   mutex_lock(&fimc->lock);
+>   mf->width = ff->width;
+>   mf->height = ff->height;
+> 
+> However, ctx->s_frame.width and ctx->s_frame.height are accessed without 
+> holding the lock fimc->lock in fimc_subdev_set_fmt():
+> 
+>   mf->width = ctx->s_frame.width;
+>   mf->height = ctx->s_frame.height;
 
-Reset the surface mapped flag when unreferencing the plane state surface
-to fix null derefs in cleanup. Fixes crashes in KDE KWin 6.0 on Wayland:
+Other places setting parts of s_frame, like fimc_capture_try_format() or
+fimc_capture_try_selection(), do not have mutex.
 
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 4 PID: 2533 Comm: kwin_wayland Not tainted 6.7.0-rc3-vmwgfx #2
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
-RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
-Call Trace:
- <TASK>
- ? __die+0x23/0x70
- ? page_fault_oops+0x171/0x4e0
- ? exc_page_fault+0x7f/0x180
- ? asm_exc_page_fault+0x26/0x30
- ? vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
- drm_atomic_helper_cleanup_planes+0x9b/0xc0
- commit_tail+0xd1/0x130
- drm_atomic_helper_commit+0x11a/0x140
- drm_atomic_commit+0x97/0xd0
- ? __pfx___drm_printfn_info+0x10/0x10
- drm_atomic_helper_update_plane+0xf5/0x160
- drm_mode_cursor_universal+0x10e/0x270
- drm_mode_cursor_common+0x102/0x230
- ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
- drm_ioctl_kernel+0xb2/0x110
- drm_ioctl+0x26d/0x4b0
- ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
- ? __pfx_drm_ioctl+0x10/0x10
- vmw_generic_ioctl+0xa4/0x110 [vmwgfx]
- __x64_sys_ioctl+0x94/0xd0
- do_syscall_64+0x61/0xe0
- ? __x64_sys_ioctl+0xaf/0xd0
- ? syscall_exit_to_user_mode+0x2b/0x40
- ? do_syscall_64+0x70/0xe0
- ? __x64_sys_ioctl+0xaf/0xd0
- ? syscall_exit_to_user_mode+0x2b/0x40
- ? do_syscall_64+0x70/0xe0
- ? exc_page_fault+0x7f/0x180
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-RIP: 0033:0x7f1e93f279ed
-Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff f>
-RSP: 002b:00007ffca0faf600 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 000055db876ed2c0 RCX: 00007f1e93f279ed
-RDX: 00007ffca0faf6c0 RSI: 00000000c02464bb RDI: 0000000000000015
-RBP: 00007ffca0faf650 R08: 000055db87184010 R09: 0000000000000007
-R10: 000055db886471a0 R11: 0000000000000246 R12: 00007ffca0faf6c0
-R13: 00000000c02464bb R14: 0000000000000015 R15: 00007ffca0faf790
- </TASK>
-Modules linked in: snd_seq_dummy snd_hrtimer nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_ine>
-CR2: 0000000000000028
----[ end trace 0000000000000000 ]---
-RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
-RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
-Reported-by: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
-Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/34
-Cc: Martin Krastev <martin.krastev@broadcom.com>
-Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Cc: Ian Forbes <ian.forbes@broadcom.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.19+
----
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> 
+> And thus a harmful data race can occur, which can make ctx->s_frame.width
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 65ed9b061753..e7bbe4b05233 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -693,6 +693,10 @@ vmw_du_cursor_plane_prepare_fb(struct drm_plane *plane,
- 	int ret = 0;
- 
- 	if (vps->surf) {
-+		if (vps->surf_mapped) {
-+			vmw_bo_unmap(vps->surf->res.guest_memory_bo);
-+			vps->surf_mapped = false;
-+		}
- 		vmw_surface_unreference(&vps->surf);
- 		vps->surf = NULL;
- 	}
--- 
-2.40.1
+Harmful how?
+
+> inconsistent with ctx->s_frame.height, if ctx->s_frame.height is updated 
+> right after ctx->s_frame.width is accessed by another thread.
+> 
+> This possible bug is found by an experimental static analysis tool
+> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+> to extract function pairs that can be concurrently executed, and then
+> analyzes the instructions in the paired functions to identify possible
+> concurrency bugs including data races and atomicity violations. The above
+> possible bug is reported when our tool analyzes the source code of
+> Linux 6.2.
+> 
+> To fix this possible data race, the lock operation mutex_lock(&fimc->lock)
+> is moved to the front of the accesses to these two variables. With this 
+> patch applied, our tool no longer reports the bug, with the kernel 
+> configuration allyesconfig for x86_64. Due to the lack of associated 
+> hardware, we cannot test the patch in runtime testing, and just verify it 
+> according to the code logic.
+
+You wrote long four paragraphs which have basically almost zero relevant
+information, whether this locking is needed or not. Your bass
+description is not relevant... or actually making things worse because I
+am certain you are fixing it just to fix your report, not to fix real issue.
+
+> 
+> [1] https://sites.google.com/view/basscheck/
+
+Instead provide the report.
+
+> 
+> Fixes: 88fa8311ee36 ("[media] s5p-fimc: Add support for ISP Writeback ...")
+> Signed-off-by: Tuo Li <islituo@gmail.com>
+> Cc: stable@vger.kernel.org
+> Reported-by: BassCheck <bass@buaa.edu.cn>
+
+Run checkpatch, you will see the warning.
+
+
+Best regards,
+Krzysztof
 
 
