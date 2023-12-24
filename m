@@ -1,193 +1,169 @@
-Return-Path: <stable+bounces-8410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BC981D8A7
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 11:11:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BE881D8C6
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 11:50:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BBD22824BF
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 10:11:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6741C218A7
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 10:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758261C29;
-	Sun, 24 Dec 2023 10:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C6920F8;
+	Sun, 24 Dec 2023 10:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q/xDevEt"
+	dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b="WUFlNtP8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound-ip168b.ess.barracuda.com (outbound-ip168b.ess.barracuda.com [209.222.82.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BE120F8
-	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 10:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-40d4f5d902dso12705425e9.2
-        for <stable@vger.kernel.org>; Sun, 24 Dec 2023 02:11:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1703412664; x=1704017464; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUc+VGzz0e0QDKg0efGo4jVLEcAKF7vo/7r2DSKdGbE=;
-        b=Q/xDevEtoDV30QWpJE0SMfHxFPbWgMNne7RaCLhhVep69xODpTeaivZk+4RPBrpHJU
-         bDEaJcuoyfx3Epr3lTkkgnn0jcGV3VLaxuxRwPfW4vYdNZe+BN16lGj6KylGAWw2CHCK
-         qew10FmSxEqn6mvrqeZtUMMIORTVK/AjPrMq/I7pU2GLYG0mH3OBdiOTnYTcqt2lVQpx
-         q87gy35yyYT+JElB3191YiJUp230fi/sStVP333WL4ArDJjl2UNoJBj2GFd1TT/bw0V6
-         KBmoeTtsdPlkNQabbe5LvFs5NPITECZb0kB3CnEpkoiY3C3ufZKQkvMlyuNPgnUPp+FH
-         V4nQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703412664; x=1704017464;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wUc+VGzz0e0QDKg0efGo4jVLEcAKF7vo/7r2DSKdGbE=;
-        b=PMafpHsJIlqcQC2nPUz3a181hHL5ThDGTdjxP+LbH4dukUF9EsmG3l4wR7O8t3dPmf
-         TWdz2/SxdW2taXUvc+9VbtIGYC2xIwGp/n7XFXZkRyUU6APh4V8wyUY7DKgvhSLiFSTH
-         lHsU+s9Dpqd7y+CPq/or3S+7/Ug7GxkvktgND6ezZl6hl9N9Tnecbytgl8i3hEWnh6R7
-         s9sSh/RQ8RSl7BJ2crMTku13KVI4ieKgVsc4IH/Bh5UIm2lVF6AbQ+NKKQRFVm2LPvKG
-         L4wdLj/eTll4tcSckg5mHCqL3VZO970hS8JnBrTI7uG0GtVDRCxwY1Fkr25PIbEuUJU7
-         dtGQ==
-X-Gm-Message-State: AOJu0Yw/+P+88bmBp4lFiqLiy/u2DnLkcdCGkajmS4NQQCV3pKKYY3Kw
-	17QFSrKm2cE3w/U0PR5NG47LUD4KrmQgTw==
-X-Google-Smtp-Source: AGHT+IEn2GjtswEPW9gGypF7uYSa2XrydRyJvpI8CBOa06+jSFJK9r/jtx4YCtWCho2ru1s9ifkKfw==
-X-Received: by 2002:a05:600c:2218:b0:40d:3bed:d868 with SMTP id z24-20020a05600c221800b0040d3bedd868mr2444837wml.14.1703412663596;
-        Sun, 24 Dec 2023 02:11:03 -0800 (PST)
-Received: from [192.168.0.22] ([78.10.206.178])
-        by smtp.gmail.com with ESMTPSA id w25-20020a170906481900b00a26ac253486sm3191092ejq.134.2023.12.24.02.11.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Dec 2023 02:11:03 -0800 (PST)
-Message-ID: <93da765f-44c8-4023-b416-eae617d5ed74@linaro.org>
-Date: Sun, 24 Dec 2023 11:11:00 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3455020FA;
+	Sun, 24 Dec 2023 10:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ddn.com
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2169.outbound.protection.outlook.com [104.47.73.169]) by mx-outbound22-58.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Sun, 24 Dec 2023 10:49:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KngvBWb+PmbuF1XkqH4w2y3FZePt4KkvJYro2ed4qO3BliOMWx2OjZeSvUarKgfITIJKJL/ZWrcGUjDhxnBKPSvxhoAAvP7Xm5DBEtzANYKz188aZ1X4M5OQCmMQzngW1H+QWOcgsK6cMjw96WT279nzJOZsV7ifV3NXBc5XfgtbliiDYAPcX52fCbWm5/bYUZ4DuomkAlNmDXijwlXHjbZgm0YvZw0qrl4Z25hbmm1hf23GLCath72KAL+tkVB1FQwhxXlSnIVTmkKsn1/ZDWfyW0RdA+tncQPYZOx91GZoNm6Yse5wkWlBAXbHp/7WdpAlBixQTe8Q0dNJtZ4OLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bFmWOcQ5bLEZvSGFgGcd1Y7BisfNVQzPPuC+ciLqEuA=;
+ b=TVMO+O6vsNQzVx9uZm9jpPBu8C5QBNOnu0GzFS8lXAHq87ervCYHFsWsoev8kA6K8ayPRml+s9u3261VydiMFUTp9hm423ygQmRigPnx6NkoBM9SLQP1RU3yTvQ84OnVkzSJlswy7LqBlABQeC3iDpgSm+ya3IYkPguMwtCvgZimKqA/Wib2HJ3D6a5LGiY0eKIEW+xePEWMYs3lxVIJEtZ5gWtJmCx4adEgUpOmxMvzqspg2jXQFs0NHwt7I0MeVee4ZuFoX56MB843A6ihK9JheDjJHXmU7PDHD2lKwoTAtx7Fbs+4CHOaxgdLa94U6N63OG3j5VAr7hETYph2dw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 50.222.100.11) smtp.rcpttodomain=ddn.com smtp.mailfrom=ddn.com; dmarc=pass
+ (p=reject sp=reject pct=100) action=none header.from=ddn.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bFmWOcQ5bLEZvSGFgGcd1Y7BisfNVQzPPuC+ciLqEuA=;
+ b=WUFlNtP8yjpBBULbd+JKa8TgWFFFMXQQlznAoQ2NSZKwGcw0cyQY8ANOHRMUnnzzUFxaP3y7xglkjdhpAqrsz2NNiGPSnNhqKECXkEEVs7tT2W11gShKJlsDlKI1TXAcTW9qqksgCY6EDmg+0HVu7X3VZb4b+o+p2xoE62SJdig=
+Received: from DM6PR13CA0035.namprd13.prod.outlook.com (2603:10b6:5:bc::48) by
+ PH7PR19MB8185.namprd19.prod.outlook.com (2603:10b6:510:2f9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.24; Sun, 24 Dec
+ 2023 10:49:45 +0000
+Received: from DM6NAM04FT044.eop-NAM04.prod.protection.outlook.com
+ (2603:10b6:5:bc:cafe::35) by DM6PR13CA0035.outlook.office365.com
+ (2603:10b6:5:bc::48) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.12 via Frontend
+ Transport; Sun, 24 Dec 2023 10:49:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 50.222.100.11)
+ smtp.mailfrom=ddn.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ddn.com;
+Received-SPF: Pass (protection.outlook.com: domain of ddn.com designates
+ 50.222.100.11 as permitted sender) receiver=protection.outlook.com;
+ client-ip=50.222.100.11; helo=uww-mx01.datadirectnet.com; pr=C
+Received: from uww-mx01.datadirectnet.com (50.222.100.11) by
+ DM6NAM04FT044.mail.protection.outlook.com (10.13.159.138) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7135.14 via Frontend Transport; Sun, 24 Dec 2023 10:49:44 +0000
+Received: from localhost (unknown [10.68.0.8])
+	by uww-mx01.datadirectnet.com (Postfix) with ESMTP id 7A75620C684C;
+	Sun, 24 Dec 2023 03:50:46 -0700 (MST)
+From: Bernd Schubert <bschubert@ddn.com>
+To: linux-fsdevel@vger.kernel.org
+Cc: bernd.schubert@fastmail.fm,
+	miklos@szeredi.hu,
+	dsingh@ddn.com,
+	amir73il@gmail.com,
+	Bernd Schubert <bschubert@ddn.com>,
+	Hao Xu <howeyxu@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
+Date: Sun, 24 Dec 2023 11:49:11 +0100
+Message-Id: <20231224104914.49316-2-bschubert@ddn.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231224104914.49316-1-bschubert@ddn.com>
+References: <20231224104914.49316-1-bschubert@ddn.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media:fimc-capture: Fix a possible data inconsistency due
- to a data race in fimc_subdev_set_fmt()
-To: Tuo Li <islituo@gmail.com>, s.nawrocki@samsung.com, mchehab@kernel.org,
- alim.akhtar@samsung.com
-Cc: linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org, BassCheck <bass@buaa.edu.cn>
-References: <20231223164351.3521588-1-islituo@gmail.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231223164351.3521588-1-islituo@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM04FT044:EE_|PH7PR19MB8185:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 388a6288-fc7f-485e-15b6-08dc046e0a76
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	AJxU6R1+PlynnzrRI7InELZDpJJ43dw6BwNp/Zy5cObkO6K4iS+i6k8NM4X/RZgmiQxBYGJnWXyTX+nZyLNrBHxRacYfN5NJJApcfsEjK62oRVzJ44+DchDTXqKFNcGaIcSXSnz25FW1nNyuZBT4qfmi3zxV9mC0VFHGUr4F5KNm94/c1P0soGDz5I/uZb3zp3YyBZYew4hsMBFuYt4mqKA4qiunS8dv0TrEzDblhVx1RT84kt80DXjCElOIHF5J1/zr/4xj+ayEURg/4Nqiwef4GOiIFo6sAh98SszUAsUunRqBJCFwgWTQlMDOhrFpDyZfRqx4gXOLBiQikAN6T7+k3beLoCccJAdL0CpRV2n1Gg+YFrOcQYLeMf/Pot+1NndkYLxcGnh9wST7vgkixB7GCLvhW34J/WPvEDasnhZmHVs1GxfsHKSievLwePBsOUbElL7MpQehRBJIYBQ2H2DphBuAa0BisRfiY/EwClAW5ZRTaCdJvQfX2i0TaidSUdJn7ROBdeVIfzMhfUVkKkgkIzLOcS7n72pU+lLcNWQaavL0vAzwrtWcmXwzfTektDGdHZEmac6NSp5cVrGnXZHIUEc8JXkqqe3Fl+iILxT1NuBq3DyesON6GZMmZtLWC/6nPlN7VPfeSQZK0rzMoNXHK2Ets+jv2h1hy9JRY6yn7+3MoTMB98kIcM7KHppOedcvf+xdVfpWkrbskcktC0kpliQiJQotaYsKsSqiJYd+XnOpZzS7o9dtgZ0kwuR4EqNXSnXmjJVY3VuCcNdfG7+lY8KAPZWxinqWQBDLalY=
+X-Forefront-Antispam-Report:
+	CIP:50.222.100.11;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:uww-mx01.datadirectnet.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39840400004)(346002)(376002)(396003)(136003)(230922051799003)(230173577357003)(230273577357003)(1800799012)(64100799003)(451199024)(186009)(82310400011)(36840700001)(46966006)(2906002)(6666004)(478600001)(4326008)(8936002)(8676002)(6916009)(316002)(54906003)(70586007)(70206006)(5660300002)(86362001)(47076005)(83380400001)(36860700001)(336012)(6266002)(40480700001)(81166007)(36756003)(41300700001)(356005)(2616005)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	YoqzXS4kKwYAEQ8jSrUbHljJmX60VTzCtGM5ZjlYCz7JUDir7tK6LLqhRkRqzb9lQvsII2qZXyVi2ATb3YQQiDgWJqQCBTOHK7TTIBkYJCkKk4UmTfxM0zR7WNBMq1y35qAQJ/CxV2V5RFB6XsF1vgeBa44Vv50wI+ScFA0noEDMdn3Ctk62n++B7lGd/nFWuhX9/psmNpMU4Fwpdl6XoqeZWXb8n6ftNU9mFMiHdPJYc7nFcrHQa0HeydMU0UxMBdrLpYLS3aQOWDKk11C0jc5wdppFPVVORDgZUuenpH+wN7F5rVx6yRI2X2Yy+GAAG1RewX3h89X4eQmXLWRHOJ0ShUqYiWaEtf9BoRGMgUYegoHyzOXkD3/40xETmQsImkiTctDV2S1mflQ2lt0pemRSaRq1Bbfdfi1rWnVp8DDWXofKqd7245tWSufDqbbqbvA4ma6gFzn+xDmFI0KP1IZtzof+vMeVAROhf+Y1KuQe0f1rL+8KP5BIHoGg0oQjqJDv0VOHcwG0Bb2pn7O6uQO8fM/OQ/PoUvTBaOndxNaL2G4PAkkimPtSCAUhOScwx3SCGIT0Cy4oZglfiyBv6Se8o3d8SR21n123AxOx5o0GoHkUzSqaIbvO6ivpymyBBWNRjTfuwkkle8IYk5mD0g==
+X-OriginatorOrg: ddn.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2023 10:49:44.7411
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 388a6288-fc7f-485e-15b6-08dc046e0a76
+X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=753b6e26-6fd3-43e6-8248-3f1735d59bb4;Ip=[50.222.100.11];Helo=[uww-mx01.datadirectnet.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DM6NAM04FT044.eop-NAM04.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR19MB8185
+X-BESS-ID: 1703414989-105690-12427-18446-1
+X-BESS-VER: 2019.1_20231221.2126
+X-BESS-Apparent-Source-IP: 104.47.73.169
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVoamxsZAVgZQ0MIgzcww0TjZ1N
+	jcwtLS2MjY0jQlJcUo0SzNxDjRyDRJqTYWAEFu/ZtBAAAA
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.253033 [from 
+	cloudscan21-10.us-east-2b.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status:1
 
-On 23/12/2023 17:43, Tuo Li wrote:
-> Accesses to ctx->s_frame.width and ctx->s_frame.height should be protected
-> by the lock fimc->lock to guarantee that width and height are consistent.
-> Here is an example in fimc_subdev_get_fmt():
-> 
->   struct fimc_frame *ff = &ctx->s_frame; // Alias
->   mutex_lock(&fimc->lock);
->   mf->width = ff->width;
->   mf->height = ff->height;
-> 
-> However, ctx->s_frame.width and ctx->s_frame.height are accessed without 
-> holding the lock fimc->lock in fimc_subdev_set_fmt():
-> 
->   mf->width = ctx->s_frame.width;
->   mf->height = ctx->s_frame.height;
+There were multiple issues with direct_io_allow_mmap:
+- fuse_link_write_file() was missing, resulting in warnings in
+  fuse_write_file_get() and EIO from msync()
+- "vma->vm_ops = &fuse_file_vm_ops" was not set, but especially
+  fuse_page_mkwrite is needed.
 
-Other places setting parts of s_frame, like fimc_capture_try_format() or
-fimc_capture_try_selection(), do not have mutex.
+The semantics of invalidate_inode_pages2() is so far not clearly defined
+in fuse_file_mmap. It dates back to
+commit 3121bfe76311 ("fuse: fix "direct_io" private mmap")
+Though, as direct_io_allow_mmap is a new feature, that was for MAP_PRIVATE
+only. As invalidate_inode_pages2() is calling into fuse_launder_folio()
+and writes out dirty pages, it should be safe to call
+invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as well.
 
+Cc: Hao Xu <howeyxu@tencent.com>
+Cc: stable@vger.kernel.org
+Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+---
+ fs/fuse/file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> 
-> And thus a harmful data race can occur, which can make ctx->s_frame.width
-
-Harmful how?
-
-> inconsistent with ctx->s_frame.height, if ctx->s_frame.height is updated 
-> right after ctx->s_frame.width is accessed by another thread.
-> 
-> This possible bug is found by an experimental static analysis tool
-> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-> to extract function pairs that can be concurrently executed, and then
-> analyzes the instructions in the paired functions to identify possible
-> concurrency bugs including data races and atomicity violations. The above
-> possible bug is reported when our tool analyzes the source code of
-> Linux 6.2.
-> 
-> To fix this possible data race, the lock operation mutex_lock(&fimc->lock)
-> is moved to the front of the accesses to these two variables. With this 
-> patch applied, our tool no longer reports the bug, with the kernel 
-> configuration allyesconfig for x86_64. Due to the lack of associated 
-> hardware, we cannot test the patch in runtime testing, and just verify it 
-> according to the code logic.
-
-You wrote long four paragraphs which have basically almost zero relevant
-information, whether this locking is needed or not. Your bass
-description is not relevant... or actually making things worse because I
-am certain you are fixing it just to fix your report, not to fix real issue.
-
-> 
-> [1] https://sites.google.com/view/basscheck/
-
-Instead provide the report.
-
-> 
-> Fixes: 88fa8311ee36 ("[media] s5p-fimc: Add support for ISP Writeback ...")
-> Signed-off-by: Tuo Li <islituo@gmail.com>
-> Cc: stable@vger.kernel.org
-> Reported-by: BassCheck <bass@buaa.edu.cn>
-
-Run checkpatch, you will see the warning.
-
-
-Best regards,
-Krzysztof
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index a660f1f21540a..174aa16407c4b 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -2475,7 +2475,10 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 
+ 		invalidate_inode_pages2(file->f_mapping);
+ 
+-		return generic_file_mmap(file, vma);
++		if (!(vma->vm_flags & VM_MAYSHARE)) {
++			/* MAP_PRIVATE */
++			return generic_file_mmap(file, vma);
++		}
+ 	}
+ 
+ 	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
+-- 
+2.40.1
 
 
