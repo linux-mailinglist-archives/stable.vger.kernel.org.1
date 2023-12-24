@@ -1,329 +1,190 @@
-Return-Path: <stable+bounces-8408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C4481D6AD
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 23:01:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2EBA81D7FE
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 06:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22A951C20EE3
-	for <lists+stable@lfdr.de>; Sat, 23 Dec 2023 22:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 601932823EF
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 05:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF78168A8;
-	Sat, 23 Dec 2023 22:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBC2EC6;
+	Sun, 24 Dec 2023 05:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="0cDDlg1d"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fz6Iw3eo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C0C18B19
-	for <stable@vger.kernel.org>; Sat, 23 Dec 2023 22:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1d3ea5cc137so23521695ad.0
-        for <stable@vger.kernel.org>; Sat, 23 Dec 2023 14:01:03 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A18AEBC
+	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 05:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7811d1e68b0so249298285a.2
+        for <stable@vger.kernel.org>; Sat, 23 Dec 2023 21:29:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703368862; x=1703973662; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zO8jMQQYtaMR6GqoD27FHimJqM7nwWxuDe1/gQ5dSfE=;
-        b=0cDDlg1dppo6zDL7SzXSNLD+X12RfJrwzj6h4JQGyclMvvC0wvsbnTxkbhPXU80kI5
-         PIG0BSnv8cTxc6tc6lrzdbNHPNghFISmnaF+xu6xVaH++uxgcw+Ig1+d5ZDKULIzBX9U
-         5GqHmospHT+ZuqcM2I/lSDzdlZT4wiOwcZtPxyP98aSpDnHnL6Pns7P6Z3XEZNiGj0AI
-         PIfX/ZU9uoq9sUj40rvoUw/4DErNoeq+NlMNlGs78w2ADwbznYZtU4Y3lCYjQ7Tu9uo7
-         KdOn2I3V1zAdirLkG6+KQ3Sz82vBVXTpF05+G/lVTjQDwjzVfhzq1R5bLSis8hdzWQlU
-         4CRA==
+        d=broadcom.com; s=google; t=1703395747; x=1704000547; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ukn6wq48MkvO7qS7gVU86TrOCYSdxegt5caIV+L+HWQ=;
+        b=fz6Iw3eoeEuwjGNs5rDtbGBDS47ZFncSLd3lUSr9w9vbD+Xjl/VmnjWVjJERwnZmks
+         MlcRqf/oMdMXFfret4/VyKVNFzd2fY62KOp5RvWaeredFXIce1YVubQaP+RaB+QhTbXA
+         sEP48pRvFBsVSXmzs0OTnyON6u5TvppkevcWI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703368862; x=1703973662;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1703395747; x=1704000547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zO8jMQQYtaMR6GqoD27FHimJqM7nwWxuDe1/gQ5dSfE=;
-        b=UrIrVcB6iuNolxal0dQiLIzZvaEHuaWMMT+kqmi/XwC89Pz6o3hgTYc2RdW5VQMr0J
-         Y5c8r7iX1cWKTQGo4JOjhr/7RRD9ju4yHTkd0qfiBDsM5l0AJYxRsvIhTmgsCyxz0Bcz
-         EXzSxHRKlJblcggnRLLCkwmMct6hzeK2ywU2ytxg/zNDCSkbPO5lz4UlG4phdOo+H8et
-         uDUd2OLrbqXZ8pzgPQBFOVk+zWbQ7mOJfXCgywn6iNFoheTSBEhOSBzlxs/sSyIykLSj
-         MoWxE/4vmH9dbUm9DsBmn5fROKRdGjYnzLlUzh338SE6qkW5FWx+cIwHpfEUUzJt7PnM
-         lETw==
-X-Gm-Message-State: AOJu0YzRAguNIclg1EDNDDHbpi3krPJO9edG/nLT36Kqx/aVenQYwiUb
-	OCb6i8CQsPtyFU+G+WDeDGW65nm98NoykztEo65q9Jz5PD4=
-X-Google-Smtp-Source: AGHT+IGEyoS5NSYyNGQ3otUmoFe85fyc2UY5XWkgbtOZ0jI/+hGk52zZc4E7Fqph9bGZRdno7wmLog==
-X-Received: by 2002:a17:902:e541:b0:1d3:ac23:b511 with SMTP id n1-20020a170902e54100b001d3ac23b511mr4439107plf.54.1703368862153;
-        Sat, 23 Dec 2023 14:01:02 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id a2-20020a170902ee8200b001d362b6b0eesm5560834pld.168.2023.12.23.14.01.01
+        bh=ukn6wq48MkvO7qS7gVU86TrOCYSdxegt5caIV+L+HWQ=;
+        b=BbOTUB7nZxcan0ovrfCtiR9S2aVMx8UkFsIVJePe+0oIY5Ak5OJ15nGhwBn47fTWEW
+         2FPNfzqBCA8ewnWhQNbEnmibM2l8I2VsftSl1rRSqEJcJvoXHWDTa+pECUJV4yQfk8uY
+         4ob11vWTgl+tX9WE1I7ewExnLoOGhg6cCKMVZVIYwYT1lxF/k1EOp6KaobQh+QRsE5ej
+         Q8BcFwTwPLYriAfwwAZNg7yRph++8ecNgxGnkpZ46CA6e7e0xR+XvGel+/UA/sEhgfrD
+         BB/03LEPiIjz0dFYoaaJiQaDW4XmNyRsVNO6LHxG5HoD3svhbYwUYCRXrErMAlfahOhg
+         Br2g==
+X-Gm-Message-State: AOJu0Ywe/T9NeoaI5nIg1ohOZv6B8OOFlfwQOE45vK4sNtID4Ui9fpAS
+	3y+w5jEqGqdQ2UgPwH3bqsTLPkYhWBCM
+X-Google-Smtp-Source: AGHT+IFSWxEmsXvZETHfzvnWJylc1kKnl1OFl+uBP8OXntgfB+IQK4PUNRRzcDD8iGRTIrV03qJ3dg==
+X-Received: by 2002:ae9:f80f:0:b0:77d:c2ef:9ecf with SMTP id x15-20020ae9f80f000000b0077dc2ef9ecfmr4578151qkh.51.1703395746813;
+        Sat, 23 Dec 2023 21:29:06 -0800 (PST)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id l25-20020a05620a0c1900b0077dc7a029bfsm2504529qki.100.2023.12.23.21.29.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Dec 2023 14:01:01 -0800 (PST)
-Message-ID: <6587589d.170a0220.2884.010c@mx.google.com>
-Date: Sat, 23 Dec 2023 14:01:01 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 23 Dec 2023 21:29:06 -0800 (PST)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Zack Rusin <zack.rusin@broadcom.com>,
+	Stefan Hoffmeister <stefan.hoffmeister@econos.de>,
+	Martin Krastev <martin.krastev@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/vmwgfx: Unmap the surface before resetting it on a plane state
+Date: Sun, 24 Dec 2023 00:25:40 -0500
+Message-Id: <20231224052540.605040-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v6.1.68-153-g6433185371d8
-Subject: stable-rc/queue/6.1 baseline: 110 runs,
- 4 regressions (v6.1.68-153-g6433185371d8)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
+
+Switch to a new plane state requires unreferencing of all held surfaces.
+In the work required for mob cursors the mapped surfaces started being
+cached but the variable indicating whether the surface is currently
+mapped was not being reset. This leads to crashes as the duplicated
+state, incorrectly, indicates the that surface is mapped even when
+no surface is present. That's because after unreferencing the surface
+it's perfectly possible for the plane to be backed by a bo instead of a
+surface.
+
+Reset the surface mapped flag when unreferencing the plane state surface
+to fix null derefs in cleanup. Fixes crashes in KDE KWin 6.0 on Wayland:
+
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 4 PID: 2533 Comm: kwin_wayland Not tainted 6.7.0-rc3-vmwgfx #2
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
+RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
+RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
+R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
+R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
+FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
+Call Trace:
+ <TASK>
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x171/0x4e0
+ ? exc_page_fault+0x7f/0x180
+ ? asm_exc_page_fault+0x26/0x30
+ ? vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+ drm_atomic_helper_cleanup_planes+0x9b/0xc0
+ commit_tail+0xd1/0x130
+ drm_atomic_helper_commit+0x11a/0x140
+ drm_atomic_commit+0x97/0xd0
+ ? __pfx___drm_printfn_info+0x10/0x10
+ drm_atomic_helper_update_plane+0xf5/0x160
+ drm_mode_cursor_universal+0x10e/0x270
+ drm_mode_cursor_common+0x102/0x230
+ ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
+ drm_ioctl_kernel+0xb2/0x110
+ drm_ioctl+0x26d/0x4b0
+ ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
+ ? __pfx_drm_ioctl+0x10/0x10
+ vmw_generic_ioctl+0xa4/0x110 [vmwgfx]
+ __x64_sys_ioctl+0x94/0xd0
+ do_syscall_64+0x61/0xe0
+ ? __x64_sys_ioctl+0xaf/0xd0
+ ? syscall_exit_to_user_mode+0x2b/0x40
+ ? do_syscall_64+0x70/0xe0
+ ? __x64_sys_ioctl+0xaf/0xd0
+ ? syscall_exit_to_user_mode+0x2b/0x40
+ ? do_syscall_64+0x70/0xe0
+ ? exc_page_fault+0x7f/0x180
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+RIP: 0033:0x7f1e93f279ed
+Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff f>
+RSP: 002b:00007ffca0faf600 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 000055db876ed2c0 RCX: 00007f1e93f279ed
+RDX: 00007ffca0faf6c0 RSI: 00000000c02464bb RDI: 0000000000000015
+RBP: 00007ffca0faf650 R08: 000055db87184010 R09: 0000000000000007
+R10: 000055db886471a0 R11: 0000000000000246 R12: 00007ffca0faf6c0
+R13: 00000000c02464bb R14: 0000000000000015 R15: 00007ffca0faf790
+ </TASK>
+Modules linked in: snd_seq_dummy snd_hrtimer nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_ine>
+CR2: 0000000000000028
+---[ end trace 0000000000000000 ]---
+RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
+RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
+RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
+RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
+R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
+R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
+FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
+Reported-by: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
+Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/34
+Cc: Martin Krastev <martin.krastev@broadcom.com>
+Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Cc: Ian Forbes <ian.forbes@broadcom.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.19+
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 65ed9b061753..e7bbe4b05233 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -693,6 +693,10 @@ vmw_du_cursor_plane_prepare_fb(struct drm_plane *plane,
+ 	int ret = 0;
+ 
+ 	if (vps->surf) {
++		if (vps->surf_mapped) {
++			vmw_bo_unmap(vps->surf->res.guest_memory_bo);
++			vps->surf_mapped = false;
++		}
+ 		vmw_surface_unreference(&vps->surf);
+ 		vps->surf = NULL;
+ 	}
+-- 
+2.40.1
 
-stable-rc/queue/6.1 baseline: 110 runs, 4 regressions (v6.1.68-153-g6433185=
-371d8)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-qemu_smp8_riscv64  | riscv | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
-el/v6.1.68-153-g6433185371d8/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/6.1
-  Describe: v6.1.68-153-g6433185371d8
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      6433185371d86547d5279e6ccb95bae1d0bdad4e =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-qemu_smp8_riscv64  | riscv | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/658722d79c5b8415e1e13480
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (riscv64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/riscv/defconfig/gcc-10/lab-collabora/baseline-qemu_smp8_ris=
-cv64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/riscv/defconfig/gcc-10/lab-collabora/baseline-qemu_smp8_ris=
-cv64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/riscv/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/658722d79c5b8415e1e13=
-481
-        new failure (last pass: v6.1.68-147-gd5d7086b58f64) =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/658724f1f4f0113fa0e134fd
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
-.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
-.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/658724f1f4f0113fa0e13506
-        failing since 31 days (last pass: v6.1.31-26-gef50524405c2, first f=
-ail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-23T18:27:47.664128  / # #
-
-    2023-12-23T18:27:47.766305  export SHELL=3D/bin/sh
-
-    2023-12-23T18:27:47.767043  #
-
-    2023-12-23T18:27:47.868503  / # export SHELL=3D/bin/sh. /lava-12366617/=
-environment
-
-    2023-12-23T18:27:47.869228  =
-
-
-    2023-12-23T18:27:47.970606  / # . /lava-12366617/environment/lava-12366=
-617/bin/lava-test-runner /lava-12366617/1
-
-    2023-12-23T18:27:47.971732  =
-
-
-    2023-12-23T18:27:47.988237  / # /lava-12366617/bin/lava-test-runner /la=
-va-12366617/1
-
-    2023-12-23T18:27:48.037273  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-23T18:27:48.037773  + cd /lav<8>[   19.053754] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12366617_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/658724d566c70091efe134a7
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
-64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
-64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/658724d566c70091efe134b0
-        failing since 31 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-23T18:20:00.868046  <8>[   18.066744] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 449738_1.5.2.4.1>
-    2023-12-23T18:20:00.973005  / # #
-    2023-12-23T18:20:01.074632  export SHELL=3D/bin/sh
-    2023-12-23T18:20:01.075226  #
-    2023-12-23T18:20:01.176214  / # export SHELL=3D/bin/sh. /lava-449738/en=
-vironment
-    2023-12-23T18:20:01.176811  =
-
-    2023-12-23T18:20:01.277816  / # . /lava-449738/environment/lava-449738/=
-bin/lava-test-runner /lava-449738/1
-    2023-12-23T18:20:01.278741  =
-
-    2023-12-23T18:20:01.282909  / # /lava-449738/bin/lava-test-runner /lava=
--449738/1
-    2023-12-23T18:20:01.361987  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/658725067ae5f86601e13475
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
-e-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.68-15=
-3-g6433185371d8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
-e-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/658725067ae5f86601e1347e
-        failing since 31 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-23T18:28:04.510267  / # #
-
-    2023-12-23T18:28:04.612383  export SHELL=3D/bin/sh
-
-    2023-12-23T18:28:04.613092  #
-
-    2023-12-23T18:28:04.714500  / # export SHELL=3D/bin/sh. /lava-12366623/=
-environment
-
-    2023-12-23T18:28:04.715224  =
-
-
-    2023-12-23T18:28:04.816690  / # . /lava-12366623/environment/lava-12366=
-623/bin/lava-test-runner /lava-12366623/1
-
-    2023-12-23T18:28:04.817810  =
-
-
-    2023-12-23T18:28:04.834164  / # /lava-12366623/bin/lava-test-runner /la=
-va-12366623/1
-
-    2023-12-23T18:28:04.900243  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-23T18:28:04.900777  + cd /lava-1236662<8>[   19.187729] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12366623_1.5.2.4.5>
- =
-
-    ... (11 line(s) more)  =
-
- =20
 
