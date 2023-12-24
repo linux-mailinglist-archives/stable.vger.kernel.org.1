@@ -1,169 +1,308 @@
-Return-Path: <stable+bounces-8411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BE881D8C6
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 11:50:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C508481DAFE
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 15:51:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6741C218A7
-	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 10:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42A521F215CD
+	for <lists+stable@lfdr.de>; Sun, 24 Dec 2023 14:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C6920F8;
-	Sun, 24 Dec 2023 10:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7004953A0;
+	Sun, 24 Dec 2023 14:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b="WUFlNtP8"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="yoyn7Ig3"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound-ip168b.ess.barracuda.com (outbound-ip168b.ess.barracuda.com [209.222.82.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3455020FA;
-	Sun, 24 Dec 2023 10:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ddn.com
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2169.outbound.protection.outlook.com [104.47.73.169]) by mx-outbound22-58.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Sun, 24 Dec 2023 10:49:49 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KngvBWb+PmbuF1XkqH4w2y3FZePt4KkvJYro2ed4qO3BliOMWx2OjZeSvUarKgfITIJKJL/ZWrcGUjDhxnBKPSvxhoAAvP7Xm5DBEtzANYKz188aZ1X4M5OQCmMQzngW1H+QWOcgsK6cMjw96WT279nzJOZsV7ifV3NXBc5XfgtbliiDYAPcX52fCbWm5/bYUZ4DuomkAlNmDXijwlXHjbZgm0YvZw0qrl4Z25hbmm1hf23GLCath72KAL+tkVB1FQwhxXlSnIVTmkKsn1/ZDWfyW0RdA+tncQPYZOx91GZoNm6Yse5wkWlBAXbHp/7WdpAlBixQTe8Q0dNJtZ4OLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bFmWOcQ5bLEZvSGFgGcd1Y7BisfNVQzPPuC+ciLqEuA=;
- b=TVMO+O6vsNQzVx9uZm9jpPBu8C5QBNOnu0GzFS8lXAHq87ervCYHFsWsoev8kA6K8ayPRml+s9u3261VydiMFUTp9hm423ygQmRigPnx6NkoBM9SLQP1RU3yTvQ84OnVkzSJlswy7LqBlABQeC3iDpgSm+ya3IYkPguMwtCvgZimKqA/Wib2HJ3D6a5LGiY0eKIEW+xePEWMYs3lxVIJEtZ5gWtJmCx4adEgUpOmxMvzqspg2jXQFs0NHwt7I0MeVee4ZuFoX56MB843A6ihK9JheDjJHXmU7PDHD2lKwoTAtx7Fbs+4CHOaxgdLa94U6N63OG3j5VAr7hETYph2dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 50.222.100.11) smtp.rcpttodomain=ddn.com smtp.mailfrom=ddn.com; dmarc=pass
- (p=reject sp=reject pct=100) action=none header.from=ddn.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bFmWOcQ5bLEZvSGFgGcd1Y7BisfNVQzPPuC+ciLqEuA=;
- b=WUFlNtP8yjpBBULbd+JKa8TgWFFFMXQQlznAoQ2NSZKwGcw0cyQY8ANOHRMUnnzzUFxaP3y7xglkjdhpAqrsz2NNiGPSnNhqKECXkEEVs7tT2W11gShKJlsDlKI1TXAcTW9qqksgCY6EDmg+0HVu7X3VZb4b+o+p2xoE62SJdig=
-Received: from DM6PR13CA0035.namprd13.prod.outlook.com (2603:10b6:5:bc::48) by
- PH7PR19MB8185.namprd19.prod.outlook.com (2603:10b6:510:2f9::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7113.24; Sun, 24 Dec
- 2023 10:49:45 +0000
-Received: from DM6NAM04FT044.eop-NAM04.prod.protection.outlook.com
- (2603:10b6:5:bc:cafe::35) by DM6PR13CA0035.outlook.office365.com
- (2603:10b6:5:bc::48) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.12 via Frontend
- Transport; Sun, 24 Dec 2023 10:49:45 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 50.222.100.11)
- smtp.mailfrom=ddn.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ddn.com;
-Received-SPF: Pass (protection.outlook.com: domain of ddn.com designates
- 50.222.100.11 as permitted sender) receiver=protection.outlook.com;
- client-ip=50.222.100.11; helo=uww-mx01.datadirectnet.com; pr=C
-Received: from uww-mx01.datadirectnet.com (50.222.100.11) by
- DM6NAM04FT044.mail.protection.outlook.com (10.13.159.138) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7135.14 via Frontend Transport; Sun, 24 Dec 2023 10:49:44 +0000
-Received: from localhost (unknown [10.68.0.8])
-	by uww-mx01.datadirectnet.com (Postfix) with ESMTP id 7A75620C684C;
-	Sun, 24 Dec 2023 03:50:46 -0700 (MST)
-From: Bernd Schubert <bschubert@ddn.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: bernd.schubert@fastmail.fm,
-	miklos@szeredi.hu,
-	dsingh@ddn.com,
-	amir73il@gmail.com,
-	Bernd Schubert <bschubert@ddn.com>,
-	Hao Xu <howeyxu@tencent.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/4] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
-Date: Sun, 24 Dec 2023 11:49:11 +0100
-Message-Id: <20231224104914.49316-2-bschubert@ddn.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231224104914.49316-1-bschubert@ddn.com>
-References: <20231224104914.49316-1-bschubert@ddn.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB085663
+	for <stable@vger.kernel.org>; Sun, 24 Dec 2023 14:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5947cf2a4f6so257144eaf.2
+        for <stable@vger.kernel.org>; Sun, 24 Dec 2023 06:51:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1703429496; x=1704034296; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=V64IBjwE7OQuJhaD/+wvGrYPBUdXjF4JJuE5695qUDY=;
+        b=yoyn7Ig3vQkuU2KRSC1cdOhA1v/MC8JtR2fb5bAdDWRaapP2DQv9rlQpY3gnYgB0h7
+         NtsQVm4rWocfmkNjrHx/seL7lEQp9F6DVC6bXHOKPc91QaKLyjec9I3v6+GNE7SW75LV
+         oKhl7R39GUV8hWuFaWVaCsjD3RbWAWLzRelLu3we9fKVrJrjyttQQ1nPStcjicCEhZqW
+         UGNTLLxvmD4SwoHGG5bRcuklQ5QQoANkXABZ0mOaXmpos9J8CnsX00oqaOaaB5CVOram
+         gSCm2ELrmcpjuyoy6VW3zpEbd9FmjKzORGn/ylaCSg6BNNFPmHSUnXlQytS+oZy0XL2C
+         dYYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703429496; x=1704034296;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=V64IBjwE7OQuJhaD/+wvGrYPBUdXjF4JJuE5695qUDY=;
+        b=c3UL/x6M4KivO7bJKvwfvrd5X5TVW8jFg9ws+J3xt3qcw9j3QDxLFXEZi5WVfTywpB
+         cKAHFHu2X2DAKSm6GnnwuJTLnIqxGNdyyrVJAmj3ILox/0xPGcteC+2T00RN9cXYW/13
+         Tew+yLFDQzOi1h5k184WiLkpHPSscirzF5EG7fzMS7ydZnBk8OLMxsbKCBATn6JIOyLI
+         A9KolQFm6M743h1JJ0vxRJtBsn6yoTxpjs4+N324C/NoOGTpBWQ3JY/FRFfWHs+oRvr2
+         PHpV+xVRSaVL/EWDicqrqepuHBH9sstI+8D7xzypcvP25QASrDLRvYnCnvzO0e+lijNV
+         9/uQ==
+X-Gm-Message-State: AOJu0YyHKm2mvZrSwvuErGPaPVLiajgfdehc/QoapxZvto/3oJjZA49e
+	ogxU7zUQTqHtyndy/Z60dDATdPeuUUXhrz4Mc0nUQIsHAM0=
+X-Google-Smtp-Source: AGHT+IHvDgJseO9aqy7nthQKua6/WtFActMcifDKVGXhAITAZv7ZVWisbSagyqtIgpl7LduBv3jGgw==
+X-Received: by 2002:a05:6358:590f:b0:174:df72:5d9a with SMTP id g15-20020a056358590f00b00174df725d9amr3363438rwf.27.1703429495715;
+        Sun, 24 Dec 2023 06:51:35 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id y9-20020a17090264c900b001d3b258e036sm6783155pli.176.2023.12.24.06.51.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Dec 2023 06:51:35 -0800 (PST)
+Message-ID: <65884577.170a0220.b022f.25a7@mx.google.com>
+Date: Sun, 24 Dec 2023 06:51:35 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM04FT044:EE_|PH7PR19MB8185:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 388a6288-fc7f-485e-15b6-08dc046e0a76
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	AJxU6R1+PlynnzrRI7InELZDpJJ43dw6BwNp/Zy5cObkO6K4iS+i6k8NM4X/RZgmiQxBYGJnWXyTX+nZyLNrBHxRacYfN5NJJApcfsEjK62oRVzJ44+DchDTXqKFNcGaIcSXSnz25FW1nNyuZBT4qfmi3zxV9mC0VFHGUr4F5KNm94/c1P0soGDz5I/uZb3zp3YyBZYew4hsMBFuYt4mqKA4qiunS8dv0TrEzDblhVx1RT84kt80DXjCElOIHF5J1/zr/4xj+ayEURg/4Nqiwef4GOiIFo6sAh98SszUAsUunRqBJCFwgWTQlMDOhrFpDyZfRqx4gXOLBiQikAN6T7+k3beLoCccJAdL0CpRV2n1Gg+YFrOcQYLeMf/Pot+1NndkYLxcGnh9wST7vgkixB7GCLvhW34J/WPvEDasnhZmHVs1GxfsHKSievLwePBsOUbElL7MpQehRBJIYBQ2H2DphBuAa0BisRfiY/EwClAW5ZRTaCdJvQfX2i0TaidSUdJn7ROBdeVIfzMhfUVkKkgkIzLOcS7n72pU+lLcNWQaavL0vAzwrtWcmXwzfTektDGdHZEmac6NSp5cVrGnXZHIUEc8JXkqqe3Fl+iILxT1NuBq3DyesON6GZMmZtLWC/6nPlN7VPfeSQZK0rzMoNXHK2Ets+jv2h1hy9JRY6yn7+3MoTMB98kIcM7KHppOedcvf+xdVfpWkrbskcktC0kpliQiJQotaYsKsSqiJYd+XnOpZzS7o9dtgZ0kwuR4EqNXSnXmjJVY3VuCcNdfG7+lY8KAPZWxinqWQBDLalY=
-X-Forefront-Antispam-Report:
-	CIP:50.222.100.11;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:uww-mx01.datadirectnet.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39840400004)(346002)(376002)(396003)(136003)(230922051799003)(230173577357003)(230273577357003)(1800799012)(64100799003)(451199024)(186009)(82310400011)(36840700001)(46966006)(2906002)(6666004)(478600001)(4326008)(8936002)(8676002)(6916009)(316002)(54906003)(70586007)(70206006)(5660300002)(86362001)(47076005)(83380400001)(36860700001)(336012)(6266002)(40480700001)(81166007)(36756003)(41300700001)(356005)(2616005)(1076003)(26005)(36900700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	YoqzXS4kKwYAEQ8jSrUbHljJmX60VTzCtGM5ZjlYCz7JUDir7tK6LLqhRkRqzb9lQvsII2qZXyVi2ATb3YQQiDgWJqQCBTOHK7TTIBkYJCkKk4UmTfxM0zR7WNBMq1y35qAQJ/CxV2V5RFB6XsF1vgeBa44Vv50wI+ScFA0noEDMdn3Ctk62n++B7lGd/nFWuhX9/psmNpMU4Fwpdl6XoqeZWXb8n6ftNU9mFMiHdPJYc7nFcrHQa0HeydMU0UxMBdrLpYLS3aQOWDKk11C0jc5wdppFPVVORDgZUuenpH+wN7F5rVx6yRI2X2Yy+GAAG1RewX3h89X4eQmXLWRHOJ0ShUqYiWaEtf9BoRGMgUYegoHyzOXkD3/40xETmQsImkiTctDV2S1mflQ2lt0pemRSaRq1Bbfdfi1rWnVp8DDWXofKqd7245tWSufDqbbqbvA4ma6gFzn+xDmFI0KP1IZtzof+vMeVAROhf+Y1KuQe0f1rL+8KP5BIHoGg0oQjqJDv0VOHcwG0Bb2pn7O6uQO8fM/OQ/PoUvTBaOndxNaL2G4PAkkimPtSCAUhOScwx3SCGIT0Cy4oZglfiyBv6Se8o3d8SR21n123AxOx5o0GoHkUzSqaIbvO6ivpymyBBWNRjTfuwkkle8IYk5mD0g==
-X-OriginatorOrg: ddn.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Dec 2023 10:49:44.7411
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 388a6288-fc7f-485e-15b6-08dc046e0a76
-X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=753b6e26-6fd3-43e6-8248-3f1735d59bb4;Ip=[50.222.100.11];Helo=[uww-mx01.datadirectnet.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DM6NAM04FT044.eop-NAM04.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR19MB8185
-X-BESS-ID: 1703414989-105690-12427-18446-1
-X-BESS-VER: 2019.1_20231221.2126
-X-BESS-Apparent-Source-IP: 104.47.73.169
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVoamxsZAVgZQ0MIgzcww0TjZ1N
-	jcwtLS2MjY0jQlJcUo0SzNxDjRyDRJqTYWAEFu/ZtBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.253033 [from 
-	cloudscan21-10.us-east-2b.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status:1
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.264-66-g837b1ec983ee4
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.264-66-g837b1ec983ee4)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-There were multiple issues with direct_io_allow_mmap:
-- fuse_link_write_file() was missing, resulting in warnings in
-  fuse_write_file_get() and EIO from msync()
-- "vma->vm_ops = &fuse_file_vm_ops" was not set, but especially
-  fuse_page_mkwrite is needed.
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.264-66-g837b1ec983ee4)
 
-The semantics of invalidate_inode_pages2() is so far not clearly defined
-in fuse_file_mmap. It dates back to
-commit 3121bfe76311 ("fuse: fix "direct_io" private mmap")
-Though, as direct_io_allow_mmap is a new feature, that was for MAP_PRIVATE
-only. As invalidate_inode_pages2() is calling into fuse_launder_folio()
-and writes out dirty pages, it should be safe to call
-invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as well.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.264-66-g837b1ec983ee4/
 
-Cc: Hao Xu <howeyxu@tencent.com>
-Cc: stable@vger.kernel.org
-Fixes: e78662e818f9 ("fuse: add a new fuse init flag to relax restrictions in no cache mode")
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.264-66-g837b1ec983ee4
+Git Commit: 837b1ec983ee4847194e7ed14efeffa8c4b13a22
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- fs/fuse/file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index a660f1f21540a..174aa16407c4b 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -2475,7 +2475,10 @@ static int fuse_file_mmap(struct file *file, struct vm_area_struct *vma)
- 
- 		invalidate_inode_pages2(file->f_mapping);
- 
--		return generic_file_mmap(file, vma);
-+		if (!(vma->vm_flags & VM_MAYSHARE)) {
-+			/* MAP_PRIVATE */
-+			return generic_file_mmap(file, vma);
-+		}
- 	}
- 
- 	if ((vma->vm_flags & VM_SHARED) && (vma->vm_flags & VM_MAYWRITE))
--- 
-2.40.1
-
+For more info write to <info@kernelci.org>
 
