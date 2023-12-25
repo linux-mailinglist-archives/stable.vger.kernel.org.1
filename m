@@ -1,207 +1,148 @@
-Return-Path: <stable+bounces-8460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC181E225
-	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 20:48:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C830D81E239
+	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 21:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FE11F21B0C
-	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 19:48:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC6251C20E42
+	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 20:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EB31E482;
-	Mon, 25 Dec 2023 19:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB7C53806;
+	Mon, 25 Dec 2023 20:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mrman314.tech header.i=@mrman314.tech header.b="2vh2F2sf"
 X-Original-To: stable@vger.kernel.org
-Received: from www61.your-server.de (www61.your-server.de [213.133.104.61])
+Received: from mx.mrman314.tech (unknown [135.0.77.242])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F191DFC3
-	for <stable@vger.kernel.org>; Mon, 25 Dec 2023 19:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=econos.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=econos.de
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www61.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <stefan.hoffmeister@econos.de>)
-	id 1rHqa6-000KqX-70; Mon, 25 Dec 2023 20:25:42 +0100
-Received: from [192.168.0.30] (helo=webmail.your-server.de)
-	by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
-	(Exim 4.92)
-	(envelope-from <stefan.hoffmeister@econos.de>)
-	id 1rHqa5-000X2k-LH; Mon, 25 Dec 2023 20:25:41 +0100
-Received: from dslb-092-072-015-178.092.072.pools.vodafone-ip.de
- (dslb-092-072-015-178.092.072.pools.vodafone-ip.de [92.72.15.178]) by
- webmail.your-server.de (Horde Framework) with HTTPS; Mon, 25 Dec 2023
- 20:25:41 +0100
-Date: Mon, 25 Dec 2023 20:25:41 +0100
-Message-ID: <20231225202541.Horde.tXckv5NJBOomrZjolmTSDS4@webmail.your-server.de>
-From: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, Martin Krastev
- <martin.krastev@broadcom.com>, Maaz Mombasawala
- <maaz.mombasawala@broadcom.com>, Ian Forbes <ian.forbes@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/vmwgfx: Unmap the surface before resetting it on a
- plane state
-In-Reply-To: <20231224052540.605040-1-zack.rusin@broadcom.com>
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A05C537F8;
+	Mon, 25 Dec 2023 20:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mrman314.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mrman314.tech
+Received: from [192.168.6.27] (unknown [160.32.192.137])
+	by mx.mrman314.tech (Postfix) with ESMTPSA id 4B4B82F4127F;
+	Mon, 25 Dec 2023 15:01:37 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mrman314.tech;
+	s=default; t=1703534498;
+	bh=HGRyqV7DcGb8aHF62Jx1i+xG/Q9Evhw8BLp5rP7bfO0=;
+	h=Subject:From:To:Cc:Date;
+	b=2vh2F2sfJqNEWXSd18j7BLe0F6x98b7u+5bPmWnbMvDmyXMUCZjy5wQaJo9WJV+tb
+	 N+8rXNUZdc2HIzP/vXfAmuE+iLndseYEusCXAA8ucIakhKbYjPPhskQlHDElWNQeOs
+	 0BT0EnIlzxt+jAbvR0hVkn5lLy+/p/dqKwYZiivE=
+Message-ID: <77419ffacc5b4875e920e038332575a2a5bff29f.camel@mrman314.tech>
+Subject: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel MacBooks
+From: Felix Zhang <mrman@mrman314.tech>
+To: linux-bluetooth@vger.kernel.org
+Cc: stable@vger.kernel.org, marcan@marcan.st, bagasdotme@gmail.com, 
+	sven@svenpeter.dev, alyssa@rosenzweig.io, marcel@holtmann.org, 
+	johan.hedberg@gmail.com, luiz.dentz@gmail.com, orlandoch.dev@gmail.com, 
+	kekrby@gmail.com, admin@kodeit.net, j@jannau.net, gargaditya08@live.com, 
+	asahi@lists.linux.dev, linux-kernel@vger.kernel.org
+Date: Mon, 25 Dec 2023 15:01:33 -0500
+Autocrypt: addr=mrman@mrman314.tech; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-X-Authenticated-Sender: stefan.hoffmeister@econos.de
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27134/Mon Dec 25 10:40:06 2023)
 
+Starting v6.5, Bluetooth does not work at all on my T2 MacBookAir9,1
 
-Quoting Zack Rusin <zack.rusin@broadcom.com>:
+with the BCM4377 chip.  When I boot up the computer, go into
+bluetoothctl, and then try to run commands like scan on, show, list,
+it=C2=A0returns "No default controller available."  I have tried reloading
+the
+kernel module, in which the log outputs "{Added,Removed} hci0
+(unconfigured)."  With this patch, I am able to use Bluetooth as
+normal=C2=A0
+without any errors regarding hci0 being unconfigured.  However, an
+issue is still present where sometimes hci_bcm4377 will have to be
+reloaded in order to get bluetooth to work.  I believe this was still
+present before the previously mentioned commit.
 
-> Switch to a new plane state requires unreferencing of all held surfaces.
-> In the work required for mob cursors the mapped surfaces started being
-> cached but the variable indicating whether the surface is currently
-> mapped was not being reset. This leads to crashes as the duplicated
-> state, incorrectly, indicates the that surface is mapped even when
-> no surface is present. That's because after unreferencing the surface
-> it's perfectly possible for the plane to be backed by a bo instead of a
-> surface.
->
-> Reset the surface mapped flag when unreferencing the plane state surface
-> to fix null derefs in cleanup. Fixes crashes in KDE KWin 6.0 on Wayland:
->
-> Oops: 0000 [#1] PREEMPT SMP PTI
-> CPU: 4 PID: 2533 Comm: kwin_wayland Not tainted 6.7.0-rc3-vmwgfx #2
-> Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop  
-> Reference Platform, BIOS 6.00 11/12/2020
-> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00  
-> 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48>  
-> 8b 78 28 e8 e3 f>
-> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
-> Call Trace:
->  <TASK>
->  ? __die+0x23/0x70
->  ? page_fault_oops+0x171/0x4e0
->  ? exc_page_fault+0x7f/0x180
->  ? asm_exc_page_fault+0x26/0x30
->  ? vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
->  drm_atomic_helper_cleanup_planes+0x9b/0xc0
->  commit_tail+0xd1/0x130
->  drm_atomic_helper_commit+0x11a/0x140
->  drm_atomic_commit+0x97/0xd0
->  ? __pfx___drm_printfn_info+0x10/0x10
->  drm_atomic_helper_update_plane+0xf5/0x160
->  drm_mode_cursor_universal+0x10e/0x270
->  drm_mode_cursor_common+0x102/0x230
->  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
->  drm_ioctl_kernel+0xb2/0x110
->  drm_ioctl+0x26d/0x4b0
->  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
->  ? __pfx_drm_ioctl+0x10/0x10
->  vmw_generic_ioctl+0xa4/0x110 [vmwgfx]
->  __x64_sys_ioctl+0x94/0xd0
->  do_syscall_64+0x61/0xe0
->  ? __x64_sys_ioctl+0xaf/0xd0
->  ? syscall_exit_to_user_mode+0x2b/0x40
->  ? do_syscall_64+0x70/0xe0
->  ? __x64_sys_ioctl+0xaf/0xd0
->  ? syscall_exit_to_user_mode+0x2b/0x40
->  ? do_syscall_64+0x70/0xe0
->  ? exc_page_fault+0x7f/0x180
->  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> RIP: 0033:0x7f1e93f279ed
-> Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00  
-> 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89>  
-> c2 3d 00 f0 ff f>
-> RSP: 002b:00007ffca0faf600 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 000055db876ed2c0 RCX: 00007f1e93f279ed
-> RDX: 00007ffca0faf6c0 RSI: 00000000c02464bb RDI: 0000000000000015
-> RBP: 00007ffca0faf650 R08: 000055db87184010 R09: 0000000000000007
-> R10: 000055db886471a0 R11: 0000000000000246 R12: 00007ffca0faf6c0
-> R13: 00000000c02464bb R14: 0000000000000015 R15: 00007ffca0faf790
->  </TASK>
-> Modules linked in: snd_seq_dummy snd_hrtimer nf_conntrack_netbios_ns  
-> nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6  
-> nft_fib nft_reject_ine>
-> CR2: 0000000000000028
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00  
-> 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48>  
-> 8b 78 28 e8 e3 f>
-> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and  
-> CursorBypass 4")
-> Reported-by: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
-> Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/34
-> Cc: Martin Krastev <martin.krastev@broadcom.com>
-> Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-> Cc: Ian Forbes <ian.forbes@broadcom.com>
-> Cc: Broadcom internal kernel review list  
-> <bcm-kernel-feedback-list@broadcom.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.19+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c  
-> b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> index 65ed9b061753..e7bbe4b05233 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -693,6 +693,10 @@ vmw_du_cursor_plane_prepare_fb(struct drm_plane *plane,
->  	int ret = 0;
->
->  	if (vps->surf) {
-> +		if (vps->surf_mapped) {
-> +			vmw_bo_unmap(vps->surf->res.guest_memory_bo);
-> +			vps->surf_mapped = false;
-> +		}
->  		vmw_surface_unreference(&vps->surf);
->  		vps->surf = NULL;
->  	}
-> --
-> 2.40.1
+Due to the bit HCI_QUIRK_USE_BDADDR_PROPERTY being always set in
+drivers/bluetooth/hci_bcm4377.c (line 2371), the chip would be left
+unconfigured on kernels compiled after commit 6945795bc81a
+("Bluetooth:=C2=A0
+fix use-bdaddr-property quirk") due to a change in its logic.  On the
+M1 Macs, the device would be configured in the devicetree.  However,
+that is not the case on T2 Macs.  Because the bluetooth adapter is
+left=C2=A0
+unconfigured, it is not usable in the operating system.  In order to
+circumvent this issue, a flag is added to prevent the bit from being
+set on the BCM4377, while setting it on the other devices.
 
-I have tested this patch on top of a Fedora Rawhide kernel 6.7.0-rc7  
-with success: the oops has disappeared with forcing on atomic  
-mode-setting in KDE Plasma 6 (git master), while retaining the then  
-default of "hardware" cursors (steps see the gitlab issue)
+Because I do not have an M1 device to test this patch on, I am not sure
+whether the patch breaks anything for said devices.  I would be very
+grateful if anyone is willing to test this patch on their M1 device.
 
-FYI, as a challenge separate from this oops, the atomic cursor is _not  
-visible_, although apparently the plane is assigned to the right CRTC,  
-cursors are being switched (FB_ID changes), the correct X and Y  
-coordinates are emitted - all according to the output of drm_info.  
-There is nothing in the (KDE Plasma 6) logs. I will try to diagnose  
-this and other cursor-related challenges further and create separate  
-issues if/once I make progress. Thanks to the fixed oops, that has now  
-become feasible :)
+I would also like to thank Kerem Karabay <kekrby@gmail.com> for
+assisting me with this patch.
 
-Best regards
-Stefan
+Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
+Signed-off-by: Felix Zhang <mrman@mrman314.tech>
+---
+v3:
+* Adjust the format to pass the CI (again).
+---
+ drivers/bluetooth/hci_bcm4377.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/bluetooth/hci_bcm4377.c
+b/drivers/bluetooth/hci_bcm4377.c
+index a61757835695..5c6fef1aa0f6 100644
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -513,6 +513,7 @@ struct bcm4377_hw {
+ 	unsigned long broken_ext_scan : 1;
+ 	unsigned long broken_mws_transport_config : 1;
+ 	unsigned long broken_le_coded : 1;
++	unsigned long use_bdaddr_property : 1;
+=20
+ 	int (*send_calibration)(struct bcm4377_data *bcm4377);
+ 	int (*send_ptb)(struct bcm4377_data *bcm4377,
+@@ -2368,7 +2369,8 @@ static int bcm4377_probe(struct pci_dev *pdev,
+const struct pci_device_id *id)
+ 	hdev->set_bdaddr =3D bcm4377_hci_set_bdaddr;
+ 	hdev->setup =3D bcm4377_hci_setup;
+=20
+-	set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
++	if (bcm4377->hw->use_bdaddr_property)
++		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+ 	if (bcm4377->hw->broken_mws_transport_config)
+ 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev-
+>quirks);
+ 	if (bcm4377->hw->broken_ext_scan)
+@@ -2465,6 +2467,7 @@ static const struct bcm4377_hw
+bcm4377_hw_variants[] =3D {
+ 		.has_bar0_core2_window2 =3D true,
+ 		.broken_mws_transport_config =3D true,
+ 		.broken_le_coded =3D true,
++		.use_bdaddr_property =3D true,
+ 		.send_calibration =3D bcm4378_send_calibration,
+ 		.send_ptb =3D bcm4378_send_ptb,
+ 	},
+@@ -2479,6 +2482,7 @@ static const struct bcm4377_hw
+bcm4377_hw_variants[] =3D {
+ 		.clear_pciecfg_subsystem_ctrl_bit19 =3D true,
+ 		.broken_mws_transport_config =3D true,
+ 		.broken_le_coded =3D true,
++		.use_bdaddr_property =3D true,
+ 		.send_calibration =3D bcm4387_send_calibration,
+ 		.send_ptb =3D bcm4378_send_ptb,
+ 	},
+--=20
+2.43.0
 
 
 
