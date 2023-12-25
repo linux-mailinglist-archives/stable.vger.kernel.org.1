@@ -1,190 +1,207 @@
-Return-Path: <stable+bounces-8459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1936681E130
-	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 15:57:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ABC181E225
+	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 20:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DD121C2137B
-	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 14:57:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FE11F21B0C
+	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 19:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9793051C43;
-	Mon, 25 Dec 2023 14:57:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O3BhTD+n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EB31E482;
+	Mon, 25 Dec 2023 19:48:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f178.google.com (mail-il1-f178.google.com [209.85.166.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www61.your-server.de (www61.your-server.de [213.133.104.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1241851C27;
-	Mon, 25 Dec 2023 14:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f178.google.com with SMTP id e9e14a558f8ab-35fe9a6609eso22309285ab.2;
-        Mon, 25 Dec 2023 06:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703516246; x=1704121046; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4aiW5+AczULkdWKgKzZEQT6Vz/ZvVOIizOQvICxQE/g=;
-        b=O3BhTD+nXxfRLRp0SNhC9BUvQJ11hl+zkNaetrg074S0GHlFqaZIiGJENFknpePeoj
-         6JMAWXi8wbz+GBdH5x8DGfFbjMUF1ymgKQrhJZbqn3LZ3KlT136nx2mMYRugzy3D1QX2
-         xoW/rZg0f5otEWmwo0yJe43TeUmNkphPel9FQZQRwh8fVxYtkFKxrolHUr+wRyPzNoUU
-         jbamt537tsE6kvxEdm15woAGxlxZ0LrOFtjA8XgHnlWdC428YVtxy/dWJFeJpZKWuV1Q
-         tbRhh2y+wEwUUxEEYCd0FWNLots3bUdHo6SRlV9M9dimPPFUnIRavQGg4bv/A8rvtPIo
-         h77Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703516246; x=1704121046;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4aiW5+AczULkdWKgKzZEQT6Vz/ZvVOIizOQvICxQE/g=;
-        b=quRXolhjnKGCZWjLJpMPIn2UZMj2TmsUdeZUczt65ONMfCjcUF7TNV0Aa3mKeGWyWi
-         EbUW82fbDg4G4zWni/ejSno7vMTronTTGqgJGOndVIXgGLLS8xMOXdxpKRGXlBuqHxDG
-         n+Dc9AMQZSyFRN+q078AXni6KvlkIlZgwJIaFptBJdjaW+XlHz8JB/qsBRC8VV8s79go
-         h9QbDU9cC2HVgHf31UPKg9A5mnrj4ePZz2ZTLlznCP2fE9/F5mOjSkhmJ3BId2V9fsgv
-         sgtgDVmF87e9CkLuugoPTNqJXb2zqXje7nJX+EG1x8geBKRBljvdNmodz9lUlBdGTv0U
-         loGQ==
-X-Gm-Message-State: AOJu0YxAWBzNXPBBb0xH98o6i0xXwesf4EwbH9f+oMTdBajEvBZhaUpt
-	ObRGaJXInIjb01RiptqlwJ4=
-X-Google-Smtp-Source: AGHT+IHR5x6OhDDciEaHttITlEjCwg329MZhAHnNtogZRzuZTaztVIu7Xqz7JbIhp2UUwpc3NRKeaA==
-X-Received: by 2002:a05:6e02:b22:b0:35f:ef56:35a with SMTP id e2-20020a056e020b2200b0035fef56035amr7367417ilu.48.1703516246083;
-        Mon, 25 Dec 2023 06:57:26 -0800 (PST)
-Received: from [183.173.16.211] ([183.173.16.211])
-        by smtp.gmail.com with ESMTPSA id st14-20020a17090b1fce00b0028a4c85a55csm15962pjb.27.2023.12.25.06.57.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Dec 2023 06:57:25 -0800 (PST)
-Message-ID: <0edbd57a-cf94-4710-a20c-04d0cc43cfad@gmail.com>
-Date: Mon, 25 Dec 2023 22:57:23 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F191DFC3
+	for <stable@vger.kernel.org>; Mon, 25 Dec 2023 19:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=econos.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=econos.de
+Received: from sslproxy01.your-server.de ([78.46.139.224])
+	by www61.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <stefan.hoffmeister@econos.de>)
+	id 1rHqa6-000KqX-70; Mon, 25 Dec 2023 20:25:42 +0100
+Received: from [192.168.0.30] (helo=webmail.your-server.de)
+	by sslproxy01.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-CHACHA20-POLY1305:256)
+	(Exim 4.92)
+	(envelope-from <stefan.hoffmeister@econos.de>)
+	id 1rHqa5-000X2k-LH; Mon, 25 Dec 2023 20:25:41 +0100
+Received: from dslb-092-072-015-178.092.072.pools.vodafone-ip.de
+ (dslb-092-072-015-178.092.072.pools.vodafone-ip.de [92.72.15.178]) by
+ webmail.your-server.de (Horde Framework) with HTTPS; Mon, 25 Dec 2023
+ 20:25:41 +0100
+Date: Mon, 25 Dec 2023 20:25:41 +0100
+Message-ID: <20231225202541.Horde.tXckv5NJBOomrZjolmTSDS4@webmail.your-server.de>
+From: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, Martin Krastev
+ <martin.krastev@broadcom.com>, Maaz Mombasawala
+ <maaz.mombasawala@broadcom.com>, Ian Forbes <ian.forbes@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] drm/vmwgfx: Unmap the surface before resetting it on a
+ plane state
+In-Reply-To: <20231224052540.605040-1-zack.rusin@broadcom.com>
+User-Agent: Horde Application Framework 5
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media:fimc-capture: Fix a possible data inconsistency due
- to a data race in fimc_subdev_set_fmt()
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- s.nawrocki@samsung.com, mchehab@kernel.org, alim.akhtar@samsung.com
-Cc: linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@gmail.com, stable@vger.kernel.org, BassCheck <bass@buaa.edu.cn>
-References: <20231223164351.3521588-1-islituo@gmail.com>
- <93da765f-44c8-4023-b416-eae617d5ed74@linaro.org>
-From: Li Tuo <islituo@gmail.com>
-In-Reply-To: <93da765f-44c8-4023-b416-eae617d5ed74@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+X-Authenticated-Sender: stefan.hoffmeister@econos.de
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27134/Mon Dec 25 10:40:06 2023)
 
-Hi Krzysztof,
 
-Thanks for your reply very much. It is very helpful.
-I am really sorry to confuse you.
+Quoting Zack Rusin <zack.rusin@broadcom.com>:
 
-On 2023/12/24 18:11, Krzysztof Kozlowski wrote:
-
-> On 23/12/2023 17:43, Tuo Li wrote:
->> Accesses to ctx->s_frame.width and ctx->s_frame.height should be protected
->> by the lock fimc->lock to guarantee that width and height are consistent.
->> Here is an example in fimc_subdev_get_fmt():
->>
->>    struct fimc_frame *ff = &ctx->s_frame; // Alias
->>    mutex_lock(&fimc->lock);
->>    mf->width = ff->width;
->>    mf->height = ff->height;
->>
->> However, ctx->s_frame.width and ctx->s_frame.height are accessed without
->> holding the lock fimc->lock in fimc_subdev_set_fmt():
->>
->>    mf->width = ctx->s_frame.width;
->>    mf->height = ctx->s_frame.height;
-> Other places setting parts of s_frame, like fimc_capture_try_format() or
-> fimc_capture_try_selection(), do not have mutex.
+> Switch to a new plane state requires unreferencing of all held surfaces.
+> In the work required for mob cursors the mapped surfaces started being
+> cached but the variable indicating whether the surface is currently
+> mapped was not being reset. This leads to crashes as the duplicated
+> state, incorrectly, indicates the that surface is mapped even when
+> no surface is present. That's because after unreferencing the surface
+> it's perfectly possible for the plane to be backed by a bo instead of a
+> surface.
 >
->> And thus a harmful data race can occur, which can make ctx->s_frame.width
-> Harmful how?
-
-The function set_frame_crop() which updates s_frame.width and
-s_frame.height is called by fimc_cap_s_selection(). fimc_cap_s_selection()
-is an ioctl function and it is likely to be able to execute concurrently
-with other functions such as fimc_subdev_set_fmt(). However, in
-fimc_subdev_set_fmt(), the accesses to s_frame.width and s_frame.height are
-not protected by the mutex lock fimc->lock.
-
-If fimc_cap_s_selection() and fimc_subdev_set_fmt() can execute
-concurrently and the execution orders is like this:
-
-1. ctx->s_frame.width is accessed and assigned to mf->width in
-    fimc_subdev_set_fmt()      Line 1552 in fimc-capture.c
-2. ctx->s_frame.width and ctx->s_frame.height is updated by
-    fimc_cap_s_selection()     Line 1329 in fimc-capture.c
-3. ctx->s_frame.height is accessed and assigned to mf->height in
-    fimc_subdev_set_fmt()      Line 1553 in fimc-capture.c
-
-The width and height assigned to mf are not coming from the same
-ctx->s_frame configuration and can cause data inconsistency.
-
-Besides, the functions fimc_subdev_set_selection() and
-fimc_subdev_set_fmt() exist in the same driver interface named
-fimc_subdev_pad_ops. Therefore, it seems that fimc_subdev_set_fmt() and
-fimc_subdev_set_selection() can also execute concurrently. However, if the
-execution order of fimc_subdev_set_selection() and fimc_subdev_set_fmt() is
-like mentioned above, a data inconsistency can also occur.
-
-I analyze this possible data race manually according to the code logic, and
-I am not sure whether all accesses to configurations such as width, height,
-f_width, and f_height should be protected by a mutex lock to make them
-consistent. I am really sorry to trouble you, and any feedback will be
-appreciated!
-
->> inconsistent with ctx->s_frame.height, if ctx->s_frame.height is updated
->> right after ctx->s_frame.width is accessed by another thread.
->>
->> This possible bug is found by an experimental static analysis tool
->> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
->> to extract function pairs that can be concurrently executed, and then
->> analyzes the instructions in the paired functions to identify possible
->> concurrency bugs including data races and atomicity violations. The above
->> possible bug is reported when our tool analyzes the source code of
->> Linux 6.2.
->>
->> To fix this possible data race, the lock operation mutex_lock(&fimc->lock)
->> is moved to the front of the accesses to these two variables. With this
->> patch applied, our tool no longer reports the bug, with the kernel
->> configuration allyesconfig for x86_64. Due to the lack of associated
->> hardware, we cannot test the patch in runtime testing, and just verify it
->> according to the code logic.
-> You wrote long four paragraphs which have basically almost zero relevant
-> information, whether this locking is needed or not. Your bass
-> description is not relevant... or actually making things worse because I
-> am certain you are fixing it just to fix your report, not to fix real issue.
+> Reset the surface mapped flag when unreferencing the plane state surface
+> to fix null derefs in cleanup. Fixes crashes in KDE KWin 6.0 on Wayland:
 >
->> [1] https://sites.google.com/view/basscheck/
-> Instead provide the report.
-
-I am sorry to confuse you, and I wrote these descriptions according to
-researcher guidelines in the kernel documentation
-Documentation/process/researcher-guidelines.rst
-I will provide a more concise patch in the future.
-
->> Fixes: 88fa8311ee36 ("[media] s5p-fimc: Add support for ISP Writeback ...")
->> Signed-off-by: Tuo Li <islituo@gmail.com>
->> Cc: stable@vger.kernel.org
->> Reported-by: BassCheck <bass@buaa.edu.cn>
-> Run checkpatch, you will see the warning.
-
-Thanks for your advice. I am sorry to bother you, and I will be careful in
-the subsequent patches.
-
-> Best regards,
-> Krzysztof
+> Oops: 0000 [#1] PREEMPT SMP PTI
+> CPU: 4 PID: 2533 Comm: kwin_wayland Not tainted 6.7.0-rc3-vmwgfx #2
+> Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop  
+> Reference Platform, BIOS 6.00 11/12/2020
+> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00  
+> 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48>  
+> 8b 78 28 e8 e3 f>
+> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
+> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
+> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
+> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
+> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
+> Call Trace:
+>  <TASK>
+>  ? __die+0x23/0x70
+>  ? page_fault_oops+0x171/0x4e0
+>  ? exc_page_fault+0x7f/0x180
+>  ? asm_exc_page_fault+0x26/0x30
+>  ? vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+>  drm_atomic_helper_cleanup_planes+0x9b/0xc0
+>  commit_tail+0xd1/0x130
+>  drm_atomic_helper_commit+0x11a/0x140
+>  drm_atomic_commit+0x97/0xd0
+>  ? __pfx___drm_printfn_info+0x10/0x10
+>  drm_atomic_helper_update_plane+0xf5/0x160
+>  drm_mode_cursor_universal+0x10e/0x270
+>  drm_mode_cursor_common+0x102/0x230
+>  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
+>  drm_ioctl_kernel+0xb2/0x110
+>  drm_ioctl+0x26d/0x4b0
+>  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
+>  ? __pfx_drm_ioctl+0x10/0x10
+>  vmw_generic_ioctl+0xa4/0x110 [vmwgfx]
+>  __x64_sys_ioctl+0x94/0xd0
+>  do_syscall_64+0x61/0xe0
+>  ? __x64_sys_ioctl+0xaf/0xd0
+>  ? syscall_exit_to_user_mode+0x2b/0x40
+>  ? do_syscall_64+0x70/0xe0
+>  ? __x64_sys_ioctl+0xaf/0xd0
+>  ? syscall_exit_to_user_mode+0x2b/0x40
+>  ? do_syscall_64+0x70/0xe0
+>  ? exc_page_fault+0x7f/0x180
+>  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+> RIP: 0033:0x7f1e93f279ed
+> Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00  
+> 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89>  
+> c2 3d 00 f0 ff f>
+> RSP: 002b:00007ffca0faf600 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 000055db876ed2c0 RCX: 00007f1e93f279ed
+> RDX: 00007ffca0faf6c0 RSI: 00000000c02464bb RDI: 0000000000000015
+> RBP: 00007ffca0faf650 R08: 000055db87184010 R09: 0000000000000007
+> R10: 000055db886471a0 R11: 0000000000000246 R12: 00007ffca0faf6c0
+> R13: 00000000c02464bb R14: 0000000000000015 R15: 00007ffca0faf790
+>  </TASK>
+> Modules linked in: snd_seq_dummy snd_hrtimer nf_conntrack_netbios_ns  
+> nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6  
+> nft_fib nft_reject_ine>
+> CR2: 0000000000000028
+> ---[ end trace 0000000000000000 ]---
+> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
+> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00  
+> 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48>  
+> 8b 78 28 e8 e3 f>
+> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
+> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
+> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
+> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
+> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
 >
-Sincerely,
-Tuo Li
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and  
+> CursorBypass 4")
+> Reported-by: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
+> Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/34
+> Cc: Martin Krastev <martin.krastev@broadcom.com>
+> Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+> Cc: Ian Forbes <ian.forbes@broadcom.com>
+> Cc: Broadcom internal kernel review list  
+> <bcm-kernel-feedback-list@broadcom.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.19+
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c  
+> b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> index 65ed9b061753..e7bbe4b05233 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> @@ -693,6 +693,10 @@ vmw_du_cursor_plane_prepare_fb(struct drm_plane *plane,
+>  	int ret = 0;
+>
+>  	if (vps->surf) {
+> +		if (vps->surf_mapped) {
+> +			vmw_bo_unmap(vps->surf->res.guest_memory_bo);
+> +			vps->surf_mapped = false;
+> +		}
+>  		vmw_surface_unreference(&vps->surf);
+>  		vps->surf = NULL;
+>  	}
+> --
+> 2.40.1
+
+I have tested this patch on top of a Fedora Rawhide kernel 6.7.0-rc7  
+with success: the oops has disappeared with forcing on atomic  
+mode-setting in KDE Plasma 6 (git master), while retaining the then  
+default of "hardware" cursors (steps see the gitlab issue)
+
+FYI, as a challenge separate from this oops, the atomic cursor is _not  
+visible_, although apparently the plane is assigned to the right CRTC,  
+cursors are being switched (FB_ID changes), the correct X and Y  
+coordinates are emitted - all according to the output of drm_info.  
+There is nothing in the (KDE Plasma 6) logs. I will try to diagnose  
+this and other cursor-related challenges further and create separate  
+issues if/once I make progress. Thanks to the fixed oops, that has now  
+become feasible :)
+
+Best regards
+Stefan
+
 
 
