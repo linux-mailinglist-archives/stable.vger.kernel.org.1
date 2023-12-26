@@ -1,143 +1,97 @@
-Return-Path: <stable+bounces-8585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6820481E743
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 13:11:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE94D81E7E3
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 15:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DF79282FBF
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 12:11:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109021C21E2E
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 14:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC044EB58;
-	Tue, 26 Dec 2023 12:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B49F2230C;
+	Tue, 26 Dec 2023 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQuLPQYQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jGvi1VSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA85C4EB4C;
-	Tue, 26 Dec 2023 12:10:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A2BC433C8;
-	Tue, 26 Dec 2023 12:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F44CB55
+	for <stable@vger.kernel.org>; Tue, 26 Dec 2023 14:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A4AC433C7;
+	Tue, 26 Dec 2023 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703592657;
-	bh=9K3RAxwtnbgt4T42ampHD1OD/JlH35Ygy2iCSPJlHoE=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nQuLPQYQj0rJddca9UNwEtVFa9Gfe3ZywepzqjizFZ9yBP8IN9wvcebRcVwB/OItz
-	 R6BLs3SKYwlhuqWP3ADKRy+rWNnUlLtezLThB0d3BWtpB5Kk8UP4DEHzII8yvdwgah
-	 KnJhjCJ8rK3YSxyyDOEm+Cx+H5GX8gRM28VyygQh8XdJPY343/+dHGimqMqH+kkv7w
-	 e9D3ZL7s1O49Ft3+xtyLQSLosGkD4BRgJ8SU+hMbggrgSYPOb0U5rEkWHrsrmLKKHe
-	 DgVmezxBKjstYXDeOJt+MAPIQ4zvHN/nf2lwci/6UeQd22e0uhvJ1ybXw2ivd0U+l2
-	 ITEQEVdSvvd8g==
-From: Matthieu Baerts <matttbe@kernel.org>
-Date: Tue, 26 Dec 2023 13:10:18 +0100
-Subject: [PATCH net 2/2] mptcp: prevent tcp diag from closing listener
- subflows
+	s=k20201202; t=1703602794;
+	bh=oQGfQNCR3ZYUsNLoM6ycJq7TUrIo6qXpNRsBHh9gS+Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jGvi1VSQQX94j2a8jiv9s+0fZWqgzZwidMrj19cKNVZNopkc89kh8BbUpQ9zqAxeC
+	 dU2+MPD+0hWy0QAU/pfoDagW9jT99Y9Xe1tqwa6LXBQQVRuJqie439BlnHDr4Isu12
+	 23tv7ELztKqqkUKt0o3Nqtv35H1CylfJtSNjaB9hDyl38xDrDrpaM7P25yeaWdu3eZ
+	 aKKVkpnHINA7DVUUMOcE8s1mOM1kg2qmnkmCBR0/vu/euv67u/Wf+WARSWJBzqRP0E
+	 SiR85Y3PeY26c+nfSzNsZBAXczhHwPm0JsBRCaOE6IK8nRejoZtdqHpLrztHQREMif
+	 0qLgO6OiJP4aA==
+Date: Tue, 26 Dec 2023 09:59:52 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, smfrench@gmail.com,
+	Steve French <stfrench@microsoft.com>
+Subject: Re: [PATCH 5.15.y 1/8] ksmbd: add support for key exchange
+Message-ID: <ZYrqaBw9o9L_WmW7@sashalap>
+References: <20231226105333.5150-1-linkinjeon@kernel.org>
+ <20231226105333.5150-2-linkinjeon@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231226-upstream-net-20231226-mptcp-prevent-warn-v1-2-1404dcc431ea@kernel.org>
-References: <20231226-upstream-net-20231226-mptcp-prevent-warn-v1-0-1404dcc431ea@kernel.org>
-In-Reply-To: <20231226-upstream-net-20231226-mptcp-prevent-warn-v1-0-1404dcc431ea@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang.tang@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
- Matthieu Baerts <matttbe@kernel.org>, stable@vger.kernel.org, 
- syzbot+5a01c3a666e726bc8752@syzkaller.appspotmail.com
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2384; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=HDp1Le2S0oz86KqWx/YgeMDwAfEXRM0g+e1uupHk7kU=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlisLJiW/jUMiX4knlvoEDr/Uu+rv4Yuf4zi62F
- gnxOCaCU0aJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZYrCyQAKCRD2t4JPQmmg
- cyKzD/9qtiKMJx5LbFlpxD6kdM8LYanxi9aYr7uyauIbafSh7dLy8U0aVLOAPMe1CKRp6hmD+HN
- B3xIhkOuFu0vqvNpir8m+GaxyQKXYRNNns3atZriKmGeBnZDPQj9UYNtDvMbrEopK9rpo5DpsNr
- voq4n45obKfYjkdeCyi0DIZbR2EIp5FgAscRZW0iXltYkE5NTVjzw1WfJ02wd9528MUEn+OsKIC
- OQf2QVLsUx0HpV8beQY9CgGnYmpKYh66Pkb6yfqpaWuygfmnVEZWYgn5dIX7hE5SlcsSK2jyThO
- XS0ydvNJEYTW9Ss5oCMRyzp3G5HkmL1oS9JZnKjeLKfMmWd4efecGRk0VO5aAAC62MDCjNK38pH
- vRmuFFDhsWu8sBZA+GTCzEDHhbt5vnntHIS1f48m6pZ/4QVsSrnawH0cMXAaoSmc7K7C8tgeln1
- lG8q5hXMD7Y95VT082MLzSWR297qqC3c1dd6t2mXLsGuxg/+GeKYGKP+sIh8T86FHTS+THOsf4Y
- gQshxwrO4hzkWof8yjXfO1eNUCHVWe8TjK3QGnhrr5y58WvAgOk6ScCVWAp5yjsZsrojhS9LTpr
- kIw3l2BKrB1DIqX6L9rbj6LXQt1cw9wAtnKjvuc0RnngRx03+P1nV8lvzQ8tpfeflnUdvbrXwkO
- mHsycIOs+16SUrQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231226105333.5150-2-linkinjeon@kernel.org>
 
-From: Paolo Abeni <pabeni@redhat.com>
+On Tue, Dec 26, 2023 at 07:53:26PM +0900, Namjae Jeon wrote:
+>[ Upstream commit f9929ef6a2a55f03aac61248c6a3a987b8546f2a ]
+>
+>When mounting cifs client, can see the following warning message.
+>
+>CIFS: decode_ntlmssp_challenge: authentication has been weakened as server
+>does not support key exchange
+>
+>To remove this warning message, Add support for key exchange feature to
+>ksmbd. This patch decrypts 16-byte ciphertext value sent by the client
+>using RC4 with session key. The decrypted value is the recovered secondary
+>key that will use instead of the session key for signing and sealing.
+>
+>Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+>Signed-off-by: Steve French <stfrench@microsoft.com>
+>---
+> fs/Kconfig | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
+>
+>diff --git a/fs/Kconfig b/fs/Kconfig
+>index a6313a969bc5..971339ecc1a2 100644
+>--- a/fs/Kconfig
+>+++ b/fs/Kconfig
+>@@ -369,8 +369,8 @@ source "fs/ksmbd/Kconfig"
+>
+> config SMBFS_COMMON
+> 	tristate
+>-	default y if CIFS=y
+>-	default m if CIFS=m
+>+	default y if CIFS=y || SMB_SERVER=y
+>+	default m if CIFS=m || SMB_SERVER=m
+>
+> source "fs/coda/Kconfig"
+> source "fs/afs/Kconfig"
 
-The MPTCP protocol does not expect that any other entity could change
-the first subflow status when such socket is listening.
-Unfortunately the TCP diag interface allows aborting any TCP socket,
-including MPTCP listeners subflows. As reported by syzbot, that trigger
-a WARN() and could lead to later bigger trouble.
+This looks really weird: the hunk above is in the original upstream
+patch, but what happened to the rest of the upstream code?
 
-The MPTCP protocol needs to do some MPTCP-level cleanup actions to
-properly shutdown the listener. To keep the fix simple, prevent
-entirely the diag interface from stopping such listeners.
-
-We could refine the diag callback in a later, larger patch targeting
-net-next.
-
-Fixes: 57fc0f1ceaa4 ("mptcp: ensure listener is unhashed before updating the sk status")
-Cc: stable@vger.kernel.org
-Reported-by: <syzbot+5a01c3a666e726bc8752@syzkaller.appspotmail.com>
-Closes: https://lore.kernel.org/netdev/0000000000004f4579060c68431b@google.com/
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
----
- net/mptcp/subflow.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 6d7684c35e93..852b3f4af000 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1982,6 +1982,17 @@ static void tcp_release_cb_override(struct sock *ssk)
- 	tcp_release_cb(ssk);
- }
- 
-+static int tcp_abort_override(struct sock *ssk, int err)
-+{
-+	/* closing a listener subflow requires a great deal of care.
-+	 * keep it simple and just prevent such operation
-+	 */
-+	if (inet_sk_state_load(ssk) == TCP_LISTEN)
-+		return -EINVAL;
-+
-+	return tcp_abort(ssk, err);
-+}
-+
- static struct tcp_ulp_ops subflow_ulp_ops __read_mostly = {
- 	.name		= "mptcp",
- 	.owner		= THIS_MODULE,
-@@ -2026,6 +2037,7 @@ void __init mptcp_subflow_init(void)
- 
- 	tcp_prot_override = tcp_prot;
- 	tcp_prot_override.release_cb = tcp_release_cb_override;
-+	tcp_prot_override.diag_destroy = tcp_abort_override;
- 
- #if IS_ENABLED(CONFIG_MPTCP_IPV6)
- 	/* In struct mptcp_subflow_request_sock, we assume the TCP request sock
-@@ -2061,6 +2073,7 @@ void __init mptcp_subflow_init(void)
- 
- 	tcpv6_prot_override = tcpv6_prot;
- 	tcpv6_prot_override.release_cb = tcp_release_cb_override;
-+	tcpv6_prot_override.diag_destroy = tcp_abort_override;
- #endif
- 
- 	mptcp_diag_subflow_init(&subflow_ulp_ops);
+This change doesn't do what the message describing it says it does.
 
 -- 
-2.43.0
-
+Thanks,
+Sasha
 
