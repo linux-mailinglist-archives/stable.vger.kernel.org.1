@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-8579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6276C81E6FE
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 11:54:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C977181E6FF
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 11:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01D041F2211B
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 10:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55AC81F22841
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 10:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E57B94E1A5;
-	Tue, 26 Dec 2023 10:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2F34E1B2;
+	Tue, 26 Dec 2023 10:54:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA64CE1F
-	for <stable@vger.kernel.org>; Tue, 26 Dec 2023 10:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88334CE1F
+	for <stable@vger.kernel.org>; Tue, 26 Dec 2023 10:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-28c7c422ad9so292228a91.3
-        for <stable@vger.kernel.org>; Tue, 26 Dec 2023 02:54:14 -0800 (PST)
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-28be024282bso2024657a91.3
+        for <stable@vger.kernel.org>; Tue, 26 Dec 2023 02:54:17 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703588054; x=1704192854;
+        d=1e100.net; s=20230601; t=1703588057; x=1704192857;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U8fy9kS1fRyKFoBsaADhaTLdVMcrnoHblkFvtu/BD58=;
-        b=k/7crfY1jrb3/C6zpRlgIb0Kcfr/Wc2x4OOp2SctEYcZBxB79gPA9WQmNLxni5sKiQ
-         k3Q5jEBLMLLLhIcinzs4YrRP1l6/ZgaT84ONtKx28wgMzyJprkymljZvurMh7Q5sQYxX
-         nw7wM0PlK+twIsOSMtKI1K9zHgxUnzHCM75LotC/cVWBeta/xnjYaVGKbDuNxZxev6QN
-         W15wggSz2TvsVFJVQUoBlr1GWySipyrxs/YVD9pE1FBYrbBakS4HJ4nF9kepDU1aDKjB
-         JpXw9NINGs8SubW38iLr3bsO2A/o5MdshtZyXSI6pnNB4GrepRwjRTIFibW4AETVoxFj
-         hTJw==
-X-Gm-Message-State: AOJu0YxDW26qToxYHy6Z4+p8JOJLKHNAgdoqKUUzk2mLTbdjMYRrHZ0p
-	mn3no7SYzVxkzBNABlB/kVISLtjGSCw=
-X-Google-Smtp-Source: AGHT+IHYTyiLWneHOe2UsWFdcLYP/nU+GZ7czA8GplVDTdzOkSdFWsmV5SdQqSVqYfJdrzNQTn+jmA==
-X-Received: by 2002:a17:90a:f004:b0:28c:2786:48be with SMTP id bt4-20020a17090af00400b0028c278648bemr2034910pjb.49.1703588053809;
-        Tue, 26 Dec 2023 02:54:13 -0800 (PST)
+        bh=g0B2RRs2CydUNcrY8Xwuu51cZcfeA984rIHDnRvXMj8=;
+        b=Sqo3UAUf7Ta/INchsFQLuijHAfsp6Kn18I5h+uXedA8LJ7Twisj7mZ2obIcdfZhXUk
+         bJJzWHMqX9+MznXDpubtD1wUgSABjHpnvMNWREWTfP568L5FY3PTirKqU1jRLDCCDhm5
+         SCHmzO2nZDXStj2MEgyrp6Gmjdj1hSF+toWKmsrKcDEtm4ijwQxnCvE+XEvpDzOGQb34
+         hpZDNbCYcgK5s0PTWrogBy0r2dGc+XTYj5rgMtPZxb5x7ZS3YIP93cQvLO6i+VpxQKuu
+         tmySIeDTP2XW2hZjMnUa8SsrjnM1csgydcD+l7KBCX8KBi0r8sqSIfBkStipHJxJi6dR
+         JIHA==
+X-Gm-Message-State: AOJu0YxYKR9OoKc4j2z7cr1sO2yLGLeeJP2ZSzyuIaDFx68YarAc7qYx
+	s0RhLmaF9Nxdbp0QWRUKJBA=
+X-Google-Smtp-Source: AGHT+IFop8PzhcdDIXyhj8c/uvpqWBieLvf+8yunR6UZAbS1L5fVwXMWf738UXXb+PujsA4sC/DEOw==
+X-Received: by 2002:a17:90a:c08f:b0:28b:201f:c2be with SMTP id o15-20020a17090ac08f00b0028b201fc2bemr1656380pjs.62.1703588057032;
+        Tue, 26 Dec 2023 02:54:17 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id sg4-20020a17090b520400b0028be1050020sm10874972pjb.29.2023.12.26.02.54.10
+        by smtp.gmail.com with ESMTPSA id sg4-20020a17090b520400b0028be1050020sm10874972pjb.29.2023.12.26.02.54.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Dec 2023 02:54:11 -0800 (PST)
+        Tue, 26 Dec 2023 02:54:16 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
 Cc: smfrench@gmail.com,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 4/8] ksmbd: downgrade RWH lease caching state to RH for directory
-Date: Tue, 26 Dec 2023 19:53:29 +0900
-Message-Id: <20231226105333.5150-5-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 5/8] ksmbd: send v2 lease break notification for directory
+Date: Tue, 26 Dec 2023 19:53:30 +0900
+Message-Id: <20231226105333.5150-6-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231226105333.5150-1-linkinjeon@kernel.org>
 References: <20231226105333.5150-1-linkinjeon@kernel.org>
@@ -63,89 +63,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit eb547407f3572d2110cb1194ecd8865b3371a7a4 ]
+[ Upstream commit d47d9886aeef79feba7adac701a510d65f3682b5 ]
 
-RWH(Read + Write + Handle) caching state is not supported for directory.
-ksmbd downgrade it to RH for directory if client send RWH caching lease
-state.
+If client send different parent key, different client guid, or there is
+no parent lease key flags in create context v2 lease, ksmbd send lease
+break to client.
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/oplock.c  | 9 +++++++--
- fs/ksmbd/oplock.h  | 2 +-
- fs/ksmbd/smb2pdu.c | 8 ++++----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ fs/ksmbd/oplock.c    | 56 ++++++++++++++++++++++++++++++++++++++++----
+ fs/ksmbd/oplock.h    |  4 ++++
+ fs/ksmbd/smb2pdu.c   |  7 ++++++
+ fs/ksmbd/smb2pdu.h   |  1 +
+ fs/ksmbd/vfs_cache.c | 13 +++++++++-
+ fs/ksmbd/vfs_cache.h |  2 ++
+ 6 files changed, 77 insertions(+), 6 deletions(-)
 
 diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index 24716dbe7108..600312e2c6c2 100644
+index 600312e2c6c2..df6f00f58f19 100644
 --- a/fs/ksmbd/oplock.c
 +++ b/fs/ksmbd/oplock.c
-@@ -1398,10 +1398,11 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+@@ -102,6 +102,7 @@ static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
+ 	lease->new_state = 0;
+ 	lease->flags = lctx->flags;
+ 	lease->duration = lctx->duration;
++	lease->is_dir = lctx->is_dir;
+ 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
+ 	lease->version = lctx->version;
+ 	lease->epoch = le16_to_cpu(lctx->epoch);
+@@ -543,12 +544,13 @@ static struct oplock_info *same_client_has_lease(struct ksmbd_inode *ci,
+ 			/* upgrading lease */
+ 			if ((atomic_read(&ci->op_count) +
+ 			     atomic_read(&ci->sop_count)) == 1) {
+-				if (lease->state ==
+-				    (lctx->req_state & lease->state)) {
++				if (lease->state != SMB2_LEASE_NONE_LE &&
++				    lease->state == (lctx->req_state & lease->state)) {
+ 					lease->state |= lctx->req_state;
+ 					if (lctx->req_state &
+ 						SMB2_LEASE_WRITE_CACHING_LE)
+ 						lease_read_to_write(opinfo);
++
+ 				}
+ 			} else if ((atomic_read(&ci->op_count) +
+ 				    atomic_read(&ci->sop_count)) > 1) {
+@@ -900,7 +902,8 @@ static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level)
+ 					lease->new_state =
+ 						SMB2_LEASE_READ_CACHING_LE;
+ 			} else {
+-				if (lease->state & SMB2_LEASE_HANDLE_CACHING_LE)
++				if (lease->state & SMB2_LEASE_HANDLE_CACHING_LE &&
++						!lease->is_dir)
+ 					lease->new_state =
+ 						SMB2_LEASE_READ_CACHING_LE;
+ 				else
+@@ -1082,6 +1085,48 @@ static void set_oplock_level(struct oplock_info *opinfo, int level,
+ 	}
+ }
+ 
++void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
++				      struct lease_ctx_info *lctx)
++{
++	struct oplock_info *opinfo;
++	struct ksmbd_inode *p_ci = NULL;
++
++	if (lctx->version != 2)
++		return;
++
++	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
++	if (!p_ci)
++		return;
++
++	read_lock(&p_ci->m_lock);
++	list_for_each_entry(opinfo, &p_ci->m_op_list, op_entry) {
++		if (!opinfo->is_lease)
++			continue;
++
++		if (opinfo->o_lease->state != SMB2_OPLOCK_LEVEL_NONE &&
++		    (!(lctx->flags & SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE) ||
++		     !compare_guid_key(opinfo, fp->conn->ClientGUID,
++				      lctx->parent_lease_key))) {
++			if (!atomic_inc_not_zero(&opinfo->refcount))
++				continue;
++
++			atomic_inc(&opinfo->conn->r_count);
++			if (ksmbd_conn_releasing(opinfo->conn)) {
++				atomic_dec(&opinfo->conn->r_count);
++				continue;
++			}
++
++			read_unlock(&p_ci->m_lock);
++			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
++			opinfo_conn_put(opinfo);
++			read_lock(&p_ci->m_lock);
++		}
++	}
++	read_unlock(&p_ci->m_lock);
++
++	ksmbd_inode_put(p_ci);
++}
++
  /**
-  * parse_lease_state() - parse lease context containted in file open request
-  * @open_req:	buffer containing smb2 file open(create) request
-+ * @is_dir:	whether leasing file is directory
-  *
-  * Return:  oplock state, -ENOENT if create lease context not found
-  */
--struct lease_ctx_info *parse_lease_state(void *open_req)
-+struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
- {
- 	struct create_context *cc;
- 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
-@@ -1419,7 +1420,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
+  * smb_grant_oplock() - handle oplock/lease request on file open
+  * @work:		smb work
+@@ -1420,10 +1465,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
  		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
  
  		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
--		lreq->req_state = lc->lcontext.LeaseState;
-+		if (is_dir)
-+			lreq->req_state = lc->lcontext.LeaseState &
-+				~SMB2_LEASE_WRITE_CACHING_LE;
-+		else
-+			lreq->req_state = lc->lcontext.LeaseState;
+-		if (is_dir)
++		if (is_dir) {
+ 			lreq->req_state = lc->lcontext.LeaseState &
+ 				~SMB2_LEASE_WRITE_CACHING_LE;
+-		else
++			lreq->is_dir = true;
++		} else
+ 			lreq->req_state = lc->lcontext.LeaseState;
  		lreq->flags = lc->lcontext.LeaseFlags;
  		lreq->epoch = lc->lcontext.Epoch;
- 		lreq->duration = lc->lcontext.LeaseDuration;
 diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
-index ad31439c61fe..672127318c75 100644
+index 672127318c75..b64d1536882a 100644
 --- a/fs/ksmbd/oplock.h
 +++ b/fs/ksmbd/oplock.h
-@@ -109,7 +109,7 @@ void opinfo_put(struct oplock_info *opinfo);
+@@ -36,6 +36,7 @@ struct lease_ctx_info {
+ 	__u8			parent_lease_key[SMB2_LEASE_KEY_SIZE];
+ 	__le16			epoch;
+ 	int			version;
++	bool			is_dir;
+ };
  
- /* Lease related functions */
- void create_lease_buf(u8 *rbuf, struct lease *lease);
--struct lease_ctx_info *parse_lease_state(void *open_req);
-+struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir);
- __u8 smb2_map_lease_to_oplock(__le32 lease_state);
- int lease_read_to_write(struct oplock_info *opinfo);
+ struct lease_table {
+@@ -54,6 +55,7 @@ struct lease {
+ 	__u8			parent_lease_key[SMB2_LEASE_KEY_SIZE];
+ 	int			version;
+ 	unsigned short		epoch;
++	bool			is_dir;
+ 	struct lease_table	*l_lb;
+ };
  
+@@ -125,4 +127,6 @@ struct oplock_info *lookup_lease_in_table(struct ksmbd_conn *conn,
+ int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
+ 			struct lease_ctx_info *lctx);
+ void destroy_lease_table(struct ksmbd_conn *conn);
++void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
++				      struct lease_ctx_info *lctx);
+ #endif /* __KSMBD_OPLOCK_H */
 diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 7ce5746f9167..6a3cd6ea3af1 100644
+index 6a3cd6ea3af1..c1dde4204366 100644
 --- a/fs/ksmbd/smb2pdu.c
 +++ b/fs/ksmbd/smb2pdu.c
-@@ -2729,10 +2729,6 @@ int smb2_open(struct ksmbd_work *work)
+@@ -3222,6 +3222,13 @@ int smb2_open(struct ksmbd_work *work)
  		}
- 	}
- 
--	req_op_level = req->RequestedOplockLevel;
--	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
--		lc = parse_lease_state(req);
--
- 	if (le32_to_cpu(req->ImpersonationLevel) > le32_to_cpu(IL_DELEGATE_LE)) {
- 		pr_err("Invalid impersonationlevel : 0x%x\n",
- 		       le32_to_cpu(req->ImpersonationLevel));
-@@ -3212,6 +3208,10 @@ int smb2_open(struct ksmbd_work *work)
- 		need_truncate = 1;
- 	}
- 
-+	req_op_level = req->RequestedOplockLevel;
-+	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
-+		lc = parse_lease_state(req, S_ISDIR(file_inode(filp)->i_mode));
+ 	} else {
+ 		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
++			/*
++			 * Compare parent lease using parent key. If there is no
++			 * a lease that has same parent key, Send lease break
++			 * notification.
++			 */
++			smb_send_parent_lease_break_noti(fp, lc);
 +
- 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
- 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
- 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
+ 			req_op_level = smb2_map_lease_to_oplock(lc->req_state);
+ 			ksmbd_debug(SMB,
+ 				    "lease req for(%s) req oplock state 0x%x, lease state 0x%x\n",
+diff --git a/fs/ksmbd/smb2pdu.h b/fs/ksmbd/smb2pdu.h
+index e1d0849ee68f..912bd94257ec 100644
+--- a/fs/ksmbd/smb2pdu.h
++++ b/fs/ksmbd/smb2pdu.h
+@@ -737,6 +737,7 @@ struct create_posix_rsp {
+ #define SMB2_LEASE_WRITE_CACHING_LE		cpu_to_le32(0x04)
+ 
+ #define SMB2_LEASE_FLAG_BREAK_IN_PROGRESS_LE	cpu_to_le32(0x02)
++#define SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE	cpu_to_le32(0x04)
+ 
+ #define SMB2_LEASE_KEY_SIZE			16
+ 
+diff --git a/fs/ksmbd/vfs_cache.c b/fs/ksmbd/vfs_cache.c
+index 774a387fccce..2528ce8aeebb 100644
+--- a/fs/ksmbd/vfs_cache.c
++++ b/fs/ksmbd/vfs_cache.c
+@@ -86,6 +86,17 @@ static struct ksmbd_inode *ksmbd_inode_lookup(struct ksmbd_file *fp)
+ 	return __ksmbd_inode_lookup(fp->filp->f_path.dentry);
+ }
+ 
++struct ksmbd_inode *ksmbd_inode_lookup_lock(struct dentry *d)
++{
++	struct ksmbd_inode *ci;
++
++	read_lock(&inode_hash_lock);
++	ci = __ksmbd_inode_lookup(d);
++	read_unlock(&inode_hash_lock);
++
++	return ci;
++}
++
+ int ksmbd_query_inode_status(struct dentry *dentry)
+ {
+ 	struct ksmbd_inode *ci;
+@@ -198,7 +209,7 @@ static void ksmbd_inode_free(struct ksmbd_inode *ci)
+ 	kfree(ci);
+ }
+ 
+-static void ksmbd_inode_put(struct ksmbd_inode *ci)
++void ksmbd_inode_put(struct ksmbd_inode *ci)
+ {
+ 	if (atomic_dec_and_test(&ci->m_count))
+ 		ksmbd_inode_free(ci);
+diff --git a/fs/ksmbd/vfs_cache.h b/fs/ksmbd/vfs_cache.h
+index 8325cf4527c4..4d4938d6029b 100644
+--- a/fs/ksmbd/vfs_cache.h
++++ b/fs/ksmbd/vfs_cache.h
+@@ -138,6 +138,8 @@ struct ksmbd_file *ksmbd_lookup_foreign_fd(struct ksmbd_work *work, u64 id);
+ struct ksmbd_file *ksmbd_lookup_fd_slow(struct ksmbd_work *work, u64 id,
+ 					u64 pid);
+ void ksmbd_fd_put(struct ksmbd_work *work, struct ksmbd_file *fp);
++struct ksmbd_inode *ksmbd_inode_lookup_lock(struct dentry *d);
++void ksmbd_inode_put(struct ksmbd_inode *ci);
+ struct ksmbd_file *ksmbd_lookup_durable_fd(unsigned long long id);
+ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
+ struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
 -- 
 2.25.1
 
