@@ -1,284 +1,228 @@
-Return-Path: <stable+bounces-8573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FE781E4CF
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 05:02:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629C281E4FD
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 06:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A721F225C7
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 04:02:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 994E2282C85
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 05:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C69A19454;
-	Tue, 26 Dec 2023 04:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06984B5C8;
+	Tue, 26 Dec 2023 05:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIJwJjnd"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="n1meGHlE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E7A18EBE;
-	Tue, 26 Dec 2023 04:02:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570CBC433C8;
-	Tue, 26 Dec 2023 04:02:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703563368;
-	bh=VFtaTsNzp3ptvfryn6wsPbPQyNhhITeXxCesm41Cr7g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TIJwJjndd8hxk7YW/VNgTJlBQbz9XpgK1KOrWJLRFKZ+hFt0rWj3lJNpR9JgodWL2
-	 txxmdJTTvcP6fn3js/zg3vIaPLIiT1/Zcgc99rOpm3fjwVDHeXBvncr1KAvOZog9m2
-	 P32jhLtY3Pj7T5ih11DAi8LVrY1ZPT1DQUQCMsxkOEZVNpBJU2IX+c2rIkklRskL/l
-	 Ez1k++nkftMBmIANRwEQhUem6h/uOh+lFtOz+OLIhhZrmMO0JHj9wkwgp9nYI37g2X
-	 PyeHfHJTyquc9Jf943ioNcEZWUjeZY2qZeb9mq7/iempOTx92P0f/fLstEQ5It61RK
-	 T1uegRWIu91IA==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-204520717b3so1967769fac.0;
-        Mon, 25 Dec 2023 20:02:48 -0800 (PST)
-X-Gm-Message-State: AOJu0Yz4iMPPETy4IWcE66nDH1lG6TpHjRSj6AupAiSxj04RU+jfDX6F
-	5+XTBAliMZOy6nXOHJqP+HyDe2jXbLF8twogD/g=
-X-Google-Smtp-Source: AGHT+IEyBIbSHRen5qHShaCMvS+CmJjO5RWG9JXt2gw4B6vX61FOisb6UVUQQAc4/jtFI0yWk+/vbufZIetDO6RZX64=
-X-Received: by 2002:a05:6870:c10d:b0:203:b44f:9036 with SMTP id
- f13-20020a056870c10d00b00203b44f9036mr7611819oad.60.1703563367641; Mon, 25
- Dec 2023 20:02:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102CB4B5C5;
+	Tue, 26 Dec 2023 05:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BQ4x1vh023783;
+	Tue, 26 Dec 2023 05:24:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=AyqDWWihAa1zlhpr5k42krhHmxZ0myDPF3QTT8zp9NU=; b=n1
+	meGHlEsCsluHafGFtTwuvJMifnQNJa8FEsvtlJ8nlefSur5otdGfcwQnk9YH7uVD
+	cWUzKu4U3nQRYtuCN/l3EywoLHKNv78k/Yhg7KWJd4PmQSs5Tpqeys8F1Y8rbaK4
+	LZMFDUO38onxuVPhChmsSRY2dWYqjB5eVs12vF0KKWXNj7p5NWoZhxoq0aUm77kw
+	2ZGlaDybLcS104jnB5+a9fBLzryvHO7U/w6tPNNELA2Ilgz89ZVXCVNE6fhfD2tc
+	JX6vfiJBK/xMmaRgln8/ZGQRzbo0rPyx99ivZXxCIXxrglrs0GUwNUtKX1zRg3Iy
+	o8GgF5p2p1ax/1wimwuw==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3v7gd98pbw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Dec 2023 05:24:47 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BQ5OkDR027920
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 Dec 2023 05:24:46 GMT
+Received: from [10.216.25.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 25 Dec
+ 2023 21:24:43 -0800
+Message-ID: <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
+Date: Tue, 26 Dec 2023 10:54:38 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
- <20231219201719.1967948-1-jtornosm@redhat.com>
-In-Reply-To: <20231219201719.1967948-1-jtornosm@redhat.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 26 Dec 2023 13:02:11 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
-Message-ID: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
-Subject: Re: [PATCH v4] rpm-pkg: simplify installkernel %post
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nathan@kernel.org, ndesaulniers@google.com, 
-	nicolas@fjasle.eu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Dec 20, 2023 at 5:17=E2=80=AFAM Jose Ignacio Tornos Martinez
-<jtornosm@redhat.com> wrote:
->
-> The new installkernel application that is now included in systemd-udev
-> package allows installation although destination files are already presen=
-t
-> in the boot directory of the kernel package, but is failing with the
-> implemented workaround for the old installkernel application from grubby
-> package.
->
-> For the new installkernel application, as Davide says:
-> <<The %post currently does a shuffling dance before calling installkernel=
-.
-> This isn't actually necessary afaict, and the current implementation
-> ends up triggering downstream issues such as
-> https://github.com/systemd/systemd/issues/29568
-> This commit simplifies the logic to remove the shuffling. For reference,
-> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-> section to create initramfs and grub hooks").>>
->
-> But we need to keep the old behavior as well, because the old installkern=
-el
-> application from grubby package, does not allow this simplification and
-> we need to be backward compatible to avoid issues with the different
-> packages.
->
-> Mimic Fedora shipping process and store vmlinuz, config amd System.map
-> in the module directory instead of the boot directory. In this way, we wi=
-ll
-> avoid the commented problem for all the cases, because the new destinatio=
-n
-> files are not going to exist in the boot directory of the kernel package.
->
-> Replace installkernel tool with kernel-install tool, because the latter i=
-s
-> more complete. Suitable manual actions are added as a default if tool is =
-not
-> present (unusual).
-
-
-This paragraph should be reworded,
-and the corresponding code should be fixed.
-
-
-This patch works for fedora 38 and fedora 39,
-but may break openSUSE tumbleweed, at least.
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 1/2] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Mathias Nyman
+	<mathias.nyman@intel.com>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20231212112521.3774610-1-quic_prashk@quicinc.com>
+ <20231212112521.3774610-2-quic_prashk@quicinc.com>
+ <2023121518-uncharted-riddance-7c58@gregkh>
+ <849d0ea9-d4f7-c568-968c-88835f64fadf@quicinc.com>
+ <2023122212-stellar-handlebar-2f70@gregkh>
+From: Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <2023122212-stellar-handlebar-2f70@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: X-atXzeIR_zyOLS9sZHi_nMTKlRz2t-U
+X-Proofpoint-GUID: X-atXzeIR_zyOLS9sZHi_nMTKlRz2t-U
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 clxscore=1011
+ bulkscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
+ impostorscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2311290000 definitions=main-2312260037
 
 
 
-The kernel-install itself does not copy files,
-but invoked scripts in /usr/lib/kernel/install.d/
+On 22-12-23 11:40 am, Greg Kroah-Hartman wrote:
+> On Fri, Dec 22, 2023 at 11:29:01AM +0530, Prashanth K wrote:
+>> On 15-12-23 06:12 pm, Greg Kroah-Hartman wrote:
+>>> On Tue, Dec 12, 2023 at 04:55:20PM +0530, Prashanth K wrote:
+>>>> Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+>>>> XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+>>>> which fixes XHC timeout, which was seen on synopsys XHCs while
+>>>> using SG buffers. But the support for this quirk isn't present
+>>>> in the DWC3 layer.
+>>>>
+>>>> We will encounter this XHCI timeout/hung issue if we run iperf
+>>>> loopback tests using RTL8156 ethernet adaptor on DWC3 targets
+>>>> with scatter-gather enabled. This gets resolved after enabling
+>>>> the XHCI_SG_TRB_CACHE_SIZE_QUIRK. This patch enables it using
+>>>> the xhci device property since its needed for DWC3 controller.
+>>>>
+>>>> In Synopsys DWC3 databook,
+>>>> Table 9-3: xHCI Debug Capability Limitations
+>>>> Chained TRBs greater than TRB cache size: The debug capability
+>>>> driver must not create a multi-TRB TD that describes smaller
+>>>> than a 1K packet that spreads across 8 or more TRBs on either
+>>>> the IN TR or the OUT TR.
+>>>>
+>>>> Cc: <stable@vger.kernel.org>
+>>>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+>>>
+>>> What commit id does this fix?
+>>>
+>> This doesn't fix any commit as such, but adds the support for
+>> XHCI_SG_TRB_CACHE_SIZE_QUIRK (which is present in XHCI layer) to DWC3 layer.
+> 
+> So this is a new feature?
+> 
+> How does this fit into the stable kernel rules?
+
+This isn't a new feature. To give some background, upstream commit 
+bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+added a XHCI quirk which converts SG lists to CMA buffers/URBS if 
+certain conditions aren't met. But they never enabled this xhci quirk
+since no issues were hit at that time. So, the support for the above 
+mentioned quirk is added from 5.11 kernel onwards, but was never enabled 
+anywhere.
+
+ From commit bac1ec551434 : "We discovered this issue with devices on 
+other platforms but have not yet come across any device that triggers 
+this on Linux. But it could be a real problem now or in the future. All 
+it takes is N number of small chained TRBs. And other instances of the 
+Synopsys IP may have smaller values for the TRB_CACHE_SIZE which would 
+exacerbate the problem."
+
+For more info: 
+https://lore.kernel.org/all/20201208092912.1773650-3-mathias.nyman@linux.intel.com/
+
+> 
+>> I have CC'ed stable kernel for this to be back-ported to older kernels
+>> (#5.11).
+> 
+> Why that specific kernel version and newer?  Why not list it as
+> documented?
+
+I mentioned 5.11 because commit bac1ec551434 ("usb: xhci: Set quirk for 
+XHCI_SG_TRB_CACHE_SIZE_QUIRK") is present from 5.11.
+> 
+>>>
+>>>> ---
+>>>>    drivers/usb/dwc3/host.c | 2 ++
+>>>>    1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+>>>> index 61f57fe5bb78..31a496233d87 100644
+>>>> --- a/drivers/usb/dwc3/host.c
+>>>> +++ b/drivers/usb/dwc3/host.c
+>>>> @@ -89,6 +89,8 @@ int dwc3_host_init(struct dwc3 *dwc)
+>>>>    	memset(props, 0, sizeof(struct property_entry) * ARRAY_SIZE(props));
+>>>> +	props[prop_idx++] = PROPERTY_ENTRY_BOOL("xhci-sg-trb-cache-size-quirk");
+>>>
+>>> And this is ok if the entry is not present?
+>>>
+>> We are intending to use this quirk for all the dwc3 based devices since the
+>> DWC3 XHC needs it.
+> 
+> So you do not have this quirk yet in the kernel tree?  We can't take
+> code without any in-tree users.
+
+This is a 2 patch series, patch 1/2 sets a property from dwc3 layer. And 
+patch 2 enables XHCI quirk based on the property set from DWC3.
+> 
+>> If the entry is not present then we will hit stall if
+>> certain conditions aren't met (have mentioned the condition in commit text).
+> 
+> When will the quirk be added?  To what platforms?
+
+I guess there is some sort of confusion here, sorry for that.
+
+Earlier Tejas Joglekar from synopsys pushed a patch in XHCI layer which 
+converts certain SG lists to CMA buffers if some pre-requisites aren't 
+met. And this operation is done if an xhci->quirk is set 
+(XHCI_SG_TRB_CACHE_SIZE_QUIRK - BIT39)
+
+- 
+https://lore.kernel.org/all/20201208092912.1773650-2-mathias.nyman@linux.intel.com/
+
+- 
+https://lore.kernel.org/all/20201208092912.1773650-3-mathias.nyman@linux.intel.com/
+
+But here the option to enable this quirk was done using XHCI priv data
+
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index aa2d35f98200..4d34f6005381 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -333,6 +333,9 @@ static int xhci_plat_probe(struct platform_device *pdev)
+  	if (priv && (priv->quirks & XHCI_SKIP_PHY_INIT))
+  		hcd->skip_phy_initialization = 1;
+
++	if (priv && (priv->quirks & XHCI_SG_TRB_CACHE_SIZE_QUIRK))
++		xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
++
+  	ret = usb_add_hcd(hcd, irq, IRQF_SHARED);
+  	if (ret)
+  		goto disable_usb_phy;
 
 
-In Fedora,
+And this XHCI quirk (XHCI_SG_TRB_CACHE_SIZE_QUIRK) needs to be enabled 
+for DWC3 controllers. There are 2 ways to do it. One way is by directly 
+accessing XHCI private data from DWC3 layer (dwc3/host.c) which is not 
+cleaner approach.
 
-/usr/lib/kernel/install.d/20-grub.install
+So I'm reusing the device_create_managed_software_node() which is 
+present in dwc3/host.c to add a quirk to XHCI node, and enable 
+XHCI_SG_TRB_CACHE_SIZE_QUIRK based on property set from DWC3 layer.
 
-copies those files to /boot/.
-
-
-
-In openSUSE, the 'udev' package provides
-/usr/bin/kernel-install,
-but /usr/lib/kernel/install.d/20-grub.install
-is missing.
-
-
-masahiro@ea071f1f0504:~> rpm -qpl udev-254.5-8.1.x86_64.rpm | grep kernel
-/usr/bin/kernel-install
-/usr/lib/kernel
-/usr/lib/kernel/install.conf
-/usr/lib/kernel/install.d
-/usr/lib/kernel/install.d/50-depmod.install
-/usr/lib/kernel/install.d/90-loaderentry.install
-/usr/lib/kernel/install.d/90-uki-copy.install
-/usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
-/usr/lib/systemd/system/systemd-udevd-kernel.socket
-/usr/share/bash-completion/completions/kernel-install
-/usr/share/man/man8/kernel-install.8.gz
-/usr/share/man/man8/systemd-udevd-kernel.socket.8.gz
-/usr/share/zsh/site-functions/_kernel-install
-
-
-
-In openSUSE with the udev package installed,
-none of vmlinuz, config, System.map is copied
-to the /boot directory.
-
-
-
-
-Applying the following on top should fix the regression,
-although I did not test any other RPM-based distros.
-
-
-
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index afef3b0f6a3d..eb5cc440216b 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -71,12 +71,13 @@ rm -rf %{buildroot}
-
- %post
- if [ -x /usr/bin/kernel-install ]; then
--kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
--else
--cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
--cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELRELEA=
-SE}
--cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
-+    /usr/bin/kernel-install add %{KERNELRELEASE}
-/lib/modules/%{KERNELRELEASE}/vmlinuz
- fi
-+for file in vmlinuz System.map config; do
-+    if [ ! -e "/boot/${file}-%{KERNELRELEASE}" ]; then
-+        cp "/lib/modules/%{KERNELRELEASE}/${file}"
-"/boot/${file}-%{KERNELRELEASE}"
-+    fi
-+done
-
- %preun
- if [ -x /sbin/new-kernel-pkg ]; then
-
-
-
-
-
-
-
-
-
-
-
-
->
-> cc: stable@vger.kernel.org
-> Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
-> V1 -> V2:
-> - Complete to be backward compatible with the previous installkernel
-> application.
-> V2 -> V3:
-> - Follow the suggestions from Masahiro Yamada and change the installation
-> V3 -> V4:
-> - Make the patch applicable to linux-kbuild/for-next (ia64 support was
-> already removed).
->
->  scripts/package/kernel.spec | 21 ++++++++++-----------
->  1 file changed, 10 insertions(+), 11 deletions(-)
->
-> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-> index 89298983a169..17e7196c9be1 100644
-> --- a/scripts/package/kernel.spec
-> +++ b/scripts/package/kernel.spec
-> @@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
->  %{make} %{makeflags} KERNELRELEASE=3D%{KERNELRELEASE} KBUILD_BUILD_VERSI=
-ON=3D%{release}
->
->  %install
-> -mkdir -p %{buildroot}/boot
-> -cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KER=
-NELRELEASE}
-> +mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-> +cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERN=
-ELRELEASE}/vmlinuz
->  %{make} %{makeflags} INSTALL_MOD_PATH=3D%{buildroot} modules_install
->  %{make} %{makeflags} INSTALL_HDR_PATH=3D%{buildroot}/usr headers_install
-> -cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
-> -cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-> +cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-> +cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
->  ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KER=
-NELRELEASE}/build
->  %if %{with_devel}
->  %{make} %{makeflags} run-command KBUILD_RUN_COMMAND=3D'${srctree}/script=
-s/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE=
-}'
-> @@ -70,12 +70,12 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot=
-}/lib/modules/%{KERNELRELEA
->  rm -rf %{buildroot}
->
->  %post
-> -if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /=
-boot/System.map-%{KERNELRELEASE} ]; then
-> -cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
-> -cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-=
-rpm
-> -rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
-> -/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm=
- /boot/.System.map-%{KERNELRELEASE}-rpm
-> -rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELE=
-ASE}-rpm
-> +if [ -x /usr/bin/kernel-install ]; then
-> +kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinu=
-z
-> +else
-> +cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
-> +cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELREL=
-EASE}
-> +cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
->  fi
->
->  %preun
-> @@ -94,7 +94,6 @@ fi
->  %defattr (-, root, root)
->  /lib/modules/%{KERNELRELEASE}
->  %exclude /lib/modules/%{KERNELRELEASE}/build
-> -/boot/*
->
->  %files headers
->  %defattr (-, root, root)
-> --
-> 2.43.0
->
-
-
---=20
-Best Regards
-Masahiro Yamada
+Thanks,
+Prashanth K
 
