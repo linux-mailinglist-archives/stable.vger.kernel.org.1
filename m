@@ -1,164 +1,101 @@
-Return-Path: <stable+bounces-8468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 674C081E2F3
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 00:31:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE7681E308
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 01:20:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 992681C20FAD
-	for <lists+stable@lfdr.de>; Mon, 25 Dec 2023 23:31:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90B7B282559
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 00:20:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD25537F6;
-	Mon, 25 Dec 2023 23:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF0E380;
+	Tue, 26 Dec 2023 00:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K7QWOIU8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jpEPLtvZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BFB1EB37;
-	Mon, 25 Dec 2023 23:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703547076; x=1735083076;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5SMN0AzloiLbP8beEL+tP2MzpuhkZtwKpAax1CA2Udg=;
-  b=K7QWOIU8s9nmwIKUadWNG9iuxqcFRhiLzuX9U9WmVwTG4rm27NZuyLYz
-   JLmv0LUARDgIFvp/dCQfYaX829PKpAwPhbgHjSsR0u1sB3uAKK2FibV1h
-   Cutey/3mFmzn7+hcY20oNylUSJzobIoiicivZ6MA7WFI5L5IeCt8LN785
-   P4Ldro1l4FFpNJfb+rs95RxoCUj00TygqMmiW8zW6xChW3A5mzJsPuUp6
-   hyDbZL/Q3RcUDGLn9MFdmalltVtmTPeKcyloYVYrwJaNwDY2jKml4u3qP
-   ul5qY3oBoMdzuZaz7u71nZC2vflQWiiwSb4P/1/qcmbUpTaz3EljQvbLk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="9838291"
-X-IronPort-AV: E=Sophos;i="6.04,304,1695711600"; 
-   d="scan'208";a="9838291"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Dec 2023 15:31:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10934"; a="771030390"
-X-IronPort-AV: E=Sophos;i="6.04,304,1695711600"; 
-   d="scan'208";a="771030390"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga007.jf.intel.com with ESMTP; 25 Dec 2023 15:31:09 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rHuPa-000DmL-2L;
-	Mon, 25 Dec 2023 23:31:06 +0000
-Date: Tue, 26 Dec 2023 07:30:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lino Sanfilippo <l.sanfilippo@kunbus.com>, gregkh@linuxfoundation.org,
-	jirislaby@kernel.org, ilpo.jarvinen@linux.intel.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	u.kleine-koenig@pengutronix.de, shawnguo@kernel.org,
-	s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
-	hugo@hugovil.com, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, LinoSanfilippo@gmx.de,
-	lukas@wunner.de, p.rosenberger@kunbus.com,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v6 6/7] serial: omap: do not override settings for RS485
- support
-Message-ID: <202312260719.mI12i497-lkp@intel.com>
-References: <20231225113524.8800-7-l.sanfilippo@kunbus.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466C736E;
+	Tue, 26 Dec 2023 00:20:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF05C433C7;
+	Tue, 26 Dec 2023 00:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703550025;
+	bh=i4wXejtK3M6QlaHztWuWv4sXZWQ+aOYpR+7zI6fzdYA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=jpEPLtvZSH64C3CtBeJUAk9p3YYf/T7KFJIOqT0W7L5VpZDMAwiXlk4EKcP2PTVRl
+	 loplfZXjxlzZ1eEzbx5TFpRIsvlbfDA6aRn8o94w/cTBWeIEe1r/Sl3rwoiK8LSC9z
+	 YS7sOAh6q8BQ6dY0IKhrKIK4CDzWnlGbY5Qg8Khcgt81KvyDyxAAyjnPWYZ+Yc2aVh
+	 KL3CuBwsNXWFj+f25kRQASp1QnoQZKC5ZXySJV1y49VZwW39caAoWkFxscLyGD270E
+	 9SFzGNGuyA6lD7PIjJN01j7REmO5Y5IsKwIG09j93AMp0Fg8+yCJ6zaynn/kuaFnmt
+	 URz1TlUudDUJQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jefferymiller@google.com,
+	rrangel@chromium.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/39] Input: psmouse - enable Synaptics InterTouch for ThinkPad L14 G1
+Date: Mon, 25 Dec 2023 19:18:51 -0500
+Message-ID: <20231226002021.4776-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231225113524.8800-7-l.sanfilippo@kunbus.com>
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.8
+Content-Transfer-Encoding: 8bit
 
-Hi Lino,
+From: José Pekkarinen <jose.pekkarinen@foxhound.fi>
 
-kernel test robot noticed the following build errors:
+[ Upstream commit c1f342f35f820b33390571293498c3e2e9bc77ec ]
 
-[auto build test ERROR on ceb6a6f023fd3e8b07761ed900352ef574010bcb]
+Observed on dmesg of my laptop I see the following
+output:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lino-Sanfilippo/serial-Do-not-hold-the-port-lock-when-setting-rx-during-tx-GPIO/20231225-193833
-base:   ceb6a6f023fd3e8b07761ed900352ef574010bcb
-patch link:    https://lore.kernel.org/r/20231225113524.8800-7-l.sanfilippo%40kunbus.com
-patch subject: [PATCH v6 6/7] serial: omap: do not override settings for RS485 support
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20231226/202312260719.mI12i497-lkp@intel.com/config)
-compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project d3ef86708241a3bee902615c190dead1638c4e09)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231226/202312260719.mI12i497-lkp@intel.com/reproduce)
+[   19.898700] psmouse serio1: synaptics: queried max coordinates: x [..5678], y [..4694]
+[   19.936057] psmouse serio1: synaptics: queried min coordinates: x [1266..], y [1162..]
+[   19.936076] psmouse serio1: synaptics: Your touchpad (PNP: LEN0411 PNP0f13) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
+[   20.008901] psmouse serio1: synaptics: Touchpad model: 1, fw: 10.32, id: 0x1e2a1, caps: 0xf014a3/0x940300/0x12e800/0x500000, board id: 3471, fw id: 2909640
+[   20.008925] psmouse serio1: synaptics: serio: Synaptics pass-through port at isa0060/serio1/input0
+[   20.053344] input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input7
+[   20.397608] mousedev: PS/2 mouse device common for all mice
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312260719.mI12i497-lkp@intel.com/
+This patch will add its pnp id to the smbus list to
+produce the setup of intertouch for the device.
 
-All errors (new ones prefixed by >>):
+Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+Link: https://lore.kernel.org/r/20231114063607.71772-1-jose.pekkarinen@foxhound.fi
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/input/mouse/synaptics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
->> drivers/tty/serial/omap-serial.c:1501:29: error: use of undeclared identifier 'serial_omap_rs485_supported'
-    1501 |         up->port.rs485_supported = serial_omap_rs485_supported;
-         |                                    ^
-   1 error generated.
-
-
-vim +/serial_omap_rs485_supported +1501 drivers/tty/serial/omap-serial.c
-
-  1485	
-  1486	static int serial_omap_probe_rs485(struct uart_omap_port *up,
-  1487					   struct device *dev)
-  1488	{
-  1489		struct serial_rs485 *rs485conf = &up->port.rs485;
-  1490		struct device_node *np = dev->of_node;
-  1491		enum gpiod_flags gflags;
-  1492		int ret;
-  1493	
-  1494		rs485conf->flags = 0;
-  1495		up->rts_gpiod = NULL;
-  1496	
-  1497		if (!np)
-  1498			return 0;
-  1499	
-  1500		up->port.rs485_config = serial_omap_config_rs485;
-> 1501		up->port.rs485_supported = serial_omap_rs485_supported;
-  1502	
-  1503		ret = uart_get_rs485_mode(&up->port);
-  1504		if (ret)
-  1505			return ret;
-  1506	
-  1507		if (of_property_read_bool(np, "rs485-rts-active-high")) {
-  1508			rs485conf->flags |= SER_RS485_RTS_ON_SEND;
-  1509			rs485conf->flags &= ~SER_RS485_RTS_AFTER_SEND;
-  1510		} else {
-  1511			rs485conf->flags &= ~SER_RS485_RTS_ON_SEND;
-  1512			rs485conf->flags |= SER_RS485_RTS_AFTER_SEND;
-  1513		}
-  1514	
-  1515		/* check for tx enable gpio */
-  1516		gflags = rs485conf->flags & SER_RS485_RTS_AFTER_SEND ?
-  1517			GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
-  1518		up->rts_gpiod = devm_gpiod_get_optional(dev, "rts", gflags);
-  1519		if (IS_ERR(up->rts_gpiod)) {
-  1520			ret = PTR_ERR(up->rts_gpiod);
-  1521		        if (ret == -EPROBE_DEFER)
-  1522				return ret;
-  1523	
-  1524			up->rts_gpiod = NULL;
-  1525			up->port.rs485_supported = (const struct serial_rs485) { };
-  1526			if (rs485conf->flags & SER_RS485_ENABLED) {
-  1527				dev_err(dev, "disabling RS-485 (rts-gpio missing in device tree)\n");
-  1528				memset(rs485conf, 0, sizeof(*rs485conf));
-  1529			}
-  1530		} else {
-  1531			gpiod_set_consumer_name(up->rts_gpiod, "omap-serial");
-  1532		}
-  1533	
-  1534		return 0;
-  1535	}
-  1536	
-
+diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+index 22d16d80efb93..7a303a9d6bf72 100644
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -183,6 +183,7 @@ static const char * const smbus_pnp_ids[] = {
+ 	"LEN009b", /* T580 */
+ 	"LEN0402", /* X1 Extreme Gen 2 / P1 Gen 2 */
+ 	"LEN040f", /* P1 Gen 3 */
++	"LEN0411", /* L14 Gen 1 */
+ 	"LEN200f", /* T450s */
+ 	"LEN2044", /* L470  */
+ 	"LEN2054", /* E480 */
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
