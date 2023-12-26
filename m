@@ -1,94 +1,284 @@
-Return-Path: <stable+bounces-8572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFB081E42C
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 01:49:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FE781E4CF
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 05:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702471C21BE2
-	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 00:49:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94A721F225C7
+	for <lists+stable@lfdr.de>; Tue, 26 Dec 2023 04:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE04A54279;
-	Tue, 26 Dec 2023 00:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C69A19454;
+	Tue, 26 Dec 2023 04:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlKMiXZ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIJwJjnd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939DF61667;
-	Tue, 26 Dec 2023 00:27:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CCDC433C8;
-	Tue, 26 Dec 2023 00:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E7A18EBE;
+	Tue, 26 Dec 2023 04:02:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570CBC433C8;
+	Tue, 26 Dec 2023 04:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703550463;
-	bh=+9EjxN7OVgADoTxYjJw0S4pCwt37OnwGJGlmDH2kKvw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlKMiXZ5NORvWS1KFW+7R9emo38/BeTOtHmQAd8Fcm1FxMYjytkjgGFhpWgyveE4u
-	 yRZ6bJZUmAfSkOsO7PA65PoMdbqa6z5wsXErY5h4QqypN5UiYFkkN308XrW1ZSnocx
-	 JdNRjbl1jyw4BvdUrxWbPIxfNnWJ96EER/r5mnTHk6iyBqmC+yxr5PQ6ZX1Wa2PUJ5
-	 V9uOnSH9Bilc+2kJ33vURyqiezOVNH520hCDGF57J0nB7yTlqdicOX5QFlzK5Iy9Cx
-	 2S5bqS8wtBCfPC7QkmkQ/Iy1p9SSEVlnx7fW4nMU97lUimV0G9CVdOpZ3kWgjKrX8+
-	 5csgz2h0wL/hA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Luca Weiss <luca@z3ntu.xyz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	vi@endrift.com,
-	swyterzone@gmail.com,
-	carl.ng@hp.com,
-	matthias.benkmann@gmail.com,
-	doublej472@gmail.com,
-	slouken@libsdl.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 6/6] Input: xpad - add Razer Wolverine V2 support
-Date: Mon, 25 Dec 2023 19:27:13 -0500
-Message-ID: <20231226002725.7471-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231226002725.7471-1-sashal@kernel.org>
-References: <20231226002725.7471-1-sashal@kernel.org>
+	s=k20201202; t=1703563368;
+	bh=VFtaTsNzp3ptvfryn6wsPbPQyNhhITeXxCesm41Cr7g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=TIJwJjndd8hxk7YW/VNgTJlBQbz9XpgK1KOrWJLRFKZ+hFt0rWj3lJNpR9JgodWL2
+	 txxmdJTTvcP6fn3js/zg3vIaPLIiT1/Zcgc99rOpm3fjwVDHeXBvncr1KAvOZog9m2
+	 P32jhLtY3Pj7T5ih11DAi8LVrY1ZPT1DQUQCMsxkOEZVNpBJU2IX+c2rIkklRskL/l
+	 Ez1k++nkftMBmIANRwEQhUem6h/uOh+lFtOz+OLIhhZrmMO0JHj9wkwgp9nYI37g2X
+	 PyeHfHJTyquc9Jf943ioNcEZWUjeZY2qZeb9mq7/iempOTx92P0f/fLstEQ5It61RK
+	 T1uegRWIu91IA==
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-204520717b3so1967769fac.0;
+        Mon, 25 Dec 2023 20:02:48 -0800 (PST)
+X-Gm-Message-State: AOJu0Yz4iMPPETy4IWcE66nDH1lG6TpHjRSj6AupAiSxj04RU+jfDX6F
+	5+XTBAliMZOy6nXOHJqP+HyDe2jXbLF8twogD/g=
+X-Google-Smtp-Source: AGHT+IEyBIbSHRen5qHShaCMvS+CmJjO5RWG9JXt2gw4B6vX61FOisb6UVUQQAc4/jtFI0yWk+/vbufZIetDO6RZX64=
+X-Received: by 2002:a05:6870:c10d:b0:203:b44f:9036 with SMTP id
+ f13-20020a056870c10d00b00203b44f9036mr7611819oad.60.1703563367641; Mon, 25
+ Dec 2023 20:02:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.334
-Content-Transfer-Encoding: 8bit
+References: <CAK7LNASf7cOiWpcMsycVSBOg4Xp-dmUnAvGqdw5wAYR=KBzdig@mail.gmail.com>
+ <20231219201719.1967948-1-jtornosm@redhat.com>
+In-Reply-To: <20231219201719.1967948-1-jtornosm@redhat.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 26 Dec 2023 13:02:11 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
+Message-ID: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
+Subject: Re: [PATCH v4] rpm-pkg: simplify installkernel %post
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, nathan@kernel.org, ndesaulniers@google.com, 
+	nicolas@fjasle.eu, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Luca Weiss <luca@z3ntu.xyz>
+On Wed, Dec 20, 2023 at 5:17=E2=80=AFAM Jose Ignacio Tornos Martinez
+<jtornosm@redhat.com> wrote:
+>
+> The new installkernel application that is now included in systemd-udev
+> package allows installation although destination files are already presen=
+t
+> in the boot directory of the kernel package, but is failing with the
+> implemented workaround for the old installkernel application from grubby
+> package.
+>
+> For the new installkernel application, as Davide says:
+> <<The %post currently does a shuffling dance before calling installkernel=
+.
+> This isn't actually necessary afaict, and the current implementation
+> ends up triggering downstream issues such as
+> https://github.com/systemd/systemd/issues/29568
+> This commit simplifies the logic to remove the shuffling. For reference,
+> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
+> section to create initramfs and grub hooks").>>
+>
+> But we need to keep the old behavior as well, because the old installkern=
+el
+> application from grubby package, does not allow this simplification and
+> we need to be backward compatible to avoid issues with the different
+> packages.
+>
+> Mimic Fedora shipping process and store vmlinuz, config amd System.map
+> in the module directory instead of the boot directory. In this way, we wi=
+ll
+> avoid the commented problem for all the cases, because the new destinatio=
+n
+> files are not going to exist in the boot directory of the kernel package.
+>
+> Replace installkernel tool with kernel-install tool, because the latter i=
+s
+> more complete. Suitable manual actions are added as a default if tool is =
+not
+> present (unusual).
 
-[ Upstream commit c3d1610345b79cbe29ef6ca04a4780eff0d360c7 ]
 
-Add the VID and PID of Razer Wolverine V2 to xpad_device.
+This paragraph should be reworded,
+and the corresponding code should be fixed.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Link: https://lore.kernel.org/r/20231125-razer-wolverine-v2-v1-1-979fe9f9288e@z3ntu.xyz
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/input/joystick/xpad.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1dbe303354589..3fedc3688e8f2 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -282,6 +282,7 @@ static const struct xpad_device {
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
-+	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
--- 
-2.43.0
+This patch works for fedora 38 and fedora 39,
+but may break openSUSE tumbleweed, at least.
 
+
+
+The kernel-install itself does not copy files,
+but invoked scripts in /usr/lib/kernel/install.d/
+
+
+In Fedora,
+
+/usr/lib/kernel/install.d/20-grub.install
+
+copies those files to /boot/.
+
+
+
+In openSUSE, the 'udev' package provides
+/usr/bin/kernel-install,
+but /usr/lib/kernel/install.d/20-grub.install
+is missing.
+
+
+masahiro@ea071f1f0504:~> rpm -qpl udev-254.5-8.1.x86_64.rpm | grep kernel
+/usr/bin/kernel-install
+/usr/lib/kernel
+/usr/lib/kernel/install.conf
+/usr/lib/kernel/install.d
+/usr/lib/kernel/install.d/50-depmod.install
+/usr/lib/kernel/install.d/90-loaderentry.install
+/usr/lib/kernel/install.d/90-uki-copy.install
+/usr/lib/systemd/system/sockets.target.wants/systemd-udevd-kernel.socket
+/usr/lib/systemd/system/systemd-udevd-kernel.socket
+/usr/share/bash-completion/completions/kernel-install
+/usr/share/man/man8/kernel-install.8.gz
+/usr/share/man/man8/systemd-udevd-kernel.socket.8.gz
+/usr/share/zsh/site-functions/_kernel-install
+
+
+
+In openSUSE with the udev package installed,
+none of vmlinuz, config, System.map is copied
+to the /boot directory.
+
+
+
+
+Applying the following on top should fix the regression,
+although I did not test any other RPM-based distros.
+
+
+
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index afef3b0f6a3d..eb5cc440216b 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -71,12 +71,13 @@ rm -rf %{buildroot}
+
+ %post
+ if [ -x /usr/bin/kernel-install ]; then
+-kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
+-else
+-cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
+-cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELRELEA=
+SE}
+-cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
++    /usr/bin/kernel-install add %{KERNELRELEASE}
+/lib/modules/%{KERNELRELEASE}/vmlinuz
+ fi
++for file in vmlinuz System.map config; do
++    if [ ! -e "/boot/${file}-%{KERNELRELEASE}" ]; then
++        cp "/lib/modules/%{KERNELRELEASE}/${file}"
+"/boot/${file}-%{KERNELRELEASE}"
++    fi
++done
+
+ %preun
+ if [ -x /sbin/new-kernel-pkg ]; then
+
+
+
+
+
+
+
+
+
+
+
+
+>
+> cc: stable@vger.kernel.org
+> Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+> V1 -> V2:
+> - Complete to be backward compatible with the previous installkernel
+> application.
+> V2 -> V3:
+> - Follow the suggestions from Masahiro Yamada and change the installation
+> V3 -> V4:
+> - Make the patch applicable to linux-kbuild/for-next (ia64 support was
+> already removed).
+>
+>  scripts/package/kernel.spec | 21 ++++++++++-----------
+>  1 file changed, 10 insertions(+), 11 deletions(-)
+>
+> diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+> index 89298983a169..17e7196c9be1 100644
+> --- a/scripts/package/kernel.spec
+> +++ b/scripts/package/kernel.spec
+> @@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
+>  %{make} %{makeflags} KERNELRELEASE=3D%{KERNELRELEASE} KBUILD_BUILD_VERSI=
+ON=3D%{release}
+>
+>  %install
+> -mkdir -p %{buildroot}/boot
+> -cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KER=
+NELRELEASE}
+> +mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
+> +cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERN=
+ELRELEASE}/vmlinuz
+>  %{make} %{makeflags} INSTALL_MOD_PATH=3D%{buildroot} modules_install
+>  %{make} %{makeflags} INSTALL_HDR_PATH=3D%{buildroot}/usr headers_install
+> -cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
+> -cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
+> +cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
+> +cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
+>  ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KER=
+NELRELEASE}/build
+>  %if %{with_devel}
+>  %{make} %{makeflags} run-command KBUILD_RUN_COMMAND=3D'${srctree}/script=
+s/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE=
+}'
+> @@ -70,12 +70,12 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot=
+}/lib/modules/%{KERNELRELEA
+>  rm -rf %{buildroot}
+>
+>  %post
+> -if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /=
+boot/System.map-%{KERNELRELEASE} ]; then
+> -cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
+> -cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-=
+rpm
+> -rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
+> -/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm=
+ /boot/.System.map-%{KERNELRELEASE}-rpm
+> -rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELE=
+ASE}-rpm
+> +if [ -x /usr/bin/kernel-install ]; then
+> +kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinu=
+z
+> +else
+> +cp /lib/modules/%{KERNELRELEASE}/vmlinuz /boot/vmlinuz-%{KERNELRELEASE}
+> +cp /lib/modules/%{KERNELRELEASE}/System.map /boot/System.map-%{KERNELREL=
+EASE}
+> +cp /lib/modules/%{KERNELRELEASE}/config /boot/config-%{KERNELRELEASE}
+>  fi
+>
+>  %preun
+> @@ -94,7 +94,6 @@ fi
+>  %defattr (-, root, root)
+>  /lib/modules/%{KERNELRELEASE}
+>  %exclude /lib/modules/%{KERNELRELEASE}/build
+> -/boot/*
+>
+>  %files headers
+>  %defattr (-, root, root)
+> --
+> 2.43.0
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
