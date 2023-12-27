@@ -1,128 +1,132 @@
-Return-Path: <stable+bounces-8613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF79B81F118
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 19:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C48BE81F121
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 19:19:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E0A01C20FFC
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 18:04:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0151E1C2199B
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 18:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0212146547;
-	Wed, 27 Dec 2023 18:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4D24655E;
+	Wed, 27 Dec 2023 18:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZhpGayBt"
+	dkim=pass (1024-bit key) header.d=mrman314.tech header.i=@mrman314.tech header.b="p6fZmmjC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.mrman314.tech (unknown [135.0.77.242])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A115346522;
-	Wed, 27 Dec 2023 18:04:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EF6C433C8;
-	Wed, 27 Dec 2023 18:04:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703700274;
-	bh=Z5Xx4Awhm2yDAU7eR4KCbbH90zyc67q6J3SQ9KIFSvE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZhpGayBt8lKxIXkCy85p6bKIupO7GjLDohiqZns/nqowkDm6XfGlaj50PGSgHvQOq
-	 JhklV8O3Gk9WP227ddow0eJBwVcggrz/iZBd2aYKn6MR3VaDf1+0xdDaqZ1Qp14+KW
-	 HrRaDj6JxnnNvmDe1ysZckUpI24H3qqo4UKVq1+UocGe3mTGIa0wiWiflwuhxY3Gkk
-	 xkr3KaY9NGiBFpR5xrWkih/GDFh1u3JhZj6id/6nEZ+ZAZ2YMoxA1OihjvSnTQZCky
-	 junga5yF5xEDplOuDZArTheqGozslPGnfZ+0Aq7mezsAfU6TGgt7EG4CSryARtcjWc
-	 lmWRFG+B+wJZA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rIYGb-0001fI-1l;
-	Wed, 27 Dec 2023 19:04:29 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-bluetooth@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Matthias Kaehlcke <mka@chromium.org>
-Subject: [PATCH] Bluetooth: qca: fix device-address endianness
-Date: Wed, 27 Dec 2023 19:03:06 +0100
-Message-ID: <20231227180306.6319-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DFE246540;
+	Wed, 27 Dec 2023 18:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mrman314.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mrman314.tech
+Received: from [192.168.6.27] (unknown [160.32.192.137])
+	by mx.mrman314.tech (Postfix) with ESMTPSA id 932FA2F495C8;
+	Wed, 27 Dec 2023 13:19:39 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mrman314.tech;
+	s=default; t=1703701181;
+	bh=fZGcy7BZG167S+RHVKq7QB3BPpO7PaALkaYFRUu07bM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=p6fZmmjC343uIjMBvq+O6NtS88LEuhi9sIZ+7gsu9i7kfsRI1zp4ilC3pK80XuAuM
+	 67ZWDoCT+93cH3pOygIx/O8iF1rVzhLzb5hNI3PGHXkfm33sn3yuVB20VlFyXJiLsF
+	 XiBXJAQN5iG2gPCuJAbpO/G2nRygDNL3oMKqjwjU=
+Message-ID: <f06dbc4d10ff5eb038228e9c7abb75c85514cf36.camel@mrman314.tech>
+Subject: Re: [PATCH] Bluetooth: hci_bcm4377: do not mark valid bd_addr as
+ invalid
+From: Felix Zhang <mrman@mrman314.tech>
+To: Johan Hovold <johan+linaro@kernel.org>, Luiz Augusto von Dentz
+ <luiz.dentz@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, Johan
+ Hedberg <johan.hedberg@gmail.com>
+Cc: Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,  linux-bluetooth@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  stable@vger.kernel.org
+Date: Wed, 27 Dec 2023 13:19:39 -0500
+In-Reply-To: <20231227101003.10534-1-johan+linaro@kernel.org>
+References: <20231227101003.10534-1-johan+linaro@kernel.org>
+Autocrypt: addr=mrman@mrman314.tech; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
-device address in MSB order when setting it using the
-EDL_WRITE_BD_ADDR_OPCODE command.
+On Wed, 2023-12-27 at 11:10 +0100, Johan Hovold wrote:
+> A recent commit restored the original (and still documented)
+> semantics
+> for the HCI_QUIRK_USE_BDADDR_PROPERTY quirk so that the device
+> address
+> is considered invalid unless an address is provided by firmware.
+>=20
+> This specifically means that this flag must only be set for devices
+> with
+> invalid addresses, but the Broadcom BCM4377 driver has so far been
+> setting this flag unconditionally.
+>=20
+> Fortunately the driver already checks for invalid addresses during
+> setup
+> and sets the HCI_QUIRK_INVALID_BDADDR flag, which can simply be
+> replaced
+> with HCI_QUIRK_USE_BDADDR_PROPERTY to indicate that the default
+> address
+> is invalid but can be overridden by firmware (long term, this should
+> probably just always be allowed).
+>=20
+> Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
+> Cc: stable@vger.kernel.org=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # 6.5
+> Reported-by: Felix Zhang <mrman@mrman314.tech>
+> Link:
+> https://lore.kernel.org/r/77419ffacc5b4875e920e038332575a2a5bff29f.camel@=
+mrman314.tech/
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+> =C2=A0drivers/bluetooth/hci_bcm4377.c | 3 +--
+> =C2=A01 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/bluetooth/hci_bcm4377.c
+> b/drivers/bluetooth/hci_bcm4377.c
+> index a61757835695..9a7243d5db71 100644
+> --- a/drivers/bluetooth/hci_bcm4377.c
+> +++ b/drivers/bluetooth/hci_bcm4377.c
+> @@ -1417,7 +1417,7 @@ static int bcm4377_check_bdaddr(struct
+> bcm4377_data *bcm4377)
+> =C2=A0
+> =C2=A0	bda =3D (struct hci_rp_read_bd_addr *)skb->data;
+> =C2=A0	if (!bcm4377_is_valid_bdaddr(bcm4377, &bda->bdaddr))
+> -		set_bit(HCI_QUIRK_INVALID_BDADDR, &bcm4377->hdev-
+> >quirks);
+> +		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &bcm4377-
+> >hdev->quirks);
+> =C2=A0
+> =C2=A0	kfree_skb(skb);
+> =C2=A0	return 0;
+> @@ -2368,7 +2368,6 @@ static int bcm4377_probe(struct pci_dev *pdev,
+> const struct pci_device_id *id)
+> =C2=A0	hdev->set_bdaddr =3D bcm4377_hci_set_bdaddr;
+> =C2=A0	hdev->setup =3D bcm4377_hci_setup;
+> =C2=A0
+> -	set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+> =C2=A0	if (bcm4377->hw->broken_mws_transport_config)
+> =C2=A0		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG,
+> &hdev->quirks);
+> =C2=A0	if (bcm4377->hw->broken_ext_scan)
+Hi,
 
-Presumably, this is the case for all non-ROME devices which all use the
-EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
-use a different command and expect the address in LSB order).
+Thanks for the patch!  I have just tested the patch on my MacBookAir9,1
+with some modifications to make it patch with the master branch of the
+Linux kernel, and it works great!  The device is recognized by the
+system; and I can scan, pair, connect, and play audio just fine.  If
+you want me to send over the modified patch that I have used, please
+let me know.
 
-Reverse the little-endian address before setting it to make sure that
-the address can be configured using tools like btmgmt or using the
-'local-bd-address' devicetree property.
-
-Note that this can potentially break systems with boot firmware which
-has started relying on the broken behaviour and is incorrectly passing
-the address via devicetree in MSB order.
-
-Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
-Cc: stable@vger.kernel.org      # 5.1
-Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
-
-Hi Qualcomm people,
-
-Could you please verify with your documentation that all non-ROME
-devices expect the address provided in the EDL_WRITE_BD_ADDR_OPCODE
-command in MSB order?
-
-I assume this is not something that anyone would change between firmware
-revisions, but if that turns out to be the case, we'd need to reverse
-the address based on firmware revision or similar.
-
-Johan
-
-
- drivers/bluetooth/btqca.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index fdb0fae88d1c..29035daf21bc 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -826,11 +826,15 @@ EXPORT_SYMBOL_GPL(qca_uart_setup);
- 
- int qca_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
- {
-+	bdaddr_t bdaddr_swapped;
- 	struct sk_buff *skb;
- 	int err;
- 
--	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6, bdaddr,
--				HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
-+	baswap(&bdaddr_swapped, bdaddr);
-+
-+	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6,
-+				&bdaddr_swapped, HCI_EV_VENDOR,
-+				HCI_INIT_TIMEOUT);
- 	if (IS_ERR(skb)) {
- 		err = PTR_ERR(skb);
- 		bt_dev_err(hdev, "QCA Change address cmd failed (%d)", err);
--- 
-2.41.0
-
+Thanks!
 
