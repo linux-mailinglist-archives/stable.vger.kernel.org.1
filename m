@@ -1,158 +1,94 @@
-Return-Path: <stable+bounces-8601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C6F81EE26
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:24:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B155C81EE29
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4249D283859
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 10:24:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5BE21C20D1A
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 10:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87A952C87A;
-	Wed, 27 Dec 2023 10:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A2F2C872;
+	Wed, 27 Dec 2023 10:26:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1EC2D787;
-	Wed, 27 Dec 2023 10:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7629E2C867
+	for <stable@vger.kernel.org>; Wed, 27 Dec 2023 10:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2ccd4b743e2so10862481fa.0;
-        Wed, 27 Dec 2023 02:24:17 -0800 (PST)
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6d9bba6d773so1522113b3a.1
+        for <stable@vger.kernel.org>; Wed, 27 Dec 2023 02:26:27 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703672655; x=1704277455;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pVwxJBV9dNfPBB0zTv6L5ZFrZ/KLxWM50ofClNNSEY8=;
-        b=SWwEXEIfJz2hPlh+p6pmlC/QJmNK+bMM98MXoS2ZY0PQRV3VsGJX7/fb1vp1CRqvqw
-         sf4YJw+vTAeeHNzflebhSz++wjWLX5AoUSuoMFr6g/ND0SXSb3oPQpGoTGs1VroJRB/H
-         oAv8u1+LYAd6I3K7+1xdtO8/Glf5STuRNmgcYpQV99uK4B7fLL6Wrw/GW9xOBO+HHNcf
-         wSDdYsN0daJBk+tz+EHghTbgYicehJhiEgbSvtrHpYoxryZF7iaTjVnSb7Nb/P1SWD8Z
-         O0rpIyqmFhxffsekx8swi4rQodYKgYF2WEq9rYGSfXzJ57IU+y3e4CntyL8404UGHJ9b
-         /QYw==
-X-Gm-Message-State: AOJu0YyU68RypMm/X96lVIPBxAE5tYvJuTosrHRbmy9/krlcphggXtnD
-	y5xe19nDf+NljpramZDY2N4H+ybJPojURddz55g=
-X-Google-Smtp-Source: AGHT+IEFaZTQvgM3gcK5vb7cXkhYZOSARQdmcgitsKcfUSqssAF5YZS+LHPlMReIf04IuAhk2x5p4g==
-X-Received: by 2002:a05:6512:3c8a:b0:50e:75ec:26ed with SMTP id h10-20020a0565123c8a00b0050e75ec26edmr1721277lfv.47.1703672655103;
-        Wed, 27 Dec 2023 02:24:15 -0800 (PST)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id cs13-20020a0564020c4d00b00554a3c80d73sm4667380edb.96.2023.12.27.02.24.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 27 Dec 2023 02:24:14 -0800 (PST)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55361b7f38eso5874812a12.0;
-        Wed, 27 Dec 2023 02:24:14 -0800 (PST)
-X-Received: by 2002:a17:906:46d8:b0:a23:5eb9:367d with SMTP id
- k24-20020a17090646d800b00a235eb9367dmr2329262ejs.227.1703672654628; Wed, 27
- Dec 2023 02:24:14 -0800 (PST)
+        d=1e100.net; s=20230601; t=1703672787; x=1704277587;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Efkga04RPKL6t9PTCfiTFjsqRk3mWgmhgUx4vAYEGi4=;
+        b=NzD8oqDq/fLJmJeGM897hNaClqc4BiZjjxHoM2YWog3Ow2xx2p45U07k518V+uMV7l
+         NNBIU5lUn+3eTflCfEaXR9W1t0QDQSpW9JOuGctLk1Ga4NIUs9OlSpGjwGo7Xh/FP5ol
+         1Ky97zSuhUh8rf6/kOhFDgUVYfxMBojMPpwU3EJGFb+xA38HGK9cqIMPm92MfhX6Eohl
+         Vc8eDvgrquM3zZaF8Fv8lDatnCtbuYvQAUQF+yP177xk9oycdX4+ZBdIPismKrS71CxW
+         fxBVgzoJhPL3IN6r97eYVWUIrn+rDgz4EQstOia4g5EYnQedKD3PzMc/mx2oZ55EXWpw
+         Kp7A==
+X-Gm-Message-State: AOJu0YxdR27NUQL24q8CL8xDde5/wn9Ory6yDzhFl+ByArJqvaRItmvH
+	sMI/wb9ovfhgCFqGt4mcEnscUoBBftE=
+X-Google-Smtp-Source: AGHT+IGrtYcMfmlOcqI2onIB872GHZ7kPQqlgLVA6LdpEmz7jFgEvB3nxGLrzTpDnolNavl/PQSXng==
+X-Received: by 2002:a05:6a20:244b:b0:196:31f0:10de with SMTP id t11-20020a056a20244b00b0019631f010demr137647pzc.14.1703672786661;
+        Wed, 27 Dec 2023 02:26:26 -0800 (PST)
+Received: from localhost.localdomain ([110.14.71.32])
+        by smtp.gmail.com with ESMTPSA id v21-20020a056a00149500b006d9cf4b56edsm3588419pfu.175.2023.12.27.02.26.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Dec 2023 02:26:26 -0800 (PST)
+From: Namjae Jeon <linkinjeon@kernel.org>
+To: sashal@kernel.org,
+	gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: smfrench@gmail.com,
+	Namjae Jeon <linkinjeon@kernel.org>
+Subject: [PATCH v2 5.15.y 0/8] Additional ksmbd backport patches for linux-5.15.y
+Date: Wed, 27 Dec 2023 19:25:57 +0900
+Message-Id: <20231227102605.4766-1-linkinjeon@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <aaa107865f4cbd61f8f9006fd3e7ac43b5d1bdad.camel@mrman314.tech>
-In-Reply-To: <aaa107865f4cbd61f8f9006fd3e7ac43b5d1bdad.camel@mrman314.tech>
-From: Neal Gompa <neal@gompa.dev>
-Date: Wed, 27 Dec 2023 05:23:37 -0500
-X-Gmail-Original-Message-ID: <CAEg-Je83qHR=5v6YbAguVH8QNmnaPV6GKb6U6aDcV-_+cE291Q@mail.gmail.com>
-Message-ID: <CAEg-Je83qHR=5v6YbAguVH8QNmnaPV6GKb6U6aDcV-_+cE291Q@mail.gmail.com>
-Subject: Re: [PATCH v4] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel MacBooks
-To: Felix Zhang <mrman@mrman314.tech>
-Cc: linux-bluetooth@vger.kernel.org, stable@vger.kernel.org, marcan@marcan.st, 
-	bagasdotme@gmail.com, sven@svenpeter.dev, alyssa@rosenzweig.io, 
-	marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com, 
-	orlandoch.dev@gmail.com, kekrby@gmail.com, admin@kodeit.net, j@jannau.net, 
-	gargaditya08@live.com, asahi@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 25, 2023 at 3:21=E2=80=AFPM Felix Zhang <mrman@mrman314.tech> w=
-rote:
->
-> Starting v6.5, Bluetooth does not work at all on my T2
-> MacBookAir9,1 with the BCM4377 chip.  When I boot up the computer,
-> go into bluetoothctl, and then try to run commands like scan on,
-> show, list, it returns "No default controller available."  I have
-> tried reloading the kernel module, in which the log outputs
-> "{Added,Removed} hci0 (unconfigured)."  With this patch, I
-> am able to use Bluetooth as normal without any errors regarding
-> hci0 being unconfigured.  However, an issue is still present
-> where sometimes hci_bcm4377 will have to be reloaded in order to
-> get bluetooth to work.  I believe this was still present before
-> the previously mentioned commit.
->
-> I would also like to thank Kerem Karabay <kekrby@gmail.com> for
-> assisting me with this patch.
->
-> Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Felix Zhang <mrman@mrman314.tech>
-> ---
-> v4:
-> * Adjust the format to pass the CI (again).
-> * Shorten description
-> ---
->  drivers/bluetooth/hci_bcm4377.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/bluetooth/hci_bcm4377.c
-> b/drivers/bluetooth/hci_bcm4377.c
-> index a61757835695..5c6fef1aa0f6 100644
-> --- a/drivers/bluetooth/hci_bcm4377.c
-> +++ b/drivers/bluetooth/hci_bcm4377.c
-> @@ -513,6 +513,7 @@ struct bcm4377_hw {
->         unsigned long broken_ext_scan : 1;
->         unsigned long broken_mws_transport_config : 1;
->         unsigned long broken_le_coded : 1;
-> +       unsigned long use_bdaddr_property : 1;
->
->         int (*send_calibration)(struct bcm4377_data *bcm4377);
->         int (*send_ptb)(struct bcm4377_data *bcm4377,
-> @@ -2368,5 +2369,6 @@ static int bcm4377_probe(struct pci_dev *pdev,
-> const struct pci_device_id *id)
->         hdev->set_bdaddr =3D bcm4377_hci_set_bdaddr;
->         hdev->setup =3D bcm4377_hci_setup;
->
-> -       set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-> +       if (bcm4377->hw->use_bdaddr_property)
-> +               set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
->         if (bcm4377->hw->broken_mws_transport_config)
-> @@ -2465,6 +2467,7 @@ static const struct bcm4377_hw
-> bcm4377_hw_variants[] =3D {
->                 .has_bar0_core2_window2 =3D true,
->                 .broken_mws_transport_config =3D true,
->                 .broken_le_coded =3D true,
-> +               .use_bdaddr_property =3D true,
->                 .send_calibration =3D bcm4378_send_calibration,
->                 .send_ptb =3D bcm4378_send_ptb,
->         },
-> @@ -2479,6 +2482,7 @@ static const struct bcm4377_hw
-> bcm4377_hw_variants[] =3D {
->                 .clear_pciecfg_subsystem_ctrl_bit19 =3D true,
->                 .broken_mws_transport_config =3D true,
->                 .broken_le_coded =3D true,
-> +               .use_bdaddr_property =3D true,
->                 .send_calibration =3D bcm4387_send_calibration,
->                 .send_ptb =3D bcm4378_send_ptb,
->         },
-> --
-> 2.43.0
->
->
+These patches are backport patches to support directory(v2) lease and
+additional bug fixes for linux-5.15.y.
+note that 0001 patch add a dependency on cifs ARC4 omitted from
+backporting commit f9929ef6a2a5("ksmbd: add support for key exchange").
 
-Sorry, excuse me for replying to the wrong message, I got confused by
-Gmail on what to reply to.
+Namjae Jeon (8):
+  ksmbd: have a dependency on cifs ARC4
+  ksmbd: set epoch in create context v2 lease
+  ksmbd: set v2 lease capability
+  ksmbd: downgrade RWH lease caching state to RH for directory
+  ksmbd: send v2 lease break notification for directory
+  ksmbd: lazy v2 lease break on smb2_write()
+  ksmbd: avoid duplicate opinfo_put() call on error of
+    smb21_lease_break_ack()
+  ksmbd: fix wrong allocation size update in smb2_open()
 
-This is fine and thanks for the fix!
+ fs/Kconfig           |   4 +-
+ fs/ksmbd/oplock.c    | 115 ++++++++++++++++++++++++++++++++++++++-----
+ fs/ksmbd/oplock.h    |   8 ++-
+ fs/ksmbd/smb2ops.c   |   9 ++--
+ fs/ksmbd/smb2pdu.c   |  61 +++++++++++++----------
+ fs/ksmbd/smb2pdu.h   |   1 +
+ fs/ksmbd/vfs.c       |   3 ++
+ fs/ksmbd/vfs_cache.c |  13 ++++-
+ fs/ksmbd/vfs_cache.h |   3 ++
+ 9 files changed, 171 insertions(+), 46 deletions(-)
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
+-- 
+2.25.1
 
-
---=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
 
