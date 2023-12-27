@@ -1,108 +1,112 @@
-Return-Path: <stable+bounces-8591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9833A81EC18
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 05:43:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B405D81EC91
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 07:28:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D729BB222D1
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 04:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7359E283749
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 06:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938C53C29;
-	Wed, 27 Dec 2023 04:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470CD5243;
+	Wed, 27 Dec 2023 06:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b1s3NJMh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kxc8sU71"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46ED85662;
-	Wed, 27 Dec 2023 04:43:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28843C433C8;
-	Wed, 27 Dec 2023 04:43:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703652206;
-	bh=q9xaXdvN3BYNJgeWAI7noIC+KES6Pzsqpe3mtN3BIDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b1s3NJMh2hEIWh/xlnYXyLkkAcUimXVOAgMNmiJK0beYwm6lcizuvIYfp0GwexhMB
-	 1J/ifsOVm7ZNEAajqiZtj9DaymllGHduLSd/nMrEVmgopmYzr/CKMMX/kez1ShgYHC
-	 Uj+of1xNLDPzkvCG64VTyO5/clMWJ0cYtJTsoj+kyS9hgvcGilTze+skX0W7JrRNvn
-	 YF8gD0kJF/5RkUfrrAWkCXQ1uoYQedHz6X9f/D1TpdCN+hiTgFvEV/Z0Gqm0TCpJPX
-	 4FkW4NMRUYsEOqoPa/DZW5bizcq8O0W8pwgZ6jUza/SPc1ITq8t8HQcQEqYrHI+tLm
-	 NXQV8uwwgc+tQ==
-Date: Tue, 26 Dec 2023 22:43:22 -0600
-From: Eric Biggers <ebiggers@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Alfred Piccioni <alpic@google.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Eric Paris <eparis@parisplace.org>,
-	linux-security-module@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-	selinux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] security: new security_file_ioctl_compat() hook
-Message-ID: <20231227044322.GB4240@quark.localdomain>
-References: <20230906102557.3432236-1-alpic@google.com>
- <20231219090909.2827497-1-alpic@google.com>
- <CAHC9VhRDPv4-gNNiFMNtP_vL8UM66RQX0vxB0WkNw3Rn_Lcfmg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078075666;
+	Wed, 27 Dec 2023 06:28:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703658481; x=1735194481;
+  h=from:to:cc:subject:date:message-id;
+  bh=suBVpZrIX+26A1y1ne4PDB74bdL7C3LwazkehHNtqYs=;
+  b=kxc8sU71AVh2l8de40/YCvbZf3UzME2g04h9aNGVtcxlCzqCkdV5aIP+
+   l//1Y6jbP+muy6pgyP4SB53rhSQ7/3sZZAzcvQ3XA4SHkO6SZDhrKGUFd
+   Vx8YQJeYmNFGBOJq9MS3x9jS9Ns8QuJlOQLZhcGOz/xnRKSYEudUUc7Px
+   UGhonHARNhjczyu/HXfcluQtSLvYvdtzLaQ9YLk2GcBQ6d8b3sHNzMapa
+   coxrMfiZZ6a5Tvi5aPo4COrzAxX4sIbRR0tpKQkhOl+Gaj0kf4bFehbg8
+   OXbObHsRTEXdfB3cKzySrUhgz71hlcaYcO3XME3VohJN23/DzOURZGdOR
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10935"; a="427584069"
+X-IronPort-AV: E=Sophos;i="6.04,308,1695711600"; 
+   d="scan'208";a="427584069"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2023 22:28:00 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10935"; a="1025316079"
+X-IronPort-AV: E=Sophos;i="6.04,308,1695711600"; 
+   d="scan'208";a="1025316079"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmsmga006.fm.intel.com with ESMTP; 26 Dec 2023 22:27:59 -0800
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc: Chen Yu <yu.c.chen@intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Zhao Liu <zhao1.liu@intel.com>,
+	stable@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH 0/4] thermal: intel: hfi: Fix memory corruption on resume from hibernation
+Date: Tue, 26 Dec 2023 22:29:36 -0800
+Message-Id: <20231227062940.10780-1-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhRDPv4-gNNiFMNtP_vL8UM66RQX0vxB0WkNw3Rn_Lcfmg@mail.gmail.com>
 
-On Sun, Dec 24, 2023 at 03:53:16PM -0500, Paul Moore wrote:
-> On Tue, Dec 19, 2023 at 4:09 AM Alfred Piccioni <alpic@google.com> wrote:
-> >
-> > Some ioctl commands do not require ioctl permission, but are routed to
-> > other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
-> > done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
-> >
-> > However, if a 32-bit process is running on a 64-bit kernel, it emits
-> > 32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
-> > being checked erroneously, which leads to these ioctl operations being
-> > routed to the ioctl permission, rather than the correct file
-> > permissions.
-> >
-> > This was also noted in a RED-PEN finding from a while back -
-> > "/* RED-PEN how should LSM module know it's handling 32bit? */".
-> >
-> > This patch introduces a new hook, security_file_ioctl_compat, that is
-> > called from the compat ioctl syscall. All current LSMs have been changed
-> > to support this hook.
-> >
-> > Reviewing the three places where we are currently using
-> > security_file_ioctl, it appears that only SELinux needs a dedicated
-> > compat change; TOMOYO and SMACK appear to be functional without any
-> > change.
-> >
-> > Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
-> > Signed-off-by: Alfred Piccioni <alpic@google.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  fs/ioctl.c                    |  3 +--
-> >  include/linux/lsm_hook_defs.h |  2 ++
-> >  include/linux/security.h      |  7 +++++++
-> >  security/security.c           | 17 +++++++++++++++++
-> >  security/selinux/hooks.c      | 28 ++++++++++++++++++++++++++++
-> >  security/smack/smack_lsm.c    |  1 +
-> >  security/tomoyo/tomoyo.c      |  1 +
-> >  7 files changed, 57 insertions(+), 2 deletions(-)
-> 
-> I made some minor style tweaks around line length and alignment, but
-> otherwise this looked good to me.  Thanks all!
-> 
+Hi,
 
-Reviewed-by: Eric Biggers <ebiggers@google.com>
+Memory corruption may occur if the location of the HFI memory buffer is not
+restored when resuming from hibernation or suspend-to-memory.
 
-(I reviewed the version in branch "next" of
-https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git)
+During a normal boot, the kernel allocates a memory buffer and gives it to
+the hardware for reporting updates in the HFI table. The same allocation
+process is done by a restore kernel when resuming from suspend or
+hibernation.
 
-- Eric
+The location of the memory that the restore kernel allocates may differ
+from that allocated by the image kernel. To prevent memory corruption (the
+hardware keeps using the memory buffer from the restore kernel), it is
+necessary to disable HFI before transferring control to the image kernel.
+Once running, the image kernel must restore the location of the HFI memory
+and enable HFI.
+
+The patchset addresses the described bug on systems with one or more HFI
+instances (i.e., packages) using CPU hotplug callbacks and a suspend
+notifier.
+
+I tested this patchset on Meteor Lake and Sapphire Rapids. The systems
+completed 3500 (in two separate tests of 1500 and 2000 repeats) and
+1000 hibernate-resume cycles, respectively. I tested it using Rafael's
+testing branch as on 20th December 2023.
+
+Thanks and BR,
+Ricardo
+
+Ricardo Neri (4):
+  thermal: intel: hfi: Refactor enabling code into helper functions
+  thermal: intel: hfi: Enable an HFI instance from its first online CPU
+  thermal: intel: hfi: Disable an HFI instance when all its CPUs go
+    offline
+  thermal: intel: hfi: Add a suspend notifier
+
+ drivers/thermal/intel/intel_hfi.c | 142 ++++++++++++++++++++++++------
+ 1 file changed, 116 insertions(+), 26 deletions(-)
+
+-- 
+2.25.1
+
 
