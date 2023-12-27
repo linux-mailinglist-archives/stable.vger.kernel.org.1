@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-8605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B520C81EE2C
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:26:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E797C81EE2D
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F812833A8
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 10:26:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63953B213BB
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 10:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338A92CCD1;
-	Wed, 27 Dec 2023 10:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1762C87A;
+	Wed, 27 Dec 2023 10:26:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95842C867
-	for <stable@vger.kernel.org>; Wed, 27 Dec 2023 10:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC752C867
+	for <stable@vger.kernel.org>; Wed, 27 Dec 2023 10:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6d9a79a1ad4so614372b3a.2
-        for <stable@vger.kernel.org>; Wed, 27 Dec 2023 02:26:37 -0800 (PST)
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3bbc7746812so241746b6e.2
+        for <stable@vger.kernel.org>; Wed, 27 Dec 2023 02:26:41 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703672797; x=1704277597;
+        d=1e100.net; s=20230601; t=1703672800; x=1704277600;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JGh/5NxuNs0h69ng/7wR9n+ZMBByWOXDMLJt8zLjMbY=;
-        b=VE0gKJ8+6+8jvlMfzevXEPRJMKL4JTxY8G/fPRPlTtx5dXdMiGS+dwCLSIJ418OP/8
-         vPY8yzKqF4J90sezlp6D6cO6VvgJd1jdZekzQNkPg1KYZ0I/pqPCVSs76ENy+3SxytC+
-         rCejcMS1SKGCAVlnax2WuMQOk35iNlIKRnpo8VSkiEKcHFh1ialiaOeESFH84OhIvvkh
-         KzH0dMcujTuG7rsWa+6aoKKGaLTipcFmZPuBsPNgXODeBqREnKEVB8sJXuyw3t1boCEG
-         3Hk8PCGozKgkMB/Pm4tTYxDLqnnVRdJD0rXHHBxrAjXWbA3vEaTHw7vT3WYYRTl/wGo5
-         io5Q==
-X-Gm-Message-State: AOJu0Yw35pEg7hod3/B3ljPfmNz3xtgkhBji/trKZhvr0XTTWjdyMCzB
-	vtibTagTR+qnM8xBkex5aSg=
-X-Google-Smtp-Source: AGHT+IHiOoXTj9JD0JnNitDenccSBwS/lcjlGJ8Ovaeo2kyJGoRa4cZ1gofK0LIESN0cw+9lusBaVA==
-X-Received: by 2002:a05:6a00:92a9:b0:6d9:b14e:1094 with SMTP id jw41-20020a056a0092a900b006d9b14e1094mr2244907pfb.16.1703672797152;
-        Wed, 27 Dec 2023 02:26:37 -0800 (PST)
+        bh=U8fy9kS1fRyKFoBsaADhaTLdVMcrnoHblkFvtu/BD58=;
+        b=HRomxbnu0wmO3Etc+amiAgTDPyHFON+x9X3hUIFuy2+Q8h3sz89FTrxiaIIns06kQG
+         NrhrLDGLGhpc8qbtMVXM3zkJ27MY/2hCqv9JsKjnfpQh4eH3ayIp270UbhAzh67Mq4z7
+         WeoYZ0GSM34PeoSLHoMp8Z0K71p4Q1pFU96iUrnjlMQ1Y55d1nhTmz5Tqh4+bAZxHI1x
+         FUT3Sy2MZ3fF5m6ck5ecSxZB82GTuT9Btmgh9yyFSebGYAwPYDxbuMmpT0r1WiOT5iqB
+         5vO+P/GRli2/fXluY4ME49lS9n1SlovNNoY7knFMHj679Hqmk8HGdihyFu2yhTyt3jxp
+         HfRQ==
+X-Gm-Message-State: AOJu0YyIgzxPbUAWjauprmK58ikq6y9LJB/5erou+t5FE4yOUAtmGom/
+	0dVYwU6tN13FMoGEHKeCYlxfJN1uRqw=
+X-Google-Smtp-Source: AGHT+IHqKq2Zo8uolWDS7QvAvR1HDM/G+CLmNepnEZllDDvFpqkhbvcz+9k3xx2Dhfqvk6cRGHnuqA==
+X-Received: by 2002:a05:6808:3986:b0:3bb:bd5e:2096 with SMTP id gq6-20020a056808398600b003bbbd5e2096mr2614920oib.62.1703672800406;
+        Wed, 27 Dec 2023 02:26:40 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id v21-20020a056a00149500b006d9cf4b56edsm3588419pfu.175.2023.12.27.02.26.35
+        by smtp.gmail.com with ESMTPSA id v21-20020a056a00149500b006d9cf4b56edsm3588419pfu.175.2023.12.27.02.26.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Dec 2023 02:26:36 -0800 (PST)
+        Wed, 27 Dec 2023 02:26:39 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: sashal@kernel.org,
 	gregkh@linuxfoundation.org,
@@ -50,9 +50,9 @@ To: sashal@kernel.org,
 Cc: smfrench@gmail.com,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH v2 5.15.y 3/8] ksmbd: set v2 lease capability
-Date: Wed, 27 Dec 2023 19:26:00 +0900
-Message-Id: <20231227102605.4766-4-linkinjeon@kernel.org>
+Subject: [PATCH v2 5.15.y 4/8] ksmbd: downgrade RWH lease caching state to RH for directory
+Date: Wed, 27 Dec 2023 19:26:01 +0900
+Message-Id: <20231227102605.4766-5-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231227102605.4766-1-linkinjeon@kernel.org>
 References: <20231227102605.4766-1-linkinjeon@kernel.org>
@@ -64,67 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 18dd1c367c31d0a060f737d48345747662369b64 ]
+[ Upstream commit eb547407f3572d2110cb1194ecd8865b3371a7a4 ]
 
-Set SMB2_GLOBAL_CAP_DIRECTORY_LEASING to ->capabilities to inform server
-support directory lease to client.
+RWH(Read + Write + Handle) caching state is not supported for directory.
+ksmbd downgrade it to RH for directory if client send RWH caching lease
+state.
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/oplock.c  | 4 ----
- fs/ksmbd/smb2ops.c | 9 ++++++---
- 2 files changed, 6 insertions(+), 7 deletions(-)
+ fs/ksmbd/oplock.c  | 9 +++++++--
+ fs/ksmbd/oplock.h  | 2 +-
+ fs/ksmbd/smb2pdu.c | 8 ++++----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index ed639b7b6509..24716dbe7108 100644
+index 24716dbe7108..600312e2c6c2 100644
 --- a/fs/ksmbd/oplock.c
 +++ b/fs/ksmbd/oplock.c
-@@ -1105,10 +1105,6 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
- 	bool prev_op_has_lease;
- 	__le32 prev_op_state = 0;
+@@ -1398,10 +1398,11 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+ /**
+  * parse_lease_state() - parse lease context containted in file open request
+  * @open_req:	buffer containing smb2 file open(create) request
++ * @is_dir:	whether leasing file is directory
+  *
+  * Return:  oplock state, -ENOENT if create lease context not found
+  */
+-struct lease_ctx_info *parse_lease_state(void *open_req)
++struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
+ {
+ 	struct create_context *cc;
+ 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
+@@ -1419,7 +1420,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
+ 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
  
--	/* not support directory lease */
--	if (S_ISDIR(file_inode(fp->filp)->i_mode))
--		return 0;
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+-		lreq->req_state = lc->lcontext.LeaseState;
++		if (is_dir)
++			lreq->req_state = lc->lcontext.LeaseState &
++				~SMB2_LEASE_WRITE_CACHING_LE;
++		else
++			lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
+ 		lreq->epoch = lc->lcontext.Epoch;
+ 		lreq->duration = lc->lcontext.LeaseDuration;
+diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
+index ad31439c61fe..672127318c75 100644
+--- a/fs/ksmbd/oplock.h
++++ b/fs/ksmbd/oplock.h
+@@ -109,7 +109,7 @@ void opinfo_put(struct oplock_info *opinfo);
+ 
+ /* Lease related functions */
+ void create_lease_buf(u8 *rbuf, struct lease *lease);
+-struct lease_ctx_info *parse_lease_state(void *open_req);
++struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir);
+ __u8 smb2_map_lease_to_oplock(__le32 lease_state);
+ int lease_read_to_write(struct oplock_info *opinfo);
+ 
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 7ce5746f9167..6a3cd6ea3af1 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2729,10 +2729,6 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
+-	req_op_level = req->RequestedOplockLevel;
+-	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
+-		lc = parse_lease_state(req);
 -
- 	opinfo = alloc_opinfo(work, pid, tid);
- 	if (!opinfo)
- 		return -ENOMEM;
-diff --git a/fs/ksmbd/smb2ops.c b/fs/ksmbd/smb2ops.c
-index 9138e1c29b22..c69943d96565 100644
---- a/fs/ksmbd/smb2ops.c
-+++ b/fs/ksmbd/smb2ops.c
-@@ -222,7 +222,8 @@ void init_smb3_0_server(struct ksmbd_conn *conn)
- 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC;
+ 	if (le32_to_cpu(req->ImpersonationLevel) > le32_to_cpu(IL_DELEGATE_LE)) {
+ 		pr_err("Invalid impersonationlevel : 0x%x\n",
+ 		       le32_to_cpu(req->ImpersonationLevel));
+@@ -3212,6 +3208,10 @@ int smb2_open(struct ksmbd_work *work)
+ 		need_truncate = 1;
+ 	}
  
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
--		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
-+		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
-+			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
- 
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION &&
- 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
-@@ -246,7 +247,8 @@ void init_smb3_02_server(struct ksmbd_conn *conn)
- 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC;
- 
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
--		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
-+		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
-+			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
- 
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
- 	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
-@@ -271,7 +273,8 @@ int init_smb3_11_server(struct ksmbd_conn *conn)
- 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC;
- 
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
--		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
-+		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
-+			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
- 
- 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
- 	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
++	req_op_level = req->RequestedOplockLevel;
++	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
++		lc = parse_lease_state(req, S_ISDIR(file_inode(filp)->i_mode));
++
+ 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
+ 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
+ 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
 -- 
 2.25.1
 
