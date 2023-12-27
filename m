@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-8608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBF581EE2E
-	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:26:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED8C81EE30
+	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 11:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D35A1F21F28
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790BD283895
 	for <lists+stable@lfdr.de>; Wed, 27 Dec 2023 10:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6F62CCCA;
-	Wed, 27 Dec 2023 10:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03D52C872;
+	Wed, 27 Dec 2023 10:26:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DA72C878
-	for <stable@vger.kernel.org>; Wed, 27 Dec 2023 10:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B2E2C878
+	for <stable@vger.kernel.org>; Wed, 27 Dec 2023 10:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6d9b267007fso527360b3a.3
-        for <stable@vger.kernel.org>; Wed, 27 Dec 2023 02:26:47 -0800 (PST)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6d9b3a967dbso1929939b3a.1
+        for <stable@vger.kernel.org>; Wed, 27 Dec 2023 02:26:50 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703672807; x=1704277607;
+        d=1e100.net; s=20230601; t=1703672810; x=1704277610;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MYm3czAFr77uIyMWVWlizeaYvVGECIZcxtScat+MfjM=;
-        b=j/yqA7saVF+RiOm4mvFfDBEHpttvNyDSOOAwm9CK955l8Hm06n5mFnf/qSS5QEsVN1
-         mtetKvYewmmiEQATgiFrcYBjIZhtjoksZORwma/WOqlYIICPCZdEW7ikkTaIOqH4ShSV
-         qxTqxdeRAjWqm8nsQlX8VNIlpQNuvLELr25SsXQZwuh7CH1LKT181j6MmdWoCcbom1aG
-         N7rwPnB1Svy5tscv7W1Laxd9dByhLfoRVoMP58LXp8mrwTpTwNpc96tTGSltXiYyWqME
-         Xt5J/9jqIBXmK1GmF+VBbwbjSy4ZlcTlE3w4DyrbGsIU6CudLW7EGjbbRXQ3GBB1kx1X
-         0qXg==
-X-Gm-Message-State: AOJu0YzLnv5DJycZduq/GFGn8hmbPAebDI54K3joI0GYGgiwg30Ze01P
-	DbIj4xoHE3nM0CbJrZfZLIQ=
-X-Google-Smtp-Source: AGHT+IFvOgwcRmBKVztIrN3cnrljd+yDKczO8tBHtnuNDRT6l0x0Sns9BM3746BlG5+0eRkAXunVew==
-X-Received: by 2002:a05:6a00:124e:b0:6d9:ce76:1ff2 with SMTP id u14-20020a056a00124e00b006d9ce761ff2mr1416059pfi.31.1703672806801;
-        Wed, 27 Dec 2023 02:26:46 -0800 (PST)
+        bh=hTrI2LjaUmQpkhFvm46MUGMAd34wpXMPUGLlvRFc5Cs=;
+        b=Ym8UhlZPSmaZu2QY/zq3zsqyuBQ7i+pZTTB93aloK6QdIf/2amrm0GoewO5DAySJyn
+         GU+gSMd/fKPWy4NuGQgf0bR06PWsim+3X2ov3Xf27WAIJ9uqd7Nmi2CGdtpaq5lMQMdT
+         9o8Tq5OTTMXNjxooMzB/xKlsSXDRRojqU+Rt+wi7xw4/CtIqiB8cwy+akl/s5jQ7WvjY
+         QxJNfDu7WNhfTVc/M2PfUKHBrsOS7N+lwuoOn8DivRaUZuzGN5+s8PZVbMNW+BcdK4dl
+         91+F4jIxAEeEpIrl5IQXR/msiJEIb86Peu9oP79PuK+li69XRSV6EkT1uVTY1Z0rfJyb
+         GOIw==
+X-Gm-Message-State: AOJu0YweCNKaJp3U/aKNszGRBBljcLvhJn/RiDWRIYsmHhEm1FlSzJ+0
+	3KoOQ8RW8t5Ia14LidWnv3Y=
+X-Google-Smtp-Source: AGHT+IHtMxiCLi4xZznV+2HIg2wwelGv7c9TMnn2hRcmI8A9lCBeJ8i4LnObnwvJRB6L39kfffVMEg==
+X-Received: by 2002:a05:6a00:8e01:b0:6d9:b1da:6632 with SMTP id io1-20020a056a008e0100b006d9b1da6632mr6427621pfb.3.1703672809896;
+        Wed, 27 Dec 2023 02:26:49 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id v21-20020a056a00149500b006d9cf4b56edsm3588419pfu.175.2023.12.27.02.26.44
+        by smtp.gmail.com with ESMTPSA id v21-20020a056a00149500b006d9cf4b56edsm3588419pfu.175.2023.12.27.02.26.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Dec 2023 02:26:46 -0800 (PST)
+        Wed, 27 Dec 2023 02:26:49 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: sashal@kernel.org,
 	gregkh@linuxfoundation.org,
@@ -50,9 +50,9 @@ To: sashal@kernel.org,
 Cc: smfrench@gmail.com,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH v2 5.15.y 6/8] ksmbd: lazy v2 lease break on smb2_write()
-Date: Wed, 27 Dec 2023 19:26:03 +0900
-Message-Id: <20231227102605.4766-7-linkinjeon@kernel.org>
+Subject: [PATCH v2 5.15.y 7/8] ksmbd: avoid duplicate opinfo_put() call on error of smb21_lease_break_ack()
+Date: Wed, 27 Dec 2023 19:26:04 +0900
+Message-Id: <20231227102605.4766-8-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231227102605.4766-1-linkinjeon@kernel.org>
 References: <20231227102605.4766-1-linkinjeon@kernel.org>
@@ -64,119 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit c2a721eead71202a0d8ddd9b56ec8dce652c71d1 ]
+[ Upstream commit 658609d9a618d8881bf549b5893c0ba8fcff4526 ]
 
-Don't immediately send directory lease break notification on smb2_write().
-Instead, It postpones it until smb2_close().
+opinfo_put() could be called twice on error of smb21_lease_break_ack().
+It will cause UAF issue if opinfo is referenced on other places.
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/oplock.c    | 45 ++++++++++++++++++++++++++++++++++++++++++--
- fs/ksmbd/oplock.h    |  1 +
- fs/ksmbd/vfs.c       |  3 +++
- fs/ksmbd/vfs_cache.h |  1 +
- 4 files changed, 48 insertions(+), 2 deletions(-)
+ fs/ksmbd/smb2pdu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index df6f00f58f19..2da256259722 100644
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -396,8 +396,8 @@ void close_id_del_oplock(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
- 
--	if (S_ISDIR(file_inode(fp->filp)->i_mode))
--		return;
-+	if (fp->reserve_lease_break)
-+		smb_lazy_parent_lease_break_close(fp);
- 
- 	opinfo = opinfo_get(fp);
- 	if (!opinfo)
-@@ -1127,6 +1127,47 @@ void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 	ksmbd_inode_put(p_ci);
- }
- 
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp)
-+{
-+	struct oplock_info *opinfo;
-+	struct ksmbd_inode *p_ci = NULL;
-+
-+	rcu_read_lock();
-+	opinfo = rcu_dereference(fp->f_opinfo);
-+	rcu_read_unlock();
-+
-+	if (!opinfo->is_lease || opinfo->o_lease->version != 2)
-+		return;
-+
-+	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
-+	if (!p_ci)
-+		return;
-+
-+	read_lock(&p_ci->m_lock);
-+	list_for_each_entry(opinfo, &p_ci->m_op_list, op_entry) {
-+		if (!opinfo->is_lease)
-+			continue;
-+
-+		if (opinfo->o_lease->state != SMB2_OPLOCK_LEVEL_NONE) {
-+			if (!atomic_inc_not_zero(&opinfo->refcount))
-+				continue;
-+
-+			atomic_inc(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				atomic_dec(&opinfo->conn->r_count);
-+				continue;
-+			}
-+			read_unlock(&p_ci->m_lock);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			opinfo_conn_put(opinfo);
-+			read_lock(&p_ci->m_lock);
-+		}
-+	}
-+	read_unlock(&p_ci->m_lock);
-+
-+	ksmbd_inode_put(p_ci);
-+}
-+
- /**
-  * smb_grant_oplock() - handle oplock/lease request on file open
-  * @work:		smb work
-diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
-index b64d1536882a..5b93ea9196c0 100644
---- a/fs/ksmbd/oplock.h
-+++ b/fs/ksmbd/oplock.h
-@@ -129,4 +129,5 @@ int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
- void destroy_lease_table(struct ksmbd_conn *conn);
- void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 				      struct lease_ctx_info *lctx);
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp);
- #endif /* __KSMBD_OPLOCK_H */
-diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
-index a89529b21c86..173a488bfeee 100644
---- a/fs/ksmbd/vfs.c
-+++ b/fs/ksmbd/vfs.c
-@@ -517,6 +517,9 @@ int ksmbd_vfs_write(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		}
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index c1dde4204366..e1c640ed7acc 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -8221,6 +8221,11 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
+ 			    le32_to_cpu(req->LeaseState));
  	}
  
-+	/* Reserve lease break for parent dir at closing time */
-+	fp->reserve_lease_break = true;
++	if (ret < 0) {
++		rsp->hdr.Status = err;
++		goto err_out;
++	}
 +
- 	/* Do we need to break any of a levelII oplock? */
- 	smb_break_all_levII_oplock(work, fp, 1);
+ 	lease_state = lease->state;
+ 	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+@@ -8228,11 +8233,6 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
+ 	wake_up_interruptible_all(&opinfo->oplock_brk);
+ 	opinfo_put(opinfo);
  
-diff --git a/fs/ksmbd/vfs_cache.h b/fs/ksmbd/vfs_cache.h
-index 4d4938d6029b..a528f0cc775a 100644
---- a/fs/ksmbd/vfs_cache.h
-+++ b/fs/ksmbd/vfs_cache.h
-@@ -105,6 +105,7 @@ struct ksmbd_file {
- 	struct ksmbd_readdir_data	readdir_data;
- 	int				dot_dotdot[2];
- 	unsigned int			f_state;
-+	bool				reserve_lease_break;
- };
- 
- static inline void set_ctx_actor(struct dir_context *ctx,
+-	if (ret < 0) {
+-		rsp->hdr.Status = err;
+-		goto err_out;
+-	}
+-
+ 	rsp->StructureSize = cpu_to_le16(36);
+ 	rsp->Reserved = 0;
+ 	rsp->Flags = 0;
 -- 
 2.25.1
 
