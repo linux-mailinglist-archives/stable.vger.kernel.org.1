@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FE281F80C
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:08:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFED181F80B
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BACFB23800
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:08:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2080A1C2366E
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:08:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2036FDF;
-	Thu, 28 Dec 2023 12:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02B86FD6;
+	Thu, 28 Dec 2023 12:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl8+5ph7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNg0RmsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54CA6FD6
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:08:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFE7C433C7;
-	Thu, 28 Dec 2023 12:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FE67466
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:08:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA43C433C7;
+	Thu, 28 Dec 2023 12:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703765298;
-	bh=wbS44pPVDxQ4z6Ii8A+uzd4jjrikhKd8RmPp/fkzAoc=;
+	s=korg; t=1703765301;
+	bh=EYNpA7ilfssxMLh4+0g0zS8DLG7BLq/aStkY9gnx5eY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yl8+5ph73UeqrcixaF+BWjpBDoPUVKqXXyITgcN+71UJ5Rd+Er5B6WvpLejjoF71Z
-	 IeOl2QNiQy00pcIRKuODPmOhnKC5ZHNXsD7KViqwzSFL192FIbzel/WV1Mc23dNpD8
-	 UC6bGrHiBr++RdQPrL5RrtHbxSrdcOJZ/MmtPR/s=
-Subject: FAILED: patch "[PATCH] net: ks8851: Fix TX stall caused by TX buffer overrun" failed to apply to 5.4-stable tree
+	b=HNg0RmsGFt6YQ97SlsYo3IdahH7MmH/4BKX17gur6AzKkKurOVGWbWxMjhm/EJfcX
+	 WG15p5JlEbeNcsZ0qlVDjBflb2WT+ov3V6eSDhJ5HrwcgUTVCimTSeBDusLh44LOQ2
+	 xxacqvk5Mp3UBZhyx34sxaffh9x6ie4U117dkiPE=
+Subject: FAILED: patch "[PATCH] net: ks8851: Fix TX stall caused by TX buffer overrun" failed to apply to 4.19-stable tree
 To: ronald.wahl@raritan.com,Tristram.Ha@microchip.com,ben.dooks@codethink.co.uk,davem@davemloft.net,edumazet@google.com,horms@kernel.org,kuba@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 12:08:16 +0000
-Message-ID: <2023122816-kimono-goldsmith-1771@gregkh>
+Date: Thu, 28 Dec 2023 12:08:19 +0000
+Message-ID: <2023122818-clapper-repaint-6f52@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3dc5d44545453de1de9c53cc529cc960a85933da
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122816-kimono-goldsmith-1771@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122818-clapper-repaint-6f52@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,10 @@ aa39bf6730b7 ("net: ks8851: Use 16-bit read of RXFC register")
 b6948e1b7b09 ("net: ks8851: Use devm_alloc_etherdev()")
 bfd1e0eb08f6 ("net: ks8851: Rename ndev to netdev in probe")
 d320692d9f85 ("net: ks8851: Factor out spi->dev in probe()/remove()")
+aae079aa76d0 ("net: ks8851: Deduplicate register macros")
+9624bafa5f64 ("net: ks8851: Set initial carrier state to down")
+d268f3155279 ("net: ks8851: Delay requesting IRQ until opened")
+761cfa979a0c ("net: ks8851: Reassert reset pin if chip ID check fails")
 
 thanks,
 
