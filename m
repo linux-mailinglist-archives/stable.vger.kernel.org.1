@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB7281F7E8
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:44:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FE281F80C
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812941C235F0
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:44:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BACFB23800
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777DD6FD5;
-	Thu, 28 Dec 2023 11:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2036FDF;
+	Thu, 28 Dec 2023 12:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVGWzrF6"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl8+5ph7"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253A579EC
-	for <Stable@vger.kernel.org>; Thu, 28 Dec 2023 11:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4744DC433C7;
-	Thu, 28 Dec 2023 11:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54CA6FD6
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:08:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFE7C433C7;
+	Thu, 28 Dec 2023 12:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703763847;
-	bh=tVJmrjssshH5qSswBK0ay8lckg81Tch9Kx06fiFBjU8=;
+	s=korg; t=1703765298;
+	bh=wbS44pPVDxQ4z6Ii8A+uzd4jjrikhKd8RmPp/fkzAoc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zVGWzrF6mseVi3CNt/doTMimfI6m6eT+VEP+c99nKOvvsvmv72yqJyl9PeqNUhgce
-	 C7EKY2Y18GLt2c1VRlrcjSFEubIxnRMbhse2aZsmML9sHNpXozYIbj8yn3JmpC8Z6/
-	 WjZGMqhPEF8UIkWIFJBzD0Rp5ACpCnzRugx5oamM=
-Subject: FAILED: patch "[PATCH] iio: imu: adis16475: add spi_device_id table" failed to apply to 6.1-stable tree
-To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=yl8+5ph73UeqrcixaF+BWjpBDoPUVKqXXyITgcN+71UJ5Rd+Er5B6WvpLejjoF71Z
+	 IeOl2QNiQy00pcIRKuODPmOhnKC5ZHNXsD7KViqwzSFL192FIbzel/WV1Mc23dNpD8
+	 UC6bGrHiBr++RdQPrL5RrtHbxSrdcOJZ/MmtPR/s=
+Subject: FAILED: patch "[PATCH] net: ks8851: Fix TX stall caused by TX buffer overrun" failed to apply to 5.4-stable tree
+To: ronald.wahl@raritan.com,Tristram.Ha@microchip.com,ben.dooks@codethink.co.uk,davem@davemloft.net,edumazet@google.com,horms@kernel.org,kuba@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:44:05 +0000
-Message-ID: <2023122805-expiring-livable-1b02@gregkh>
+Date: Thu, 28 Dec 2023 12:08:16 +0000
+Message-ID: <2023122816-kimono-goldsmith-1771@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,38 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x ee4d79055aeea27f1b8c42233cc0c90d0a8b5355
+git cherry-pick -x 3dc5d44545453de1de9c53cc529cc960a85933da
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122805-expiring-livable-1b02@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122816-kimono-goldsmith-1771@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
+3dc5d4454545 ("net: ks8851: Fix TX stall caused by TX buffer overrun")
+b07f987a8d77 ("net: ks8851: Separate SPI operations into separate file")
+7a552c850c45 ("net: ks8851: Implement register, FIFO, lock accessor callbacks")
+d2a1c643a00e ("net: ks8851: Permit overridding interrupt enable register")
+144ad36c3d3b ("net: ks8851: Factor out TX work flush function")
+24be72632c68 ("net: ks8851: Split out SPI specific code from probe() and remove()")
+d48b7634c692 ("net: ks8851: Split out SPI specific entries in struct ks8851_net")
+18a3df730932 ("net: ks8851: Factor out SKB receive function")
+22726020050b ("net: ks8851: Factor out bus lock handling")
+aa39bf6730b7 ("net: ks8851: Use 16-bit read of RXFC register")
+88cfedd0d7ab ("net: ks8851: Use 16-bit writes to program MAC address")
+806f66495e79 ("net: ks8851: Remove ks8851_rdreg32()")
+2c5b0a86ac54 ("net: ks8851: Use dev_{get,set}_drvdata()")
+b6948e1b7b09 ("net: ks8851: Use devm_alloc_etherdev()")
+bfd1e0eb08f6 ("net: ks8851: Rename ndev to netdev in probe")
+d320692d9f85 ("net: ks8851: Factor out spi->dev in probe()/remove()")
 
 thanks,
 
@@ -69,170 +84,235 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ee4d79055aeea27f1b8c42233cc0c90d0a8b5355 Mon Sep 17 00:00:00 2001
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Thu, 2 Nov 2023 13:52:58 +0100
-Subject: [PATCH] iio: imu: adis16475: add spi_device_id table
+From 3dc5d44545453de1de9c53cc529cc960a85933da Mon Sep 17 00:00:00 2001
+From: Ronald Wahl <ronald.wahl@raritan.com>
+Date: Thu, 14 Dec 2023 19:11:12 +0100
+Subject: [PATCH] net: ks8851: Fix TX stall caused by TX buffer overrun
 
-This prevents the warning message "SPI driver has no spi_device_id for..."
-when registering the driver. More importantly, it makes sure that
-module autoloading works as spi relies on spi: modaliases and not of.
+There is a bug in the ks8851 Ethernet driver that more data is written
+to the hardware TX buffer than actually available. This is caused by
+wrong accounting of the free TX buffer space.
 
-While at it, move the of_device_id table to it's natural place.
+The driver maintains a tx_space variable that represents the TX buffer
+space that is deemed to be free. The ks8851_start_xmit_spi() function
+adds an SKB to a queue if tx_space is large enough and reduces tx_space
+by the amount of buffer space it will later need in the TX buffer and
+then schedules a work item. If there is not enough space then the TX
+queue is stopped.
 
-Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231102125258.3284830-1-nuno.sa@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The worker function ks8851_tx_work() dequeues all the SKBs and writes
+the data into the hardware TX buffer. The last packet will trigger an
+interrupt after it was send. Here it is assumed that all data fits into
+the TX buffer.
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index b7cbe1565aee..04153a2725d5 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -1406,50 +1406,6 @@ static int adis16475_config_irq_pin(struct adis16475 *st)
- 	return 0;
+In the interrupt routine (which runs asynchronously because it is a
+threaded interrupt) tx_space is updated with the current value from the
+hardware. Also the TX queue is woken up again.
+
+Now it could happen that after data was sent to the hardware and before
+handling the TX interrupt new data is queued in ks8851_start_xmit_spi()
+when the TX buffer space had still some space left. When the interrupt
+is actually handled tx_space is updated from the hardware but now we
+already have new SKBs queued that have not been written to the hardware
+TX buffer yet. Since tx_space has been overwritten by the value from the
+hardware the space is not accounted for.
+
+Now we have more data queued then buffer space available in the hardware
+and ks8851_tx_work() will potentially overrun the hardware TX buffer. In
+many cases it will still work because often the buffer is written out
+fast enough so that no overrun occurs but for example if the peer
+throttles us via flow control then an overrun may happen.
+
+This can be fixed in different ways. The most simple way would be to set
+tx_space to 0 before writing data to the hardware TX buffer preventing
+the queuing of more SKBs until the TX interrupt has been handled. I have
+chosen a slightly more efficient (and still rather simple) way and
+track the amount of data that is already queued and not yet written to
+the hardware. When new SKBs are to be queued the already queued amount
+of data is honoured when checking free TX buffer space.
+
+I tested this with a setup of two linked KS8851 running iperf3 between
+the two in bidirectional mode. Before the fix I got a stall after some
+minutes. With the fix I saw now issues anymore after hours.
+
+Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Cc: Tristram Ha <Tristram.Ha@microchip.com>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231214181112.76052-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+
+diff --git a/drivers/net/ethernet/micrel/ks8851.h b/drivers/net/ethernet/micrel/ks8851.h
+index fecd43754cea..e5ec0a363aff 100644
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -350,6 +350,8 @@ union ks8851_tx_hdr {
+  * @rxd: Space for receiving SPI data, in DMA-able space.
+  * @txd: Space for transmitting SPI data, in DMA-able space.
+  * @msg_enable: The message flags controlling driver output (see ethtool).
++ * @tx_space: Free space in the hardware TX buffer (cached copy of KS_TXMIR).
++ * @queued_len: Space required in hardware TX buffer for queued packets in txq.
+  * @fid: Incrementing frame id tag.
+  * @rc_ier: Cached copy of KS_IER.
+  * @rc_ccr: Cached copy of KS_CCR.
+@@ -399,6 +401,7 @@ struct ks8851_net {
+ 	struct work_struct	rxctrl_work;
+ 
+ 	struct sk_buff_head	txq;
++	unsigned int		queued_len;
+ 
+ 	struct eeprom_93cx6	eeprom;
+ 	struct regulator	*vdd_reg;
+diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+index cfbc900d4aeb..0bf13b38b8f5 100644
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -362,16 +362,18 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 		handled |= IRQ_RXPSI;
+ 
+ 	if (status & IRQ_TXI) {
+-		handled |= IRQ_TXI;
++		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 
+-		/* no lock here, tx queue should have been stopped */
++		netif_dbg(ks, intr, ks->netdev,
++			  "%s: txspace %d\n", __func__, tx_space);
+ 
+-		/* update our idea of how much tx space is available to the
+-		 * system */
+-		ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
++		spin_lock(&ks->statelock);
++		ks->tx_space = tx_space;
++		if (netif_queue_stopped(ks->netdev))
++			netif_wake_queue(ks->netdev);
++		spin_unlock(&ks->statelock);
+ 
+-		netif_dbg(ks, intr, ks->netdev,
+-			  "%s: txspace %d\n", __func__, ks->tx_space);
++		handled |= IRQ_TXI;
+ 	}
+ 
+ 	if (status & IRQ_RXI)
+@@ -414,9 +416,6 @@ static irqreturn_t ks8851_irq(int irq, void *_ks)
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
+ 
+-	if (status & IRQ_TXI)
+-		netif_wake_queue(ks->netdev);
+-
+ 	return IRQ_HANDLED;
  }
  
--static const struct of_device_id adis16475_of_match[] = {
--	{ .compatible = "adi,adis16470",
--		.data = &adis16475_chip_info[ADIS16470] },
--	{ .compatible = "adi,adis16475-1",
--		.data = &adis16475_chip_info[ADIS16475_1] },
--	{ .compatible = "adi,adis16475-2",
--		.data = &adis16475_chip_info[ADIS16475_2] },
--	{ .compatible = "adi,adis16475-3",
--		.data = &adis16475_chip_info[ADIS16475_3] },
--	{ .compatible = "adi,adis16477-1",
--		.data = &adis16475_chip_info[ADIS16477_1] },
--	{ .compatible = "adi,adis16477-2",
--		.data = &adis16475_chip_info[ADIS16477_2] },
--	{ .compatible = "adi,adis16477-3",
--		.data = &adis16475_chip_info[ADIS16477_3] },
--	{ .compatible = "adi,adis16465-1",
--		.data = &adis16475_chip_info[ADIS16465_1] },
--	{ .compatible = "adi,adis16465-2",
--		.data = &adis16475_chip_info[ADIS16465_2] },
--	{ .compatible = "adi,adis16465-3",
--		.data = &adis16475_chip_info[ADIS16465_3] },
--	{ .compatible = "adi,adis16467-1",
--		.data = &adis16475_chip_info[ADIS16467_1] },
--	{ .compatible = "adi,adis16467-2",
--		.data = &adis16475_chip_info[ADIS16467_2] },
--	{ .compatible = "adi,adis16467-3",
--		.data = &adis16475_chip_info[ADIS16467_3] },
--	{ .compatible = "adi,adis16500",
--		.data = &adis16475_chip_info[ADIS16500] },
--	{ .compatible = "adi,adis16505-1",
--		.data = &adis16475_chip_info[ADIS16505_1] },
--	{ .compatible = "adi,adis16505-2",
--		.data = &adis16475_chip_info[ADIS16505_2] },
--	{ .compatible = "adi,adis16505-3",
--		.data = &adis16475_chip_info[ADIS16505_3] },
--	{ .compatible = "adi,adis16507-1",
--		.data = &adis16475_chip_info[ADIS16507_1] },
--	{ .compatible = "adi,adis16507-2",
--		.data = &adis16475_chip_info[ADIS16507_2] },
--	{ .compatible = "adi,adis16507-3",
--		.data = &adis16475_chip_info[ADIS16507_3] },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, adis16475_of_match);
+@@ -500,6 +499,7 @@ static int ks8851_net_open(struct net_device *dev)
+ 	ks8851_wrreg16(ks, KS_ISR, ks->rc_ier);
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
  
- static int adis16475_probe(struct spi_device *spi)
++	ks->queued_len = 0;
+ 	netif_start_queue(ks->netdev);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+diff --git a/drivers/net/ethernet/micrel/ks8851_spi.c b/drivers/net/ethernet/micrel/ks8851_spi.c
+index 70bc7253454f..88e26c120b48 100644
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -286,6 +286,18 @@ static void ks8851_wrfifo_spi(struct ks8851_net *ks, struct sk_buff *txp,
+ 		netdev_err(ks->netdev, "%s: spi_sync() failed\n", __func__);
+ }
+ 
++/**
++ * calc_txlen - calculate size of message to send packet
++ * @len: Length of data
++ *
++ * Returns the size of the TXFIFO message needed to send
++ * this packet.
++ */
++static unsigned int calc_txlen(unsigned int len)
++{
++	return ALIGN(len + 4, 4);
++}
++
+ /**
+  * ks8851_rx_skb_spi - receive skbuff
+  * @ks: The device state
+@@ -305,7 +317,9 @@ static void ks8851_rx_skb_spi(struct ks8851_net *ks, struct sk_buff *skb)
+  */
+ static void ks8851_tx_work(struct work_struct *work)
  {
-@@ -1463,7 +1419,7 @@ static int adis16475_probe(struct spi_device *spi)
++	unsigned int dequeued_len = 0;
+ 	struct ks8851_net_spi *kss;
++	unsigned short tx_space;
+ 	struct ks8851_net *ks;
+ 	unsigned long flags;
+ 	struct sk_buff *txb;
+@@ -322,6 +336,8 @@ static void ks8851_tx_work(struct work_struct *work)
+ 		last = skb_queue_empty(&ks->txq);
  
- 	st = iio_priv(indio_dev);
+ 		if (txb) {
++			dequeued_len += calc_txlen(txb->len);
++
+ 			ks8851_wrreg16_spi(ks, KS_RXQCR,
+ 					   ks->rc_rxqcr | RXQCR_SDA);
+ 			ks8851_wrfifo_spi(ks, txb, last);
+@@ -332,6 +348,13 @@ static void ks8851_tx_work(struct work_struct *work)
+ 		}
+ 	}
  
--	st->info = device_get_match_data(&spi->dev);
-+	st->info = spi_get_device_match_data(spi);
- 	if (!st->info)
- 		return -EINVAL;
- 
-@@ -1503,12 +1459,83 @@ static int adis16475_probe(struct spi_device *spi)
- 	return 0;
++	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
++
++	spin_lock(&ks->statelock);
++	ks->queued_len -= dequeued_len;
++	ks->tx_space = tx_space;
++	spin_unlock(&ks->statelock);
++
+ 	ks8851_unlock_spi(ks, &flags);
  }
  
-+static const struct of_device_id adis16475_of_match[] = {
-+	{ .compatible = "adi,adis16470",
-+		.data = &adis16475_chip_info[ADIS16470] },
-+	{ .compatible = "adi,adis16475-1",
-+		.data = &adis16475_chip_info[ADIS16475_1] },
-+	{ .compatible = "adi,adis16475-2",
-+		.data = &adis16475_chip_info[ADIS16475_2] },
-+	{ .compatible = "adi,adis16475-3",
-+		.data = &adis16475_chip_info[ADIS16475_3] },
-+	{ .compatible = "adi,adis16477-1",
-+		.data = &adis16475_chip_info[ADIS16477_1] },
-+	{ .compatible = "adi,adis16477-2",
-+		.data = &adis16475_chip_info[ADIS16477_2] },
-+	{ .compatible = "adi,adis16477-3",
-+		.data = &adis16475_chip_info[ADIS16477_3] },
-+	{ .compatible = "adi,adis16465-1",
-+		.data = &adis16475_chip_info[ADIS16465_1] },
-+	{ .compatible = "adi,adis16465-2",
-+		.data = &adis16475_chip_info[ADIS16465_2] },
-+	{ .compatible = "adi,adis16465-3",
-+		.data = &adis16475_chip_info[ADIS16465_3] },
-+	{ .compatible = "adi,adis16467-1",
-+		.data = &adis16475_chip_info[ADIS16467_1] },
-+	{ .compatible = "adi,adis16467-2",
-+		.data = &adis16475_chip_info[ADIS16467_2] },
-+	{ .compatible = "adi,adis16467-3",
-+		.data = &adis16475_chip_info[ADIS16467_3] },
-+	{ .compatible = "adi,adis16500",
-+		.data = &adis16475_chip_info[ADIS16500] },
-+	{ .compatible = "adi,adis16505-1",
-+		.data = &adis16475_chip_info[ADIS16505_1] },
-+	{ .compatible = "adi,adis16505-2",
-+		.data = &adis16475_chip_info[ADIS16505_2] },
-+	{ .compatible = "adi,adis16505-3",
-+		.data = &adis16475_chip_info[ADIS16505_3] },
-+	{ .compatible = "adi,adis16507-1",
-+		.data = &adis16475_chip_info[ADIS16507_1] },
-+	{ .compatible = "adi,adis16507-2",
-+		.data = &adis16475_chip_info[ADIS16507_2] },
-+	{ .compatible = "adi,adis16507-3",
-+		.data = &adis16475_chip_info[ADIS16507_3] },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adis16475_of_match);
-+
-+static const struct spi_device_id adis16475_ids[] = {
-+	{ "adis16470", (kernel_ulong_t)&adis16475_chip_info[ADIS16470] },
-+	{ "adis16475-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_1] },
-+	{ "adis16475-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_2] },
-+	{ "adis16475-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_3] },
-+	{ "adis16477-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_1] },
-+	{ "adis16477-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_2] },
-+	{ "adis16477-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_3] },
-+	{ "adis16465-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_1] },
-+	{ "adis16465-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_2] },
-+	{ "adis16465-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_3] },
-+	{ "adis16467-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_1] },
-+	{ "adis16467-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_2] },
-+	{ "adis16467-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_3] },
-+	{ "adis16500", (kernel_ulong_t)&adis16475_chip_info[ADIS16500] },
-+	{ "adis16505-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_1] },
-+	{ "adis16505-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_2] },
-+	{ "adis16505-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_3] },
-+	{ "adis16507-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_1] },
-+	{ "adis16507-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_2] },
-+	{ "adis16507-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_3] },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, adis16475_ids);
-+
- static struct spi_driver adis16475_driver = {
- 	.driver = {
- 		.name = "adis16475",
- 		.of_match_table = adis16475_of_match,
- 	},
- 	.probe = adis16475_probe,
-+	.id_table = adis16475_ids,
- };
- module_spi_driver(adis16475_driver);
+@@ -346,18 +369,6 @@ static void ks8851_flush_tx_work_spi(struct ks8851_net *ks)
+ 	flush_work(&kss->tx_work);
+ }
  
+-/**
+- * calc_txlen - calculate size of message to send packet
+- * @len: Length of data
+- *
+- * Returns the size of the TXFIFO message needed to send
+- * this packet.
+- */
+-static unsigned int calc_txlen(unsigned int len)
+-{
+-	return ALIGN(len + 4, 4);
+-}
+-
+ /**
+  * ks8851_start_xmit_spi - transmit packet using SPI
+  * @skb: The buffer to transmit
+@@ -386,16 +397,17 @@ static netdev_tx_t ks8851_start_xmit_spi(struct sk_buff *skb,
+ 
+ 	spin_lock(&ks->statelock);
+ 
+-	if (needed > ks->tx_space) {
++	if (ks->queued_len + needed > ks->tx_space) {
+ 		netif_stop_queue(dev);
+ 		ret = NETDEV_TX_BUSY;
+ 	} else {
+-		ks->tx_space -= needed;
++		ks->queued_len += needed;
+ 		skb_queue_tail(&ks->txq, skb);
+ 	}
+ 
+ 	spin_unlock(&ks->statelock);
+-	schedule_work(&kss->tx_work);
++	if (ret == NETDEV_TX_OK)
++		schedule_work(&kss->tx_work);
+ 
+ 	return ret;
+ }
 
 
