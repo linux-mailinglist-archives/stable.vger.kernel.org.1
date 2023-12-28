@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E5681F786
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A5B381F787
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57D0F1F2152D
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC0361F22795
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C3B6FBB;
-	Thu, 28 Dec 2023 11:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1ADF63DB;
+	Thu, 28 Dec 2023 11:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCj6WmDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXAwCl2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2563DB
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE45C433C8;
-	Thu, 28 Dec 2023 11:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD48A6FBE
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA75C433C8;
+	Thu, 28 Dec 2023 11:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761550;
-	bh=3okl219Nri+LwU4bxnnuzt3wjwuDgQhn71oTN3j284U=;
+	s=korg; t=1703761553;
+	bh=SqKN9a+BnTLx7eGtBN/cPpEUu4jo0uMBOWp5kbscXXo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QCj6WmDvnGpNqEUNh7wunPgn4I7CRa/hSJewuiVU0Zd/AOl8ildRx/MQOqliccA+i
-	 QF7igZwPq+sbGJFyNwiP3CdYT6FblokXW3cDmu6OTiCuF2LIVjtr7Q0pDx7wVj4eX8
-	 rkKDmgi07Y7KUaVCLZX1XRH5fFIAIBnSb+LD2QQw=
-Subject: FAILED: patch "[PATCH] Bluetooth: Add more enc key size check" failed to apply to 5.10-stable tree
+	b=uXAwCl2WmUWMUBRaQI0JXTVn4XKIJpo1yRIfFokSx/pWNmywy1Ssv2kNqcXeJH0sC
+	 UETpCF5G1xXhUaF0TLdAuOEr4NpSlN9B1+n4ldSRgX4MUWF8lNU1Elu4r8Qeg2n7B0
+	 Uft2DnAPYW0G6rrChV/1+Udsp9Q1OpyQf1r0EXpE=
+Subject: FAILED: patch "[PATCH] Bluetooth: Add more enc key size check" failed to apply to 5.4-stable tree
 To: alex_lu@realsil.com.cn,luiz.von.dentz@intel.com,max.chou@realtek.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:05:47 +0000
-Message-ID: <2023122847-laborious-dating-8efb@gregkh>
+Date: Thu, 28 Dec 2023 11:05:50 +0000
+Message-ID: <2023122850-amulet-untwist-14e2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 04a342cc49a8522e99c9b3346371c329d841dcd2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122847-laborious-dating-8efb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122850-amulet-untwist-14e2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
