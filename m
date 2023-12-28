@@ -1,188 +1,102 @@
-Return-Path: <stable+bounces-8618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EFF81F681
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 10:48:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A615A81F712
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:51:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40501C21B63
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 09:47:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83BE1C20DA9
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 10:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDDB6ABC;
-	Thu, 28 Dec 2023 09:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C53A6AA4;
+	Thu, 28 Dec 2023 10:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svenpeter.dev header.i=@svenpeter.dev header.b="JEODCXGf";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Q+kQXi9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZSokmgC"
 X-Original-To: stable@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8428C8DB;
-	Thu, 28 Dec 2023 09:47:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svenpeter.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svenpeter.dev
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailout.nyi.internal (Postfix) with ESMTP id 172185C0085;
-	Thu, 28 Dec 2023 04:47:10 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 28 Dec 2023 04:47:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:message-id:mime-version
-	:reply-to:subject:subject:to:to; s=fm2; t=1703756830; x=
-	1703843230; bh=InsY1OZSAZnSuRG5SxIiyCXnOFO2J93RUtltbwwZBKQ=; b=J
-	EODCXGfaWH/RBkHZg+MRUqF14mEFLiGkf14+E4Owwcr9gcZY/MDgMh0K4ZwLuVZO
-	Vf6vvjrZDlISOgRZ9g1bd/X7f5YPiXR6UV/urfeRAzEliopi0TDWjUA+LCmxxNyj
-	s3FCRG7wh7i93JKXGmYeJNUpK8erAuFOrforPnOxfZG9XzlTtMnRKkzR/CSeWvDr
-	cdgmZ+vgApPg2fd2oXITlzVYbsS17tiOZWHcbfNVpU/atoRuHFdpXrCYvwCermAB
-	ruA4bt40t6hPIBK5FLSpEUA+ysgnWG5/zxXkLIWO6ufF711mi1TMHv4AhmFjilBD
-	Dn5WNeP0RU5qrbWijm+IA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; t=1703756830; x=1703843230; bh=InsY1OZSAZnSu
-	RG5SxIiyCXnOFO2J93RUtltbwwZBKQ=; b=Q+kQXi9iTox/LHxCTiogbP52BxlSn
-	AuAqbM6oHAU6oRIxONdnB24SftCQulLg30NCmtTkXPFnJ5soDBYFWlFTlRcEuGaN
-	AbKa+oCNavbBUPlRSWuQAr/LRj+heuP+CqMjk7KZtBxdfJdlOAjxKydk8/+fn6Ul
-	DO9HzATDcAT6LS41wtASf7UX9TE4yQxDdnUOaOxhN2DLji7433rmUM9hi9FRCZNr
-	MyuzfeWJrts/IstFwR6gkCfeWawTRKbXQ/71fXn+OqFxQW93o89DRNOQRzyMrSfw
-	a/sxh1sPy5UySogDK4w0MJoYP8Bvi/3Mxz+6/1c0kHNjTW4d3j+aXPFjA==
-X-ME-Sender: <xms:HUSNZc39K3WYZc-YiW5QMAka5XWh7gfHT7T8UFb3ThG_yavNn91nmg>
-    <xme:HUSNZXFas3AUsapFZmLAKT_AlBB6FjfLCtUMHafwuDsO4SEYZAW9gz7RYs1OorlMX
-    ZpPO43X2m9L3ZOOTDQ>
-X-ME-Received: <xmr:HUSNZU5gK3V14ecc6FSbK2IHQ8PLeMZNoO5wL1XmVQeufORXYLQbDOTvKLnyN9aj_Bxqyfl0VLpkkc_lWM91OipeDylLg16oAKyvL1-bz_BLF4ta5szwj0zikwK6Zg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdefuddgtdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurheptgfghfgguffkffevvffosehtqhhmtdhhtdejnecuhfhrohhmpefuvhgvnhcu
-    rfgvthgvrhcuoehsvhgvnhesshhvvghnphgvthgvrhdruggvvheqnecuggftrfgrthhtvg
-    hrnhepleehkeehudelvefhteeltdelhfekiefgkefguddvheekjeehuedvtdeikefhgeel
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpehsvhgvnhesshhvvghnphgvthgvrhdruggvvh
-X-ME-Proxy: <xmx:HUSNZV2ByYyS1HTDH2irmFn-Zao3jF9vqBR0BgGZ08cjUU7zZ_5_zQ>
-    <xmx:HUSNZfFmBSCmTAfv-Wj9_SZy6mFWdQi8KmATinoeufcSHcPsxufPcA>
-    <xmx:HUSNZe_22-F5_YmMRyo28uLypzQog2athcPLRgJhU3qTY3BrIxfnhQ>
-    <xmx:HkSNZQIbd22bB8eWUI6N3DRwJGU1uQYSHMvHcIJGBWjtLtN5piajWw>
-Feedback-ID: i51094778:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 28 Dec 2023 04:47:09 -0500 (EST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Sven Peter <sven@svenpeter.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA726FA1
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 10:51:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612CBC433C8;
+	Thu, 28 Dec 2023 10:51:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1703760706;
+	bh=r168erayrVWB/r0EpasnIBfnfBi/PcJIe47J9JMHU/I=;
+	h=Subject:To:Cc:From:Date:From;
+	b=uZSokmgCMFgIX4D4BTEw0S9Kzsmnn1Xz2Ua4DfALGKllRFOkyXFXrY/ry/7aRs4fg
+	 JpFfE+luUz6DpuNcCDJMuKcRDVAtBrEgun+kPxp7WFpck0oOFZZsBGtst8F8rQU6e2
+	 lTCwJxUe7MrffAAGnywNNR5nKZJlES6tSAfa98rE=
+Subject: FAILED: patch "[PATCH] ARM: dts: Fix occasional boot hang for am3 usb" failed to apply to 6.1-stable tree
+To: tony@atomide.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 28 Dec 2023 10:51:44 +0000
+Message-ID: <2023122844-impending-deceiving-5f9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel MacBooks
-Message-Id: <AB87C916-9CF9-4B8C-AFF5-74CA4151C4FC@svenpeter.dev>
-Date: Thu, 28 Dec 2023 10:46:57 +0100
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Felix Zhang <mrman@mrman314.tech>,
- linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
- Johan Hovold <johan+linaro@kernel.org>, Hector Martin <marcan@marcan.st>,
- Bagas Sanjaya <bagasdotme@gmail.com>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Orlando Chamberlain <orlandoch.dev@gmail.com>, kekrby@gmail.com,
- admin@kodeit.net, Janne Grunau <j@jannau.net>,
- Aditya Garg <gargaditya08@live.com>, asahi@lists.linux.dev,
- linux-kernel@vger.kernel.org
-To: Johan Hovold <johan@kernel.org>
-X-Mailer: iPhone Mail (21B101)
-
-=EF=BB=BFSending this again because Apple mail decided to default to HTML
-mails since the last update apparently *sigh*
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-=EF=BB=BFHi,
+To reproduce the conflict and resubmit, you may use the following commands:
 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122844-impending-deceiving-5f9d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> On Dec 27, 2023, at 11:30, Johan Hovold <johan@kernel.org> wrote:
->=20
-> On Mon, Dec 25, 2023 at 09:26:05PM +0100, Paul Menzel wrote:
->=20
->> Thank you very much for the patch. I am adding Johan to Cc field.
->=20
-> Thanks for the report. Guess I could use a break from the proverbial
-> eggnog.
->=20
->> Am 25.12.23 um 21:01 schrieb Felix Zhang:
->>> Starting v6.5, Bluetooth does not work at all on my T2 MacBookAir9,1
->>> with the BCM4377 chip.  When I boot up the computer, go into
->> Somehow a blank line snug in above.
->>> bluetoothctl, and then try to run commands like scan on, show, list,
->>> it returns "No default controller available."  I have tried reloading
->>> the
->> It=E2=80=99d be great if you reflowed for 75 characters per line (also be=
-low).
->>> kernel module, in which the log outputs "{Added,Removed} hci0
->>> (unconfigured)."  With this patch, I am able to use Bluetooth as
->>> normal
->>> without any errors regarding hci0 being unconfigured.  However, an
->>> issue is still present where sometimes hci_bcm4377 will have to be
->>> reloaded in order to get bluetooth to work.  I believe this was still
->>> present before the previously mentioned commit.
->>> Due to the bit HCI_QUIRK_USE_BDADDR_PROPERTY being always set in
->>> drivers/bluetooth/hci_bcm4377.c (line 2371), the chip would be left
->>> unconfigured on kernels compiled after commit 6945795bc81a
->>> ("Bluetooth:
->>> fix use-bdaddr-property quirk") due to a change in its logic.  On the
->>> M1 Macs, the device would be configured in the devicetree.  However,
->>> that is not the case on T2 Macs.  Because the bluetooth adapter is
->>> left
->>> unconfigured, it is not usable in the operating system.  In order to
->>> circumvent this issue, a flag is added to prevent the bit from being
->>> set on the BCM4377, while setting it on the other devices.
->=20
-> The commit you tracked this down to restored the original semantics for
-> HCI_QUIRK_USE_BDADDR_PROPERTY, which means that it should only be set
-> for devices with an invalid address.
->=20
-> The Broadcom BCM4377 driver has so far been setting this flag
-> unconditionally which now potentially results in also valid addresses
-> being marked as invalid.
->=20
-> I've just sent a patch that makes sure to only mark invalid addresses as
-> invalid:
->=20
-> https://lore.kernel.org/lkml/20231227101003.10534-1-johan+linaro@kernel.or=
-g/
->=20
-> Note however that the flag still needs to be set in case your device
-> lacks storage for a unique device address so you cannot simply drop it
-> for some device classes as you do below (unless you are certain that
-> these devices will always have a valid address).
+Possible dependencies:
 
+9b6a51aab5f5 ("ARM: dts: Fix occasional boot hang for am3 usb")
 
-We do know that though.
+thanks,
 
-BCM4377 is present on Apple=E2=80=99s x86 Macs and always has internal stora=
-ge
-for the address. If the board comes up without an address there=E2=80=99s no=
-thing
-much we can do because the address isn=E2=80=99t provided by ACPI or anythin=
-g
-else and setting the invalid address quirk for that situation seems appropri=
-ate.
+greg k-h
 
-BCM4378/4387 is present on Apple=E2=80=99s ARM Macs and never has internal s=
-torage.
-The address is always provided by our bootloader in the device tree.
-These should always unconditionally set HCI_QUIRK_USE_BDADDR_PROPERTY
-just like this patch does.
+------------------ original commit in Linus's tree ------------------
 
+From 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb Mon Sep 17 00:00:00 2001
+From: Tony Lindgren <tony@atomide.com>
+Date: Tue, 12 Dec 2023 15:50:35 +0200
+Subject: [PATCH] ARM: dts: Fix occasional boot hang for am3 usb
 
-Best,
+With subtle timings changes, we can now sometimes get an external abort on
+non-linefetch error booting am3 devices at sysc_reset(). This is because
+of a missing reset delay needed for the usb target module.
 
+Looks like we never enabled the delay earlier for am3, although a similar
+issue was seen earlier with a similar usb setup for dm814x as described in
+commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
 
-Sven=
+Cc: stable@vger.kernel.org
+Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+
+diff --git a/arch/arm/boot/dts/ti/omap/am33xx.dtsi b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+index 1a2cd5baf402..5b9e01a8aa5d 100644
+--- a/arch/arm/boot/dts/ti/omap/am33xx.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am33xx.dtsi
+@@ -359,6 +359,7 @@ usb: target-module@47400000 {
+ 					<SYSC_IDLE_NO>,
+ 					<SYSC_IDLE_SMART>,
+ 					<SYSC_IDLE_SMART_WKUP>;
++			ti,sysc-delay-us = <2>;
+ 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
+ 			clock-names = "fck";
+ 			#address-cells = <1>;
 
 
