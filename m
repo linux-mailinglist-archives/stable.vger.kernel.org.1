@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B4581F789
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:06:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D0981F78A
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF81F283A3B
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:06:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 376051F216D6
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FE36AAC;
-	Thu, 28 Dec 2023 11:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9DA63DB;
+	Thu, 28 Dec 2023 11:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKJl68Pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eufK8xJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F37F6FB6
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4E5C433C8;
-	Thu, 28 Dec 2023 11:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D3B6FB6
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547E8C433C8;
+	Thu, 28 Dec 2023 11:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761566;
-	bh=M7hY8NKgPZYV1kAn9lrdnitJZXBt0gHwo44uVB2vEic=;
+	s=korg; t=1703761591;
+	bh=1N/MSqKKsDiadQIIXkALuUbrzXL41/9jWbBkqrajOGE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZKJl68Pjxw/b9y35OwlnnpkZo3wy5GmvMQeAdAS+2P1k4CikvlDBJ1dfqMj1PGuZd
-	 31meDRkKX3aOkES2IoX75fJwlCtNqoBvaOVUrDYMk8NtPpcwOlwmBxdZTyuubJjfWq
-	 6qYRK8VNfUQjfrO0FM5KVWerQqqJeT+K+EQ/A6yo=
-Subject: FAILED: patch "[PATCH] Bluetooth: Add more enc key size check" failed to apply to 4.14-stable tree
-To: alex_lu@realsil.com.cn,luiz.von.dentz@intel.com,max.chou@realtek.com
+	b=eufK8xJ1ZIUdMD1U+Y5fHg05pWlJRBMFYUcU0wd2B3hpE+URPiLI8tUKlaGfORZ5D
+	 vMWa0S1nJUbsW6XKmJF2nyL2Bek9Y/D7Z0UFQtTcte2kZ2KNQNLBSzUc5RTXyS8Vgh
+	 hhPGhEhxIXPRWobv9rzVnV8tGhNpow31NUgN4SQY=
+Subject: FAILED: patch "[PATCH] usb: fotg210-hcd: delete an incorrect bounds test" failed to apply to 6.1-stable tree
+To: dan.carpenter@linaro.org,gregkh@linuxfoundation.org,lee@kernel.org,linus.walleij@linaro.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:05:56 +0000
-Message-ID: <2023122856-banister-hatchling-4b1f@gregkh>
+Date: Thu, 28 Dec 2023 11:06:29 +0000
+Message-ID: <2023122829-entryway-broadband-fe23@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 04a342cc49a8522e99c9b3346371c329d841dcd2
+git cherry-pick -x 7fbcd195e2b8cc952e4aeaeb50867b798040314c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122856-banister-hatchling-4b1f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122829-entryway-broadband-fe23@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-04a342cc49a8 ("Bluetooth: Add more enc key size check")
-278d933e12f1 ("Bluetooth: Normalize HCI_OP_READ_ENC_KEY_SIZE cmdcmplt")
-c8992cffbe74 ("Bluetooth: hci_event: Use of a function table to handle Command Complete")
-3e54c5890c87 ("Bluetooth: hci_event: Use of a function table to handle HCI events")
-12cfe4176ad6 ("Bluetooth: HCI: Use skb_pull_data to parse LE Metaevents")
-70a6b8de6af5 ("Bluetooth: HCI: Use skb_pull_data to parse Extended Inquiry Result event")
-8d08d324fdcb ("Bluetooth: HCI: Use skb_pull_data to parse Inquiry Result with RSSI event")
-27d9eb4bcac1 ("Bluetooth: HCI: Use skb_pull_data to parse Inquiry Result event")
-aadc3d2f42a5 ("Bluetooth: HCI: Use skb_pull_data to parse Number of Complete Packets event")
-e3f3a1aea871 ("Bluetooth: HCI: Use skb_pull_data to parse Command Complete event")
-ae61a10d9d46 ("Bluetooth: HCI: Use skb_pull_data to parse BR/EDR events")
-3244845c6307 ("Bluetooth: hci_sync: Convert MGMT_OP_SSP")
-6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
-cf75ad8b41d2 ("Bluetooth: hci_sync: Convert MGMT_SET_POWERED")
-ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
-e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
-cba6b758711c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2")
-161510ccf91c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 1")
-6a98e3836fa2 ("Bluetooth: Add helper for serialized HCI command execution")
-4139ff008330 ("Bluetooth: Fix wrong opcode when LL privacy enabled")
+7fbcd195e2b8 ("usb: fotg210-hcd: delete an incorrect bounds test")
 
 thanks,
 
@@ -88,114 +69,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 04a342cc49a8522e99c9b3346371c329d841dcd2 Mon Sep 17 00:00:00 2001
-From: Alex Lu <alex_lu@realsil.com.cn>
-Date: Tue, 12 Dec 2023 10:30:34 +0800
-Subject: [PATCH] Bluetooth: Add more enc key size check
+From 7fbcd195e2b8cc952e4aeaeb50867b798040314c Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@linaro.org>
+Date: Wed, 13 Dec 2023 16:22:43 +0300
+Subject: [PATCH] usb: fotg210-hcd: delete an incorrect bounds test
 
-When we are slave role and receives l2cap conn req when encryption has
-started, we should check the enc key size to avoid KNOB attack or BLUFFS
-attack.
-From SIG recommendation, implementations are advised to reject
-service-level connections on an encrypted baseband link with key
-strengths below 7 octets.
-A simple and clear way to achieve this is to place the enc key size
-check in hci_cc_read_enc_key_size()
+Here "temp" is the number of characters that we have written and "size"
+is the size of the buffer.  The intent was clearly to say that if we have
+written to the end of the buffer then stop.
 
-The btmon log below shows the case that lacks enc key size check.
+However, for that to work the comparison should have been done on the
+original "size" value instead of the "size -= temp" value.  Not only
+will that not trigger when we want to, but there is a small chance that
+it will trigger incorrectly before we want it to and we break from the
+loop slightly earlier than intended.
 
-> HCI Event: Connect Request (0x04) plen 10
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Class: 0x480104
-          Major class: Computer (desktop, notebook, PDA, organizers)
-          Minor class: Desktop workstation
-          Capturing (Scanner, Microphone)
-          Telephony (Cordless telephony, Modem, Headset)
-        Link type: ACL (0x01)
-< HCI Command: Accept Connection Request (0x01|0x0009) plen 7
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Role: Peripheral (0x01)
-> HCI Event: Command Status (0x0f) plen 4
-      Accept Connection Request (0x01|0x0009) ncmd 2
-        Status: Success (0x00)
-> HCI Event: Connect Complete (0x03) plen 11
-        Status: Success (0x00)
-        Handle: 1
-        Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Link type: ACL (0x01)
-        Encryption: Disabled (0x00)
-...
+This code was recently changed from using snprintf() to scnprintf().  With
+snprintf() we likely would have continued looping and passed a negative
+size parameter to snprintf().  This would have triggered an annoying
+WARN().  Now that we have converted to scnprintf() "size" will never
+drop below 1 and there is no real need for this test.  We could change
+the condition to "if (temp <= 1) goto done;" but just deleting the test
+is cleanest.
 
-> HCI Event: Encryption Change (0x08) plen 4
-        Status: Success (0x00)
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Encryption: Enabled with E0 (0x01)
-< HCI Command: Read Encryption Key Size (0x05|0x0008) plen 2
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 2
-        Status: Success (0x00)
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Key size: 6
-// We should check the enc key size
-...
+Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-> ACL Data RX: Handle 1 flags 0x02 dlen 12
-      L2CAP: Connection Request (0x02) ident 3 len 4
-        PSM: 25 (0x0019)
-        Source CID: 64
-< ACL Data TX: Handle 1 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 3 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection pending (0x0001)
-        Status: Authorization pending (0x0002)
-> HCI Event: Number of Completed Packets (0x13) plen 5
-        Num handles: 1
-        Handle: 1 Address: BB:22:33:44:55:99 (OUI BB-22-33)
-        Count: 1
-        #35: len 16 (25 Kb/s)
-        Latency: 5 msec (2-7 msec ~4 msec)
-< ACL Data TX: Handle 1 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 3 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Lu <alex_lu@realsil.com.cn>
-Signed-off-by: Max Chou <max.chou@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index cc5fd290d529..ebf17b51072f 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -750,9 +750,23 @@ static u8 hci_cc_read_enc_key_size(struct hci_dev *hdev, void *data,
- 	} else {
- 		conn->enc_key_size = rp->key_size;
- 		status = 0;
-+
-+		if (conn->enc_key_size < hdev->min_enc_key_size) {
-+			/* As slave role, the conn->state has been set to
-+			 * BT_CONNECTED and l2cap conn req might not be received
-+			 * yet, at this moment the l2cap layer almost does
-+			 * nothing with the non-zero status.
-+			 * So we also clear encrypt related bits, and then the
-+			 * handler of l2cap conn req will get the right secure
-+			 * state at a later time.
-+			 */
-+			status = HCI_ERROR_AUTH_FAILURE;
-+			clear_bit(HCI_CONN_ENCRYPT, &conn->flags);
-+			clear_bit(HCI_CONN_AES_CCM, &conn->flags);
-+		}
+diff --git a/drivers/usb/fotg210/fotg210-hcd.c b/drivers/usb/fotg210/fotg210-hcd.c
+index 929106c16b29..7bf810a0c98a 100644
+--- a/drivers/usb/fotg210/fotg210-hcd.c
++++ b/drivers/usb/fotg210/fotg210-hcd.c
+@@ -428,8 +428,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 			temp = size;
+ 		size -= temp;
+ 		next += temp;
+-		if (temp == size)
+-			goto done;
  	}
  
--	hci_encrypt_cfm(conn, 0);
-+	hci_encrypt_cfm(conn, status);
+ 	temp = snprintf(next, size, "\n");
+@@ -439,7 +437,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 	size -= temp;
+ 	next += temp;
  
- done:
- 	hci_dev_unlock(hdev);
+-done:
+ 	*sizep = size;
+ 	*nextp = next;
+ }
 
 
