@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE8781F782
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1479E81F784
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 416C81C2102E
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0028283E1E
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F6A6FBF;
-	Thu, 28 Dec 2023 11:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5864A80B;
+	Thu, 28 Dec 2023 11:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsaU+r8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScGZzHJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CA46FBE
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7BBC433C7;
-	Thu, 28 Dec 2023 11:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C446AAC
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27A2C433C7;
+	Thu, 28 Dec 2023 11:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761534;
-	bh=MUx63zelRvVD4fvmkrEIfKNkUwwoa31wNT4ew5PsRMI=;
+	s=korg; t=1703761537;
+	bh=lR0/jd4vD/Esa3uYfcIE+9KDSdD34sqks3/hd9hkzm0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bsaU+r8AveeP4GbNb4vLkPj5G2NFKs9JRHiceUrIzybMbpmbebbhIJH7+WzzDK8YM
-	 lFdFxAs4FxTWXB9B/T8l/GAaQO68sWe4cCIhy7qxLE4BinXrKEcwNF+VGbQEjrBz2L
-	 X6g55H2Ed5m0+gANIUc9tuggjV3AD51MPB8+Mkc8=
-Subject: FAILED: patch "[PATCH] Bluetooth: MGMT/SMP: Fix address type when using SMP over" failed to apply to 4.19-stable tree
+	b=ScGZzHJJchnxmjFl7sAEh82Y1lbLdrABiGG5hDi3/vX5O/FBNS3dY3dt2slLKkHBs
+	 loozPGTFRKVYXQDmoAyuEZ2bNEp9babPaXkf2RNi7pWOGiYiNqXNXKKcji4oTFJueM
+	 cYxr12GmhigUIuJ7qgueIbK6HXyy+oJUQBqDD+uE=
+Subject: FAILED: patch "[PATCH] Bluetooth: MGMT/SMP: Fix address type when using SMP over" failed to apply to 4.14-stable tree
 To: xiaoyao@rock-chips.com,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:05:31 +0000
-Message-ID: <2023122831-improve-valiant-22fe@gregkh>
+Date: Thu, 28 Dec 2023 11:05:34 +0000
+Message-ID: <2023122834-spectrum-unfold-1ab6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 59b047bc98084f8af2c41483e4d68a5adf2fa7f7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122831-improve-valiant-22fe@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122834-spectrum-unfold-1ab6@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
