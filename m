@@ -1,114 +1,111 @@
-Return-Path: <stable+bounces-8668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D00481F81D
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:10:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17E181F81F
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8161F23F61
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FCA91C2337A
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265396FDF;
-	Thu, 28 Dec 2023 12:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C448B747C;
+	Thu, 28 Dec 2023 12:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kx3gkJi1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WlnJ6fLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37F16FDA
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:10:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA0FC433C8;
-	Thu, 28 Dec 2023 12:10:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703765432;
-	bh=c2DUf3XJQgCAGHqpirXLEW+c6K5m+khOs6ycBPVrFSs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=kx3gkJi1NPX66uDGqc9XKUo+ZgkhMvheXX/45q+1L5Pupw/7uvRbkdYggw4vbc7CM
-	 mLWEqJTUN8wtoxnbvjo/I0jTxpo70B2VNHuv1Df62M5jmqgzDqwmEjF1um1daYbiGD
-	 nyV3rEu6TjG7WHmrdzp2o41u6E+TMkn5CsO0EdBw=
-Subject: FAILED: patch "[PATCH] fs: cifs: Fix atime update check" failed to apply to 5.4-stable tree
-To: wozizhi@huawei.com,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 12:10:23 +0000
-Message-ID: <2023122823-washbowl-saxophone-c4b6@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710057466;
+	Thu, 28 Dec 2023 12:10:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71F2C433C8;
+	Thu, 28 Dec 2023 12:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1703765457;
+	bh=gC2BNbPpsT8NBQuqVA/gwgYEvuw7NsOU5Nw1q+1sLtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WlnJ6fLMKC+M7L6MuT6FYUKuSqH0fbr+u0SBvsa5rWauRKMtFMt+w3ATQHP5Hk0Cg
+	 3SqcW5A33OeLeWbQ8hlH7oGJDwtIxne9C38wNjQmS3LkhAIty37+cuP20OsCnu3BcD
+	 yfSDBZOmOxHE88e39ei8kJpahk9eZSYM7uaHVLu8U8DDPfMhiwmCXS30sbyk/i8b3M
+	 yOtcGxoJIcGw+ozu4Pn/kItozA886UP1hosPmApYc3cgqDIVx0ZKEZaLFVI2go5A9e
+	 +8jL60BTu5EetftSMfXNg/KtyzxMdQXDZDvK6CrUujHyi2hMONioowCDYv6V0lK9SY
+	 +Qz6jVjvsvwkw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rIpDv-00046r-1D;
+	Thu, 28 Dec 2023 13:10:52 +0100
+Date: Thu, 28 Dec 2023 13:10:51 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Sven Peter <sven@svenpeter.dev>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, Felix Zhang <mrman@mrman314.tech>,
+	linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Orlando Chamberlain <orlandoch.dev@gmail.com>, kekrby@gmail.com,
+	admin@kodeit.net, Janne Grunau <j@jannau.net>,
+	Aditya Garg <gargaditya08@live.com>, asahi@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel
+ MacBooks
+Message-ID: <ZY1ly_uB8huYl5jO@hovoldconsulting.com>
+References: <AB87C916-9CF9-4B8C-AFF5-74CA4151C4FC@svenpeter.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <AB87C916-9CF9-4B8C-AFF5-74CA4151C4FC@svenpeter.dev>
 
+On Thu, Dec 28, 2023 at 10:46:57AM +0100, Sven Peter wrote:
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> > On Dec 27, 2023, at 11:30, Johan Hovold <johan@kernel.org> wrote:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> > The commit you tracked this down to restored the original semantics for
+> > HCI_QUIRK_USE_BDADDR_PROPERTY, which means that it should only be set
+> > for devices with an invalid address.
+> > 
+> > The Broadcom BCM4377 driver has so far been setting this flag
+> > unconditionally which now potentially results in also valid addresses
+> > being marked as invalid.
+> > 
+> > I've just sent a patch that makes sure to only mark invalid addresses as
+> > invalid:
+> > 
+> > https://lore.kernel.org/lkml/20231227101003.10534-1-johan+linaro@kernel.org/
+> > 
+> > Note however that the flag still needs to be set in case your device
+> > lacks storage for a unique device address so you cannot simply drop it
+> > for some device classes as you do below (unless you are certain that
+> > these devices will always have a valid address).
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 01fe654f78fd1ea4df046ef76b07ba92a35f8dbe
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122823-washbowl-saxophone-c4b6@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+> We do know that though.
+> 
+> BCM4377 is present on Apple’s x86 Macs and always has internal storage
+> for the address. If the board comes up without an address there’s nothing
+> much we can do because the address isn’t provided by ACPI or anything
+> else and setting the invalid address quirk for that situation seems appropriate.
+> 
+> BCM4378/4387 is present on Apple’s ARM Macs and never has internal storage.
+> The address is always provided by our bootloader in the device tree.
+> These should always unconditionally set HCI_QUIRK_USE_BDADDR_PROPERTY
+> just like this patch does.
 
-Possible dependencies:
+Ok, good, then this patch and the one I posted are mostly equivalent
+assuming that the BCM4378/4387 return an invalid address during setup.
 
-01fe654f78fd ("fs: cifs: Fix atime update check")
-8f22ce708883 ("client: convert to new timestamp accessors")
-9448765397b6 ("smb: convert to ctime accessor functions")
-bc2390f2c884 ("cifs: update the ctime on a partial page write")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-abdb1742a312 ("cifs: get rid of mount options string parsing")
-9fd29a5bae6e ("cifs: use fs_context for automounts")
-5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
-332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
+This patch may be preferred as it does not need to rely on such
+assumptions, though.
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 01fe654f78fd1ea4df046ef76b07ba92a35f8dbe Mon Sep 17 00:00:00 2001
-From: Zizhi Wo <wozizhi@huawei.com>
-Date: Wed, 13 Dec 2023 10:23:53 +0800
-Subject: [PATCH] fs: cifs: Fix atime update check
-
-Commit 9b9c5bea0b96 ("cifs: do not return atime less than mtime") indicates
-that in cifs, if atime is less than mtime, some apps will break.
-Therefore, it introduce a function to compare this two variables in two
-places where atime is updated. If atime is less than mtime, update it to
-mtime.
-
-However, the patch was handled incorrectly, resulting in atime and mtime
-being exactly equal. A previous commit 69738cfdfa70 ("fs: cifs: Fix atime
-update check vs mtime") fixed one place and forgot to fix another. Fix it.
-
-Fixes: 9b9c5bea0b96 ("cifs: do not return atime less than mtime")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index cf17e3dd703e..32a8525415d9 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -4671,7 +4671,7 @@ static int cifs_readpage_worker(struct file *file, struct page *page,
- 	/* we do not want atime to be less than mtime, it broke some apps */
- 	atime = inode_set_atime_to_ts(inode, current_time(inode));
- 	mtime = inode_get_mtime(inode);
--	if (timespec64_compare(&atime, &mtime))
-+	if (timespec64_compare(&atime, &mtime) < 0)
- 		inode_set_atime_to_ts(inode, inode_get_mtime(inode));
- 
- 	if (PAGE_SIZE > rc)
-
+Johan
 
