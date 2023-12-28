@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9856681F7E4
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:44:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAC081F7E7
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 039B6B22BCB
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:44:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F929B21C29
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46A46FBE;
-	Thu, 28 Dec 2023 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB7C6FDA;
+	Thu, 28 Dec 2023 11:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arZ2t1jV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JETruhA5"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BFB6FDA
-	for <Stable@vger.kernel.org>; Thu, 28 Dec 2023 11:43:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908B6C433C7;
-	Thu, 28 Dec 2023 11:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761AB79D9
+	for <Stable@vger.kernel.org>; Thu, 28 Dec 2023 11:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4DFC433CC;
+	Thu, 28 Dec 2023 11:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703763804;
-	bh=wkx2LjU9ywCDQncKTrI6RYBoqul/w6/bzUJX7tDrk2w=;
+	s=korg; t=1703763824;
+	bh=bE3h4ZN1KTz4uw97u5w3Aoz0WoaRf27f2O7LYNo7jGw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=arZ2t1jVpE1+jotqGwip5Mw/Nt2kBVN0YXZjvfvqsuvS9pjKa1GMzJIUURc/XFPjc
-	 txYBVTaDftMOmkrr0pouRwHmo9hO4F2QLyZ1LvljByAgbtgpznL0gVNQ3QIfRcL/mU
-	 4iQwteufXHyxGtoB0s+96u3FxE0XY6mj+csLnPS0=
-Subject: FAILED: patch "[PATCH] iio: imu: adis16475: add spi_device_id table" failed to apply to 5.10-stable tree
+	b=JETruhA5yVOJMm4H7DYTd02t8Nmvvnm9F+iuvd/xDvPKpkgLwkSTc6N61adrgaVja
+	 kqQF9eL8Jp+xAjv7VEZYMQK8FO3p41AZDKkCjSmxuzKkcvbTBSp3Ql1uDuM2NvSKiD
+	 o1kbgKCnqL+LjnYK7mFdnFmf950sgLUYCvF/8gC8=
+Subject: FAILED: patch "[PATCH] iio: imu: adis16475: add spi_device_id table" failed to apply to 5.15-stable tree
 To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:43:22 +0000
-Message-ID: <2023122822-plow-yahoo-3622@gregkh>
+Date: Thu, 28 Dec 2023 11:43:41 +0000
+Message-ID: <2023122841-winnings-careless-572f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x ee4d79055aeea27f1b8c42233cc0c90d0a8b5355
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122822-plow-yahoo-3622@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122841-winnings-careless-572f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
-21fd77afa113 ("iio: imu: remove unused private data assigned with spi_set_drvdata()")
-30f6a542b7d3 ("iio:imu:adis: Use IRQF_NO_AUTOEN instead of irq request then disable")
 
 thanks,
 
