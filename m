@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FE081F796
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:07:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177F181F795
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93E9B235E8
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:07:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5AF1C23393
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B2D63DB;
-	Thu, 28 Dec 2023 11:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CAA66FB6;
+	Thu, 28 Dec 2023 11:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq5KNEbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+W1TzCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C4C79C3
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671FEC433C7;
-	Thu, 28 Dec 2023 11:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0D79C6
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E76C433C7;
+	Thu, 28 Dec 2023 11:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761616;
-	bh=H+Mfs5mp0oEf+fTvV6Pmse4pjBZvRLUH2luaCcOu6/s=;
+	s=korg; t=1703761619;
+	bh=wEann27GtEVIA1hLgCwoEZBuVAZSQNkJvVZ5PYM1O34=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Oq5KNEbCGCmUFqxb95TlnYQREUlSnaId9R2e4zijguxVc0PucKvWC/DaW1aEiV+TY
-	 aIUBhwbZqgv4tPvgrl95NvkpBBq9AqIyKPlybYNeTleeOTxYAAknaHl0u3luddbDA/
-	 uAWzvro3Y8HiWN1fWd1EV4UcDBHgjR8ZNkTbFglQ=
-Subject: FAILED: patch "[PATCH] net: usb: ax88179_178a: avoid failed operations when device" failed to apply to 5.10-stable tree
+	b=A+W1TzCm9I4YrmRAPQdHKiAkxeZ1TEvBn8HmtTiq3UexjsTNh+bVDXnco2reKaJBm
+	 Q+DeqBGxk+8cqyiXT8CjCCHx2z8YshaXeG+pzEF1XAAfSMYvhXCYryXE5IP5aWP58f
+	 PbITyYOs6e0UsXQ2kbN9xHLBUYpIL/kWSFmwZreQ=
+Subject: FAILED: patch "[PATCH] net: usb: ax88179_178a: avoid failed operations when device" failed to apply to 5.4-stable tree
 To: jtornosm@redhat.com,gregkh@linuxfoundation.org,stable@vger.kernel.org,stern@rowland.harvard.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:06:52 +0000
-Message-ID: <2023122852-twitter-ransack-4715@gregkh>
+Date: Thu, 28 Dec 2023 11:06:54 +0000
+Message-ID: <2023122854-resend-spinach-4d47@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x aef05e349bfd81c95adb4489639413fadbb74a83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122852-twitter-ransack-4715@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122854-resend-spinach-4d47@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,19 @@ aef05e349bfd ("net: usb: ax88179_178a: avoid failed operations when device is di
 7b3c8e27d67e ("bnxt_en: Move bnxt_approve_mac().")
 bd78980be1a6 ("net: usb: ax88179_178a: initialize local variables before use")
 de6e0b198239 ("net: ethernet: actions: Add Actions Semi Owl Ethernet MAC driver")
+4dca650991e4 ("net/mlx5: Enable QP number request when creating IPoIB underlay QP")
+8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+40f05e5b0d0e ("net: atlantic: proper rss_ctrl1 (54c0) initialization")
+43c670c8e48a ("net: atlantic: A2 ingress / egress hw configuration")
+e54dcf4bba3e ("net: atlantic: basic A2 init/deinit hw_ops")
+ec7629e0c221 ("net: atlantic: HW bindings for basic A2 init/deinit hw_ops")
+3417368494db ("net: atlantic: add A2 RPF hw_ops")
+57fe8fd2255c ("net: atlantic: HW bindings for A2 RFP")
+b3f0c79cba20 ("net: atlantic: A2 hw_ops skeleton")
+5cfd54d7dc18 ("net: atlantic: minimal A2 fw_ops")
+258ff0cf61d6 ("net: atlantic: minimal A2 HW bindings required for fw_ops")
+f67619611b4c ("net: atlantic: A2 driver-firmware interface")
+c6168161f693 ("net/mlx5: Add support for release all pages event")
 
 thanks,
 
