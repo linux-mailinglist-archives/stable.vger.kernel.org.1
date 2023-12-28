@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635BE81F785
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2E5681F786
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E04F282FE7
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57D0F1F2152D
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121796FB6;
-	Thu, 28 Dec 2023 11:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C3B6FBB;
+	Thu, 28 Dec 2023 11:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ur34HzAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCj6WmDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29E56AA8
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590AAC433C8;
-	Thu, 28 Dec 2023 11:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF2563DB
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE45C433C8;
+	Thu, 28 Dec 2023 11:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761547;
-	bh=MBnRIUNuucjmsXaAj8U6Ik58l/4uPE6OVQyGtcwvwwM=;
+	s=korg; t=1703761550;
+	bh=3okl219Nri+LwU4bxnnuzt3wjwuDgQhn71oTN3j284U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ur34HzACqOrsg5DUVqD2IOcXK2UCqvINW/+HlnTUryDVH0VQKzsRLP4GBCa58/N4c
-	 C2/8RUUWwj1CiahirS7sF+3cyaeHeqXetxizVB7z4yl1g5iGzAzpdcSoB3Kf3SkIc4
-	 Fg+L+uxsH1kBJEBJSmX6i1q922YnNr3a6yXYRazI=
-Subject: FAILED: patch "[PATCH] Bluetooth: Add more enc key size check" failed to apply to 5.15-stable tree
+	b=QCj6WmDvnGpNqEUNh7wunPgn4I7CRa/hSJewuiVU0Zd/AOl8ildRx/MQOqliccA+i
+	 QF7igZwPq+sbGJFyNwiP3CdYT6FblokXW3cDmu6OTiCuF2LIVjtr7Q0pDx7wVj4eX8
+	 rkKDmgi07Y7KUaVCLZX1XRH5fFIAIBnSb+LD2QQw=
+Subject: FAILED: patch "[PATCH] Bluetooth: Add more enc key size check" failed to apply to 5.10-stable tree
 To: alex_lu@realsil.com.cn,luiz.von.dentz@intel.com,max.chou@realtek.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:05:45 +0000
-Message-ID: <2023122845-moonscape-hermit-0bd5@gregkh>
+Date: Thu, 28 Dec 2023 11:05:47 +0000
+Message-ID: <2023122847-laborious-dating-8efb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 04a342cc49a8522e99c9b3346371c329d841dcd2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122845-moonscape-hermit-0bd5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122847-laborious-dating-8efb@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,14 @@ aadc3d2f42a5 ("Bluetooth: HCI: Use skb_pull_data to parse Number of Complete Pac
 e3f3a1aea871 ("Bluetooth: HCI: Use skb_pull_data to parse Command Complete event")
 ae61a10d9d46 ("Bluetooth: HCI: Use skb_pull_data to parse BR/EDR events")
 3244845c6307 ("Bluetooth: hci_sync: Convert MGMT_OP_SSP")
+6f6ff38a1e14 ("Bluetooth: hci_sync: Convert MGMT_OP_SET_LOCAL_NAME")
+cf75ad8b41d2 ("Bluetooth: hci_sync: Convert MGMT_SET_POWERED")
+ad383c2c65a5 ("Bluetooth: hci_sync: Enable advertising when LL privacy is enabled")
+e8907f76544f ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 3")
+cba6b758711c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 2")
+161510ccf91c ("Bluetooth: hci_sync: Make use of hci_cmd_sync_queue set 1")
+6a98e3836fa2 ("Bluetooth: Add helper for serialized HCI command execution")
+4139ff008330 ("Bluetooth: Fix wrong opcode when LL privacy enabled")
 
 thanks,
 
