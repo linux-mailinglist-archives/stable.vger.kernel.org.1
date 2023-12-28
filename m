@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F80681F780
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FEA81F781
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0A8F1C209B7
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B59828311E
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9AA6FBA;
-	Thu, 28 Dec 2023 11:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195A46AA8;
+	Thu, 28 Dec 2023 11:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLG7mx4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGNoEDc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5F663DB
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6453BC433C8;
-	Thu, 28 Dec 2023 11:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BFD6FB6
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:05:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566B0C433C8;
+	Thu, 28 Dec 2023 11:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761496;
-	bh=TOvBY+kZ/gzpksBgL4FXIpndruZTTBiSPvbSAJPqAuQ=;
+	s=korg; t=1703761528;
+	bh=mcUBUsa0Ks5T7ZAVYb3FXiBrYofWNh9posVo+CEZwdg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kLG7mx4jq/DSHjPe7oFuj1kZtR/S0BfUkxoYEkgvmhULpaLmt0J3EvquyJBXiBD9z
-	 WRRIIbHG8Za0xRo/Kxnz8XRrruTAK//dOooGHtKhEhtB0P/54kLB33q58efVmrSX87
-	 6BV2RVR+EN1TEgKNxLyypzKHlx3rKI1pveqGhYDY=
-Subject: FAILED: patch "[PATCH] Bluetooth: af_bluetooth: Fix Use-After-Free in" failed to apply to 4.14-stable tree
-To: v4bel@theori.io,luiz.von.dentz@intel.com
+	b=yGNoEDc6mlsSwDoKhNwJ5EdFBnWz985DCTag58bjynol9UluQpcf9HFEf0BqzL4o6
+	 9NGJiMqeZVkNKakwFb+9fkrSSgWZCXaGymYgVxxQw0NVHmZtVQFzrZkMGPQFgXjYrx
+	 zVRrz0o6vZMO1+khRVoA/V+NnUQAEWTBLk9k77oE=
+Subject: FAILED: patch "[PATCH] Bluetooth: MGMT/SMP: Fix address type when using SMP over" failed to apply to 5.10-stable tree
+To: xiaoyao@rock-chips.com,luiz.von.dentz@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:04:46 +0000
-Message-ID: <2023122845-pancake-handyman-652b@gregkh>
+Date: Thu, 28 Dec 2023 11:05:21 +0000
+Message-ID: <2023122821-partridge-succulent-3224@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2e07e8348ea454615e268222ae3fc240421be768
+git cherry-pick -x 59b047bc98084f8af2c41483e4d68a5adf2fa7f7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122845-pancake-handyman-652b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122821-partridge-succulent-3224@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-2e07e8348ea4 ("Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg")
-f4b41f062c42 ("net: remove noblock parameter from skb_recv_datagram()")
-42bf50a1795a ("can: isotp: support MSG_TRUNC flag when reading from socket")
-30ffd5332e06 ("can: isotp: return -EADDRNOTAVAIL when reading from unbound socket")
-c5755214623d ("mctp: tests: Add key state tests")
-62a2b005c6d6 ("mctp: tests: Rename FL_T macro to FL_TO")
-1e5e9250d422 ("mctp: Add input reassembly tests")
-8892c0490779 ("mctp: Add route input to socket tests")
-b504db408c34 ("mctp: Add packet rx tests")
-161eba50e183 ("mctp: Add initial test structure and fragmentation test")
-833ef3b91de6 ("mctp: Populate socket implementation")
-4d8b9319282a ("mctp: Add neighbour implementation")
-889b7da23abf ("mctp: Add initial routing framework")
-583be982d934 ("mctp: Add device handling and netlink interface")
-60fc63981693 ("mctp: Add sockaddr_mctp to uapi")
-2c8e2e9aec79 ("mctp: Add base packet definitions")
-8f601a1e4f8c ("mctp: Add base socket/protocol definitions")
-bc49d8169aa7 ("mctp: Add MCTP base")
-29df44fa52b7 ("af_unix: Implement ->read_sock() for sockmap")
-fe0bdbde0756 ("net: add pf_family_names[] for protocol family")
+59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
+fad646e16d3c ("Bluetooth: use inclusive language in SMP")
+2e1614f7d61e ("Bluetooth: SMP: Convert BT_ERR/BT_DBG to bt_dev_err/bt_dev_dbg")
 
 thanks,
 
@@ -88,55 +71,258 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2e07e8348ea454615e268222ae3fc240421be768 Mon Sep 17 00:00:00 2001
-From: Hyunwoo Kim <v4bel@theori.io>
-Date: Sat, 9 Dec 2023 05:55:18 -0500
-Subject: [PATCH] Bluetooth: af_bluetooth: Fix Use-After-Free in
- bt_sock_recvmsg
+From 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 Mon Sep 17 00:00:00 2001
+From: Xiao Yao <xiaoyao@rock-chips.com>
+Date: Tue, 12 Dec 2023 00:27:18 +0800
+Subject: [PATCH] Bluetooth: MGMT/SMP: Fix address type when using SMP over
+ BREDR/LE
 
-This can cause a race with bt_sock_ioctl() because
-bt_sock_recvmsg() gets the skb from sk->sk_receive_queue
-and then frees it without holding lock_sock.
-A use-after-free for a skb occurs with the following flow.
-```
-bt_sock_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-bt_sock_ioctl() -> skb_peek()
-```
-Add lock_sock to bt_sock_recvmsg() to fix this issue.
+If two Bluetooth devices both support BR/EDR and BLE, and also
+support Secure Connections, then they only need to pair once.
+The LTK generated during the LE pairing process may be converted
+into a BR/EDR link key for BR/EDR transport, and conversely, a
+link key generated during the BR/EDR SSP pairing process can be
+converted into an LTK for LE transport. Hence, the link type of
+the link key and LTK is not fixed, they can be either an LE LINK
+or an ACL LINK.
+
+Currently, in the mgmt_new_irk/ltk/crsk/link_key functions, the
+link type is fixed, which could lead to incorrect address types
+being reported to the application layer. Therefore, it is necessary
+to add link_type/addr_type to the smp_irk/ltk/crsk and link_key,
+to ensure the generation of the correct address type.
+
+SMP over BREDR:
+Before Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+        BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+
+After Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+      BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+
+SMP over LE:
+Before Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5F:5C:07:37:47:D5 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
+
+After Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5E:03:1C:00:38:21 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        Store hint: Yes (0x01)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
 
 Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Xiao Yao <xiaoyao@rock-chips.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
-index 336a76165454..b93464ac3517 100644
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -309,11 +309,14 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	if (flags & MSG_OOB)
- 		return -EOPNOTSUPP;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index fb5e3ef3ec2f..a3a1ea2696a8 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -189,6 +189,7 @@ struct blocked_key {
+ struct smp_csrk {
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[16];
+ };
+@@ -198,6 +199,7 @@ struct smp_ltk {
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 authenticated;
+ 	u8 type;
+ 	u8 enc_size;
+@@ -212,6 +214,7 @@ struct smp_irk {
+ 	bdaddr_t rpa;
+ 	bdaddr_t bdaddr;
+ 	u8 addr_type;
++	u8 link_type;
+ 	u8 val[16];
+ };
  
-+	lock_sock(sk);
+@@ -219,6 +222,8 @@ struct link_key {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
++	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[HCI_LINK_KEY_SIZE];
+ 	u8 pin_len;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index ba2e00646e8e..9dd815b6603f 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2897,7 +2897,8 @@ static int load_link_keys(struct sock *sk, struct hci_dev *hdev, void *data,
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_link_key_info *key = &cp->keys[i];
+ 
+-		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
++		/* Considering SMP over BREDR/LE, there is no need to check addr_type */
++		if (key->type > 0x08)
+ 			return mgmt_cmd_status(sk, hdev->id,
+ 					       MGMT_OP_LOAD_LINK_KEYS,
+ 					       MGMT_STATUS_INVALID_PARAMS);
+@@ -7130,6 +7131,7 @@ static int load_irks(struct sock *sk, struct hci_dev *hdev, void *cp_data,
+ 
+ 	for (i = 0; i < irk_count; i++) {
+ 		struct mgmt_irk_info *irk = &cp->irks[i];
++		u8 addr_type = le_addr_type(irk->addr.type);
+ 
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_IRK,
+@@ -7139,8 +7141,12 @@ static int load_irks(struct sock *sk, struct hci_dev *hdev, void *cp_data,
+ 			continue;
+ 		}
+ 
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (irk->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
 +
- 	skb = skb_recv_datagram(sk, flags, &err);
- 	if (!skb) {
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
--			return 0;
-+			err = 0;
- 
-+		release_sock(sk);
- 		return err;
+ 		hci_add_irk(hdev, &irk->addr.bdaddr,
+-			    le_addr_type(irk->addr.type), irk->val,
++			    addr_type, irk->val,
+ 			    BDADDR_ANY);
  	}
  
-@@ -343,6 +346,8 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+@@ -7221,6 +7227,7 @@ static int load_long_term_keys(struct sock *sk, struct hci_dev *hdev,
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_ltk_info *key = &cp->keys[i];
+ 		u8 type, authenticated;
++		u8 addr_type = le_addr_type(key->addr.type);
  
- 	skb_free_datagram(sk, skb);
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_LTK,
+@@ -7255,8 +7262,12 @@ static int load_long_term_keys(struct sock *sk, struct hci_dev *hdev,
+ 			continue;
+ 		}
  
-+	release_sock(sk);
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (key->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
 +
- 	if (flags & MSG_TRUNC)
- 		copied = skblen;
+ 		hci_add_ltk(hdev, &key->addr.bdaddr,
+-			    le_addr_type(key->addr.type), type, authenticated,
++			    addr_type, type, authenticated,
+ 			    key->val, key->enc_size, key->ediv, key->rand);
+ 	}
  
+@@ -9523,7 +9534,7 @@ void mgmt_new_link_key(struct hci_dev *hdev, struct link_key *key,
+ 
+ 	ev.store_hint = persistent;
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = BDADDR_BREDR;
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = key->type;
+ 	memcpy(ev.key.val, key->val, HCI_LINK_KEY_SIZE);
+ 	ev.key.pin_len = key->pin_len;
+@@ -9574,7 +9585,7 @@ void mgmt_new_ltk(struct hci_dev *hdev, struct smp_ltk *key, bool persistent)
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, key->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = mgmt_ltk_type(key);
+ 	ev.key.enc_size = key->enc_size;
+ 	ev.key.ediv = key->ediv;
+@@ -9603,7 +9614,7 @@ void mgmt_new_irk(struct hci_dev *hdev, struct smp_irk *irk, bool persistent)
+ 
+ 	bacpy(&ev.rpa, &irk->rpa);
+ 	bacpy(&ev.irk.addr.bdaddr, &irk->bdaddr);
+-	ev.irk.addr.type = link_to_bdaddr(LE_LINK, irk->addr_type);
++	ev.irk.addr.type = link_to_bdaddr(irk->link_type, irk->addr_type);
+ 	memcpy(ev.irk.val, irk->val, sizeof(irk->val));
+ 
+ 	mgmt_event(MGMT_EV_NEW_IRK, hdev, &ev, sizeof(ev), NULL);
+@@ -9632,7 +9643,7 @@ void mgmt_new_csrk(struct hci_dev *hdev, struct smp_csrk *csrk,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &csrk->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, csrk->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(csrk->link_type, csrk->bdaddr_type);
+ 	ev.key.type = csrk->type;
+ 	memcpy(ev.key.val, csrk->val, sizeof(csrk->val));
+ 
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index 5f2f97de295e..1e7ea3a4b7ef 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1059,6 +1059,7 @@ static void smp_notify_keys(struct l2cap_conn *conn)
+ 	}
+ 
+ 	if (smp->remote_irk) {
++		smp->remote_irk->link_type = hcon->type;
+ 		mgmt_new_irk(hdev, smp->remote_irk, persistent);
+ 
+ 		/* Now that user space can be considered to know the
+@@ -1078,24 +1079,28 @@ static void smp_notify_keys(struct l2cap_conn *conn)
+ 	}
+ 
+ 	if (smp->csrk) {
++		smp->csrk->link_type = hcon->type;
+ 		smp->csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->csrk, persistent);
+ 	}
+ 
+ 	if (smp->responder_csrk) {
++		smp->responder_csrk->link_type = hcon->type;
+ 		smp->responder_csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
+ 	}
+ 
+ 	if (smp->ltk) {
++		smp->ltk->link_type = hcon->type;
+ 		smp->ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->ltk, persistent);
+ 	}
+ 
+ 	if (smp->responder_ltk) {
++		smp->responder_ltk->link_type = hcon->type;
+ 		smp->responder_ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
+@@ -1115,6 +1120,8 @@ static void smp_notify_keys(struct l2cap_conn *conn)
+ 		key = hci_add_link_key(hdev, smp->conn->hcon, &hcon->dst,
+ 				       smp->link_key, type, 0, &persistent);
+ 		if (key) {
++			key->link_type = hcon->type;
++			key->bdaddr_type = hcon->dst_type;
+ 			mgmt_new_link_key(hdev, key, persistent);
+ 
+ 			/* Don't keep debug keys around if the relevant
 
 
