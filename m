@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8FB81F813
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:10:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BD581F814
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4061284DF4
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B881C23247
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CAC6FDE;
-	Thu, 28 Dec 2023 12:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4176FDE;
+	Thu, 28 Dec 2023 12:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAGPhijR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YorHS148"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11EC6FA3
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:10:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E0EC433C7;
-	Thu, 28 Dec 2023 12:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6BA6FDA
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:10:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AB9C433C7;
+	Thu, 28 Dec 2023 12:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703765402;
-	bh=p/d84tAUhY0V5t4ZZUg/tXD5dsTQmX9nUOJ0HU/5kWk=;
+	s=korg; t=1703765406;
+	bh=Y6z0QUvnjwaZbdVSbAAvVOzz8yIloBxD138XiWmMnug=;
 	h=Subject:To:Cc:From:Date:From;
-	b=aAGPhijR7PadqWS80r6VepPZv+EaVHWsFAxgslmOkwl4EwOcC/wwZpKXSFB5OUM+6
-	 y91ZgiUz00nulDsBp//ofoPJfaj4AkjbGLA/tgs//FCg2zyiwSUDCaXelQKgBlGICw
-	 DmPwHJZAYInGZ2OdHjpU6LfemlUOhSHy1cmY05Ps=
-Subject: FAILED: patch "[PATCH] smb: client: fix OOB in cifsd when receiving compounded resps" failed to apply to 4.19-stable tree
-To: pc@manguebit.com,rtm@csail.mit.edu,stfrench@microsoft.com
+	b=YorHS1481ebgA3zwvny1cb8vhO7T3hcf3cdjWbt5uqj+aeWePc+ThggllzD+ceiO8
+	 TR3Y8K9HHbtegPvD5uWdsnPTk0P9qCkMoNXGT8MkfoofM4ePNRO3nPIGwY4pGnfqpc
+	 kjQdcEkGII+fT0US8/4ZdaiSNlISnTabgYvJZQLQ=
+Subject: FAILED: patch "[PATCH] smb: client: fix potential OOB in cifs_dump_detail()" failed to apply to 5.15-stable tree
+To: pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 12:09:56 +0000
-Message-ID: <2023122855-whisking-mourner-910f@gregkh>
+Date: Thu, 28 Dec 2023 12:10:04 +0000
+Message-ID: <2023122803-waving-evil-478b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,26 +45,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a8f68b11158f09754418de62e6b3e7b9b7a50cc9
+git cherry-pick -x b50492b05fd02887b46aef079592207fb5c97a4c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122855-whisking-mourner-910f@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122803-waving-evil-478b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-a8f68b11158f ("smb: client: fix OOB in cifsd when receiving compounded resps")
+b50492b05fd0 ("smb: client: fix potential OOB in cifs_dump_detail()")
 38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
 abdb1742a312 ("cifs: get rid of mount options string parsing")
 9fd29a5bae6e ("cifs: use fs_context for automounts")
+68ed14496b03 ("cifs: remove unused server parameter from calc_smb_size()")
 5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
 332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
@@ -74,162 +75,40 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a8f68b11158f09754418de62e6b3e7b9b7a50cc9 Mon Sep 17 00:00:00 2001
+From b50492b05fd02887b46aef079592207fb5c97a4c Mon Sep 17 00:00:00 2001
 From: Paulo Alcantara <pc@manguebit.com>
-Date: Wed, 13 Dec 2023 12:25:56 -0300
-Subject: [PATCH] smb: client: fix OOB in cifsd when receiving compounded resps
+Date: Sat, 16 Dec 2023 01:10:04 -0300
+Subject: [PATCH] smb: client: fix potential OOB in cifs_dump_detail()
 
-Validate next header's offset in ->next_header() so that it isn't
-smaller than MID_HEADER_SIZE(server) and then standard_receive3() or
-->receive() ends up writing off the end of the buffer because
-'pdu_length - MID_HEADER_SIZE(server)' wraps up to a huge length:
+Validate SMB message with ->check_message() before calling
+->calc_smb_size().
 
-  BUG: KASAN: slab-out-of-bounds in _copy_to_iter+0x4fc/0x840
-  Write of size 701 at addr ffff88800caf407f by task cifsd/1090
-
-  CPU: 0 PID: 1090 Comm: cifsd Not tainted 6.7.0-rc4 #5
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xd8/0x110
-   ? _copy_to_iter+0x4fc/0x840
-   ? _copy_to_iter+0x4fc/0x840
-   kasan_check_range+0x105/0x1b0
-   __asan_memcpy+0x3c/0x60
-   _copy_to_iter+0x4fc/0x840
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? hlock_class+0x32/0xc0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __pfx__copy_to_iter+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_is_held_type+0x90/0x100
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __might_resched+0x278/0x360
-   ? __pfx___might_resched+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   __skb_datagram_iter+0x2c2/0x460
-   ? __pfx_simple_copy_to_iter+0x10/0x10
-   skb_copy_datagram_iter+0x6c/0x110
-   tcp_recvmsg_locked+0x9be/0xf40
-   ? __pfx_tcp_recvmsg_locked+0x10/0x10
-   ? mark_held_locks+0x5d/0x90
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   tcp_recvmsg+0xe2/0x310
-   ? __pfx_tcp_recvmsg+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0x14a/0x3a0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   inet_recvmsg+0xd0/0x370
-   ? __pfx_inet_recvmsg+0x10/0x10
-   ? __pfx_lock_release+0x10/0x10
-   ? do_raw_spin_trylock+0xd1/0x120
-   sock_recvmsg+0x10d/0x150
-   cifs_readv_from_socket+0x25a/0x490 [cifs]
-   ? __pfx_cifs_readv_from_socket+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_read_from_socket+0xb5/0x100 [cifs]
-   ? __pfx_cifs_read_from_socket+0x10/0x10 [cifs]
-   ? __pfx_lock_release+0x10/0x10
-   ? do_raw_spin_trylock+0xd1/0x120
-   ? _raw_spin_unlock+0x23/0x40
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __smb2_find_mid+0x126/0x230 [cifs]
-   cifs_demultiplex_thread+0xd39/0x1270 [cifs]
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   ? __pfx_lock_release+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? mark_held_locks+0x1a/0x90
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kthread_parkme+0xce/0xf0
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   kthread+0x18d/0x1d0
-   ? kthread+0xdb/0x1d0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x34/0x60
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
-
-Fixes: 8ce79ec359ad ("cifs: update multiplex loop to handle compounded responses")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
 Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 7558167f603c..55b3ce944022 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -532,7 +532,8 @@ struct smb_version_operations {
- 				 struct mid_q_entry **, char **, int *);
- 	enum securityEnum (*select_sectype)(struct TCP_Server_Info *,
- 			    enum securityEnum);
--	int (*next_header)(char *);
-+	int (*next_header)(struct TCP_Server_Info *server, char *buf,
-+			   unsigned int *noff);
- 	/* ioctl passthrough for query_info */
- 	int (*ioctl_query_info)(const unsigned int xid,
- 				struct cifs_tcon *tcon,
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 9dc6dc2754c2..dd2a1fb65e71 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1201,7 +1201,12 @@ cifs_demultiplex_thread(void *p)
- 		server->total_read += length;
+diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
+index 5596c9f30ccb..60027f5aebe8 100644
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -40,11 +40,13 @@ void cifs_dump_detail(void *buf, struct TCP_Server_Info *server)
+ #ifdef CONFIG_CIFS_DEBUG2
+ 	struct smb_hdr *smb = buf;
  
- 		if (server->ops->next_header) {
--			next_offset = server->ops->next_header(buf);
-+			if (server->ops->next_header(server, buf, &next_offset)) {
-+				cifs_dbg(VFS, "%s: malformed response (next_offset=%u)\n",
-+					 __func__, next_offset);
-+				cifs_reconnect(server, true);
-+				continue;
-+			}
- 			if (next_offset)
- 				server->pdu_size = next_offset;
- 		}
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 8f6f0a38b886..62b0a8df867b 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5074,17 +5074,22 @@ smb3_handle_read_data(struct TCP_Server_Info *server, struct mid_q_entry *mid)
- 				NULL, 0, false);
- }
- 
--static int
--smb2_next_header(char *buf)
-+static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
-+			    unsigned int *noff)
- {
- 	struct smb2_hdr *hdr = (struct smb2_hdr *)buf;
- 	struct smb2_transform_hdr *t_hdr = (struct smb2_transform_hdr *)buf;
- 
--	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM)
--		return sizeof(struct smb2_transform_hdr) +
--		  le32_to_cpu(t_hdr->OriginalMessageSize);
--
--	return le32_to_cpu(hdr->NextCommand);
-+	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM) {
-+		*noff = le32_to_cpu(t_hdr->OriginalMessageSize);
-+		if (unlikely(check_add_overflow(*noff, sizeof(*t_hdr), noff)))
-+			return -EINVAL;
-+	} else {
-+		*noff = le32_to_cpu(hdr->NextCommand);
+-	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d\n",
+-		 smb->Command, smb->Status.CifsError,
+-		 smb->Flags, smb->Flags2, smb->Mid, smb->Pid);
+-	cifs_dbg(VFS, "smb buf %p len %u\n", smb,
+-		 server->ops->calc_smb_size(smb));
++	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d Wct: %d\n",
++		 smb->Command, smb->Status.CifsError, smb->Flags,
++		 smb->Flags2, smb->Mid, smb->Pid, smb->WordCount);
++	if (!server->ops->check_message(buf, server->total_read, server)) {
++		cifs_dbg(VFS, "smb buf %p len %u\n", smb,
++			 server->ops->calc_smb_size(smb));
 +	}
-+	if (unlikely(*noff && *noff < MID_HEADER_SIZE(server)))
-+		return -EINVAL;
-+	return 0;
+ #endif /* CONFIG_CIFS_DEBUG2 */
  }
  
- int cifs_sfu_make_node(unsigned int xid, struct inode *inode,
 
 
