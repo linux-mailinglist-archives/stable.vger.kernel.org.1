@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E8181F790
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:06:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52FE081F796
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:07:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFA052840EB
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:06:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93E9B235E8
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 11:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DA06FB6;
-	Thu, 28 Dec 2023 11:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B2D63DB;
+	Thu, 28 Dec 2023 11:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRpUX7Yv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq5KNEbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C2763DB
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4595BC433C9;
-	Thu, 28 Dec 2023 11:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31C4C79C3
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 11:06:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 671FEC433C7;
+	Thu, 28 Dec 2023 11:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703761613;
-	bh=0pOuNcF3KtVhugtL8yU150DAqWi7XySPw1cp0gvWXZg=;
+	s=korg; t=1703761616;
+	bh=H+Mfs5mp0oEf+fTvV6Pmse4pjBZvRLUH2luaCcOu6/s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jRpUX7YvakRNp/zC0xUnlp7us67cqV3mN9ll7/BuDgi1X+7us7xE7FkEcYL3TUx7P
-	 2bQe56LjOjfysLA1nxE/VBQddkBjULNpURSNowVy5pSCMfYV0CmHBH8snTkLcgBcJy
-	 zSxb8LrYfXH+B5OX8EXQG3yTFoRw3qDovRW6jk10=
-Subject: FAILED: patch "[PATCH] net: usb: ax88179_178a: avoid failed operations when device" failed to apply to 5.15-stable tree
+	b=Oq5KNEbCGCmUFqxb95TlnYQREUlSnaId9R2e4zijguxVc0PucKvWC/DaW1aEiV+TY
+	 aIUBhwbZqgv4tPvgrl95NvkpBBq9AqIyKPlybYNeTleeOTxYAAknaHl0u3luddbDA/
+	 uAWzvro3Y8HiWN1fWd1EV4UcDBHgjR8ZNkTbFglQ=
+Subject: FAILED: patch "[PATCH] net: usb: ax88179_178a: avoid failed operations when device" failed to apply to 5.10-stable tree
 To: jtornosm@redhat.com,gregkh@linuxfoundation.org,stable@vger.kernel.org,stern@rowland.harvard.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 11:06:51 +0000
-Message-ID: <2023122851-liqueur-sitter-a95e@gregkh>
+Date: Thu, 28 Dec 2023 11:06:52 +0000
+Message-ID: <2023122852-twitter-ransack-4715@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x aef05e349bfd81c95adb4489639413fadbb74a83
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122851-liqueur-sitter-a95e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122852-twitter-ransack-4715@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,9 @@ aef05e349bfd ("net: usb: ax88179_178a: avoid failed operations when device is di
 5050531610a6 ("net: usb: ax88179_178a: wol optimizations")
 843f92052da7 ("net: usb: ax88179_178a: clean up pm calls")
 766607570bec ("ethernet: constify references to netdev->dev_addr in drivers")
+7b3c8e27d67e ("bnxt_en: Move bnxt_approve_mac().")
+bd78980be1a6 ("net: usb: ax88179_178a: initialize local variables before use")
+de6e0b198239 ("net: ethernet: actions: Add Actions Semi Owl Ethernet MAC driver")
 
 thanks,
 
