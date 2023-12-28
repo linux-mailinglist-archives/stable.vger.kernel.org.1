@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2610A81F825
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:11:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D736481F824
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0BABB23840
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7D8B1C2334B
 	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D377475;
-	Thu, 28 Dec 2023 12:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF8E7474;
+	Thu, 28 Dec 2023 12:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfZfO5+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6HFUe2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933FB7474
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ABEC433C8;
-	Thu, 28 Dec 2023 12:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7854C6FA3
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:11:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C6DC433C8;
+	Thu, 28 Dec 2023 12:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703765475;
-	bh=SpOuq15cpxvTz06vulp94d2ztju4Ze5KsJv6YCsTirY=;
+	s=korg; t=1703765478;
+	bh=wnSwVJzuoJCalJ3R/q5XnKJqKIVZ3HK1WFad0gUP8L0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PfZfO5+strpTQChjzvzFpEhAj/o6gnEE0kW6oQNLnWzuYWatLkAd2siDotQqhQCej
-	 j4BDI0sTmK5w3UhuhkkRlqR4vEWzLnLEZyFtBINPhGUL30x5Hr+32hFXgf6wz2ANxY
-	 w9x8AnI8pf99lmp4WO0kMypSGllb6yUtEXiByo5A=
-Subject: FAILED: patch "[PATCH] smb: client: fix OOB in smbCalcSize()" failed to apply to 5.15-stable tree
+	b=P6HFUe2uTlXUgtMMMEXKLTnMKfGGoI5LNlyfnmtUWf8iV5UaluM8xsg2esuffNLZh
+	 MRu01gbFJ29Cwm5KUjajEXDZgJQeHpLayU/o2BmRrgN0pjgulCMKZZWLuBNyQ3O2ph
+	 CNt6QL+LWud+JaAEONap41Ldhgl8gFQPt3nFdFPE=
+Subject: FAILED: patch "[PATCH] smb: client: fix OOB in smbCalcSize()" failed to apply to 5.10-stable tree
 To: pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 12:11:12 +0000
-Message-ID: <2023122812-exile-synthesis-b83a@gregkh>
+Date: Thu, 28 Dec 2023 12:11:14 +0000
+Message-ID: <2023122814-pregnancy-mumps-c958@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x b35858b3786ddbb56e1c35138ba25d6adf8d0bef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122812-exile-synthesis-b83a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122814-pregnancy-mumps-c958@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
