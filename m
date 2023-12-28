@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F3B81F81B
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:10:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E8281F81A
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 13:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9264CB2284F
-	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:10:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 036A01C2326C
+	for <lists+stable@lfdr.de>; Thu, 28 Dec 2023 12:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1786FDE;
-	Thu, 28 Dec 2023 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FDA7466;
+	Thu, 28 Dec 2023 12:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iYZ1SlJz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRhNfZnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95BA96FA3
-	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:10:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D522C433C8;
-	Thu, 28 Dec 2023 12:10:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E40C6FD6
+	for <stable@vger.kernel.org>; Thu, 28 Dec 2023 12:10:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC494C433C8;
+	Thu, 28 Dec 2023 12:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703765424;
-	bh=sMreVnYAUavVgAAjp9kkciAzEklKfYjL9bPG5qLQmEA=;
+	s=korg; t=1703765427;
+	bh=fn2RuN7CHRhNEmBidectZh3zqoLCxy46ZmyyOyklBtw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iYZ1SlJzW7GYG2Zf9tu16jtpW39tQh+tisCLnjBRZ9uTRm1MRtU2uFVi6k7QdnY4a
-	 JjZ6aAwqrO53KzwW8Xye7PfkIz0ddqxgmPDBbI+UquYXFcb0PYln/AY/bzysbZqqoI
-	 AE7ffQ0McGHiOwmInVPyPkZC1fYLoPR3//NAMUDg=
-Subject: FAILED: patch "[PATCH] fs: cifs: Fix atime update check" failed to apply to 6.1-stable tree
+	b=YRhNfZnMB8iBT8GKQamOuN4RW5PIHcCfjupGJiPbT9f4j5rj9czoTxGZ+VyGOga7K
+	 Pp3U+aC7mfxZO3DDIfOyMoDVWLmfN2Q9nGyu9NtLu5LpIbTj1h4Q5NUAdzlc/Oqa7V
+	 2GdZa1foNKgBMbNveurQR39huGmWxFrvD33as8QI=
+Subject: FAILED: patch "[PATCH] fs: cifs: Fix atime update check" failed to apply to 5.15-stable tree
 To: wozizhi@huawei.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 28 Dec 2023 12:10:20 +0000
-Message-ID: <2023122819-squatted-triceps-048a@gregkh>
+Date: Thu, 28 Dec 2023 12:10:21 +0000
+Message-ID: <2023122821-hedge-chug-be5d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 01fe654f78fd1ea4df046ef76b07ba92a35f8dbe
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122819-squatted-triceps-048a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023122821-hedge-chug-be5d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,11 @@ Possible dependencies:
 8f22ce708883 ("client: convert to new timestamp accessors")
 9448765397b6 ("smb: convert to ctime accessor functions")
 bc2390f2c884 ("cifs: update the ctime on a partial page write")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
