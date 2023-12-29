@@ -1,133 +1,167 @@
-Return-Path: <stable+bounces-8690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A629820082
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 17:22:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB73820090
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 17:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0035C284667
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 16:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 186AF2848D7
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 16:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B3C125CF;
-	Fri, 29 Dec 2023 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD6F125DB;
+	Fri, 29 Dec 2023 16:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mzl0h77R"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B50YTE3P"
 X-Original-To: stable@vger.kernel.org
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6109125CB;
-	Fri, 29 Dec 2023 16:22:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from relay1-d.mail.gandi.net (unknown [IPv6:2001:4b98:dc4:8::221])
-	by mslow1.mail.gandi.net (Postfix) with ESMTP id EF778C194F;
-	Fri, 29 Dec 2023 16:11:36 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BF78A240002;
-	Fri, 29 Dec 2023 16:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703866288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zqi8dmMeOU3XDtyNyrJLxgovOsvnL1n+HnUCWjiryzI=;
-	b=mzl0h77RyMj6S5QimPrixX8KNRjlHePNB2ZkUiW1I9hnJLejc/VQzGFm8nS326dqZfS/xl
-	bKxX9mx4sqb41UzWjA7WEILOygNJBiY3aF+fLvRNRIRx6piDkxSq6D6QjpfZWfHUaUXoBn
-	EGqUEC7N6KQLY+EEXZVaq4glUhZGUMhpeh2/L3dqd4kzSptktj4f0Xq+V/7sLwXJyw9yrw
-	8LbIR34NmLppvtiNnUyC1RlZoVp65QhK2CNsUmkWp6d8A1MGIWlQyrzRCrJ3lpFeChxtTS
-	uB/RNEHBgtTq2yrcgaWItC+6TVZK+2vqh7awbOTGv4iN1prJ8kR1js1/I9Mx5g==
-Date: Fri, 29 Dec 2023 17:11:48 +0100 (CET)
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Vladimir Oltean <olteanv@gmail.com>
-cc: Romain Gantois <romain.gantois@bootlin.com>, 
-    Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-    Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, 
-    Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-    Miquel Raynal <miquel.raynal@bootlin.com>, 
-    Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-    Sylvain Girard <sylvain.girard@se.com>, 
-    Pascal EBERHARD <pascal.eberhard@se.com>, 
-    Richard Tresidder <rtresidd@electromag.com.au>, netdev@vger.kernel.org, 
-    linux-stm32@st-md-mailman.stormreply.com, 
-    linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] net: stmmac: Prevent DSA tags from breaking
- COE
-In-Reply-To: <20231219122034.pg2djgrosa4irubh@skbuf>
-Message-ID: <3b53aa8a-73e9-9260-f05b-05dac80a4276@bootlin.com>
-References: <20231218162326.173127-1-romain.gantois@bootlin.com> <20231218162326.173127-2-romain.gantois@bootlin.com> <20231219122034.pg2djgrosa4irubh@skbuf>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12461125D1;
+	Fri, 29 Dec 2023 16:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BTEWnii000745;
+	Fri, 29 Dec 2023 16:39:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=wbcLOjD/g4HQFnhKj1bNCq5O1tu+YtaxHZUwcKk3Rsc=;
+ b=B50YTE3P+ltwHRtV9pdbXNh+3+ORJUo3V2XaPk/woyiuUiEWVSK0bTB8VjyuUPHVz8RH
+ OZ0sXuDRVCZzkdidhwhYzdBgsjHEuGRB+odocA8zaYCmjBFPPlj3zV37UMUAtyxNVziS
+ NdP4Cn6o63zNj+U1SinhP04jfXPWipXO1RtMh5moQUS8J6gUn+oVAJszHb+wmT8g0U2H
+ EYJPQNFf00sZnLjYxqM4tjgqSMtsPmJdHjVGcozH7LMcsAN6Q7D7Q3zI3GXuyMlWfYKn
+ t1G0/qOvI0kd6rMROY7ObwsOSigOINelR5PrEVgx1wXvzID0DbEyQHbIm5UeeIS/hTii 2Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v9yyfjh3q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 16:39:19 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BTGMXte028567;
+	Fri, 29 Dec 2023 16:39:18 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3v9yyfjh3j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 16:39:18 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BTFqk40016600;
+	Fri, 29 Dec 2023 16:39:18 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v6c3ke3vq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 16:39:18 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BTGdHUM15663674
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Dec 2023 16:39:17 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E86C058059;
+	Fri, 29 Dec 2023 16:39:16 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2219A58061;
+	Fri, 29 Dec 2023 16:39:15 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 Dec 2023 16:39:15 +0000 (GMT)
+Message-ID: <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
+Date: Fri, 29 Dec 2023 11:39:14 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+Content-Language: en-US
+To: Askar Safin <safinaskar@gmail.com>, Rob Landley <rob@landley.net>
+Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        zohar@linux.ibm.com
+References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
+ <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
+ <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kKDHc4NgNKVYGnuWe57kEubX-peY3s2Y
+X-Proofpoint-GUID: cU7McnlYahldSoVWHrdOVhsr_YZLIby2
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-GND-Sasl: romain.gantois@bootlin.com
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-29_06,2023-12-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 impostorscore=0 phishscore=0
+ clxscore=1011 lowpriorityscore=0 spamscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312290132
 
 
-On Tue, 19 Dec 2023, Vladimir Oltean wrote:
-> DSA_TAG_PROTO_LAN9303, DSA_TAG_PROTO_SJA1105 and DSA_TAG_PROTO_SJA1110
-> construct tags with ETH_P_8021Q as EtherType. Do you still think it
-> would be correct to say that all DSA tags break COE on the stmmac, as
-> this patch assumes?
+
+On 12/21/23 17:58, Askar Safin wrote:
+> Hi, Rob. And Stefan.
 > 
-> The NETIF_F_IP_CSUM | NETIF_F_IPV6_CSUM convention is not about
-> statically checking whether the interface using DSA, but about looking
-> at each packet before deciding whether to use the offload engine or to
-> call skb_checksum_help().
+> First of all, this patch got to linux-next (
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=author&q=Stefan+Berger
+> ), so it seems it soon will be in mainline.
 > 
-> You can experiment with any tagging protocol on the stmmac driver, and
-> thus with the controller's response to any kind of traffic, even if the
-> port is not attached to a hardware switch. You need to enable the
-Thanks for telling me about DSA_LOOP, I've tested several DSA tagging protocols 
-with the RZN1 GMAC1 hardware using this method. Here's what I found in a 
-nutshell:
+> On Thu, Dec 21, 2023 at 12:24 PM Rob Landley <rob@landley.net> wrote:
+>> Can you build tmpfs on a nommu system? Last I checked the plumbing expects swap,
+>> but it's been a while...
+> Okay, I agree, let's not remove ramfs.
+> 
+> Still, I don't like this (already applied) patch. init= and rdinit=
+> are two different options, and this is good. So, I think we should
+> have two different options. Analogously they should be rootfstype= and
+> rdrootfstype=. rootfstype= should be read by kernel when deciding how
+> to mount real root (i. e. not initramfs or initrd) only and
+> rdrootfstype= when deciding how to mount initramfs only. This will
+> make everything cleaner. Also note that userspace tools read
+> rootfstype= and assume that it always applies to real root. For
+> example, this is Debian's rdinit:
+> 
+> https://salsa.debian.org/kernel-team/initramfs-tools/-/blob/cf964bfb4362019fd7fba1e839e403ff950dca8e/init#L103
+> 
+> As you can see, this shell script parses /proc/cmdline and assumes
+> that rootfstype= always applies to real root. So, if someone sets
+> rootfstype= to tmpfs or ramfs, this will likely break this script.
 
-For tagging protocols that change the EtherType field in the MAC header (e.g. 
-DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105): On TX the tagged frames are 
-almost always ignored by the checksum offload engine and IP header checker of 
-the MAC device. I say "almost always" because there is an 
-unlikely but nasty corner case where a DSA tag can be identical to an IP 
-EtherType value. In these cases, the frame will likely fail IP header checks 
-and be dropped by the MAC.
+Setting the kernel boot command line option rootfstype= to tmpfs or 
+ramfs was possible so far and that's what the documentation and code 
+supported so far as well. The bug surfaced when root= was provided, in 
+which case it was ignored.
 
-Ignoring these corner cases, the DSA frames will egress with a partial 
-checksum and be dropped by the recipient. On RX, these frames will, once again, 
-not be detected as IP frames by the MAC. So they will be transmitted to the CPU. 
-However, the stmmac driver will assume (wrongly in this case) that
-these frames' checksums have been verified by the MAC. So it will set 
-CHECKSUM_UNECESSARY:
+> 
+> So, I think the code should look so:
+> 
+> +if (IS_ENABLED(CONFIG_TMPFS)) {
+> +        if (!rd_root_fs_names) // We assume rd_root_fs_names is set
+> by rdrootfstype=
+> +                is_tmpfs = true; // Use tmpfs if rdrootfstype= is not
+> set. To get all tmpfs benefits
+> +        else if (rd_root_fs_names && !!strstr(rd_root_fs_names, "tmpfs"))
+> +                is_tmpfs = true;
+> +}
+> 
+> Yes, this will slightly break compatibility. I. e. this will make
+> Linux always choose tmpfs if rdrootfstype= is not present. But I think
 
-https://elixir.bootlin.com/linux/latest/source/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c#L5493
- 
-And so the IP/TCP checksums will not be checked at all, 
-which is not ideal.
+You may find someone who doesn't like this change, either, ...
 
-There are other DSA tagging protocols which cause different issues. For example 
-DSA_TAG_PROTO_BRCM_PREPEND, which seems to offset the whole MAC header, and 
-DSA_TAG_PROTO_LAN9303 which sets ETH_P_8021Q as its EtherType. I haven't dug too 
-deeply on these issues yet, since I'd rather deal with the checksumming issue 
-before getting distracted by VLAN offloading and other stuff.
+> there is nothing wrong with it. If a user cares, he will set
+> rdrootfstype= . And early boot code will become a lot more clean and
+> logical.
+> 
+> Rob, do you agree? Stefan, do you agree? Then I will write a patch,
 
-Among the tagging protocols I tested, the only one that didn't cause any issues 
-was DSA_TAG_PROTO_TRAILER, which only appends stuff to the frame.
+... but go ahead.
 
-TLDR: The simplest solution seems to be to modify the stmmac TX and RX paths to 
-disable checksum offloading for frames that have a non-IP ethertype in 
-their MAC header. This will fix the checksum situation for DSA tagging protocols 
-that set non-IP and non-8021Q EtherTypes. Some edge cases like 
-DSA_TAG_PROTO_BRCM_PREPEND and DSA_TAG_PROTO_LAN9303 will require a completely 
-different solution if we want these MAC devices to handle them properly.
-Please share any thoughts you might have on this suggestion.
-
-Best Regards,
-
--- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> with doc changes (currently I use gmail web interface, of course I
+> will use git send-email when I sent actual patch)
+> 
 
