@@ -1,126 +1,220 @@
-Return-Path: <stable+bounces-8696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8064A82011C
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 20:07:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F8282012A
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 20:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FF611C21722
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 19:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CC431F20FAA
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 19:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECAC12E5C;
-	Fri, 29 Dec 2023 19:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A3E12E57;
+	Fri, 29 Dec 2023 19:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="d3ZFvyjK"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dPi6bE+r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16ED512B93;
-	Fri, 29 Dec 2023 19:07:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EF3C433C8;
-	Fri, 29 Dec 2023 19:07:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1703876849;
-	bh=wB9g3K5uRJDJKPewUbc3L9soV5ziv4h2s0ZAqdBR+ek=;
-	h=Date:To:From:Subject:From;
-	b=d3ZFvyjKpYN0iXsFYFZAio2x8DgAOELIz/QoF3N7Y9vx5Ez26SRJDMuucF6wBeHFD
-	 TbDlZWfB5xFBigqxUCPiiYBppTM37GB9ZPPlLbuKWHQpBlF9A2MXd7/16HkzTzM1ou
-	 PPltI4QgoLod7OOJebpOFua34WI7tIv0CviJGmeM=
-Date: Fri, 29 Dec 2023 11:07:29 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,yuzhao@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-mglru-skip-special-vmas-in-lru_gen_look_around.patch removed from -mm tree
-Message-Id: <20231229190729.C4EF3C433C8@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2292F12E44;
+	Fri, 29 Dec 2023 19:15:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3BTIWaVa013888;
+	Fri, 29 Dec 2023 19:14:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=J3eS5bDnSos7ysUiTU5ykNlo718JRz72hO5XekH6WfM=;
+ b=dPi6bE+r1Xouurm9nQW9ote0HhNS/tqIaPZ3nAg6bEMM7RdBCy94nivliixH/aw7WnQB
+ 5yP2nvnSmnNRTnrbw1zYUcvYdelGP2sNqjLKix/Y9AUjsflspllD6fmzMJ3ulJmREGVF
+ qqHxP4VyfCA+askEk924VEOflpfVWPse1a9Ymtu9RnIrNCKHI1xP3lYLDD+wj3THzRAd
+ M4R0TM4wlrO0hIIrAVlICkWBGr3kFO/xMpHPv8WvENChNQCn1TyR7PXHB1mkhjEnexwD
+ KuFJySBAsfiLTg/sDgaUSdyuT/Yyfbuti0MIrApkD4D57ozMtn4QXczv/lG9AMBpFX82 dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3va3fu8q0w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 19:14:57 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BTJEvpW028058;
+	Fri, 29 Dec 2023 19:14:57 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3va3fu8q0m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 19:14:57 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3BTG955t008302;
+	Fri, 29 Dec 2023 19:14:56 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3v6ck26m25-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Dec 2023 19:14:56 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3BTJEuS863045964
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 29 Dec 2023 19:14:56 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59D3E58058;
+	Fri, 29 Dec 2023 19:14:56 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D111F58057;
+	Fri, 29 Dec 2023 19:14:55 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 29 Dec 2023 19:14:55 +0000 (GMT)
+Message-ID: <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com>
+Date: Fri, 29 Dec 2023 14:14:55 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+Content-Language: en-US
+To: Rob Landley <rob@landley.net>, Askar Safin <safinaskar@gmail.com>
+Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        zohar@linux.ibm.com
+References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
+ <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
+ <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
+ <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
+ <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: y6eSWf-VkW_26zwfMq9tfrKvvNMM_ug3
+X-Proofpoint-ORIG-GUID: 3UUtt-e5-9_VNJM8V50AVMIQ4E8SX2im
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-29_08,2023-12-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ bulkscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 phishscore=0 malwarescore=0 clxscore=1015
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312290154
 
 
-The quilt patch titled
-     Subject: mm/mglru: skip special VMAs in lru_gen_look_around()
-has been removed from the -mm tree.  Its filename was
-     mm-mglru-skip-special-vmas-in-lru_gen_look_around.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On 12/29/23 13:35, Rob Landley wrote:
+> On 12/29/23 10:39, Stefan Berger wrote:> On 12/21/23 17:58, Askar Safin wrote:
+>>> Hi, Rob. And Stefan.
+>>>
+>>> First of all, this patch got to linux-next (
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=author&q=Stefan+Berger
+>>> ), so it seems it soon will be in mainline.
+>>>
+>>> On Thu, Dec 21, 2023 at 12:24 PM Rob Landley <rob@landley.net> wrote:
+>>>> Can you build tmpfs on a nommu system? Last I checked the plumbing expects swap,
+>>>> but it's been a while...
+>>> Okay, I agree, let's not remove ramfs.
+>>>
+>>> Still, I don't like this (already applied) patch. init= and rdinit=
+>>> are two different options,
+> 
+> Because they control two different things which are often used at the same time.
+> (Debian has an initramfs that hands off to the final root filesystem, for
+> example. Hence the initramfs-tools package that runs every time apt-get updates
+> the kernel.)
+> 
+> So being able to specify rdinit= to intercept the ramfs layer or init= to
+> intercept the root= layer made sense, because they did different things.
+> 
+> But the only reason to specify anything nontrivial for the initramfs
+> _filesystem_ mount properties is because you intend to stay there. They don't
+> get used together.
+> 
+>>> and this is good.
+> 
+> Eh, not really. Strange legacy decision we're now stuck with. The kernel only
+> ever runs one init task per boot. If init= was _also_ checked to see which file
+> to run out of initramfs (and the plumbing still justs silently fails and moves
+> on if it's not found) then the debian script would have been forced to do INIT=
+> or similar to override the overmounted root's init task separately from initrd's
+> init task, making it clear a script (not the kernel) is making that decision.
+> 
+> But that would have been a user-visible change, and when initramfs was going in
+> they were trying to avoid user-visible changes that would force sysadmins to
+> learn new stuff because the plumbing changed out from under them. (Like the
+> change you're proposing now would.)
+> 
+>>> So, I think we should
+>>> have two different options. Analogously they should be rootfstype= and
+>>> rdrootfstype=.
+> 
+> You can't have a root= type of initramfs or tmpfs. The specified values can't
+> overlap. The plumbing I wrote responds to specific values but otherwise leaves
+> it for later users.
+> 
+>>> https://salsa.debian.org/kernel-team/initramfs-tools/-/blob/cf964bfb4362019fd7fba1e839e403ff950dca8e/init#L103
+>>>
+>>> As you can see, this shell script parses /proc/cmdline and assumes
+>>> that rootfstype= always applies to real root.
+> 
+> The script is running _in_ the initramfs, which is already loaded and running at
+> that point. Meaning the _kernel_ will not parse root= at that point, userspace
+> has to do it.
+> 
+>>> So, if someone sets
+>>> rootfstype= to tmpfs or ramfs, this will likely break this script.
+> 
+> Which was the same 10 years ago?
+> 
+> The script is running in a context where initramfs is not persistent, so
+> overriding it to be a tmpfs has no benefit. (I mean you _can_... Nobody does,
+> because we're gonna switch_root off of it.)
+> 
+> And once code _is_ running in initramfs, the kernel's internal root= automounter
+> will never run. The initramfs code can parse /proc/cmdline to use the same
+> arguments as the kernel, or it could much more easily use the "any unrecognized
+> arguments get set as environment variables in PID 1" and use ROOT= or similar,
+> like many scripts do.
+> 
+> Modifying kernel code that NEVER RUNS in the case you're pointing out seems
+> silly to me.
+> 
+> That said, the code I wrote is doing a strstr to see if the argument's there,
+> but doesn't care what ELSE is there, so it could easily be
+> "rootfstype=tmpfs,ext4" and have the userspace script also filter the argument
+> for just what it's interested in, since at that point it's NOT THE KERNEL DOING IT.
 
-------------------------------------------------------
-From: Yu Zhao <yuzhao@google.com>
-Subject: mm/mglru: skip special VMAs in lru_gen_look_around()
-Date: Fri, 22 Dec 2023 21:56:47 -0700
+It's a bit tricky that this particular option, that can support a 
+comma-separated list, is shared between kernel and user space and user 
+space does not already filter-out what is not relevant for it.
 
-Special VMAs like VM_PFNMAP can contain anon pages from COW.  There isn't
-much profit in doing lookaround on them.  Besides, they can trigger the
-pte_special() warning in get_pte_pfn().
+> 
+>> Setting the kernel boot command line option rootfstype= to tmpfs or
+>> ramfs was possible so far and that's what the documentation and code
+>> supported so far as well. The bug surfaced when root= was provided, in
+>> which case it was ignored.
+> 
+> No, as I explained when I wrote the initmpfs code in 2013 when you say root= you
+> are explicitly requesting the kernel mount a second file system over rootfs
 
-Skip them in lru_gen_look_around().
+ From the perspective of needing xattr support in initramfs it's 
+unfortunately not so obvious what the filesystem type of the kernel's 
+rootfs (presumably the 1st file system) has to do with the option given 
+for the 2nd filesystem. Though the Debian scripts are the bigger problem 
+it seems. However, for those one could argue that the Debian scripts 
+could be updated and for as long as they are not able to filter-out the 
+tmpfs or ramfs options we are interested in one cannot pass these 
+options or a comma-separated list on systems that run the current Debian 
+scripts.
 
-Link: https://lkml.kernel.org/r/20231223045647.1566043-1-yuzhao@google.com
-Fixes: 018ee47f1489 ("mm: multi-gen LRU: exploit locality in rmap")
-Signed-off-by: Yu Zhao <yuzhao@google.com>
-Reported-by: syzbot+03fd9b3f71641f0ebf2d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/000000000000f9ff00060d14c256@google.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+> (that's what root= MEANS), and thus don't bother making it a (more expensive)
+> tmpfs because it's not sticking around.
 
- mm/vmscan.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+That's true unless you want to use IMA signature enforcement in the 
+initramfs already and tmpfs is now required.
 
---- a/mm/vmscan.c~mm-mglru-skip-special-vmas-in-lru_gen_look_around
-+++ a/mm/vmscan.c
-@@ -3955,6 +3955,7 @@ void lru_gen_look_around(struct page_vma
- 	int young = 0;
- 	pte_t *pte = pvmw->pte;
- 	unsigned long addr = pvmw->address;
-+	struct vm_area_struct *vma = pvmw->vma;
- 	struct folio *folio = pfn_folio(pvmw->pfn);
- 	bool can_swap = !folio_is_file_lru(folio);
- 	struct mem_cgroup *memcg = folio_memcg(folio);
-@@ -3969,11 +3970,15 @@ void lru_gen_look_around(struct page_vma
- 	if (spin_is_contended(pvmw->ptl))
- 		return;
- 
-+	/* exclude special VMAs containing anon pages from COW */
-+	if (vma->vm_flags & VM_SPECIAL)
-+		return;
-+
- 	/* avoid taking the LRU lock under the PTL when possible */
- 	walk = current->reclaim_state ? current->reclaim_state->mm_walk : NULL;
- 
--	start = max(addr & PMD_MASK, pvmw->vma->vm_start);
--	end = min(addr | ~PMD_MASK, pvmw->vma->vm_end - 1) + 1;
-+	start = max(addr & PMD_MASK, vma->vm_start);
-+	end = min(addr | ~PMD_MASK, vma->vm_end - 1) + 1;
- 
- 	if (end - start > MIN_LRU_BATCH * PAGE_SIZE) {
- 		if (addr - start < MIN_LRU_BATCH * PAGE_SIZE / 2)
-@@ -3998,7 +4003,7 @@ void lru_gen_look_around(struct page_vma
- 		unsigned long pfn;
- 		pte_t ptent = ptep_get(pte + i);
- 
--		pfn = get_pte_pfn(ptent, pvmw->vma, addr);
-+		pfn = get_pte_pfn(ptent, vma, addr);
- 		if (pfn == -1)
- 			continue;
- 
-@@ -4009,7 +4014,7 @@ void lru_gen_look_around(struct page_vma
- 		if (!folio)
- 			continue;
- 
--		if (!ptep_test_and_clear_young(pvmw->vma, addr, pte + i))
-+		if (!ptep_test_and_clear_young(vma, addr, pte + i))
- 			VM_WARN_ON_ONCE(true);
- 
- 		young++;
-_
-
-Patches currently in -mm which might be from yuzhao@google.com are
-
-
+    Stefan
 
