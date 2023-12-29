@@ -1,140 +1,119 @@
-Return-Path: <stable+bounces-8684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D83081FF7C
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 13:46:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D481FF9E
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 14:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A8732824FA
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 12:46:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41AE21F21E74
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 13:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DEB111A3;
-	Fri, 29 Dec 2023 12:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A140B111A1;
+	Fri, 29 Dec 2023 13:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c0K6bqrK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Qec/+vnn";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c0K6bqrK";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Qec/+vnn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JOOlctru"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8546211700;
-	Fri, 29 Dec 2023 12:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 1F9EF1F7A9;
-	Fri, 29 Dec 2023 12:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703853980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632D9111B1
+	for <stable@vger.kernel.org>; Fri, 29 Dec 2023 13:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1703855752;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DrfgzpQFNY6S02Kc9q4U3G892up+XPMx6Jx7zcjS9aI=;
-	b=c0K6bqrKFgbSd2sx5A0/v8DUDyIYdmzAhQuZrPIUxrs1EW2G5OHEz1WoNKx2P6ERfdxVsh
-	Av7EzPAs/MHvxXtRtYHzfIQsil2E1Pnf4SGHlX5fKgnskBx0S0OyGvHOxE+++cz+yIw9+1
-	HSy41BMzWubXLpeCVtX/tZSNNp0fAYA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703853980;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DrfgzpQFNY6S02Kc9q4U3G892up+XPMx6Jx7zcjS9aI=;
-	b=Qec/+vnnPIlHWbWk23hbqWGaLrxW3tHt5/1Fx4dWNmrr8eFLEOcLqYx3dVPzXwab9VO4F5
-	dDujQtHu7BT3k/Cw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1703853980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DrfgzpQFNY6S02Kc9q4U3G892up+XPMx6Jx7zcjS9aI=;
-	b=c0K6bqrKFgbSd2sx5A0/v8DUDyIYdmzAhQuZrPIUxrs1EW2G5OHEz1WoNKx2P6ERfdxVsh
-	Av7EzPAs/MHvxXtRtYHzfIQsil2E1Pnf4SGHlX5fKgnskBx0S0OyGvHOxE+++cz+yIw9+1
-	HSy41BMzWubXLpeCVtX/tZSNNp0fAYA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1703853980;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DrfgzpQFNY6S02Kc9q4U3G892up+XPMx6Jx7zcjS9aI=;
-	b=Qec/+vnnPIlHWbWk23hbqWGaLrxW3tHt5/1Fx4dWNmrr8eFLEOcLqYx3dVPzXwab9VO4F5
-	dDujQtHu7BT3k/Cw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B5D5E133E5;
-	Fri, 29 Dec 2023 12:46:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id o1LhKpu/jmV2aAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 29 Dec 2023 12:46:19 +0000
-Date: Fri, 29 Dec 2023 13:46:19 +0100
-Message-ID: <87v88hxjl0.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Gergo Koteles <soyer@irl.hu>
-Cc: Shenghao Ding <shenghao-ding@ti.com>,
-	Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] ALSA: hda/tas2781: move set_drv_data outside tasdevice_init
-In-Reply-To: <1398bd8bf3e935b1595a99128320e4a1913e210a.1703204848.git.soyer@irl.hu>
-References: <1398bd8bf3e935b1595a99128320e4a1913e210a.1703204848.git.soyer@irl.hu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	bh=pfPmhWh5N07csZQbCyEOyFqOu16Nwjy09GLJLCEkO2c=;
+	b=JOOlctruYXV72fmhtBTyPYAd629rX8OW/hxiMo3eDibMiTuVyQjrqSTgCVZzNMQ3pnubyx
+	+KsE/UGxb6z/1YRO9QyeJ1B01DlD0VuyMmkfFJLaS55zDSMmmrdvUvHHWzcdlh/arZ6LzE
+	SOvf40proLHI7aaz1fgQY5Sd2iB01HI=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-629-hAIYKzJEOKGJSUrU963Mog-1; Fri, 29 Dec 2023 08:15:50 -0500
+X-MC-Unique: hAIYKzJEOKGJSUrU963Mog-1
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-427b10db31fso76149911cf.0
+        for <stable@vger.kernel.org>; Fri, 29 Dec 2023 05:15:50 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703855750; x=1704460550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pfPmhWh5N07csZQbCyEOyFqOu16Nwjy09GLJLCEkO2c=;
+        b=ZRSQvMKjRmSxPyXhTi+bs09y1Uv7tI2etJqMToDYRJKpAApS3z7Du/bH01E4d/7yMr
+         xNnGkYXaACqOlMwzjhSOnccZ5ts4xDPhew7sYnHVKMnxxMQ2w0JSiid8w/sIEuQrJVpj
+         AIe32nPdUEOaxXo29WFyiJnItngqS0qOkf2GQHxhtUoLwOpb594BGkGvJkBydiucpqG9
+         pPTGnTqFplwDIweAcdJGZ/ybRf3bKV/B6k3MuFhs442EHRX49aTKjPfycQ7Ko2OFLMHR
+         PjN7OjEwOew23ta0CmjL3V7jppUZ5o9lOc8/DNaRC0XThqHi0vArD/ySRHmY92kXifzV
+         XX6Q==
+X-Gm-Message-State: AOJu0YzoxrDCdWtHG0eVi31XYPzDmk1D5ZJ6+Xn230ma3X+3qZl9klZ6
+	lguMN3aQPGkQAjAjhpjwDTh4fnNpBR6a+kg4ZKZqYZsNtZ6itQbEIwH+MqIr70zovbaiAmPDcUs
+	GU4M/Ooz6FzEdmq0BaqEeIol58zbx2k0SNJE2YodK
+X-Received: by 2002:a05:622a:191f:b0:427:eab9:9066 with SMTP id w31-20020a05622a191f00b00427eab99066mr5338492qtc.18.1703855750116;
+        Fri, 29 Dec 2023 05:15:50 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHfBDDAmt/X1fcwAziQNaFqEOeKl3wNTh1KeafT9WlILnoleEYbHi8kmd4ctu+RfMRi43nxUnehQ2Fqztiafmg=
+X-Received: by 2002:a05:622a:191f:b0:427:eab9:9066 with SMTP id
+ w31-20020a05622a191f00b00427eab99066mr5338476qtc.18.1703855749909; Fri, 29
+ Dec 2023 05:15:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.10 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[12];
-	 MID_CONTAINS_FROM(1.00)[];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[ti.com,perex.cz,suse.com,gmail.com,kernel.org,vger.kernel.org,alsa-project.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[99.98%]
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Score: -2.10
-X-Spam-Flag: NO
+MIME-Version: 1.0
+References: <20231228143737.17712-1-wander@redhat.com> <CAHk-=wg1VJR4WFT4VhEqXgE14dogJe9kbpYGBZdtai3ORomfOw@mail.gmail.com>
+ <20231228220045.GA598@breakpoint.cc>
+In-Reply-To: <20231228220045.GA598@breakpoint.cc>
+From: Wander Lairson Costa <wander@redhat.com>
+Date: Fri, 29 Dec 2023 10:15:38 -0300
+Message-ID: <CAAq0SUmgoYEWEkp1YhZcEeaSZTA7FsOhu=Ltwu93-ibfFd3dPw@mail.gmail.com>
+Subject: Re: [PATCH] netfilter/nf_tables: fix UAF in catchall element removal
+To: Florian Westphal <fw@strlen.de>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	Jozsef Kadlecsik <kadlec@netfilter.org>, security@kernel.org, 
+	Kevin Rich <kevinrich1337@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Dec 2023 01:34:47 +0100,
-Gergo Koteles wrote:
-> 
-> allow driver specific driver data in tas2781-hda-i2c and tas2781-i2c
-> 
-> Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+On Thu, Dec 28, 2023 at 7:00=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Linus Torvalds <torvalds@linuxfoundation.org> wrote:
+> > On Thu, 28 Dec 2023 at 06:38, Wander Lairson Costa <wander@redhat.com> =
+wrote:
+> > >
+> > > If the catchall element is gc'd when the pipapo set is removed, the e=
+lement
+> > > can be deactivated twice.
+> > >
+> > > When a set is deleted, the nft_map_deactivate() is called to deactiva=
+te the
+> > > data of the set elements [1].
+> >
+> > Please send this to the netdev list and netfilter-devel, it's already
+> > on a public list thanks to the stable cc.
+> >
+> > Pablo & al - see
+> >
+> >     https://lore.kernel.org/all/20231228143737.17712-1-wander@redhat.co=
+m/
+> >
+> > for the original full email.
+>
+> Thanks.  I suspect the correct fix is
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git/commit/?=
+id=3D7315dc1e122c85ffdfc8defffbb8f8b616c2eb1a
+>
+> which missed the last pre-holiday-shutdown net pull request and
+> is thus still only in nf.git.
+>
 
-Both patches applied to for-linus branch now.  Thanks.
+Indeed, it fixes the issue. Thanks!
 
-
-Takashi
 
