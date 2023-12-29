@@ -1,196 +1,105 @@
-Return-Path: <stable+bounces-8692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C918200CD
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 18:27:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0AB8200EF
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 18:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 138071F22239
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 17:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14AD1C21619
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 17:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F5C12B7E;
-	Fri, 29 Dec 2023 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653CD12B84;
+	Fri, 29 Dec 2023 17:46:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB112B72;
-	Fri, 29 Dec 2023 17:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC3012B7A;
+	Fri, 29 Dec 2023 17:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6dbca8c6eeeso1488846a34.1;
-        Fri, 29 Dec 2023 09:27:41 -0800 (PST)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-593f182f263so1546087eaf.0;
+        Fri, 29 Dec 2023 09:46:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703870861; x=1704475661;
+        d=1e100.net; s=20230601; t=1703871970; x=1704476770;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qJAYsDTmYmyvQGFSeJtiB4aaPRQYv97IAZCo7KpDKGo=;
-        b=NxHycAn6keiJCyvJOx9CNRoB5861vX1e9fQ3bM8gIou8W1AKSJpY8tgd47bJ2LPm2A
-         2Px5PkNPHtfexKu2RJguPMdzrjXVglXhgrso2LMTqsyE3vbNZum9lcG9Ojqo35wDeJjo
-         dqmKxM8s0GeNrueVJkgzNp/PNpcEjmJJEvyBB/V3uWWTLGycwuAcCr2sr/mPFfS9CeaI
-         ziWFrm4tnsheEOOQu7lTiGzRcZTyrqy7FcpgBGpEELDY/+mhpAkydJZvbi7N7BPxbAmR
-         SRV/9q9WAJJ8rrQ+QXn9HBoEryNolfTKTOlsfi29sG5VCEhx7SvtX48+wcEyXmM2csU2
-         lc6g==
-X-Gm-Message-State: AOJu0YxJCDpP5QfcLtY0Iq0BFYAGEWC/SvH3A1ZXS3LPnwTChADzpPKj
-	JQf+iqv+yMfvinKopFh3bRLeVn4oYK2wZF4aKA8=
-X-Google-Smtp-Source: AGHT+IHHs52Y/YvXjeCcLgRjwN4KgLAu8x7NEb0xdA+Q5Ye49v2GGBGMB0Ax1smVMoQQDPdb/S2YZiCjmS6Z6ilNgYE=
-X-Received: by 2002:a05:6820:358:b0:593:fbd5:10aa with SMTP id
- m24-20020a056820035800b00593fbd510aamr17655974ooe.1.1703870861144; Fri, 29
- Dec 2023 09:27:41 -0800 (PST)
+        bh=Ij+yfM4X0zpLioUNYhPb+qga+C2woQXfUc7dfdDob98=;
+        b=t1UYfM7ZOKmNqK8UbjDBhBW70bWsB9yujiIaAxYM93vHjc/Wre78z40v6cOaEMF1LE
+         hUj11h2INraVv//FXPvRRG+K6r0k/0hW3b+5zlmtdVLUW7p556FizZ19PGm0hpGYA7Jw
+         tIukGLIIaKG5KS1crKEz7FDFIX4pGkLK2VFHGmVvrbvsX0KU+WZTlasNdebnErRYsaku
+         iY8Dr80vmmIV6o19xhK1zqiRf+sKDoj0upTxpAcxuFjuEv4nSUOi4+HqmDMwQUtL9nC5
+         bI8Jt1KmrKxclDg5UZhqbUY1vM4iXgbtxBF5yTXXQGyn98YHG0rBD58ir08WtmyPqISN
+         ZTkQ==
+X-Gm-Message-State: AOJu0Yy2upddJQo6GAwiwY4udzS4DF8da4ZyytNuRu9OZnZEjMJcK3oj
+	8RiblTApDtt2sMKmaV8ZDiRVP6OBIrMuCYTntnb8d4OW
+X-Google-Smtp-Source: AGHT+IER5p4XKobGAux2V7O3DbwvUZwNDzoHCNqx/v4bJCnl64wHp/9z4gWFcsNQLXwu7K2jVP18XZcsNTK9PS+3X9s=
+X-Received: by 2002:a4a:d1b0:0:b0:594:177d:8bd6 with SMTP id
+ z16-20020a4ad1b0000000b00594177d8bd6mr17897825oor.1.1703871970187; Fri, 29
+ Dec 2023 09:46:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231227062940.10780-1-ricardo.neri-calderon@linux.intel.com> <20231227062940.10780-5-ricardo.neri-calderon@linux.intel.com>
-In-Reply-To: <20231227062940.10780-5-ricardo.neri-calderon@linux.intel.com>
+References: <20231223145706.26218-1-hdegoede@redhat.com>
+In-Reply-To: <20231223145706.26218-1-hdegoede@redhat.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 29 Dec 2023 18:27:30 +0100
-Message-ID: <CAJZ5v0hHu7R+mnW=w1NM80=Ha0QL853+O6i3RKrw18wuhRPUOg@mail.gmail.com>
-Subject: Re: [PATCH 4/4] thermal: intel: hfi: Add a suspend notifier
-To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, Chen Yu <yu.c.chen@intel.com>, 
-	Len Brown <len.brown@intel.com>, 
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>, Zhang Rui <rui.zhang@intel.com>, 
-	Zhao Liu <zhao1.liu@intel.com>, stable@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Zhao Liu <zhao1.liu@linux.intel.com>
+Date: Fri, 29 Dec 2023 18:45:58 +0100
+Message-ID: <CAJZ5v0icBn6ib7sVOvYoMR2_amqFH8s4KDb0fe-iYe6s-pqvZg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: resource: At another DMI match for the TongFang GMxXGxx
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, linux-acpi@vger.kernel.org, 
+	Luis Acuna <ldacuna@gmail.com>, Werner Sembach <wse@tuxedocomputers.com>, 
+	All applicable <stable@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Dec 27, 2023 at 7:28=E2=80=AFAM Ricardo Neri
-<ricardo.neri-calderon@linux.intel.com> wrote:
+On Sat, Dec 23, 2023 at 3:57=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
 >
-> The kernel gives the HFI hardware a memory region that the latter uses to
-> provide updates to the HFI table. The kernel allocates this memory region
-> at boot. It remains constant throughout runtime time.
+> The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work=
+,
+> is also sold as the Eluktronics RP-15 which does not use the standard
+> TongFang GMxXGxx DMI board_name.
 >
-> When resuming from suspend or hibernation, the restore kernel allocates a
-> second memory buffer and reprograms the HFI hardware with the new locatio=
-n
-> as part of a normal boot. The location of the second memory buffer may
-> differ from the one allocated by the image kernel. Subsequently, when the
-> restore kernel transfers control to the image kernel, the second buffer
-> becomes invalid, potentially leading to memory corruption if the hardware
-> writes to it (hardware continues using the buffer from the restore kernel=
-).
+> Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
+> table to make the internal keyboard functional.
 >
-> Add a suspend notifier to disable all HFI instances before jumping to the
-> image kernel and enable them once the image kernel has been restored. Use
-> the memory buffer that the image kernel allocated.
->
-> For non-boot CPUs, rely on the CPU hotplug callbacks as CPUs are disabled
-> and enabled during suspend and resume, respectively.
->
-> The CPU hotplug callbacks do not cover the boot CPU. Handle the HFI
-> instance of the boot CPU from the suspend notifier callback.
->
-> Cc: Chen Yu <yu.c.chen@intel.com>
-> Cc: Len Brown <len.brown@intel.com>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> Cc: Zhang Rui <rui.zhang@intel.com>
-> Cc: Zhao Liu <zhao1.liu@linux.intel.com>
-> Cc: linux-pm@vger.kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> Reported-by: Luis Acuna <ldacuna@gmail.com>
+> Cc: Werner Sembach <wse@tuxedocomputers.com>
+> Cc: All applicable <stable@vger.kernel.org>
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/thermal/intel/intel_hfi.c | 53 +++++++++++++++++++++++++++++++
->  1 file changed, 53 insertions(+)
+> Note reportedy by private email so not Closes tag
+> ---
+>  drivers/acpi/resource.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 >
-> diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/in=
-tel_hfi.c
-> index d2c874f43786..965c245e5e78 100644
-> --- a/drivers/thermal/intel/intel_hfi.c
-> +++ b/drivers/thermal/intel/intel_hfi.c
-> @@ -30,11 +30,13 @@
->  #include <linux/kernel.h>
->  #include <linux/math.h>
->  #include <linux/mutex.h>
-> +#include <linux/notifier.h>
->  #include <linux/percpu-defs.h>
->  #include <linux/printk.h>
->  #include <linux/processor.h>
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
-> +#include <linux/suspend.h>
->  #include <linux/string.h>
->  #include <linux/topology.h>
->  #include <linux/workqueue.h>
-> @@ -569,11 +571,62 @@ static __init int hfi_parse_features(void)
->         return 0;
->  }
->
-> +static void hfi_do_pm_enable(void *info)
-> +{
-> +       struct hfi_instance *hfi_instance =3D info;
-> +
-> +       hfi_set_hw_table(hfi_instance);
-> +       hfi_enable();
-
-The above do RMW, so should locking be used here?
-
-> +}
-> +
-> +static void hfi_do_pm_disable(void *info)
-> +{
-> +       hfi_disable();
-> +}
-
-And here?
-
-> +
-> +static int hfi_pm_notify(struct notifier_block *nb,
-> +                        unsigned long mode, void *unused)
-> +{
-> +       struct hfi_cpu_info *info =3D &per_cpu(hfi_cpu_info, 0);
-> +       struct hfi_instance *hfi_instance =3D info->hfi_instance;
-> +
-> +       /* HFI may not be in use. */
-> +       if (!hfi_instance)
-> +               return 0;
-> +
-> +       /*
-> +        * Only handle the HFI instance of the package of the boot CPU. T=
-he
-> +        * instances of other packages are handled in the CPU hotplug cal=
-lbacks.
-> +        */
-> +       switch (mode) {
-> +       case PM_HIBERNATION_PREPARE:
-> +       case PM_SUSPEND_PREPARE:
-> +       case PM_RESTORE_PREPARE:
-> +               return smp_call_function_single(0, hfi_do_pm_disable,
-> +                                               NULL, true);
-> +
-> +       case PM_POST_RESTORE:
-> +       case PM_POST_HIBERNATION:
-> +       case PM_POST_SUSPEND:
-> +               return smp_call_function_single(0, hfi_do_pm_enable,
-> +                                               hfi_instance, true);
-> +       default:
-> +               return -EINVAL;
-> +       }
-> +}
-> +
-> +static struct notifier_block hfi_pm_nb =3D {
-> +       .notifier_call =3D hfi_pm_notify,
-> +};
-> +
->  void __init intel_hfi_init(void)
->  {
->         struct hfi_instance *hfi_instance;
->         int i, j;
->
-> +       if (register_pm_notifier(&hfi_pm_nb))
-> +               return;
-> +
->         if (hfi_parse_features())
->                 return;
->
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 9bd9f79cd409..c3536c236be9 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -510,6 +510,13 @@ static const struct dmi_system_id irq1_edge_low_forc=
+e_override[] =3D {
+>                         DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
+>                 },
+>         },
+> +       {
+> +               /* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
+> +                       DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
+> +               },
+> +       },
+>         {
+>                 /* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+>                 .matches =3D {
 > --
+
+Applied as 6.8 material, thanks!
 
