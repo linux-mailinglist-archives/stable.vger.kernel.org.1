@@ -1,255 +1,143 @@
-Return-Path: <stable+bounces-8686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71BB820015
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 16:05:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E2D820021
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 16:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 585B628468B
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 15:05:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC7A284766
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 15:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0D411CB0;
-	Fri, 29 Dec 2023 15:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=linosanfilippo@gmx.de header.b="r2dZZbEa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F70F125AC;
+	Fri, 29 Dec 2023 15:12:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B743411CAE;
-	Fri, 29 Dec 2023 15:05:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1703862196; x=1704466996; i=linosanfilippo@gmx.de;
-	bh=AVsyOvF8iyVIZ+y0HTYWiJ5lv/jurTEehXeDcW566s0=;
-	h=X-UI-Sender-Class:From:Subject:To:Cc:References:Date:
-	 In-Reply-To;
-	b=r2dZZbEaWPakyKajbHilP2dnmyJQIb86Rl008O7k9kDpUqJpmZQEZkjI/NXiK8rG
-	 MnvCowJCC5OgZxpapX/fGY8SxDumm/i7qAlZayspO5DABfCL8PdKmD4Y2YnRV09JR
-	 TmR+fpSUNJ1mwUOskIIoBrgZzrLIamEi2adOrQIK19sHEF039vFt+VjnDngfrAuV1
-	 Es9klZjHMmjwV1MA9dqP1NpU34hNI2+tCLoNhxBp/YTY0Dwd0oA6bdrZ7nnw5Y+I/
-	 c+/jpKt9464KyX6IwDzsyj9R/3fyRd7t4v/cdh8jOpnyGG8QyzF1ZwLOTIh6Emml9
-	 aG+lcQpdgMCs2IVwag==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.37] ([84.162.15.98]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MVvPJ-1rilU12tdd-00Rsyf; Fri, 29
- Dec 2023 16:03:16 +0100
-From: Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Subject: Re: [PATCH v6 1/7] serial: Do not hold the port lock when setting
- rx-during-tx GPIO
-To: Maarten Brock <m.brock@vanmierlo.com>,
- Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
- ilpo.jarvinen@linux.intel.com, u.kleine-koenig@pengutronix.de,
- shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
- hugo@hugovil.com, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, lukas@wunner.de, p.rosenberger@kunbus.com,
- stable@vger.kernel.org, Hugo Villeneuve <hvilleneuve@dimonoff.com>
-References: <20231225113524.8800-1-l.sanfilippo@kunbus.com>
- <20231225113524.8800-2-l.sanfilippo@kunbus.com>
- <5177a7aef77a6b77a6e742a2fdd52a0e@vanmierlo.com>
-Message-ID: <988518d5-0d4f-1362-64f9-8bfeb3e3b700@gmx.de>
-Date: Fri, 29 Dec 2023 16:03:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDD711CBA;
+	Fri, 29 Dec 2023 15:12:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5534dcfdd61so12002277a12.0;
+        Fri, 29 Dec 2023 07:12:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703862730; x=1704467530;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6WiNU1LEWoMOUqNGo6cu6jntHEa+IYTRycCPjYF8UZI=;
+        b=Jv6Li27PF1AU14fHJjTUxVKSeBLS4HS6zxMP7TnBZ3RnM9qmuFaJJqhcmwbUCGXDOh
+         O0CQ8p8pf5luO62Tb4qMLJageGavzxtj+wYx7ZNNlEzsDwlRJLrrW1b4ByIM/7VzgNDx
+         8kd/1aqUmzWXSjj5QTY+xrcE2rzhr6RKh7+u5EVYpc6yG7aPxO8x8hAFbCgdfZM1VcI5
+         FfAABnxz4ljzZKNXXXIBG4vAIkG1oVaw5ZjjkYGQpH8dB88ddD7wXTr4iRWV3OjOGezN
+         11/RiRnFoGj9cxUmfkAEHxHbtqpP+hCunCElAslp4J4BZaxOTUZl7T/nj4ATdI5D65Km
+         PH9A==
+X-Gm-Message-State: AOJu0YwKXs53UUKHeumq5mmsm9oE6tbQzD7Ck/AfMB07UAsPDAYsXeOr
+	iHf6ekA6P2XIcLcVUvyD5ghe5XE7nzwjLnRI2uE=
+X-Google-Smtp-Source: AGHT+IERHitNghjW7vaITdOuqsjWF+Un7GLEQ3PnUm7/+6GJ83XVMlklZMI4Hy76IqAUDtHCU29Mmg==
+X-Received: by 2002:a50:d55c:0:b0:554:1100:99e9 with SMTP id f28-20020a50d55c000000b00554110099e9mr12967538edj.9.1703862730080;
+        Fri, 29 Dec 2023 07:12:10 -0800 (PST)
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
+        by smtp.gmail.com with ESMTPSA id p20-20020aa7cc94000000b00553b746e17esm11264425edt.83.2023.12.29.07.12.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 29 Dec 2023 07:12:09 -0800 (PST)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a2768b78a9eso252671366b.0;
+        Fri, 29 Dec 2023 07:12:09 -0800 (PST)
+X-Received: by 2002:a17:906:5c:b0:a1e:842d:ccd5 with SMTP id
+ 28-20020a170906005c00b00a1e842dccd5mr10324550ejg.48.1703862729636; Fri, 29
+ Dec 2023 07:12:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <5177a7aef77a6b77a6e742a2fdd52a0e@vanmierlo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+References: <20231227101003.10534-1-johan+linaro@kernel.org>
+In-Reply-To: <20231227101003.10534-1-johan+linaro@kernel.org>
+From: Neal Gompa <neal@gompa.dev>
+Date: Fri, 29 Dec 2023 10:11:32 -0500
+X-Gmail-Original-Message-ID: <CAEg-Je-WJZGMgurcQY3p9wQffEJmN3OsiK_9ictsFV3uTGdS9g@mail.gmail.com>
+Message-ID: <CAEg-Je-WJZGMgurcQY3p9wQffEJmN3OsiK_9ictsFV3uTGdS9g@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: hci_bcm4377: do not mark valid bd_addr as invalid
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Hector Martin <marcan@marcan.st>, 
+	Sven Peter <sven@svenpeter.dev>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, asahi@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-bluetooth@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Felix Zhang <mrman@mrman314.tech>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:p+fqf9l7jTjDJGxOH1YnDruj+CgRcfHEjHCkTRBGnhLYpt29OXV
- R50OBYMIgvUo5aIQm5sh9SxU6sVZXMnlFA0+GDq6udaQo3wcl+rbv34yuG5VN29b2Vlffu6
- zAvc8CpRqId2jLxcr6nPA9IofjPOvyAU9zamJUHNf+kGZ62cHjoS5DczHJqzwEn8+y+LMaq
- NrW/B/qTVorJKXXGloH4Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sRL9VqN4ciI=;ndmP7eJWlwKe3/QqbuaaDjEotdN
- +lfLCMaxTEtl1BV/yENDeJ/gzs8DB07gKzSpOq7e3apLb0V1uvLKw5fsfA7CiBiWNv5ZObq/7
- rPU+FHhmV1K2wjdRauS9nHBy2nMsCTf+EqiPKv+QWb2VlAq7NgO6FfFXJ/wK6MZrx4l1TyfOW
- l55S6fF3ugQ6HRdKWHaQktYkNdXy5V6N/tyMmCGHdcwyKFAKdlRW7O7uLW/2e7/abIrr50YMG
- dwsshviwna+ZcnJTtrWeHAvacFSV4oo2tEzl5rRt51flvQVt4w9qIVHIRXsJ2+Tx6hvIDovoc
- BrP44nSYLAGYesBd9mnvQiZKbUG0kZrfzm0rYSpcZBTN4PuPVMJJQFfOFjx0+PE1vJdw3v/So
- tY7FKzrxBWScjjYSPvpu/d0s4LOMrUysgjQaSSYWxQB6GD3rrVlm5ORJta63SKvH2eTYTc5Ln
- 3d1Mv464qX7tZ2DlaSZdjJ+DYZrkQGwRkwmZDg9yxSr2afb+EJpNJTYefd32S6/9f1G5fsw9s
- baOA12B2TIhjGQ2c/qmWUCKfwldpDzbIl5dneoOVdVSCGom1LDuO26R9+hjq9p139THl9vNMJ
- ENKm1w9G6dr0XSVwULfKC2LeeNRAcqeQt5R33JY7DZRyoq7vzVwiwnxK3UMtE6ElwVbmHnetP
- Sw2mLuMA19evwfCv0RGUDzL+LL9rgX3a58uayTI00t6N9ddNAUHUBgSo6Rl7i3szN3qRqoY5Z
- A6UjPnok9EKW5Ibb5MxGGf/fksFwC2wECE299A24b6oq2ZPddZXnJVrwV4JvObc6omsE56MO6
- H6S9R0IDuTTActmzsZdracFUSR9YDUqiNgnFaCVUNNHHl4bJRw/0VDcBXSf93kv96ohSWzZjE
- bTzLJDBrjHXHql2SCSSO4xgVOUBqimtjRdDNqjFohZT4N6bssbfQgOLgHb2pjQVuYlT/EO6VO
- jfmI1TOsZ8LrJBmsmJZr1O1y1BQ=
 
-
-Hi,
-
-On 25.12.23 at 13:31, Maarten Brock wrote:
-> Lino Sanfilippo wrote on 2023-12-25 12:35:
->> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/seri=
-al_core.c
->> index f1348a509552..d155131f221d 100644
->> --- a/drivers/tty/serial/serial_core.c
->> +++ b/drivers/tty/serial/serial_core.c
->> @@ -1402,6 +1402,16 @@ static void uart_set_rs485_termination(struct
->> uart_port *port,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !!(rs485->flags & SER_RS485_TERMINATE_BU=
-S));
->> =C2=A0}
->>
->> +static void uart_set_rs485_rx_during_tx(struct uart_port *port,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct serial_rs485 *r=
-s485)
->> +{
->> +=C2=A0=C2=A0=C2=A0 if (!(rs485->flags & SER_RS485_ENABLED))
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->> +
+On Wed, Dec 27, 2023 at 5:10=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
+rg> wrote:
 >
-> How about checking port->rs485_rx_during_tx_gpio here against NULL inste=
-ad of
-> before every call?
+> A recent commit restored the original (and still documented) semantics
+> for the HCI_QUIRK_USE_BDADDR_PROPERTY quirk so that the device address
+> is considered invalid unless an address is provided by firmware.
 >
-
-gpiod_set_value_cansleep() already checks for a NULL pointer, so doing thi=
-s check
-in the caller is not needed.
-
->> +=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(port->rs485_rx_during_tx_g=
-pio,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 !!(rs485->flags & SER_RS485_RX_DURING_TX));
->> +}
->> +
->> =C2=A0static int uart_rs485_config(struct uart_port *port)
->> =C2=A0{
->> =C2=A0=C2=A0=C2=A0=C2=A0 struct serial_rs485 *rs485 =3D &port->rs485;
->> @@ -1413,12 +1423,17 @@ static int uart_rs485_config(struct uart_port *=
-port)
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_sanitize_serial_rs485(port, rs485);
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_set_rs485_termination(port, rs485);
->> +=C2=A0=C2=A0=C2=A0 uart_set_rs485_rx_during_tx(port, rs485);
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_port_lock_irqsave(port, &flags);
->> =C2=A0=C2=A0=C2=A0=C2=A0 ret =3D port->rs485_config(port, NULL, rs485);
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_port_unlock_irqrestore(port, flags);
->> -=C2=A0=C2=A0=C2=A0 if (ret)
->> +=C2=A0=C2=A0=C2=A0 if (ret) {
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memset(rs485, 0, sizeo=
-f(*rs485));
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* unset GPIOs */
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(po=
-rt->rs485_term_gpio, 0);
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(po=
-rt->rs485_rx_during_tx_gpio, 0);
->> +=C2=A0=C2=A0=C2=A0 }
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 return ret;
->> =C2=A0}
->> @@ -1457,6 +1472,7 @@ static int uart_set_rs485_config(struct
->> tty_struct *tty, struct uart_port *port,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_sanitize_serial_rs485(port, &rs485);
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_set_rs485_termination(port, &rs485);
->> +=C2=A0=C2=A0=C2=A0 uart_set_rs485_rx_during_tx(port, &rs485);
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_port_lock_irqsave(port, &flags);
->> =C2=A0=C2=A0=C2=A0=C2=A0 ret =3D port->rs485_config(port, &tty->termios=
-, &rs485);
->> @@ -1468,8 +1484,14 @@ static int uart_set_rs485_config(struct
->> tty_struct *tty, struct uart_port *port,
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 port->ops->set_mctrl(port, port->mctrl);
->> =C2=A0=C2=A0=C2=A0=C2=A0 }
->> =C2=A0=C2=A0=C2=A0=C2=A0 uart_port_unlock_irqrestore(port, flags);
->> -=C2=A0=C2=A0=C2=A0 if (ret)
->> +=C2=A0=C2=A0=C2=A0 if (ret) {
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* restore old GPIO setting=
-s */
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(po=
-rt->rs485_term_gpio,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !!(=
-port->rs485.flags & SER_RS485_TERMINATE_BUS));
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(po=
-rt->rs485_rx_during_tx_gpio,
->> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !!(=
-port->rs485.flags & SER_RS485_RX_DURING_TX));
+> This specifically means that this flag must only be set for devices with
+> invalid addresses, but the Broadcom BCM4377 driver has so far been
+> setting this flag unconditionally.
 >
-> This does not look like restoring.
-
-
-Hmm. The rx-during-tx and terminate-bus GPIOs may have changed before the
-drivers rs485_config() was called. If that function fails, the GPIOs
-are set back to the values they had before (i.e what is still stored in
-the ports serial_rs485 struct). So what is wrong with the term "restore"?
-
-> Further this looks suspiciously like duplicated code
-
-Since the added code consists of two one-liners I am not sure how to
-decrease code duplication in this case. We could introduce wrapper functio=
-ns (the only
-ones we have so far to set the GPIOs are uart_set_rs485_termination() and
-uart_set_rs485_rx_during_tx() which cannot be used here due to the initial
-check for SER_RS485_ENABLED). But would that really help?
-
-
+> Fortunately the driver already checks for invalid addresses during setup
+> and sets the HCI_QUIRK_INVALID_BDADDR flag, which can simply be replaced
+> with HCI_QUIRK_USE_BDADDR_PROPERTY to indicate that the default address
+> is invalid but can be overridden by firmware (long term, this should
+> probably just always be allowed).
 >
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ret;
->> +=C2=A0=C2=A0=C2=A0 }
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 if (copy_to_user(rs485_user, &port->rs485, siz=
-eof(port->rs485)))
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EFAULT;
->> diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm3=
-2-usart.c
->> index 3048620315d6..ec9a72a5bea9 100644
->> --- a/drivers/tty/serial/stm32-usart.c
->> +++ b/drivers/tty/serial/stm32-usart.c
->> @@ -226,10 +226,7 @@ static int stm32_usart_config_rs485(struct
->> uart_port *port, struct ktermios *ter
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 stm32_usart_clr_bits(port, ofs->cr1, BIT(cfg->=
-uart_enable_bit));
->>
->> -=C2=A0=C2=A0=C2=A0 if (port->rs485_rx_during_tx_gpio)
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 gpiod_set_value_cansleep(po=
-rt->rs485_rx_during_tx_gpio,
->> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 !!(rs485conf->flags & =
-SER_RS485_RX_DURING_TX));
->> -=C2=A0=C2=A0=C2=A0 else
->> +=C2=A0=C2=A0=C2=A0 if (!port->rs485_rx_during_tx_gpio)
+> Fixes: 6945795bc81a ("Bluetooth: fix use-bdaddr-property quirk")
+> Cc: stable@vger.kernel.org      # 6.5
+> Reported-by: Felix Zhang <mrman@mrman314.tech>
+> Link: https://lore.kernel.org/r/77419ffacc5b4875e920e038332575a2a5bff29f.=
+camel@mrman314.tech/
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/bluetooth/hci_bcm4377.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> Should the ! be there?
+> diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4=
+377.c
+> index a61757835695..9a7243d5db71 100644
+> --- a/drivers/bluetooth/hci_bcm4377.c
+> +++ b/drivers/bluetooth/hci_bcm4377.c
+> @@ -1417,7 +1417,7 @@ static int bcm4377_check_bdaddr(struct bcm4377_data=
+ *bcm4377)
+>
+>         bda =3D (struct hci_rp_read_bd_addr *)skb->data;
+>         if (!bcm4377_is_valid_bdaddr(bcm4377, &bda->bdaddr))
+> -               set_bit(HCI_QUIRK_INVALID_BDADDR, &bcm4377->hdev->quirks)=
+;
+> +               set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &bcm4377->hdev->qu=
+irks);
+>
+>         kfree_skb(skb);
+>         return 0;
+> @@ -2368,7 +2368,6 @@ static int bcm4377_probe(struct pci_dev *pdev, cons=
+t struct pci_device_id *id)
+>         hdev->set_bdaddr =3D bcm4377_hci_set_bdaddr;
+>         hdev->setup =3D bcm4377_hci_setup;
+>
+> -       set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
+>         if (bcm4377->hw->broken_mws_transport_config)
+>                 set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->qui=
+rks);
+>         if (bcm4377->hw->broken_ext_scan)
+> --
+> 2.41.0
+>
 >
 
-Thats a good point, the "else" seems indeed to be wrong. It has been intro=
-duced
-with the code that added the GPIO support (c54d48543689 "serial: stm32: Ad=
-d support for rs485 RX_DURING_TX output GPIO")
+Looks good to me. This replaces the other patch[1], I take it?
 
-I will fix it in the next version of this patch, thanks.
+Reviewed-by: Neal Gompa <neal@gompa.dev>
 
+[1]: https://lore.kernel.org/asahi/aaa107865f4cbd61f8f9006fd3e7ac43b5d1bdad=
+.camel@mrman314.tech/
 
->> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 rs485conf->flags |=3D =
-SER_RS485_RX_DURING_TX;
->>
->> =C2=A0=C2=A0=C2=A0=C2=A0 if (rs485conf->flags & SER_RS485_ENABLED) {
->
-> Kind Regards
-> Maarten Brock
->
-
-Thanks a lot for the review.
-
-BR,
-Lino
+--=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
 
