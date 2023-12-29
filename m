@@ -1,221 +1,134 @@
-Return-Path: <stable+bounces-8694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2123A820109
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 19:29:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3801982011B
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 20:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402191C216AD
-	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 18:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCF191F21B5A
+	for <lists+stable@lfdr.de>; Fri, 29 Dec 2023 19:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986F312E43;
-	Fri, 29 Dec 2023 18:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD6712E4E;
+	Fri, 29 Dec 2023 19:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley-net.20230601.gappssmtp.com header.i=@landley-net.20230601.gappssmtp.com header.b="HPy7A0gg"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="tZMy91R4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A47A12B8B
-	for <stable@vger.kernel.org>; Fri, 29 Dec 2023 18:29:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=landley.net
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-594e9135d82so1109902eaf.2
-        for <stable@vger.kernel.org>; Fri, 29 Dec 2023 10:29:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20230601.gappssmtp.com; s=20230601; t=1703874555; x=1704479355; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AeSrtwQFurF3YcqKmZ2Gt/CZU5AB/xdcrHrq4YB+YYQ=;
-        b=HPy7A0ggUGfH6s1EnM0YCdJJ0d19olaHinlwhluoGFlYJXiDRibKwGt96axQmY19wJ
-         w8vZsLRzyYH17ORKm6HQCMPT8As8iwTABgywxDE06LHy83bej7xfDsfqdH6mIOaCM58R
-         T3zfNbyXitdTSpciZowZxe9PmH4wAayHVjQgpADubhrlmlZ48X4Yxpz8smGJystfTkPl
-         AI5JDl8rEw+Tf7vmw6agbj4wxPJKiMs2Se0VQTtI42JVHzId6ITi1ia3u5UoCg6Ajrx3
-         wgiWTOA5WIvOYfsvsag1+w570SWsOZ4UCKHm1OYf2LDMalb1MHaDMw19+k2PUMUODOc7
-         PZEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703874555; x=1704479355;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AeSrtwQFurF3YcqKmZ2Gt/CZU5AB/xdcrHrq4YB+YYQ=;
-        b=ok+OEN42fVH0HxxbCqsmzwYvOSVqxpY747A1ItVY60uP4SWNOZdxd1jEUDG+5amAWH
-         TRyrfhPojEIMoYW6t5Iy41o6mqLkWo8F7MpOUH2d3y673prmmmd37Y5R/C6te3ucP/2b
-         mAtvLTEcR4SegMtMDfHI42VSaF9QKuXoWe5KvOWFlw9epK7ErbgBTcutPPyR+Tx2Mhsm
-         WM4fojN9j60KTVEPNT/WxP33oSdn5BMhfBBBiJJ4icZrXAR+MUvSkjOetTK+oDw7f3xt
-         4VGQvPHDOO9pDyR3E4l8ineQGAJNFiqXKkyllUyp9nfq82WQPQHlyQlEKgO8Zql0FHyZ
-         WKtw==
-X-Gm-Message-State: AOJu0Yw9gZf5YTUeibqdBQk6aqH5wPADPXOaFpvRP2fg28u6EexcOdKf
-	a35WMCZDFymAlsc3fHMpM4BnVqXPhxJI7Q==
-X-Google-Smtp-Source: AGHT+IHU72x2P2ARSJrsYr/9PdegL2CIZ35HgbWVZhDOtO8cPofDfaOEFOG6SoWrOxrtPxpcGj8jCw==
-X-Received: by 2002:a05:6820:613:b0:595:1c09:613a with SMTP id e19-20020a056820061300b005951c09613amr1158857oow.18.1703874555656;
-        Fri, 29 Dec 2023 10:29:15 -0800 (PST)
-Received: from [192.168.1.4] ([136.62.51.249])
-        by smtp.gmail.com with ESMTPSA id i1-20020a4aab01000000b0058ad7b0b1a8sm3526791oon.13.2023.12.29.10.29.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 29 Dec 2023 10:29:15 -0800 (PST)
-Message-ID: <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
-Date: Fri, 29 Dec 2023 12:35:31 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F612B99;
+	Fri, 29 Dec 2023 19:07:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CB4C433C8;
+	Fri, 29 Dec 2023 19:07:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1703876845;
+	bh=VeNqkKpc0NYluTw50JCX3V29xXFVmRyhiDDu1enAJdA=;
+	h=Date:To:From:Subject:From;
+	b=tZMy91R4eWbSNLrk9zgZFRz3RvR9JG/MEcM9Jvnxide0CnNQNVQxvuNNRCgFgvwYl
+	 oqXXxtfxgPlOoXUa8hn7ElkmrtmO8qW3P+LuGkjW+8F4bZ7XtESW0e5tjMOGnXrgoz
+	 gTbyTdhb8PXiBEvMM3n2hXp/lDwYpVjAzYT31ZCY=
+Date: Fri, 29 Dec 2023 11:07:25 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jiajun.xie.sh@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-fix-unmap_mapping_range-high-bits-shift-bug.patch removed from -mm tree
+Message-Id: <20231229190725.A2CB4C433C8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
- given
-Content-Language: en-US
-To: Stefan Berger <stefanb@linux.ibm.com>, Askar Safin <safinaskar@gmail.com>
-Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, zohar@linux.ibm.com
-References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
- <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
- <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
- <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 12/29/23 10:39, Stefan Berger wrote:> On 12/21/23 17:58, Askar Safin wrote:
->> Hi, Rob. And Stefan.
->> 
->> First of all, this patch got to linux-next (
->> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/?qt=author&q=Stefan+Berger
->> ), so it seems it soon will be in mainline.
->> 
->> On Thu, Dec 21, 2023 at 12:24 PM Rob Landley <rob@landley.net> wrote:
->>> Can you build tmpfs on a nommu system? Last I checked the plumbing expects swap,
->>> but it's been a while...
->> Okay, I agree, let's not remove ramfs.
->> 
->> Still, I don't like this (already applied) patch. init= and rdinit=
->> are two different options,
 
-Because they control two different things which are often used at the same time.
-(Debian has an initramfs that hands off to the final root filesystem, for
-example. Hence the initramfs-tools package that runs every time apt-get updates
-the kernel.)
+The quilt patch titled
+     Subject: mm: fix unmap_mapping_range high bits shift bug
+has been removed from the -mm tree.  Its filename was
+     mm-fix-unmap_mapping_range-high-bits-shift-bug.patch
 
-So being able to specify rdinit= to intercept the ramfs layer or init= to
-intercept the root= layer made sense, because they did different things.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-But the only reason to specify anything nontrivial for the initramfs
-_filesystem_ mount properties is because you intend to stay there. They don't
-get used together.
+------------------------------------------------------
+From: Jiajun Xie <jiajun.xie.sh@gmail.com>
+Subject: mm: fix unmap_mapping_range high bits shift bug
+Date: Wed, 20 Dec 2023 13:28:39 +0800
 
->> and this is good.
+The bug happens when highest bit of holebegin is 1, suppose holebegin is
+0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
+vma_interval_tree_foreach would look it up fail or leads to the wrong
+result.
 
-Eh, not really. Strange legacy decision we're now stuck with. The kernel only
-ever runs one init task per boot. If init= was _also_ checked to see which file
-to run out of initramfs (and the plumbing still justs silently fails and moves
-on if it's not found) then the debian script would have been forced to do INIT=
-or similar to override the overmounted root's init task separately from initrd's
-init task, making it clear a script (not the kernel) is making that decision.
+error call seq e.g.:
+- mmap(..., offset=0x8000000111111000)
+  |- syscall(mmap, ... unsigned long, off):
+     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
 
-But that would have been a user-visible change, and when initramfs was going in
-they were trying to avoid user-visible changes that would force sysadmins to
-learn new stuff because the plumbing changed out from under them. (Like the
-change you're proposing now would.)
+  here pgoff is correctly shifted to 0x8000000111111,
+  but pass 0x8000000111111000 as holebegin to unmap
+  would then cause terrible result, as shown below:
 
->> So, I think we should
->> have two different options. Analogously they should be rootfstype= and
->> rdrootfstype=.
+- unmap_mapping_range(..., loff_t const holebegin)
+  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
+          /* hba = 0xfff8000000111111 unexpectedly */
 
-You can't have a root= type of initramfs or tmpfs. The specified values can't
-overlap. The plumbing I wrote responds to specific values but otherwise leaves
-it for later users.
+The issue happens in Heterogeneous computing, where the device(e.g. 
+gpu) and host share the same virtual address space.
 
->> https://salsa.debian.org/kernel-team/initramfs-tools/-/blob/cf964bfb4362019fd7fba1e839e403ff950dca8e/init#L103
->> 
->> As you can see, this shell script parses /proc/cmdline and assumes
->> that rootfstype= always applies to real root.
+A simple workflow pattern which hit the issue is:
+        /* host */
+    1. userspace first mmap a file backed VA range with specified offset.
+                        e.g. (offset=0x800..., mmap return: va_a)
+    2. write some data to the corresponding sys page
+                         e.g. (va_a = 0xAABB)
+        /* device */
+    3. gpu workload touches VA, triggers gpu fault and notify the host.
+        /* host */
+    4. reviced gpu fault notification, then it will:
+            4.1 unmap host pages and also takes care of cpu tlb
+                  (use unmap_mapping_range with offset=0x800...)
+            4.2 migrate sys page to device
+            4.3 setup device page table and resolve device fault.
+        /* device */
+    5. gpu workload continued, it accessed va_a and got 0xAABB.
+    6. gpu workload continued, it wrote 0xBBCC to va_a.
+        /* host */
+    7. userspace access va_a, as expected, it will:
+            7.1 trigger cpu vm fault.
+            7.2 driver handling fault to migrate gpu local page to host.
+    8. userspace then could correctly get 0xBBCC from va_a
+    9. done
 
-The script is running _in_ the initramfs, which is already loaded and running at
-that point. Meaning the _kernel_ will not parse root= at that point, userspace
-has to do it.
+But in step 4.1, if we hit the bug this patch mentioned, then userspace
+would never trigger cpu fault, and still get the old value: 0xAABB.
 
->> So, if someone sets
->> rootfstype= to tmpfs or ramfs, this will likely break this script.
+Making holebegin unsigned first fixes the bug.
 
-Which was the same 10 years ago?
+Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
+Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-The script is running in a context where initramfs is not persistent, so
-overriding it to be a tmpfs has no benefit. (I mean you _can_... Nobody does,
-because we're gonna switch_root off of it.)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-And once code _is_ running in initramfs, the kernel's internal root= automounter
-will never run. The initramfs code can parse /proc/cmdline to use the same
-arguments as the kernel, or it could much more easily use the "any unrecognized
-arguments get set as environment variables in PID 1" and use ROOT= or similar,
-like many scripts do.
+--- a/mm/memory.c~mm-fix-unmap_mapping_range-high-bits-shift-bug
++++ a/mm/memory.c
+@@ -3624,8 +3624,8 @@ EXPORT_SYMBOL_GPL(unmap_mapping_pages);
+ void unmap_mapping_range(struct address_space *mapping,
+ 		loff_t const holebegin, loff_t const holelen, int even_cows)
+ {
+-	pgoff_t hba = holebegin >> PAGE_SHIFT;
+-	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
++	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
++	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 
+ 	/* Check for overflow. */
+ 	if (sizeof(holelen) > sizeof(hlen)) {
+_
 
-Modifying kernel code that NEVER RUNS in the case you're pointing out seems
-silly to me.
+Patches currently in -mm which might be from jiajun.xie.sh@gmail.com are
 
-That said, the code I wrote is doing a strstr to see if the argument's there,
-but doesn't care what ELSE is there, so it could easily be
-"rootfstype=tmpfs,ext4" and have the userspace script also filter the argument
-for just what it's interested in, since at that point it's NOT THE KERNEL DOING IT.
 
-> Setting the kernel boot command line option rootfstype= to tmpfs or 
-> ramfs was possible so far and that's what the documentation and code 
-> supported so far as well. The bug surfaced when root= was provided, in 
-> which case it was ignored.
-
-No, as I explained when I wrote the initmpfs code in 2013 when you say root= you
-are explicitly requesting the kernel mount a second file system over rootfs
-(that's what root= MEANS), and thus don't bother making it a (more expensive)
-tmpfs because it's not sticking around.
-
-I did that to NOT invent new arguments, and work with existing systems. The new
-feature I added triggered when you _requested_ it.
-
->> Yes, this will slightly break compatibility. I. e. this will make
->> Linux always choose tmpfs if rdrootfstype= is not present. But I think
-> 
-> You may find someone who doesn't like this change, either, ...
-
-Yeah, me.
-
->> there is nothing wrong with it. If a user cares, he will set
->> rdrootfstype= . And early boot code will become a lot more clean and
->> logical.
->> 
->> Rob, do you agree? Stefan, do you agree? Then I will write a patch,
-
-I think it's a bad idea.
-
-If a documentation change is needed, maybe clarify what root= means? That
-argument explicitly requests the kernel mount a second filesystem over rootfs
-after failing to launch init out of initramfs, so that rootfs will NOT be the /
-visible to PID 1.
-
-This is what it has ALWAYS meant. Back before initramfs was invented in the old
-initrd days, you didn't need to say root= if you provided an initial ramdisk
-with an init executable in it (except the old mechanism didn't want /init it
-wanted /linuxrc for no apparent reason), and if you DID say root= when the
-kernel launched PID 1 out of initrd the superfluous argument was ignored (never
-parsed) because the kernel setup code never made it far enough to check it.
-
-I also note that I never wired up "rootflags=" (see init/do_mounts.c
-root_data_setup) so it gets passed through to initmpfs, meaning you can't
-specify size= and thus it defaults to 50% of available memory as the enforced
-limit. That would be actually useful. (And no I don't really care if it's the
-original argument or a different one because it can't have any existing users to
-break yet, although once again the kernel CAN'T do both at once so having two is
-SILLY. The reason they're NOT wired up yet is ramfs takes no arguments, so only
-passing rootflags to tmpfs when you didn't specify a root= or when you tell it
-rootfstype=tmpfs makes sense, because then what you're passing better not be
-ext4 arguments because you're staying on initramfs and the kernel's root=
-plumbing doesn't run.)
-
-That's the actual missing feature here.
-
-Rob
 
