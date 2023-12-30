@@ -1,53 +1,45 @@
-Return-Path: <stable+bounces-8996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380D68205C3
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD1E820558
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EDB6B21532
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E2D1C20DAC
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919B579EF;
-	Sat, 30 Dec 2023 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A9779DF;
+	Sat, 30 Dec 2023 12:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsTvMPgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKuGeyJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5672B8487;
-	Sat, 30 Dec 2023 12:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB916C433C8;
-	Sat, 30 Dec 2023 12:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3FB679D8;
+	Sat, 30 Dec 2023 12:07:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CE9C433C7;
+	Sat, 30 Dec 2023 12:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938303;
-	bh=1AFj07lSnVlJsgQpzKxKHFdm3No23o4xa/beZqgt2jI=;
+	s=korg; t=1703938046;
+	bh=2sfOPaeOiFelc8keLrLJilo6w//Zcbz3XN5Xafao+mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsTvMPgpu1FpHeI1gWn3pYyRC2IgL36up9zwJYEJeYpY5Z+miDbdKnqCMgRhtl5PU
-	 FueLvukvGmnw8P6XDHiKD/zqj4Vesigla7JsEYolQ50H+jGJtQyrq4zby1vMNN5zc6
-	 Snxtqp3aEBZY5FO91BLzj4S+mw8hUvh/W1NCn52g=
+	b=cKuGeyJLLpjZGuDtgdiPm2YlXsmmNcsUyQZQngAC0FoipedlFvqRAbKu1tywDAMwx
+	 iVUMYuH5PF8ksRT/JqABvostRwJwM31K4nn0CV4pAq2x6taP7kxbd/LJUtu2jnKlgo
+	 9z8TDQRWoAc4APcKz6s5Dek4Qanh102cicZIo+d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	netdev@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.1 080/112] net: ks8851: Fix TX stall caused by TX buffer overrun
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 139/156] Revert "scsi: aacraid: Reply queue mapping to CPUs based on IRQ affinity"
 Date: Sat, 30 Dec 2023 11:59:53 +0000
-Message-ID: <20231230115809.331474176@linuxfoundation.org>
+Message-ID: <20231230115816.878417400@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,239 +51,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-commit 3dc5d44545453de1de9c53cc529cc960a85933da upstream.
+commit c5becf57dd5659c687d41d623a69f42d63f59eb2 upstream.
 
-There is a bug in the ks8851 Ethernet driver that more data is written
-to the hardware TX buffer than actually available. This is caused by
-wrong accounting of the free TX buffer space.
+This reverts commit 9dc704dcc09eae7d21b5da0615eb2ed79278f63e.
 
-The driver maintains a tx_space variable that represents the TX buffer
-space that is deemed to be free. The ks8851_start_xmit_spi() function
-adds an SKB to a queue if tx_space is large enough and reduces tx_space
-by the amount of buffer space it will later need in the TX buffer and
-then schedules a work item. If there is not enough space then the TX
-queue is stopped.
+Several reports have been made indicating that this commit caused
+hangs. Numerous attempts at root causing and fixing the issue have
+been unsuccessful so let's revert for now.
 
-The worker function ks8851_tx_work() dequeues all the SKBs and writes
-the data into the hardware TX buffer. The last packet will trigger an
-interrupt after it was send. Here it is assumed that all data fits into
-the TX buffer.
-
-In the interrupt routine (which runs asynchronously because it is a
-threaded interrupt) tx_space is updated with the current value from the
-hardware. Also the TX queue is woken up again.
-
-Now it could happen that after data was sent to the hardware and before
-handling the TX interrupt new data is queued in ks8851_start_xmit_spi()
-when the TX buffer space had still some space left. When the interrupt
-is actually handled tx_space is updated from the hardware but now we
-already have new SKBs queued that have not been written to the hardware
-TX buffer yet. Since tx_space has been overwritten by the value from the
-hardware the space is not accounted for.
-
-Now we have more data queued then buffer space available in the hardware
-and ks8851_tx_work() will potentially overrun the hardware TX buffer. In
-many cases it will still work because often the buffer is written out
-fast enough so that no overrun occurs but for example if the peer
-throttles us via flow control then an overrun may happen.
-
-This can be fixed in different ways. The most simple way would be to set
-tx_space to 0 before writing data to the hardware TX buffer preventing
-the queuing of more SKBs until the TX interrupt has been handled. I have
-chosen a slightly more efficient (and still rather simple) way and
-track the amount of data that is already queued and not yet written to
-the hardware. When new SKBs are to be queued the already queued amount
-of data is honoured when checking free TX buffer space.
-
-I tested this with a setup of two linked KS8851 running iperf3 between
-the two in bidirectional mode. Before the fix I got a stall after some
-minutes. With the fix I saw now issues anymore after hours.
-
-Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: Tristram Ha <Tristram.Ha@microchip.com>
-Cc: netdev@vger.kernel.org
-Cc: stable@vger.kernel.org # 5.10+
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231214181112.76052-1-rwahl@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217599
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/micrel/ks8851.h        |    3 ++
- drivers/net/ethernet/micrel/ks8851_common.c |   20 ++++++-------
- drivers/net/ethernet/micrel/ks8851_spi.c    |   42 ++++++++++++++++++----------
- 3 files changed, 40 insertions(+), 25 deletions(-)
+ drivers/scsi/aacraid/aacraid.h |    1 -
+ drivers/scsi/aacraid/commsup.c |    6 +-----
+ drivers/scsi/aacraid/linit.c   |   14 --------------
+ drivers/scsi/aacraid/src.c     |   25 ++-----------------------
+ 4 files changed, 3 insertions(+), 43 deletions(-)
 
---- a/drivers/net/ethernet/micrel/ks8851.h
-+++ b/drivers/net/ethernet/micrel/ks8851.h
-@@ -350,6 +350,8 @@ union ks8851_tx_hdr {
-  * @rxd: Space for receiving SPI data, in DMA-able space.
-  * @txd: Space for transmitting SPI data, in DMA-able space.
-  * @msg_enable: The message flags controlling driver output (see ethtool).
-+ * @tx_space: Free space in the hardware TX buffer (cached copy of KS_TXMIR).
-+ * @queued_len: Space required in hardware TX buffer for queued packets in txq.
-  * @fid: Incrementing frame id tag.
-  * @rc_ier: Cached copy of KS_IER.
-  * @rc_ccr: Cached copy of KS_CCR.
-@@ -399,6 +401,7 @@ struct ks8851_net {
- 	struct work_struct	rxctrl_work;
+--- a/drivers/scsi/aacraid/aacraid.h
++++ b/drivers/scsi/aacraid/aacraid.h
+@@ -1678,7 +1678,6 @@ struct aac_dev
+ 	u32			handle_pci_error;
+ 	bool			init_reset;
+ 	u8			soft_reset_support;
+-	u8			use_map_queue;
+ };
  
- 	struct sk_buff_head	txq;
-+	unsigned int		queued_len;
- 
- 	struct eeprom_93cx6	eeprom;
- 	struct regulator	*vdd_reg;
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -362,16 +362,18 @@ static irqreturn_t ks8851_irq(int irq, v
- 		handled |= IRQ_RXPSI;
- 
- 	if (status & IRQ_TXI) {
--		handled |= IRQ_TXI;
-+		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
- 
--		/* no lock here, tx queue should have been stopped */
-+		netif_dbg(ks, intr, ks->netdev,
-+			  "%s: txspace %d\n", __func__, tx_space);
- 
--		/* update our idea of how much tx space is available to the
--		 * system */
--		ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
-+		spin_lock(&ks->statelock);
-+		ks->tx_space = tx_space;
-+		if (netif_queue_stopped(ks->netdev))
-+			netif_wake_queue(ks->netdev);
-+		spin_unlock(&ks->statelock);
- 
--		netif_dbg(ks, intr, ks->netdev,
--			  "%s: txspace %d\n", __func__, ks->tx_space);
-+		handled |= IRQ_TXI;
- 	}
- 
- 	if (status & IRQ_RXI)
-@@ -414,9 +416,6 @@ static irqreturn_t ks8851_irq(int irq, v
- 	if (status & IRQ_LCI)
- 		mii_check_link(&ks->mii);
- 
--	if (status & IRQ_TXI)
--		netif_wake_queue(ks->netdev);
--
- 	return IRQ_HANDLED;
- }
- 
-@@ -500,6 +499,7 @@ static int ks8851_net_open(struct net_de
- 	ks8851_wrreg16(ks, KS_ISR, ks->rc_ier);
- 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
- 
-+	ks->queued_len = 0;
- 	netif_start_queue(ks->netdev);
- 
- 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
---- a/drivers/net/ethernet/micrel/ks8851_spi.c
-+++ b/drivers/net/ethernet/micrel/ks8851_spi.c
-@@ -287,6 +287,18 @@ static void ks8851_wrfifo_spi(struct ks8
- }
- 
- /**
-+ * calc_txlen - calculate size of message to send packet
-+ * @len: Length of data
-+ *
-+ * Returns the size of the TXFIFO message needed to send
-+ * this packet.
-+ */
-+static unsigned int calc_txlen(unsigned int len)
-+{
-+	return ALIGN(len + 4, 4);
-+}
-+
-+/**
-  * ks8851_rx_skb_spi - receive skbuff
-  * @ks: The device state
-  * @skb: The skbuff
-@@ -305,7 +317,9 @@ static void ks8851_rx_skb_spi(struct ks8
-  */
- static void ks8851_tx_work(struct work_struct *work)
+ #define aac_adapter_interrupt(dev) \
+--- a/drivers/scsi/aacraid/commsup.c
++++ b/drivers/scsi/aacraid/commsup.c
+@@ -223,12 +223,8 @@ int aac_fib_setup(struct aac_dev * dev)
+ struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
  {
-+	unsigned int dequeued_len = 0;
- 	struct ks8851_net_spi *kss;
-+	unsigned short tx_space;
- 	struct ks8851_net *ks;
- 	unsigned long flags;
- 	struct sk_buff *txb;
-@@ -322,6 +336,8 @@ static void ks8851_tx_work(struct work_s
- 		last = skb_queue_empty(&ks->txq);
+ 	struct fib *fibptr;
+-	u32 blk_tag;
+-	int i;
  
- 		if (txb) {
-+			dequeued_len += calc_txlen(txb->len);
-+
- 			ks8851_wrreg16_spi(ks, KS_RXQCR,
- 					   ks->rc_rxqcr | RXQCR_SDA);
- 			ks8851_wrfifo_spi(ks, txb, last);
-@@ -332,6 +348,13 @@ static void ks8851_tx_work(struct work_s
- 		}
- 	}
+-	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
+-	i = blk_mq_unique_tag_to_tag(blk_tag);
+-	fibptr = &dev->fibs[i];
++	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
+ 	/*
+ 	 *	Null out fields that depend on being zero at the start of
+ 	 *	each I/O
+--- a/drivers/scsi/aacraid/linit.c
++++ b/drivers/scsi/aacraid/linit.c
+@@ -19,7 +19,6 @@
  
-+	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
-+
-+	spin_lock(&ks->statelock);
-+	ks->queued_len -= dequeued_len;
-+	ks->tx_space = tx_space;
-+	spin_unlock(&ks->statelock);
-+
- 	ks8851_unlock_spi(ks, &flags);
+ #include <linux/compat.h>
+ #include <linux/blkdev.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/completion.h>
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+@@ -505,15 +504,6 @@ common_config:
+ 	return 0;
  }
  
-@@ -347,18 +370,6 @@ static void ks8851_flush_tx_work_spi(str
- }
- 
- /**
-- * calc_txlen - calculate size of message to send packet
-- * @len: Length of data
-- *
-- * Returns the size of the TXFIFO message needed to send
-- * this packet.
-- */
--static unsigned int calc_txlen(unsigned int len)
+-static void aac_map_queues(struct Scsi_Host *shost)
 -{
--	return ALIGN(len + 4, 4);
+-	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
+-
+-	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
+-			      aac->pdev, 0);
+-	aac->use_map_queue = true;
 -}
 -
--/**
-  * ks8851_start_xmit_spi - transmit packet using SPI
-  * @skb: The buffer to transmit
-  * @dev: The device used to transmit the packet.
-@@ -386,16 +397,17 @@ static netdev_tx_t ks8851_start_xmit_spi
+ /**
+  *	aac_change_queue_depth		-	alter queue depths
+  *	@sdev:	SCSI device we are considering
+@@ -1498,7 +1488,6 @@ static const struct scsi_host_template a
+ 	.bios_param			= aac_biosparm,
+ 	.shost_groups			= aac_host_groups,
+ 	.slave_configure		= aac_slave_configure,
+-	.map_queues			= aac_map_queues,
+ 	.change_queue_depth		= aac_change_queue_depth,
+ 	.sdev_groups			= aac_dev_groups,
+ 	.eh_abort_handler		= aac_eh_abort,
+@@ -1786,8 +1775,6 @@ static int aac_probe_one(struct pci_dev
+ 	shost->max_lun = AAC_MAX_LUN;
  
- 	spin_lock(&ks->statelock);
+ 	pci_set_drvdata(pdev, shost);
+-	shost->nr_hw_queues = aac->max_msix;
+-	shost->host_tagset = 1;
  
--	if (needed > ks->tx_space) {
-+	if (ks->queued_len + needed > ks->tx_space) {
- 		netif_stop_queue(dev);
- 		ret = NETDEV_TX_BUSY;
- 	} else {
--		ks->tx_space -= needed;
-+		ks->queued_len += needed;
- 		skb_queue_tail(&ks->txq, skb);
- 	}
+ 	error = scsi_add_host(shost, &pdev->dev);
+ 	if (error)
+@@ -1919,7 +1906,6 @@ static void aac_remove_one(struct pci_de
+ 	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
  
- 	spin_unlock(&ks->statelock);
--	schedule_work(&kss->tx_work);
-+	if (ret == NETDEV_TX_OK)
-+		schedule_work(&kss->tx_work);
+ 	aac_cancel_rescan_worker(aac);
+-	aac->use_map_queue = false;
+ 	scsi_remove_host(shost);
  
- 	return ret;
- }
+ 	__aac_shutdown(aac);
+--- a/drivers/scsi/aacraid/src.c
++++ b/drivers/scsi/aacraid/src.c
+@@ -493,10 +493,6 @@ static int aac_src_deliver_message(struc
+ #endif
+ 
+ 	u16 vector_no;
+-	struct scsi_cmnd *scmd;
+-	u32 blk_tag;
+-	struct Scsi_Host *shost = dev->scsi_host_ptr;
+-	struct blk_mq_queue_map *qmap;
+ 
+ 	atomic_inc(&q->numpending);
+ 
+@@ -509,25 +505,8 @@ static int aac_src_deliver_message(struc
+ 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
+ 			&& dev->sa_firmware)
+ 			vector_no = aac_get_vector(dev);
+-		else {
+-			if (!fib->vector_no || !fib->callback_data) {
+-				if (shost && dev->use_map_queue) {
+-					qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
+-					vector_no = qmap->mq_map[raw_smp_processor_id()];
+-				}
+-				/*
+-				 *	We hardcode the vector_no for
+-				 *	reserved commands as a valid shost is
+-				 *	absent during the init
+-				 */
+-				else
+-					vector_no = 0;
+-			} else {
+-				scmd = (struct scsi_cmnd *)fib->callback_data;
+-				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
+-				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
+-			}
+-		}
++		else
++			vector_no = fib->vector_no;
+ 
+ 		if (native_hba) {
+ 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
 
 
 
