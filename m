@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-8938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E968820587
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 207A8820531
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549DE1F22535
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF837281E80
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8339D881F;
-	Sat, 30 Dec 2023 12:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152D079DC;
+	Sat, 30 Dec 2023 12:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtF+MMfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB+uaCJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E33F79CD;
-	Sat, 30 Dec 2023 12:09:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C978DC433C7;
-	Sat, 30 Dec 2023 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B7979C2;
+	Sat, 30 Dec 2023 12:05:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2EDC433C8;
+	Sat, 30 Dec 2023 12:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938152;
-	bh=y2Dp7WYRanM6A00VqSYrolYHFdUCWWlWsw9PCi+1GTQ=;
+	s=korg; t=1703937945;
+	bh=fAAxMhoaR2AmsJODD3yzNlbif+fJVLE68KrApxbUilw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MtF+MMfxjuaqkv7U2N4aBD7WlJi9M/fProx5DfIdLhCHYIv5IvuHBFtKITJnTH6ad
-	 aS+mlepaGF/XU0KqE5yIpvRjYL3za7d54c1qPQGE9aqdI+SVOJjcbYyEW/weLpvJSu
-	 1MUHyAJIQiBSYO4x8uC4SmMioudtuqjBkNm0dRY8=
+	b=SB+uaCJjn4/CaYM8ILko/ciMPIkiMDVtIvJ9MrP5tA9cM83c5NeFyXxr6q8Vj74uW
+	 PiC+heiq+sPN17PpjG1An3Ek1Y8VhEufe9QTZizwd/MZGjTAMSCuxTJuPJjaR2G/k9
+	 gXVEblw6yZDVt6hT4NuHAhrQ/rFOZ4y9Js8szILs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/112] gpiolib: cdev: add gpio_device locking wrapper around gpio_ioctl()
-Date: Sat, 30 Dec 2023 11:59:19 +0000
-Message-ID: <20231230115808.200978597@linuxfoundation.org>
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 106/156] ALSA: hda/tas2781: select program 0, conf 0 by default
+Date: Sat, 30 Dec 2023 11:59:20 +0000
+Message-ID: <20231230115815.833248150@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +52,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit 1d656bd259edb89dc1d9938ec5c5389867088546 ]
+commit ec1de5c214eb5a892fdb7c450748249d5e2840f5 upstream.
 
-While the GPIO cdev gpio_ioctl() call is in progress, the kernel can
-call gpiochip_remove() which will set gdev->chip to NULL, after which
-any subsequent access will cause a crash.
+Currently, cur_prog/cur_conf remains at the default value (-1), while
+program 0 has been loaded into the amplifiers.
 
-gpio_ioctl() was overlooked by the previous fix to protect syscalls
-(bdbbae241a04), so add protection for that.
+In the playback hook, tasdevice_tuning_switch tries to restore the
+cur_prog/cur_conf. In the runtime_resume/system_resume,
+tasdevice_prmg_load tries to load the cur_prog as well.
 
-Fixes: bdbbae241a04 ("gpiolib: protect the GPIO device against being dropped while in use by user-space")
-Fixes: d7c51b47ac11 ("gpio: userspace ABI for reading/writing GPIO lines")
-Fixes: 3c0d9c635ae2 ("gpiolib: cdev: support GPIO_V2_GET_LINE_IOCTL and GPIO_V2_LINE_GET_VALUES_IOCTL")
-Fixes: aad955842d1c ("gpiolib: cdev: support GPIO_V2_GET_LINEINFO_IOCTL and GPIO_V2_GET_LINEINFO_WATCH_IOCTL")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Set cur_prog and cur_conf to 0 if available in the firmware.
+
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/038add0bdca1f979cc7abcce8f24cbcd3544084b.1702596646.git.soyer@irl.hu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ sound/pci/hda/tas2781_hda_i2c.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
-index 6ab1cf489d035..e40c93f0960b4 100644
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -2444,10 +2444,7 @@ static int lineinfo_unwatch(struct gpio_chardev_data *cdev, void __user *ip)
- 	return 0;
- }
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 63a90c7e8976..2fb1a7037c82 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -543,6 +543,10 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
  
--/*
-- * gpio_ioctl() - ioctl handler for the GPIO chardev
-- */
--static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-+static long gpio_ioctl_unlocked(struct file *file, unsigned int cmd, unsigned long arg)
- {
- 	struct gpio_chardev_data *cdev = file->private_data;
- 	struct gpio_device *gdev = cdev->gdev;
-@@ -2484,6 +2481,17 @@ static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 	}
- }
+ 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
+ 	tasdevice_prmg_load(tas_priv, 0);
++	if (tas_priv->fmw->nr_programs > 0)
++		tas_priv->cur_prog = 0;
++	if (tas_priv->fmw->nr_configurations > 0)
++		tas_priv->cur_conf = 0;
  
-+/*
-+ * gpio_ioctl() - ioctl handler for the GPIO chardev
-+ */
-+static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
-+{
-+	struct gpio_chardev_data *cdev = file->private_data;
-+
-+	return call_ioctl_locked(file, cmd, arg, cdev->gdev,
-+				 gpio_ioctl_unlocked);
-+}
-+
- #ifdef CONFIG_COMPAT
- static long gpio_ioctl_compat(struct file *file, unsigned int cmd,
- 			      unsigned long arg)
+ 	/* If calibrated data occurs error, dsp will still works with default
+ 	 * calibrated data inside algo.
 -- 
 2.43.0
 
