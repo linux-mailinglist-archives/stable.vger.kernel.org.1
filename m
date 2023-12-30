@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-8796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46F98204EA
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 802B8820569
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FC8B1F21A3C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CDBC28201C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA35C8473;
-	Sat, 30 Dec 2023 12:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C94579DC;
+	Sat, 30 Dec 2023 12:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3Eb7nkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n77gtU1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AA479E0;
-	Sat, 30 Dec 2023 12:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985FC433C8;
-	Sat, 30 Dec 2023 12:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342379D8;
+	Sat, 30 Dec 2023 12:08:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE9C7C433C8;
+	Sat, 30 Dec 2023 12:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937785;
-	bh=7W0hI7unFNGK+Fsc2rtMdVNcQCxZ9zGBmhFpLpnxc2Y=;
+	s=korg; t=1703938090;
+	bh=gYNOUJpbSQUBmLLN2fLIN5WCeXwGeAYzijcdXtvDiYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o3Eb7nkA8kksDOeS4szZzNHA/utV6Onskn1f82qWaUK6uQmmLLkXU8h9tkSTB8cfO
-	 pd3IfE2/V55OvjfMe9Ol9GNSXnVARsVS4Yx+BT3f5dJJyzlN1NKjoN/lVqQNt9n6GV
-	 1SQKz2AgMgoMyCvShvyTIrkp/FIHhWtak1FcXrew=
+	b=n77gtU1zGqDYQAu5p+8uoHLArB9klKnI1LBBSYea76nMVSif32GiUpSiojRqib/2R
+	 5cxXGUARaiNNLJZMw+uUQ17XyNOgTyHQID/LcU1eAA48DrCIXwIX9VtZwVwM4MEvWQ
+	 NXsKdC0GwNIIPRpjyTTaOwHKnZyPuVIRSDF4KGo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/156] afs: Fix the dynamic roots d_delete to always delete unused dentries
-Date: Sat, 30 Dec 2023 11:58:36 +0000
-Message-ID: <20231230115814.373760801@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Marcus Aram <marcus+oss@oxar.nl>,
+	Mark Herbert <mark.herbert42@gmail.com>
+Subject: [PATCH 6.1 004/112] HID: i2c-hid: Add IDEA5002 to i2c_hid_acpi_blacklist[]
+Date: Sat, 30 Dec 2023 11:58:37 +0000
+Message-ID: <20231230115806.875570644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,55 +55,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 71f8b55bc30e82d6355e07811213d847981a32e2 ]
+[ Upstream commit a9f68ffe1170ca4bc17ab29067d806a354a026e0 ]
 
-Fix the afs dynamic root's d_delete function to always delete unused
-dentries rather than only deleting them if they're positive.  With things
-as they stand upstream, negative dentries stemming from failed DNS lookups
-stick around preventing retries.
+Users have reported problems with recent Lenovo laptops that contain
+an IDEA5002 I2C HID device. Reports include fans turning on and
+running even at idle and spurious wakeups from suspend.
 
-Fixes: 66c7e1d319a5 ("afs: Split the dynroot stuff out and give it its own ops tables")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Presumably in the Windows ecosystem there is an application that
+uses the HID device. Maybe that puts it into a lower power state so
+it doesn't cause spurious events.
+
+This device doesn't serve any functional purpose in Linux as nothing
+interacts with it so blacklist it from being probed. This will
+prevent the GPIO driver from setting up the GPIO and the spurious
+interrupts and wake events will not occur.
+
+Cc: stable@vger.kernel.org # 6.1
+Reported-and-tested-by: Marcus Aram <marcus+oss@oxar.nl>
+Reported-and-tested-by: Mark Herbert <mark.herbert42@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2812
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dynroot.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-acpi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index 8081d68004d05..cec7d8e5ad0c9 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -252,20 +252,9 @@ static int afs_dynroot_d_revalidate(struct dentry *dentry, unsigned int flags)
- 	return 1;
- }
- 
--/*
-- * Allow the VFS to enquire as to whether a dentry should be unhashed (mustn't
-- * sleep)
-- * - called from dput() when d_count is going to 0.
-- * - return 1 to request dentry be unhashed, 0 otherwise
-- */
--static int afs_dynroot_d_delete(const struct dentry *dentry)
--{
--	return d_really_is_positive(dentry);
--}
--
- const struct dentry_operations afs_dynroot_dentry_operations = {
- 	.d_revalidate	= afs_dynroot_d_revalidate,
--	.d_delete	= afs_dynroot_d_delete,
-+	.d_delete	= always_delete_dentry,
- 	.d_release	= afs_d_release,
- 	.d_automount	= afs_d_automount,
+diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+index 171332fef6d14..6d35bb3974818 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
++++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+@@ -40,6 +40,11 @@ static const struct acpi_device_id i2c_hid_acpi_blacklist[] = {
+ 	 * ICN8505 controller, has a _CID of PNP0C50 but is not HID compatible.
+ 	 */
+ 	{ "CHPN0001" },
++	/*
++	 * The IDEA5002 ACPI device causes high interrupt usage and spurious
++	 * wakeups from suspend.
++	 */
++	{ "IDEA5002" },
+ 	{ }
  };
+ 
 -- 
 2.43.0
 
