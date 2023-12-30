@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-8804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BD28204F7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9594382055E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 504A5282367
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B131F21520
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3636B8489;
-	Sat, 30 Dec 2023 12:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7F679DC;
+	Sat, 30 Dec 2023 12:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIMq6FWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYzpUUNl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F224D8483;
-	Sat, 30 Dec 2023 12:03:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C15EC433C7;
-	Sat, 30 Dec 2023 12:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2405B79D8;
+	Sat, 30 Dec 2023 12:07:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E90C433C7;
+	Sat, 30 Dec 2023 12:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937805;
-	bh=lVu/qOulUI2OkLOpg4XQGNRWnBj7Yuhp8Q98Glzv4gw=;
+	s=korg; t=1703938062;
+	bh=KFb2wCdXl+NHMUSyImIUk0cwDyryKhigftBtqdMaIGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIMq6FWmkmPuBQE7nDsBGWxVlC5lfix2aQkKMziykgcXkW4aZE2Ftlc5t8Hf3bkgR
-	 yZeXLwj5+wgSI0LeM93tqTT+zl6Xnr0uJ6rWk+MupqX9Np+s6OXp143qomqwo31ZoV
-	 wVqpurHmT3qf6uRbR2Q1mEZ/vknoQW0Vnf5FljPI=
+	b=aYzpUUNll3fRzTAhG5+e0QJcJzMYItZkE04qGbrgv7yWBZEuktVr8R1I8DxytRgvR
+	 WDyjhgkF6Pc4HMoXPF9PW2K1K5ZR73VL1HifnrexVHmWOz52PSyGjN900ONzkYnFZr
+	 S+qA3hAwkG/UBPbCpD3Fe9phl9uWnz+aix+X8+iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badal Nilawar <badal.nilawar@intel.com>,
-	Anshuman Gupta <anshuman.gupta@intel.com>,
-	Karthik Poosa <karthik.poosa@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/156] drm/i915/hwmon: Fix static analysis tool reported issues
-Date: Sat, 30 Dec 2023 11:58:44 +0000
-Message-ID: <20231230115814.647573906@linuxfoundation.org>
+Subject: [PATCH 6.1 012/112] wifi: mac80211: mesh: check element parsing succeeded
+Date: Sat, 30 Dec 2023 11:58:45 +0000
+Message-ID: <20231230115807.145742478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,56 +53,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karthik Poosa <karthik.poosa@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 768f17fd25e4a98bf5166148629ecf6f647d5efc ]
+[ Upstream commit 1fc4a3eec50d726f4663ad3c0bb0158354d6647a ]
 
-Updated i915 hwmon with fixes for issues reported by static analysis tool.
-Fixed integer overflow with upcasting.
+ieee802_11_parse_elems() can return NULL, so we must
+check for the return value.
 
-v2:
-- Added Fixes tag (Badal).
-- Updated commit message as per review comments (Anshuman).
-
-Fixes: 4c2572fe0ae7 ("drm/i915/hwmon: Expose power1_max_interval")
-Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
-Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-Signed-off-by: Anshuman Gupta <anshuman.gupta@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231204144809.1518704-1-karthik.poosa@intel.com
-(cherry picked from commit ac3420d3d428443a08b923f9118121c170192b62)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 5d24828d05f3 ("mac80211: always allocate struct ieee802_11_elems")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231211085121.93dea364f3d3.Ie87781c6c48979fb25a744b90af4a33dc2d83a28@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_hwmon.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/mesh_plink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_hwmon.c b/drivers/gpu/drm/i915/i915_hwmon.c
-index 975da8e7f2a9f..8c3f443c8347e 100644
---- a/drivers/gpu/drm/i915/i915_hwmon.c
-+++ b/drivers/gpu/drm/i915/i915_hwmon.c
-@@ -175,7 +175,7 @@ hwm_power1_max_interval_show(struct device *dev, struct device_attribute *attr,
- 	 *     tau4 = (4 | x) << y
- 	 * but add 2 when doing the final right shift to account for units
- 	 */
--	tau4 = ((1 << x_w) | x) << y;
-+	tau4 = (u64)((1 << x_w) | x) << y;
- 	/* val in hwmon interface units (millisec) */
- 	out = mul_u64_u32_shr(tau4, SF_TIME, hwmon->scl_shift_time + x_w);
- 
-@@ -211,7 +211,7 @@ hwm_power1_max_interval_store(struct device *dev,
- 	r = FIELD_PREP(PKG_MAX_WIN, PKG_MAX_WIN_DEFAULT);
- 	x = REG_FIELD_GET(PKG_MAX_WIN_X, r);
- 	y = REG_FIELD_GET(PKG_MAX_WIN_Y, r);
--	tau4 = ((1 << x_w) | x) << y;
-+	tau4 = (u64)((1 << x_w) | x) << y;
- 	max_win = mul_u64_u32_shr(tau4, SF_TIME, hwmon->scl_shift_time + x_w);
- 
- 	if (val > max_win)
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index bd0b7c189adfa..c54acdc8d00ab 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -1230,6 +1230,8 @@ void mesh_rx_plink_frame(struct ieee80211_sub_if_data *sdata,
+ 			return;
+ 	}
+ 	elems = ieee802_11_parse_elems(baseaddr, len - baselen, true, NULL);
+-	mesh_process_plink_frame(sdata, mgmt, elems, rx_status);
+-	kfree(elems);
++	if (elems) {
++		mesh_process_plink_frame(sdata, mgmt, elems, rx_status);
++		kfree(elems);
++	}
+ }
 -- 
 2.43.0
 
