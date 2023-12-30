@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-8906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A11820561
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC958204FB
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D87C0B212F5
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B20C71F2151B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1812179D8;
-	Sat, 30 Dec 2023 12:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192E079DF;
+	Sat, 30 Dec 2023 12:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck5UDvDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Za3u6AO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EA779C2;
-	Sat, 30 Dec 2023 12:07:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE68C433C8;
-	Sat, 30 Dec 2023 12:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59CF881F;
+	Sat, 30 Dec 2023 12:03:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F159C433C8;
+	Sat, 30 Dec 2023 12:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938069;
-	bh=xKOLIh/V+VhiHNKxLHHmBRouY49KKiUMk3oVZ3TEJAo=;
+	s=korg; t=1703937818;
+	bh=KxyLGrmPfPt0JWp6zdwv1YW8JpRA71SP1XnWV190JTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ck5UDvDQwmqFRqOQAfcFiT1U9Z/c4MSlcA1FiXgKbv7DH62re1jtNKRfIyuFc6pAK
-	 FzqZRmpWIns6GCHZGJ84umbTt8Bq7j7EO0i9AuWUiNAqvucKBSlsXCCdpvCJ/7hrd4
-	 eOwbUhEM71jCbEtdoRCsT2WSvFhZVpJbxeGnfdMk=
+	b=Za3u6AO2a4zI8swxZXsC4/cAI0Oy/uF40v0KbsHCMlAyesj0QxQPmxc3bQ++U0WcQ
+	 QlvgcR/Bq/knh5VLYSG76e+9w2iNcAcH9hexKaWs22LHQh81HOgndi8+KdtpyPxU3O
+	 CI9RixCkK18JB/1QqYSXvEYzN1cdDhU9KLhu5DFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/112] Revert "net/mlx5e: fix double free of encap_header"
+Subject: [PATCH 6.6 074/156] i2c: qcom-geni: fix missing clk_disable_unprepare() and geni_se_resources_off()
 Date: Sat, 30 Dec 2023 11:58:48 +0000
-Message-ID: <20231230115807.240318919@linuxfoundation.org>
+Message-ID: <20231230115814.781076381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +54,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 5d089684dc434a31e08d32f0530066d0025c52e4 ]
+[ Upstream commit 043465b66506e8c647cdd38a2db1f2ee0f369a1b ]
 
-This reverts commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1.
+Add missing clk_disable_unprepare() and geni_se_resources_off() in the error
+path in geni_i2c_probe().
 
-This patch is causing a null ptr issue, the proper fix is in the next
-patch.
-
-Fixes: 6f9b1a073166 ("net/mlx5e: fix double free of encap_header")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-qcom-geni.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index ccfc626c37d48..83bb0811e7741 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -300,6 +300,9 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
- 
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -319,8 +322,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 229353e96e095..0a9d389df301b 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -857,6 +857,7 @@ static int geni_i2c_probe(struct platform_device *pdev)
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
+ 		dev_err(dev, "Error turning on resources %d\n", ret);
++		clk_disable_unprepare(gi2c->core_clk);
+ 		return ret;
  	}
+ 	proto = geni_se_read_proto(&gi2c->se);
+@@ -876,8 +877,11 @@ static int geni_i2c_probe(struct platform_device *pdev)
+ 		/* FIFO is disabled, so we can only use GPI DMA */
+ 		gi2c->gpi_mode = true;
+ 		ret = setup_gpi_dma(gi2c);
+-		if (ret)
++		if (ret) {
++			geni_se_resources_off(&gi2c->se);
++			clk_disable_unprepare(gi2c->core_clk);
+ 			return dev_err_probe(dev, ret, "Failed to setup GPI DMA mode\n");
++		}
  
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv4_put(&attr);
-@@ -567,6 +568,9 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+ 		dev_dbg(dev, "Using GPI DMA mode for I2C\n");
+ 	} else {
+@@ -890,6 +894,8 @@ static int geni_i2c_probe(struct platform_device *pdev)
  
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -586,8 +590,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+ 		if (!tx_depth) {
+ 			dev_err(dev, "Invalid TX FIFO depth\n");
++			geni_se_resources_off(&gi2c->se);
++			clk_disable_unprepare(gi2c->core_clk);
+ 			return -EINVAL;
+ 		}
  
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv6_put(&attr);
 -- 
 2.43.0
 
