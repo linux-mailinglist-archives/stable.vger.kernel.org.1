@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1BD082045D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621B582045E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684622820F8
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D29E9B213E5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79B91FC5;
-	Sat, 30 Dec 2023 10:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FFA23C4;
+	Sat, 30 Dec 2023 10:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6h+mHz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZZL+UMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8277B23AE
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB66C433C8;
-	Sat, 30 Dec 2023 10:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA05823A5
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006F0C433C7;
+	Sat, 30 Dec 2023 10:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933796;
-	bh=j7WjFo+ds5cjvYpNSi5ds49DrFjhy/t/uxqNPJihE08=;
+	s=korg; t=1703933800;
+	bh=rj8sC0PUXPQ7+e0hYCvv6e6gZDaG9o8OltBRyaqjKSQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=A6h+mHz+9Ss7Mwj7C5qvx7K0IPCzLLMs2dlnTW3oW5rqnaeU8oGBFYlS/Iv0uzpk7
-	 CJp6MXwJdNluCsIgv1UjaOVIyQ9v4mnp8nFnQ791Y4sXIEakr4Da08iq2fK6fXGkqz
-	 2moJuMNfAXutdiooZdSULavDqb2Dtjaqdan3b0gc=
-Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 5.10-stable tree
+	b=tZZL+UMypasRbIY4AAlZrvMq136ApOnRjDTLeD3dqIrg8U40FkSZtG9tBr/yJUBaF
+	 r65GMnuDJyKygPG6MEtnwS4WJ5YoJpEGvOhhdzOydhQNivZ1uzyO0Q6PI/yEiLgoxY
+	 RHHU8RjblLATr/wH8yfmwY38Fjzo+yv6uvjeCndA=
+Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 5.4-stable tree
 To: louis.chauvet@bootlin.com,broonie@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:56:34 +0000
-Message-ID: <2023123034-sauciness-sarcasm-914b@gregkh>
+Date: Sat, 30 Dec 2023 10:56:37 +0000
+Message-ID: <2023123037-kudos-frayed-b7a9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123034-sauciness-sarcasm-914b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123037-kudos-frayed-b7a9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
 69e1818ad27b ("spi: atmel: Fix CS and initialization bug")
 5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer method")
+ca4196aa1008 ("Merge branch 'spi-5.5' into spi-next")
 
 thanks,
 
