@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-8888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6893A82054F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593358205B9
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25F6B282216
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FFBC1F231A4
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A877879EF;
-	Sat, 30 Dec 2023 12:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838588483;
+	Sat, 30 Dec 2023 12:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBLz3KlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACwguz7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7208879DE;
-	Sat, 30 Dec 2023 12:07:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED9BC433C7;
-	Sat, 30 Dec 2023 12:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEE379DD;
+	Sat, 30 Dec 2023 12:11:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C757BC433C8;
+	Sat, 30 Dec 2023 12:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938023;
-	bh=Kkp/9beZOD2mX2oE4Skso7WYXbZULJHfJ+Wzs6cEq6o=;
+	s=korg; t=1703938280;
+	bh=5EAqNRWruzVVU81F9hGZ04oiiyuPre7+HCfZJL2eLl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bBLz3KlEgsBz0FYPRAwe/anOeSYhSXQbycfAe3Yt5svSfzeIRPXreIrzdEQFLj1U0
-	 /gT4rW+3LNlCrGnESxuquI6sNQxoG9JPL3jxcMv4Y8qFovz9d9L3CXyUHEWWmH8/Gm
-	 ZcpO9sxrcHxruJNTjOI6Y00sTkHt/Nt8/4MwpJ0Y=
+	b=ACwguz7DJGMrBtRAWYzJwebfjUd4nqK4rvXEYkeQeB9a0j1I/HFMabXvNHuEic+lr
+	 5KEaBoxoXRNH2eCLK9MzWKYgnsNG6AeyIKLhIUrMal5VXsfTteovkWMBlcMoUn/Fcl
+	 eKKr/+sblu+vcP4LDXxXZuHEOzTCT4batlLnHXaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 153/156] x86/alternatives: Sync core before enabling interrupts
-Date: Sat, 30 Dec 2023 12:00:07 +0000
-Message-ID: <20231230115817.298291227@linuxfoundation.org>
+	Geliang Tang <geliang.tang@linux.dev>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/112] selftests: mptcp: join: fix subflow_send_ack lookup
+Date: Sat, 30 Dec 2023 12:00:08 +0000
+Message-ID: <20231230115809.855103870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Geliang Tang <geliang.tang@linux.dev>
 
-commit 3ea1704a92967834bf0e64ca1205db4680d04048 upstream.
+[ Upstream commit c8f021eec5817601dbd25ab7e3ad5c720965c688 ]
 
-text_poke_early() does:
+MPC backups tests will skip unexpected sometimes (For example, when
+compiling kernel with an older version of gcc, such as gcc-8), since
+static functions like mptcp_subflow_send_ack also be listed in
+/proc/kallsyms, with a 't' in front of it, not 'T' ('T' is for a global
+function):
 
-   local_irq_save(flags);
-   memcpy(addr, opcode, len);
-   local_irq_restore(flags);
-   sync_core();
+ > grep "mptcp_subflow_send_ack" /proc/kallsyms
 
-That's not really correct because the synchronization should happen before
-interrupts are re-enabled to ensure that a pending interrupt observes the
-complete update of the opcodes.
+ 0000000000000000 T __pfx___mptcp_subflow_send_ack
+ 0000000000000000 T __mptcp_subflow_send_ack
+ 0000000000000000 t __pfx_mptcp_subflow_send_ack
+ 0000000000000000 t mptcp_subflow_send_ack
 
-It's not entirely clear whether the interrupt entry provides enough
-serialization already, but moving the sync_core() invocation into interrupt
-disabled region does no harm and is obviously correct.
+In this case, mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"
+will be false, MPC backups tests will skip. This is not what we expected.
 
-Fixes: 6fffacb30349 ("x86/alternatives, jumplabel: Use text_poke_early() before mm_init()")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZT6narvE%2BLxX%2B7Be@windriver.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The correct logic here should be: if mptcp_subflow_send_ack is not a
+global function in /proc/kallsyms, do these MPC backups tests. So a 'T'
+must be added in front of mptcp_subflow_send_ack.
+
+Fixes: 632978f0a961 ("selftests: mptcp: join: skip MPC backups tests if not supported")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/alternative.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -1685,8 +1685,8 @@ void __init_or_module text_poke_early(vo
- 	} else {
- 		local_irq_save(flags);
- 		memcpy(addr, opcode, len);
--		local_irq_restore(flags);
- 		sync_core();
-+		local_irq_restore(flags);
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index ea6fc59e9f62f..e52d513009fb0 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2652,7 +2652,7 @@ backup_tests()
+ 	fi
  
- 		/*
- 		 * Could also do a CLFLUSH here to speed up CPU recovery; but
+ 	if reset "mpc backup" &&
+-	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
++	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow
+ 		chk_join_nr 0 0 0
+@@ -2660,7 +2660,7 @@ backup_tests()
+ 	fi
+ 
+ 	if reset "mpc backup both sides" &&
+-	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
++	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow
+@@ -2669,7 +2669,7 @@ backup_tests()
+ 	fi
+ 
+ 	if reset "mpc switch to backup" &&
+-	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
++	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow backup
+ 		chk_join_nr 0 0 0
+@@ -2677,7 +2677,7 @@ backup_tests()
+ 	fi
+ 
+ 	if reset "mpc switch to backup both sides" &&
+-	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
++	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow backup
+-- 
+2.43.0
+
 
 
 
