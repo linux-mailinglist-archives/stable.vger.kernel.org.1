@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-8837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D7D282051B
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31778820584
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FE0D1C20E3F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6201F2256D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23CC8473;
-	Sat, 30 Dec 2023 12:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A588BEB;
+	Sat, 30 Dec 2023 12:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jf8Ag5dF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrM07WHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C52A8BE3;
-	Sat, 30 Dec 2023 12:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E6CEC433C7;
-	Sat, 30 Dec 2023 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4A88BE7;
+	Sat, 30 Dec 2023 12:09:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08391C433C8;
+	Sat, 30 Dec 2023 12:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937890;
-	bh=7nzCEs0AmaCTV/p0i+W4IVo6ZvEE9n0i7QyLd1D7Rn8=;
+	s=korg; t=1703938144;
+	bh=R1YnlVz/IG/qla5C0RylRCsVeGI/NvJtK08zHW232AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jf8Ag5dFRpCdXKlILL274gS4JlK0DAPg1pyId9P4nlSsfSAuRJqvFkTDVX/4ubMXs
-	 9SY2GmdsOjMrzxoWTKNYZhtrwZP1I9l+rdd3pulRCq2ksCfdu+zXZp5aTOMWB7dMGm
-	 8KfnxhA6CCsHIF5b9wTaoBl55wfxXGNauOqn5cf4=
+	b=mrM07WHTaU2YvJ6U9XAkxnu4mfojkZlbF28zKiRyjuVuxv61E/ID9HdYA8S6laim8
+	 fZWKrFhP3uBhv8RzRk9ZNc74tkml+q8mNTU6Fwtiy1ye+d63GrPxDAibojrVK70fr4
+	 1Yab3kIzaUokropciL5eo6XssJT3k6TQ7YWYUcJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Glover <mark.glover@actisense.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 102/156] USB: serial: ftdi_sio: update Actisense PIDs constant names
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 043/112] i2c: aspeed: Handle the coalesced stop conditions with the start conditions.
 Date: Sat, 30 Dec 2023 11:59:16 +0000
-Message-ID: <20231230115815.701393811@linuxfoundation.org>
+Message-ID: <20231230115808.114268256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,56 +55,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Glover <mark.glover@actisense.com>
+From: Quan Nguyen <quan@os.amperecomputing.com>
 
-commit 513d88a88e0203188a38f4647dd08170aebd85df upstream.
+[ Upstream commit b4cc1cbba5195a4dd497cf2f8f09e7807977d543 ]
 
-Update the constant names for unused USB PIDs (product identifiers) to
-reflect the new products now using the PIDs.
+Some masters may drive the transfers with low enough latency between
+the nak/stop phase of the current command and the start/address phase
+of the following command that the interrupts are coalesced by the
+time we process them.
+Handle the stop conditions before processing SLAVE_MATCH to fix the
+complaints that sometimes occur below.
 
-Signed-off-by: Mark Glover <mark.glover@actisense.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"aspeed-i2c-bus 1e78a040.i2c-bus: irq handled != irq. Expected
+0x00000086, but was 0x00000084"
+
+Fixes: f9eb91350bb2 ("i2c: aspeed: added slave support for Aspeed I2C driver")
+Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    6 +++---
- drivers/usb/serial/ftdi_sio_ids.h |    6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/i2c-aspeed.c | 48 ++++++++++++++++++++++-----------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1033,9 +1033,9 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_USG_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGT_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGW_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AC_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AD_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AE_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_UID_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_USA_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGX_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AF_PID) },
- 	{ USB_DEVICE(FTDI_VID, CHETCO_SEAGAUGE_PID) },
- 	{ USB_DEVICE(FTDI_VID, CHETCO_SEASWITCH_PID) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1568,9 +1568,9 @@
- #define ACTISENSE_USG_PID		0xD9A9 /* USG USB Serial Adapter */
- #define ACTISENSE_NGT_PID		0xD9AA /* NGT NMEA2000 Interface */
- #define ACTISENSE_NGW_PID		0xD9AB /* NGW NMEA2000 Gateway */
--#define ACTISENSE_D9AC_PID		0xD9AC /* Actisense Reserved */
--#define ACTISENSE_D9AD_PID		0xD9AD /* Actisense Reserved */
--#define ACTISENSE_D9AE_PID		0xD9AE /* Actisense Reserved */
-+#define ACTISENSE_UID_PID		0xD9AC /* USB Isolating Device */
-+#define ACTISENSE_USA_PID		0xD9AD /* USB to Serial Adapter */
-+#define ACTISENSE_NGX_PID		0xD9AE /* NGX NMEA2000 Gateway */
- #define ACTISENSE_D9AF_PID		0xD9AF /* Actisense Reserved */
- #define CHETCO_SEAGAUGE_PID		0xA548 /* SeaGauge USB Adapter */
- #define CHETCO_SEASWITCH_PID		0xA549 /* SeaSwitch USB Adapter */
+diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+index 6adf3b141316b..86daf791aa27c 100644
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -249,18 +249,46 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 	if (!slave)
+ 		return 0;
+ 
+-	command = readl(bus->base + ASPEED_I2C_CMD_REG);
++	/*
++	 * Handle stop conditions early, prior to SLAVE_MATCH. Some masters may drive
++	 * transfers with low enough latency between the nak/stop phase of the current
++	 * command and the start/address phase of the following command that the
++	 * interrupts are coalesced by the time we process them.
++	 */
++	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
++		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
++		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
++	}
++
++	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
++	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
++		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
++		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
++	}
++
++	/* Propagate any stop conditions to the slave implementation. */
++	if (bus->slave_state == ASPEED_I2C_SLAVE_STOP) {
++		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
++		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
++	}
+ 
+-	/* Slave was requested, restart state machine. */
++	/*
++	 * Now that we've dealt with any potentially coalesced stop conditions,
++	 * address any start conditions.
++	 */
+ 	if (irq_status & ASPEED_I2CD_INTR_SLAVE_MATCH) {
+ 		irq_handled |= ASPEED_I2CD_INTR_SLAVE_MATCH;
+ 		bus->slave_state = ASPEED_I2C_SLAVE_START;
+ 	}
+ 
+-	/* Slave is not currently active, irq was for someone else. */
++	/*
++	 * If the slave has been stopped and not started then slave interrupt
++	 * handling is complete.
++	 */
+ 	if (bus->slave_state == ASPEED_I2C_SLAVE_INACTIVE)
+ 		return irq_handled;
+ 
++	command = readl(bus->base + ASPEED_I2C_CMD_REG);
+ 	dev_dbg(bus->dev, "slave irq status 0x%08x, cmd 0x%08x\n",
+ 		irq_status, command);
+ 
+@@ -279,17 +307,6 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 		irq_handled |= ASPEED_I2CD_INTR_RX_DONE;
+ 	}
+ 
+-	/* Slave was asked to stop. */
+-	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
+-		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
+-		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
+-	}
+-	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
+-	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
+-		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
+-		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
+-	}
+-
+ 	switch (bus->slave_state) {
+ 	case ASPEED_I2C_SLAVE_READ_REQUESTED:
+ 		if (unlikely(irq_status & ASPEED_I2CD_INTR_TX_ACK))
+@@ -324,8 +341,7 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 		i2c_slave_event(slave, I2C_SLAVE_WRITE_RECEIVED, &value);
+ 		break;
+ 	case ASPEED_I2C_SLAVE_STOP:
+-		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
+-		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
++		/* Stop event handling is done early. Unreachable. */
+ 		break;
+ 	case ASPEED_I2C_SLAVE_START:
+ 		/* Slave was just started. Waiting for the next event. */;
+-- 
+2.43.0
+
 
 
 
