@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-8860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8A0820533
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8041882059D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0CD11C20F9A
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216E11F22B02
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6D679D8;
-	Sat, 30 Dec 2023 12:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B93679EE;
+	Sat, 30 Dec 2023 12:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdGWW5v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnZdwjNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7D78483;
-	Sat, 30 Dec 2023 12:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75047C433C8;
-	Sat, 30 Dec 2023 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A7479CD;
+	Sat, 30 Dec 2023 12:10:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFA4C433C7;
+	Sat, 30 Dec 2023 12:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937950;
-	bh=vVMv8TA39+W6TfDT6EypWk5MhuOXaia5keD830w62xs=;
+	s=korg; t=1703938206;
+	bh=kCWQYduUeVnJE1iKCUl9Rzb7uSxaFWwftowPGM0diYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdGWW5v3fNNL0YMOUxQHEk2XPvGNpTxsPNhPVt8qizMjjEtyHtvAo3UPUc4OI2kx1
-	 m/c/lPuHZryKDd1XScArnjVPaq3NaGJWTHc83eptQNvUvp6s5QXVQ6QA5WUAcPmKjc
-	 N0MxRkIMfqd3P2yR4a+MApEK05/vpJTySmmnNM/Q=
+	b=DnZdwjNI5sAQ3V5FeohuSfaXZrLgXiHUa4cqh7SspHZF3olguB7glWERilpyY+BZy
+	 tj/TdNy+c4cvgcTHAUQFcrE0ZiTuf7Fkg6NHvHoipzre+dZo/4Y4A+YqKZW9S4uf0V
+	 ZN9hYtcZyZBjkmfHwh4QRCjUNlREOGwfSV1gzKzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 125/156] smb: client: fix OOB in cifsd when receiving compounded resps
-Date: Sat, 30 Dec 2023 11:59:39 +0000
-Message-ID: <20231230115816.457792940@linuxfoundation.org>
+	Alper Ak <alperyasinak1@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 067/112] USB: serial: option: add Quectel EG912Y module support
+Date: Sat, 30 Dec 2023 11:59:40 +0000
+Message-ID: <20231230115808.860624997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,166 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Alper Ak <alperyasinak1@gmail.com>
 
-commit a8f68b11158f09754418de62e6b3e7b9b7a50cc9 upstream.
+commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
 
-Validate next header's offset in ->next_header() so that it isn't
-smaller than MID_HEADER_SIZE(server) and then standard_receive3() or
-->receive() ends up writing off the end of the buffer because
-'pdu_length - MID_HEADER_SIZE(server)' wraps up to a huge length:
+Add Quectel EG912Y "DIAG, AT, MODEM"
 
-  BUG: KASAN: slab-out-of-bounds in _copy_to_iter+0x4fc/0x840
-  Write of size 701 at addr ffff88800caf407f by task cifsd/1090
+0x6001: ECM / RNDIS + DIAG + AT + MODEM
 
-  CPU: 0 PID: 1090 Comm: cifsd Not tainted 6.7.0-rc4 #5
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xd8/0x110
-   ? _copy_to_iter+0x4fc/0x840
-   ? _copy_to_iter+0x4fc/0x840
-   kasan_check_range+0x105/0x1b0
-   __asan_memcpy+0x3c/0x60
-   _copy_to_iter+0x4fc/0x840
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? hlock_class+0x32/0xc0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __pfx__copy_to_iter+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_is_held_type+0x90/0x100
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __might_resched+0x278/0x360
-   ? __pfx___might_resched+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   __skb_datagram_iter+0x2c2/0x460
-   ? __pfx_simple_copy_to_iter+0x10/0x10
-   skb_copy_datagram_iter+0x6c/0x110
-   tcp_recvmsg_locked+0x9be/0xf40
-   ? __pfx_tcp_recvmsg_locked+0x10/0x10
-   ? mark_held_locks+0x5d/0x90
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   tcp_recvmsg+0xe2/0x310
-   ? __pfx_tcp_recvmsg+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0x14a/0x3a0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   inet_recvmsg+0xd0/0x370
-   ? __pfx_inet_recvmsg+0x10/0x10
-   ? __pfx_lock_release+0x10/0x10
-   ? do_raw_spin_trylock+0xd1/0x120
-   sock_recvmsg+0x10d/0x150
-   cifs_readv_from_socket+0x25a/0x490 [cifs]
-   ? __pfx_cifs_readv_from_socket+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_read_from_socket+0xb5/0x100 [cifs]
-   ? __pfx_cifs_read_from_socket+0x10/0x10 [cifs]
-   ? __pfx_lock_release+0x10/0x10
-   ? do_raw_spin_trylock+0xd1/0x120
-   ? _raw_spin_unlock+0x23/0x40
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __smb2_find_mid+0x126/0x230 [cifs]
-   cifs_demultiplex_thread+0xd39/0x1270 [cifs]
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   ? __pfx_lock_release+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? mark_held_locks+0x1a/0x90
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kthread_parkme+0xce/0xf0
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   kthread+0x18d/0x1d0
-   ? kthread+0xdb/0x1d0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x34/0x60
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6001 Rev= 3.18
+S:  Manufacturer=Android
+S:  Product=Android
+S:  SerialNumber=0000
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: 8ce79ec359ad ("cifs: update multiplex loop to handle compounded responses")
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
 Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |    3 ++-
- fs/smb/client/connect.c  |    7 ++++++-
- fs/smb/client/smb2ops.c  |   19 ++++++++++++-------
- 3 files changed, 20 insertions(+), 9 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -532,7 +532,8 @@ struct smb_version_operations {
- 				 struct mid_q_entry **, char **, int *);
- 	enum securityEnum (*select_sectype)(struct TCP_Server_Info *,
- 			    enum securityEnum);
--	int (*next_header)(char *);
-+	int (*next_header)(struct TCP_Server_Info *server, char *buf,
-+			   unsigned int *noff);
- 	/* ioctl passthrough for query_info */
- 	int (*ioctl_query_info)(const unsigned int xid,
- 				struct cifs_tcon *tcon,
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1180,7 +1180,12 @@ next_pdu:
- 		server->total_read += length;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -272,6 +272,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM500Q			0x0800
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
++#define QUECTEL_PRODUCT_EG912Y			0x6001
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
+ #define QUECTEL_PRODUCT_EC200A			0x6005
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+@@ -1244,6 +1245,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
  
- 		if (server->ops->next_header) {
--			next_offset = server->ops->next_header(buf);
-+			if (server->ops->next_header(server, buf, &next_offset)) {
-+				cifs_dbg(VFS, "%s: malformed response (next_offset=%u)\n",
-+					 __func__, next_offset);
-+				cifs_reconnect(server, true);
-+				continue;
-+			}
- 			if (next_offset)
- 				server->pdu_size = next_offset;
- 		}
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5072,17 +5072,22 @@ smb3_handle_read_data(struct TCP_Server_
- 				NULL, 0, false);
- }
- 
--static int
--smb2_next_header(char *buf)
-+static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
-+			    unsigned int *noff)
- {
- 	struct smb2_hdr *hdr = (struct smb2_hdr *)buf;
- 	struct smb2_transform_hdr *t_hdr = (struct smb2_transform_hdr *)buf;
- 
--	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM)
--		return sizeof(struct smb2_transform_hdr) +
--		  le32_to_cpu(t_hdr->OriginalMessageSize);
--
--	return le32_to_cpu(hdr->NextCommand);
-+	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM) {
-+		*noff = le32_to_cpu(t_hdr->OriginalMessageSize);
-+		if (unlikely(check_add_overflow(*noff, sizeof(*t_hdr), noff)))
-+			return -EINVAL;
-+	} else {
-+		*noff = le32_to_cpu(hdr->NextCommand);
-+	}
-+	if (unlikely(*noff && *noff < MID_HEADER_SIZE(server)))
-+		return -EINVAL;
-+	return 0;
- }
- 
- static int
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
 
 
 
