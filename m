@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-8976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490538205AE
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002B2820545
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF2901F21A6B
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E3C6B211AD
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E88483;
-	Sat, 30 Dec 2023 12:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE00F611A;
+	Sat, 30 Dec 2023 12:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws/uOzkm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vICrAiB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB7F79CD;
-	Sat, 30 Dec 2023 12:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BC7C433C8;
-	Sat, 30 Dec 2023 12:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D0079DE;
+	Sat, 30 Dec 2023 12:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218B3C433C7;
+	Sat, 30 Dec 2023 12:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938251;
-	bh=HdcgvPXJGSr6ZKjjaVrsOmxl/F2bXb21PwIjWcOgKLI=;
+	s=korg; t=1703937997;
+	bh=gaYY3h/DIpDEPbgBmRoW3JZOSyBp2Ragi0UAK7lsSPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws/uOzkmi0M7a7SzbTOMYdCmF9iXbOJ9t7HfucCkVRd3qNgLueg5HHE7kVSXtKBb7
-	 vAE1Zx7eV13gwp7AvB5IFDbnPRLFKAfUh1REHC6JBwCnV1+i2LO4WetmTeozA4Jr2+
-	 +0Vk/ZPDYOiSl7IsTUE0/tRd5gIQ2ZOZZGKKqHBo=
+	b=vICrAiB5rISB5mbh3gZUIKq8tysyO4VLYNOA13jfOaaaocCkxrIJdYBPY/lx/Dmq4
+	 IXsaSOs6lLMi28y7AuX3WS/EqSMBq4R0iiYJs/0pb2jDC5+uKlTub4CkYbY67WlVou
+	 UjasYEgATWC36AuZpwKU8SMOy9qTfqbyK7OQb568=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 085/112] smb: client: fix OOB in smbCalcSize()
+	Nam Cao <namcao@linutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.6 144/156] pinctrl: starfive: jh7110: ignore disabled device tree nodes
 Date: Sat, 30 Dec 2023 11:59:58 +0000
-Message-ID: <20231230115809.510607448@linuxfoundation.org>
+Message-ID: <20231230115817.029425075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,84 +52,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit b35858b3786ddbb56e1c35138ba25d6adf8d0bef upstream.
+commit f6e3b40a2c89c1d832ed9cb031dc9825bbf43b7c upstream.
 
-Validate @smb->WordCount to avoid reading off the end of @smb and thus
-causing the following KASAN splat:
+The driver always registers pin configurations in device tree. This can
+cause some inconvenience to users, as pin configurations in the base
+device tree cannot be disabled in the device tree overlay, even when the
+relevant devices are not used.
 
-  BUG: KASAN: slab-out-of-bounds in smbCalcSize+0x32/0x40 [cifs]
-  Read of size 2 at addr ffff88801c024ec5 by task cifsd/1328
+Ignore disabled pin configuration nodes in device tree.
 
-  CPU: 1 PID: 1328 Comm: cifsd Not tainted 6.7.0-rc5 #9
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xd8/0x110
-   ? smbCalcSize+0x32/0x40 [cifs]
-   ? smbCalcSize+0x32/0x40 [cifs]
-   kasan_check_range+0x105/0x1b0
-   smbCalcSize+0x32/0x40 [cifs]
-   checkSMB+0x162/0x370 [cifs]
-   ? __pfx_checkSMB+0x10/0x10 [cifs]
-   cifs_handle_standard+0xbc/0x2f0 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_demultiplex_thread+0xed1/0x1360 [cifs]
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? __pfx_lock_release+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? mark_held_locks+0x1a/0x90
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kthread_parkme+0xce/0xf0
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   kthread+0x18d/0x1d0
-   ? kthread+0xdb/0x1d0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x34/0x60
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
-
-This fixes CVE-2023-6606.
-
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218218
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 447976ab62c5 ("pinctrl: starfive: Add StarFive JH7110 sys controller driver")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/fd8bf044799ae50a6291ae150ef87b4f1923cacb.1701422582.git.namcao@linutronix.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/misc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/misc.c
-+++ b/fs/smb/client/misc.c
-@@ -350,6 +350,10 @@ checkSMB(char *buf, unsigned int total_r
- 			cifs_dbg(VFS, "Length less than smb header size\n");
- 		}
- 		return -EIO;
-+	} else if (total_read < sizeof(*smb) + 2 * smb->WordCount) {
-+		cifs_dbg(VFS, "%s: can't read BCC due to invalid WordCount(%u)\n",
-+			 __func__, smb->WordCount);
-+		return -EIO;
- 	}
+--- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
++++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
+@@ -135,7 +135,7 @@ static int jh7110_dt_node_to_map(struct
+ 	int ret;
  
- 	/* otherwise, there is enough to get to the BCC */
+ 	ngroups = 0;
+-	for_each_child_of_node(np, child)
++	for_each_available_child_of_node(np, child)
+ 		ngroups += 1;
+ 	nmaps = 2 * ngroups;
+ 
+@@ -150,7 +150,7 @@ static int jh7110_dt_node_to_map(struct
+ 	nmaps = 0;
+ 	ngroups = 0;
+ 	mutex_lock(&sfp->mutex);
+-	for_each_child_of_node(np, child) {
++	for_each_available_child_of_node(np, child) {
+ 		int npins = of_property_count_u32_elems(child, "pinmux");
+ 		int *pins;
+ 		u32 *pinmux;
 
 
 
