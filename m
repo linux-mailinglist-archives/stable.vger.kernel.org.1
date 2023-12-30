@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136C9820480
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87E1820481
 	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB0B1F21727
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4B91C20D72
 	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363AB5699;
-	Sat, 30 Dec 2023 11:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851EF611A;
+	Sat, 30 Dec 2023 11:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPWmKd2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMmloRZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0230779CC
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D344C433C7;
-	Sat, 30 Dec 2023 11:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5155863A1
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE3AC433C7;
+	Sat, 30 Dec 2023 11:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703934809;
-	bh=X3OZhof2YTqs5TxpIo/ibTflwI9VxHFUR5+ts1R1wHc=;
+	s=korg; t=1703934813;
+	bh=0LTSNZSnei0ge27I8gRQWjJQKxtt1JqkBt1CEcnU8yM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vPWmKd2clwLt/SwufzA6UwJ2I4sEvf9OXY8NN2WEAhSReZh7ZydcD1sI9jlDuG1ew
-	 WjMibNJ54g6VTpP1jIndDYYgqM/5kzaBic0EFDC6X5bTrnk7PGrwLs/vNmdKgQUbwO
-	 TjXBa56g+A0MD0qXmVnIxTxsZqni3rX4USUMmbgc=
-Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 6.1-stable tree
+	b=wMmloRZquHN97oOc1NfTBQr+b7fK8Z2C3YIgKb+W2IJlo1gAqSSQIvhFquy/8PoK/
+	 klR/TEiV910rHjIwaaL4GcEU8wy6xqljJMX1LFtCM6zMyk9p3l8ongC6cQveitFsnI
+	 QJiax94nmLNruJDRsKk/KUFKWHhVEAVoZeGSYh8c=
+Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 5.15-stable tree
 To: louis.chauvet@bootlin.com,broonie@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 11:13:27 +0000
-Message-ID: <2023123026-print-hydrogen-51d9@gregkh>
+Date: Sat, 30 Dec 2023 11:13:31 +0000
+Message-ID: <2023123031-ferris-flatness-02b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123026-print-hydrogen-51d9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123031-ferris-flatness-02b2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
