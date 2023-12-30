@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-8967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB9A8205A5
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D816182053D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B912B210AB
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FF2281D46
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B6879E0;
-	Sat, 30 Dec 2023 12:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C81F8473;
+	Sat, 30 Dec 2023 12:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJLMt3YB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLn98ofb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B11879DC;
-	Sat, 30 Dec 2023 12:10:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85E5C433C8;
-	Sat, 30 Dec 2023 12:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE6079E0;
+	Sat, 30 Dec 2023 12:06:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA4CC433C8;
+	Sat, 30 Dec 2023 12:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938228;
-	bh=tkwdpAKeg/WH90Uqv60htuwpmPSRRvgASEYxWjATC6k=;
+	s=korg; t=1703937976;
+	bh=Bk43Hkq/xQMTlsO3sW/brVJmuvoVrvrkGQbGedhlDU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJLMt3YBBZ81ME5l/cdcTvHDw9UXFI7dz8qRGTgchOzIacQ/M5ooBuk2/a8UZWFU8
-	 w6bDf9B8lLR+FfzopW5GP7mVrWPxANC9Lgs4MEW0tdq/ucprQkhT/hYt7xFePu9EcF
-	 BPjVW1IdR4Fr+jmrIrRdpk6H3vsXHYwX8SZvjfa0=
+	b=FLn98ofbGoNCU24+GjelK+CrhNPPSAP+IW2H/y4Q6SorcvvUSRP+yWYhpUBCBUGQm
+	 FoXbP3J4AT3/jNR/6vn9Vv5Jh45U79D5Ia2/Fxk5HFE8m73M/m7uo6L9u+NxRwTFDY
+	 Y6c3/2VZvXoemGYj+ODtYDpkcQPZWzrz7ESy/epI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clint Taylor <clinton.a.taylor@intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/112] drm/i915/mtl: Add MTL for remapping CCS FBs
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 111/156] Bluetooth: L2CAP: Send reject on command corrupted request
 Date: Sat, 30 Dec 2023 11:59:25 +0000
-Message-ID: <20231230115808.382553981@linuxfoundation.org>
+Message-ID: <20231230115815.996277895@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +50,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clint Taylor <clinton.a.taylor@intel.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit 0da6bfe857ea9399498876cbe6ef428637b6e475 ]
+commit 78b99eb1faa7371bf9c534690f26a71b6996622d upstream.
 
-Add support for remapping CCS FBs on MTL to remove the restriction
-of the power-of-two sized stride and the 2MB surface offset alignment
-for these FBs.
+L2CAP/COS/CED/BI-02-C PTS test send a malformed L2CAP signaling packet
+with 2 commands in it (a connection request and an unknown command) and
+expect to get a connection response packet and a command reject packet.
+The second is currently not sent.
 
-Signed-off-by: Clint Taylor <clinton.a.taylor@intel.com>
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230505144005.23480-2-nirmoy.das@intel.com
-Stable-dep-of: 324b70e997aa ("drm/i915: Fix ADL+ tiled plane stride when the POT stride is smaller than the original")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_fb.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_fb.c b/drivers/gpu/drm/i915/display/intel_fb.c
-index c22ca36a38a9d..583b3c0f96ddc 100644
---- a/drivers/gpu/drm/i915/display/intel_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb.c
-@@ -1176,7 +1176,8 @@ bool intel_fb_needs_pot_stride_remap(const struct intel_framebuffer *fb)
- {
- 	struct drm_i915_private *i915 = to_i915(fb->base.dev);
- 
--	return IS_ALDERLAKE_P(i915) && intel_fb_uses_dpt(&fb->base);
-+	return (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14) &&
-+		intel_fb_uses_dpt(&fb->base);
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6492,6 +6492,14 @@ drop:
+ 	kfree_skb(skb);
  }
  
- static int intel_fb_pitch(const struct intel_framebuffer *fb, int color_plane, unsigned int rotation)
-@@ -1312,9 +1313,10 @@ plane_view_scanout_stride(const struct intel_framebuffer *fb, int color_plane,
- 			  unsigned int tile_width,
- 			  unsigned int src_stride_tiles, unsigned int dst_stride_tiles)
++static inline void l2cap_sig_send_rej(struct l2cap_conn *conn, u16 ident)
++{
++	struct l2cap_cmd_rej_unk rej;
++
++	rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
++	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
++}
++
+ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 				     struct sk_buff *skb)
  {
-+	struct drm_i915_private *i915 = to_i915(fb->base.dev);
- 	unsigned int stride_tiles;
+@@ -6517,23 +6525,24 @@ static inline void l2cap_sig_channel(str
  
--	if (IS_ALDERLAKE_P(to_i915(fb->base.dev)))
-+	if (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14)
- 		stride_tiles = src_stride_tiles;
- 	else
- 		stride_tiles = dst_stride_tiles;
-@@ -1520,7 +1522,8 @@ static void intel_fb_view_init(struct drm_i915_private *i915, struct intel_fb_vi
- 	memset(view, 0, sizeof(*view));
- 	view->gtt.type = view_type;
+ 		if (len > skb->len || !cmd->ident) {
+ 			BT_DBG("corrupted command");
++			l2cap_sig_send_rej(conn, cmd->ident);
+ 			break;
+ 		}
  
--	if (view_type == I915_GTT_VIEW_REMAPPED && IS_ALDERLAKE_P(i915))
-+	if (view_type == I915_GTT_VIEW_REMAPPED &&
-+	    (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14))
- 		view->gtt.remapped.plane_alignment = SZ_2M / PAGE_SIZE;
+ 		err = l2cap_bredr_sig_cmd(conn, cmd, len, skb->data);
+ 		if (err) {
+-			struct l2cap_cmd_rej_unk rej;
+-
+ 			BT_ERR("Wrong link type (%d)", err);
+-
+-			rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
+-			l2cap_send_cmd(conn, cmd->ident, L2CAP_COMMAND_REJ,
+-				       sizeof(rej), &rej);
++			l2cap_sig_send_rej(conn, cmd->ident);
+ 		}
+ 
+ 		skb_pull(skb, len);
+ 	}
+ 
++	if (skb->len > 0) {
++		BT_DBG("corrupted command");
++		l2cap_sig_send_rej(conn, 0);
++	}
++
+ drop:
+ 	kfree_skb(skb);
  }
- 
--- 
-2.43.0
-
 
 
 
