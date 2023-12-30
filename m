@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-8877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BF2820544
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3626F8205AD
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1BF61F219F7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1981C210F8
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5845479EF;
-	Sat, 30 Dec 2023 12:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F96379E0;
+	Sat, 30 Dec 2023 12:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wviCoDHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQSkhiz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F52679DE;
-	Sat, 30 Dec 2023 12:06:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABB4C433C8;
-	Sat, 30 Dec 2023 12:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0924479DC;
+	Sat, 30 Dec 2023 12:10:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868EDC433C7;
+	Sat, 30 Dec 2023 12:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937995;
-	bh=UdYtSPgcrYecQnluAyJOjx7UFUiXj9wrUJENRh1H3No=;
+	s=korg; t=1703938248;
+	bh=PckBdg5kMHwmG42OXgMVDoM53aXrcTmalUXdFf94LKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wviCoDHdk9SnWyzFgBXh4lNm2RpepL4AXyNbW5J1O4DvZSV+XnCt0dsI2BOA6+Dgk
-	 SIW25rigoW5dkCMUJ+U5wo1bZnPnAJwnoXA7m/sE1aMZIm+2RfuoximFNAqySnYbz5
-	 yR70u8JPkZGS9FfxakYs2nuv5Hjz9qXUXGzybh1s=
+	b=nQSkhiz++/8eyUIwwNOdA5aIPp9RalZ29VEwRxFJz/LwDhfavf72LkQFZdg+mcDMK
+	 rYuOfxVTb5LkwUq8d5/Ka0dmDSKg+p5lDS3RPKaaNgpr47RRZp/PWrmYSiDGrCg6he
+	 jhhcGdDuS/9mv1pN1N0kFbXG9J5Wbj/6n98DfsMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 143/156] selftests: mptcp: join: fix subflow_send_ack lookup
+	Robert Morris <rtm@csail.mit.edu>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 084/112] smb: client: fix OOB in SMB2_query_info_init()
 Date: Sat, 30 Dec 2023 11:59:57 +0000
-Message-ID: <20231230115816.999022746@linuxfoundation.org>
+Message-ID: <20231230115809.477663619@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,83 +53,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@linux.dev>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit c8f021eec5817601dbd25ab7e3ad5c720965c688 upstream.
+commit 33eae65c6f49770fec7a662935d4eb4a6406d24b upstream.
 
-MPC backups tests will skip unexpected sometimes (For example, when
-compiling kernel with an older version of gcc, such as gcc-8), since
-static functions like mptcp_subflow_send_ack also be listed in
-/proc/kallsyms, with a 't' in front of it, not 'T' ('T' is for a global
-function):
+A small CIFS buffer (448 bytes) isn't big enough to hold
+SMB2_QUERY_INFO request along with user's input data from
+CIFS_QUERY_INFO ioctl.  That is, if the user passed an input buffer >
+344 bytes, the client will memcpy() off the end of @req->Buffer in
+SMB2_query_info_init() thus causing the following KASAN splat:
 
- > grep "mptcp_subflow_send_ack" /proc/kallsyms
+  BUG: KASAN: slab-out-of-bounds in SMB2_query_info_init+0x242/0x250 [cifs]
+  Write of size 1023 at addr ffff88801308c5a8 by task a.out/1240
 
- 0000000000000000 T __pfx___mptcp_subflow_send_ack
- 0000000000000000 T __mptcp_subflow_send_ack
- 0000000000000000 t __pfx_mptcp_subflow_send_ack
- 0000000000000000 t mptcp_subflow_send_ack
+  CPU: 1 PID: 1240 Comm: a.out Not tainted 6.7.0-rc4 #5
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4a/0x80
+   print_report+0xcf/0x650
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __phys_addr+0x46/0x90
+   kasan_report+0xd8/0x110
+   ? SMB2_query_info_init+0x242/0x250 [cifs]
+   ? SMB2_query_info_init+0x242/0x250 [cifs]
+   kasan_check_range+0x105/0x1b0
+   __asan_memcpy+0x3c/0x60
+   SMB2_query_info_init+0x242/0x250 [cifs]
+   ? __pfx_SMB2_query_info_init+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? smb_rqst_len+0xa6/0xc0 [cifs]
+   smb2_ioctl_query_info+0x4f4/0x9a0 [cifs]
+   ? __pfx_smb2_ioctl_query_info+0x10/0x10 [cifs]
+   ? __pfx_cifsConvertToUTF16+0x10/0x10 [cifs]
+   ? kasan_set_track+0x25/0x30
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __kasan_kmalloc+0x8f/0xa0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? cifs_strndup_to_utf16+0x12d/0x1a0 [cifs]
+   ? __build_path_from_dentry_optional_prefix+0x19d/0x2d0 [cifs]
+   ? __pfx_smb2_ioctl_query_info+0x10/0x10 [cifs]
+   cifs_ioctl+0x11c7/0x1de0 [cifs]
+   ? __pfx_cifs_ioctl+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? rcu_is_watching+0x23/0x50
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __rseq_handle_notify_resume+0x6cd/0x850
+   ? __pfx___schedule+0x10/0x10
+   ? blkcg_iostat_update+0x250/0x290
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? ksys_write+0xe9/0x170
+   __x64_sys_ioctl+0xc9/0x100
+   do_syscall_64+0x47/0xf0
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+  RIP: 0033:0x7f893dde49cf
+  Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48
+  89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89>
+  c2 3d 00 f0 ff ff 77 18 48 8b 44 24 18 64 48 2b 04 25 28 00 00
+  RSP: 002b:00007ffc03ff4160 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007ffc03ff4378 RCX: 00007f893dde49cf
+  RDX: 00007ffc03ff41d0 RSI: 00000000c018cf07 RDI: 0000000000000003
+  RBP: 00007ffc03ff4260 R08: 0000000000000410 R09: 0000000000000001
+  R10: 00007f893dce7300 R11: 0000000000000246 R12: 0000000000000000
+  R13: 00007ffc03ff4388 R14: 00007f893df15000 R15: 0000000000406de0
+   </TASK>
 
-In this case, mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"
-will be false, MPC backups tests will skip. This is not what we expected.
+Fix this by increasing size of SMB2_QUERY_INFO request buffers and
+validating input length to prevent other callers from overflowing @req
+in SMB2_query_info_init() as well.
 
-The correct logic here should be: if mptcp_subflow_send_ack is not a
-global function in /proc/kallsyms, do these MPC backups tests. So a 'T'
-must be added in front of mptcp_subflow_send_ack.
-
-Fixes: 632978f0a961 ("selftests: mptcp: join: skip MPC backups tests if not supported")
+Fixes: f5b05d622a3e ("cifs: add IOCTL for QUERY_INFO passthrough to userspace")
 Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/client/smb2pdu.c |   29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2773,7 +2773,7 @@ backup_tests()
- 	fi
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -372,10 +372,15 @@ static int __smb2_plain_req_init(__le16
+ 				 void **request_buf, unsigned int *total_len)
+ {
+ 	/* BB eventually switch this to SMB2 specific small buf size */
+-	if (smb2_command == SMB2_SET_INFO)
++	switch (smb2_command) {
++	case SMB2_SET_INFO:
++	case SMB2_QUERY_INFO:
+ 		*request_buf = cifs_buf_get();
+-	else
++		break;
++	default:
+ 		*request_buf = cifs_small_buf_get();
++		break;
++	}
+ 	if (*request_buf == NULL) {
+ 		/* BB should we add a retry in here if not a writepage? */
+ 		return -ENOMEM;
+@@ -3523,8 +3528,13 @@ SMB2_query_info_init(struct cifs_tcon *t
+ 	struct smb2_query_info_req *req;
+ 	struct kvec *iov = rqst->rq_iov;
+ 	unsigned int total_len;
++	size_t len;
+ 	int rc;
  
- 	if reset "mpc backup" &&
--	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
-+	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
- 		speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2782,7 +2782,7 @@ backup_tests()
- 	fi
++	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
++		     len > CIFSMaxBufSize))
++		return -EINVAL;
++
+ 	rc = smb2_plain_req_init(SMB2_QUERY_INFO, tcon, server,
+ 				 (void **) &req, &total_len);
+ 	if (rc)
+@@ -3546,7 +3556,7 @@ SMB2_query_info_init(struct cifs_tcon *t
  
- 	if reset "mpc backup both sides" &&
--	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
-+	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
- 		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow,backup
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,backup
- 		speed=slow \
-@@ -2792,7 +2792,7 @@ backup_tests()
- 	fi
+ 	iov[0].iov_base = (char *)req;
+ 	/* 1 for Buffer */
+-	iov[0].iov_len = total_len - 1 + input_len;
++	iov[0].iov_len = len;
+ 	return 0;
+ }
  
- 	if reset "mpc switch to backup" &&
--	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
-+	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow
- 		sflags=backup speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
-@@ -2801,7 +2801,7 @@ backup_tests()
- 	fi
+@@ -3554,7 +3564,7 @@ void
+ SMB2_query_info_free(struct smb_rqst *rqst)
+ {
+ 	if (rqst && rqst->rq_iov)
+-		cifs_small_buf_release(rqst->rq_iov[0].iov_base); /* request */
++		cifs_buf_release(rqst->rq_iov[0].iov_base); /* request */
+ }
  
- 	if reset "mpc switch to backup both sides" &&
--	   continue_if mptcp_lib_kallsyms_doesnt_have "mptcp_subflow_send_ack$"; then
-+	   continue_if mptcp_lib_kallsyms_doesnt_have "T mptcp_subflow_send_ack$"; then
- 		pm_nl_add_endpoint $ns1 10.0.1.1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow
- 		sflags=backup speed=slow \
+ static int
+@@ -5439,6 +5449,11 @@ build_qfs_info_req(struct kvec *iov, str
+ 	return 0;
+ }
+ 
++static inline void free_qfs_info_req(struct kvec *iov)
++{
++	cifs_buf_release(iov->iov_base);
++}
++
+ int
+ SMB311_posix_qfs_info(const unsigned int xid, struct cifs_tcon *tcon,
+ 	      u64 persistent_fid, u64 volatile_fid, struct kstatfs *fsdata)
+@@ -5470,7 +5485,7 @@ SMB311_posix_qfs_info(const unsigned int
+ 
+ 	rc = cifs_send_recv(xid, ses, server,
+ 			    &rqst, &resp_buftype, flags, &rsp_iov);
+-	cifs_small_buf_release(iov.iov_base);
++	free_qfs_info_req(&iov);
+ 	if (rc) {
+ 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
+ 		goto posix_qfsinf_exit;
+@@ -5521,7 +5536,7 @@ SMB2_QFS_info(const unsigned int xid, st
+ 
+ 	rc = cifs_send_recv(xid, ses, server,
+ 			    &rqst, &resp_buftype, flags, &rsp_iov);
+-	cifs_small_buf_release(iov.iov_base);
++	free_qfs_info_req(&iov);
+ 	if (rc) {
+ 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
+ 		goto qfsinf_exit;
+@@ -5588,7 +5603,7 @@ SMB2_QFS_attr(const unsigned int xid, st
+ 
+ 	rc = cifs_send_recv(xid, ses, server,
+ 			    &rqst, &resp_buftype, flags, &rsp_iov);
+-	cifs_small_buf_release(iov.iov_base);
++	free_qfs_info_req(&iov);
+ 	if (rc) {
+ 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
+ 		goto qfsattr_exit;
 
 
 
