@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-8962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D878205A0
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3A2820537
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E5F282078
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D2D41C21001
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3AC79DE;
-	Sat, 30 Dec 2023 12:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1378979D8;
+	Sat, 30 Dec 2023 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAmWcHJa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSr/CP+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475898483;
-	Sat, 30 Dec 2023 12:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C679C433C9;
-	Sat, 30 Dec 2023 12:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CE48486;
+	Sat, 30 Dec 2023 12:06:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB930C433C8;
+	Sat, 30 Dec 2023 12:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938214;
-	bh=yVJUZjZ0OhBSOwI614z8YjpJN2fT0Og790r8/BTCJ/k=;
+	s=korg; t=1703937961;
+	bh=yO+8BdWCaWJg7tf3k+Z7Tf2Qb6omYu2KwvpeQJZoUMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAmWcHJaddf1Fd7VFo0JpPDZTo9FxOK/5iJgumsyAWj2zM+sxlPhPu62wJdmnWR9+
-	 5guntyOh8RamXVILDxVKtkC755cMpy3+RWaUJ7dsPrm9dltqLiUjHFImRBsY0ljeUm
-	 fOVWCb2LAk32en6MdmiA5SPzC1UQytb2/5FWv/So=
+	b=XSr/CP+vly2d8NaqM58LjnZMDKAGJX7fLjefGyFPybEIrATM+tl7X/oEA3Kz7CmZF
+	 1MHliQRj7fCFiz4xkst6f/l+bYya2WzbU/ek/YrqldA3BdFarDB59D+aTPe3AdsPvo
+	 ri9qnB0di7qlwCvM5Gi8JL/8Wnodexth1i91uTNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20Villeret?= <clement.villeret@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 070/112] ALSA: hda/realtek: Add quirk for ASUS ROG GV302XA
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 129/156] drm/i915: Reject async flips with bigjoiner
 Date: Sat, 30 Dec 2023 11:59:43 +0000
-Message-ID: <20231230115808.972050273@linuxfoundation.org>
+Message-ID: <20231230115816.579118363@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,35 +54,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Villeret <clement.villeret@gmail.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 02a460adfc4920d4da775fb59ab3e54036daef22 upstream.
+commit 88a173e5dd05e788068e8fa20a8c37c44bd8f416 upstream.
 
-Asus ROG Flowx13 (GV302XA) seems require same patch as others asus products
+Currently async flips are busted when bigjoiner is in use.
+As a short term fix simply reject async flips in that case.
 
-Signed-off-by: Clément Villeret <clement.villeret@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/0a27bf4b-3056-49ac-9651-ebd7f3e36328@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9769
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081134.2698-1-ville.syrjala@linux.intel.com
+Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+(cherry picked from commit e93bffc2ac0a833b42841f31fff955549d38ce98)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_display.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9735,6 +9735,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x1473, "ASUS GU604V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1483, "ASUS GU603V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
-+	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -5977,6 +5977,17 @@ static int intel_async_flip_check_hw(str
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * FIXME: Bigjoiner+async flip is busted currently.
++	 * Remove this check once the issues are fixed.
++	 */
++	if (new_crtc_state->bigjoiner_pipes) {
++		drm_dbg_kms(&i915->drm,
++			    "[CRTC:%d:%s] async flip disallowed with bigjoiner\n",
++			    crtc->base.base.id, crtc->base.name);
++		return -EINVAL;
++	}
++
+ 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
+ 					     new_plane_state, i) {
+ 		if (plane->pipe != crtc->pipe)
 
 
 
