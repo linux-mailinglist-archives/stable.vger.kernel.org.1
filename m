@@ -1,280 +1,311 @@
-Return-Path: <stable+bounces-8708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F0C820411
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 09:44:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BD082045D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF14B20C9E
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 08:44:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 684622820F8
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF1E1C0F;
-	Sat, 30 Dec 2023 08:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79B91FC5;
+	Sat, 30 Dec 2023 10:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HYO6b3Ex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6h+mHz+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000095239;
-	Sat, 30 Dec 2023 08:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1703925863; x=1735461863;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=kP48Qr7mS35FgW5l3bihWVKTEbnJqD/ev/ndiwrg9tM=;
-  b=HYO6b3ExF5WQx7Pb8Da0mbIZNb+ic2SxHyLxkzrP9mMmjC8GEpUcSH0s
-   AMpXQ8ijGUv4A3TYq2eVeLfo7RKL9WZN0+8b++A+yJWjn1+KkGcGWi2uz
-   WpL53jU02rwdvftYpBj9ZpzPuwrYi3sNkiR0vl4Jd0tumzDmixaNXUOVy
-   G0KKD2LS+N5tRhrv1paAM9dAfyMLPvplVlf9rKFpKLe5GA38AueGrMFPI
-   ny3eScnCmvSUZA4tH9/5EEjCj3z8XqunCAoQIBuyKWJpdg+lvI/4M/smE
-   A8uVpjds04o0bQsftGApFjPooys3Kf5k+CJ5HIcDIuZdOLtysxJ3cBBr7
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="376184511"
-X-IronPort-AV: E=Sophos;i="6.04,317,1695711600"; 
-   d="scan'208";a="376184511"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2023 00:44:22 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="1026075769"
-X-IronPort-AV: E=Sophos;i="6.04,317,1695711600"; 
-   d="scan'208";a="1026075769"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 30 Dec 2023 00:44:19 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rJUx7-000IHJ-16;
-	Sat, 30 Dec 2023 08:44:17 +0000
-Date: Sat, 30 Dec 2023 16:43:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, adamg@pobox.com,
-	stable@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tobias Gruetzmacher <tobias-lists@23.gs>
-Subject: Re: [PATCH] firewire: ohci: suppress unexpected system reboot in AMD
- Ryzen machines and ASM108x/VT630x PCIe cards
-Message-ID: <202312301629.2sCcBeRp-lkp@intel.com>
-References: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8277B23AE
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB66C433C8;
+	Sat, 30 Dec 2023 10:56:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1703933796;
+	bh=j7WjFo+ds5cjvYpNSi5ds49DrFjhy/t/uxqNPJihE08=;
+	h=Subject:To:Cc:From:Date:From;
+	b=A6h+mHz+9Ss7Mwj7C5qvx7K0IPCzLLMs2dlnTW3oW5rqnaeU8oGBFYlS/Iv0uzpk7
+	 CJp6MXwJdNluCsIgv1UjaOVIyQ9v4mnp8nFnQ791Y4sXIEakr4Da08iq2fK6fXGkqz
+	 2moJuMNfAXutdiooZdSULavDqb2Dtjaqdan3b0gc=
+Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 5.10-stable tree
+To: louis.chauvet@bootlin.com,broonie@kernel.org,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 30 Dec 2023 10:56:34 +0000
+Message-ID: <2023123034-sauciness-sarcasm-914b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
-
-Hi Takashi,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on ieee1394-linux1394/for-next]
-[also build test ERROR on ieee1394-linux1394/for-linus linus/master v6.7-rc7 next-20231222]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Takashi-Sakamoto/firewire-ohci-suppress-unexpected-system-reboot-in-AMD-Ryzen-machines-and-ASM108x-VT630x-PCIe-cards/20231229-120311
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394.git for-next
-patch link:    https://lore.kernel.org/r/20231229035735.11127-1-o-takashi%40sakamocchi.jp
-patch subject: [PATCH] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
-config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20231230/202312301629.2sCcBeRp-lkp@intel.com/config)
-compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project 8a4266a626914765c0c69839e8a51be383013c1a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231230/202312301629.2sCcBeRp-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312301629.2sCcBeRp-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/firewire/ohci.c:3679:59: error: too many arguments provided to function-like macro invocation
-    3679 |         if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
-         |                                                                  ^
-   drivers/firewire/ohci.c:3573:9: note: macro 'detect_vt630x_with_asm1083_on_amd_ryzen_machine' defined here
-    3573 | #define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)   false
-         |         ^
->> drivers/firewire/ohci.c:3679:6: error: use of undeclared identifier 'detect_vt630x_with_asm1083_on_amd_ryzen_machine'
-    3679 |         if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
-         |             ^
-   2 errors generated.
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-vim +3679 drivers/firewire/ohci.c
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-  3617	
-  3618	static int pci_probe(struct pci_dev *dev,
-  3619				       const struct pci_device_id *ent)
-  3620	{
-  3621		struct fw_ohci *ohci;
-  3622		u32 bus_options, max_receive, link_speed, version;
-  3623		u64 guid;
-  3624		int i, err;
-  3625		size_t size;
-  3626	
-  3627		if (dev->vendor == PCI_VENDOR_ID_PINNACLE_SYSTEMS) {
-  3628			dev_err(&dev->dev, "Pinnacle MovieBoard is not yet supported\n");
-  3629			return -ENOSYS;
-  3630		}
-  3631	
-  3632		ohci = devres_alloc(release_ohci, sizeof(*ohci), GFP_KERNEL);
-  3633		if (ohci == NULL)
-  3634			return -ENOMEM;
-  3635		fw_card_initialize(&ohci->card, &ohci_driver, &dev->dev);
-  3636		pci_set_drvdata(dev, ohci);
-  3637		pmac_ohci_on(dev);
-  3638		devres_add(&dev->dev, ohci);
-  3639	
-  3640		err = pcim_enable_device(dev);
-  3641		if (err) {
-  3642			dev_err(&dev->dev, "failed to enable OHCI hardware\n");
-  3643			return err;
-  3644		}
-  3645	
-  3646		pci_set_master(dev);
-  3647		pci_write_config_dword(dev, OHCI1394_PCI_HCI_Control, 0);
-  3648	
-  3649		spin_lock_init(&ohci->lock);
-  3650		mutex_init(&ohci->phy_reg_mutex);
-  3651	
-  3652		INIT_WORK(&ohci->bus_reset_work, bus_reset_work);
-  3653	
-  3654		if (!(pci_resource_flags(dev, 0) & IORESOURCE_MEM) ||
-  3655		    pci_resource_len(dev, 0) < OHCI1394_REGISTER_SIZE) {
-  3656			ohci_err(ohci, "invalid MMIO resource\n");
-  3657			return -ENXIO;
-  3658		}
-  3659	
-  3660		err = pcim_iomap_regions(dev, 1 << 0, ohci_driver_name);
-  3661		if (err) {
-  3662			ohci_err(ohci, "request and map MMIO resource unavailable\n");
-  3663			return -ENXIO;
-  3664		}
-  3665		ohci->registers = pcim_iomap_table(dev)[0];
-  3666	
-  3667		for (i = 0; i < ARRAY_SIZE(ohci_quirks); i++)
-  3668			if ((ohci_quirks[i].vendor == dev->vendor) &&
-  3669			    (ohci_quirks[i].device == (unsigned short)PCI_ANY_ID ||
-  3670			     ohci_quirks[i].device == dev->device) &&
-  3671			    (ohci_quirks[i].revision == (unsigned short)PCI_ANY_ID ||
-  3672			     ohci_quirks[i].revision >= dev->revision)) {
-  3673				ohci->quirks = ohci_quirks[i].flags;
-  3674				break;
-  3675			}
-  3676		if (param_quirks)
-  3677			ohci->quirks = param_quirks;
-  3678	
-> 3679		if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
-  3680			ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
-  3681	
-  3682		/*
-  3683		 * Because dma_alloc_coherent() allocates at least one page,
-  3684		 * we save space by using a common buffer for the AR request/
-  3685		 * response descriptors and the self IDs buffer.
-  3686		 */
-  3687		BUILD_BUG_ON(AR_BUFFERS * sizeof(struct descriptor) > PAGE_SIZE/4);
-  3688		BUILD_BUG_ON(SELF_ID_BUF_SIZE > PAGE_SIZE/2);
-  3689		ohci->misc_buffer = dmam_alloc_coherent(&dev->dev, PAGE_SIZE, &ohci->misc_buffer_bus,
-  3690							GFP_KERNEL);
-  3691		if (!ohci->misc_buffer)
-  3692			return -ENOMEM;
-  3693	
-  3694		err = ar_context_init(&ohci->ar_request_ctx, ohci, 0,
-  3695				      OHCI1394_AsReqRcvContextControlSet);
-  3696		if (err < 0)
-  3697			return err;
-  3698	
-  3699		err = ar_context_init(&ohci->ar_response_ctx, ohci, PAGE_SIZE/4,
-  3700				      OHCI1394_AsRspRcvContextControlSet);
-  3701		if (err < 0)
-  3702			return err;
-  3703	
-  3704		err = context_init(&ohci->at_request_ctx, ohci,
-  3705				   OHCI1394_AsReqTrContextControlSet, handle_at_packet);
-  3706		if (err < 0)
-  3707			return err;
-  3708	
-  3709		err = context_init(&ohci->at_response_ctx, ohci,
-  3710				   OHCI1394_AsRspTrContextControlSet, handle_at_packet);
-  3711		if (err < 0)
-  3712			return err;
-  3713	
-  3714		reg_write(ohci, OHCI1394_IsoRecvIntMaskSet, ~0);
-  3715		ohci->ir_context_channels = ~0ULL;
-  3716		ohci->ir_context_support = reg_read(ohci, OHCI1394_IsoRecvIntMaskSet);
-  3717		reg_write(ohci, OHCI1394_IsoRecvIntMaskClear, ~0);
-  3718		ohci->ir_context_mask = ohci->ir_context_support;
-  3719		ohci->n_ir = hweight32(ohci->ir_context_mask);
-  3720		size = sizeof(struct iso_context) * ohci->n_ir;
-  3721		ohci->ir_context_list = devm_kzalloc(&dev->dev, size, GFP_KERNEL);
-  3722		if (!ohci->ir_context_list)
-  3723			return -ENOMEM;
-  3724	
-  3725		reg_write(ohci, OHCI1394_IsoXmitIntMaskSet, ~0);
-  3726		ohci->it_context_support = reg_read(ohci, OHCI1394_IsoXmitIntMaskSet);
-  3727		/* JMicron JMB38x often shows 0 at first read, just ignore it */
-  3728		if (!ohci->it_context_support) {
-  3729			ohci_notice(ohci, "overriding IsoXmitIntMask\n");
-  3730			ohci->it_context_support = 0xf;
-  3731		}
-  3732		reg_write(ohci, OHCI1394_IsoXmitIntMaskClear, ~0);
-  3733		ohci->it_context_mask = ohci->it_context_support;
-  3734		ohci->n_it = hweight32(ohci->it_context_mask);
-  3735		size = sizeof(struct iso_context) * ohci->n_it;
-  3736		ohci->it_context_list = devm_kzalloc(&dev->dev, size, GFP_KERNEL);
-  3737		if (!ohci->it_context_list)
-  3738			return -ENOMEM;
-  3739	
-  3740		ohci->self_id     = ohci->misc_buffer     + PAGE_SIZE/2;
-  3741		ohci->self_id_bus = ohci->misc_buffer_bus + PAGE_SIZE/2;
-  3742	
-  3743		bus_options = reg_read(ohci, OHCI1394_BusOptions);
-  3744		max_receive = (bus_options >> 12) & 0xf;
-  3745		link_speed = bus_options & 0x7;
-  3746		guid = ((u64) reg_read(ohci, OHCI1394_GUIDHi) << 32) |
-  3747			reg_read(ohci, OHCI1394_GUIDLo);
-  3748	
-  3749		if (!(ohci->quirks & QUIRK_NO_MSI))
-  3750			pci_enable_msi(dev);
-  3751		err = devm_request_irq(&dev->dev, dev->irq, irq_handler,
-  3752				       pci_dev_msi_enabled(dev) ? 0 : IRQF_SHARED, ohci_driver_name, ohci);
-  3753		if (err < 0) {
-  3754			ohci_err(ohci, "failed to allocate interrupt %d\n", dev->irq);
-  3755			goto fail_msi;
-  3756		}
-  3757	
-  3758		err = fw_card_add(&ohci->card, max_receive, link_speed, guid);
-  3759		if (err)
-  3760			goto fail_msi;
-  3761	
-  3762		version = reg_read(ohci, OHCI1394_Version) & 0x00ff00ff;
-  3763		ohci_notice(ohci,
-  3764			    "added OHCI v%x.%x device as card %d, "
-  3765			    "%d IR + %d IT contexts, quirks 0x%x%s\n",
-  3766			    version >> 16, version & 0xff, ohci->card.index,
-  3767			    ohci->n_ir, ohci->n_it, ohci->quirks,
-  3768			    reg_read(ohci, OHCI1394_PhyUpperBound) ?
-  3769				", physUB" : "");
-  3770	
-  3771		return 0;
-  3772	
-  3773	 fail_msi:
-  3774		pci_disable_msi(dev);
-  3775	
-  3776		return err;
-  3777	}
-  3778	
+To reproduce the conflict and resubmit, you may use the following commands:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123034-sauciness-sarcasm-914b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
+69e1818ad27b ("spi: atmel: Fix CS and initialization bug")
+5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer method")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc Mon Sep 17 00:00:00 2001
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Date: Mon, 4 Dec 2023 16:49:03 +0100
+Subject: [PATCH] spi: atmel: Fix clock issue when using devices with different
+ polarities
+
+The current Atmel SPI controller driver (v2) behaves incorrectly when
+using two SPI devices with different clock polarities and GPIO CS.
+
+When switching from one device to another, the controller driver first
+enables the CS and then applies whatever configuration suits the targeted
+device (typically, the polarities). The side effect of such order is the
+apparition of a spurious clock edge after enabling the CS when the clock
+polarity needs to be inverted wrt. the previous configuration of the
+controller.
+
+This parasitic clock edge is problematic when the SPI device uses that edge
+for internal processing, which is perfectly legitimate given that its CS
+was asserted. Indeed, devices such as HVS8080 driven by driver gpio-sr in
+the kernel are shift registers and will process this first clock edge to
+perform a first register shift. In this case, the first bit gets lost and
+the whole data block that will later be read by the kernel is all shifted
+by one.
+
+    Current behavior:
+      The actual switching of the clock polarity only occurs after the CS
+      when the controller sends the first message:
+
+    CLK ------------\   /-\ /-\
+                    |   | | | |    . . .
+                    \---/ \-/ \
+    CS  -----\
+             |
+             \------------------
+
+             ^      ^   ^
+             |      |   |
+             |      |   Actual clock of the message sent
+             |      |
+             |      Change of clock polarity, which occurs with the first
+             |      write to the bus. This edge occurs when the CS is
+             |      already asserted, and can be interpreted as
+             |      the first clock edge by the receiver.
+             |
+             GPIO CS toggle
+
+This issue is specific to this controller because while the SPI core
+performs the operations in the right order, the controller however does
+not. In practice, the controller only applies the clock configuration right
+before the first transmission.
+
+So this is not a problem when using the controller's dedicated CS, as the
+controller does things correctly, but it becomes a problem when you need to
+change the clock polarity and use an external GPIO for the CS.
+
+One possible approach to solve this problem is to send a dummy message
+before actually activating the CS, so that the controller applies the clock
+polarity beforehand.
+
+New behavior:
+
+CLK     ------\      /-\     /-\      /-\     /-\
+              |      | | ... | |      | | ... | |
+              \------/ \-   -/ \------/ \-   -/ \------
+
+CS      -\/-----------------------\
+         ||                       |
+         \/                       \---------------------
+         ^    ^       ^           ^    ^
+         |    |       |           |    |
+         |    |       |           |    Expected clock cycles when
+         |    |       |           |    sending the message
+         |    |       |           |
+         |    |       |           Actual GPIO CS activation, occurs inside
+         |    |       |           the driver
+         |    |       |
+         |    |       Dummy message, to trigger clock polarity
+         |    |       reconfiguration. This message is not received and
+         |    |       processed by the device because CS is low.
+         |    |
+         |    Change of clock polarity, forced by the dummy message. This
+         |    time, the edge is not detected by the receiver.
+         |
+         This small spike in CS activation is due to the fact that the
+         spi-core activates the CS gpio before calling the driver's
+         set_cs callback, which deactivates this gpio again until the
+         clock polarity is correct.
+
+To avoid having to systematically send a dummy packet, the driver keeps
+track of the clock's current polarity. In this way, it only sends the dummy
+packet when necessary, ensuring that the clock will have the correct
+polarity when the CS is toggled.
+
+There could be two hardware problems with this patch:
+1- Maybe the small CS activation peak can confuse SPI devices
+2- If on a design, a single wire is used to select two devices depending
+on its state, the dummy message may disturb them.
+
+Fixes: 5ee36c989831 ("spi: atmel_spi update chipselect handling")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+Link: https://msgid.link/r/20231204154903.11607-1-louis.chauvet@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 54277de30161..bad34998454a 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -22,6 +22,7 @@
+ #include <linux/gpio/consumer.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/pm_runtime.h>
++#include <linux/iopoll.h>
+ #include <trace/events/spi.h>
+ 
+ /* SPI register offsets */
+@@ -276,6 +277,7 @@ struct atmel_spi {
+ 	bool			keep_cs;
+ 
+ 	u32			fifo_size;
++	bool			last_polarity;
+ 	u8			native_cs_free;
+ 	u8			native_cs_for_gpio;
+ };
+@@ -288,6 +290,22 @@ struct atmel_spi_device {
+ #define SPI_MAX_DMA_XFER	65535 /* true for both PDC and DMA */
+ #define INVALID_DMA_ADDRESS	0xffffffff
+ 
++/*
++ * This frequency can be anything supported by the controller, but to avoid
++ * unnecessary delay, the highest possible frequency is chosen.
++ *
++ * This frequency is the highest possible which is not interfering with other
++ * chip select registers (see Note for Serial Clock Bit Rate configuration in
++ * Atmel-11121F-ATARM-SAMA5D3-Series-Datasheet_02-Feb-16, page 1283)
++ */
++#define DUMMY_MSG_FREQUENCY	0x02
++/*
++ * 8 bits is the minimum data the controller is capable of sending.
++ *
++ * This message can be anything as it should not be treated by any SPI device.
++ */
++#define DUMMY_MSG		0xAA
++
+ /*
+  * Version 2 of the SPI controller has
+  *  - CR.LASTXFER
+@@ -301,6 +319,43 @@ static bool atmel_spi_is_v2(struct atmel_spi *as)
+ 	return as->caps.is_spi2;
+ }
+ 
++/*
++ * Send a dummy message.
++ *
++ * This is sometimes needed when using a CS GPIO to force clock transition when
++ * switching between devices with different polarities.
++ */
++static void atmel_spi_send_dummy(struct atmel_spi *as, struct spi_device *spi, int chip_select)
++{
++	u32 status;
++	u32 csr;
++
++	/*
++	 * Set a clock frequency to allow sending message on SPI bus.
++	 * The frequency here can be anything, but is needed for
++	 * the controller to send the data.
++	 */
++	csr = spi_readl(as, CSR0 + 4 * chip_select);
++	csr = SPI_BFINS(SCBR, DUMMY_MSG_FREQUENCY, csr);
++	spi_writel(as, CSR0 + 4 * chip_select, csr);
++
++	/*
++	 * Read all data coming from SPI bus, needed to be able to send
++	 * the message.
++	 */
++	spi_readl(as, RDR);
++	while (spi_readl(as, SR) & SPI_BIT(RDRF)) {
++		spi_readl(as, RDR);
++		cpu_relax();
++	}
++
++	spi_writel(as, TDR, DUMMY_MSG);
++
++	readl_poll_timeout_atomic(as->regs + SPI_SR, status,
++				  (status & SPI_BIT(TXEMPTY)), 1, 1000);
++}
++
++
+ /*
+  * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
+  * they assume that spi slave device state will not change on deselect, so
+@@ -317,11 +372,17 @@ static bool atmel_spi_is_v2(struct atmel_spi *as)
+  * Master on Chip Select 0.")  No workaround exists for that ... so for
+  * nCS0 on that chip, we (a) don't use the GPIO, (b) can't support CS_HIGH,
+  * and (c) will trigger that first erratum in some cases.
++ *
++ * When changing the clock polarity, the SPI controller waits for the next
++ * transmission to enforce the default clock state. This may be an issue when
++ * using a GPIO as Chip Select: the clock level is applied only when the first
++ * packet is sent, once the CS has already been asserted. The workaround is to
++ * avoid this by sending a first (dummy) message before toggling the CS state.
+  */
+-
+ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ {
+ 	struct atmel_spi_device *asd = spi->controller_state;
++	bool new_polarity;
+ 	int chip_select;
+ 	u32 mr;
+ 
+@@ -350,6 +411,25 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 		}
+ 
+ 		mr = spi_readl(as, MR);
++
++		/*
++		 * Ensures the clock polarity is valid before we actually
++		 * assert the CS to avoid spurious clock edges to be
++		 * processed by the spi devices.
++		 */
++		if (spi_get_csgpiod(spi, 0)) {
++			new_polarity = (asd->csr & SPI_BIT(CPOL)) != 0;
++			if (new_polarity != as->last_polarity) {
++				/*
++				 * Need to disable the GPIO before sending the dummy
++				 * message because it is already set by the spi core.
++				 */
++				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 0);
++				atmel_spi_send_dummy(as, spi, chip_select);
++				as->last_polarity = new_polarity;
++				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 1);
++			}
++		}
+ 	} else {
+ 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+ 		int i;
+
 
