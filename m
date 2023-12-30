@@ -1,50 +1,56 @@
-Return-Path: <stable+bounces-8818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA54820508
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BA482055B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428411F21AA9
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0133C28231C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB3C8473;
-	Sat, 30 Dec 2023 12:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D4D179C2;
+	Sat, 30 Dec 2023 12:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhYKYh98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLwOjKSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061BC8487;
-	Sat, 30 Dec 2023 12:04:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86317C433C7;
-	Sat, 30 Dec 2023 12:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C2079DC;
+	Sat, 30 Dec 2023 12:07:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B398C433C8;
+	Sat, 30 Dec 2023 12:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937841;
-	bh=p19dlEJwoPXitJZDVs+6MTSce4kZCU+eI1i/NFB/Asw=;
+	s=korg; t=1703938054;
+	bh=9GwcvXQe/atHLoCbvcqWgFN0GlVZcQorlIA17fL/+z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhYKYh981AiJIlvtEOXm1AfwN07LgiNsweMM2vf5zFg1qZqzgBc9mgovkvSpySDBq
-	 lajHEhpeBn2u6S2jCQX5LNF9+4vHNfnEZW3zes4oy9cNnCTset/QQdl2T6kr0lgrWy
-	 lD/p14yEsazm8U6NEhCFpZ3IONEzEkRipIUts7Gs=
+	b=kLwOjKSomKho0CrFa9RbLafrgmVwiIRERTaDp1f/5vH0Vvoef1UNDoEMA51wwnbu1
+	 mTa8TuyBK5doQDsx/vSJJzEVhoZ/ozdVYj9qpt41n2yDWSmhOnTLWWm6DKJocHexcr
+	 WAnVHnRx/YGFgZZc+XDDmDwPXArEguO8aakrb4NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.6 059/156] ice: Fix PF with enabled XDP going no-carrier after reset
-Date: Sat, 30 Dec 2023 11:58:33 +0000
-Message-ID: <20231230115814.267309866@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Haibo Li <haibo.li@mediatek.com>,
+	Kees Cook <keescook@chromium.org>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 6.1 001/112] kasan: disable kasan_non_canonical_hook() for HW tags
+Date: Sat, 30 Dec 2023 11:58:34 +0000
+Message-ID: <20231230115806.771958480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,55 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f5728a418945ba53e2fdf38a6e5c5a2670965e85 ]
+commit 17c17567fe510857b18fe01b7a88027600e76ac6 upstream.
 
-Commit 6624e780a577fc596788 ("ice: split ice_vsi_setup into smaller
-functions") has refactored a bunch of code involved in PFR. In this
-process, TC queue number adjustment for XDP was lost. Bring it back.
+On arm64, building with CONFIG_KASAN_HW_TAGS now causes a compile-time
+error:
 
-Lack of such adjustment causes interface to go into no-carrier after a
-reset, if XDP program is attached, with the following message:
+mm/kasan/report.c: In function 'kasan_non_canonical_hook':
+mm/kasan/report.c:637:20: error: 'KASAN_SHADOW_OFFSET' undeclared (first use in this function)
+  637 |         if (addr < KASAN_SHADOW_OFFSET)
+      |                    ^~~~~~~~~~~~~~~~~~~
+mm/kasan/report.c:637:20: note: each undeclared identifier is reported only once for each function it appears in
+mm/kasan/report.c:640:77: error: expected expression before ';' token
+  640 |         orig_addr = (addr - KASAN_SHADOW_OFFSET) << KASAN_SHADOW_SCALE_SHIFT;
 
-ice 0000:b1:00.0: Failed to set LAN Tx queue context, error: -22
-ice 0000:b1:00.0 ens801f0np0: Failed to open VSI 0x0006 on switch 0x0001
-ice 0000:b1:00.0: enable VSI failed, err -22, VSI index 0, type ICE_VSI_PF
-ice 0000:b1:00.0: PF VSI rebuild failed: -22
-ice 0000:b1:00.0: Rebuild failed, unload and reload driver
+This was caused by removing the dependency on CONFIG_KASAN_INLINE that
+used to prevent this from happening. Use the more specific dependency
+on KASAN_SW_TAGS || KASAN_GENERIC to only ignore the function for hwasan
+mode.
 
-Fixes: 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231016200925.984439-1-arnd@kernel.org
+Fixes: 12ec6a919b0f ("kasan: print the original fault addr when access invalid shadow")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Haibo Li <haibo.li@mediatek.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/kasan.h |    6 +++---
+ mm/kasan/report.c     |    4 +++-
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 8dbf7a381e49b..a66c3b6ccec1e 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2384,6 +2384,9 @@ static int ice_vsi_cfg_tc_lan(struct ice_pf *pf, struct ice_vsi *vsi)
- 		} else {
- 			max_txqs[i] = vsi->alloc_txq;
- 		}
-+
-+		if (vsi->type == ICE_VSI_PF)
-+			max_txqs[i] += vsi->num_xdp_txq;
- 	}
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -471,10 +471,10 @@ static inline void kasan_free_module_sha
  
- 	dev_dbg(dev, "vsi->tc_cfg.ena_tc = %d\n", vsi->tc_cfg.ena_tc);
--- 
-2.43.0
-
+ #endif /* (CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS) && !CONFIG_KASAN_VMALLOC */
+ 
+-#ifdef CONFIG_KASAN
++#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ void kasan_non_canonical_hook(unsigned long addr);
+-#else /* CONFIG_KASAN */
++#else /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+ static inline void kasan_non_canonical_hook(unsigned long addr) { }
+-#endif /* CONFIG_KASAN */
++#endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
+ 
+ #endif /* LINUX_KASAN_H */
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -523,8 +523,9 @@ void kasan_report_async(void)
+ }
+ #endif /* CONFIG_KASAN_HW_TAGS */
+ 
++#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
+ /*
+- * With CONFIG_KASAN, accesses to bogus pointers (outside the high
++ * With CONFIG_KASAN_INLINE, accesses to bogus pointers (outside the high
+  * canonical half of the address space) cause out-of-bounds shadow memory reads
+  * before the actual access. For addresses in the low canonical half of the
+  * address space, as well as most non-canonical addresses, that out-of-bounds
+@@ -560,3 +561,4 @@ void kasan_non_canonical_hook(unsigned l
+ 	pr_alert("KASAN: %s in range [0x%016lx-0x%016lx]\n", bug_type,
+ 		 orig_addr, orig_addr + KASAN_GRANULE_SIZE - 1);
+ }
++#endif
 
 
 
