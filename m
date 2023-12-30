@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-8896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0EB1820557
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 380D68205C3
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B8481F21AE8
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EDB6B21532
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A34D79EE;
-	Sat, 30 Dec 2023 12:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919B579EF;
+	Sat, 30 Dec 2023 12:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlypgkQ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsTvMPgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BBE79DC;
-	Sat, 30 Dec 2023 12:07:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7060AC433C8;
-	Sat, 30 Dec 2023 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5672B8487;
+	Sat, 30 Dec 2023 12:11:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB916C433C8;
+	Sat, 30 Dec 2023 12:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938043;
-	bh=tUenh+2/f8rXkwTnk7ktFHfMjb+OefZiz/LjJhSQkN8=;
+	s=korg; t=1703938303;
+	bh=1AFj07lSnVlJsgQpzKxKHFdm3No23o4xa/beZqgt2jI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlypgkQ3ErMt1aeE5P3YgOoKkCCTFKHzB6UGUhYNr3Vx+fxO3Sm4n3kBMabE7o78/
-	 /Jxdm9vK9DsHfqGXZzM4RUsVW0ySpjWSTHPZgbkhNwzNHG9wAMYfVEdqwc11uBkZnl
-	 qYhrI+sVUZAOJ6vc5w3CWHGF+DaDEi56aojHeNLM=
+	b=GsTvMPgpu1FpHeI1gWn3pYyRC2IgL36up9zwJYEJeYpY5Z+miDbdKnqCMgRhtl5PU
+	 FueLvukvGmnw8P6XDHiKD/zqj4Vesigla7JsEYolQ50H+jGJtQyrq4zby1vMNN5zc6
+	 Snxtqp3aEBZY5FO91BLzj4S+mw8hUvh/W1NCn52g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Scott Branden <scott.branden@broadcom.com>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.6 138/156] nvmem: brcm_nvram: store a copy of NVRAM content
-Date: Sat, 30 Dec 2023 11:59:52 +0000
-Message-ID: <20231230115816.848335845@linuxfoundation.org>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Tristram Ha <Tristram.Ha@microchip.com>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.1 080/112] net: ks8851: Fix TX stall caused by TX buffer overrun
+Date: Sat, 30 Dec 2023 11:59:53 +0000
+Message-ID: <20231230115809.331474176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,270 +57,240 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit 1e37bf84afacd5ba17b7a13a18ca2bc78aff05c0 upstream.
+commit 3dc5d44545453de1de9c53cc529cc960a85933da upstream.
 
-This driver uses MMIO access for reading NVRAM from a flash device.
-Underneath there is a flash controller that reads data and provides
-mapping window.
+There is a bug in the ks8851 Ethernet driver that more data is written
+to the hardware TX buffer than actually available. This is caused by
+wrong accounting of the free TX buffer space.
 
-Using MMIO interface affects controller configuration and may break real
-controller driver. It was reported by multiple users of devices with
-NVRAM stored on NAND.
+The driver maintains a tx_space variable that represents the TX buffer
+space that is deemed to be free. The ks8851_start_xmit_spi() function
+adds an SKB to a queue if tx_space is large enough and reduces tx_space
+by the amount of buffer space it will later need in the TX buffer and
+then schedules a work item. If there is not enough space then the TX
+queue is stopped.
 
-Modify driver to read & cache NVRAM content during init and use that
-copy to provide NVMEM data when requested. On NAND flashes due to their
-alignment NVRAM partitions can be quite big (1 MiB and more) while
-actual NVRAM content stays quite small (usually 16 to 32 KiB). To avoid
-allocating so much memory check for actual data length.
+The worker function ks8851_tx_work() dequeues all the SKBs and writes
+the data into the hardware TX buffer. The last packet will trigger an
+interrupt after it was send. Here it is assumed that all data fits into
+the TX buffer.
 
-Link: https://lore.kernel.org/linux-mtd/CACna6rwf3_9QVjYcM+847biTX=K0EoWXuXcSMkJO1Vy_5vmVqA@mail.gmail.com/
-Fixes: 3fef9ed0627a ("nvmem: brcm_nvram: new driver exposing Broadcom's NVRAM")
-Cc:  <Stable@vger.kernel.org>
-Cc: Arınç ÜNAL <arinc.unal@arinc9.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Scott Branden <scott.branden@broadcom.com>
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Acked-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231215111358.316727-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the interrupt routine (which runs asynchronously because it is a
+threaded interrupt) tx_space is updated with the current value from the
+hardware. Also the TX queue is woken up again.
+
+Now it could happen that after data was sent to the hardware and before
+handling the TX interrupt new data is queued in ks8851_start_xmit_spi()
+when the TX buffer space had still some space left. When the interrupt
+is actually handled tx_space is updated from the hardware but now we
+already have new SKBs queued that have not been written to the hardware
+TX buffer yet. Since tx_space has been overwritten by the value from the
+hardware the space is not accounted for.
+
+Now we have more data queued then buffer space available in the hardware
+and ks8851_tx_work() will potentially overrun the hardware TX buffer. In
+many cases it will still work because often the buffer is written out
+fast enough so that no overrun occurs but for example if the peer
+throttles us via flow control then an overrun may happen.
+
+This can be fixed in different ways. The most simple way would be to set
+tx_space to 0 before writing data to the hardware TX buffer preventing
+the queuing of more SKBs until the TX interrupt has been handled. I have
+chosen a slightly more efficient (and still rather simple) way and
+track the amount of data that is already queued and not yet written to
+the hardware. When new SKBs are to be queued the already queued amount
+of data is honoured when checking free TX buffer space.
+
+I tested this with a setup of two linked KS8851 running iperf3 between
+the two in bidirectional mode. Before the fix I got a stall after some
+minutes. With the fix I saw now issues anymore after hours.
+
+Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Cc: Tristram Ha <Tristram.Ha@microchip.com>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231214181112.76052-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/brcm_nvram.c |  134 +++++++++++++++++++++++++++++++--------------
- 1 file changed, 94 insertions(+), 40 deletions(-)
+ drivers/net/ethernet/micrel/ks8851.h        |    3 ++
+ drivers/net/ethernet/micrel/ks8851_common.c |   20 ++++++-------
+ drivers/net/ethernet/micrel/ks8851_spi.c    |   42 ++++++++++++++++++----------
+ 3 files changed, 40 insertions(+), 25 deletions(-)
 
---- a/drivers/nvmem/brcm_nvram.c
-+++ b/drivers/nvmem/brcm_nvram.c
-@@ -17,9 +17,23 @@
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -350,6 +350,8 @@ union ks8851_tx_hdr {
+  * @rxd: Space for receiving SPI data, in DMA-able space.
+  * @txd: Space for transmitting SPI data, in DMA-able space.
+  * @msg_enable: The message flags controlling driver output (see ethtool).
++ * @tx_space: Free space in the hardware TX buffer (cached copy of KS_TXMIR).
++ * @queued_len: Space required in hardware TX buffer for queued packets in txq.
+  * @fid: Incrementing frame id tag.
+  * @rc_ier: Cached copy of KS_IER.
+  * @rc_ccr: Cached copy of KS_CCR.
+@@ -399,6 +401,7 @@ struct ks8851_net {
+ 	struct work_struct	rxctrl_work;
  
- #define NVRAM_MAGIC			"FLSH"
+ 	struct sk_buff_head	txq;
++	unsigned int		queued_len;
  
-+/**
-+ * struct brcm_nvram - driver state internal struct
-+ *
-+ * @dev:		NVMEM device pointer
-+ * @nvmem_size:		Size of the whole space available for NVRAM
-+ * @data:		NVRAM data copy stored to avoid poking underlaying flash controller
-+ * @data_len:		NVRAM data size
-+ * @padding_byte:	Padding value used to fill remaining space
-+ * @cells:		Array of discovered NVMEM cells
-+ * @ncells:		Number of elements in cells
-+ */
- struct brcm_nvram {
- 	struct device *dev;
--	void __iomem *base;
-+	size_t nvmem_size;
-+	uint8_t *data;
-+	size_t data_len;
-+	uint8_t padding_byte;
- 	struct nvmem_cell_info *cells;
- 	int ncells;
- };
-@@ -36,10 +50,47 @@ static int brcm_nvram_read(void *context
- 			   size_t bytes)
- {
- 	struct brcm_nvram *priv = context;
--	u8 *dst = val;
-+	size_t to_copy;
-+
-+	if (offset + bytes > priv->data_len)
-+		to_copy = max_t(ssize_t, (ssize_t)priv->data_len - offset, 0);
-+	else
-+		to_copy = bytes;
-+
-+	memcpy(val, priv->data + offset, to_copy);
-+
-+	memset((uint8_t *)val + to_copy, priv->padding_byte, bytes - to_copy);
-+
-+	return 0;
-+}
-+
-+static int brcm_nvram_copy_data(struct brcm_nvram *priv, struct platform_device *pdev)
-+{
-+	struct resource *res;
-+	void __iomem *base;
-+
-+	base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
-+	if (IS_ERR(base))
-+		return PTR_ERR(base);
-+
-+	priv->nvmem_size = resource_size(res);
-+
-+	priv->padding_byte = readb(base + priv->nvmem_size - 1);
-+	for (priv->data_len = priv->nvmem_size;
-+	     priv->data_len;
-+	     priv->data_len--) {
-+		if (readb(base + priv->data_len - 1) != priv->padding_byte)
-+			break;
-+	}
-+	WARN(priv->data_len > SZ_128K, "Unexpected (big) NVRAM size: %zu B\n", priv->data_len);
+ 	struct eeprom_93cx6	eeprom;
+ 	struct regulator	*vdd_reg;
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -362,16 +362,18 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		handled |= IRQ_RXPSI;
  
--	while (bytes--)
--		*dst++ = readb(priv->base + offset++);
-+	priv->data = devm_kzalloc(priv->dev, priv->data_len, GFP_KERNEL);
-+	if (!priv->data)
-+		return -ENOMEM;
-+
-+	memcpy_fromio(priv->data, base, priv->data_len);
-+
-+	bcm47xx_nvram_init_from_iomem(base, priv->data_len);
+ 	if (status & IRQ_TXI) {
+-		handled |= IRQ_TXI;
++		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
  
- 	return 0;
- }
-@@ -67,8 +118,13 @@ static int brcm_nvram_add_cells(struct b
- 				size_t len)
- {
- 	struct device *dev = priv->dev;
--	char *var, *value, *eq;
-+	char *var, *value;
-+	uint8_t tmp;
- 	int idx;
-+	int err = 0;
-+
-+	tmp = priv->data[len - 1];
-+	priv->data[len - 1] = '\0';
+-		/* no lock here, tx queue should have been stopped */
++		netif_dbg(ks, intr, ks->netdev,
++			  "%s: txspace %d\n", __func__, tx_space);
  
- 	priv->ncells = 0;
- 	for (var = data + sizeof(struct brcm_nvram_header);
-@@ -78,67 +134,68 @@ static int brcm_nvram_add_cells(struct b
+-		/* update our idea of how much tx space is available to the
+-		 * system */
+-		ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
++		spin_lock(&ks->statelock);
++		ks->tx_space = tx_space;
++		if (netif_queue_stopped(ks->netdev))
++			netif_wake_queue(ks->netdev);
++		spin_unlock(&ks->statelock);
+ 
+-		netif_dbg(ks, intr, ks->netdev,
+-			  "%s: txspace %d\n", __func__, ks->tx_space);
++		handled |= IRQ_TXI;
  	}
  
- 	priv->cells = devm_kcalloc(dev, priv->ncells, sizeof(*priv->cells), GFP_KERNEL);
--	if (!priv->cells)
--		return -ENOMEM;
-+	if (!priv->cells) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
+ 	if (status & IRQ_RXI)
+@@ -414,9 +416,6 @@ static irqreturn_t ks8851_irq(int irq, v
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
  
- 	for (var = data + sizeof(struct brcm_nvram_header), idx = 0;
- 	     var < (char *)data + len && *var;
- 	     var = value + strlen(value) + 1, idx++) {
-+		char *eq, *name;
+-	if (status & IRQ_TXI)
+-		netif_wake_queue(ks->netdev);
+-
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -500,6 +499,7 @@ static int ks8851_net_open(struct net_de
+ 	ks8851_wrreg16(ks, KS_ISR, ks->rc_ier);
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
+ 
++	ks->queued_len = 0;
+ 	netif_start_queue(ks->netdev);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -287,6 +287,18 @@ static void ks8851_wrfifo_spi(struct ks8
+ }
+ 
+ /**
++ * calc_txlen - calculate size of message to send packet
++ * @len: Length of data
++ *
++ * Returns the size of the TXFIFO message needed to send
++ * this packet.
++ */
++static unsigned int calc_txlen(unsigned int len)
++{
++	return ALIGN(len + 4, 4);
++}
 +
- 		eq = strchr(var, '=');
- 		if (!eq)
- 			break;
- 		*eq = '\0';
-+		name = devm_kstrdup(dev, var, GFP_KERNEL);
-+		*eq = '=';
-+		if (!name) {
-+			err = -ENOMEM;
-+			goto out;
-+		}
- 		value = eq + 1;
++/**
+  * ks8851_rx_skb_spi - receive skbuff
+  * @ks: The device state
+  * @skb: The skbuff
+@@ -305,7 +317,9 @@ static void ks8851_rx_skb_spi(struct ks8
+  */
+ static void ks8851_tx_work(struct work_struct *work)
+ {
++	unsigned int dequeued_len = 0;
+ 	struct ks8851_net_spi *kss;
++	unsigned short tx_space;
+ 	struct ks8851_net *ks;
+ 	unsigned long flags;
+ 	struct sk_buff *txb;
+@@ -322,6 +336,8 @@ static void ks8851_tx_work(struct work_s
+ 		last = skb_queue_empty(&ks->txq);
  
--		priv->cells[idx].name = devm_kstrdup(dev, var, GFP_KERNEL);
--		if (!priv->cells[idx].name)
--			return -ENOMEM;
-+		priv->cells[idx].name = name;
- 		priv->cells[idx].offset = value - (char *)data;
- 		priv->cells[idx].bytes = strlen(value);
- 		priv->cells[idx].np = of_get_child_by_name(dev->of_node, priv->cells[idx].name);
--		if (!strcmp(var, "et0macaddr") ||
--		    !strcmp(var, "et1macaddr") ||
--		    !strcmp(var, "et2macaddr")) {
-+		if (!strcmp(name, "et0macaddr") ||
-+		    !strcmp(name, "et1macaddr") ||
-+		    !strcmp(name, "et2macaddr")) {
- 			priv->cells[idx].raw_len = strlen(value);
- 			priv->cells[idx].bytes = ETH_ALEN;
- 			priv->cells[idx].read_post_process = brcm_nvram_read_post_process_macaddr;
+ 		if (txb) {
++			dequeued_len += calc_txlen(txb->len);
++
+ 			ks8851_wrreg16_spi(ks, KS_RXQCR,
+ 					   ks->rc_rxqcr | RXQCR_SDA);
+ 			ks8851_wrfifo_spi(ks, txb, last);
+@@ -332,6 +348,13 @@ static void ks8851_tx_work(struct work_s
  		}
  	}
  
--	return 0;
-+out:
-+	priv->data[len - 1] = tmp;
-+	return err;
++	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
++
++	spin_lock(&ks->statelock);
++	ks->queued_len -= dequeued_len;
++	ks->tx_space = tx_space;
++	spin_unlock(&ks->statelock);
++
+ 	ks8851_unlock_spi(ks, &flags);
  }
  
- static int brcm_nvram_parse(struct brcm_nvram *priv)
- {
-+	struct brcm_nvram_header *header = (struct brcm_nvram_header *)priv->data;
- 	struct device *dev = priv->dev;
--	struct brcm_nvram_header header;
--	uint8_t *data;
- 	size_t len;
- 	int err;
- 
--	memcpy_fromio(&header, priv->base, sizeof(header));
--
--	if (memcmp(header.magic, NVRAM_MAGIC, 4)) {
-+	if (memcmp(header->magic, NVRAM_MAGIC, 4)) {
- 		dev_err(dev, "Invalid NVRAM magic\n");
- 		return -EINVAL;
- 	}
- 
--	len = le32_to_cpu(header.len);
--
--	data = kzalloc(len, GFP_KERNEL);
--	if (!data)
--		return -ENOMEM;
--
--	memcpy_fromio(data, priv->base, len);
--	data[len - 1] = '\0';
--
--	err = brcm_nvram_add_cells(priv, data, len);
--	if (err) {
--		dev_err(dev, "Failed to add cells: %d\n", err);
--		return err;
-+	len = le32_to_cpu(header->len);
-+	if (len > priv->nvmem_size) {
-+		dev_err(dev, "NVRAM length (%zd) exceeds mapped size (%zd)\n", len,
-+			priv->nvmem_size);
-+		return -EINVAL;
- 	}
- 
--	kfree(data);
-+	err = brcm_nvram_add_cells(priv, priv->data, len);
-+	if (err)
-+		dev_err(dev, "Failed to add cells: %d\n", err);
- 
- 	return 0;
+@@ -347,18 +370,6 @@ static void ks8851_flush_tx_work_spi(str
  }
-@@ -150,7 +207,6 @@ static int brcm_nvram_probe(struct platf
- 		.reg_read = brcm_nvram_read,
- 	};
- 	struct device *dev = &pdev->dev;
--	struct resource *res;
- 	struct brcm_nvram *priv;
- 	int err;
  
-@@ -159,21 +215,19 @@ static int brcm_nvram_probe(struct platf
- 		return -ENOMEM;
- 	priv->dev = dev;
- 
--	priv->base = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
--	if (IS_ERR(priv->base))
--		return PTR_ERR(priv->base);
-+	err = brcm_nvram_copy_data(priv, pdev);
-+	if (err)
-+		return err;
- 
- 	err = brcm_nvram_parse(priv);
- 	if (err)
- 		return err;
- 
--	bcm47xx_nvram_init_from_iomem(priv->base, resource_size(res));
+ /**
+- * calc_txlen - calculate size of message to send packet
+- * @len: Length of data
+- *
+- * Returns the size of the TXFIFO message needed to send
+- * this packet.
+- */
+-static unsigned int calc_txlen(unsigned int len)
+-{
+-	return ALIGN(len + 4, 4);
+-}
 -
- 	config.dev = dev;
- 	config.cells = priv->cells;
- 	config.ncells = priv->ncells;
- 	config.priv = priv;
--	config.size = resource_size(res);
-+	config.size = priv->nvmem_size;
+-/**
+  * ks8851_start_xmit_spi - transmit packet using SPI
+  * @skb: The buffer to transmit
+  * @dev: The device used to transmit the packet.
+@@ -386,16 +397,17 @@ static netdev_tx_t ks8851_start_xmit_spi
  
- 	return PTR_ERR_OR_ZERO(devm_nvmem_register(dev, &config));
+ 	spin_lock(&ks->statelock);
+ 
+-	if (needed > ks->tx_space) {
++	if (ks->queued_len + needed > ks->tx_space) {
+ 		netif_stop_queue(dev);
+ 		ret = NETDEV_TX_BUSY;
+ 	} else {
+-		ks->tx_space -= needed;
++		ks->queued_len += needed;
+ 		skb_queue_tail(&ks->txq, skb);
+ 	}
+ 
+ 	spin_unlock(&ks->statelock);
+-	schedule_work(&kss->tx_work);
++	if (ret == NETDEV_TX_OK)
++		schedule_work(&kss->tx_work);
+ 
+ 	return ret;
  }
 
 
