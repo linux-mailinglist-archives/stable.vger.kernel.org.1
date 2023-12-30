@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-8829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D5E3820513
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5449A820577
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2ADEF282337
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1881F221BA
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9578F8483;
-	Sat, 30 Dec 2023 12:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA84883C;
+	Sat, 30 Dec 2023 12:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKvq3xDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMJ6dbSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCF26AD6;
-	Sat, 30 Dec 2023 12:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9582C433C8;
-	Sat, 30 Dec 2023 12:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E798489;
+	Sat, 30 Dec 2023 12:08:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B2FC433C8;
+	Sat, 30 Dec 2023 12:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937870;
-	bh=hWs6gQ8FaiI7yCEu21b1u5xCEmbZwxKknMzSS7DZN7w=;
+	s=korg; t=1703938123;
+	bh=kzpgZTKoyGUDJ7yi2mYcpQuO4KBEjespCg4hjEYjlDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKvq3xDOSPXYg7mWf4tmE/oY9aHny6QqE8JdFUAOiavoa7OlBAkKgvg/Gb6OkGt9J
-	 zGW9PNceU+1VWIecNtiE3flAdzJ30XuzkxmQEA13/CjkobGidSNNn3wnfg5EKFai1v
-	 hxBumg4IcLyQ/hfzSTXUDKv2X3T1iQTs9qsCNAL0=
+	b=TMJ6dbSXFasJ86XNrrFZ3m/M5S1AbznlwCy/ZW/ZbkHfJQ5fVHnaWRpkTakI2hrfn
+	 ypiCVwLFQjeUzi251x7vjultUeQ8WMWTylPeZ42Pe8LYwF4TtCXPNKDJI7222KSzh2
+	 GxYyCSABOvXqw7kDBV4RAcNnyxpfBH6UgMO27MOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 095/156] iio: triggered-buffer: prevent possible freeing of wrong buffer
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/112] afs: Fix dynamic root lookup DNS check
 Date: Sat, 30 Dec 2023 11:59:09 +0000
-Message-ID: <20231230115815.462289333@linuxfoundation.org>
+Message-ID: <20231230115807.905009758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +55,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: David Howells <dhowells@redhat.com>
 
-commit bce61476dc82f114e24e9c2e11fb064781ec563c upstream.
+[ Upstream commit 74cef6872ceaefb5b6c5c60641371ea28702d358 ]
 
-Commit ee708e6baacd ("iio: buffer: introduce support for attaching more
-IIO buffers") introduced support for multiple buffers per indio_dev but
-left indio_dev->buffer for a few legacy use cases.
+In the afs dynamic root directory, the ->lookup() function does a DNS check
+on the cell being asked for and if the DNS upcall reports an error it will
+report an error back to userspace (typically ENOENT).
 
-In the case of the triggered buffer, iio_triggered_buffer_cleanup()
-still assumes that indio_dev->buffer points to the buffer allocated by
-iio_triggered_buffer_setup_ext(). However, since
-iio_triggered_buffer_setup_ext() now calls iio_device_attach_buffer()
-to attach the buffer, indio_dev->buffer will only point to the buffer
-allocated by iio_device_attach_buffer() if it the first buffer attached.
+However, if a failed DNS upcall returns a new-style result, it will return
+a valid result, with the status field set appropriately to indicate the
+type of failure - and in that case, dns_query() doesn't return an error and
+we let stat() complete with no error - which can cause confusion in
+userspace as subsequent calls that trigger d_automount then fail with
+ENOENT.
 
-This adds a check to make sure that no other buffer has been attached
-yet to ensure that indio_dev->buffer will be assigned when
-iio_device_attach_buffer() is called.
+Fix this by checking the status result from a valid dns_query() and
+returning an error if it indicates a failure.
 
-As per discussion in the review thread, we may want to deal with multiple
-triggers per device, but this is a fix for the issue in the meantime and
-any such support would be unlikely to be suitable for a backport.
-
-Fixes: ee708e6baacd ("iio: buffer: introduce support for attaching more IIO buffers")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Acked-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231031210521.1661552-1-dlechner@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server set")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/buffer/industrialio-triggered-buffer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/afs/dynroot.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-+++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-@@ -46,6 +46,16 @@ int iio_triggered_buffer_setup_ext(struc
- 	struct iio_buffer *buffer;
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index 910c8a7a685ce..9937993cf29dc 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -114,6 +114,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	struct afs_net *net = afs_d2net(dentry);
+ 	const char *name = dentry->d_name.name;
+ 	size_t len = dentry->d_name.len;
++	char *result = NULL;
  	int ret;
  
-+	/*
-+	 * iio_triggered_buffer_cleanup() assumes that the buffer allocated here
-+	 * is assigned to indio_dev->buffer but this is only the case if this
-+	 * function is the first caller to iio_device_attach_buffer(). If
-+	 * indio_dev->buffer is already set then we can't proceed otherwise the
-+	 * cleanup function will try to free a buffer that was not allocated here.
-+	 */
-+	if (indio_dev->buffer)
-+		return -EADDRINUSE;
+ 	/* Names prefixed with a dot are R/W mounts. */
+@@ -131,9 +132,22 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	}
+ 
+ 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
+-			NULL, NULL, false);
+-	if (ret == -ENODATA || ret == -ENOKEY)
++			&result, NULL, false);
++	if (ret == -ENODATA || ret == -ENOKEY || ret == 0)
+ 		ret = -ENOENT;
++	if (ret > 0 && ret >= sizeof(struct dns_server_list_v1_header)) {
++		struct dns_server_list_v1_header *v1 = (void *)result;
 +
- 	buffer = iio_kfifo_allocate();
- 	if (!buffer) {
- 		ret = -ENOMEM;
++		if (v1->hdr.zero == 0 &&
++		    v1->hdr.content == DNS_PAYLOAD_IS_SERVER_LIST &&
++		    v1->hdr.version == 1 &&
++		    (v1->status != DNS_LOOKUP_GOOD &&
++		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD))
++			return -ENOENT;
++
++	}
++
++	kfree(result);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
