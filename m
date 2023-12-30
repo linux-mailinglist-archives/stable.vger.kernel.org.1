@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-8887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D8882054E
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD578205B7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0961F21A41
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DD1B1C211E7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEB679DF;
-	Sat, 30 Dec 2023 12:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F278C79DD;
+	Sat, 30 Dec 2023 12:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaR3ENNj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQsrjsMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E909D79C2;
-	Sat, 30 Dec 2023 12:07:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A7FC433C7;
-	Sat, 30 Dec 2023 12:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D2E79CD;
+	Sat, 30 Dec 2023 12:11:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34826C433C7;
+	Sat, 30 Dec 2023 12:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938020;
-	bh=JF6k7xVy+249CIEdMnLMIdVT8yOGEM33RM/Wt0ck1HA=;
+	s=korg; t=1703938277;
+	bh=0t1Z4poAobnJg/JXKdNXMgueY7zEYvdi7mh7dcSEWVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaR3ENNjb2yZISlNG4XWjY4zl+NBtyQQ1617AGy2VX2p9hBmmJlx5G7cSagd5aKWf
-	 pHKRfXwZBLfirQkJ3k305n/WXEetXh6EKBaTFc99z++2TjJsRskGULZpQzuGX0DJ4I
-	 vDg7bjrcP2WR7t4vXIAyLQAMBB3jTWHa8iYGlKo8=
+	b=vQsrjsMNyK1dj7ped2GkibMXZGgueEaGfUMoDyNlZ0iPRNpyStekpmuz3mcmIB+kg
+	 vwUg+mWcbJTecfasrqo7HFywEalHxLza48A30K+7Ecj1R00Om+TJwvbss+8H26RHg+
+	 UkxfKMHbz4ybeG8plNgoK+gNgGIxNlwO5Xv2vzkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 152/156] KVM: arm64: vgic: Force vcpu vgic teardown on vcpu destroy
-Date: Sat, 30 Dec 2023 12:00:06 +0000
-Message-ID: <20231230115817.268071639@linuxfoundation.org>
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/112] ublk: move ublk_cancel_dev() out of ub->mutex
+Date: Sat, 30 Dec 2023 12:00:07 +0000
+Message-ID: <20231230115809.831305626@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,80 +53,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 02e3858f08faabab9503ae2911cf7c7e27702257 upstream.
+[ Upstream commit 85248d670b71d9edda9459ee14fdc85c8e9632c0 ]
 
-When failing to create a vcpu because (for example) it has a
-duplicate vcpu_id, we destroy the vcpu. Amusingly, this leaves
-the redistributor registered with the KVM_MMIO bus.
+ublk_cancel_dev() just calls ublk_cancel_queue() to cancel all pending
+io commands after ublk request queue is idle. The only protection is just
+the read & write of ubq->nr_io_ready and avoid duplicated command cancel,
+so add one per-queue lock with cancel flag for providing this protection,
+meantime move ublk_cancel_dev() out of ub->mutex.
 
-This is no good, and we should properly clean the mess. Force
-a teardown of the vgic vcpu interface, including the RD device
-before returning to the caller.
+Then we needn't to call io_uring_cmd_complete_in_task() to cancel
+pending command. And the same cancel logic will be re-used for
+cancelable uring command.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20231207151201.3028710-4-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch basically reverts commit ac5902f84bb5 ("ublk: fix AB-BA lockdep warning").
+
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231009093324.957829-4-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/arm.c               |    2 +-
- arch/arm64/kvm/vgic/vgic-init.c    |    5 ++++-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
- arch/arm64/kvm/vgic/vgic.h         |    1 +
- 4 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/block/ublk_drv.c | 40 +++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -407,7 +407,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vc
- 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
- 	kvm_timer_vcpu_terminate(vcpu);
- 	kvm_pmu_vcpu_destroy(vcpu);
--
-+	kvm_vgic_vcpu_destroy(vcpu);
- 	kvm_arm_vcpu_destroy(vcpu);
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c2f0f74193f0e..3fa74051f31b4 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -103,6 +103,9 @@ struct ublk_uring_cmd_pdu {
+  */
+ #define UBLK_IO_FLAG_NEED_GET_DATA 0x08
+ 
++/* atomic RW with ubq->cancel_lock */
++#define UBLK_IO_FLAG_CANCELED	0x80000000
++
+ struct ublk_io {
+ 	/* userspace buffer address from io cmd */
+ 	__u64	addr;
+@@ -126,6 +129,7 @@ struct ublk_queue {
+ 	unsigned int max_io_sz;
+ 	bool force_abort;
+ 	unsigned short nr_io_ready;	/* how many ios setup */
++	spinlock_t		cancel_lock;
+ 	struct ublk_device *dev;
+ 	struct ublk_io ios[];
+ };
+@@ -1045,28 +1049,28 @@ static inline bool ublk_queue_ready(struct ublk_queue *ubq)
+ 	return ubq->nr_io_ready == ubq->q_depth;
  }
  
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -379,7 +379,10 @@ static void __kvm_vgic_vcpu_destroy(stru
- 	vgic_flush_pending_lpis(vcpu);
+-static void ublk_cmd_cancel_cb(struct io_uring_cmd *cmd, unsigned issue_flags)
+-{
+-	io_uring_cmd_done(cmd, UBLK_IO_RES_ABORT, 0, issue_flags);
+-}
+-
+ static void ublk_cancel_queue(struct ublk_queue *ubq)
+ {
+ 	int i;
  
- 	INIT_LIST_HEAD(&vgic_cpu->ap_list_head);
--	vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-+	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
-+		vgic_unregister_redist_iodev(vcpu);
-+		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
+-	if (!ublk_queue_ready(ubq))
+-		return;
+-
+ 	for (i = 0; i < ubq->q_depth; i++) {
+ 		struct ublk_io *io = &ubq->ios[i];
+ 
+-		if (io->flags & UBLK_IO_FLAG_ACTIVE)
+-			io_uring_cmd_complete_in_task(io->cmd,
+-						      ublk_cmd_cancel_cb);
+-	}
++		if (io->flags & UBLK_IO_FLAG_ACTIVE) {
++			bool done;
+ 
+-	/* all io commands are canceled */
+-	ubq->nr_io_ready = 0;
++			spin_lock(&ubq->cancel_lock);
++			done = !!(io->flags & UBLK_IO_FLAG_CANCELED);
++			if (!done)
++				io->flags |= UBLK_IO_FLAG_CANCELED;
++			spin_unlock(&ubq->cancel_lock);
++
++			if (!done)
++				io_uring_cmd_done(io->cmd,
++						UBLK_IO_RES_ABORT, 0,
++						IO_URING_F_UNLOCKED);
++		}
 +	}
  }
  
- void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -820,7 +820,7 @@ out_unlock:
- 	return ret;
+ /* Cancel all pending commands, must be called after del_gendisk() returns */
+@@ -1113,7 +1117,6 @@ static void __ublk_quiesce_dev(struct ublk_device *ub)
+ 	blk_mq_quiesce_queue(ub->ub_disk->queue);
+ 	ublk_wait_tagset_rqs_idle(ub);
+ 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
+-	ublk_cancel_dev(ub);
+ 	/* we are going to release task_struct of ubq_daemon and resets
+ 	 * ->ubq_daemon to NULL. So in monitor_work, check on ubq_daemon causes UAF.
+ 	 * Besides, monitor_work is not necessary in QUIESCED state since we have
+@@ -1136,6 +1139,7 @@ static void ublk_quiesce_work_fn(struct work_struct *work)
+ 	__ublk_quiesce_dev(ub);
+  unlock:
+ 	mutex_unlock(&ub->mutex);
++	ublk_cancel_dev(ub);
  }
  
--static void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
-+void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
- {
- 	struct vgic_io_device *rd_dev = &vcpu->arch.vgic_cpu.rd_iodev;
+ static void ublk_unquiesce_dev(struct ublk_device *ub)
+@@ -1175,8 +1179,8 @@ static void ublk_stop_dev(struct ublk_device *ub)
+ 	put_disk(ub->ub_disk);
+ 	ub->ub_disk = NULL;
+  unlock:
+-	ublk_cancel_dev(ub);
+ 	mutex_unlock(&ub->mutex);
++	ublk_cancel_dev(ub);
+ 	cancel_delayed_work_sync(&ub->monitor_work);
+ }
  
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -241,6 +241,7 @@ int vgic_v3_lpi_sync_pending_status(stru
- int vgic_v3_save_pending_tables(struct kvm *kvm);
- int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count);
- int vgic_register_redist_iodev(struct kvm_vcpu *vcpu);
-+void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu);
- bool vgic_v3_check_base(struct kvm *kvm);
+@@ -1353,6 +1357,7 @@ static int ublk_init_queue(struct ublk_device *ub, int q_id)
+ 	void *ptr;
+ 	int size;
  
- void vgic_v3_load(struct kvm_vcpu *vcpu);
++	spin_lock_init(&ubq->cancel_lock);
+ 	ubq->flags = ub->dev_info.flags;
+ 	ubq->q_id = q_id;
+ 	ubq->q_depth = ub->dev_info.queue_depth;
+@@ -1882,8 +1887,9 @@ static void ublk_queue_reinit(struct ublk_device *ub, struct ublk_queue *ubq)
+ 	int i;
+ 
+ 	WARN_ON_ONCE(!(ubq->ubq_daemon && ubq_daemon_is_dying(ubq)));
++
+ 	/* All old ioucmds have to be completed */
+-	WARN_ON_ONCE(ubq->nr_io_ready);
++	ubq->nr_io_ready = 0;
+ 	/* old daemon is PF_EXITING, put it now */
+ 	put_task_struct(ubq->ubq_daemon);
+ 	/* We have to reset it to NULL, otherwise ub won't accept new FETCH_REQ */
+-- 
+2.43.0
+
 
 
 
