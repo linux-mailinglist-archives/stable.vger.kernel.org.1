@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AD8820474
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:00:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF9B820475
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E7E31C20C3C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:00:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A942821A6
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059A51FCF;
-	Sat, 30 Dec 2023 11:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137161FCF;
+	Sat, 30 Dec 2023 11:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8U4dVjW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVC/raQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44B12561
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:00:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044B0C433C7;
-	Sat, 30 Dec 2023 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A9823A5
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:00:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3A6C433C8;
+	Sat, 30 Dec 2023 11:00:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703934002;
-	bh=9oxmMS9GnTKLSAy7I2LcSUZbTZMKeGy9dFKHvHjJs58=;
+	s=korg; t=1703934049;
+	bh=IWeOHk3YVeVVlzJNJbzEXBRWZ/WW3x/y7ai3OVVF7Kw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=p8U4dVjWrCvNeugjtjj+PfPDyH/1fuMTq/YgL3jsj41R2dIVX4vdLsXvlvBzpVFYP
-	 ZrbdGO0veTiqgG27ormEGg9phap9iGr62yPyuZxY0XTCwA88TqlTpkHhzT8PI7zyqJ
-	 6GYb+Pkn1aGiBHlD+9l3ievFrcgTFa2ldT3Pw57s=
-Subject: FAILED: patch "[PATCH] mptcp: fix inconsistent state on fastopen race" failed to apply to 6.6-stable tree
-To: pabeni@redhat.com,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org,syzbot+c53d4d3ddb327e80bc51@syzkaller.appspotmail.com
+	b=hVC/raQ6wxPkt0Cx249k32ykQ5bmdg01ymYPb/QH90PGPRXOB3U6ApOhVUctuCnsB
+	 RUb7FV8nx9+P7leik1DmIC41giZ2iGYtjlChUyc28hxNgMhVJeog4s1I+NjOb8oexT
+	 ZoUMQPWvYRr2Pm5FlcCAwVuQg5q6NAGJ6cfrNuIY=
+Subject: FAILED: patch "[PATCH] ring-buffer: Fix slowpath of interrupted event" failed to apply to 6.1-stable tree
+To: rostedt@goodmis.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,torvalds@linux-foundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:59:59 +0000
-Message-ID: <2023123059-ardently-giver-2441@gregkh>
+Date: Sat, 30 Dec 2023 11:00:47 +0000
+Message-ID: <2023123047-tuesday-whooping-6ae3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4fd19a30701659af5839b7bd19d1f05f05933ebe
+git cherry-pick -x b803d7c664d55705831729d2f2e29c874bcd62ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123059-ardently-giver-2441@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123047-tuesday-whooping-6ae3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
-d109a7767273 ("mptcp: fix possible NULL pointer dereference on close")
-8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+b803d7c664d5 ("ring-buffer: Fix slowpath of interrupted event")
+0aa0e5289cfe ("ring-buffer: Have rb_time_cmpxchg() set the msb counter too")
+fff88fa0fbc7 ("ring-buffer: Fix a race in rb_time_cmpxchg() for 32 bit archs")
+00a8478f8f5c ("ring_buffer: Use try_cmpxchg instead of cmpxchg")
+bc92b9562abc ("ring_buffer: Change some static functions to bool")
+88ca6a71dcab ("ring-buffer: Handle resize in early boot up")
 
 thanks,
 
@@ -71,229 +74,273 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4fd19a30701659af5839b7bd19d1f05f05933ebe Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Fri, 15 Dec 2023 17:04:25 +0100
-Subject: [PATCH] mptcp: fix inconsistent state on fastopen race
+From b803d7c664d55705831729d2f2e29c874bcd62ea Mon Sep 17 00:00:00 2001
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Date: Mon, 18 Dec 2023 23:07:12 -0500
+Subject: [PATCH] ring-buffer: Fix slowpath of interrupted event
 
-The netlink PM can race with fastopen self-connect attempts, shutting
-down the first subflow via:
+To synchronize the timestamps with the ring buffer reservation, there are
+two timestamps that are saved in the buffer meta data.
 
-MPTCP_PM_CMD_DEL_ADDR -> mptcp_nl_remove_id_zero_address ->
-  mptcp_pm_nl_rm_subflow_received -> mptcp_close_ssk
+1. before_stamp
+2. write_stamp
 
-and transitioning such subflow to FIN_WAIT1 status before the syn-ack
-packet is processed. The MPTCP code does not react to such state change,
-leaving the connection in not-fallback status and the subflow handshake
-uncompleted, triggering the following splat:
+When the two are equal, the write_stamp is considered valid, as in, it may
+be used to calculate the delta of the next event as the write_stamp is the
+timestamp of the previous reserved event on the buffer.
 
-  WARNING: CPU: 0 PID: 10630 at net/mptcp/subflow.c:1405 subflow_data_ready+0x39f/0x690 net/mptcp/subflow.c:1405
-  Modules linked in:
-  CPU: 0 PID: 10630 Comm: kworker/u4:11 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
-  Workqueue: bat_events batadv_nc_worker
-  RIP: 0010:subflow_data_ready+0x39f/0x690 net/mptcp/subflow.c:1405
-  Code: 18 89 ee e8 e3 d2 21 f7 40 84 ed 75 1f e8 a9 d7 21 f7 44 89 fe bf 07 00 00 00 e8 0c d3 21 f7 41 83 ff 07 74 07 e8 91 d7 21 f7 <0f> 0b e8 8a d7 21 f7 48 89 df e8 d2 b2 ff ff 31 ff 89 c5 89 c6 e8
-  RSP: 0018:ffffc90000007448 EFLAGS: 00010246
-  RAX: 0000000000000000 RBX: ffff888031efc700 RCX: ffffffff8a65baf4
-  RDX: ffff888043222140 RSI: ffffffff8a65baff RDI: 0000000000000005
-  RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000007
-  R10: 000000000000000b R11: 0000000000000000 R12: 1ffff92000000e89
-  R13: ffff88807a534d80 R14: ffff888021c11a00 R15: 000000000000000b
-  FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fa19a0ffc81 CR3: 000000007a2db000 CR4: 00000000003506f0
-  DR0: 000000000000d8dd DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000ffff0ff0 DR7: 0000000000000400
-  Call Trace:
-   <IRQ>
-   tcp_data_ready+0x14c/0x5b0 net/ipv4/tcp_input.c:5128
-   tcp_data_queue+0x19c3/0x5190 net/ipv4/tcp_input.c:5208
-   tcp_rcv_state_process+0x11ef/0x4e10 net/ipv4/tcp_input.c:6844
-   tcp_v4_do_rcv+0x369/0xa10 net/ipv4/tcp_ipv4.c:1929
-   tcp_v4_rcv+0x3888/0x3b30 net/ipv4/tcp_ipv4.c:2329
-   ip_protocol_deliver_rcu+0x9f/0x480 net/ipv4/ip_input.c:205
-   ip_local_deliver_finish+0x2e4/0x510 net/ipv4/ip_input.c:233
-   NF_HOOK include/linux/netfilter.h:314 [inline]
-   NF_HOOK include/linux/netfilter.h:308 [inline]
-   ip_local_deliver+0x1b6/0x550 net/ipv4/ip_input.c:254
-   dst_input include/net/dst.h:461 [inline]
-   ip_rcv_finish+0x1c4/0x2e0 net/ipv4/ip_input.c:449
-   NF_HOOK include/linux/netfilter.h:314 [inline]
-   NF_HOOK include/linux/netfilter.h:308 [inline]
-   ip_rcv+0xce/0x440 net/ipv4/ip_input.c:569
-   __netif_receive_skb_one_core+0x115/0x180 net/core/dev.c:5527
-   __netif_receive_skb+0x1f/0x1b0 net/core/dev.c:5641
-   process_backlog+0x101/0x6b0 net/core/dev.c:5969
-   __napi_poll.constprop.0+0xb4/0x540 net/core/dev.c:6531
-   napi_poll net/core/dev.c:6600 [inline]
-   net_rx_action+0x956/0xe90 net/core/dev.c:6733
-   __do_softirq+0x21a/0x968 kernel/softirq.c:553
-   do_softirq kernel/softirq.c:454 [inline]
-   do_softirq+0xaa/0xe0 kernel/softirq.c:441
-   </IRQ>
-   <TASK>
-   __local_bh_enable_ip+0xf8/0x120 kernel/softirq.c:381
-   spin_unlock_bh include/linux/spinlock.h:396 [inline]
-   batadv_nc_purge_paths+0x1ce/0x3c0 net/batman-adv/network-coding.c:471
-   batadv_nc_worker+0x9b1/0x10e0 net/batman-adv/network-coding.c:722
-   process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
-   process_scheduled_works kernel/workqueue.c:2703 [inline]
-   worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
-   kthread+0x33c/0x440 kernel/kthread.c:388
-   ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-   ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-   </TASK>
+This is done by the following:
 
-To address the issue, catch the racing subflow state change and
-use it to cause the MPTCP fallback. Such fallback is also used to
-cause the first subflow state propagation to the msk socket via
-mptcp_set_connected(). After this change, the first subflow can
-additionally propagate the TCP_FIN_WAIT1 state, so rename the
-helper accordingly.
+ /*A*/	w = current position on the ring buffer
+	before = before_stamp
+	after = write_stamp
+	ts = read current timestamp
 
-Finally, if the state propagation is delayed to the msk release
-callback, the first subflow can change to a different state in between.
-Cache the relevant target state in a new msk-level field and use
-such value to update the msk state at release time.
+	if (before != after) {
+		write_stamp is not valid, force adding an absolute
+		timestamp.
+	}
 
-Fixes: 1e777f39b4d7 ("mptcp: add MSG_FASTOPEN sendmsg flag support")
+ /*B*/	before_stamp = ts
+
+ /*C*/	write = local_add_return(event length, position on ring buffer)
+
+	if (w == write - event length) {
+		/* Nothing interrupted between A and C */
+ /*E*/		write_stamp = ts;
+		delta = ts - after
+		/*
+		 * If nothing interrupted again,
+		 * before_stamp == write_stamp and write_stamp
+		 * can be used to calculate the delta for
+		 * events that come in after this one.
+		 */
+	} else {
+
+		/*
+		 * The slow path!
+		 * Was interrupted between A and C.
+		 */
+
+This is the place that there's a bug. We currently have:
+
+		after = write_stamp
+		ts = read current timestamp
+
+ /*F*/		if (write == current position on the ring buffer &&
+		    after < ts && cmpxchg(write_stamp, after, ts)) {
+
+			delta = ts - after;
+
+		} else {
+			delta = 0;
+		}
+
+The assumption is that if the current position on the ring buffer hasn't
+moved between C and F, then it also was not interrupted, and that the last
+event written has a timestamp that matches the write_stamp. That is the
+write_stamp is valid.
+
+But this may not be the case:
+
+If a task context event was interrupted by softirq between B and C.
+
+And the softirq wrote an event that got interrupted by a hard irq between
+C and E.
+
+and the hard irq wrote an event (does not need to be interrupted)
+
+We have:
+
+ /*B*/ before_stamp = ts of normal context
+
+   ---> interrupted by softirq
+
+	/*B*/ before_stamp = ts of softirq context
+
+	  ---> interrupted by hardirq
+
+		/*B*/ before_stamp = ts of hard irq context
+		/*E*/ write_stamp = ts of hard irq context
+
+		/* matches and write_stamp valid */
+	  <----
+
+	/*E*/ write_stamp = ts of softirq context
+
+	/* No longer matches before_stamp, write_stamp is not valid! */
+
+   <---
+
+ w != write - length, go to slow path
+
+// Right now the order of events in the ring buffer is:
+//
+// |-- softirq event --|-- hard irq event --|-- normal context event --|
+//
+
+ after = write_stamp (this is the ts of softirq)
+ ts = read current timestamp
+
+ if (write == current position on the ring buffer [true] &&
+     after < ts [true] && cmpxchg(write_stamp, after, ts) [true]) {
+
+	delta = ts - after  [Wrong!]
+
+The delta is to be between the hard irq event and the normal context
+event, but the above logic made the delta between the softirq event and
+the normal context event, where the hard irq event is between the two. This
+will shift all the remaining event timestamps on the sub-buffer
+incorrectly.
+
+The write_stamp is only valid if it matches the before_stamp. The cmpxchg
+does nothing to help this.
+
+Instead, the following logic can be done to fix this:
+
+	before = before_stamp
+	ts = read current timestamp
+	before_stamp = ts
+
+	after = write_stamp
+
+	if (write == current position on the ring buffer &&
+	    after == before && after < ts) {
+
+		delta = ts - after
+
+	} else {
+		delta = 0;
+	}
+
+The above will only use the write_stamp if it still matches before_stamp
+and was tested to not have changed since C.
+
+As a bonus, with this logic we do not need any 64-bit cmpxchg() at all!
+
+This means the 32-bit rb_time_t workaround can finally be removed. But
+that's for a later time.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231218175229.58ec3daf@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231218230712.3a76b081@gandalf.local.home
+
 Cc: stable@vger.kernel.org
-Reported-by: <syzbot+c53d4d3ddb327e80bc51@syzkaller.appspotmail.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/458
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: dd93942570789 ("ring-buffer: Do not try to put back write_stamp")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index bc81ea53a049..5cd5c3f535a8 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3402,12 +3402,12 @@ static void mptcp_release_cb(struct sock *sk)
- 	if (__test_and_clear_bit(MPTCP_CLEAN_UNA, &msk->cb_flags))
- 		__mptcp_clean_una_wakeup(sk);
- 	if (unlikely(msk->cb_flags)) {
--		/* be sure to set the current sk state before taking actions
-+		/* be sure to sync the msk state before taking actions
- 		 * depending on sk_state (MPTCP_ERROR_REPORT)
- 		 * On sk release avoid actions depending on the first subflow
- 		 */
--		if (__test_and_clear_bit(MPTCP_CONNECTED, &msk->cb_flags) && msk->first)
--			__mptcp_set_connected(sk);
-+		if (__test_and_clear_bit(MPTCP_SYNC_STATE, &msk->cb_flags) && msk->first)
-+			__mptcp_sync_state(sk, msk->pending_state);
- 		if (__test_and_clear_bit(MPTCP_ERROR_REPORT, &msk->cb_flags))
- 			__mptcp_error_report(sk);
- 		if (__test_and_clear_bit(MPTCP_SYNC_SNDBUF, &msk->cb_flags))
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index fe6f2d399ee8..aa1a93fe40ff 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -124,7 +124,7 @@
- #define MPTCP_ERROR_REPORT	3
- #define MPTCP_RETRANSMIT	4
- #define MPTCP_FLUSH_JOIN_LIST	5
--#define MPTCP_CONNECTED		6
-+#define MPTCP_SYNC_STATE	6
- #define MPTCP_SYNC_SNDBUF	7
- 
- struct mptcp_skb_cb {
-@@ -296,6 +296,9 @@ struct mptcp_sock {
- 	bool		use_64bit_ack; /* Set when we received a 64-bit DSN */
- 	bool		csum_enabled;
- 	bool		allow_infinite_fallback;
-+	u8		pending_state; /* A subflow asked to set this sk_state,
-+					* protected by the msk data lock
-+					*/
- 	u8		mpc_endpoint_id;
- 	u8		recvmsg_inq:1,
- 			cork:1,
-@@ -728,7 +731,7 @@ void mptcp_get_options(const struct sk_buff *skb,
- 		       struct mptcp_options_received *mp_opt);
- 
- void mptcp_finish_connect(struct sock *sk);
--void __mptcp_set_connected(struct sock *sk);
-+void __mptcp_sync_state(struct sock *sk, int state);
- void mptcp_reset_tout_timer(struct mptcp_sock *msk, unsigned long fail_tout);
- 
- static inline void mptcp_stop_tout_timer(struct sock *sk)
-@@ -1115,7 +1118,7 @@ static inline bool subflow_simultaneous_connect(struct sock *sk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
- 
--	return sk->sk_state == TCP_ESTABLISHED &&
-+	return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_FIN_WAIT1) &&
- 	       is_active_ssk(subflow) &&
- 	       !subflow->conn_finished;
- }
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index a4f3c27f0309..6d7684c35e93 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -419,22 +419,28 @@ static bool subflow_use_different_dport(struct mptcp_sock *msk, const struct soc
- 	return inet_sk(sk)->inet_dport != inet_sk((struct sock *)msk)->inet_dport;
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 5a114e752f11..83eab547f1d1 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -700,48 +700,6 @@ rb_time_read_cmpxchg(local_t *l, unsigned long expect, unsigned long set)
+ 	return local_try_cmpxchg(l, &expect, set);
  }
  
--void __mptcp_set_connected(struct sock *sk)
-+void __mptcp_sync_state(struct sock *sk, int state)
+-static bool rb_time_cmpxchg(rb_time_t *t, u64 expect, u64 set)
+-{
+-	unsigned long cnt, top, bottom, msb;
+-	unsigned long cnt2, top2, bottom2, msb2;
+-	u64 val;
+-
+-	/* Any interruptions in this function should cause a failure */
+-	cnt = local_read(&t->cnt);
+-
+-	/* The cmpxchg always fails if it interrupted an update */
+-	 if (!__rb_time_read(t, &val, &cnt2))
+-		 return false;
+-
+-	 if (val != expect)
+-		 return false;
+-
+-	 if ((cnt & 3) != cnt2)
+-		 return false;
+-
+-	 cnt2 = cnt + 1;
+-
+-	 rb_time_split(val, &top, &bottom, &msb);
+-	 msb = rb_time_val_cnt(msb, cnt);
+-	 top = rb_time_val_cnt(top, cnt);
+-	 bottom = rb_time_val_cnt(bottom, cnt);
+-
+-	 rb_time_split(set, &top2, &bottom2, &msb2);
+-	 msb2 = rb_time_val_cnt(msb2, cnt);
+-	 top2 = rb_time_val_cnt(top2, cnt2);
+-	 bottom2 = rb_time_val_cnt(bottom2, cnt2);
+-
+-	if (!rb_time_read_cmpxchg(&t->cnt, cnt, cnt2))
+-		return false;
+-	if (!rb_time_read_cmpxchg(&t->msb, msb, msb2))
+-		return false;
+-	if (!rb_time_read_cmpxchg(&t->top, top, top2))
+-		return false;
+-	if (!rb_time_read_cmpxchg(&t->bottom, bottom, bottom2))
+-		return false;
+-	return true;
+-}
+-
+ #else /* 64 bits */
+ 
+ /* local64_t always succeeds */
+@@ -755,11 +713,6 @@ static void rb_time_set(rb_time_t *t, u64 val)
  {
--	__mptcp_propagate_sndbuf(sk, mptcp_sk(sk)->first);
-+	struct mptcp_sock *msk = mptcp_sk(sk);
+ 	local64_set(&t->time, val);
+ }
+-
+-static bool rb_time_cmpxchg(rb_time_t *t, u64 expect, u64 set)
+-{
+-	return local64_try_cmpxchg(&t->time, &expect, set);
+-}
+ #endif
+ 
+ /*
+@@ -3610,20 +3563,36 @@ __rb_reserve_next(struct ring_buffer_per_cpu *cpu_buffer,
+ 	} else {
+ 		u64 ts;
+ 		/* SLOW PATH - Interrupted between A and C */
+-		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
+-		/* Was interrupted before here, write_stamp must be valid */
 +
-+	__mptcp_propagate_sndbuf(sk, msk->first);
- 	if (sk->sk_state == TCP_SYN_SENT) {
--		inet_sk_state_store(sk, TCP_ESTABLISHED);
-+		inet_sk_state_store(sk, state);
- 		sk->sk_state_change(sk);
- 	}
- }
- 
--static void mptcp_set_connected(struct sock *sk)
-+static void mptcp_propagate_state(struct sock *sk, struct sock *ssk)
- {
-+	struct mptcp_sock *msk = mptcp_sk(sk);
++		/* Save the old before_stamp */
++		a_ok = rb_time_read(&cpu_buffer->before_stamp, &info->before);
+ 		RB_WARN_ON(cpu_buffer, !a_ok);
 +
- 	mptcp_data_lock(sk);
--	if (!sock_owned_by_user(sk))
--		__mptcp_set_connected(sk);
--	else
--		__set_bit(MPTCP_CONNECTED, &mptcp_sk(sk)->cb_flags);
-+	if (!sock_owned_by_user(sk)) {
-+		__mptcp_sync_state(sk, ssk->sk_state);
-+	} else {
-+		msk->pending_state = ssk->sk_state;
-+		__set_bit(MPTCP_SYNC_STATE, &msk->cb_flags);
-+	}
- 	mptcp_data_unlock(sk);
- }
- 
-@@ -496,7 +502,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		subflow_set_remote_key(msk, subflow, &mp_opt);
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVEACK);
- 		mptcp_finish_connect(sk);
--		mptcp_set_connected(parent);
-+		mptcp_propagate_state(parent, sk);
- 	} else if (subflow->request_join) {
- 		u8 hmac[SHA256_DIGEST_SIZE];
- 
-@@ -540,7 +546,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 	} else if (mptcp_check_fallback(sk)) {
- fallback:
- 		mptcp_rcv_space_init(msk, sk);
--		mptcp_set_connected(parent);
-+		mptcp_propagate_state(parent, sk);
- 	}
- 	return;
- 
-@@ -1740,7 +1746,7 @@ static void subflow_state_change(struct sock *sk)
- 		mptcp_rcv_space_init(msk, sk);
- 		pr_fallback(msk);
- 		subflow->conn_finished = 1;
--		mptcp_set_connected(parent);
-+		mptcp_propagate_state(parent, sk);
- 	}
- 
- 	/* as recvmsg() does not acquire the subflow socket for ssk selection
++		/*
++		 * Read a new timestamp and update the before_stamp to make
++		 * the next event after this one force using an absolute
++		 * timestamp. This is in case an interrupt were to come in
++		 * between E and F.
++		 */
+ 		ts = rb_time_stamp(cpu_buffer->buffer);
++		rb_time_set(&cpu_buffer->before_stamp, ts);
++
++		barrier();
++ /*E*/		a_ok = rb_time_read(&cpu_buffer->write_stamp, &info->after);
++		/* Was interrupted before here, write_stamp must be valid */
++		RB_WARN_ON(cpu_buffer, !a_ok);
+ 		barrier();
+- /*E*/		if (write == (local_read(&tail_page->write) & RB_WRITE_MASK) &&
+-		    info->after < ts &&
+-		    rb_time_cmpxchg(&cpu_buffer->write_stamp,
+-				    info->after, ts)) {
+-			/* Nothing came after this event between C and E */
++ /*F*/		if (write == (local_read(&tail_page->write) & RB_WRITE_MASK) &&
++		    info->after == info->before && info->after < ts) {
++			/*
++			 * Nothing came after this event between C and F, it is
++			 * safe to use info->after for the delta as it
++			 * matched info->before and is still valid.
++			 */
+ 			info->delta = ts - info->after;
+ 		} else {
+ 			/*
+-			 * Interrupted between C and E:
++			 * Interrupted between C and F:
+ 			 * Lost the previous events time stamp. Just set the
+ 			 * delta to zero, and this will be the same time as
+ 			 * the event this event interrupted. And the events that
 
 
