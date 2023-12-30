@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-8879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AC1820546
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07ECA8205AF
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30A591C20C8F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C5B1C21151
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B89879DE;
-	Sat, 30 Dec 2023 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76036849C;
+	Sat, 30 Dec 2023 12:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hW+XhHHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVD1lttf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1418C8473;
-	Sat, 30 Dec 2023 12:06:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F62C433C7;
-	Sat, 30 Dec 2023 12:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400C579DC;
+	Sat, 30 Dec 2023 12:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE24C433C7;
+	Sat, 30 Dec 2023 12:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937999;
-	bh=GMLTJx8evgUE3TZzyjmYnl5Ws3Hjq5+h4Z9XurbEOzY=;
+	s=korg; t=1703938254;
+	bh=2voai+wTGMDdfQZNJ+vS5HmdObP0Mq9vXuAE8Ovh1Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hW+XhHHMwk2djw/Xe4k5jinuvzJKBXkn185WpgjexVw6+gJG4p2aRD3ZL+LNLVfcm
-	 8mW2RAO/Q+yfdTJp0EzmIOnsBJWyfTVt8FU7obgSBfW3IwWHmLbQLEmjTaw89ziHGz
-	 HNjoD+a4UauKLVDY8kONYLgAYfyQ4ecXmnGdYN0I=
+	b=sVD1lttfYVTVyIErlBpNjEICw50036Bdyc+u7HULdiXknKc6imgBvO392DO3IMLHy
+	 ea8+MsiTS6x737yVOASc7qy4nYtLfVQBZ6XDD7/Wxn7h1pemAPxe2PzxVcNXFj4AjE
+	 Syljq/fWetJkUJ9XZvK//bJYzJsqM/zSzqcrlSE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 145/156] pinctrl: starfive: jh7100: ignore disabled device tree nodes
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 086/112] drm/i915: Reject async flips with bigjoiner
 Date: Sat, 30 Dec 2023 11:59:59 +0000
-Message-ID: <20231230115817.059737391@linuxfoundation.org>
+Message-ID: <20231230115809.550116533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +51,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 5c584f175d32f9cc66c909f851cd905da58b39ea upstream.
+commit 88a173e5dd05e788068e8fa20a8c37c44bd8f416 upstream.
 
-The driver always registers pin configurations in device tree. This can
-cause some inconvenience to users, as pin configurations in the base
-device tree cannot be disabled in the device tree overlay, even when the
-relevant devices are not used.
+Currently async flips are busted when bigjoiner is in use.
+As a short term fix simply reject async flips in that case.
 
-Ignore disabled pin configuration nodes in device tree.
-
-Fixes: ec648f6b7686 ("pinctrl: starfive: Add pinctrl driver for StarFive SoCs")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Link: https://lore.kernel.org/r/fe4c15dcc3074412326b8dc296b0cbccf79c49bf.1701422582.git.namcao@linutronix.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9769
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081134.2698-1-ville.syrjala@linux.intel.com
+Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+(cherry picked from commit e93bffc2ac0a833b42841f31fff955549d38ce98)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-+++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-@@ -492,7 +492,7 @@ static int starfive_dt_node_to_map(struc
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -6481,6 +6481,17 @@ static int intel_async_flip_check_uapi(s
+ 		return -EINVAL;
+ 	}
  
- 	nmaps = 0;
- 	ngroups = 0;
--	for_each_child_of_node(np, child) {
-+	for_each_available_child_of_node(np, child) {
- 		int npinmux = of_property_count_u32_elems(child, "pinmux");
- 		int npins   = of_property_count_u32_elems(child, "pins");
- 
-@@ -527,7 +527,7 @@ static int starfive_dt_node_to_map(struc
- 	nmaps = 0;
- 	ngroups = 0;
- 	mutex_lock(&sfp->mutex);
--	for_each_child_of_node(np, child) {
-+	for_each_available_child_of_node(np, child) {
- 		int npins;
- 		int i;
- 
++	/*
++	 * FIXME: Bigjoiner+async flip is busted currently.
++	 * Remove this check once the issues are fixed.
++	 */
++	if (new_crtc_state->bigjoiner_pipes) {
++		drm_dbg_kms(&i915->drm,
++			    "[CRTC:%d:%s] async flip disallowed with bigjoiner\n",
++			    crtc->base.base.id, crtc->base.name);
++		return -EINVAL;
++	}
++
+ 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
+ 					     new_plane_state, i) {
+ 		if (plane->pipe != crtc->pipe)
 
 
 
