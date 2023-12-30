@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-8997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC4C8205C4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBB5820559
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EDCE2824E7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1E41C21040
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358F579DC;
-	Sat, 30 Dec 2023 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574FE8473;
+	Sat, 30 Dec 2023 12:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tF/b2WAN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dPsZiYn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D928BFA;
-	Sat, 30 Dec 2023 12:11:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E63C433C8;
-	Sat, 30 Dec 2023 12:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A6279D8;
+	Sat, 30 Dec 2023 12:07:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E845C433C7;
+	Sat, 30 Dec 2023 12:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938305;
-	bh=clM8VmSW505eS7EvOaqipAzBUCtp8COk7xJnzTjueLo=;
+	s=korg; t=1703938049;
+	bh=kT08HQoGFAMQuELkI/ekHKRA9z98gVpbiUBvvzVrJng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tF/b2WAN/QZQOlXrF/X2IGoU+7lDFhs71lJ87XfpXIMG18d+AKvuQLYZC45uo5pWC
-	 ZSIFgMLGq8ioMTPm0nVY1UpThVyeM2tBgWbK73Gf/iZttpZ3V4jH4GdaCcO89Fa3+N
-	 tKQa16yXUke/XcasFm9fgIinLL017kFdILoaWFoE=
+	b=1dPsZiYniU3yHM11bcXoL4SChYP+9mwrH8raXVzxhRsuEnN6UBt5fKoSErRPh5PNm
+	 7iGDYsQF/5QCvmUt1vNDrYvpMuM68zYI2Yq5xcsESKjxr4k7hlzFd/HZ8SmA6GIV8b
+	 pyarhw3v8g11XMmcxQaExXRe8ZZU30iCS6B04SCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Fabio Estevam <festevam@denx.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.1 081/112] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+	Alexander Atanasov <alexander.atanasov@virtuozzo.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 140/156] scsi: core: Always send batch on reset or error handling command
 Date: Sat, 30 Dec 2023 11:59:54 +0000
-Message-ID: <20231230115809.372044418@linuxfoundation.org>
+Message-ID: <20231230115816.908505266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +53,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
 
-commit a2a8aefecbd0f87d6127951cef33b3def8439057 upstream.
+commit 066c5b46b6eaf2f13f80c19500dbb3b84baabb33 upstream.
 
-Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
-the format:
+In commit 8930a6c20791 ("scsi: core: add support for request batching") the
+block layer bd->last flag was mapped to SCMD_LAST and used as an indicator
+to send the batch for the drivers that implement this feature. However, the
+error handling code was not updated accordingly.
 
-compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+scsi_send_eh_cmnd() is used to send error handling commands and request
+sense. The problem is that request sense comes as a single command that
+gets into the batch queue and times out. As a result the device goes
+offline after several failed resets. This was observed on virtio_scsi
+during a device resize operation.
 
-Document the "fsl,ocotp" entry to fix the following schema
-warning:
+[  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
+[  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
+[  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
 
-efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
-from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
+To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd() and
+scsi_reset_ioctl().
 
-Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
-Cc:  <Stable@vger.kernel.org>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231215111358.316727-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Link: https://lore.kernel.org/r/20231215121008.2881653-1-alexander.atanasov@virtuozzo.com
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_error.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
-@@ -14,9 +14,11 @@ allOf:
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1152,6 +1152,7 @@ retry:
  
- properties:
-   compatible:
--    enum:
--      - fsl,imx23-ocotp
--      - fsl,imx28-ocotp
-+    items:
-+      - enum:
-+          - fsl,imx23-ocotp
-+          - fsl,imx28-ocotp
-+      - const: fsl,ocotp
+ 	scsi_log_send(scmd);
+ 	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
++	scmd->flags |= SCMD_LAST;
  
-   "#address-cells":
-     const: 1
-@@ -40,7 +42,7 @@ additionalProperties: false
- examples:
-   - |
-     ocotp: efuse@8002c000 {
--        compatible = "fsl,imx28-ocotp";
-+        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
-         #address-cells = <1>;
-         #size-cells = <1>;
-         reg = <0x8002c000 0x2000>;
+ 	/*
+ 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+@@ -2459,6 +2460,7 @@ scsi_ioctl_reset(struct scsi_device *dev
+ 	scsi_init_command(dev, scmd);
+ 
+ 	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
++	scmd->flags |= SCMD_LAST;
+ 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
+ 
+ 	scmd->cmd_len			= 0;
 
 
 
