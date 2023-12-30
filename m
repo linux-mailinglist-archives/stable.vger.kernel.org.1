@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-8753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C7FA8204BC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:01:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 393448204BE
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1AF1C20DFE
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B4F01C20E62
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702F679DD;
-	Sat, 30 Dec 2023 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C487C79DD;
+	Sat, 30 Dec 2023 12:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMi6IweA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEvwx37+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F4579DC;
-	Sat, 30 Dec 2023 12:01:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1227C433C8;
-	Sat, 30 Dec 2023 12:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1AC63D5;
+	Sat, 30 Dec 2023 12:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD26C433C7;
+	Sat, 30 Dec 2023 12:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937674;
-	bh=dCo58GCm1R/opRgxbjpr0m1axxBzity5HmgCGUgaTt8=;
+	s=korg; t=1703937679;
+	bh=tbQoJK8CN6dE1QnN/jnhpzy/91HO5P4u0k7XTGbDP74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMi6IweArKGOod0toOERKmKnqKwy1C6zzY0J1KpiswfvGwBmsozVg8UouBsmqKxLv
-	 tF+15bNvn0w7cKLOH8plXcGDr9UQOLIl5HcZG8RYcaL7OnvPDcBeS5mxH2K4NIezFY
-	 F4AbPp0w+x+sLfJQ3APmJGmxcVRD2z5kudcy+hIM=
+	b=SEvwx37+WFXth5sRdE0d7zHCX+vp0ZIwdF8gA+cZP/4GIa/OSHNddGKvL/6NkxkvR
+	 oAk4TeYNNzaypD2R6oRryJH/3VfQt+ndLlQrzZEFh+gjjaX16ICkia++Q+JEVWKFrd
+	 wZtJN1J/gu+UyZtkNpTZViAbVOuTJsjLBomjciSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajvi Jingar <rajvi.jingar@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Guillaume Morin <guillaume@morinfr.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/156] platform/x86/intel/pmc: Fix hang in pmc_core_send_ltr_ignore()
-Date: Sat, 30 Dec 2023 11:57:53 +0000
-Message-ID: <20231230115813.002035492@linuxfoundation.org>
+Subject: [PATCH 6.6 020/156] SUNRPC: Revert 5f7fc5d69f6e92ec0b38774c387f5cf7812c5806
+Date: Sat, 30 Dec 2023 11:57:54 +0000
+Message-ID: <20231230115813.032018292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -51,44 +51,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajvi Jingar <rajvi.jingar@linux.intel.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit fbcf67ce5a9e2831c14bdfb895be05213e611724 ]
+[ Upstream commit bd018b98ba84ca0c80abac1ef23ce726a809e58c ]
 
-For input value 0, PMC stays unassigned which causes crash while trying
-to access PMC for register read/write. Include LTR index 0 in pmc_index
-and ltr_index calculation.
+Guillaume says:
+> I believe commit 5f7fc5d69f6e ("SUNRPC: Resupply rq_pages from
+> node-local memory") in Linux 6.5+ is incorrect. It passes
+> unconditionally rq_pool->sp_id as the NUMA node.
+>
+> While the comment in the svc_pool declaration in sunrpc/svc.h says
+> that sp_id is also the NUMA node id, it might not be the case if
+> the svc is created using svc_create_pooled(). svc_created_pooled()
+> can use the per-cpu pool mode therefore in this case sp_id would
+> be the cpu id.
 
-Fixes: 2bcef4529222 ("platform/x86:intel/pmc: Enable debugfs multiple PMC support")
-Signed-off-by: Rajvi Jingar <rajvi.jingar@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231216011650.1973941-1-rajvi.jingar@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fix this by reverting now. At a later point this minor optimization,
+and the deceptive labeling of the sp_id field, can be revisited.
+
+Reported-by: Guillaume Morin <guillaume@morinfr.org>
+Closes: https://lore.kernel.org/linux-nfs/ZYC9rsno8qYggVt9@bender.morinfr.org/T/#u
+Fixes: 5f7fc5d69f6e ("SUNRPC: Resupply rq_pages from node-local memory")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/pmc/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/svc_xprt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index 84c175b9721a0..e95d3011b9997 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -472,7 +472,7 @@ int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value)
- 	 * is based on the contiguous indexes from ltr_show output.
- 	 * pmc index and ltr index needs to be calculated from it.
- 	 */
--	for (pmc_index = 0; pmc_index < ARRAY_SIZE(pmcdev->pmcs) && ltr_index > 0; pmc_index++) {
-+	for (pmc_index = 0; pmc_index < ARRAY_SIZE(pmcdev->pmcs) && ltr_index >= 0; pmc_index++) {
- 		pmc = pmcdev->pmcs[pmc_index];
+diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
+index 4cfe9640df481..5cfe5c7408b74 100644
+--- a/net/sunrpc/svc_xprt.c
++++ b/net/sunrpc/svc_xprt.c
+@@ -666,9 +666,8 @@ static bool svc_alloc_arg(struct svc_rqst *rqstp)
+ 	}
  
- 		if (!pmc)
+ 	for (filled = 0; filled < pages; filled = ret) {
+-		ret = alloc_pages_bulk_array_node(GFP_KERNEL,
+-						  rqstp->rq_pool->sp_id,
+-						  pages, rqstp->rq_pages);
++		ret = alloc_pages_bulk_array(GFP_KERNEL, pages,
++					     rqstp->rq_pages);
+ 		if (ret > filled)
+ 			/* Made progress, don't sleep yet */
+ 			continue;
 -- 
 2.43.0
 
