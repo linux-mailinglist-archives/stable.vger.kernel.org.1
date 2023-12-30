@@ -1,43 +1,44 @@
-Return-Path: <stable+bounces-8820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A30882050C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29C938204E6
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 966A9B211E2
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DAB31C20F1A
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EB3883C;
-	Sat, 30 Dec 2023 12:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9938479DF;
+	Sat, 30 Dec 2023 12:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGSudJY+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOiEcb/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C56E8813;
-	Sat, 30 Dec 2023 12:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADC4C433C7;
-	Sat, 30 Dec 2023 12:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623BB79CD;
+	Sat, 30 Dec 2023 12:03:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5A6C433C9;
+	Sat, 30 Dec 2023 12:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937847;
-	bh=vcN/Ser6Ie6Lmx628/gPDqhxM4/RMGcnmvyNy52d5Vk=;
+	s=korg; t=1703937779;
+	bh=HHCoIS5YupxNuoGbsqtfgd6VR+u5ATKHYrriHJmSKRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGSudJY+4vtnrOZw31mcti1yNky0IkRBMRsr2GKtI24y2rApi6WHSaD4ZdHcGHHkI
-	 FzS++R5FjeElfqlJhxNG+Kp2f/5/iIbCo14GPCkZp4XlzBW3O7K4DDsFNs6OU08Ia+
-	 Fr6nkJSd8Bk8jJ8/819k3vs8U5kxTe0BYSIpLj6w=
+	b=dOiEcb/IqiUSOWYQqjzV2duAUwkoIFVIwjUTJcnuoCu8xmuJdmjUI8v0OGaUxsEcd
+	 M8tAFsdjGLi/9OBWvdhhc76I1xmpujyFbSEGvHwCavmifQBvk2FCgzzlLjmPH6An88
+	 6ucH7h3pNp0x65CLYvK7k3QWsxE0e97kG7lcseFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ying Hsu <yinghsu@chromium.org>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/156] Bluetooth: Fix not notifying when connection encryption changes
-Date: Sat, 30 Dec 2023 11:58:25 +0000
-Message-ID: <20231230115814.011019333@linuxfoundation.org>
+Subject: [PATCH 6.6 052/156] Bluetooth: Fix deadlock in vhci_send_frame
+Date: Sat, 30 Dec 2023 11:58:26 +0000
+Message-ID: <20231230115814.038261305@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -56,49 +57,131 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit f67eabffb57d0bee379994a18ec5f462b2cbdf86 ]
+[ Upstream commit 769bf60e17ee1a56a81e7c031192c3928312c52e ]
 
-Some layers such as SMP depend on getting notified about encryption
-changes immediately as they only allow certain PDU to be transmitted
-over an encrypted link which may cause SMP implementation to reject
-valid PDUs received thus causing pairing to fail when it shouldn't.
+syzbot found a potential circular dependency leading to a deadlock:
+    -> #3 (&hdev->req_lock){+.+.}-{3:3}:
+    __mutex_lock_common+0x1b6/0x1bc2 kernel/locking/mutex.c:599
+    __mutex_lock kernel/locking/mutex.c:732 [inline]
+    mutex_lock_nested+0x17/0x1c kernel/locking/mutex.c:784
+    hci_dev_do_close+0x3f/0x9f net/bluetooth/hci_core.c:551
+    hci_rfkill_set_block+0x130/0x1ac net/bluetooth/hci_core.c:935
+    rfkill_set_block+0x1e6/0x3b8 net/rfkill/core.c:345
+    rfkill_fop_write+0x2d8/0x672 net/rfkill/core.c:1274
+    vfs_write+0x277/0xcf5 fs/read_write.c:594
+    ksys_write+0x19b/0x2bd fs/read_write.c:650
+    do_syscall_x64 arch/x86/entry/common.c:55 [inline]
+    do_syscall_64+0x51/0xba arch/x86/entry/common.c:93
+    entry_SYSCALL_64_after_hwframe+0x61/0xcb
 
-Fixes: 7aca0ac4792e ("Bluetooth: Wait for HCI_OP_WRITE_AUTH_PAYLOAD_TO to complete")
+    -> #2 (rfkill_global_mutex){+.+.}-{3:3}:
+    __mutex_lock_common+0x1b6/0x1bc2 kernel/locking/mutex.c:599
+    __mutex_lock kernel/locking/mutex.c:732 [inline]
+    mutex_lock_nested+0x17/0x1c kernel/locking/mutex.c:784
+    rfkill_register+0x30/0x7e3 net/rfkill/core.c:1045
+    hci_register_dev+0x48f/0x96d net/bluetooth/hci_core.c:2622
+    __vhci_create_device drivers/bluetooth/hci_vhci.c:341 [inline]
+    vhci_create_device+0x3ad/0x68f drivers/bluetooth/hci_vhci.c:374
+    vhci_get_user drivers/bluetooth/hci_vhci.c:431 [inline]
+    vhci_write+0x37b/0x429 drivers/bluetooth/hci_vhci.c:511
+    call_write_iter include/linux/fs.h:2109 [inline]
+    new_sync_write fs/read_write.c:509 [inline]
+    vfs_write+0xaa8/0xcf5 fs/read_write.c:596
+    ksys_write+0x19b/0x2bd fs/read_write.c:650
+    do_syscall_x64 arch/x86/entry/common.c:55 [inline]
+    do_syscall_64+0x51/0xba arch/x86/entry/common.c:93
+    entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+    -> #1 (&data->open_mutex){+.+.}-{3:3}:
+    __mutex_lock_common+0x1b6/0x1bc2 kernel/locking/mutex.c:599
+    __mutex_lock kernel/locking/mutex.c:732 [inline]
+    mutex_lock_nested+0x17/0x1c kernel/locking/mutex.c:784
+    vhci_send_frame+0x68/0x9c drivers/bluetooth/hci_vhci.c:75
+    hci_send_frame+0x1cc/0x2ff net/bluetooth/hci_core.c:2989
+    hci_sched_acl_pkt net/bluetooth/hci_core.c:3498 [inline]
+    hci_sched_acl net/bluetooth/hci_core.c:3583 [inline]
+    hci_tx_work+0xb94/0x1a60 net/bluetooth/hci_core.c:3654
+    process_one_work+0x901/0xfb8 kernel/workqueue.c:2310
+    worker_thread+0xa67/0x1003 kernel/workqueue.c:2457
+    kthread+0x36a/0x430 kernel/kthread.c:319
+    ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:298
+
+    -> #0 ((work_completion)(&hdev->tx_work)){+.+.}-{0:0}:
+    check_prev_add kernel/locking/lockdep.c:3053 [inline]
+    check_prevs_add kernel/locking/lockdep.c:3172 [inline]
+    validate_chain kernel/locking/lockdep.c:3787 [inline]
+    __lock_acquire+0x2d32/0x77fa kernel/locking/lockdep.c:5011
+    lock_acquire+0x273/0x4d5 kernel/locking/lockdep.c:5622
+    __flush_work+0xee/0x19f kernel/workqueue.c:3090
+    hci_dev_close_sync+0x32f/0x1113 net/bluetooth/hci_sync.c:4352
+    hci_dev_do_close+0x47/0x9f net/bluetooth/hci_core.c:553
+    hci_rfkill_set_block+0x130/0x1ac net/bluetooth/hci_core.c:935
+    rfkill_set_block+0x1e6/0x3b8 net/rfkill/core.c:345
+    rfkill_fop_write+0x2d8/0x672 net/rfkill/core.c:1274
+    vfs_write+0x277/0xcf5 fs/read_write.c:594
+    ksys_write+0x19b/0x2bd fs/read_write.c:650
+    do_syscall_x64 arch/x86/entry/common.c:55 [inline]
+    do_syscall_64+0x51/0xba arch/x86/entry/common.c:93
+    entry_SYSCALL_64_after_hwframe+0x61/0xcb
+
+This change removes the need for acquiring the open_mutex in
+vhci_send_frame, thus eliminating the potential deadlock while
+maintaining the required packet ordering.
+
+Fixes: 92d4abd66f70 ("Bluetooth: vhci: Fix race when opening vhci device")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/bluetooth/hci_vhci.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index f6d3150bcbb03..da756cbf62206 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -820,8 +820,6 @@ static u8 hci_cc_write_auth_payload_timeout(struct hci_dev *hdev, void *data,
- 	if (!rp->status)
- 		conn->auth_payload_timeout = get_unaligned_le16(sent + 2);
+diff --git a/drivers/bluetooth/hci_vhci.c b/drivers/bluetooth/hci_vhci.c
+index f3892e9ce800f..572d68d52965f 100644
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -11,6 +11,7 @@
+ #include <linux/module.h>
+ #include <asm/unaligned.h>
  
--	hci_encrypt_cfm(conn, 0);
--
- unlock:
- 	hci_dev_unlock(hdev);
++#include <linux/atomic.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/slab.h>
+@@ -44,6 +45,7 @@ struct vhci_data {
+ 	bool wakeup;
+ 	__u16 msft_opcode;
+ 	bool aosp_capable;
++	atomic_t initialized;
+ };
  
-@@ -3683,12 +3681,8 @@ static void hci_encrypt_change_evt(struct hci_dev *hdev, void *data,
- 		cp.handle = cpu_to_le16(conn->handle);
- 		cp.timeout = cpu_to_le16(hdev->auth_payload_timeout);
- 		if (hci_send_cmd(conn->hdev, HCI_OP_WRITE_AUTH_PAYLOAD_TO,
--				 sizeof(cp), &cp)) {
-+				 sizeof(cp), &cp))
- 			bt_dev_err(hdev, "write auth payload timeout failed");
--			goto notify;
--		}
--
--		goto unlock;
- 	}
+ static int vhci_open_dev(struct hci_dev *hdev)
+@@ -75,11 +77,10 @@ static int vhci_send_frame(struct hci_dev *hdev, struct sk_buff *skb)
  
- notify:
+ 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
+ 
+-	mutex_lock(&data->open_mutex);
+ 	skb_queue_tail(&data->readq, skb);
+-	mutex_unlock(&data->open_mutex);
+ 
+-	wake_up_interruptible(&data->read_wait);
++	if (atomic_read(&data->initialized))
++		wake_up_interruptible(&data->read_wait);
+ 	return 0;
+ }
+ 
+@@ -464,7 +465,8 @@ static int __vhci_create_device(struct vhci_data *data, __u8 opcode)
+ 	skb_put_u8(skb, 0xff);
+ 	skb_put_u8(skb, opcode);
+ 	put_unaligned_le16(hdev->id, skb_put(skb, 2));
+-	skb_queue_tail(&data->readq, skb);
++	skb_queue_head(&data->readq, skb);
++	atomic_inc(&data->initialized);
+ 
+ 	wake_up_interruptible(&data->read_wait);
+ 	return 0;
 -- 
 2.43.0
 
