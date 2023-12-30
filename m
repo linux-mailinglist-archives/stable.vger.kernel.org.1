@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-8885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDA1082054C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E508205AB
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2671F21626
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2162823A5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFD079DF;
-	Sat, 30 Dec 2023 12:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042FC8473;
+	Sat, 30 Dec 2023 12:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtELum9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uK78uAvw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40CA79C2;
-	Sat, 30 Dec 2023 12:06:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD28C433C7;
-	Sat, 30 Dec 2023 12:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C179C79E0;
+	Sat, 30 Dec 2023 12:10:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CF9C433C7;
+	Sat, 30 Dec 2023 12:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938015;
-	bh=bR3Oo9PggkCwUFqWGGJ4nahYBYjs7X3yqRqEVrxXv4Y=;
+	s=korg; t=1703938243;
+	bh=cIKo1uG66hdUfVKf7uL+6CoF4yX7N3kMeuu35/KXxXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtELum9gFkdsa8cvY05rCAnaCwHgS9yPJBFfGJjSU3xS6gJhkkrRvDQdGGH1tGymQ
-	 E61cVvTUMEwv0bu0H0KHhQTXxsgiIhUDJiibzNihqOb3ZYmwmr0On4BeCfIKgjNlEV
-	 QUIUbHTkjFhJkGGKj19uxztt1jg9i0JBL73ppW4c=
+	b=uK78uAvw4JLxdX5Z3FL1cCC4pTGrH5OTZ0NLIVn+LQy3RP/5+tNpuXSbUeEM0i2S8
+	 jsbxZX1CuSOewBU6HDiogEW2Egc9XLG0OmwbkeQAwd4UmXrF7lLRbGMmLJu4QfH2PJ
+	 Mu1sAL61Rygo8ODZLP0RFfnevevyW5HFK7SD410E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/156] ring-buffer: Remove useless update to write_stamp in rb_try_to_discard()
+	Xiao Yao <xiaoyao@rock-chips.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 074/112] Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE
 Date: Sat, 30 Dec 2023 11:59:47 +0000
-Message-ID: <20231230115816.705008371@linuxfoundation.org>
+Message-ID: <20231230115809.114575091@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,154 +52,261 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Xiao Yao <xiaoyao@rock-chips.com>
 
-[ Upstream commit 083e9f65bd215582bf8f6a920db729fadf16704f ]
+commit 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 upstream.
 
-When filtering is enabled, a temporary buffer is created to place the
-content of the trace event output so that the filter logic can decide
-from the trace event output if the trace event should be filtered out or
-not. If it is to be filtered out, the content in the temporary buffer is
-simply discarded, otherwise it is written into the trace buffer.
+If two Bluetooth devices both support BR/EDR and BLE, and also
+support Secure Connections, then they only need to pair once.
+The LTK generated during the LE pairing process may be converted
+into a BR/EDR link key for BR/EDR transport, and conversely, a
+link key generated during the BR/EDR SSP pairing process can be
+converted into an LTK for LE transport. Hence, the link type of
+the link key and LTK is not fixed, they can be either an LE LINK
+or an ACL LINK.
 
-But if an interrupt were to come in while a previous event was using that
-temporary buffer, the event written by the interrupt would actually go
-into the ring buffer itself to prevent corrupting the data on the
-temporary buffer. If the event is to be filtered out, the event in the
-ring buffer is discarded, or if it fails to discard because another event
-were to have already come in, it is turned into padding.
+Currently, in the mgmt_new_irk/ltk/crsk/link_key functions, the
+link type is fixed, which could lead to incorrect address types
+being reported to the application layer. Therefore, it is necessary
+to add link_type/addr_type to the smp_irk/ltk/crsk and link_key,
+to ensure the generation of the correct address type.
 
-The update to the write_stamp in the rb_try_to_discard() happens after a
-fix was made to force the next event after the discard to use an absolute
-timestamp by setting the before_stamp to zero so it does not match the
-write_stamp (which causes an event to use the absolute timestamp).
+SMP over BREDR:
+Before Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+        BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
 
-But there's an effort in rb_try_to_discard() to put back the write_stamp
-to what it was before the event was added. But this is useless and
-wasteful because nothing is going to be using that write_stamp for
-calculations as it still will not match the before_stamp.
+After Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+      BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
 
-Remove this useless update, and in doing so, we remove another
-cmpxchg64()!
+SMP over LE:
+Before Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5F:5C:07:37:47:D5 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
 
-Also update the comments to reflect this change as well as remove some
-extra white space in another comment.
+After Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5E:03:1C:00:38:21 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        Store hint: Yes (0x01)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231215081810.1f4f38fe@rorschach.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Vincent Donnefort   <vdonnefort@google.com>
-Fixes: b2dd797543cf ("ring-buffer: Force absolute timestamp on discard of event")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiao Yao <xiaoyao@rock-chips.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 47 +++++++++-----------------------------
- 1 file changed, 11 insertions(+), 36 deletions(-)
+ include/net/bluetooth/hci_core.h |    5 +++++
+ net/bluetooth/mgmt.c             |   25 ++++++++++++++++++-------
+ net/bluetooth/smp.c              |    7 +++++++
+ 3 files changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 070566baa0ca4..4c97160ab9c15 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2987,25 +2987,6 @@ static unsigned rb_calculate_event_length(unsigned length)
- 	return length;
- }
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -187,6 +187,7 @@ struct blocked_key {
+ struct smp_csrk {
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[16];
+ };
+@@ -196,6 +197,7 @@ struct smp_ltk {
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 authenticated;
+ 	u8 type;
+ 	u8 enc_size;
+@@ -210,6 +212,7 @@ struct smp_irk {
+ 	bdaddr_t rpa;
+ 	bdaddr_t bdaddr;
+ 	u8 addr_type;
++	u8 link_type;
+ 	u8 val[16];
+ };
  
--static u64 rb_time_delta(struct ring_buffer_event *event)
--{
--	switch (event->type_len) {
--	case RINGBUF_TYPE_PADDING:
--		return 0;
--
--	case RINGBUF_TYPE_TIME_EXTEND:
--		return rb_event_time_stamp(event);
--
--	case RINGBUF_TYPE_TIME_STAMP:
--		return 0;
--
--	case RINGBUF_TYPE_DATA:
--		return event->time_delta;
--	default:
--		return 0;
--	}
--}
--
- static inline bool
- rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
- 		  struct ring_buffer_event *event)
-@@ -3013,8 +2994,6 @@ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
- 	unsigned long new_index, old_index;
- 	struct buffer_page *bpage;
- 	unsigned long addr;
--	u64 write_stamp;
--	u64 delta;
+@@ -217,6 +220,8 @@ struct link_key {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
++	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[HCI_LINK_KEY_SIZE];
+ 	u8 pin_len;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2883,7 +2883,8 @@ static int load_link_keys(struct sock *s
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_link_key_info *key = &cp->keys[i];
  
- 	new_index = rb_event_index(event);
- 	old_index = new_index + rb_event_ts_length(event);
-@@ -3023,14 +3002,10 @@ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
+-		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
++		/* Considering SMP over BREDR/LE, there is no need to check addr_type */
++		if (key->type > 0x08)
+ 			return mgmt_cmd_status(sk, hdev->id,
+ 					       MGMT_OP_LOAD_LINK_KEYS,
+ 					       MGMT_STATUS_INVALID_PARAMS);
+@@ -7129,6 +7130,7 @@ static int load_irks(struct sock *sk, st
  
- 	bpage = READ_ONCE(cpu_buffer->tail_page);
+ 	for (i = 0; i < irk_count; i++) {
+ 		struct mgmt_irk_info *irk = &cp->irks[i];
++		u8 addr_type = le_addr_type(irk->addr.type);
  
--	delta = rb_time_delta(event);
--
--	if (!rb_time_read(&cpu_buffer->write_stamp, &write_stamp))
--		return false;
--
--	/* Make sure the write stamp is read before testing the location */
--	barrier();
--
-+	/*
-+	 * Make sure the tail_page is still the same and
-+	 * the next write location is the end of this event
-+	 */
- 	if (bpage->page == (void *)addr && rb_page_write(bpage) == old_index) {
- 		unsigned long write_mask =
- 			local_read(&bpage->write) & ~RB_WRITE_MASK;
-@@ -3041,20 +3016,20 @@ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
- 		 * to make sure that the next event adds an absolute
- 		 * value and does not rely on the saved write stamp, which
- 		 * is now going to be bogus.
-+		 *
-+		 * By setting the before_stamp to zero, the next event
-+		 * is not going to use the write_stamp and will instead
-+		 * create an absolute timestamp. This means there's no
-+		 * reason to update the wirte_stamp!
- 		 */
- 		rb_time_set(&cpu_buffer->before_stamp, 0);
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_IRK,
+@@ -7138,8 +7140,12 @@ static int load_irks(struct sock *sk, st
+ 			continue;
+ 		}
  
--		/* Something came in, can't discard */
--		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
--				       write_stamp, write_stamp - delta))
--			return false;
--
- 		/*
- 		 * If an event were to come in now, it would see that the
- 		 * write_stamp and the before_stamp are different, and assume
- 		 * that this event just added itself before updating
- 		 * the write stamp. The interrupting event will fix the
--		 * write stamp for us, and use the before stamp as its delta.
-+		 * write stamp for us, and use an absolute timestamp.
- 		 */
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (irk->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
++
+ 		hci_add_irk(hdev, &irk->addr.bdaddr,
+-			    le_addr_type(irk->addr.type), irk->val,
++			    addr_type, irk->val,
+ 			    BDADDR_ANY);
+ 	}
  
- 		/*
-@@ -3491,7 +3466,7 @@ static void check_buffer(struct ring_buffer_per_cpu *cpu_buffer,
- 		return;
+@@ -7220,6 +7226,7 @@ static int load_long_term_keys(struct so
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_ltk_info *key = &cp->keys[i];
+ 		u8 type, authenticated;
++		u8 addr_type = le_addr_type(key->addr.type);
  
- 	/*
--	 * If this interrupted another event, 
-+	 * If this interrupted another event,
- 	 */
- 	if (atomic_inc_return(this_cpu_ptr(&checking)) != 1)
- 		goto out;
--- 
-2.43.0
-
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_LTK,
+@@ -7254,8 +7261,12 @@ static int load_long_term_keys(struct so
+ 			continue;
+ 		}
+ 
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (key->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
++
+ 		hci_add_ltk(hdev, &key->addr.bdaddr,
+-			    le_addr_type(key->addr.type), type, authenticated,
++			    addr_type, type, authenticated,
+ 			    key->val, key->enc_size, key->ediv, key->rand);
+ 	}
+ 
+@@ -9523,7 +9534,7 @@ void mgmt_new_link_key(struct hci_dev *h
+ 
+ 	ev.store_hint = persistent;
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = BDADDR_BREDR;
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = key->type;
+ 	memcpy(ev.key.val, key->val, HCI_LINK_KEY_SIZE);
+ 	ev.key.pin_len = key->pin_len;
+@@ -9574,7 +9585,7 @@ void mgmt_new_ltk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, key->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = mgmt_ltk_type(key);
+ 	ev.key.enc_size = key->enc_size;
+ 	ev.key.ediv = key->ediv;
+@@ -9603,7 +9614,7 @@ void mgmt_new_irk(struct hci_dev *hdev,
+ 
+ 	bacpy(&ev.rpa, &irk->rpa);
+ 	bacpy(&ev.irk.addr.bdaddr, &irk->bdaddr);
+-	ev.irk.addr.type = link_to_bdaddr(LE_LINK, irk->addr_type);
++	ev.irk.addr.type = link_to_bdaddr(irk->link_type, irk->addr_type);
+ 	memcpy(ev.irk.val, irk->val, sizeof(irk->val));
+ 
+ 	mgmt_event(MGMT_EV_NEW_IRK, hdev, &ev, sizeof(ev), NULL);
+@@ -9632,7 +9643,7 @@ void mgmt_new_csrk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &csrk->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, csrk->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(csrk->link_type, csrk->bdaddr_type);
+ 	ev.key.type = csrk->type;
+ 	memcpy(ev.key.val, csrk->val, sizeof(csrk->val));
+ 
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1058,6 +1058,7 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->remote_irk) {
++		smp->remote_irk->link_type = hcon->type;
+ 		mgmt_new_irk(hdev, smp->remote_irk, persistent);
+ 
+ 		/* Now that user space can be considered to know the
+@@ -1072,24 +1073,28 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->csrk) {
++		smp->csrk->link_type = hcon->type;
+ 		smp->csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->csrk, persistent);
+ 	}
+ 
+ 	if (smp->responder_csrk) {
++		smp->responder_csrk->link_type = hcon->type;
+ 		smp->responder_csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
+ 	}
+ 
+ 	if (smp->ltk) {
++		smp->ltk->link_type = hcon->type;
+ 		smp->ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->ltk, persistent);
+ 	}
+ 
+ 	if (smp->responder_ltk) {
++		smp->responder_ltk->link_type = hcon->type;
+ 		smp->responder_ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
+@@ -1109,6 +1114,8 @@ static void smp_notify_keys(struct l2cap
+ 		key = hci_add_link_key(hdev, smp->conn->hcon, &hcon->dst,
+ 				       smp->link_key, type, 0, &persistent);
+ 		if (key) {
++			key->link_type = hcon->type;
++			key->bdaddr_type = hcon->dst_type;
+ 			mgmt_new_link_key(hdev, key, persistent);
+ 
+ 			/* Don't keep debug keys around if the relevant
 
 
 
