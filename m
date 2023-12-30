@@ -1,95 +1,122 @@
-Return-Path: <stable+bounces-8741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6B98204A5
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:43:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B149C8204A7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:43:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506581C20BE0
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:43:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D153282167
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948FB749E;
-	Sat, 30 Dec 2023 11:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8763B749E;
+	Sat, 30 Dec 2023 11:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRNrRS06"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="rtItvV3f";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZhOK0LBZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FBA7465
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:43:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CA6C433C7;
-	Sat, 30 Dec 2023 11:43:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703936597;
-	bh=f+SrcJ3wSfMf1gdNgdTBMGxkYCdL2vJAYm4maE+IBXY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zRNrRS06lMN/ISyGFF0Ry1bGcPa3V4Xe0vvG+bohbrYbOphX16DOPQf5tvjiqixST
-	 MIzo/jYzSP+e10hAlt2ALaczXiX/OEQsTlwiGfAgRhgjdGRuTVbg4AbqNf7Fio9A6V
-	 r1djAoP6HQL5A0z4GjqKZWqiMCCk1PlfJZ50e4BE=
-Date: Sat, 30 Dec 2023 11:43:15 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?B?TOlv?= Lam <leo@leolam.fr>
-Cc: stable@vger.kernel.org,
-	Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH 2/2] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi
- (6.6.x)
-Message-ID: <2023123005-annuity-numbly-e6d8@gregkh>
-References: <20231216054715.7729-2-leo@leolam.fr>
- <20231216054715.7729-4-leo@leolam.fr>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8DC79CD;
+	Sat, 30 Dec 2023 11:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id D6BA85C0075;
+	Sat, 30 Dec 2023 06:43:48 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Sat, 30 Dec 2023 06:43:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1703936628; x=1704023028; bh=RDMzNXeoRc
+	XtTozgalvQ1v7S9gcCF0W/23GWD67Yelg=; b=rtItvV3fct9Ah3tKmTbcAT+uro
+	/8gumEOF30bzbKOqwjqcRllVZmBQPkn99DlIR0/NHH1R8jkAjhlFp3/ncXdGdj3l
+	A/6p1FANm2O5UE+zY60kaaUmMARtGeDgayCODji3pDdCso1b5qslEOQaZP88+24z
+	Z0BkybZk7MfkpKuSCwzrc2ZhPG0CsAhZKdkqWK4XmnpqBYeLZRo2cOfVvBxTnfOK
+	lfBo8HKZ4vteixcWMTmzZBlOzot3xWnBetFYT6pX4hBvT2N/i90/N7WlIlUtkdZb
+	oj+GjB7lShuyQQtRCm4Uu9c4eebrxMSNrP8/SW32slFyozjYdGxSA9uJddfg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1703936628; x=1704023028; bh=RDMzNXeoRcXtTozgalvQ1v7S9gcC
+	F0W/23GWD67Yelg=; b=ZhOK0LBZRGNZxTF7TQ9YpCn1UYZkqTyTW0WKhBC2Av8V
+	zqhUAaCDhEMWP0uaRG2+RmIE+Ra/FAFT8esGtklM92Xdn5DMK4TP7KyGJb9AyHUd
+	BfeFUwSigl/+srUQB0/VKpOWj92YJZpQRf5Ih2allHdvToJBONXrBy5OoNcajo8l
+	siWvQw1tjOVNRPXoV1vJkoS2w1zWja8su73SkjyI90/iqFAdLaG3b5h3Tg8zAxsf
+	0XDDpx2/urcS5xv8hTtKiB+8ONfejWGyvgEeDdfuYUadt0BzY5r5zXwazhxCEYyD
+	3W3+xodNudClje4KKFMmowDaMNVMxaGWPLQpA+HP3Q==
+X-ME-Sender: <xms:cwKQZcsdQj0szJ-3NOwXM7UiDdTvPF2gregvMHjs2hMEKPEyrqeIyA>
+    <xme:cwKQZZctBUV3M1gAfno5rYvqiz_D-RViQTWIyvEE63r0PT5bMQw6hmwPre68fDYIh
+    QFyprTxr6Pv0w>
+X-ME-Received: <xmr:cwKQZXxrvvrF9JRfCGVb9X-JGtal9csvgPeu__01K1YXBU-rIM3FJq34_hs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdefhedgfedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:cwKQZfOX2LorBkssFUmtubV2xCjis9sUvR0IXWwWpcv66R9zLIO64Q>
+    <xmx:cwKQZc_IBDGj518M2AxafhPVHdJ_NzYgzBMU1QQTh2-jESsctBEZgg>
+    <xmx:cwKQZXUWLk3w6C6UM3DUgb4fj5FzIfz_mDsTjQKFmiLlSG-mykkFgA>
+    <xmx:dAKQZcNx5nXiPU5lClqzSvPhrzj8iZTxuVnDIR88Bi4WHFpabCvUIQ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 30 Dec 2023 06:43:47 -0500 (EST)
+Date: Sat, 30 Dec 2023 11:43:46 +0000
+From: Greg KH <greg@kroah.com>
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	maple-tree@lists.infradead.org, akpm@linux-foundation.org,
+	willy@infradead.org, liam.howlett@oracle.com,
+	zhangpeng.00@bytedance.com, stable@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] maple_tree: do not preallocate nodes for slot
+ stores
+Message-ID: <2023123027-baffling-arise-63bf@gregkh>
+References: <20231212195255.219624-1-sidhartha.kumar@oracle.com>
+ <2023121847-cope-surviving-26bf@gregkh>
+ <19b88718-a1e6-d699-f056-cf00b1b75346@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231216054715.7729-4-leo@leolam.fr>
+In-Reply-To: <19b88718-a1e6-d699-f056-cf00b1b75346@oracle.com>
 
-On Sat, Dec 16, 2023 at 05:47:17AM +0000, Léo Lam wrote:
-> Commit 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use"
-> backported to 6.6.x) causes nl80211_set_cqm_rssi not to release the
-> wdev lock in some of the error paths.
+On Mon, Dec 18, 2023 at 09:53:53AM -0800, Sidhartha Kumar wrote:
+> On 12/18/23 2:59 AM, Greg KH wrote:
+> > On Tue, Dec 12, 2023 at 11:52:55AM -0800, Sidhartha Kumar wrote:
+> > > mas_preallocate() defaults to requesting 1 node for preallocation and then
+> > > ,depending on the type of store, will update the request variable. There
+> > > isn't a check for a slot store type, so slot stores are preallocating the
+> > > default 1 node. Slot stores do not require any additional nodes, so add a
+> > > check for the slot store case that will bypass node_count_gfp(). Update
+> > > the tests to reflect that slot stores do not require allocations.
+> > > 
+> > > User visible effects of this bug include increased memory usage from the
+> > > unneeded node that was allocated.
+> > > 
+> > > Fixes: 0b8bb544b1a7 ("maple_tree: update mas_preallocate() testing")
+> > > Cc: <stable@vger.kernel.org> # 6.6+
+> > > Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> > > ---
+> > > This is a modified backport as the patch to fix this in upstream does not
+> > > apply to 6.6 because the node_end field was moved from the ma_wr_state to
+> > > the ma_state after 6.6.
+> > 
+> > What is the git commit id of this change in Linus's tree?
 > 
-> Of course, the ensuing deadlock causes userland network managers to
-> break pretty badly, and on typical systems this also causes lockups on
-> on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
-> 
-> The upstream commit 7e7efdda6adb ("wifi: cfg80211: fix CQM for non-range
-> use"), committed in November 2023, is completely fine because there was
-> another commit in August 2023 that removed the wdev lock:
-> see commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex").
-> 
-> The reason things broke in 6.6.5 is that commit 4338058f6009 was applied
-> without also applying 076fc8775daf.
-> 
-> Commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex") is a rather
-> large commit; adjusting the error handling (which is what this commit does)
-> yields a much simpler patch and was tested to work properly.
-> 
-> Fix the deadlock by releasing the lock before returning.
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
-> [2] https://bbs.archlinux.org/viewtopic.php?id=290976
-> [3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
-> 
-> Link: https://lore.kernel.org/stable/e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org/
-> Fixes: 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use")
-> Tested-by: Léo Lam <leo@leolam.fr>
-> Tested-by: Philip Müller <philm@manjaro.org>
-> Cc: stable@vger.kernel.org
-> Cc: Johannes Berg <johannes.berg@intel.com>
-> Signed-off-by: Léo Lam <leo@leolam.fr>
-> ---
->  net/wireless/nl80211.c | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
+> The patch is in akpm's mm-hotfixes-unstable tree and has not made it to
+> Linus's tree yet.
 
-Both now queued up, thanks.
-
-greg k-h
+Ok, please resend when it hits Linus's tree.
 
