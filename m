@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-8985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F808205B8
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D8882054E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02B6EB2125D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC0961F21A41
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E498483;
-	Sat, 30 Dec 2023 12:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEB679DF;
+	Sat, 30 Dec 2023 12:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+bKXxIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaR3ENNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0601979CD;
-	Sat, 30 Dec 2023 12:11:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8231EC433C8;
-	Sat, 30 Dec 2023 12:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E909D79C2;
+	Sat, 30 Dec 2023 12:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A7FC433C7;
+	Sat, 30 Dec 2023 12:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938274;
-	bh=0c5oREFeTedWJeRJVQ+PtB6DrnPEjoCCDjkb4EzNNbQ=;
+	s=korg; t=1703938020;
+	bh=JF6k7xVy+249CIEdMnLMIdVT8yOGEM33RM/Wt0ck1HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+bKXxIWVK/UallKAcwBCV7NR8zmAKcPWxY5Kc28Fo5HU1I+JAGRTiqEHkUDRTFL/
-	 t+E3PlqIJjwuU3Q0E37FZsdsOi6xV9B8OGjnNp/E7d5X4OGJXSXBy5PibPysT+3IxU
-	 mc2X5Jed8rDWu1CNwytdCmuUfzlcbHRp7NMNm2Y8=
+	b=oaR3ENNjb2yZISlNG4XWjY4zl+NBtyQQ1617AGy2VX2p9hBmmJlx5G7cSagd5aKWf
+	 pHKRfXwZBLfirQkJ3k305n/WXEetXh6EKBaTFc99z++2TjJsRskGULZpQzuGX0DJ4I
+	 vDg7bjrcP2WR7t4vXIAyLQAMBB3jTWHa8iYGlKo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>,
-	Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 6.1 093/112] ubifs: fix possible dereference after free
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 152/156] KVM: arm64: vgic: Force vcpu vgic teardown on vcpu destroy
 Date: Sat, 30 Dec 2023 12:00:06 +0000
-Message-ID: <20231230115809.797986161@linuxfoundation.org>
+Message-ID: <20231230115817.268071639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,42 +52,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit d81efd66106c03771ffc8637855a6ec24caa6350 ]
+commit 02e3858f08faabab9503ae2911cf7c7e27702257 upstream.
 
-'old_idx' could be dereferenced after free via 'rb_link_node' function
-call.
+When failing to create a vcpu because (for example) it has a
+duplicate vcpu_id, we destroy the vcpu. Amusingly, this leaves
+the redistributor registered with the KVM_MMIO bus.
 
-Fixes: b5fda08ef213 ("ubifs: Fix memleak when insert_old_idx() failed")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is no good, and we should properly clean the mess. Force
+a teardown of the vgic vcpu interface, including the RD device
+before returning to the caller.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231207151201.3028710-4-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ubifs/tnc.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kvm/arm.c               |    2 +-
+ arch/arm64/kvm/vgic/vgic-init.c    |    5 ++++-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |    2 +-
+ arch/arm64/kvm/vgic/vgic.h         |    1 +
+ 4 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
-index 6b7d95b65f4b6..f4728e65d1bda 100644
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -65,6 +65,7 @@ static void do_insert_old_idx(struct ubifs_info *c,
- 		else {
- 			ubifs_err(c, "old idx added twice!");
- 			kfree(old_idx);
-+			return;
- 		}
- 	}
- 	rb_link_node(&old_idx->rb, parent, p);
--- 
-2.43.0
-
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -407,7 +407,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vc
+ 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
+ 	kvm_timer_vcpu_terminate(vcpu);
+ 	kvm_pmu_vcpu_destroy(vcpu);
+-
++	kvm_vgic_vcpu_destroy(vcpu);
+ 	kvm_arm_vcpu_destroy(vcpu);
+ }
+ 
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -379,7 +379,10 @@ static void __kvm_vgic_vcpu_destroy(stru
+ 	vgic_flush_pending_lpis(vcpu);
+ 
+ 	INIT_LIST_HEAD(&vgic_cpu->ap_list_head);
+-	vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
++	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
++		vgic_unregister_redist_iodev(vcpu);
++		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
++	}
+ }
+ 
+ void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -820,7 +820,7 @@ out_unlock:
+ 	return ret;
+ }
+ 
+-static void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
++void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
+ {
+ 	struct vgic_io_device *rd_dev = &vcpu->arch.vgic_cpu.rd_iodev;
+ 
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -241,6 +241,7 @@ int vgic_v3_lpi_sync_pending_status(stru
+ int vgic_v3_save_pending_tables(struct kvm *kvm);
+ int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count);
+ int vgic_register_redist_iodev(struct kvm_vcpu *vcpu);
++void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu);
+ bool vgic_v3_check_base(struct kvm *kvm);
+ 
+ void vgic_v3_load(struct kvm_vcpu *vcpu);
 
 
 
