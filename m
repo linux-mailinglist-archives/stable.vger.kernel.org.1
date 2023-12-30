@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-8861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69230820534
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E14F82059E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B15C1C20F53
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFFE41F22B38
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2BB79DE;
-	Sat, 30 Dec 2023 12:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B17179CD;
+	Sat, 30 Dec 2023 12:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRJEcyGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBkjbYLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9047C8473;
-	Sat, 30 Dec 2023 12:05:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1729EC433C7;
-	Sat, 30 Dec 2023 12:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95D228FE;
+	Sat, 30 Dec 2023 12:10:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AB9C433C9;
+	Sat, 30 Dec 2023 12:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937953;
-	bh=5n9QbdvScBMT/m/k7x8JFoIFCoZRwqZUP/KacC1FnV4=;
+	s=korg; t=1703938209;
+	bh=tu9tz+88KLsGBnfDmhiOUW/vAfuD9k9Y/V2xLga+EVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRJEcyGnLyTw+QVXW3j9C5bBHW34pthX6Lk5gcn8Qc4X5gTuJxXbHF6pbqK20WlwY
-	 /4mmzbpnwUdgsYxfBP8G3MOM57LwUfVNkFuZHYyfKKj+gcMki/AIiE0zH+D0ccVjuh
-	 F7Zkqz0doFTBEaKBqpEMwl/Me8SGJnx+faXmPI5M=
+	b=TBkjbYLU/8yJPJbsa9W+U8BvYgjD3MBEdmZjS3tq3Vb8A1+x6EEVM1CGb07pJxy1I
+	 DixinlcP9qKtCkrBx8xDNn1/rve5bkHvIQAY7mmygA2ytqIP/beS+9DCHsHQsKWFFG
+	 +VD7nu57d4mkrbMNZwDgHxTFMGEPXI4bxcHdORCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 126/156] smb: client: fix potential OOB in cifs_dump_detail()
-Date: Sat, 30 Dec 2023 11:59:40 +0000
-Message-ID: <20231230115816.489946074@linuxfoundation.org>
+	Slark Xiao <slark_xiao@163.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 068/112] USB: serial: option: add Foxconn T99W265 with new baseline
+Date: Sat, 30 Dec 2023 11:59:41 +0000
+Message-ID: <20231230115808.900862491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit b50492b05fd02887b46aef079592207fb5c97a4c upstream.
+commit 13fde9ac23ca8c6d1ac13cc9eefe1f1ac3ee30a4 upstream.
 
-Validate SMB message with ->check_message() before calling
-->calc_smb_size().
+This ID was added based on latest SDX12 code base line, and we
+made some changes with previous 0489:e0db.
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Test evidence as below:
+T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  2
+P:  Vendor=0489 ProdID=e0da Rev=05.04
+S:  Manufacturer=Qualcomm
+S:  Product=Qualcomm Snapdragon X12
+S:  SerialNumber=2bda65fb
+C:  #Ifs= 6 Cfg#= 2 Atr=a0 MxPwr=896mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+
+0&1: MBIM, 2: Modem, 3:GNSS, 4:Diag, 5:ADB
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -40,11 +40,13 @@ void cifs_dump_detail(void *buf, struct
- #ifdef CONFIG_CIFS_DEBUG2
- 	struct smb_hdr *smb = buf;
- 
--	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d\n",
--		 smb->Command, smb->Status.CifsError,
--		 smb->Flags, smb->Flags2, smb->Mid, smb->Pid);
--	cifs_dbg(VFS, "smb buf %p len %u\n", smb,
--		 server->ops->calc_smb_size(smb));
-+	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d Wct: %d\n",
-+		 smb->Command, smb->Status.CifsError, smb->Flags,
-+		 smb->Flags2, smb->Mid, smb->Pid, smb->WordCount);
-+	if (!server->ops->check_message(buf, server->total_read, server)) {
-+		cifs_dbg(VFS, "smb buf %p len %u\n", smb,
-+			 server->ops->calc_smb_size(smb));
-+	}
- #endif /* CONFIG_CIFS_DEBUG2 */
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2244,6 +2244,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
+ 	{ USB_DEVICE(0x0489, 0xe0b5),						/* Foxconn T77W968 ESIM */
+ 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0da, 0xff),                     /* Foxconn T99W265 MBIM variant */
++	  .driver_info = RSVD(3) | RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
+ 	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
 
 
 
