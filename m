@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-8936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147E6820585
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D06B82051C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C525F28239E
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D2F1F21AB7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C6C8473;
-	Sat, 30 Dec 2023 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353CC79E0;
+	Sat, 30 Dec 2023 12:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtGXzskt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXybrqZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABEE8BF6;
-	Sat, 30 Dec 2023 12:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EFDC433C8;
-	Sat, 30 Dec 2023 12:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A7C79DC;
+	Sat, 30 Dec 2023 12:04:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F14FC433C8;
+	Sat, 30 Dec 2023 12:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938146;
-	bh=aclKohuCApr0lVK7iisiD1nU3GSPiIs53QxxsakHuqI=;
+	s=korg; t=1703937893;
+	bh=SDJmN7OqlUSpMwl4y+aDK8ijakTU7cbK8aDrxMBuI+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jtGXzsktr4dDFQ+oR6SyGgHlYwC9OR+kF0NtSby3POs6DCXtRzj7rOzt8aN4gGx1m
-	 JxxRNOE+GNKGeJ1exLAViL0ULR5ZyoeZaMHZWzsOgiQ0z+p3hcPvQ0ewoxMUfSvLJf
-	 zCGtMBUM3JYEf0d8v7gE8SXbYjHTPIRSCzZgNHCg=
+	b=LXybrqZDVnw5GInXpNG602ZbjEZWP24kYbr84TdgktxsRF057eouxGlH5Y/L+RBUg
+	 kCqlJgG0ztrSfDSoNxjBwFtMFr3bD/RVYRP1/RD2HSMVr9KThWnRbZAA+U34OlZIsT
+	 Ksh96z5wdbEz3vxWvPBfosNqfusm8UfITTaK88hA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Juergen Gross <jgross@suse.com>,
-	Alyssa Ross <hi@alyssa.is>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/112] x86/xen: add CPU dependencies for 32-bit build
+	Alper Ak <alperyasinak1@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 103/156] USB: serial: option: add Quectel EG912Y module support
 Date: Sat, 30 Dec 2023 11:59:17 +0000
-Message-ID: <20231230115808.138735571@linuxfoundation.org>
+Message-ID: <20231230115815.734540499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alper Ak <alperyasinak1@gmail.com>
 
-[ Upstream commit 93cd0597649844a0fe7989839a3202735fb3ae67 ]
+commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
 
-Xen only supports modern CPUs even when running a 32-bit kernel, and it now
-requires a kernel built for a 64 byte (or larger) cache line:
+Add Quectel EG912Y "DIAG, AT, MODEM"
 
-In file included from <command-line>:
-In function 'xen_vcpu_setup',
-    inlined from 'xen_vcpu_setup_restore' at arch/x86/xen/enlighten.c:111:3,
-    inlined from 'xen_vcpu_restore' at arch/x86/xen/enlighten.c:141:3:
-include/linux/compiler_types.h:435:45: error: call to '__compiletime_assert_287' declared with attribute error: BUILD_BUG_ON failed: sizeof(*vcpup) > SMP_CACHE_BYTES
-arch/x86/xen/enlighten.c:166:9: note: in expansion of macro 'BUILD_BUG_ON'
-  166 |         BUILD_BUG_ON(sizeof(*vcpup) > SMP_CACHE_BYTES);
-      |         ^~~~~~~~~~~~
+0x6001: ECM / RNDIS + DIAG + AT + MODEM
 
-Enforce the dependency with a whitelist of CPU configurations. In normal
-distro kernels, CONFIG_X86_GENERIC is enabled, and this works fine. When this
-is not set, still allow Xen to be built on kernels that target a 64-bit
-capable CPU.
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6001 Rev= 3.18
+S:  Manufacturer=Android
+S:  Product=Android
+S:  SerialNumber=0000
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Fixes: db2832309a82 ("x86/xen: fix percpu vcpu_info allocation")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Tested-by: Alyssa Ross <hi@alyssa.is>
-Link: https://lore.kernel.org/r/20231204084722.3789473-1-arnd@kernel.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/xen/Kconfig b/arch/x86/xen/Kconfig
-index 9b1ec5d8c99c8..a65fc2ae15b49 100644
---- a/arch/x86/xen/Kconfig
-+++ b/arch/x86/xen/Kconfig
-@@ -9,6 +9,7 @@ config XEN
- 	select PARAVIRT_CLOCK
- 	select X86_HV_CALLBACK_VECTOR
- 	depends on X86_64 || (X86_32 && X86_PAE)
-+	depends on X86_64 || (X86_GENERIC || MPENTIUM4 || MCORE2 || MATOM || MK8)
- 	depends on X86_LOCAL_APIC && X86_TSC
- 	help
- 	  This is the Linux Xen port.  Enabling this will allow the
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -272,6 +272,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM500Q			0x0800
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
++#define QUECTEL_PRODUCT_EG912Y			0x6001
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
+ #define QUECTEL_PRODUCT_EC200A			0x6005
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+@@ -1244,6 +1245,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
+ 
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
 
 
 
