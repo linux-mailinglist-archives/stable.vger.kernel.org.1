@@ -1,47 +1,44 @@
-Return-Path: <stable+bounces-8743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6958C8204B2
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:00:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99EAF8204BD
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77C831C20DD4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5167D281FE6
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A5C79DE;
-	Sat, 30 Dec 2023 12:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6201279EE;
+	Sat, 30 Dec 2023 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gULgDbNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2yBDqVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A035079DD;
-	Sat, 30 Dec 2023 12:00:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED4BC433C7;
-	Sat, 30 Dec 2023 12:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22EA179DC;
+	Sat, 30 Dec 2023 12:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5189AC433C8;
+	Sat, 30 Dec 2023 12:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937648;
-	bh=HrO1LizfPSv8+PWNb7LAdxH7BhcAOMsf0kcVdFiDJmw=;
+	s=korg; t=1703937676;
+	bh=J8/qmqIF0UUb/NeK3Ao4ZpR76faoyNf967Qc7Cwc4FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gULgDbNWpTU1rocruQPKUZBtu7u+mBq7yfAMDDIsDR5CXWNSm9LlHQSjeAZMXRFlf
-	 qAwrjirPDyC7vqy0BflsKU+IJWYTw0GMB/QLjo2PhfBmk7GNvDSokBuc486GE/Aqzu
-	 PM7+Lv71X8kCz1+kpEb9OMBBt2agCFdLpc1vGgmQ=
+	b=b2yBDqVi6I0RY/EUFvN4zPnu+y6xEqhqPKcRi/A+1nMaWlNZ3BCTzotebIUWW6ES3
+	 8jCvcFYmxQVSIpQNfmuXcRb05KXLAfQFLLhIV9LF4odZ8WFn4MqSUr9836UMXw9bLN
+	 BRHOLfDffIKZCUp7hzkaZoWWo3cPRG4pDzwZJDtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
-	Jiri Olsa <jolsa@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Lee Jones <lee@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH 6.6 001/156] bpf: Fix prog_array_map_poke_run map poke update
-Date: Sat, 30 Dec 2023 11:57:35 +0000
-Message-ID: <20231230115812.391952293@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/156] mm/damon/core: use number of passed access sampling as a timer
+Date: Sat, 30 Dec 2023 11:57:36 +0000
+Message-ID: <20231230115812.427401825@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -60,228 +57,260 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit 4b7de801606e504e69689df71475d27e35336fb3 upstream.
+[ Upstream commit 4472edf63d6630e6cf65e205b4fc8c3c94d0afe5 ]
 
-Lee pointed out issue found by syscaller [0] hitting BUG in prog array
-map poke update in prog_array_map_poke_run function due to error value
-returned from bpf_arch_text_poke function.
+DAMON sleeps for sampling interval after each sampling, and check if the
+aggregation interval and the ops update interval have passed using
+ktime_get_coarse_ts64() and baseline timestamps for the intervals.  That
+design is for making the operations occur at deterministic timing
+regardless of the time that spend for each work.  However, it turned out
+it is not that useful, and incur not-that-intuitive results.
 
-There's race window where bpf_arch_text_poke can fail due to missing
-bpf program kallsym symbols, which is accounted for with check for
--EINVAL in that BUG_ON call.
+After all, timer functions, and especially sleep functions that DAMON uses
+to wait for specific timing, are not necessarily strictly accurate.  It is
+legal design, so no problem.  However, depending on such inaccuracies, the
+nr_accesses can be larger than aggregation interval divided by sampling
+interval.  For example, with the default setting (5 ms sampling interval
+and 100 ms aggregation interval) we frequently show regions having
+nr_accesses larger than 20.  Also, if the execution of a DAMOS scheme
+takes a long time, next aggregation could happen before enough number of
+samples are collected.  This is not what usual users would intuitively
+expect.
 
-The problem is that in such case we won't update the tail call jump
-and cause imbalance for the next tail call update check which will
-fail with -EBUSY in bpf_arch_text_poke.
+Since access check sampling is the smallest unit work of DAMON, using the
+number of passed sampling intervals as the DAMON-internal timer can easily
+avoid these problems.  That is, convert aggregation and ops update
+intervals to numbers of sampling intervals that need to be passed before
+those operations be executed, count the number of passed sampling
+intervals, and invoke the operations as soon as the specific amount of
+sampling intervals passed.  Make the change.
 
-I'm hitting following race during the program load:
+Note that this could make a behavioral change to settings that using
+intervals that not aligned by the sampling interval.  For example, if the
+sampling interval is 5 ms and the aggregation interval is 12 ms, DAMON
+effectively uses 15 ms as its aggregation interval, because it checks
+whether the aggregation interval after sleeping the sampling interval.
+This change will make DAMON to effectively use 10 ms as aggregation
+interval, since it uses 'aggregation interval / sampling interval *
+sampling interval' as the effective aggregation interval, and we don't use
+floating point types.  Usual users would have used aligned intervals, so
+this behavioral change is not expected to make any meaningful impact, so
+just make this change.
 
-  CPU 0                             CPU 1
-
-  bpf_prog_load
-    bpf_check
-      do_misc_fixups
-        prog_array_map_poke_track
-
-                                    map_update_elem
-                                      bpf_fd_array_map_update_elem
-                                        prog_array_map_poke_run
-
-                                          bpf_arch_text_poke returns -EINVAL
-
-    bpf_prog_kallsyms_add
-
-After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
-poke update fails on expected jump instruction check in bpf_arch_text_poke
-with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
-
-Similar race exists on the program unload.
-
-Fixing this by moving the update to bpf_arch_poke_desc_update function which
-makes sure we call __bpf_arch_text_poke that skips the bpf address check.
-
-Each architecture has slightly different approach wrt looking up bpf address
-in bpf_arch_text_poke, so instead of splitting the function or adding new
-'checkip' argument in previous version, it seems best to move the whole
-map_poke_run update as arch specific code.
-
-  [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
-
-Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
-Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20231206083041.1306660-2-jolsa@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20230914021523.60649-1-sj@kernel.org
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6376a8245956 ("mm/damon/core: make damon_start() waits until kdamond_fn() starts")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c |   46 ++++++++++++++++++++++++++++++++++
- include/linux/bpf.h         |    3 ++
- kernel/bpf/arraymap.c       |   58 +++++++-------------------------------------
- 3 files changed, 59 insertions(+), 48 deletions(-)
+ include/linux/damon.h | 14 ++++++-
+ mm/damon/core.c       | 96 +++++++++++++++++++++----------------------
+ 2 files changed, 59 insertions(+), 51 deletions(-)
 
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -2929,3 +2929,49 @@ void bpf_jit_free(struct bpf_prog *prog)
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index c70cca8a839f7..506118916378b 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -522,8 +522,18 @@ struct damon_ctx {
+ 	struct damon_attrs attrs;
  
- 	bpf_prog_unlock_free(prog);
- }
-+
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	u8 *old_addr, *new_addr, *old_bypass_addr;
-+	int ret;
-+
-+	old_bypass_addr = old ? NULL : poke->bypass_addr;
-+	old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
-+	new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
-+
+ /* private: internal use only */
+-	struct timespec64 last_aggregation;
+-	struct timespec64 last_ops_update;
++	/* number of sample intervals that passed since this context started */
++	unsigned long passed_sample_intervals;
 +	/*
-+	 * On program loading or teardown, the program's kallsym entry
-+	 * might not be in place, so we use __bpf_arch_text_poke to skip
-+	 * the kallsyms check.
++	 * number of sample intervals that should be passed before next
++	 * aggregation
 +	 */
-+	if (new) {
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, new_addr);
-+		BUG_ON(ret < 0);
-+		if (!old) {
-+			ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+						   BPF_MOD_JUMP,
-+						   poke->bypass_addr,
-+						   NULL);
-+			BUG_ON(ret < 0);
-+		}
-+	} else {
-+		ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+					   BPF_MOD_JUMP,
-+					   old_bypass_addr,
-+					   poke->bypass_addr);
-+		BUG_ON(ret < 0);
-+		/* let other CPUs finish the execution of program
-+		 * so that it will not possible to expose them
-+		 * to invalid nop, stack unwind, nop state
-+		 */
-+		if (!ret)
-+			synchronize_rcu();
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, NULL);
-+		BUG_ON(ret < 0);
-+	}
-+}
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -3143,6 +3143,9 @@ enum bpf_text_poke_type {
- int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
- 		       void *addr1, void *addr2);
++	unsigned long next_aggregation_sis;
++	/*
++	 * number of sample intervals that should be passed before next ops
++	 * update
++	 */
++	unsigned long next_ops_update_sis;
  
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old);
-+
- void *bpf_arch_text_copy(void *dst, void *src, size_t len);
- int bpf_arch_text_invalidate(void *dst, size_t len);
+ /* public: */
+ 	struct task_struct *kdamond;
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index fd5be73f699f4..30c93de59475f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -427,8 +427,10 @@ struct damon_ctx *damon_new_ctx(void)
+ 	ctx->attrs.aggr_interval = 100 * 1000;
+ 	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
  
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -1012,11 +1012,16 @@ static void prog_array_map_poke_untrack(
- 	mutex_unlock(&aux->poke_mutex);
- }
+-	ktime_get_coarse_ts64(&ctx->last_aggregation);
+-	ctx->last_ops_update = ctx->last_aggregation;
++	ctx->passed_sample_intervals = 0;
++	/* These will be set from kdamond_init_intervals_sis() */
++	ctx->next_aggregation_sis = 0;
++	ctx->next_ops_update_sis = 0;
  
-+void __weak bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+				      struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	WARN_ON_ONCE(1);
-+}
-+
- static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 				    struct bpf_prog *old,
- 				    struct bpf_prog *new)
+ 	mutex_init(&ctx->kdamond_lock);
+ 
+@@ -542,6 +544,9 @@ static void damon_update_monitoring_results(struct damon_ctx *ctx,
+  */
+ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
  {
--	u8 *old_addr, *new_addr, *old_bypass_addr;
- 	struct prog_poke_elem *elem;
- 	struct bpf_array_aux *aux;
++	unsigned long sample_interval = attrs->sample_interval ?
++		attrs->sample_interval : 1;
++
+ 	if (attrs->min_nr_regions < 3)
+ 		return -EINVAL;
+ 	if (attrs->min_nr_regions > attrs->max_nr_regions)
+@@ -549,6 +554,11 @@ int damon_set_attrs(struct damon_ctx *ctx, struct damon_attrs *attrs)
+ 	if (attrs->sample_interval > attrs->aggr_interval)
+ 		return -EINVAL;
  
-@@ -1025,7 +1030,7 @@ static void prog_array_map_poke_run(stru
- 
- 	list_for_each_entry(elem, &aux->poke_progs, list) {
- 		struct bpf_jit_poke_descriptor *poke;
--		int i, ret;
-+		int i;
- 
- 		for (i = 0; i < elem->aux->size_poke_tab; i++) {
- 			poke = &elem->aux->poke_tab[i];
-@@ -1044,21 +1049,10 @@ static void prog_array_map_poke_run(stru
- 			 *    activated, so tail call updates can arrive from here
- 			 *    while JIT is still finishing its final fixup for
- 			 *    non-activated poke entries.
--			 * 3) On program teardown, the program's kallsym entry gets
--			 *    removed out of RCU callback, but we can only untrack
--			 *    from sleepable context, therefore bpf_arch_text_poke()
--			 *    might not see that this is in BPF text section and
--			 *    bails out with -EINVAL. As these are unreachable since
--			 *    RCU grace period already passed, we simply skip them.
--			 * 4) Also programs reaching refcount of zero while patching
-+			 * 3) Also programs reaching refcount of zero while patching
- 			 *    is in progress is okay since we're protected under
- 			 *    poke_mutex and untrack the programs before the JIT
--			 *    buffer is freed. When we're still in the middle of
--			 *    patching and suddenly kallsyms entry of the program
--			 *    gets evicted, we just skip the rest which is fine due
--			 *    to point 3).
--			 * 5) Any other error happening below from bpf_arch_text_poke()
--			 *    is a unexpected bug.
-+			 *    buffer is freed.
- 			 */
- 			if (!READ_ONCE(poke->tailcall_target_stable))
- 				continue;
-@@ -1068,39 +1062,7 @@ static void prog_array_map_poke_run(stru
- 			    poke->tail_call.key != key)
- 				continue;
- 
--			old_bypass_addr = old ? NULL : poke->bypass_addr;
--			old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
--			new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
--
--			if (new) {
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, new_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				if (!old) {
--					ret = bpf_arch_text_poke(poke->tailcall_bypass,
--								 BPF_MOD_JUMP,
--								 poke->bypass_addr,
--								 NULL);
--					BUG_ON(ret < 0 && ret != -EINVAL);
--				}
--			} else {
--				ret = bpf_arch_text_poke(poke->tailcall_bypass,
--							 BPF_MOD_JUMP,
--							 old_bypass_addr,
--							 poke->bypass_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				/* let other CPUs finish the execution of program
--				 * so that it will not possible to expose them
--				 * to invalid nop, stack unwind, nop state
--				 */
--				if (!ret)
--					synchronize_rcu();
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, NULL);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--			}
-+			bpf_arch_poke_desc_update(poke, new, old);
- 		}
- 	}
++	ctx->next_aggregation_sis = ctx->passed_sample_intervals +
++		attrs->aggr_interval / sample_interval;
++	ctx->next_ops_update_sis = ctx->passed_sample_intervals +
++		attrs->ops_update_interval / sample_interval;
++
+ 	damon_update_monitoring_results(ctx, attrs);
+ 	ctx->attrs = *attrs;
+ 	return 0;
+@@ -722,38 +732,6 @@ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs)
+ 	return err;
  }
+ 
+-/*
+- * damon_check_reset_time_interval() - Check if a time interval is elapsed.
+- * @baseline:	the time to check whether the interval has elapsed since
+- * @interval:	the time interval (microseconds)
+- *
+- * See whether the given time interval has passed since the given baseline
+- * time.  If so, it also updates the baseline to current time for next check.
+- *
+- * Return:	true if the time interval has passed, or false otherwise.
+- */
+-static bool damon_check_reset_time_interval(struct timespec64 *baseline,
+-		unsigned long interval)
+-{
+-	struct timespec64 now;
+-
+-	ktime_get_coarse_ts64(&now);
+-	if ((timespec64_to_ns(&now) - timespec64_to_ns(baseline)) <
+-			interval * 1000)
+-		return false;
+-	*baseline = now;
+-	return true;
+-}
+-
+-/*
+- * Check whether it is time to flush the aggregated information
+- */
+-static bool kdamond_aggregate_interval_passed(struct damon_ctx *ctx)
+-{
+-	return damon_check_reset_time_interval(&ctx->last_aggregation,
+-			ctx->attrs.aggr_interval);
+-}
+-
+ /*
+  * Reset the aggregated monitoring results ('nr_accesses' of each region).
+  */
+@@ -1234,18 +1212,6 @@ static void kdamond_split_regions(struct damon_ctx *ctx)
+ 	last_nr_regions = nr_regions;
+ }
+ 
+-/*
+- * Check whether it is time to check and apply the operations-related data
+- * structures.
+- *
+- * Returns true if it is.
+- */
+-static bool kdamond_need_update_operations(struct damon_ctx *ctx)
+-{
+-	return damon_check_reset_time_interval(&ctx->last_ops_update,
+-			ctx->attrs.ops_update_interval);
+-}
+-
+ /*
+  * Check whether current monitoring should be stopped
+  *
+@@ -1357,6 +1323,17 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
+ 	return -EBUSY;
+ }
+ 
++static void kdamond_init_intervals_sis(struct damon_ctx *ctx)
++{
++	unsigned long sample_interval = ctx->attrs.sample_interval ?
++		ctx->attrs.sample_interval : 1;
++
++	ctx->passed_sample_intervals = 0;
++	ctx->next_aggregation_sis = ctx->attrs.aggr_interval / sample_interval;
++	ctx->next_ops_update_sis = ctx->attrs.ops_update_interval /
++		sample_interval;
++}
++
+ /*
+  * The monitoring daemon that runs as a kernel thread
+  */
+@@ -1370,6 +1347,8 @@ static int kdamond_fn(void *data)
+ 
+ 	pr_debug("kdamond (%d) starts\n", current->pid);
+ 
++	kdamond_init_intervals_sis(ctx);
++
+ 	if (ctx->ops.init)
+ 		ctx->ops.init(ctx);
+ 	if (ctx->callback.before_start && ctx->callback.before_start(ctx))
+@@ -1378,6 +1357,17 @@ static int kdamond_fn(void *data)
+ 	sz_limit = damon_region_sz_limit(ctx);
+ 
+ 	while (!kdamond_need_stop(ctx)) {
++		/*
++		 * ctx->attrs and ctx->next_{aggregation,ops_update}_sis could
++		 * be changed from after_wmarks_check() or after_aggregation()
++		 * callbacks.  Read the values here, and use those for this
++		 * iteration.  That is, damon_set_attrs() updated new values
++		 * are respected from next iteration.
++		 */
++		unsigned long next_aggregation_sis = ctx->next_aggregation_sis;
++		unsigned long next_ops_update_sis = ctx->next_ops_update_sis;
++		unsigned long sample_interval = ctx->attrs.sample_interval;
++
+ 		if (kdamond_wait_activation(ctx))
+ 			break;
+ 
+@@ -1387,12 +1377,17 @@ static int kdamond_fn(void *data)
+ 				ctx->callback.after_sampling(ctx))
+ 			break;
+ 
+-		kdamond_usleep(ctx->attrs.sample_interval);
++		kdamond_usleep(sample_interval);
++		ctx->passed_sample_intervals++;
+ 
+ 		if (ctx->ops.check_accesses)
+ 			max_nr_accesses = ctx->ops.check_accesses(ctx);
+ 
+-		if (kdamond_aggregate_interval_passed(ctx)) {
++		sample_interval = ctx->attrs.sample_interval ?
++			ctx->attrs.sample_interval : 1;
++		if (ctx->passed_sample_intervals == next_aggregation_sis) {
++			ctx->next_aggregation_sis = next_aggregation_sis +
++				ctx->attrs.aggr_interval / sample_interval;
+ 			kdamond_merge_regions(ctx,
+ 					max_nr_accesses / 10,
+ 					sz_limit);
+@@ -1407,7 +1402,10 @@ static int kdamond_fn(void *data)
+ 				ctx->ops.reset_aggregated(ctx);
+ 		}
+ 
+-		if (kdamond_need_update_operations(ctx)) {
++		if (ctx->passed_sample_intervals == next_ops_update_sis) {
++			ctx->next_ops_update_sis = next_ops_update_sis +
++				ctx->attrs.ops_update_interval /
++				sample_interval;
+ 			if (ctx->ops.update)
+ 				ctx->ops.update(ctx);
+ 			sz_limit = damon_region_sz_limit(ctx);
+-- 
+2.43.0
+
 
 
 
