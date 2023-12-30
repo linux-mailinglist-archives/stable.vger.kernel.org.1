@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-8934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FEB820583
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9429082051A
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80C81F22552
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38C61C20A2E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260948825;
-	Sat, 30 Dec 2023 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1779A79D8;
+	Sat, 30 Dec 2023 12:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRci/Mto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8vtyqj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B7F8BE7;
-	Sat, 30 Dec 2023 12:09:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695DCC433C8;
-	Sat, 30 Dec 2023 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D529B79DE;
+	Sat, 30 Dec 2023 12:04:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104E8C433C8;
+	Sat, 30 Dec 2023 12:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938141;
-	bh=Nozvg3dfrgqG93WwRaliLbpkys7mtdLf2KFzPVG8YkU=;
+	s=korg; t=1703937888;
+	bh=ktZITLM9vIuLKC0Cz+AcKMDpBj3A9xekoiBviundXlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FRci/MtoUA5e8i8KR7ABHosCAF/vxHQHaCm2UKuMbkwgiZf4lc08EHSkBUCiG6umT
-	 +LPgrKhQZg8E9krqbQ97rUvVJiS/1boFyHzs1AU5KxfUBhimTCcRrMkUYfjvVASfHF
-	 geotHfaDRjXtojVcydM7y71hCRiGHoGkLpllspLQ=
+	b=W8vtyqj6gnaeYTg702rmODuucUZfP6y+z3AsT2LJrUuU6sXFO+DPb5rYPobzljy1g
+	 cEZi1IswlegIq/yJfNTHeNJ+qMK7mPK50Ff6p4O843gzFuRHVqsSXkbi38rNogAB46
+	 Tv7M6YxGysXLeUbUXpnfY94AoeSB3wPk9Ei/RXqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/112] ASoC: fsl_sai: Fix channel swap issue on i.MX8MP
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 101/156] wifi: cfg80211: fix certs build to not depend on file order
 Date: Sat, 30 Dec 2023 11:59:15 +0000
-Message-ID: <20231230115808.082180732@linuxfoundation.org>
+Message-ID: <20231230115815.670881851@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +53,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 8f0f01647550daf9cd8752c1656dcb0136d79ce1 ]
+commit 3c2a8ebe3fe66a5f77d4c164a0bea8e2ff37b455 upstream.
 
-When flag mclk_with_tere and mclk_direction_output enabled,
-The SAI transmitter or receiver will be enabled in very early
-stage, that if FSL_SAI_xMR is set by previous case,
-for example previous case is one channel, current case is
-two channels, then current case started with wrong xMR in
-the beginning, then channel swap happen.
+The file for the new certificate (Chen-Yu Tsai's) didn't
+end with a comma, so depending on the file order in the
+build rule, we'd end up with invalid C when concatenating
+the (now two) certificates. Fix that.
 
-The patch is to clear xMR in hw_free() to avoid such
-channel swap issue.
-
-Fixes: 3e4a82612998 ("ASoC: fsl_sai: MCLK bind with TX/RX enable bit")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://msgid.link/r/1702953057-4499-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: fb768d3b13ff ("wifi: cfg80211: Add my certificate")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/certs/wens.hex |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 6364d9be28fbb..cf1cd0460ad98 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -715,6 +715,9 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 
-+	/* Clear xMR to avoid channel swap with mclk_with_tere enabled case */
-+	regmap_write(sai->regmap, FSL_SAI_xMR(tx), 0);
-+
- 	regmap_update_bits(sai->regmap, FSL_SAI_xCR3(tx, ofs),
- 			   FSL_SAI_CR3_TRCE_MASK, 0);
- 
--- 
-2.43.0
-
+--- a/net/wireless/certs/wens.hex
++++ b/net/wireless/certs/wens.hex
+@@ -84,4 +84,4 @@
+ 0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
+ 0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
+ 0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
+-0x45, 0x4e, 0xc3
++0x45, 0x4e, 0xc3,
 
 
 
