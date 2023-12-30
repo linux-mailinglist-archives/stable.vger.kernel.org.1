@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-8823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E1982050E
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AEA82058F
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC0A1B211BB
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1131F226FF
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A10A8483;
-	Sat, 30 Dec 2023 12:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DC98486;
+	Sat, 30 Dec 2023 12:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgTgGELE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeEswc4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046BA8BFB;
-	Sat, 30 Dec 2023 12:04:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D288C433C7;
-	Sat, 30 Dec 2023 12:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8098779DE;
+	Sat, 30 Dec 2023 12:09:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3A0C433C8;
+	Sat, 30 Dec 2023 12:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937854;
-	bh=rCf7e1g5z0PduMVI2gjLn+cN3lzXvBoHXf8BzvI8ULo=;
+	s=korg; t=1703938170;
+	bh=CReT5+n/memh1zEGKi9tY/NmdWumE4sExwk+Mew5+No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgTgGELERyil8NRm1TfQj5w8etNhYdGbu3+KkN4LCuOiw9Y4sM8T8eYQEVPnouEY/
-	 jW/fzgW7/4HzQDQ8ldWMHU4W/2oipS8280zbrXkM0HCaiemRnxsFIxSBvuUK9zxQbc
-	 51smiHu2q1WlsZAHf7qfSe+KGEHV5JGVMx/ZWimk=
+	b=eeEswc4Ow/IG4/1tk6IUwGl12qo08e7wB/s/NaYtKqnUlt0EFzyFapDpX+qu+hk/T
+	 sObm1i9XNhO0K4I2JjHQP8ZSJ8fg01Wn0Sc+zzpb9olEqXj401CituHJCEjheCUQqp
+	 vvTut6b9rLu3tKNGTeEJR58WFusJ4xELAZipxOf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Jagath Jog J <jagathjog1996@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 089/156] iio: kx022a: Fix acceleration value scaling
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Bernard Pidoux <f6bvp@free.fr>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/112] net/rose: fix races in rose_kill_by_device()
 Date: Sat, 30 Dec 2023 11:59:03 +0000
-Message-ID: <20231230115815.264796458@linuxfoundation.org>
+Message-ID: <20231230115807.724161866@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,107 +55,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 92bfa4ab1b79be95c4f52d13f5386390f0a513c2 upstream.
+[ Upstream commit 64b8bc7d5f1434c636a40bdcfcd42b278d1714be ]
 
-The IIO ABI mandates acceleration values from accelerometer to be
-emitted in m/s^2. The KX022A was emitting values in micro m/s^2.
+syzbot found an interesting netdev refcounting issue in
+net/rose/af_rose.c, thanks to CONFIG_NET_DEV_REFCNT_TRACKER=y [1]
 
-Fix driver to report the correct scale values.
+Problem is that rose_kill_by_device() can change rose->device
+while other threads do not expect the pointer to be changed.
 
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Reported-by: Jagath Jog J <jagathjog1996@gmail.com>
-Fixes: 7c1d1677b322 ("iio: accel: Support Kionix/ROHM KX022A accelerometer")
-Tested-by: Jagath Jog J <jagathjog1996@gmail.com>
-Link: https://lore.kernel.org/r/ZTEt7NqfDHPOkm8j@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We have to first collect sockets in a temporary array,
+then perform the changes while holding the socket
+lock and rose_list_lock spinlock (in this order)
+
+Change rose_release() to also acquire rose_list_lock
+before releasing the netdev refcount.
+
+[1]
+
+[ 1185.055088][ T7889] ref_tracker: reference already released.
+[ 1185.061476][ T7889] ref_tracker: allocated in:
+[ 1185.066081][ T7889]  rose_bind+0x4ab/0xd10
+[ 1185.070446][ T7889]  __sys_bind+0x1ec/0x220
+[ 1185.074818][ T7889]  __x64_sys_bind+0x72/0xb0
+[ 1185.079356][ T7889]  do_syscall_64+0x40/0x110
+[ 1185.083897][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+[ 1185.089835][ T7889] ref_tracker: freed in:
+[ 1185.094088][ T7889]  rose_release+0x2f5/0x570
+[ 1185.098629][ T7889]  __sock_release+0xae/0x260
+[ 1185.103262][ T7889]  sock_close+0x1c/0x20
+[ 1185.107453][ T7889]  __fput+0x270/0xbb0
+[ 1185.111467][ T7889]  task_work_run+0x14d/0x240
+[ 1185.116085][ T7889]  get_signal+0x106f/0x2790
+[ 1185.120622][ T7889]  arch_do_signal_or_restart+0x90/0x7f0
+[ 1185.126205][ T7889]  exit_to_user_mode_prepare+0x121/0x240
+[ 1185.131846][ T7889]  syscall_exit_to_user_mode+0x1e/0x60
+[ 1185.137293][ T7889]  do_syscall_64+0x4d/0x110
+[ 1185.141783][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+[ 1185.148085][ T7889] ------------[ cut here ]------------
+
+WARNING: CPU: 1 PID: 7889 at lib/ref_tracker.c:255 ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
+Modules linked in:
+CPU: 1 PID: 7889 Comm: syz-executor.2 Not tainted 6.7.0-rc4-syzkaller-00162-g65c95f78917e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
+Code: 00 44 8b 6b 18 31 ff 44 89 ee e8 21 62 f5 fc 45 85 ed 0f 85 a6 00 00 00 e8 a3 66 f5 fc 48 8b 34 24 48 89 ef e8 27 5f f1 05 90 <0f> 0b 90 bb ea ff ff ff e9 52 fd ff ff e8 84 66 f5 fc 4c 8d 6d 44
+RSP: 0018:ffffc90004917850 EFLAGS: 00010202
+RAX: 0000000000000201 RBX: ffff88802618f4c0 RCX: 0000000000000000
+RDX: 0000000000000202 RSI: ffffffff8accb920 RDI: 0000000000000001
+RBP: ffff8880269ea5b8 R08: 0000000000000001 R09: fffffbfff23e35f6
+R10: ffffffff91f1afb7 R11: 0000000000000001 R12: 1ffff92000922f0c
+R13: 0000000005a2039b R14: ffff88802618f4d8 R15: 00000000ffffffff
+FS: 00007f0a720ef6c0(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f43a819d988 CR3: 0000000076c64000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+netdev_tracker_free include/linux/netdevice.h:4127 [inline]
+netdev_put include/linux/netdevice.h:4144 [inline]
+netdev_put include/linux/netdevice.h:4140 [inline]
+rose_kill_by_device net/rose/af_rose.c:195 [inline]
+rose_device_event+0x25d/0x330 net/rose/af_rose.c:218
+notifier_call_chain+0xb6/0x3b0 kernel/notifier.c:93
+call_netdevice_notifiers_info+0xbe/0x130 net/core/dev.c:1967
+call_netdevice_notifiers_extack net/core/dev.c:2005 [inline]
+call_netdevice_notifiers net/core/dev.c:2019 [inline]
+__dev_notify_flags+0x1f5/0x2e0 net/core/dev.c:8646
+dev_change_flags+0x122/0x170 net/core/dev.c:8682
+dev_ifsioc+0x9ad/0x1090 net/core/dev_ioctl.c:529
+dev_ioctl+0x224/0x1090 net/core/dev_ioctl.c:786
+sock_do_ioctl+0x198/0x270 net/socket.c:1234
+sock_ioctl+0x22e/0x6b0 net/socket.c:1339
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl fs/ioctl.c:857 [inline]
+__x64_sys_ioctl+0x18f/0x210 fs/ioctl.c:857
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f0a7147cba9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0a720ef0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f0a7159bf80 RCX: 00007f0a7147cba9
+RDX: 0000000020000040 RSI: 0000000000008914 RDI: 0000000000000004
+RBP: 00007f0a714c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f0a7159bf80 R15: 00007ffc8bb3a5f8
+</TASK>
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/kionix-kx022a.c |   37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ net/rose/af_rose.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/accel/kionix-kx022a.c
-+++ b/drivers/iio/accel/kionix-kx022a.c
-@@ -273,17 +273,17 @@ static const unsigned int kx022a_odrs[]
-  *	(range / 2^bits) * g = (range / 2^bits) * 9.80665 m/s^2
-  *	=> KX022A uses 16 bit (HiRes mode - assume the low 8 bits are zeroed
-  *	in low-power mode(?) )
-- *	=> +/-2G  => 4 / 2^16 * 9,80665 * 10^6 (to scale to micro)
-- *	=> +/-2G  - 598.550415
-- *	   +/-4G  - 1197.10083
-- *	   +/-8G  - 2394.20166
-- *	   +/-16G - 4788.40332
-+ *	=> +/-2G  => 4 / 2^16 * 9,80665
-+ *	=> +/-2G  - 0.000598550415
-+ *	   +/-4G  - 0.00119710083
-+ *	   +/-8G  - 0.00239420166
-+ *	   +/-16G - 0.00478840332
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 674937284b8d2..29b74a569e0b0 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -182,21 +182,47 @@ void rose_kill_by_neigh(struct rose_neigh *neigh)
   */
- static const int kx022a_scale_table[][2] = {
--	{ 598, 550415 },
--	{ 1197, 100830 },
--	{ 2394, 201660 },
--	{ 4788, 403320 },
-+	{ 0, 598550 },
-+	{ 0, 1197101 },
-+	{ 0, 2394202 },
-+	{ 0, 4788403 },
- };
+ static void rose_kill_by_device(struct net_device *dev)
+ {
+-	struct sock *s;
++	struct sock *sk, *array[16];
++	struct rose_sock *rose;
++	bool rescan;
++	int i, cnt;
  
- static int kx022a_read_avail(struct iio_dev *indio_dev,
-@@ -302,7 +302,7 @@ static int kx022a_read_avail(struct iio_
- 		*vals = (const int *)kx022a_scale_table;
- 		*length = ARRAY_SIZE(kx022a_scale_table) *
- 			  ARRAY_SIZE(kx022a_scale_table[0]);
--		*type = IIO_VAL_INT_PLUS_MICRO;
-+		*type = IIO_VAL_INT_PLUS_NANO;
- 		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
-@@ -366,6 +366,20 @@ static int kx022a_turn_on_unlock(struct
- 	return ret;
++start:
++	rescan = false;
++	cnt = 0;
+ 	spin_lock_bh(&rose_list_lock);
+-	sk_for_each(s, &rose_list) {
+-		struct rose_sock *rose = rose_sk(s);
++	sk_for_each(sk, &rose_list) {
++		rose = rose_sk(sk);
++		if (rose->device == dev) {
++			if (cnt == ARRAY_SIZE(array)) {
++				rescan = true;
++				break;
++			}
++			sock_hold(sk);
++			array[cnt++] = sk;
++		}
++	}
++	spin_unlock_bh(&rose_list_lock);
+ 
++	for (i = 0; i < cnt; i++) {
++		sk = array[cnt];
++		rose = rose_sk(sk);
++		lock_sock(sk);
++		spin_lock_bh(&rose_list_lock);
+ 		if (rose->device == dev) {
+-			rose_disconnect(s, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
++			rose_disconnect(sk, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
+ 			if (rose->neighbour)
+ 				rose->neighbour->use--;
+ 			netdev_put(rose->device, &rose->dev_tracker);
+ 			rose->device = NULL;
+ 		}
++		spin_unlock_bh(&rose_list_lock);
++		release_sock(sk);
++		sock_put(sk);
++		cond_resched();
+ 	}
+-	spin_unlock_bh(&rose_list_lock);
++	if (rescan)
++		goto start;
  }
  
-+static int kx022a_write_raw_get_fmt(struct iio_dev *idev,
-+				    struct iio_chan_spec const *chan,
-+				    long mask)
-+{
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SCALE:
-+		return IIO_VAL_INT_PLUS_NANO;
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		return IIO_VAL_INT_PLUS_MICRO;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
- static int kx022a_write_raw(struct iio_dev *idev,
- 			    struct iio_chan_spec const *chan,
- 			    int val, int val2, long mask)
-@@ -510,7 +524,7 @@ static int kx022a_read_raw(struct iio_de
- 
- 		kx022a_reg2scale(regval, val, val2);
- 
--		return IIO_VAL_INT_PLUS_MICRO;
-+		return IIO_VAL_INT_PLUS_NANO;
+ /*
+@@ -656,7 +682,10 @@ static int rose_release(struct socket *sock)
+ 		break;
  	}
  
- 	return -EINVAL;
-@@ -712,6 +726,7 @@ static int kx022a_fifo_flush(struct iio_
- static const struct iio_info kx022a_info = {
- 	.read_raw = &kx022a_read_raw,
- 	.write_raw = &kx022a_write_raw,
-+	.write_raw_get_fmt = &kx022a_write_raw_get_fmt,
- 	.read_avail = &kx022a_read_avail,
- 
- 	.validate_trigger	= iio_validate_own_trigger,
++	spin_lock_bh(&rose_list_lock);
+ 	netdev_put(rose->device, &rose->dev_tracker);
++	rose->device = NULL;
++	spin_unlock_bh(&rose_list_lock);
+ 	sock->sk = NULL;
+ 	release_sock(sk);
+ 	sock_put(sk);
+-- 
+2.43.0
+
 
 
 
