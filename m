@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-8895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A367820556
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548358205C1
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4371C21027
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9468B21506
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EB979C2;
-	Sat, 30 Dec 2023 12:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0E679DC;
+	Sat, 30 Dec 2023 12:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nALD8c2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6SWDYt3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3579DC;
-	Sat, 30 Dec 2023 12:07:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56F0C433C7;
-	Sat, 30 Dec 2023 12:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C365279DE;
+	Sat, 30 Dec 2023 12:11:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0E0C433C8;
+	Sat, 30 Dec 2023 12:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938041;
-	bh=w7V2dvKlJfH8JWLAwTJU6Zs060J3g7q1Q2ia11SpbH0=;
+	s=korg; t=1703938300;
+	bh=h2qOHNguli0fSoEKRtXCDl6NH6FAvdMgSDnZ52hRPRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nALD8c2lIIZMR7iRk9/me9bbijdEMNIYRMeivF91W1q5R5Bea2FFVKUVo3TNrsaBz
-	 Y1odxANZ+dEvpOwDYkCsb6Dx65X9Ih5br9icZvvgccsWmECspKQcEuU+j3kiaot9W1
-	 q+j91kpUL0qsHatT/yao4ECJIHjjbDDjrLWSMnjg=
+	b=s6SWDYt3FO2AOShesfsIf+0soJErS3VZhVdvTo2Tuu2J5L9rz1UMcC/lrBWkY4kZx
+	 ZISfqzy/pVSGo3HfwDKRIu8/b9ql/79L2d2T313h5rxYZGnbhB6Maj8To57P0xoEN8
+	 +iwPm2i7lfiZdFHYV3gYI/onpo2sZGnAiFL+0e4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis Chauvet <louis.chauvet@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 137/156] spi: atmel: Fix clock issue when using devices with different polarities
-Date: Sat, 30 Dec 2023 11:59:51 +0000
-Message-ID: <20231230115816.821879397@linuxfoundation.org>
+	Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 079/112] net: rfkill: gpio: set GPIO direction
+Date: Sat, 30 Dec 2023 11:59:52 +0000
+Message-ID: <20231230115809.291987844@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,246 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis Chauvet <louis.chauvet@bootlin.com>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-commit fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc upstream.
+commit 23484d817082c3005252d8edfc8292c8a1006b5b upstream.
 
-The current Atmel SPI controller driver (v2) behaves incorrectly when
-using two SPI devices with different clock polarities and GPIO CS.
+Fix the undefined usage of the GPIO consumer API after retrieving the
+GPIO description with GPIO_ASIS. The API documentation mentions that
+GPIO_ASIS won't set a GPIO direction and requires the user to set a
+direction before using the GPIO.
 
-When switching from one device to another, the controller driver first
-enables the CS and then applies whatever configuration suits the targeted
-device (typically, the polarities). The side effect of such order is the
-apparition of a spurious clock edge after enabling the CS when the clock
-polarity needs to be inverted wrt. the previous configuration of the
-controller.
+This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
+able to enabled/disable a device, presumably because the GPIO controller
+was never configured for the output direction.
 
-This parasitic clock edge is problematic when the SPI device uses that edge
-for internal processing, which is perfectly legitimate given that its CS
-was asserted. Indeed, devices such as HVS8080 driven by driver gpio-sr in
-the kernel are shift registers and will process this first clock edge to
-perform a first register shift. In this case, the first bit gets lost and
-the whole data block that will later be read by the kernel is all shifted
-by one.
-
-    Current behavior:
-      The actual switching of the clock polarity only occurs after the CS
-      when the controller sends the first message:
-
-    CLK ------------\   /-\ /-\
-                    |   | | | |    . . .
-                    \---/ \-/ \
-    CS  -----\
-             |
-             \------------------
-
-             ^      ^   ^
-             |      |   |
-             |      |   Actual clock of the message sent
-             |      |
-             |      Change of clock polarity, which occurs with the first
-             |      write to the bus. This edge occurs when the CS is
-             |      already asserted, and can be interpreted as
-             |      the first clock edge by the receiver.
-             |
-             GPIO CS toggle
-
-This issue is specific to this controller because while the SPI core
-performs the operations in the right order, the controller however does
-not. In practice, the controller only applies the clock configuration right
-before the first transmission.
-
-So this is not a problem when using the controller's dedicated CS, as the
-controller does things correctly, but it becomes a problem when you need to
-change the clock polarity and use an external GPIO for the CS.
-
-One possible approach to solve this problem is to send a dummy message
-before actually activating the CS, so that the controller applies the clock
-polarity beforehand.
-
-New behavior:
-
-CLK     ------\      /-\     /-\      /-\     /-\
-              |      | | ... | |      | | ... | |
-              \------/ \-   -/ \------/ \-   -/ \------
-
-CS      -\/-----------------------\
-         ||                       |
-         \/                       \---------------------
-         ^    ^       ^           ^    ^
-         |    |       |           |    |
-         |    |       |           |    Expected clock cycles when
-         |    |       |           |    sending the message
-         |    |       |           |
-         |    |       |           Actual GPIO CS activation, occurs inside
-         |    |       |           the driver
-         |    |       |
-         |    |       Dummy message, to trigger clock polarity
-         |    |       reconfiguration. This message is not received and
-         |    |       processed by the device because CS is low.
-         |    |
-         |    Change of clock polarity, forced by the dummy message. This
-         |    time, the edge is not detected by the receiver.
-         |
-         This small spike in CS activation is due to the fact that the
-         spi-core activates the CS gpio before calling the driver's
-         set_cs callback, which deactivates this gpio again until the
-         clock polarity is correct.
-
-To avoid having to systematically send a dummy packet, the driver keeps
-track of the clock's current polarity. In this way, it only sends the dummy
-packet when necessary, ensuring that the clock will have the correct
-polarity when the CS is toggled.
-
-There could be two hardware problems with this patch:
-1- Maybe the small CS activation peak can confuse SPI devices
-2- If on a design, a single wire is used to select two devices depending
-on its state, the dummy message may disturb them.
-
-Fixes: 5ee36c989831 ("spi: atmel_spi update chipselect handling")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://msgid.link/r/20231204154903.11607-1-louis.chauvet@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Link: https://msgid.link/20231207075835.3091694-1-r.czerwinski@pengutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-atmel.c |   82 +++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 81 insertions(+), 1 deletion(-)
+ net/rfkill/rfkill-gpio.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -22,6 +22,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
-+#include <linux/iopoll.h>
- #include <trace/events/spi.h>
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -116,6 +116,14 @@ static int rfkill_gpio_probe(struct plat
+ 		return -EINVAL;
+ 	}
  
- /* SPI register offsets */
-@@ -279,6 +280,7 @@ struct atmel_spi {
- 	bool			keep_cs;
- 
- 	u32			fifo_size;
-+	bool			last_polarity;
- 	u8			native_cs_free;
- 	u8			native_cs_for_gpio;
- };
-@@ -292,6 +294,22 @@ struct atmel_spi_device {
- #define INVALID_DMA_ADDRESS	0xffffffff
- 
- /*
-+ * This frequency can be anything supported by the controller, but to avoid
-+ * unnecessary delay, the highest possible frequency is chosen.
-+ *
-+ * This frequency is the highest possible which is not interfering with other
-+ * chip select registers (see Note for Serial Clock Bit Rate configuration in
-+ * Atmel-11121F-ATARM-SAMA5D3-Series-Datasheet_02-Feb-16, page 1283)
-+ */
-+#define DUMMY_MSG_FREQUENCY	0x02
-+/*
-+ * 8 bits is the minimum data the controller is capable of sending.
-+ *
-+ * This message can be anything as it should not be treated by any SPI device.
-+ */
-+#define DUMMY_MSG		0xAA
++	ret = gpiod_direction_output(rfkill->reset_gpio, true);
++	if (ret)
++		return ret;
 +
-+/*
-  * Version 2 of the SPI controller has
-  *  - CR.LASTXFER
-  *  - SPI_MR.DIV32 may become FDIV or must-be-zero (here: always zero)
-@@ -305,6 +323,43 @@ static bool atmel_spi_is_v2(struct atmel
- }
- 
- /*
-+ * Send a dummy message.
-+ *
-+ * This is sometimes needed when using a CS GPIO to force clock transition when
-+ * switching between devices with different polarities.
-+ */
-+static void atmel_spi_send_dummy(struct atmel_spi *as, struct spi_device *spi, int chip_select)
-+{
-+	u32 status;
-+	u32 csr;
++	ret = gpiod_direction_output(rfkill->shutdown_gpio, true);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * Set a clock frequency to allow sending message on SPI bus.
-+	 * The frequency here can be anything, but is needed for
-+	 * the controller to send the data.
-+	 */
-+	csr = spi_readl(as, CSR0 + 4 * chip_select);
-+	csr = SPI_BFINS(SCBR, DUMMY_MSG_FREQUENCY, csr);
-+	spi_writel(as, CSR0 + 4 * chip_select, csr);
-+
-+	/*
-+	 * Read all data coming from SPI bus, needed to be able to send
-+	 * the message.
-+	 */
-+	spi_readl(as, RDR);
-+	while (spi_readl(as, SR) & SPI_BIT(RDRF)) {
-+		spi_readl(as, RDR);
-+		cpu_relax();
-+	}
-+
-+	spi_writel(as, TDR, DUMMY_MSG);
-+
-+	readl_poll_timeout_atomic(as->regs + SPI_SR, status,
-+				  (status & SPI_BIT(TXEMPTY)), 1, 1000);
-+}
-+
-+
-+/*
-  * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
-  * they assume that spi slave device state will not change on deselect, so
-  * that automagic deselection is OK.  ("NPCSx rises if no data is to be
-@@ -320,11 +375,17 @@ static bool atmel_spi_is_v2(struct atmel
-  * Master on Chip Select 0.")  No workaround exists for that ... so for
-  * nCS0 on that chip, we (a) don't use the GPIO, (b) can't support CS_HIGH,
-  * and (c) will trigger that first erratum in some cases.
-+ *
-+ * When changing the clock polarity, the SPI controller waits for the next
-+ * transmission to enforce the default clock state. This may be an issue when
-+ * using a GPIO as Chip Select: the clock level is applied only when the first
-+ * packet is sent, once the CS has already been asserted. The workaround is to
-+ * avoid this by sending a first (dummy) message before toggling the CS state.
-  */
--
- static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- {
- 	struct atmel_spi_device *asd = spi->controller_state;
-+	bool new_polarity;
- 	int chip_select;
- 	u32 mr;
- 
-@@ -353,6 +414,25 @@ static void cs_activate(struct atmel_spi
- 		}
- 
- 		mr = spi_readl(as, MR);
-+
-+		/*
-+		 * Ensures the clock polarity is valid before we actually
-+		 * assert the CS to avoid spurious clock edges to be
-+		 * processed by the spi devices.
-+		 */
-+		if (spi_get_csgpiod(spi, 0)) {
-+			new_polarity = (asd->csr & SPI_BIT(CPOL)) != 0;
-+			if (new_polarity != as->last_polarity) {
-+				/*
-+				 * Need to disable the GPIO before sending the dummy
-+				 * message because it is already set by the spi core.
-+				 */
-+				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 0);
-+				atmel_spi_send_dummy(as, spi, chip_select);
-+				as->last_polarity = new_polarity;
-+				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 1);
-+			}
-+		}
- 	} else {
- 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
- 		int i;
+ 	rfkill->rfkill_dev = rfkill_alloc(rfkill->name, &pdev->dev,
+ 					  rfkill->type, &rfkill_gpio_ops,
+ 					  rfkill);
 
 
 
