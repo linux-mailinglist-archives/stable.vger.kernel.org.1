@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-8980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70C28205B2
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6548820549
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A9B0B211AC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 149EB1C20FDA
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315FF79EE;
-	Sat, 30 Dec 2023 12:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153A38473;
+	Sat, 30 Dec 2023 12:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2kepHZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BmJgfW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FA79DD;
-	Sat, 30 Dec 2023 12:11:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68191C433C7;
-	Sat, 30 Dec 2023 12:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13ED79DE;
+	Sat, 30 Dec 2023 12:06:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59756C433C9;
+	Sat, 30 Dec 2023 12:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938261;
-	bh=NFIO6hjcA85MJTwp0i7WTWUkChUPbe+fmDZOTddbyTo=;
+	s=korg; t=1703938007;
+	bh=8hfpXWgVGYyYI2+KOhnT1xdL42fycZ6MGqDr7QbWH7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2kepHZIDfiaqYJox67v+PC4uTEuH/F603OHj96k/ifQaYQpKl52VKIZ4NkwdETEK
-	 t+OSt/FkOMosXTViv3Trp9nLOMN+rV7Xkk2DQGoOsmSmOc+o5uF+xzPw5kontnXHOD
-	 0i7eAmEU3acaN9Ro0AAyNGdSImAG2kVbpCFTqPmY=
+	b=0BmJgfW1vnTnnqz+x8HPQla9l4MMIGGj9hfhu8uLnh8nqzPdxA9JP6N0mdsnUEjif
+	 +JMKcOJlo4J9YHZf1d7D5/fi7a4/XpRyFnqZ4AeA6piwn4Xpkje2Q++51N4ImNOw/O
+	 i5EUN3qPQpCQrYGdym3Y/Js2idTg8OK/D3ErgCsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauricio Faria de Oliveira <mfo@canonical.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/112] loop: do not enforce max_loop hard limit by (new) default
+	Herve Codina <herve.codina@bootlin.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 6.6 148/156] lib/vsprintf: Fix %pfwf when current node refcount == 0
 Date: Sat, 30 Dec 2023 12:00:02 +0000
-Message-ID: <20231230115809.666462326@linuxfoundation.org>
+Message-ID: <20231230115817.149312882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,213 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauricio Faria de Oliveira <mfo@canonical.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit bb5faa99f0ce40756ab7bbbce4f16c01ca5ebd5a ]
+commit 5c47251e8c4903111608ddcba2a77c0c425c247c upstream.
 
-Problem:
+A refcount issue can appeared in __fwnode_link_del() due to the
+pr_debug() call:
+  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+  Call Trace:
+  <TASK>
+  ...
+  of_node_get+0x1e/0x30
+  of_fwnode_get+0x28/0x40
+  fwnode_full_name_string+0x34/0x90
+  fwnode_string+0xdb/0x140
+  ...
+  vsnprintf+0x17b/0x630
+  ...
+  __fwnode_link_del+0x25/0xa0
+  fwnode_links_purge+0x39/0xb0
+  of_node_release+0xd9/0x180
+  ...
 
-The max_loop parameter is used for 2 different purposes:
+Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+is called because the of_node refcount reached 0.
+>From of_node_release() several function calls are done and lead to
+a pr_debug() calls with %pfwf to print the fwnode full name.
+The issue is not present if we change %pfwf to %pfwP.
 
-1) initial number of loop devices to pre-create on init
-2) maximum number of loop devices to add on access/open()
+To print the full name, %pfwf iterates over the current node and its
+parents and obtain/drop a reference to all nodes involved.
 
-Historically, its default value (zero) caused 1) to create non-zero
-number of devices (CONFIG_BLK_DEV_LOOP_MIN_COUNT), and no hard limit on
-2) to add devices with autoloading.
+In order to allow to print the full name (%pfwf) of a node while it is
+being destroyed, do not obtain/drop a reference to this current node.
 
-However, the default value changed in commit 85c50197716c ("loop: Fix
-the max_loop commandline argument treatment when it is set to 0") to
-CONFIG_BLK_DEV_LOOP_MIN_COUNT, for max_loop=0 not to pre-create devices.
-
-That does improve 1), but unfortunately it breaks 2), as the default
-behavior changed from no-limit to hard-limit.
-
-Example:
-
-For example, this userspace code broke for N >= CONFIG, if the user
-relied on the default value 0 for max_loop:
-
-    mknod("/dev/loopN");
-    open("/dev/loopN");  // now fails with ENXIO
-
-Though affected users may "fix" it with (loop.)max_loop=0, this means to
-require a kernel parameter change on stable kernel update (that commit
-Fixes: an old commit in stable).
-
-Solution:
-
-The original semantics for the default value in 2) can be applied if the
-parameter is not set (ie, default behavior).
-
-This still keeps the intended function in 1) and 2) if set, and that
-commit's intended improvement in 1) if max_loop=0.
-
-Before 85c50197716c:
-  - default:     1) CONFIG devices   2) no limit
-  - max_loop=0:  1) CONFIG devices   2) no limit
-  - max_loop=X:  1) X devices        2) X limit
-
-After 85c50197716c:
-  - default:     1) CONFIG devices   2) CONFIG limit (*)
-  - max_loop=0:  1) 0 devices (*)    2) no limit
-  - max_loop=X:  1) X devices        2) X limit
-
-This commit:
-  - default:     1) CONFIG devices   2) no limit (*)
-  - max_loop=0:  1) 0 devices        2) no limit
-  - max_loop=X:  1) X devices        2) X limit
-
-Future:
-
-The issue/regression from that commit only affects code under the
-CONFIG_BLOCK_LEGACY_AUTOLOAD deprecation guard, thus the fix too is
-contained under it.
-
-Once that deprecated functionality/code is removed, the purpose 2) of
-max_loop (hard limit) is no longer in use, so the module parameter
-description can be changed then.
-
-Tests:
-
-Linux 6.4-rc7
-CONFIG_BLK_DEV_LOOP_MIN_COUNT=8
-CONFIG_BLOCK_LEGACY_AUTOLOAD=y
-
-- default (original)
-
-	# ls -1 /dev/loop*
-	/dev/loop-control
-	/dev/loop0
-	...
-	/dev/loop7
-
-	# ./test-loop
-	open: /dev/loop8: No such device or address
-
-- default (patched)
-
-	# ls -1 /dev/loop*
-	/dev/loop-control
-	/dev/loop0
-	...
-	/dev/loop7
-
-	# ./test-loop
-	#
-
-- max_loop=0 (original & patched):
-
-	# ls -1 /dev/loop*
-	/dev/loop-control
-
-	# ./test-loop
-	#
-
-- max_loop=8 (original & patched):
-
-	# ls -1 /dev/loop*
-	/dev/loop-control
-	/dev/loop0
-	...
-	/dev/loop7
-
-	# ./test-loop
-	open: /dev/loop8: No such device or address
-
-- max_loop=0 (patched; CONFIG_BLOCK_LEGACY_AUTOLOAD is not set)
-
-	# ls -1 /dev/loop*
-	/dev/loop-control
-
-	# ./test-loop
-	open: /dev/loop8: No such device or address
-
-Fixes: 85c50197716c ("loop: Fix the max_loop commandline argument treatment when it is set to 0")
-Signed-off-by: Mauricio Faria de Oliveira <mfo@canonical.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230720143033.841001-3-mfo@canonical.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20231114152655.409331-1-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+ lib/vsprintf.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 426d0b42685a0..d74f8eb7f5293 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1777,14 +1777,43 @@ static const struct block_device_operations lo_fops = {
- /*
-  * If max_loop is specified, create that many devices upfront.
-  * This also becomes a hard limit. If max_loop is not specified,
-+ * the default isn't a hard limit (as before commit 85c50197716c
-+ * changed the default value from 0 for max_loop=0 reasons), just
-  * create CONFIG_BLK_DEV_LOOP_MIN_COUNT loop devices at module
-  * init time. Loop devices can be requested on-demand with the
-  * /dev/loop-control interface, or be instantiated by accessing
-  * a 'dead' device node.
-  */
- static int max_loop = CONFIG_BLK_DEV_LOOP_MIN_COUNT;
--module_param(max_loop, int, 0444);
-+
-+#ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
-+static bool max_loop_specified;
-+
-+static int max_loop_param_set_int(const char *val,
-+				  const struct kernel_param *kp)
-+{
-+	int ret;
-+
-+	ret = param_set_int(val, kp);
-+	if (ret < 0)
-+		return ret;
-+
-+	max_loop_specified = true;
-+	return 0;
-+}
-+
-+static const struct kernel_param_ops max_loop_param_ops = {
-+	.set = max_loop_param_set_int,
-+	.get = param_get_int,
-+};
-+
-+module_param_cb(max_loop, &max_loop_param_ops, &max_loop, 0444);
- MODULE_PARM_DESC(max_loop, "Maximum number of loop devices");
-+#else
-+module_param(max_loop, int, 0444);
-+MODULE_PARM_DESC(max_loop, "Initial number of loop devices");
-+#endif
-+
- module_param(max_part, int, 0444);
- MODULE_PARM_DESC(max_part, "Maximum number of partitions per loop device");
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2110,15 +2110,20 @@ char *fwnode_full_name_string(struct fwn
  
-@@ -2093,7 +2122,7 @@ static void loop_probe(dev_t dev)
- {
- 	int idx = MINOR(dev) >> part_shift;
+ 	/* Loop starting from the root node to the current node. */
+ 	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+-		struct fwnode_handle *__fwnode =
+-			fwnode_get_nth_parent(fwnode, depth);
++		/*
++		 * Only get a reference for other nodes (i.e. parent nodes).
++		 * fwnode refcount may be 0 here.
++		 */
++		struct fwnode_handle *__fwnode = depth ?
++			fwnode_get_nth_parent(fwnode, depth) : fwnode;
  
--	if (max_loop && idx >= max_loop)
-+	if (max_loop_specified && max_loop && idx >= max_loop)
- 		return;
- 	loop_add(idx);
- }
-@@ -2277,6 +2306,9 @@ module_exit(loop_exit);
- static int __init max_loop_setup(char *str)
- {
- 	max_loop = simple_strtol(str, NULL, 0);
-+#ifdef CONFIG_BLOCK_LEGACY_AUTOLOAD
-+	max_loop_specified = true;
-+#endif
- 	return 1;
- }
+ 		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
+ 			     default_str_spec);
+ 		buf = string(buf, end, fwnode_get_name(__fwnode),
+ 			     default_str_spec);
  
--- 
-2.43.0
-
+-		fwnode_handle_put(__fwnode);
++		if (depth)
++			fwnode_handle_put(__fwnode);
+ 	}
+ 
+ 	return buf;
 
 
 
