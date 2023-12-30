@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-8966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632728205A4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8473A82053C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95F441C20ECC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71271C20FEF
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA7479EF;
-	Sat, 30 Dec 2023 12:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD2179D8;
+	Sat, 30 Dec 2023 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgNVEm6j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d1Y8kCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F488483;
-	Sat, 30 Dec 2023 12:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13899C433C9;
-	Sat, 30 Dec 2023 12:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA98483;
+	Sat, 30 Dec 2023 12:06:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAF3C433C8;
+	Sat, 30 Dec 2023 12:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938225;
-	bh=x7bneNO96w4mP8mNvakxBLUz2nzxrkzhO+vB5653KOQ=;
+	s=korg; t=1703937974;
+	bh=nLQwV88NY+vOhvgnfZURK7zaQurIxBdIG9Pig/j7+lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgNVEm6jdkx78moWxIeiBzfZOOytmkA7HogGfhwpwz4zj1OFC7PnUzvGZxvaCzvmm
-	 1JM3f8+lq07GFGz4uDwL/yfMifl8Ilb3FHYHL0ZdKIgzHoZEnac1VE5VedeXBncgvE
-	 0LWioQ07M32kfAwyaDusmi+dnTtAYRbBbs+VWX6k=
+	b=2d1Y8kCY57l/46Ry7bsqp6D/i5oTLLrUtpKULyZUEuUoUIxK6Mt0Cf82m1Y3cwICf
+	 qRPHtqs1pah+9XSheNzHr6Gia1m1eSLr+H0BvL93fsQiFd0GDAXb5GKSmMgCzWtTOP
+	 +59LJa6rA84UQehZFCFxCJSsj2Gqfh1sOUTKIcrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/112] drm/i915/dpt: Only do the POT stride remap when using DPT
+	Hyunwoo Kim <v4bel@theori.io>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 110/156] Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
 Date: Sat, 30 Dec 2023 11:59:24 +0000
-Message-ID: <20231230115808.350404014@linuxfoundation.org>
+Message-ID: <20231230115815.962033506@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +50,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit ef5cb493a9acd7d97870d6e542020980ae3f3483 ]
+commit 2e07e8348ea454615e268222ae3fc240421be768 upstream.
 
-If we want to test with DPT disabled on ADL the POT stride remap
-stuff needs to be disabled. Make it depend on actual DPT usage
-instead of just assuming it based on the modifier.
+This can cause a race with bt_sock_ioctl() because
+bt_sock_recvmsg() gets the skb from sk->sk_receive_queue
+and then frees it without holding lock_sock.
+A use-after-free for a skb occurs with the following flow.
+```
+bt_sock_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+bt_sock_ioctl() -> skb_peek()
+```
+Add lock_sock to bt_sock_recvmsg() to fix this issue.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230320090522.9909-3-ville.syrjala@linux.intel.com
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Stable-dep-of: 324b70e997aa ("drm/i915: Fix ADL+ tiled plane stride when the POT stride is smaller than the original")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_fb.c b/drivers/gpu/drm/i915/display/intel_fb.c
-index 23d854bd73b77..c22ca36a38a9d 100644
---- a/drivers/gpu/drm/i915/display/intel_fb.c
-+++ b/drivers/gpu/drm/i915/display/intel_fb.c
-@@ -1176,7 +1176,7 @@ bool intel_fb_needs_pot_stride_remap(const struct intel_framebuffer *fb)
- {
- 	struct drm_i915_private *i915 = to_i915(fb->base.dev);
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -309,11 +309,14 @@ int bt_sock_recvmsg(struct socket *sock,
+ 	if (flags & MSG_OOB)
+ 		return -EOPNOTSUPP;
  
--	return IS_ALDERLAKE_P(i915) && fb->base.modifier != DRM_FORMAT_MOD_LINEAR;
-+	return IS_ALDERLAKE_P(i915) && intel_fb_uses_dpt(&fb->base);
- }
++	lock_sock(sk);
++
+ 	skb = skb_recv_datagram(sk, flags, &err);
+ 	if (!skb) {
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+-			return 0;
++			err = 0;
  
- static int intel_fb_pitch(const struct intel_framebuffer *fb, int color_plane, unsigned int rotation)
--- 
-2.43.0
-
++		release_sock(sk);
+ 		return err;
+ 	}
+ 
+@@ -343,6 +346,8 @@ int bt_sock_recvmsg(struct socket *sock,
+ 
+ 	skb_free_datagram(sk, skb);
+ 
++	release_sock(sk);
++
+ 	if (flags & MSG_TRUNC)
+ 		copied = skblen;
+ 
 
 
 
