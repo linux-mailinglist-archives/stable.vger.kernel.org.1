@@ -1,135 +1,110 @@
-Return-Path: <stable+bounces-9003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3BEF8205CA
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:12:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D90820650
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 798C41F2354F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEC151C20FAC
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14838487;
-	Sat, 30 Dec 2023 12:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D078468;
+	Sat, 30 Dec 2023 12:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0cCv0YY"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="ZQt+PPzi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A71579C2;
-	Sat, 30 Dec 2023 12:12:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00269C433C8;
-	Sat, 30 Dec 2023 12:12:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938321;
-	bh=G90VcqE/vmcUvZinbNW/lkORQ3W8ZRIPCbc5NDHhAGs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0cCv0YYixuClpbqhxrwvpLrM4LW3Ub+6zORgcN7EiQTa6+Q/n/r4eoZJFfuJvr0F
-	 sLdvjyIG+69SQ1QT+7yttpdv+6fLCdGFJcEM8KywysGUHojE0IVVKWpBwUjeI/TTdi
-	 Mz1FD7ouY0WRSdVRAgFq1/Enn4OgrFSJLk91/odo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	=?UTF-8?q?L=E9o=20Lam?= <leo@leolam.fr>,
-	=?UTF-8?q?Philip=20M=FCller?= <philm@manjaro.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 112/112] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
-Date: Sat, 30 Dec 2023 12:00:25 +0000
-Message-ID: <20231230115810.342302151@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82058489;
+	Sat, 30 Dec 2023 12:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-35fcea0ac1aso38006885ab.1;
+        Sat, 30 Dec 2023 04:59:39 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703941179; x=1704545979;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=+SPPYnUKKW20M/c+9jcCpTlZCNyMAPsPCD8sE9q2KXY=;
+        b=WrBmGNNep2x9kW0yxSWM6tRVIuLK6AivwaI1AxM5+NsGdfnz3tK6kVElQJ4f4nJGuO
+         q3uutLhJsvBEwroTjLtKnCdV0NeZInQ1PWQgo/47aQM9VbxEWH9FXbWMiP3Bf8I9mlN5
+         CBSCvwzd33mJECcLACA+zqxWj59VU6kNUN4bP6N0gcqzJFJDQO26cRCr2F606fBNKPfl
+         PxtKSbWmZcWNd6Pc1oHez7Nj4hJrDEkx4peSTYf0uJCBOBe8yBNYM3pfbynkOlu6+lXB
+         HiliT58+KS3SuWfUmgHduCWbT1Q/f9JZ2N6GFoDptaZnVzddsBlKjpJsf1JDyAkJiq2T
+         aHqg==
+X-Gm-Message-State: AOJu0Yy77jpqRQtQLrrXwLAWgp4qGNesL68OVn66y5nwP1wBGvlr7hNI
+	TtzG1EC6BV1SGzy4dCvyedw=
+X-Google-Smtp-Source: AGHT+IELIFDcFmENKgqmiyD21UiRKt2HITdlFCAxxtYexcKtA1cbXKI34gYZ6e3FLZzYttx66ZFHZQ==
+X-Received: by 2002:a92:ca0e:0:b0:35d:59a2:bd2 with SMTP id j14-20020a92ca0e000000b0035d59a20bd2mr13619674ils.104.1703941178892;
+        Sat, 30 Dec 2023 04:59:38 -0800 (PST)
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id a12-20020a65640c000000b005cdfb0a11e1sm12080891pgv.88.2023.12.30.04.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 Dec 2023 04:59:38 -0800 (PST)
+Date: Sat, 30 Dec 2023 09:59:49 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2023; t=1703941176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+SPPYnUKKW20M/c+9jcCpTlZCNyMAPsPCD8sE9q2KXY=;
+	b=ZQt+PPzi6WAqbFjufkekLbkbc1xVykUa/dm2flpY5wz6YDtxOtEH622TtcQEAfmUTEEnB4
+	ciX4qZ+Leg6bqqNI11lZOnxkSRNddDMagEWg0oz/oQ/e5ubD249hUyjPAIU7DY0Hv+Odad
+	LOZReIg5TNcBQTO49XDn35v+3tpTy0fWWZTRMGkRpUeq9m+yLDkX4aV3sPJsTryKQs2wJ+
+	HnvGTd1+93QeLysV7MAgdJerGgbxGveA2if3uW1NXBBWkwyliimI9EmpTwWCnz3hOm5akl
+	49qBCUpYNo/Ykn3+IPcJdgCw42EKVf0Gxp0uJD7LvxoqARWVzywChE+mXlBjbQ==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/156] 6.6.9-rc1 review
+Message-ID: <w7qzykc6e5baubwb3fcgdimxenisxl4kc2ydxlzwfkyt2i5yit@jl5tf6lsjntn>
+References: <20231230115812.333117904@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On 23/12/30 11:57AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.9 release.
+> There are 156 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 01 Jan 2024 11:57:43 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-------------------
+System runs fine, no noticeable regressions.
 
-From: "Léo Lam" <leo@leolam.fr>
+[    0.000000] Linux version 6.6.9-rc1-ktest+ (rbmarliere@debian) (gcc (Debian 13.2.0-9) 13.2.0, GNU ld (GNU Binutils for Debian) 2.41.50.20231227) #1 SMP PREEMPT_DYNAMIC Sat Dec 30 08:42:24 -03 2023
 
-Commit 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use"
-backported to 6.6.x) causes nl80211_set_cqm_rssi not to release the
-wdev lock in some of the error paths.
+Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
 
-Of course, the ensuing deadlock causes userland network managers to
-break pretty badly, and on typical systems this also causes lockups on
-on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
-
-The upstream commit 7e7efdda6adb ("wifi: cfg80211: fix CQM for non-range
-use"), committed in November 2023, is completely fine because there was
-another commit in August 2023 that removed the wdev lock:
-see commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex").
-
-The reason things broke in 6.6.5 is that commit 4338058f6009 was applied
-without also applying 076fc8775daf.
-
-Commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex") is a rather
-large commit; adjusting the error handling (which is what this commit does)
-yields a much simpler patch and was tested to work properly.
-
-Fix the deadlock by releasing the lock before returning.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
-[2] https://bbs.archlinux.org/viewtopic.php?id=290976
-[3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
-
-Link: https://lore.kernel.org/stable/e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org/
-Fixes: 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use")
-Tested-by: "Léo Lam" <leo@leolam.fr>
-Tested-by: "Philip Müller" <philm@manjaro.org>
-Cc: stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: "Léo Lam" <leo@leolam.fr>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- net/wireless/nl80211.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12656,17 +12656,23 @@ static int nl80211_set_cqm_rssi(struct g
- 					lockdep_is_held(&wdev->mtx));
- 
- 	/* if already disabled just succeed */
--	if (!n_thresholds && !old)
--		return 0;
-+	if (!n_thresholds && !old) {
-+		err = 0;
-+		goto unlock;
-+	}
- 
- 	if (n_thresholds > 1) {
- 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
- 					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
--		    !rdev->ops->set_cqm_rssi_range_config)
--			return -EOPNOTSUPP;
-+		    !rdev->ops->set_cqm_rssi_range_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	} else {
--		if (!rdev->ops->set_cqm_rssi_config)
--			return -EOPNOTSUPP;
-+		if (!rdev->ops->set_cqm_rssi_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	}
- 
- 	if (n_thresholds) {
-
-
+Thanks,
+-	Ricardo
 
