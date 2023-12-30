@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-8802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97ED08204F5
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64ACF82056F
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DCD01F21AE0
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 074E8B213F3
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6363879E0;
-	Sat, 30 Dec 2023 12:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC2079E0;
+	Sat, 30 Dec 2023 12:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVcBLPPz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xci2ECvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA1A8F54;
-	Sat, 30 Dec 2023 12:03:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC19C433C7;
-	Sat, 30 Dec 2023 12:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A02B79DE;
+	Sat, 30 Dec 2023 12:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CB8C433C7;
+	Sat, 30 Dec 2023 12:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937800;
-	bh=5oYy0/3iHu4HoBxNNo8jPPsixUKxLtXu6paFP113zQo=;
+	s=korg; t=1703938103;
+	bh=yiFk4cAErXEHHG/qga1R3c3viP4RXMyt/StLx246/mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVcBLPPzexlawxAf7NdweCH+W0l+I7rmojmBzq4CMuTXduMM0o9jqkyDf2UvKseVO
-	 AGFhgESfD3h47LADsCTTSJYIWYNZq7AZIxrT3LJ+cOjUC3n7lq+2UYjin1uaLcYavR
-	 q1FktRtHDJ7cx1TEfBKxWJcR8VTrilYKFbB0erD8=
+	b=xci2ECvJAEgcH+dyI2a8yr34blHSem28WCWNdqeZWuyL0Ay954ADvYXj5mCF7ZuXL
+	 rbkHZ4KTTWasTHIpO4dFUF98sBNNcKTd0QyA76Vf8aTK3XR9nLwtiSVmlAINeN0FDU
+	 C3efgC/C1Y9L1n7K4d5EgrWInLshjB9VTseeBwR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	lvc-project@linuxtesting.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/156] afs: Fix overwriting of result of DNS query
+Subject: [PATCH 6.1 009/112] s390/vx: fix save/restore of fpu kernel context
 Date: Sat, 30 Dec 2023 11:58:42 +0000
-Message-ID: <20231230115814.581896215@linuxfoundation.org>
+Message-ID: <20231230115807.047598417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,60 +54,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit a9e01ac8c5ff32669119c40dfdc9e80eb0b7d7aa ]
+[ Upstream commit e6b2dab41888332bf83f592131e7ea07756770a4 ]
 
-In afs_update_cell(), ret is the result of the DNS lookup and the errors
-are to be handled by a switch - however, the value gets clobbered in
-between by setting it to -ENOMEM in case afs_alloc_vlserver_list()
-fails.
+The KERNEL_FPR mask only contains a flag for the first eight vector
+registers. However floating point registers overlay parts of the first
+sixteen vector registers.
 
-Fix this by moving the setting of -ENOMEM into the error handling for
-OOM failure.  Further, only do it if we don't have an alternative error
-to return.
+This could lead to vector register corruption if a kernel fpu context uses
+any of the vector registers 8 to 15 and is interrupted or calls a
+KERNEL_FPR context. If that context uses also vector registers 8 to 15,
+their contents will be corrupted on return.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.  Based
-on a patch from Anastasia Belova [1].
+Luckily this is currently not a real bug, since the kernel has only one
+KERNEL_FPR user with s390_adjust_jiffies() and it is only using floating
+point registers 0 to 2.
 
-Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Anastasia Belova <abelova@astralinux.ru>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: lvc-project@linuxtesting.org
-Link: https://lore.kernel.org/r/20231221085849.1463-1-abelova@astralinux.ru/ [1]
-Link: https://lore.kernel.org/r/1700862.1703168632@warthog.procyon.org.uk/ # v1
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fix this by using the correct bits for KERNEL_FPR.
+
+Fixes: 7f79695cc1b6 ("s390/fpu: improve kernel_fpu_[begin|end]")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/cell.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/s390/include/asm/fpu/api.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/cell.c b/fs/afs/cell.c
-index 988c2ac7cecec..926cb1188eba6 100644
---- a/fs/afs/cell.c
-+++ b/fs/afs/cell.c
-@@ -409,10 +409,12 @@ static int afs_update_cell(struct afs_cell *cell)
- 		if (ret == -ENOMEM)
- 			goto out_wake;
+diff --git a/arch/s390/include/asm/fpu/api.h b/arch/s390/include/asm/fpu/api.h
+index b714ed0ef6885..9acf48e53a87f 100644
+--- a/arch/s390/include/asm/fpu/api.h
++++ b/arch/s390/include/asm/fpu/api.h
+@@ -79,7 +79,7 @@ static inline int test_fp_ctl(u32 fpc)
+ #define KERNEL_VXR_HIGH		(KERNEL_VXR_V16V23|KERNEL_VXR_V24V31)
  
--		ret = -ENOMEM;
- 		vllist = afs_alloc_vlserver_list(0);
--		if (!vllist)
-+		if (!vllist) {
-+			if (ret >= 0)
-+				ret = -ENOMEM;
- 			goto out_wake;
-+		}
+ #define KERNEL_VXR		(KERNEL_VXR_LOW|KERNEL_VXR_HIGH)
+-#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_V0V7)
++#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_LOW)
  
- 		switch (ret) {
- 		case -ENODATA:
+ struct kernel_fpu;
+ 
 -- 
 2.43.0
 
