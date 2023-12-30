@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-8993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B278205C0
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F044820555
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A4BBB211AC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307011F21AF9
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C529979DE;
-	Sat, 30 Dec 2023 12:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C17479D8;
+	Sat, 30 Dec 2023 12:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr0sk/8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US9D6Xzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1EB8483;
-	Sat, 30 Dec 2023 12:11:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18757C433C8;
-	Sat, 30 Dec 2023 12:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861C8486;
+	Sat, 30 Dec 2023 12:07:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A04C433C7;
+	Sat, 30 Dec 2023 12:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938295;
-	bh=OhIUW936iuPRYhlVAnZxsEAvq42S67y889qzzGg82NQ=;
+	s=korg; t=1703938038;
+	bh=jxojuaY9+845dnjGq1Is6JatDyGV/qJwa2qg+XRCYY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qr0sk/8rsezvk31omaXayPMQvuPQkTnChDPFHSMMIhb+buqBJwHZvWzK974ZC2xYj
-	 Gccfehv4HTBXBqPZp5wQcPvlIeomkzmlNxCQ3hvu6mKYeNyLi4FTiHeeBNX6zn1Lkf
-	 /oTBez2qqsL/4+n2VsjkaMuMWaUVq2MZTIvakUuc=
+	b=US9D6Xzf3gjaMzx3/4ybclKtxkKD5wcfI8aFpHZ7DUErc36li10UTATAg1vDm6OBZ
+	 C5D971UWtv0HwODLgnxtARSl7aO956BP8EzaCQWyeeJNdy2WAfh4Cu29qOhqPP5kuA
+	 F2yHr9XTBfacpzM1WJBQVFPz2f37ElSVVmrh1i+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 077/112] Input: soc_button_array - add mapping for airplane mode button
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 136/156] spi: atmel: Prevent spi transfers from being killed
 Date: Sat, 30 Dec 2023 11:59:50 +0000
-Message-ID: <20231230115809.224100496@linuxfoundation.org>
+Message-ID: <20231230115816.793269633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit ea3715941a9b7d816a1e9096ac0577900af2a69e upstream.
+commit 890188d2d7e4ac6c131ba166ca116cb315e752ee upstream.
 
-This add a mapping for the airplane mode button on the TUXEDO Pulse Gen3.
+Upstream commit e0205d6203c2 ("spi: atmel: Prevent false timeouts on
+long transfers") has tried to mitigate the problem of getting spi
+transfers canceled because they were lasting too long. On slow buses,
+transfers in the MiB range can take more than one second and thus a
+calculation was added to progressively increment the timeout value. In
+order to not be too problematic from a user point of view (waiting dozen
+of seconds or even minutes), the wait call was turned interruptible.
 
-While it is physically a key it behaves more like a switch, sending a key
-down on first press and a key up on 2nd press. Therefor the switch event
-is used here. Besides this behaviour it uses the HID usage-id 0xc6
-(Wireless Radio Button) and not 0xc8 (Wireless Radio Slider Switch), but
-since neither 0xc6 nor 0xc8 are currently implemented at all in
-soc_button_array this not to standard behaviour is not put behind a quirk
-for the moment.
+Turning the wait interruptible was a mistake as what we really wanted to
+do was to be able to kill a transfer. Any signal interrupting our
+transfer would not be suitable at all so a second attempt was made at
+turning the wait killable instead.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20231215171718.80229-1-wse@tuxedocomputers.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/linux-spi/20231127095842.389631-1-miquel.raynal@bootlin.com/
+
+All being well, it was reported that JFFS2 was showing a splat when
+interrupting a transfer. After some more debate about whether JFFS2
+should be fixed and how, it was also pointed out that the whole
+consistency of the filesystem in case of parallel I/O would be
+compromised. Changing JFFS2 behavior would in theory be possible but
+nobody has the energy and time and knowledge to do this now, so better
+prevent spi transfers to be interrupted by the user.
+
+Partially revert the blamed commit to no longer use the interruptible
+nor the killable variant of wait_for_completion().
+
+Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfers")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Ronald Wahl <ronald.wahl@raritan.com>
+Link: https://lore.kernel.org/r/20231205083102.16946-1-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/soc_button_array.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-atmel.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/input/misc/soc_button_array.c
-+++ b/drivers/input/misc/soc_button_array.c
-@@ -299,6 +299,11 @@ static int soc_button_parse_btn_desc(str
- 		info->name = "power";
- 		info->event_code = KEY_POWER;
- 		info->wakeup = true;
-+	} else if (upage == 0x01 && usage == 0xc6) {
-+		info->name = "airplane mode switch";
-+		info->event_type = EV_SW;
-+		info->event_code = SW_RFKILL_ALL;
-+		info->active_low = false;
- 	} else if (upage == 0x01 && usage == 0xca) {
- 		info->name = "rotation lock switch";
- 		info->event_type = EV_SW;
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -1336,12 +1336,10 @@ static int atmel_spi_one_transfer(struct
+ 		}
+ 
+ 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
+-		ret_timeout = wait_for_completion_killable_timeout(&as->xfer_completion,
+-								   dma_timeout);
+-		if (ret_timeout <= 0) {
+-			dev_err(&spi->dev, "spi transfer %s\n",
+-				!ret_timeout ? "timeout" : "canceled");
+-			as->done_status = ret_timeout < 0 ? ret_timeout : -EIO;
++		ret_timeout = wait_for_completion_timeout(&as->xfer_completion, dma_timeout);
++		if (!ret_timeout) {
++			dev_err(&spi->dev, "spi transfer timeout\n");
++			as->done_status = -EIO;
+ 		}
+ 
+ 		if (as->done_status)
 
 
 
