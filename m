@@ -1,47 +1,52 @@
-Return-Path: <stable+bounces-8918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9F082056D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97ED08204F5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 913151C2108A
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DCD01F21AE0
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC2A8473;
-	Sat, 30 Dec 2023 12:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6363879E0;
+	Sat, 30 Dec 2023 12:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPtS/hck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVcBLPPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9831F79EE;
-	Sat, 30 Dec 2023 12:08:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20519C433C8;
-	Sat, 30 Dec 2023 12:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA1A8F54;
+	Sat, 30 Dec 2023 12:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC19C433C7;
+	Sat, 30 Dec 2023 12:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938100;
-	bh=z2XN07YbiYQCD9Nwd0KEScLuZhGtPranLz+psukX+ZE=;
+	s=korg; t=1703937800;
+	bh=5oYy0/3iHu4HoBxNNo8jPPsixUKxLtXu6paFP113zQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPtS/hckCPxeTZ/3/0hFhHfE/Vp9c08JfI8UAW8IxrdkvmW5aqj3nNuxRHIS+FLSG
-	 R3Vvm+0WB7zFICbx5BNsTbt5GmZg/1uVOyKvEtRzSrbrQuCOYWk8nwzLE0rjmr/2zW
-	 tejFLfm2iPzqQP85+lYe4kZ1gqCWpwHlyqe/qUjI=
+	b=jVcBLPPzexlawxAf7NdweCH+W0l+I7rmojmBzq4CMuTXduMM0o9jqkyDf2UvKseVO
+	 AGFhgESfD3h47LADsCTTSJYIWYNZq7AZIxrT3LJ+cOjUC3n7lq+2UYjin1uaLcYavR
+	 q1FktRtHDJ7cx1TEfBKxWJcR8VTrilYKFbB0erD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	lvc-project@linuxtesting.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/112] reset: Fix crash when freeing non-existent optional resets
-Date: Sat, 30 Dec 2023 11:58:41 +0000
-Message-ID: <20231230115807.011043679@linuxfoundation.org>
+Subject: [PATCH 6.6 068/156] afs: Fix overwriting of result of DNS query
+Date: Sat, 30 Dec 2023 11:58:42 +0000
+Message-ID: <20231230115814.581896215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +58,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 4a6756f56bcf8e64c87144a626ce53aea4899c0e ]
+[ Upstream commit a9e01ac8c5ff32669119c40dfdc9e80eb0b7d7aa ]
 
-When obtaining one or more optional resets, non-existent resets are
-stored as NULL pointers, and all related error and cleanup paths need to
-take this into account.
+In afs_update_cell(), ret is the result of the DNS lookup and the errors
+are to be handled by a switch - however, the value gets clobbered in
+between by setting it to -ENOMEM in case afs_alloc_vlserver_list()
+fails.
 
-Currently only reset_control_put() and reset_control_bulk_put()
-get this right.  All of __reset_control_bulk_get(),
-of_reset_control_array_get(), and reset_control_array_put() lack the
-proper checking, causing NULL pointer dereferences on failure or
-release.
+Fix this by moving the setting of -ENOMEM into the error handling for
+OOM failure.  Further, only do it if we don't have an alternative error
+to return.
 
-Fix this by moving the existing check from reset_control_bulk_put() to
-__reset_control_put_internal(), so it applies to all callers.
-The double check in reset_control_put() doesn't hurt.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.  Based
+on a patch from Anastasia Belova [1].
 
-Fixes: 17c82e206d2a3cd8 ("reset: Add APIs to manage array of resets")
-Fixes: 48d71395896d54ee ("reset: Add reset_control_bulk API")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/2440edae7ca8534628cdbaf559ded288f2998178.1701276806.git.geert+renesas@glider.be
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Anastasia Belova <abelova@astralinux.ru>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: lvc-project@linuxtesting.org
+Link: https://lore.kernel.org/r/20231221085849.1463-1-abelova@astralinux.ru/ [1]
+Link: https://lore.kernel.org/r/1700862.1703168632@warthog.procyon.org.uk/ # v1
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/afs/cell.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index f0a076e94118f..92cc13ef3e566 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -807,6 +807,9 @@ static void __reset_control_put_internal(struct reset_control *rstc)
- {
- 	lockdep_assert_held(&reset_list_mutex);
+diff --git a/fs/afs/cell.c b/fs/afs/cell.c
+index 988c2ac7cecec..926cb1188eba6 100644
+--- a/fs/afs/cell.c
++++ b/fs/afs/cell.c
+@@ -409,10 +409,12 @@ static int afs_update_cell(struct afs_cell *cell)
+ 		if (ret == -ENOMEM)
+ 			goto out_wake;
  
-+	if (IS_ERR_OR_NULL(rstc))
-+		return;
-+
- 	kref_put(&rstc->refcnt, __reset_control_release);
- }
+-		ret = -ENOMEM;
+ 		vllist = afs_alloc_vlserver_list(0);
+-		if (!vllist)
++		if (!vllist) {
++			if (ret >= 0)
++				ret = -ENOMEM;
+ 			goto out_wake;
++		}
  
-@@ -1017,11 +1020,8 @@ EXPORT_SYMBOL_GPL(reset_control_put);
- void reset_control_bulk_put(int num_rstcs, struct reset_control_bulk_data *rstcs)
- {
- 	mutex_lock(&reset_list_mutex);
--	while (num_rstcs--) {
--		if (IS_ERR_OR_NULL(rstcs[num_rstcs].rstc))
--			continue;
-+	while (num_rstcs--)
- 		__reset_control_put_internal(rstcs[num_rstcs].rstc);
--	}
- 	mutex_unlock(&reset_list_mutex);
- }
- EXPORT_SYMBOL_GPL(reset_control_bulk_put);
+ 		switch (ret) {
+ 		case -ENODATA:
 -- 
 2.43.0
 
