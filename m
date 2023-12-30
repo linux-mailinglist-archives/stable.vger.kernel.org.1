@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-8894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F044820555
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F2E8205BF
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307011F21AF9
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4332A1C21173
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C17479D8;
-	Sat, 30 Dec 2023 12:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC0E79EF;
+	Sat, 30 Dec 2023 12:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="US9D6Xzf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8xTMx6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C861C8486;
-	Sat, 30 Dec 2023 12:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A04C433C7;
-	Sat, 30 Dec 2023 12:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C7E79DD;
+	Sat, 30 Dec 2023 12:11:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0868C433C8;
+	Sat, 30 Dec 2023 12:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938038;
-	bh=jxojuaY9+845dnjGq1Is6JatDyGV/qJwa2qg+XRCYY4=;
+	s=korg; t=1703938298;
+	bh=SApmFM6nW1C5go2VWf7+BsrIOkLKGzv0I2qk5rM9orQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=US9D6Xzf3gjaMzx3/4ybclKtxkKD5wcfI8aFpHZ7DUErc36li10UTATAg1vDm6OBZ
-	 C5D971UWtv0HwODLgnxtARSl7aO956BP8EzaCQWyeeJNdy2WAfh4Cu29qOhqPP5kuA
-	 F2yHr9XTBfacpzM1WJBQVFPz2f37ElSVVmrh1i+A=
+	b=S8xTMx6SPFCZblx5XWVJIG8EEyRpFWChhZKtyuOFz4MiMZY39WaAEWFwHrCHPHBNV
+	 zFLJVGRNwXbuhJp/fieYQOYxbPHNfIJrNwjwa4ZT88vEsyW8nk+CEwKDJNUuKfp6pW
+	 XktWNr7km1fKXipSkmVyHWTCdwW1LyLYHowdjfBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 136/156] spi: atmel: Prevent spi transfers from being killed
-Date: Sat, 30 Dec 2023 11:59:50 +0000
-Message-ID: <20231230115816.793269633@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Simon Horman <horms@kernel.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 6.1 078/112] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+Date: Sat, 30 Dec 2023 11:59:51 +0000
+Message-ID: <20231230115809.257923881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +54,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 890188d2d7e4ac6c131ba166ca116cb315e752ee upstream.
+commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
 
-Upstream commit e0205d6203c2 ("spi: atmel: Prevent false timeouts on
-long transfers") has tried to mitigate the problem of getting spi
-transfers canceled because they were lasting too long. On slow buses,
-transfers in the MiB range can take more than one second and thus a
-calculation was added to progressively increment the timeout value. In
-order to not be too problematic from a user point of view (waiting dozen
-of seconds or even minutes), the wait call was turned interruptible.
+If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
+the error path is not handled properly. *wnames or members of *wnames
+array may be left uninitialized and invalidly freed.
 
-Turning the wait interruptible was a mistake as what we really wanted to
-do was to be able to kill a transfer. Any signal interrupting our
-transfer would not be suitable at all so a second attempt was made at
-turning the wait killable instead.
+Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
+*wnames array element to NULL and nullify the failing *wnames element so
+that the error path freeing loop stops on the first NULL element and
+doesn't proceed further.
 
-Link: https://lore.kernel.org/linux-spi/20231127095842.389631-1-miquel.raynal@bootlin.com/
+Found by Linux Verification Center (linuxtesting.org).
 
-All being well, it was reported that JFFS2 was showing a splat when
-interrupting a transfer. After some more debate about whether JFFS2
-should be fixed and how, it was also pointed out that the whole
-consistency of the filesystem in case of parallel I/O would be
-compromised. Changing JFFS2 behavior would in theory be possible but
-nobody has the energy and time and knowledge to do this now, so better
-prevent spi transfers to be interrupted by the user.
-
-Partially revert the blamed commit to no longer use the interruptible
-nor the killable variant of wait_for_completion().
-
-Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfers")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Ronald Wahl <ronald.wahl@raritan.com>
-Link: https://lore.kernel.org/r/20231205083102.16946-1-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-atmel.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/9p/protocol.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1336,12 +1336,10 @@ static int atmel_spi_one_transfer(struct
- 		}
+--- a/net/9p/protocol.c
++++ b/net/9p/protocol.c
+@@ -394,6 +394,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 				uint16_t *nwname = va_arg(ap, uint16_t *);
+ 				char ***wnames = va_arg(ap, char ***);
  
- 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
--		ret_timeout = wait_for_completion_killable_timeout(&as->xfer_completion,
--								   dma_timeout);
--		if (ret_timeout <= 0) {
--			dev_err(&spi->dev, "spi transfer %s\n",
--				!ret_timeout ? "timeout" : "canceled");
--			as->done_status = ret_timeout < 0 ? ret_timeout : -EIO;
-+		ret_timeout = wait_for_completion_timeout(&as->xfer_completion, dma_timeout);
-+		if (!ret_timeout) {
-+			dev_err(&spi->dev, "spi transfer timeout\n");
-+			as->done_status = -EIO;
- 		}
++				*wnames = NULL;
++
+ 				errcode = p9pdu_readf(pdu, proto_version,
+ 								"w", nwname);
+ 				if (!errcode) {
+@@ -403,6 +405,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 							  GFP_NOFS);
+ 					if (!*wnames)
+ 						errcode = -ENOMEM;
++					else
++						(*wnames)[0] = NULL;
+ 				}
  
- 		if (as->done_status)
+ 				if (!errcode) {
+@@ -414,8 +418,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 								proto_version,
+ 								"s",
+ 								&(*wnames)[i]);
+-						if (errcode)
++						if (errcode) {
++							(*wnames)[i] = NULL;
+ 							break;
++						}
+ 					}
+ 				}
+ 
+@@ -423,11 +429,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 					if (*wnames) {
+ 						int i;
+ 
+-						for (i = 0; i < *nwname; i++)
++						for (i = 0; i < *nwname; i++) {
++							if (!(*wnames)[i])
++								break;
+ 							kfree((*wnames)[i]);
++						}
++						kfree(*wnames);
++						*wnames = NULL;
+ 					}
+-					kfree(*wnames);
+-					*wnames = NULL;
+ 				}
+ 			}
+ 			break;
 
 
 
