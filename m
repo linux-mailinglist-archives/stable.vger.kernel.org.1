@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-8931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ECBE820580
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16891820519
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DA031F22499
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6D162822B7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B4779EE;
-	Sat, 30 Dec 2023 12:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBB679E0;
+	Sat, 30 Dec 2023 12:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjXZTgeX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqK0DImw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327278BED;
-	Sat, 30 Dec 2023 12:08:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF20C433C8;
-	Sat, 30 Dec 2023 12:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0408379DD;
+	Sat, 30 Dec 2023 12:04:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8497BC433C7;
+	Sat, 30 Dec 2023 12:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938134;
-	bh=ferp0lNHfD2M6yGAEycQpzt2Q6QEIfCSX2Z4U4YwLKY=;
+	s=korg; t=1703937885;
+	bh=XntXHmk6BvTmoFFhOZlaW8hOPYk4NF6UG21CILxLBNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjXZTgeX/lhBUmHu88bgOuowou0m5WCh8RIjWZuzKftos90vhad6Mh1m9z59mUoPY
-	 goKr3oUvVTOPUrX8FhGlI3rHVvwC2vok1NvJv/eILD7df06ndUNxbQbisZwFQpq1Hm
-	 gewskFxx2QhZunaPJ/MfNT7iX+HaeADureoEjVuY=
+	b=WqK0DImwjvhNrrZV82vTXjlonGHLyU3NpaxsV2/0FnfLr0wdFdL7/4I9c2QgEYamz
+	 vzQRP04oPAVyrvXZ/vmlgMI8CBuweBVXZ5yp3GM1NMDNeSnbww0PNYer4AyuN0IL0h
+	 zPuw9fGZm2EPTxIchs09L/14CeImYCLkvxp1Zf/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/112] afs: Fix use-after-free due to get/remove race in volume tree
-Date: Sat, 30 Dec 2023 11:59:13 +0000
-Message-ID: <20231230115808.022045814@linuxfoundation.org>
+	Chen-Yu Tsai <wens@kernel.org>,
+	Seth Forshee <sforshee@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 100/156] wifi: cfg80211: Add my certificate
+Date: Sat, 30 Dec 2023 11:59:14 +0000
+Message-ID: <20231230115815.637038721@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,133 +53,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Chen-Yu Tsai <wens@kernel.org>
 
-[ Upstream commit 9a6b294ab496650e9f270123730df37030911b55 ]
+commit fb768d3b13ffa325b7e84480d488ac799c9d2cd7 upstream.
 
-When an afs_volume struct is put, its refcount is reduced to 0 before
-the cell->volume_lock is taken and the volume removed from the
-cell->volumes tree.
+As announced [1][2], I have taken over maintainership of the
+wireless-regdb project.
 
-Unfortunately, this means that the lookup code can race and see a volume
-with a zero ref in the tree, resulting in a use-after-free:
+Add my certificate so that newer releases are valid to the kernel.
+Seth's certificate should be kept around for awhile, at least until
+a few new releases by me happen.
 
-    refcount_t: addition on 0; use-after-free.
-    WARNING: CPU: 3 PID: 130782 at lib/refcount.c:25 refcount_warn_saturate+0x7a/0xda
-    ...
-    RIP: 0010:refcount_warn_saturate+0x7a/0xda
-    ...
-    Call Trace:
-     afs_get_volume+0x3d/0x55
-     afs_create_volume+0x126/0x1de
-     afs_validate_fc+0xfe/0x130
-     afs_get_tree+0x20/0x2e5
-     vfs_get_tree+0x1d/0xc9
-     do_new_mount+0x13b/0x22e
-     do_mount+0x5d/0x8a
-     __do_sys_mount+0x100/0x12a
-     do_syscall_64+0x3a/0x94
-     entry_SYSCALL_64_after_hwframe+0x62/0x6a
+This should also be applied to stable trees so that stable kernels
+can utilize newly released database binaries.
 
-Fix this by:
+[1] https://lore.kernel.org/linux-wireless/CAGb2v657baNMPKU3QADijx7hZa=GUcSv2LEDdn6N=QQaFX8r-g@mail.gmail.com/
+[2] https://lore.kernel.org/linux-wireless/ZWmRR5ul7EDfxCan@wens.tw/
 
- (1) When putting, use a flag to indicate if the volume has been removed
-     from the tree and skip the rb_erase if it has.
-
- (2) When looking up, use a conditional ref increment and if it fails
-     because the refcount is 0, replace the node in the tree and set the
-     removal flag.
-
-Fixes: 20325960f875 ("afs: Reorganise volume and server trees to be rooted on the cell")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen-Yu Tsai <wens@kernel.org>
+Acked-by: Seth Forshee <sforshee@kernel.org>
+Link: https://msgid.link/ZXHGsqs34qZyzZng@wens.tw
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/internal.h |  2 ++
- fs/afs/volume.c   | 26 +++++++++++++++++++++++---
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ net/wireless/certs/wens.hex |   87 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 87 insertions(+)
+ create mode 100644 net/wireless/certs/wens.hex
 
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index c2d70fc1698c0..fcbb598d8c85d 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -585,6 +585,7 @@ struct afs_volume {
- #define AFS_VOLUME_OFFLINE	4	/* - T if volume offline notice given */
- #define AFS_VOLUME_BUSY		5	/* - T if volume busy notice given */
- #define AFS_VOLUME_MAYBE_NO_IBULK 6	/* - T if some servers don't have InlineBulkStatus */
-+#define AFS_VOLUME_RM_TREE	7	/* - Set if volume removed from cell->volumes */
- #ifdef CONFIG_AFS_FSCACHE
- 	struct fscache_volume	*cache;		/* Caching cookie */
- #endif
-@@ -1517,6 +1518,7 @@ extern struct afs_vlserver_list *afs_extract_vlserver_list(struct afs_cell *,
- extern struct afs_volume *afs_create_volume(struct afs_fs_context *);
- extern int afs_activate_volume(struct afs_volume *);
- extern void afs_deactivate_volume(struct afs_volume *);
-+bool afs_try_get_volume(struct afs_volume *volume, enum afs_volume_trace reason);
- extern struct afs_volume *afs_get_volume(struct afs_volume *, enum afs_volume_trace);
- extern void afs_put_volume(struct afs_net *, struct afs_volume *, enum afs_volume_trace);
- extern int afs_check_volume_status(struct afs_volume *, struct afs_operation *);
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index f4937029dcd72..1c9144e3e83ac 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -32,8 +32,13 @@ static struct afs_volume *afs_insert_volume_into_cell(struct afs_cell *cell,
- 		} else if (p->vid > volume->vid) {
- 			pp = &(*pp)->rb_right;
- 		} else {
--			volume = afs_get_volume(p, afs_volume_trace_get_cell_insert);
--			goto found;
-+			if (afs_try_get_volume(p, afs_volume_trace_get_cell_insert)) {
-+				volume = p;
-+				goto found;
-+			}
-+
-+			set_bit(AFS_VOLUME_RM_TREE, &volume->flags);
-+			rb_replace_node_rcu(&p->cell_node, &volume->cell_node, &cell->volumes);
- 		}
- 	}
- 
-@@ -56,7 +61,8 @@ static void afs_remove_volume_from_cell(struct afs_volume *volume)
- 				 afs_volume_trace_remove);
- 		write_seqlock(&cell->volume_lock);
- 		hlist_del_rcu(&volume->proc_link);
--		rb_erase(&volume->cell_node, &cell->volumes);
-+		if (!test_and_set_bit(AFS_VOLUME_RM_TREE, &volume->flags))
-+			rb_erase(&volume->cell_node, &cell->volumes);
- 		write_sequnlock(&cell->volume_lock);
- 	}
- }
-@@ -235,6 +241,20 @@ static void afs_destroy_volume(struct afs_net *net, struct afs_volume *volume)
- 	_leave(" [destroyed]");
- }
- 
-+/*
-+ * Try to get a reference on a volume record.
-+ */
-+bool afs_try_get_volume(struct afs_volume *volume, enum afs_volume_trace reason)
-+{
-+	int r;
-+
-+	if (__refcount_inc_not_zero(&volume->ref, &r)) {
-+		trace_afs_volume(volume->vid, r + 1, reason);
-+		return true;
-+	}
-+	return false;
-+}
-+
- /*
-  * Get a reference on a volume record.
-  */
--- 
-2.43.0
-
+--- /dev/null
++++ b/net/wireless/certs/wens.hex
+@@ -0,0 +1,87 @@
++/* Chen-Yu Tsai's regdb certificate */
++0x30, 0x82, 0x02, 0xa7, 0x30, 0x82, 0x01, 0x8f,
++0x02, 0x14, 0x61, 0xc0, 0x38, 0x65, 0x1a, 0xab,
++0xdc, 0xf9, 0x4b, 0xd0, 0xac, 0x7f, 0xf0, 0x6c,
++0x72, 0x48, 0xdb, 0x18, 0xc6, 0x00, 0x30, 0x0d,
++0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d,
++0x01, 0x01, 0x0b, 0x05, 0x00, 0x30, 0x0f, 0x31,
++0x0d, 0x30, 0x0b, 0x06, 0x03, 0x55, 0x04, 0x03,
++0x0c, 0x04, 0x77, 0x65, 0x6e, 0x73, 0x30, 0x20,
++0x17, 0x0d, 0x32, 0x33, 0x31, 0x32, 0x30, 0x31,
++0x30, 0x37, 0x34, 0x31, 0x31, 0x34, 0x5a, 0x18,
++0x0f, 0x32, 0x31, 0x32, 0x33, 0x31, 0x31, 0x30,
++0x37, 0x30, 0x37, 0x34, 0x31, 0x31, 0x34, 0x5a,
++0x30, 0x0f, 0x31, 0x0d, 0x30, 0x0b, 0x06, 0x03,
++0x55, 0x04, 0x03, 0x0c, 0x04, 0x77, 0x65, 0x6e,
++0x73, 0x30, 0x82, 0x01, 0x22, 0x30, 0x0d, 0x06,
++0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01,
++0x01, 0x01, 0x05, 0x00, 0x03, 0x82, 0x01, 0x0f,
++0x00, 0x30, 0x82, 0x01, 0x0a, 0x02, 0x82, 0x01,
++0x01, 0x00, 0xa9, 0x7a, 0x2c, 0x78, 0x4d, 0xa7,
++0x19, 0x2d, 0x32, 0x52, 0xa0, 0x2e, 0x6c, 0xef,
++0x88, 0x7f, 0x15, 0xc5, 0xb6, 0x69, 0x54, 0x16,
++0x43, 0x14, 0x79, 0x53, 0xb7, 0xae, 0x88, 0xfe,
++0xc0, 0xb7, 0x5d, 0x47, 0x8e, 0x1a, 0xe1, 0xef,
++0xb3, 0x90, 0x86, 0xda, 0xd3, 0x64, 0x81, 0x1f,
++0xce, 0x5d, 0x9e, 0x4b, 0x6e, 0x58, 0x02, 0x3e,
++0xb2, 0x6f, 0x5e, 0x42, 0x47, 0x41, 0xf4, 0x2c,
++0xb8, 0xa8, 0xd4, 0xaa, 0xc0, 0x0e, 0xe6, 0x48,
++0xf0, 0xa8, 0xce, 0xcb, 0x08, 0xae, 0x37, 0xaf,
++0xf6, 0x40, 0x39, 0xcb, 0x55, 0x6f, 0x5b, 0x4f,
++0x85, 0x34, 0xe6, 0x69, 0x10, 0x50, 0x72, 0x5e,
++0x4e, 0x9d, 0x4c, 0xba, 0x38, 0x36, 0x0d, 0xce,
++0x73, 0x38, 0xd7, 0x27, 0x02, 0x2a, 0x79, 0x03,
++0xe1, 0xac, 0xcf, 0xb0, 0x27, 0x85, 0x86, 0x93,
++0x17, 0xab, 0xec, 0x42, 0x77, 0x37, 0x65, 0x8a,
++0x44, 0xcb, 0xd6, 0x42, 0x93, 0x92, 0x13, 0xe3,
++0x39, 0x45, 0xc5, 0x6e, 0x00, 0x4a, 0x7f, 0xcb,
++0x42, 0x17, 0x2b, 0x25, 0x8c, 0xb8, 0x17, 0x3b,
++0x15, 0x36, 0x59, 0xde, 0x42, 0xce, 0x21, 0xe6,
++0xb6, 0xc7, 0x6e, 0x5e, 0x26, 0x1f, 0xf7, 0x8a,
++0x57, 0x9e, 0xa5, 0x96, 0x72, 0xb7, 0x02, 0x32,
++0xeb, 0x07, 0x2b, 0x73, 0xe2, 0x4f, 0x66, 0x58,
++0x9a, 0xeb, 0x0f, 0x07, 0xb6, 0xab, 0x50, 0x8b,
++0xc3, 0x8f, 0x17, 0xfa, 0x0a, 0x99, 0xc2, 0x16,
++0x25, 0xbf, 0x2d, 0x6b, 0x1a, 0xaa, 0xe6, 0x3e,
++0x5f, 0xeb, 0x6d, 0x9b, 0x5d, 0x4d, 0x42, 0x83,
++0x2d, 0x39, 0xb8, 0xc9, 0xac, 0xdb, 0x3a, 0x91,
++0x50, 0xdf, 0xbb, 0xb1, 0x76, 0x6d, 0x15, 0x73,
++0xfd, 0xc6, 0xe6, 0x6b, 0x71, 0x9e, 0x67, 0x36,
++0x22, 0x83, 0x79, 0xb1, 0xd6, 0xb8, 0x84, 0x52,
++0xaf, 0x96, 0x5b, 0xc3, 0x63, 0x02, 0x4e, 0x78,
++0x70, 0x57, 0x02, 0x03, 0x01, 0x00, 0x01, 0x30,
++0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7,
++0x0d, 0x01, 0x01, 0x0b, 0x05, 0x00, 0x03, 0x82,
++0x01, 0x01, 0x00, 0x24, 0x28, 0xee, 0x22, 0x74,
++0x7f, 0x7c, 0xfa, 0x6c, 0x1f, 0xb3, 0x18, 0xd1,
++0xc2, 0x3d, 0x7d, 0x29, 0x42, 0x88, 0xad, 0x82,
++0xa5, 0xb1, 0x8a, 0x05, 0xd0, 0xec, 0x5c, 0x91,
++0x20, 0xf6, 0x82, 0xfd, 0xd5, 0x67, 0x60, 0x5f,
++0x31, 0xf5, 0xbd, 0x88, 0x91, 0x70, 0xbd, 0xb8,
++0xb9, 0x8c, 0x88, 0xfe, 0x53, 0xc9, 0x54, 0x9b,
++0x43, 0xc4, 0x7a, 0x43, 0x74, 0x6b, 0xdd, 0xb0,
++0xb1, 0x3b, 0x33, 0x45, 0x46, 0x78, 0xa3, 0x1c,
++0xef, 0x54, 0x68, 0xf7, 0x85, 0x9c, 0xe4, 0x51,
++0x6f, 0x06, 0xaf, 0x81, 0xdb, 0x2a, 0x7b, 0x7b,
++0x6f, 0xa8, 0x9c, 0x67, 0xd8, 0xcb, 0xc9, 0x91,
++0x40, 0x00, 0xae, 0xd9, 0xa1, 0x9f, 0xdd, 0xa6,
++0x43, 0x0e, 0x28, 0x7b, 0xaa, 0x1b, 0xe9, 0x84,
++0xdb, 0x76, 0x64, 0x42, 0x70, 0xc9, 0xc0, 0xeb,
++0xae, 0x84, 0x11, 0x16, 0x68, 0x4e, 0x84, 0x9e,
++0x7e, 0x92, 0x36, 0xee, 0x1c, 0x3b, 0x08, 0x63,
++0xeb, 0x79, 0x84, 0x15, 0x08, 0x9d, 0xaf, 0xc8,
++0x9a, 0xc7, 0x34, 0xd3, 0x94, 0x4b, 0xd1, 0x28,
++0x97, 0xbe, 0xd1, 0x45, 0x75, 0xdc, 0x35, 0x62,
++0xac, 0x1d, 0x1f, 0xb7, 0xb7, 0x15, 0x87, 0xc8,
++0x98, 0xc0, 0x24, 0x31, 0x56, 0x8d, 0xed, 0xdb,
++0x06, 0xc6, 0x46, 0xbf, 0x4b, 0x6d, 0xa6, 0xd5,
++0xab, 0xcc, 0x60, 0xfc, 0xe5, 0x37, 0xb6, 0x53,
++0x7d, 0x58, 0x95, 0xa9, 0x56, 0xc7, 0xf7, 0xee,
++0xc3, 0xa0, 0x76, 0xf7, 0x65, 0x4d, 0x53, 0xfa,
++0xff, 0x5f, 0x76, 0x33, 0x5a, 0x08, 0xfa, 0x86,
++0x92, 0x5a, 0x13, 0xfa, 0x1a, 0xfc, 0xf2, 0x1b,
++0x8c, 0x7f, 0x42, 0x6d, 0xb7, 0x7e, 0xb7, 0xb4,
++0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
++0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
++0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
++0x45, 0x4e, 0xc3
 
 
 
