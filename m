@@ -1,198 +1,261 @@
-Return-Path: <stable+bounces-9024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC9B82084A
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 20:39:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B6B82086B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 21:13:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D50CB2158C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 19:39:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B353B21AD6
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 20:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F44BE6B;
-	Sat, 30 Dec 2023 19:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XH+KVExN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111D6C13D;
+	Sat, 30 Dec 2023 20:13:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C387BE4E;
-	Sat, 30 Dec 2023 19:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-40d5336986cso68334735e9.1;
-        Sat, 30 Dec 2023 11:39:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703965141; x=1704569941; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j7JHhM7jbOB+wY2wLgwyx4XsHrIJ0CwMn7xqcJQu5ww=;
-        b=XH+KVExNERAG51oqaoaPz3RDolJyu0ZK7D9b5MeJEzk6L5lNCAiyw1bBjPMqUax3Z+
-         Qd3FkqdJGWcpNsNacQ5sPIvtHFOpX9sfL/GypOmiZr0qDwWirNHqu0Qu1rKU3C0iKeiM
-         DffhzhypheTuAkd4yKVlIpcfmbucXFTOrC0tcBrOgl5/mj1hjerwdyMtuMhNwvhstcke
-         mfOGnKfAYAVJo2mcVq6M2jl/0BPvmbki64A0CGumrR2jXSEWcz/AHJ1z8DF30OoErzE7
-         FfEY/tlsiiYWOhCVmlZ6vpEi5OejEHNpk2T/3I+imIMhO3gxClsLS0MNqPfLBEJ5IRh8
-         NJ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703965141; x=1704569941;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j7JHhM7jbOB+wY2wLgwyx4XsHrIJ0CwMn7xqcJQu5ww=;
-        b=q36tmjcCgtYrHYf5M/D8cFnFMBNfgNCw6GXEBrz+Z2gX7YPK3Cy/jZo73xoDaq92xy
-         TpHG7rmpo9MJXwIqHODOiB7+Obo+bfZlp83azZcTrfAZHhS/J7/aBdZcZPWORCG2auJU
-         MDHw3YsbRzgr7QsR76XnKo7+Icxn7ccoxqNPyeR1Zwo92bsyN75NF2MeeUZF161z4KNj
-         D2AHflQC1UsYJJgixL0OHyMe14yBpLJ+daee2QF+7qUPRMlJD5YVdBgniKroameF0qfG
-         F6obDlYxzdaG07texodOal30FgdtZ6I+AcjmUGMnuEmkPtE4tpzO4oVf4mZW3/1fIrOn
-         AN0Q==
-X-Gm-Message-State: AOJu0Ywrjg+NxALK9RDD3DXs7H7syv4HmLO7njHRwaC2uEJ2yst30cxN
-	GMSGV3svTC4VKHXZTYtjnLY=
-X-Google-Smtp-Source: AGHT+IFEGA0A7r9OvarUZi116HsIRUFLLyo3Djefw7VCB6dNZsNsbGiwrCgq9zTnsB00AIPHlJLJUA==
-X-Received: by 2002:a05:600c:4506:b0:40d:6c77:8570 with SMTP id t6-20020a05600c450600b0040d6c778570mr2047305wmo.72.1703965141079;
-        Sat, 30 Dec 2023 11:39:01 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id n18-20020a05600c3b9200b0040d8632cb60sm435361wms.34.2023.12.30.11.39.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Dec 2023 11:39:00 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id B3B03BE2DE0; Sat, 30 Dec 2023 20:38:59 +0100 (CET)
-Date: Sat, 30 Dec 2023 20:38:59 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Christoph Hellwig <hch@lst.de>, Huacai Chen <chenhuacai@kernel.org>,
-	linux-mips@vger.kernel.org
-Subject: Re: [PATCH 5.10 81/97] MIPS: Loongson64: Enable DMA noncoherent
- support
-Message-ID: <ZZBx01WttA3R1XjI@eldamar.lan>
-References: <20231211182019.802717483@linuxfoundation.org>
- <20231211182023.277870337@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9747C12B
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 20:13:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C65C433C7;
+	Sat, 30 Dec 2023 20:13:45 +0000 (UTC)
+Date: Sat, 30 Dec 2023 15:14:39 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: <gregkh@linuxfoundation.org>
+Cc: akpm@linux-foundation.org, mark.rutland@arm.com,
+ mathieu.desnoyers@efficios.com, mhiramat@kernel.org,
+ <stable@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] tracing: Disable snapshot buffer when
+ stopping instance" failed to apply to 5.4-stable tree
+Message-ID: <20231230151439.4802d6b2@gandalf.local.home>
+In-Reply-To: <2023120908-crisply-trash-d37e@gregkh>
+References: <2023120908-crisply-trash-d37e@gregkh>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231211182023.277870337@linuxfoundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Sat, 09 Dec 2023 13:27:08 +0100
+<gregkh@linuxfoundation.org> wrote:
 
-On Mon, Dec 11, 2023 at 07:22:24PM +0100, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> The patch below does not apply to the 5.4-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
-> ------------------
+> To reproduce the conflict and resubmit, you may use the following commands:
 > 
-> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x b538bf7d0ec11ca49f536dfda742a5f6db90a798
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120908-crisply-trash-d37e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 > 
-> commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
+> Possible dependencies:
 > 
-> There are some Loongson64 systems come with broken coherent DMA
-> support, firmware will set a bit in boot_param and pass nocoherentio
-> in cmdline.
+> b538bf7d0ec1 ("tracing: Disable snapshot buffer when stopping instance tracers")
+> 13292494379f ("tracing: Make struct ring_buffer less ambiguous")
+> 1c5eb4481e01 ("tracing: Rename trace_buffer to array_buffer")
+> 2d6425af6116 ("tracing: Declare newly exported APIs in include/linux/trace.h")
 > 
-> However nonconherent support was missed out when spin off Loongson-2EF
-> form Loongson64, and that boot_param change never made itself into
-> upstream.
+> thanks,
 > 
-> Support DMA noncoherent properly to get those systems working.
+> greg k-h
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  arch/mips/Kconfig                                  |    2 ++
->  arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
->  arch/mips/loongson64/env.c                         |   10 +++++++++-
->  3 files changed, 13 insertions(+), 2 deletions(-)
+> ------------------ original commit in Linus's tree ------------------
 > 
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -468,6 +468,7 @@ config MACH_LOONGSON2EF
->  
->  config MACH_LOONGSON64
->  	bool "Loongson 64-bit family of machines"
-> +	select ARCH_DMA_DEFAULT_COHERENT
->  	select ARCH_SPARSEMEM_ENABLE
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
->  	select ARCH_MIGHT_HAVE_PC_SERIO
-> @@ -1379,6 +1380,7 @@ config CPU_LOONGSON64
->  	select CPU_SUPPORTS_MSA
->  	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
->  	select CPU_MIPSR2_IRQ_VI
-> +	select DMA_NONCOHERENT
->  	select WEAK_ORDERING
->  	select WEAK_REORDERING_BEYOND_LLSC
->  	select MIPS_ASID_BITS_VARIABLE
-> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> @@ -117,7 +117,8 @@ struct irq_source_routing_table {
->  	u64 pci_io_start_addr;
->  	u64 pci_io_end_addr;
->  	u64 pci_config_addr;
-> -	u32 dma_mask_bits;
-> +	u16 dma_mask_bits;
-> +	u16 dma_noncoherent;
->  } __packed;
->  
->  struct interface_info {
-> --- a/arch/mips/loongson64/env.c
-> +++ b/arch/mips/loongson64/env.c
-> @@ -13,6 +13,8 @@
->   * Copyright (C) 2009 Lemote Inc.
->   * Author: Wu Zhangjin, wuzhangjin@gmail.com
->   */
-> +
-> +#include <linux/dma-map-ops.h>
->  #include <linux/export.h>
->  #include <linux/pci_ids.h>
->  #include <asm/bootinfo.h>
-> @@ -131,8 +133,14 @@ void __init prom_init_env(void)
->  	loongson_sysconf.pci_io_base = eirq_source->pci_io_start_addr;
->  	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
->  	if (loongson_sysconf.dma_mask_bits < 32 ||
-> -		loongson_sysconf.dma_mask_bits > 64)
-> +			loongson_sysconf.dma_mask_bits > 64) {
->  		loongson_sysconf.dma_mask_bits = 32;
-> +		dma_default_coherent = true;
-> +	} else {
-> +		dma_default_coherent = !eirq_source->dma_noncoherent;
-> +	}
-> +
-> +	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
->  
->  	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
->  	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
+> >From b538bf7d0ec11ca49f536dfda742a5f6db90a798 Mon Sep 17 00:00:00 2001  
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> Date: Tue, 5 Dec 2023 16:52:11 -0500
+> Subject: [PATCH] tracing: Disable snapshot buffer when stopping instance
+>  tracers
+> 
 
-While preparing an update for Debian and finally building for all
-supported architecture, the builds for mipsel and mips64el were
-failing with:
+This is the fix for 5.4.265, although running tests on it, there appears
+to be other issues with snapshot and 5.4.265 with and without this patch.
 
-/<<PKGBUILDDIR>>/arch/mips/loongson64/env.c: In function 'prom_init_env':
-/<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: error: 'dma_default_coherent' undeclared (first use in this function); did you mean 'dma_free_coherent'?
-  138 |   dma_default_coherent = true;
-      |   ^~~~~~~~~~~~~~~~~~~~
-      |   dma_free_coherent
-/<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: note: each undeclared identifier is reported only once for each function it appears in
-make[6]: *** [/<<PKGBUILDDIR>>/scripts/Makefile.build:291: arch/mips/loongson64/env.o] Error 1
-make[6]: *** Waiting for unfinished jobs....
+I don't have time to investigate though.
 
-Is here a prerequisite missing for the commit?
+-- Steve
 
-Backporting though 6d4e9a8efe3d ("driver core: lift dma_default_coherent into
-common code") which is from 5.12-rc1 though seems too intrusive, correct? Would
-the alternative be to just revert the 3ee7e2faef87 ("MIPS: Loongson64: Enable
-DMA noncoherent support") commit which landed in 5.10.204?
 
-Regards,
-Salvatore
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index d7ca8f97b315..a1967c46af12 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2039,13 +2039,7 @@ int is_tracing_stopped(void)
+ 	return global_trace.stop_count;
+ }
+ 
+-/**
+- * tracing_start - quick start of the tracer
+- *
+- * If tracing is enabled but was stopped by tracing_stop,
+- * this will start the tracer back up.
+- */
+-void tracing_start(void)
++static void tracing_start_tr(struct trace_array *tr)
+ {
+ 	struct ring_buffer *buffer;
+ 	unsigned long flags;
+@@ -2053,119 +2047,83 @@ void tracing_start(void)
+ 	if (tracing_disabled)
+ 		return;
+ 
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (--global_trace.stop_count) {
+-		if (global_trace.stop_count < 0) {
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (--tr->stop_count) {
++		if (WARN_ON_ONCE(tr->stop_count < 0)) {
+ 			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			global_trace.stop_count = 0;
++			tr->stop_count = 0;
+ 		}
+ 		goto out;
+ 	}
+ 
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
+ 
+-	buffer = global_trace.trace_buffer.buffer;
++	buffer = tr->trace_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
+-}
+-
+-static void tracing_start_tr(struct trace_array *tr)
+-{
+-	struct ring_buffer *buffer;
+-	unsigned long flags;
+-
+-	if (tracing_disabled)
+-		return;
+-
+-	/* If global, we need to also start the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_start();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-
+-	if (--tr->stop_count) {
+-		if (tr->stop_count < 0) {
+-			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			tr->stop_count = 0;
+-		}
+-		goto out;
+-	}
+-
+-	buffer = tr->trace_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_enable(buffer);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+ 	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+ /**
+- * tracing_stop - quick stop of the tracer
++ * tracing_start - quick start of the tracer
+  *
+- * Light weight way to stop tracing. Use in conjunction with
+- * tracing_start.
++ * If tracing is enabled but was stopped by tracing_stop,
++ * this will start the tracer back up.
+  */
+-void tracing_stop(void)
++void tracing_start(void)
++
++{
++	return tracing_start_tr(&global_trace);
++}
++
++static void tracing_stop_tr(struct trace_array *tr)
+ {
+ 	struct ring_buffer *buffer;
+ 	unsigned long flags;
+ 
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (global_trace.stop_count++)
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (tr->stop_count++)
+ 		goto out;
+ 
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
+ 
+-	buffer = global_trace.trace_buffer.buffer;
++	buffer = tr->trace_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
++	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+-static void tracing_stop_tr(struct trace_array *tr)
++/**
++ * tracing_stop - quick stop of the tracer
++ *
++ * Light weight way to stop tracing. Use in conjunction with
++ * tracing_start.
++ */
++void tracing_stop(void)
+ {
+-	struct ring_buffer *buffer;
+-	unsigned long flags;
+-
+-	/* If global, we need to also stop the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_stop();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-	if (tr->stop_count++)
+-		goto out;
+-
+-	buffer = tr->trace_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
++	return tracing_stop_tr(&global_trace);
+ }
+ 
+ static int trace_save_cmdline(struct task_struct *tsk)
 
