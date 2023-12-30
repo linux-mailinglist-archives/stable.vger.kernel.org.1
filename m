@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-8852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D9B82052B
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D63820595
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAC828102C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A309AB20DB0
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6642C79DE;
-	Sat, 30 Dec 2023 12:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6338487;
+	Sat, 30 Dec 2023 12:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfiMTAlX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVs+zDPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBB679C2;
-	Sat, 30 Dec 2023 12:05:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B3DC433C8;
-	Sat, 30 Dec 2023 12:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6605B79DE;
+	Sat, 30 Dec 2023 12:09:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E384FC433C9;
+	Sat, 30 Dec 2023 12:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937930;
-	bh=7TNLFqj7jn1Z1lTihJ0BnsKJR5v88hdW2u01yrR9ZP4=;
+	s=korg; t=1703938183;
+	bh=41SyahsVS+dQ6adikv9jM+bKcX/nNNIGD+Ljgn+U5Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YfiMTAlXUYE+EqS5BSoNEbOA5UzL4iSk27nGNgp1YM1hbUF4HJIwLRElWWiLzL2ek
-	 JVZAHCTq2X955nCcB8+619Y6olRjOKLxvbTM9fX8kKXOxxXCx1sJjOk60V7cFD5xOn
-	 7OlnrLooOJ6XvexuIicxuE28Z/UXuD69fINyzJtc=
+	b=XVs+zDPRmLXfv1quGV6qEvO81FgbemrG+YSd3xD3ZEPgM3HjLL+tlcdch6QcnZd1L
+	 c+RG/14bKTAzE00pZggFYxpE1+XanRBfeWYEuZNzrorXQwHnGvO7YY6WMTS+vS9zFI
+	 W74AqB+Mc9tyZZkamrFj0m7Iu3O6zYi8fcyVzU90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Simon Horman <horms@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 6.6 118/156] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 059/112] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
 Date: Sat, 30 Dec 2023 11:59:32 +0000
-Message-ID: <20231230115816.216691050@linuxfoundation.org>
+Message-ID: <20231230115808.597776906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,87 +53,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
+commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
 
-If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
-the error path is not handled properly. *wnames or members of *wnames
-array may be left uninitialized and invalidly freed.
+The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
+associated to an index that is used to select the right measurement
+resolution and its corresponding measurement time. The current
+implementation selects the measurement resolution and the temperature
+measurement time properly, but it does not select the right humidity
+measurement time in all cases.
 
-Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
-*wnames array element to NULL and nullify the failing *wnames element so
-that the error path freeing loop stops on the first NULL element and
-doesn't proceed further.
+In summary, the 40 and 70 humidity measurement times are swapped.
 
-Found by Linux Verification Center (linuxtesting.org).
+The reason for that is probably the unusual coding for the measurement
+resolution. According to the datasheet, the bits [7,0] of the "user
+register" are used as follows to select the bit resolution:
 
-Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+--------------------------------------------------
+| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
+--------------------------------------------------
+|   0   |   0   | 12 |  14  |  16000   |  50000  |
+--------------------------------------------------
+|   0   |   1   | 8  |  12  |  3000    |  13000  |
+--------------------------------------------------
+|   1   |   0   | 10 |  13  |  5000    |  25000  |
+--------------------------------------------------
+|   1   |   1   | 11 |  11  |  8000    |  7000   |
+--------------------------------------------------
+*This table is available in the official datasheet, page 13/21. I have
+just appended the times provided in the humidity/temperature tables,
+pages 3/21, 5/21. Note that always a pair of resolutions is selected.
+
+The sampling frequencies [20, 40, 70, 120] are assigned to a linear
+index [0..3] which is then coded as follows [1]:
+
+Index    [7,0]
+--------------
+idx 0     0,0
+idx 1     1,0
+idx 2     0,1
+idx 3     1,1
+
+That is done that way because the temperature measurements are being
+used as the reference for the sampling frequency (the frequencies and
+the temperature measurement times are correlated), so increasing the
+index always reduces the temperature measurement time and its
+resolution. Therefore, the temperature measurement time array is as
+simple as [50000, 25000, 13000, 7000]
+
+On the other hand, the humidity resolution cannot follow the same
+pattern because of the way it is coded in the "user register", where
+both resolutions are selected at the same time. The humidity measurement
+time array is the following: [16000, 3000, 5000, 8000], which defines
+the following assignments:
+
+Index    [7,0]    Trh
+-----------------------
+idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
+idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
+idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
+idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
+
+The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
+which is not the case for the reason explained above.
+
+So a simple modification is required to obtain the right humidity
+measurement time array, swapping the values in the positions 1 and 2.
+
+The right table should be the following: [16000, 5000, 3000, 8000]
+
+Fix the humidity measurement time array with the right idex/value
+coding.
+
+[1] The actual code that makes this coding and assigns it to the current
+value of the "user register" is the following:
+config_reg &= 0x7E;
+config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
+
+Fixes: d574a87cc311 ("Add meas-spec sensors common part")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/protocol.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/9p/protocol.c
-+++ b/net/9p/protocol.c
-@@ -394,6 +394,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 				uint16_t *nwname = va_arg(ap, uint16_t *);
- 				char ***wnames = va_arg(ap, char ***);
+--- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
++++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+@@ -15,8 +15,8 @@
+ /* Conversion times in us */
+ static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
+ 						       13000, 7000 };
+-static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
+-						       5000, 8000 };
++static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
++						       3000, 8000 };
+ static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
+ 						     4100, 8220, 16440 };
  
-+				*wnames = NULL;
-+
- 				errcode = p9pdu_readf(pdu, proto_version,
- 								"w", nwname);
- 				if (!errcode) {
-@@ -403,6 +405,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 							  GFP_NOFS);
- 					if (!*wnames)
- 						errcode = -ENOMEM;
-+					else
-+						(*wnames)[0] = NULL;
- 				}
- 
- 				if (!errcode) {
-@@ -414,8 +418,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 								proto_version,
- 								"s",
- 								&(*wnames)[i]);
--						if (errcode)
-+						if (errcode) {
-+							(*wnames)[i] = NULL;
- 							break;
-+						}
- 					}
- 				}
- 
-@@ -423,11 +429,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 					if (*wnames) {
- 						int i;
- 
--						for (i = 0; i < *nwname; i++)
-+						for (i = 0; i < *nwname; i++) {
-+							if (!(*wnames)[i])
-+								break;
- 							kfree((*wnames)[i]);
-+						}
-+						kfree(*wnames);
-+						*wnames = NULL;
- 					}
--					kfree(*wnames);
--					*wnames = NULL;
- 				}
- 			}
- 			break;
 
 
 
