@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84164820460
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4029E820461
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A81EB1C20A94
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719561C20D3D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1437C1FC5;
-	Sat, 30 Dec 2023 10:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6501C0F;
+	Sat, 30 Dec 2023 10:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thCaFIMv"
-X-Original-To: stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjPxLfO7"
+X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2E6323AF
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C662C433C8;
-	Sat, 30 Dec 2023 10:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A11123A5
+	for <Stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE57FC433C7;
+	Sat, 30 Dec 2023 10:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933808;
-	bh=lKErCGXXg3r9lprlt++HmZO4X+vN07ADg7soULEWDO4=;
+	s=korg; t=1703933813;
+	bh=mV7N/5qty24PSC48TDNNyfvFoxWQMP6JcG76H3/OEJU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=thCaFIMv/Zb8cZcTbhmUKbbTk7PKtjuqKORo7KIvcqfSyPxa+87ZvuJVX7O9tYXkn
-	 ptV1kPIjLDnoxRdLFg6ynEMrN7VPIR7pkb6UpNZInYnTOAsFAAWVOPmMxdiiEtkVAL
-	 av2Vapbk4CoZ1evoAtWZAZf2u5jvDvzGi6ML6Q+o=
-Subject: FAILED: patch "[PATCH] spi: atmel: Fix clock issue when using devices with different" failed to apply to 4.14-stable tree
-To: louis.chauvet@bootlin.com,broonie@kernel.org,stable@vger.kernel.org
+	b=EjPxLfO7mMtm4DeXK/Gzwh4GZ8T8NqljHpTvYIidJbnpNnwgHLEPynFy4EdSH+Alw
+	 vHKvxNI5jbFM08T/PzImXCSxKfWTXljoKxniJO1gyx1GE5drVhWQp64ZkojHqHn2gh
+	 kYCYO3W3mOoF5mYbAIlvDV5BlDvoTZprdLpWIzp4=
+Subject: FAILED: patch "[PATCH] iio: imu: adis16475: use bit numbers in assign_bit()" failed to apply to 6.6-stable tree
+To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,error27@gmail.com,lkp@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:56:45 +0000
-Message-ID: <2023123045-comfy-crouch-3a6d@gregkh>
+Date: Sat, 30 Dec 2023 10:56:50 +0000
+Message-ID: <2023123050-margarita-embargo-94bc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,26 +45,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc
+git cherry-pick -x 1cd2fe4fd63e54b799a68c0856bda18f2e40caa8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123045-comfy-crouch-3a6d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123050-margarita-embargo-94bc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
-69e1818ad27b ("spi: atmel: Fix CS and initialization bug")
-5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer method")
-ca4196aa1008 ("Merge branch 'spi-5.5' into spi-next")
+1cd2fe4fd63e ("iio: imu: adis16475: use bit numbers in assign_bit()")
+8f6bc87d67c0 ("iio: imu: adis16475.c: Add delta angle and delta velocity channels")
 
 thanks,
 
@@ -72,241 +70,37 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fc70d643a2f6678cbe0f5c86433c1aeb4d613fcc Mon Sep 17 00:00:00 2001
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Mon, 4 Dec 2023 16:49:03 +0100
-Subject: [PATCH] spi: atmel: Fix clock issue when using devices with different
- polarities
+From 1cd2fe4fd63e54b799a68c0856bda18f2e40caa8 Mon Sep 17 00:00:00 2001
+From: Nuno Sa <nuno.sa@analog.com>
+Date: Mon, 6 Nov 2023 16:07:30 +0100
+Subject: [PATCH] iio: imu: adis16475: use bit numbers in assign_bit()
 
-The current Atmel SPI controller driver (v2) behaves incorrectly when
-using two SPI devices with different clock polarities and GPIO CS.
+assign_bit() expects a bit number and not a mask like BIT(x). Hence,
+just remove the BIT() macro from the #defines.
 
-When switching from one device to another, the controller driver first
-enables the CS and then applies whatever configuration suits the targeted
-device (typically, the polarities). The side effect of such order is the
-apparition of a spurious clock edge after enabling the CS when the clock
-polarity needs to be inverted wrt. the previous configuration of the
-controller.
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311060647.i9XyO4ej-lkp@intel.com/
+Fixes: fff7352bf7a3ce ("iio: imu: Add support for adis16475")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231106150730.945-1-nuno.sa@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This parasitic clock edge is problematic when the SPI device uses that edge
-for internal processing, which is perfectly legitimate given that its CS
-was asserted. Indeed, devices such as HVS8080 driven by driver gpio-sr in
-the kernel are shift registers and will process this first clock edge to
-perform a first register shift. In this case, the first bit gets lost and
-the whole data block that will later be read by the kernel is all shifted
-by one.
-
-    Current behavior:
-      The actual switching of the clock polarity only occurs after the CS
-      when the controller sends the first message:
-
-    CLK ------------\   /-\ /-\
-                    |   | | | |    . . .
-                    \---/ \-/ \
-    CS  -----\
-             |
-             \------------------
-
-             ^      ^   ^
-             |      |   |
-             |      |   Actual clock of the message sent
-             |      |
-             |      Change of clock polarity, which occurs with the first
-             |      write to the bus. This edge occurs when the CS is
-             |      already asserted, and can be interpreted as
-             |      the first clock edge by the receiver.
-             |
-             GPIO CS toggle
-
-This issue is specific to this controller because while the SPI core
-performs the operations in the right order, the controller however does
-not. In practice, the controller only applies the clock configuration right
-before the first transmission.
-
-So this is not a problem when using the controller's dedicated CS, as the
-controller does things correctly, but it becomes a problem when you need to
-change the clock polarity and use an external GPIO for the CS.
-
-One possible approach to solve this problem is to send a dummy message
-before actually activating the CS, so that the controller applies the clock
-polarity beforehand.
-
-New behavior:
-
-CLK     ------\      /-\     /-\      /-\     /-\
-              |      | | ... | |      | | ... | |
-              \------/ \-   -/ \------/ \-   -/ \------
-
-CS      -\/-----------------------\
-         ||                       |
-         \/                       \---------------------
-         ^    ^       ^           ^    ^
-         |    |       |           |    |
-         |    |       |           |    Expected clock cycles when
-         |    |       |           |    sending the message
-         |    |       |           |
-         |    |       |           Actual GPIO CS activation, occurs inside
-         |    |       |           the driver
-         |    |       |
-         |    |       Dummy message, to trigger clock polarity
-         |    |       reconfiguration. This message is not received and
-         |    |       processed by the device because CS is low.
-         |    |
-         |    Change of clock polarity, forced by the dummy message. This
-         |    time, the edge is not detected by the receiver.
-         |
-         This small spike in CS activation is due to the fact that the
-         spi-core activates the CS gpio before calling the driver's
-         set_cs callback, which deactivates this gpio again until the
-         clock polarity is correct.
-
-To avoid having to systematically send a dummy packet, the driver keeps
-track of the clock's current polarity. In this way, it only sends the dummy
-packet when necessary, ensuring that the clock will have the correct
-polarity when the CS is toggled.
-
-There could be two hardware problems with this patch:
-1- Maybe the small CS activation peak can confuse SPI devices
-2- If on a design, a single wire is used to select two devices depending
-on its state, the dummy message may disturb them.
-
-Fixes: 5ee36c989831 ("spi: atmel_spi update chipselect handling")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-Link: https://msgid.link/r/20231204154903.11607-1-louis.chauvet@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 54277de30161..bad34998454a 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -22,6 +22,7 @@
- #include <linux/gpio/consumer.h>
- #include <linux/pinctrl/consumer.h>
- #include <linux/pm_runtime.h>
-+#include <linux/iopoll.h>
- #include <trace/events/spi.h>
+diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+index 04153a2725d5..64be656f0b80 100644
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -70,8 +70,8 @@
+ #define ADIS16475_MAX_SCAN_DATA		20
+ /* spi max speed in brust mode */
+ #define ADIS16475_BURST_MAX_SPEED	1000000
+-#define ADIS16475_LSB_DEC_MASK		BIT(0)
+-#define ADIS16475_LSB_FIR_MASK		BIT(1)
++#define ADIS16475_LSB_DEC_MASK		0
++#define ADIS16475_LSB_FIR_MASK		1
+ #define ADIS16500_BURST_DATA_SEL_0_CHN_MASK	GENMASK(5, 0)
+ #define ADIS16500_BURST_DATA_SEL_1_CHN_MASK	GENMASK(12, 7)
  
- /* SPI register offsets */
-@@ -276,6 +277,7 @@ struct atmel_spi {
- 	bool			keep_cs;
- 
- 	u32			fifo_size;
-+	bool			last_polarity;
- 	u8			native_cs_free;
- 	u8			native_cs_for_gpio;
- };
-@@ -288,6 +290,22 @@ struct atmel_spi_device {
- #define SPI_MAX_DMA_XFER	65535 /* true for both PDC and DMA */
- #define INVALID_DMA_ADDRESS	0xffffffff
- 
-+/*
-+ * This frequency can be anything supported by the controller, but to avoid
-+ * unnecessary delay, the highest possible frequency is chosen.
-+ *
-+ * This frequency is the highest possible which is not interfering with other
-+ * chip select registers (see Note for Serial Clock Bit Rate configuration in
-+ * Atmel-11121F-ATARM-SAMA5D3-Series-Datasheet_02-Feb-16, page 1283)
-+ */
-+#define DUMMY_MSG_FREQUENCY	0x02
-+/*
-+ * 8 bits is the minimum data the controller is capable of sending.
-+ *
-+ * This message can be anything as it should not be treated by any SPI device.
-+ */
-+#define DUMMY_MSG		0xAA
-+
- /*
-  * Version 2 of the SPI controller has
-  *  - CR.LASTXFER
-@@ -301,6 +319,43 @@ static bool atmel_spi_is_v2(struct atmel_spi *as)
- 	return as->caps.is_spi2;
- }
- 
-+/*
-+ * Send a dummy message.
-+ *
-+ * This is sometimes needed when using a CS GPIO to force clock transition when
-+ * switching between devices with different polarities.
-+ */
-+static void atmel_spi_send_dummy(struct atmel_spi *as, struct spi_device *spi, int chip_select)
-+{
-+	u32 status;
-+	u32 csr;
-+
-+	/*
-+	 * Set a clock frequency to allow sending message on SPI bus.
-+	 * The frequency here can be anything, but is needed for
-+	 * the controller to send the data.
-+	 */
-+	csr = spi_readl(as, CSR0 + 4 * chip_select);
-+	csr = SPI_BFINS(SCBR, DUMMY_MSG_FREQUENCY, csr);
-+	spi_writel(as, CSR0 + 4 * chip_select, csr);
-+
-+	/*
-+	 * Read all data coming from SPI bus, needed to be able to send
-+	 * the message.
-+	 */
-+	spi_readl(as, RDR);
-+	while (spi_readl(as, SR) & SPI_BIT(RDRF)) {
-+		spi_readl(as, RDR);
-+		cpu_relax();
-+	}
-+
-+	spi_writel(as, TDR, DUMMY_MSG);
-+
-+	readl_poll_timeout_atomic(as->regs + SPI_SR, status,
-+				  (status & SPI_BIT(TXEMPTY)), 1, 1000);
-+}
-+
-+
- /*
-  * Earlier SPI controllers (e.g. on at91rm9200) have a design bug whereby
-  * they assume that spi slave device state will not change on deselect, so
-@@ -317,11 +372,17 @@ static bool atmel_spi_is_v2(struct atmel_spi *as)
-  * Master on Chip Select 0.")  No workaround exists for that ... so for
-  * nCS0 on that chip, we (a) don't use the GPIO, (b) can't support CS_HIGH,
-  * and (c) will trigger that first erratum in some cases.
-+ *
-+ * When changing the clock polarity, the SPI controller waits for the next
-+ * transmission to enforce the default clock state. This may be an issue when
-+ * using a GPIO as Chip Select: the clock level is applied only when the first
-+ * packet is sent, once the CS has already been asserted. The workaround is to
-+ * avoid this by sending a first (dummy) message before toggling the CS state.
-  */
--
- static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- {
- 	struct atmel_spi_device *asd = spi->controller_state;
-+	bool new_polarity;
- 	int chip_select;
- 	u32 mr;
- 
-@@ -350,6 +411,25 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 		}
- 
- 		mr = spi_readl(as, MR);
-+
-+		/*
-+		 * Ensures the clock polarity is valid before we actually
-+		 * assert the CS to avoid spurious clock edges to be
-+		 * processed by the spi devices.
-+		 */
-+		if (spi_get_csgpiod(spi, 0)) {
-+			new_polarity = (asd->csr & SPI_BIT(CPOL)) != 0;
-+			if (new_polarity != as->last_polarity) {
-+				/*
-+				 * Need to disable the GPIO before sending the dummy
-+				 * message because it is already set by the spi core.
-+				 */
-+				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 0);
-+				atmel_spi_send_dummy(as, spi, chip_select);
-+				as->last_polarity = new_polarity;
-+				gpiod_set_value_cansleep(spi_get_csgpiod(spi, 0), 1);
-+			}
-+		}
- 	} else {
- 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
- 		int i;
 
 
