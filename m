@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4029E820461
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FE8820462
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719561C20D3D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9AA1C20D4B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6501C0F;
-	Sat, 30 Dec 2023 10:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA2E1FC5;
+	Sat, 30 Dec 2023 10:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjPxLfO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gM9W8nAn"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A11123A5
-	for <Stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE57FC433C7;
-	Sat, 30 Dec 2023 10:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472F123AF
+	for <Stable@vger.kernel.org>; Sat, 30 Dec 2023 10:56:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742A5C433C7;
+	Sat, 30 Dec 2023 10:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933813;
-	bh=mV7N/5qty24PSC48TDNNyfvFoxWQMP6JcG76H3/OEJU=;
+	s=korg; t=1703933815;
+	bh=YlXMpKKdBKrFckJcsPS7U6DX6FVQ2wLns92GmC8gy4Q=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EjPxLfO7mMtm4DeXK/Gzwh4GZ8T8NqljHpTvYIidJbnpNnwgHLEPynFy4EdSH+Alw
-	 vHKvxNI5jbFM08T/PzImXCSxKfWTXljoKxniJO1gyx1GE5drVhWQp64ZkojHqHn2gh
-	 kYCYO3W3mOoF5mYbAIlvDV5BlDvoTZprdLpWIzp4=
-Subject: FAILED: patch "[PATCH] iio: imu: adis16475: use bit numbers in assign_bit()" failed to apply to 6.6-stable tree
+	b=gM9W8nAnQiecQLEaBwLUydZyY2RKmVg5K++x/PJxdk2x7OkA6eB2wHaM+mR37biuK
+	 MaQ232AGNmjKS5fGD/f2BaQugE7cEhTydvQf8s5cgF7XTfrCEPp6Euc3hW2NMw9kAG
+	 7Ix140hxe2lvVNbK0wrF4OzSyThhIaxigKFDu+pM=
+Subject: FAILED: patch "[PATCH] iio: imu: adis16475: use bit numbers in assign_bit()" failed to apply to 6.1-stable tree
 To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,error27@gmail.com,lkp@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:56:50 +0000
-Message-ID: <2023123050-margarita-embargo-94bc@gregkh>
+Date: Sat, 30 Dec 2023 10:56:51 +0000
+Message-ID: <2023123051-duckbill-coping-e6ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1cd2fe4fd63e54b799a68c0856bda18f2e40caa8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123050-margarita-embargo-94bc@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123051-duckbill-coping-e6ae@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 1cd2fe4fd63e ("iio: imu: adis16475: use bit numbers in assign_bit()")
 8f6bc87d67c0 ("iio: imu: adis16475.c: Add delta angle and delta velocity channels")
+c1f10bff1619 ("iio: imu: adis16475.c: Add has_burst32 flag to adis16477 devices")
+a216d411b547 ("iio: imu: adis16475.c: Remove unused enum elements")
 
 thanks,
 
