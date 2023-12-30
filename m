@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-8970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF438205A8
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0866D820526
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A9C1C20E26
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B73B5281855
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3CC8473;
-	Sat, 30 Dec 2023 12:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FE479C2;
+	Sat, 30 Dec 2023 12:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRImA464"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCD/PtoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E8279DD;
-	Sat, 30 Dec 2023 12:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868DCC433C7;
-	Sat, 30 Dec 2023 12:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1D858473;
+	Sat, 30 Dec 2023 12:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB82C433C8;
+	Sat, 30 Dec 2023 12:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938235;
-	bh=WMejTZSMwuRmP25mdJJ9pfHSDsmzbngSaEqTlzrpj5Y=;
+	s=korg; t=1703937919;
+	bh=KnN0ICKvT3I4Aeu2T4eOmw0xns58uTcmhef2Q9GQghA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRImA464pQvO+gEgxUc21jXefLwIdEpsBKTfZQdq48KZFGdygVOyD2HWB6nesmQBn
-	 XPjwJUGF7FhynOkwlH1k2rnHDPr+DWy9U0GmIAbsrYLky3PwfWxelrSldEzs6Ua3vs
-	 GkzxlfE3iTtb5GEK5aEYsF7XZ+DVYXbmUwcoM6T4=
+	b=uCD/PtoEq6dM80Lai3tgviShwrwehCeSO+1cIT24N7r0MC4HbXTpiV/NuIX7QRWsR
+	 iyUFLOWdT8RpnDX/ff59yVKT5HkgTXQo8HFYgQB9jPBtYKpVJNPK9+JOQrIArbuaSk
+	 hivfkQmuPO9PDfb//nYt8T9VRp724ol0KSdOyhjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/112] iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
+	stable <stable@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 114/156] usb: typec: ucsi: fix gpio-based orientation detection
 Date: Sat, 30 Dec 2023 11:59:28 +0000
-Message-ID: <20231230115808.472253031@linuxfoundation.org>
+Message-ID: <20231230115816.085996152@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +55,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c3df0e29fb7788c4b3ddf37d5ed87dda2b822943 ]
+commit c994cb596bf7ef5928f06331c76f46e071b16f09 upstream.
 
-inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
-true value rather than only return IIO_VAL_INT.
+Fix the recently added connector sanity check which was off by one and
+prevented orientation notifications from being handled correctly for the
+second port when using GPIOs to determine orientation.
 
-Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231030020218.65728-1-suhui@nfschina.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+Cc: stable <stable@kernel.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231208123603.29957-1-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_glink.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 86fbbe9040503..19a1ef5351d24 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -736,13 +736,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
- 			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
- 		case IIO_ACCEL:
- 			mutex_lock(&st->lock);
- 			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -228,7 +228,7 @@ static void pmic_glink_ucsi_notify(struc
  
- 		default:
- 			return -EINVAL;
--- 
-2.43.0
-
+ 	con_num = UCSI_CCI_CONNECTOR(cci);
+ 	if (con_num) {
+-		if (con_num < PMIC_GLINK_MAX_PORTS &&
++		if (con_num <= PMIC_GLINK_MAX_PORTS &&
+ 		    ucsi->port_orientation[con_num - 1]) {
+ 			int orientation = gpiod_get_value(ucsi->port_orientation[con_num - 1]);
+ 
 
 
 
