@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-8954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1C7820598
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC780820530
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0B021F22980
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF4121C20F34
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D448487;
-	Sat, 30 Dec 2023 12:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCC08489;
+	Sat, 30 Dec 2023 12:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS57Jd/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlqNZGAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A1D28FE;
-	Sat, 30 Dec 2023 12:09:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8DCC433C9;
-	Sat, 30 Dec 2023 12:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C0528FE;
+	Sat, 30 Dec 2023 12:05:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4241C433C8;
+	Sat, 30 Dec 2023 12:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938193;
-	bh=I5X8qo+5wLAxscClNxnlm1e4pSJ1o4eVz7jMVXYBv+A=;
+	s=korg; t=1703937943;
+	bh=FzCcarRApC/VDOcAx2P3oYrX948HGwkg6zu7E5QmFGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qS57Jd/ONb8TXPCX7NkK8oprM0GXc8b/NvEJvoK1o1RiVbwdjwF6kee7LG/t2qWK6
-	 KAQJEBGCCWWM2xVtWLrYmcbdYJ8A6bcJW4CjfJCAjt9pLbotDxGsiIpmcLWVjtRwqS
-	 DpSapKjVj4fc9vjViyZibxOT4wPNgguwZtla7+f0=
+	b=ZlqNZGAhArAnfQ1KKstCuZfGPr7AXO2WWwhqZCSZQlm7zrsx+l4sF8G9/9l4soQYJ
+	 F8FMmqcDYxV9qlLWFW4tGJhAjIp9IYyMf04WXhyfJ3sR4qICUs9lX2nZzaz1MxS7ll
+	 M7XMbLCWrlhdHp1T8AfCok7FkbdyTTE9lui5SCUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 063/112] usb-storage: Add quirk for incorrect WP on Kingston DT Ultimate 3.0 G3
-Date: Sat, 30 Dec 2023 11:59:36 +0000
-Message-ID: <20231230115808.717878159@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 123/156] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+Date: Sat, 30 Dec 2023 11:59:37 +0000
+Message-ID: <20231230115816.396075420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Fabio Estevam <festevam@denx.de>
 
-commit 772685c14743ad565bb271041ad3c262298cd6fc upstream.
+commit a2a8aefecbd0f87d6127951cef33b3def8439057 upstream.
 
-This flash drive reports write protect during the first mode sense.
+Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
+the format:
 
-In the past this was not an issue as the kernel called revalidate twice,
-thus asking the device for its write protect status twice, with write
-protect being disabled in the second mode sense.
+compatible = "fsl,imx28-ocotp", "fsl,ocotp";
 
-However, since commit 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to
-avoid calling revalidate twice") that is no longer the case, thus the
-device shows up read only.
+Document the "fsl,ocotp" entry to fix the following schema
+warning:
 
-[490891.289495] sd 12:0:0:0: [sdl] Write Protect is on
-[490891.289497] sd 12:0:0:0: [sdl] Mode Sense: 2b 00 80 08
+efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
+from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
 
-This does not appear to be a timing issue, as enabling the usbcore quirk
-USB_QUIRK_DELAY_INIT has no effect on write protect.
-
-Fixes: 1e029397d12f ("scsi: sd: Reorganize DIF/DIX code to avoid calling revalidate twice")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Link: https://lore.kernel.org/r/20231207134441.298131-1-tasos@tasossah.com
+Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
+Cc:  <Stable@vger.kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231215111358.316727-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_devs.h |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/storage/unusual_devs.h
-+++ b/drivers/usb/storage/unusual_devs.h
-@@ -1306,6 +1306,17 @@ UNUSUAL_DEV(  0x090c, 0x6000, 0x0100, 0x
- 		US_FL_INITIAL_READ10 ),
+--- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+@@ -14,9 +14,11 @@ allOf:
  
- /*
-+ * Patch by Tasos Sahanidis <tasos@tasossah.com>
-+ * This flash drive always shows up with write protect enabled
-+ * during the first mode sense.
-+ */
-+UNUSUAL_DEV(0x0951, 0x1697, 0x0100, 0x0100,
-+		"Kingston",
-+		"DT Ultimate G3",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_WP_DETECT),
-+
-+/*
-  * This Pentax still camera is not conformant
-  * to the USB storage specification: -
-  * - It does not like the INQUIRY command. So we must handle this command
+ properties:
+   compatible:
+-    enum:
+-      - fsl,imx23-ocotp
+-      - fsl,imx28-ocotp
++    items:
++      - enum:
++          - fsl,imx23-ocotp
++          - fsl,imx28-ocotp
++      - const: fsl,ocotp
+ 
+   reg:
+     maxItems: 1
+@@ -34,7 +36,7 @@ unevaluatedProperties: false
+ examples:
+   - |
+     ocotp: efuse@8002c000 {
+-        compatible = "fsl,imx28-ocotp";
++        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+         #address-cells = <1>;
+         #size-cells = <1>;
+         reg = <0x8002c000 0x2000>;
 
 
 
