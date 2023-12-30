@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-8810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46AC8204FC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB0D820562
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D38151C20FC4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38E181F21206
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B6779DC;
-	Sat, 30 Dec 2023 12:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997AB79DE;
+	Sat, 30 Dec 2023 12:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PWw3CHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VzmRvaul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5658483;
-	Sat, 30 Dec 2023 12:03:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB39C433C8;
-	Sat, 30 Dec 2023 12:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640AA79C2;
+	Sat, 30 Dec 2023 12:07:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1AF2C433C7;
+	Sat, 30 Dec 2023 12:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937821;
-	bh=hyD9uvDkVgjtNKGWwdfR2RivUciZGns65PM0rtqd2Z4=;
+	s=korg; t=1703938072;
+	bh=4i1rgTb+NioTY9mD59D/XH8jY9fWedHjDn4pnJAW0uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2PWw3CHY7r0mK2zJ11ezPSzABqZ5JGNZsl7psRwaTCVrIwh7Rh7J5Kcc2Atvih1c9
-	 fcrIU2EZKIc7YPR1L3/YrSAnQJeCC4WVvOaQOY2Yeffy50nk5iIw5SRFZ6hvXc38d9
-	 ahc6cjVki0PFW/PjfmzHQfnSe03j+5CDI0The5D0=
+	b=VzmRvaulw/bz5fiuLq6wFroJ+yXgZIlKv6MvK0OEM84Xx9Jw8nPJFFQflCGgyivoW
+	 +7/HfAmuhovKUumAl7gx4xLNL6wdoqw/ii1EdK3ARdOkA1U80ZgKCvz5rQv7bF5cax
+	 dOiHAOPQbaZlFmD3y7a6sQpI8kqmbr8yiZlhXz0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhenGuo Yin <zhenguo.yin@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ding Hui <dinghui@sangfor.com.cn>,
+	Shifeng Li <lishifeng@sangfor.com.cn>,
+	Simon Horman <horms@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/156] drm/amdgpu: re-create idle bos PTE during VM state machine reset
+Subject: [PATCH 6.1 016/112] net/mlx5e: Fix slab-out-of-bounds in mlx5_query_nic_vport_mac_list()
 Date: Sat, 30 Dec 2023 11:58:49 +0000
-Message-ID: <20231230115814.811673960@linuxfoundation.org>
+Message-ID: <20231230115807.270142169@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +53,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhenGuo Yin <zhenguo.yin@amd.com>
+From: Shifeng Li <lishifeng@sangfor.com.cn>
 
-[ Upstream commit 4a0057afa35872a5f2e65576785844688dd9fa5e ]
+[ Upstream commit ddb38ddff9c71026bad481b791a94d446ee37603 ]
 
-Idle bo's PTE needs to be re-created when resetting VM state machine.
-Set idle bo's vm_bo as moved to mark it as invalid.
+Out_sz that the size of out buffer is calculated using query_nic_vport
+_context_in structure when driver query the MAC list. However query_nic
+_vport_context_in structure is smaller than query_nic_vport_context_out.
+When allowed_list_size is greater than 96, calling ether_addr_copy() will
+trigger an slab-out-of-bounds.
 
-Fixes: 55bf196f60df ("drm/amdgpu: reset VM when an error is detected")
-Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ 1170.055866] BUG: KASAN: slab-out-of-bounds in mlx5_query_nic_vport_mac_list+0x481/0x4d0 [mlx5_core]
+[ 1170.055869] Read of size 4 at addr ffff88bdbc57d912 by task kworker/u128:1/461
+[ 1170.055870]
+[ 1170.055932] Workqueue: mlx5_esw_wq esw_vport_change_handler [mlx5_core]
+[ 1170.055936] Call Trace:
+[ 1170.055949]  dump_stack+0x8b/0xbb
+[ 1170.055958]  print_address_description+0x6a/0x270
+[ 1170.055961]  kasan_report+0x179/0x2c0
+[ 1170.056061]  mlx5_query_nic_vport_mac_list+0x481/0x4d0 [mlx5_core]
+[ 1170.056162]  esw_update_vport_addr_list+0x2c5/0xcd0 [mlx5_core]
+[ 1170.056257]  esw_vport_change_handle_locked+0xd08/0x1a20 [mlx5_core]
+[ 1170.056377]  esw_vport_change_handler+0x6b/0x90 [mlx5_core]
+[ 1170.056381]  process_one_work+0x65f/0x12d0
+[ 1170.056383]  worker_thread+0x87/0xb50
+[ 1170.056390]  kthread+0x2e9/0x3a0
+[ 1170.056394]  ret_from_fork+0x1f/0x40
+
+Fixes: e16aea2744ab ("net/mlx5: Introduce access functions to modify/query vport mac lists")
+Cc: Ding Hui <dinghui@sangfor.com.cn>
+Signed-off-by: Shifeng Li <lishifeng@sangfor.com.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 89c8e51cd3323..9fe1278fd5861 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -285,6 +285,7 @@ static void amdgpu_vm_bo_reset_state_machine(struct amdgpu_vm *vm)
- 	list_for_each_entry_safe(vm_bo, tmp, &vm->idle, vm_status) {
- 		struct amdgpu_bo *bo = vm_bo->bo;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index d5c3173250309..3f68e3198aa64 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -277,7 +277,7 @@ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
+ 		req_list_size = max_list_size;
+ 	}
  
-+		vm_bo->moved = true;
- 		if (!bo || bo->tbo.type != ttm_bo_type_kernel)
- 			list_move(&vm_bo->vm_status, &vm_bo->vm->moved);
- 		else if (bo->parent)
+-	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_in) +
++	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_out) +
+ 			req_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
+ 
+ 	out = kvzalloc(out_sz, GFP_KERNEL);
 -- 
 2.43.0
 
