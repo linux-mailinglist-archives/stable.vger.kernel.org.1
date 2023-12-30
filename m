@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-8944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C06182058D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45C082050B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E3BD1C2111A
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B359282378
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D30D8486;
-	Sat, 30 Dec 2023 12:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA50B8821;
+	Sat, 30 Dec 2023 12:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aKYIxp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmgypVv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4E679CD;
-	Sat, 30 Dec 2023 12:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BACC433C7;
-	Sat, 30 Dec 2023 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35898BED;
+	Sat, 30 Dec 2023 12:04:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02CFC433C8;
+	Sat, 30 Dec 2023 12:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938167;
-	bh=wqD9EwwIQumwyzQDLs93e7wXSEB/uEaqVwKEN87uvKA=;
+	s=korg; t=1703937852;
+	bh=j/ulLeD53Wf5m7M/be9K2Aqb2lvEujnipbau7T9xEi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aKYIxp11Cp0kDpYVBhKmYzj/tr9eI2+oSQA1gv6Zj79AHfpEMa62eUJzHGnByOHE
-	 qo9AtrLvZRKlGj6u1TEhkXzjcmd0Mkh6xFZGAL8LWOfKyxE2C3siZ6YdDnNEgBtBmw
-	 hprElBuIJKdE8Jvo9ROMUoq9pQnnFpm+rop3mQG0=
+	b=tmgypVv4qcfhG/XPgxvXjnGKKVLSaUgkqNulIjVZnoN/a/Jv7fw5dX8fAPuUmhfTC
+	 ytZnOW4uxwoptFV7XaISq03jcOU5CSSkGBaUdBPGbVvJiYEJAgAgtjVfcL97mWvrQW
+	 cs21pzDqs2yV20C1pRnxJQuL1cqbAWytsOXWOj7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Suman Ghosh <sumang@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Can Guo <quic_cang@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/112] ethernet: atheros: fix a memleak in atl1e_setup_ring_resources
+Subject: [PATCH 6.6 088/156] scsi: ufs: core: Let the sq_lock protect sq_tail_slot access
 Date: Sat, 30 Dec 2023 11:59:02 +0000
-Message-ID: <20231230115807.696772597@linuxfoundation.org>
+Message-ID: <20231230115815.232271354@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Can Guo <quic_cang@quicinc.com>
 
-[ Upstream commit 309fdb1c33fe726d92d0030481346f24e1b01f07 ]
+[ Upstream commit 04c116e2bdfc3969f9819d2cebfdf678353c354c ]
 
-In the error handling of 'offset > adapter->ring_size', the
-tx_ring->tx_buffer allocated by kzalloc should be freed,
-instead of 'goto failed' instantly.
+When accessing sq_tail_slot without protection from sq_lock, a race
+condition can cause multiple SQEs to be copied to duplicate SQE slots. This
+can lead to multiple stability issues. Fix this by moving the *dest
+initialization in ufshcd_send_command() back under protection from the
+sq_lock.
 
-Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 3c85f087faec ("scsi: ufs: mcq: Use pointer arithmetic in ufshcd_send_command()")
+Signed-off-by: Can Guo <quic_cang@quicinc.com>
+Link: https://lore.kernel.org/r/1702913550-20631-1-git-send-email-quic_cang@quicinc.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-index 5935be190b9e2..5f2a6fcba9670 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -866,10 +866,13 @@ static int atl1e_setup_ring_resources(struct atl1e_adapter *adapter)
- 		netdev_err(adapter->netdev, "offset(%d) > ring size(%d) !!\n",
- 			   offset, adapter->ring_size);
- 		err = -1;
--		goto failed;
-+		goto free_buffer;
- 	}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 170fbd5715b21..a885cc177cff7 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -2172,9 +2172,10 @@ void ufshcd_send_command(struct ufs_hba *hba, unsigned int task_tag,
+ 	if (is_mcq_enabled(hba)) {
+ 		int utrd_size = sizeof(struct utp_transfer_req_desc);
+ 		struct utp_transfer_req_desc *src = lrbp->utr_descriptor_ptr;
+-		struct utp_transfer_req_desc *dest = hwq->sqe_base_addr + hwq->sq_tail_slot;
++		struct utp_transfer_req_desc *dest;
  
- 	return 0;
-+free_buffer:
-+	kfree(tx_ring->tx_buffer);
-+	tx_ring->tx_buffer = NULL;
- failed:
- 	if (adapter->ring_vir_addr != NULL) {
- 		dma_free_coherent(&pdev->dev, adapter->ring_size,
+ 		spin_lock(&hwq->sq_lock);
++		dest = hwq->sqe_base_addr + hwq->sq_tail_slot;
+ 		memcpy(dest, src, utrd_size);
+ 		ufshcd_inc_sq_tail(hwq);
+ 		spin_unlock(&hwq->sq_lock);
 -- 
 2.43.0
 
