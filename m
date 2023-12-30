@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-8991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF3AF8205BD
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396B38205D4
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEA51F2328F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFE82B212A0
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:12:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE17E79CD;
-	Sat, 30 Dec 2023 12:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D283279EF;
+	Sat, 30 Dec 2023 12:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yy9TIw4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guzkFykp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C158483;
-	Sat, 30 Dec 2023 12:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41DCC433C8;
-	Sat, 30 Dec 2023 12:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B0C79DD;
+	Sat, 30 Dec 2023 12:12:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247B5C433C8;
+	Sat, 30 Dec 2023 12:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938290;
-	bh=H/w7slU9FZzAh/+U7Of+mglpkwa3ECHRdrr6EpkYiOs=;
+	s=korg; t=1703938344;
+	bh=HcKn7HXfRFA5zEqzxllfsggxycXUXb92tmdvJu0fNAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yy9TIw4U2z0RRA7nhUIr7CqMJlYmtD7abKd3/TQ99SKUHomFFziaAeHq/I//H6nDm
-	 dvE44fdwnrHCz5rNtJ3GxKYpCODDsn5jOqc7BkdaQCL4pCbSXoO0A6gEZhBDF/mRPD
-	 res43CjohkbvVaeAT9uBSmzUe1SwWZEu01AJhA3Y=
+	b=guzkFykpT6/IqfNMLhNDKwcCQs+v0La1efuI1fRNDmjm2jdVb2udOF2X2lN7fs2k8
+	 aqWxkT6lbeP/q2YOgynt8qLMrh28FGrd3vhMnQSIH2EtECHt/J/DAnvY+m5ihmZEuk
+	 Ebu0pSxTPewoNEWO8BaZhqBsAMGqqNh//765OOf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 099/112] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
-Date: Sat, 30 Dec 2023 12:00:12 +0000
-Message-ID: <20231230115809.961662447@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 100/112] pinctrl: starfive: jh7100: ignore disabled device tree nodes
+Date: Sat, 30 Dec 2023 12:00:13 +0000
+Message-ID: <20231230115809.993288961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
 References: <20231230115806.714618407@linuxfoundation.org>
@@ -56,67 +56,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
+commit 5c584f175d32f9cc66c909f851cd905da58b39ea upstream.
 
-__bio_for_each_segment assumes that the first struct bio_vec argument
-doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
-(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
-code changes the bio_vec with "bv.bv_len -= pos". When this code path
-is taken, the iterator would be out of sync and dm-integrity would
-report errors. This happens if the machine is out of memory and
-"kmalloc" fails.
+The driver always registers pin configurations in device tree. This can
+cause some inconvenience to users, as pin configurations in the base
+device tree cannot be disabled in the device tree overlay, even when the
+relevant devices are not used.
 
-Fix this bug by making a copy of "bv" and changing the copy instead.
+Ignore disabled pin configuration nodes in device tree.
 
-Fixes: 7eada909bfd7 ("dm: add integrity target")
-Cc: stable@vger.kernel.org	# v4.12+
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: ec648f6b7686 ("pinctrl: starfive: Add pinctrl driver for StarFive SoCs")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Link: https://lore.kernel.org/r/fe4c15dcc3074412326b8dc296b0cbccf79c49bf.1701422582.git.namcao@linutronix.de
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -1763,11 +1763,12 @@ static void integrity_metadata(struct wo
- 		sectors_to_process = dio->range.n_sectors;
+--- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
++++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
+@@ -489,7 +489,7 @@ static int starfive_dt_node_to_map(struc
  
- 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
-+			struct bio_vec bv_copy = bv;
- 			unsigned int pos;
- 			char *mem, *checksums_ptr;
+ 	nmaps = 0;
+ 	ngroups = 0;
+-	for_each_child_of_node(np, child) {
++	for_each_available_child_of_node(np, child) {
+ 		int npinmux = of_property_count_u32_elems(child, "pinmux");
+ 		int npins   = of_property_count_u32_elems(child, "pins");
  
- again:
--			mem = bvec_kmap_local(&bv);
-+			mem = bvec_kmap_local(&bv_copy);
- 			pos = 0;
- 			checksums_ptr = checksums;
- 			do {
-@@ -1776,7 +1777,7 @@ again:
- 				sectors_to_process -= ic->sectors_per_block;
- 				pos += ic->sectors_per_block << SECTOR_SHIFT;
- 				sector += ic->sectors_per_block;
--			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
-+			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
- 			kunmap_local(mem);
+@@ -524,7 +524,7 @@ static int starfive_dt_node_to_map(struc
+ 	nmaps = 0;
+ 	ngroups = 0;
+ 	mutex_lock(&sfp->mutex);
+-	for_each_child_of_node(np, child) {
++	for_each_available_child_of_node(np, child) {
+ 		int npins;
+ 		int i;
  
- 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
-@@ -1801,9 +1802,9 @@ again:
- 			if (!sectors_to_process)
- 				break;
- 
--			if (unlikely(pos < bv.bv_len)) {
--				bv.bv_offset += pos;
--				bv.bv_len -= pos;
-+			if (unlikely(pos < bv_copy.bv_len)) {
-+				bv_copy.bv_offset += pos;
-+				bv_copy.bv_len -= pos;
- 				goto again;
- 			}
- 		}
 
 
 
