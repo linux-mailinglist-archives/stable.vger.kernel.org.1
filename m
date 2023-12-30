@@ -1,42 +1,47 @@
-Return-Path: <stable+bounces-9000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 523A98205C7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043428205CB
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:12:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A1A1F234FA
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 373111C20FD7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47D779E0;
-	Sat, 30 Dec 2023 12:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C378473;
+	Sat, 30 Dec 2023 12:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDjogCZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIBb04vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6318825;
-	Sat, 30 Dec 2023 12:11:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3669AC433C8;
-	Sat, 30 Dec 2023 12:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB7179DC;
+	Sat, 30 Dec 2023 12:12:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861DFC433C8;
+	Sat, 30 Dec 2023 12:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938313;
-	bh=pJ/0G0Ue0A+MxVnqxaIIKQHkiU368uVP/SLnD/4tfis=;
+	s=korg; t=1703938323;
+	bh=BSkRvkLB8TOY0faiU4m5rW6OlXo2mywrhWIMTIGi5KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDjogCZPMURjetRC22h+nzagFmeG/qpW9BMpE18Hu9VpFZGAePYRyQRcFnEJ7n7Xr
-	 8tls6uw/quq2AXYLLqy2t5pITpvMpMmAKvUq35C66lE8AwjPQmbN3FlPa1zUxl01Uu
-	 SL1OUEvIkicgCrxXgnAJO8yMKBoJAKFs8quoW69o=
+	b=AIBb04vFO9sl7gmIyKnR1tBT/xGh+2a+sjgaaG2TbRc1gNJntghLLgRIP2z5Y6IIP
+	 TMw33FTl+6+eEopfUTA2/10FyCJNDSAN0CkdWVnmP2S9HTathVPUT8ExodbBszE7Mb
+	 FrNgOCw6o/Iau5gSnrTs9J/5A2nnfmoOmGBFr0Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.1 101/112] bus: ti-sysc: Flush posted write only after srst_udelay
-Date: Sat, 30 Dec 2023 12:00:14 +0000
-Message-ID: <20231230115810.022629134@linuxfoundation.org>
+	stable@kernel.org,
+	Riwen Lu <luriwen@kylinos.cn>,
+	xiongxin <xiongxin@kylinos.cn>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 102/112] gpio: dwapb: mask/unmask IRQ when disable/enale it
+Date: Sat, 30 Dec 2023 12:00:15 +0000
+Message-ID: <20231230115810.051620562@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
 References: <20231230115806.714618407@linuxfoundation.org>
@@ -55,60 +60,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: xiongxin <xiongxin@kylinos.cn>
 
-commit f71f6ff8c1f682a1cae4e8d7bdeed9d7f76b8f75 upstream.
+commit 1cc3542c76acb5f59001e3e562eba672f1983355 upstream.
 
-Commit 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before
-reset") caused a regression reproducable on omap4 duovero where the ISS
-target module can produce interconnect errors on boot. Turns out the
-registers are not accessible until after a delay for devices needing
-a ti,sysc-delay-us value.
+In the hardware implementation of the I2C HID driver based on DesignWare
+GPIO IRQ chip, when the user continues to use the I2C HID device in the
+suspend process, the I2C HID interrupt will be masked after the resume
+process is finished.
 
-Let's fix this by flushing the posted write only after the reset delay.
-We do flushing also for ti,sysc-delay-us using devices as that should
-trigger an interconnect error if the delay is not properly configured.
+This is because the disable_irq()/enable_irq() of the DesignWare GPIO
+driver does not synchronize the IRQ mask register state. In normal use
+of the I2C HID procedure, the GPIO IRQ irq_mask()/irq_unmask() functions
+are called in pairs. In case of an exception, i2c_hid_core_suspend()
+calls disable_irq() to disable the GPIO IRQ. With low probability, this
+causes irq_unmask() to not be called, which causes the GPIO IRQ to be
+masked and not unmasked in enable_irq(), raising an exception.
 
-Let's also add some comments while at it.
+Add synchronization to the masked register state in the
+dwapb_irq_enable()/dwapb_irq_disable() function. mask the GPIO IRQ
+before disabling it. After enabling the GPIO IRQ, unmask the IRQ.
 
-Fixes: 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before reset")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Fixes: 7779b3455697 ("gpio: add a driver for the Synopsys DesignWare APB GPIO block")
+Cc: stable@kernel.org
+Co-developed-by: Riwen Lu <luriwen@kylinos.cn>
+Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
+Signed-off-by: xiongxin <xiongxin@kylinos.cn>
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/ti-sysc.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-dwapb.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2174,13 +2174,23 @@ static int sysc_reset(struct sysc *ddata
- 		sysc_val = sysc_read_sysconfig(ddata);
- 		sysc_val |= sysc_mask;
- 		sysc_write(ddata, sysc_offset, sysc_val);
--		/* Flush posted write */
-+
-+		/*
-+		 * Some devices need a delay before reading registers
-+		 * after reset. Presumably a srst_udelay is not needed
-+		 * for devices that use a rstctrl register reset.
-+		 */
-+		if (ddata->cfg.srst_udelay)
-+			fsleep(ddata->cfg.srst_udelay);
-+
-+		/*
-+		 * Flush posted write. For devices needing srst_udelay
-+		 * this should trigger an interconnect error if the
-+		 * srst_udelay value is needed but not configured.
-+		 */
- 		sysc_val = sysc_read_sysconfig(ddata);
- 	}
+--- a/drivers/gpio/gpio-dwapb.c
++++ b/drivers/gpio/gpio-dwapb.c
+@@ -283,13 +283,15 @@ static void dwapb_irq_enable(struct irq_
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
++	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 	u32 val;
  
--	if (ddata->cfg.srst_udelay)
--		fsleep(ddata->cfg.srst_udelay);
--
- 	if (ddata->post_reset_quirk)
- 		ddata->post_reset_quirk(ddata);
+ 	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+-	val = dwapb_read(gpio, GPIO_INTEN);
+-	val |= BIT(irqd_to_hwirq(d));
++	val = dwapb_read(gpio, GPIO_INTEN) | BIT(hwirq);
+ 	dwapb_write(gpio, GPIO_INTEN, val);
++	val = dwapb_read(gpio, GPIO_INTMASK) & ~BIT(hwirq);
++	dwapb_write(gpio, GPIO_INTMASK, val);
+ 	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+ }
  
+@@ -297,12 +299,14 @@ static void dwapb_irq_disable(struct irq
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
++	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 	u32 val;
+ 
+ 	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+-	val = dwapb_read(gpio, GPIO_INTEN);
+-	val &= ~BIT(irqd_to_hwirq(d));
++	val = dwapb_read(gpio, GPIO_INTMASK) | BIT(hwirq);
++	dwapb_write(gpio, GPIO_INTMASK, val);
++	val = dwapb_read(gpio, GPIO_INTEN) & ~BIT(hwirq);
+ 	dwapb_write(gpio, GPIO_INTEN, val);
+ 	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+ }
 
 
 
