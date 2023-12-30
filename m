@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-8870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D816182053D
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5243A8205A6
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FF2281D46
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC352820AD
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C81F8473;
-	Sat, 30 Dec 2023 12:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ED779EE;
+	Sat, 30 Dec 2023 12:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLn98ofb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHuuL+u0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE6079E0;
-	Sat, 30 Dec 2023 12:06:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA4CC433C8;
-	Sat, 30 Dec 2023 12:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CE079CD;
+	Sat, 30 Dec 2023 12:10:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AA8C433C8;
+	Sat, 30 Dec 2023 12:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937976;
-	bh=Bk43Hkq/xQMTlsO3sW/brVJmuvoVrvrkGQbGedhlDU0=;
+	s=korg; t=1703938230;
+	bh=iPuCW4b72GEau599RTwqCRyNqqwyMKnOdcvJtRrFMVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLn98ofbGoNCU24+GjelK+CrhNPPSAP+IW2H/y4Q6SorcvvUSRP+yWYhpUBCBUGQm
-	 FoXbP3J4AT3/jNR/6vn9Vv5Jh45U79D5Ia2/Fxk5HFE8m73M/m7uo6L9u+NxRwTFDY
-	 Y6c3/2VZvXoemGYj+ODtYDpkcQPZWzrz7ESy/epI=
+	b=sHuuL+u0b0oo7Zgg96t12YzbSQfPBHVRhcDvOGA6cSobD/19S3HaSmMh568t9TKPo
+	 FT67gnsx1Z7lxEerQHPZJwBN+H+RyROpumhTz2QmW2BNp0Lfn9hSgOZigBBGjh2Uej
+	 2gw/jRKX5EY4iKWO3Ksk0RtQnB/TncCFwrnFD8F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 111/156] Bluetooth: L2CAP: Send reject on command corrupted request
-Date: Sat, 30 Dec 2023 11:59:25 +0000
-Message-ID: <20231230115815.996277895@linuxfoundation.org>
+	Imre Deak <imre.deak@intel.com>,
+	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 053/112] drm/i915: Fix ADL+ tiled plane stride when the POT stride is smaller than the original
+Date: Sat, 30 Dec 2023 11:59:26 +0000
+Message-ID: <20231230115808.408687995@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +56,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 78b99eb1faa7371bf9c534690f26a71b6996622d upstream.
+[ Upstream commit 324b70e997aab0a7deab8cb90711faccda4e98c8 ]
 
-L2CAP/COS/CED/BI-02-C PTS test send a malformed L2CAP signaling packet
-with 2 commands in it (a connection request and an unknown command) and
-expect to get a connection response packet and a command reject packet.
-The second is currently not sent.
+plane_view_scanout_stride() currently assumes that we had to pad the
+mapping stride with dummy pages in order to align it. But that is not
+the case if the original fb stride exceeds the aligned stride used
+to populate the remapped view, which is calculated from the user
+specified framebuffer width rather than the user specified framebuffer
+stride.
 
+Ignore the original fb stride in this case and just stick to the POT
+aligned stride. Getting this wrong will cause the plane to fetch the
+wrong data, and can lead to fault errors if the page tables at the
+bogus location aren't even populated.
+
+TODO: figure out if this is OK for CCS, or if we should instead increase
+the width of the view to cover the entire user specified fb stride
+instead...
+
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231204202443.31247-1-ville.syrjala@linux.intel.com
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+(cherry picked from commit 01a39f1c4f1220a4e6a25729fae87ff5794cbc52)
 Cc: stable@vger.kernel.org
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/display/intel_fb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6492,6 +6492,14 @@ drop:
- 	kfree_skb(skb);
- }
+diff --git a/drivers/gpu/drm/i915/display/intel_fb.c b/drivers/gpu/drm/i915/display/intel_fb.c
+index 583b3c0f96ddc..c69a638796c62 100644
+--- a/drivers/gpu/drm/i915/display/intel_fb.c
++++ b/drivers/gpu/drm/i915/display/intel_fb.c
+@@ -1316,7 +1316,8 @@ plane_view_scanout_stride(const struct intel_framebuffer *fb, int color_plane,
+ 	struct drm_i915_private *i915 = to_i915(fb->base.dev);
+ 	unsigned int stride_tiles;
  
-+static inline void l2cap_sig_send_rej(struct l2cap_conn *conn, u16 ident)
-+{
-+	struct l2cap_cmd_rej_unk rej;
-+
-+	rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
-+	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
-+}
-+
- static inline void l2cap_sig_channel(struct l2cap_conn *conn,
- 				     struct sk_buff *skb)
- {
-@@ -6517,23 +6525,24 @@ static inline void l2cap_sig_channel(str
- 
- 		if (len > skb->len || !cmd->ident) {
- 			BT_DBG("corrupted command");
-+			l2cap_sig_send_rej(conn, cmd->ident);
- 			break;
- 		}
- 
- 		err = l2cap_bredr_sig_cmd(conn, cmd, len, skb->data);
- 		if (err) {
--			struct l2cap_cmd_rej_unk rej;
--
- 			BT_ERR("Wrong link type (%d)", err);
--
--			rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
--			l2cap_send_cmd(conn, cmd->ident, L2CAP_COMMAND_REJ,
--				       sizeof(rej), &rej);
-+			l2cap_sig_send_rej(conn, cmd->ident);
- 		}
- 
- 		skb_pull(skb, len);
- 	}
- 
-+	if (skb->len > 0) {
-+		BT_DBG("corrupted command");
-+		l2cap_sig_send_rej(conn, 0);
-+	}
-+
- drop:
- 	kfree_skb(skb);
- }
+-	if (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14)
++	if ((IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14) &&
++	    src_stride_tiles < dst_stride_tiles)
+ 		stride_tiles = src_stride_tiles;
+ 	else
+ 		stride_tiles = dst_stride_tiles;
+-- 
+2.43.0
+
 
 
 
