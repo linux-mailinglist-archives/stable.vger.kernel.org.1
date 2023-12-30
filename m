@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-8862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6CF820535
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E2482059F
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F101F202CA
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90C30281FF2
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A1379C2;
-	Sat, 30 Dec 2023 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671F679DC;
+	Sat, 30 Dec 2023 12:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP/9qhP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFWk8dCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC9F8821;
-	Sat, 30 Dec 2023 12:05:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC418C433C7;
-	Sat, 30 Dec 2023 12:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3124579DE;
+	Sat, 30 Dec 2023 12:10:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0485C433C7;
+	Sat, 30 Dec 2023 12:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937956;
-	bh=zKNT9zowcqcYdnaX1w2m+FF8nc8XhEKvA3FRN5/tjY8=;
+	s=korg; t=1703938212;
+	bh=Ij5J6aAD3VePlrUyxJsT8o7EZPZ/tioynQK6+/y4s1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lP/9qhP9rMpFrYRlnfSu35gx0NECgL3ocK4zYoIFkQXp4PKuM817w2cdEXyUyt4hK
-	 e6cY1c5+gf6CpzFi3dwh96eYmnyrFYwpdGELnYvaYjFEwRnilrL8N300e5/nzXTX3B
-	 8447+d+kMSIk+YA05mCu24N37oeVIdNdSx0GSIZI=
+	b=pFWk8dCPsIronCm1mlgksV5YzWUnXkLVOjpVXFMEoNFLS9zEIQPzNdfV5CdwCKT5f
+	 z6RdQqeD1Hzq0tlrDfJppuag5bkxWkfBT/VmK510/8zOk7Q5Fr5xK9Jc8LqnIWT8Yl
+	 Ie9+L0D6BCaGg6xZ6OP0Tjwuk///ULQgoI8ef1Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 127/156] smb: client: fix OOB in SMB2_query_info_init()
-Date: Sat, 30 Dec 2023 11:59:41 +0000
-Message-ID: <20231230115816.519594970@linuxfoundation.org>
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 069/112] USB: serial: option: add Quectel RM500Q R13 firmware support
+Date: Sat, 30 Dec 2023 11:59:42 +0000
+Message-ID: <20231230115808.939541303@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,183 +52,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-commit 33eae65c6f49770fec7a662935d4eb4a6406d24b upstream.
+commit 06f22cd6635bdae7d73566fca9879b2026a08e00 upstream.
 
-A small CIFS buffer (448 bytes) isn't big enough to hold
-SMB2_QUERY_INFO request along with user's input data from
-CIFS_QUERY_INFO ioctl.  That is, if the user passed an input buffer >
-344 bytes, the client will memcpy() off the end of @req->Buffer in
-SMB2_query_info_init() thus causing the following KASAN splat:
+Add support for Quectel RM500Q R13 firmware which uses Prot=40 for the
+NMEA port:
 
-  BUG: KASAN: slab-out-of-bounds in SMB2_query_info_init+0x242/0x250 [cifs]
-  Write of size 1023 at addr ffff88801308c5a8 by task a.out/1240
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  8 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0800 Rev= 4.14
+S:  Manufacturer=Quectel
+S:  Product=RM500Q-AE
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-  CPU: 1 PID: 1240 Comm: a.out Not tainted 6.7.0-rc4 #5
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xd8/0x110
-   ? SMB2_query_info_init+0x242/0x250 [cifs]
-   ? SMB2_query_info_init+0x242/0x250 [cifs]
-   kasan_check_range+0x105/0x1b0
-   __asan_memcpy+0x3c/0x60
-   SMB2_query_info_init+0x242/0x250 [cifs]
-   ? __pfx_SMB2_query_info_init+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? smb_rqst_len+0xa6/0xc0 [cifs]
-   smb2_ioctl_query_info+0x4f4/0x9a0 [cifs]
-   ? __pfx_smb2_ioctl_query_info+0x10/0x10 [cifs]
-   ? __pfx_cifsConvertToUTF16+0x10/0x10 [cifs]
-   ? kasan_set_track+0x25/0x30
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kasan_kmalloc+0x8f/0xa0
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? cifs_strndup_to_utf16+0x12d/0x1a0 [cifs]
-   ? __build_path_from_dentry_optional_prefix+0x19d/0x2d0 [cifs]
-   ? __pfx_smb2_ioctl_query_info+0x10/0x10 [cifs]
-   cifs_ioctl+0x11c7/0x1de0 [cifs]
-   ? __pfx_cifs_ioctl+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? rcu_is_watching+0x23/0x50
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __rseq_handle_notify_resume+0x6cd/0x850
-   ? __pfx___schedule+0x10/0x10
-   ? blkcg_iostat_update+0x250/0x290
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? ksys_write+0xe9/0x170
-   __x64_sys_ioctl+0xc9/0x100
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7f893dde49cf
-  Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48
-  89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <89>
-  c2 3d 00 f0 ff ff 77 18 48 8b 44 24 18 64 48 2b 04 25 28 00 00
-  RSP: 002b:00007ffc03ff4160 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00007ffc03ff4378 RCX: 00007f893dde49cf
-  RDX: 00007ffc03ff41d0 RSI: 00000000c018cf07 RDI: 0000000000000003
-  RBP: 00007ffc03ff4260 R08: 0000000000000410 R09: 0000000000000001
-  R10: 00007f893dce7300 R11: 0000000000000246 R12: 0000000000000000
-  R13: 00007ffc03ff4388 R14: 00007f893df15000 R15: 0000000000406de0
-   </TASK>
-
-Fix this by increasing size of SMB2_QUERY_INFO request buffers and
-validating input length to prevent other callers from overflowing @req
-in SMB2_query_info_init() as well.
-
-Fixes: f5b05d622a3e ("cifs: add IOCTL for QUERY_INFO passthrough to userspace")
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
 Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |   29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -376,10 +376,15 @@ static int __smb2_plain_req_init(__le16
- 				 void **request_buf, unsigned int *total_len)
- {
- 	/* BB eventually switch this to SMB2 specific small buf size */
--	if (smb2_command == SMB2_SET_INFO)
-+	switch (smb2_command) {
-+	case SMB2_SET_INFO:
-+	case SMB2_QUERY_INFO:
- 		*request_buf = cifs_buf_get();
--	else
-+		break;
-+	default:
- 		*request_buf = cifs_small_buf_get();
-+		break;
-+	}
- 	if (*request_buf == NULL) {
- 		/* BB should we add a retry in here if not a writepage? */
- 		return -ENOMEM;
-@@ -3494,8 +3499,13 @@ SMB2_query_info_init(struct cifs_tcon *t
- 	struct smb2_query_info_req *req;
- 	struct kvec *iov = rqst->rq_iov;
- 	unsigned int total_len;
-+	size_t len;
- 	int rc;
- 
-+	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
-+		     len > CIFSMaxBufSize))
-+		return -EINVAL;
-+
- 	rc = smb2_plain_req_init(SMB2_QUERY_INFO, tcon, server,
- 				 (void **) &req, &total_len);
- 	if (rc)
-@@ -3517,7 +3527,7 @@ SMB2_query_info_init(struct cifs_tcon *t
- 
- 	iov[0].iov_base = (char *)req;
- 	/* 1 for Buffer */
--	iov[0].iov_len = total_len - 1 + input_len;
-+	iov[0].iov_len = len;
- 	return 0;
- }
- 
-@@ -3525,7 +3535,7 @@ void
- SMB2_query_info_free(struct smb_rqst *rqst)
- {
- 	if (rqst && rqst->rq_iov)
--		cifs_small_buf_release(rqst->rq_iov[0].iov_base); /* request */
-+		cifs_buf_release(rqst->rq_iov[0].iov_base); /* request */
- }
- 
- static int
-@@ -5392,6 +5402,11 @@ build_qfs_info_req(struct kvec *iov, str
- 	return 0;
- }
- 
-+static inline void free_qfs_info_req(struct kvec *iov)
-+{
-+	cifs_buf_release(iov->iov_base);
-+}
-+
- int
- SMB311_posix_qfs_info(const unsigned int xid, struct cifs_tcon *tcon,
- 	      u64 persistent_fid, u64 volatile_fid, struct kstatfs *fsdata)
-@@ -5423,7 +5438,7 @@ SMB311_posix_qfs_info(const unsigned int
- 
- 	rc = cifs_send_recv(xid, ses, server,
- 			    &rqst, &resp_buftype, flags, &rsp_iov);
--	cifs_small_buf_release(iov.iov_base);
-+	free_qfs_info_req(&iov);
- 	if (rc) {
- 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
- 		goto posix_qfsinf_exit;
-@@ -5474,7 +5489,7 @@ SMB2_QFS_info(const unsigned int xid, st
- 
- 	rc = cifs_send_recv(xid, ses, server,
- 			    &rqst, &resp_buftype, flags, &rsp_iov);
--	cifs_small_buf_release(iov.iov_base);
-+	free_qfs_info_req(&iov);
- 	if (rc) {
- 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
- 		goto qfsinf_exit;
-@@ -5541,7 +5556,7 @@ SMB2_QFS_attr(const unsigned int xid, st
- 
- 	rc = cifs_send_recv(xid, ses, server,
- 			    &rqst, &resp_buftype, flags, &rsp_iov);
--	cifs_small_buf_release(iov.iov_base);
-+	free_qfs_info_req(&iov);
- 	if (rc) {
- 		cifs_stats_fail_inc(tcon, SMB2_QUERY_INFO_HE);
- 		goto qfsattr_exit;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1233,6 +1233,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, 0x0700, 0xff), /* BG95 */
+ 	  .driver_info = RSVD(3) | ZLP },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x10),
+ 	  .driver_info = ZLP },
 
 
 
