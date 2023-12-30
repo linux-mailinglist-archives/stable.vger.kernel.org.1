@@ -1,44 +1,46 @@
-Return-Path: <stable+bounces-8766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8798204C8
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:01:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 363128204B3
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9F81C20E0C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:01:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0A851F21505
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C7E79DE;
-	Sat, 30 Dec 2023 12:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5D079E0;
+	Sat, 30 Dec 2023 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxVPEagi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DC9Ur/nm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CE079CD;
-	Sat, 30 Dec 2023 12:01:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DAFC433C8;
-	Sat, 30 Dec 2023 12:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375FD79DC;
+	Sat, 30 Dec 2023 12:00:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CB62C433C8;
+	Sat, 30 Dec 2023 12:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937707;
-	bh=0NoMbjtM3Gz6L6/dw8NURG3u0qxvDbd4Ri4BGY6vA0s=;
+	s=korg; t=1703937650;
+	bh=mt+RDhVkwVPW4X5LRtr6G22nbNkFNAmMmpwaLPfSfTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxVPEagigV5XbJvecr7ECVNY9FhyfdJwKTyDjtBYiZcKyUymJRLZ374ZB0espkMdE
-	 wbMpO0LIxbdauZTQm5kRuYbYAv2ArNokxom4b7baK1nMA2YHmnS3aNSQs1EaiSrs3W
-	 5ZCQVS8s3rhuPA2VfO0l4ioy4+f6Xngsd93IK4+E=
+	b=DC9Ur/nmpiKgxep0xcGyI24Y005AvrdZGYM/ZuGJw4tS/l/YGSIxKSlrzQ2LzA1C5
+	 uQf+L5m5ti5T9AIeQ3eFfYtZ2mFIdD2Dmt3SGxZReKfT6jg39XC4sEozB/gr9jglyL
+	 HGismKdrJnrJTm3E2V6SqnVjlJ1LjmfPSLOFyoGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Animesh Manna <animesh.manna@intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
 	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/156] drm/i915: Introduce crtc_state->enhanced_framing
-Date: Sat, 30 Dec 2023 11:57:43 +0000
-Message-ID: <20231230115812.662514386@linuxfoundation.org>
+Subject: [PATCH 6.6 010/156] drm/i915/edp: dont write to DP_LINK_BW_SET when using rate select
+Date: Sat, 30 Dec 2023 11:57:44 +0000
+Message-ID: <20231230115812.701902401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -58,198 +60,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 3072a24c778a7102d70692af5556e47363114c67 ]
+[ Upstream commit e6861d8264cd43c5eb20196e53df36fd71ec5698 ]
 
-Track DP enhanced framing properly in the crtc state instead
-of relying just on the cached DPCD everywhere, and hook it
-up into the state check and dump.
+The eDP 1.5 spec adds a clarification for eDP 1.4x:
 
-v2: Actually set enhanced_framing in .compute_config()
+> For eDP v1.4x, if the Source device chooses the Main-Link rate by way
+> of DPCD 00100h, the Sink device shall ignore DPCD 00115h[2:0].
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230503113659.16305-1-ville.syrjala@linux.intel.com
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-Stable-dep-of: e6861d8264cd ("drm/i915/edp: don't write to DP_LINK_BW_SET when using rate select")
+We write 0 to DP_LINK_BW_SET (DPCD 100h) even when using
+DP_LINK_RATE_SET (DPCD 114h). Stop doing that, as it can cause the panel
+to ignore the rate set method.
+
+Moreover, 0 is a reserved value for DP_LINK_BW_SET, and should not be
+used.
+
+v2: Improve the comments (Ville)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9081
+Tested-by: Animesh Manna <animesh.manna@intel.com>
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231205180551.2476228-1-jani.nikula@intel.com
+(cherry picked from commit 23b392b94acb0499f69706c5808c099f590ebcf4)
+Cc: stable@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/g4x_dp.c                 | 10 ++++++++--
- drivers/gpu/drm/i915/display/intel_crt.c              |  2 ++
- drivers/gpu/drm/i915/display/intel_crtc_state_dump.c  |  5 +++--
- drivers/gpu/drm/i915/display/intel_ddi.c              | 11 +++++++++--
- drivers/gpu/drm/i915/display/intel_display.c          |  1 +
- drivers/gpu/drm/i915/display/intel_display_types.h    |  2 ++
- drivers/gpu/drm/i915/display/intel_dp.c               |  3 +++
- drivers/gpu/drm/i915/display/intel_dp_link_training.c |  2 +-
- 8 files changed, 29 insertions(+), 7 deletions(-)
+ .../drm/i915/display/intel_dp_link_training.c | 31 +++++++++++++------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/g4x_dp.c b/drivers/gpu/drm/i915/display/g4x_dp.c
-index 4c7187f7913ea..e8ee0a08947e8 100644
---- a/drivers/gpu/drm/i915/display/g4x_dp.c
-+++ b/drivers/gpu/drm/i915/display/g4x_dp.c
-@@ -141,7 +141,7 @@ static void intel_dp_prepare(struct intel_encoder *encoder,
- 
- 		intel_de_rmw(dev_priv, TRANS_DP_CTL(crtc->pipe),
- 			     TRANS_DP_ENH_FRAMING,
--			     drm_dp_enhanced_frame_cap(intel_dp->dpcd) ?
-+			     pipe_config->enhanced_framing ?
- 			     TRANS_DP_ENH_FRAMING : 0);
- 	} else {
- 		if (IS_G4X(dev_priv) && pipe_config->limited_color_range)
-@@ -153,7 +153,7 @@ static void intel_dp_prepare(struct intel_encoder *encoder,
- 			intel_dp->DP |= DP_SYNC_VS_HIGH;
- 		intel_dp->DP |= DP_LINK_TRAIN_OFF;
- 
--		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
-+		if (pipe_config->enhanced_framing)
- 			intel_dp->DP |= DP_ENHANCED_FRAMING;
- 
- 		if (IS_CHERRYVIEW(dev_priv))
-@@ -351,6 +351,9 @@ static void intel_dp_get_config(struct intel_encoder *encoder,
- 		u32 trans_dp = intel_de_read(dev_priv,
- 					     TRANS_DP_CTL(crtc->pipe));
- 
-+		if (trans_dp & TRANS_DP_ENH_FRAMING)
-+			pipe_config->enhanced_framing = true;
-+
- 		if (trans_dp & TRANS_DP_HSYNC_ACTIVE_HIGH)
- 			flags |= DRM_MODE_FLAG_PHSYNC;
- 		else
-@@ -361,6 +364,9 @@ static void intel_dp_get_config(struct intel_encoder *encoder,
- 		else
- 			flags |= DRM_MODE_FLAG_NVSYNC;
- 	} else {
-+		if (tmp & DP_ENHANCED_FRAMING)
-+			pipe_config->enhanced_framing = true;
-+
- 		if (tmp & DP_SYNC_HS_HIGH)
- 			flags |= DRM_MODE_FLAG_PHSYNC;
- 		else
-diff --git a/drivers/gpu/drm/i915/display/intel_crt.c b/drivers/gpu/drm/i915/display/intel_crt.c
-index d23020eb87f46..4352f90177615 100644
---- a/drivers/gpu/drm/i915/display/intel_crt.c
-+++ b/drivers/gpu/drm/i915/display/intel_crt.c
-@@ -456,6 +456,8 @@ static int hsw_crt_compute_config(struct intel_encoder *encoder,
- 	/* FDI must always be 2.7 GHz */
- 	pipe_config->port_clock = 135000 * 2;
- 
-+	pipe_config->enhanced_framing = true;
-+
- 	adjusted_mode->crtc_clock = lpt_iclkip(pipe_config);
- 
- 	return 0;
-diff --git a/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c b/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-index 8b34fa55fa1bd..66fe880af8f3f 100644
---- a/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-+++ b/drivers/gpu/drm/i915/display/intel_crtc_state_dump.c
-@@ -258,8 +258,9 @@ void intel_crtc_state_dump(const struct intel_crtc_state *pipe_config,
- 		intel_dump_m_n_config(pipe_config, "dp m2_n2",
- 				      pipe_config->lane_count,
- 				      &pipe_config->dp_m2_n2);
--		drm_dbg_kms(&i915->drm, "fec: %s\n",
--			    str_enabled_disabled(pipe_config->fec_enable));
-+		drm_dbg_kms(&i915->drm, "fec: %s, enhanced framing: %s\n",
-+			    str_enabled_disabled(pipe_config->fec_enable),
-+			    str_enabled_disabled(pipe_config->enhanced_framing));
- 	}
- 
- 	drm_dbg_kms(&i915->drm, "framestart delay: %d, MSA timing delay: %d\n",
-diff --git a/drivers/gpu/drm/i915/display/intel_ddi.c b/drivers/gpu/drm/i915/display/intel_ddi.c
-index 85e2263e688de..c7e00f57cb7ab 100644
---- a/drivers/gpu/drm/i915/display/intel_ddi.c
-+++ b/drivers/gpu/drm/i915/display/intel_ddi.c
-@@ -3432,7 +3432,7 @@ static void mtl_ddi_prepare_link_retrain(struct intel_dp *intel_dp,
- 		dp_tp_ctl |= DP_TP_CTL_MODE_MST;
- 	} else {
- 		dp_tp_ctl |= DP_TP_CTL_MODE_SST;
--		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
-+		if (crtc_state->enhanced_framing)
- 			dp_tp_ctl |= DP_TP_CTL_ENHANCED_FRAME_ENABLE;
- 	}
- 	intel_de_write(dev_priv, dp_tp_ctl_reg(encoder, crtc_state), dp_tp_ctl);
-@@ -3489,7 +3489,7 @@ static void intel_ddi_prepare_link_retrain(struct intel_dp *intel_dp,
- 		dp_tp_ctl |= DP_TP_CTL_MODE_MST;
- 	} else {
- 		dp_tp_ctl |= DP_TP_CTL_MODE_SST;
--		if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
-+		if (crtc_state->enhanced_framing)
- 			dp_tp_ctl |= DP_TP_CTL_ENHANCED_FRAME_ENABLE;
- 	}
- 	intel_de_write(dev_priv, dp_tp_ctl_reg(encoder, crtc_state), dp_tp_ctl);
-@@ -3724,6 +3724,10 @@ static void intel_ddi_read_func_ctl(struct intel_encoder *encoder,
- 		intel_cpu_transcoder_get_m2_n2(crtc, cpu_transcoder,
- 					       &pipe_config->dp_m2_n2);
- 
-+		pipe_config->enhanced_framing =
-+			intel_de_read(dev_priv, dp_tp_ctl_reg(encoder, pipe_config)) &
-+			DP_TP_CTL_ENHANCED_FRAME_ENABLE;
-+
- 		if (DISPLAY_VER(dev_priv) >= 11)
- 			pipe_config->fec_enable =
- 				intel_de_read(dev_priv,
-@@ -3740,6 +3744,9 @@ static void intel_ddi_read_func_ctl(struct intel_encoder *encoder,
- 		if (!HAS_DP20(dev_priv)) {
- 			/* FDI */
- 			pipe_config->output_types |= BIT(INTEL_OUTPUT_ANALOG);
-+			pipe_config->enhanced_framing =
-+				intel_de_read(dev_priv, dp_tp_ctl_reg(encoder, pipe_config)) &
-+				DP_TP_CTL_ENHANCED_FRAME_ENABLE;
- 			break;
- 		}
- 		fallthrough; /* 128b/132b */
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index 1e2b09ae09b9c..2d9d96ecbb251 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -5255,6 +5255,7 @@ intel_pipe_config_compare(const struct intel_crtc_state *current_config,
- 	PIPE_CONF_CHECK_BOOL(hdmi_scrambling);
- 	PIPE_CONF_CHECK_BOOL(hdmi_high_tmds_clock_ratio);
- 	PIPE_CONF_CHECK_BOOL(has_infoframe);
-+	PIPE_CONF_CHECK_BOOL(enhanced_framing);
- 	PIPE_CONF_CHECK_BOOL(fec_enable);
- 
- 	PIPE_CONF_CHECK_BOOL_INCOMPLETE(has_audio);
-diff --git a/drivers/gpu/drm/i915/display/intel_display_types.h b/drivers/gpu/drm/i915/display/intel_display_types.h
-index 731f2ec04d5cd..7fc92b1474cc4 100644
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1362,6 +1362,8 @@ struct intel_crtc_state {
- 	u16 linetime;
- 	u16 ips_linetime;
- 
-+	bool enhanced_framing;
-+
- 	/* Forward Error correction State */
- 	bool fec_enable;
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 66e35f8443e1a..b4fb7ce39d06f 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2312,6 +2312,9 @@ intel_dp_compute_config(struct intel_encoder *encoder,
- 	pipe_config->limited_color_range =
- 		intel_dp_limited_color_range(pipe_config, conn_state);
- 
-+	pipe_config->enhanced_framing =
-+		drm_dp_enhanced_frame_cap(intel_dp->dpcd);
-+
- 	if (pipe_config->dsc.compression_enable)
- 		output_bpp = pipe_config->dsc.compressed_bpp;
- 	else
 diff --git a/drivers/gpu/drm/i915/display/intel_dp_link_training.c b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-index a263773f4d68a..d09e43a38fa61 100644
+index d09e43a38fa61..a62bca622b0a1 100644
 --- a/drivers/gpu/drm/i915/display/intel_dp_link_training.c
 +++ b/drivers/gpu/drm/i915/display/intel_dp_link_training.c
-@@ -655,7 +655,7 @@ intel_dp_update_link_bw_set(struct intel_dp *intel_dp,
- 	/* Write the link configuration data */
- 	link_config[0] = link_bw;
- 	link_config[1] = crtc_state->lane_count;
--	if (drm_dp_enhanced_frame_cap(intel_dp->dpcd))
-+	if (crtc_state->enhanced_framing)
- 		link_config[1] |= DP_LANE_COUNT_ENHANCED_FRAME_EN;
- 	drm_dp_dpcd_write(&intel_dp->aux, DP_LINK_BW_SET, link_config, 2);
+@@ -650,19 +650,30 @@ intel_dp_update_link_bw_set(struct intel_dp *intel_dp,
+ 			    const struct intel_crtc_state *crtc_state,
+ 			    u8 link_bw, u8 rate_select)
+ {
+-	u8 link_config[2];
++	u8 lane_count = crtc_state->lane_count;
  
+-	/* Write the link configuration data */
+-	link_config[0] = link_bw;
+-	link_config[1] = crtc_state->lane_count;
+ 	if (crtc_state->enhanced_framing)
+-		link_config[1] |= DP_LANE_COUNT_ENHANCED_FRAME_EN;
+-	drm_dp_dpcd_write(&intel_dp->aux, DP_LINK_BW_SET, link_config, 2);
++		lane_count |= DP_LANE_COUNT_ENHANCED_FRAME_EN;
++
++	if (link_bw) {
++		/* DP and eDP v1.3 and earlier link bw set method. */
++		u8 link_config[] = { link_bw, lane_count };
+ 
+-	/* eDP 1.4 rate select method. */
+-	if (!link_bw)
+-		drm_dp_dpcd_write(&intel_dp->aux, DP_LINK_RATE_SET,
+-				  &rate_select, 1);
++		drm_dp_dpcd_write(&intel_dp->aux, DP_LINK_BW_SET, link_config,
++				  ARRAY_SIZE(link_config));
++	} else {
++		/*
++		 * eDP v1.4 and later link rate set method.
++		 *
++		 * eDP v1.4x sinks shall ignore DP_LINK_RATE_SET if
++		 * DP_LINK_BW_SET is set. Avoid writing DP_LINK_BW_SET.
++		 *
++		 * eDP v1.5 sinks allow choosing either, and the last choice
++		 * shall be active.
++		 */
++		drm_dp_dpcd_writeb(&intel_dp->aux, DP_LANE_COUNT_SET, lane_count);
++		drm_dp_dpcd_writeb(&intel_dp->aux, DP_LINK_RATE_SET, rate_select);
++	}
+ }
+ 
+ /*
 -- 
 2.43.0
 
