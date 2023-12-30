@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-8828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681FF820512
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA366820576
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99FC11C20EC7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCA061C210BF
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07A079DE;
-	Sat, 30 Dec 2023 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E86779DC;
+	Sat, 30 Dec 2023 12:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6bGSYZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzE0I3+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA10E79DC;
-	Sat, 30 Dec 2023 12:04:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4266FC433C8;
-	Sat, 30 Dec 2023 12:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C1E8BEB;
+	Sat, 30 Dec 2023 12:08:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B450BC433C7;
+	Sat, 30 Dec 2023 12:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937867;
-	bh=RqaqHwmtyWEDuYMBpFSYZ1QMrmdOdNL/FiDIgq206k0=;
+	s=korg; t=1703938121;
+	bh=UxqPWMNsMSCybpGsoKYlWYc96MgT5rrphYZTBCz6UlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6bGSYZ0uvaC3N5lwcuIiHd9KK0ADH/JLhXsr4Aems/cvmu+P3pZY2KJjDIK1lAdY
-	 nw5BcWLxTOU/4pDFbg+0OKBt8s4b6H58YqKSZ5UV566KAazqPFEB4NzRwbOMLE9Byc
-	 +CwR3bzm6WZ8RDcSdbZ+wmhMs3i7rTWODSasq/QU=
+	b=SzE0I3+PXF4xuz4P6dXfXRSyd4w+XhsKFWCCWyiH9PoNGAcDyakc4JjoiHdJBQs6I
+	 PMgpdDfGovYm2QwkfNwHjZrZmXOe0EmjGQ0h+H9Ryu5PVxZBoaESavmN7dxmf1/o7w
+	 z3rJhErYW9o1ywVnIBLSmPXxM3J9rEjPeqVeAKvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco@wolfvision.net>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 094/156] iio: tmag5273: fix temperature offset
+	David Howells <dhowells@redhat.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 035/112] afs: Fix the dynamic roots d_delete to always delete unused dentries
 Date: Sat, 30 Dec 2023 11:59:08 +0000
-Message-ID: <20231230115815.432279624@linuxfoundation.org>
+Message-ID: <20231230115807.875031707@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +55,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco@wolfvision.net>
+From: David Howells <dhowells@redhat.com>
 
-commit 3b8157ec4573e304a29b7bced627e144dbc3dfdb upstream.
+[ Upstream commit 71f8b55bc30e82d6355e07811213d847981a32e2 ]
 
-The current offset has the scale already applied to it. The ABI
-documentation defines the offset parameter as "offset to be added
-to <type>[Y]_raw prior to scaling by <type>[Y]_scale in order to
-obtain value in the <type> units as specified in <type>[Y]_raw
-documentation"
+Fix the afs dynamic root's d_delete function to always delete unused
+dentries rather than only deleting them if they're positive.  With things
+as they stand upstream, negative dentries stemming from failed DNS lookups
+stick around preventing retries.
 
-The right value is obtained at 0 degrees Celsius by the formula provided
-in the datasheet:
-
-T = Tsens_t0 + (Tadc_t - Tadc_t0) / Tadc_res
-
-where:
-T = 0 degrees Celsius
-Tsens_t0 (reference temperature) = 25 degrees Celsius
-Tadc_t0 (16-bit format for Tsens_t0) = 17508
-Tadc_res = 60.1 LSB/degree Celsius
-
-The resulting offset is 16005.5, which has been truncated to 16005 to
-provide an integer value with a precision loss smaller than the 1-LSB
-measurement precision.
-
-Fix the offset to apply its value prior to scaling.
-
-Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-Link: https://lore.kernel.org/r/9879beec-05fc-4fc6-af62-d771e238954e@wolfvision.net
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 66c7e1d319a5 ("afs: Split the dynroot stuff out and give it its own ops tables")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/magnetometer/tmag5273.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/dynroot.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
---- a/drivers/iio/magnetometer/tmag5273.c
-+++ b/drivers/iio/magnetometer/tmag5273.c
-@@ -356,7 +356,7 @@ static int tmag5273_read_raw(struct iio_
- 	case IIO_CHAN_INFO_OFFSET:
- 		switch (chan->type) {
- 		case IIO_TEMP:
--			*val = -266314;
-+			*val = -16005;
- 			return IIO_VAL_INT;
- 		default:
- 			return -EINVAL;
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index 91e804c70dd0a..910c8a7a685ce 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -252,20 +252,9 @@ static int afs_dynroot_d_revalidate(struct dentry *dentry, unsigned int flags)
+ 	return 1;
+ }
+ 
+-/*
+- * Allow the VFS to enquire as to whether a dentry should be unhashed (mustn't
+- * sleep)
+- * - called from dput() when d_count is going to 0.
+- * - return 1 to request dentry be unhashed, 0 otherwise
+- */
+-static int afs_dynroot_d_delete(const struct dentry *dentry)
+-{
+-	return d_really_is_positive(dentry);
+-}
+-
+ const struct dentry_operations afs_dynroot_dentry_operations = {
+ 	.d_revalidate	= afs_dynroot_d_revalidate,
+-	.d_delete	= afs_dynroot_d_delete,
++	.d_delete	= always_delete_dentry,
+ 	.d_release	= afs_d_release,
+ 	.d_automount	= afs_d_automount,
+ };
+-- 
+2.43.0
+
 
 
 
