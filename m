@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-8846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A082B820523
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C4E820565
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C04B51C20F43
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DBF31C2104D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B4279DF;
-	Sat, 30 Dec 2023 12:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC9C79EF;
+	Sat, 30 Dec 2023 12:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+yiRGaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kW/IoYpc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60096AD6;
-	Sat, 30 Dec 2023 12:05:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E087C433C7;
-	Sat, 30 Dec 2023 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535A779DE;
+	Sat, 30 Dec 2023 12:08:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81983C433C8;
+	Sat, 30 Dec 2023 12:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937914;
-	bh=pVM7Uxj0OgHbd8Oml5sRPnKgWD0DjgA/7VJ2P1rrpyU=;
+	s=korg; t=1703938079;
+	bh=DLDxNCX6DIe7lMRJof1aeL29jIaxHxv3bLyc6efyYkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z+yiRGaV06X4P35hPA1b8oYir7/C8WnTecSBbwVtJVrJ+slJwp4jaUsgpU9cVoQuQ
-	 lTljJ/It23VTLKVNAP24tNx8of6rIzTIj8WmKm0U17eUDAiJ67iZYtulUT7LPPCJI9
-	 LA5F8X0eZU0H5JPcyIe6sqyBtxWQFD5MPEJWtX8E=
+	b=kW/IoYpc3+p6sB14lIcLUpe726LoQeIVT6O4uDjJiel0H0Q1scQl9yI0vrxmiKlIY
+	 32rpH3tWzIhNdA6I9eFfdPFK5TShvQrx0uKd7bM1f8s7ZoTWbJGWHIRJPBUke9BhoT
+	 Yyv2fceIWAJpsA/QRlbl5lmZ02P14KSCV73l7VhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/156] pinctrl: at91-pio4: use dedicated lock class for IRQ
+Subject: [PATCH 6.1 019/112] net/mlx5: Re-organize mlx5_cmd struct
 Date: Sat, 30 Dec 2023 11:58:52 +0000
-Message-ID: <20231230115814.913443215@linuxfoundation.org>
+Message-ID: <20231230115807.365789407@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,123 +52,341 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 14694179e561b5f2f7e56a0f590e2cb49a9cc7ab ]
+[ Upstream commit 58db72869a9f8e01910844ca145efc2ea91bbbf9 ]
 
-Trying to suspend to RAM on SAMA5D27 EVK leads to the following lockdep
-warning:
+Downstream patch will split mlx5_cmd_init() to probe and reload
+routines. As a preparation, organize mlx5_cmd struct so that any
+field that will be used in the reload routine are grouped at new
+nested struct.
 
- ============================================
- WARNING: possible recursive locking detected
- 6.7.0-rc5-wt+ #532 Not tainted
- --------------------------------------------
- sh/92 is trying to acquire lock:
- c3cf306c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
-
- but task is already holding lock:
- c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
-
- other info that might help us debug this:
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-   lock(&irq_desc_lock_class);
-   lock(&irq_desc_lock_class);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 6 locks held by sh/92:
-  #0: c3aa0258 (sb_writers#6){.+.+}-{0:0}, at: ksys_write+0xd8/0x178
-  #1: c4c2df44 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x138/0x284
-  #2: c32684a0 (kn->active){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x148/0x284
-  #3: c232b6d4 (system_transition_mutex){+.+.}-{3:3}, at: pm_suspend+0x13c/0x4e8
-  #4: c387b088 (&dev->mutex){....}-{3:3}, at: __device_suspend+0x1e8/0x91c
-  #5: c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
-
- stack backtrace:
- CPU: 0 PID: 92 Comm: sh Not tainted 6.7.0-rc5-wt+ #532
- Hardware name: Atmel SAMA5
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x34/0x48
-  dump_stack_lvl from __lock_acquire+0x19ec/0x3a0c
-  __lock_acquire from lock_acquire.part.0+0x124/0x2d0
-  lock_acquire.part.0 from _raw_spin_lock_irqsave+0x5c/0x78
-  _raw_spin_lock_irqsave from __irq_get_desc_lock+0xe8/0x100
-  __irq_get_desc_lock from irq_set_irq_wake+0xa8/0x204
-  irq_set_irq_wake from atmel_gpio_irq_set_wake+0x58/0xb4
-  atmel_gpio_irq_set_wake from irq_set_irq_wake+0x100/0x204
-  irq_set_irq_wake from gpio_keys_suspend+0xec/0x2b8
-  gpio_keys_suspend from dpm_run_callback+0xe4/0x248
-  dpm_run_callback from __device_suspend+0x234/0x91c
-  __device_suspend from dpm_suspend+0x224/0x43c
-  dpm_suspend from dpm_suspend_start+0x9c/0xa8
-  dpm_suspend_start from suspend_devices_and_enter+0x1e0/0xa84
-  suspend_devices_and_enter from pm_suspend+0x460/0x4e8
-  pm_suspend from state_store+0x78/0xe4
-  state_store from kernfs_fop_write_iter+0x1a0/0x284
-  kernfs_fop_write_iter from vfs_write+0x38c/0x6f4
-  vfs_write from ksys_write+0xd8/0x178
-  ksys_write from ret_fast_syscall+0x0/0x1c
- Exception stack(0xc52b3fa8 to 0xc52b3ff0)
- 3fa0:                   00000004 005a0ae8 00000001 005a0ae8 00000004 00000001
- 3fc0: 00000004 005a0ae8 00000001 00000004 00000004 b6c616c0 00000020 0059d190
- 3fe0: 00000004 b6c61678 aec5a041 aebf1a26
-
-This warning is raised because pinctrl-at91-pio4 uses chained IRQ. Whenever
-a wake up source configures an IRQ through irq_set_irq_wake, it will
-lock the corresponding IRQ desc, and then call irq_set_irq_wake on "parent"
-IRQ which will do the same on its own IRQ desc, but since those two locks
-share the same class, lockdep reports this as an issue.
-
-Fix lockdep false positive by setting a different class for parent and
-children IRQ
-
-Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20231215-lockdep_warning-v1-1-8137b2510ed5@bootlin.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 8f5100da56b3 ("net/mlx5e: Fix a race in command alloc flow")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91-pio4.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 94 +++++++++----------
+ .../net/ethernet/mellanox/mlx5/core/debugfs.c |  4 +-
+ include/linux/mlx5/driver.h                   | 21 +++--
+ 3 files changed, 60 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
-index 383309e533c3d..a27c01fcbb47e 100644
---- a/drivers/pinctrl/pinctrl-at91-pio4.c
-+++ b/drivers/pinctrl/pinctrl-at91-pio4.c
-@@ -1068,6 +1068,13 @@ static const struct of_device_id atmel_pctrl_of_match[] = {
- 	}
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 84f926064cf7b..e89d4fb7774bb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -162,18 +162,18 @@ static int cmd_alloc_index(struct mlx5_cmd *cmd)
+ 	int ret;
  
-+/*
-+ * This lock class allows to tell lockdep that parent IRQ and children IRQ do
-+ * not share the same class so it does not raise false positive
-+ */
-+static struct lock_class_key atmel_lock_key;
-+static struct lock_class_key atmel_request_key;
-+
- static int atmel_pinctrl_probe(struct platform_device *pdev)
+ 	spin_lock_irqsave(&cmd->alloc_lock, flags);
+-	ret = find_first_bit(&cmd->bitmask, cmd->max_reg_cmds);
+-	if (ret < cmd->max_reg_cmds)
+-		clear_bit(ret, &cmd->bitmask);
++	ret = find_first_bit(&cmd->vars.bitmask, cmd->vars.max_reg_cmds);
++	if (ret < cmd->vars.max_reg_cmds)
++		clear_bit(ret, &cmd->vars.bitmask);
+ 	spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 
+-	return ret < cmd->max_reg_cmds ? ret : -ENOMEM;
++	return ret < cmd->vars.max_reg_cmds ? ret : -ENOMEM;
+ }
+ 
+ static void cmd_free_index(struct mlx5_cmd *cmd, int idx)
  {
- 	struct device *dev = &pdev->dev;
-@@ -1214,6 +1221,7 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
- 		irq_set_chip_and_handler(irq, &atmel_gpio_irq_chip,
- 					 handle_simple_irq);
- 		irq_set_chip_data(irq, atmel_pioctrl);
-+		irq_set_lockdep_class(irq, &atmel_lock_key, &atmel_request_key);
- 		dev_dbg(dev,
- 			"atmel gpio irq domain: hwirq: %d, linux irq: %d\n",
- 			i, irq);
+ 	lockdep_assert_held(&cmd->alloc_lock);
+-	set_bit(idx, &cmd->bitmask);
++	set_bit(idx, &cmd->vars.bitmask);
+ }
+ 
+ static void cmd_ent_get(struct mlx5_cmd_work_ent *ent)
+@@ -192,7 +192,7 @@ static void cmd_ent_put(struct mlx5_cmd_work_ent *ent)
+ 
+ 	if (ent->idx >= 0) {
+ 		cmd_free_index(cmd, ent->idx);
+-		up(ent->page_queue ? &cmd->pages_sem : &cmd->sem);
++		up(ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem);
+ 	}
+ 
+ 	cmd_free_ent(ent);
+@@ -202,7 +202,7 @@ static void cmd_ent_put(struct mlx5_cmd_work_ent *ent)
+ 
+ static struct mlx5_cmd_layout *get_inst(struct mlx5_cmd *cmd, int idx)
+ {
+-	return cmd->cmd_buf + (idx << cmd->log_stride);
++	return cmd->cmd_buf + (idx << cmd->vars.log_stride);
+ }
+ 
+ static int mlx5_calc_cmd_blocks(struct mlx5_cmd_msg *msg)
+@@ -971,7 +971,7 @@ static void cmd_work_handler(struct work_struct *work)
+ 	cb_timeout = msecs_to_jiffies(mlx5_tout_ms(dev, CMD));
+ 
+ 	complete(&ent->handling);
+-	sem = ent->page_queue ? &cmd->pages_sem : &cmd->sem;
++	sem = ent->page_queue ? &cmd->vars.pages_sem : &cmd->vars.sem;
+ 	down(sem);
+ 	if (!ent->page_queue) {
+ 		alloc_ret = cmd_alloc_index(cmd);
+@@ -991,9 +991,9 @@ static void cmd_work_handler(struct work_struct *work)
+ 		}
+ 		ent->idx = alloc_ret;
+ 	} else {
+-		ent->idx = cmd->max_reg_cmds;
++		ent->idx = cmd->vars.max_reg_cmds;
+ 		spin_lock_irqsave(&cmd->alloc_lock, flags);
+-		clear_bit(ent->idx, &cmd->bitmask);
++		clear_bit(ent->idx, &cmd->vars.bitmask);
+ 		spin_unlock_irqrestore(&cmd->alloc_lock, flags);
+ 	}
+ 
+@@ -1569,15 +1569,15 @@ void mlx5_cmd_allowed_opcode(struct mlx5_core_dev *dev, u16 opcode)
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+ 	int i;
+ 
+-	for (i = 0; i < cmd->max_reg_cmds; i++)
+-		down(&cmd->sem);
+-	down(&cmd->pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++		down(&cmd->vars.sem);
++	down(&cmd->vars.pages_sem);
+ 
+ 	cmd->allowed_opcode = opcode;
+ 
+-	up(&cmd->pages_sem);
+-	for (i = 0; i < cmd->max_reg_cmds; i++)
+-		up(&cmd->sem);
++	up(&cmd->vars.pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++		up(&cmd->vars.sem);
+ }
+ 
+ static void mlx5_cmd_change_mod(struct mlx5_core_dev *dev, int mode)
+@@ -1585,15 +1585,15 @@ static void mlx5_cmd_change_mod(struct mlx5_core_dev *dev, int mode)
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+ 	int i;
+ 
+-	for (i = 0; i < cmd->max_reg_cmds; i++)
+-		down(&cmd->sem);
+-	down(&cmd->pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++		down(&cmd->vars.sem);
++	down(&cmd->vars.pages_sem);
+ 
+ 	cmd->mode = mode;
+ 
+-	up(&cmd->pages_sem);
+-	for (i = 0; i < cmd->max_reg_cmds; i++)
+-		up(&cmd->sem);
++	up(&cmd->vars.pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++		up(&cmd->vars.sem);
+ }
+ 
+ static int cmd_comp_notifier(struct notifier_block *nb,
+@@ -1652,7 +1652,7 @@ static void mlx5_cmd_comp_handler(struct mlx5_core_dev *dev, u64 vec, bool force
+ 
+ 	/* there can be at most 32 command queues */
+ 	vector = vec & 0xffffffff;
+-	for (i = 0; i < (1 << cmd->log_sz); i++) {
++	for (i = 0; i < (1 << cmd->vars.log_sz); i++) {
+ 		if (test_bit(i, &vector)) {
+ 			ent = cmd->ent_arr[i];
+ 
+@@ -1741,7 +1741,7 @@ static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
+ 	/* wait for pending handlers to complete */
+ 	mlx5_eq_synchronize_cmd_irq(dev);
+ 	spin_lock_irqsave(&dev->cmd.alloc_lock, flags);
+-	vector = ~dev->cmd.bitmask & ((1ul << (1 << dev->cmd.log_sz)) - 1);
++	vector = ~dev->cmd.vars.bitmask & ((1ul << (1 << dev->cmd.vars.log_sz)) - 1);
+ 	if (!vector)
+ 		goto no_trig;
+ 
+@@ -1750,14 +1750,14 @@ static void mlx5_cmd_trigger_completions(struct mlx5_core_dev *dev)
+ 	 * to guarantee pending commands will not get freed in the meanwhile.
+ 	 * For that reason, it also has to be done inside the alloc_lock.
+ 	 */
+-	for_each_set_bit(i, &bitmask, (1 << cmd->log_sz))
++	for_each_set_bit(i, &bitmask, (1 << cmd->vars.log_sz))
+ 		cmd_ent_get(cmd->ent_arr[i]);
+ 	vector |= MLX5_TRIGGERED_CMD_COMP;
+ 	spin_unlock_irqrestore(&dev->cmd.alloc_lock, flags);
+ 
+ 	mlx5_core_dbg(dev, "vector 0x%llx\n", vector);
+ 	mlx5_cmd_comp_handler(dev, vector, true);
+-	for_each_set_bit(i, &bitmask, (1 << cmd->log_sz))
++	for_each_set_bit(i, &bitmask, (1 << cmd->vars.log_sz))
+ 		cmd_ent_put(cmd->ent_arr[i]);
+ 	return;
+ 
+@@ -1770,22 +1770,22 @@ void mlx5_cmd_flush(struct mlx5_core_dev *dev)
+ 	struct mlx5_cmd *cmd = &dev->cmd;
+ 	int i;
+ 
+-	for (i = 0; i < cmd->max_reg_cmds; i++) {
+-		while (down_trylock(&cmd->sem)) {
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++) {
++		while (down_trylock(&cmd->vars.sem)) {
+ 			mlx5_cmd_trigger_completions(dev);
+ 			cond_resched();
+ 		}
+ 	}
+ 
+-	while (down_trylock(&cmd->pages_sem)) {
++	while (down_trylock(&cmd->vars.pages_sem)) {
+ 		mlx5_cmd_trigger_completions(dev);
+ 		cond_resched();
+ 	}
+ 
+ 	/* Unlock cmdif */
+-	up(&cmd->pages_sem);
+-	for (i = 0; i < cmd->max_reg_cmds; i++)
+-		up(&cmd->sem);
++	up(&cmd->vars.pages_sem);
++	for (i = 0; i < cmd->vars.max_reg_cmds; i++)
++		up(&cmd->vars.sem);
+ }
+ 
+ static struct mlx5_cmd_msg *alloc_msg(struct mlx5_core_dev *dev, int in_size,
+@@ -1855,7 +1855,7 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+ 		/* atomic context may not sleep */
+ 		if (callback)
+ 			return -EINVAL;
+-		down(&dev->cmd.throttle_sem);
++		down(&dev->cmd.vars.throttle_sem);
+ 	}
+ 
+ 	pages_queue = is_manage_pages(in);
+@@ -1900,7 +1900,7 @@ static int cmd_exec(struct mlx5_core_dev *dev, void *in, int in_size, void *out,
+ 	free_msg(dev, inb);
+ out_up:
+ 	if (throttle_op)
+-		up(&dev->cmd.throttle_sem);
++		up(&dev->cmd.vars.throttle_sem);
+ 	return err;
+ }
+ 
+@@ -2210,16 +2210,16 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
+ 		goto err_free_pool;
+ 
+ 	cmd_l = ioread32be(&dev->iseg->cmdq_addr_l_sz) & 0xff;
+-	cmd->log_sz = cmd_l >> 4 & 0xf;
+-	cmd->log_stride = cmd_l & 0xf;
+-	if (1 << cmd->log_sz > MLX5_MAX_COMMANDS) {
++	cmd->vars.log_sz = cmd_l >> 4 & 0xf;
++	cmd->vars.log_stride = cmd_l & 0xf;
++	if (1 << cmd->vars.log_sz > MLX5_MAX_COMMANDS) {
+ 		mlx5_core_err(dev, "firmware reports too many outstanding commands %d\n",
+-			      1 << cmd->log_sz);
++			      1 << cmd->vars.log_sz);
+ 		err = -EINVAL;
+ 		goto err_free_page;
+ 	}
+ 
+-	if (cmd->log_sz + cmd->log_stride > MLX5_ADAPTER_PAGE_SHIFT) {
++	if (cmd->vars.log_sz + cmd->vars.log_stride > MLX5_ADAPTER_PAGE_SHIFT) {
+ 		mlx5_core_err(dev, "command queue size overflow\n");
+ 		err = -EINVAL;
+ 		goto err_free_page;
+@@ -2227,13 +2227,13 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
+ 
+ 	cmd->state = MLX5_CMDIF_STATE_DOWN;
+ 	cmd->checksum_disabled = 1;
+-	cmd->max_reg_cmds = (1 << cmd->log_sz) - 1;
+-	cmd->bitmask = (1UL << cmd->max_reg_cmds) - 1;
++	cmd->vars.max_reg_cmds = (1 << cmd->vars.log_sz) - 1;
++	cmd->vars.bitmask = (1UL << cmd->vars.max_reg_cmds) - 1;
+ 
+-	cmd->cmdif_rev = ioread32be(&dev->iseg->cmdif_rev_fw_sub) >> 16;
+-	if (cmd->cmdif_rev > CMD_IF_REV) {
++	cmd->vars.cmdif_rev = ioread32be(&dev->iseg->cmdif_rev_fw_sub) >> 16;
++	if (cmd->vars.cmdif_rev > CMD_IF_REV) {
+ 		mlx5_core_err(dev, "driver does not support command interface version. driver %d, firmware %d\n",
+-			      CMD_IF_REV, cmd->cmdif_rev);
++			      CMD_IF_REV, cmd->vars.cmdif_rev);
+ 		err = -EOPNOTSUPP;
+ 		goto err_free_page;
+ 	}
+@@ -2243,9 +2243,9 @@ int mlx5_cmd_init(struct mlx5_core_dev *dev)
+ 	for (i = 0; i < MLX5_CMD_OP_MAX; i++)
+ 		spin_lock_init(&cmd->stats[i].lock);
+ 
+-	sema_init(&cmd->sem, cmd->max_reg_cmds);
+-	sema_init(&cmd->pages_sem, 1);
+-	sema_init(&cmd->throttle_sem, DIV_ROUND_UP(cmd->max_reg_cmds, 2));
++	sema_init(&cmd->vars.sem, cmd->vars.max_reg_cmds);
++	sema_init(&cmd->vars.pages_sem, 1);
++	sema_init(&cmd->vars.throttle_sem, DIV_ROUND_UP(cmd->vars.max_reg_cmds, 2));
+ 
+ 	cmd_h = (u32)((u64)(cmd->dma) >> 32);
+ 	cmd_l = (u32)(cmd->dma);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+index bb95b40d25eb5..e0b0729e238c1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/debugfs.c
+@@ -176,8 +176,8 @@ static ssize_t slots_read(struct file *filp, char __user *buf, size_t count,
+ 	int ret;
+ 
+ 	cmd = filp->private_data;
+-	weight = bitmap_weight(&cmd->bitmask, cmd->max_reg_cmds);
+-	field = cmd->max_reg_cmds - weight;
++	weight = bitmap_weight(&cmd->vars.bitmask, cmd->vars.max_reg_cmds);
++	field = cmd->vars.max_reg_cmds - weight;
+ 	ret = snprintf(tbuf, sizeof(tbuf), "%d\n", field);
+ 	return simple_read_from_buffer(buf, count, pos, tbuf, ret);
+ }
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index ce019c337f67f..93ec34a94b724 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -282,18 +282,23 @@ struct mlx5_cmd_stats {
+ struct mlx5_cmd {
+ 	struct mlx5_nb    nb;
+ 
++	/* members which needs to be queried or reinitialized each reload */
++	struct {
++		u16		cmdif_rev;
++		u8		log_sz;
++		u8		log_stride;
++		int		max_reg_cmds;
++		unsigned long	bitmask;
++		struct semaphore sem;
++		struct semaphore pages_sem;
++		struct semaphore throttle_sem;
++	} vars;
+ 	enum mlx5_cmdif_state	state;
+ 	void	       *cmd_alloc_buf;
+ 	dma_addr_t	alloc_dma;
+ 	int		alloc_size;
+ 	void	       *cmd_buf;
+ 	dma_addr_t	dma;
+-	u16		cmdif_rev;
+-	u8		log_sz;
+-	u8		log_stride;
+-	int		max_reg_cmds;
+-	int		events;
+-	u32 __iomem    *vector;
+ 
+ 	/* protect command queue allocations
+ 	 */
+@@ -303,12 +308,8 @@ struct mlx5_cmd {
+ 	 */
+ 	spinlock_t	token_lock;
+ 	u8		token;
+-	unsigned long	bitmask;
+ 	char		wq_name[MLX5_CMD_WQ_MAX_NAME];
+ 	struct workqueue_struct *wq;
+-	struct semaphore sem;
+-	struct semaphore pages_sem;
+-	struct semaphore throttle_sem;
+ 	int	mode;
+ 	u16     allowed_opcode;
+ 	struct mlx5_cmd_work_ent *ent_arr[MLX5_MAX_COMMANDS];
 -- 
 2.43.0
 
