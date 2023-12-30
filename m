@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-8793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F4A8204E5
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:02:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8A48204CC
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A8D1F21993
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:02:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 556E61F21460
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16F08473;
-	Sat, 30 Dec 2023 12:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426588BFB;
+	Sat, 30 Dec 2023 12:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoemCF/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL9W2c60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9950579EF;
-	Sat, 30 Dec 2023 12:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226B9C433C8;
-	Sat, 30 Dec 2023 12:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0863C8BF3;
+	Sat, 30 Dec 2023 12:01:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848FDC433C8;
+	Sat, 30 Dec 2023 12:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937777;
-	bh=FhTdmwuk5yHzPUZKf3Ukx0Ml4Fg1IqqY5JGZWZgZ5Ts=;
+	s=korg; t=1703937712;
+	bh=MXlVAFwDvfEtwa5mhxlQDyagDN51kZ3AwaOwg/vSF9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoemCF/WjoHMJuqrSiwGIAJ5cnLxFEvhZYrAmFunHOPMDtAyUdX7MdKLQ7lyFRLvL
-	 06xvhDZSvUneXAECWYF/JGxRSYiBFxx+54C+hbaSevryG58BmEqJ6DyVsQQABE05RT
-	 ARzD6oMA1c9Fbf0WmGEx3hHbhjODz+e5xmqHa64w=
+	b=PL9W2c60caopDcPdzFazNdbXcDDSYPlyjrQqtHUwcItzwvs8w6Ary0jCtSdY1IDME
+	 2y/DqeeP2ghr6QePkKedCISQRTzUKm+owDumqEsQSllCh1wX2JotDL6Hri0TppEiCi
+	 v3h4RFZEEzcc4xgT1K0jmjaWJUwWpULV6RzZccdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/156] wifi: mac80211: check defragmentation succeeded
-Date: Sat, 30 Dec 2023 11:57:59 +0000
-Message-ID: <20231230115813.199111872@linuxfoundation.org>
+Subject: [PATCH 6.6 026/156] wifi: mac80211: mesh: check element parsing succeeded
+Date: Sat, 30 Dec 2023 11:58:00 +0000
+Message-ID: <20231230115813.226840801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -59,44 +59,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 98849ba2aa9db46e62720fb686a9d63ed9887806 ]
+[ Upstream commit 1fc4a3eec50d726f4663ad3c0bb0158354d6647a ]
 
-We need to check that cfg80211_defragment_element()
-didn't return an error, since it can fail due to bad
-input, and we didn't catch that before.
+ieee802_11_parse_elems() can return NULL, so we must
+check for the return value.
 
-Fixes: 8eb8dd2ffbbb ("wifi: mac80211: Support link removal using Reconfiguration ML element")
+Fixes: 5d24828d05f3 ("mac80211: always allocate struct ieee802_11_elems")
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231211085121.8595a6b67fc0.I1225edd8f98355e007f96502e358e476c7971d8c@changeid
+Link: https://msgid.link/20231211085121.93dea364f3d3.Ie87781c6c48979fb25a744b90af4a33dc2d83a28@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/mesh_plink.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 0c9198997482b..73f8df03d159c 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5805,7 +5805,7 @@ static void ieee80211_ml_reconfiguration(struct ieee80211_sub_if_data *sdata,
- {
- 	const struct ieee80211_multi_link_elem *ml;
- 	const struct element *sub;
--	size_t ml_len;
-+	ssize_t ml_len;
- 	unsigned long removed_links = 0;
- 	u16 link_removal_timeout[IEEE80211_MLD_MAX_NUM_LINKS] = {};
- 	u8 link_id;
-@@ -5821,6 +5821,8 @@ static void ieee80211_ml_reconfiguration(struct ieee80211_sub_if_data *sdata,
- 					     elems->scratch + elems->scratch_len -
- 					     elems->scratch_pos,
- 					     WLAN_EID_FRAGMENT);
-+	if (ml_len < 0)
-+		return;
- 
- 	elems->ml_reconf = (const void *)elems->scratch_pos;
- 	elems->ml_reconf_len = ml_len;
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index a1e526419e9d2..5c8a3ff0ae0cc 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -1243,6 +1243,8 @@ void mesh_rx_plink_frame(struct ieee80211_sub_if_data *sdata,
+ 			return;
+ 	}
+ 	elems = ieee802_11_parse_elems(baseaddr, len - baselen, true, NULL);
+-	mesh_process_plink_frame(sdata, mgmt, elems, rx_status);
+-	kfree(elems);
++	if (elems) {
++		mesh_process_plink_frame(sdata, mgmt, elems, rx_status);
++		kfree(elems);
++	}
+ }
 -- 
 2.43.0
 
