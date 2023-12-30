@@ -1,129 +1,140 @@
-Return-Path: <stable+bounces-8723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797AB82046C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:58:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 324BC82046E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 654951C20ACA
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:58:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632C81C20D3D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22E42561;
-	Sat, 30 Dec 2023 10:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A748F1FCF;
+	Sat, 30 Dec 2023 10:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDVIFxVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHMxF9NK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791BF20EA;
-	Sat, 30 Dec 2023 10:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8405BC433C8;
-	Sat, 30 Dec 2023 10:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7283163A5
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:59:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D469C433C7;
+	Sat, 30 Dec 2023 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933906;
-	bh=8jyz6J2LW3mt3sCjl8zoQF4EqO3LKwzRdDigq943sAk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xDVIFxVWAL2N+h4ZkCJcxGDZdybqW/kXLjElPQj3TLx0dqcjj+M490OqEFPuDHoCa
-	 o7ftRMpl5vdnEZORUgXW2bZZcqnJpMcP+oE5LtcjRxY0IPt3ge2HquMhrwRbdZFvFZ
-	 PQrjC+F/JrFWMSppnxutARJX1kZdW3PN5RLV31pI=
-Date: Sat, 30 Dec 2023 10:58:23 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Sagar Biradar <sagar.biradar@microchip.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Adaptec OEM Raid Solutions <aacraid@microsemi.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	Hannes Reinecke <hare@suse.de>, scsi <linux-scsi@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Gilbert Wu <gilbert.wu@microchip.com>,
-	John Garry <john.g.garry@oracle.com>
-Subject: Re: scsi regression that after months is still not addressed and now
- bothering 6.1.y users, too
-Message-ID: <2023123013-dose-skirmish-27c2@gregkh>
-References: <c6ff53dc-a001-48ee-8559-b69be8e4db81@leemhuis.info>
- <2023112456-disinfect-undoing-b5ef@gregkh>
- <34c5b291-b69e-4592-bc9f-fc1b2ef5c5d7@leemhuis.info>
- <ZY8oXge0QKYUkO1b@eldamar.lan>
+	s=korg; t=1703933943;
+	bh=h8uSNfdXDF+groE7gmYd1peWWJp8MA/erretcXRuRrs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=eHMxF9NKqBNgqEU+nPUUWnhpRsU5RwhULVt4iEb1gtwCgI6g2UlFI6BWjh1cXfOAc
+	 +EXquKbG8H/LzdD8oPbjlivb5cScfDX6pj3mCo1CI8ANThkZMPzxWf8Fr2GnzpqUvF
+	 GX7roSUSnePSO9IMpQ6w9/WKFrXXdMCGNMB9Hrjs=
+Subject: FAILED: patch "[PATCH] dm-integrity: don't modify bio's immutable bio_vec in" failed to apply to 5.15-stable tree
+To: mpatocka@redhat.com,snitzer@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 30 Dec 2023 10:59:01 +0000
+Message-ID: <2023123001-profusely-reassign-059b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZY8oXge0QKYUkO1b@eldamar.lan>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 29, 2023 at 09:13:18PM +0100, Salvatore Bonaccorso wrote:
-> Hi all,
-> 
-> On Sat, Nov 25, 2023 at 08:10:35AM +0100, Thorsten Leemhuis wrote:
-> > On 24.11.23 17:25, Greg KH wrote:
-> > > On Tue, Nov 21, 2023 at 10:50:57AM +0100, Thorsten Leemhuis wrote:
-> > >> * @SCSI maintainers: could you please look into below please?
-> > >>
-> > >> * @Stable team: you might want to take a look as well and consider a
-> > >> revert in 6.1.y (yes, I know, those are normally avoided, but here it
-> > >> might make sense).
-> > >>
-> > >> Hi everyone!
-> > >>
-> > >> TLDR: I noticed a regression (Adaptec 71605z with aacraid sometimes
-> > >> hangs for a while) that was reported months ago already but is still not
-> > >> fixed. Not only that, it apparently more and more users run into this
-> > >> recently, as the culprit was recently integrated into 6.1.y; I wonder if
-> > >> it would be best to revert it there, unless a fix for mainline comes
-> > >> into reach soon.
-> > >>
-> > >> Details:
-> > >>
-> > >> Quite a few machines with Adaptec controllers seems to hang for a few
-> > >> tens of seconds to a few minutes before things start to work normally
-> > >> again for a while:
-> > >> https://bugzilla.kernel.org/show_bug.cgi?id=217599
-> > >>
-> > >> That problem is apparently caused by 9dc704dcc09eae ("scsi: aacraid:
-> > >> Reply queue mapping to CPUs based on IRQ affinity") [v6.4-rc7]. That
-> > >> commit despite a warning of mine to Sasha recently made it into 6.1.53
-> > >> -- and that way apparently recently reached more users recently, as
-> > >> quite a few joined that ticket.
-> > >[...]
-> > > I am loath to revert a stable patch that has been there for so long as
-> > > any upgrade will just cause the same bug to show back up. Why can't we
-> > > just revert it in Linus's tree now and I'll take that revert in the
-> > > stable trees as well?
-> > 
-> > FWIW, I know and in general agree with that strategy, that's why I
-> > normally wouldn't have brought a stable-only revert up for
-> > consideration. But this issue to me looked somewhat special and urgent
-> > for two and a half reasons: (1) that backport apparently made a lot more
-> > people suddenly hit the issue (2) there was also this data corruption
-> > aspect one of the reporters mentioned (not sure if that is real and/or
-> > if this might be just a 6.1.y thing). Furthermore for 6.1.y it was
-> > recently confirmed that reverting the change fixes things, while we iirc
-> > had no such confirmation for recent mainline kernels at that point. So
-> > it looked like it would take a while to get this sorted out in mainline.
-> > But it seems we finally might get closer to that now, so yeah, maybe
-> > it's not worth a stable revert.
-> 
-> If I'm not completely wrong, finally indeed the commit has been
-> reverted in mainline, with c5becf57dd56 ("Revert "scsi: aacraid: Reply
-> queue mapping to CPUs based on IRQ affinity"") .
-> 
-> This is what was mentioned here:
-> https://bugzilla.kernel.org/show_bug.cgi?id=217599#c52
-> 
-> So should/can it be reverted it now as well on the 6.1.y stable series
-> (and the others up as needed?)
 
-Now queued up, thanks.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x b86f4b790c998afdbc88fe1aa55cfe89c4068726
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123001-profusely-reassign-059b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+b86f4b790c99 ("dm-integrity: don't modify bio's immutable bio_vec in integrity_metadata()")
+86a3238c7b9b ("dm: change "unsigned" to "unsigned int"")
+7533afa1d27b ("dm: send just one event on resize, not two")
+5cd6d1d53a1f ("dm integrity: Remove bi_sector that's only used by commented debug code")
+22c40e134c4c ("dm cache: Add some documentation to dm-cache-background-tracker.h")
+86e4d3e8d183 ("dm-crypt: provide dma_alignment limit in io_hints")
+c3adefb5baf3 ("Merge tag 'for-6.0/dm-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/device-mapper/linux-dm")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b86f4b790c998afdbc88fe1aa55cfe89c4068726 Mon Sep 17 00:00:00 2001
+From: Mikulas Patocka <mpatocka@redhat.com>
+Date: Tue, 5 Dec 2023 16:39:16 +0100
+Subject: [PATCH] dm-integrity: don't modify bio's immutable bio_vec in
+ integrity_metadata()
+
+__bio_for_each_segment assumes that the first struct bio_vec argument
+doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+code changes the bio_vec with "bv.bv_len -= pos". When this code path
+is taken, the iterator would be out of sync and dm-integrity would
+report errors. This happens if the machine is out of memory and
+"kmalloc" fails.
+
+Fix this bug by making a copy of "bv" and changing the copy instead.
+
+Fixes: 7eada909bfd7 ("dm: add integrity target")
+Cc: stable@vger.kernel.org	# v4.12+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index e85c688fd91e..c5f03aab4552 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -1755,11 +1755,12 @@ static void integrity_metadata(struct work_struct *w)
+ 		sectors_to_process = dio->range.n_sectors;
+ 
+ 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned int pos;
+ 			char *mem, *checksums_ptr;
+ 
+ again:
+-			mem = bvec_kmap_local(&bv);
++			mem = bvec_kmap_local(&bv_copy);
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1768,7 +1769,7 @@ static void integrity_metadata(struct work_struct *w)
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_local(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1793,9 +1794,9 @@ static void integrity_metadata(struct work_struct *w)
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
+
 
