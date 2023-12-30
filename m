@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-8977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07ECA8205AF
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A1E820547
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39C5B1C21151
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 874AC1C21015
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76036849C;
-	Sat, 30 Dec 2023 12:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6BC79C2;
+	Sat, 30 Dec 2023 12:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVD1lttf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePL/B1i9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400C579DC;
-	Sat, 30 Dec 2023 12:10:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE24C433C7;
-	Sat, 30 Dec 2023 12:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BA979D8;
+	Sat, 30 Dec 2023 12:06:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F97DC433C7;
+	Sat, 30 Dec 2023 12:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938254;
-	bh=2voai+wTGMDdfQZNJ+vS5HmdObP0Mq9vXuAE8Ovh1Bo=;
+	s=korg; t=1703938002;
+	bh=sjo1KcoFUZGlRjib0/hkLgwxf/4KZkp9PJ16qNSNeoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVD1lttfYVTVyIErlBpNjEICw50036Bdyc+u7HULdiXknKc6imgBvO392DO3IMLHy
-	 ea8+MsiTS6x737yVOASc7qy4nYtLfVQBZ6XDD7/Wxn7h1pemAPxe2PzxVcNXFj4AjE
-	 Syljq/fWetJkUJ9XZvK//bJYzJsqM/zSzqcrlSE0=
+	b=ePL/B1i9Julr41CEOU0Yne2ctad8/3eMb1bZAQOT9GHZd9L8dskxlUr2BHAV4ZJ0m
+	 E2i+0ybMB1ke/sBrz8a9SVObWGjAB674KxksnSCG+QmP7oKUh5zNZy2aLszZrt2hae
+	 EAow5U6ctRpNWdXiwovjWyAEcXpW6gzgraCRNqJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 086/112] drm/i915: Reject async flips with bigjoiner
-Date: Sat, 30 Dec 2023 11:59:59 +0000
-Message-ID: <20231230115809.550116533@linuxfoundation.org>
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.6 146/156] bus: ti-sysc: Flush posted write only after srst_udelay
+Date: Sat, 30 Dec 2023 12:00:00 +0000
+Message-ID: <20231230115817.092478298@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +49,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 88a173e5dd05e788068e8fa20a8c37c44bd8f416 upstream.
+commit f71f6ff8c1f682a1cae4e8d7bdeed9d7f76b8f75 upstream.
 
-Currently async flips are busted when bigjoiner is in use.
-As a short term fix simply reject async flips in that case.
+Commit 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before
+reset") caused a regression reproducable on omap4 duovero where the ISS
+target module can produce interconnect errors on boot. Turns out the
+registers are not accessible until after a delay for devices needing
+a ti,sysc-delay-us value.
 
+Let's fix this by flushing the posted write only after the reset delay.
+We do flushing also for ti,sysc-delay-us using devices as that should
+trigger an interconnect error if the delay is not properly configured.
+
+Let's also add some comments while at it.
+
+Fixes: 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before reset")
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9769
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081134.2698-1-ville.syrjala@linux.intel.com
-Reviewed-by: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
-(cherry picked from commit e93bffc2ac0a833b42841f31fff955549d38ce98)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/bus/ti-sysc.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -6481,6 +6481,17 @@ static int intel_async_flip_check_uapi(s
- 		return -EINVAL;
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -2158,13 +2158,23 @@ static int sysc_reset(struct sysc *ddata
+ 		sysc_val = sysc_read_sysconfig(ddata);
+ 		sysc_val |= sysc_mask;
+ 		sysc_write(ddata, sysc_offset, sysc_val);
+-		/* Flush posted write */
++
++		/*
++		 * Some devices need a delay before reading registers
++		 * after reset. Presumably a srst_udelay is not needed
++		 * for devices that use a rstctrl register reset.
++		 */
++		if (ddata->cfg.srst_udelay)
++			fsleep(ddata->cfg.srst_udelay);
++
++		/*
++		 * Flush posted write. For devices needing srst_udelay
++		 * this should trigger an interconnect error if the
++		 * srst_udelay value is needed but not configured.
++		 */
+ 		sysc_val = sysc_read_sysconfig(ddata);
  	}
  
-+	/*
-+	 * FIXME: Bigjoiner+async flip is busted currently.
-+	 * Remove this check once the issues are fixed.
-+	 */
-+	if (new_crtc_state->bigjoiner_pipes) {
-+		drm_dbg_kms(&i915->drm,
-+			    "[CRTC:%d:%s] async flip disallowed with bigjoiner\n",
-+			    crtc->base.base.id, crtc->base.name);
-+		return -EINVAL;
-+	}
-+
- 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
- 					     new_plane_state, i) {
- 		if (plane->pipe != crtc->pipe)
+-	if (ddata->cfg.srst_udelay)
+-		fsleep(ddata->cfg.srst_udelay);
+-
+ 	if (ddata->post_reset_quirk)
+ 		ddata->post_reset_quirk(ddata);
+ 
 
 
 
