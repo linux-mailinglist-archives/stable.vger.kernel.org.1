@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-8858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 207A8820531
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21BDD8205AA
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF837281E80
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08DA2823EB
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152D079DC;
-	Sat, 30 Dec 2023 12:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4B679EF;
+	Sat, 30 Dec 2023 12:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SB+uaCJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAY/rKcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B7979C2;
-	Sat, 30 Dec 2023 12:05:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2EDC433C8;
-	Sat, 30 Dec 2023 12:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193278473;
+	Sat, 30 Dec 2023 12:10:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A2EC433C7;
+	Sat, 30 Dec 2023 12:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937945;
-	bh=fAAxMhoaR2AmsJODD3yzNlbif+fJVLE68KrApxbUilw=;
+	s=korg; t=1703938240;
+	bh=RH/g3ptj0zhJXWeFUQqi7mZr7AGHRd/Gp8EHW5q9XgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SB+uaCJjn4/CaYM8ILko/ciMPIkiMDVtIvJ9MrP5tA9cM83c5NeFyXxr6q8Vj74uW
-	 PiC+heiq+sPN17PpjG1An3Ek1Y8VhEufe9QTZizwd/MZGjTAMSCuxTJuPJjaR2G/k9
-	 gXVEblw6yZDVt6hT4NuHAhrQ/rFOZ4y9Js8szILs=
+	b=gAY/rKcCtGU9eaYDQ0sYUeRV2wa/0jJd0IVPV1FhUpuJP/lptY7o+wAlQ7eG0QVOw
+	 GoMhqZD5i6GS+T+JRy6nXodJUQENMt7MYwuSRY9NWcj0CO7l1F0nx0Flp2C6iljVQH
+	 4H2usY7ACfwqmvgf8Hqoyio/4hJrb2QJ0/JibDO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 106/156] ALSA: hda/tas2781: select program 0, conf 0 by default
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/112] nvme-pci: fix sleeping function called from interrupt context
 Date: Sat, 30 Dec 2023 11:59:20 +0000
-Message-ID: <20231230115815.833248150@linuxfoundation.org>
+Message-ID: <20231230115808.227909289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit ec1de5c214eb5a892fdb7c450748249d5e2840f5 upstream.
+[ Upstream commit f6fe0b2d35457c10ec37acc209d19726bdc16dbd ]
 
-Currently, cur_prog/cur_conf remains at the default value (-1), while
-program 0 has been loaded into the amplifiers.
+the nvme_handle_cqe() interrupt handler calls nvme_complete_async_event()
+but the latter may call nvme_auth_stop() which is a blocking function.
+Sleeping functions can't be called in interrupt context
 
-In the playback hook, tasdevice_tuning_switch tries to restore the
-cur_prog/cur_conf. In the runtime_resume/system_resume,
-tasdevice_prmg_load tries to load the cur_prog as well.
+ BUG: sleeping function called from invalid context
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/15
+  Call Trace:
+     <IRQ>
+      __cancel_work_timer+0x31e/0x460
+      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
+      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
+      nvme_complete_async_event+0x365/0x480 [nvme_core]
+      nvme_poll_cq+0x262/0xe50 [nvme]
 
-Set cur_prog and cur_conf to 0 if available in the firmware.
+Fix the bug by moving nvme_auth_stop() to fw_act_work
+(executed by the nvme_wq workqueue)
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/038add0bdca1f979cc7abcce8f24cbcd3544084b.1702596646.git.soyer@irl.hu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f50fff73d620 ("nvme: implement In-Band authentication")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/host/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 63a90c7e8976..2fb1a7037c82 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -543,6 +543,10 @@ static void tasdev_fw_ready(const struct firmware *fmw, void *context)
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index eb7c87b344b8f..5b906dbb1096c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4835,6 +4835,8 @@ static void nvme_fw_act_work(struct work_struct *work)
+ 				struct nvme_ctrl, fw_act_work);
+ 	unsigned long fw_act_timeout;
  
- 	tas_priv->fw_state = TASDEVICE_DSP_FW_ALL_OK;
- 	tasdevice_prmg_load(tas_priv, 0);
-+	if (tas_priv->fmw->nr_programs > 0)
-+		tas_priv->cur_prog = 0;
-+	if (tas_priv->fmw->nr_configurations > 0)
-+		tas_priv->cur_conf = 0;
- 
- 	/* If calibrated data occurs error, dsp will still works with default
- 	 * calibrated data inside algo.
++	nvme_auth_stop(ctrl);
++
+ 	if (ctrl->mtfa)
+ 		fw_act_timeout = jiffies +
+ 				msecs_to_jiffies(ctrl->mtfa * 100);
+@@ -4890,7 +4892,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ 		 * firmware activation.
+ 		 */
+ 		if (nvme_change_ctrl_state(ctrl, NVME_CTRL_RESETTING)) {
+-			nvme_auth_stop(ctrl);
+ 			requeue = false;
+ 			queue_work(nvme_wq, &ctrl->fw_act_work);
+ 		}
 -- 
 2.43.0
 
