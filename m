@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-8826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42276820510
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB234820574
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66D081C20F89
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 685022823BA
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99C88483;
-	Sat, 30 Dec 2023 12:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5233B8821;
+	Sat, 30 Dec 2023 12:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTSKPhSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRcFbQPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17488801;
-	Sat, 30 Dec 2023 12:04:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DB5C433C8;
-	Sat, 30 Dec 2023 12:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194CD8483;
+	Sat, 30 Dec 2023 12:08:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9665DC433C8;
+	Sat, 30 Dec 2023 12:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937862;
-	bh=8j3MNnnWH7kfyvN/NwAxicJidz+WIFPbGYcs9oGNO0c=;
+	s=korg; t=1703938115;
+	bh=C+6sOcmXyIWn8sLEUUnFum5FYCUAs9uAVKArBmAe3V4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTSKPhSPIrXrvLaAevQimjPbcEbr0F1wC6sm8X2LcEAtNnF6oIrr6jhaOgWgK6aV9
-	 Ae4ORi5eeUcoxxoBtP1HE/rPD46q7676CWFZXSkNx/faZ0Vj5kIhjvO34IHxbenWtL
-	 SXp+jS2zkgJ8rzY+WA0K8dAphIaZrSVZVZXiztJQ=
+	b=lRcFbQPotoyYKJ1iNcExoqjlp41D8UAZ3BQRSVR4WVQo0Mo2Rmbmz6ponrVxtBMjN
+	 jx6lGrb8i9MsxWy9Nb5lMUvHHWpamKKMasu6o1HxA31hoSL7+oJtGm+IVYRzJbygNr
+	 GdEGYpGV3/0qU/+lxyTVc/nkEDe7t+TI0NnqXoT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 092/156] iio: imu: adis16475: add spi_device_id table
+	Yury Norov <yury.norov@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 033/112] net: mana: select PAGE_POOL
 Date: Sat, 30 Dec 2023 11:59:06 +0000
-Message-ID: <20231230115815.368763555@linuxfoundation.org>
+Message-ID: <20231230115807.810902711@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,176 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Yury Norov <yury.norov@gmail.com>
 
-commit ee4d79055aeea27f1b8c42233cc0c90d0a8b5355 upstream.
+[ Upstream commit 340943fbff3d8faa44d2223ca04917df28786a07 ]
 
-This prevents the warning message "SPI driver has no spi_device_id for..."
-when registering the driver. More importantly, it makes sure that
-module autoloading works as spi relies on spi: modaliases and not of.
+Mana uses PAGE_POOL API. x86_64 defconfig doesn't select it:
 
-While at it, move the of_device_id table to it's natural place.
+ld: vmlinux.o: in function `mana_create_page_pool.isra.0':
+mana_en.c:(.text+0x9ae36f): undefined reference to `page_pool_create'
+ld: vmlinux.o: in function `mana_get_rxfrag':
+mana_en.c:(.text+0x9afed1): undefined reference to `page_pool_alloc_pages'
+make[3]: *** [/home/yury/work/linux/scripts/Makefile.vmlinux:37: vmlinux] Error 1
+make[2]: *** [/home/yury/work/linux/Makefile:1154: vmlinux] Error 2
+make[1]: *** [/home/yury/work/linux/Makefile:234: __sub-make] Error 2
+make[1]: Leaving directory '/home/yury/work/build-linux-x86_64'
+make: *** [Makefile:234: __sub-make] Error 2
 
-Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231102125258.3284830-1-nuno.sa@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So we need to select it explicitly.
+
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Fixes: ca9c54d2 ("net: mana: Add a driver for Microsoft Azure Network Adapter")
+Link: https://lore.kernel.org/r/20231215203353.635379-1-yury.norov@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/adis16475.c |  117 +++++++++++++++++++++++++++-----------------
- 1 file changed, 72 insertions(+), 45 deletions(-)
+ drivers/net/ethernet/microsoft/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -1244,50 +1244,6 @@ static int adis16475_config_irq_pin(stru
- 	return 0;
- }
- 
--static const struct of_device_id adis16475_of_match[] = {
--	{ .compatible = "adi,adis16470",
--		.data = &adis16475_chip_info[ADIS16470] },
--	{ .compatible = "adi,adis16475-1",
--		.data = &adis16475_chip_info[ADIS16475_1] },
--	{ .compatible = "adi,adis16475-2",
--		.data = &adis16475_chip_info[ADIS16475_2] },
--	{ .compatible = "adi,adis16475-3",
--		.data = &adis16475_chip_info[ADIS16475_3] },
--	{ .compatible = "adi,adis16477-1",
--		.data = &adis16475_chip_info[ADIS16477_1] },
--	{ .compatible = "adi,adis16477-2",
--		.data = &adis16475_chip_info[ADIS16477_2] },
--	{ .compatible = "adi,adis16477-3",
--		.data = &adis16475_chip_info[ADIS16477_3] },
--	{ .compatible = "adi,adis16465-1",
--		.data = &adis16475_chip_info[ADIS16465_1] },
--	{ .compatible = "adi,adis16465-2",
--		.data = &adis16475_chip_info[ADIS16465_2] },
--	{ .compatible = "adi,adis16465-3",
--		.data = &adis16475_chip_info[ADIS16465_3] },
--	{ .compatible = "adi,adis16467-1",
--		.data = &adis16475_chip_info[ADIS16467_1] },
--	{ .compatible = "adi,adis16467-2",
--		.data = &adis16475_chip_info[ADIS16467_2] },
--	{ .compatible = "adi,adis16467-3",
--		.data = &adis16475_chip_info[ADIS16467_3] },
--	{ .compatible = "adi,adis16500",
--		.data = &adis16475_chip_info[ADIS16500] },
--	{ .compatible = "adi,adis16505-1",
--		.data = &adis16475_chip_info[ADIS16505_1] },
--	{ .compatible = "adi,adis16505-2",
--		.data = &adis16475_chip_info[ADIS16505_2] },
--	{ .compatible = "adi,adis16505-3",
--		.data = &adis16475_chip_info[ADIS16505_3] },
--	{ .compatible = "adi,adis16507-1",
--		.data = &adis16475_chip_info[ADIS16507_1] },
--	{ .compatible = "adi,adis16507-2",
--		.data = &adis16475_chip_info[ADIS16507_2] },
--	{ .compatible = "adi,adis16507-3",
--		.data = &adis16475_chip_info[ADIS16507_3] },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, adis16475_of_match);
- 
- static int adis16475_probe(struct spi_device *spi)
- {
-@@ -1301,7 +1257,7 @@ static int adis16475_probe(struct spi_de
- 
- 	st = iio_priv(indio_dev);
- 
--	st->info = device_get_match_data(&spi->dev);
-+	st->info = spi_get_device_match_data(spi);
- 	if (!st->info)
- 		return -EINVAL;
- 
-@@ -1341,12 +1297,83 @@ static int adis16475_probe(struct spi_de
- 	return 0;
- }
- 
-+static const struct of_device_id adis16475_of_match[] = {
-+	{ .compatible = "adi,adis16470",
-+		.data = &adis16475_chip_info[ADIS16470] },
-+	{ .compatible = "adi,adis16475-1",
-+		.data = &adis16475_chip_info[ADIS16475_1] },
-+	{ .compatible = "adi,adis16475-2",
-+		.data = &adis16475_chip_info[ADIS16475_2] },
-+	{ .compatible = "adi,adis16475-3",
-+		.data = &adis16475_chip_info[ADIS16475_3] },
-+	{ .compatible = "adi,adis16477-1",
-+		.data = &adis16475_chip_info[ADIS16477_1] },
-+	{ .compatible = "adi,adis16477-2",
-+		.data = &adis16475_chip_info[ADIS16477_2] },
-+	{ .compatible = "adi,adis16477-3",
-+		.data = &adis16475_chip_info[ADIS16477_3] },
-+	{ .compatible = "adi,adis16465-1",
-+		.data = &adis16475_chip_info[ADIS16465_1] },
-+	{ .compatible = "adi,adis16465-2",
-+		.data = &adis16475_chip_info[ADIS16465_2] },
-+	{ .compatible = "adi,adis16465-3",
-+		.data = &adis16475_chip_info[ADIS16465_3] },
-+	{ .compatible = "adi,adis16467-1",
-+		.data = &adis16475_chip_info[ADIS16467_1] },
-+	{ .compatible = "adi,adis16467-2",
-+		.data = &adis16475_chip_info[ADIS16467_2] },
-+	{ .compatible = "adi,adis16467-3",
-+		.data = &adis16475_chip_info[ADIS16467_3] },
-+	{ .compatible = "adi,adis16500",
-+		.data = &adis16475_chip_info[ADIS16500] },
-+	{ .compatible = "adi,adis16505-1",
-+		.data = &adis16475_chip_info[ADIS16505_1] },
-+	{ .compatible = "adi,adis16505-2",
-+		.data = &adis16475_chip_info[ADIS16505_2] },
-+	{ .compatible = "adi,adis16505-3",
-+		.data = &adis16475_chip_info[ADIS16505_3] },
-+	{ .compatible = "adi,adis16507-1",
-+		.data = &adis16475_chip_info[ADIS16507_1] },
-+	{ .compatible = "adi,adis16507-2",
-+		.data = &adis16475_chip_info[ADIS16507_2] },
-+	{ .compatible = "adi,adis16507-3",
-+		.data = &adis16475_chip_info[ADIS16507_3] },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adis16475_of_match);
-+
-+static const struct spi_device_id adis16475_ids[] = {
-+	{ "adis16470", (kernel_ulong_t)&adis16475_chip_info[ADIS16470] },
-+	{ "adis16475-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_1] },
-+	{ "adis16475-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_2] },
-+	{ "adis16475-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_3] },
-+	{ "adis16477-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_1] },
-+	{ "adis16477-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_2] },
-+	{ "adis16477-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_3] },
-+	{ "adis16465-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_1] },
-+	{ "adis16465-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_2] },
-+	{ "adis16465-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_3] },
-+	{ "adis16467-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_1] },
-+	{ "adis16467-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_2] },
-+	{ "adis16467-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_3] },
-+	{ "adis16500", (kernel_ulong_t)&adis16475_chip_info[ADIS16500] },
-+	{ "adis16505-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_1] },
-+	{ "adis16505-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_2] },
-+	{ "adis16505-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_3] },
-+	{ "adis16507-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_1] },
-+	{ "adis16507-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_2] },
-+	{ "adis16507-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_3] },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, adis16475_ids);
-+
- static struct spi_driver adis16475_driver = {
- 	.driver = {
- 		.name = "adis16475",
- 		.of_match_table = adis16475_of_match,
- 	},
- 	.probe = adis16475_probe,
-+	.id_table = adis16475_ids,
- };
- module_spi_driver(adis16475_driver);
- 
+diff --git a/drivers/net/ethernet/microsoft/Kconfig b/drivers/net/ethernet/microsoft/Kconfig
+index fe4e7a7d9c0b5..8b6c4cc37c53c 100644
+--- a/drivers/net/ethernet/microsoft/Kconfig
++++ b/drivers/net/ethernet/microsoft/Kconfig
+@@ -19,6 +19,7 @@ config MICROSOFT_MANA
+ 	tristate "Microsoft Azure Network Adapter (MANA) support"
+ 	depends on PCI_MSI && X86_64
+ 	depends on PCI_HYPERV
++	select PAGE_POOL
+ 	help
+ 	  This driver supports Microsoft Azure Network Adapter (MANA).
+ 	  So far, the driver is only supported on X86_64.
+-- 
+2.43.0
+
 
 
 
