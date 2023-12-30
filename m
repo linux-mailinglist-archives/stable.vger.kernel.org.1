@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DF9B820475
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:00:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12BED820476
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A942821A6
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD1642821C7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137161FCF;
-	Sat, 30 Dec 2023 11:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76ABB2104;
+	Sat, 30 Dec 2023 11:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVC/raQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQZ5Pcu+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A9823A5
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:00:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3A6C433C8;
-	Sat, 30 Dec 2023 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427F51FC5
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 11:00:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 537DAC433C7;
+	Sat, 30 Dec 2023 11:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703934049;
-	bh=IWeOHk3YVeVVlzJNJbzEXBRWZ/WW3x/y7ai3OVVF7Kw=;
+	s=korg; t=1703934055;
+	bh=jI0BuwNdrmM9bELT/OYuUf7mxY6UaPDwBQITcnXtmfc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hVC/raQ6wxPkt0Cx249k32ykQ5bmdg01ymYPb/QH90PGPRXOB3U6ApOhVUctuCnsB
-	 RUb7FV8nx9+P7leik1DmIC41giZ2iGYtjlChUyc28hxNgMhVJeog4s1I+NjOb8oexT
-	 ZoUMQPWvYRr2Pm5FlcCAwVuQg5q6NAGJ6cfrNuIY=
-Subject: FAILED: patch "[PATCH] ring-buffer: Fix slowpath of interrupted event" failed to apply to 6.1-stable tree
+	b=fQZ5Pcu+/nhiEeQHdn8nPS7AHrSHLIvbwA5ugXoxSKpA9kZhpJiA93hDgg/HC46p4
+	 bWlxsPfpvh5JEaSE/vdJz7vhBJzFmVUaNaoQDX/WT8dTYd0KPsbfDyLIEidqPvjyhv
+	 kJqKBIg0rIfEGoSvTTEx5VCe7EBC4EsF0SL9mJeo=
+Subject: FAILED: patch "[PATCH] ring-buffer: Fix slowpath of interrupted event" failed to apply to 5.15-stable tree
 To: rostedt@goodmis.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,torvalds@linux-foundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 11:00:47 +0000
-Message-ID: <2023123047-tuesday-whooping-6ae3@gregkh>
+Date: Sat, 30 Dec 2023 11:00:53 +0000
+Message-ID: <2023123053-transpose-backtalk-0702@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x b803d7c664d55705831729d2f2e29c874bcd62ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123047-tuesday-whooping-6ae3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123053-transpose-backtalk-0702@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,7 @@ fff88fa0fbc7 ("ring-buffer: Fix a race in rb_time_cmpxchg() for 32 bit archs")
 00a8478f8f5c ("ring_buffer: Use try_cmpxchg instead of cmpxchg")
 bc92b9562abc ("ring_buffer: Change some static functions to bool")
 88ca6a71dcab ("ring-buffer: Handle resize in early boot up")
+f03f2abce4f3 ("ring-buffer: Have 32 bit time stamps use all 64 bits")
 
 thanks,
 
