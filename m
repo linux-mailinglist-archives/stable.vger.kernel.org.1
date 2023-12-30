@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-8974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358258205AC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC626820543
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6743282092
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEADF1C21037
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FAD8473;
-	Sat, 30 Dec 2023 12:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67A479EF;
+	Sat, 30 Dec 2023 12:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltVQZrZ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykTWDBTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6137679DD;
-	Sat, 30 Dec 2023 12:10:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDB6C433C8;
-	Sat, 30 Dec 2023 12:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9162479DE;
+	Sat, 30 Dec 2023 12:06:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CDFC433C7;
+	Sat, 30 Dec 2023 12:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938246;
-	bh=5Yhde4+pUdiarnAI/agGhvKrnKSBzUZNGP9svSQrvtM=;
+	s=korg; t=1703937992;
+	bh=/E1q+mNnkbZJDixEczimPNJPOknVjqo1+3f7Tfow3Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltVQZrZ0emWBJKDLjpy0JZL36v4iFmjcMs19QLcFw9DllcY3u4ifb+SPncHSeu0Rp
-	 QGNA9/rH6hCZgNBfmCIwFkR9ezqolCxpajkKtPE6z7OD6JaEdEZuXf4rPmxIOZWQ7J
-	 xBApYB7hlEi3u/iij7HPZrx8/R2FKIpIlME9YK2I=
+	b=ykTWDBTwoJlm8k0HWhqZete2HZPM3+Q8bTFGeFBAMSMOwGpgnUZlk0aH7iZ2X6wbJ
+	 ZHrNHVHMQ+ZVDKjBqEFGDnx0tU+Bg2uMJGyuc2vY7z1p8B1vfCD/QlY9NIIryzzcLL
+	 odDhNQhIYQn+7ENkrQngNKGfLZWFtEjZ76Dpzb4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 083/112] smb: client: fix potential OOB in cifs_dump_detail()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.6 142/156] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
 Date: Sat, 30 Dec 2023 11:59:56 +0000
-Message-ID: <20231230115809.444011704@linuxfoundation.org>
+Message-ID: <20231230115816.967594033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit b50492b05fd02887b46aef079592207fb5c97a4c upstream.
+commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
 
-Validate SMB message with ->check_message() before calling
-->calc_smb_size().
+__bio_for_each_segment assumes that the first struct bio_vec argument
+doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+code changes the bio_vec with "bv.bv_len -= pos". When this code path
+is taken, the iterator would be out of sync and dm-integrity would
+report errors. This happens if the machine is out of memory and
+"kmalloc" fails.
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this bug by making a copy of "bv" and changing the copy instead.
+
+Fixes: 7eada909bfd7 ("dm: add integrity target")
+Cc: stable@vger.kernel.org	# v4.12+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/md/dm-integrity.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -38,11 +38,13 @@ void cifs_dump_detail(void *buf, struct
- #ifdef CONFIG_CIFS_DEBUG2
- 	struct smb_hdr *smb = buf;
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -1765,11 +1765,12 @@ static void integrity_metadata(struct wo
+ 		sectors_to_process = dio->range.n_sectors;
  
--	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d\n",
--		 smb->Command, smb->Status.CifsError,
--		 smb->Flags, smb->Flags2, smb->Mid, smb->Pid);
--	cifs_dbg(VFS, "smb buf %p len %u\n", smb,
--		 server->ops->calc_smb_size(smb));
-+	cifs_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Flgs2: 0x%x Mid: %d Pid: %d Wct: %d\n",
-+		 smb->Command, smb->Status.CifsError, smb->Flags,
-+		 smb->Flags2, smb->Mid, smb->Pid, smb->WordCount);
-+	if (!server->ops->check_message(buf, server->total_read, server)) {
-+		cifs_dbg(VFS, "smb buf %p len %u\n", smb,
-+			 server->ops->calc_smb_size(smb));
-+	}
- #endif /* CONFIG_CIFS_DEBUG2 */
- }
+ 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned int pos;
+ 			char *mem, *checksums_ptr;
  
+ again:
+-			mem = bvec_kmap_local(&bv);
++			mem = bvec_kmap_local(&bv_copy);
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1778,7 +1779,7 @@ again:
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_local(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1803,9 +1804,9 @@ again:
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
 
 
 
