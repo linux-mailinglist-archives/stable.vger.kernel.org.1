@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8A4D820469
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5DDB82046A
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:58:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71A251F216DC
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:58:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74F231F216C0
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768031FC5;
-	Sat, 30 Dec 2023 10:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FAD1FCF;
+	Sat, 30 Dec 2023 10:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIbjHkvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jzr2TbTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7723A5
-	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD457C433C7;
-	Sat, 30 Dec 2023 10:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1C623AE
+	for <stable@vger.kernel.org>; Sat, 30 Dec 2023 10:58:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30413C433C7;
+	Sat, 30 Dec 2023 10:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933883;
-	bh=qlrxEgo/mxBNm3qC5qCK/WVhWwHAVLaolr7rYuIj6f4=;
+	s=korg; t=1703933892;
+	bh=VGNNoryJqcvyeB9KIXQGKlDRjl67me0c22zpRodFO9o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AIbjHkvnGCF0DW2iWKmhjxRAsbnRTlq616CS7aTQOMgiPK8lew1JffNE9f/WLKfqg
-	 t0bVy/K6XuwQULHjVbOr/G3gmMDduxO+FdAUX0eRr69AeSD761WxZyOXzg/x555FWA
-	 X4+Lu0MxHy972gTaPJHb5+ch8Cdxdju5TL/v8wqU=
-Subject: FAILED: patch "[PATCH] scsi: core: Always send batch on reset or error handling" failed to apply to 5.10-stable tree
+	b=Jzr2TbTu3ajcyRCUwRIElCvyql3SOOOOJoV0L5wzzk9JEYTuXe0M7r6wtelJdFZQi
+	 ZVlwYhtvG4vaR/yVc8YEnrEb/HOnx+Nc3s6dy6NlRec4h2XJ8YSoMPSitQbOxdZXiz
+	 BnJpBT2NB1KApZdhH+sDl127tCkdZbEtSRGIM0yA=
+Subject: FAILED: patch "[PATCH] scsi: core: Always send batch on reset or error handling" failed to apply to 5.4-stable tree
 To: alexander.atanasov@virtuozzo.com,martin.petersen@oracle.com,ming.lei@redhat.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:58:00 +0000
-Message-ID: <2023123000-cornmeal-magnesium-abc7@gregkh>
+Date: Sat, 30 Dec 2023 10:58:02 +0000
+Message-ID: <2023123002-vocalist-unmoved-5bd9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 066c5b46b6eaf2f13f80c19500dbb3b84baabb33
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123000-cornmeal-magnesium-abc7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123002-vocalist-unmoved-5bd9@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,11 @@ aa8e25e5006a ("scsi: core: Use scsi_cmd_to_rq() instead of scsi_cmnd.request")
 d2c945f01d23 ("scsi: core: Make scsi_get_lba() return the LBA")
 f0f214fe8cd3 ("scsi: core: Introduce scsi_get_sector()")
 7ba46799d346 ("scsi: core: Add scsi_prot_ref_tag() helper")
+2ceda20f0a99 ("scsi: core: Move command size detection out of the fast path")
+3a8dc5bbc8c0 ("scsi: core: Remove scsi_init_cmd_errh")
+2a242d59d6b9 ("scsi: core: Add limitless cmd retry support")
+15f73f5b3e59 ("blk-mq: move failure injection out of blk_mq_complete_request")
+818dbde78e0f ("Merge tag 'scsi-misc' of git://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi")
 
 thanks,
 
