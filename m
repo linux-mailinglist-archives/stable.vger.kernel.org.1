@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-8869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8473A82053C
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB9A8205A5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71271C20FEF
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B912B210AB
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD2179D8;
-	Sat, 30 Dec 2023 12:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B6879E0;
+	Sat, 30 Dec 2023 12:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2d1Y8kCY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJLMt3YB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BA98483;
-	Sat, 30 Dec 2023 12:06:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFAF3C433C8;
-	Sat, 30 Dec 2023 12:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B11879DC;
+	Sat, 30 Dec 2023 12:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85E5C433C8;
+	Sat, 30 Dec 2023 12:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937974;
-	bh=nLQwV88NY+vOhvgnfZURK7zaQurIxBdIG9Pig/j7+lI=;
+	s=korg; t=1703938228;
+	bh=tkwdpAKeg/WH90Uqv60htuwpmPSRRvgASEYxWjATC6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2d1Y8kCY57l/46Ry7bsqp6D/i5oTLLrUtpKULyZUEuUoUIxK6Mt0Cf82m1Y3cwICf
-	 qRPHtqs1pah+9XSheNzHr6Gia1m1eSLr+H0BvL93fsQiFd0GDAXb5GKSmMgCzWtTOP
-	 +59LJa6rA84UQehZFCFxCJSsj2Gqfh1sOUTKIcrw=
+	b=xJLMt3YBBZ81ME5l/cdcTvHDw9UXFI7dz8qRGTgchOzIacQ/M5ooBuk2/a8UZWFU8
+	 w6bDf9B8lLR+FfzopW5GP7mVrWPxANC9Lgs4MEW0tdq/ucprQkhT/hYt7xFePu9EcF
+	 BPjVW1IdR4Fr+jmrIrRdpk6H3vsXHYwX8SZvjfa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <v4bel@theori.io>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 110/156] Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
-Date: Sat, 30 Dec 2023 11:59:24 +0000
-Message-ID: <20231230115815.962033506@linuxfoundation.org>
+	Clint Taylor <clinton.a.taylor@intel.com>,
+	Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+	Radhakrishna Sripada <radhakrishna.sripada@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/112] drm/i915/mtl: Add MTL for remapping CCS FBs
+Date: Sat, 30 Dec 2023 11:59:25 +0000
+Message-ID: <20231230115808.382553981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,60 +55,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <v4bel@theori.io>
+From: Clint Taylor <clinton.a.taylor@intel.com>
 
-commit 2e07e8348ea454615e268222ae3fc240421be768 upstream.
+[ Upstream commit 0da6bfe857ea9399498876cbe6ef428637b6e475 ]
 
-This can cause a race with bt_sock_ioctl() because
-bt_sock_recvmsg() gets the skb from sk->sk_receive_queue
-and then frees it without holding lock_sock.
-A use-after-free for a skb occurs with the following flow.
-```
-bt_sock_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
-bt_sock_ioctl() -> skb_peek()
-```
-Add lock_sock to bt_sock_recvmsg() to fix this issue.
+Add support for remapping CCS FBs on MTL to remove the restriction
+of the power-of-two sized stride and the 2MB surface offset alignment
+for these FBs.
 
-Cc: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clint Taylor <clinton.a.taylor@intel.com>
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Radhakrishna Sripada <radhakrishna.sripada@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230505144005.23480-2-nirmoy.das@intel.com
+Stable-dep-of: 324b70e997aa ("drm/i915: Fix ADL+ tiled plane stride when the POT stride is smaller than the original")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/af_bluetooth.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_fb.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/af_bluetooth.c
-+++ b/net/bluetooth/af_bluetooth.c
-@@ -309,11 +309,14 @@ int bt_sock_recvmsg(struct socket *sock,
- 	if (flags & MSG_OOB)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/gpu/drm/i915/display/intel_fb.c b/drivers/gpu/drm/i915/display/intel_fb.c
+index c22ca36a38a9d..583b3c0f96ddc 100644
+--- a/drivers/gpu/drm/i915/display/intel_fb.c
++++ b/drivers/gpu/drm/i915/display/intel_fb.c
+@@ -1176,7 +1176,8 @@ bool intel_fb_needs_pot_stride_remap(const struct intel_framebuffer *fb)
+ {
+ 	struct drm_i915_private *i915 = to_i915(fb->base.dev);
  
-+	lock_sock(sk);
-+
- 	skb = skb_recv_datagram(sk, flags, &err);
- 	if (!skb) {
- 		if (sk->sk_shutdown & RCV_SHUTDOWN)
--			return 0;
-+			err = 0;
+-	return IS_ALDERLAKE_P(i915) && intel_fb_uses_dpt(&fb->base);
++	return (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14) &&
++		intel_fb_uses_dpt(&fb->base);
+ }
  
-+		release_sock(sk);
- 		return err;
- 	}
+ static int intel_fb_pitch(const struct intel_framebuffer *fb, int color_plane, unsigned int rotation)
+@@ -1312,9 +1313,10 @@ plane_view_scanout_stride(const struct intel_framebuffer *fb, int color_plane,
+ 			  unsigned int tile_width,
+ 			  unsigned int src_stride_tiles, unsigned int dst_stride_tiles)
+ {
++	struct drm_i915_private *i915 = to_i915(fb->base.dev);
+ 	unsigned int stride_tiles;
  
-@@ -343,6 +346,8 @@ int bt_sock_recvmsg(struct socket *sock,
+-	if (IS_ALDERLAKE_P(to_i915(fb->base.dev)))
++	if (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14)
+ 		stride_tiles = src_stride_tiles;
+ 	else
+ 		stride_tiles = dst_stride_tiles;
+@@ -1520,7 +1522,8 @@ static void intel_fb_view_init(struct drm_i915_private *i915, struct intel_fb_vi
+ 	memset(view, 0, sizeof(*view));
+ 	view->gtt.type = view_type;
  
- 	skb_free_datagram(sk, skb);
+-	if (view_type == I915_GTT_VIEW_REMAPPED && IS_ALDERLAKE_P(i915))
++	if (view_type == I915_GTT_VIEW_REMAPPED &&
++	    (IS_ALDERLAKE_P(i915) || DISPLAY_VER(i915) >= 14))
+ 		view->gtt.remapped.plane_alignment = SZ_2M / PAGE_SIZE;
+ }
  
-+	release_sock(sk);
-+
- 	if (flags & MSG_TRUNC)
- 		copied = skblen;
- 
+-- 
+2.43.0
+
 
 
 
