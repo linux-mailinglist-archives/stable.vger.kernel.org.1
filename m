@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-8875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2F6820542
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFE18205C5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5CF1C208C3
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76A032820AD
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8E479DF;
-	Sat, 30 Dec 2023 12:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53278487;
+	Sat, 30 Dec 2023 12:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJGITmVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbP5gtIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CD279C2;
-	Sat, 30 Dec 2023 12:06:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA23C433C8;
-	Sat, 30 Dec 2023 12:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EFA579DE;
+	Sat, 30 Dec 2023 12:11:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9879C433C8;
+	Sat, 30 Dec 2023 12:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937989;
-	bh=2maALwr6itLSHfiThUnBvxb2ue6lPDx9Fq5NzV/t40Y=;
+	s=korg; t=1703938308;
+	bh=SPiSZEVrgdxELhQmo8fRcwqabtCF/NA1gnEhK10JTgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJGITmVqDHc9NpdEMOnYHhN3gP6phq16tIyok1bGVgbXVu8JzCccALOduMS2aQMCN
-	 /0+Y5VqfJW0KThWXm/7mStUPaBDLOp9d1uw0Bj6GzLQBA7oYmMzb/UQN+EYtDzblqg
-	 Is7pupC0v9QLz35TM/k2RuVOaxQ5ODQJa32HYB0Y=
+	b=QbP5gtIsnPA6xX+Y5bh9Tde0di5EPGTuFw7Wzz0cqDVRvTqKrrYbS+63UcfXRV/FK
+	 NJETMYZnK6+KGk+40IqTAb+C8suQLGZvlosPKfEtizk08SZTBHTQol6blKuu9FiLV1
+	 dAl+RLuAHmYpUiVHe6nXqogNKkTOkpsNvludx+mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Tom Zanussi <zanussi@kernel.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 141/156] tracing / synthetic: Disable events after testing in synth_event_gen_test_init()
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 082/112] smb: client: fix OOB in cifsd when receiving compounded resps
 Date: Sat, 30 Dec 2023 11:59:55 +0000
-Message-ID: <20231230115816.939929528@linuxfoundation.org>
+Message-ID: <20231230115809.408233975@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
-References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+References: <20231230115806.714618407@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,115 +53,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 88b30c7f5d27e1594d70dc2bd7199b18f2b57fa9 upstream.
+commit a8f68b11158f09754418de62e6b3e7b9b7a50cc9 upstream.
 
-The synth_event_gen_test module can be built in, if someone wants to run
-the tests at boot up and not have to load them.
+Validate next header's offset in ->next_header() so that it isn't
+smaller than MID_HEADER_SIZE(server) and then standard_receive3() or
+->receive() ends up writing off the end of the buffer because
+'pdu_length - MID_HEADER_SIZE(server)' wraps up to a huge length:
 
-The synth_event_gen_test_init() function creates and enables the synthetic
-events and runs its tests.
+  BUG: KASAN: slab-out-of-bounds in _copy_to_iter+0x4fc/0x840
+  Write of size 701 at addr ffff88800caf407f by task cifsd/1090
 
-The synth_event_gen_test_exit() disables the events it created and
-destroys the events.
+  CPU: 0 PID: 1090 Comm: cifsd Not tainted 6.7.0-rc4 #5
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4a/0x80
+   print_report+0xcf/0x650
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __phys_addr+0x46/0x90
+   kasan_report+0xd8/0x110
+   ? _copy_to_iter+0x4fc/0x840
+   ? _copy_to_iter+0x4fc/0x840
+   kasan_check_range+0x105/0x1b0
+   __asan_memcpy+0x3c/0x60
+   _copy_to_iter+0x4fc/0x840
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? hlock_class+0x32/0xc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __pfx__copy_to_iter+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lock_is_held_type+0x90/0x100
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __might_resched+0x278/0x360
+   ? __pfx___might_resched+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __skb_datagram_iter+0x2c2/0x460
+   ? __pfx_simple_copy_to_iter+0x10/0x10
+   skb_copy_datagram_iter+0x6c/0x110
+   tcp_recvmsg_locked+0x9be/0xf40
+   ? __pfx_tcp_recvmsg_locked+0x10/0x10
+   ? mark_held_locks+0x5d/0x90
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   tcp_recvmsg+0xe2/0x310
+   ? __pfx_tcp_recvmsg+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lock_acquire+0x14a/0x3a0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   inet_recvmsg+0xd0/0x370
+   ? __pfx_inet_recvmsg+0x10/0x10
+   ? __pfx_lock_release+0x10/0x10
+   ? do_raw_spin_trylock+0xd1/0x120
+   sock_recvmsg+0x10d/0x150
+   cifs_readv_from_socket+0x25a/0x490 [cifs]
+   ? __pfx_cifs_readv_from_socket+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   cifs_read_from_socket+0xb5/0x100 [cifs]
+   ? __pfx_cifs_read_from_socket+0x10/0x10 [cifs]
+   ? __pfx_lock_release+0x10/0x10
+   ? do_raw_spin_trylock+0xd1/0x120
+   ? _raw_spin_unlock+0x23/0x40
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __smb2_find_mid+0x126/0x230 [cifs]
+   cifs_demultiplex_thread+0xd39/0x1270 [cifs]
+   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+   ? __pfx_lock_release+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? mark_held_locks+0x1a/0x90
+   ? lockdep_hardirqs_on_prepare+0x136/0x210
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __kthread_parkme+0xce/0xf0
+   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+   kthread+0x18d/0x1d0
+   ? kthread+0xdb/0x1d0
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x34/0x60
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
 
-If the module is builtin, the events are never disabled. The issue is, the
-events should be disable after the tests are run. This could be an issue
-if the rest of the boot up tests are enabled, as they expect the events to
-be in a known state before testing. That known state happens to be
-disabled.
-
-When CONFIG_SYNTH_EVENT_GEN_TEST=y and CONFIG_EVENT_TRACE_STARTUP_TEST=y
-a warning will trigger:
-
- Running tests on trace events:
- Testing event create_synth_test:
- Enabled event during self test!
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 1 at kernel/trace/trace_events.c:4150 event_trace_self_tests+0x1c2/0x480
- Modules linked in:
- CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc2-test-00031-gb803d7c664d5-dirty #276
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- RIP: 0010:event_trace_self_tests+0x1c2/0x480
- Code: bb e8 a2 ab 5d fc 48 8d 7b 48 e8 f9 3d 99 fc 48 8b 73 48 40 f6 c6 01 0f 84 d6 fe ff ff 48 c7 c7 20 b6 ad bb e8 7f ab 5d fc 90 <0f> 0b 90 48 89 df e8 d3 3d 99 fc 48 8b 1b 4c 39 f3 0f 85 2c ff ff
- RSP: 0000:ffffc9000001fdc0 EFLAGS: 00010246
- RAX: 0000000000000029 RBX: ffff88810399ca80 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: ffffffffb9f19478 RDI: ffff88823c734e64
- RBP: ffff88810399f300 R08: 0000000000000000 R09: fffffbfff79eb32a
- R10: ffffffffbcf59957 R11: 0000000000000001 R12: ffff888104068090
- R13: ffffffffbc89f0a0 R14: ffffffffbc8a0f08 R15: 0000000000000078
- FS:  0000000000000000(0000) GS:ffff88823c700000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000000000000 CR3: 00000001f6282001 CR4: 0000000000170ef0
- Call Trace:
-  <TASK>
-  ? __warn+0xa5/0x200
-  ? event_trace_self_tests+0x1c2/0x480
-  ? report_bug+0x1f6/0x220
-  ? handle_bug+0x6f/0x90
-  ? exc_invalid_op+0x17/0x50
-  ? asm_exc_invalid_op+0x1a/0x20
-  ? tracer_preempt_on+0x78/0x1c0
-  ? event_trace_self_tests+0x1c2/0x480
-  ? __pfx_event_trace_self_tests_init+0x10/0x10
-  event_trace_self_tests_init+0x27/0xe0
-  do_one_initcall+0xd6/0x3c0
-  ? __pfx_do_one_initcall+0x10/0x10
-  ? kasan_set_track+0x25/0x30
-  ? rcu_is_watching+0x38/0x60
-  kernel_init_freeable+0x324/0x450
-  ? __pfx_kernel_init+0x10/0x10
-  kernel_init+0x1f/0x1e0
-  ? _raw_spin_unlock_irq+0x33/0x50
-  ret_from_fork+0x34/0x60
-  ? __pfx_kernel_init+0x10/0x10
-  ret_from_fork_asm+0x1b/0x30
-  </TASK>
-
-This is because the synth_event_gen_test_init() left the synthetic events
-that it created enabled. By having it disable them after testing, the
-other selftests will run fine.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231220111525.2f0f49b0@gandalf.local.home
-
+Fixes: 8ce79ec359ad ("cifs: update multiplex loop to handle compounded responses")
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Fixes: 9fe41efaca084 ("tracing: Add synth event generation test module")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reported-by: Alexander Graf <graf@amazon.com>
-Tested-by: Alexander Graf <graf@amazon.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/synth_event_gen_test.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/smb/client/cifsglob.h |    3 ++-
+ fs/smb/client/connect.c  |    7 ++++++-
+ fs/smb/client/smb2ops.c  |   19 ++++++++++++-------
+ 3 files changed, 20 insertions(+), 9 deletions(-)
 
---- a/kernel/trace/synth_event_gen_test.c
-+++ b/kernel/trace/synth_event_gen_test.c
-@@ -477,6 +477,17 @@ static int __init synth_event_gen_test_i
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -513,7 +513,8 @@ struct smb_version_operations {
+ 				 struct mid_q_entry **, char **, int *);
+ 	enum securityEnum (*select_sectype)(struct TCP_Server_Info *,
+ 			    enum securityEnum);
+-	int (*next_header)(char *);
++	int (*next_header)(struct TCP_Server_Info *server, char *buf,
++			   unsigned int *noff);
+ 	/* ioctl passthrough for query_info */
+ 	int (*ioctl_query_info)(const unsigned int xid,
+ 				struct cifs_tcon *tcon,
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1225,7 +1225,12 @@ next_pdu:
+ 		server->total_read += length;
  
- 	ret = test_trace_synth_event();
- 	WARN_ON(ret);
-+
-+	/* Disable when done */
-+	trace_array_set_clr_event(gen_synth_test->tr,
-+				  "synthetic",
-+				  "gen_synth_test", false);
-+	trace_array_set_clr_event(empty_synth_test->tr,
-+				  "synthetic",
-+				  "empty_synth_test", false);
-+	trace_array_set_clr_event(create_synth_test->tr,
-+				  "synthetic",
-+				  "create_synth_test", false);
-  out:
- 	return ret;
+ 		if (server->ops->next_header) {
+-			next_offset = server->ops->next_header(buf);
++			if (server->ops->next_header(server, buf, &next_offset)) {
++				cifs_dbg(VFS, "%s: malformed response (next_offset=%u)\n",
++					 __func__, next_offset);
++				cifs_reconnect(server, true);
++				continue;
++			}
+ 			if (next_offset)
+ 				server->pdu_size = next_offset;
+ 		}
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5196,17 +5196,22 @@ smb3_handle_read_data(struct TCP_Server_
+ 				NULL, 0, 0, false);
  }
+ 
+-static int
+-smb2_next_header(char *buf)
++static int smb2_next_header(struct TCP_Server_Info *server, char *buf,
++			    unsigned int *noff)
+ {
+ 	struct smb2_hdr *hdr = (struct smb2_hdr *)buf;
+ 	struct smb2_transform_hdr *t_hdr = (struct smb2_transform_hdr *)buf;
+ 
+-	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM)
+-		return sizeof(struct smb2_transform_hdr) +
+-		  le32_to_cpu(t_hdr->OriginalMessageSize);
+-
+-	return le32_to_cpu(hdr->NextCommand);
++	if (hdr->ProtocolId == SMB2_TRANSFORM_PROTO_NUM) {
++		*noff = le32_to_cpu(t_hdr->OriginalMessageSize);
++		if (unlikely(check_add_overflow(*noff, sizeof(*t_hdr), noff)))
++			return -EINVAL;
++	} else {
++		*noff = le32_to_cpu(hdr->NextCommand);
++	}
++	if (unlikely(*noff && *noff < MID_HEADER_SIZE(server)))
++		return -EINVAL;
++	return 0;
+ }
+ 
+ static int
 
 
 
