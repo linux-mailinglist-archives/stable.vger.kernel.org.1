@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-8982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0549D8205B4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:11:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDC082054B
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 379EF1C21171
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:11:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A976281FBC
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF9779EF;
-	Sat, 30 Dec 2023 12:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E8979EE;
+	Sat, 30 Dec 2023 12:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AeSLEY8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+DOPr3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2915079DD;
-	Sat, 30 Dec 2023 12:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59B9C433C7;
-	Sat, 30 Dec 2023 12:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1016379C2;
+	Sat, 30 Dec 2023 12:06:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E516C433C8;
+	Sat, 30 Dec 2023 12:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938267;
-	bh=cEPO1RLfmyotuxMxXczLX8c4c43vQwWiEYCXCKriXec=;
+	s=korg; t=1703938012;
+	bh=8kELQPakE4OMFUzM20IJORanDGKgdHKGUTQxEyF9hxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AeSLEY8d7vjtUB5kYtkUgwbUWMTFvhPb5Zrr0IO5CaKukcLePpu339PWVi9BoAsAW
-	 kOGeYX99Iek+C97tLm2aK3/xNLnbqJoEaxLbAlK0rQhGJW/8S+9QVWtmGiaszGJcui
-	 sFlOuNCX4+J7uKuV5y5xhAJFhfDjqXFDqAvCfN5k=
+	b=B+DOPr3Bo5AL/ie+sbdPrRrTq9wmEFTycMB9G+a0ShrqULbOj4WzKOs0GIuZ9llSt
+	 bzTKtniFWcSTi2/s1soPK6muCT2Ze2NJEZZrTJCAfwLkgOXosV63ii71ibmvE2bd/f
+	 gR3KN4J5lpF9QgYx5TkyYPyrcUr4yuQIDSG6v9Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Qingqing Zhuo <qingqing.zhuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/112] Revert "drm/amd/display: Do not set DRR on pipe commit"
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 150/156] KVM: arm64: vgic: Simplify kvm_vgic_destroy()
 Date: Sat, 30 Dec 2023 12:00:04 +0000
-Message-ID: <20231230115809.737659773@linuxfoundation.org>
+Message-ID: <20231230115817.209156889@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,46 +52,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aric Cyr <aric.cyr@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 36951fc9460fce96bafd131ceb0f343cae6d3cb9 ]
+commit 01ad29d224ff73bc4e16e0ef9ece17f28598c4a4 upstream.
 
-This reverts commit 4f1b5e739dfd1edde33329e3f376733a131fb1ff.
+When destroying a vgic, we have rather cumbersome rules about
+when slots_lock and config_lock are held, resulting in fun
+buglets.
 
-[Why & How]
-Original change causes a regression. Revert
-until fix is available.
+The first port of call is to simplify kvm_vgic_map_resources()
+so that there is only one call to kvm_vgic_destroy() instead of
+two, with the second only holding half of the locks.
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
-Signed-off-by: Aric Cyr <aric.cyr@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For that, we kill the non-locking primitive and move the call
+outside of the locking altogether. This doesn't change anything
+(we re-acquire the locks and teardown the whole vgic), and
+simplifies the code significantly.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231207151201.3028710-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/kvm/vgic/vgic-init.c |   29 ++++++++++++++---------------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index 53262f6bc40b0..72bec33e371f3 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -994,5 +994,8 @@ void dcn30_prepare_bandwidth(struct dc *dc,
- 			dc->clk_mgr->funcs->set_max_memclk(dc->clk_mgr, dc->clk_mgr->bw_params->clk_table.entries[dc->clk_mgr->bw_params->clk_table.num_entries - 1].memclk_mhz);
- 
- 	dcn20_prepare_bandwidth(dc, context);
-+
-+	dc_dmub_srv_p_state_delegate(dc,
-+		context->bw_ctx.bw.dcn.clk.fw_based_mclk_switching, context);
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -382,26 +382,24 @@ void kvm_vgic_vcpu_destroy(struct kvm_vc
+ 	vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
  }
  
--- 
-2.43.0
-
+-static void __kvm_vgic_destroy(struct kvm *kvm)
++void kvm_vgic_destroy(struct kvm *kvm)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	unsigned long i;
+ 
+-	lockdep_assert_held(&kvm->arch.config_lock);
++	mutex_lock(&kvm->slots_lock);
+ 
+ 	vgic_debug_destroy(kvm);
+ 
+ 	kvm_for_each_vcpu(i, vcpu, kvm)
+ 		kvm_vgic_vcpu_destroy(vcpu);
+ 
++	mutex_lock(&kvm->arch.config_lock);
++
+ 	kvm_vgic_dist_destroy(kvm);
+-}
+ 
+-void kvm_vgic_destroy(struct kvm *kvm)
+-{
+-	mutex_lock(&kvm->arch.config_lock);
+-	__kvm_vgic_destroy(kvm);
+ 	mutex_unlock(&kvm->arch.config_lock);
++	mutex_unlock(&kvm->slots_lock);
+ }
+ 
+ /**
+@@ -469,25 +467,26 @@ int kvm_vgic_map_resources(struct kvm *k
+ 		type = VGIC_V3;
+ 	}
+ 
+-	if (ret) {
+-		__kvm_vgic_destroy(kvm);
++	if (ret)
+ 		goto out;
+-	}
++
+ 	dist->ready = true;
+ 	dist_base = dist->vgic_dist_base;
+ 	mutex_unlock(&kvm->arch.config_lock);
+ 
+ 	ret = vgic_register_dist_iodev(kvm, dist_base, type);
+-	if (ret) {
++	if (ret)
+ 		kvm_err("Unable to register VGIC dist MMIO regions\n");
+-		kvm_vgic_destroy(kvm);
+-	}
+-	mutex_unlock(&kvm->slots_lock);
+-	return ret;
+ 
++	goto out_slots;
+ out:
+ 	mutex_unlock(&kvm->arch.config_lock);
++out_slots:
+ 	mutex_unlock(&kvm->slots_lock);
++
++	if (ret)
++		kvm_vgic_destroy(kvm);
++
+ 	return ret;
+ }
+ 
 
 
 
