@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-8778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC2398204D6
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:02:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 187308204D8
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 920881F21628
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:02:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFFB61F21850
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AD58473;
-	Sat, 30 Dec 2023 12:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1051179EE;
+	Sat, 30 Dec 2023 12:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GjlaMa+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQiOgXNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9056879EE;
-	Sat, 30 Dec 2023 12:02:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194AAC433C8;
-	Sat, 30 Dec 2023 12:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC61479DC;
+	Sat, 30 Dec 2023 12:02:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 558C7C433C8;
+	Sat, 30 Dec 2023 12:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937738;
-	bh=By1T0EH2GjbiqJPiS6jf9M2HlrKfrhxhTRUNnbuIe4g=;
+	s=korg; t=1703937743;
+	bh=1K1ykQTX/QsrFhMaNX5vzX9GkHF9rWhMU7Rxp9gT4FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjlaMa+d83GSDDH4UDY/JS8Jmi2Bm8APZD2touZZXpURkLuLp5y8xExjX+Eo523Tz
-	 fplmKYvaZgl3hutO3jwFrXuGGTDxX55vNryudz28dcJb6UGC5WBRINnN825W89oUcc
-	 tQVvQQ4Fy0NZZigpUO/P4cnlJ3rFpyUwYQW4Gd14=
+	b=mQiOgXNA+jy5n1lXmT2F+X7FIMJvxyT5EarN07oqbdm+RqGK0k4XlxDTf1xao+KW0
+	 cpK5QmUALealbH3IYei1D7KpkjyIUu/eOrTSKN0mWoliafAwX8hHRuh2uXBJ9vGEWr
+	 ivFkVjQ9YlMgF/3SVYR/NDwl2Ju3nYzEiBppMXzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -37,9 +37,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/156] net: mscc: ocelot: fix eMAC TX RMON stats for bucket 256-511 and above
-Date: Sat, 30 Dec 2023 11:58:18 +0000
-Message-ID: <20231230115813.797051099@linuxfoundation.org>
+Subject: [PATCH 6.6 045/156] net: mscc: ocelot: fix pMAC TX RMON stats for bucket 256-511 and above
+Date: Sat, 30 Dec 2023 11:58:19 +0000
+Message-ID: <20231230115813.827600320@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -60,19 +60,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 52eda4641d041667fa059f4855c5f88dcebd8afe ]
+[ Upstream commit 70f010da00f90415296f93fb47a561977eae41cb ]
 
-There is a typo in the driver due to which we report incorrect TX RMON
-counters for the 256-511 octet bucket and all the other buckets larger
-than that.
+The typo from ocelot_port_rmon_stats_cb() was also carried over to
+ocelot_port_pmac_rmon_stats_cb() as well, leading to incorrect TX RMON
+stats for the pMAC too.
 
-Bug found with the selftest at
-https://patchwork.kernel.org/project/netdevbpf/patch/20231211223346.2497157-9-tobias@waldekranz.com/
-
-Fixes: e32036e1ae7b ("net: mscc: ocelot: add support for all sorts of standardized counters present in DSA")
+Fixes: ab3f97a9610a ("net: mscc: ocelot: export ethtool MAC Merge stats for Felix VSC9959")
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231214000902.545625-1-vladimir.oltean@nxp.com
+Link: https://lore.kernel.org/r/20231214000902.545625-2-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
@@ -80,24 +77,24 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/ethernet/mscc/ocelot_stats.c b/drivers/net/ethernet/mscc/ocelot_stats.c
-index 5c55197c7327d..f29fa37263dae 100644
+index f29fa37263dae..c018783757fb2 100644
 --- a/drivers/net/ethernet/mscc/ocelot_stats.c
 +++ b/drivers/net/ethernet/mscc/ocelot_stats.c
-@@ -582,10 +582,10 @@ static void ocelot_port_rmon_stats_cb(struct ocelot *ocelot, int port, void *pri
- 	rmon_stats->hist_tx[0] = s[OCELOT_STAT_TX_64];
- 	rmon_stats->hist_tx[1] = s[OCELOT_STAT_TX_65_127];
- 	rmon_stats->hist_tx[2] = s[OCELOT_STAT_TX_128_255];
--	rmon_stats->hist_tx[3] = s[OCELOT_STAT_TX_128_255];
--	rmon_stats->hist_tx[4] = s[OCELOT_STAT_TX_256_511];
--	rmon_stats->hist_tx[5] = s[OCELOT_STAT_TX_512_1023];
--	rmon_stats->hist_tx[6] = s[OCELOT_STAT_TX_1024_1526];
-+	rmon_stats->hist_tx[3] = s[OCELOT_STAT_TX_256_511];
-+	rmon_stats->hist_tx[4] = s[OCELOT_STAT_TX_512_1023];
-+	rmon_stats->hist_tx[5] = s[OCELOT_STAT_TX_1024_1526];
-+	rmon_stats->hist_tx[6] = s[OCELOT_STAT_TX_1527_MAX];
+@@ -610,10 +610,10 @@ static void ocelot_port_pmac_rmon_stats_cb(struct ocelot *ocelot, int port,
+ 	rmon_stats->hist_tx[0] = s[OCELOT_STAT_TX_PMAC_64];
+ 	rmon_stats->hist_tx[1] = s[OCELOT_STAT_TX_PMAC_65_127];
+ 	rmon_stats->hist_tx[2] = s[OCELOT_STAT_TX_PMAC_128_255];
+-	rmon_stats->hist_tx[3] = s[OCELOT_STAT_TX_PMAC_128_255];
+-	rmon_stats->hist_tx[4] = s[OCELOT_STAT_TX_PMAC_256_511];
+-	rmon_stats->hist_tx[5] = s[OCELOT_STAT_TX_PMAC_512_1023];
+-	rmon_stats->hist_tx[6] = s[OCELOT_STAT_TX_PMAC_1024_1526];
++	rmon_stats->hist_tx[3] = s[OCELOT_STAT_TX_PMAC_256_511];
++	rmon_stats->hist_tx[4] = s[OCELOT_STAT_TX_PMAC_512_1023];
++	rmon_stats->hist_tx[5] = s[OCELOT_STAT_TX_PMAC_1024_1526];
++	rmon_stats->hist_tx[6] = s[OCELOT_STAT_TX_PMAC_1527_MAX];
  }
  
- static void ocelot_port_pmac_rmon_stats_cb(struct ocelot *ocelot, int port,
+ void ocelot_port_get_rmon_stats(struct ocelot *ocelot, int port,
 -- 
 2.43.0
 
