@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-8951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E3D820594
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE30582052A
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFDAE281EB4
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C57D1C20F95
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D5E79EF;
-	Sat, 30 Dec 2023 12:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F359F79EE;
+	Sat, 30 Dec 2023 12:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rS+A+/3F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2anjPoe7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF39279DE;
-	Sat, 30 Dec 2023 12:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A7BC433C7;
-	Sat, 30 Dec 2023 12:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA2079E0;
+	Sat, 30 Dec 2023 12:05:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450C6C433C7;
+	Sat, 30 Dec 2023 12:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938185;
-	bh=LSdkXjarCzDhYu4BxuFQXI3BRrmGJ+tnnwq3LfJk5SI=;
+	s=korg; t=1703937932;
+	bh=SnRte+qzyASCEpaJ35RDUkgags9kVFm+Vh+IC30YjVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rS+A+/3F5KvpXQJB1JaZbk5BAUZ7xK86zXiH7GZ436H/GGJlUd4kM6RRK7cVf7HnL
-	 uSEZUXEq4pCjdPCBk1ejHx/IfPkCp26GT/GfPiCnuTOg3eL1eQJavjLk5wgnwevlgm
-	 oMCAg1cDPgYUkRuD64G29cNbWyc7vyO2FRG6/eLw=
+	b=2anjPoe7hEgryfeBR7khyyBEjs5VoevF7kmgigBTGiBKNe/L/2JP/Dr23LLGN/Hrc
+	 1Ji2FWNzdkhPwxnEbcBq75ZZr7LBSwJnqgU/RQI048LEus3EFxDvFyJMgmQ2IuBGhl
+	 IRaANxNH/NmbWp/TDOssNj+qB+Ya5wA8WHIHbMzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wadim Egorov <w.egorov@phytec.de>,
-	Bhavya Kapoor <b-kapoor@ti.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 060/112] iio: adc: ti_am335x_adc: Fix return value check of tiadc_request_dma()
+	Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 119/156] net: rfkill: gpio: set GPIO direction
 Date: Sat, 30 Dec 2023 11:59:33 +0000
-Message-ID: <20231230115808.625596651@linuxfoundation.org>
+Message-ID: <20231230115816.254161342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-commit 60576e84c187043cef11f11d015249e71151d35a upstream.
+commit 23484d817082c3005252d8edfc8292c8a1006b5b upstream.
 
-Fix wrong handling of a DMA request where the probing only failed
-if -EPROPE_DEFER was returned. Instead, let us fail if a non -ENODEV
-value is returned. This makes DMAs explicitly optional. Even if the
-DMA request is unsuccessfully, the ADC can still work properly.
-We do also handle the defer probe case by making use of dev_err_probe().
+Fix the undefined usage of the GPIO consumer API after retrieving the
+GPIO description with GPIO_ASIS. The API documentation mentions that
+GPIO_ASIS won't set a GPIO direction and requires the user to set a
+direction before using the GPIO.
 
-Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Reviewed-by: Bhavya Kapoor <b-kapoor@ti.com>
-Link: https://lore.kernel.org/r/20230925134427.214556-1-w.egorov@phytec.de
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
+able to enabled/disable a device, presumably because the GPIO controller
+was never configured for the output direction.
+
+Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Link: https://msgid.link/20231207075835.3091694-1-r.czerwinski@pengutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ti_am335x_adc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rfkill/rfkill-gpio.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -671,8 +671,10 @@ static int tiadc_probe(struct platform_d
- 	platform_set_drvdata(pdev, indio_dev);
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -126,6 +126,14 @@ static int rfkill_gpio_probe(struct plat
+ 		return -EINVAL;
+ 	}
  
- 	err = tiadc_request_dma(pdev, adc_dev);
--	if (err && err == -EPROBE_DEFER)
-+	if (err && err != -ENODEV) {
-+		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
- 		goto err_dma;
-+	}
- 
- 	return 0;
- 
++	ret = gpiod_direction_output(rfkill->reset_gpio, true);
++	if (ret)
++		return ret;
++
++	ret = gpiod_direction_output(rfkill->shutdown_gpio, true);
++	if (ret)
++		return ret;
++
+ 	rfkill->rfkill_dev = rfkill_alloc(rfkill->name, &pdev->dev,
+ 					  rfkill->type, &rfkill_gpio_ops,
+ 					  rfkill);
 
 
 
