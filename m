@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-8913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F07820568
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46F98204EA
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C939C1C20FED
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FC8B1F21A3C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AC279E0;
-	Sat, 30 Dec 2023 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA35C8473;
+	Sat, 30 Dec 2023 12:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSf6ayK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3Eb7nkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC2C79C2;
-	Sat, 30 Dec 2023 12:08:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378B2C433C8;
-	Sat, 30 Dec 2023 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AA479E0;
+	Sat, 30 Dec 2023 12:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C985FC433C8;
+	Sat, 30 Dec 2023 12:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938087;
-	bh=bsL6zdOSV6W80LL9kzzMI6BpBHSU1GDQjBiTfs440N4=;
+	s=korg; t=1703937785;
+	bh=7W0hI7unFNGK+Fsc2rtMdVNcQCxZ9zGBmhFpLpnxc2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSf6ayK3TmKLFVQ1J5GYmb5HeGcHMTpK05onWxTvn2dwS8gCboGlaSpW8/tBheXUu
-	 0bHuh7h9V+0bLV9y94EnrvNilJsmXdXIDFW3viVMh7Qce12p2t2nfsFg/SM6iPhJbQ
-	 OmPCBme0gQZ58tFhKL4xQ6QYiIsfKZrsNjKS7xkY=
+	b=o3Eb7nkA8kksDOeS4szZzNHA/utV6Onskn1f82qWaUK6uQmmLLkXU8h9tkSTB8cfO
+	 pd3IfE2/V55OvjfMe9Ol9GNSXnVARsVS4Yx+BT3f5dJJyzlN1NKjoN/lVqQNt9n6GV
+	 1SQKz2AgMgoMyCvShvyTIrkp/FIHhWtak1FcXrew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+	David Howells <dhowells@redhat.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/112] HID: i2c-hid: acpi: Unify ACPI ID tables format
+Subject: [PATCH 6.6 062/156] afs: Fix the dynamic roots d_delete to always delete unused dentries
 Date: Sat, 30 Dec 2023 11:58:36 +0000
-Message-ID: <20231230115806.842131016@linuxfoundation.org>
+Message-ID: <20231230115814.373760801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +53,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 4122abfed2193e752485282370abf5c419f05cad ]
+[ Upstream commit 71f8b55bc30e82d6355e07811213d847981a32e2 ]
 
-Unify ACPI ID tables format by:
-- surrounding HID by spaces
-- dropping unnecessary driver_data assignment to 0
-- dropping comma at the terminator entry
+Fix the afs dynamic root's d_delete function to always delete unused
+dentries rather than only deleting them if they're positive.  With things
+as they stand upstream, negative dentries stemming from failed DNS lookups
+stick around preventing retries.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Stable-dep-of: a9f68ffe1170 ("HID: i2c-hid: Add IDEA5002 to i2c_hid_acpi_blacklist[]")
+Fixes: 66c7e1d319a5 ("afs: Split the dynroot stuff out and give it its own ops tables")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-acpi.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/afs/dynroot.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index b96ae15e0ad91..171332fef6d14 100644
---- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-@@ -39,8 +39,8 @@ static const struct acpi_device_id i2c_hid_acpi_blacklist[] = {
- 	 * The CHPN0001 ACPI device, which is used to describe the Chipone
- 	 * ICN8505 controller, has a _CID of PNP0C50 but is not HID compatible.
- 	 */
--	{"CHPN0001", 0 },
--	{ },
-+	{ "CHPN0001" },
-+	{ }
- };
- 
- /* HID I²C Device: 3cdff6f7-4267-4555-ad05-b30a3d8938de */
-@@ -115,9 +115,9 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index 8081d68004d05..cec7d8e5ad0c9 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -252,20 +252,9 @@ static int afs_dynroot_d_revalidate(struct dentry *dentry, unsigned int flags)
+ 	return 1;
  }
  
- static const struct acpi_device_id i2c_hid_acpi_match[] = {
--	{"ACPI0C50", 0 },
--	{"PNP0C50", 0 },
--	{ },
-+	{ "ACPI0C50" },
-+	{ "PNP0C50" },
-+	{ }
+-/*
+- * Allow the VFS to enquire as to whether a dentry should be unhashed (mustn't
+- * sleep)
+- * - called from dput() when d_count is going to 0.
+- * - return 1 to request dentry be unhashed, 0 otherwise
+- */
+-static int afs_dynroot_d_delete(const struct dentry *dentry)
+-{
+-	return d_really_is_positive(dentry);
+-}
+-
+ const struct dentry_operations afs_dynroot_dentry_operations = {
+ 	.d_revalidate	= afs_dynroot_d_revalidate,
+-	.d_delete	= afs_dynroot_d_delete,
++	.d_delete	= always_delete_dentry,
+ 	.d_release	= afs_d_release,
+ 	.d_automount	= afs_d_automount,
  };
- MODULE_DEVICE_TABLE(acpi, i2c_hid_acpi_match);
- 
 -- 
 2.43.0
 
