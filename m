@@ -1,259 +1,280 @@
-Return-Path: <stable+bounces-8707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BAE820353
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 03:30:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F0C820411
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 09:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76DAB1C21440
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 02:30:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FF14B20C9E
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 08:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D75F10E9;
-	Sat, 30 Dec 2023 02:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF1E1C0F;
+	Sat, 30 Dec 2023 08:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lLNIe9Yw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HYO6b3Ex"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2067.outbound.protection.outlook.com [40.107.243.67])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5E92598;
-	Sat, 30 Dec 2023 02:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RnKXIvTmOPo3uWRFNYmZ7Erv717nwONph447JQnCBUgNKliHxZTh4OhIFB3vT9XIpRJTaxUXnZFz/nurc55mAuXIrm6Wf0yNHEf793im8wJQsB+kXKcm3o2CrttYxVOpZ8e7QbFrZ8wTO+6/pUIrhY3oCWkA/51a9wOWNcgRTQwo67X7w+sY3SqmJfco+Ab0Q5s1e7Cst/rUJWJrU+3KQs+4MifYtPSF8G1dbLHAVU+e3K3WWAWb3jjgbX8UZth1L89E01L9s+AdFiqEJ5rMWrNjIYNAYIFrU7wc0VZ77fvK0H7orXDYJvscd/iH1fhN+crn+xyJaouJxXcp2wb+DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e7GMhfYHcTr5RGqIPmIp40EkKLkt1NzpPpHir6Lsw4c=;
- b=Qa6Hqc6YWK31n0l8+Kitr3aXgO6y5T63osFE3ZdFDJiMDGJHtBCAKPelb++g41941Srmql3gdOUNUzeho8Jr9q6SvTEVy20epzDUfTCJLMDPVbfBqTR44SnyaooN9d3jVfzzUt+httd9N20r1NjTViYtPsGmYaP8sA5zmj2ZP+83etHdpTFWbzo0Mq4iOb5lfZB6RagGtYTOsWgY7llPMFRf8zIihCdZN7ZHGytKXmGXr7TxwinFChpgA0qGvaMomubEH5KoKlR1s+OjrmOoOeZOv34f6kjRb9Z1COlaE8y7I8Nz9pq7SbdvgwzD2n48LCgs2/5NCY8W6AED6WzUsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e7GMhfYHcTr5RGqIPmIp40EkKLkt1NzpPpHir6Lsw4c=;
- b=lLNIe9Yw68lwD+DQ+xEx7+KJD/8fNL5OZRjXIMiRZoFrL2FgMImRjDMqnt70HgAp9otkbpRTMDfaBY4WShkQGqpV8tVadZQFkepvebTAMClnwRBh+EvbzEaB23++4RzLciJN39P4SixyeLZBUfyQcMkvZ8nGE1mVS5P8/yxx8lo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SJ0PR12MB5439.namprd12.prod.outlook.com (2603:10b6:a03:3ae::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.21; Sat, 30 Dec
- 2023 02:30:03 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ce8d:7121:cb06:91ba]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::ce8d:7121:cb06:91ba%4]) with mapi id 15.20.7135.019; Sat, 30 Dec 2023
- 02:30:03 +0000
-Message-ID: <af04e964-28b9-4c31-a2e2-93d8410b5e8b@amd.com>
-Date: Fri, 29 Dec 2023 20:30:00 -0600
-User-Agent: Mozilla Thunderbird
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 000095239;
+	Sat, 30 Dec 2023 08:44:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1703925863; x=1735461863;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kP48Qr7mS35FgW5l3bihWVKTEbnJqD/ev/ndiwrg9tM=;
+  b=HYO6b3ExF5WQx7Pb8Da0mbIZNb+ic2SxHyLxkzrP9mMmjC8GEpUcSH0s
+   AMpXQ8ijGUv4A3TYq2eVeLfo7RKL9WZN0+8b++A+yJWjn1+KkGcGWi2uz
+   WpL53jU02rwdvftYpBj9ZpzPuwrYi3sNkiR0vl4Jd0tumzDmixaNXUOVy
+   G0KKD2LS+N5tRhrv1paAM9dAfyMLPvplVlf9rKFpKLe5GA38AueGrMFPI
+   ny3eScnCmvSUZA4tH9/5EEjCj3z8XqunCAoQIBuyKWJpdg+lvI/4M/smE
+   A8uVpjds04o0bQsftGApFjPooys3Kf5k+CJ5HIcDIuZdOLtysxJ3cBBr7
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="376184511"
+X-IronPort-AV: E=Sophos;i="6.04,317,1695711600"; 
+   d="scan'208";a="376184511"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Dec 2023 00:44:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10938"; a="1026075769"
+X-IronPort-AV: E=Sophos;i="6.04,317,1695711600"; 
+   d="scan'208";a="1026075769"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga006.fm.intel.com with ESMTP; 30 Dec 2023 00:44:19 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rJUx7-000IHJ-16;
+	Sat, 30 Dec 2023 08:44:17 +0000
+Date: Sat, 30 Dec 2023 16:43:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, adamg@pobox.com,
+	stable@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tobias Gruetzmacher <tobias-lists@23.gs>
 Subject: Re: [PATCH] firewire: ohci: suppress unexpected system reboot in AMD
  Ryzen machines and ASM108x/VT630x PCIe cards
-Content-Language: en-US
-To: Takashi Sakamoto <o-takashi@sakamocchi.jp>,
- linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
-Cc: adamg@pobox.com, stable@vger.kernel.org, Jiri Slaby
- <jirislaby@kernel.org>, Tobias Gruetzmacher <tobias-lists@23.gs>
+Message-ID: <202312301629.2sCcBeRp-lkp@intel.com>
 References: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA0PR11CA0182.namprd11.prod.outlook.com
- (2603:10b6:806:1bc::7) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ0PR12MB5439:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e5effc4-b774-4c24-d372-08dc08df3a69
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	PImiX9Mg6smIehSgzoLiLMmtA83hPl9OEyrtu63lQeu4NcHbz9YryU/NLToegAjVE0o4OwFsLzoxo10EHIoxlSBKQKDqZZhUyd9YYOBds8ZXhknIRGWeu8VQy3+w3amshOfOndrjkk98sOD47otodRp9Q7OLgeAM/rPl+xkSaTO7sqbI5bNkNM1NeFPuMfLQ15C2hJif2uJy5t4cY5eaO1P5FZP5cgkGeozToUHZazwnIHLfdMzxEXq1UOl1ou7gmU3NQz931XZ32Jm6B/l/EQ4k/FSl9w0fUlywNHGIkgVIa7g51TMsGDVTnM61oXwTghjQKJtIv+x2/fsTmphMysLMX/bscG/gkCTFFjjUd/TbYST2IzK+r6e+MdC5G17ctfq+EioBJt9cW10J8QHQ11e+UGUSVve4Wjj0y4rrqxXc3X3QwKLfgLUKc0/GhxaUf34WsPUSq49gPCHPkTKqIFW2T1pEZhmzMV+kBnKihDGruUe3UNxzU+rptfAHn6147CcQPFsZdXzzc3LbVvi2VieHRkNkJ4k3bXfZ62uYj2mOG9kYiuY/YchZzWOCD8hnTwBqN+FiZFSe6BCJXkCKNfp6lLqNyNWVPKo6n8z5uMrtWA5eQOJv/lDlzeB4iYcTvjNNbVIWKgbKZBbeyQwpzw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(376002)(39860400002)(396003)(136003)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(2906002)(316002)(31686004)(4326008)(54906003)(966005)(38100700002)(41300700001)(8936002)(6512007)(6506007)(8676002)(478600001)(66556008)(5660300002)(66476007)(66946007)(44832011)(86362001)(36756003)(6486002)(31696002)(53546011)(2616005)(26005)(83380400001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q0JIYktCLzFhOG9rZGZXS201U1lNNzdtNXF0RFNoOXQyVm4vK3pLdFRRZE9Y?=
- =?utf-8?B?T1lrYnV0bUxkVHM4ZVBOMWx2QnFGdTRXUlZXd0cxbCtKcDRCNE5sRmd3VDl1?=
- =?utf-8?B?cFZ1QXVmcHV5dUROM0dvTm1TT1ErSGEyb2kybll2NU9veHJ1VXM5eUFHOEhw?=
- =?utf-8?B?QmZoS3FScGFXOFpnYTVlVVNNMm9VK1UyUURjc1BlWEhaVjdBK0lUUkFHQ0xy?=
- =?utf-8?B?WThDNGxrVEZBeExuaGt5UWFsZFdIVVBXRHNjZ1pUT3lVajhONTR5RW9sSDlI?=
- =?utf-8?B?ZWNkSWJqOFdlNkV6VkxFSGxwdy9RdFdObElXL096bTJSMCtIbUtXb0Y2YzNG?=
- =?utf-8?B?NjdLWkVJT0txQ2c0RElhc21oVWxocCtPWmx5WnQ3bi9aVVphTzN3anJzQyti?=
- =?utf-8?B?dHloMi94R0xac2xZdlNOeVlRdXNSUHd3RWdlb3RYZzByY1JycVI4RkVMc2J0?=
- =?utf-8?B?eGxSdWtYVVd0a1U3a2UwaE9LbzJ0Z2RkWFh5VWhLWjF5dkloTnVVRHp2NkMr?=
- =?utf-8?B?alR1bG12UldoK1c5QUtQamtwbHZDT0JLeFlDZ05pVjBRT21aVTd5VHd4ME5M?=
- =?utf-8?B?U3crQWV1RW1OcXo0aENqdWZFWTJDdnROcDdhbmtoajdwZjMyQU83MnFublVE?=
- =?utf-8?B?RXQxdWZDeThRQkw4Y2s2QXZjb3JGbTgycnFmZVNyeEtsc0laZHFhU3ZBaE5x?=
- =?utf-8?B?SWJtVm5FMFhiaUxld3FkU3dPaGthcmRzanNVa0R4dVRsaTBMMTlUYTcrWFp3?=
- =?utf-8?B?R3F4MnN6a2FtSFJ6bVdhZEJVRUdMNXE0aVU4NThrUmRETVRFZGRyTW1TYXB6?=
- =?utf-8?B?bE9KcW1VUkhKY3FCWjFxZzF3OGl4dTlqS3JXaUJuTlRWNFJVRVEvMHNtc3Bu?=
- =?utf-8?B?Mm83Zi9BR1hBalk2eW91dnNWUlFWdG0vQUVVTm1weDYyaGM2eEZvd0Erbk1m?=
- =?utf-8?B?Qk15bGhoQmFPTS82c3NGTDNoZXhwbzFRRjNPcm1VdjVxY0NFdW9PVGRxUVV4?=
- =?utf-8?B?MTdMV2ZTaWx3R1JUdnhJYjlVR2hzdnhxOHFkMGNuZjBlMVNEZlVrdkRRYmhP?=
- =?utf-8?B?aUZHUnpZWDRlUWRzQ2MyK3dQcHlKdXZaNzk0U3NTTkZKdWpWenZZSkNOai9y?=
- =?utf-8?B?VGJPWERqRWV5SWVQQ3B4bjBScVBZRjQwbU9xZlN3dDk0cDRGRFNidHJTcVE1?=
- =?utf-8?B?RHRvd3lHUzY0cjVqNElVODN3WWNRWVVlRHF6WWhodUJpZGYwRFpTQk9xaE11?=
- =?utf-8?B?QUtkQlFwcHFLRWV5OXFJNVljMEhwMXpvYkpXcTVWMys4dUVMR2c3N0ZZRStU?=
- =?utf-8?B?WnpoUEdTd1lGRkJ6SlZOTUNSU2t4UXcxVXI1SHJNaitmUUg2Y1c0bVZ6VUJS?=
- =?utf-8?B?S1o1Q1pYTkFmWmhsR04zM2dsZVVjalRLWFRVdVFvYStvZTArTHFqNjVvVDZX?=
- =?utf-8?B?SmRiK21XSnFjczl6TzhjNTI4dFArdnVOb2NkT2luaThqUW5CVTBJZHU5Ui9R?=
- =?utf-8?B?cEt6WGFlVERvbTg0ekg4Y3BYN25BU0FTTmNzZTB2WitpNjdyenlvb2VBR1dH?=
- =?utf-8?B?OThrc1I1aXBxYzdUak90c3YxUEJEbUNtdEttMm83K21XTFp5TVEyVVRWRFhU?=
- =?utf-8?B?MWxSa1NLQm9MWnpXQTgybzJGdXdtd1pvZER2SmRMVy9IRXVnYUU0djNHaDFt?=
- =?utf-8?B?SXREcFl5SzBTblBQakh1VTFOSEF2eVYzcDVHOFBBNWNKdjIxbTg0d2lwSWU4?=
- =?utf-8?B?Tm1wQXhZQitRZy82cmErM1N1OUcveXBYb2lESDRBRVdvRUdWQld0QWlLcnp6?=
- =?utf-8?B?dFhZWkFmSWRiN2ticEMvZStBQndLRGFwMFNPRTg2cno5WXo4K0JqRUtFZFgw?=
- =?utf-8?B?ZW13cys2Z2gwRThma2huYmZGZm5GOTNRTVVqM2dYU3BrN0pwTHR1bDczbEd5?=
- =?utf-8?B?Rk5sRDJ2azZJYy9mMmJhVWV4T0FJRXpDYmxmT2k2RUJiR3BtY01WNk16cEd5?=
- =?utf-8?B?Uys2aVRLTnM1Qkt2Z0t5dGh1TDUxOFV2U1lFUlVuWkZUTVZTTmEwQnhCMksr?=
- =?utf-8?B?NnQzVUZ1emxaT1VuaFRHK1lFTFkrNWZ0V0F2aU5MS3RqVDc3YzI5Q1luVU1K?=
- =?utf-8?Q?Fu81CZy8Ldn5bi9or28cDGdHR?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e5effc4-b774-4c24-d372-08dc08df3a69
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Dec 2023 02:30:03.1826
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AWSI9fnKwvmtBkVbAk5il6r+uWplYj1/sajctZTzt9yEflJ7PngOunKiTotp9tIGXieEKOOvUato/zSexut/hQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5439
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
 
-On 12/28/2023 21:57, Takashi Sakamoto wrote:
-> VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-> the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-> it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-> 0xf0 on PCI I/O space) often causes unexpected system reboot in any type
-> of AMD Ryzen machine (both 0x17 and 0x19 families). It does not appears in
-> the other type of machine (AMD pre-Ryzen machine, Intel machine, at least),
-> or in the other OHCI 1394 hardware (e.g. Texas Instruments).
-> 
-> The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-> use union for callback of transaction completion") added to v6.5 kernel.
-> It changed 1394 OHCI driver to access to the register every time to
-> dispatch local asynchronous transaction. However, the issue exists in
-> older version of kernel as long as it runs in AMD Ryzen machine, since
-> the access to the register is required to maintain bus time. It is not
-> hard to imagine that users experience the unexpected system reboot when
-> generating bus reset by plugging any devices in, or reading the register
-> by time-aware application programs; e.g. audio sample processing.
-> 
-> Well, this commit suppresses the system reboot in the combination of
-> hardware. It avoids the access itself. As a result, the software stack can
-> not provide the hardware time anymore to unit drivers, userspace
-> applications, and nodes in the same IEEE 1394 bus. It brings apparent
-> disadvantage since time-aware application programs require it, while
-> time-unaware applications are available again; e.g. sbp2.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Jiri Slaby <jirislaby@kernel.org>
-> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-> Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-> Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-> Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-> Closes: https://bugs.launchpad.net/linux/+bug/2043905
-> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-> ---
->   drivers/firewire/ohci.c | 49 +++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 49 insertions(+)
-> 
-> diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-> index 7e88fd489741..62af3fa39a70 100644
-> --- a/drivers/firewire/ohci.c
-> +++ b/drivers/firewire/ohci.c
-> @@ -279,6 +279,8 @@ static char ohci_driver_name[] = KBUILD_MODNAME;
->   #define QUIRK_TI_SLLZ059		0x20
->   #define QUIRK_IR_WAKE			0x40
->   
-> +#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
-> +
->   /* In case of multiple matches in ohci_quirks[], only the first one is used. */
->   static const struct {
->   	unsigned short vendor, device, revision, flags;
-> @@ -1724,6 +1726,11 @@ static u32 get_cycle_time(struct fw_ohci *ohci)
->   	s32 diff01, diff12;
->   	int i;
->   
-> +#if IS_ENABLED(CONFIG_X86)
-> +	if (ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ)
-> +		return 0;
-> +#endif
-> +
->   	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
->   
->   	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
-> @@ -3527,6 +3534,45 @@ static const struct fw_card_driver ohci_driver = {
->   	.stop_iso		= ohci_stop_iso,
->   };
->   
-> +// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
-> +// ASM1083/1085 brings an inconvenience that read accesses to 'Isochronous Cycle Timer' register
-> +// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
-> +// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
-> +// while it is probable due to detection of any type of PCIe error.
-> +#if IS_ENABLED(CONFIG_X86)
-> +
-> +#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
-> +
-> +static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev,
-> +							    struct fw_ohci *ohci)
-> +{
-> +	const struct pci_dev *pcie_to_pci_bridge;
-> +	const struct cpuinfo_x86 *cinfo = &cpu_data(0);
-> +
-> +	// Detect any type of AMD Ryzen machine.
-> +	if (cinfo->x86_vendor != X86_VENDOR_AMD || cinfo->x86 < 0x17)
-> +		return false;
+Hi Takashi,
 
-Maybe it's better to use X86_FEATURE_ZEN?
+kernel test robot noticed the following build errors:
 
-> +
-> +	// Detect VIA VT6306/6307/6308.
-> +	if (pdev->vendor != PCI_VENDOR_ID_VIA)
-> +		return false;
-> +	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
-> +		return false;
-> +
-> +	// Detect Asmedia ASM1083/1085.
-> +	pcie_to_pci_bridge = pdev->bus->self;
-> +	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
-> +		return false;
-> +	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
-> +#else
-> +#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
-> +#endif
-> +
->   #ifdef CONFIG_PPC_PMAC
->   static void pmac_ohci_on(struct pci_dev *dev)
->   {
-> @@ -3630,6 +3676,9 @@ static int pci_probe(struct pci_dev *dev,
->   	if (param_quirks)
->   		ohci->quirks = param_quirks;
->   
-> +	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
-> +		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
-> +
->   	/*
->   	 * Because dma_alloc_coherent() allocates at least one page,
->   	 * we save space by using a common buffer for the AR request/
+[auto build test ERROR on ieee1394-linux1394/for-next]
+[also build test ERROR on ieee1394-linux1394/for-linus linus/master v6.7-rc7 next-20231222]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Takashi-Sakamoto/firewire-ohci-suppress-unexpected-system-reboot-in-AMD-Ryzen-machines-and-ASM108x-VT630x-PCIe-cards/20231229-120311
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394.git for-next
+patch link:    https://lore.kernel.org/r/20231229035735.11127-1-o-takashi%40sakamocchi.jp
+patch subject: [PATCH] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
+config: arm64-allyesconfig (https://download.01.org/0day-ci/archive/20231230/202312301629.2sCcBeRp-lkp@intel.com/config)
+compiler: clang version 18.0.0git (https://github.com/llvm/llvm-project 8a4266a626914765c0c69839e8a51be383013c1a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231230/202312301629.2sCcBeRp-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312301629.2sCcBeRp-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/firewire/ohci.c:3679:59: error: too many arguments provided to function-like macro invocation
+    3679 |         if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
+         |                                                                  ^
+   drivers/firewire/ohci.c:3573:9: note: macro 'detect_vt630x_with_asm1083_on_amd_ryzen_machine' defined here
+    3573 | #define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)   false
+         |         ^
+>> drivers/firewire/ohci.c:3679:6: error: use of undeclared identifier 'detect_vt630x_with_asm1083_on_amd_ryzen_machine'
+    3679 |         if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
+         |             ^
+   2 errors generated.
+
+
+vim +3679 drivers/firewire/ohci.c
+
+  3617	
+  3618	static int pci_probe(struct pci_dev *dev,
+  3619				       const struct pci_device_id *ent)
+  3620	{
+  3621		struct fw_ohci *ohci;
+  3622		u32 bus_options, max_receive, link_speed, version;
+  3623		u64 guid;
+  3624		int i, err;
+  3625		size_t size;
+  3626	
+  3627		if (dev->vendor == PCI_VENDOR_ID_PINNACLE_SYSTEMS) {
+  3628			dev_err(&dev->dev, "Pinnacle MovieBoard is not yet supported\n");
+  3629			return -ENOSYS;
+  3630		}
+  3631	
+  3632		ohci = devres_alloc(release_ohci, sizeof(*ohci), GFP_KERNEL);
+  3633		if (ohci == NULL)
+  3634			return -ENOMEM;
+  3635		fw_card_initialize(&ohci->card, &ohci_driver, &dev->dev);
+  3636		pci_set_drvdata(dev, ohci);
+  3637		pmac_ohci_on(dev);
+  3638		devres_add(&dev->dev, ohci);
+  3639	
+  3640		err = pcim_enable_device(dev);
+  3641		if (err) {
+  3642			dev_err(&dev->dev, "failed to enable OHCI hardware\n");
+  3643			return err;
+  3644		}
+  3645	
+  3646		pci_set_master(dev);
+  3647		pci_write_config_dword(dev, OHCI1394_PCI_HCI_Control, 0);
+  3648	
+  3649		spin_lock_init(&ohci->lock);
+  3650		mutex_init(&ohci->phy_reg_mutex);
+  3651	
+  3652		INIT_WORK(&ohci->bus_reset_work, bus_reset_work);
+  3653	
+  3654		if (!(pci_resource_flags(dev, 0) & IORESOURCE_MEM) ||
+  3655		    pci_resource_len(dev, 0) < OHCI1394_REGISTER_SIZE) {
+  3656			ohci_err(ohci, "invalid MMIO resource\n");
+  3657			return -ENXIO;
+  3658		}
+  3659	
+  3660		err = pcim_iomap_regions(dev, 1 << 0, ohci_driver_name);
+  3661		if (err) {
+  3662			ohci_err(ohci, "request and map MMIO resource unavailable\n");
+  3663			return -ENXIO;
+  3664		}
+  3665		ohci->registers = pcim_iomap_table(dev)[0];
+  3666	
+  3667		for (i = 0; i < ARRAY_SIZE(ohci_quirks); i++)
+  3668			if ((ohci_quirks[i].vendor == dev->vendor) &&
+  3669			    (ohci_quirks[i].device == (unsigned short)PCI_ANY_ID ||
+  3670			     ohci_quirks[i].device == dev->device) &&
+  3671			    (ohci_quirks[i].revision == (unsigned short)PCI_ANY_ID ||
+  3672			     ohci_quirks[i].revision >= dev->revision)) {
+  3673				ohci->quirks = ohci_quirks[i].flags;
+  3674				break;
+  3675			}
+  3676		if (param_quirks)
+  3677			ohci->quirks = param_quirks;
+  3678	
+> 3679		if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev, ohci))
+  3680			ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
+  3681	
+  3682		/*
+  3683		 * Because dma_alloc_coherent() allocates at least one page,
+  3684		 * we save space by using a common buffer for the AR request/
+  3685		 * response descriptors and the self IDs buffer.
+  3686		 */
+  3687		BUILD_BUG_ON(AR_BUFFERS * sizeof(struct descriptor) > PAGE_SIZE/4);
+  3688		BUILD_BUG_ON(SELF_ID_BUF_SIZE > PAGE_SIZE/2);
+  3689		ohci->misc_buffer = dmam_alloc_coherent(&dev->dev, PAGE_SIZE, &ohci->misc_buffer_bus,
+  3690							GFP_KERNEL);
+  3691		if (!ohci->misc_buffer)
+  3692			return -ENOMEM;
+  3693	
+  3694		err = ar_context_init(&ohci->ar_request_ctx, ohci, 0,
+  3695				      OHCI1394_AsReqRcvContextControlSet);
+  3696		if (err < 0)
+  3697			return err;
+  3698	
+  3699		err = ar_context_init(&ohci->ar_response_ctx, ohci, PAGE_SIZE/4,
+  3700				      OHCI1394_AsRspRcvContextControlSet);
+  3701		if (err < 0)
+  3702			return err;
+  3703	
+  3704		err = context_init(&ohci->at_request_ctx, ohci,
+  3705				   OHCI1394_AsReqTrContextControlSet, handle_at_packet);
+  3706		if (err < 0)
+  3707			return err;
+  3708	
+  3709		err = context_init(&ohci->at_response_ctx, ohci,
+  3710				   OHCI1394_AsRspTrContextControlSet, handle_at_packet);
+  3711		if (err < 0)
+  3712			return err;
+  3713	
+  3714		reg_write(ohci, OHCI1394_IsoRecvIntMaskSet, ~0);
+  3715		ohci->ir_context_channels = ~0ULL;
+  3716		ohci->ir_context_support = reg_read(ohci, OHCI1394_IsoRecvIntMaskSet);
+  3717		reg_write(ohci, OHCI1394_IsoRecvIntMaskClear, ~0);
+  3718		ohci->ir_context_mask = ohci->ir_context_support;
+  3719		ohci->n_ir = hweight32(ohci->ir_context_mask);
+  3720		size = sizeof(struct iso_context) * ohci->n_ir;
+  3721		ohci->ir_context_list = devm_kzalloc(&dev->dev, size, GFP_KERNEL);
+  3722		if (!ohci->ir_context_list)
+  3723			return -ENOMEM;
+  3724	
+  3725		reg_write(ohci, OHCI1394_IsoXmitIntMaskSet, ~0);
+  3726		ohci->it_context_support = reg_read(ohci, OHCI1394_IsoXmitIntMaskSet);
+  3727		/* JMicron JMB38x often shows 0 at first read, just ignore it */
+  3728		if (!ohci->it_context_support) {
+  3729			ohci_notice(ohci, "overriding IsoXmitIntMask\n");
+  3730			ohci->it_context_support = 0xf;
+  3731		}
+  3732		reg_write(ohci, OHCI1394_IsoXmitIntMaskClear, ~0);
+  3733		ohci->it_context_mask = ohci->it_context_support;
+  3734		ohci->n_it = hweight32(ohci->it_context_mask);
+  3735		size = sizeof(struct iso_context) * ohci->n_it;
+  3736		ohci->it_context_list = devm_kzalloc(&dev->dev, size, GFP_KERNEL);
+  3737		if (!ohci->it_context_list)
+  3738			return -ENOMEM;
+  3739	
+  3740		ohci->self_id     = ohci->misc_buffer     + PAGE_SIZE/2;
+  3741		ohci->self_id_bus = ohci->misc_buffer_bus + PAGE_SIZE/2;
+  3742	
+  3743		bus_options = reg_read(ohci, OHCI1394_BusOptions);
+  3744		max_receive = (bus_options >> 12) & 0xf;
+  3745		link_speed = bus_options & 0x7;
+  3746		guid = ((u64) reg_read(ohci, OHCI1394_GUIDHi) << 32) |
+  3747			reg_read(ohci, OHCI1394_GUIDLo);
+  3748	
+  3749		if (!(ohci->quirks & QUIRK_NO_MSI))
+  3750			pci_enable_msi(dev);
+  3751		err = devm_request_irq(&dev->dev, dev->irq, irq_handler,
+  3752				       pci_dev_msi_enabled(dev) ? 0 : IRQF_SHARED, ohci_driver_name, ohci);
+  3753		if (err < 0) {
+  3754			ohci_err(ohci, "failed to allocate interrupt %d\n", dev->irq);
+  3755			goto fail_msi;
+  3756		}
+  3757	
+  3758		err = fw_card_add(&ohci->card, max_receive, link_speed, guid);
+  3759		if (err)
+  3760			goto fail_msi;
+  3761	
+  3762		version = reg_read(ohci, OHCI1394_Version) & 0x00ff00ff;
+  3763		ohci_notice(ohci,
+  3764			    "added OHCI v%x.%x device as card %d, "
+  3765			    "%d IR + %d IT contexts, quirks 0x%x%s\n",
+  3766			    version >> 16, version & 0xff, ohci->card.index,
+  3767			    ohci->n_ir, ohci->n_it, ohci->quirks,
+  3768			    reg_read(ohci, OHCI1394_PhyUpperBound) ?
+  3769				", physUB" : "");
+  3770	
+  3771		return 0;
+  3772	
+  3773	 fail_msi:
+  3774		pci_disable_msi(dev);
+  3775	
+  3776		return err;
+  3777	}
+  3778	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
