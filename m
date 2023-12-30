@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-8911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816F6820566
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:08:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CF08204E9
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C77C1F21B75
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:08:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DD8B1C20EC7
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA998483;
-	Sat, 30 Dec 2023 12:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B6579DD;
+	Sat, 30 Dec 2023 12:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVm+dsI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JZMu7Rz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949F279EE;
-	Sat, 30 Dec 2023 12:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B44BC433C7;
-	Sat, 30 Dec 2023 12:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AF68C18;
+	Sat, 30 Dec 2023 12:03:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C418C433CA;
+	Sat, 30 Dec 2023 12:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938082;
-	bh=F20lV3reRSH8EkFLZAuYnX5u1FRz1AsHPetvJSpe07U=;
+	s=korg; t=1703937782;
+	bh=jasCBNKHvonXjX5nnMVYdX9QdmHLwRKO3WuGEADqWeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVm+dsI33EWOgOGZgXOWLmHFJuI6j7Nl5eM2wc917EBt0hXzZ6uQoUlXZt9uUAWUV
-	 yuoGAYU1+43YOLyGtDYmy/SizWfTwnM099GgFxnic0bP9zKiBnAB+2y2+9mHouCllu
-	 y1Z7LOyA3UTCivkKf3v6yAEow3jjQGyaevWBCPu8=
+	b=0JZMu7Rzp6Y2CZArorJQG99Qldmu0GpskTffKQmLcIIA3ux7fwOEcqkrykzCF6I3n
+	 w+d5Lg3S9YNdILIQ1KZZtWTHcizIjpDBw3N2W/yCri7/p4NMbnHVQH5epiBfXqM3RT
+	 nLQSSh8WXKUXCIRGK5KqgUKx+OwIFOftOWKqXTko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
-	Jiri Olsa <jolsa@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Lee Jones <lee@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Subject: [PATCH 6.1 002/112] bpf: Fix prog_array_map_poke_run map poke update
+	Liu Jian <liujian56@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 061/156] net: check vlan filter feature in vlan_vids_add_by_dev() and vlan_vids_del_by_dev()
 Date: Sat, 30 Dec 2023 11:58:35 +0000
-Message-ID: <20231230115806.808365451@linuxfoundation.org>
+Message-ID: <20231230115814.342182237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,232 +53,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Liu Jian <liujian56@huawei.com>
 
-commit 4b7de801606e504e69689df71475d27e35336fb3 upstream.
+[ Upstream commit 01a564bab4876007ce35f312e16797dfe40e4823 ]
 
-Lee pointed out issue found by syscaller [0] hitting BUG in prog array
-map poke update in prog_array_map_poke_run function due to error value
-returned from bpf_arch_text_poke function.
+I got the below warning trace:
 
-There's race window where bpf_arch_text_poke can fail due to missing
-bpf program kallsym symbols, which is accounted for with check for
--EINVAL in that BUG_ON call.
+WARNING: CPU: 4 PID: 4056 at net/core/dev.c:11066 unregister_netdevice_many_notify
+CPU: 4 PID: 4056 Comm: ip Not tainted 6.7.0-rc4+ #15
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:unregister_netdevice_many_notify+0x9a4/0x9b0
+Call Trace:
+ rtnl_dellink
+ rtnetlink_rcv_msg
+ netlink_rcv_skb
+ netlink_unicast
+ netlink_sendmsg
+ __sock_sendmsg
+ ____sys_sendmsg
+ ___sys_sendmsg
+ __sys_sendmsg
+ do_syscall_64
+ entry_SYSCALL_64_after_hwframe
 
-The problem is that in such case we won't update the tail call jump
-and cause imbalance for the next tail call update check which will
-fail with -EBUSY in bpf_arch_text_poke.
+It can be repoduced via:
 
-I'm hitting following race during the program load:
+    ip netns add ns1
+    ip netns exec ns1 ip link add bond0 type bond mode 0
+    ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+    ip netns exec ns1 ip link set bond_slave_1 master bond0
+[1] ip netns exec ns1 ethtool -K bond0 rx-vlan-filter off
+[2] ip netns exec ns1 ip link add link bond_slave_1 name bond_slave_1.0 type vlan id 0
+[3] ip netns exec ns1 ip link add link bond0 name bond0.0 type vlan id 0
+[4] ip netns exec ns1 ip link set bond_slave_1 nomaster
+[5] ip netns exec ns1 ip link del veth2
+    ip netns del ns1
 
-  CPU 0                             CPU 1
+This is all caused by command [1] turning off the rx-vlan-filter function
+of bond0. The reason is the same as commit 01f4fd270870 ("bonding: Fix
+incorrect deletion of ETH_P_8021AD protocol vid from slaves"). Commands
+[2] [3] add the same vid to slave and master respectively, causing
+command [4] to empty slave->vlan_info. The following command [5] triggers
+this problem.
 
-  bpf_prog_load
-    bpf_check
-      do_misc_fixups
-        prog_array_map_poke_track
+To fix this problem, we should add VLAN_FILTER feature checks in
+vlan_vids_add_by_dev() and vlan_vids_del_by_dev() to prevent incorrect
+addition or deletion of vlan_vid information.
 
-                                    map_update_elem
-                                      bpf_fd_array_map_update_elem
-                                        prog_array_map_poke_run
-
-                                          bpf_arch_text_poke returns -EINVAL
-
-    bpf_prog_kallsyms_add
-
-After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
-poke update fails on expected jump instruction check in bpf_arch_text_poke
-with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
-
-Similar race exists on the program unload.
-
-Fixing this by moving the update to bpf_arch_poke_desc_update function which
-makes sure we call __bpf_arch_text_poke that skips the bpf address check.
-
-Each architecture has slightly different approach wrt looking up bpf address
-in bpf_arch_text_poke, so instead of splitting the function or adding new
-'checkip' argument in previous version, it seems best to move the whole
-map_poke_run update as arch specific code.
-
-  [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
-
-Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
-Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20231206083041.1306660-2-jolsa@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 348a1443cc43 ("vlan: introduce functions to do mass addition/deletion of vids by another device")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c |   46 ++++++++++++++++++++++++++++++++++
- include/linux/bpf.h         |    3 ++
- kernel/bpf/arraymap.c       |   58 +++++++-------------------------------------
- 3 files changed, 59 insertions(+), 48 deletions(-)
+ net/8021q/vlan_core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -2553,3 +2553,49 @@ void bpf_jit_free(struct bpf_prog *prog)
+diff --git a/net/8021q/vlan_core.c b/net/8021q/vlan_core.c
+index 0beb44f2fe1f0..f001582345052 100644
+--- a/net/8021q/vlan_core.c
++++ b/net/8021q/vlan_core.c
+@@ -407,6 +407,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 		return 0;
  
- 	bpf_prog_unlock_free(prog);
- }
-+
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	u8 *old_addr, *new_addr, *old_bypass_addr;
-+	int ret;
-+
-+	old_bypass_addr = old ? NULL : poke->bypass_addr;
-+	old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
-+	new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
-+
-+	/*
-+	 * On program loading or teardown, the program's kallsym entry
-+	 * might not be in place, so we use __bpf_arch_text_poke to skip
-+	 * the kallsyms check.
-+	 */
-+	if (new) {
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, new_addr);
-+		BUG_ON(ret < 0);
-+		if (!old) {
-+			ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+						   BPF_MOD_JUMP,
-+						   poke->bypass_addr,
-+						   NULL);
-+			BUG_ON(ret < 0);
-+		}
-+	} else {
-+		ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+					   BPF_MOD_JUMP,
-+					   old_bypass_addr,
-+					   poke->bypass_addr);
-+		BUG_ON(ret < 0);
-+		/* let other CPUs finish the execution of program
-+		 * so that it will not possible to expose them
-+		 * to invalid nop, stack unwind, nop state
-+		 */
-+		if (!ret)
-+			synchronize_rcu();
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, NULL);
-+		BUG_ON(ret < 0);
-+	}
-+}
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2681,6 +2681,9 @@ enum bpf_text_poke_type {
- int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
- 		       void *addr1, void *addr2);
- 
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old);
-+
- void *bpf_arch_text_copy(void *dst, void *src, size_t len);
- int bpf_arch_text_invalidate(void *dst, size_t len);
- 
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -997,11 +997,16 @@ static void prog_array_map_poke_untrack(
- 	mutex_unlock(&aux->poke_mutex);
- }
- 
-+void __weak bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+				      struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	WARN_ON_ONCE(1);
-+}
-+
- static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 				    struct bpf_prog *old,
- 				    struct bpf_prog *new)
- {
--	u8 *old_addr, *new_addr, *old_bypass_addr;
- 	struct prog_poke_elem *elem;
- 	struct bpf_array_aux *aux;
- 
-@@ -1010,7 +1015,7 @@ static void prog_array_map_poke_run(stru
- 
- 	list_for_each_entry(elem, &aux->poke_progs, list) {
- 		struct bpf_jit_poke_descriptor *poke;
--		int i, ret;
-+		int i;
- 
- 		for (i = 0; i < elem->aux->size_poke_tab; i++) {
- 			poke = &elem->aux->poke_tab[i];
-@@ -1029,21 +1034,10 @@ static void prog_array_map_poke_run(stru
- 			 *    activated, so tail call updates can arrive from here
- 			 *    while JIT is still finishing its final fixup for
- 			 *    non-activated poke entries.
--			 * 3) On program teardown, the program's kallsym entry gets
--			 *    removed out of RCU callback, but we can only untrack
--			 *    from sleepable context, therefore bpf_arch_text_poke()
--			 *    might not see that this is in BPF text section and
--			 *    bails out with -EINVAL. As these are unreachable since
--			 *    RCU grace period already passed, we simply skip them.
--			 * 4) Also programs reaching refcount of zero while patching
-+			 * 3) Also programs reaching refcount of zero while patching
- 			 *    is in progress is okay since we're protected under
- 			 *    poke_mutex and untrack the programs before the JIT
--			 *    buffer is freed. When we're still in the middle of
--			 *    patching and suddenly kallsyms entry of the program
--			 *    gets evicted, we just skip the rest which is fine due
--			 *    to point 3).
--			 * 5) Any other error happening below from bpf_arch_text_poke()
--			 *    is a unexpected bug.
-+			 *    buffer is freed.
- 			 */
- 			if (!READ_ONCE(poke->tailcall_target_stable))
- 				continue;
-@@ -1053,39 +1047,7 @@ static void prog_array_map_poke_run(stru
- 			    poke->tail_call.key != key)
- 				continue;
- 
--			old_bypass_addr = old ? NULL : poke->bypass_addr;
--			old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
--			new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
--
--			if (new) {
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, new_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				if (!old) {
--					ret = bpf_arch_text_poke(poke->tailcall_bypass,
--								 BPF_MOD_JUMP,
--								 poke->bypass_addr,
--								 NULL);
--					BUG_ON(ret < 0 && ret != -EINVAL);
--				}
--			} else {
--				ret = bpf_arch_text_poke(poke->tailcall_bypass,
--							 BPF_MOD_JUMP,
--							 old_bypass_addr,
--							 poke->bypass_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				/* let other CPUs finish the execution of program
--				 * so that it will not possible to expose them
--				 * to invalid nop, stack unwind, nop state
--				 */
--				if (!ret)
--					synchronize_rcu();
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, NULL);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--			}
-+			bpf_arch_poke_desc_update(poke, new, old);
- 		}
+ 	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		err = vlan_vid_add(dev, vid_info->proto, vid_info->vid);
+ 		if (err)
+ 			goto unwind;
+@@ -417,6 +419,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 	list_for_each_entry_continue_reverse(vid_info,
+ 					     &vlan_info->vid_list,
+ 					     list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
  	}
+ 
+@@ -436,8 +440,11 @@ void vlan_vids_del_by_dev(struct net_device *dev,
+ 	if (!vlan_info)
+ 		return;
+ 
+-	list_for_each_entry(vid_info, &vlan_info->vid_list, list)
++	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
++	}
  }
+ EXPORT_SYMBOL(vlan_vids_del_by_dev);
+ 
+-- 
+2.43.0
+
 
 
 
