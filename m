@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-8952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78734820596
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D78B82052C
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB6301C20EB7
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20071C20F76
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09688473;
-	Sat, 30 Dec 2023 12:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BA179EE;
+	Sat, 30 Dec 2023 12:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0WuPKsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD7iYaWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BCF79DC;
-	Sat, 30 Dec 2023 12:09:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E62C433C9;
-	Sat, 30 Dec 2023 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5992979D8;
+	Sat, 30 Dec 2023 12:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C9CC433C7;
+	Sat, 30 Dec 2023 12:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938188;
-	bh=O1h+StoktARVjPQjYbWBr5QGTgOAu4iS92+V2qsYecE=;
+	s=korg; t=1703937935;
+	bh=5Onr7YVEW/+zuhb7bbwiWLpPghhH0p6jfaLFH2hIEKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0WuPKsRAd7pq8x5FQbfcX26Ji6Ls9psGiFuXtE0iWun+qAH31IVivoi+hPlbC+5g
-	 749tIeyNU0GwHct+vBTJnGF62mlV7GsYm6FOb7aZwGeox2Ly1OvenzdA+YvkfktRZ0
-	 oOgwe3ytc7Hr71Oqs53Hs62Ddd+J5LpyFag+xy+M=
+	b=XD7iYaWM4jriOC4pSTDrIggtvBYy5vGi19lLwaM2ucBjpqDD3TMz6uXWFNiZ6MzhG
+	 czjCvNA6GiWv0N3FZwyS4Fa6A5XC1t9XvyCr47MUatEw+Xt5/oloueI86Ahd2pYWUY
+	 Y4m376uuME74anVXD3O8zF7CoeZPEBoB4SpYZpIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 061/112] iio: triggered-buffer: prevent possible freeing of wrong buffer
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Tristram Ha <Tristram.Ha@microchip.com>,
+	netdev@vger.kernel.org,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.6 120/156] net: ks8851: Fix TX stall caused by TX buffer overrun
 Date: Sat, 30 Dec 2023 11:59:34 +0000
-Message-ID: <20231230115808.655408509@linuxfoundation.org>
+Message-ID: <20231230115816.284204605@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +59,239 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit bce61476dc82f114e24e9c2e11fb064781ec563c upstream.
+commit 3dc5d44545453de1de9c53cc529cc960a85933da upstream.
 
-Commit ee708e6baacd ("iio: buffer: introduce support for attaching more
-IIO buffers") introduced support for multiple buffers per indio_dev but
-left indio_dev->buffer for a few legacy use cases.
+There is a bug in the ks8851 Ethernet driver that more data is written
+to the hardware TX buffer than actually available. This is caused by
+wrong accounting of the free TX buffer space.
 
-In the case of the triggered buffer, iio_triggered_buffer_cleanup()
-still assumes that indio_dev->buffer points to the buffer allocated by
-iio_triggered_buffer_setup_ext(). However, since
-iio_triggered_buffer_setup_ext() now calls iio_device_attach_buffer()
-to attach the buffer, indio_dev->buffer will only point to the buffer
-allocated by iio_device_attach_buffer() if it the first buffer attached.
+The driver maintains a tx_space variable that represents the TX buffer
+space that is deemed to be free. The ks8851_start_xmit_spi() function
+adds an SKB to a queue if tx_space is large enough and reduces tx_space
+by the amount of buffer space it will later need in the TX buffer and
+then schedules a work item. If there is not enough space then the TX
+queue is stopped.
 
-This adds a check to make sure that no other buffer has been attached
-yet to ensure that indio_dev->buffer will be assigned when
-iio_device_attach_buffer() is called.
+The worker function ks8851_tx_work() dequeues all the SKBs and writes
+the data into the hardware TX buffer. The last packet will trigger an
+interrupt after it was send. Here it is assumed that all data fits into
+the TX buffer.
 
-As per discussion in the review thread, we may want to deal with multiple
-triggers per device, but this is a fix for the issue in the meantime and
-any such support would be unlikely to be suitable for a backport.
+In the interrupt routine (which runs asynchronously because it is a
+threaded interrupt) tx_space is updated with the current value from the
+hardware. Also the TX queue is woken up again.
 
-Fixes: ee708e6baacd ("iio: buffer: introduce support for attaching more IIO buffers")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Acked-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231031210521.1661552-1-dlechner@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Now it could happen that after data was sent to the hardware and before
+handling the TX interrupt new data is queued in ks8851_start_xmit_spi()
+when the TX buffer space had still some space left. When the interrupt
+is actually handled tx_space is updated from the hardware but now we
+already have new SKBs queued that have not been written to the hardware
+TX buffer yet. Since tx_space has been overwritten by the value from the
+hardware the space is not accounted for.
+
+Now we have more data queued then buffer space available in the hardware
+and ks8851_tx_work() will potentially overrun the hardware TX buffer. In
+many cases it will still work because often the buffer is written out
+fast enough so that no overrun occurs but for example if the peer
+throttles us via flow control then an overrun may happen.
+
+This can be fixed in different ways. The most simple way would be to set
+tx_space to 0 before writing data to the hardware TX buffer preventing
+the queuing of more SKBs until the TX interrupt has been handled. I have
+chosen a slightly more efficient (and still rather simple) way and
+track the amount of data that is already queued and not yet written to
+the hardware. When new SKBs are to be queued the already queued amount
+of data is honoured when checking free TX buffer space.
+
+I tested this with a setup of two linked KS8851 running iperf3 between
+the two in bidirectional mode. Before the fix I got a stall after some
+minutes. With the fix I saw now issues anymore after hours.
+
+Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
+Cc: Tristram Ha <Tristram.Ha@microchip.com>
+Cc: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org # 5.10+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231214181112.76052-1-rwahl@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/buffer/industrialio-triggered-buffer.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/micrel/ks8851.h        |    3 ++
+ drivers/net/ethernet/micrel/ks8851_common.c |   20 ++++++-------
+ drivers/net/ethernet/micrel/ks8851_spi.c    |   42 ++++++++++++++++++----------
+ 3 files changed, 40 insertions(+), 25 deletions(-)
 
---- a/drivers/iio/buffer/industrialio-triggered-buffer.c
-+++ b/drivers/iio/buffer/industrialio-triggered-buffer.c
-@@ -46,6 +46,16 @@ int iio_triggered_buffer_setup_ext(struc
- 	struct iio_buffer *buffer;
- 	int ret;
+--- a/drivers/net/ethernet/micrel/ks8851.h
++++ b/drivers/net/ethernet/micrel/ks8851.h
+@@ -350,6 +350,8 @@ union ks8851_tx_hdr {
+  * @rxd: Space for receiving SPI data, in DMA-able space.
+  * @txd: Space for transmitting SPI data, in DMA-able space.
+  * @msg_enable: The message flags controlling driver output (see ethtool).
++ * @tx_space: Free space in the hardware TX buffer (cached copy of KS_TXMIR).
++ * @queued_len: Space required in hardware TX buffer for queued packets in txq.
+  * @fid: Incrementing frame id tag.
+  * @rc_ier: Cached copy of KS_IER.
+  * @rc_ccr: Cached copy of KS_CCR.
+@@ -399,6 +401,7 @@ struct ks8851_net {
+ 	struct work_struct	rxctrl_work;
  
-+	/*
-+	 * iio_triggered_buffer_cleanup() assumes that the buffer allocated here
-+	 * is assigned to indio_dev->buffer but this is only the case if this
-+	 * function is the first caller to iio_device_attach_buffer(). If
-+	 * indio_dev->buffer is already set then we can't proceed otherwise the
-+	 * cleanup function will try to free a buffer that was not allocated here.
-+	 */
-+	if (indio_dev->buffer)
-+		return -EADDRINUSE;
+ 	struct sk_buff_head	txq;
++	unsigned int		queued_len;
+ 
+ 	struct eeprom_93cx6	eeprom;
+ 	struct regulator	*vdd_reg;
+--- a/drivers/net/ethernet/micrel/ks8851_common.c
++++ b/drivers/net/ethernet/micrel/ks8851_common.c
+@@ -362,16 +362,18 @@ static irqreturn_t ks8851_irq(int irq, v
+ 		handled |= IRQ_RXPSI;
+ 
+ 	if (status & IRQ_TXI) {
+-		handled |= IRQ_TXI;
++		unsigned short tx_space = ks8851_rdreg16(ks, KS_TXMIR);
+ 
+-		/* no lock here, tx queue should have been stopped */
++		netif_dbg(ks, intr, ks->netdev,
++			  "%s: txspace %d\n", __func__, tx_space);
+ 
+-		/* update our idea of how much tx space is available to the
+-		 * system */
+-		ks->tx_space = ks8851_rdreg16(ks, KS_TXMIR);
++		spin_lock(&ks->statelock);
++		ks->tx_space = tx_space;
++		if (netif_queue_stopped(ks->netdev))
++			netif_wake_queue(ks->netdev);
++		spin_unlock(&ks->statelock);
+ 
+-		netif_dbg(ks, intr, ks->netdev,
+-			  "%s: txspace %d\n", __func__, ks->tx_space);
++		handled |= IRQ_TXI;
+ 	}
+ 
+ 	if (status & IRQ_RXI)
+@@ -414,9 +416,6 @@ static irqreturn_t ks8851_irq(int irq, v
+ 	if (status & IRQ_LCI)
+ 		mii_check_link(&ks->mii);
+ 
+-	if (status & IRQ_TXI)
+-		netif_wake_queue(ks->netdev);
+-
+ 	return IRQ_HANDLED;
+ }
+ 
+@@ -500,6 +499,7 @@ static int ks8851_net_open(struct net_de
+ 	ks8851_wrreg16(ks, KS_ISR, ks->rc_ier);
+ 	ks8851_wrreg16(ks, KS_IER, ks->rc_ier);
+ 
++	ks->queued_len = 0;
+ 	netif_start_queue(ks->netdev);
+ 
+ 	netif_dbg(ks, ifup, ks->netdev, "network device up\n");
+--- a/drivers/net/ethernet/micrel/ks8851_spi.c
++++ b/drivers/net/ethernet/micrel/ks8851_spi.c
+@@ -287,6 +287,18 @@ static void ks8851_wrfifo_spi(struct ks8
+ }
+ 
+ /**
++ * calc_txlen - calculate size of message to send packet
++ * @len: Length of data
++ *
++ * Returns the size of the TXFIFO message needed to send
++ * this packet.
++ */
++static unsigned int calc_txlen(unsigned int len)
++{
++	return ALIGN(len + 4, 4);
++}
 +
- 	buffer = iio_kfifo_allocate();
- 	if (!buffer) {
- 		ret = -ENOMEM;
++/**
+  * ks8851_rx_skb_spi - receive skbuff
+  * @ks: The device state
+  * @skb: The skbuff
+@@ -305,7 +317,9 @@ static void ks8851_rx_skb_spi(struct ks8
+  */
+ static void ks8851_tx_work(struct work_struct *work)
+ {
++	unsigned int dequeued_len = 0;
+ 	struct ks8851_net_spi *kss;
++	unsigned short tx_space;
+ 	struct ks8851_net *ks;
+ 	unsigned long flags;
+ 	struct sk_buff *txb;
+@@ -322,6 +336,8 @@ static void ks8851_tx_work(struct work_s
+ 		last = skb_queue_empty(&ks->txq);
+ 
+ 		if (txb) {
++			dequeued_len += calc_txlen(txb->len);
++
+ 			ks8851_wrreg16_spi(ks, KS_RXQCR,
+ 					   ks->rc_rxqcr | RXQCR_SDA);
+ 			ks8851_wrfifo_spi(ks, txb, last);
+@@ -332,6 +348,13 @@ static void ks8851_tx_work(struct work_s
+ 		}
+ 	}
+ 
++	tx_space = ks8851_rdreg16_spi(ks, KS_TXMIR);
++
++	spin_lock(&ks->statelock);
++	ks->queued_len -= dequeued_len;
++	ks->tx_space = tx_space;
++	spin_unlock(&ks->statelock);
++
+ 	ks8851_unlock_spi(ks, &flags);
+ }
+ 
+@@ -347,18 +370,6 @@ static void ks8851_flush_tx_work_spi(str
+ }
+ 
+ /**
+- * calc_txlen - calculate size of message to send packet
+- * @len: Length of data
+- *
+- * Returns the size of the TXFIFO message needed to send
+- * this packet.
+- */
+-static unsigned int calc_txlen(unsigned int len)
+-{
+-	return ALIGN(len + 4, 4);
+-}
+-
+-/**
+  * ks8851_start_xmit_spi - transmit packet using SPI
+  * @skb: The buffer to transmit
+  * @dev: The device used to transmit the packet.
+@@ -386,16 +397,17 @@ static netdev_tx_t ks8851_start_xmit_spi
+ 
+ 	spin_lock(&ks->statelock);
+ 
+-	if (needed > ks->tx_space) {
++	if (ks->queued_len + needed > ks->tx_space) {
+ 		netif_stop_queue(dev);
+ 		ret = NETDEV_TX_BUSY;
+ 	} else {
+-		ks->tx_space -= needed;
++		ks->queued_len += needed;
+ 		skb_queue_tail(&ks->txq, skb);
+ 	}
+ 
+ 	spin_unlock(&ks->statelock);
+-	schedule_work(&kss->tx_work);
++	if (ret == NETDEV_TX_OK)
++		schedule_work(&kss->tx_work);
+ 
+ 	return ret;
+ }
 
 
 
