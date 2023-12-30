@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-8946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E375820590
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:09:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC199820516
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A51B21274
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175221C20EAE
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531208483;
-	Sat, 30 Dec 2023 12:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5BB79DC;
+	Sat, 30 Dec 2023 12:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+DXqM6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h08RI9Hw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D76079CD;
-	Sat, 30 Dec 2023 12:09:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98F5FC433C7;
-	Sat, 30 Dec 2023 12:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E58483;
+	Sat, 30 Dec 2023 12:04:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E58C433C7;
+	Sat, 30 Dec 2023 12:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703938172;
-	bh=s2YqA6FRyWIhU28irJMzaw3ZiSprjKconsd7aA+BPVU=;
+	s=korg; t=1703937878;
+	bh=oSCYPi7qnYBPEAjb7bdyBLbk1oBiECAMCmy6ARNvQ3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+DXqM6NKzY1CfZ4AGtqyXwK1a8R07MKYpYBtnbqr4jEiS0seX/9G7/hqIfhDw+dK
-	 aES7D/lUJDiV0FfojJO8ZqaoBPWTxkFiG2euosGDo8j+sqzBcbX8YCPdEbQDdHb2+x
-	 W5QB6/Rw6BEIM8AKFpLi2m3MwxScBUatfPR42Yb4=
+	b=h08RI9Hwn16hoNSbGc83yXopvz8qjPzvYlU8F/bkvSIkrrSKAKcKCsvp+/Ew/d/Pb
+	 DC2YfQN8/OJRMTkA2+U9KdPHaf2YbjogxfU+Ag5891SUwOimLHw5q7qFBDq4X/Rj9F
+	 gnj0rbaZONCHmnygwZ5ZH/70S/twu4rInooYgVis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/112] net/mlx5e: fix a potential double-free in fs_udp_create_groups
+Subject: [PATCH 6.6 080/156] nvme-pci: fix sleeping function called from interrupt context
 Date: Sat, 30 Dec 2023 11:58:54 +0000
-Message-ID: <20231230115807.430305569@linuxfoundation.org>
+Message-ID: <20231230115814.973153574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+References: <20231230115812.333117904@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,42 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit e75efc6466ae289e599fb12a5a86545dff245c65 ]
+[ Upstream commit f6fe0b2d35457c10ec37acc209d19726bdc16dbd ]
 
-When kcalloc() for ft->g succeeds but kvzalloc() for in fails,
-fs_udp_create_groups() will free ft->g. However, its caller
-fs_udp_create_table() will free ft->g again through calling
-mlx5e_destroy_flow_table(), which will lead to a double-free.
-Fix this by setting ft->g to NULL in fs_udp_create_groups().
+the nvme_handle_cqe() interrupt handler calls nvme_complete_async_event()
+but the latter may call nvme_auth_stop() which is a blocking function.
+Sleeping functions can't be called in interrupt context
 
-Fixes: 1c80bd684388 ("net/mlx5e: Introduce Flow Steering UDP API")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+ BUG: sleeping function called from invalid context
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/15
+  Call Trace:
+     <IRQ>
+      __cancel_work_timer+0x31e/0x460
+      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
+      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
+      nvme_complete_async_event+0x365/0x480 [nvme_core]
+      nvme_poll_cq+0x262/0xe50 [nvme]
+
+Fix the bug by moving nvme_auth_stop() to fw_act_work
+(executed by the nvme_wq workqueue)
+
+Fixes: f50fff73d620 ("nvme: implement In-Band authentication")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-index be83ad9db82a4..e1283531e0b81 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
-@@ -154,6 +154,7 @@ static int fs_udp_create_groups(struct mlx5e_flow_table *ft, enum fs_udp_type ty
- 	in = kvzalloc(inlen, GFP_KERNEL);
- 	if  (!in || !ft->g) {
- 		kfree(ft->g);
-+		ft->g = NULL;
- 		kvfree(in);
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index d5c8b0a08d494..b32e3cff37b14 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4100,6 +4100,8 @@ static void nvme_fw_act_work(struct work_struct *work)
+ 				struct nvme_ctrl, fw_act_work);
+ 	unsigned long fw_act_timeout;
+ 
++	nvme_auth_stop(ctrl);
++
+ 	if (ctrl->mtfa)
+ 		fw_act_timeout = jiffies +
+ 				msecs_to_jiffies(ctrl->mtfa * 100);
+@@ -4155,7 +4157,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
+ 		 * firmware activation.
+ 		 */
+ 		if (nvme_change_ctrl_state(ctrl, NVME_CTRL_RESETTING)) {
+-			nvme_auth_stop(ctrl);
+ 			requeue = false;
+ 			queue_work(nvme_wq, &ctrl->fw_act_work);
+ 		}
 -- 
 2.43.0
 
