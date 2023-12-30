@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-8832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC199820516
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438A882051D
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 13:04:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 175221C20EAE
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768BE1C20BD5
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 12:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5BB79DC;
-	Sat, 30 Dec 2023 12:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB56779DE;
+	Sat, 30 Dec 2023 12:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h08RI9Hw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qev1E5/o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376E58483;
-	Sat, 30 Dec 2023 12:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E58C433C7;
-	Sat, 30 Dec 2023 12:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C5179DC;
+	Sat, 30 Dec 2023 12:04:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61F1C433C8;
+	Sat, 30 Dec 2023 12:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703937878;
-	bh=oSCYPi7qnYBPEAjb7bdyBLbk1oBiECAMCmy6ARNvQ3o=;
+	s=korg; t=1703937896;
+	bh=sxBWn5LA4qG1qK66TEuEAZM9hGcfBJnShl1PhOfmp3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h08RI9Hwn16hoNSbGc83yXopvz8qjPzvYlU8F/bkvSIkrrSKAKcKCsvp+/Ew/d/Pb
-	 DC2YfQN8/OJRMTkA2+U9KdPHaf2YbjogxfU+Ag5891SUwOimLHw5q7qFBDq4X/Rj9F
-	 gnj0rbaZONCHmnygwZ5ZH/70S/twu4rInooYgVis=
+	b=qev1E5/oT1maPqCPsh+KDLXMKd5CPv9k9LkmJB8mDxQMUJ0F5M7YqMGi6W4r6Ydx7
+	 AnME7TyH3aT9wjAKERDbWoh4ABsFjDM8srJi8SH6BndbOitTuJexDKei3uHwitwFvm
+	 LKbRczQvw77mcIBbn2Wx2z65d0HsJhF6ohljak8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/156] nvme-pci: fix sleeping function called from interrupt context
-Date: Sat, 30 Dec 2023 11:58:54 +0000
-Message-ID: <20231230115814.973153574@linuxfoundation.org>
+Subject: [PATCH 6.6 081/156] interconnect: Treat xlate() returning NULL node as an error
+Date: Sat, 30 Dec 2023 11:58:55 +0000
+Message-ID: <20231230115815.006595438@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
 References: <20231230115812.333117904@linuxfoundation.org>
@@ -59,58 +57,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-[ Upstream commit f6fe0b2d35457c10ec37acc209d19726bdc16dbd ]
+[ Upstream commit ad2ab1297d0c80899125a842bb7a078abfe1e6ce ]
 
-the nvme_handle_cqe() interrupt handler calls nvme_complete_async_event()
-but the latter may call nvme_auth_stop() which is a blocking function.
-Sleeping functions can't be called in interrupt context
+Currently, if provider->xlate() or provider->xlate_extended()
+"successfully" return a NULL node, then of_icc_get_from_provider() won't
+consider that an error and will successfully return the NULL node. This
+bypasses error handling in of_icc_get_by_index() and leads to NULL
+dereferences in path_find().
 
- BUG: sleeping function called from invalid context
- in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/15
-  Call Trace:
-     <IRQ>
-      __cancel_work_timer+0x31e/0x460
-      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
-      ? nvme_change_ctrl_state+0xcf/0x3c0 [nvme_core]
-      nvme_complete_async_event+0x365/0x480 [nvme_core]
-      nvme_poll_cq+0x262/0xe50 [nvme]
+This could be avoided by ensuring provider callbacks always return an
+error for NULL nodes, but it's better to explicitly protect against this
+in the common framework.
 
-Fix the bug by moving nvme_auth_stop() to fw_act_work
-(executed by the nvme_wq workqueue)
-
-Fixes: f50fff73d620 ("nvme: implement In-Band authentication")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 87e3031b6fbd ("interconnect: Allow endpoints translation via DT")
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Link: https://lore.kernel.org/r/20231025145829.11603-1-quic_mdtipton@quicinc.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/interconnect/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index d5c8b0a08d494..b32e3cff37b14 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4100,6 +4100,8 @@ static void nvme_fw_act_work(struct work_struct *work)
- 				struct nvme_ctrl, fw_act_work);
- 	unsigned long fw_act_timeout;
+diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+index dfab160ca5293..50bac2d79d9b5 100644
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -395,6 +395,9 @@ struct icc_node_data *of_icc_get_from_provider(struct of_phandle_args *spec)
+ 	}
+ 	mutex_unlock(&icc_lock);
  
-+	nvme_auth_stop(ctrl);
++	if (!node)
++		return ERR_PTR(-EINVAL);
 +
- 	if (ctrl->mtfa)
- 		fw_act_timeout = jiffies +
- 				msecs_to_jiffies(ctrl->mtfa * 100);
-@@ -4155,7 +4157,6 @@ static bool nvme_handle_aen_notice(struct nvme_ctrl *ctrl, u32 result)
- 		 * firmware activation.
- 		 */
- 		if (nvme_change_ctrl_state(ctrl, NVME_CTRL_RESETTING)) {
--			nvme_auth_stop(ctrl);
- 			requeue = false;
- 			queue_work(nvme_wq, &ctrl->fw_act_work);
- 		}
+ 	if (IS_ERR(node))
+ 		return ERR_CAST(node);
+ 
 -- 
 2.43.0
 
