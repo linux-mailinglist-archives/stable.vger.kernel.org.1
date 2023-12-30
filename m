@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-8719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-8720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686BB820467
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:57:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F4820468
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 11:57:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D72828210F
-	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:57:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8CBE2821C4
+	for <lists+stable@lfdr.de>; Sat, 30 Dec 2023 10:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECAE1FCF;
-	Sat, 30 Dec 2023 10:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224091FC5;
+	Sat, 30 Dec 2023 10:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu222w/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5RTDZ9t"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47DBD1FC5
-	for <Stable@vger.kernel.org>; Sat, 30 Dec 2023 10:57:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9292BC433C9;
-	Sat, 30 Dec 2023 10:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFA423A5
+	for <Stable@vger.kernel.org>; Sat, 30 Dec 2023 10:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179FDC433C8;
+	Sat, 30 Dec 2023 10:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1703933846;
-	bh=PZ41Suhxl7F3xBFC/QxeRr2Fmuk9LgLmpbn9XD2/kns=;
+	s=korg; t=1703933856;
+	bh=NBpsryUwXRjHbHpu/JkFmURCwaRT1DhoYufVFhGorPM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xu222w/AWnjyhIxc/wwOAIyud2+4kRo+4YlKGSbGEKK/S2nJYIrfnSn9FSpAZpW7c
-	 bKBfK287CT/g3YreBTMcM9BBj7z0XaYxVOr/PfCMPewHeunGqptmHGv0RRV6UsqOkg
-	 LAeBzO8bhYlDwmiY+D7x6hcKprrNyo1rV3c86AWA=
-Subject: FAILED: patch "[PATCH] nvmem: brcm_nvram: store a copy of NVRAM content" failed to apply to 6.1-stable tree
+	b=Z5RTDZ9t2SI7ckPHFaUxsIGSYTH24YoqxBDBX+hJm13nrS6Gfi7wQc7xkKRn2AG/s
+	 6LXGulePJvuTvYzjya3jvVMCMcR3Zo7oE0IcGxer3NUC5QLkWjQfNsVu8PmohHwxzk
+	 RikQSPwxJtL52y5JV9n4FlPQEd7mpBFkFY7K2eOI=
+Subject: FAILED: patch "[PATCH] nvmem: brcm_nvram: store a copy of NVRAM content" failed to apply to 5.15-stable tree
 To: rafal@milecki.pl,Stable@vger.kernel.org,arinc.unal@arinc9.com,florian.fainelli@broadcom.com,gregkh@linuxfoundation.org,scott.branden@broadcom.com,srinivas.kandagatla@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 30 Dec 2023 10:57:24 +0000
-Message-ID: <2023123024-disliking-irritably-814a@gregkh>
+Date: Sat, 30 Dec 2023 10:57:25 +0000
+Message-ID: <2023123025-coming-unlawful-c79b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1e37bf84afacd5ba17b7a13a18ca2bc78aff05c0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123024-disliking-irritably-814a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023123025-coming-unlawful-c79b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,6 +66,11 @@ cfadd0e7d922 ("nvmem: brcm_nvram: Use devm_platform_get_and_ioremap_resource()")
 73bcd133c910 ("nvmem: brcm_nvram: add .read_post_process() for MACs")
 b0576ade3aaf ("nvmem: brcm_nvram: Add check for kzalloc")
 a5be5ce0e254 ("firmware/nvram: bcm47xx: support init from IO memory")
+a06d9e5a63b7 ("nvmem: sort config symbols alphabetically")
+28fc7c986f01 ("nvmem: prefix all symbols with NVMEM_")
+d3524bb5b9a0 ("nvmem: brcm_nvram: Use kzalloc for allocating only one element")
+d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
+228dfe98a313 ("Merge tag 'char-misc-6.0-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc")
 
 thanks,
 
