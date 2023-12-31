@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-9057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227FC820A0A
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:15:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82F6C820A0B
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE479282F7E
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5800B20FFB
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2B417C7;
-	Sun, 31 Dec 2023 07:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E5E17F4;
+	Sun, 31 Dec 2023 07:15:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A131F17C2
-	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063F217C2
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5ce2170b716so3476386a12.1
-        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:15:04 -0800 (PST)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6d9b37f4804so3085344b3a.1
+        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:15:07 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704006904; x=1704611704;
+        d=1e100.net; s=20230601; t=1704006907; x=1704611707;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gH4CJx5JoRGnmadhuZPqXN1zoP8V5EEmBHFY9MTDdoU=;
-        b=wkdMfv8JBJvxm7+x6AfJ72Raa1Z2M7VEQY6hwW3gc7/+Br5uwA1a/cJc1u1COWy/rX
-         ZYEO75wkDWweCWKvN6Bun8epzOXqVV9QA0Sti/dV5mf8ORlr4vsK6C8R1o69AJg4/ZWK
-         ntnmdLZ4DhesZFLIiulb92fGLYvz8bx0txGMERUB6QT0mIoznB8J732NjBmQMueCFr0X
-         s+0FmK4mUtwz0mkFq6JhtzhWzw/M8M4xnS2/vF8cGOf7KKhYoHQOlru69kbxjCuxAC5Q
-         Lej0wU42aS7XzGGoSmHKk0jCg0GjIq8hg8Ht4dJKHmKNWEnwUt0Z22ikuD1ma/1BMkXW
-         0ufg==
-X-Gm-Message-State: AOJu0YyRvPLbr3P8fEdM9iMQJ5/cZXj9y1Quzq/T/dpcN+o0uXqkPJQI
-	RvPLIROw6ZOrnbbTZcpv8mA=
-X-Google-Smtp-Source: AGHT+IFPj0FY5QQP7OpjrFomikOYqvOMFLLfvKK6lCMF7/4rgEGIfFgkFbvI5EhzYNDJamk1PbInAw==
-X-Received: by 2002:a05:6a20:431a:b0:196:efe0:c6b8 with SMTP id h26-20020a056a20431a00b00196efe0c6b8mr132844pzk.63.1704006903877;
-        Sat, 30 Dec 2023 23:15:03 -0800 (PST)
+        bh=cJ8eCZq9Fuz0BYOyFNT22XffJVM474FPZ5RM09ZOILU=;
+        b=ECBqOcs346ADlUW0g2sTOp8Cdou0c//4i0bncwBa3Jj2iImY5kxu3D3oTceabxTk1m
+         XTaPuwoqIqU0SS8tzN78dZ/Tvm6NUHtnYWcmaDa2Ne9v+dn9ffkWnn18gHYJadx3pzwb
+         U2h3yFvVyhPY8V8hQC193TMT7jLu6jwd/jaLvoUCxlZ5H4yt204TmvJ9tQ/0zfrAYygV
+         Pk9iIUCsgx6XoocmrsE1SrlDmddXj+9vIKCCXeUjX4d9QWDnIYXitidfX2EXSIrrd0Qh
+         C+j5I342RhTWbMWYS48j/25AG88bFREGDCbpxoWu9GX8kACSskQ6V9wB8gYneaaiWHx3
+         HcoQ==
+X-Gm-Message-State: AOJu0YyU8+o1MfbQ/lR5qBPl4B1dVO2Ij5+Z4AptPK1st+T/RltK2BD7
+	6d1OlOO5AyAlXU2VoYMqh38=
+X-Google-Smtp-Source: AGHT+IHaRGCXt4gl/WqREEQfDEDmbqkGFfPEtZAGkA7X/xRqFNX6txCvNph9wUhrPy+Gne/hJBvptg==
+X-Received: by 2002:a05:6a21:6d8b:b0:196:a6e3:21f0 with SMTP id wl11-20020a056a216d8b00b00196a6e321f0mr2268156pzb.36.1704006907386;
+        Sat, 30 Dec 2023 23:15:07 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.15.01
+        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.15.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Dec 2023 23:15:03 -0800 (PST)
+        Sat, 30 Dec 2023 23:15:06 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
 	sashal@kernel.org
 Cc: smfrench@gmail.com,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Amir Goldstein <amir73il@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1.y 23/73] ksmbd: add mnt_want_write to ksmbd vfs functions
-Date: Sun, 31 Dec 2023 16:12:42 +0900
-Message-Id: <20231231071332.31724-24-linkinjeon@kernel.org>
+Subject: [PATCH 6.1.y 24/73] ksmbd: remove unused ksmbd_tree_conn_share function
+Date: Sun, 31 Dec 2023 16:12:43 +0900
+Message-Id: <20231231071332.31724-25-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231231071332.31724-1-linkinjeon@kernel.org>
 References: <20231231071332.31724-1-linkinjeon@kernel.org>
@@ -65,595 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 40b268d384a22276dca1450549f53eed60e21deb ]
+[ Upstream commit 7bd9f0876fdef00f4e155be35e6b304981a53f80 ]
 
-ksmbd is doing write access using vfs helpers. There are the cases that
-mnt_want_write() is not called in vfs helper. This patch add missing
-mnt_want_write() to ksmbd vfs functions.
+Remove unused ksmbd_tree_conn_share function.
 
-Cc: stable@vger.kernel.org
-Cc: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/smb/server/smb2pdu.c   |  26 ++++-----
- fs/smb/server/smbacl.c    |  10 ++--
- fs/smb/server/vfs.c       | 112 ++++++++++++++++++++++++++++++--------
- fs/smb/server/vfs.h       |  17 +++---
- fs/smb/server/vfs_cache.c |   2 +-
- 5 files changed, 112 insertions(+), 55 deletions(-)
+ fs/smb/server/mgmt/tree_connect.c | 11 -----------
+ fs/smb/server/mgmt/tree_connect.h |  3 ---
+ 2 files changed, 14 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 028b1d1055b5..f35e06ae25b3 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2295,7 +2295,7 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
- 			/* delete the EA only when it exits */
- 			if (rc > 0) {
- 				rc = ksmbd_vfs_remove_xattr(user_ns,
--							    path->dentry,
-+							    path,
- 							    attr_name);
- 
- 				if (rc < 0) {
-@@ -2309,8 +2309,7 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
- 			/* if the EA doesn't exist, just do nothing. */
- 			rc = 0;
- 		} else {
--			rc = ksmbd_vfs_setxattr(user_ns,
--						path->dentry, attr_name, value,
-+			rc = ksmbd_vfs_setxattr(user_ns, path, attr_name, value,
- 						le16_to_cpu(eabuf->EaValueLength), 0);
- 			if (rc < 0) {
- 				ksmbd_debug(SMB,
-@@ -2374,8 +2373,7 @@ static noinline int smb2_set_stream_name_xattr(const struct path *path,
- 		return -EBADF;
- 	}
- 
--	rc = ksmbd_vfs_setxattr(user_ns, path->dentry,
--				xattr_stream_name, NULL, 0, 0);
-+	rc = ksmbd_vfs_setxattr(user_ns, path, xattr_stream_name, NULL, 0, 0);
- 	if (rc < 0)
- 		pr_err("Failed to store XATTR stream name :%d\n", rc);
- 	return 0;
-@@ -2403,7 +2401,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
- 		if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN) &&
- 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
- 			     STREAM_PREFIX_LEN)) {
--			err = ksmbd_vfs_remove_xattr(user_ns, path->dentry,
-+			err = ksmbd_vfs_remove_xattr(user_ns, path,
- 						     name);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
-@@ -2450,8 +2448,7 @@ static void smb2_new_xattrs(struct ksmbd_tree_connect *tcon, const struct path *
- 	da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
- 		XATTR_DOSINFO_ITIME;
- 
--	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt),
--					    path->dentry, &da);
-+	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da);
- 	if (rc)
- 		ksmbd_debug(SMB, "failed to store file attribute into xattr\n");
+diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
+index f07a05f37651..408cddf2f094 100644
+--- a/fs/smb/server/mgmt/tree_connect.c
++++ b/fs/smb/server/mgmt/tree_connect.c
+@@ -120,17 +120,6 @@ struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
+ 	return tcon;
  }
-@@ -3025,7 +3022,7 @@ int smb2_open(struct ksmbd_work *work)
- 		struct inode *inode = d_inode(path.dentry);
  
- 		posix_acl_rc = ksmbd_vfs_inherit_posix_acl(user_ns,
--							   inode,
-+							   &path,
- 							   d_inode(path.dentry->d_parent));
- 		if (posix_acl_rc)
- 			ksmbd_debug(SMB, "inherit posix acl failed : %d\n", posix_acl_rc);
-@@ -3041,7 +3038,7 @@ int smb2_open(struct ksmbd_work *work)
- 			if (rc) {
- 				if (posix_acl_rc)
- 					ksmbd_vfs_set_init_posix_acl(user_ns,
--								     inode);
-+								     &path);
- 
- 				if (test_share_config_flag(work->tcon->share_conf,
- 							   KSMBD_SHARE_FLAG_ACL_XATTR)) {
-@@ -3081,7 +3078,7 @@ int smb2_open(struct ksmbd_work *work)
- 
- 					rc = ksmbd_vfs_set_sd_xattr(conn,
- 								    user_ns,
--								    path.dentry,
-+								    &path,
- 								    pntsd,
- 								    pntsd_size);
- 					kfree(pntsd);
-@@ -5522,7 +5519,7 @@ static int smb2_rename(struct ksmbd_work *work,
- 			goto out;
- 
- 		rc = ksmbd_vfs_setxattr(file_mnt_user_ns(fp->filp),
--					fp->filp->f_path.dentry,
-+					&fp->filp->f_path,
- 					xattr_stream_name,
- 					NULL, 0, 0);
- 		if (rc < 0) {
-@@ -5687,8 +5684,7 @@ static int set_file_basic_info(struct ksmbd_file *fp,
- 		da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
- 			XATTR_DOSINFO_ITIME;
- 
--		rc = ksmbd_vfs_set_dos_attrib_xattr(user_ns,
--						    filp->f_path.dentry, &da);
-+		rc = ksmbd_vfs_set_dos_attrib_xattr(user_ns, &filp->f_path, &da);
- 		if (rc)
- 			ksmbd_debug(SMB,
- 				    "failed to restore file attribute in EA\n");
-@@ -7558,7 +7554,7 @@ static inline int fsctl_set_sparse(struct ksmbd_work *work, u64 id,
- 
- 		da.attr = le32_to_cpu(fp->f_ci->m_fattr);
- 		ret = ksmbd_vfs_set_dos_attrib_xattr(user_ns,
--						     fp->filp->f_path.dentry, &da);
-+						     &fp->filp->f_path, &da);
- 		if (ret)
- 			fp->f_ci->m_fattr = old_fattr;
- 	}
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 8c041e71cf15..8fe2592c5525 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1185,8 +1185,7 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
- 			pntsd_size += sizeof(struct smb_acl) + nt_size;
- 		}
- 
--		ksmbd_vfs_set_sd_xattr(conn, user_ns,
--				       path->dentry, pntsd, pntsd_size);
-+		ksmbd_vfs_set_sd_xattr(conn, user_ns, path, pntsd, pntsd_size);
- 		kfree(pntsd);
- 	}
- 
-@@ -1406,7 +1405,7 @@ int set_info_sec(struct ksmbd_conn *conn, struct ksmbd_tree_connect *tcon,
- 	newattrs.ia_valid |= ATTR_MODE;
- 	newattrs.ia_mode = (inode->i_mode & ~0777) | (fattr.cf_mode & 0777);
- 
--	ksmbd_vfs_remove_acl_xattrs(user_ns, path->dentry);
-+	ksmbd_vfs_remove_acl_xattrs(user_ns, path);
- 	/* Update posix acls */
- 	if (IS_ENABLED(CONFIG_FS_POSIX_ACL) && fattr.cf_dacls) {
- 		rc = set_posix_acl(user_ns, inode,
-@@ -1437,9 +1436,8 @@ int set_info_sec(struct ksmbd_conn *conn, struct ksmbd_tree_connect *tcon,
- 
- 	if (test_share_config_flag(tcon->share_conf, KSMBD_SHARE_FLAG_ACL_XATTR)) {
- 		/* Update WinACL in xattr */
--		ksmbd_vfs_remove_sd_xattrs(user_ns, path->dentry);
--		ksmbd_vfs_set_sd_xattr(conn, user_ns,
--				       path->dentry, pntsd, ntsd_len);
-+		ksmbd_vfs_remove_sd_xattrs(user_ns, path);
-+		ksmbd_vfs_set_sd_xattr(conn, user_ns, path, pntsd, ntsd_len);
- 	}
- 
- out:
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 6d171f2757f1..e6218c687fa0 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -171,6 +171,10 @@ int ksmbd_vfs_create(struct ksmbd_work *work, const char *name, umode_t mode)
- 		return err;
- 	}
- 
-+	err = mnt_want_write(path.mnt);
-+	if (err)
-+		goto out_err;
-+
- 	mode |= S_IFREG;
- 	err = vfs_create(mnt_user_ns(path.mnt), d_inode(path.dentry),
- 			 dentry, mode, true);
-@@ -180,6 +184,9 @@ int ksmbd_vfs_create(struct ksmbd_work *work, const char *name, umode_t mode)
- 	} else {
- 		pr_err("File(%s): creation failed (err:%d)\n", name, err);
- 	}
-+	mnt_drop_write(path.mnt);
-+
-+out_err:
- 	done_path_create(&path, dentry);
- 	return err;
- }
-@@ -210,30 +217,35 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *work, const char *name, umode_t mode)
- 		return err;
- 	}
- 
-+	err = mnt_want_write(path.mnt);
-+	if (err)
-+		goto out_err2;
-+
- 	user_ns = mnt_user_ns(path.mnt);
- 	mode |= S_IFDIR;
- 	err = vfs_mkdir(user_ns, d_inode(path.dentry), dentry, mode);
--	if (err) {
--		goto out;
--	} else if (d_unhashed(dentry)) {
-+	if (!err && d_unhashed(dentry)) {
- 		struct dentry *d;
- 
- 		d = lookup_one(user_ns, dentry->d_name.name, dentry->d_parent,
- 			       dentry->d_name.len);
- 		if (IS_ERR(d)) {
- 			err = PTR_ERR(d);
--			goto out;
-+			goto out_err1;
- 		}
- 		if (unlikely(d_is_negative(d))) {
- 			dput(d);
- 			err = -ENOENT;
--			goto out;
-+			goto out_err1;
- 		}
- 
- 		ksmbd_vfs_inherit_owner(work, d_inode(path.dentry), d_inode(d));
- 		dput(d);
- 	}
--out:
-+
-+out_err1:
-+	mnt_drop_write(path.mnt);
-+out_err2:
- 	done_path_create(&path, dentry);
- 	if (err)
- 		pr_err("mkdir(%s): creation failed (err:%d)\n", name, err);
-@@ -444,7 +456,7 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
- 	memcpy(&stream_buf[*pos], buf, count);
- 
- 	err = ksmbd_vfs_setxattr(user_ns,
--				 fp->filp->f_path.dentry,
-+				 &fp->filp->f_path,
- 				 fp->stream.name,
- 				 (void *)stream_buf,
- 				 size,
-@@ -590,6 +602,10 @@ int ksmbd_vfs_remove_file(struct ksmbd_work *work, const struct path *path)
- 		goto out_err;
- 	}
- 
-+	err = mnt_want_write(path->mnt);
-+	if (err)
-+		goto out_err;
-+
- 	user_ns = mnt_user_ns(path->mnt);
- 	if (S_ISDIR(d_inode(path->dentry)->i_mode)) {
- 		err = vfs_rmdir(user_ns, d_inode(parent), path->dentry);
-@@ -600,6 +616,7 @@ int ksmbd_vfs_remove_file(struct ksmbd_work *work, const struct path *path)
- 		if (err)
- 			ksmbd_debug(VFS, "unlink failed, err %d\n", err);
- 	}
-+	mnt_drop_write(path->mnt);
- 
- out_err:
- 	ksmbd_revert_fsids(work);
-@@ -645,11 +662,16 @@ int ksmbd_vfs_link(struct ksmbd_work *work, const char *oldname,
- 		goto out3;
- 	}
- 
-+	err = mnt_want_write(newpath.mnt);
-+	if (err)
-+		goto out3;
-+
- 	err = vfs_link(oldpath.dentry, mnt_user_ns(newpath.mnt),
- 		       d_inode(newpath.dentry),
- 		       dentry, NULL);
- 	if (err)
- 		ksmbd_debug(VFS, "vfs_link failed err %d\n", err);
-+	mnt_drop_write(newpath.mnt);
- 
- out3:
- 	done_path_create(&newpath, dentry);
-@@ -695,6 +717,10 @@ int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
- 		goto out2;
- 	}
- 
-+	err = mnt_want_write(old_path->mnt);
-+	if (err)
-+		goto out2;
-+
- 	trap = lock_rename_child(old_child, new_path.dentry);
- 
- 	old_parent = dget(old_child->d_parent);
-@@ -758,6 +784,7 @@ int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
- out3:
- 	dput(old_parent);
- 	unlock_rename(old_parent, new_path.dentry);
-+	mnt_drop_write(old_path->mnt);
- out2:
- 	path_put(&new_path);
- 
-@@ -898,19 +925,24 @@ ssize_t ksmbd_vfs_getxattr(struct user_namespace *user_ns,
-  * Return:	0 on success, otherwise error
-  */
- int ksmbd_vfs_setxattr(struct user_namespace *user_ns,
--		       struct dentry *dentry, const char *attr_name,
-+		       const struct path *path, const char *attr_name,
- 		       void *attr_value, size_t attr_size, int flags)
+-struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
+-						 unsigned int id)
+-{
+-	struct ksmbd_tree_connect *tc;
+-
+-	tc = ksmbd_tree_conn_lookup(sess, id);
+-	if (tc)
+-		return tc->share_conf;
+-	return NULL;
+-}
+-
+ int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess)
  {
- 	int err;
+ 	int ret = 0;
+diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
+index 700df36cf3e3..562d647ad9fa 100644
+--- a/fs/smb/server/mgmt/tree_connect.h
++++ b/fs/smb/server/mgmt/tree_connect.h
+@@ -53,9 +53,6 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+ struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
+ 						  unsigned int id);
  
-+	err = mnt_want_write(path->mnt);
-+	if (err)
-+		return err;
-+
- 	err = vfs_setxattr(user_ns,
--			   dentry,
-+			   path->dentry,
- 			   attr_name,
- 			   attr_value,
- 			   attr_size,
- 			   flags);
- 	if (err)
- 		ksmbd_debug(VFS, "setxattr failed, err %d\n", err);
-+	mnt_drop_write(path->mnt);
- 	return err;
- }
+-struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
+-						 unsigned int id);
+-
+ int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess);
  
-@@ -1014,9 +1046,18 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
- }
- 
- int ksmbd_vfs_remove_xattr(struct user_namespace *user_ns,
--			   struct dentry *dentry, char *attr_name)
-+			   const struct path *path, char *attr_name)
- {
--	return vfs_removexattr(user_ns, dentry, attr_name);
-+	int err;
-+
-+	err = mnt_want_write(path->mnt);
-+	if (err)
-+		return err;
-+
-+	err = vfs_removexattr(user_ns, path->dentry, attr_name);
-+	mnt_drop_write(path->mnt);
-+
-+	return err;
- }
- 
- int ksmbd_vfs_unlink(struct file *filp)
-@@ -1025,6 +1066,10 @@ int ksmbd_vfs_unlink(struct file *filp)
- 	struct dentry *dir, *dentry = filp->f_path.dentry;
- 	struct user_namespace *user_ns = file_mnt_user_ns(filp);
- 
-+	err = mnt_want_write(filp->f_path.mnt);
-+	if (err)
-+		return err;
-+
- 	dir = dget_parent(dentry);
- 	err = ksmbd_vfs_lock_parent(dir, dentry);
- 	if (err)
-@@ -1042,6 +1087,7 @@ int ksmbd_vfs_unlink(struct file *filp)
- 		ksmbd_debug(VFS, "failed to delete, err %d\n", err);
- out:
- 	dput(dir);
-+	mnt_drop_write(filp->f_path.mnt);
- 
- 	return err;
- }
-@@ -1245,13 +1291,13 @@ struct dentry *ksmbd_vfs_kern_path_create(struct ksmbd_work *work,
- }
- 
- int ksmbd_vfs_remove_acl_xattrs(struct user_namespace *user_ns,
--				struct dentry *dentry)
-+				const struct path *path)
- {
- 	char *name, *xattr_list = NULL;
- 	ssize_t xattr_list_len;
- 	int err = 0;
- 
--	xattr_list_len = ksmbd_vfs_listxattr(dentry, &xattr_list);
-+	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
- 	if (xattr_list_len < 0) {
- 		goto out;
- 	} else if (!xattr_list_len) {
-@@ -1267,25 +1313,25 @@ int ksmbd_vfs_remove_acl_xattrs(struct user_namespace *user_ns,
- 			     sizeof(XATTR_NAME_POSIX_ACL_ACCESS) - 1) ||
- 		    !strncmp(name, XATTR_NAME_POSIX_ACL_DEFAULT,
- 			     sizeof(XATTR_NAME_POSIX_ACL_DEFAULT) - 1)) {
--			err = ksmbd_vfs_remove_xattr(user_ns, dentry, name);
-+			err = ksmbd_vfs_remove_xattr(user_ns, path, name);
- 			if (err)
- 				ksmbd_debug(SMB,
- 					    "remove acl xattr failed : %s\n", name);
- 		}
- 	}
-+
- out:
- 	kvfree(xattr_list);
- 	return err;
- }
- 
--int ksmbd_vfs_remove_sd_xattrs(struct user_namespace *user_ns,
--			       struct dentry *dentry)
-+int ksmbd_vfs_remove_sd_xattrs(struct user_namespace *user_ns, const struct path *path)
- {
- 	char *name, *xattr_list = NULL;
- 	ssize_t xattr_list_len;
- 	int err = 0;
- 
--	xattr_list_len = ksmbd_vfs_listxattr(dentry, &xattr_list);
-+	xattr_list_len = ksmbd_vfs_listxattr(path->dentry, &xattr_list);
- 	if (xattr_list_len < 0) {
- 		goto out;
- 	} else if (!xattr_list_len) {
-@@ -1298,7 +1344,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct user_namespace *user_ns,
- 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
- 
- 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
--			err = ksmbd_vfs_remove_xattr(user_ns, dentry, name);
-+			err = ksmbd_vfs_remove_xattr(user_ns, path, name);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
- 		}
-@@ -1375,13 +1421,14 @@ static struct xattr_smb_acl *ksmbd_vfs_make_xattr_posix_acl(struct user_namespac
- 
- int ksmbd_vfs_set_sd_xattr(struct ksmbd_conn *conn,
- 			   struct user_namespace *user_ns,
--			   struct dentry *dentry,
-+			   const struct path *path,
- 			   struct smb_ntsd *pntsd, int len)
- {
- 	int rc;
- 	struct ndr sd_ndr = {0}, acl_ndr = {0};
- 	struct xattr_ntacl acl = {0};
- 	struct xattr_smb_acl *smb_acl, *def_smb_acl = NULL;
-+	struct dentry *dentry = path->dentry;
- 	struct inode *inode = d_inode(dentry);
- 
- 	acl.version = 4;
-@@ -1433,7 +1480,7 @@ int ksmbd_vfs_set_sd_xattr(struct ksmbd_conn *conn,
- 		goto out;
- 	}
- 
--	rc = ksmbd_vfs_setxattr(user_ns, dentry,
-+	rc = ksmbd_vfs_setxattr(user_ns, path,
- 				XATTR_NAME_SD, sd_ndr.data,
- 				sd_ndr.offset, 0);
- 	if (rc < 0)
-@@ -1523,7 +1570,7 @@ int ksmbd_vfs_get_sd_xattr(struct ksmbd_conn *conn,
- }
- 
- int ksmbd_vfs_set_dos_attrib_xattr(struct user_namespace *user_ns,
--				   struct dentry *dentry,
-+				   const struct path *path,
- 				   struct xattr_dos_attrib *da)
- {
- 	struct ndr n;
-@@ -1533,7 +1580,7 @@ int ksmbd_vfs_set_dos_attrib_xattr(struct user_namespace *user_ns,
- 	if (err)
- 		return err;
- 
--	err = ksmbd_vfs_setxattr(user_ns, dentry, XATTR_NAME_DOS_ATTRIBUTE,
-+	err = ksmbd_vfs_setxattr(user_ns, path, XATTR_NAME_DOS_ATTRIBUTE,
- 				 (void *)n.data, n.offset, 0);
- 	if (err)
- 		ksmbd_debug(SMB, "failed to store dos attribute in xattr\n");
-@@ -1770,10 +1817,11 @@ void ksmbd_vfs_posix_lock_unblock(struct file_lock *flock)
- }
- 
- int ksmbd_vfs_set_init_posix_acl(struct user_namespace *user_ns,
--				 struct inode *inode)
-+				 struct path *path)
- {
- 	struct posix_acl_state acl_state;
- 	struct posix_acl *acls;
-+	struct inode *inode = d_inode(path->dentry);
- 	int rc;
- 
- 	if (!IS_ENABLED(CONFIG_FS_POSIX_ACL))
-@@ -1802,6 +1850,11 @@ int ksmbd_vfs_set_init_posix_acl(struct user_namespace *user_ns,
- 		return -ENOMEM;
- 	}
- 	posix_state_to_acl(&acl_state, acls->a_entries);
-+
-+	rc = mnt_want_write(path->mnt);
-+	if (rc)
-+		goto out_err;
-+
- 	rc = set_posix_acl(user_ns, inode, ACL_TYPE_ACCESS, acls);
- 	if (rc < 0)
- 		ksmbd_debug(SMB, "Set posix acl(ACL_TYPE_ACCESS) failed, rc : %d\n",
-@@ -1814,16 +1867,20 @@ int ksmbd_vfs_set_init_posix_acl(struct user_namespace *user_ns,
- 			ksmbd_debug(SMB, "Set posix acl(ACL_TYPE_DEFAULT) failed, rc : %d\n",
- 				    rc);
- 	}
-+	mnt_drop_write(path->mnt);
-+
-+out_err:
- 	free_acl_state(&acl_state);
- 	posix_acl_release(acls);
- 	return rc;
- }
- 
- int ksmbd_vfs_inherit_posix_acl(struct user_namespace *user_ns,
--				struct inode *inode, struct inode *parent_inode)
-+				struct path *path, struct inode *parent_inode)
- {
- 	struct posix_acl *acls;
- 	struct posix_acl_entry *pace;
-+	struct inode *inode = d_inode(path->dentry);
- 	int rc, i;
- 
- 	if (!IS_ENABLED(CONFIG_FS_POSIX_ACL))
-@@ -1841,6 +1898,10 @@ int ksmbd_vfs_inherit_posix_acl(struct user_namespace *user_ns,
- 		}
- 	}
- 
-+	rc = mnt_want_write(path->mnt);
-+	if (rc)
-+		goto out_err;
-+
- 	rc = set_posix_acl(user_ns, inode, ACL_TYPE_ACCESS, acls);
- 	if (rc < 0)
- 		ksmbd_debug(SMB, "Set posix acl(ACL_TYPE_ACCESS) failed, rc : %d\n",
-@@ -1852,6 +1913,9 @@ int ksmbd_vfs_inherit_posix_acl(struct user_namespace *user_ns,
- 			ksmbd_debug(SMB, "Set posix acl(ACL_TYPE_DEFAULT) failed, rc : %d\n",
- 				    rc);
- 	}
-+	mnt_drop_write(path->mnt);
-+
-+out_err:
- 	posix_acl_release(acls);
- 	return rc;
- }
-diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
-index 7660565ac277..0a4eb1e1a79a 100644
---- a/fs/smb/server/vfs.h
-+++ b/fs/smb/server/vfs.h
-@@ -108,12 +108,12 @@ ssize_t ksmbd_vfs_casexattr_len(struct user_namespace *user_ns,
- 				struct dentry *dentry, char *attr_name,
- 				int attr_name_len);
- int ksmbd_vfs_setxattr(struct user_namespace *user_ns,
--		       struct dentry *dentry, const char *attr_name,
-+		       const struct path *path, const char *attr_name,
- 		       void *attr_value, size_t attr_size, int flags);
- int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
- 				size_t *xattr_stream_name_size, int s_type);
- int ksmbd_vfs_remove_xattr(struct user_namespace *user_ns,
--			   struct dentry *dentry, char *attr_name);
-+			   const struct path *path, char *attr_name);
- int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 			       unsigned int flags, struct path *path,
- 			       bool caseless);
-@@ -139,26 +139,25 @@ void ksmbd_vfs_posix_lock_wait(struct file_lock *flock);
- int ksmbd_vfs_posix_lock_wait_timeout(struct file_lock *flock, long timeout);
- void ksmbd_vfs_posix_lock_unblock(struct file_lock *flock);
- int ksmbd_vfs_remove_acl_xattrs(struct user_namespace *user_ns,
--				struct dentry *dentry);
--int ksmbd_vfs_remove_sd_xattrs(struct user_namespace *user_ns,
--			       struct dentry *dentry);
-+				const struct path *path);
-+int ksmbd_vfs_remove_sd_xattrs(struct user_namespace *user_ns, const struct path *path);
- int ksmbd_vfs_set_sd_xattr(struct ksmbd_conn *conn,
- 			   struct user_namespace *user_ns,
--			   struct dentry *dentry,
-+			   const struct path *path,
- 			   struct smb_ntsd *pntsd, int len);
- int ksmbd_vfs_get_sd_xattr(struct ksmbd_conn *conn,
- 			   struct user_namespace *user_ns,
- 			   struct dentry *dentry,
- 			   struct smb_ntsd **pntsd);
- int ksmbd_vfs_set_dos_attrib_xattr(struct user_namespace *user_ns,
--				   struct dentry *dentry,
-+				   const struct path *path,
- 				   struct xattr_dos_attrib *da);
- int ksmbd_vfs_get_dos_attrib_xattr(struct user_namespace *user_ns,
- 				   struct dentry *dentry,
- 				   struct xattr_dos_attrib *da);
- int ksmbd_vfs_set_init_posix_acl(struct user_namespace *user_ns,
--				 struct inode *inode);
-+				 struct path *path);
- int ksmbd_vfs_inherit_posix_acl(struct user_namespace *user_ns,
--				struct inode *inode,
-+				struct path *path,
- 				struct inode *parent_inode);
- #endif /* __KSMBD_VFS_H__ */
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index bafb34d4b5bb..94ad8fa07b46 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -251,7 +251,7 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
- 	if (ksmbd_stream_fd(fp) && (ci->m_flags & S_DEL_ON_CLS_STREAM)) {
- 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
- 		err = ksmbd_vfs_remove_xattr(file_mnt_user_ns(filp),
--					     filp->f_path.dentry,
-+					     &filp->f_path,
- 					     fp->stream.name);
- 		if (err)
- 			pr_err("remove xattr failed : %s\n",
+ #endif /* __TREE_CONNECT_MANAGEMENT_H__ */
 -- 
 2.25.1
 
