@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-9051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EC1820A04
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:14:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21053820A05
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC3F1F2200E
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA7C282F25
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260B117C3;
-	Sun, 31 Dec 2023 07:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6E817D3;
+	Sun, 31 Dec 2023 07:14:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B617C2
-	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299BB17C2
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2053f5e97b2so286672fac.3
-        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:14:44 -0800 (PST)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6dc36e501e1so1206456a34.1
+        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:14:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704006884; x=1704611684;
+        d=1e100.net; s=20230601; t=1704006887; x=1704611687;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UGxqxudiEeXUS5B0KpVw2Ip9rGqR31POE/SP7iz6X4o=;
-        b=aoaFMCoJaSZE71FhdP4Mh8fguK4gionSiihAirEANbpPwjwRBBXSD+TAo8FBaWJ0AZ
-         y0PsSNU92tZr/eJgc+tkPRWdaN8AOBjLDbFfbnLKT+ZZ5TyObqE8w/CJPy/Bo0Uf2Bl5
-         AzeGina/bo9YZxSCSifhtRTJogOwfrNk3dE/idhh1/C4eWjb5qZD6BDZvGHCjEaG4usw
-         oJuSYuQsrv2wBiebEaliMkK5naLqoHWpThnyW9dxPVzAQO+4o0Mxz8lJ9YYFxKyqnuJg
-         nxAwZH4CHtuaf3z9bmTRx9GICz7Eo4CIjiU+XVo9otJWXV3N0R/NVY36LSoCqXpwzvwg
-         FRuA==
-X-Gm-Message-State: AOJu0Yw7hscAdEOEnhZOf7xsNx4sbKoV7Rk386XAhd0pX4ZXwV/W3INM
-	U3LwwfqlNcYpoP2HSGfR0gY=
-X-Google-Smtp-Source: AGHT+IGAS/cTiLLfOe7RJCQBdwelTgb/380skDAYtJacFL3tRP7BGIzf2/J9g9vDBbPcuUW0zvRzmw==
-X-Received: by 2002:a05:6870:468d:b0:1fa:e74a:c7ad with SMTP id a13-20020a056870468d00b001fae74ac7admr18293543oap.28.1704006883729;
-        Sat, 30 Dec 2023 23:14:43 -0800 (PST)
+        bh=pIBU2Qyzl5jqHIApmc5kghALmmOwGeSqp4Es/FRKCMo=;
+        b=G9vfLQvyN9iJ6kcpjL11TlJdXjgHKPU1rJJ+4Z8ExrDsrL5Esolz7phV8CdiM95Bm/
+         YrYl9LnogNFMSIYiuLzQV164kgl8xk+dsgAMEoFvcclnEh/vFf6QZACoKVoDAZHiGqzU
+         LTolgFlTb9TJxBEMG51POtfV+SE9WBLM6EeqMNJJpOGEB1a8IU2MkfDnQ2UvIRzzXTGJ
+         I7IntCQVp3kY/J0UzuF/NPNH24YRj7Xi+Ur0qikjPrBTBhqPbpA9AcufDCMTZlH3kDEb
+         Fn66rhZStD5DLjT0zMGeEbm3jnGduHirFwbwW6zaNhPYbRuk7ni5yRCsjxLFeM/mGodE
+         BS0w==
+X-Gm-Message-State: AOJu0Yxol8yOCpPK+Vyyqt73yqpJQ4QYoQvZfWBY1OwDMYrL/SQ0SKPc
+	6h5LRsKNpoSuoxiiKCEPa0Y=
+X-Google-Smtp-Source: AGHT+IEIvgpQtwvUEALTtwTBkVcY/8ptozHckn9QlIPo3Ldb8i2ENClQiXG1GrWQ8TwWAfQmIajkeA==
+X-Received: by 2002:a9d:4f14:0:b0:6db:da49:ac8f with SMTP id d20-20020a9d4f14000000b006dbda49ac8fmr10130606otl.10.1704006887162;
+        Sat, 30 Dec 2023 23:14:47 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.14.41
+        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.14.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Dec 2023 23:14:43 -0800 (PST)
+        Sat, 30 Dec 2023 23:14:46 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
 	sashal@kernel.org
 Cc: smfrench@gmail.com,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Namjae Jeon <linkinjeon@kernel.org>
-Subject: [PATCH 6.1.y 17/73] fs: introduce lock_rename_child() helper
-Date: Sun, 31 Dec 2023 16:12:36 +0900
-Message-Id: <20231231071332.31724-18-linkinjeon@kernel.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1.y 18/73] ksmbd: fix racy issue from using ->d_parent and ->d_name
+Date: Sun, 31 Dec 2023 16:12:37 +0900
+Message-Id: <20231231071332.31724-19-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231231071332.31724-1-linkinjeon@kernel.org>
 References: <20231231071332.31724-1-linkinjeon@kernel.org>
@@ -64,128 +64,1188 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+[ Upstream commit 74d7970febf7e9005375aeda0df821d2edffc9f7 ]
 
-[ Upstream commit 9bc37e04823b5280dd0f22b6680fc23fe81ca325 ]
+Al pointed out that ksmbd has racy issue from using ->d_parent and ->d_name
+in ksmbd_vfs_unlink and smb2_vfs_rename(). and use new lock_rename_child()
+to lock stable parent while underlying rename racy.
+Introduce vfs_path_parent_lookup helper to avoid out of share access and
+export vfs functions like the following ones to use
+vfs_path_parent_lookup().
+ - rename __lookup_hash() to lookup_one_qstr_excl().
+ - export lookup_one_qstr_excl().
+ - export getname_kernel() and putname().
 
-Pass the dentry of a source file and the dentry of a destination directory
-to lock parent inodes for rename. As soon as this function returns,
-->d_parent of the source file dentry is stable and inodes are properly
-locked for calling vfs-rename. This helper is needed for ksmbd server.
-rename request of SMB protocol has to rename an opened file, no matter
-which directory it's in.
+vfs_path_parent_lookup() is used for parent lookup of destination file
+using absolute pathname given from FILE_RENAME_INFORMATION request.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/namei.c            | 68 ++++++++++++++++++++++++++++++++++++-------
- include/linux/namei.h |  1 +
- 2 files changed, 58 insertions(+), 11 deletions(-)
+ fs/namei.c                |  57 +++--
+ fs/smb/server/smb2pdu.c   | 147 +++----------
+ fs/smb/server/vfs.c       | 435 ++++++++++++++++----------------------
+ fs/smb/server/vfs.h       |  19 +-
+ fs/smb/server/vfs_cache.c |   5 +-
+ include/linux/namei.h     |   6 +
+ 6 files changed, 283 insertions(+), 386 deletions(-)
 
 diff --git a/fs/namei.c b/fs/namei.c
-index 5e1c2ab2ae70..6daaf8456719 100644
+index 6daaf8456719..b5578f4ce5d6 100644
 --- a/fs/namei.c
 +++ b/fs/namei.c
-@@ -2980,20 +2980,10 @@ static inline int may_create(struct user_namespace *mnt_userns,
- 	return inode_permission(mnt_userns, dir, MAY_WRITE | MAY_EXEC);
+@@ -253,6 +253,7 @@ getname_kernel(const char * filename)
+ 
+ 	return result;
+ }
++EXPORT_SYMBOL(getname_kernel);
+ 
+ void putname(struct filename *name)
+ {
+@@ -271,6 +272,7 @@ void putname(struct filename *name)
+ 	} else
+ 		__putname(name);
+ }
++EXPORT_SYMBOL(putname);
+ 
+ /**
+  * check_acl - perform ACL permission checking
+@@ -1581,8 +1583,9 @@ static struct dentry *lookup_dcache(const struct qstr *name,
+  * when directory is guaranteed to have no in-lookup children
+  * at all.
+  */
+-static struct dentry *__lookup_hash(const struct qstr *name,
+-		struct dentry *base, unsigned int flags)
++struct dentry *lookup_one_qstr_excl(const struct qstr *name,
++				    struct dentry *base,
++				    unsigned int flags)
+ {
+ 	struct dentry *dentry = lookup_dcache(name, base, flags);
+ 	struct dentry *old;
+@@ -1606,6 +1609,7 @@ static struct dentry *__lookup_hash(const struct qstr *name,
+ 	}
+ 	return dentry;
+ }
++EXPORT_SYMBOL(lookup_one_qstr_excl);
+ 
+ static struct dentry *lookup_fast(struct nameidata *nd)
+ {
+@@ -2532,16 +2536,17 @@ static int path_parentat(struct nameidata *nd, unsigned flags,
  }
  
--/*
-- * p1 and p2 should be directories on the same fs.
-- */
--struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
-+static struct dentry *lock_two_directories(struct dentry *p1, struct dentry *p2)
+ /* Note: this does not consume "name" */
+-static int filename_parentat(int dfd, struct filename *name,
+-			     unsigned int flags, struct path *parent,
+-			     struct qstr *last, int *type)
++static int __filename_parentat(int dfd, struct filename *name,
++			       unsigned int flags, struct path *parent,
++			       struct qstr *last, int *type,
++			       const struct path *root)
  {
- 	struct dentry *p;
+ 	int retval;
+ 	struct nameidata nd;
  
--	if (p1 == p2) {
--		inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
--		return NULL;
+ 	if (IS_ERR(name))
+ 		return PTR_ERR(name);
+-	set_nameidata(&nd, dfd, name, NULL);
++	set_nameidata(&nd, dfd, name, root);
+ 	retval = path_parentat(&nd, flags | LOOKUP_RCU, parent);
+ 	if (unlikely(retval == -ECHILD))
+ 		retval = path_parentat(&nd, flags, parent);
+@@ -2556,6 +2561,13 @@ static int filename_parentat(int dfd, struct filename *name,
+ 	return retval;
+ }
+ 
++static int filename_parentat(int dfd, struct filename *name,
++			     unsigned int flags, struct path *parent,
++			     struct qstr *last, int *type)
++{
++	return __filename_parentat(dfd, name, flags, parent, last, type, NULL);
++}
++
+ /* does lookup, returns the object with parent locked */
+ static struct dentry *__kern_path_locked(struct filename *name, struct path *path)
+ {
+@@ -2571,7 +2583,7 @@ static struct dentry *__kern_path_locked(struct filename *name, struct path *pat
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 	inode_lock_nested(path->dentry->d_inode, I_MUTEX_PARENT);
+-	d = __lookup_hash(&last, path->dentry, 0);
++	d = lookup_one_qstr_excl(&last, path->dentry, 0);
+ 	if (IS_ERR(d)) {
+ 		inode_unlock(path->dentry->d_inode);
+ 		path_put(path);
+@@ -2599,6 +2611,24 @@ int kern_path(const char *name, unsigned int flags, struct path *path)
+ }
+ EXPORT_SYMBOL(kern_path);
+ 
++/**
++ * vfs_path_parent_lookup - lookup a parent path relative to a dentry-vfsmount pair
++ * @filename: filename structure
++ * @flags: lookup flags
++ * @parent: pointer to struct path to fill
++ * @last: last component
++ * @type: type of the last component
++ * @root: pointer to struct path of the base directory
++ */
++int vfs_path_parent_lookup(struct filename *filename, unsigned int flags,
++			   struct path *parent, struct qstr *last, int *type,
++			   const struct path *root)
++{
++	return  __filename_parentat(AT_FDCWD, filename, flags, parent, last,
++				    type, root);
++}
++EXPORT_SYMBOL(vfs_path_parent_lookup);
++
+ /**
+  * vfs_path_lookup - lookup a file path relative to a dentry-vfsmount pair
+  * @dentry:  pointer to dentry of the base directory
+@@ -3852,7 +3882,8 @@ static struct dentry *filename_create(int dfd, struct filename *name,
+ 	if (last.name[last.len] && !want_dir)
+ 		create_flags = 0;
+ 	inode_lock_nested(path->dentry->d_inode, I_MUTEX_PARENT);
+-	dentry = __lookup_hash(&last, path->dentry, reval_flag | create_flags);
++	dentry = lookup_one_qstr_excl(&last, path->dentry,
++				      reval_flag | create_flags);
+ 	if (IS_ERR(dentry))
+ 		goto unlock;
+ 
+@@ -4214,7 +4245,7 @@ int do_rmdir(int dfd, struct filename *name)
+ 		goto exit2;
+ 
+ 	inode_lock_nested(path.dentry->d_inode, I_MUTEX_PARENT);
+-	dentry = __lookup_hash(&last, path.dentry, lookup_flags);
++	dentry = lookup_one_qstr_excl(&last, path.dentry, lookup_flags);
+ 	error = PTR_ERR(dentry);
+ 	if (IS_ERR(dentry))
+ 		goto exit3;
+@@ -4348,7 +4379,7 @@ int do_unlinkat(int dfd, struct filename *name)
+ 		goto exit2;
+ retry_deleg:
+ 	inode_lock_nested(path.dentry->d_inode, I_MUTEX_PARENT);
+-	dentry = __lookup_hash(&last, path.dentry, lookup_flags);
++	dentry = lookup_one_qstr_excl(&last, path.dentry, lookup_flags);
+ 	error = PTR_ERR(dentry);
+ 	if (!IS_ERR(dentry)) {
+ 		struct user_namespace *mnt_userns;
+@@ -4922,7 +4953,8 @@ int do_renameat2(int olddfd, struct filename *from, int newdfd,
+ retry_deleg:
+ 	trap = lock_rename(new_path.dentry, old_path.dentry);
+ 
+-	old_dentry = __lookup_hash(&old_last, old_path.dentry, lookup_flags);
++	old_dentry = lookup_one_qstr_excl(&old_last, old_path.dentry,
++					  lookup_flags);
+ 	error = PTR_ERR(old_dentry);
+ 	if (IS_ERR(old_dentry))
+ 		goto exit3;
+@@ -4930,7 +4962,8 @@ int do_renameat2(int olddfd, struct filename *from, int newdfd,
+ 	error = -ENOENT;
+ 	if (d_is_negative(old_dentry))
+ 		goto exit4;
+-	new_dentry = __lookup_hash(&new_last, new_path.dentry, lookup_flags | target_flags);
++	new_dentry = lookup_one_qstr_excl(&new_last, new_path.dentry,
++					  lookup_flags | target_flags);
+ 	error = PTR_ERR(new_dentry);
+ 	if (IS_ERR(new_dentry))
+ 		goto exit4;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index ca57e85abf91..fe10c75f6f2b 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2506,7 +2506,7 @@ static int smb2_creat(struct ksmbd_work *work, struct path *path, char *name,
+ 			return rc;
+ 	}
+ 
+-	rc = ksmbd_vfs_kern_path(work, name, 0, path, 0);
++	rc = ksmbd_vfs_kern_path_locked(work, name, 0, path, 0);
+ 	if (rc) {
+ 		pr_err("cannot get linux path (%s), err = %d\n",
+ 		       name, rc);
+@@ -2797,8 +2797,10 @@ int smb2_open(struct ksmbd_work *work)
+ 		goto err_out1;
+ 	}
+ 
+-	rc = ksmbd_vfs_kern_path(work, name, LOOKUP_NO_SYMLINKS, &path, 1);
++	rc = ksmbd_vfs_kern_path_locked(work, name, LOOKUP_NO_SYMLINKS, &path, 1);
+ 	if (!rc) {
++		file_present = true;
++
+ 		if (req->CreateOptions & FILE_DELETE_ON_CLOSE_LE) {
+ 			/*
+ 			 * If file exists with under flags, return access
+@@ -2807,7 +2809,6 @@ int smb2_open(struct ksmbd_work *work)
+ 			if (req->CreateDisposition == FILE_OVERWRITE_IF_LE ||
+ 			    req->CreateDisposition == FILE_OPEN_IF_LE) {
+ 				rc = -EACCES;
+-				path_put(&path);
+ 				goto err_out;
+ 			}
+ 
+@@ -2815,26 +2816,23 @@ int smb2_open(struct ksmbd_work *work)
+ 				ksmbd_debug(SMB,
+ 					    "User does not have write permission\n");
+ 				rc = -EACCES;
+-				path_put(&path);
+ 				goto err_out;
+ 			}
+ 		} else if (d_is_symlink(path.dentry)) {
+ 			rc = -EACCES;
+-			path_put(&path);
+ 			goto err_out;
+ 		}
+-	}
+ 
+-	if (rc) {
++		file_present = true;
++		user_ns = mnt_user_ns(path.mnt);
++	} else {
+ 		if (rc != -ENOENT)
+ 			goto err_out;
+ 		ksmbd_debug(SMB, "can not get linux path for %s, rc = %d\n",
+ 			    name, rc);
+ 		rc = 0;
+-	} else {
+-		file_present = true;
+-		user_ns = mnt_user_ns(path.mnt);
+ 	}
++
+ 	if (stream_name) {
+ 		if (req->CreateOptions & FILE_DIRECTORY_FILE_LE) {
+ 			if (s_type == DATA_STREAM) {
+@@ -2962,8 +2960,9 @@ int smb2_open(struct ksmbd_work *work)
+ 
+ 			if ((daccess & FILE_DELETE_LE) ||
+ 			    (req->CreateOptions & FILE_DELETE_ON_CLOSE_LE)) {
+-				rc = ksmbd_vfs_may_delete(user_ns,
+-							  path.dentry);
++				rc = inode_permission(user_ns,
++						      d_inode(path.dentry->d_parent),
++						      MAY_EXEC | MAY_WRITE);
+ 				if (rc)
+ 					goto err_out;
+ 			}
+@@ -3334,10 +3333,13 @@ int smb2_open(struct ksmbd_work *work)
+ 	}
+ 
+ err_out:
+-	if (file_present || created)
+-		path_put(&path);
++	if (file_present || created) {
++		inode_unlock(d_inode(path.dentry->d_parent));
++		dput(path.dentry);
++	}
+ 	ksmbd_revert_fsids(work);
+ err_out1:
++
+ 	if (rc) {
+ 		if (rc == -EINVAL)
+ 			rsp->hdr.Status = STATUS_INVALID_PARAMETER;
+@@ -5481,44 +5483,19 @@ int smb2_echo(struct ksmbd_work *work)
+ 
+ static int smb2_rename(struct ksmbd_work *work,
+ 		       struct ksmbd_file *fp,
+-		       struct user_namespace *user_ns,
+ 		       struct smb2_file_rename_info *file_info,
+ 		       struct nls_table *local_nls)
+ {
+ 	struct ksmbd_share_config *share = fp->tcon->share_conf;
+-	char *new_name = NULL, *abs_oldname = NULL, *old_name = NULL;
+-	char *pathname = NULL;
+-	struct path path;
+-	bool file_present = true;
+-	int rc;
++	char *new_name = NULL;
++	int rc, flags = 0;
+ 
+ 	ksmbd_debug(SMB, "setting FILE_RENAME_INFO\n");
+-	pathname = kmalloc(PATH_MAX, GFP_KERNEL);
+-	if (!pathname)
+-		return -ENOMEM;
+-
+-	abs_oldname = file_path(fp->filp, pathname, PATH_MAX);
+-	if (IS_ERR(abs_oldname)) {
+-		rc = -EINVAL;
+-		goto out;
+-	}
+-	old_name = strrchr(abs_oldname, '/');
+-	if (old_name && old_name[1] != '\0') {
+-		old_name++;
+-	} else {
+-		ksmbd_debug(SMB, "can't get last component in path %s\n",
+-			    abs_oldname);
+-		rc = -ENOENT;
+-		goto out;
 -	}
 -
--	mutex_lock(&p1->d_sb->s_vfs_rename_mutex);
--
- 	p = d_ancestor(p2, p1);
- 	if (p) {
- 		inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
-@@ -3012,8 +3002,64 @@ struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
- 			I_MUTEX_PARENT, I_MUTEX_PARENT2);
- 	return NULL;
- }
-+
-+/*
-+ * p1 and p2 should be directories on the same fs.
-+ */
-+struct dentry *lock_rename(struct dentry *p1, struct dentry *p2)
-+{
-+	if (p1 == p2) {
-+		inode_lock_nested(p1->d_inode, I_MUTEX_PARENT);
-+		return NULL;
-+	}
-+
-+	mutex_lock(&p1->d_sb->s_vfs_rename_mutex);
-+	return lock_two_directories(p1, p2);
-+}
- EXPORT_SYMBOL(lock_rename);
+ 	new_name = smb2_get_name(file_info->FileName,
+ 				 le32_to_cpu(file_info->FileNameLength),
+ 				 local_nls);
+-	if (IS_ERR(new_name)) {
+-		rc = PTR_ERR(new_name);
+-		goto out;
+-	}
++	if (IS_ERR(new_name))
++		return PTR_ERR(new_name);
  
-+/*
-+ * c1 and p2 should be on the same fs.
-+ */
-+struct dentry *lock_rename_child(struct dentry *c1, struct dentry *p2)
-+{
-+	if (READ_ONCE(c1->d_parent) == p2) {
-+		/*
-+		 * hopefully won't need to touch ->s_vfs_rename_mutex at all.
-+		 */
-+		inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
-+		/*
-+		 * now that p2 is locked, nobody can move in or out of it,
-+		 * so the test below is safe.
-+		 */
-+		if (likely(c1->d_parent == p2))
-+			return NULL;
+ 	if (strchr(new_name, ':')) {
+ 		int s_type;
+@@ -5544,7 +5521,7 @@ static int smb2_rename(struct ksmbd_work *work,
+ 		if (rc)
+ 			goto out;
+ 
+-		rc = ksmbd_vfs_setxattr(user_ns,
++		rc = ksmbd_vfs_setxattr(file_mnt_user_ns(fp->filp),
+ 					fp->filp->f_path.dentry,
+ 					xattr_stream_name,
+ 					NULL, 0, 0);
+@@ -5559,47 +5536,18 @@ static int smb2_rename(struct ksmbd_work *work,
+ 	}
+ 
+ 	ksmbd_debug(SMB, "new name %s\n", new_name);
+-	rc = ksmbd_vfs_kern_path(work, new_name, LOOKUP_NO_SYMLINKS, &path, 1);
+-	if (rc) {
+-		if (rc != -ENOENT)
+-			goto out;
+-		file_present = false;
+-	} else {
+-		path_put(&path);
+-	}
+-
+ 	if (ksmbd_share_veto_filename(share, new_name)) {
+ 		rc = -ENOENT;
+ 		ksmbd_debug(SMB, "Can't rename vetoed file: %s\n", new_name);
+ 		goto out;
+ 	}
+ 
+-	if (file_info->ReplaceIfExists) {
+-		if (file_present) {
+-			rc = ksmbd_vfs_remove_file(work, new_name);
+-			if (rc) {
+-				if (rc != -ENOTEMPTY)
+-					rc = -EINVAL;
+-				ksmbd_debug(SMB, "cannot delete %s, rc %d\n",
+-					    new_name, rc);
+-				goto out;
+-			}
+-		}
+-	} else {
+-		if (file_present &&
+-		    strncmp(old_name, path.dentry->d_name.name, strlen(old_name))) {
+-			rc = -EEXIST;
+-			ksmbd_debug(SMB,
+-				    "cannot rename already existing file\n");
+-			goto out;
+-		}
+-	}
++	if (!file_info->ReplaceIfExists)
++		flags = RENAME_NOREPLACE;
+ 
+-	rc = ksmbd_vfs_fp_rename(work, fp, new_name);
++	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
+ out:
+-	kfree(pathname);
+-	if (!IS_ERR(new_name))
+-		kfree(new_name);
++	kfree(new_name);
+ 	return rc;
+ }
+ 
+@@ -5639,18 +5587,17 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 	}
+ 
+ 	ksmbd_debug(SMB, "target name is %s\n", target_name);
+-	rc = ksmbd_vfs_kern_path(work, link_name, LOOKUP_NO_SYMLINKS, &path, 0);
++	rc = ksmbd_vfs_kern_path_locked(work, link_name, LOOKUP_NO_SYMLINKS,
++					&path, 0);
+ 	if (rc) {
+ 		if (rc != -ENOENT)
+ 			goto out;
+ 		file_present = false;
+-	} else {
+-		path_put(&path);
+ 	}
+ 
+ 	if (file_info->ReplaceIfExists) {
+ 		if (file_present) {
+-			rc = ksmbd_vfs_remove_file(work, link_name);
++			rc = ksmbd_vfs_remove_file(work, &path);
+ 			if (rc) {
+ 				rc = -EINVAL;
+ 				ksmbd_debug(SMB, "cannot delete %s\n",
+@@ -5670,6 +5617,10 @@ static int smb2_create_link(struct ksmbd_work *work,
+ 	if (rc)
+ 		rc = -EINVAL;
+ out:
++	if (file_present) {
++		inode_unlock(d_inode(path.dentry->d_parent));
++		path_put(&path);
++	}
+ 	if (!IS_ERR(link_name))
+ 		kfree(link_name);
+ 	kfree(pathname);
+@@ -5847,12 +5798,6 @@ static int set_rename_info(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 			   struct smb2_file_rename_info *rename_info,
+ 			   unsigned int buf_len)
+ {
+-	struct user_namespace *user_ns;
+-	struct ksmbd_file *parent_fp;
+-	struct dentry *parent;
+-	struct dentry *dentry = fp->filp->f_path.dentry;
+-	int ret;
+-
+ 	if (!(fp->daccess & FILE_DELETE_LE)) {
+ 		pr_err("no right to delete : 0x%x\n", fp->daccess);
+ 		return -EACCES;
+@@ -5862,32 +5807,10 @@ static int set_rename_info(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 			le32_to_cpu(rename_info->FileNameLength))
+ 		return -EINVAL;
+ 
+-	user_ns = file_mnt_user_ns(fp->filp);
+-	if (ksmbd_stream_fd(fp))
+-		goto next;
+-
+-	parent = dget_parent(dentry);
+-	ret = ksmbd_vfs_lock_parent(user_ns, parent, dentry);
+-	if (ret) {
+-		dput(parent);
+-		return ret;
+-	}
+-
+-	parent_fp = ksmbd_lookup_fd_inode(d_inode(parent));
+-	inode_unlock(d_inode(parent));
+-	dput(parent);
++	if (!le32_to_cpu(rename_info->FileNameLength))
++		return -EINVAL;
+ 
+-	if (parent_fp) {
+-		if (parent_fp->daccess & FILE_DELETE_LE) {
+-			pr_err("parent dir is opened with delete access\n");
+-			ksmbd_fd_put(work, parent_fp);
+-			return -ESHARE;
+-		}
+-		ksmbd_fd_put(work, parent_fp);
+-	}
+-next:
+-	return smb2_rename(work, fp, user_ns, rename_info,
+-			   work->conn->local_nls);
++	return smb2_rename(work, fp, rename_info, work->conn->local_nls);
+ }
+ 
+ static int set_file_disposition_info(struct ksmbd_file *fp,
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 187d31d98494..58a6665f1c3a 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -17,6 +17,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/sched/xacct.h>
+ #include <linux/crc32c.h>
++#include <linux/namei.h>
+ 
+ #include "../../internal.h"	/* for vfs_path_lookup */
+ 
+@@ -36,19 +37,6 @@
+ #include "mgmt/user_session.h"
+ #include "mgmt/user_config.h"
+ 
+-static char *extract_last_component(char *path)
+-{
+-	char *p = strrchr(path, '/');
+-
+-	if (p && p[1] != '\0') {
+-		*p = '\0';
+-		p++;
+-	} else {
+-		p = NULL;
+-	}
+-	return p;
+-}
+-
+ static void ksmbd_vfs_inherit_owner(struct ksmbd_work *work,
+ 				    struct inode *parent_inode,
+ 				    struct inode *inode)
+@@ -62,65 +50,77 @@ static void ksmbd_vfs_inherit_owner(struct ksmbd_work *work,
+ 
+ /**
+  * ksmbd_vfs_lock_parent() - lock parent dentry if it is stable
+- *
+- * the parent dentry got by dget_parent or @parent could be
+- * unstable, we try to lock a parent inode and lookup the
+- * child dentry again.
+- *
+- * the reference count of @parent isn't incremented.
+  */
+-int ksmbd_vfs_lock_parent(struct user_namespace *user_ns, struct dentry *parent,
+-			  struct dentry *child)
++int ksmbd_vfs_lock_parent(struct dentry *parent, struct dentry *child)
+ {
+-	struct dentry *dentry;
+-	int ret = 0;
+-
+ 	inode_lock_nested(d_inode(parent), I_MUTEX_PARENT);
+-	dentry = lookup_one(user_ns, child->d_name.name, parent,
+-			    child->d_name.len);
+-	if (IS_ERR(dentry)) {
+-		ret = PTR_ERR(dentry);
+-		goto out_err;
+-	}
+-
+-	if (dentry != child) {
+-		ret = -ESTALE;
+-		dput(dentry);
+-		goto out_err;
++	if (child->d_parent != parent) {
++		inode_unlock(d_inode(parent));
++		return -ENOENT;
+ 	}
+ 
+-	dput(dentry);
+ 	return 0;
+-out_err:
+-	inode_unlock(d_inode(parent));
+-	return ret;
+ }
+ 
+-int ksmbd_vfs_may_delete(struct user_namespace *user_ns,
+-			 struct dentry *dentry)
++static int ksmbd_vfs_path_lookup_locked(struct ksmbd_share_config *share_conf,
++					char *pathname, unsigned int flags,
++					struct path *path)
+ {
+-	struct dentry *parent;
+-	int ret;
++	struct qstr last;
++	struct filename *filename;
++	struct path *root_share_path = &share_conf->vfs_path;
++	int err, type;
++	struct path parent_path;
++	struct dentry *d;
 +
-+		/*
-+		 * c1 got moved out of p2 while we'd been taking locks;
-+		 * unlock and fall back to slow case.
-+		 */
-+		inode_unlock(p2->d_inode);
++	if (pathname[0] == '\0') {
++		pathname = share_conf->path;
++		root_share_path = NULL;
++	} else {
++		flags |= LOOKUP_BENEATH;
++	}
+ 
+-	parent = dget_parent(dentry);
+-	ret = ksmbd_vfs_lock_parent(user_ns, parent, dentry);
+-	if (ret) {
+-		dput(parent);
+-		return ret;
++	filename = getname_kernel(pathname);
++	if (IS_ERR(filename))
++		return PTR_ERR(filename);
++
++	err = vfs_path_parent_lookup(filename, flags,
++				     &parent_path, &last, &type,
++				     root_share_path);
++	putname(filename);
++	if (err)
++		return err;
++
++	if (unlikely(type != LAST_NORM)) {
++		path_put(&parent_path);
++		return -ENOENT;
+ 	}
+ 
+-	ret = inode_permission(user_ns, d_inode(parent),
+-			       MAY_EXEC | MAY_WRITE);
++	inode_lock_nested(parent_path.dentry->d_inode, I_MUTEX_PARENT);
++	d = lookup_one_qstr_excl(&last, parent_path.dentry, 0);
++	if (IS_ERR(d))
++		goto err_out;
+ 
+-	inode_unlock(d_inode(parent));
+-	dput(parent);
+-	return ret;
++	if (d_is_negative(d)) {
++		dput(d);
++		goto err_out;
 +	}
 +
-+	mutex_lock(&c1->d_sb->s_vfs_rename_mutex);
-+	/*
-+	 * nobody can move out of any directories on this fs.
-+	 */
-+	if (likely(c1->d_parent != p2))
-+		return lock_two_directories(c1->d_parent, p2);
++	path->dentry = d;
++	path->mnt = share_conf->vfs_path.mnt;
++	path_put(&parent_path);
 +
-+	/*
-+	 * c1 got moved into p2 while we were taking locks;
-+	 * we need p2 locked and ->s_vfs_rename_mutex unlocked,
-+	 * for consistency with lock_rename().
-+	 */
-+	inode_lock_nested(p2->d_inode, I_MUTEX_PARENT);
-+	mutex_unlock(&c1->d_sb->s_vfs_rename_mutex);
-+	return NULL;
-+}
-+EXPORT_SYMBOL(lock_rename_child);
++	return 0;
 +
- void unlock_rename(struct dentry *p1, struct dentry *p2)
++err_out:
++	inode_unlock(parent_path.dentry->d_inode);
++	path_put(&parent_path);
++	return -ENOENT;
+ }
+ 
+ int ksmbd_vfs_query_maximal_access(struct user_namespace *user_ns,
+ 				   struct dentry *dentry, __le32 *daccess)
  {
- 	inode_unlock(p1->d_inode);
+-	struct dentry *parent;
+ 	int ret = 0;
+ 
+ 	*daccess = cpu_to_le32(FILE_READ_ATTRIBUTES | READ_CONTROL);
+@@ -137,18 +137,9 @@ int ksmbd_vfs_query_maximal_access(struct user_namespace *user_ns,
+ 	if (!inode_permission(user_ns, d_inode(dentry), MAY_OPEN | MAY_EXEC))
+ 		*daccess |= FILE_EXECUTE_LE;
+ 
+-	parent = dget_parent(dentry);
+-	ret = ksmbd_vfs_lock_parent(user_ns, parent, dentry);
+-	if (ret) {
+-		dput(parent);
+-		return ret;
+-	}
+-
+-	if (!inode_permission(user_ns, d_inode(parent), MAY_EXEC | MAY_WRITE))
++	if (!inode_permission(user_ns, d_inode(dentry->d_parent), MAY_EXEC | MAY_WRITE))
+ 		*daccess |= FILE_DELETE_LE;
+ 
+-	inode_unlock(d_inode(parent));
+-	dput(parent);
+ 	return ret;
+ }
+ 
+@@ -581,54 +572,32 @@ int ksmbd_vfs_fsync(struct ksmbd_work *work, u64 fid, u64 p_id)
+  *
+  * Return:	0 on success, otherwise error
+  */
+-int ksmbd_vfs_remove_file(struct ksmbd_work *work, char *name)
++int ksmbd_vfs_remove_file(struct ksmbd_work *work, const struct path *path)
+ {
+ 	struct user_namespace *user_ns;
+-	struct path path;
+-	struct dentry *parent;
++	struct dentry *parent = path->dentry->d_parent;
+ 	int err;
+ 
+ 	if (ksmbd_override_fsids(work))
+ 		return -ENOMEM;
+ 
+-	err = ksmbd_vfs_kern_path(work, name, LOOKUP_NO_SYMLINKS, &path, false);
+-	if (err) {
+-		ksmbd_debug(VFS, "can't get %s, err %d\n", name, err);
+-		ksmbd_revert_fsids(work);
+-		return err;
+-	}
+-
+-	user_ns = mnt_user_ns(path.mnt);
+-	parent = dget_parent(path.dentry);
+-	err = ksmbd_vfs_lock_parent(user_ns, parent, path.dentry);
+-	if (err) {
+-		dput(parent);
+-		path_put(&path);
+-		ksmbd_revert_fsids(work);
+-		return err;
+-	}
+-
+-	if (!d_inode(path.dentry)->i_nlink) {
++	if (!d_inode(path->dentry)->i_nlink) {
+ 		err = -ENOENT;
+ 		goto out_err;
+ 	}
+ 
+-	if (S_ISDIR(d_inode(path.dentry)->i_mode)) {
+-		err = vfs_rmdir(user_ns, d_inode(parent), path.dentry);
++	user_ns = mnt_user_ns(path->mnt);
++	if (S_ISDIR(d_inode(path->dentry)->i_mode)) {
++		err = vfs_rmdir(user_ns, d_inode(parent), path->dentry);
+ 		if (err && err != -ENOTEMPTY)
+-			ksmbd_debug(VFS, "%s: rmdir failed, err %d\n", name,
+-				    err);
++			ksmbd_debug(VFS, "rmdir failed, err %d\n", err);
+ 	} else {
+-		err = vfs_unlink(user_ns, d_inode(parent), path.dentry, NULL);
++		err = vfs_unlink(user_ns, d_inode(parent), path->dentry, NULL);
+ 		if (err)
+-			ksmbd_debug(VFS, "%s: unlink failed, err %d\n", name,
+-				    err);
++			ksmbd_debug(VFS, "unlink failed, err %d\n", err);
+ 	}
+ 
+ out_err:
+-	inode_unlock(d_inode(parent));
+-	dput(parent);
+-	path_put(&path);
+ 	ksmbd_revert_fsids(work);
+ 	return err;
+ }
+@@ -687,149 +656,114 @@ int ksmbd_vfs_link(struct ksmbd_work *work, const char *oldname,
+ 	return err;
+ }
+ 
+-static int ksmbd_validate_entry_in_use(struct dentry *src_dent)
++int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
++		     char *newname, int flags)
+ {
+-	struct dentry *dst_dent;
+-
+-	spin_lock(&src_dent->d_lock);
+-	list_for_each_entry(dst_dent, &src_dent->d_subdirs, d_child) {
+-		struct ksmbd_file *child_fp;
++	struct dentry *old_parent, *new_dentry, *trap;
++	struct dentry *old_child = old_path->dentry;
++	struct path new_path;
++	struct qstr new_last;
++	struct renamedata rd;
++	struct filename *to;
++	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
++	struct ksmbd_file *parent_fp;
++	int new_type;
++	int err, lookup_flags = LOOKUP_NO_SYMLINKS;
+ 
+-		if (d_really_is_negative(dst_dent))
+-			continue;
++	if (ksmbd_override_fsids(work))
++		return -ENOMEM;
+ 
+-		child_fp = ksmbd_lookup_fd_inode(d_inode(dst_dent));
+-		if (child_fp) {
+-			spin_unlock(&src_dent->d_lock);
+-			ksmbd_debug(VFS, "Forbid rename, sub file/dir is in use\n");
+-			return -EACCES;
+-		}
++	to = getname_kernel(newname);
++	if (IS_ERR(to)) {
++		err = PTR_ERR(to);
++		goto revert_fsids;
+ 	}
+-	spin_unlock(&src_dent->d_lock);
+ 
+-	return 0;
+-}
++retry:
++	err = vfs_path_parent_lookup(to, lookup_flags | LOOKUP_BENEATH,
++				     &new_path, &new_last, &new_type,
++				     &share_conf->vfs_path);
++	if (err)
++		goto out1;
+ 
+-static int __ksmbd_vfs_rename(struct ksmbd_work *work,
+-			      struct user_namespace *src_user_ns,
+-			      struct dentry *src_dent_parent,
+-			      struct dentry *src_dent,
+-			      struct user_namespace *dst_user_ns,
+-			      struct dentry *dst_dent_parent,
+-			      struct dentry *trap_dent,
+-			      char *dst_name)
+-{
+-	struct dentry *dst_dent;
+-	int err;
++	if (old_path->mnt != new_path.mnt) {
++		err = -EXDEV;
++		goto out2;
++	}
+ 
+-	if (!work->tcon->posix_extensions) {
+-		err = ksmbd_validate_entry_in_use(src_dent);
+-		if (err)
+-			return err;
++	trap = lock_rename_child(old_child, new_path.dentry);
++
++	old_parent = dget(old_child->d_parent);
++	if (d_unhashed(old_child)) {
++		err = -EINVAL;
++		goto out3;
+ 	}
+ 
+-	if (d_really_is_negative(src_dent_parent))
+-		return -ENOENT;
+-	if (d_really_is_negative(dst_dent_parent))
+-		return -ENOENT;
+-	if (d_really_is_negative(src_dent))
+-		return -ENOENT;
+-	if (src_dent == trap_dent)
+-		return -EINVAL;
++	parent_fp = ksmbd_lookup_fd_inode(d_inode(old_child->d_parent));
++	if (parent_fp) {
++		if (parent_fp->daccess & FILE_DELETE_LE) {
++			pr_err("parent dir is opened with delete access\n");
++			err = -ESHARE;
++			ksmbd_fd_put(work, parent_fp);
++			goto out3;
++		}
++		ksmbd_fd_put(work, parent_fp);
++	}
+ 
+-	if (ksmbd_override_fsids(work))
+-		return -ENOMEM;
++	new_dentry = lookup_one_qstr_excl(&new_last, new_path.dentry,
++					  lookup_flags | LOOKUP_RENAME_TARGET);
++	if (IS_ERR(new_dentry)) {
++		err = PTR_ERR(new_dentry);
++		goto out3;
++	}
+ 
+-	dst_dent = lookup_one(dst_user_ns, dst_name, dst_dent_parent,
+-			      strlen(dst_name));
+-	err = PTR_ERR(dst_dent);
+-	if (IS_ERR(dst_dent)) {
+-		pr_err("lookup failed %s [%d]\n", dst_name, err);
+-		goto out;
++	if (d_is_symlink(new_dentry)) {
++		err = -EACCES;
++		goto out4;
+ 	}
+ 
+-	err = -ENOTEMPTY;
+-	if (dst_dent != trap_dent && !d_really_is_positive(dst_dent)) {
+-		struct renamedata rd = {
+-			.old_mnt_userns	= src_user_ns,
+-			.old_dir	= d_inode(src_dent_parent),
+-			.old_dentry	= src_dent,
+-			.new_mnt_userns	= dst_user_ns,
+-			.new_dir	= d_inode(dst_dent_parent),
+-			.new_dentry	= dst_dent,
+-		};
+-		err = vfs_rename(&rd);
++	if ((flags & RENAME_NOREPLACE) && d_is_positive(new_dentry)) {
++		err = -EEXIST;
++		goto out4;
+ 	}
+-	if (err)
+-		pr_err("vfs_rename failed err %d\n", err);
+-	if (dst_dent)
+-		dput(dst_dent);
+-out:
+-	ksmbd_revert_fsids(work);
+-	return err;
+-}
+ 
+-int ksmbd_vfs_fp_rename(struct ksmbd_work *work, struct ksmbd_file *fp,
+-			char *newname)
+-{
+-	struct user_namespace *user_ns;
+-	struct path dst_path;
+-	struct dentry *src_dent_parent, *dst_dent_parent;
+-	struct dentry *src_dent, *trap_dent, *src_child;
+-	char *dst_name;
+-	int err;
++	if (old_child == trap) {
++		err = -EINVAL;
++		goto out4;
++	}
+ 
+-	dst_name = extract_last_component(newname);
+-	if (!dst_name) {
+-		dst_name = newname;
+-		newname = "";
++	if (new_dentry == trap) {
++		err = -ENOTEMPTY;
++		goto out4;
+ 	}
+ 
+-	src_dent_parent = dget_parent(fp->filp->f_path.dentry);
+-	src_dent = fp->filp->f_path.dentry;
++	rd.old_mnt_userns	= mnt_user_ns(old_path->mnt),
++	rd.old_dir		= d_inode(old_parent),
++	rd.old_dentry		= old_child,
++	rd.new_mnt_userns	= mnt_user_ns(new_path.mnt),
++	rd.new_dir		= new_path.dentry->d_inode,
++	rd.new_dentry		= new_dentry,
++	rd.flags		= flags,
++	err = vfs_rename(&rd);
++	if (err)
++		ksmbd_debug(VFS, "vfs_rename failed err %d\n", err);
+ 
+-	err = ksmbd_vfs_kern_path(work, newname,
+-				  LOOKUP_NO_SYMLINKS | LOOKUP_DIRECTORY,
+-				  &dst_path, false);
+-	if (err) {
+-		ksmbd_debug(VFS, "Cannot get path for %s [%d]\n", newname, err);
+-		goto out;
++out4:
++	dput(new_dentry);
++out3:
++	dput(old_parent);
++	unlock_rename(old_parent, new_path.dentry);
++out2:
++	path_put(&new_path);
++
++	if (retry_estale(err, lookup_flags)) {
++		lookup_flags |= LOOKUP_REVAL;
++		goto retry;
+ 	}
+-	dst_dent_parent = dst_path.dentry;
+-
+-	trap_dent = lock_rename(src_dent_parent, dst_dent_parent);
+-	dget(src_dent);
+-	dget(dst_dent_parent);
+-	user_ns = file_mnt_user_ns(fp->filp);
+-	src_child = lookup_one(user_ns, src_dent->d_name.name, src_dent_parent,
+-			       src_dent->d_name.len);
+-	if (IS_ERR(src_child)) {
+-		err = PTR_ERR(src_child);
+-		goto out_lock;
+-	}
+-
+-	if (src_child != src_dent) {
+-		err = -ESTALE;
+-		dput(src_child);
+-		goto out_lock;
+-	}
+-	dput(src_child);
+-
+-	err = __ksmbd_vfs_rename(work,
+-				 user_ns,
+-				 src_dent_parent,
+-				 src_dent,
+-				 mnt_user_ns(dst_path.mnt),
+-				 dst_dent_parent,
+-				 trap_dent,
+-				 dst_name);
+-out_lock:
+-	dput(src_dent);
+-	dput(dst_dent_parent);
+-	unlock_rename(src_dent_parent, dst_dent_parent);
+-	path_put(&dst_path);
+-out:
+-	dput(src_dent_parent);
++out1:
++	putname(to);
++revert_fsids:
++	ksmbd_revert_fsids(work);
+ 	return err;
+ }
+ 
+@@ -1080,14 +1014,16 @@ int ksmbd_vfs_remove_xattr(struct user_namespace *user_ns,
+ 	return vfs_removexattr(user_ns, dentry, attr_name);
+ }
+ 
+-int ksmbd_vfs_unlink(struct user_namespace *user_ns,
+-		     struct dentry *dir, struct dentry *dentry)
++int ksmbd_vfs_unlink(struct file *filp)
+ {
+ 	int err = 0;
++	struct dentry *dir, *dentry = filp->f_path.dentry;
++	struct user_namespace *user_ns = file_mnt_user_ns(filp);
+ 
+-	err = ksmbd_vfs_lock_parent(user_ns, dir, dentry);
++	dir = dget_parent(dentry);
++	err = ksmbd_vfs_lock_parent(dir, dentry);
+ 	if (err)
+-		return err;
++		goto out;
+ 	dget(dentry);
+ 
+ 	if (S_ISDIR(d_inode(dentry)->i_mode))
+@@ -1099,6 +1035,8 @@ int ksmbd_vfs_unlink(struct user_namespace *user_ns,
+ 	inode_unlock(d_inode(dir));
+ 	if (err)
+ 		ksmbd_debug(VFS, "failed to delete, err %d\n", err);
++out:
++	dput(dir);
+ 
+ 	return err;
+ }
+@@ -1201,7 +1139,7 @@ static int ksmbd_vfs_lookup_in_dir(const struct path *dir, char *name,
+ }
+ 
+ /**
+- * ksmbd_vfs_kern_path() - lookup a file and get path info
++ * ksmbd_vfs_kern_path_locked() - lookup a file and get path info
+  * @name:	file path that is relative to share
+  * @flags:	lookup flags
+  * @path:	if lookup succeed, return path info
+@@ -1209,24 +1147,20 @@ static int ksmbd_vfs_lookup_in_dir(const struct path *dir, char *name,
+  *
+  * Return:	0 on success, otherwise error
+  */
+-int ksmbd_vfs_kern_path(struct ksmbd_work *work, char *name,
+-			unsigned int flags, struct path *path, bool caseless)
++int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
++			       unsigned int flags, struct path *path,
++			       bool caseless)
+ {
+ 	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
+ 	int err;
++	struct path parent_path;
+ 
+-	flags |= LOOKUP_BENEATH;
+-	err = vfs_path_lookup(share_conf->vfs_path.dentry,
+-			      share_conf->vfs_path.mnt,
+-			      name,
+-			      flags,
+-			      path);
++	err = ksmbd_vfs_path_lookup_locked(share_conf, name, flags, path);
+ 	if (!err)
+-		return 0;
++		return err;
+ 
+ 	if (caseless) {
+ 		char *filepath;
+-		struct path parent;
+ 		size_t path_len, remain_len;
+ 
+ 		filepath = kstrdup(name, GFP_KERNEL);
+@@ -1236,10 +1170,10 @@ int ksmbd_vfs_kern_path(struct ksmbd_work *work, char *name,
+ 		path_len = strlen(filepath);
+ 		remain_len = path_len;
+ 
+-		parent = share_conf->vfs_path;
+-		path_get(&parent);
++		parent_path = share_conf->vfs_path;
++		path_get(&parent_path);
+ 
+-		while (d_can_lookup(parent.dentry)) {
++		while (d_can_lookup(parent_path.dentry)) {
+ 			char *filename = filepath + path_len - remain_len;
+ 			char *next = strchrnul(filename, '/');
+ 			size_t filename_len = next - filename;
+@@ -1248,12 +1182,11 @@ int ksmbd_vfs_kern_path(struct ksmbd_work *work, char *name,
+ 			if (filename_len == 0)
+ 				break;
+ 
+-			err = ksmbd_vfs_lookup_in_dir(&parent, filename,
++			err = ksmbd_vfs_lookup_in_dir(&parent_path, filename,
+ 						      filename_len,
+ 						      work->conn->um);
+-			path_put(&parent);
+ 			if (err)
+-				goto out;
++				goto out2;
+ 
+ 			next[0] = '\0';
+ 
+@@ -1261,23 +1194,31 @@ int ksmbd_vfs_kern_path(struct ksmbd_work *work, char *name,
+ 					      share_conf->vfs_path.mnt,
+ 					      filepath,
+ 					      flags,
+-					      &parent);
++					      path);
+ 			if (err)
+-				goto out;
+-			else if (is_last) {
+-				*path = parent;
+-				goto out;
+-			}
++				goto out2;
++			else if (is_last)
++				goto out1;
++			path_put(&parent_path);
++			parent_path = *path;
+ 
+ 			next[0] = '/';
+ 			remain_len -= filename_len + 1;
+ 		}
+ 
+-		path_put(&parent);
+ 		err = -EINVAL;
+-out:
++out2:
++		path_put(&parent_path);
++out1:
+ 		kfree(filepath);
+ 	}
++
++	if (!err) {
++		err = ksmbd_vfs_lock_parent(parent_path.dentry, path->dentry);
++		if (err)
++			dput(path->dentry);
++		path_put(&parent_path);
++	}
+ 	return err;
+ }
+ 
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index 593059ca8511..7660565ac277 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -71,9 +71,7 @@ struct ksmbd_kstat {
+ 	__le32			file_attributes;
+ };
+ 
+-int ksmbd_vfs_lock_parent(struct user_namespace *user_ns, struct dentry *parent,
+-			  struct dentry *child);
+-int ksmbd_vfs_may_delete(struct user_namespace *user_ns, struct dentry *dentry);
++int ksmbd_vfs_lock_parent(struct dentry *parent, struct dentry *child);
+ int ksmbd_vfs_query_maximal_access(struct user_namespace *user_ns,
+ 				   struct dentry *dentry, __le32 *daccess);
+ int ksmbd_vfs_create(struct ksmbd_work *work, const char *name, umode_t mode);
+@@ -84,12 +82,12 @@ int ksmbd_vfs_write(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 		    char *buf, size_t count, loff_t *pos, bool sync,
+ 		    ssize_t *written);
+ int ksmbd_vfs_fsync(struct ksmbd_work *work, u64 fid, u64 p_id);
+-int ksmbd_vfs_remove_file(struct ksmbd_work *work, char *name);
++int ksmbd_vfs_remove_file(struct ksmbd_work *work, const struct path *path);
+ int ksmbd_vfs_link(struct ksmbd_work *work,
+ 		   const char *oldname, const char *newname);
+ int ksmbd_vfs_getattr(const struct path *path, struct kstat *stat);
+-int ksmbd_vfs_fp_rename(struct ksmbd_work *work, struct ksmbd_file *fp,
+-			char *newname);
++int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
++		     char *newname, int flags);
+ int ksmbd_vfs_truncate(struct ksmbd_work *work,
+ 		       struct ksmbd_file *fp, loff_t size);
+ struct srv_copychunk;
+@@ -116,9 +114,9 @@ int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
+ 				size_t *xattr_stream_name_size, int s_type);
+ int ksmbd_vfs_remove_xattr(struct user_namespace *user_ns,
+ 			   struct dentry *dentry, char *attr_name);
+-int ksmbd_vfs_kern_path(struct ksmbd_work *work,
+-			char *name, unsigned int flags, struct path *path,
+-			bool caseless);
++int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
++			       unsigned int flags, struct path *path,
++			       bool caseless);
+ struct dentry *ksmbd_vfs_kern_path_create(struct ksmbd_work *work,
+ 					  const char *name,
+ 					  unsigned int flags,
+@@ -131,8 +129,7 @@ struct file_allocated_range_buffer;
+ int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
+ 			 struct file_allocated_range_buffer *ranges,
+ 			 unsigned int in_count, unsigned int *out_count);
+-int ksmbd_vfs_unlink(struct user_namespace *user_ns,
+-		     struct dentry *dir, struct dentry *dentry);
++int ksmbd_vfs_unlink(struct file *filp);
+ void *ksmbd_vfs_init_kstat(char **p, struct ksmbd_kstat *ksmbd_kstat);
+ int ksmbd_vfs_fill_dentry_attrs(struct ksmbd_work *work,
+ 				struct user_namespace *user_ns,
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 6ec6c129465d..bafb34d4b5bb 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -243,7 +243,6 @@ void ksmbd_release_inode_hash(void)
+ 
+ static void __ksmbd_inode_close(struct ksmbd_file *fp)
+ {
+-	struct dentry *dir, *dentry;
+ 	struct ksmbd_inode *ci = fp->f_ci;
+ 	int err;
+ 	struct file *filp;
+@@ -262,11 +261,9 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
+ 	if (atomic_dec_and_test(&ci->m_count)) {
+ 		write_lock(&ci->m_lock);
+ 		if (ci->m_flags & (S_DEL_ON_CLS | S_DEL_PENDING)) {
+-			dentry = filp->f_path.dentry;
+-			dir = dentry->d_parent;
+ 			ci->m_flags &= ~(S_DEL_ON_CLS | S_DEL_PENDING);
+ 			write_unlock(&ci->m_lock);
+-			ksmbd_vfs_unlink(file_mnt_user_ns(filp), dir, dentry);
++			ksmbd_vfs_unlink(filp);
+ 			write_lock(&ci->m_lock);
+ 		}
+ 		write_unlock(&ci->m_lock);
 diff --git a/include/linux/namei.h b/include/linux/namei.h
-index 00fee52df842..2b66021c740d 100644
+index 2b66021c740d..5c0149603dc3 100644
 --- a/include/linux/namei.h
 +++ b/include/linux/namei.h
-@@ -81,6 +81,7 @@ extern int follow_down(struct path *);
- extern int follow_up(struct path *);
+@@ -57,12 +57,18 @@ static inline int user_path_at(int dfd, const char __user *name, unsigned flags,
+ 	return user_path_at_empty(dfd, name, flags, path, NULL);
+ }
  
- extern struct dentry *lock_rename(struct dentry *, struct dentry *);
-+extern struct dentry *lock_rename_child(struct dentry *, struct dentry *);
- extern void unlock_rename(struct dentry *, struct dentry *);
++struct dentry *lookup_one_qstr_excl(const struct qstr *name,
++				    struct dentry *base,
++				    unsigned int flags);
+ extern int kern_path(const char *, unsigned, struct path *);
  
- extern int __must_check nd_jump_link(const struct path *path);
+ extern struct dentry *kern_path_create(int, const char *, struct path *, unsigned int);
+ extern struct dentry *user_path_create(int, const char __user *, struct path *, unsigned int);
+ extern void done_path_create(struct path *, struct dentry *);
+ extern struct dentry *kern_path_locked(const char *, struct path *);
++int vfs_path_parent_lookup(struct filename *filename, unsigned int flags,
++			   struct path *parent, struct qstr *last, int *type,
++			   const struct path *root);
+ 
+ extern struct dentry *try_lookup_one_len(const char *, struct dentry *, int);
+ extern struct dentry *lookup_one_len(const char *, struct dentry *, int);
 -- 
 2.25.1
 
