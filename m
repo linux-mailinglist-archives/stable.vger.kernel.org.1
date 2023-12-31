@@ -1,93 +1,120 @@
-Return-Path: <stable+bounces-9139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF595820BDD
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 16:42:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AFE820BE3
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 16:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8971C21329
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 15:42:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EC26B2132A
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 15:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C2F6132;
-	Sun, 31 Dec 2023 15:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BE663A4;
+	Sun, 31 Dec 2023 15:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzNF5lfE"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="F+8mhInN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90E63A7;
-	Sun, 31 Dec 2023 15:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788B0C433C8;
-	Sun, 31 Dec 2023 15:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704037373;
-	bh=ugUHGXN1wnY8yOHwqohHOciRnTZQxc/VpJob2I72q7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mzNF5lfEDU3TkEGX8nvB8tCdzgGCe+FUmaUEx0jnxhRYMkZRM0K7jo+0vvs8pT8iz
-	 +tHo1UMQxuieOkOuLvLBW6JSNopKXYNaSpBhGNNxXSV/iAE2O1ifNRs06uK2b5dh8R
-	 bG/xyMlcZsR/serBw+uPbFOYz6/YNEkxLK/SCih+GuP7t7s6F4jlMEV0Nw1sR6WuLJ
-	 0yrw/wVEcIp3VHwJorAAibsPz1Zv1E/fxZmZg4kPWDrHJR3++5VFgktVoGYIbWlCTV
-	 Qy1OaXcZDPvB0d/6Dscxbal+HcRSO5qPyQXVfoCDi0ijYsPuDMyF0Lrwcb0bSU0Rcp
-	 gkb0qcpiLB0rg==
-Date: Sun, 31 Dec 2023 10:42:52 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: stable-commits@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	stable <stable@vger.kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Patch "ring-buffer: Force absolute timestamp on discard of
- event" has been added to the 6.1-stable tree
-Message-ID: <ZZGL_COQ_bo-dnEy@sashalap>
-References: <20231210194035.164923-1-sashal@kernel.org>
- <20231230112246.72c8b2cd@gandalf.local.home>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95508F6A;
+	Sun, 31 Dec 2023 15:49:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1704037750; x=1704642550; i=svenjoac@gmx.de;
+	bh=9ZkZb/6NySPoY2LhMbaCqmu0Y8p8T2cEK9vht0pBelQ=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
+	 Date;
+	b=F+8mhInN5gD7RxWV7mh31P18Cc9wvKHuP21vKCBW8lbSAapQ6rPVnzT/Hk8MjMap
+	 BoM0Jkjd0ZzIiL4milgVkxp4gVNBDoLESJ57cBmMHteEF8x7HpqWpR2vPk6QL8Z+R
+	 n3jZi1zou2DOClIx9D8njuMYE8TMd4v0lHluuPwMiGvwvf3YGAOU72qNWSZ2025V1
+	 YN3y53tjhZ1PV0LWAxHrfkEcGL70W7MW8LXJrsyi+CVNUs4oCLV9IxpWSz9aqXj6V
+	 zgcMCcI+1/unzKpXHZoFc6kNvq1NNW64tLfw4g8j4q6ObjcqFVK12tTgQ0bZ4opfJ
+	 gpLA9LTkRdecJVhlnA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([79.203.84.168]) by mail.gmx.net
+ (mrgmx005 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MC30Z-1rVoQF11LR-00CSWI; Sun, 31 Dec 2023 16:49:10 +0100
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id C849480098; Sun, 31 Dec 2023 16:49:08 +0100 (CET)
+From: Sven Joachim <svenjoac@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,  Mauricio Faria de
+ Oliveira <mfo@canonical.com>,  Christoph Hellwig <hch@lst.de>,  Jens Axboe
+ <axboe@kernel.dk>,  Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 089/112] loop: do not enforce max_loop hard limit by
+ (new) default
+In-Reply-To: <20231230115809.666462326@linuxfoundation.org> (Greg
+	Kroah-Hartman's message of "Sat, 30 Dec 2023 12:00:02 +0000")
+References: <20231230115806.714618407@linuxfoundation.org>
+	<20231230115809.666462326@linuxfoundation.org>
+Date: Sun, 31 Dec 2023 16:49:08 +0100
+Message-ID: <87y1dape2z.fsf@turtle.gmx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20231230112246.72c8b2cd@gandalf.local.home>
+Content-Type: text/plain
+X-Provags-ID: V03:K1:iASsc9y1+B9kBoxWnnVl/mmmjqfLDkMDoHd4Cz3XulKXJUY91Wx
+ Z4BmBI+Qa7U+W+KOhWZjF5sfLffn6jH2lBkM3nuqW+/t5tuvm+yeVd4gPxePUieSmFU0JUI
+ FMGY+mfd76Oop6N9/TDTUyOlfG8G02bR5CN1TEVXcEGNT9cbJ/WcicrsrP0JqAo4zFXwh4g
+ 7J9LOgC2suMO9n0hYxfZg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Hw3V35oM3oc=;bLSri1artzPi0OnZwt1+wHu2ydN
+ VUs1dB0I9EjSGFBiQtPUhywwpS2f+TcE7JP6hq/wQWCecheT0rcze2hPTo7taQxrhAeH8jU7y
+ HuNSXFNZ6VvJikVt6FebY44JKLastecOl3DC5xIIHIJtTRbT0ja7e3J3ymIlASSqXScMjoIGY
+ hZyeZfHTtkbM9IJ9cCtVkNznvA2Kz6qlQJZXwI+HulME2c4I2nJbZhzTcZqq6tLbj8K/MIklR
+ z7fZzv1BzkQnFdZHGaEu1x8/N563mjU0Ydda2x7RTCy20qqJDCHOEzmBPxyDv2nqs0tItCPvp
+ dXEn9MU1xU6nFUUbclaLDz0q+dGfIDhWOrEPIWxYJ6ktvFVF+mqox9nlKYPbCmWTaw17DqQSN
+ Vah+Byn2V81xdFI082HE4m7eJ8iGlmu/oPVULdFejbzvnT+/U+oiLrEXpWDDwmFZOQwUzMSL5
+ mq0vPiR2ot/UklFLJyXPYPyCuGKROJiBkaM028Ao5quOdWCBCv7t/VdsWL8YMtBuplSiNvnzV
+ Knwm7GRTinsQ6okPrIdesYJyhtMyRgsQth81jCAdeKh5yV7LEqjvOu4dFteHPtBpIQeassZGZ
+ 58JANowxPLRN3fiUv/7zlACi8Hj2G6jrMioimAmUZAben49Vp4LtZJZ9jnZEfUTI12HLaHKEc
+ +blrKiwTUejLcHjXsBcAj97ay742Y7b0wGyfXYe6RzkHsLDc4Tyx9gTsVz41CCfRJzu1DTAav
+ epD9Su5QyyfNFFYfJ+qZH96OxUa09vbTq2hTrVKFo5FiTWNlIVhS/8VX6zd4ABStYUmXIre5Q
+ xPcxrHtUTFz1Ib4eIZF+H6CJ6uTzO0QV90oC/ohyfKwn9egih6C0VVMMn2xr32WsgQskI3076
+ F3/3DK8uV2NIw9uMMv2t4evpgQlR6issKXIbjPoqVADoBsH08QcvxtVTTQkyb85Q0GWyOphPS
+ de3RuK5Q1t1mzlOTvWkygE/nFOE=
+Content-Transfer-Encoding: quoted-printable
 
-Hey Steve,
+On 2023-12-30 12:00 +0000, Greg Kroah-Hartman wrote:
 
-On Sat, Dec 30, 2023 at 11:22:46AM -0500, Steven Rostedt wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+
+This failed to build here:
+
+,----
+|   CC [M]  drivers/block/loop.o
+| drivers/block/loop.c: In function 'loop_probe':
+| drivers/block/loop.c:2125:6: error: 'max_loop_specified' undeclared (fir=
+st use in this function)
+|  2125 |  if (max_loop_specified && max_loop && idx >=3D max_loop)
+|       |      ^~~~~~~~~~~~~~~~~~
+| drivers/block/loop.c:2125:6: note: each undeclared identifier is reporte=
+d only once for each function it appears in
+| make[6]: *** [scripts/Makefile.build:250: drivers/block/loop.o] Error 1
+`----
+
+> @@ -2093,7 +2122,7 @@ static void loop_probe(dev_t dev)
+>  {
+>  	int idx =3D MINOR(dev) >> part_shift;
 >
->Sasha,
->
->Was this automated or did you do this manually?
+> -	if (max_loop && idx >=3D max_loop)
+> +	if (max_loop_specified && max_loop && idx >=3D max_loop)
+>  		return;
+>  	loop_add(idx);
+>  }
 
-This is mostly automated.
+If CONFIG_BLOCK_LEGACY_AUTOLOAD is not set, max_loop_specified is
+undeclared.  Applying commit 23881aec85f3 ("loop: deprecate autoloading
+callback loop_probe()") fixes that.
 
->I'm asking because I was walking through my INBOX to see what FAILED
->backports I could clean up, and I started on this one:
->
->  https://lore.kernel.org/all/2023120938-unclamped-fleshy-688e@gregkh/
->
->I did the cherry pick, fixed up the conflict, but when I tried to commit
->it, it failed because there was nothing to commit.
->
->This confused me for a bit, and then when I did a git blame, I saw that you
->had done the fix already.
->
->When you fix a FAILED patch, can you do a reply to the FAILED message that
->Greg sends out, so that I don't waste my time on trying to fix something
->that was already fixed?
-
-The process I have is that I go over the stable tagged commits with a
-week or two delay, and attempt to apply the commits that aren't in the
-tree yet using the dependency bot.
-
-I can look into how to tie this into Greg's FAILED emails; I used to do
-the above manually and reply to those mails, but now the process is
-slightly different and there's no direct connection between the two.
-
--- 
-Thanks,
-Sasha
+Cheers,
+       Sven
 
