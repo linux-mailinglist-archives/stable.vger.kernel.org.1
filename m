@@ -1,102 +1,79 @@
-Return-Path: <stable+bounces-9143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E8D7820BFE
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 17:34:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA30820C01
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 17:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C971F21354
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 16:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C681F214DA
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 16:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6718C0C;
-	Sun, 31 Dec 2023 16:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8440479D4;
+	Sun, 31 Dec 2023 16:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D0hD9vUB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHosPwMa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7008483;
-	Sun, 31 Dec 2023 16:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d427518d52so41947125ad.0;
-        Sun, 31 Dec 2023 08:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704040436; x=1704645236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EoRqjvUgh8JU685KBdBRezA/nzCz/FKUz4z7zC2ePDk=;
-        b=D0hD9vUBKcfN/Dcm5eWH032uznEs5Fq2KNSF5RlUZays70GVyyTu+rbPTXMDTTmNim
-         csAwBqYW/o05yPqlUe69ZTziR8+EKOY6WUO203aZL0TMsuUeGUJiDxImBdWAEWzdSFaW
-         OshIDnffc81JpRy75bRO4RY0GtBgC55v6atmRxZ58mjGGc3gsvyURBXpT+AvA+VFSD9y
-         j3sv/P3OEqqD4gGzuzKfkYDAjuA9OijjosIKswIJmpughSCynPRQs8KvfUidZao77cwZ
-         w/N+tWc38dv2MACW7APbX+T3xIocR3aPXrCJ3my/L2NTEshcAZaCYQNgThyUDfyZ+sKf
-         gJ5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704040436; x=1704645236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EoRqjvUgh8JU685KBdBRezA/nzCz/FKUz4z7zC2ePDk=;
-        b=fovXU/Ml584pnQsVbAbiyqP68qUpZ2WODNBlS1lxahCCPwy9o2J/09mXebRFqXQOKr
-         6hfQVR5Vgcdp/ctwc279ARMP7mcFJEa4UUA60fJtO7wByIKn4OxiyChGikrN/CIa93PO
-         BUR0TAcycJ7WvoEUvcu8fg37fHx8nnQ8y2tbs/7ExE8Y/xH8+5T6FB0hThjg9bwJn45H
-         Rl3jppwOQjX0N1suCfBNEFYAHxw1E7YSpJaruGbm0E48skhnl37Jbs58/ZZ8Wnrophcv
-         BR1DpBJkBAwGgi1ziEV9DnxqelsRUxB1huX6LS1PFCo78VQ3tt+b3sXj7CLJF+xCr8Zp
-         12HA==
-X-Gm-Message-State: AOJu0Yyba2eGplnHxQs+a31w0sBfYkbMB5WZeuM+KSO7LdwqUWdUwRf0
-	IRit/AlR48aKmwbk4bexrV8=
-X-Google-Smtp-Source: AGHT+IHgL5gGyZDuBEhl14AgPpSIdkLnqgk8VZzGiZbirzfA50CFCKnOtDvmGuvntYuu7oPq+LX68A==
-X-Received: by 2002:a17:902:ced2:b0:1d3:f344:6b01 with SMTP id d18-20020a170902ced200b001d3f3446b01mr17882203plg.3.1704040435686;
-        Sun, 31 Dec 2023 08:33:55 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u10-20020a170902b28a00b001d3dfebc05esm18812619plr.21.2023.12.31.08.33.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Dec 2023 08:33:55 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Sun, 31 Dec 2023 08:33:54 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/156] 6.6.9-rc1 review
-Message-ID: <15cdead7-b9bd-4531-9222-3d41d2989f7f@roeck-us.net>
-References: <20231230115812.333117904@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D768BFB;
+	Sun, 31 Dec 2023 16:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BF1C433C7;
+	Sun, 31 Dec 2023 16:36:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704040608;
+	bh=xHR2BmGNhsT1V2gyQzJQlFuD7Bsc1mYJR1dfjZOk9ZI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=qHosPwMa46ex6qH+a3YY77ZIeHM/VQaKn4VyuTm4/ooSRe5U4aW4+Kgl2y8I65wbV
+	 szkTrnilWGqu6xNF6ZGUfEkWON5/DpuOfBbV0huDPa1nQ6+R6t9MOzspy22W0L0TgE
+	 6f4ZnAE8LTfGaDL7XupXIvQHgGHTwzz1gUPI35446FhU+Sm2c8BL7hwrkOZU2kWpht
+	 QJ3lBEep3mO5f9SmOM+Tinp5AUyl/s2+pNRujecZPCa9Tgfn0qZ/yJRkdFY6A8kz+y
+	 1krBbq4AeLeUXYLC7wlkdes9t/4aawHTS2xDNkoN8FXKWHy2T5/1LiVo/afgd+MKm5
+	 RzAJ9KwNadXag==
+Message-ID: <42ad4a1e-3a48-48aa-acd1-47d44b2ad0ba@kernel.org>
+Date: Sun, 31 Dec 2023 09:36:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] rtnetlink: allow to set iface down before enslaving
+ it
+Content-Language: en-US
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ Phil Sutter <phil@nwl.cc>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Dec 30, 2023 at 11:57:34AM +0000, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.9 release.
-> There are 156 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 12/29/23 5:08 AM, Nicolas Dichtel wrote:
+> The below commit adds support for:
+>> ip link set dummy0 down
+>> ip link set dummy0 master bond0 up
 > 
-> Responses should be made by Mon, 01 Jan 2024 11:57:43 +0000.
-> Anything received after that time might be too late.
+> but breaks the opposite:
+>> ip link set dummy0 up
+>> ip link set dummy0 master bond0 down
+> 
+> Let's add a workaround to have both commands working.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> ---
+>  net/core/rtnetlink.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 545 pass: 545 fail: 0
+add tests to tools/testing/selftests/net/rtnetlink.sh
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-Guenter
 
