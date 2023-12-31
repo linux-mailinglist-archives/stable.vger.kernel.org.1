@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-9037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBDC8209F7
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:14:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4928209F6
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 08:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBF55B21705
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01AD11C20978
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 07:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DA917C2;
-	Sun, 31 Dec 2023 07:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C69517D3;
+	Sun, 31 Dec 2023 07:13:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86E184C
-	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDD817C7
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 07:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3bbbf5a59b7so3497661b6e.3
-        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:13:54 -0800 (PST)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6d9b51093a0so4147163b3a.0
+        for <stable@vger.kernel.org>; Sat, 30 Dec 2023 23:13:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704006833; x=1704611633;
+        d=1e100.net; s=20230601; t=1704006837; x=1704611637;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ENV0U1ctp0lZ/L7fnKB2LxFecZX3KvSDH5OLF9rmqAA=;
-        b=wOxQaIn5b2F4KXK7jdJRkCFjWeq/CJU+NtJ1sakeHV4VQm3w4OcA9LT2f8CCN3EBni
-         Nk4Zqul1/EnfjkgIZYvGFYJYcrrU3+poHLRF51VC5okeQ9KkjHovhZWflJh3bIC4mdFS
-         IH4zsJFt5Ake5DZCo0t+R3CQ0L1IW3IfV699Plqb8LQl6Jndhmi5ljTq9hFYRcnnkyJw
-         QZZdd4ZFE2//jaMmo5ANtiD/xnjCx0HyN+c2BblKL0utUSrwnlfYhpIsPoN/s+m3ma0R
-         GjEQZz4/IyuvmV7WyGU94i907m/vPkhL7WJsk7MTl2HCuM5hGQBM/mZe4Bv21RSLqttg
-         LUWg==
-X-Gm-Message-State: AOJu0YzxEu3U+8RhZh4/Sw+yrfI4lCF/e2MQCjDLc/3Vfn2JQB/TxT8U
-	rEWfB40dGg2j421+yI0F8Mc=
-X-Google-Smtp-Source: AGHT+IHUC6n3I0Ande6ziL3t66AWr9UStzkQIFdk4wJSDJ9opIZFeqmb7zoHDGENVCCQb5xnbGbtgA==
-X-Received: by 2002:a05:6808:10c2:b0:3bb:f921:7d5d with SMTP id s2-20020a05680810c200b003bbf9217d5dmr1485292ois.103.1704006833313;
-        Sat, 30 Dec 2023 23:13:53 -0800 (PST)
+        bh=xU4KMXDx1vlNLMYWaqDPbn64dvK5obg9vwS4ta+Lkq0=;
+        b=atQnIbxxAGet62KIbPS1hSzLzjg67pMOmVB+vfoboRx7rk1hltnn+lGAtFdHAIc0U7
+         B0+JNk+X9N2aima9ZgHJUAjVGkYNGPxBl1MNbutFAtbvhh9vjTZBk8IvB6NxSVJSZsS/
+         VAyaf0cI4yvfRIYUuONfYVkBUWwHw1y+lz6CXudfTrlNvugZB/BJyMAEuVrji05CHW7p
+         MIyY61KxcPru0IlLYzM1pllMq8XdGsYvco9F4JcyhH9sJxqw1QVZl502yQ3bz/6Y6f2k
+         uzRFcfLoSEra2tKN9CRk/s3+tOxTWZvhbAw7q02G7FUsI/lbE9BqcfEP8Fx/IhUl230G
+         Vkeg==
+X-Gm-Message-State: AOJu0Yy4G1teXpVHXQI8YjJV9PVG2qb6kH90ZQ9hA1tQlYxNTYc9F8pS
+	oGx+EkgolY8VGUffcUNWKFxkKtGbHM0=
+X-Google-Smtp-Source: AGHT+IEkBxG1HqIEeZNFbdOWSfBJgfuqDlM5ji4XrRGCBt75hAHIVeIy7/HQewQfoyBiKX3kAXCVXA==
+X-Received: by 2002:aa7:8517:0:b0:6d9:aab9:c75c with SMTP id v23-20020aa78517000000b006d9aab9c75cmr12090220pfn.23.1704006837094;
+        Sat, 30 Dec 2023 23:13:57 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.13.50
+        by smtp.gmail.com with ESMTPSA id a2-20020a63d402000000b005c661a432d7sm17146357pgh.75.2023.12.30.23.13.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Dec 2023 23:13:52 -0800 (PST)
+        Sat, 30 Dec 2023 23:13:56 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org,
 	sashal@kernel.org
 Cc: smfrench@gmail.com,
-	Jeff Layton <jlayton@kernel.org>,
-	David Howells <dhowells@redhat.com>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1.y 03/73] ksmbd: use F_SETLK when unlocking a file
-Date: Sun, 31 Dec 2023 16:12:22 +0900
-Message-Id: <20231231071332.31724-4-linkinjeon@kernel.org>
+Subject: [PATCH 6.1.y 04/73] ksmbd: Fix resource leak in smb2_lock()
+Date: Sun, 31 Dec 2023 16:12:23 +0900
+Message-Id: <20231231071332.31724-5-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231231071332.31724-1-linkinjeon@kernel.org>
 References: <20231231071332.31724-1-linkinjeon@kernel.org>
@@ -66,47 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-[ Upstream commit 7ecbe92696bb7fe32c80b6cf64736a0d157717a9 ]
+[ Upstream commit 01f6c61bae3d658058ee6322af77acea26a5ee3a ]
 
-ksmbd seems to be trying to use a cmd value of 0 when unlocking a file.
-That activity requires a type of F_UNLCK with a cmd of F_SETLK. For
-local POSIX locking, it doesn't matter much since vfs_lock_file ignores
-@cmd, but filesystems that define their own ->lock operation expect to
-see it set sanely.
+"flock" is leaked if an error happens before smb2_lock_init(), as the
+lock is not added to the lock_list to be cleaned up.
 
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/smb/server/smb2pdu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index f5a46b683163..554214fca5b7 100644
+index 554214fca5b7..21d0416f1101 100644
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -6845,7 +6845,7 @@ static int smb2_set_flock_flags(struct file_lock *flock, int flags)
- 	case SMB2_LOCKFLAG_UNLOCK:
- 		ksmbd_debug(SMB, "received unlock request\n");
- 		flock->fl_type = F_UNLCK;
--		cmd = 0;
-+		cmd = F_SETLK;
- 		break;
+@@ -6951,6 +6951,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 		if (lock_start > U64_MAX - lock_length) {
+ 			pr_err("Invalid lock range requested\n");
+ 			rsp->hdr.Status = STATUS_INVALID_LOCK_RANGE;
++			locks_free_lock(flock);
+ 			goto out;
+ 		}
+ 
+@@ -6970,6 +6971,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 				    "the end offset(%llx) is smaller than the start offset(%llx)\n",
+ 				    flock->fl_end, flock->fl_start);
+ 			rsp->hdr.Status = STATUS_INVALID_LOCK_RANGE;
++			locks_free_lock(flock);
+ 			goto out;
+ 		}
+ 
+@@ -6981,6 +6983,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 				    flock->fl_type != F_UNLCK) {
+ 					pr_err("conflict two locks in one request\n");
+ 					err = -EINVAL;
++					locks_free_lock(flock);
+ 					goto out;
+ 				}
+ 			}
+@@ -6989,6 +6992,7 @@ int smb2_lock(struct ksmbd_work *work)
+ 		smb_lock = smb2_lock_init(flock, cmd, flags, &lock_list);
+ 		if (!smb_lock) {
+ 			err = -EINVAL;
++			locks_free_lock(flock);
+ 			goto out;
+ 		}
  	}
- 
-@@ -7228,7 +7228,7 @@ int smb2_lock(struct ksmbd_work *work)
- 		rlock->fl_start = smb_lock->start;
- 		rlock->fl_end = smb_lock->end;
- 
--		rc = vfs_lock_file(filp, 0, rlock, NULL);
-+		rc = vfs_lock_file(filp, F_SETLK, rlock, NULL);
- 		if (rc)
- 			pr_err("rollback unlock fail : %d\n", rc);
- 
 -- 
 2.25.1
 
