@@ -1,231 +1,247 @@
-Return-Path: <stable+bounces-9131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84454820AC2
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 10:33:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84135820AE1
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 10:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1400E2828AC
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 09:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07AAEB209F7
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 09:49:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085B529A0;
-	Sun, 31 Dec 2023 09:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F7A20F0;
+	Sun, 31 Dec 2023 09:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NxpWFs+B"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iLRAknbW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90B5186E;
-	Sun, 31 Dec 2023 09:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40d4a222818so36002295e9.0;
-        Sun, 31 Dec 2023 01:33:22 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BB5186C
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 09:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-467010c1c72so2740509137.0
+        for <stable@vger.kernel.org>; Sun, 31 Dec 2023 01:49:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704015201; x=1704620001; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Xd+Bnx1opc3iAibyYwlUzJrfg5GwcesaHbEFLQImyi0=;
-        b=NxpWFs+B1u3M25qYjQdrMFjONbRfUmuHEzqgDxZJXxn/aeIAGhyze7IYrWD7w5B5uO
-         94mg0VGPhWEsq1lhIDNJ/QLokmXvfd/A7eUQibsiKj5ckgpsjdZkVEjdgQ/0VW6BpBHq
-         BGILgIyAajUlCBHGLTKLEnLx5x1RfPLPRtoI7BhUOLiqc0c0fD3mWCWd9wcQB64eqjDd
-         uwP7N52PHun7dqAeSUMtwbvICcT5D9qnxC63yzk/s1qbg/ia1GXwAXChTCA0MMBCl+eB
-         FpBqVT2Bc0IpMpl4Yci6t70nc7XQL8xSGj7qY5CJKrdYcPR06g4dFsiEE7ZEHtMJpjB/
-         C1mQ==
+        d=linaro.org; s=google; t=1704016157; x=1704620957; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dpJkWjQtcLPrrAUeSPsMgmPP9dcEbzNL6qUsGWeWy48=;
+        b=iLRAknbWveoNJlpmSAcBpPdQ9UnbtB6gyyaIEziV0h8Ik/yqeL0KJA6SgFpH70FjEG
+         WGwVs4z7wqGOd6OgCb/rz5nOkC+04sBgk5K/s8wi/GXIS0vmVfSs3fRTMKdPh1Ys9lw6
+         baPy8AVJ52GqnEcGoBl+56SrzFRBJHseAGnGEMvoXyvNC8l4iL0fjrX5RozDkSfH5K7s
+         3V9XhPnoSZeKYu/RYcNzzIgvtKbD84s+uWxqdIcMwCLKpDfbS+WonB7Bd3mlgowko29s
+         wQezr+AVgkk8Msqlwdd9okZPcI5bqs2SeEaQKb69A6iWfbt8EEoI8cmT9zEWPuOIPXPK
+         NQQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704015201; x=1704620001;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xd+Bnx1opc3iAibyYwlUzJrfg5GwcesaHbEFLQImyi0=;
-        b=MtMhdnJqBDebE6PAXWJJrof42y2DLOijHDj3x/bi6UWYRLplyoMAUVPD4UIV9FntpM
-         bTrdopy+Ec9/ukwdIRf1/w9FN4Xwjta2hOgvs2HUYBo+d6w5JbUNUoR3KVchlJFeWc7B
-         ZUhzpR6xRySAxlad/zvwI+r1kwuw9l5OW1IxXfK1gYA95SvskjDP0Un/vnv1BDfD7JFP
-         BBt6axkY+W0DU/r3MSCYyNmglf3EM8oRR56oRYmBlfJJ0elabTyl+NcZK9Wsp1JC28Jb
-         Y1W4/VUF8QgaW/RgUVJjtjR6g8/eDaPiHpMGH6DU18BcD/eoZrpW8VW/ncmaeg7mNJK3
-         q7Fg==
-X-Gm-Message-State: AOJu0YzmysOu0B6mOQNwYdv8oxuzXqomF6fdiV7OmGseqTnTTxOhntlk
-	Q56Su/LHM+iDQhVV5mq7jbo=
-X-Google-Smtp-Source: AGHT+IFqPb0CWvc+oHF4g1xL88gWBlrSCaKzJW3qylcJXPd/RSJXE4gSi5luTIE7NTG0Qb4ckSRlkA==
-X-Received: by 2002:a05:600c:22d8:b0:40d:6293:fb4f with SMTP id 24-20020a05600c22d800b0040d6293fb4fmr2963741wmg.140.1704015200953;
-        Sun, 31 Dec 2023 01:33:20 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id jg7-20020a05600ca00700b0040c46719966sm44178526wmb.25.2023.12.31.01.33.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 Dec 2023 01:33:20 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id A1913BE2DE0; Sun, 31 Dec 2023 10:33:19 +0100 (CET)
-Date: Sun, 31 Dec 2023 10:33:19 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Christoph Hellwig <hch@lst.de>, Huacai Chen <chenhuacai@kernel.org>,
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
-Subject: Re: [PATCH 5.10 81/97] MIPS: Loongson64: Enable DMA noncoherent
- support
-Message-ID: <ZZE1X8m5PXJExffG@eldamar.lan>
-References: <20231211182019.802717483@linuxfoundation.org>
- <20231211182023.277870337@linuxfoundation.org>
- <ZZBx01WttA3R1XjI@eldamar.lan>
- <8d70aead-6ed5-4d53-b920-d12167787f0b@app.fastmail.com>
+        d=1e100.net; s=20230601; t=1704016157; x=1704620957;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dpJkWjQtcLPrrAUeSPsMgmPP9dcEbzNL6qUsGWeWy48=;
+        b=sAnkpDcyhPZRyEVxZTdaCtn+NrzX93gaBxbKTZ4A3w6SxAGIoGPR6SmC+qA7crUa91
+         KyugYLaM4L54U3JQSnBSUn3nwrOf9Uhdg8AT5S0sbZEZNEDvbhJeXvRRnWIu4bW68LQ2
+         oN/RZOHvq7FxTc7xekY2nyC8h8dAgbaS+5lwoKVccCCN8CxxLzhkGWyNDXLZgc1cYd6A
+         TJi0iaGpKOGzzUvQJz06/GrG+/1KesyCQcQcBR1wxBb9U+4Xiy9CDcqxnnrkZTsZiZjN
+         gheROwvhB0Cr8FpeiNpJbjdaaD5sVf9Oz0w1QU2T3sG7cxApQZhpgEn8xfU4OqZNDbSc
+         yt3g==
+X-Gm-Message-State: AOJu0YwdNye5fDXCEXcmiyFna5hE81wA6JGD5HkwsAeTIQaUl92yxbLa
+	MUybPDGZnPDiLp703K79rXeoLjZ36tgcnRwJEP+RZVDyzxJSsQ==
+X-Google-Smtp-Source: AGHT+IHVkBnxKxoccj1aut9b24Yn4p0IaxJO51yYWmBK2spGAvo8qRlCRuQI1J1h9JWKrfLjtru10Jik4grazyftqOA=
+X-Received: by 2002:a05:6102:159e:b0:466:255a:69fe with SMTP id
+ g30-20020a056102159e00b00466255a69femr8633577vsv.35.1704016156956; Sun, 31
+ Dec 2023 01:49:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8d70aead-6ed5-4d53-b920-d12167787f0b@app.fastmail.com>
+References: <20231230115806.714618407@linuxfoundation.org>
+In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sun, 31 Dec 2023 15:19:05 +0530
+Message-ID: <CA+G9fYtoMtSRzA8Wx4TCe=noeAamPXE04-gHUR+W1R5gpVy4gA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/112] 6.1.70-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Sat, 30 Dec 2023 at 17:38, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.70 release.
+> There are 112 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 01 Jan 2024 11:57:43 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.70-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On Sat, Dec 30, 2023 at 11:16:41PM +0000, Jiaxun Yang wrote:
-> 
-> 
-> 在2023年12月30日十二月 下午7:38，Salvatore Bonaccorso写道：
-> > Hi,
-> >
-> > On Mon, Dec 11, 2023 at 07:22:24PM +0100, Greg Kroah-Hartman wrote:
-> >> 5.10-stable review patch.  If anyone has any objections, please let me know.
-> >> 
-> >> ------------------
-> >> 
-> >> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> >> 
-> >> commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
-> >> 
-> >> There are some Loongson64 systems come with broken coherent DMA
-> >> support, firmware will set a bit in boot_param and pass nocoherentio
-> >> in cmdline.
-> >> 
-> >> However nonconherent support was missed out when spin off Loongson-2EF
-> >> form Loongson64, and that boot_param change never made itself into
-> >> upstream.
-> >> 
-> >> Support DMA noncoherent properly to get those systems working.
-> >> 
-> >> Cc: stable@vger.kernel.org
-> >> Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
-> >> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> >> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> >> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> >> ---
-> >>  arch/mips/Kconfig                                  |    2 ++
-> >>  arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
-> >>  arch/mips/loongson64/env.c                         |   10 +++++++++-
-> >>  3 files changed, 13 insertions(+), 2 deletions(-)
-> >> 
-> >> --- a/arch/mips/Kconfig
-> >> +++ b/arch/mips/Kconfig
-> >> @@ -468,6 +468,7 @@ config MACH_LOONGSON2EF
-> >>  
-> >>  config MACH_LOONGSON64
-> >>  	bool "Loongson 64-bit family of machines"
-> >> +	select ARCH_DMA_DEFAULT_COHERENT
-> >>  	select ARCH_SPARSEMEM_ENABLE
-> >>  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> >>  	select ARCH_MIGHT_HAVE_PC_SERIO
-> >> @@ -1379,6 +1380,7 @@ config CPU_LOONGSON64
-> >>  	select CPU_SUPPORTS_MSA
-> >>  	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
-> >>  	select CPU_MIPSR2_IRQ_VI
-> >> +	select DMA_NONCOHERENT
-> >>  	select WEAK_ORDERING
-> >>  	select WEAK_REORDERING_BEYOND_LLSC
-> >>  	select MIPS_ASID_BITS_VARIABLE
-> >> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> >> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> >> @@ -117,7 +117,8 @@ struct irq_source_routing_table {
-> >>  	u64 pci_io_start_addr;
-> >>  	u64 pci_io_end_addr;
-> >>  	u64 pci_config_addr;
-> >> -	u32 dma_mask_bits;
-> >> +	u16 dma_mask_bits;
-> >> +	u16 dma_noncoherent;
-> >>  } __packed;
-> >>  
-> >>  struct interface_info {
-> >> --- a/arch/mips/loongson64/env.c
-> >> +++ b/arch/mips/loongson64/env.c
-> >> @@ -13,6 +13,8 @@
-> >>   * Copyright (C) 2009 Lemote Inc.
-> >>   * Author: Wu Zhangjin, wuzhangjin@gmail.com
-> >>   */
-> >> +
-> >> +#include <linux/dma-map-ops.h>
-> >>  #include <linux/export.h>
-> >>  #include <linux/pci_ids.h>
-> >>  #include <asm/bootinfo.h>
-> >> @@ -131,8 +133,14 @@ void __init prom_init_env(void)
-> >>  	loongson_sysconf.pci_io_base = eirq_source->pci_io_start_addr;
-> >>  	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
-> >>  	if (loongson_sysconf.dma_mask_bits < 32 ||
-> >> -		loongson_sysconf.dma_mask_bits > 64)
-> >> +			loongson_sysconf.dma_mask_bits > 64) {
-> >>  		loongson_sysconf.dma_mask_bits = 32;
-> >> +		dma_default_coherent = true;
-> >> +	} else {
-> >> +		dma_default_coherent = !eirq_source->dma_noncoherent;
-> >> +	}
-> >> +
-> >> +	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
-> >>  
-> >>  	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
-> >>  	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
-> >
-> > While preparing an update for Debian and finally building for all
-> > supported architecture, the builds for mipsel and mips64el were
-> > failing with:
-> >
-> > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c: In function 
-> > 'prom_init_env':
-> > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: error: 
-> > 'dma_default_coherent' undeclared (first use in this function); did you 
-> > mean 'dma_free_coherent'?
-> >   138 |   dma_default_coherent = true;
-> >       |   ^~~~~~~~~~~~~~~~~~~~
-> >       |   dma_free_coherent
-> > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: note: each 
-> > undeclared identifier is reported only once for each function it 
-> > appears in
-> > make[6]: *** [/<<PKGBUILDDIR>>/scripts/Makefile.build:291: 
-> > arch/mips/loongson64/env.o] Error 1
-> > make[6]: *** Waiting for unfinished jobs....
-> >
-> > Is here a prerequisite missing for the commit?
-> >
-> > Backporting though 6d4e9a8efe3d ("driver core: lift dma_default_coherent into
-> > common code") which is from 5.12-rc1 though seems too intrusive, correct? Would
-> > the alternative be to just revert the 3ee7e2faef87 ("MIPS: Loongson64: Enable
-> > DMA noncoherent support") commit which landed in 5.10.204?
-> 
-> Hi,
-> 
-> Sorry for not spotting the issue in the first place.
-> 
-> It actually requires more dependencies such as c00a60d6f4a1 ("of: address: always
-> use dma_default_coherent for default coherency").
-> 
-> I'll try to produce a backport series but better to drop this patch from stable
-> for now.
 
-Thanks a lot for your quick reply! 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-So I guess it only needs a revert for now from 5.10.y correct?
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Greg, possible to already queue up the revert for 5.10.y for the next
-upload?
+## Build
+* kernel: 6.1.68
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: ba6f5fb465114fcd48ddb2c7a7740915b2289d6b
+* git describe: v6.1.68
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.6=
+8
 
-Regards,
-Salvatore
+## Test Regressions (compared to v6.1.67)
+
+## Metric Regressions (compared to v6.1.67)
+
+## Test Fixes (compared to v6.1.67)
+
+## Metric Fixes (compared to v6.1.67)
+
+## Test result summary
+total: 135673, pass: 114774, fail: 2742, skip: 18024, xfail: 133
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 52 total, 52 passed, 0 failed
+* i386: 39 total, 39 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 15 total, 15 passed, 0 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+* v4l2-complianciance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
