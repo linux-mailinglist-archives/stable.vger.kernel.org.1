@@ -1,110 +1,123 @@
-Return-Path: <stable+bounces-9031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0898D82096E
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 02:01:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D74982096F
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 02:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371D11C217E6
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 01:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C48F21F22282
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 01:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A49659;
-	Sun, 31 Dec 2023 01:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF74B819;
+	Sun, 31 Dec 2023 01:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="tyVxh/mr"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="orJIXsMc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0A9639
-	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 01:01:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-Message-ID: <8a43a969-bb8f-4ff2-9344-a221f46c51e5@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1703983950;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IiMUSVNJt8AtmWVVScSVBlWaCPZP7VRr0Nz5f9Uu0A8=;
-	b=tyVxh/mr/j9tsYalch9eTzseeDi53loog0SUAriJwVYOJcYzX9u/F13AIiPaLzb98VygV3
-	Oj61HqWyV1MICgrGbAMHrDPWxuVblMOFUNqDyS7SEtkVwDU8LANpWqjyuwx4nH1RC102fS
-	nL3Bp3AVYCHIIJalfwOHXPYzwQqvzugJEp+e3WPp3/Rxf+n1jdvbgt4+k+VLE3mbUbmYTu
-	QWHWp5MJzqUHTO4zPmwnTaqTvUUKGw8qKNKBC+mFiIAjSG4WadMMCBZpHNkTTRJEK7VnWm
-	+4hRG8kmGWHlPF8YPWhQD0kSGOCCjTYdHnAxGC1QSpzpd4kgwm+lJUZid0MScA==
-Date: Sun, 31 Dec 2023 07:52:24 +0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C45658
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 01:05:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5007a.ext.cloudfilter.net ([10.0.29.141])
+	by cmsmtp with ESMTPS
+	id JVCNra68IL9AgJkEmrB3H4; Sun, 31 Dec 2023 01:03:32 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id JkElrEMG7qkaTJkElrfMVl; Sun, 31 Dec 2023 01:03:32 +0000
+X-Authority-Analysis: v=2.4 cv=bY547cDB c=1 sm=1 tr=0 ts=6590bde4
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=FZRryd9vdzjGbbfKjtQA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=xx9SnSiPZtgb/X/N2IqfZ0fQLJnuY9/+aje1lLKoYAE=; b=orJIXsMcHsE+vN9yfKcUOwxZzo
+	FiEs5EiVpYmhFj0dgu/f9hgiJm6OnPMHLwfDxgNBhBXAhYTC7S3Lt+bdmgZ9p5o+HIqyBGxU+QQzH
+	e2Qn6xTh0pbCiFWUbezFQfPdJFqMIfWUTRIC7rKNRJzn6ECoLkoJK0JL4qSCIO1IIPfrgYCMy2YBM
+	NiaJxB/epoVxT4ytH62yFdqhAAnpFcHBOllZujhCQKVQPSUtQpcpzb6J7f4+xfBzQ4qoattKCchCQ
+	//ch9wAehvlmnJotSyJ5AxYKv1Gt0LprlARa1tgXWNN2SA1Lcc/OYEZLNxadatxhGkZEbbqjduL48
+	kWn1d17Q==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:33714 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rJkEj-001Auh-0f;
+	Sat, 30 Dec 2023 18:03:29 -0700
+Subject: Re: [PATCH 6.6 000/156] 6.6.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231230115812.333117904@linuxfoundation.org>
+In-Reply-To: <20231230115812.333117904@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <ccd6a5d2-2a96-4d6f-f494-3a6a38784362@w6rz.net>
+Date: Sat, 30 Dec 2023 17:03:26 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi
- (6.6.x)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
- =?UTF-8?Q?L=C3=A9o_Lam?= <leo@leolam.fr>
-References: <20231216054715.7729-2-leo@leolam.fr>
- <20231216054715.7729-4-leo@leolam.fr> <2023123005-annuity-numbly-e6d8@gregkh>
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-In-Reply-To: <2023123005-annuity-numbly-e6d8@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rJkEj-001Auh-0f
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:33714
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKaLhUEScXIoA68SwKIVy1sZhsjwGkKttKgVWdBJY06L0ERuwj3SEh8E7lNhMf4aVIH+2U8xcxRo9RIu9WXXRThaVBf7fC3vP3i0XyjsF/MCoN50e3kR
+ CE6690m0norzsUO6DNmQgZnknb0CFAQ2EncUuEgPnXpUIE4pM+CR2ISvxX4+0NPa1fwLE/w+XVUyiQ==
 
-On 30.12.23 18:43, Greg KH wrote:
-> On Sat, Dec 16, 2023 at 05:47:17AM +0000, Léo Lam wrote:
->> Commit 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use"
->> backported to 6.6.x) causes nl80211_set_cqm_rssi not to release the
->> wdev lock in some of the error paths.
->>
->> Of course, the ensuing deadlock causes userland network managers to
->> break pretty badly, and on typical systems this also causes lockups on
->> on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
->>
->> The upstream commit 7e7efdda6adb ("wifi: cfg80211: fix CQM for non-range
->> use"), committed in November 2023, is completely fine because there was
->> another commit in August 2023 that removed the wdev lock:
->> see commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex").
->>
->> The reason things broke in 6.6.5 is that commit 4338058f6009 was applied
->> without also applying 076fc8775daf.
->>
->> Commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex") is a rather
->> large commit; adjusting the error handling (which is what this commit does)
->> yields a much simpler patch and was tested to work properly.
->>
->> Fix the deadlock by releasing the lock before returning.
->>
->> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
->> [2] https://bbs.archlinux.org/viewtopic.php?id=290976
->> [3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
->>
->> Link: https://lore.kernel.org/stable/e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org/
->> Fixes: 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use")
->> Tested-by: Léo Lam <leo@leolam.fr>
->> Tested-by: Philip Müller <philm@manjaro.org>
->> Cc: stable@vger.kernel.org
->> Cc: Johannes Berg <johannes.berg@intel.com>
->> Signed-off-by: Léo Lam <leo@leolam.fr>
->> ---
->>   net/wireless/nl80211.c | 18 ++++++++++++------
->>   1 file changed, 12 insertions(+), 6 deletions(-)
-> 
-> Both now queued up, thanks.
-> 
+On 12/30/23 3:57 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.9 release.
+> There are 156 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 01 Jan 2024 11:57:43 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
 > greg k-h
 
-Hi Greg,
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-seems only for 6.1.x series. Still don't see it for 6.6.x ...
--- 
-Best, Philip
+Tested-by: Ron Economos <re@w6rz.net>
 
 
