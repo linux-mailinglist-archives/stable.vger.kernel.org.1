@@ -1,123 +1,123 @@
-Return-Path: <stable+bounces-9137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE15820B5B
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 13:06:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9660A820B6E
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 14:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CDA9B2137D
-	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 12:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75E8281B69
+	for <lists+stable@lfdr.de>; Sun, 31 Dec 2023 13:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC99833EA;
-	Sun, 31 Dec 2023 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9A33C13;
+	Sun, 31 Dec 2023 13:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="fOiMM5Nc"
+	dkim=pass (2048-bit key) header.d=in04.sg header.i=@in04.sg header.b="EJSqQHw4";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="BIoLjUa3"
 X-Original-To: stable@vger.kernel.org
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652843D70
-	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 12:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
-	by cmsmtp with ESMTPS
-	id JjjXrZCq3jtZ3JuZ3r3dfk; Sun, 31 Dec 2023 12:05:09 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id JuYqr40kq11XZJuYqrncqs; Sun, 31 Dec 2023 12:04:57 +0000
-X-Authority-Analysis: v=2.4 cv=Z+v/oVdA c=1 sm=1 tr=0 ts=659158e9
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=mXnCyquSlPjAy6dvzwgA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=jVBDB5fHsjyyZj/a6YgGxOC3B4CrqzM1aF4ZjesDwDU=; b=fOiMM5Nc3x7NH8aZIAoaMW4Quv
-	T33H9n/a8DeYtSAnt2MhpuTGuKGehbPhYH08kNBjvsZP93lp+KZtp3MDGcTn86ZErp8BhDK+VGgfu
-	Ug3otVelxqz0JdaCjsxlflgstQC4Cf0MfbyoG5gtYNwIjv/p6YcspxPGAmluBSQuRefRFbUzfXGHq
-	HZ2I78vNw0fvhdj1/zIHp8GVxHxSr6ELEYbcsNAK/A4QO93Qxwif7xojAJHBAvQPgBOS/56rYB7m/
-	vfG3vVL72PZuyhRlhBQtifrDI5WFj7TPGWnxV/7RcMXxJ8jq18wilYGgKUzmkMoBOBBquldE6T6Yn
-	ERpdXcxA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:33768 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rJuYo-000nUH-0H;
-	Sun, 31 Dec 2023 05:04:54 -0700
-Subject: Re: [PATCH 6.1 000/112] 6.1.70-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231230115806.714618407@linuxfoundation.org>
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <a50d5997-0a8a-ef49-c8b8-68d640389a68@w6rz.net>
-Date: Sun, 31 Dec 2023 04:04:51 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74BB84418
+	for <stable@vger.kernel.org>; Sun, 31 Dec 2023 13:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=in04.sg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=in04.sg
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.west.internal (Postfix) with ESMTP id 05E3A3200A76;
+	Sun, 31 Dec 2023 08:10:04 -0500 (EST)
+Received: from imap47 ([10.202.2.97])
+  by compute6.internal (MEProxy); Sun, 31 Dec 2023 08:10:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=in04.sg; h=cc:cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1704028204; x=1704114604; bh=H2x0Q38Wwf
+	2qcQoO2ebpBNqiplIFrHytqmZUQrdmcLc=; b=EJSqQHw4eO1zVEEyhk1NkdzOFm
+	cZ4bF/6NTsEN8vc4SAHzabzlUe2cNO4q7lIZVWB8di1/bYRn5+5peVC2ZiYT9Ldu
+	wwVP+wBEDYpKQVZ28/MNQEuV3/Sx0Bl0AirpbN/0tz2H9hqpWJGWonROupUrPJfr
+	XeBTDrMx8dsJGbyxo8NbEdGp3UibaxYUy6fosZh1SEud9fA89N4JBsujFE1WuRQv
+	GR6BGTGbJDbVCp/fThDuIV8WFeIGBLiGnCbWafOxX6JFH+LTNIX/Soa601cVW9hW
+	dwy2m5pEurgSJ5WJv/HMK+4nRvAKlLZXgnB/gfS3vxmdvm3OYouOsoCTA1YA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1704028204; x=1704114604; bh=H2x0Q38Wwf2qcQoO2ebpBNqiplIF
+	rHytqmZUQrdmcLc=; b=BIoLjUa35fbeJJFxKEpHLXj0RMu31TmkxXujImejKI6n
+	XMOe/BaHOfGGByg0VTx+F2AUM1mkQChTlxq8gAPn/FH6/SnhZFCxkH7afL/b8khC
+	0dxHmg6Kxw1p6IR10BMfT8BLjwOS7qzR5FHf/YZNtamHe5v/90wxBZFIPQhW6VXw
+	qg9ObO29sceBiCwaZpyLFTXSGxuSMXRNxnf6hhMMqmeJJ9ZCJFQwk09i3Fl/aaXY
+	+2i9eZMcaRhCcbcunoGvgDbklP1FD2tnhjwYDmw/fmjiqxX0RXqcYrkxfLiaz8EX
+	Ng+MSGrScL5Ker/FfblXWhxYXji8m7fDMe9rPP1ATw==
+X-ME-Sender: <xms:LGiRZYLpk0UgoLm0y6TdcdedRtbj7cb4kXPqnUS4IilNUjWbR96Q2w>
+    <xme:LGiRZYJUk8sshGpZTRMp96GzGvzWm4jPJ2hqB63Gy3JrVoH1I6YS81NiqJqZNCrWp
+    HEBVQiffMVv4I2vXsA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdefkedgvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfvfgv
+    vgcujfgrohcuhggvihdfuceorghnghgvlhhslhesihhntdegrdhsgheqnecuggftrfgrth
+    htvghrnhepvefgtdfggeeifeeufedvgeejvdevvdeffeejffeujeeuffeifedujedutefg
+    teeknecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhhgvghlshhlsehinhdtgedrshhg
+X-ME-Proxy: <xmx:LGiRZYsf4KZRp5Pr7YAhx-JFpdsqVFu80RbkcMjCQRORlg9CFzfKHQ>
+    <xmx:LGiRZVa8y0yn722wIi5veY_lGsIx2T8j4aCkNbW85wpXbUpwGplDrQ>
+    <xmx:LGiRZfY4gC3MCU470NuFm_ELm-rLOqhPA-dUPhkmhFH2XXZNt4prOw>
+    <xmx:LGiRZeVo8TD6Sk2Q423A9V85WSoA4nW2XicsM-bVtqMsTprKFJR2Vg>
+Feedback-ID: id6914741:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 30BA8A60078; Sun, 31 Dec 2023 08:10:04 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1364-ga51d5fd3b7-fm-20231219.001-ga51d5fd3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rJuYo-000nUH-0H
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:33768
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfOmDwd9bCByZjlUvUx3Zd6ORUYSuhjs71cpiBw1Dvq/meoKUfVEqCfA5DC0FC3N+ra8DEbEPgEBDM0wBQne7LcN9EJ3Nv3J/t9ihwbXhhjQdZfzmct6b
- x7OWvgRurU31qtbpJk4YFztYX2e4ZyEAAG5JQ9kQXgohzjTWHWhkhMfuPMCMiwWpBRRS/TytjxcFvw==
+Message-Id: <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
+In-Reply-To: <20231220170016.23654-1-angelsl@in04.sg>
+References: <2023102922-handwrite-unpopular-0e1d@gregkh>
+ <20231220170016.23654-1-angelsl@in04.sg>
+Date: Sun, 31 Dec 2023 21:09:36 +0800
+From: "Tee Hao Wei" <angelsl@in04.sg>
+To: gregkh@linuxfoundation.org
+Cc: "Andrii Nakryiko" <andrii@kernel.org>,
+ "Francis Laniel" <flaniel@linux.microsoft.com>,
+ "Masami Hiramatsu" <mhiramat@kernel.org>,
+ "Steven Rostedt" <rostedt@goodmis.org>, "Song Liu" <song@kernel.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] tracing/kprobes: Fix symbol counting logic by looking at
+ modules as well
+Content-Type: text/plain
 
-On 12/30/23 3:58 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.70 release.
-> There are 112 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Mon, 01 Jan 2024 11:57:43 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.70-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, 21 Dec 2023, at 01:00, Hao Wei Tee wrote:
+> From: Andrii Nakryiko <andrii@kernel.org>
+> 
+> Recent changes to count number of matching symbols when creating
+> a kprobe event failed to take into account kernel modules. As such, it
+> breaks kprobes on kernel module symbols, by assuming there is no match.
+> 
+> Fix this my calling module_kallsyms_on_each_symbol() in addition to
+> kallsyms_on_each_match_symbol() to perform a proper counting.
+> 
+> Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+> 
+> Cc: Francis Laniel <flaniel@linux.microsoft.com>
+> Cc: stable@vger.kernel.org
+> Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> Cc: Steven Rostedt <rostedt@goodmis.org>
+> Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> Acked-by: Song Liu <song@kernel.org>
+> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> (cherry picked from commit 926fe783c8a64b33997fec405cf1af3e61aed441)
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+I noticed this patch was added and then dropped in the 6.1 stable queue. Is there any issue with it? I'll fix it ASAP.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thanks.
 
+-- 
+Hao Wei
 
