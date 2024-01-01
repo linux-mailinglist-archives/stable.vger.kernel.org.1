@@ -1,186 +1,98 @@
-Return-Path: <stable+bounces-9157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F51821507
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 19:44:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C5C82156E
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 22:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E89A281CC9
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 18:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741081F21468
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 21:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A46D52F;
-	Mon,  1 Jan 2024 18:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184D1DF6C;
+	Mon,  1 Jan 2024 21:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=landley-net.20230601.gappssmtp.com header.i=@landley-net.20230601.gappssmtp.com header.b="UdgpbZ0C"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="hdsr7phr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E92D51E
-	for <stable@vger.kernel.org>; Mon,  1 Jan 2024 18:44:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=landley.net
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6dbbc637df7so5923605a34.2
-        for <stable@vger.kernel.org>; Mon, 01 Jan 2024 10:44:11 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF65E544
+	for <stable@vger.kernel.org>; Mon,  1 Jan 2024 21:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-58962bf3f89so1650253a12.0
+        for <stable@vger.kernel.org>; Mon, 01 Jan 2024 13:27:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=landley-net.20230601.gappssmtp.com; s=20230601; t=1704134651; x=1704739451; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1704144420; x=1704749220; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=sjmXOhTctx42zOaMIsPFinaKFIHlr/ulkQ7Lu3BkB+w=;
-        b=UdgpbZ0CL9BY45Pt+ewC0brwHYnSlpgkh8oNOXjVh66JyarN6aHMhr9wqTHf59cNsh
-         NiFjXztRwN6yQiTcDmAHn2dDJaH7Fxu6XSyotPvaoHR2EX9nYtugc/k1YjstJ9mentbg
-         doVa5/9853Wq8odtWXZLmbk0zkCl5MDRio9q5Tmf9JeHXtekiAIE+Xxo1If5VXEoLy52
-         qyOBBqFKcmlHjKbGExANh21NHPy4IDxPViW3NIFZytSM4JPYsNO6ssWk1NdU4TSK4Q45
-         SpDtg/CW9IwySsL5+iL8Mf0wFTLHWtTOPTXyQJL3XBi/nrxOOuUHytUuRru0eoPFeheV
-         tg5Q==
+        bh=8kpBoPyhUaQAP/gLzTZh/k1bq/vx+Y3mPraIQNXEeM8=;
+        b=hdsr7phr/y9IYt06Z5ptd6KmNu6vQODXjRQ1LMdPvDKunk/cHKOtYtjzylBltoAhDi
+         iqrSZg1ANSJRgcCO6/dT+vsZT+0MevhfHi4elDEXpnY+Ef160jlPrXFH65nFbpFepy3E
+         rU6cz027U7V9BB8rqkP3SU88UmoyiFZaniDZMO0yDV+hsbrHYhSDszzoXrMSLkhKP4k7
+         UB40jEBPRs88I7VFM4cj0PeDZMKY9k9/WgMRUTr3B9IeBt/gSlPFHIb1mySkm7m0+kNC
+         ldxgoGGEA9jOuQTCQgQ6oMwUrM6MiPj0k92sNz4LOR0H8OX4bUoTa93LeRpPQ4iMVhkg
+         rvxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704134651; x=1704739451;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1704144420; x=1704749220;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sjmXOhTctx42zOaMIsPFinaKFIHlr/ulkQ7Lu3BkB+w=;
-        b=LJm+k8G/DZR7+ctqudC5LJRT4mr2Smhjdp3ZvuRyXDP5eKck7eVfyNX+WtxEp+pJrp
-         6VFA9JBkH1ZrklSvr660tuQ2gYyoSFITxe51TSnXEiuTluEQP1Z/yqvOiKLuTzIiUo+C
-         0xw3jn9iGwMEQfpXt5PHI6KwNkg6b5taG1zM41q+4jSrhkj9Zj47uHb1Ah+E8dCmjOSj
-         YP6Zr4XZO/Rh83/pDfhQ/D6cS4a1tNK8Nfuo/YL6Qb1h1rSdxFypiFeKwevkp8lvW6kS
-         SnZ7WIMWWOrT9gyJH8C1mdTqjI1fLx8xEmxAm0qx3CmxiD9MrbuAyoczdVpKNhgrMWvJ
-         C5IA==
-X-Gm-Message-State: AOJu0YyGnLDdD/D6WisEUdfPg8hnroyJQ9o00OMPwm7oRyZduvgzrOMn
-	8EwGxg5Q7LhLxezcoA1z7Qz8ANN75p8Vhw==
-X-Google-Smtp-Source: AGHT+IEGggXhpHPG1W3qW7pdwlHgw/HZy7YXw6H/rODYtkG6/6okVpvuY9/RVCotfiLACdJliNmjpw==
-X-Received: by 2002:a05:6830:12c6:b0:6dc:20e:a447 with SMTP id a6-20020a05683012c600b006dc020ea447mr6046580otq.25.1704134650809;
-        Mon, 01 Jan 2024 10:44:10 -0800 (PST)
-Received: from ?IPV6:2607:fb90:f21e:ce05:3ea9:f4ff:fe4b:aee8? ([2607:fb90:f21e:ce05:3ea9:f4ff:fe4b:aee8])
-        by smtp.gmail.com with ESMTPSA id l35-20020a0568302b2300b006d9a339773csm1562495otv.27.2024.01.01.10.44.09
+        bh=8kpBoPyhUaQAP/gLzTZh/k1bq/vx+Y3mPraIQNXEeM8=;
+        b=hHJSLZ5h5+8ONzhVWTIVeiVn9VgVE3i+Lyf22Ar8/I1NQ9ZVAMUV9jmmEtnp1aqU8L
+         snR/AgQ045QAeR7E/yo4/UBDDgk7USgC4ayXeJusB/xp6NmVV48+fxeFxlc7uFBIS33k
+         QYnsIHAPfFvxEHXLm69CTMeeW5C+UUkPAUBqFY+IgWLeMQhxoWdZM9zG9ZmKdrddY/0S
+         CQ2S9E9P1hKCOn7QOyhZYNvGoxTtZsRvAGdLlS2zpZIiAfnZOZwHrGaAjf8e9AYl7tLC
+         whWkYTD5kgvJoLrtN5GPISA8fB7eLnEeucyVuYee2e8dR2BWU/jQGwfVaR1nYB2hE/aY
+         pjiA==
+X-Gm-Message-State: AOJu0Yx4QQaKfIVklSlHw/YTVuDyllG0cxZer6ROeNKOT5GlHDS3HZZE
+	gk626ip8rtrnpVuX25KujMnWGZu5AOMi8w==
+X-Google-Smtp-Source: AGHT+IH60O+WpJhiQAiTUmpw9aw4g+0VyfS3W8LLnbH7pnoug16WNT1+Bsebt70bWPu99FnB4b6w4Q==
+X-Received: by 2002:a05:6a00:6817:b0:6da:83a2:1d5e with SMTP id hq23-20020a056a00681700b006da83a21d5emr5282807pfb.2.1704144420574;
+        Mon, 01 Jan 2024 13:27:00 -0800 (PST)
+Received: from [192.168.1.150] ([198.8.77.194])
+        by smtp.gmail.com with ESMTPSA id b5-20020a056a0002c500b006d9a16ca748sm15997842pft.122.2024.01.01.13.26.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jan 2024 10:44:10 -0800 (PST)
-Message-ID: <01010fbc-50d9-37f3-309c-f01643865ed9@landley.net>
-Date: Mon, 1 Jan 2024 12:50:31 -0600
+        Mon, 01 Jan 2024 13:26:59 -0800 (PST)
+Message-ID: <cb12eefa-9588-4244-a1de-b1ea62f6096d@kernel.dk>
+Date: Mon, 1 Jan 2024 14:26:58 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
- given
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] block: fix length of strscpy()
+To: Guoxin Pu <pugokushin@gmail.com>
+Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240101175051.38479-2-pugokushin@gmail.com>
 Content-Language: en-US
-To: Stefan Berger <stefanb@linux.ibm.com>, Askar Safin <safinaskar@gmail.com>
-Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, zohar@linux.ibm.com
-References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
- <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
- <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
- <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
- <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
- <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com>
- <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
- <8b85253d-dd75-42e4-9a05-dafb3618269c@linux.ibm.com>
-From: Rob Landley <rob@landley.net>
-In-Reply-To: <8b85253d-dd75-42e4-9a05-dafb3618269c@linux.ibm.com>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20240101175051.38479-2-pugokushin@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 12/31/23 10:03, Stefan Berger wrote:
->> Let me see if I understand your problem: it sounds like debian's initramfs-tools
->> overloads the root= and rootfstype= arguments parsed by the kernel to have a
->> second meaning (the kernel uses them for one thing, you want to use them for
->> something else, and there's currently a semantic gap between the two.)
+On 1/1/24 10:50 AM, Guoxin Pu wrote:
+> In commit 146afeb235ccec10c17ad8ea26327c0c79dbd968 ("block: use strscpy()
+> to instead of strncpy()") , the length that should now represent the length
+> of the string with the terminating NULL was not updated alongside the
+> change.
 > 
-> My intention is to be able to pass rootfstype= to the kernel and have it 
-> interpreted correctly in the presence of root=, which currently does not 
-> work. User space tools that interpret the value of rootfstype= as if 
-> this option belonged to user space is not helpful, though it should be 
-> easy to teach the user space scripts to strip a leading 'tmpfs,' or 
-> 'ramfs,' from the rootfstype value and let them interpret the rest.
-
-Does your initramfs plumbing need to pass a rootfstype equivalent on to the
-userspace mount at all? In what cases does it not autodetect the type correctly?
-
-(Even NFS and SMB mounts are generally detectable because of the leading \\ or
-blah: although I suppose there are other network filesystem types that wouldn't
-be. Or if you wanted to micromanage the fat variant you were using...)
-
-"rootfstype=" is the argument that tells the _kernel_ how to mount / and by the
-time init runs the kernel's already mounted what it's going to mount. The kernel
-only exposes one visible / mount to userspace, you don't return back into it and
-get another init launched running in a different root filesystem.
-
->> You want to add a new capability requiring a new build dependency in the
->> initramfs-tools package because it's doing new stuff, but there cannot be any
->> OTHER changes made to initramfs-tools, so the kernel should change its existing
->> semantics instead.
+> This has caused blkdevparts= definition on kernel cmdline to be not
+> correctly recognized and partitions not correctly initialized, breaking any
+> device relying on such partitions to boot, on stable releases since 6.6
 > 
-> I haven't even thought of what would need to be added to Debian's 
-> initramfs-tools package since my primary goal was to enable tmpfs for 
-> the initramfs on OpenBMC where we then read the xattr values from a file 
-> and write them into the filesystem because cpio format doesn't carry 
-> them.
+> This patch fixes the lengths to contain the terminating NULL.
 
-Me, I'd have a simple initramfs extract/decrypt a tarball with the filesystem
-that needs xattr values into a new tmpfs mount and switch_root to that. But I
-tend to statically link an initramfs into the kernel image when I want to be
-sure what it's running, and have never quite been clear on the benefit of
-_additionally_ verifying data that originates from within the kernel image. (If
-they can change that, they can change ring 0 code.)
+This needs a Fixes line.
 
-Still, adding xattr support to cpio comes up a lot. It seems like a couple days
-work tops, maybe the interested parties should do a video conference thingy,
-hammer out the details, and come up with a patch to add support? The userspace
-side sounds easy enough, I added xattr support to toybox tar in 2021 in a
-weekend, and have sent "would you like to keep up with toybox" patches at the
-busybox guys semi-regularly.
+-- 
+Jens Axboe
 
-I even poked coreutils about feature parity once (the Android guys asked me to),
-which they said they would like to add, but which but still isn't in years later:
 
-https://lists.gnu.org/archive/html/coreutils/2023-08/msg00009.html
-https://lists.gnu.org/archive/html/coreutils/2023-08/msg00100.html
-
-But eh, I'm used to that with 30 year old projects licensed under copyleft...
-
-> Also, I didn't expect that any user space tools would try to 
-> handle a kernel command line option as if it was theirs.
-
-Debian predates the 1.0 kernel release, so has some historical design baggage.
-That's why it's I tend to check them for snags in this area.
-
->> You can't NOT provide root=, and you can't provide initramfstype=tmpfs...
-> 
-> I only know about rootfstype= ( 
-> https://github.com/torvalds/linux/blob/master/init/do_mounts.c#L128 ). 
-> If currently handling of rootfstype= in presence of root= is not 
-> considered a bug and we should introduce initramfstype= instead, we 
-> could do that. But doesn't this become a bit confusing if rootfstype= 
-> can be passed when root= is absent but then initramfstype= must be used 
-> when root= is present?
-
-I personally think having two would be confusing, and changing the existing API
-without adding new capabilities is pointless.
-
-> This is 'our' patch describing the issue: 
-> https://github.com/torvalds/linux/blob/master/init/do_mounts.c#L128
-> 
->> either, and those are the two existing ways to tell rootfs to be tmpfs instead
->> of ramfs. You'd like to add a third way to specify the same thing.
-> 
-> Do you have a link to initramfstype= handling in kernel code?
-
-No, it's never done that. There was a suggestion to do that earlier in this thread:
-
-https://lkml.iu.edu/hypermail/linux/kernel/2312.2/07060.html
-
-And I thought it was a bad idea. The submitter agreed it was a bad idea. (Over
-the holidays I've haven't been paying close attention and threads tend to bleed
-together, sorry. :)
-
-The answer to my "do I have this right" question was, apparently, "no". I mixed
-together what two different people wanted...
-
-Rob
 
