@@ -1,141 +1,63 @@
-Return-Path: <stable+bounces-9155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F368214D2
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 18:53:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A67F98214E2
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 19:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D65F11F21389
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 17:53:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BD13B21064
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 18:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40088F79;
-	Mon,  1 Jan 2024 17:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7BD9466;
+	Mon,  1 Jan 2024 18:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KAT8ku4r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHcZN3Zk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481598F4E;
-	Mon,  1 Jan 2024 17:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d427518d52so45140015ad.0;
-        Mon, 01 Jan 2024 09:53:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704131603; x=1704736403; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P2BWNvYBepeLwb8q83GJwuE1J0b0OLLscBDVehSnTxA=;
-        b=KAT8ku4ryMcRo8eQWCGlD3bN1k2R1Oe8LMgkn5lSHiJfG9koKVKv3vSTTHqMTFNbJJ
-         YXvA1PWJLPNObbaMyI2YjxIKJVKczSlVhlX6NuNSDjj+bg/ywDzcg3dF3j8d8KLkB28U
-         d47D+Ue5M4RpB5rRA7Un1vVnluGOZNp4pT7K/42/k2SngQsFlDEzgPYOIr4pu/5JDitz
-         LXopRIGEU1uaPA8r2z7z9nnbHCFgsu8uqv1yZbMzrQHdLVuHuAO/6MbvbJOFrOt8Ueyg
-         XMB2NnvXdsObz7i6owBaj3iqj90NX0olDWlqS5cmyny2TDnffatiLni71I1c0bsy2dJG
-         oOyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704131603; x=1704736403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P2BWNvYBepeLwb8q83GJwuE1J0b0OLLscBDVehSnTxA=;
-        b=G18cjzNZBsds87iQGubrBP/BbAy2Ce0VgJrTXAz3VfJ20Vn50PpgIhStI2u82zyDcC
-         EZ+lFkc26ZFO3/VGuZ0T3+ERvF0RMEj5Cf++WcnlOIxLMdqooFYTtp2ASX7zZ+4yZE+N
-         +M835gM8bIXM/1adfZggW1JS3IYePK6qXk56mvYbKLgspZxnge8EcPt3MjJ2b4V/uDx4
-         TsCK/aukiO/QMyngfBS/ZskdnJwr8L5JJcMBuRH4CXAocgTzw2N8nod2V8hlQhEIUa+z
-         qbhV8F3wQwvq5saLGX2un/gv4LnpIjWb4m1GBIKAhU0j4ipL6AYBnjHVHdvmQWl/vizX
-         Yt+g==
-X-Gm-Message-State: AOJu0YyOgyDRNtD94Vm7KaFtsFr+BYLQeMHCSpfvP5rqFku7Tuwx+Uen
-	qiRjZ3B+fdlOmqUHIXO0zro=
-X-Google-Smtp-Source: AGHT+IG+5A3KCbkUups7IoOdYOFwSobipBI/piCU/mQUi+kjTuXEP6dOoXqMdpw/27xVJZ7NXtQhfw==
-X-Received: by 2002:a17:903:2652:b0:1d4:b66b:b48f with SMTP id je18-20020a170903265200b001d4b66bb48fmr2421015plb.19.1704131603339;
-        Mon, 01 Jan 2024 09:53:23 -0800 (PST)
-Received: from localhost.localdomain (45.78.55.121.16clouds.com. [45.78.55.121])
-        by smtp.gmail.com with ESMTPSA id z3-20020a170902ee0300b001d3561680aasm20325367plb.82.2024.01.01.09.53.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jan 2024 09:53:23 -0800 (PST)
-From: Guoxin Pu <pugokushin@gmail.com>
-To: axboe@kernel.dk
-Cc: linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Guoxin Pu <pugokushin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] block: fix length of strscpy()
-Date: Tue,  2 Jan 2024 01:50:52 +0800
-Message-ID: <20240101175051.38479-2-pugokushin@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9AA9456
+	for <stable@vger.kernel.org>; Mon,  1 Jan 2024 18:11:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35825C433C7;
+	Mon,  1 Jan 2024 18:11:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704132704;
+	bh=g3BnUiDaoBOi9TIDh5oeBCTTci0aIp+mTj+EpaJ20Eo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aHcZN3Zkb4jDOXqtEs6tsJ7kk9hsWXRPAdo8T9+MhSXUO1hn8cg1jwII/y2Y0lr83
+	 v2RnjuXRNFJljOASzp1d4q/WasS/sdKeYjplR0EM8QylpehAhV4+lhtIobNs1JOv8L
+	 sQa19FI4vHVCqj7s3oPnCPFtvyBhZ8YHYCyjbAd1pcICQYPeRgym0WxcxtrjHfftv+
+	 cHw4yotwy+ULVvjkQYl3oRVOD67acuY2kAuM1aKy1iEgRJmM8KC9xhoUXg7XdCQ8p9
+	 DFcAteOuLh4ok2dmHgRYDRWITC9rl6CuUq/UfjwZtV3P4KSxQFh44avPygBm+y5iQH
+	 AyxgkMMfjWOiw==
+Date: Mon, 1 Jan 2024 13:11:42 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, smfrench@gmail.com
+Subject: Re: [PATCH 6.6.y 00/19] ksmbd backport patches for linux-6.6.y
+Message-ID: <ZZMAXlQc8uIrw5Nc@sashalap>
+References: <20231231071919.32103-1-linkinjeon@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20231231071919.32103-1-linkinjeon@kernel.org>
 
-In commit 146afeb235ccec10c17ad8ea26327c0c79dbd968 ("block: use strscpy()
-to instead of strncpy()") , the length that should now represent the length
-of the string with the terminating NULL was not updated alongside the
-change.
+On Sun, Dec 31, 2023 at 04:19:00PM +0900, Namjae Jeon wrote:
+>This patchset backport ksmbd patches between 6.6 and 6.7-rc5 kernel.
+>Bug fixes were not applied well due to clean-up and new feautre patches.
+>To facilitate backport, This patch-set included clean-up patches and
+>new feature patches of ksmbd for stable 6.6 kernel.
 
-This has caused blkdevparts= definition on kernel cmdline to be not
-correctly recognized and partitions not correctly initialized, breaking any
-device relying on such partitions to boot, on stable releases since 6.6
+I've queued up the 6.6, 6.1, and 5.15 backports. Thanks!
 
-This patch fixes the lengths to contain the terminating NULL.
-
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Guoxin Pu <pugokushin@gmail.com>
----
- block/partitions/cmdline.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/block/partitions/cmdline.c b/block/partitions/cmdline.c
-index c03bc105e575..c2aac5f4ab82 100644
---- a/block/partitions/cmdline.c
-+++ b/block/partitions/cmdline.c
-@@ -79,8 +79,8 @@ static int parse_subpart(struct cmdline_subpart **subpart, char *partdef)
- 			goto fail;
- 		}
- 
--		length = min_t(int, next - partdef,
--			       sizeof(new_subpart->name) - 1);
-+		length = min_t(int, next - partdef + 1,
-+			       sizeof(new_subpart->name));
- 		strscpy(new_subpart->name, partdef, length);
- 
- 		partdef = ++next;
-@@ -138,7 +138,7 @@ static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
- 		goto fail;
- 	}
- 
--	length = min_t(int, next - bdevdef, sizeof(newparts->name) - 1);
-+	length = min_t(int, next - bdevdef + 1, sizeof(newparts->name));
- 	strscpy(newparts->name, bdevdef, length);
- 	newparts->nr_subparts = 0;
- 
-@@ -148,8 +148,8 @@ static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
- 		bdevdef = next;
- 		next = strchr(bdevdef, ',');
- 
--		length = (!next) ? (sizeof(buf) - 1) :
--			min_t(int, next - bdevdef, sizeof(buf) - 1);
-+		length = (!next) ? sizeof(buf) :
-+			min_t(int, next - bdevdef + 1, sizeof(buf));
- 
- 		strscpy(buf, bdevdef, length);
- 
-@@ -262,7 +262,7 @@ static int add_part(int slot, struct cmdline_subpart *subpart,
- 
- 	info = &state->parts[slot].info;
- 
--	label_min = min_t(int, sizeof(info->volname) - 1,
-+	label_min = min_t(int, sizeof(info->volname),
- 			  sizeof(subpart->name));
- 	strscpy(info->volname, subpart->name, label_min);
- 
 -- 
-2.43.0
-
+Thanks,
+Sasha
 
