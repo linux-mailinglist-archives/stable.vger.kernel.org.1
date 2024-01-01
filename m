@@ -1,155 +1,113 @@
-Return-Path: <stable+bounces-9159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7653182157A
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 22:48:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA4682158B
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 23:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E4011C20EFD
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 21:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33FD61C20F22
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 22:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6D8E56C;
-	Mon,  1 Jan 2024 21:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7CEE558;
+	Mon,  1 Jan 2024 22:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="Bi+EMzJu"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92CAEDF71
-	for <stable@vger.kernel.org>; Mon,  1 Jan 2024 21:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-284-gOA7zgZwMQSLg4lQ6zD55Q-1; Mon, 01 Jan 2024 21:47:48 +0000
-X-MC-Unique: gOA7zgZwMQSLg4lQ6zD55Q-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 1 Jan
- 2024 21:47:23 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 1 Jan 2024 21:47:23 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Guoxin Pu' <pugokushin@gmail.com>, "axboe@kernel.dk" <axboe@kernel.dk>
-CC: "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] block: fix length of strscpy()
-Thread-Topic: [PATCH] block: fix length of strscpy()
-Thread-Index: AQHaPNtiMZZ0F2vqTUGoSDgTJCHi3bDFesXA
-Date: Mon, 1 Jan 2024 21:47:23 +0000
-Message-ID: <ed0b9dd45fca4f6e910a9e1ffa756180@AcuMS.aculab.com>
-References: <20240101175051.38479-2-pugokushin@gmail.com>
-In-Reply-To: <20240101175051.38479-2-pugokushin@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48054E54D;
+	Mon,  1 Jan 2024 22:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
+	s=mail2022; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=WzE+7UWIzKuUxCweY/khq4/xWZsw/9PPWQykX2hyH6A=; b=Bi+EMzJur/rwE7Vl92/duaXADw
+	hgi38A7FSUz4btk3VdXWnsCZGOTgTP4EEIFvmPLNLbtws8qqhaj1kpv+g+60MT5ODHJLdbi+eJ2VB
+	jj2D669P+wutWsrKFKZ/jy4jeSKd54pNDWaL6AlHb+jVhTF9WATJwK+KW8UKYH8Y0f5de2wi55MEB
+	28Y6gf7Yoz++wAa2sJmjI2QeT3UBYQ3Anxiv8Ec9axpeIIt8PQHc4+Svr9NdANmd59nqnW+ucliw2
+	9SfRvWPZS+Gl6dU8nVPdQTSefkaruycpPTIG7r2mnYgbSIp3hMCmgqNoMrf0cCvgSTV9EdvqhO/r0
+	1w7Gj5+w==;
+Received: from n0-1 by orbyte.nwl.cc with local (Exim 4.97)
+	(envelope-from <phil@nwl.cc>)
+	id 1rKQU1-000000007qB-3ZEJ;
+	Mon, 01 Jan 2024 23:10:05 +0100
+Date: Mon, 1 Jan 2024 23:10:05 +0100
+From: Phil Sutter <phil@nwl.cc>
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] rtnetlink: allow to set iface down before enslaving
+ it
+Message-ID: <ZZM4Pa3KuD0uaTkx@orbyte.nwl.cc>
+Mail-Followup-To: Phil Sutter <phil@nwl.cc>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
 
-From: Guoxin Pu
-> Sent: 01 January 2024 17:51
->=20
-> In commit 146afeb235ccec10c17ad8ea26327c0c79dbd968 ("block: use strscpy()
-> to instead of strncpy()") , the length that should now represent the leng=
-th
-> of the string with the terminating NULL was not updated alongside the
-> change.
->=20
-> This has caused blkdevparts=3D definition on kernel cmdline to be not
-> correctly recognized and partitions not correctly initialized, breaking a=
-ny
-> device relying on such partitions to boot, on stable releases since 6.6
->=20
-> This patch fixes the lengths to contain the terminating NULL.
->=20
-> Cc: stable@vger.kernel.org # 6.6.x
-> Signed-off-by: Guoxin Pu <pugokushin@gmail.com>
+On Fri, Dec 29, 2023 at 11:08:35AM +0100, Nicolas Dichtel wrote:
+> The below commit adds support for:
+> > ip link set dummy0 down
+> > ip link set dummy0 master bond0 up
+> 
+> but breaks the opposite:
+> > ip link set dummy0 up
+> > ip link set dummy0 master bond0 down
+> 
+> Let's add a workaround to have both commands working.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 > ---
->  block/partitions/cmdline.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
->=20
-> diff --git a/block/partitions/cmdline.c b/block/partitions/cmdline.c
-> index c03bc105e575..c2aac5f4ab82 100644
-> --- a/block/partitions/cmdline.c
-> +++ b/block/partitions/cmdline.c
-> @@ -79,8 +79,8 @@ static int parse_subpart(struct cmdline_subpart **subpa=
-rt, char *partdef)
->  =09=09=09goto fail;
->  =09=09}
->=20
-> -=09=09length =3D min_t(int, next - partdef,
-> -=09=09=09       sizeof(new_subpart->name) - 1);
-> +=09=09length =3D min_t(int, next - partdef + 1,
-> +=09=09=09       sizeof(new_subpart->name));
->  =09=09strscpy(new_subpart->name, partdef, length);
+>  net/core/rtnetlink.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index e8431c6c8490..dd79693c2d91 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -2905,6 +2905,14 @@ static int do_setlink(const struct sk_buff *skb,
+>  		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+>  	}
+>  
+> +	/* Backward compat: enable to set interface down before enslaving it */
+> +	if (!(ifm->ifi_flags & IFF_UP) && ifm->ifi_change & IFF_UP) {
+> +		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+> +				       extack);
+> +		if (err < 0)
+> +			goto errout;
+> +	}
+> +
+>  	if (tb[IFLA_MASTER]) {
+>  		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
+>  		if (err)
 
-Shouldn't that be a memcpy() with the original length?
-Since it looks as though there is something equivalent to:
-=09=09next =3D strchr(partdef, ',');
-just above?
-Maybe with:
-=09=09new_subpart->name[length] =3D '\0';
-if the target isn't zero filled (which the strncpy() probably
-relied on.)
+Doesn't this merely revert to the old behaviour of setting the interface
+up before enslaving if both IFF_UP and IFLA_MASTER are present? Did you
+test this with a bond-type master?
 
-> @@ -138,7 +138,7 @@ static int parse_parts(struct cmdline_parts **parts, =
-const char *bdevdef)
->  =09=09goto fail;
->  =09}
->=20
-> -=09length =3D min_t(int, next - bdevdef, sizeof(newparts->name) - 1);
-> +=09length =3D min_t(int, next - bdevdef + 1, sizeof(newparts->name));
->  =09strscpy(newparts->name, bdevdef, length);
-
-Same.
-
-> @@ -148,8 +148,8 @@ static int parse_parts(struct cmdline_parts **parts, =
-const char *bdevdef)
->  =09=09bdevdef =3D next;
->  =09=09next =3D strchr(bdevdef, ',');
->=20
-> -=09=09length =3D (!next) ? (sizeof(buf) - 1) :
-> -=09=09=09min_t(int, next - bdevdef, sizeof(buf) - 1);
-> +=09=09length =3D (!next) ? sizeof(buf) :
-> +=09=09=09min_t(int, next - bdevdef + 1, sizeof(buf));
->=20
->  =09=09strscpy(buf, bdevdef, length);
-
-Same
-
-> @@ -262,7 +262,7 @@ static int add_part(int slot, struct cmdline_subpart =
-*subpart,
->=20
->  =09info =3D &state->parts[slot].info;
->=20
-> -=09label_min =3D min_t(int, sizeof(info->volname) - 1,
-> +=09label_min =3D min_t(int, sizeof(info->volname),
->  =09=09=09  sizeof(subpart->name));
->  =09strscpy(info->volname, subpart->name, label_min);
-
-WTF?
-That only makes any sense if subpart->name might not be '\0'
-terminated - which strncpy() would have handled fine (with the -1).
-Otherwise what is wrong with:
-=09strscpy(info->volname, subpart->name, sizeof (info->volname));
-
-=09David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
-PT, UK
-Registration No: 1397386 (Wales)
-
+Cheers, Phil
 
