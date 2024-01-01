@@ -1,86 +1,82 @@
-Return-Path: <stable+bounces-9146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF4F821366
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 10:27:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D574C8213B0
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 13:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BC91C20FE1
-	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 09:27:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4F2C1C20BF3
+	for <lists+stable@lfdr.de>; Mon,  1 Jan 2024 12:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D6417F5;
-	Mon,  1 Jan 2024 09:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8D920FD;
+	Mon,  1 Jan 2024 12:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdYIEsb9"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189FF17C8;
-	Mon,  1 Jan 2024 09:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 2F6EB1C006B; Mon,  1 Jan 2024 10:26:46 +0100 (CET)
-Date: Mon, 1 Jan 2024 10:26:45 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/112] 6.1.70-rc1 review
-Message-ID: <ZZKFVZulBkoSPaK+@duo.ucw.cz>
-References: <20231230115806.714618407@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE7B6107
+	for <stable@vger.kernel.org>; Mon,  1 Jan 2024 12:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A74C433C8;
+	Mon,  1 Jan 2024 12:10:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704111013;
+	bh=7mrrOIbz5aa9ZPQnkl2t5IKAIwj9CPTXRTPLOFalI08=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mdYIEsb9dNmyn9pOLhbspUiYMrhtN9vKt7/TKDnBAoODx2PgbUGIUvKgcNrygmNRo
+	 seEYpk/Lv70KSvC4l7CsOfw0ussdkjAH82+lWCwvXiihQNhuJAsqrVcB9Owz6GVNoz
+	 3WdYG4yul0mxpbrfiqYgNEIBYjSK25vKxr/2zY8g=
+Date: Mon, 1 Jan 2024 12:10:08 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Tee Hao Wei <angelsl@in04.sg>
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Francis Laniel <flaniel@linux.microsoft.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, Song Liu <song@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] tracing/kprobes: Fix symbol counting logic by
+ looking at modules as well
+Message-ID: <2024010101-stabilize-geography-7d63@gregkh>
+References: <2023102922-handwrite-unpopular-0e1d@gregkh>
+ <20231220170016.23654-1-angelsl@in04.sg>
+ <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="fNl/8HAa7Md2pAse"
-Content-Disposition: inline
-In-Reply-To: <20231230115806.714618407@linuxfoundation.org>
-
-
---fNl/8HAa7Md2pAse
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
 
-Hi!
+On Sun, Dec 31, 2023 at 09:09:36PM +0800, Tee Hao Wei wrote:
+> On Thu, 21 Dec 2023, at 01:00, Hao Wei Tee wrote:
+> > From: Andrii Nakryiko <andrii@kernel.org>
+> > 
+> > Recent changes to count number of matching symbols when creating
+> > a kprobe event failed to take into account kernel modules. As such, it
+> > breaks kprobes on kernel module symbols, by assuming there is no match.
+> > 
+> > Fix this my calling module_kallsyms_on_each_symbol() in addition to
+> > kallsyms_on_each_match_symbol() to perform a proper counting.
+> > 
+> > Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+> > 
+> > Cc: Francis Laniel <flaniel@linux.microsoft.com>
+> > Cc: stable@vger.kernel.org
+> > Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+> > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> > Acked-by: Song Liu <song@kernel.org>
+> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > (cherry picked from commit 926fe783c8a64b33997fec405cf1af3e61aed441)
+> 
+> I noticed this patch was added and then dropped in the 6.1 stable queue. Is there any issue with it? I'll fix it ASAP.
 
-> This is the start of the stable review cycle for the 6.1.70 release.
-> There are 112 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---fNl/8HAa7Md2pAse
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZZKFVQAKCRAw5/Bqldv6
-8r7YAKCGYi3qL8yZP4s1dwJVyThqG4M6agCgnJ25HNwnacPNPeuoSsqwgeMXWtE=
-=9i1G
------END PGP SIGNATURE-----
-
---fNl/8HAa7Md2pAse--
+It broke the build.
 
