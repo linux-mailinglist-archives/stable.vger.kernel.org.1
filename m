@@ -1,192 +1,221 @@
-Return-Path: <stable+bounces-9182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F242821BBB
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:38:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B22C821C26
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C76B1F229F3
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:38:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DA141C21EC4
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1F6F9EA;
-	Tue,  2 Jan 2024 12:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514DEF9DA;
+	Tue,  2 Jan 2024 13:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="BTgilUQ6"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="j6Lzo/m4"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4671FBF8;
-	Tue,  2 Jan 2024 12:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1704199077;
-	bh=ei3L/hMRlfNY7Sz9SmZ4DfXD98IpAmHi1yZnfBh/zq8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=BTgilUQ6d6Nhlffji4EuRffpQbwj5zKUAVdh1QrfJBokQNNr263l+XmZ3oloR5grM
-	 szxThG4GcKMu1GQxiYesEcu0yZhL4SlgbrAnlckyk6byN3iVvXlst4LYk9BnGp7Rbf
-	 OAl17T5daR/pwWCkvEGxbuX28lsp318dr11H3CdE=
-Received: from stargazer.. (unknown [113.200.174.68])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id C76556707D;
-	Tue,  2 Jan 2024 07:37:52 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Eric Biederman <ebiederm@xmission.com>,
-	Kees Cook <keescook@chromium.org>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Jinyang He <hejinyang@loongson.cn>,
-	loongarch@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xi Ruoyao <xry111@xry111.site>,
-	stable@vger.kernel.org,
-	linux-mips@vger.kernel.org
-Subject: [PATCH v3] LoongArch: Fix and simplify fcsr initialization on execve
-Date: Tue,  2 Jan 2024 20:37:07 +0800
-Message-ID: <20240102123706.6099-2-xry111@xry111.site>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D099FBE2;
+	Tue,  2 Jan 2024 13:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 402CgZaO007352;
+	Tue, 2 Jan 2024 13:03:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=6GPl8Fgppj8jE8Ii9nAOicUgGEWraLIpSFxzZ3BotJM=;
+ b=j6Lzo/m4jK3+x8E3OwbjGYajZMjXXn4HBQNbY0xKcpvUO43PCglOV2Rbu22bSNkRfc06
+ YLcsr/tT2mU7kiv1JTvboJbpLH48cSd73YMi4/Rjt58al6HIJs1mjzbxK2bFTV7emF/w
+ oshtJrSDH6j0J/2gxrBr8ehZUQXgZ/Ab21EImY0yPUJS9mCriESq7xftflbBmCN277as
+ ir55KJY+w9WYEI2T7dPg9obb9QToayFtaS5/CA2AbRlNYTF2SJbqh927AFL1BlugNbjD
+ 1VbZL1RIUp5OhQpPWaFoYZZpniDIK5m/8fsghpzkgJnEMa747JdXWDfZXN+7Sx2vSVbM HQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vcjqt0atd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jan 2024 13:03:03 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 402CufhZ009407;
+	Tue, 2 Jan 2024 13:03:03 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vcjqt0asy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jan 2024 13:03:03 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 402ABIDD017850;
+	Tue, 2 Jan 2024 13:03:02 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vawwymye8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Jan 2024 13:03:02 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 402D32Zi54985214
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Jan 2024 13:03:02 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4AEB558061;
+	Tue,  2 Jan 2024 13:03:02 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 53B6A58056;
+	Tue,  2 Jan 2024 13:03:01 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Jan 2024 13:03:01 +0000 (GMT)
+Message-ID: <b1ad9ed4-0924-4642-b49f-4cfc2daf2277@linux.ibm.com>
+Date: Tue, 2 Jan 2024 08:03:00 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+Content-Language: en-US
+To: Rob Landley <rob@landley.net>, Askar Safin <safinaskar@gmail.com>
+Cc: gregkh@linuxfoundation.org, initramfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        zohar@linux.ibm.com
+References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
+ <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
+ <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
+ <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
+ <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
+ <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com>
+ <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
+ <8b85253d-dd75-42e4-9a05-dafb3618269c@linux.ibm.com>
+ <01010fbc-50d9-37f3-309c-f01643865ed9@landley.net>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <01010fbc-50d9-37f3-309c-f01643865ed9@landley.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ge-9UIqfqlcWxXM9PaU0BCbOVAiMLF8w
+X-Proofpoint-GUID: XIyif6-oxoGOpbZfQcegi0ACz6aDZfdK
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-02_02,2024-01-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
+ impostorscore=0 adultscore=0 lowpriorityscore=0 mlxscore=0 bulkscore=0
+ malwarescore=0 priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401020099
 
-There has been a lingering bug in LoongArch Linux systems causing some
-GCC tests to intermittently fail (see Closes link).  I've made a minimal
-reproducer:
 
-    zsh% cat measure.s
-    .align 4
-    .globl _start
-    _start:
-        movfcsr2gr  $a0, $fcsr0
-        bstrpick.w  $a0, $a0, 16, 16
-        beqz        $a0, .ok
-        break       0
-    .ok:
-        li.w        $a7, 93
-        syscall     0
-    zsh% cc mesaure.s -o measure -nostdlib
-    zsh% echo $((1.0/3))
-    0.33333333333333331
-    zsh% while ./measure; do ; done
 
-This while loop should not stop as POSIX is clear that execve must set
-fenv to the default, where FCSR should be zero.  But in fact it will
-just stop after running for a while (normally less than 30 seconds).
-Note that "$((1.0/3))" is needed to reproduce the issue because it
-raises FE_INVALID and makes fcsr0 non-zero.
+On 1/1/24 13:50, Rob Landley wrote:
+> On 12/31/23 10:03, Stefan Berger wrote:
+>>> Let me see if I understand your problem: it sounds like debian's initramfs-tools
+>>> overloads the root= and rootfstype= arguments parsed by the kernel to have a
+>>> second meaning (the kernel uses them for one thing, you want to use them for
+>>> something else, and there's currently a semantic gap between the two.)
+>>
+>> My intention is to be able to pass rootfstype= to the kernel and have it
+>> interpreted correctly in the presence of root=, which currently does not
+>> work. User space tools that interpret the value of rootfstype= as if
+>> this option belonged to user space is not helpful, though it should be
+>> easy to teach the user space scripts to strip a leading 'tmpfs,' or
+>> 'ramfs,' from the rootfstype value and let them interpret the rest.
+> 
+> Does your initramfs plumbing need to pass a rootfstype equivalent on to the
+> userspace mount at all? In what cases does it not autodetect the type correctly?
 
-The problem is we are relying on SET_PERSONALITY2 to reset
-current->thread.fpu.fcsr.  But SET_PERSONALITY2 is executed before
-start_thread which calls lose_fpu(0).  We can see if kernel preempt is
-enabled, we may switch to another thread after SET_PERSONALITY2 but
-before lose_fpu(0).  Then bad thing happens: during the thread switch
-the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
-making it dirty again.
+The only change I needed was to have tmpfs used for the initramfs to 
+enable xattrs. No other changes were needed in my case (OpenBMC/Yocto).
 
-The issue can be fixed by setting current->thread.fpu.fcsr after
-lose_fpu(0) because lose_fpu clears TIF_USEDFPU, then the thread
-switch won't touch current->thread.fpu.fcsr.
+> 
+> (Even NFS and SMB mounts are generally detectable because of the leading \\ or
+> blah: although I suppose there are other network filesystem types that wouldn't
+> be. Or if you wanted to micromanage the fat variant you were using...)
+> 
+> "rootfstype=" is the argument that tells the _kernel_ how to mount / and by the
+> time init runs the kernel's already mounted what it's going to mount. The kernel
+> only exposes one visible / mount to userspace, you don't return back into it and
+> get another init launched running in a different root filesystem.
+> 
+>>> You want to add a new capability requiring a new build dependency in the
+>>> initramfs-tools package because it's doing new stuff, but there cannot be any
+>>> OTHER changes made to initramfs-tools, so the kernel should change its existing
+>>> semantics instead.
+>>
+>> I haven't even thought of what would need to be added to Debian's
+>> initramfs-tools package since my primary goal was to enable tmpfs for
+>> the initramfs on OpenBMC where we then read the xattr values from a file
+>> and write them into the filesystem because cpio format doesn't carry
+>> them.
+> 
+> Me, I'd have a simple initramfs extract/decrypt a tarball with the filesystem
+> that needs xattr values into a new tmpfs mount and switch_root to that. But I
+> tend to statically link an initramfs into the kernel image when I want to be
+> sure what it's running, and have never quite been clear on the benefit of
+> _additionally_ verifying data that originates from within the kernel image. (If
+> they can change that, they can change ring 0 code.)
+> 
+> Still, adding xattr support to cpio comes up a lot. It seems like a couple days
 
-The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
-I've ran a similar test on MIPS with mainline kernel and it turns out
-MIPS is buggy too.  Anyway MIPS do this for supporting different FP
-flavors (NaN encodings etc.) which do not exist on LoongArch.  So for
-LoongArch, we can simply remove the current->thread.fpu.fcsr setting
-from SET_PERSONALITY2 and do it in start_thread, after lose_fpu(0).
-I'll leave the job to fix MIPS for MIPS maintainers.
+Let's see where we can take this next now that we will have xattr 
+support via tmpfs for the initramfs.
 
-The while loop failing with the mainline kernel has survived one hour
-after this change on LoongArch.
+    Stefan
 
-Closes: https://github.com/loongson-community/discussions/issues/7
-Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
-Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Cc: stable@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
 
-v2 -> v3:
-- Update the commit message to mention MIPS is buggy too.
-- Replace tabs in the commit message with whitespaces.
-- No code change.
-
-v1 -> v2:
-- Still set current->thread.fpu.fcsr to boot_cpu_data.fpu_csr0 instead
-  of constant 0.
-
- arch/loongarch/include/asm/elf.h | 5 -----
- arch/loongarch/kernel/elf.c      | 5 -----
- arch/loongarch/kernel/process.c  | 1 +
- 3 files changed, 1 insertion(+), 10 deletions(-)
-
-diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
-index 9b16a3b8e706..f16bd42456e4 100644
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct pt_regs *regs);
- do {									\
- 	current->thread.vdso = &vdso_info;				\
- 									\
--	loongarch_set_personality_fcsr(state);				\
--									\
- 	if (personality(current->personality) != PER_LINUX)		\
- 		set_personality(PER_LINUX);				\
- } while (0)
-@@ -259,7 +257,6 @@ do {									\
- 	clear_thread_flag(TIF_32BIT_ADDR);				\
- 									\
- 	current->thread.vdso = &vdso_info;				\
--	loongarch_set_personality_fcsr(state);				\
- 									\
- 	p = personality(current->personality);				\
- 	if (p != PER_LINUX32 && p != PER_LINUX)				\
-@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
- extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
- 			  struct arch_elf_state *state);
- 
--extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
--
- #endif /* _ASM_ELF_H */
-diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
-index 183e94fc9c69..0fa81ced28dc 100644
---- a/arch/loongarch/kernel/elf.c
-+++ b/arch/loongarch/kernel/elf.c
-@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
- {
- 	return 0;
- }
--
--void loongarch_set_personality_fcsr(struct arch_elf_state *state)
--{
--	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
--}
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index 767d94cce0de..3f9cae615f52 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -92,6 +92,7 @@ void start_thread(struct pt_regs *regs, unsigned long pc, unsigned long sp)
- 	clear_used_math();
- 	regs->csr_era = pc;
- 	regs->regs[3] = sp;
-+	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
- }
- 
- void flush_thread(void)
--- 
-2.43.0
-
+> work tops, maybe the interested parties should do a video conference thingy,
+> hammer out the details, and come up with a patch to add support? The userspace
+> side sounds easy enough, I added xattr support to toybox tar in 2021 in a
+> weekend, and have sent "would you like to keep up with toybox" patches at the
+> busybox guys semi-regularly.
+> 
+> I even poked coreutils about feature parity once (the Android guys asked me to),
+> which they said they would like to add, but which but still isn't in years later:
+> 
+> https://lists.gnu.org/archive/html/coreutils/2023-08/msg00009.html
+> https://lists.gnu.org/archive/html/coreutils/2023-08/msg00100.html
+> 
+> But eh, I'm used to that with 30 year old projects licensed under copyleft...
+> 
+>> Also, I didn't expect that any user space tools would try to
+>> handle a kernel command line option as if it was theirs.
+> 
+> Debian predates the 1.0 kernel release, so has some historical design baggage.
+> That's why it's I tend to check them for snags in this area.
+> 
+>>> You can't NOT provide root=, and you can't provide initramfstype=tmpfs...
+>>
+>> I only know about rootfstype= (
+>> https://github.com/torvalds/linux/blob/master/init/do_mounts.c#L128 ).
+>> If currently handling of rootfstype= in presence of root= is not
+>> considered a bug and we should introduce initramfstype= instead, we
+>> could do that. But doesn't this become a bit confusing if rootfstype=
+>> can be passed when root= is absent but then initramfstype= must be used
+>> when root= is present?
+> 
+> I personally think having two would be confusing, and changing the existing API
+> without adding new capabilities is pointless.
+> 
+>> This is 'our' patch describing the issue:
+>> https://github.com/torvalds/linux/blob/master/init/do_mounts.c#L128
+>>
+>>> either, and those are the two existing ways to tell rootfs to be tmpfs instead
+>>> of ramfs. You'd like to add a third way to specify the same thing.
+>>
+>> Do you have a link to initramfstype= handling in kernel code?
+> 
+> No, it's never done that. There was a suggestion to do that earlier in this thread:
+> 
+> https://lkml.iu.edu/hypermail/linux/kernel/2312.2/07060.html
+> 
+> And I thought it was a bad idea. The submitter agreed it was a bad idea. (Over
+> the holidays I've haven't been paying close attention and threads tend to bleed
+> together, sorry. :)
+> 
+> The answer to my "do I have this right" question was, apparently, "no". I mixed
+> together what two different people wanted...
+> 
+> Rob
 
