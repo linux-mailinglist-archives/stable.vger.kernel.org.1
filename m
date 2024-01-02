@@ -1,202 +1,148 @@
-Return-Path: <stable+bounces-9223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED1A822502
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 23:55:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37D8822567
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 00:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33F5B283F3F
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 22:55:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F3C11F2348B
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 23:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F42171DB;
-	Tue,  2 Jan 2024 22:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628421772F;
+	Tue,  2 Jan 2024 23:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UH/maBXO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naqQ0d6N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571917729
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 22:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5c6bd3100fcso2696788a12.3
-        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 14:55:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704236151; x=1704840951; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4SowcMGS/cxz8zwv9eFgdC73hvGSoN9UkdYSL0+83qw=;
-        b=UH/maBXOL5KfQ5Mv8ysQanfNu+EXXIJPM40sHUwlgpuUfpjxGg8UbIUaAU7hrGqSN+
-         7RqOpF+86MWqQX42zavDPVvVvpsguW7dpzytHsocqzx1vqA30cTODsJDfp5nKFpE3YHJ
-         1nkAU+kTAmIP2n65zKs5czrKTNynWz9HcoQGc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704236151; x=1704840951;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4SowcMGS/cxz8zwv9eFgdC73hvGSoN9UkdYSL0+83qw=;
-        b=w5CJXhBJQraaYacq/pHBzf7pJqC5wJd3rzVAZKIHXmjvIRu6Lb32bnZT+E08GeLpr7
-         7okGaTSZOfmGfueFcKyx7feuhehgjhBJ5vCnqQmzUpctqZGlciGO5+gUh9g98TZaii6W
-         d0DQ+0HR2DMLzQGBDEGEm3XJ1jXkjBHLQ3jhxBsFLqZ66PtZBTNoHEjrjf9OnYu5D4eE
-         Z7ZcE+3DWvrHX8UDAyObL4FHR8nv16fkLTGiXPN++vuVYKOfsFGwWt9zUkHLnGIe/T15
-         c1IDkH0aTTNBD9EN9Hcp23MvUB4Ov23UT3ryFZk6Oe0TA6M3ifaohkY9U4+KFK2VZV0q
-         T9VQ==
-X-Gm-Message-State: AOJu0Yyv5hTUs+zQFDoMWYT23HFS4cvjcfYy1z80QV9jvjlxRoO0rpBw
-	XmHFxJzC7EqLCnOSsZOg1dZ63UTi7x3l
-X-Google-Smtp-Source: AGHT+IEv88HYlv6uoDUUcHkrfKcs+VOypwJCou2QEfZSFJEYrAITSr5GWljJbuzw9NsIcWFxA3BhUA==
-X-Received: by 2002:a05:6a20:c601:b0:194:9750:fb9c with SMTP id gp1-20020a056a20c60100b001949750fb9cmr6732437pzb.54.1704236150889;
-        Tue, 02 Jan 2024 14:55:50 -0800 (PST)
-Received: from [10.20.136.39] ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id e14-20020a170902ed8e00b001d4c8eb6d8esm1807303plj.294.2024.01.02.14.55.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jan 2024 14:55:50 -0800 (PST)
-Message-ID: <72d6c2d0-03b7-41c6-92f1-027eeaf15096@broadcom.com>
-Date: Tue, 2 Jan 2024 14:55:49 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C40517999
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 23:10:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E47C433CA
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 23:10:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704237033;
+	bh=MquSI2fdVKSuxNcUfuZIzvUeJHlxhlQhjbr5hxXbJf4=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=naqQ0d6NYm5Gk+DGR/uqu5Nhtm/PrFh39AtEc59RvN6V3zl9Rvlc2m3ewNe6bk8ev
+	 iynb5BU/aIw8XeZsiPnuKAayl+fUnc30EbTF98kdpa0gY+6GErUWnU+CUajtSwANpt
+	 qnCCc0zvorMpRdMSfsVE0JyA/AM4ISPEK0WCg2JWuPN+pB4BNZB9JNJK2FBNFPAxDC
+	 bFSMgA1c+rLHLU2F9fUcpTDn7NhBXosN08gWHdwV4V+uEm7i/gg3sYtkJwp63s+4io
+	 nspSMEQvR7+8Y4H6syIrbwgM6KpyOFzeUvo4NFHlsDj0ZCOdsluZScv2ZM30mL801A
+	 3XBWGz5sZK5sw==
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-59502aa878aso2231975eaf.1
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 15:10:33 -0800 (PST)
+X-Gm-Message-State: AOJu0YxkxcAWiWWmwEyRifdcHM9HFq+Ex69ZOapgS6JkT4dTA2mGGrd+
+	PsEQx7XFO4pwuZw07QLhBqGAVJLhl4fd8kLHpOc=
+X-Google-Smtp-Source: AGHT+IE/YbmDkQTHmHXeFYGD/5go7LXKRrOzR6dR7mu2x92zp8d3tPSUoDuKNc4dLD9ixL1TTGmXss+thAsaM/sKy0A=
+X-Received: by 2002:a05:6820:160b:b0:590:2b6d:a862 with SMTP id
+ bb11-20020a056820160b00b005902b6da862mr10553582oob.15.1704237032931; Tue, 02
+ Jan 2024 15:10:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/vmwgfx: Unmap the surface before resetting it on a
- plane state
-Content-Language: en-US
-To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
-Cc: Stefan Hoffmeister <stefan.hoffmeister@econos.de>,
- Martin Krastev <martin.krastev@broadcom.com>,
- Ian Forbes <ian.forbes@broadcom.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, stable@vger.kernel.org
-References: <20231224052540.605040-1-zack.rusin@broadcom.com>
-From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-In-Reply-To: <20231224052540.605040-1-zack.rusin@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a8a:d42:0:b0:511:f2c1:11ee with HTTP; Tue, 2 Jan 2024
+ 15:10:32 -0800 (PST)
+In-Reply-To: <2024010241-define-gangly-9bf9@gregkh>
+References: <2024010241-define-gangly-9bf9@gregkh>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 3 Jan 2024 08:10:32 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8t1VYq-DC9tH-Fh41qR9wJt=MSbYjLxtGX4uBK4CDNTg@mail.gmail.com>
+Message-ID: <CAKYAXd8t1VYq-DC9tH-Fh41qR9wJt=MSbYjLxtGX4uBK4CDNTg@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] ksmbd: fix slab-out-of-bounds in
+ smb_strndup_from_utf16()" failed to apply to 5.15-stable tree
+To: gregkh@linuxfoundation.org
+Cc: lometsj@live.com, stfrench@microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/23/23 21:25, Zack Rusin wrote:
-> Switch to a new plane state requires unreferencing of all held surfaces.
-> In the work required for mob cursors the mapped surfaces started being
-> cached but the variable indicating whether the surface is currently
-> mapped was not being reset. This leads to crashes as the duplicated
-> state, incorrectly, indicates the that surface is mapped even when
-> no surface is present. That's because after unreferencing the surface
-> it's perfectly possible for the plane to be backed by a bo instead of a
-> surface.
+2024-01-02 23:28 GMT+09:00, gregkh@linuxfoundation.org
+<gregkh@linuxfoundation.org>:
 >
-> Reset the surface mapped flag when unreferencing the plane state surface
-> to fix null derefs in cleanup. Fixes crashes in KDE KWin 6.0 on Wayland:
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+I will send a backport patch for this today.
+Thank you!
 >
-> Oops: 0000 [#1] PREEMPT SMP PTI
-> CPU: 4 PID: 2533 Comm: kwin_wayland Not tainted 6.7.0-rc3-vmwgfx #2
-> Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
-> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
-> Call Trace:
->  <TASK>
->  ? __die+0x23/0x70
->  ? page_fault_oops+0x171/0x4e0
->  ? exc_page_fault+0x7f/0x180
->  ? asm_exc_page_fault+0x26/0x30
->  ? vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
->  drm_atomic_helper_cleanup_planes+0x9b/0xc0
->  commit_tail+0xd1/0x130
->  drm_atomic_helper_commit+0x11a/0x140
->  drm_atomic_commit+0x97/0xd0
->  ? __pfx___drm_printfn_info+0x10/0x10
->  drm_atomic_helper_update_plane+0xf5/0x160
->  drm_mode_cursor_universal+0x10e/0x270
->  drm_mode_cursor_common+0x102/0x230
->  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
->  drm_ioctl_kernel+0xb2/0x110
->  drm_ioctl+0x26d/0x4b0
->  ? __pfx_drm_mode_cursor2_ioctl+0x10/0x10
->  ? __pfx_drm_ioctl+0x10/0x10
->  vmw_generic_ioctl+0xa4/0x110 [vmwgfx]
->  __x64_sys_ioctl+0x94/0xd0
->  do_syscall_64+0x61/0xe0
->  ? __x64_sys_ioctl+0xaf/0xd0
->  ? syscall_exit_to_user_mode+0x2b/0x40
->  ? do_syscall_64+0x70/0xe0
->  ? __x64_sys_ioctl+0xaf/0xd0
->  ? syscall_exit_to_user_mode+0x2b/0x40
->  ? do_syscall_64+0x70/0xe0
->  ? exc_page_fault+0x7f/0x180
->  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> RIP: 0033:0x7f1e93f279ed
-> Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff f>
-> RSP: 002b:00007ffca0faf600 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-> RAX: ffffffffffffffda RBX: 000055db876ed2c0 RCX: 00007f1e93f279ed
-> RDX: 00007ffca0faf6c0 RSI: 00000000c02464bb RDI: 0000000000000015
-> RBP: 00007ffca0faf650 R08: 000055db87184010 R09: 0000000000000007
-> R10: 000055db886471a0 R11: 0000000000000246 R12: 00007ffca0faf6c0
-> R13: 00000000c02464bb R14: 0000000000000015 R15: 00007ffca0faf790
->  </TASK>
-> Modules linked in: snd_seq_dummy snd_hrtimer nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_ine>
-> CR2: 0000000000000028
-> ---[ end trace 0000000000000000 ]---
-> RIP: 0010:vmw_du_cursor_plane_cleanup_fb+0x124/0x140 [vmwgfx]
-> Code: 00 00 00 75 3a 48 83 c4 10 5b 5d c3 cc cc cc cc 48 8b b3 a8 00 00 00 48 c7 c7 99 90 43 c0 e8 93 c5 db ca 48 8b 83 a8 00 00 00 <48> 8b 78 28 e8 e3 f>
-> RSP: 0018:ffffb6b98216fa80 EFLAGS: 00010246
-> RAX: 0000000000000000 RBX: ffff969d84cdcb00 RCX: 0000000000000027
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: ffff969e75f21600
-> RBP: ffff969d4143dc50 R08: 0000000000000000 R09: ffffb6b98216f920
-> R10: 0000000000000003 R11: ffff969e7feb3b10 R12: 0000000000000000
-> R13: 0000000000000000 R14: 000000000000027b R15: ffff969d49c9fc00
-> FS:  00007f1e8f1b4180(0000) GS:ffff969e75f00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 0000000000000028 CR3: 0000000104006004 CR4: 00000000003706f0
+> To reproduce the conflict and resubmit, you may use the following commands:
 >
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 485d98d472d5 ("drm/vmwgfx: Add support for CursorMob and CursorBypass 4")
-> Reported-by: Stefan Hoffmeister <stefan.hoffmeister@econos.de>
-> Closes: https://gitlab.freedesktop.org/drm/misc/-/issues/34
-> Cc: Martin Krastev <martin.krastev@broadcom.com>
-> Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-> Cc: Ian Forbes <ian.forbes@broadcom.com>
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v5.19+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
+> linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x d10c77873ba1e9e6b91905018e29e196fd5f863d
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to
+> '2024010241-define-gangly-9bf9@gregkh' --subject-prefix 'PATCH 5.15.y'
+> HEAD^..
 >
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> index 65ed9b061753..e7bbe4b05233 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -693,6 +693,10 @@ vmw_du_cursor_plane_prepare_fb(struct drm_plane *plane,
->  	int ret = 0;
->  
->  	if (vps->surf) {
-> +		if (vps->surf_mapped) {
-> +			vmw_bo_unmap(vps->surf->res.guest_memory_bo);
-> +			vps->surf_mapped = false;
-> +		}
->  		vmw_surface_unreference(&vps->surf);
->  		vps->surf = NULL;
+> Possible dependencies:
+>
+> d10c77873ba1 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From d10c77873ba1e9e6b91905018e29e196fd5f863d Mon Sep 17 00:00:00 2001
+> From: Namjae Jeon <linkinjeon@kernel.org>
+> Date: Wed, 20 Dec 2023 15:52:11 +0900
+> Subject: [PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+>
+> If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
+> ksmbd_check_message doesn't validate request buffer it correctly.
+> So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
+> in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
+> of the two sums (Name and CreateContext size) as the offset and length of
+> the data area.
+>
+> Reported-by: Yang Chaoming <lometsj@live.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+>
+> diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
+> index 23bd3d1209df..03dded29a980 100644
+> --- a/fs/smb/server/smb2misc.c
+> +++ b/fs/smb/server/smb2misc.c
+> @@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsigned int *off,
+> unsigned int *len,
+>  		break;
+>  	case SMB2_CREATE:
+>  	{
+> +		unsigned short int name_off =
+> +			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+> +		unsigned short int name_len =
+> +			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
+> +
+>  		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
+>  			*off = le32_to_cpu(((struct smb2_create_req *)
+>  				hdr)->CreateContextsOffset);
+>  			*len = le32_to_cpu(((struct smb2_create_req *)
+>  				hdr)->CreateContextsLength);
+> -			break;
+> +			if (!name_len)
+> +				break;
+> +
+> +			if (name_off + name_len < (u64)*off + *len)
+> +				break;
+>  		}
+>
+> -		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+> -		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
+> +		*off = name_off;
+> +		*len = name_len;
+>  		break;
 >  	}
-
-
-LGTM!
-
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-
-Thanks,
-
-Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-
+>  	case SMB2_QUERY_INFO:
+>
+>
 
