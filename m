@@ -1,109 +1,153 @@
-Return-Path: <stable+bounces-9190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60910821D05
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:45:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EDA821D6B
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:08:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00711B21C60
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:45:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 039361F22C34
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25D4FC0B;
-	Tue,  2 Jan 2024 13:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B77E101CF;
+	Tue,  2 Jan 2024 14:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6a95KkL"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MPkZ4ZGy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E55AFBEF
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 13:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CAFC433C7;
-	Tue,  2 Jan 2024 13:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704203149;
-	bh=LSFw3ox50f6RF4UQMlxv5K65lLgs0inrcIENuIqMW1k=;
-	h=Subject:To:From:Date:From;
-	b=E6a95KkL/PQR4TCx+ekHNri760LPoRGagaph+gHnkhQa0O6FPQLwhLvJK0/ognc0j
-	 iGwAUhAIRMJrQWRU0SRwm0pw2t8fRSinLTQL3W/gfUIrnAowv8KtvN49Wo4jK+rcku
-	 NUdSJrsKabP8atNfLUovtdGwOKqVvNQkmufrlN0c=
-Subject: patch "Revert "usb: dwc3: don't reset device side if dwc3 was configured as" added to usb-next
-To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 14:45:38 +0100
-Message-ID: <2024010238-helper-duller-bc6f@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD591172D
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704204507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JpAu6h+HZXArju44AbXVGnOwWcQV+dpsQ3lrBqSYO/k=;
+	b=MPkZ4ZGyrO7gVxo76RMk672rJCgehzxppDkZ4IlNBkiuaBSvJqv6NcpxOIcw8zJir3XjCx
+	0+XJ1ErkLATo8egfjRh3Ue+PlWWCmN0O4HJPk/Yl0b2UibZBv9z5rgdDB7KnF302MdfljW
+	5LBvJISVaY2SVd6jQz22WsXTRVMkxBE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-404-Vb-Af4DNNEecCNvVDYv6yQ-1; Tue,
+ 02 Jan 2024 09:08:25 -0500
+X-MC-Unique: Vb-Af4DNNEecCNvVDYv6yQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5075B1C0512A;
+	Tue,  2 Jan 2024 14:08:25 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 4812B3C25;
+	Tue,  2 Jan 2024 14:08:25 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id 32E2D30C1C03; Tue,  2 Jan 2024 14:08:25 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 2F6AE3FB50;
+	Tue,  2 Jan 2024 15:08:25 +0100 (CET)
+Date: Tue, 2 Jan 2024 15:08:25 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: gregkh@linuxfoundation.org
+cc: snitzer@kernel.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] dm-integrity: don't modify bio's immutable
+ bio_vec in" failed to apply to 5.15-stable tree
+In-Reply-To: <2023123001-profusely-reassign-059b@gregkh>
+Message-ID: <7617f0c7-669d-e33e-60cb-b216789014b2@redhat.com>
+References: <2023123001-profusely-reassign-059b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
 
-This is a note to let you know that I've just added the patch titled
 
-    Revert "usb: dwc3: don't reset device side if dwc3 was configured as
+On Sat, 30 Dec 2023, gregkh@linuxfoundation.org wrote:
 
-to my usb git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-next branch.
+> 
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+Hi
 
-The patch will also be merged in the next major kernel release
-during the merge window.
+Here I'm sending backport of the patch 
+b86f4b790c998afdbc88fe1aa55cfe89c4068726 for the stable branches 4.19 to 
+5.15.
 
-If you have any questions about this process, please let me know.
+commit b86f4b790c998afdbc88fe1aa55cfe89c4068726
+Author: Mikulas Patocka <mpatocka@redhat.com>
+Date:   Tue Dec 5 16:39:16 2023 +0100
 
+    dm-integrity: don't modify bio's immutable bio_vec in integrity_metadata()
+    
+    __bio_for_each_segment assumes that the first struct bio_vec argument
+    doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+    (bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+    code changes the bio_vec with "bv.bv_len -= pos". When this code path
+    is taken, the iterator would be out of sync and dm-integrity would
+    report errors. This happens if the machine is out of memory and
+    "kmalloc" fails.
+    
+    Fix this bug by making a copy of "bv" and changing the copy instead.
+    
+    Fixes: 7eada909bfd7 ("dm: add integrity target")
+    Cc: stable@vger.kernel.org      # v4.12+
+    Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+    Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 
-From afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 Mon Sep 17 00:00:00 2001
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Date: Fri, 22 Dec 2023 22:11:33 +0000
-Subject: Revert "usb: dwc3: don't reset device side if dwc3 was configured as
- host-only"
-
-This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
-
-Don't omit soft-reset. During initialization, the driver may need to
-perform a soft reset to ensure the phy is ready when the controller
-updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
-Many platforms often have access to DCTL register for soft-reset despite
-being host-only. If there are actual reported issues from the platforms
-that don't expose DCTL registers, then we will need to revisit (perhaps
-to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
-
-Cc:  <stable@vger.kernel.org>
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-integrity.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 832c41fec4f7..f50b5575d588 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -277,9 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dwc)
- 	/*
- 	 * We're resetting only the device side because, if we're in host mode,
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
--	 * host-only mode or current role is host, then we can return early.
-+	 * host-only mode, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+Index: linux-stable/drivers/md/dm-integrity.c
+===================================================================
+--- linux-stable.orig/drivers/md/dm-integrity.c
++++ linux-stable/drivers/md/dm-integrity.c
+@@ -1762,11 +1762,12 @@ static void integrity_metadata(struct wo
+ 		sectors_to_process = dio->range.n_sectors;
  
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
--- 
-2.43.0
-
+ 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned pos;
+ 			char *mem, *checksums_ptr;
+ 
+ again:
+-			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
++			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1775,7 +1776,7 @@ again:
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_atomic(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1796,9 +1797,9 @@ again:
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
 
 
