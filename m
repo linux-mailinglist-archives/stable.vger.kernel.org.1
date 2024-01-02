@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D71821D9F
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:28:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E74821DA1
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471C11F22B06
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49B7C1C2205B
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2383E111A5;
-	Tue,  2 Jan 2024 14:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D98D11189;
+	Tue,  2 Jan 2024 14:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXiO3cfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMsiPv2w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD82111195
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD13AC433C8;
-	Tue,  2 Jan 2024 14:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC72F111AF
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:29:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3321C433C8;
+	Tue,  2 Jan 2024 14:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205725;
-	bh=aNj2oClbg4rKnyWNfsMlIWP/70u1gfVh2uAz8eTaYXg=;
+	s=korg; t=1704205775;
+	bh=Phd+oxteZUCbVlT5d8xQ7JwzhKK1QfGSba0FuUH92K4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xXiO3cfUJP45KYttirHK8+EkZapSeG+L1VBz4JokRjm0XnRzCEmBiWheYE/yk3Lw2
-	 3/CUy9KsTzvSLoh+UvSPO8ceAIzCcAkX5PXjQB9cq5qjLNh6OyTZFg6Vz6hBqS0Axu
-	 w2HaSXv2dS4OzlPmp022IxCjKJhL2fVQFb6DCQ94=
-Subject: FAILED: patch "[PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()" failed to apply to 5.15-stable tree
-To: linkinjeon@kernel.org,lometsj@live.com,stfrench@microsoft.com
+	b=VMsiPv2wX5gZDN1uWmt3YKrQ6X1EvG2YzFoY0CUr3Qi3sdjIEuI1UFuNS8dQaDxmX
+	 h9Y6np1P7J3eGzeUrRK7Zv30tUeNLpFRBiu8qSJ9eETDLzHL3n92gg5GtpDasrn+nX
+	 ehNHloKqgqsRmZuh44Ly5k3Sy6HE3Gtbu79OZS4o=
+Subject: FAILED: patch "[PATCH] selftests: secretmem: floor the memory size to the multiple" failed to apply to 6.1-stable tree
+To: usama.anjum@collabora.com,James.Bottomley@HansenPartnership.com,akpm@linux-foundation.org,bot@kernelci.org,rppt@kernel.org,shuah@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:28:42 +0100
-Message-ID: <2024010241-define-gangly-9bf9@gregkh>
+Date: Tue, 02 Jan 2024 15:29:32 +0100
+Message-ID: <2024010232-imagines-collie-15cd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d10c77873ba1e9e6b91905018e29e196fd5f863d
+git cherry-pick -x 0aac13add26d546ac74c89d2883b3a5f0fbea039
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010241-define-gangly-9bf9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010232-imagines-collie-15cd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-d10c77873ba1 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
+0aac13add26d ("selftests: secretmem: floor the memory size to the multiple of page_size")
 
 thanks,
 
@@ -69,55 +69,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d10c77873ba1e9e6b91905018e29e196fd5f863d Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 20 Dec 2023 15:52:11 +0900
-Subject: [PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+From 0aac13add26d546ac74c89d2883b3a5f0fbea039 Mon Sep 17 00:00:00 2001
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Date: Thu, 14 Dec 2023 15:19:30 +0500
+Subject: [PATCH] selftests: secretmem: floor the memory size to the multiple
+ of page_size
 
-If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
-ksmbd_check_message doesn't validate request buffer it correctly.
-So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
-in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
-of the two sums (Name and CreateContext size) as the offset and length of
-the data area.
+The "locked-in-memory size" limit per process can be non-multiple of
+page_size.  The mmap() fails if we try to allocate locked-in-memory with
+same size as the allowed limit if it isn't multiple of the page_size
+because mmap() rounds off the memory size to be allocated to next multiple
+of page_size.
 
-Reported-by: Yang Chaoming <lometsj@live.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by flooring the length to be allocated with mmap() to the
+previous multiple of the page_size.
 
-diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-index 23bd3d1209df..03dded29a980 100644
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
- 		break;
- 	case SMB2_CREATE:
- 	{
-+		unsigned short int name_off =
-+			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-+		unsigned short int name_len =
-+			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-+
- 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
- 			*off = le32_to_cpu(((struct smb2_create_req *)
- 				hdr)->CreateContextsOffset);
- 			*len = le32_to_cpu(((struct smb2_create_req *)
- 				hdr)->CreateContextsLength);
--			break;
-+			if (!name_len)
-+				break;
-+
-+			if (name_off + name_len < (u64)*off + *len)
-+				break;
- 		}
+This was getting triggered on KernelCI regularly because of different
+ulimit settings which wasn't multiple of the page_size.  Find logs
+here: https://linux.kernelci.org/test/plan/id/657654bd8e81e654fae13532/
+The bug in was present from the time test was first added.
+
+Link: https://lkml.kernel.org/r/20231214101931.1155586-1-usama.anjum@collabora.com
+Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reported-by: "kernelci.org bot" <bot@kernelci.org>
+Closes: https://linux.kernelci.org/test/plan/id/657654bd8e81e654fae13532/
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/tools/testing/selftests/mm/memfd_secret.c b/tools/testing/selftests/mm/memfd_secret.c
+index 957b9e18c729..9b298f6a04b3 100644
+--- a/tools/testing/selftests/mm/memfd_secret.c
++++ b/tools/testing/selftests/mm/memfd_secret.c
+@@ -62,6 +62,9 @@ static void test_mlock_limit(int fd)
+ 	char *mem;
  
--		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
--		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-+		*off = name_off;
-+		*len = name_len;
- 		break;
- 	}
- 	case SMB2_QUERY_INFO:
+ 	len = mlock_limit_cur;
++	if (len % page_size != 0)
++		len = (len/page_size) * page_size;
++
+ 	mem = mmap(NULL, len, prot, mode, fd, 0);
+ 	if (mem == MAP_FAILED) {
+ 		fail("unable to mmap secret memory\n");
 
 
