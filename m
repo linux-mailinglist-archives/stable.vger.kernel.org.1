@@ -1,148 +1,166 @@
-Return-Path: <stable+bounces-9224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37D8822567
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 00:10:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0D4D82257A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 00:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F3C11F2348B
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 23:10:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BDB71C21A67
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 23:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628421772F;
-	Tue,  2 Jan 2024 23:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07601774D;
+	Tue,  2 Jan 2024 23:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="naqQ0d6N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jfpOimGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C40517999
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 23:10:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E47C433CA
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 23:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C6B1773F;
+	Tue,  2 Jan 2024 23:26:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6451C433C8;
+	Tue,  2 Jan 2024 23:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704237033;
-	bh=MquSI2fdVKSuxNcUfuZIzvUeJHlxhlQhjbr5hxXbJf4=;
-	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-	b=naqQ0d6NYm5Gk+DGR/uqu5Nhtm/PrFh39AtEc59RvN6V3zl9Rvlc2m3ewNe6bk8ev
-	 iynb5BU/aIw8XeZsiPnuKAayl+fUnc30EbTF98kdpa0gY+6GErUWnU+CUajtSwANpt
-	 qnCCc0zvorMpRdMSfsVE0JyA/AM4ISPEK0WCg2JWuPN+pB4BNZB9JNJK2FBNFPAxDC
-	 bFSMgA1c+rLHLU2F9fUcpTDn7NhBXosN08gWHdwV4V+uEm7i/gg3sYtkJwp63s+4io
-	 nspSMEQvR7+8Y4H6syIrbwgM6KpyOFzeUvo4NFHlsDj0ZCOdsluZScv2ZM30mL801A
-	 3XBWGz5sZK5sw==
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-59502aa878aso2231975eaf.1
-        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 15:10:33 -0800 (PST)
-X-Gm-Message-State: AOJu0YxkxcAWiWWmwEyRifdcHM9HFq+Ex69ZOapgS6JkT4dTA2mGGrd+
-	PsEQx7XFO4pwuZw07QLhBqGAVJLhl4fd8kLHpOc=
-X-Google-Smtp-Source: AGHT+IE/YbmDkQTHmHXeFYGD/5go7LXKRrOzR6dR7mu2x92zp8d3tPSUoDuKNc4dLD9ixL1TTGmXss+thAsaM/sKy0A=
-X-Received: by 2002:a05:6820:160b:b0:590:2b6d:a862 with SMTP id
- bb11-20020a056820160b00b005902b6da862mr10553582oob.15.1704237032931; Tue, 02
- Jan 2024 15:10:32 -0800 (PST)
+	s=k20201202; t=1704237964;
+	bh=WuAwk7zWQxqNeWy+iKLUu2zXubSzzN/H4OfczTv4nxA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jfpOimGxKcd/lNdyF4JmHXBCA1H8M/3p9i1QnRTrwe0kkmqKuIwpjYOTp1+4UmaWd
+	 ZVhSaYSVnLrRLosMrPA1y9wgPKDppB/zXajSlvvyn2xz/hVrEJG5oum60EeDXiOsTv
+	 eh64lEOr8RehlCK97W7ZeIdrfAMQLGZBD2afvie6VcsMdnyrcKuu7TwW19Oj7tTYnD
+	 X4s2UPmmqHEr5ZoclapmYC8KO3ZXVQLBu1h+Y6ULCI+9K+DVKMidEfVzMRW2LMgs0N
+	 MpME5ecw+0mNBUBaFmW6nUWy5uYiSsyIl3dJHbLW7aSomdhWK+EyabwyOZWejRIkFY
+	 8pod8hJoC5aZQ==
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"
+Date: Tue,  2 Jan 2024 17:25:50 -0600
+Message-Id: <20240102232550.1751655-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de>
+References: <76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a8a:d42:0:b0:511:f2c1:11ee with HTTP; Tue, 2 Jan 2024
- 15:10:32 -0800 (PST)
-In-Reply-To: <2024010241-define-gangly-9bf9@gregkh>
-References: <2024010241-define-gangly-9bf9@gregkh>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Wed, 3 Jan 2024 08:10:32 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8t1VYq-DC9tH-Fh41qR9wJt=MSbYjLxtGX4uBK4CDNTg@mail.gmail.com>
-Message-ID: <CAKYAXd8t1VYq-DC9tH-Fh41qR9wJt=MSbYjLxtGX4uBK4CDNTg@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] ksmbd: fix slab-out-of-bounds in
- smb_strndup_from_utf16()" failed to apply to 5.15-stable tree
-To: gregkh@linuxfoundation.org
-Cc: lometsj@live.com, stfrench@microsoft.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-2024-01-02 23:28 GMT+09:00, gregkh@linuxfoundation.org
-<gregkh@linuxfoundation.org>:
->
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-I will send a backport patch for this today.
-Thank you!
->
-> To reproduce the conflict and resubmit, you may use the following commands:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
-> linux-5.15.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x d10c77873ba1e9e6b91905018e29e196fd5f863d
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to
-> '2024010241-define-gangly-9bf9@gregkh' --subject-prefix 'PATCH 5.15.y'
-> HEAD^..
->
-> Possible dependencies:
->
-> d10c77873ba1 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From d10c77873ba1e9e6b91905018e29e196fd5f863d Mon Sep 17 00:00:00 2001
-> From: Namjae Jeon <linkinjeon@kernel.org>
-> Date: Wed, 20 Dec 2023 15:52:11 +0900
-> Subject: [PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
->
-> If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
-> ksmbd_check_message doesn't validate request buffer it correctly.
-> So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
-> in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
-> of the two sums (Name and CreateContext size) as the offset and length of
-> the data area.
->
-> Reported-by: Yang Chaoming <lometsj@live.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
->
-> diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-> index 23bd3d1209df..03dded29a980 100644
-> --- a/fs/smb/server/smb2misc.c
-> +++ b/fs/smb/server/smb2misc.c
-> @@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsigned int *off,
-> unsigned int *len,
->  		break;
->  	case SMB2_CREATE:
->  	{
-> +		unsigned short int name_off =
-> +			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-> +		unsigned short int name_len =
-> +			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-> +
->  		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
->  			*off = le32_to_cpu(((struct smb2_create_req *)
->  				hdr)->CreateContextsOffset);
->  			*len = le32_to_cpu(((struct smb2_create_req *)
->  				hdr)->CreateContextsLength);
-> -			break;
-> +			if (!name_len)
-> +				break;
-> +
-> +			if (name_off + name_len < (u64)*off + *len)
-> +				break;
->  		}
->
-> -		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-> -		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-> +		*off = name_off;
-> +		*len = name_len;
->  		break;
->  	}
->  	case SMB2_QUERY_INFO:
->
->
+From: Bjorn Helgaas <bhelgaas@google.com>
+
+This reverts commit 08d0cc5f34265d1a1e3031f319f594bd1970976c.
+
+Michael reported that when attempting to resume from suspend to RAM on ASUS
+mini PC PN51-BB757MDE1 (DMI model: MINIPC PN51-E1), 08d0cc5f3426
+("PCI/ASPM: Remove pcie_aspm_pm_state_change()") caused a 12-second delay
+with no output, followed by a reboot.
+
+Workarounds include:
+
+  - Reverting 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+  - Booting with "pcie_aspm=off"
+  - Booting with "pcie_aspm.policy=performance"
+  - "echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/link/l1_aspm"
+    before suspending
+  - Connecting a USB flash drive
+
+Fixes: 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+Reported-by: Michael Schaller <michael@5challer.de>
+Link: https://lore.kernel.org/r/76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: <stable@vger.kernel.org>
+---
+ drivers/pci/pci.c       |  6 ++++++
+ drivers/pci/pci.h       |  2 ++
+ drivers/pci/pcie/aspm.c | 19 +++++++++++++++++++
+ 3 files changed, 27 insertions(+)
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 55bc3576a985..bdbf8a94b4d0 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -1335,6 +1335,9 @@ static int pci_set_full_power_state(struct pci_dev *dev)
+ 		pci_restore_bars(dev);
+ 	}
+ 
++	if (dev->bus->self)
++		pcie_aspm_pm_state_change(dev->bus->self);
++
+ 	return 0;
+ }
+ 
+@@ -1429,6 +1432,9 @@ static int pci_set_low_power_state(struct pci_dev *dev, pci_power_t state)
+ 				     pci_power_name(dev->current_state),
+ 				     pci_power_name(state));
+ 
++	if (dev->bus->self)
++		pcie_aspm_pm_state_change(dev->bus->self);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+index 5ecbcf041179..f43873049d52 100644
+--- a/drivers/pci/pci.h
++++ b/drivers/pci/pci.h
+@@ -569,10 +569,12 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt);
+ #ifdef CONFIG_PCIEASPM
+ void pcie_aspm_init_link_state(struct pci_dev *pdev);
+ void pcie_aspm_exit_link_state(struct pci_dev *pdev);
++void pcie_aspm_pm_state_change(struct pci_dev *pdev);
+ void pcie_aspm_powersave_config_link(struct pci_dev *pdev);
+ #else
+ static inline void pcie_aspm_init_link_state(struct pci_dev *pdev) { }
+ static inline void pcie_aspm_exit_link_state(struct pci_dev *pdev) { }
++static inline void pcie_aspm_pm_state_change(struct pci_dev *pdev) { }
+ static inline void pcie_aspm_powersave_config_link(struct pci_dev *pdev) { }
+ #endif
+ 
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 50b04ae5c394..8715e951c491 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1008,6 +1008,25 @@ void pcie_aspm_exit_link_state(struct pci_dev *pdev)
+ 	up_read(&pci_bus_sem);
+ }
+ 
++/* @pdev: the root port or switch downstream port */
++void pcie_aspm_pm_state_change(struct pci_dev *pdev)
++{
++	struct pcie_link_state *link = pdev->link_state;
++
++	if (aspm_disabled || !link)
++		return;
++	/*
++	 * Devices changed PM state, we should recheck if latency
++	 * meets all functions' requirement
++	 */
++	down_read(&pci_bus_sem);
++	mutex_lock(&aspm_lock);
++	pcie_update_aspm_capable(link->root);
++	pcie_config_aspm_path(link);
++	mutex_unlock(&aspm_lock);
++	up_read(&pci_bus_sem);
++}
++
+ void pcie_aspm_powersave_config_link(struct pci_dev *pdev)
+ {
+ 	struct pcie_link_state *link = pdev->link_state;
+-- 
+2.34.1
+
 
