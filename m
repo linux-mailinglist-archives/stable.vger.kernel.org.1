@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-9188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B238821D03
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:45:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298E0821D04
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152301F2279C
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:45:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE2F9B21906
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29547FC00;
-	Tue,  2 Jan 2024 13:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85361FC00;
+	Tue,  2 Jan 2024 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iD8YsvLF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waSxDohb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B9DFBF2
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 13:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA918C433C7;
-	Tue,  2 Jan 2024 13:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B7CFBEF
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 13:45:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6147BC433C7;
+	Tue,  2 Jan 2024 13:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704203139;
-	bh=V+qtLkGUbQ6zBOsZDoMCM5mEapIB8Ry3BBo3lcsY8PU=;
+	s=korg; t=1704203145;
+	bh=PWVjSNhJGdKs9rCHb75m/pc/2mmMisBy4d5iYhOG248=;
 	h=Subject:To:From:Date:From;
-	b=iD8YsvLFtW/M6mJxNQAUzXCfbgiS94C/xn5LQtAnIopLhdAIEIUW2mCEZcrjDEx97
-	 t9mtLefcz0gaszII4oRgfoV9ZIhojfLTBszQ6+0tkSSNw3WThoZ0szIfugEUzlFe1n
-	 dl+dEv0JKyNTN41jG08/w5tcF0d1Pccej43WkyL0=
-Subject: patch "Revert "usb: typec: class: fix typec_altmode_put_partner to put" added to usb-next
-To: heikki.krogerus@linux.intel.com,chris.bainbridge@gmail.com,gregkh@linuxfoundation.org,rdbabiera@google.com,stable@vger.kernel.org
+	b=waSxDohb4EVY6c8JAGJ+pDuWzj4W1ySo7/vbtdAsh9dU45vX9F9nrmBqSTVuLdYaU
+	 FkCIq+6xHxP3LLMgVGYsTz4hO5oeHrGoN+F82O9xqfG2g1YtJ0CjRDxQLhdFT84063
+	 XRjToeENpCPgsInJLJ3thS/eMzlAM7S7uATwLma8=
+Subject: patch "Revert "usb: dwc3: Soft reset phy on probe for host"" added to usb-next
+To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,kory.maincent@bootlin.com,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 14:45:36 +0100
-Message-ID: <2024010236-crispness-acquaint-1819@gregkh>
+Date: Tue, 02 Jan 2024 14:45:37 +0100
+Message-ID: <2024010237-levers-jogger-6b50@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    Revert "usb: typec: class: fix typec_altmode_put_partner to put
+    Revert "usb: dwc3: Soft reset phy on probe for host"
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -61,52 +61,82 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 9c6b789e954fae73c548f39332bcc56bdf0d4373 Mon Sep 17 00:00:00 2001
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Date: Tue, 2 Jan 2024 11:11:41 +0200
-Subject: Revert "usb: typec: class: fix typec_altmode_put_partner to put
- plugs"
+From 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 Mon Sep 17 00:00:00 2001
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Date: Fri, 22 Dec 2023 22:11:27 +0000
+Subject: Revert "usb: dwc3: Soft reset phy on probe for host"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
+This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
 
-That commit messed up the reference counting, so it needs to
-be rethought.
+The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
+ULPI. This fix is incomplete.
 
-Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
 Cc:  <stable@vger.kernel.org>
-Cc: RD Babiera <rdbabiera@google.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
+Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
+Reported-by: Köry Maincent <kory.maincent@bootlin.com>
+Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/core.c | 39 +--------------------------------------
+ 1 file changed, 1 insertion(+), 38 deletions(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index aeae8009b9e3..4d11f2b536fa 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
- 	if (!partner)
- 		return;
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index b101dbf8c5dc..832c41fec4f7 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -279,46 +279,9 @@ int dwc3_core_soft_reset(struct dwc3 *dwc)
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+ 	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
--	adev = &altmode->adev;
-+	adev = &partner->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -497,8 +497,7 @@ static void typec_altmode_release(struct device *dev)
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	if (!is_typec_port(dev->parent))
--		typec_altmode_put_partner(alt);
-+	typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+-	/*
+-	 * If the dr_mode is host and the dwc->current_dr_role is not the
+-	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
+-	 * isn't executed yet. Ensure the phy is ready before the controller
+-	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
+-	 * the phy.
+-	 *
+-	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
+-	 * is port index. If this is a multiport host, then we need to reset
+-	 * all active ports.
+-	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST) {
+-		u32 usb3_port;
+-		u32 usb2_port;
+-
+-		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+-		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+-		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Small delay for phy reset assertion */
+-		usleep_range(1000, 2000);
+-
+-		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
+-
+-		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
+-		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
+-
+-		/* Wait for clock synchronization */
+-		msleep(50);
+-		return 0;
+-	}
+-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	reg |= DWC3_DCTL_CSFTRST;
+ 	reg &= ~DWC3_DCTL_RUN_STOP;
 -- 
 2.43.0
 
