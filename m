@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08D9D821DBD
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA52F821DBE
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE201C222C5
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D4AFB219C2
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624901095C;
-	Tue,  2 Jan 2024 14:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEC79440;
+	Tue,  2 Jan 2024 14:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLXczulC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/0BIKa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD9810955
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:32:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD90C433C8;
-	Tue,  2 Jan 2024 14:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C58411194
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE303C433C7;
+	Tue,  2 Jan 2024 14:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205949;
-	bh=sk7kexMwa4B35mNf59ToDn6+rO9b6+PDgLuwJd8mNic=;
+	s=korg; t=1704205952;
+	bh=WL8hRLygxy43/FXFGmp/8XbFzlvrbRQ8pfbdlx0TuUU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sLXczulCWHtFRk6m/6pD6E0ZpwUNE8YpE1+rTA69HjOdkUqMSXCqZzwXzKgysBp0g
-	 4qRv8tlMCueXGA/HulIV0zKoaeP4246qV/52Q5G+rm26Yjbs1uSWYtt9Mp1R1ncn3Y
-	 CkvtyyUQSEAKSCAcKwiigAi7+TM951RIcxADlhGM=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: check the mapcount of the precise page" failed to apply to 4.19-stable tree
+	b=q/0BIKa8JOGWEiZ/M/q7w8n7XOKpA5uhthHcCEQVHydESF+wTC/t+rPv+G4YMBImw
+	 zL8gXJhn2zbwg/3xdYcH2z9Lw+MEFWW9HDZl4YOwuC5ccXuW5pgbO9a6Ja9lG5lv5h
+	 Ig6RxhCtcbPirbFwHvofwZ18rtv2aF8O8v1e7Xhs=
+Subject: FAILED: patch "[PATCH] mm/memory-failure: check the mapcount of the precise page" failed to apply to 4.14-stable tree
 To: willy@infradead.org,akpm@linux-foundation.org,dan.j.williams@intel.com,n-horiguchi@ah.jp.nec.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:32:15 +0100
-Message-ID: <2024010215-eligible-badness-76db@gregkh>
+Date: Tue, 02 Jan 2024 15:32:16 +0100
+Message-ID: <2024010216-concerned-surrender-e169@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x c79c5a0a00a9457718056b588f312baadf44e471
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010215-eligible-badness-76db@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010216-concerned-surrender-e169@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
