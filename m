@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4606D821DAF
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5639C821DB0
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDF7C1F22AFE
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ADB41F21245
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EED9440;
-	Tue,  2 Jan 2024 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7988E11194;
+	Tue,  2 Jan 2024 14:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiuOEPjY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG9JK+l2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D179814A92
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CAFC433C8;
-	Tue,  2 Jan 2024 14:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376FE111AF
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:31:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5B0C433C7;
+	Tue,  2 Jan 2024 14:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205900;
-	bh=ZLqj6ee2I8227UOIu1U3+7dv18LP1SxPI5yKaiE/2aU=;
+	s=korg; t=1704205903;
+	bh=Nodvzj9wB7QQjTkpUMW62BJwV9RN/Sy+SVrv81spAV8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DiuOEPjYh2xQfrZbBuInt2f4o31e1aZWeQUWfvfkbsOoPCZRc6qGTNHz9mbQNHaHY
-	 Lm1pTMthboplTIFiNkFXbTZj9GW79PNzVqBSjVrmGbi8R6Uvl3P8wEnZ1VZiuRprrh
-	 WXdWOqsek6QbfXiIJj7HKX4S28qomW9B3VFSH6S8=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: pass the folio and the page to" failed to apply to 6.6-stable tree
+	b=aG9JK+l2wIpWRbByDeF4KWI+3pzhC5gnSDteg57JnOx/qEax/1Ie1Z2gkncPlRXIi
+	 lfJ9za8ZA81vsTmuTxxHy7zxBB20YgaCyHAjMrsJaw4rGTaliqZ5LFp0v5BSxCPwpn
+	 LnxZju/c8T7QXs0zRS0kOHqs8XMVpRdNuRoQdz5Q=
+Subject: FAILED: patch "[PATCH] mm/memory-failure: pass the folio and the page to" failed to apply to 6.1-stable tree
 To: willy@infradead.org,akpm@linux-foundation.org,dan.j.williams@intel.com,n-horiguchi@ah.jp.nec.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:31:37 +0100
-Message-ID: <2024010237-scrutiny-repost-e68e@gregkh>
+Date: Tue, 02 Jan 2024 15:31:38 +0100
+Message-ID: <2024010238-pouring-zeppelin-2e03@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 376907f3a0b34a17e80417825f8cc1c40fcba81b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010237-scrutiny-repost-e68e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010238-pouring-zeppelin-2e03@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 376907f3a0b3 ("mm/memory-failure: pass the folio and the page to collect_procs()")
 91e79d22be75 ("mm: convert DAX lock/unlock page to lock/unlock folio")
+4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
+4f775086a6ee ("mm: memory-failure: refactor add_to_kill()")
+5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+a46c9304b4bb ("mm/hwpoison: pass pfn to num_poisoned_pages_*()")
+d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
+e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
 
 thanks,
 
