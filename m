@@ -1,213 +1,206 @@
-Return-Path: <stable+bounces-9175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8430E821A9D
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:02:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C262F821AC1
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7E351F2237A
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:02:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C69931C21C79
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EDDDDB6;
-	Tue,  2 Jan 2024 11:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59932DDCA;
+	Tue,  2 Jan 2024 11:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="BocdAxcO";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bIr9du0k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKmx+O3G"
 X-Original-To: stable@vger.kernel.org
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590C4DDA6;
-	Tue,  2 Jan 2024 11:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id 4380C5C01B0;
-	Tue,  2 Jan 2024 06:01:56 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Tue, 02 Jan 2024 06:01:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm2; t=1704193316; x=1704279716; bh=ClsJU6F+GN
-	ksCC5vz1p80RASe2HA56v4MNN8n0S25W0=; b=BocdAxcO6RbdX0By3niK+IwKWy
-	JUaQDNhRPKOA3Bt4fnKbt+oXiW/EwJt1jUNDCW9pSZiYt/djv9dbJBWJFqLE5khD
-	lDcPb4ZK728wmhAzUV5yIAoHOsc4YeYnY5mE5wAuA+Nw6M6xNg1CV/BabEFxlDng
-	ri0cJIHQLDtY7DjwjyDIn16jnYDqWf0efMFCvDowdeQT0Hyxl65WKnhX7j4yagfG
-	9Tc9H/02FkPZSQg7TIniVrXAtHx0l/XddVlQ2BFxD1+i6uCKWUn+5QiLySJZMN6n
-	y2KVKA+1bFDQIIA7u1aIL6rXWoH56+vKEotD0dx1sTzV3u/yQzMMG7NFocKA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1704193316; x=1704279716; bh=ClsJU6F+GNksCC5vz1p80RASe2HA
-	56v4MNN8n0S25W0=; b=bIr9du0kRzaXU08/SYCd/I+ppMoNRkecwXNvFGevy9w6
-	zcifWzodcTXBsYVaqmWQ2JoigR1T/BNe99WXATI69AzFT3hT4Tcfi1yoZAu8GmwR
-	qnLgRJV/6IYTDFGOPk16KiZ5eILRpjOqU4BKLkNqxON2mHVzoFHGuObG0rZaQu9B
-	iKOiXOuwkHZlCqSyF2cWZKvEisCWTYDNQ5eTP/xHHMvdsJeBOVHs2DhYkTNI0vku
-	NKoT5r++RFXYT6aKAxGjXUMuh7vvY9nhhLCFz89fKgSZ6qpCI3CAAIvL9FcBM8uy
-	M/7IONBY3zuN4wekbOSFKAwyUGa7LL74bU0neSt0nQ==
-X-ME-Sender: <xms:JO2TZR0L1foW2F5_jA6etfOs9gzmyosxxXbB4xd9ozoqIPgOhAExVw>
-    <xme:JO2TZYHlY-FpsFJb2dVgOiUUbePjNs726Ao0QfJJF4EjffuQcOrfQ017rXz_EC6Rw
-    5WJLO9m8z0m-_CR-Fc>
-X-ME-Received: <xmr:JO2TZR72BiAuFvg49ZrWdaTdV4rlyiXe1sy2f9egyzEJpE0tXZKuXr8-LOt6_VhISIFfRGhnPGOngnGbkx8fKSW9zsbeKYFmxF2QRfXSwSj-0Zs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegvddgvddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    goufhushhpvggtthffohhmrghinhculdegledmnecujfgurhephffvvefufffkofgggfes
-    tdekredtredttdenucfhrhhomhepvfgrkhgrshhhihcuufgrkhgrmhhothhouceoohdqth
-    grkhgrshhhihesshgrkhgrmhhotggthhhirdhjpheqnecuggftrfgrthhtvghrnhepgeei
-    tdetvddtfeeuhffgfeffveefgfevtdduveevieettefgueeivdetvedugfeinecuffhomh
-    grihhnpehsuhhsvgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhsohhurhgtvghfohhrghgv
-    rdhnvghtpdhrvgguhhgrthdrtghomhdplhgruhhntghhphgrugdrnhgvthenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhi
-    sehsrghkrghmohgttghhihdrjhhp
-X-ME-Proxy: <xmx:JO2TZe0qoRB1Hg2pjAs_J0bRMXZo951lSmDGPt4GvehLNTF_4HbEgw>
-    <xmx:JO2TZUH57zX7m4NF1kCGn2a-5aLhALqUbE_IgNf4vXAC0DH9PnsQfg>
-    <xmx:JO2TZf8i8DfeIj1sL63G3Az3f7L6uEkJjEBAqtOmXzEjr5QYfZF1Gg>
-    <xmx:JO2TZZM4KVe8iPFoVveMXVPhJEJaPlfh-sZdK0W0FfWAFoOYPdK_KA>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 2 Jan 2024 06:01:54 -0500 (EST)
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: linux1394-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Cc: adamg@pobox.com,
-	stable@vger.kernel.org,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tobias Gruetzmacher <tobias-lists@23.gs>
-Subject: [PATCH v2] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
-Date: Tue,  2 Jan 2024 20:01:50 +0900
-Message-Id: <20240102110150.244475-1-o-takashi@sakamocchi.jp>
-X-Mailer: git-send-email 2.40.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B68DDC7;
+	Tue,  2 Jan 2024 11:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC65FC43391;
+	Tue,  2 Jan 2024 11:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704194212;
+	bh=wH3UN+QEBeHo1CxZ6/L0nHaYUK8LzrtPCHlYvTqoAPQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rKmx+O3G4u6tD/av1MVTGyVxCkd2s7aCJQMOAf5BmsZGJ2kac2aZZOirU3ltVF+xU
+	 BY2I1h4URbBV3ME3JYpYc/Lk7bneh1cTHtl6Qjv0k9fveNELZ6dSabLVupVUgQi3Hm
+	 sMXBGCCQsdVSeBQyp7+t9TNe9aI6HfuXY7p/xYhIwrJ6crJV6QVhWkeTMuJQqbkz5q
+	 sNLGt01zACtu7LZBl3P9NyS6Shd9TJ938UU64KsL9R/gGuwdsjdxkjo2BMlmmEtZxT
+	 PcdBKIAk2mDsoUuSm9isVjYr0aLeufNAyB6JCuGJSB7EoKW1+QfFl/s3toWaFJeDEr
+	 ubPjbOhP1PLVw==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a282cb36d37so74783266b.3;
+        Tue, 02 Jan 2024 03:16:52 -0800 (PST)
+X-Gm-Message-State: AOJu0YxbnANKJ+Uu1fCx+3omXVbBJGyz4w1+EbkBTROfOCcMo2hH1mhx
+	udbmg2rggF8M5Am6D015zbh2zZUMgnvfpGTsDpc=
+X-Google-Smtp-Source: AGHT+IGz8iOixHSCpJ0lYL7fIB2qzRVNbPRM/W2vZAG0Y741XUSxrPBDI1OQCXvTMipu+vnICAmP15DLX+1P3yL2QZM=
+X-Received: by 2002:a17:907:61a2:b0:a26:8ee9:9b31 with SMTP id
+ mt34-20020a17090761a200b00a268ee99b31mr708210ejc.4.1704194211016; Tue, 02 Jan
+ 2024 03:16:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240102101711.10872-2-xry111@xry111.site>
+In-Reply-To: <20240102101711.10872-2-xry111@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 2 Jan 2024 19:16:43 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H45oORgBPF0g4hqJB=dqtEuHCh1o4mKZELrvRNfrS5FEw@mail.gmail.com>
+Message-ID: <CAAhV-H45oORgBPF0g4hqJB=dqtEuHCh1o4mKZELrvRNfrS5FEw@mail.gmail.com>
+Subject: Re: [PATCH v2] LoongArch: Fix and simplify fcsr initialization on execve
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: WANG Xuerui <kernel@xen0n.name>, Eric Biederman <ebiederm@xmission.com>, 
+	Kees Cook <keescook@chromium.org>, Tiezhu Yang <yangtiezhu@loongson.cn>, 
+	Jinyang He <hejinyang@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+	loongarch@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-0xf0 on PCI I/O space) often causes unexpected system reboot in any type
-of AMD Ryzen machine (both 0x17 and 0x19 families). It does not appears in
-the other type of machine (AMD pre-Ryzen machine, Intel machine, at least),
-or in the other OHCI 1394 hardware (e.g. Texas Instruments).
+On Tue, Jan 2, 2024 at 6:17=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrote=
+:
+>
+> There has been a lingering bug in LoongArch Linux systems causing some
+> GCC tests to intermittently fail (see Closes link).  I've made a minimal
+> reproducer:
+>
+>     zsh% cat measure.s
+>     .align 4
+>     .globl _start
+>     _start:
+>         movfcsr2gr  $a0, $fcsr0
+>         bstrpick.w  $a0, $a0, 16, 16
+>         beqz        $a0, .ok
+>         break       0
+>     .ok:
+>         li.w        $a7, 93
+>         syscall     0
+>     zsh% cc mesaure.s -o measure -nostdlib
+>     zsh% echo $((1.0/3))
+>     0.33333333333333331
+>     zsh% while ./measure; do ; done
+>
+> This while loop should not stop as POSIX is clear that execve must set
+> fenv to the default, where FCSR should be zero.  But in fact it will
+> just stop after running for a while (normally less than 30 seconds).
+> Note that "$((1.0/3))" is needed to reproduce the issue because it
+> raises FE_INVALID and makes fcsr0 non-zero.
+>
+> The problem is we are relying on SET_PERSONALITY2 to reset
+> current->thread.fpu.fcsr.  But SET_PERSONALITY2 is executed before
+> start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+> enabled, we may switch to another thread after SET_PERSONALITY2 but
+> before lose_fpu(0).  Then bad thing happens: during the thread switch
+> the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+> making it dirty again.
+>
+> The issue can be fixed by setting current->thread.fpu.fcsr after
+> lose_fpu(0) because lose_fpu clears TIF_USEDFPU, then the thread
+> switch won't touch current->thread.fpu.fcsr.
+>
+> The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
+> They do this for supporting different FP flavors (NaN encodings etc).
+> which do not exist on LoongArch.  I'm not sure how MIPS evades the issue
+> (or maybe it's just buggy too) but I'll investigate it later.
+You have already investigated it, so should this message be updated?
 
-The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-use union for callback of transaction completion") added to v6.5 kernel.
-It changed 1394 OHCI driver to access to the register every time to
-dispatch local asynchronous transaction. However, the issue exists in
-older version of kernel as long as it runs in AMD Ryzen machine, since
-the access to the register is required to maintain bus time. It is not
-hard to imagine that users experience the unexpected system reboot when
-generating bus reset by plugging any devices in, or reading the register
-by time-aware application programs; e.g. audio sample processing.
+Huacai
 
-This commit suppresses the unexpected system reboot in the combination of
-hardware. It avoids the access itself. As a result, the software stack can
-not provide the hardware time anymore to unit drivers, userspace
-applications, and nodes in the same IEEE 1394 bus. It brings apparent
-disadvantage since time-aware application programs require it, while
-time-unaware applications are available again; e.g. sbp2.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-Closes: https://bugs.launchpad.net/linux/+bug/2043905
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
----
- drivers/firewire/ohci.c | 51 +++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
-
-diff --git a/drivers/firewire/ohci.c b/drivers/firewire/ohci.c
-index 7e88fd489741..9db9290c3269 100644
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -279,6 +279,51 @@ static char ohci_driver_name[] = KBUILD_MODNAME;
- #define QUIRK_TI_SLLZ059		0x20
- #define QUIRK_IR_WAKE			0x40
- 
-+// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
-+// ASM1083/1085 brings an inconvenience that the read accesses to 'Isochronous Cycle Timer' register
-+// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
-+// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
-+// while it is probable due to detection of any type of PCIe error.
-+#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+static bool has_reboot_by_cycle_timer_read_quirk(const struct fw_ohci *ohci)
-+{
-+	return !!(ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ);
-+}
-+
-+#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
-+
-+static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev)
-+{
-+	const struct pci_dev *pcie_to_pci_bridge;
-+
-+	// Detect any type of AMD Ryzen machine.
-+	if (!static_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+
-+	// Detect VIA VT6306/6307/6308.
-+	if (pdev->vendor != PCI_VENDOR_ID_VIA)
-+		return false;
-+	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
-+		return false;
-+
-+	// Detect Asmedia ASM1083/1085.
-+	pcie_to_pci_bridge = pdev->bus->self;
-+	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
-+		return false;
-+	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
-+		return false;
-+
-+	return true;
-+}
-+
-+#else
-+#define has_reboot_by_cycle_timer_read_quirk(ohci) false
-+#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
-+#endif
-+
- /* In case of multiple matches in ohci_quirks[], only the first one is used. */
- static const struct {
- 	unsigned short vendor, device, revision, flags;
-@@ -1724,6 +1769,9 @@ static u32 get_cycle_time(struct fw_ohci *ohci)
- 	s32 diff01, diff12;
- 	int i;
- 
-+	if (has_reboot_by_cycle_timer_read_quirk(ohci))
-+		return 0;
-+
- 	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
- 
- 	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
-@@ -3630,6 +3678,9 @@ static int pci_probe(struct pci_dev *dev,
- 	if (param_quirks)
- 		ohci->quirks = param_quirks;
- 
-+	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev))
-+		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
-+
- 	/*
- 	 * Because dma_alloc_coherent() allocates at least one page,
- 	 * we save space by using a common buffer for the AR request/
--- 
-2.40.1
-
+>
+> For LoongArch, just remove the current->thread.fpu.fcsr setting from
+> SET_PERSONALITY2 and do it in start_thread, after lose_fpu(0).
+>
+> The while loop failing with the mainline kernel has survived one hour
+> after this change.
+>
+> Closes: https://github.com/loongson-community/discussions/issues/7
+> Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> ---
+>
+> v1 -> v2:
+> - Still set current->thread.fpu.fcsr to boot_cpu_data.fpu_csr0 instead
+>   of constant 0.
+>
+>  arch/loongarch/include/asm/elf.h | 5 -----
+>  arch/loongarch/kernel/elf.c      | 5 -----
+>  arch/loongarch/kernel/process.c  | 1 +
+>  3 files changed, 1 insertion(+), 10 deletions(-)
+>
+> diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/as=
+m/elf.h
+> index 9b16a3b8e706..f16bd42456e4 100644
+> --- a/arch/loongarch/include/asm/elf.h
+> +++ b/arch/loongarch/include/asm/elf.h
+> @@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct p=
+t_regs *regs);
+>  do {                                                                   \
+>         current->thread.vdso =3D &vdso_info;                             =
+ \
+>                                                                         \
+> -       loongarch_set_personality_fcsr(state);                          \
+> -                                                                       \
+>         if (personality(current->personality) !=3D PER_LINUX)            =
+ \
+>                 set_personality(PER_LINUX);                             \
+>  } while (0)
+> @@ -259,7 +257,6 @@ do {                                                 =
+                       \
+>         clear_thread_flag(TIF_32BIT_ADDR);                              \
+>                                                                         \
+>         current->thread.vdso =3D &vdso_info;                             =
+ \
+> -       loongarch_set_personality_fcsr(state);                          \
+>                                                                         \
+>         p =3D personality(current->personality);                         =
+ \
+>         if (p !=3D PER_LINUX32 && p !=3D PER_LINUX)                      =
+   \
+> @@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, s=
+truct file *elf,
+>  extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp=
+_ehdr,
+>                           struct arch_elf_state *state);
+>
+> -extern void loongarch_set_personality_fcsr(struct arch_elf_state *state)=
+;
+> -
+>  #endif /* _ASM_ELF_H */
+> diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
+> index 183e94fc9c69..0fa81ced28dc 100644
+> --- a/arch/loongarch/kernel/elf.c
+> +++ b/arch/loongarch/kernel/elf.c
+> @@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, v=
+oid *_interp_ehdr,
+>  {
+>         return 0;
+>  }
+> -
+> -void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+> -{
+> -       current->thread.fpu.fcsr =3D boot_cpu_data.fpu_csr0;
+> -}
+> diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/proc=
+ess.c
+> index 767d94cce0de..3f9cae615f52 100644
+> --- a/arch/loongarch/kernel/process.c
+> +++ b/arch/loongarch/kernel/process.c
+> @@ -92,6 +92,7 @@ void start_thread(struct pt_regs *regs, unsigned long p=
+c, unsigned long sp)
+>         clear_used_math();
+>         regs->csr_era =3D pc;
+>         regs->regs[3] =3D sp;
+> +       current->thread.fpu.fcsr =3D boot_cpu_data.fpu_csr0;
+>  }
+>
+>  void flush_thread(void)
+> --
+> 2.43.0
+>
 
