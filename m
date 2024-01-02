@@ -1,107 +1,122 @@
-Return-Path: <stable+bounces-9177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460C9821AD2
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:21:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7CF821AFF
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D94291F22000
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:21:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CEE1F223C0
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E759E55F;
-	Tue,  2 Jan 2024 11:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4539EADE;
+	Tue,  2 Jan 2024 11:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeDzh8jA"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XryoqP6M"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A7CE544;
-	Tue,  2 Jan 2024 11:21:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B48C433C7;
-	Tue,  2 Jan 2024 11:21:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704194465;
-	bh=9BxRzEOBTvR+ppxG806EdQKoWFFjbUS/+GzPU/AwX9g=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=GeDzh8jA6WHp/CxKP0OUKid/aof8nCv7fI6c2Z6/esAnHXjkaYY5h9T5qBYA9bGhq
-	 F55tRn31n4Ja8nd0kjwpooY0qXEZqPg8h1XltOwsqwEkCHWla6jI1W+mpSOniWCRIO
-	 cTyHNZY3uVgxbGTuAFKDeJwSGtCFDksU0Z+GPvAzFL5FBR55w5FH6CZgbi9tFUZsPn
-	 k2ABDr0oG0AhvA7h+BD/cjpRdlJgEyEx15b8i2C4yiSrz5fsFFUjSIiLUzFggCeJGR
-	 YlQ9eFU/CVl4LE6PzYCHykNQPZyO+jrzwfwt0NvBg/RPWeZq4aZfX8orOhWYPBGycq
-	 yqEI3TKmy0F+w==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a282cb36d37so75148066b.3;
-        Tue, 02 Jan 2024 03:21:05 -0800 (PST)
-X-Gm-Message-State: AOJu0YyWpCIG103YPc8b5oIQIClbz88SxTAoa/UhK5vyt6aEtwCLFmbc
-	z4rhouJ53e5A1cnU1v5mpHAvitB4Nn1b6StRhRQ=
-X-Google-Smtp-Source: AGHT+IFlsPq24WCd2yxgqmcSvJkW3nbzdQEW3v5ivSTAT0THQwBtZN9+rL4w0A9AFZUm25f69rf/1O7XVxbOBueUL+0=
-X-Received: by 2002:a17:906:7399:b0:a23:68ec:a863 with SMTP id
- f25-20020a170906739900b00a2368eca863mr7697697ejl.87.1704194463900; Tue, 02
- Jan 2024 03:21:03 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9DFE554
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 11:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7811db57cb4so697796485a.0
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 03:32:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1704195128; x=1704799928; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4CTXYQjDTx9MjNeWmQMbnj/JJ7KlKNb5ez8YnAlEmuU=;
+        b=XryoqP6MDCAM1W1boSMn8ZBw8f+60nmm1oSpqP0kth0iGwh8i5ExfZgjnH1O9A1dqO
+         H8jD6zUY6iOUe7pEuMt0M4MXSgAxbABixjJs5ByoVpRifB5O6qsiN9nHRQYMVDXhszCs
+         aRJoUzFow+6QMg6R0KTpKWw+ZIxKWfPPBW1OU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704195128; x=1704799928;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4CTXYQjDTx9MjNeWmQMbnj/JJ7KlKNb5ez8YnAlEmuU=;
+        b=OCdfkONGY2DcChOSrXcnv50Pp9hZaxts3mhpBw7Dl0u8yLcEUjOUK1dh7M1gQweGzP
+         2tOrmrCd9ZuMKv6sZnZi/ugCBrRpOnciq3muDK4XCKn/oY1T4oU5HqZujDE/cEnJb6nB
+         xF4xMVtbAjeoDH+cwONI6LRJfILR2c28+XYRv28HIOHBbQrjWEURzd+Fu7AbuWOCKZk1
+         E4UbcQcn3+LEonB4BuZHUfVY+Tgiu8b2zvYZG+Bz0Abdc1kJ3z1g7nsIM6iU4W6m3Vpe
+         zSKczf/xxWoGp+NtImoKq147CR/pYqALZ5bZ633jekRBX7pWLPGGp7mN4LfrZn5XtOuD
+         sU+w==
+X-Gm-Message-State: AOJu0Yx1e2tw2/E/5r0IQzY7DeBYrKtqr/xoON0bw72qhblqwkUU8v8G
+	6M/m/ZWnIfFJ2Q1mSAtkGNKOe6TrwqSY80gEQFu0rpcRXA==
+X-Google-Smtp-Source: AGHT+IFawNil5W9TbiYgkDgyTiW77/pUrZGmdiJAi/XcvNXrMrch5AuWPx65MT9pc2zJXQKfLzwheA==
+X-Received: by 2002:a05:620a:4309:b0:781:bd80:af82 with SMTP id u9-20020a05620a430900b00781bd80af82mr4522274qko.37.1704195127802;
+        Tue, 02 Jan 2024 03:32:07 -0800 (PST)
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
+        by smtp.gmail.com with ESMTPSA id ay30-20020a05620a179e00b00781b2c3699bsm2049640qkb.132.2024.01.02.03.32.07
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 02 Jan 2024 03:32:07 -0800 (PST)
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4281f6400feso8628281cf.1
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 03:32:07 -0800 (PST)
+X-Received: by 2002:a05:6214:2a85:b0:67f:67de:5d32 with SMTP id
+ jr5-20020a0562142a8500b0067f67de5d32mr26610741qvb.41.1704195126792; Tue, 02
+ Jan 2024 03:32:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240102101711.10872-2-xry111@xry111.site> <f6e0b3a0e08a8100fa5dc9345af8582ff664321c.camel@xry111.site>
- <7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site>
-In-Reply-To: <7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 2 Jan 2024 19:20:57 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7oMB62mSL1O4QPdUNW5z1_12G3L5QAm81KsSwDv_GsEg@mail.gmail.com>
-Message-ID: <CAAhV-H7oMB62mSL1O4QPdUNW5z1_12G3L5QAm81KsSwDv_GsEg@mail.gmail.com>
-Subject: Re: MIPS: fcsr31 may be dirty after execve when kernel preempt is
- enabled (was: Re: [PATCH v2] LoongArch: Fix and simplify fcsr initialization
- on execve)
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: WANG Xuerui <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
-	Eric Biederman <ebiederm@xmission.com>, Kees Cook <keescook@chromium.org>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Jinyang He <hejinyang@loongson.cn>, 
-	loongarch@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, linux-mips@vger.kernel.org
+References: <20231222-rallybar-v2-1-5849d62a9514@chromium.org> <82bf432c-2a78-4b9c-88ab-ef4f0888e9aa@rowland.harvard.edu>
+In-Reply-To: <82bf432c-2a78-4b9c-88ab-ef4f0888e9aa@rowland.harvard.edu>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 2 Jan 2024 12:31:53 +0100
+X-Gmail-Original-Message-ID: <CANiDSCtd4-pQDdf03cBZz6deUe=b4ufiQ4WR=ddwjubOoxAQ1w@mail.gmail.com>
+Message-ID: <CANiDSCtd4-pQDdf03cBZz6deUe=b4ufiQ4WR=ddwjubOoxAQ1w@mail.gmail.com>
+Subject: Re: [PATCH v2] usb: core: Add quirk for Logitech Rallybar
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 2, 2024 at 6:48=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrote=
-:
->
-> On Tue, 2024-01-02 at 18:25 +0800, Xi Ruoyao wrote:
-> > On Tue, 2024-01-02 at 18:17 +0800, Xi Ruoyao wrote:
-> > > The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
-> > > They do this for supporting different FP flavors (NaN encodings etc).
-> > > which do not exist on LoongArch.  I'm not sure how MIPS evades the is=
-sue
-> > > (or maybe it's just buggy too) but I'll investigate it later.
-> >
-> > Phew.  I just managed to recommission my 3A4000 and I can reproduce the
-> > issue as well with Linux 5.18.1 (the latest kernel release when I
-> > decommissioned it) and CONFIG_PREEMPT=3Dy.
-> >
-> > % cat measure.c
-> > #include <fenv.h>
-> > int main() { return fetestexcept(FE_INEXACT); }
-> >
-> > % echo $((1./3))
-> > 0.33333333333333331
-> >
-> > % while ./a.out; do ; done
-> > (stopped in seconds)
-> >
-> > I'm building the mainline kernel on the 3A4000 now, will see if the
-> > issue still exists...
->
-> Still happening with 6.7.0-rc8.  I'm not sure how to fix it for MIPS.
-> Maybe lose_fpu in SET_PERSONALITY2? But to me doing so will be really
-> nasty.  Anyway I'll leave this for MIPS maintainers.
-Disable preemption in SET_PERSONALITY2 and enable in START_THREAD?
+Hi Alan
 
-Huacai
-
+On Sat, 23 Dec 2023 at 21:01, Alan Stern <stern@rowland.harvard.edu> wrote:
 >
-> --
-> Xi Ruoyao <xry111@xry111.site>
-> School of Aerospace Science and Technology, Xidian University
+> On Fri, Dec 22, 2023 at 10:55:49PM +0000, Ricardo Ribalda wrote:
+> > Logitech Rallybar devices, despite behaving as UVC camera, they have a
+> > different power management system than the rest of the other Logitech
+> > cameras.
+> >
+> > USB_QUIRK_RESET_RESUME causes undesired USB disconnects, that make the
+> > device unusable.
+> >
+> > These are the only two devices that have this behavior, and we do not
+> > have the list of devices that require USB_QUIRK_RESET_RESUME, so lets
+> > create a new lit for them that un-apply the USB_QUIRK_RESET_RESUME
+> > quirk.
+> >
+> > Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> > ---
+>
+> Would it make more sense to do this inside the uvc driver instead of
+> creating a new single-purpose list in the core?
+
+I can try to move it to the uvc driver. But maybe it is better to keep it here:
+
+The same vid:pid also has other functionality, not only uvc: Sync
+agent interface, UPD Interface, ADB interface.
+If we apply the quirk to the uvc driver, and the uvc driver is not
+loaded, the other functionality will still be broken....
+
+I expect to see more devices from Logitech not needing the
+RESET_RESUME quirk... so this list will eventually grow.
+
+Setting/useting RESET_RESUME in two different locations, can make the
+code difficult to follow.
+
+What do you think?
+
+Regards!
 
