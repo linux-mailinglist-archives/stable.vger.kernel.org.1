@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E74821DA1
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:29:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07289821DA2
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49B7C1C2205B
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CE1280F78
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D98D11189;
-	Tue,  2 Jan 2024 14:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A516C111A5;
+	Tue,  2 Jan 2024 14:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMsiPv2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlqE+psX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC72F111AF
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:29:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3321C433C8;
-	Tue,  2 Jan 2024 14:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616181119C
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:29:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687EDC433C7;
+	Tue,  2 Jan 2024 14:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205775;
-	bh=Phd+oxteZUCbVlT5d8xQ7JwzhKK1QfGSba0FuUH92K4=;
+	s=korg; t=1704205784;
+	bh=UXvQx53ga1nMSxCTiEPnmXfAlPgUqms9wi8KRseW4xc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VMsiPv2wX5gZDN1uWmt3YKrQ6X1EvG2YzFoY0CUr3Qi3sdjIEuI1UFuNS8dQaDxmX
-	 h9Y6np1P7J3eGzeUrRK7Zv30tUeNLpFRBiu8qSJ9eETDLzHL3n92gg5GtpDasrn+nX
-	 ehNHloKqgqsRmZuh44Ly5k3Sy6HE3Gtbu79OZS4o=
-Subject: FAILED: patch "[PATCH] selftests: secretmem: floor the memory size to the multiple" failed to apply to 6.1-stable tree
+	b=GlqE+psXg493sXSAtjBQNRhHYsxUsNoKkGIUP0q/dRV6x7Pyvji0xhCi54cW1d2ox
+	 3S53Z/XzC33InA7CEwkmAdOdU9ymNtTc/wE86qexkYukUQUB9FHhCnigJQvlyvjycJ
+	 52AallW5QVjD+f5bokKpaBy6dSr/91RbBmUVeaXg=
+Subject: FAILED: patch "[PATCH] selftests: secretmem: floor the memory size to the multiple" failed to apply to 5.15-stable tree
 To: usama.anjum@collabora.com,James.Bottomley@HansenPartnership.com,akpm@linux-foundation.org,bot@kernelci.org,rppt@kernel.org,shuah@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:29:32 +0100
-Message-ID: <2024010232-imagines-collie-15cd@gregkh>
+Date: Tue, 02 Jan 2024 15:29:33 +0100
+Message-ID: <2024010233-emblem-devalue-d485@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0aac13add26d546ac74c89d2883b3a5f0fbea039
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010232-imagines-collie-15cd@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010233-emblem-devalue-d485@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
