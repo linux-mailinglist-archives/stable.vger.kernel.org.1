@@ -1,138 +1,192 @@
-Return-Path: <stable+bounces-9181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F43C821B9F
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:31:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F242821BBB
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B5D71C21F07
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:31:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C76B1F229F3
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C01D2FE;
-	Tue,  2 Jan 2024 12:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1F6F9EA;
+	Tue,  2 Jan 2024 12:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvWAYpJW"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="BTgilUQ6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347C1F9D2;
-	Tue,  2 Jan 2024 12:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704198648; x=1735734648;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=rtM5doXFq2NWibzp7OwFSY3PvLEqNSMtMBZ+d5jeVxk=;
-  b=MvWAYpJWQAdH/qOacLAHCdqaMVKIj7KJaBhg4kL/AmJKEAqSkRDIAnk7
-   lAw0umOyzh4ZhIPuVaOZibPIm/OPgYBKSxhhzEODHYcRtaVgMBg0+6WuE
-   5cW/ZuAjouaQgUpafQy1LqHUQ3854XdKaBX1bVok3Fy6KKJ47BPZuIhkN
-   fzEYZOu6TD0BnrnzU0bE+8G5HvuArtVlsqToTZvDaJVgQiXNODpMPZKbU
-   Etop6uBeQH0vZ/gpSvAdwQVifzAMHBOSroZJDnrIWqIj15t4slTL+SiG7
-   dTtmIeuAzXA6fZVJOUmtUz5CTxhfq5U1ozQp+7MR2/yBS6rq2N3I7DjTM
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="377030763"
-X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="377030763"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 04:30:47 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="1111033434"
-X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
-   d="scan'208";a="1111033434"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga005.fm.intel.com with ESMTP; 02 Jan 2024 04:30:45 -0800
-Message-ID: <b88a9573-6ab5-ed86-dabc-dd07875f88f3@linux.intel.com>
-Date: Tue, 2 Jan 2024 14:32:11 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4671FBF8;
+	Tue,  2 Jan 2024 12:38:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+	s=default; t=1704199077;
+	bh=ei3L/hMRlfNY7Sz9SmZ4DfXD98IpAmHi1yZnfBh/zq8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BTgilUQ6d6Nhlffji4EuRffpQbwj5zKUAVdh1QrfJBokQNNr263l+XmZ3oloR5grM
+	 szxThG4GcKMu1GQxiYesEcu0yZhL4SlgbrAnlckyk6byN3iVvXlst4LYk9BnGp7Rbf
+	 OAl17T5daR/pwWCkvEGxbuX28lsp318dr11H3CdE=
+Received: from stargazer.. (unknown [113.200.174.68])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id C76556707D;
+	Tue,  2 Jan 2024 07:37:52 -0500 (EST)
+From: Xi Ruoyao <xry111@xry111.site>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <keescook@chromium.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Jinyang He <hejinyang@loongson.cn>,
+	loongarch@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xi Ruoyao <xry111@xry111.site>,
+	stable@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: [PATCH v3] LoongArch: Fix and simplify fcsr initialization on execve
+Date: Tue,  2 Jan 2024 20:37:07 +0800
+Message-ID: <20240102123706.6099-2-xry111@xry111.site>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Content-Language: en-US
-To: Prashanth K <quic_prashk@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
- Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
- linux-usb@vger.kernel.org, stable@vger.kernel.org
-References: <20231212112521.3774610-1-quic_prashk@quicinc.com>
- <20231212112521.3774610-2-quic_prashk@quicinc.com>
- <2023121518-uncharted-riddance-7c58@gregkh>
- <849d0ea9-d4f7-c568-968c-88835f64fadf@quicinc.com>
- <2023122212-stellar-handlebar-2f70@gregkh>
- <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: Re: [PATCH v2 1/2] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
-In-Reply-To: <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 26.12.2023 7.24, Prashanth K wrote:
-> 
-> 
-> On 22-12-23 11:40 am, Greg Kroah-Hartman wrote:
->> On Fri, Dec 22, 2023 at 11:29:01AM +0530, Prashanth K wrote:
->>> On 15-12-23 06:12 pm, Greg Kroah-Hartman wrote:
->>>> On Tue, Dec 12, 2023 at 04:55:20PM +0530, Prashanth K wrote:
->>>>> Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
->>>>> XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
->>>>> which fixes XHC timeout, which was seen on synopsys XHCs while
->>>>> using SG buffers. But the support for this quirk isn't present
->>>>> in the DWC3 layer.
->>>>>
->>>>> We will encounter this XHCI timeout/hung issue if we run iperf
->>>>> loopback tests using RTL8156 ethernet adaptor on DWC3 targets
->>>>> with scatter-gather enabled. This gets resolved after enabling
->>>>> the XHCI_SG_TRB_CACHE_SIZE_QUIRK. This patch enables it using
->>>>> the xhci device property since its needed for DWC3 controller.
->>>>>
->>>>> In Synopsys DWC3 databook,
->>>>> Table 9-3: xHCI Debug Capability Limitations
->>>>> Chained TRBs greater than TRB cache size: The debug capability
->>>>> driver must not create a multi-TRB TD that describes smaller
->>>>> than a 1K packet that spreads across 8 or more TRBs on either
->>>>> the IN TR or the OUT TR.
->>>>>
->>>>> Cc: <stable@vger.kernel.org>
->>>>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
->>>>
->>>> What commit id does this fix?
->>>>
->>> This doesn't fix any commit as such, but adds the support for
->>> XHCI_SG_TRB_CACHE_SIZE_QUIRK (which is present in XHCI layer) to DWC3 layer.
->>
->> So this is a new feature?
->>
->> How does this fit into the stable kernel rules?
-> 
-> This isn't a new feature. To give some background, upstream commit bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
-> added a XHCI quirk which converts SG lists to CMA buffers/URBS if certain conditions aren't met. But they never enabled this xhci quirk
-> since no issues were hit at that time. So, the support for the above mentioned quirk is added from 5.11 kernel onwards, but was never enabled anywhere.
+There has been a lingering bug in LoongArch Linux systems causing some
+GCC tests to intermittently fail (see Closes link).  I've made a minimal
+reproducer:
 
-I remember this now.
-  
-Original series had three patches, two adding the feature to xhci, and one for dwc3 enabling it.
-The xhci patches were fine and got in.
+    zsh% cat measure.s
+    .align 4
+    .globl _start
+    _start:
+        movfcsr2gr  $a0, $fcsr0
+        bstrpick.w  $a0, $a0, 16, 16
+        beqz        $a0, .ok
+        break       0
+    .ok:
+        li.w        $a7, 93
+        syscall     0
+    zsh% cc mesaure.s -o measure -nostdlib
+    zsh% echo $((1.0/3))
+    0.33333333333333331
+    zsh% while ./measure; do ; done
 
-https://marc.info/?l=linux-usb&m=160570849625065&w=2
+This while loop should not stop as POSIX is clear that execve must set
+fenv to the default, where FCSR should be zero.  But in fact it will
+just stop after running for a while (normally less than 30 seconds).
+Note that "$((1.0/3))" is needed to reproduce the issue because it
+raises FE_INVALID and makes fcsr0 non-zero.
 
-The last dwc3 patch had issues and never apparently got in
+The problem is we are relying on SET_PERSONALITY2 to reset
+current->thread.fpu.fcsr.  But SET_PERSONALITY2 is executed before
+start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+enabled, we may switch to another thread after SET_PERSONALITY2 but
+before lose_fpu(0).  Then bad thing happens: during the thread switch
+the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+making it dirty again.
 
-https://marc.info/?l=linux-usb&m=161008968009766&w=2
+The issue can be fixed by setting current->thread.fpu.fcsr after
+lose_fpu(0) because lose_fpu clears TIF_USEDFPU, then the thread
+switch won't touch current->thread.fpu.fcsr.
 
-As this feature hasn't been enabled and code not widely run I think it would be  better
-to skip stable for now. Stable can be added later once this has been successfully running
-in upstream for a while.
+The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
+I've ran a similar test on MIPS with mainline kernel and it turns out
+MIPS is buggy too.  Anyway MIPS do this for supporting different FP
+flavors (NaN encodings etc.) which do not exist on LoongArch.  So for
+LoongArch, we can simply remove the current->thread.fpu.fcsr setting
+from SET_PERSONALITY2 and do it in start_thread, after lose_fpu(0).
+I'll leave the job to fix MIPS for MIPS maintainers.
 
-Thanks
-Mathias
+The while loop failing with the mainline kernel has survived one hour
+after this change on LoongArch.
 
+Closes: https://github.com/loongson-community/discussions/issues/7
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Cc: stable@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+---
+
+v2 -> v3:
+- Update the commit message to mention MIPS is buggy too.
+- Replace tabs in the commit message with whitespaces.
+- No code change.
+
+v1 -> v2:
+- Still set current->thread.fpu.fcsr to boot_cpu_data.fpu_csr0 instead
+  of constant 0.
+
+ arch/loongarch/include/asm/elf.h | 5 -----
+ arch/loongarch/kernel/elf.c      | 5 -----
+ arch/loongarch/kernel/process.c  | 1 +
+ 3 files changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
+index 9b16a3b8e706..f16bd42456e4 100644
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct pt_regs *regs);
+ do {									\
+ 	current->thread.vdso = &vdso_info;				\
+ 									\
+-	loongarch_set_personality_fcsr(state);				\
+-									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ } while (0)
+@@ -259,7 +257,6 @@ do {									\
+ 	clear_thread_flag(TIF_32BIT_ADDR);				\
+ 									\
+ 	current->thread.vdso = &vdso_info;				\
+-	loongarch_set_personality_fcsr(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+ 			  struct arch_elf_state *state);
+ 
+-extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
+-
+ #endif /* _ASM_ELF_H */
+diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
+index 183e94fc9c69..0fa81ced28dc 100644
+--- a/arch/loongarch/kernel/elf.c
++++ b/arch/loongarch/kernel/elf.c
+@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
+ {
+ 	return 0;
+ }
+-
+-void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+-{
+-	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-}
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 767d94cce0de..3f9cae615f52 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -92,6 +92,7 @@ void start_thread(struct pt_regs *regs, unsigned long pc, unsigned long sp)
+ 	clear_used_math();
+ 	regs->csr_era = pc;
+ 	regs->regs[3] = sp;
++	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+ }
+ 
+ void flush_thread(void)
+-- 
+2.43.0
 
 
