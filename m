@@ -1,109 +1,97 @@
-Return-Path: <stable+bounces-9169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A281B8218B1
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 10:12:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA278218C7
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 10:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 357E21F22149
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91D4FB211E7
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F0A6139;
-	Tue,  2 Jan 2024 09:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bPKWtbpt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C128D299;
+	Tue,  2 Jan 2024 09:14:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B3C568D;
-	Tue,  2 Jan 2024 09:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704186723; x=1735722723;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NyvPMiWn3WT/oZc8EH+SNeHjU8WnY+nEsLSZKALA/ow=;
-  b=bPKWtbptAPui07c3URUxb4MdOZTEVwLrCn7bpqavfXnLSzI1qHTW9M5Q
-   9t1haV9KH71skJ+Di4mes4yuIgb8wTJ4KnRpz7cie3w4UfXam1Fp+WFvm
-   KkNU/hXMNKcUcO8ppAorKrluSarOJEDgZd1jFJ3O65WXKxQWqlrlyvQAW
-   SfHHbLiJRjQ1TcukWOQfqzFD398G2J4Ox7K93cjv5nZhI6DhIHY9hhBmz
-   HMzNolRoHhPHhwgPfEODqj28+LU/W6IlHG54vAG3rvuvCidIgq4Rtdc+7
-   BGreGo7j1iFdvP5va39hhC6Vp+1zeESzgWxzJtXXWe/3bomigrxoEUJeN
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="463258977"
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
-   d="scan'208";a="463258977"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 01:11:46 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="923172841"
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
-   d="scan'208";a="923172841"
-Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 02 Jan 2024 01:11:43 -0800
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	RD Babiera <rdbabiera@google.com>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
-Date: Tue,  2 Jan 2024 11:11:41 +0200
-Message-ID: <20240102091142.2136472-1-heikki.krogerus@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350CCA6B
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 09:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-285-KxmtTKFzMXWzLQ9SE7vhdg-1; Tue, 02 Jan 2024 09:14:30 +0000
+X-MC-Unique: KxmtTKFzMXWzLQ9SE7vhdg-1
+Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
+ (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 2 Jan
+ 2024 09:14:15 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Tue, 2 Jan 2024 09:14:15 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Guoxin Pu' <pugokushin@gmail.com>, "axboe@kernel.dk" <axboe@kernel.dk>
+CC: "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] block: fix length of strscpy()
+Thread-Topic: [PATCH] block: fix length of strscpy()
+Thread-Index: AQHaPNtiMZZ0F2vqTUGoSDgTJCHi3bDFesXAgABTFoCAAG/DAA==
+Date: Tue, 2 Jan 2024 09:14:15 +0000
+Message-ID: <25655037ca3e404e9111341ea423f5ce@AcuMS.aculab.com>
+References: <20240101175051.38479-2-pugokushin@gmail.com>
+ <ed0b9dd45fca4f6e910a9e1ffa756180@AcuMS.aculab.com>
+ <c7e29d85-277d-46ae-87ae-bb77dd423652@gmail.com>
+In-Reply-To: <c7e29d85-277d-46ae-87ae-bb77dd423652@gmail.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
-
-That commit messed up the reference counting, so it needs to
-be rethought.
-
-Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
-Cc: stable@vger.kernel.org
-Cc: RD Babiera <rdbabiera@google.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
- drivers/usb/typec/class.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index aeae8009b9e3..4d11f2b536fa 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
- 	if (!partner)
- 		return;
- 
--	adev = &altmode->adev;
-+	adev = &partner->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -497,8 +497,7 @@ static void typec_altmode_release(struct device *dev)
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	if (!is_typec_port(dev->parent))
--		typec_altmode_put_partner(alt);
-+	typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
--- 
-2.43.0
+RnJvbTogR3VveGluIFB1IA0KPiBTZW50OiAwMiBKYW51YXJ5IDIwMjQgMDI6MzENCj4gDQo+IFRo
+YW5rIHlvdSBmb3IgdGhlIHJldmlldy4gU29ycnkgaWYgdGhpcyBpcyB0aGUgZHVwbGljYXRlZCBy
+ZXBseSwgYXMgSQ0KPiBkaWRuJ3QgY29uZmlndXJlIG15IG1haWwgY2xpZW50IHRvIHNlbmQgdGV4
+dC1vbmx5IG1lc3NhZ2UgYW5kIHRoZQ0KPiBwcmV2aW91cyBtYWlsIHdhcyByZWplY3RlZCBieSB0
+aGUgbGlzdC4NCj4gDQo+IE9uIDAyLzAxLzIwMjQgMDU6NDcsIERhdmlkIExhaWdodCB3cm90ZToN
+Cj4gPj4gQEAgLTc5LDggKzc5LDggQEAgc3RhdGljIGludCBwYXJzZV9zdWJwYXJ0KHN0cnVjdCBj
+bWRsaW5lX3N1YnBhcnQgKipzdWJwYXJ0LCBjaGFyICpwYXJ0ZGVmKQ0KPiA+PiAgIAkJCWdvdG8g
+ZmFpbDsNCj4gPj4gICAJCX0NCj4gPj4NCj4gPj4gLQkJbGVuZ3RoID0gbWluX3QoaW50LCBuZXh0
+IC0gcGFydGRlZiwNCj4gPj4gLQkJCSAgICAgICBzaXplb2YobmV3X3N1YnBhcnQtPm5hbWUpIC0g
+MSk7DQo+ID4+ICsJCWxlbmd0aCA9IG1pbl90KGludCwgbmV4dCAtIHBhcnRkZWYgKyAxLA0KPiA+
+PiArCQkJICAgICAgIHNpemVvZihuZXdfc3VicGFydC0+bmFtZSkpOw0KPiA+PiAgIAkJc3Ryc2Nw
+eShuZXdfc3VicGFydC0+bmFtZSwgcGFydGRlZiwgbGVuZ3RoKTsNCj4gPiBTaG91bGRuJ3QgdGhh
+dCBiZSBhIG1lbWNweSgpIHdpdGggdGhlIG9yaWdpbmFsIGxlbmd0aD8NCj4gPiBTaW5jZSBpdCBs
+b29rcyBhcyB0aG91Z2ggdGhlcmUgaXMgc29tZXRoaW5nIGVxdWl2YWxlbnQgdG86DQo+ID4gCQlu
+ZXh0ID0gc3RyY2hyKHBhcnRkZWYsICcsJyk7DQo+ID4ganVzdCBhYm92ZT8NCj4gPiBNYXliZSB3
+aXRoOg0KPiA+IAkJbmV3X3N1YnBhcnQtPm5hbWVbbGVuZ3RoXSA9ICdcMCc7DQo+ID4gaWYgdGhl
+IHRhcmdldCBpc24ndCB6ZXJvIGZpbGxlZCAod2hpY2ggdGhlIHN0cm5jcHkoKSBwcm9iYWJseQ0K
+PiA+IHJlbGllZCBvbi4pDQo+IA0KPiBZZXMgdGhhdCB3b3VsZCBiZSBiZXR0ZXIuIEJ1dCBzaW5j
+ZSBJJ20gZml4aW5nIHRoZSBpc3N1ZSBjYXVzZWQgYnkgdGhlDQo+IG1lbnRpb25lZCBjb21taXQs
+IHdoaWNoIHdhcyBhbiBhY2NlcHRlZCBjaGFuZ2UgdG8gdXNlIHN0cnNjcHkgaW5zdGVhZCBvZg0K
+PiBzdHJuY3B5IGFuZCBzZWVtcyBhIHBhcnQgb2YgYSBzZXJpZXMgb2YgY2hhbmdlcyB0byBkbyB0
+aGF0LCBJIHRoaW5rDQo+IHRoZXJlIG1pZ2h0IGJlIGEgcmVhc29uIHRoZSBtYWludGFpbmVycyBw
+cmVmZXJyZWQgc3Ryc2NweSBvdmVyIHN0cm5jcHkNCj4gb3ZlciBtZW1jcHk/IE90aGVyd2lzZSB3
+ZSBjb3VsZCBqdXN0IHJldmVydCB0aGF0IGNvbW1pdCBhbmQga2VlcCB1c2luZw0KPiB0aGUgb3Jp
+Z2luYWwgc3RybmNweSArIHNldHRpbmcgTlVMTCBtZXRob2QsIGFuZCB0aGVuIHBvdGVudGlhbGx5
+IHN3YXANCj4gc3RybmNweSB3aXRoIG1lbWNweS4NCg0KSSBzdXNwZWN0IHRoZXkgYWNjZXB0ZWQg
+dGhlIGNoYW5nZSB3aXRob3V0IHJlYWxpc2luZyBqdXN0IGhvdw0KY3JlYXRpdmUgc29tZSBvZiB0
+aGUgc3RybmNweSgpIGNhbGxzIGFyZS4NCldoaWxlIHN0cnNjcHkoKSBpcyBhIGJldHRlciBmdW5j
+dGlvbiB0aGFuIHN0cm5jcHkoKSAob3Igc3RybGNweSgpKQ0KZXh0cmVtZSBjYXJlIGhhcyB0byBi
+ZSB0YWtlbiB0byBhdm9pZCBhZGRpbmcgYnVncyB0byBjb2RlIHRoYXQNCndhcyBhY3R1YWxseSBm
+aW5lLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
+IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
+b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
 
 
