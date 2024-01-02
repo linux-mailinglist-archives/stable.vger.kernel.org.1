@@ -1,212 +1,138 @@
-Return-Path: <stable+bounces-9164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61A78216AB
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 04:39:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954188216C2
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 04:55:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2910D1F21912
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 03:39:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFBAD1C20B1F
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 03:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBDBEC8;
-	Tue,  2 Jan 2024 03:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F15EC4;
+	Tue,  2 Jan 2024 03:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mvb+BPh4"
+	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="M+hlsmwV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="4mzICWGb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A9920E0;
-	Tue,  2 Jan 2024 03:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704166753; x=1735702753;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=mXMcv0AhIvrLmeabUc73o/ZBWaLRRjH+EzWOYT+W7IM=;
-  b=Mvb+BPh4MbYQQizCjMfpYbkE2Pw56M5Q+xEamQRlqNd53mX0N8F+sAyp
-   EG2JZU2a+nkjsOEzoqYCEvMYcZNACLYVt0b0VzY/ZE/En3PXySgvHYAjK
-   HZUkEnw6J/2sUbVTVUEirtjWlTlHJOS5alGCkU+RUWy2umLX8zKS771td
-   4KQw24O4sTDuS6xS3hDoZZKKDpIWBjLziBoJcnN+GNF3iOY8tOxeZITSa
-   5xeW35qUzRwCyK+mjlvD81gfGNOUpQN4Md4ovP2rCjz+Ai4AhUWlb07NV
-   JIDocYeHJapOqKBip7h55iSGhlc198brx4WZNgll/ZbMuRGdlVTlnYG+b
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="395721108"
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
-   d="scan'208";a="395721108"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2024 19:39:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
-   d="scan'208";a="21355779"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2024 19:39:13 -0800
-Date: Mon, 1 Jan 2024 19:40:50 -0800
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Zhang Rui <rui.zhang@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
-	stable@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Zhao Liu <zhao1.liu@linux.intel.com>
-Subject: Re: [PATCH 4/4] thermal: intel: hfi: Add a suspend notifier
-Message-ID: <20240102034050.GA8661@ranerica-svr.sc.intel.com>
-References: <20231227062940.10780-1-ricardo.neri-calderon@linux.intel.com>
- <20231227062940.10780-5-ricardo.neri-calderon@linux.intel.com>
- <CAJZ5v0hHu7R+mnW=w1NM80=Ha0QL853+O6i3RKrw18wuhRPUOg@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB4120F9;
+	Tue,  2 Jan 2024 03:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailout.west.internal (Postfix) with ESMTP id BD4A33200CCA;
+	Mon,  1 Jan 2024 22:55:25 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Mon, 01 Jan 2024 22:55:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1704167725; x=
+	1704254125; bh=xtu5fnYjiNRMAjboSlP/RYM4DJQBVcWuSfRSYWtS7Ig=; b=M
+	+hlsmwV6Ot1lbuzgVo8WDSd/F690g+htk9q9v8KRFns1RQXKO29KsA0TStUK2kkQ
+	LBBi4NTqtgy8ELWYKsOggEPez9yqErfrHs293FtFJhcxIWHlKUA5NfR/7W1FKM/t
+	DSIun06sCHDBaqyd9yM6AHnH9qyQ3zn9paRUi7KzoMz0Yt3yOsXOGLFkgxSCDuL/
+	dLs7hFOef0z9PhJD9RcMT7wKzrT659QPdpFwNZuMi9hie9jtWh3gB/XI2O/6RfCB
+	PTWimKDosgkI0LB8Njv3LURoWKgz21nKZgvD/5uxQto0ylUTxElrcpkI9nvQXEWD
+	dWIGdu6V7Jovab2qTzITg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1704167725; x=1704254125; bh=xtu5fnYjiNRMAjboSlP/RYM4DJQB
+	VcWuSfRSYWtS7Ig=; b=4mzICWGbr2/Ghz4dtdjxN3mXUqAF9gKenc/1zZwJHtPB
+	mHQtoeb+AgGS6LTzs0qKH0IIB3sXVHbRbi9K153gvwbXKHdVPtq7wVC6uDOc/Oje
+	FIy2yijP2yNwXZgapE7qrJqZzBu8wZdOLFzNrsnC8KAdZXEkhRBCdpAWbVh+NyRt
+	PvNv9DqcQV/3Ltsv8XqW8o8dNVN02fzm4x/D1lzB1Z157aTj3pqIgDVoV4zKx4Hs
+	m874+pEaetrGbrJiP98bfQeJgxBUt2OyI5ET4UZVYG7IZN+g//LuG/b+ankDz5dA
+	1od7EuUdBCcGSmi7cmou5TacKt0G/knDQRNmGaos4Q==
+X-ME-Sender: <xms:LImTZYYGub6MV00vuUJfSdbZrLX66npZFnkn_T7-4mme1LGJoi7N3Q>
+    <xme:LImTZTZHIvDOf0LU-oVuVqyTJdhBq8JsOQD_wWYLReAvfaR_2dzdudSgfXJt28K7K
+    Jm3kd1YUTsmgTru2E0>
+X-ME-Received: <xmr:LImTZS8uu3srXsyZ7v1KoJ1S3hEihe6hkbI-Q08DwkHOKFs8GSAjXhVZxdDNIW9hS-qV1vyXHefb8rBvwUOgvNXFPFV3Eux6Vg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeguddgieeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfgrkhgr
+    shhhihcuufgrkhgrmhhothhouceoohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhird
+    hjpheqnecuggftrfgrthhtvghrnhephefhhfettefgkedvieeuffevveeufedtlefhjeei
+    ieetvdelfedtgfefuedukeeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepohdqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjph
+X-ME-Proxy: <xmx:LYmTZSpQaHQMhjLL1ubJrHdfhJE6pYWgyOxNmT-raeZdg84SQoegTg>
+    <xmx:LYmTZTqia9dfCvoydY9hsd5H4rWjMMpttyVqQQab8tOpefrVQXUtaw>
+    <xmx:LYmTZQTL8saVIzbLm6ddByOgjb9Oi1IL-gWG_C8FhvqGUFm8RnAM7g>
+    <xmx:LYmTZUDp4Luo-GJB4SsBGhYSt3DEHSwfA4t6Sj4x8PCQpWvj7g_jqg>
+Feedback-ID: ie8e14432:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 1 Jan 2024 22:55:22 -0500 (EST)
+Date: Tue, 2 Jan 2024 12:55:19 +0900
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	adamg@pobox.com, stable@vger.kernel.org,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Tobias Gruetzmacher <tobias-lists@23.gs>
+Subject: Re: [PATCH] firewire: ohci: suppress unexpected system reboot in AMD
+ Ryzen machines and ASM108x/VT630x PCIe cards
+Message-ID: <20240102035519.GA46261@workstation.local>
+Mail-Followup-To: Mario Limonciello <mario.limonciello@amd.com>,
+	linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	adamg@pobox.com, stable@vger.kernel.org,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Tobias Gruetzmacher <tobias-lists@23.gs>
+References: <20231229035735.11127-1-o-takashi@sakamocchi.jp>
+ <af04e964-28b9-4c31-a2e2-93d8410b5e8b@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hHu7R+mnW=w1NM80=Ha0QL853+O6i3RKrw18wuhRPUOg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <af04e964-28b9-4c31-a2e2-93d8410b5e8b@amd.com>
 
-On Fri, Dec 29, 2023 at 06:27:30PM +0100, Rafael J. Wysocki wrote:
-> On Wed, Dec 27, 2023 at 7:28 AM Ricardo Neri
-> <ricardo.neri-calderon@linux.intel.com> wrote:
-> >
-> > The kernel gives the HFI hardware a memory region that the latter uses to
-> > provide updates to the HFI table. The kernel allocates this memory region
-> > at boot. It remains constant throughout runtime time.
-> >
-> > When resuming from suspend or hibernation, the restore kernel allocates a
-> > second memory buffer and reprograms the HFI hardware with the new location
-> > as part of a normal boot. The location of the second memory buffer may
-> > differ from the one allocated by the image kernel. Subsequently, when the
-> > restore kernel transfers control to the image kernel, the second buffer
-> > becomes invalid, potentially leading to memory corruption if the hardware
-> > writes to it (hardware continues using the buffer from the restore kernel).
-> >
-> > Add a suspend notifier to disable all HFI instances before jumping to the
-> > image kernel and enable them once the image kernel has been restored. Use
-> > the memory buffer that the image kernel allocated.
-> >
-> > For non-boot CPUs, rely on the CPU hotplug callbacks as CPUs are disabled
-> > and enabled during suspend and resume, respectively.
-> >
-> > The CPU hotplug callbacks do not cover the boot CPU. Handle the HFI
-> > instance of the boot CPU from the suspend notifier callback.
-> >
-> > Cc: Chen Yu <yu.c.chen@intel.com>
-> > Cc: Len Brown <len.brown@intel.com>
-> > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > Cc: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-> > Cc: Zhang Rui <rui.zhang@intel.com>
-> > Cc: Zhao Liu <zhao1.liu@linux.intel.com>
-> > Cc: linux-pm@vger.kernel.org
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> > ---
-> >  drivers/thermal/intel/intel_hfi.c | 53 +++++++++++++++++++++++++++++++
-> >  1 file changed, 53 insertions(+)
-> >
-> > diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
-> > index d2c874f43786..965c245e5e78 100644
-> > --- a/drivers/thermal/intel/intel_hfi.c
-> > +++ b/drivers/thermal/intel/intel_hfi.c
-> > @@ -30,11 +30,13 @@
-> >  #include <linux/kernel.h>
-> >  #include <linux/math.h>
-> >  #include <linux/mutex.h>
-> > +#include <linux/notifier.h>
-> >  #include <linux/percpu-defs.h>
-> >  #include <linux/printk.h>
-> >  #include <linux/processor.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/spinlock.h>
-> > +#include <linux/suspend.h>
-> >  #include <linux/string.h>
-> >  #include <linux/topology.h>
-> >  #include <linux/workqueue.h>
-> > @@ -569,11 +571,62 @@ static __init int hfi_parse_features(void)
-> >         return 0;
-> >  }
-> >
-> > +static void hfi_do_pm_enable(void *info)
-> > +{
-> > +       struct hfi_instance *hfi_instance = info;
-> > +
-> > +       hfi_set_hw_table(hfi_instance);
-> > +       hfi_enable();
-> 
-> The above do RMW, so should locking be used here?
-> 
-> > +}
-> > +
-> > +static void hfi_do_pm_disable(void *info)
-> > +{
-> > +       hfi_disable();
-> > +}
-> 
-> And here?
+Hi Mario,
 
-On single-package systems, HFI enable/disable only happens on the boot CPU,
-via either the CPU hotplug callbacks or the suspend notifier. It is
-unlikely they will run concurrently, IMO. It also looks as good hygiene to
-me to use locking, just in case. I will use the hfi_instance_lock in my
-next version.
-
-On multi-package systems, HFI instance of non-boot packages are always
-handled via the CPU hotplug callbacks.
- 
-> 
+On Fri, Dec 29, 2023 at 08:30:00PM -0600, Mario Limonciello wrote:
+> On 12/28/2023 21:57, Takashi Sakamoto wrote:
+> > @@ -3527,6 +3534,45 @@ static const struct fw_card_driver ohci_driver = {
+> >   	.stop_iso		= ohci_stop_iso,
+> >   };
+> > +// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
+> > +// ASM1083/1085 brings an inconvenience that read accesses to 'Isochronous Cycle Timer' register
+> > +// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
+> > +// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
+> > +// while it is probable due to detection of any type of PCIe error.
+> > +#if IS_ENABLED(CONFIG_X86)
 > > +
-> > +static int hfi_pm_notify(struct notifier_block *nb,
-> > +                        unsigned long mode, void *unused)
+> > +#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
+> > +
+> > +static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev,
+> > +							    struct fw_ohci *ohci)
 > > +{
-> > +       struct hfi_cpu_info *info = &per_cpu(hfi_cpu_info, 0);
-> > +       struct hfi_instance *hfi_instance = info->hfi_instance;
+> > +	const struct pci_dev *pcie_to_pci_bridge;
+> > +	const struct cpuinfo_x86 *cinfo = &cpu_data(0);
 > > +
-> > +       /* HFI may not be in use. */
-> > +       if (!hfi_instance)
-> > +               return 0;
-> > +
-> > +       /*
-> > +        * Only handle the HFI instance of the package of the boot CPU. The
-> > +        * instances of other packages are handled in the CPU hotplug callbacks.
-> > +        */
-> > +       switch (mode) {
-> > +       case PM_HIBERNATION_PREPARE:
-> > +       case PM_SUSPEND_PREPARE:
-> > +       case PM_RESTORE_PREPARE:
-> > +               return smp_call_function_single(0, hfi_do_pm_disable,
-> > +                                               NULL, true);
-> > +
-> > +       case PM_POST_RESTORE:
-> > +       case PM_POST_HIBERNATION:
-> > +       case PM_POST_SUSPEND:
-> > +               return smp_call_function_single(0, hfi_do_pm_enable,
-> > +                                               hfi_instance, true);
-> > +       default:
-> > +               return -EINVAL;
-> > +       }
-> > +}
-> > +
-> > +static struct notifier_block hfi_pm_nb = {
-> > +       .notifier_call = hfi_pm_notify,
-> > +};
-> > +
-> >  void __init intel_hfi_init(void)
-> >  {
-> >         struct hfi_instance *hfi_instance;
-> >         int i, j;
-> >
-> > +       if (register_pm_notifier(&hfi_pm_nb))
-> > +               return;
-> > +
-> >         if (hfi_parse_features())
-> >                 return;
-> >
-> > --
+> > +	// Detect any type of AMD Ryzen machine.
+> > +	if (cinfo->x86_vendor != X86_VENDOR_AMD || cinfo->x86 < 0x17)
+> > +		return false;
+> 
+> Maybe it's better to use X86_FEATURE_ZEN?
+
+Indeed. We can use it under the condition branch for CONFIG_X86, like:
+
++       // Detect any type of AMD Ryzen machine.
++       if (!static_cpu_has(X86_FEATURE_ZEN))
++               return false;
+
+
+Thanks
+
+Takashi Sakamoto
 
