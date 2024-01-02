@@ -1,114 +1,138 @@
-Return-Path: <stable+bounces-9180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE78821B76
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:14:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F43C821B9F
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB948282299
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:14:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B5D71C21F07
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21CFEAFF;
-	Tue,  2 Jan 2024 12:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C01D2FE;
+	Tue,  2 Jan 2024 12:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="WxwBsML1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MvWAYpJW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3567AF4FC
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 12:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-33686649b72so9528734f8f.3
-        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 04:14:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1704197684; x=1704802484; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:reply-to:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zhh5vYdTZsQ1BaZTdDhHiFjJyttFCie1hf7tVLjKe4E=;
-        b=WxwBsML1xEmvYETHA+2azUPAb+bHBDmjJhXbGW3MuowA4Hr6NmzOJlwCWuaTIt4855
-         sQvZVkXHc8hf1m12hmwa0mWPu7Zr1Ieds/3Ix+VyI9nzYxyMyXZcop8PiHRD1h+SVlhu
-         0iUDrXRc3YVxA7+lgNEXsju6t8DX53gjFBptUTDl+HIypncD7I1G4at9MFNBCei4Yo05
-         /K+G/s8Kr6vei5NiZo44DbAW3pwk89URSYt5wb7TyEWKFZfAlX3b+cezIG3SlA4bRP+9
-         3HLsX/Pk6PfFNvby6cKT6dCAftsNTD5gIxIJCwC8YTxz9hk7nfrmZCfBaINNB/Xw3aTh
-         1OEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704197684; x=1704802484;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:reply-to:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zhh5vYdTZsQ1BaZTdDhHiFjJyttFCie1hf7tVLjKe4E=;
-        b=w/2HUyp6ulqAN+0EZ5ha7md/9xzLKyc3zrR7FYFYsXQpyo2Y51DRf3++AvvY41pUhr
-         QKufUWldDLnqrip93O/vBPYa0p3YGjVWH+grLOOMPYfgtjekhFsAGxX8561V4A6+BUcM
-         2J/tT7cKEFYap8vEDvItZ6tlMIzjx6Emo9ptaLOH/zjzLzkf2746ryyfbsrv43EQtIuD
-         ZxsBETCpTtf8s4lSrgDoxO0Ywzg9xZstxFNQCwvLTmIThIPZl0zpbCpC491kFSsVYZUb
-         fez44O7WTPVBp7nI62rFf2il279jtKlY1LQskPBc1hyk9bipWAT1qIWKnDjMwIHDOWWK
-         U/Kg==
-X-Gm-Message-State: AOJu0YyJ8Q/IE2SHM/fvr6jSHeeCgKwq4nbSm2vQnH5g8b8As0UeNxgZ
-	PP2UCUWofUqF4DaTmyC6PB2MEr1g1CET3syQHNuqCNouAmc=
-X-Google-Smtp-Source: AGHT+IHKcvbQIsFBLDgIl79CiLExOpF73lYzXq3fNR05MEXO1/H2Asjz3awgiFru0mE28p5VPlXF3w==
-X-Received: by 2002:adf:fdc7:0:b0:333:37f6:ad33 with SMTP id i7-20020adffdc7000000b0033337f6ad33mr8723122wrs.102.1704197684568;
-        Tue, 02 Jan 2024 04:14:44 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:b41:c160:2900:c6f1:e9ae:67a6? ([2a01:e0a:b41:c160:2900:c6f1:e9ae:67a6])
-        by smtp.gmail.com with ESMTPSA id cg13-20020a5d5ccd000000b00336e6014263sm16874405wrb.98.2024.01.02.04.14.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jan 2024 04:14:43 -0800 (PST)
-Message-ID: <a8b5e3fb-ff65-41c0-916c-58454cd0c810@6wind.com>
-Date: Tue, 2 Jan 2024 13:14:43 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347C1F9D2;
+	Tue,  2 Jan 2024 12:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704198648; x=1735734648;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=rtM5doXFq2NWibzp7OwFSY3PvLEqNSMtMBZ+d5jeVxk=;
+  b=MvWAYpJWQAdH/qOacLAHCdqaMVKIj7KJaBhg4kL/AmJKEAqSkRDIAnk7
+   lAw0umOyzh4ZhIPuVaOZibPIm/OPgYBKSxhhzEODHYcRtaVgMBg0+6WuE
+   5cW/ZuAjouaQgUpafQy1LqHUQ3854XdKaBX1bVok3Fy6KKJ47BPZuIhkN
+   fzEYZOu6TD0BnrnzU0bE+8G5HvuArtVlsqToTZvDaJVgQiXNODpMPZKbU
+   Etop6uBeQH0vZ/gpSvAdwQVifzAMHBOSroZJDnrIWqIj15t4slTL+SiG7
+   dTtmIeuAzXA6fZVJOUmtUz5CTxhfq5U1ozQp+7MR2/yBS6rq2N3I7DjTM
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="377030763"
+X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
+   d="scan'208";a="377030763"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 04:30:47 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="1111033434"
+X-IronPort-AV: E=Sophos;i="6.04,325,1695711600"; 
+   d="scan'208";a="1111033434"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmsmga005.fm.intel.com with ESMTP; 02 Jan 2024 04:30:45 -0800
+Message-ID: <b88a9573-6ab5-ed86-dabc-dd07875f88f3@linux.intel.com>
+Date: Tue, 2 Jan 2024 14:32:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net] rtnetlink: allow to set iface down before enslaving
- it
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
 Content-Language: en-US
-To: David Ahern <dsahern@kernel.org>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
- Phil Sutter <phil@nwl.cc>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-References: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
- <42ad4a1e-3a48-48aa-acd1-47d44b2ad0ba@kernel.org>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Organization: 6WIND
-In-Reply-To: <42ad4a1e-3a48-48aa-acd1-47d44b2ad0ba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Prashanth K <quic_prashk@quicinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ Mathias Nyman <mathias.nyman@intel.com>, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20231212112521.3774610-1-quic_prashk@quicinc.com>
+ <20231212112521.3774610-2-quic_prashk@quicinc.com>
+ <2023121518-uncharted-riddance-7c58@gregkh>
+ <849d0ea9-d4f7-c568-968c-88835f64fadf@quicinc.com>
+ <2023122212-stellar-handlebar-2f70@gregkh>
+ <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: [PATCH v2 1/2] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
+In-Reply-To: <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Le 31/12/2023 à 17:36, David Ahern a écrit :
-> On 12/29/23 5:08 AM, Nicolas Dichtel wrote:
->> The below commit adds support for:
->>> ip link set dummy0 down
->>> ip link set dummy0 master bond0 up
->>
->> but breaks the opposite:
->>> ip link set dummy0 up
->>> ip link set dummy0 master bond0 down
->>
->> Let's add a workaround to have both commands working.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
->> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
->> ---
->>  net/core/rtnetlink.c | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
+On 26.12.2023 7.24, Prashanth K wrote:
 > 
-> add tests to tools/testing/selftests/net/rtnetlink.sh
 > 
-Will do.
+> On 22-12-23 11:40 am, Greg Kroah-Hartman wrote:
+>> On Fri, Dec 22, 2023 at 11:29:01AM +0530, Prashanth K wrote:
+>>> On 15-12-23 06:12 pm, Greg Kroah-Hartman wrote:
+>>>> On Tue, Dec 12, 2023 at 04:55:20PM +0530, Prashanth K wrote:
+>>>>> Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+>>>>> XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+>>>>> which fixes XHC timeout, which was seen on synopsys XHCs while
+>>>>> using SG buffers. But the support for this quirk isn't present
+>>>>> in the DWC3 layer.
+>>>>>
+>>>>> We will encounter this XHCI timeout/hung issue if we run iperf
+>>>>> loopback tests using RTL8156 ethernet adaptor on DWC3 targets
+>>>>> with scatter-gather enabled. This gets resolved after enabling
+>>>>> the XHCI_SG_TRB_CACHE_SIZE_QUIRK. This patch enables it using
+>>>>> the xhci device property since its needed for DWC3 controller.
+>>>>>
+>>>>> In Synopsys DWC3 databook,
+>>>>> Table 9-3: xHCI Debug Capability Limitations
+>>>>> Chained TRBs greater than TRB cache size: The debug capability
+>>>>> driver must not create a multi-TRB TD that describes smaller
+>>>>> than a 1K packet that spreads across 8 or more TRBs on either
+>>>>> the IN TR or the OUT TR.
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+>>>>
+>>>> What commit id does this fix?
+>>>>
+>>> This doesn't fix any commit as such, but adds the support for
+>>> XHCI_SG_TRB_CACHE_SIZE_QUIRK (which is present in XHCI layer) to DWC3 layer.
+>>
+>> So this is a new feature?
+>>
+>> How does this fit into the stable kernel rules?
+> 
+> This isn't a new feature. To give some background, upstream commit bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+> added a XHCI quirk which converts SG lists to CMA buffers/URBS if certain conditions aren't met. But they never enabled this xhci quirk
+> since no issues were hit at that time. So, the support for the above mentioned quirk is added from 5.11 kernel onwards, but was never enabled anywhere.
+
+I remember this now.
+  
+Original series had three patches, two adding the feature to xhci, and one for dwc3 enabling it.
+The xhci patches were fine and got in.
+
+https://marc.info/?l=linux-usb&m=160570849625065&w=2
+
+The last dwc3 patch had issues and never apparently got in
+
+https://marc.info/?l=linux-usb&m=161008968009766&w=2
+
+As this feature hasn't been enabled and code not widely run I think it would be  better
+to skip stable for now. Stable can be added later once this has been successfully running
+in upstream for a while.
+
+Thanks
+Mathias
 
 
-Thanks,
-Nicolas
 
