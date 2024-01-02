@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FF3821DB1
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4C0821DB3
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5429A1F22CB5
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FFD61F22C8B
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0171172D;
-	Tue,  2 Jan 2024 14:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CFB1173B;
+	Tue,  2 Jan 2024 14:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3X209Hw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSVX/C+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF8F1171B
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E82C433C9;
-	Tue,  2 Jan 2024 14:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410E011718
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:31:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58868C433C8;
+	Tue,  2 Jan 2024 14:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205910;
-	bh=/jNlgzGh7jsyjBhmXLSJWXPEPR8x7r4cgd+M9BLd7Vg=;
+	s=korg; t=1704205914;
+	bh=V8/Rt/4bUPzc8RLoiAzRHiyjIxgOSi7r0PPHy7kplZQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y3X209Hw7runkMjhcolRp87rLXH9+MjS/X8A+CA46e/ljLJSLvad/UzBh3pROlXFb
-	 qVnCQRyPDee8nzkPSwqzxQh2YE5Z+I00My71ZSW/HHPUistXlw61geavEDA+RMkYH+
-	 4GfEjAbvddXB1BJOeGpiawinw7tf7xflg0ovCphA=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: pass the folio and the page to" failed to apply to 5.10-stable tree
+	b=bSVX/C+M4utamPieCc4+4/JWv0BrdvUHGfNgpz4NIfWL946h2YBR/hVmNmJBGluQR
+	 VzPRlWTxjJajxZXlp5T8CmY2hNDEIAvUlHH4bFsGQ8viKr+uWO76y0T4pm1RyTjGQb
+	 NjYEazRpfiUeJt2KDlq5eYhNVhkIRi1QUnedwCNI=
+Subject: FAILED: patch "[PATCH] mm/memory-failure: pass the folio and the page to" failed to apply to 5.4-stable tree
 To: willy@infradead.org,akpm@linux-foundation.org,dan.j.williams@intel.com,n-horiguchi@ah.jp.nec.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:31:41 +0100
-Message-ID: <2024010240-irregular-unthawed-c372@gregkh>
+Date: Tue, 02 Jan 2024 15:31:42 +0100
+Message-ID: <2024010242-sneak-monoxide-9bec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 376907f3a0b34a17e80417825f8cc1c40fcba81b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010240-irregular-unthawed-c372@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010242-sneak-monoxide-9bec@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
