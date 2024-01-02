@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00479821DB5
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A4E821DB6
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A980F1F22D34
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 989F228379D
 	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F345811CA3;
-	Tue,  2 Jan 2024 14:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C0A10955;
+	Tue,  2 Jan 2024 14:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tj+sqOHm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEnPQXbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCAE11CB8
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD27FC433C8;
-	Tue,  2 Jan 2024 14:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F375211C8A
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:32:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16174C433C7;
+	Tue,  2 Jan 2024 14:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205921;
-	bh=aV7GZV6g2m404qr9Lh8MqBgfnvYUHK23mrsfPAKz+xg=;
+	s=korg; t=1704205925;
+	bh=EtVLWgkrHmgeeg7xnkfM3NlobeMsqNi7WW/u0Pfgz8o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Tj+sqOHmRjcgInBd+SdqAOivPtJQRyXa/hKKx1SPNDcTsJA7w62Vw/8L44d6Kp+qk
-	 +nF5+sGsTgDrS7rAUpQkfwMhNBVyeXuhUJRbHshFJ+Ag9XbIVLNaLUasQFkVVQf+a+
-	 Q8/3qT8ymMMprO/6XmFXfn8HewglgNgqE6S6wh18=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: pass the folio and the page to" failed to apply to 4.14-stable tree
+	b=lEnPQXbOZzGml+eFoWtvDyQNPQY4sLRL033A9RrwRiOILrXIDmG6OSkwaRARTPMg5
+	 jrCNpvN6oZAHAEqRCS4rbesIljg4YXaXQdu5+z5kjIwx8sy/xrZrOH4UwzW1jRd1kS
+	 opadvJqyVDt4tV/hgrWefmtVcUjefC6/3XLo+yMw=
+Subject: FAILED: patch "[PATCH] mm/memory-failure: cast index to loff_t before shifting it" failed to apply to 5.15-stable tree
 To: willy@infradead.org,akpm@linux-foundation.org,dan.j.williams@intel.com,n-horiguchi@ah.jp.nec.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:31:45 +0100
-Message-ID: <2024010244-amends-pruning-6885@gregkh>
+Date: Tue, 02 Jan 2024 15:31:55 +0100
+Message-ID: <2024010255-buccaneer-rockfish-3014@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,35 +45,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 376907f3a0b34a17e80417825f8cc1c40fcba81b
+git cherry-pick -x 39ebd6dce62d8cfe3864e16148927a139f11bc9a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010244-amends-pruning-6885@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010255-buccaneer-rockfish-3014@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-376907f3a0b3 ("mm/memory-failure: pass the folio and the page to collect_procs()")
-91e79d22be75 ("mm: convert DAX lock/unlock page to lock/unlock folio")
-4248d0083ec5 ("mm: ksm: support hwpoison for ksm page")
-4f775086a6ee ("mm: memory-failure: refactor add_to_kill()")
-5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-a46c9304b4bb ("mm/hwpoison: pass pfn to num_poisoned_pages_*()")
-d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
-e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
-0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
-eba4d770efc8 ("mm/swap: comment all the ifdef in swapops.h")
-36537a67d356 ("mm, hwpoison: avoid unneeded page_mapped_in_vma() overhead in collect_procs_anon()")
-21c9e90ab9a4 ("mm, hwpoison: use num_poisoned_pages_sub() to decrease num_poisoned_pages")
-6d751329e761 ("Merge branch 'mm-hotfixes-stable' into mm-stable")
+39ebd6dce62d ("mm/memory-failure: cast index to loff_t before shifting it")
+00cc790e0036 ("mm: factor helpers for memory_failure_dev_pagemap")
+f25cbb7a95a2 ("mm: add zone device coherent type memory support")
+034e5afad921 ("mm: re-allow pinning of zero pfns")
+1c563432588d ("mm: fix is_pinnable_page against a cma page")
+405ce051236c ("mm/hwpoison: fix race between hugetlb free/demotion and memory_failure_hugetlb()")
+9030fb0bb9d6 ("Merge tag 'folio-5.18c' of git://git.infradead.org/users/willy/pagecache")
 
 thanks,
 
@@ -81,32 +75,17 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 376907f3a0b34a17e80417825f8cc1c40fcba81b Mon Sep 17 00:00:00 2001
+From 39ebd6dce62d8cfe3864e16148927a139f11bc9a Mon Sep 17 00:00:00 2001
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Date: Mon, 18 Dec 2023 13:58:35 +0000
-Subject: [PATCH] mm/memory-failure: pass the folio and the page to
- collect_procs()
+Date: Mon, 18 Dec 2023 13:58:37 +0000
+Subject: [PATCH] mm/memory-failure: cast index to loff_t before shifting it
 
-Patch series "Three memory-failure fixes".
+On 32-bit systems, we'll lose the top bits of index because arithmetic
+will be performed in unsigned long instead of unsigned long long.  This
+affects files over 4GB in size.
 
-I've been looking at the memory-failure code and I believe I have found
-three bugs that need fixing -- one going all the way back to 2010!  I'll
-have more patches later to use folios more extensively but didn't want
-these bugfixes to get caught up in that.
-
-
-This patch (of 3):
-
-Both collect_procs_anon() and collect_procs_file() iterate over the VMA
-interval trees looking for a single pgoff, so it is wrong to look for the
-pgoff of the head page as is currently done.  However, it is also wrong to
-look at page->mapping of the precise page as this is invalid for tail
-pages.  Clear up the confusion by passing both the folio and the precise
-page to collect_procs().
-
-Link: https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-Link: https://lkml.kernel.org/r/20231218135837.3310403-2-willy@infradead.org
-Fixes: 415c64c1453a ("mm/memory-failure: split thp earlier in memory error handling")
+Link: https://lkml.kernel.org/r/20231218135837.3310403-4-willy@infradead.org
+Fixes: 6100e34b2526 ("mm, memory_failure: Teach memory_failure() about dev_pagemap pages")
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 Cc: Dan Williams <dan.j.williams@intel.com>
 Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
@@ -114,78 +93,17 @@ Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 660c21859118..6953bda11e6e 100644
+index 82e15baabb48..455093f73a70 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -595,10 +595,9 @@ struct task_struct *task_early_kill(struct task_struct *tsk, int force_early)
- /*
-  * Collect processes when the error hit an anonymous page.
-  */
--static void collect_procs_anon(struct page *page, struct list_head *to_kill,
--				int force_early)
-+static void collect_procs_anon(struct folio *folio, struct page *page,
-+		struct list_head *to_kill, int force_early)
- {
--	struct folio *folio = page_folio(page);
- 	struct vm_area_struct *vma;
- 	struct task_struct *tsk;
- 	struct anon_vma *av;
-@@ -633,12 +632,12 @@ static void collect_procs_anon(struct page *page, struct list_head *to_kill,
- /*
-  * Collect processes when the error hit a file mapped page.
-  */
--static void collect_procs_file(struct page *page, struct list_head *to_kill,
--				int force_early)
-+static void collect_procs_file(struct folio *folio, struct page *page,
-+		struct list_head *to_kill, int force_early)
- {
- 	struct vm_area_struct *vma;
- 	struct task_struct *tsk;
--	struct address_space *mapping = page->mapping;
-+	struct address_space *mapping = folio->mapping;
- 	pgoff_t pgoff;
+@@ -1704,7 +1704,7 @@ static void unmap_and_kill(struct list_head *to_kill, unsigned long pfn,
+ 		 * mapping being torn down is communicated in siginfo, see
+ 		 * kill_proc()
+ 		 */
+-		loff_t start = (index << PAGE_SHIFT) & ~(size - 1);
++		loff_t start = ((loff_t)index << PAGE_SHIFT) & ~(size - 1);
  
- 	i_mmap_lock_read(mapping);
-@@ -704,17 +703,17 @@ static void collect_procs_fsdax(struct page *page,
- /*
-  * Collect the processes who have the corrupted page mapped to kill.
-  */
--static void collect_procs(struct page *page, struct list_head *tokill,
--				int force_early)
-+static void collect_procs(struct folio *folio, struct page *page,
-+		struct list_head *tokill, int force_early)
- {
--	if (!page->mapping)
-+	if (!folio->mapping)
- 		return;
- 	if (unlikely(PageKsm(page)))
- 		collect_procs_ksm(page, tokill, force_early);
- 	else if (PageAnon(page))
--		collect_procs_anon(page, tokill, force_early);
-+		collect_procs_anon(folio, page, tokill, force_early);
- 	else
--		collect_procs_file(page, tokill, force_early);
-+		collect_procs_file(folio, page, tokill, force_early);
- }
- 
- struct hwpoison_walk {
-@@ -1602,7 +1601,7 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
- 	 * mapped in dirty form.  This has to be done before try_to_unmap,
- 	 * because ttu takes the rmap data structures down.
- 	 */
--	collect_procs(hpage, &tokill, flags & MF_ACTION_REQUIRED);
-+	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
- 
- 	if (PageHuge(hpage) && !PageAnon(hpage)) {
- 		/*
-@@ -1772,7 +1771,7 @@ static int mf_generic_kill_procs(unsigned long long pfn, int flags,
- 	 * SIGBUS (i.e. MF_MUST_KILL)
- 	 */
- 	flags |= MF_ACTION_REQUIRED | MF_MUST_KILL;
--	collect_procs(&folio->page, &to_kill, true);
-+	collect_procs(folio, &folio->page, &to_kill, true);
- 
- 	unmap_and_kill(&to_kill, pfn, folio->mapping, folio->index, flags);
- unlock:
+ 		unmap_mapping_range(mapping, start, size, 0);
+ 	}
 
 
