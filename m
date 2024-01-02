@@ -1,152 +1,212 @@
-Return-Path: <stable+bounces-9163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C686582168B
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 03:42:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D61A78216AB
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 04:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB85281FA6
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 02:42:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2910D1F21912
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 03:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 142ECA48;
-	Tue,  2 Jan 2024 02:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBDBEC8;
+	Tue,  2 Jan 2024 03:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dgcb7+aA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mvb+BPh4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766D646A3;
-	Tue,  2 Jan 2024 02:42:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d45f182fa2so42783265ad.3;
-        Mon, 01 Jan 2024 18:42:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704163327; x=1704768127; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IfOHaDOQFWCjFE5eYECAufdGX/M8ENRMe8BdoJQwdrM=;
-        b=dgcb7+aAMoauuTzvh8Nau8kLSePNZJYoHi3AkeNl8se+Cw6TIjRVVaKMoFNAnEMEuL
-         PElVf5uImFZ3ErbOc7D1VzSEmOyedcATKhRxmy1moWexiM2+EZ/I1MUDACj4j+OHj1fx
-         +YGgZRJdtX1Tn7vbXwjfR54z+OlfD9Qu8pjpC4ZBvxGZZZMI1yySTM47cGqcXBKt/TD3
-         LmCpOMDE72qQQfxPpkRdMEd2Y0WS3EZhutpB4M9c/gUn1kVzZyYrQ/Mx9QUgcGW0sBiB
-         rmEJYmaYpwH2f8okSsAEym46Jf+Vk+ZxKZUU4mqjLGmijiG1w/V8q56B+WPHOXXN5rIs
-         WWsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704163327; x=1704768127;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IfOHaDOQFWCjFE5eYECAufdGX/M8ENRMe8BdoJQwdrM=;
-        b=iBTA1d4dtLHmjOoieydFu3kXxgtEM52T3CGJVfjf2U96IrSLtApZ2hXYkdzkgMR0kf
-         uxQwBSjtCcyDULVVxTNaUijyWccx2415UP+uGch2KX1QiR8QGdSGdkvvf6GlqcGBpadP
-         mqhpVYKVB0yg9y0RRtGSY2+mSN9QcMthhV8SJouy1bJ5UgMeBIfWUAhvbgJRevcXeeAh
-         OB21wlxf/liCgQtrVo8cWI92LbAbClWufbWneoU1/mvO7rNlaL8/5U0nnmhzOWfzlqMf
-         7f1K+VYgFP4iDFdu6Mm6xjF+hz371DvEWtvEbK7Gvq9BPCov4VTh25NQpUde5Ken2N5l
-         0b9w==
-X-Gm-Message-State: AOJu0YxEupkK/OaBmbGGDSAMvAaKgRQx3qb+XvleIEu8cOv7UeYNkjhD
-	DAamdKKhsw0CZMLzUN1M/d4=
-X-Google-Smtp-Source: AGHT+IGBlPFEg45SFGKot3B9Qmhip+YFNIfepomX4SLuIrjxOfMELCEVoF3xRzLbgD7feppLDqQifw==
-X-Received: by 2002:a17:902:e88d:b0:1d4:be70:21c0 with SMTP id w13-20020a170902e88d00b001d4be7021c0mr2015443plg.16.1704163326602;
-        Mon, 01 Jan 2024 18:42:06 -0800 (PST)
-Received: from localhost.localdomain (45.78.55.121.16clouds.com. [45.78.55.121])
-        by smtp.gmail.com with ESMTPSA id a4-20020a170902ecc400b001d1d1ef8be5sm20895643plh.173.2024.01.01.18.42.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jan 2024 18:42:06 -0800 (PST)
-From: Guoxin Pu <pugokushin@gmail.com>
-To: axboe@kernel.dk
-Cc: linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Guoxin Pu <pugokushin@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] block: fix length of strscpy()
-Date: Tue,  2 Jan 2024 10:41:15 +0800
-Message-ID: <20240102024115.4395-1-pugokushin@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A9920E0;
+	Tue,  2 Jan 2024 03:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704166753; x=1735702753;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=mXMcv0AhIvrLmeabUc73o/ZBWaLRRjH+EzWOYT+W7IM=;
+  b=Mvb+BPh4MbYQQizCjMfpYbkE2Pw56M5Q+xEamQRlqNd53mX0N8F+sAyp
+   EG2JZU2a+nkjsOEzoqYCEvMYcZNACLYVt0b0VzY/ZE/En3PXySgvHYAjK
+   HZUkEnw6J/2sUbVTVUEirtjWlTlHJOS5alGCkU+RUWy2umLX8zKS771td
+   4KQw24O4sTDuS6xS3hDoZZKKDpIWBjLziBoJcnN+GNF3iOY8tOxeZITSa
+   5xeW35qUzRwCyK+mjlvD81gfGNOUpQN4Md4ovP2rCjz+Ai4AhUWlb07NV
+   JIDocYeHJapOqKBip7h55iSGhlc198brx4WZNgll/ZbMuRGdlVTlnYG+b
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="395721108"
+X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
+   d="scan'208";a="395721108"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2024 19:39:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
+   d="scan'208";a="21355779"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2024 19:39:13 -0800
+Date: Mon, 1 Jan 2024 19:40:50 -0800
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Zhang Rui <rui.zhang@intel.com>, Zhao Liu <zhao1.liu@intel.com>,
+	stable@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Zhao Liu <zhao1.liu@linux.intel.com>
+Subject: Re: [PATCH 4/4] thermal: intel: hfi: Add a suspend notifier
+Message-ID: <20240102034050.GA8661@ranerica-svr.sc.intel.com>
+References: <20231227062940.10780-1-ricardo.neri-calderon@linux.intel.com>
+ <20231227062940.10780-5-ricardo.neri-calderon@linux.intel.com>
+ <CAJZ5v0hHu7R+mnW=w1NM80=Ha0QL853+O6i3RKrw18wuhRPUOg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0hHu7R+mnW=w1NM80=Ha0QL853+O6i3RKrw18wuhRPUOg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-In commit 146afeb235ccec10c17ad8ea26327c0c79dbd968 ("block: use strscpy()
-to instead of strncpy()") , the length that should now represent the length
-of the string with the terminating NULL was not updated alongside the
-change.
+On Fri, Dec 29, 2023 at 06:27:30PM +0100, Rafael J. Wysocki wrote:
+> On Wed, Dec 27, 2023 at 7:28 AM Ricardo Neri
+> <ricardo.neri-calderon@linux.intel.com> wrote:
+> >
+> > The kernel gives the HFI hardware a memory region that the latter uses to
+> > provide updates to the HFI table. The kernel allocates this memory region
+> > at boot. It remains constant throughout runtime time.
+> >
+> > When resuming from suspend or hibernation, the restore kernel allocates a
+> > second memory buffer and reprograms the HFI hardware with the new location
+> > as part of a normal boot. The location of the second memory buffer may
+> > differ from the one allocated by the image kernel. Subsequently, when the
+> > restore kernel transfers control to the image kernel, the second buffer
+> > becomes invalid, potentially leading to memory corruption if the hardware
+> > writes to it (hardware continues using the buffer from the restore kernel).
+> >
+> > Add a suspend notifier to disable all HFI instances before jumping to the
+> > image kernel and enable them once the image kernel has been restored. Use
+> > the memory buffer that the image kernel allocated.
+> >
+> > For non-boot CPUs, rely on the CPU hotplug callbacks as CPUs are disabled
+> > and enabled during suspend and resume, respectively.
+> >
+> > The CPU hotplug callbacks do not cover the boot CPU. Handle the HFI
+> > instance of the boot CPU from the suspend notifier callback.
+> >
+> > Cc: Chen Yu <yu.c.chen@intel.com>
+> > Cc: Len Brown <len.brown@intel.com>
+> > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> > Cc: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+> > Cc: Zhang Rui <rui.zhang@intel.com>
+> > Cc: Zhao Liu <zhao1.liu@linux.intel.com>
+> > Cc: linux-pm@vger.kernel.org
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > ---
+> >  drivers/thermal/intel/intel_hfi.c | 53 +++++++++++++++++++++++++++++++
+> >  1 file changed, 53 insertions(+)
+> >
+> > diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
+> > index d2c874f43786..965c245e5e78 100644
+> > --- a/drivers/thermal/intel/intel_hfi.c
+> > +++ b/drivers/thermal/intel/intel_hfi.c
+> > @@ -30,11 +30,13 @@
+> >  #include <linux/kernel.h>
+> >  #include <linux/math.h>
+> >  #include <linux/mutex.h>
+> > +#include <linux/notifier.h>
+> >  #include <linux/percpu-defs.h>
+> >  #include <linux/printk.h>
+> >  #include <linux/processor.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/spinlock.h>
+> > +#include <linux/suspend.h>
+> >  #include <linux/string.h>
+> >  #include <linux/topology.h>
+> >  #include <linux/workqueue.h>
+> > @@ -569,11 +571,62 @@ static __init int hfi_parse_features(void)
+> >         return 0;
+> >  }
+> >
+> > +static void hfi_do_pm_enable(void *info)
+> > +{
+> > +       struct hfi_instance *hfi_instance = info;
+> > +
+> > +       hfi_set_hw_table(hfi_instance);
+> > +       hfi_enable();
+> 
+> The above do RMW, so should locking be used here?
+> 
+> > +}
+> > +
+> > +static void hfi_do_pm_disable(void *info)
+> > +{
+> > +       hfi_disable();
+> > +}
+> 
+> And here?
 
-This has caused blkdevparts= definition on kernel cmdline to be not
-correctly recognized and partitions not correctly initialized, breaking any
-device relying on such partitions to boot, on stable releases since 6.6
+On single-package systems, HFI enable/disable only happens on the boot CPU,
+via either the CPU hotplug callbacks or the suspend notifier. It is
+unlikely they will run concurrently, IMO. It also looks as good hygiene to
+me to use locking, just in case. I will use the hfi_instance_lock in my
+next version.
 
-This patch fixes the lengths to contain the terminating NULL.
-
-Fixes: 146afeb235cc ("block: use strscpy() to instead of strncpy()")
-Cc: stable@vger.kernel.org # 6.6.x
-Signed-off-by: Guoxin Pu <pugokushin@gmail.com>
----
- block/partitions/cmdline.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
-
-diff --git a/block/partitions/cmdline.c b/block/partitions/cmdline.c
-index c03bc105e575..4657704c3e37 100644
---- a/block/partitions/cmdline.c
-+++ b/block/partitions/cmdline.c
-@@ -79,8 +79,8 @@ static int parse_subpart(struct cmdline_subpart **subpart, char *partdef)
- 			goto fail;
- 		}
+On multi-package systems, HFI instance of non-boot packages are always
+handled via the CPU hotplug callbacks.
  
--		length = min_t(int, next - partdef,
--			       sizeof(new_subpart->name) - 1);
-+		length = min_t(int, next - partdef + 1,
-+			       sizeof(new_subpart->name));
- 		strscpy(new_subpart->name, partdef, length);
- 
- 		partdef = ++next;
-@@ -138,7 +138,7 @@ static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
- 		goto fail;
- 	}
- 
--	length = min_t(int, next - bdevdef, sizeof(newparts->name) - 1);
-+	length = min_t(int, next - bdevdef + 1, sizeof(newparts->name));
- 	strscpy(newparts->name, bdevdef, length);
- 	newparts->nr_subparts = 0;
- 
-@@ -148,8 +148,8 @@ static int parse_parts(struct cmdline_parts **parts, const char *bdevdef)
- 		bdevdef = next;
- 		next = strchr(bdevdef, ',');
- 
--		length = (!next) ? (sizeof(buf) - 1) :
--			min_t(int, next - bdevdef, sizeof(buf) - 1);
-+		length = (!next) ? sizeof(buf) :
-+			min_t(int, next - bdevdef + 1, sizeof(buf));
- 
- 		strscpy(buf, bdevdef, length);
- 
-@@ -250,7 +250,6 @@ static struct cmdline_parts *bdev_parts;
- static int add_part(int slot, struct cmdline_subpart *subpart,
- 		struct parsed_partitions *state)
- {
--	int label_min;
- 	struct partition_meta_info *info;
- 	char tmp[sizeof(info->volname) + 4];
- 
-@@ -262,9 +261,7 @@ static int add_part(int slot, struct cmdline_subpart *subpart,
- 
- 	info = &state->parts[slot].info;
- 
--	label_min = min_t(int, sizeof(info->volname) - 1,
--			  sizeof(subpart->name));
--	strscpy(info->volname, subpart->name, label_min);
-+	strscpy(info->volname, subpart->name, sizeof(info->volname));
- 
- 	snprintf(tmp, sizeof(tmp), "(%s)", info->volname);
- 	strlcat(state->pp_buf, tmp, PAGE_SIZE);
--- 
-2.43.0
-
+> 
+> > +
+> > +static int hfi_pm_notify(struct notifier_block *nb,
+> > +                        unsigned long mode, void *unused)
+> > +{
+> > +       struct hfi_cpu_info *info = &per_cpu(hfi_cpu_info, 0);
+> > +       struct hfi_instance *hfi_instance = info->hfi_instance;
+> > +
+> > +       /* HFI may not be in use. */
+> > +       if (!hfi_instance)
+> > +               return 0;
+> > +
+> > +       /*
+> > +        * Only handle the HFI instance of the package of the boot CPU. The
+> > +        * instances of other packages are handled in the CPU hotplug callbacks.
+> > +        */
+> > +       switch (mode) {
+> > +       case PM_HIBERNATION_PREPARE:
+> > +       case PM_SUSPEND_PREPARE:
+> > +       case PM_RESTORE_PREPARE:
+> > +               return smp_call_function_single(0, hfi_do_pm_disable,
+> > +                                               NULL, true);
+> > +
+> > +       case PM_POST_RESTORE:
+> > +       case PM_POST_HIBERNATION:
+> > +       case PM_POST_SUSPEND:
+> > +               return smp_call_function_single(0, hfi_do_pm_enable,
+> > +                                               hfi_instance, true);
+> > +       default:
+> > +               return -EINVAL;
+> > +       }
+> > +}
+> > +
+> > +static struct notifier_block hfi_pm_nb = {
+> > +       .notifier_call = hfi_pm_notify,
+> > +};
+> > +
+> >  void __init intel_hfi_init(void)
+> >  {
+> >         struct hfi_instance *hfi_instance;
+> >         int i, j;
+> >
+> > +       if (register_pm_notifier(&hfi_pm_nb))
+> > +               return;
+> > +
+> >         if (hfi_parse_features())
+> >                 return;
+> >
+> > --
 
