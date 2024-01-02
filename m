@@ -1,181 +1,195 @@
-Return-Path: <stable+bounces-9213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7951821E42
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 16:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AB4821EA6
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 16:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3C561C2238D
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:04:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9656D1C224F0
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F82113AC5;
-	Tue,  2 Jan 2024 15:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE6613AF4;
+	Tue,  2 Jan 2024 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bgzhe2H3"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="M3JwIcd5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B3F12E69;
-	Tue,  2 Jan 2024 15:03:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAE8C433C7;
-	Tue,  2 Jan 2024 15:03:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704207838;
-	bh=aAclt0B+OSjENNYBjj9U19v0PFhS/aJa+mB6Qz5/pfY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bgzhe2H3J4eljcl+IJ8gS2QwDzge1N+6/3/KTfrX7nT2XFEZiGdHYyUwjZ5j28MbP
-	 mUCpqPJBc68LBW2UdMeVl/rrrG+ytlf0sBv28Hvy927HBFnSYQSeyobrdzjySZRi4h
-	 eB6QH7Gd6zlpcs/J2chdu+1XoOFeCggI8bO9LM9z2jL59wxCKCDkTD6hcgfXt590Pr
-	 DSltxYFLQOUOpQAeBymvie+c7Ewky3a0uDpDMfOe8brn9M4PZjGiew6R7ByFxL1fz3
-	 T8G636rdv+SFU2d8LdhQOk7/U76UQNUsv5Aq0uYx4LHr+wEaxVICONizhpJX91/fYg
-	 RAyXuZqAbGhDA==
-From: Michael Walle <mwalle@kernel.org>
-To: bbara93@gmail.com
-Cc: benjamin.bara@skidata.com,
-	dmitry.osipenko@collabora.com,
-	jonathanh@nvidia.com,
-	lee@kernel.org,
-	linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	nm@ti.com,
-	peterz@infradead.org,
-	rafael.j.wysocki@intel.com,
-	richard.leitner@linux.dev,
-	stable@vger.kernel.org,
-	treding@nvidia.com,
-	wsa+renesas@sang-engineering.com,
-	wsa@kernel.org,
-	Michael Walle <mwalle@kernel.org>
-Subject: [PATCH v7 2/5] Re: i2c: core: run atomic i2c xfer when !preemptible
-Date: Tue,  2 Jan 2024 16:03:50 +0100
-Message-Id: <20240102150350.3180741-1-mwalle@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
-References: <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA9914290
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 15:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d4a2526a7eso12948205ad.3
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 07:22:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1704208930; x=1704813730; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WnoKlKYiizgsB6ujheryP5PYfuny9iKP1ScPefgYZXU=;
+        b=M3JwIcd5AWmwUY0iTB/EX8Twd7VX2Ijryp3PIee0wxFSI6Tt8yMl09Y7cWFH4vwcVf
+         JgeGrZMv5x1SoQAAQbAvbhWIBCSyNKTkS5wC4FGdljRIFtiKYs3P0bI0Plp3JOln61JS
+         +GAPuQoIV+QOtprPlX+Y3+uHW0UBKdnpDDjEw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704208930; x=1704813730;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WnoKlKYiizgsB6ujheryP5PYfuny9iKP1ScPefgYZXU=;
+        b=CEsxJXeMeqXx2Lh1kYkVlS36pAt+ZLJp9sUafrPkonHwKhqnt25BSeMiZMCfSDKLx1
+         jPSkGOFwQvBm0RyKb08kSXBPZvT4YNInKn7MO8uFXiwbY2j3TCYkwXwve9Hpf4fAEVzN
+         mI++MjMtUSfd6SK6IoPA4AngrcuG5FfowXSWwC1SjLI1DnxORVcSm3eyDYtTBrJ7hohq
+         W1ycRoC7O18a5kBGwNFFoLVha9+NcRkRQhyGGyCFnoseEcfNEXdIaXK13Ikij9yQdXUI
+         DjGlyjDQ/N5qKyH3t6Jt8KcRRZljjC+qNmQuwnULRV1lZ5lOdFpc0Y5WShz7yIEr6Rbw
+         JofQ==
+X-Gm-Message-State: AOJu0YwPbwfm9pJPmGxdWadr47pfDQrlkUfjYlAXFaezI57HTAyjSQ64
+	PFcFp4Z9j2qURdxxeHY4RcmzP+MnnDth
+X-Google-Smtp-Source: AGHT+IHqtvxbjkvDda5WO8gzIjSVhLh3dh3vGZa7JhWfStq7MIx0YyZwB0lFlqbflMkdqIeUrzQ5JA==
+X-Received: by 2002:a17:903:11c3:b0:1d4:75c6:953e with SMTP id q3-20020a17090311c300b001d475c6953emr6585389plh.111.1704208930370;
+        Tue, 02 Jan 2024 07:22:10 -0800 (PST)
+Received: from C02YVCJELVCG.dhcp.broadcom.net ([192.19.144.250])
+        by smtp.gmail.com with ESMTPSA id iw6-20020a170903044600b001d0c151d325sm22043625plb.209.2024.01.02.07.22.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jan 2024 07:22:09 -0800 (PST)
+From: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+X-Google-Original-From: Andy Gospodarek <gospo@broadcom.com>
+Date: Tue, 2 Jan 2024 10:22:02 -0500
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	David Wei <dw@davidwei.uk>, Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 055/156] bnxt_en: do not map packet buffers twice
+Message-ID: <ZZQqGtYqN3X9EuWo@C02YVCJELVCG.dhcp.broadcom.net>
+References: <20231230115812.333117904@linuxfoundation.org>
+ <20231230115814.135415743@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231230115814.135415743@linuxfoundation.org>
 
-Hi,
+On Sat, Dec 30, 2023 at 11:58:29AM +0000, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+> 
 
-> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-> disabled. However, non-atomic i2c transfers require preemption (e.g. in
-> wait_for_completion() while waiting for the DMA).
+No objections from me.
+
+For reference I do have an implementation of this functionality to v6.1
+if/when it should be added.   It is different as the bnxt_en driver did
+not use the page pool to manage DMA mapping until v6.6.
+
+The minimally disruptive patch to prevent this memory leak is below:
+
+From dc82f8b57e2692ec987628b53e6446ab9f4fa615 Mon Sep 17 00:00:00 2001
+From: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Date: Thu, 7 Dec 2023 16:23:21 -0500
+Subject: [PATCH] bnxt_en: unmap frag buffers before returning page to pool
+
+If pages are not unmapped before calling page_pool_recycle_direct they
+will not be freed back to the pool.  This will lead to a memory leak and
+messages like the following in dmesg:
+
+[ 8229.436920] page_pool_release_retry() stalled pool shutdown 340 inflight 5437 sec
+
+Fixes: a7559bc8c17c ("bnxt: support transmit and free of aggregation buffers")
+Signed-off-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+---
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+index aa56db138d6b..5b4548fad870 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -80,6 +80,7 @@ struct bnxt_sw_tx_bd *bnxt_xmit_bd(struct bnxt *bp,
+ 			return NULL;
+ 
+ 		dma_unmap_addr_set(frag_tx_buf, mapping, frag_mapping);
++		dma_unmap_addr_set(frag_tx_buf, len, frag_len);
+ 
+ 		flags = frag_len << TX_BD_LEN_SHIFT;
+ 		txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
+@@ -154,8 +155,14 @@ void bnxt_tx_int_xdp(struct bnxt *bp, struct bnxt_napi *bnapi, int nr_pkts)
+ 
+ 			frags = tx_buf->nr_frags;
+ 			for (j = 0; j < frags; j++) {
++				struct pci_dev *pdev = bp->pdev;
++
+ 				tx_cons = NEXT_TX(tx_cons);
+ 				tx_buf = &txr->tx_buf_ring[tx_cons];
++				dma_unmap_single(&pdev->dev,
++						 dma_unmap_addr(tx_buf, mapping),
++						 dma_unmap_len(tx_buf, len),
++						 DMA_TO_DEVICE);
+ 				page_pool_recycle_direct(rxr->page_pool, tx_buf->page);
+ 			}
+ 		}
+
 > 
-> panic() calls preempt_disable_notrace() before calling
-> emergency_restart(). Therefore, if an i2c device is used for the
-> restart, the xfer should be atomic. This avoids warnings like:
+> From: Andy Gospodarek <andrew.gospodarek@broadcom.com>
 > 
-> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-> [   12.676926] Voluntary context switch within RCU read-side critical section!
-> ...
-> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-> ...
-> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-> [   13.001050]  machine_restart from panic+0x2a8/0x32c
+> [ Upstream commit 23c93c3b6275a59f2a685f4a693944b53c31df4e ]
 > 
-> Use !preemptible() instead, which is basically the same check as
-> pre-v5.2.
+> Remove double-mapping of DMA buffers as it can prevent page pool entries
+> from being freed.  Mapping is managed by page pool infrastructure and
+> was previously managed by the driver in __bnxt_alloc_rx_page before
+> allowing the page pool infrastructure to manage it.
 > 
-> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-> Cc: stable@vger.kernel.org # v5.2+
-> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Acked-by: Wolfram Sang <wsa@kernel.org>
-> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> Tested-by: Nishanth Menon <nm@ti.com>
-> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> Fixes: 578fcfd26e2a ("bnxt_en: Let the page pool manage the DMA mapping")
+> Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+> Signed-off-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+> Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+> Reviewed-by: David Wei <dw@davidwei.uk>
+> Link: https://lore.kernel.org/r/20231214213138.98095-1-michael.chan@broadcom.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/i2c/i2c-core.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 11 ++---------
+>  1 file changed, 2 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-> index 1247e6e6e975..05b8b8dfa9bd 100644
-> --- a/drivers/i2c/i2c-core.h
-> +++ b/drivers/i2c/i2c-core.h
-> @@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
->   */
->  static inline bool i2c_in_atomic_xfer_mode(void)
->  {
-> -	return system_state > SYSTEM_RUNNING && irqs_disabled();
-> +	return system_state > SYSTEM_RUNNING && !preemptible();
-
-With preemption disabled, this boils down to
-  return system_state > SYSTEM_RUNNING (&& !0)
-
-and will then generate a backtrace splash on each reboot on our
-board:
-
-# reboot -f
-[   12.687169] No atomic I2C transfer handler for 'i2c-0'
-[   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x100/0x118
-[   12.700745] Modules linked in:
-[   12.703788] CPU: 6 PID: 275 Comm: reboot Not tainted 6.7.0-rc6-next-20231222+ #2494
-[   12.711431] Hardware name: Kontron 3.5"-SBC-i1200 (DT)
-[   12.716555] pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   12.723504] pc : i2c_smbus_xfer+0x100/0x118
-[   12.727674] lr : i2c_smbus_xfer+0x100/0x118
-[   12.731844] sp : ffff80008389b7c0
-[   12.735146] x29: ffff80008389b7c0 x28: ffff0000c561b4c0 x27: ffff0000c2b06400
-[   12.742268] x26: ffff0000c65aec4a x25: 000000000000000b x24: 0000000000000001
-[   12.749389] x23: 0000000000000000 x22: 0000000000000064 x21: 0000000000000008
-[   12.756510] x20: ffff80008389b836 x19: ffff0000c2dda080 x18: ffffffffffffffff
-[   12.763631] x17: ffff800080813f48 x16: ffff80008081bd38 x15: 0730072d07630732
-[   12.770752] x14: 0769072707200772 x13: 0730072d07630732 x12: 0769072707200772
-[   12.777873] x11: 0720072007200720 x10: ffff8000827dc828 x9 : ffff80008012e154
-[   12.784994] x8 : 00000000ffffefff x7 : ffff8000827dc828 x6 : 80000000fffff000
-[   12.792116] x5 : 000000000000bff4 x4 : 0000000000000000 x3 : 0000000000000000
-[   12.799236] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000c561b4c0
-[   12.806359] Call trace:
-[   12.808793]  i2c_smbus_xfer+0x100/0x118
-[   12.812616]  i2c_smbus_read_i2c_block_data+0x60/0xb0
-[   12.817569]  mt6360_regmap_read+0xa4/0x1b8
-[   12.821654]  _regmap_raw_read+0xfc/0x270
-[   12.825566]  _regmap_bus_read+0x4c/0x90
-[   12.829389]  _regmap_read+0x6c/0x168
-[   12.832953]  _regmap_update_bits+0xf8/0x150
-[   12.837124]  regmap_update_bits_base+0x6c/0xa8
-[   12.841555]  regulator_disable_regmap+0x48/0x68
-[   12.846073]  _regulator_do_disable+0x130/0x1e8
-[   12.850504]  _regulator_disable+0x154/0x1d8
-[   12.854676]  regulator_disable+0x44/0x90
-[   12.858587]  mmc_regulator_set_ocr+0x8c/0x118
-[   12.862933]  msdc_ops_set_ios+0x3f4/0x938
-[   12.866932]  mmc_set_initial_state+0x90/0xa8
-[   12.871191]  mmc_power_off+0x40/0x68
-[   12.874754]  _mmc_sd_suspend+0x5c/0x190
-[   12.878577]  mmc_sd_suspend+0x20/0x78
-[   12.882227]  mmc_bus_shutdown+0x48/0x90
-[   12.886051]  device_shutdown+0x134/0x298
-[   12.889961]  kernel_restart+0x48/0xd0
-[   12.893613]  __do_sys_reboot+0x1e0/0x278
-[   12.897523]  __arm64_sys_reboot+0x2c/0x40
-[   12.901519]  invoke_syscall+0x50/0x128
-[   12.905257]  el0_svc_common.constprop.0+0x48/0xf0
-[   12.909950]  do_el0_svc+0x24/0x38
-[   12.913253]  el0_svc+0x38/0xd8
-[   12.916296]  el0t_64_sync_handler+0x100/0x130
-[   12.920639]  el0t_64_sync+0x1a4/0x1a8
-[   12.924289] ---[ end trace 0000000000000000 ]---
-...
-
-I'm not sure if this is now the expected behavior or not. There will be
-no backtraces, if I build a preemptible kernel, nor will there be
-backtraces if I revert this patch.
-
-OTOH, the driver I'm using (drivers/i2c/busses/i2c-mt65xx.c) has no
-*_atomic(). So the warning is correct. There is also [1], which seems to
-be the same issue I'm facing.
-
--michael
-
-[1] https://lore.kernel.org/linux-i2c/13271b9b-4132-46ef-abf8-2c311967bb46@mailbox.org/
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+> index 96f5ca778c67d..8cb9a99154aad 100644
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+> @@ -59,7 +59,6 @@ struct bnxt_sw_tx_bd *bnxt_xmit_bd(struct bnxt *bp,
+>  	for (i = 0; i < num_frags ; i++) {
+>  		skb_frag_t *frag = &sinfo->frags[i];
+>  		struct bnxt_sw_tx_bd *frag_tx_buf;
+> -		struct pci_dev *pdev = bp->pdev;
+>  		dma_addr_t frag_mapping;
+>  		int frag_len;
+>  
+> @@ -73,16 +72,10 @@ struct bnxt_sw_tx_bd *bnxt_xmit_bd(struct bnxt *bp,
+>  		txbd = &txr->tx_desc_ring[TX_RING(prod)][TX_IDX(prod)];
+>  
+>  		frag_len = skb_frag_size(frag);
+> -		frag_mapping = skb_frag_dma_map(&pdev->dev, frag, 0,
+> -						frag_len, DMA_TO_DEVICE);
+> -
+> -		if (unlikely(dma_mapping_error(&pdev->dev, frag_mapping)))
+> -			return NULL;
+> -
+> -		dma_unmap_addr_set(frag_tx_buf, mapping, frag_mapping);
+> -
+>  		flags = frag_len << TX_BD_LEN_SHIFT;
+>  		txbd->tx_bd_len_flags_type = cpu_to_le32(flags);
+> +		frag_mapping = page_pool_get_dma_addr(skb_frag_page(frag)) +
+> +			       skb_frag_off(frag);
+>  		txbd->tx_bd_haddr = cpu_to_le64(frag_mapping);
+>  
+>  		len = frag_len;
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
