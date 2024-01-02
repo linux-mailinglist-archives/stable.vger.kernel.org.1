@@ -1,93 +1,109 @@
-Return-Path: <stable+bounces-9168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B560982189B
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:55:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A281B8218B1
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 10:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37E21C21625
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 08:55:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 357E21F22149
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35D153A7;
-	Tue,  2 Jan 2024 08:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F0A6139;
+	Tue,  2 Jan 2024 09:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="FJVcEG+x"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bPKWtbpt"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D6CA66
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 08:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C3E0C20ACED1;
-	Tue,  2 Jan 2024 00:46:32 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C3E0C20ACED1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1704185194;
-	bh=gjFkDbYE1pM02+6S548ZYRSs+wDA7q0OA6FMoPWMhko=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJVcEG+xYAnxncT0A1iMehRnrwMm1kd/CCfRAQOnMF0INsr0I7sl+42yex1g1CiyW
-	 eJfSt8KotAu9MjZRhyF31DhDHzrE9n6avTAgyV9m8IhgFTSshHWyvssNjTiOb801Zp
-	 UnijA6mVkSinLymgkFiIQS3gpmCGv+rJUftVQDoo=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: gregkh@linuxfoundation.org, Tee Hao Wei <angelsl@in04.sg>
-Cc: Andrii Nakryiko <andrii@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Song Liu <song@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] tracing/kprobes: Fix symbol counting logic by looking at modules as well
-Date: Tue, 02 Jan 2024 09:46:30 +0100
-Message-ID: <12353213.O9o76ZdvQC@pwmachine>
-In-Reply-To: <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
-References: <2023102922-handwrite-unpopular-0e1d@gregkh> <20231220170016.23654-1-angelsl@in04.sg> <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B3C568D;
+	Tue,  2 Jan 2024 09:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704186723; x=1735722723;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NyvPMiWn3WT/oZc8EH+SNeHjU8WnY+nEsLSZKALA/ow=;
+  b=bPKWtbptAPui07c3URUxb4MdOZTEVwLrCn7bpqavfXnLSzI1qHTW9M5Q
+   9t1haV9KH71skJ+Di4mes4yuIgb8wTJ4KnRpz7cie3w4UfXam1Fp+WFvm
+   KkNU/hXMNKcUcO8ppAorKrluSarOJEDgZd1jFJ3O65WXKxQWqlrlyvQAW
+   SfHHbLiJRjQ1TcukWOQfqzFD398G2J4Ox7K93cjv5nZhI6DhIHY9hhBmz
+   HMzNolRoHhPHhwgPfEODqj28+LU/W6IlHG54vAG3rvuvCidIgq4Rtdc+7
+   BGreGo7j1iFdvP5va39hhC6Vp+1zeESzgWxzJtXXWe/3bomigrxoEUJeN
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="463258977"
+X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
+   d="scan'208";a="463258977"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2024 01:11:46 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10940"; a="923172841"
+X-IronPort-AV: E=Sophos;i="6.04,324,1695711600"; 
+   d="scan'208";a="923172841"
+Received: from black.fi.intel.com (HELO black.fi.intel.com.) ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 02 Jan 2024 01:11:43 -0800
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	RD Babiera <rdbabiera@google.com>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>
+Subject: [PATCH] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
+Date: Tue,  2 Jan 2024 11:11:41 +0200
+Message-ID: <20240102091142.2136472-1-heikki.krogerus@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-Hi!
+This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
 
+That commit messed up the reference counting, so it needs to
+be rethought.
 
-Le dimanche 31 d=E9cembre 2023, 14:09:36 CET Tee Hao Wei a =E9crit :
-> On Thu, 21 Dec 2023, at 01:00, Hao Wei Tee wrote:
-> > From: Andrii Nakryiko <andrii@kernel.org>
-> >=20
-> > Recent changes to count number of matching symbols when creating
-> > a kprobe event failed to take into account kernel modules. As such, it
-> > breaks kprobes on kernel module symbols, by assuming there is no match.
-> >=20
-> > Fix this my calling module_kallsyms_on_each_symbol() in addition to
-> > kallsyms_on_each_match_symbol() to perform a proper counting.
-> >=20
-> > Link:
-> > https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
-> >=20
-> > Cc: Francis Laniel <flaniel@linux.microsoft.com>
-> > Cc: stable@vger.kernel.org
-> > Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> > Cc: Steven Rostedt <rostedt@goodmis.org>
-> > Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func
-> > matches several symbols") Signed-off-by: Andrii Nakryiko
-> > <andrii@kernel.org>
-> > Acked-by: Song Liu <song@kernel.org>
-> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > (cherry picked from commit 926fe783c8a64b33997fec405cf1af3e61aed441)
->=20
-> I noticed this patch was added and then dropped in the 6.1 stable queue. =
-Is
-> there any issue with it? I'll fix it ASAP.
+Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
+Cc: stable@vger.kernel.org
+Cc: RD Babiera <rdbabiera@google.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+ drivers/usb/typec/class.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-=46eel free to send me this updated patch privately, so I can also test it =
-to=20
-ensure everything is correct before sending again to stable.
-=20
-> Thanks.
-
-
-Best regards.
-
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index aeae8009b9e3..4d11f2b536fa 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+ 	if (!partner)
+ 		return;
+ 
+-	adev = &altmode->adev;
++	adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -497,8 +497,7 @@ static void typec_altmode_release(struct device *dev)
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	if (!is_typec_port(dev->parent))
+-		typec_altmode_put_partner(alt);
++	typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
+-- 
+2.43.0
 
 
