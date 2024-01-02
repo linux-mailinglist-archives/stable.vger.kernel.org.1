@@ -1,122 +1,136 @@
-Return-Path: <stable+bounces-9178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7CF821AFF
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:32:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23112821B73
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4CEE1F223C0
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73111282F88
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 12:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4539EADE;
-	Tue,  2 Jan 2024 11:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E043AEAED;
+	Tue,  2 Jan 2024 12:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XryoqP6M"
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="fImfiL01"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9DFE554
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 11:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7811db57cb4so697796485a.0
-        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 03:32:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEF6F9CF
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 12:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-336788cb261so8472258f8f.3
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 04:14:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704195128; x=1704799928; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4CTXYQjDTx9MjNeWmQMbnj/JJ7KlKNb5ez8YnAlEmuU=;
-        b=XryoqP6MDCAM1W1boSMn8ZBw8f+60nmm1oSpqP0kth0iGwh8i5ExfZgjnH1O9A1dqO
-         H8jD6zUY6iOUe7pEuMt0M4MXSgAxbABixjJs5ByoVpRifB5O6qsiN9nHRQYMVDXhszCs
-         aRJoUzFow+6QMg6R0KTpKWw+ZIxKWfPPBW1OU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704195128; x=1704799928;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=6wind.com; s=google; t=1704197663; x=1704802463; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=4CTXYQjDTx9MjNeWmQMbnj/JJ7KlKNb5ez8YnAlEmuU=;
-        b=OCdfkONGY2DcChOSrXcnv50Pp9hZaxts3mhpBw7Dl0u8yLcEUjOUK1dh7M1gQweGzP
-         2tOrmrCd9ZuMKv6sZnZi/ugCBrRpOnciq3muDK4XCKn/oY1T4oU5HqZujDE/cEnJb6nB
-         xF4xMVtbAjeoDH+cwONI6LRJfILR2c28+XYRv28HIOHBbQrjWEURzd+Fu7AbuWOCKZk1
-         E4UbcQcn3+LEonB4BuZHUfVY+Tgiu8b2zvYZG+Bz0Abdc1kJ3z1g7nsIM6iU4W6m3Vpe
-         zSKczf/xxWoGp+NtImoKq147CR/pYqALZ5bZ633jekRBX7pWLPGGp7mN4LfrZn5XtOuD
-         sU+w==
-X-Gm-Message-State: AOJu0Yx1e2tw2/E/5r0IQzY7DeBYrKtqr/xoON0bw72qhblqwkUU8v8G
-	6M/m/ZWnIfFJ2Q1mSAtkGNKOe6TrwqSY80gEQFu0rpcRXA==
-X-Google-Smtp-Source: AGHT+IFawNil5W9TbiYgkDgyTiW77/pUrZGmdiJAi/XcvNXrMrch5AuWPx65MT9pc2zJXQKfLzwheA==
-X-Received: by 2002:a05:620a:4309:b0:781:bd80:af82 with SMTP id u9-20020a05620a430900b00781bd80af82mr4522274qko.37.1704195127802;
-        Tue, 02 Jan 2024 03:32:07 -0800 (PST)
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
-        by smtp.gmail.com with ESMTPSA id ay30-20020a05620a179e00b00781b2c3699bsm2049640qkb.132.2024.01.02.03.32.07
-        for <stable@vger.kernel.org>
+        bh=hSLIIdVObXyVwnR590fH1wylxU49PILdHE+HMzdEH/4=;
+        b=fImfiL010+lY2K2Fxa0kQcE5pWYIgrX6ALYOMgV5c6rpsaOoeMrRBocHmGJUowzE91
+         xccN5/uOpaKHYDFY9hVigiTvLIrD2UyaxfejCM234iYzmnrmuv2zmSrf/21EDyL9knXv
+         lPSMgFouEZzQ3F6WshMFCb3PNi8gXrziEK68yuTNxBHJrJedUJbtGHqgYj2a1bNh5RTz
+         iP5m7dxt3XPyVjO7NRmdqbEjenzxO9kFz3hx1U3qlyC4r9ESbCYcnyx3INbXUaxbdGup
+         cOnbH18W46FhuWX16AoksWemdhh54k36cryjxuCVBt+G46WnbnwVwBwSvwB7jBORX/SZ
+         2cFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704197663; x=1704802463;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hSLIIdVObXyVwnR590fH1wylxU49PILdHE+HMzdEH/4=;
+        b=ikVTbVWMclMRKr6yJDWg0Sl+yAxPYgZ6USaFTZmhj+KIC5BuDX/7TenkuzKeKrn7hy
+         0PuVxEGRsSqGrSfIGsScMNpkJud34DxgMnF9aFD88+Yd2x4KvTVyUXyGJEzrgwwClJU2
+         D4f/TOU+Ps6xHkwoM/Uhv6WsvmpIwWa8KM5pYL+j6+dV3iyHP/gcfskg715hf+wzjngK
+         W/JJp4FJnZwemLLhpSA3KETxeIsG3rcbiUpxbc79INF9IIb8Q2KYah+C17v/pEBusm2x
+         n7KFFtaJTjXIIdpJr/hp+k+ZOoznOnCQIFeqDVqwpPd7e40osMPfMXN1he0wl9xBt5TU
+         1Thg==
+X-Gm-Message-State: AOJu0Yw8VzY/DCD1Wi+ChdCbDC7R76la+6PjjYT1FlOXn9jybdJxpnGz
+	T87sYueeQO7gSW0rqXzkwoVIm4rwCW6hGA==
+X-Google-Smtp-Source: AGHT+IGd0wZvlbAugiY9MsTbS6QyHp89fdVRt/H5p6o1N9yplwlOmpKCy46WyxWgLWNpq0Nl3bwvEA==
+X-Received: by 2002:a5d:46c2:0:b0:333:2f23:8708 with SMTP id g2-20020a5d46c2000000b003332f238708mr8115037wrs.29.1704197663128;
+        Tue, 02 Jan 2024 04:14:23 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:b41:c160:2900:c6f1:e9ae:67a6? ([2a01:e0a:b41:c160:2900:c6f1:e9ae:67a6])
+        by smtp.gmail.com with ESMTPSA id cg13-20020a5d5ccd000000b00336e6014263sm16874405wrb.98.2024.01.02.04.14.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jan 2024 03:32:07 -0800 (PST)
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4281f6400feso8628281cf.1
-        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 03:32:07 -0800 (PST)
-X-Received: by 2002:a05:6214:2a85:b0:67f:67de:5d32 with SMTP id
- jr5-20020a0562142a8500b0067f67de5d32mr26610741qvb.41.1704195126792; Tue, 02
- Jan 2024 03:32:06 -0800 (PST)
+        Tue, 02 Jan 2024 04:14:22 -0800 (PST)
+Message-ID: <a5282f4c-21e5-4c1e-b0bb-10f222453099@6wind.com>
+Date: Tue, 2 Jan 2024 13:14:21 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231222-rallybar-v2-1-5849d62a9514@chromium.org> <82bf432c-2a78-4b9c-88ab-ef4f0888e9aa@rowland.harvard.edu>
-In-Reply-To: <82bf432c-2a78-4b9c-88ab-ef4f0888e9aa@rowland.harvard.edu>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Tue, 2 Jan 2024 12:31:53 +0100
-X-Gmail-Original-Message-ID: <CANiDSCtd4-pQDdf03cBZz6deUe=b4ufiQ4WR=ddwjubOoxAQ1w@mail.gmail.com>
-Message-ID: <CANiDSCtd4-pQDdf03cBZz6deUe=b4ufiQ4WR=ddwjubOoxAQ1w@mail.gmail.com>
-Subject: Re: [PATCH v2] usb: core: Add quirk for Logitech Rallybar
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net] rtnetlink: allow to set iface down before enslaving
+ it
+To: Phil Sutter <phil@nwl.cc>, "David S . Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Eric Dumazet <edumazet@google.com>, David Ahern <dsahern@kernel.org>,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20231229100835.3996906-1-nicolas.dichtel@6wind.com>
+ <ZZM4Pa3KuD0uaTkx@orbyte.nwl.cc>
+Content-Language: en-US
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Organization: 6WIND
+In-Reply-To: <ZZM4Pa3KuD0uaTkx@orbyte.nwl.cc>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Alan
+Le 01/01/2024 à 23:10, Phil Sutter a écrit :
+> On Fri, Dec 29, 2023 at 11:08:35AM +0100, Nicolas Dichtel wrote:
+>> The below commit adds support for:
+>>> ip link set dummy0 down
+>>> ip link set dummy0 master bond0 up
+>>
+>> but breaks the opposite:
+>>> ip link set dummy0 up
+>>> ip link set dummy0 master bond0 down
+>>
+>> Let's add a workaround to have both commands working.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+>> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+>> ---
+>>  net/core/rtnetlink.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+>> index e8431c6c8490..dd79693c2d91 100644
+>> --- a/net/core/rtnetlink.c
+>> +++ b/net/core/rtnetlink.c
+>> @@ -2905,6 +2905,14 @@ static int do_setlink(const struct sk_buff *skb,
+>>  		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+>>  	}
+>>  
+>> +	/* Backward compat: enable to set interface down before enslaving it */
+>> +	if (!(ifm->ifi_flags & IFF_UP) && ifm->ifi_change & IFF_UP) {
+>> +		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+>> +				       extack);
+>> +		if (err < 0)
+>> +			goto errout;
+>> +	}
+>> +
+>>  	if (tb[IFLA_MASTER]) {
+>>  		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
+>>  		if (err)
+> 
+> Doesn't this merely revert to the old behaviour of setting the interface
+> up before enslaving if both IFF_UP and IFLA_MASTER are present? Did you
+> test this with a bond-type master?
+Yes, both command sequences (cf commit log) work after the patch.
+dev_change_flags() is called before do_set_master() only if the user asks to
+remove the flag IFF_UP.
 
-On Sat, 23 Dec 2023 at 21:01, Alan Stern <stern@rowland.harvard.edu> wrote:
->
-> On Fri, Dec 22, 2023 at 10:55:49PM +0000, Ricardo Ribalda wrote:
-> > Logitech Rallybar devices, despite behaving as UVC camera, they have a
-> > different power management system than the rest of the other Logitech
-> > cameras.
-> >
-> > USB_QUIRK_RESET_RESUME causes undesired USB disconnects, that make the
-> > device unusable.
-> >
-> > These are the only two devices that have this behavior, and we do not
-> > have the list of devices that require USB_QUIRK_RESET_RESUME, so lets
-> > create a new lit for them that un-apply the USB_QUIRK_RESET_RESUME
-> > quirk.
-> >
-> > Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > ---
->
-> Would it make more sense to do this inside the uvc driver instead of
-> creating a new single-purpose list in the core?
 
-I can try to move it to the uvc driver. But maybe it is better to keep it here:
-
-The same vid:pid also has other functionality, not only uvc: Sync
-agent interface, UPD Interface, ADB interface.
-If we apply the quirk to the uvc driver, and the uvc driver is not
-loaded, the other functionality will still be broken....
-
-I expect to see more devices from Logitech not needing the
-RESET_RESUME quirk... so this list will eventually grow.
-
-Setting/useting RESET_RESUME in two different locations, can make the
-code difficult to follow.
-
-What do you think?
-
-Regards!
+Regards,
+Nicolas
 
