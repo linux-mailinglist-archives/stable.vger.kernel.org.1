@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-9186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4BB821CEE
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:42:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901F1821CF0
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B7A1C2219E
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:42:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7BDD1C22132
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 13:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5BFFBF6;
-	Tue,  2 Jan 2024 13:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1815BFBF2;
+	Tue,  2 Jan 2024 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3FBvYpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pau7fCLf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4EEFBEF
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 13:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2E9C433C7;
-	Tue,  2 Jan 2024 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D076FFBEF
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 13:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA902C433C8;
+	Tue,  2 Jan 2024 13:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704202939;
-	bh=OvdY5tu0oxKXoArmzRzu7yENyM0X+RdnqK8RSxKDcKo=;
+	s=korg; t=1704202946;
+	bh=Lqk7YHQuM5kzoktgowsfTFXYh+/HdzYEDwwiyp9BU48=;
 	h=Subject:To:From:Date:From;
-	b=Q3FBvYpIpv1691t9M+hzkYvXIdNKn/0lgkQSY9g3ob0z98id3M4yIrH63uRZ3vBfV
-	 8Eba8RYAmSUNf/cBJhjkrLoN3A95y/oczorSgFVAMZdovkARe3r/EgbHfjRqH0z194
-	 GgUw7jRno38KgaJ8W0KuEEN6ks5EwBeKE7d8vld8=
-Subject: patch "Revert "usb: dwc3: Soft reset phy on probe for host"" added to usb-testing
-To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,kory.maincent@bootlin.com,stable@vger.kernel.org
+	b=pau7fCLfHxZPCb8RIEFgqp9nXELWxmiriWpfYrMYEHQkK4Imev98WHk89xRNpe9Ks
+	 5QOc8j8gRNurz2Li3uqSxWAqbJoulPhCKESvw2xSNtTIcBhLC+NMCXBbcWRqlFc85g
+	 E14e/n3Ib1tEamBDbVFvmOCvjBTJgIF8aXQTWem8=
+Subject: patch "Revert "usb: dwc3: don't reset device side if dwc3 was configured as" added to usb-testing
+To: Thinh.Nguyen@synopsys.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 14:42:16 +0100
-Message-ID: <2024010216-frenzy-bullring-fc01@gregkh>
+Date: Tue, 02 Jan 2024 14:42:17 +0100
+Message-ID: <2024010216-transport-matchbook-03e5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    Revert "usb: dwc3: Soft reset phy on probe for host"
+    Revert "usb: dwc3: don't reset device side if dwc3 was configured as
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -61,82 +61,47 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 Mon Sep 17 00:00:00 2001
+From afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 Mon Sep 17 00:00:00 2001
 From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Date: Fri, 22 Dec 2023 22:11:27 +0000
-Subject: Revert "usb: dwc3: Soft reset phy on probe for host"
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 22 Dec 2023 22:11:33 +0000
+Subject: Revert "usb: dwc3: don't reset device side if dwc3 was configured as
+ host-only"
 
-This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
+This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
 
-The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
-ULPI. This fix is incomplete.
+Don't omit soft-reset. During initialization, the driver may need to
+perform a soft reset to ensure the phy is ready when the controller
+updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
+Many platforms often have access to DCTL register for soft-reset despite
+being host-only. If there are actual reported issues from the platforms
+that don't expose DCTL registers, then we will need to revisit (perhaps
+to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
 
 Cc:  <stable@vger.kernel.org>
-Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
-Reported-by: Köry Maincent <kory.maincent@bootlin.com>
-Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
+Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
 Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
+Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c | 39 +--------------------------------------
- 1 file changed, 1 insertion(+), 38 deletions(-)
+ drivers/usb/dwc3/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index b101dbf8c5dc..832c41fec4f7 100644
+index 832c41fec4f7..f50b5575d588 100644
 --- a/drivers/usb/dwc3/core.c
 +++ b/drivers/usb/dwc3/core.c
-@@ -279,46 +279,9 @@ int dwc3_core_soft_reset(struct dwc3 *dwc)
+@@ -277,9 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dwc)
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
  	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
+-	 * host-only mode or current role is host, then we can return early.
++	 * host-only mode, then we can return early.
  	 */
--	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+-	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
  		return 0;
  
--	/*
--	 * If the dr_mode is host and the dwc->current_dr_role is not the
--	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
--	 * isn't executed yet. Ensure the phy is ready before the controller
--	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
--	 * the phy.
--	 *
--	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
--	 * is port index. If this is a multiport host, then we need to reset
--	 * all active ports.
--	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST) {
--		u32 usb3_port;
--		u32 usb2_port;
--
--		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
--		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
--		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Small delay for phy reset assertion */
--		usleep_range(1000, 2000);
--
--		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Wait for clock synchronization */
--		msleep(50);
--		return 0;
--	}
--
  	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	reg &= ~DWC3_DCTL_RUN_STOP;
 -- 
 2.43.0
 
