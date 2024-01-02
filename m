@@ -1,152 +1,123 @@
-Return-Path: <stable+bounces-9192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5F7821D6F
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:10:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7D71821D9F
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1AE1C22233
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:10:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471C11F22B06
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81367101FB;
-	Tue,  2 Jan 2024 14:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2383E111A5;
+	Tue,  2 Jan 2024 14:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TILvDLU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXiO3cfU"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B668101D5
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704204646;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oBg9zO8LMPh/hqPHeXBwu+rh33K3WnQIm65IPufY/3s=;
-	b=TILvDLU5QGdPibvkkdHn1DM7MdM6VBqsVQcTMu874mcYVDkOP+VnVec1lxmdvXj2rZF/KC
-	Eb1MGiepfE+b9c/c2DfqTqUC18526cWvMEllzncB1jlzXeYf1lIXKqY4aJ/CZ8F1XUGi4E
-	50ZSvnQHScprUApz/OFWbQj/P/vQvYY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-248-zObiPc1COzWJnagyBQGIGw-1; Tue,
- 02 Jan 2024 09:10:43 -0500
-X-MC-Unique: zObiPc1COzWJnagyBQGIGw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BE41C29AC00E;
-	Tue,  2 Jan 2024 14:10:42 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-	by smtp.corp.redhat.com (Postfix) with ESMTPS id B8D8051D5;
-	Tue,  2 Jan 2024 14:10:42 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-	id A4A0330C1C03; Tue,  2 Jan 2024 14:10:42 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id A1B513FB50;
-	Tue,  2 Jan 2024 15:10:42 +0100 (CET)
-Date: Tue, 2 Jan 2024 15:10:42 +0100 (CET)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: gregkh@linuxfoundation.org
-cc: snitzer@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] dm-integrity: don't modify bio's immutable
- bio_vec in" failed to apply to 4.14-stable tree
-In-Reply-To: <2023123006-koala-satirical-e348@gregkh>
-Message-ID: <39b21411-d7f4-5e47-9d4-5ef99bc4967f@redhat.com>
-References: <2023123006-koala-satirical-e348@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD82111195
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD13AC433C8;
+	Tue,  2 Jan 2024 14:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704205725;
+	bh=aNj2oClbg4rKnyWNfsMlIWP/70u1gfVh2uAz8eTaYXg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=xXiO3cfUJP45KYttirHK8+EkZapSeG+L1VBz4JokRjm0XnRzCEmBiWheYE/yk3Lw2
+	 3/CUy9KsTzvSLoh+UvSPO8ceAIzCcAkX5PXjQB9cq5qjLNh6OyTZFg6Vz6hBqS0Axu
+	 w2HaSXv2dS4OzlPmp022IxCjKJhL2fVQFb6DCQ94=
+Subject: FAILED: patch "[PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()" failed to apply to 5.15-stable tree
+To: linkinjeon@kernel.org,lometsj@live.com,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 02 Jan 2024 15:28:42 +0100
+Message-ID: <2024010241-define-gangly-9bf9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Sat, 30 Dec 2023, gregkh@linuxfoundation.org wrote:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> 
-> The patch below does not apply to the 4.14-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x d10c77873ba1e9e6b91905018e29e196fd5f863d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010241-define-gangly-9bf9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-Hi
+Possible dependencies:
 
-Here I'm sending backport of the patch
-b86f4b790c998afdbc88fe1aa55cfe89c4068726 for the stable branch 4.14.
+d10c77873ba1 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
 
-commit b86f4b790c998afdbc88fe1aa55cfe89c4068726
-Author: Mikulas Patocka <mpatocka@redhat.com>
-Date:   Tue Dec 5 16:39:16 2023 +0100
+thanks,
 
-    dm-integrity: don't modify bio's immutable bio_vec in integrity_metadata()
-    
-    __bio_for_each_segment assumes that the first struct bio_vec argument
-    doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
-    (bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
-    code changes the bio_vec with "bv.bv_len -= pos". When this code path
-    is taken, the iterator would be out of sync and dm-integrity would
-    report errors. This happens if the machine is out of memory and
-    "kmalloc" fails.
-    
-    Fix this bug by making a copy of "bv" and changing the copy instead.
-    
-    Fixes: 7eada909bfd7 ("dm: add integrity target")
-    Cc: stable@vger.kernel.org      # v4.12+
-    Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-    Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+greg k-h
 
----
- drivers/md/dm-integrity.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+------------------ original commit in Linus's tree ------------------
 
-Index: linux-stable/drivers/md/dm-integrity.c
-===================================================================
---- linux-stable.orig/drivers/md/dm-integrity.c
-+++ linux-stable/drivers/md/dm-integrity.c
-@@ -1257,11 +1257,12 @@ static void integrity_metadata(struct wo
- 			checksums = checksums_onstack;
- 
- 		__bio_for_each_segment(bv, bio, iter, dio->orig_bi_iter) {
-+			struct bio_vec bv_copy = bv;
- 			unsigned pos;
- 			char *mem, *checksums_ptr;
- 
- again:
--			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
-+			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
- 			pos = 0;
- 			checksums_ptr = checksums;
- 			do {
-@@ -1270,7 +1271,7 @@ again:
- 				sectors_to_process -= ic->sectors_per_block;
- 				pos += ic->sectors_per_block << SECTOR_SHIFT;
- 				sector += ic->sectors_per_block;
--			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
-+			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
- 			kunmap_atomic(mem);
- 
- 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
-@@ -1290,9 +1291,9 @@ again:
- 			if (!sectors_to_process)
- 				break;
- 
--			if (unlikely(pos < bv.bv_len)) {
--				bv.bv_offset += pos;
--				bv.bv_len -= pos;
-+			if (unlikely(pos < bv_copy.bv_len)) {
-+				bv_copy.bv_offset += pos;
-+				bv_copy.bv_len -= pos;
- 				goto again;
- 			}
+From d10c77873ba1e9e6b91905018e29e196fd5f863d Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 20 Dec 2023 15:52:11 +0900
+Subject: [PATCH] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+
+If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
+ksmbd_check_message doesn't validate request buffer it correctly.
+So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
+in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
+of the two sums (Name and CreateContext size) as the offset and length of
+the data area.
+
+Reported-by: Yang Chaoming <lometsj@live.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
+index 23bd3d1209df..03dded29a980 100644
+--- a/fs/smb/server/smb2misc.c
++++ b/fs/smb/server/smb2misc.c
+@@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsigned int *off, unsigned int *len,
+ 		break;
+ 	case SMB2_CREATE:
+ 	{
++		unsigned short int name_off =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
++		unsigned short int name_len =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++
+ 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
+ 			*off = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsOffset);
+ 			*len = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsLength);
+-			break;
++			if (!name_len)
++				break;
++
++			if (name_off + name_len < (u64)*off + *len)
++				break;
  		}
+ 
+-		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+-		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++		*off = name_off;
++		*len = name_len;
+ 		break;
+ 	}
+ 	case SMB2_QUERY_INFO:
 
 
