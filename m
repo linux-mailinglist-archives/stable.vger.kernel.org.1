@@ -1,118 +1,179 @@
-Return-Path: <stable+bounces-9211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA52F821DBE
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:32:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4C8821DED
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 15:41:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D4AFB219C2
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:32:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B81F2838DE
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 14:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEC79440;
-	Tue,  2 Jan 2024 14:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1793A16408;
+	Tue,  2 Jan 2024 14:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/0BIKa8"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lI4MKSKK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C58411194
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:32:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE303C433C7;
-	Tue,  2 Jan 2024 14:32:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704205952;
-	bh=WL8hRLygxy43/FXFGmp/8XbFzlvrbRQ8pfbdlx0TuUU=;
-	h=Subject:To:Cc:From:Date:From;
-	b=q/0BIKa8JOGWEiZ/M/q7w8n7XOKpA5uhthHcCEQVHydESF+wTC/t+rPv+G4YMBImw
-	 zL8gXJhn2zbwg/3xdYcH2z9Lw+MEFWW9HDZl4YOwuC5ccXuW5pgbO9a6Ja9lG5lv5h
-	 Ig6RxhCtcbPirbFwHvofwZ18rtv2aF8O8v1e7Xhs=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: check the mapcount of the precise page" failed to apply to 4.14-stable tree
-To: willy@infradead.org,akpm@linux-foundation.org,dan.j.williams@intel.com,n-horiguchi@ah.jp.nec.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 02 Jan 2024 15:32:16 +0100
-Message-ID: <2024010216-concerned-surrender-e169@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2396015AD0
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 14:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dbdbe917d39so7643076276.2
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 06:38:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1704206327; x=1704811127; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Jy0uRx2JMKC7IT4IrT6DQeOOAvtEVqpfbBhM8k6y5YU=;
+        b=lI4MKSKK0DT9T/8CHJPTLjXGtC2VQyQIeo0slFWaSUBLQN4POb17ew1naXivDDu/dH
+         1PGocvTFj7iEoIepWOWsnw8K6DvpBxTfYnnpVNPrFssj2uTKAdqRTr4sKpgzrtPxcQ9N
+         sQGG8BVCoe7bHpGNdA2rNyWCsM8zaAy7wPX4w=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704206327; x=1704811127;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jy0uRx2JMKC7IT4IrT6DQeOOAvtEVqpfbBhM8k6y5YU=;
+        b=RTw+drchOzMKttBRMvZlXliN1BZGMEYNkTLm43Sz2HIm4iNtkVAZN8cTebVHJaf1dP
+         5p4zQvehs7MbVqIEFams+uGqMtzIXTwMzWIwPMW96D70deZwPMj9rQ1UJN5RIZAJc9Ew
+         VM6DuKMwae50bGc7khzxOIUyfVGB3rqmAXZV58YI7RMjZqELksJK4IuAZEGYkQ6RdJol
+         t5+vWAPHhp8nZZ00FJSf2BJnymBnPymTgEAdCxS+GAXt35NuagZ8AI/wOgy1dZRe04m6
+         pb5/vUBLGEal9t9n5O6qCmeeW4LG9yqERatvWps19gKAfq0LLr6KFo7VIKfz3jjMuRke
+         cYdQ==
+X-Gm-Message-State: AOJu0YwUwj8FxLaBYPcTCkBrpZ+1zJ705NiR5Us4gmJsAuZVYgIM65O3
+	CDHGBOxAFPnypk3FRmhQw6OJoMb7gYjzCVemDLFHafaGhRgy8wk=
+X-Google-Smtp-Source: AGHT+IF2VmlnzA7AgDC3KwlEUuCIE5PgevZGdecadVjf9tfvv09O27NfPI3ZsHc2De/o71n4pxcOUQ==
+X-Received: by 2002:a25:aa2d:0:b0:dbd:5cd5:4d53 with SMTP id s42-20020a25aa2d000000b00dbd5cd54d53mr7126352ybi.96.1704206327096;
+        Tue, 02 Jan 2024 06:38:47 -0800 (PST)
+Received: from denia.c.googlers.com (204.246.236.35.bc.googleusercontent.com. [35.236.246.204])
+        by smtp.gmail.com with ESMTPSA id p13-20020ad451cd000000b00680b34d52f8sm1463586qvq.13.2024.01.02.06.38.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jan 2024 06:38:46 -0800 (PST)
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Tue, 02 Jan 2024 14:38:45 +0000
+Subject: [PATCH v3] media: ucvideo: Add quirk for Logitech Rally Bar
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240102-rallybar-v3-1-0ab197ce4aa2@chromium.org>
+X-B4-Tracking: v=1; b=H4sIAPUflGUC/3WMwQ6CMBAFf4X0bA27LQ148j+Mh9IWaALUbLWRE
+ P7dwtHocV7ezMqiI+8iuxQrI5d89GHOIE4FM4Oee8e9zcywRAGIyEmP49Jq4tAYVxolbeUUy/c
+ Huc6/j9Ttnnnw8RloOcoJ9vVHJAEHXmOLWloBpequZqAw+dd0DtSzvZPwn4vZrWrZWIW6qUB+u
+ du2fQDDhAwd3wAAAA==
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Alan Stern <stern@rowland.harvard.edu>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, stable@vger.kernel.org, 
+ Ricardo Ribalda <ribalda@chromium.org>
+X-Mailer: b4 0.12.3
 
+Logitech Rally Bar devices, despite behaving as UVC cameras, have a
+different power management system that the other cameras from Logitech.
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
+at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
+USB disconnects, that make them completely unusable.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Instead of creating a list for this family of devices in the core, let's
+create a quirk in the UVC driver.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x c79c5a0a00a9457718056b588f312baadf44e471
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010216-concerned-surrender-e169@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+Cc: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+---
+Tested with a Rallybar Mini with an Acer Chromebook Spin 513
+---
+Changes in v3:
+- Move quirk to uvc driver
+- Link to v2: https://lore.kernel.org/r/20231222-rallybar-v2-1-5849d62a9514@chromium.org
 
-Possible dependencies:
+Changes in v2:
+- Add Fixes tag
+- Add UVC maintainer as Cc
+- Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
+---
+ drivers/media/usb/uvc/uvc_driver.c | 21 +++++++++++++++++++++
+ drivers/media/usb/uvc/uvcvideo.h   |  1 +
+ 2 files changed, 22 insertions(+)
 
-c79c5a0a00a9 ("mm/memory-failure: check the mapcount of the precise page")
-96f96763de26 ("mm: memory-failure: convert to pr_fmt()")
-98931dd95fd4 ("Merge tag 'mm-stable-2022-05-25' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c79c5a0a00a9457718056b588f312baadf44e471 Mon Sep 17 00:00:00 2001
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Date: Mon, 18 Dec 2023 13:58:36 +0000
-Subject: [PATCH] mm/memory-failure: check the mapcount of the precise page
-
-A process may map only some of the pages in a folio, and might be missed
-if it maps the poisoned page but not the head page.  Or it might be
-unnecessarily hit if it maps the head page, but not the poisoned page.
-
-Link: https://lkml.kernel.org/r/20231218135837.3310403-3-willy@infradead.org
-Fixes: 7af446a841a2 ("HWPOISON, hugetlb: enable error handling path for hugepage")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 6953bda11e6e..82e15baabb48 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1570,7 +1570,7 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
- 	 * This check implies we don't kill processes if their pages
- 	 * are in the swap cache early. Those are always late kills.
- 	 */
--	if (!page_mapped(hpage))
-+	if (!page_mapped(p))
- 		return true;
- 
- 	if (PageSwapCache(p)) {
-@@ -1621,10 +1621,10 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
- 		try_to_unmap(folio, ttu);
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 08fcd2ffa727..77c1932c29ca 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -14,6 +14,7 @@
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/usb.h>
++#include <linux/usb/quirks.h>
+ #include <linux/usb/uvc.h>
+ #include <linux/videodev2.h>
+ #include <linux/vmalloc.h>
+@@ -2233,6 +2234,8 @@ static int uvc_probe(struct usb_interface *intf,
  	}
  
--	unmap_success = !page_mapped(hpage);
-+	unmap_success = !page_mapped(p);
- 	if (!unmap_success)
- 		pr_err("%#lx: failed to unmap page (mapcount=%d)\n",
--		       pfn, page_mapcount(hpage));
-+		       pfn, page_mapcount(p));
+ 	uvc_dbg(dev, PROBE, "UVC device initialized\n");
++	if (dev->quirks & UVC_QUIRK_FORCE_RESUME)
++		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
+ 	usb_enable_autosuspend(udev);
+ 	return 0;
  
- 	/*
- 	 * try_to_unmap() might put mlocked page in lru cache, so call
+@@ -2574,6 +2577,24 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
++	/* Logitech Rally Bar */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x046d,
++	  .idProduct		= 0x089b,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
++	/* Logitech Rally Bar */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x046d,
++	  .idProduct		= 0x08d3,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= 0,
++	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+ 	/* Chicony CNF7129 (Asus EEE 100HE) */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 6fb0a78b1b00..fa59a21d2a28 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -73,6 +73,7 @@
+ #define UVC_QUIRK_FORCE_Y8		0x00000800
+ #define UVC_QUIRK_FORCE_BPP		0x00001000
+ #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
++#define UVC_QUIRK_FORCE_RESUME		0x00004000
+ 
+ /* Format flags */
+ #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+
+---
+base-commit: c0f65a7c112b3cfa691cead54bcf24d6cc2182b5
+change-id: 20231222-rallybar-19ce0c64d5e6
+
+Best regards,
+-- 
+Ricardo Ribalda <ribalda@chromium.org>
 
 
