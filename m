@@ -1,97 +1,184 @@
-Return-Path: <stable+bounces-9170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA278218C7
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 10:15:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6FD821983
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 11:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91D4FB211E7
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:15:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D28BBB21D00
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 10:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C128D299;
-	Tue,  2 Jan 2024 09:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DA8D26A;
+	Tue,  2 Jan 2024 10:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="BX985uIF"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7350CCA6B
-	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 09:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-285-KxmtTKFzMXWzLQ9SE7vhdg-1; Tue, 02 Jan 2024 09:14:30 +0000
-X-MC-Unique: KxmtTKFzMXWzLQ9SE7vhdg-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 2 Jan
- 2024 09:14:15 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Tue, 2 Jan 2024 09:14:15 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Guoxin Pu' <pugokushin@gmail.com>, "axboe@kernel.dk" <axboe@kernel.dk>
-CC: "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] block: fix length of strscpy()
-Thread-Topic: [PATCH] block: fix length of strscpy()
-Thread-Index: AQHaPNtiMZZ0F2vqTUGoSDgTJCHi3bDFesXAgABTFoCAAG/DAA==
-Date: Tue, 2 Jan 2024 09:14:15 +0000
-Message-ID: <25655037ca3e404e9111341ea423f5ce@AcuMS.aculab.com>
-References: <20240101175051.38479-2-pugokushin@gmail.com>
- <ed0b9dd45fca4f6e910a9e1ffa756180@AcuMS.aculab.com>
- <c7e29d85-277d-46ae-87ae-bb77dd423652@gmail.com>
-In-Reply-To: <c7e29d85-277d-46ae-87ae-bb77dd423652@gmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D82DF6A;
+	Tue,  2 Jan 2024 10:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+	s=default; t=1704190660;
+	bh=uf8dTMlebu51EEyODmvtuTNr9cflN5DSEjldk9W9h34=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BX985uIFo3e6UGkmqcICVT/dwtYlVpg8OS6/Uj5fCTXQdj6/pg88XQNip2xKm5YWx
+	 LZXtYyQv8zoZ2mxu3sylfE6XgsSp8FHlKcVbOr5MARlXKtE1LocLlArj9eS/hpdPkd
+	 0q3n5fOgCe9CY47rMwF/khW6llIwjkfiU/PuVlkI=
+Received: from stargazer.. (unknown [IPv6:240e:358:11a9:2200:dc73:854d:832e:3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 79D4666BFB;
+	Tue,  2 Jan 2024 05:17:35 -0500 (EST)
+From: Xi Ruoyao <xry111@xry111.site>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>
+Cc: Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <keescook@chromium.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Jinyang He <hejinyang@loongson.cn>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	loongarch@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xi Ruoyao <xry111@xry111.site>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] LoongArch: Fix and simplify fcsr initialization on execve
+Date: Tue,  2 Jan 2024 18:17:12 +0800
+Message-ID: <20240102101711.10872-2-xry111@xry111.site>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-RnJvbTogR3VveGluIFB1IA0KPiBTZW50OiAwMiBKYW51YXJ5IDIwMjQgMDI6MzENCj4gDQo+IFRo
-YW5rIHlvdSBmb3IgdGhlIHJldmlldy4gU29ycnkgaWYgdGhpcyBpcyB0aGUgZHVwbGljYXRlZCBy
-ZXBseSwgYXMgSQ0KPiBkaWRuJ3QgY29uZmlndXJlIG15IG1haWwgY2xpZW50IHRvIHNlbmQgdGV4
-dC1vbmx5IG1lc3NhZ2UgYW5kIHRoZQ0KPiBwcmV2aW91cyBtYWlsIHdhcyByZWplY3RlZCBieSB0
-aGUgbGlzdC4NCj4gDQo+IE9uIDAyLzAxLzIwMjQgMDU6NDcsIERhdmlkIExhaWdodCB3cm90ZToN
-Cj4gPj4gQEAgLTc5LDggKzc5LDggQEAgc3RhdGljIGludCBwYXJzZV9zdWJwYXJ0KHN0cnVjdCBj
-bWRsaW5lX3N1YnBhcnQgKipzdWJwYXJ0LCBjaGFyICpwYXJ0ZGVmKQ0KPiA+PiAgIAkJCWdvdG8g
-ZmFpbDsNCj4gPj4gICAJCX0NCj4gPj4NCj4gPj4gLQkJbGVuZ3RoID0gbWluX3QoaW50LCBuZXh0
-IC0gcGFydGRlZiwNCj4gPj4gLQkJCSAgICAgICBzaXplb2YobmV3X3N1YnBhcnQtPm5hbWUpIC0g
-MSk7DQo+ID4+ICsJCWxlbmd0aCA9IG1pbl90KGludCwgbmV4dCAtIHBhcnRkZWYgKyAxLA0KPiA+
-PiArCQkJICAgICAgIHNpemVvZihuZXdfc3VicGFydC0+bmFtZSkpOw0KPiA+PiAgIAkJc3Ryc2Nw
-eShuZXdfc3VicGFydC0+bmFtZSwgcGFydGRlZiwgbGVuZ3RoKTsNCj4gPiBTaG91bGRuJ3QgdGhh
-dCBiZSBhIG1lbWNweSgpIHdpdGggdGhlIG9yaWdpbmFsIGxlbmd0aD8NCj4gPiBTaW5jZSBpdCBs
-b29rcyBhcyB0aG91Z2ggdGhlcmUgaXMgc29tZXRoaW5nIGVxdWl2YWxlbnQgdG86DQo+ID4gCQlu
-ZXh0ID0gc3RyY2hyKHBhcnRkZWYsICcsJyk7DQo+ID4ganVzdCBhYm92ZT8NCj4gPiBNYXliZSB3
-aXRoOg0KPiA+IAkJbmV3X3N1YnBhcnQtPm5hbWVbbGVuZ3RoXSA9ICdcMCc7DQo+ID4gaWYgdGhl
-IHRhcmdldCBpc24ndCB6ZXJvIGZpbGxlZCAod2hpY2ggdGhlIHN0cm5jcHkoKSBwcm9iYWJseQ0K
-PiA+IHJlbGllZCBvbi4pDQo+IA0KPiBZZXMgdGhhdCB3b3VsZCBiZSBiZXR0ZXIuIEJ1dCBzaW5j
-ZSBJJ20gZml4aW5nIHRoZSBpc3N1ZSBjYXVzZWQgYnkgdGhlDQo+IG1lbnRpb25lZCBjb21taXQs
-IHdoaWNoIHdhcyBhbiBhY2NlcHRlZCBjaGFuZ2UgdG8gdXNlIHN0cnNjcHkgaW5zdGVhZCBvZg0K
-PiBzdHJuY3B5IGFuZCBzZWVtcyBhIHBhcnQgb2YgYSBzZXJpZXMgb2YgY2hhbmdlcyB0byBkbyB0
-aGF0LCBJIHRoaW5rDQo+IHRoZXJlIG1pZ2h0IGJlIGEgcmVhc29uIHRoZSBtYWludGFpbmVycyBw
-cmVmZXJyZWQgc3Ryc2NweSBvdmVyIHN0cm5jcHkNCj4gb3ZlciBtZW1jcHk/IE90aGVyd2lzZSB3
-ZSBjb3VsZCBqdXN0IHJldmVydCB0aGF0IGNvbW1pdCBhbmQga2VlcCB1c2luZw0KPiB0aGUgb3Jp
-Z2luYWwgc3RybmNweSArIHNldHRpbmcgTlVMTCBtZXRob2QsIGFuZCB0aGVuIHBvdGVudGlhbGx5
-IHN3YXANCj4gc3RybmNweSB3aXRoIG1lbWNweS4NCg0KSSBzdXNwZWN0IHRoZXkgYWNjZXB0ZWQg
-dGhlIGNoYW5nZSB3aXRob3V0IHJlYWxpc2luZyBqdXN0IGhvdw0KY3JlYXRpdmUgc29tZSBvZiB0
-aGUgc3RybmNweSgpIGNhbGxzIGFyZS4NCldoaWxlIHN0cnNjcHkoKSBpcyBhIGJldHRlciBmdW5j
-dGlvbiB0aGFuIHN0cm5jcHkoKSAob3Igc3RybGNweSgpKQ0KZXh0cmVtZSBjYXJlIGhhcyB0byBi
-ZSB0YWtlbiB0byBhdm9pZCBhZGRpbmcgYnVncyB0byBjb2RlIHRoYXQNCndhcyBhY3R1YWxseSBm
-aW5lLg0KDQoJRGF2aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5
-IFJvYWQsIE1vdW50IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRp
-b24gTm86IDEzOTczODYgKFdhbGVzKQ0K
+There has been a lingering bug in LoongArch Linux systems causing some
+GCC tests to intermittently fail (see Closes link).  I've made a minimal
+reproducer:
+
+    zsh% cat measure.s
+    .align 4
+    .globl _start
+    _start:
+        movfcsr2gr  $a0, $fcsr0
+        bstrpick.w  $a0, $a0, 16, 16
+        beqz        $a0, .ok
+	break       0
+    .ok:
+        li.w        $a7, 93
+	syscall     0
+    zsh% cc mesaure.s -o measure -nostdlib
+    zsh% echo $((1.0/3))
+    0.33333333333333331
+    zsh% while ./measure; do ; done
+
+This while loop should not stop as POSIX is clear that execve must set
+fenv to the default, where FCSR should be zero.  But in fact it will
+just stop after running for a while (normally less than 30 seconds).
+Note that "$((1.0/3))" is needed to reproduce the issue because it
+raises FE_INVALID and makes fcsr0 non-zero.
+
+The problem is we are relying on SET_PERSONALITY2 to reset
+current->thread.fpu.fcsr.  But SET_PERSONALITY2 is executed before
+start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+enabled, we may switch to another thread after SET_PERSONALITY2 but
+before lose_fpu(0).  Then bad thing happens: during the thread switch
+the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+making it dirty again.
+
+The issue can be fixed by setting current->thread.fpu.fcsr after
+lose_fpu(0) because lose_fpu clears TIF_USEDFPU, then the thread
+switch won't touch current->thread.fpu.fcsr.
+
+The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
+They do this for supporting different FP flavors (NaN encodings etc).
+which do not exist on LoongArch.  I'm not sure how MIPS evades the issue
+(or maybe it's just buggy too) but I'll investigate it later.
+
+For LoongArch, just remove the current->thread.fpu.fcsr setting from
+SET_PERSONALITY2 and do it in start_thread, after lose_fpu(0).
+
+The while loop failing with the mainline kernel has survived one hour
+after this change.
+
+Closes: https://github.com/loongson-community/discussions/issues/7
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+---
+
+v1 -> v2:
+- Still set current->thread.fpu.fcsr to boot_cpu_data.fpu_csr0 instead
+  of constant 0.
+
+ arch/loongarch/include/asm/elf.h | 5 -----
+ arch/loongarch/kernel/elf.c      | 5 -----
+ arch/loongarch/kernel/process.c  | 1 +
+ 3 files changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
+index 9b16a3b8e706..f16bd42456e4 100644
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct pt_regs *regs);
+ do {									\
+ 	current->thread.vdso = &vdso_info;				\
+ 									\
+-	loongarch_set_personality_fcsr(state);				\
+-									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ } while (0)
+@@ -259,7 +257,6 @@ do {									\
+ 	clear_thread_flag(TIF_32BIT_ADDR);				\
+ 									\
+ 	current->thread.vdso = &vdso_info;				\
+-	loongarch_set_personality_fcsr(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+ 			  struct arch_elf_state *state);
+ 
+-extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
+-
+ #endif /* _ASM_ELF_H */
+diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
+index 183e94fc9c69..0fa81ced28dc 100644
+--- a/arch/loongarch/kernel/elf.c
++++ b/arch/loongarch/kernel/elf.c
+@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
+ {
+ 	return 0;
+ }
+-
+-void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+-{
+-	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-}
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 767d94cce0de..3f9cae615f52 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -92,6 +92,7 @@ void start_thread(struct pt_regs *regs, unsigned long pc, unsigned long sp)
+ 	clear_used_math();
+ 	regs->csr_era = pc;
+ 	regs->regs[3] = sp;
++	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+ }
+ 
+ void flush_thread(void)
+-- 
+2.43.0
 
 
