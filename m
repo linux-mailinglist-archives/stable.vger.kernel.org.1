@@ -1,98 +1,93 @@
-Return-Path: <stable+bounces-9167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A42821832
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:09:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B560982189B
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 09:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21D252820C6
-	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 08:09:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37E21C21625
+	for <lists+stable@lfdr.de>; Tue,  2 Jan 2024 08:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B5E3C26;
-	Tue,  2 Jan 2024 08:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35D153A7;
+	Tue,  2 Jan 2024 08:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="VkxwVMqd"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="FJVcEG+x"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1554D2116;
-	Tue,  2 Jan 2024 08:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1704182949;
-	bh=rfgD7wZxYb3q3Dx3Za3Q0wUzALNwOb57oBPgRsgGEhg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=VkxwVMqdveqAGWhyd+OVaZM8AZENzYgSY/np/cKWR/nmvD0l8poLVV4Xsh3p6yvUO
-	 VjncBlXIdtzeQp+9FKVTutNAiCq1wOXwpV458UztG/CuQQwnLVA4hs1wY9SWH0D3kn
-	 sj/5k2Bszg9lJwNZ+SZPdHij4UebdjlOybIsVWMQ=
-Received: from [IPv6:240e:358:11a9:2200:dc73:854d:832e:3] (unknown [IPv6:240e:358:11a9:2200:dc73:854d:832e:3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 392B366963;
-	Tue,  2 Jan 2024 03:09:04 -0500 (EST)
-Message-ID: <22af410fe1f60e7fc04cafbe03cfc50b36b53ae3.camel@xry111.site>
-Subject: Re: [PATCH] LoongArch: Fix and simplify fcsr initialization on
- execve
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>, Eric Biederman <ebiederm@xmission.com>,
-  Kees Cook <keescook@chromium.org>, Tiezhu Yang <yangtiezhu@loongson.cn>,
- Jinyang He <hejinyang@loongson.cn>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- loongarch@lists.linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Date: Tue, 02 Jan 2024 16:09:00 +0800
-In-Reply-To: <CAAhV-H6dJtc3ZpEBnJzKdh691KQck771KOR0Lj41VLZ-Rc1ZwQ@mail.gmail.com>
-References: <20240101172143.14530-2-xry111@xry111.site>
-	 <CAAhV-H6dJtc3ZpEBnJzKdh691KQck771KOR0Lj41VLZ-Rc1ZwQ@mail.gmail.com>
-Autocrypt: addr=xry111@xry111.site; prefer-encrypt=mutual;
- keydata=mDMEYnkdPhYJKwYBBAHaRw8BAQdAsY+HvJs3EVKpwIu2gN89cQT/pnrbQtlvd6Yfq7egugi0HlhpIFJ1b3lhbyA8eHJ5MTExQHhyeTExMS5zaXRlPoiTBBMWCgA7FiEEkdD1djAfkk197dzorKrSDhnnEOMFAmJ5HT4CGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQrKrSDhnnEOPHFgD8D9vUToTd1MF5bng9uPJq5y3DfpcxDp+LD3joA3U2TmwA/jZtN9xLH7CGDHeClKZK/ZYELotWfJsqRcthOIGjsdAPuDgEYnkdPhIKKwYBBAGXVQEFAQEHQG+HnNiPZseiBkzYBHwq/nN638o0NPwgYwH70wlKMZhRAwEIB4h4BBgWCgAgFiEEkdD1djAfkk197dzorKrSDhnnEOMFAmJ5HT4CGwwACgkQrKrSDhnnEOPjXgD/euD64cxwqDIqckUaisT3VCst11RcnO5iRHm6meNIwj0BALLmWplyi7beKrOlqKfuZtCLbiAPywGfCNg8LOTt4iMD
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767D6CA66
+	for <stable@vger.kernel.org>; Tue,  2 Jan 2024 08:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C3E0C20ACED1;
+	Tue,  2 Jan 2024 00:46:32 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C3E0C20ACED1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1704185194;
+	bh=gjFkDbYE1pM02+6S548ZYRSs+wDA7q0OA6FMoPWMhko=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FJVcEG+xYAnxncT0A1iMehRnrwMm1kd/CCfRAQOnMF0INsr0I7sl+42yex1g1CiyW
+	 eJfSt8KotAu9MjZRhyF31DhDHzrE9n6avTAgyV9m8IhgFTSshHWyvssNjTiOb801Zp
+	 UnijA6mVkSinLymgkFiIQS3gpmCGv+rJUftVQDoo=
+From: Francis Laniel <flaniel@linux.microsoft.com>
+To: gregkh@linuxfoundation.org, Tee Hao Wei <angelsl@in04.sg>
+Cc: Andrii Nakryiko <andrii@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, Song Liu <song@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] tracing/kprobes: Fix symbol counting logic by looking at modules as well
+Date: Tue, 02 Jan 2024 09:46:30 +0100
+Message-ID: <12353213.O9o76ZdvQC@pwmachine>
+In-Reply-To: <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
+References: <2023102922-handwrite-unpopular-0e1d@gregkh> <20231220170016.23654-1-angelsl@in04.sg> <279de9e4-502c-49f1-be7f-c203134fbaae@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 
-On Tue, 2024-01-02 at 10:35 +0800, Huacai Chen wrote:
+Hi!
 
-/* snip */
 
-> > The only other architecture setting FCSR in SET_PERSONALITY2 is MIPS.
-> > They do this for supporting different FP flavors (NaN encodings etc).
-> > which do not exist on LoongArch.=C2=A0 I'm not sure how MIPS evades the=
- issue
-> > (or maybe it's just buggy too) as I don't have a running MIPS hardware
-> > now.
-> I think you can use QEMU. :)
-
-I'll investigate it later.
-
-> > So for LoongArch, just remove the current->thread.fpu.fcsr setting from
-> > SET_PERSONALITY2 and do it in start_thread, after lose_fpu(0).=C2=A0 An=
-d we
-> > just set it to 0, instead of boot_cpu_data.fpu_csr0 (because we should
-> > provide the userspace a consistent configuration, no matter how hardwar=
-e
-> > and firmware behave).
-> I still prefer to set fcsr to boot_cpu_data.fpu_csr0, because we will
-> add LoongArch32 later, not sure whether something will change.
-
-I just seen fpu_csr0 is initialized to FPU_CSR_RN which is just 0 for
-LA64, so my concern about firmware & hardware leaving non-zero FCSR is
-not valid.  I'll send v2 to keep using boot_cpu_data.fpu_csr0 then.
-
+Le dimanche 31 d=E9cembre 2023, 14:09:36 CET Tee Hao Wei a =E9crit :
+> On Thu, 21 Dec 2023, at 01:00, Hao Wei Tee wrote:
+> > From: Andrii Nakryiko <andrii@kernel.org>
+> >=20
+> > Recent changes to count number of matching symbols when creating
+> > a kprobe event failed to take into account kernel modules. As such, it
+> > breaks kprobes on kernel module symbols, by assuming there is no match.
+> >=20
+> > Fix this my calling module_kallsyms_on_each_symbol() in addition to
+> > kallsyms_on_each_match_symbol() to perform a proper counting.
+> >=20
+> > Link:
+> > https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+> >=20
+> > Cc: Francis Laniel <flaniel@linux.microsoft.com>
+> > Cc: stable@vger.kernel.org
+> > Cc: Masami Hiramatsu <mhiramat@kernel.org>
+> > Cc: Steven Rostedt <rostedt@goodmis.org>
+> > Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func
+> > matches several symbols") Signed-off-by: Andrii Nakryiko
+> > <andrii@kernel.org>
+> > Acked-by: Song Liu <song@kernel.org>
+> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > (cherry picked from commit 926fe783c8a64b33997fec405cf1af3e61aed441)
 >=20
->=20
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+> I noticed this patch was added and then dropped in the 6.1 stable queue. =
+Is
+> there any issue with it? I'll fix it ASAP.
+
+=46eel free to send me this updated patch privately, so I can also test it =
+to=20
+ensure everything is correct before sending again to stable.
+=20
+> Thanks.
+
+
+Best regards.
+
+
 
