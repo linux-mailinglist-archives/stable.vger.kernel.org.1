@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9BF82323F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4058231DA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EDEA1C210E3
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B68161C23BB5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003521C6AE;
-	Wed,  3 Jan 2024 17:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46191C29C;
+	Wed,  3 Jan 2024 16:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7DHajyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNAksgzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAA21C289;
-	Wed,  3 Jan 2024 17:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FE5C433C7;
-	Wed,  3 Jan 2024 17:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5051BDE9;
+	Wed,  3 Jan 2024 16:59:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D60C433C7;
+	Wed,  3 Jan 2024 16:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301457;
-	bh=06pau6XYOKhmE30NiZoOYYGoDCM5DdmGzRNOKmQGOfs=;
+	s=korg; t=1704301171;
+	bh=jnp+tcf+ccPhv3Qd4yarQN/eqeScvKapG3VwU9znXvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I7DHajyb59jiLTt9qpw4CNWdc9yP2Reb4S8mMs3pP0oQeVuYnXHfWrkWcsguj09Sa
-	 e1hc1yA67JLqcT2V+46brglGCwFD2OTT8q/5d8p8DheErC0R3dOsWRj3MRlhaaB2UN
-	 1ObeWxV+VBOWzJn9RZO/3ObjXItLXiXVDAjkA4Ws=
+	b=pNAksgzKDnJ4UQKx9nd0LDRqkEC3fjNkXrfGIFcf6hPWgMpZ35es7KfDn0UgMB4LC
+	 DpugKrjXaD2gtRgNiA3e/iXp7gcFogE545s80sFHznU8EkOWFH/T9Lx+6wHyBYyAYo
+	 OV5scc4ybD2qhPpgybKlExl/0pHEL6if/yXV5Lt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoran Liu <liuhaoran14@163.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/95] Input: ipaq-micro-keys - add error handling for devm_kmemdup
+Subject: [PATCH 6.1 057/100] ksmbd: add support for surrogate pair conversion
 Date: Wed,  3 Jan 2024 17:54:46 +0100
-Message-ID: <20240103164859.779884288@linuxfoundation.org>
+Message-ID: <20240103164904.603285689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +54,299 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoran Liu <liuhaoran14@163.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 59b6a747e2d39227ac2325c5e29d6ab3bb070c2a ]
+[ Upstream commit 0c180317c654a494fe429adbf7bc9b0793caf9e2 ]
 
-Check the return value of i2c_add_adapter. Static analysis revealed that
-the function did not properly handle potential failures of
-i2c_add_adapter, which could lead to partial initialization of the I2C
-adapter and unstable operation.
+ksmbd is missing supporting to convert filename included surrogate pair
+characters. It triggers a "file or folder does not exist" error in
+Windows client.
 
-Signed-off-by: Haoran Liu <liuhaoran14@163.com>
-Link: https://lore.kernel.org/r/20231203164653.38983-1-liuhaoran14@163.com
-Fixes: d7535ffa427b ("Input: driver for microcontroller keys on the iPaq h3xxx")
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[Steps to Reproduce for bug]
+1. Create surrogate pair file
+ touch $(echo -e '\xf0\x9d\x9f\xa3')
+ touch $(echo -e '\xf0\x9d\x9f\xa4')
+
+2. Try to open these files in ksmbd share through Windows client.
+
+This patch update unicode functions not to consider about surrogate pair
+(and IVS).
+
+Reviewed-by: Marios Makassikis <mmakassikis@freebox.fr>
+Tested-by: Marios Makassikis <mmakassikis@freebox.fr>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/ipaq-micro-keys.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/unicode.c | 187 +++++++++++++++++++++++++++++-----------
+ 1 file changed, 138 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/input/keyboard/ipaq-micro-keys.c b/drivers/input/keyboard/ipaq-micro-keys.c
-index 13a66a8e3411f..e0c51189e329c 100644
---- a/drivers/input/keyboard/ipaq-micro-keys.c
-+++ b/drivers/input/keyboard/ipaq-micro-keys.c
-@@ -105,6 +105,9 @@ static int micro_key_probe(struct platform_device *pdev)
- 	keys->codes = devm_kmemdup(&pdev->dev, micro_keycodes,
- 			   keys->input->keycodesize * keys->input->keycodemax,
- 			   GFP_KERNEL);
-+	if (!keys->codes)
-+		return -ENOMEM;
-+
- 	keys->input->keycode = keys->codes;
+diff --git a/fs/smb/server/unicode.c b/fs/smb/server/unicode.c
+index 9ae676906ed39..33fc6d45c0f38 100644
+--- a/fs/smb/server/unicode.c
++++ b/fs/smb/server/unicode.c
+@@ -14,46 +14,10 @@
+ #include "uniupr.h"
+ #include "smb_common.h"
  
- 	__set_bit(EV_KEY, keys->input->evbit);
+-/*
+- * smb_utf16_bytes() - how long will a string be after conversion?
+- * @from:	pointer to input string
+- * @maxbytes:	don't go past this many bytes of input string
+- * @codepage:	destination codepage
+- *
+- * Walk a utf16le string and return the number of bytes that the string will
+- * be after being converted to the given charset, not including any null
+- * termination required. Don't walk past maxbytes in the source buffer.
+- *
+- * Return:	string length after conversion
+- */
+-static int smb_utf16_bytes(const __le16 *from, int maxbytes,
+-			   const struct nls_table *codepage)
+-{
+-	int i;
+-	int charlen, outlen = 0;
+-	int maxwords = maxbytes / 2;
+-	char tmp[NLS_MAX_CHARSET_SIZE];
+-	__u16 ftmp;
+-
+-	for (i = 0; i < maxwords; i++) {
+-		ftmp = get_unaligned_le16(&from[i]);
+-		if (ftmp == 0)
+-			break;
+-
+-		charlen = codepage->uni2char(ftmp, tmp, NLS_MAX_CHARSET_SIZE);
+-		if (charlen > 0)
+-			outlen += charlen;
+-		else
+-			outlen++;
+-	}
+-
+-	return outlen;
+-}
+-
+ /*
+  * cifs_mapchar() - convert a host-endian char to proper char in codepage
+  * @target:	where converted character should be copied
+- * @src_char:	2 byte host-endian source character
++ * @from:	host-endian source string
+  * @cp:		codepage to which character should be converted
+  * @mapchar:	should character be mapped according to mapchars mount option?
+  *
+@@ -64,10 +28,13 @@ static int smb_utf16_bytes(const __le16 *from, int maxbytes,
+  * Return:	string length after conversion
+  */
+ static int
+-cifs_mapchar(char *target, const __u16 src_char, const struct nls_table *cp,
++cifs_mapchar(char *target, const __u16 *from, const struct nls_table *cp,
+ 	     bool mapchar)
+ {
+ 	int len = 1;
++	__u16 src_char;
++
++	src_char = *from;
+ 
+ 	if (!mapchar)
+ 		goto cp_convert;
+@@ -105,12 +72,66 @@ cifs_mapchar(char *target, const __u16 src_char, const struct nls_table *cp,
+ 
+ cp_convert:
+ 	len = cp->uni2char(src_char, target, NLS_MAX_CHARSET_SIZE);
+-	if (len <= 0) {
+-		*target = '?';
+-		len = 1;
+-	}
++	if (len <= 0)
++		goto surrogate_pair;
+ 
+ 	goto out;
++
++surrogate_pair:
++	/* convert SURROGATE_PAIR and IVS */
++	if (strcmp(cp->charset, "utf8"))
++		goto unknown;
++	len = utf16s_to_utf8s(from, 3, UTF16_LITTLE_ENDIAN, target, 6);
++	if (len <= 0)
++		goto unknown;
++	return len;
++
++unknown:
++	*target = '?';
++	len = 1;
++	goto out;
++}
++
++/*
++ * smb_utf16_bytes() - compute converted string length
++ * @from:	pointer to input string
++ * @maxbytes:	input string length
++ * @codepage:	destination codepage
++ *
++ * Walk a utf16le string and return the number of bytes that the string will
++ * be after being converted to the given charset, not including any null
++ * termination required. Don't walk past maxbytes in the source buffer.
++ *
++ * Return:	string length after conversion
++ */
++static int smb_utf16_bytes(const __le16 *from, int maxbytes,
++			   const struct nls_table *codepage)
++{
++	int i, j;
++	int charlen, outlen = 0;
++	int maxwords = maxbytes / 2;
++	char tmp[NLS_MAX_CHARSET_SIZE];
++	__u16 ftmp[3];
++
++	for (i = 0; i < maxwords; i++) {
++		ftmp[0] = get_unaligned_le16(&from[i]);
++		if (ftmp[0] == 0)
++			break;
++		for (j = 1; j <= 2; j++) {
++			if (i + j < maxwords)
++				ftmp[j] = get_unaligned_le16(&from[i + j]);
++			else
++				ftmp[j] = 0;
++		}
++
++		charlen = cifs_mapchar(tmp, ftmp, codepage, 0);
++		if (charlen > 0)
++			outlen += charlen;
++		else
++			outlen++;
++	}
++
++	return outlen;
+ }
+ 
+ /*
+@@ -140,12 +161,12 @@ cifs_mapchar(char *target, const __u16 src_char, const struct nls_table *cp,
+ static int smb_from_utf16(char *to, const __le16 *from, int tolen, int fromlen,
+ 			  const struct nls_table *codepage, bool mapchar)
+ {
+-	int i, charlen, safelen;
++	int i, j, charlen, safelen;
+ 	int outlen = 0;
+ 	int nullsize = nls_nullsize(codepage);
+ 	int fromwords = fromlen / 2;
+ 	char tmp[NLS_MAX_CHARSET_SIZE];
+-	__u16 ftmp;
++	__u16 ftmp[3];	/* ftmp[3] = 3array x 2bytes = 6bytes UTF-16 */
+ 
+ 	/*
+ 	 * because the chars can be of varying widths, we need to take care
+@@ -156,9 +177,15 @@ static int smb_from_utf16(char *to, const __le16 *from, int tolen, int fromlen,
+ 	safelen = tolen - (NLS_MAX_CHARSET_SIZE + nullsize);
+ 
+ 	for (i = 0; i < fromwords; i++) {
+-		ftmp = get_unaligned_le16(&from[i]);
+-		if (ftmp == 0)
++		ftmp[0] = get_unaligned_le16(&from[i]);
++		if (ftmp[0] == 0)
+ 			break;
++		for (j = 1; j <= 2; j++) {
++			if (i + j < fromwords)
++				ftmp[j] = get_unaligned_le16(&from[i + j]);
++			else
++				ftmp[j] = 0;
++		}
+ 
+ 		/*
+ 		 * check to see if converting this character might make the
+@@ -173,6 +200,19 @@ static int smb_from_utf16(char *to, const __le16 *from, int tolen, int fromlen,
+ 		/* put converted char into 'to' buffer */
+ 		charlen = cifs_mapchar(&to[outlen], ftmp, codepage, mapchar);
+ 		outlen += charlen;
++
++		/*
++		 * charlen (=bytes of UTF-8 for 1 character)
++		 * 4bytes UTF-8(surrogate pair) is charlen=4
++		 * (4bytes UTF-16 code)
++		 * 7-8bytes UTF-8(IVS) is charlen=3+4 or 4+4
++		 * (2 UTF-8 pairs divided to 2 UTF-16 pairs)
++		 */
++		if (charlen == 4)
++			i++;
++		else if (charlen >= 5)
++			/* 5-6bytes UTF-8 */
++			i += 2;
+ 	}
+ 
+ 	/* properly null-terminate string */
+@@ -307,6 +347,9 @@ int smbConvertToUTF16(__le16 *target, const char *source, int srclen,
+ 	char src_char;
+ 	__le16 dst_char;
+ 	wchar_t tmp;
++	wchar_t wchar_to[6];	/* UTF-16 */
++	int ret;
++	unicode_t u;
+ 
+ 	if (!mapchars)
+ 		return smb_strtoUTF16(target, source, srclen, cp);
+@@ -349,11 +392,57 @@ int smbConvertToUTF16(__le16 *target, const char *source, int srclen,
+ 			 * if no match, use question mark, which at least in
+ 			 * some cases serves as wild card
+ 			 */
+-			if (charlen < 1) {
+-				dst_char = cpu_to_le16(0x003f);
+-				charlen = 1;
++			if (charlen > 0)
++				goto ctoUTF16;
++
++			/* convert SURROGATE_PAIR */
++			if (strcmp(cp->charset, "utf8"))
++				goto unknown;
++			if (*(source + i) & 0x80) {
++				charlen = utf8_to_utf32(source + i, 6, &u);
++				if (charlen < 0)
++					goto unknown;
++			} else
++				goto unknown;
++			ret  = utf8s_to_utf16s(source + i, charlen,
++					UTF16_LITTLE_ENDIAN,
++					wchar_to, 6);
++			if (ret < 0)
++				goto unknown;
++
++			i += charlen;
++			dst_char = cpu_to_le16(*wchar_to);
++			if (charlen <= 3)
++				/* 1-3bytes UTF-8 to 2bytes UTF-16 */
++				put_unaligned(dst_char, &target[j]);
++			else if (charlen == 4) {
++				/*
++				 * 4bytes UTF-8(surrogate pair) to 4bytes UTF-16
++				 * 7-8bytes UTF-8(IVS) divided to 2 UTF-16
++				 * (charlen=3+4 or 4+4)
++				 */
++				put_unaligned(dst_char, &target[j]);
++				dst_char = cpu_to_le16(*(wchar_to + 1));
++				j++;
++				put_unaligned(dst_char, &target[j]);
++			} else if (charlen >= 5) {
++				/* 5-6bytes UTF-8 to 6bytes UTF-16 */
++				put_unaligned(dst_char, &target[j]);
++				dst_char = cpu_to_le16(*(wchar_to + 1));
++				j++;
++				put_unaligned(dst_char, &target[j]);
++				dst_char = cpu_to_le16(*(wchar_to + 2));
++				j++;
++				put_unaligned(dst_char, &target[j]);
+ 			}
++			continue;
++
++unknown:
++			dst_char = cpu_to_le16(0x003f);
++			charlen = 1;
+ 		}
++
++ctoUTF16:
+ 		/*
+ 		 * character may take more than one byte in the source string,
+ 		 * but will take exactly two bytes in the target string
 -- 
 2.43.0
 
