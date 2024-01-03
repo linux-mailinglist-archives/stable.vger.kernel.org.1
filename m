@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E5F823291
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50A28823248
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16997B229C6
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7458B24395
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DB21C298;
-	Wed,  3 Jan 2024 17:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E21BDF4;
+	Wed,  3 Jan 2024 17:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjUiBGzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0H8A8Tj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077A61C290;
-	Wed,  3 Jan 2024 17:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A02EC433C8;
-	Wed,  3 Jan 2024 17:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C935F1C298;
+	Wed,  3 Jan 2024 17:04:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC1DC433C7;
+	Wed,  3 Jan 2024 17:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301724;
-	bh=wJ7mEVOCKBKHvsNOjc+kB7I/tp9pFKUq1x1elqVGITg=;
+	s=korg; t=1704301485;
+	bh=nshPneWRoPHfIE0+rwuHX4Qi5CNZ6259GzlBNhwRns8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjUiBGztY0DwHhsQ3U53+KAspd9XvJAv9rzTlLGWnoTVuyJNrE2a2+9nl1K77Xwtb
-	 bInVoLePVCwCWriad1eYeJXtbiI74Qbt/2vKAKJZjUw8pqJn3IEVI89mcerXTfYvX6
-	 E8cYH8JEQeYPYTERxclC+ocnRQDaKaOJ2f0WH58M=
+	b=n0H8A8TjjRBh0T96sAM5Fq6Cjle5g+agBBI5vGNh8vR5wnANFaYzr8xwf0iP2aEDT
+	 sSNOz+c46M+iPABmBp2YD/d/2TAmwschHvUPmDOC4/Nip8L56RszaIFDhywBQibV8o
+	 gMtCvzHiTbuClN+UDldz0jufDslwwMU8o3RvdrxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Suman Ghosh <sumang@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 12/75] ethernet: atheros: fix a memleak in atl1e_setup_ring_resources
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 45/95] wifi: cfg80211: fix certs build to not depend on file order
 Date: Wed,  3 Jan 2024 17:54:53 +0100
-Message-ID: <20240103164845.059975234@linuxfoundation.org>
+Message-ID: <20240103164900.856217047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +53,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 309fdb1c33fe726d92d0030481346f24e1b01f07 ]
+commit 3c2a8ebe3fe66a5f77d4c164a0bea8e2ff37b455 upstream.
 
-In the error handling of 'offset > adapter->ring_size', the
-tx_ring->tx_buffer allocated by kzalloc should be freed,
-instead of 'goto failed' instantly.
+The file for the new certificate (Chen-Yu Tsai's) didn't
+end with a comma, so depending on the file order in the
+build rule, we'd end up with invalid C when concatenating
+the (now two) certificates. Fix that.
 
-Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Fixes: fb768d3b13ff ("wifi: cfg80211: Add my certificate")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/wireless/certs/wens.hex |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-index 696ce3c5a8ba3..e8772972bc2f0 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -866,10 +866,13 @@ static int atl1e_setup_ring_resources(struct atl1e_adapter *adapter)
- 		netdev_err(adapter->netdev, "offset(%d) > ring size(%d) !!\n",
- 			   offset, adapter->ring_size);
- 		err = -1;
--		goto failed;
-+		goto free_buffer;
- 	}
- 
- 	return 0;
-+free_buffer:
-+	kfree(tx_ring->tx_buffer);
-+	tx_ring->tx_buffer = NULL;
- failed:
- 	if (adapter->ring_vir_addr != NULL) {
- 		dma_free_coherent(&pdev->dev, adapter->ring_size,
--- 
-2.43.0
-
+--- a/net/wireless/certs/wens.hex
++++ b/net/wireless/certs/wens.hex
+@@ -84,4 +84,4 @@
+ 0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
+ 0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
+ 0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
+-0x45, 0x4e, 0xc3
++0x45, 0x4e, 0xc3,
 
 
 
