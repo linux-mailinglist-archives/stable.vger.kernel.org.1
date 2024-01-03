@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC6F8232AA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FD982327F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F88C1C23D32
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197041F24D4B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C651C280;
-	Wed,  3 Jan 2024 17:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACE71BDFB;
+	Wed,  3 Jan 2024 17:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPy4nSLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azjUKn3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B095F1BDFB;
-	Wed,  3 Jan 2024 17:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15911C433C8;
-	Wed,  3 Jan 2024 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FAA1BDF1;
+	Wed,  3 Jan 2024 17:07:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AED4C433C8;
+	Wed,  3 Jan 2024 17:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301796;
-	bh=A0x4ZJBHCj863bxtVd8eK8ru92XEbiAq/2rbaCifRfU=;
+	s=korg; t=1704301674;
+	bh=oWsuWTO9BShKTMuZGdzwj3drSH4VlIPE8H5lSufB0FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPy4nSLtZEkp9Zo7jQLYBiBossVfT+Pv1wAL/QYbdqjrRl2ukm74NwTMj6+R5lgws
-	 qLp8Oj9DWvqWAqvYlPkHf8aMs2L4WHoCfscm9cuirlZ9jJjT6AfTZWciuM8RnGi35r
-	 Cmw4u6Iz0yFVVfJKa3CiiDH5hDqumP/2i9E+S02A=
+	b=azjUKn3XiK6Qk+XKYVXJcwo5BevI+ow5K+jYlQUfNGEhiXJ+ToLO2ItoCZPkXVMdb
+	 DPcgTga9qVE0EIjlAzAwjoc+U6UoV4GXEFaOemr2/aOGOSPaMHt3JtXoXNzkvASEPY
+	 bZ6NUcClO1QS1a9eDhV52+rgehjpcDd6vY6IzmGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 32/75] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.15 65/95] fuse: share lookup state between submount and its parent
 Date: Wed,  3 Jan 2024 17:55:13 +0100
-Message-ID: <20240103164848.063199083@linuxfoundation.org>
+Message-ID: <20240103164903.718010233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,110 +52,226 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
+commit c4d361f66ac91db8fc65061a9671682f61f4ca9d upstream.
 
-The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
-associated to an index that is used to select the right measurement
-resolution and its corresponding measurement time. The current
-implementation selects the measurement resolution and the temperature
-measurement time properly, but it does not select the right humidity
-measurement time in all cases.
+Fuse submounts do not perform a lookup for the nodeid that they inherit
+from their parent.  Instead, the code decrements the nlookup on the
+submount's fuse_inode when it is instantiated, and no forget is
+performed when a submount root is evicted.
 
-In summary, the 40 and 70 humidity measurement times are swapped.
+Trouble arises when the submount's parent is evicted despite the
+submount itself being in use.  In this author's case, the submount was
+in a container and deatched from the initial mount namespace via a
+MNT_DEATCH operation.  When memory pressure triggered the shrinker, the
+inode from the parent was evicted, which triggered enough forgets to
+render the submount's nodeid invalid.
 
-The reason for that is probably the unusual coding for the measurement
-resolution. According to the datasheet, the bits [7,0] of the "user
-register" are used as follows to select the bit resolution:
+Since submounts should still function, even if their parent goes away,
+solve this problem by sharing refcounted state between the parent and
+its submount.  When all of the references on this shared state reach
+zero, it's safe to forget the final lookup of the fuse nodeid.
 
---------------------------------------------------
-| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
---------------------------------------------------
-|   0   |   0   | 12 |  14  |  16000   |  50000  |
---------------------------------------------------
-|   0   |   1   | 8  |  12  |  3000    |  13000  |
---------------------------------------------------
-|   1   |   0   | 10 |  13  |  5000    |  25000  |
---------------------------------------------------
-|   1   |   1   | 11 |  11  |  8000    |  7000   |
---------------------------------------------------
-*This table is available in the official datasheet, page 13/21. I have
-just appended the times provided in the humidity/temperature tables,
-pages 3/21, 5/21. Note that always a pair of resolutions is selected.
-
-The sampling frequencies [20, 40, 70, 120] are assigned to a linear
-index [0..3] which is then coded as follows [1]:
-
-Index    [7,0]
---------------
-idx 0     0,0
-idx 1     1,0
-idx 2     0,1
-idx 3     1,1
-
-That is done that way because the temperature measurements are being
-used as the reference for the sampling frequency (the frequencies and
-the temperature measurement times are correlated), so increasing the
-index always reduces the temperature measurement time and its
-resolution. Therefore, the temperature measurement time array is as
-simple as [50000, 25000, 13000, 7000]
-
-On the other hand, the humidity resolution cannot follow the same
-pattern because of the way it is coded in the "user register", where
-both resolutions are selected at the same time. The humidity measurement
-time array is the following: [16000, 3000, 5000, 8000], which defines
-the following assignments:
-
-Index    [7,0]    Trh
------------------------
-idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
-idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
-idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
-idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
-
-The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
-which is not the case for the reason explained above.
-
-So a simple modification is required to obtain the right humidity
-measurement time array, swapping the values in the positions 1 and 2.
-
-The right table should be the following: [16000, 5000, 3000, 8000]
-
-Fix the humidity measurement time array with the right idex/value
-coding.
-
-[1] The actual code that makes this coding and assigns it to the current
-value of the "user register" is the following:
-config_reg &= 0x7E;
-config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
-
-Fixes: d574a87cc311 ("Add meas-spec sensors common part")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: 1866d779d5d2 ("fuse: Allow fuse_fill_super_common() for submounts")
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fuse/fuse_i.h |   15 +++++++++++
+ fs/fuse/inode.c  |   75 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 87 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-+++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-@@ -15,8 +15,8 @@
- /* Conversion times in us */
- static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
- 						       13000, 7000 };
--static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
--						       5000, 8000 };
-+static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
-+						       3000, 8000 };
- static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
- 						     4100, 8220, 16440 };
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -63,6 +63,19 @@ struct fuse_forget_link {
+ 	struct fuse_forget_link *next;
+ };
+ 
++/* Submount lookup tracking */
++struct fuse_submount_lookup {
++	/** Refcount */
++	refcount_t count;
++
++	/** Unique ID, which identifies the inode between userspace
++	 * and kernel */
++	u64 nodeid;
++
++	/** The request used for sending the FORGET message */
++	struct fuse_forget_link *forget;
++};
++
+ /** FUSE inode */
+ struct fuse_inode {
+ 	/** Inode data */
+@@ -155,6 +168,8 @@ struct fuse_inode {
+ 	 */
+ 	struct fuse_inode_dax *dax;
+ #endif
++	/** Submount specific lookup tracking */
++	struct fuse_submount_lookup *submount_lookup;
+ };
+ 
+ /** FUSE inode state bits */
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -69,6 +69,24 @@ struct fuse_forget_link *fuse_alloc_forg
+ 	return kzalloc(sizeof(struct fuse_forget_link), GFP_KERNEL_ACCOUNT);
+ }
+ 
++static struct fuse_submount_lookup *fuse_alloc_submount_lookup(void)
++{
++	struct fuse_submount_lookup *sl;
++
++	sl = kzalloc(sizeof(struct fuse_submount_lookup), GFP_KERNEL_ACCOUNT);
++	if (!sl)
++		return NULL;
++	sl->forget = fuse_alloc_forget();
++	if (!sl->forget)
++		goto out_free;
++
++	return sl;
++
++out_free:
++	kfree(sl);
++	return NULL;
++}
++
+ static struct inode *fuse_alloc_inode(struct super_block *sb)
+ {
+ 	struct fuse_inode *fi;
+@@ -84,6 +102,7 @@ static struct inode *fuse_alloc_inode(st
+ 	fi->attr_version = 0;
+ 	fi->orig_ino = 0;
+ 	fi->state = 0;
++	fi->submount_lookup = NULL;
+ 	mutex_init(&fi->mutex);
+ 	spin_lock_init(&fi->lock);
+ 	fi->forget = fuse_alloc_forget();
+@@ -114,6 +133,17 @@ static void fuse_free_inode(struct inode
+ 	kmem_cache_free(fuse_inode_cachep, fi);
+ }
+ 
++static void fuse_cleanup_submount_lookup(struct fuse_conn *fc,
++					 struct fuse_submount_lookup *sl)
++{
++	if (!refcount_dec_and_test(&sl->count))
++		return;
++
++	fuse_queue_forget(fc, sl->forget, sl->nodeid, 1);
++	sl->forget = NULL;
++	kfree(sl);
++}
++
+ static void fuse_evict_inode(struct inode *inode)
+ {
+ 	struct fuse_inode *fi = get_fuse_inode(inode);
+@@ -133,6 +163,11 @@ static void fuse_evict_inode(struct inod
+ 					  fi->nlookup);
+ 			fi->forget = NULL;
+ 		}
++
++		if (fi->submount_lookup) {
++			fuse_cleanup_submount_lookup(fc, fi->submount_lookup);
++			fi->submount_lookup = NULL;
++		}
+ 	}
+ 	if (S_ISREG(inode->i_mode) && !fuse_is_bad(inode)) {
+ 		WARN_ON(!list_empty(&fi->write_files));
+@@ -279,6 +314,13 @@ void fuse_change_attributes(struct inode
+ 	}
+ }
+ 
++static void fuse_init_submount_lookup(struct fuse_submount_lookup *sl,
++				      u64 nodeid)
++{
++	sl->nodeid = nodeid;
++	refcount_set(&sl->count, 1);
++}
++
+ static void fuse_init_inode(struct inode *inode, struct fuse_attr *attr)
+ {
+ 	inode->i_mode = attr->mode & S_IFMT;
+@@ -336,12 +378,22 @@ struct inode *fuse_iget(struct super_blo
+ 	 */
+ 	if (fc->auto_submounts && (attr->flags & FUSE_ATTR_SUBMOUNT) &&
+ 	    S_ISDIR(attr->mode)) {
++		struct fuse_inode *fi;
++
+ 		inode = new_inode(sb);
+ 		if (!inode)
+ 			return NULL;
+ 
+ 		fuse_init_inode(inode, attr);
+-		get_fuse_inode(inode)->nodeid = nodeid;
++		fi = get_fuse_inode(inode);
++		fi->nodeid = nodeid;
++		fi->submount_lookup = fuse_alloc_submount_lookup();
++		if (!fi->submount_lookup) {
++			iput(inode);
++			return NULL;
++		}
++		/* Sets nlookup = 1 on fi->submount_lookup->nlookup */
++		fuse_init_submount_lookup(fi->submount_lookup, nodeid);
+ 		inode->i_flags |= S_AUTOMOUNT;
+ 		goto done;
+ 	}
+@@ -364,11 +416,11 @@ retry:
+ 		iput(inode);
+ 		goto retry;
+ 	}
+-done:
+ 	fi = get_fuse_inode(inode);
+ 	spin_lock(&fi->lock);
+ 	fi->nlookup++;
+ 	spin_unlock(&fi->lock);
++done:
+ 	fuse_change_attributes(inode, attr, attr_valid, attr_version);
+ 
+ 	return inode;
+@@ -1380,6 +1432,8 @@ static int fuse_fill_super_submount(stru
+ 	struct super_block *parent_sb = parent_fi->inode.i_sb;
+ 	struct fuse_attr root_attr;
+ 	struct inode *root;
++	struct fuse_submount_lookup *sl;
++	struct fuse_inode *fi;
+ 
+ 	fuse_sb_defaults(sb);
+ 	fm->sb = sb;
+@@ -1402,12 +1456,27 @@ static int fuse_fill_super_submount(stru
+ 	 * its nlookup should not be incremented.  fuse_iget() does
+ 	 * that, though, so undo it here.
+ 	 */
+-	get_fuse_inode(root)->nlookup--;
++	fi = get_fuse_inode(root);
++	fi->nlookup--;
++
+ 	sb->s_d_op = &fuse_dentry_operations;
+ 	sb->s_root = d_make_root(root);
+ 	if (!sb->s_root)
+ 		return -ENOMEM;
+ 
++	/*
++	 * Grab the parent's submount_lookup pointer and take a
++	 * reference on the shared nlookup from the parent.  This is to
++	 * prevent the last forget for this nodeid from getting
++	 * triggered until all users have finished with it.
++	 */
++	sl = parent_fi->submount_lookup;
++	WARN_ON(!sl);
++	if (sl) {
++		refcount_inc(&sl->count);
++		fi->submount_lookup = sl;
++	}
++
+ 	return 0;
+ }
  
 
 
