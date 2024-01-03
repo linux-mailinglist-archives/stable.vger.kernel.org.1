@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2EAA822ADA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944DF822ADC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37054B21113
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43BE32821E8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE311864B;
-	Wed,  3 Jan 2024 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC351864B;
+	Wed,  3 Jan 2024 10:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlcRlqrg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsnhRup2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DF518632
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2298AC433C8;
-	Wed,  3 Jan 2024 10:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EECE18631
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:03:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78197C433C8;
+	Wed,  3 Jan 2024 10:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704276176;
-	bh=3mtDP86GmypyMdCQAK4SS2OFRQotHb/jhrvLSCzsm/s=;
+	s=korg; t=1704276187;
+	bh=cW8HvA2UmvMTj7zjGVkSR+GakV1g0qLlBa/70Ib5IxU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tlcRlqrg/b58nV1YFXXUjxiGILO/3gz1QiyrSndenSdjtDD9S1NY9WUAnU/l4n+0W
-	 1LOHCn8J6EOHudywaqeFR/u42w0nf0nFiBNpIryBDH757aLjAkwNYocNIG3yOOH1AX
-	 K7c59rXlY2IPtW7c9fSrz9LIWhEsLB4ziYcOO1VU=
-Subject: FAILED: patch "[PATCH] ftrace: Fix modification of direct_function hash while in use" failed to apply to 5.15-stable tree
+	b=BsnhRup2y0VMn3BXiiPvkWI8FPKmqQeImWI64/ENcLWCfxPV0a0bAuTPe0hyJU1R7
+	 Li8n1tSjdIQjB2e9nTcf0FukGfCjw95dnSZC0uzbSp5/0DqLxTZVbNdcho3qJvTRHh
+	 AIxK/XXLdoDXjBKZlY0ToWY6ylBaNdG0Sffn4qrU=
+Subject: FAILED: patch "[PATCH] ftrace: Fix modification of direct_function hash while in use" failed to apply to 5.10-stable tree
 To: rostedt@goodmis.org,ast@kernel.org,daniel@iogearbox.net,jolsa@kernel.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 03 Jan 2024 11:02:53 +0100
-Message-ID: <2024010353-overview-departed-a99e@gregkh>
+Date: Wed, 03 Jan 2024 11:02:55 +0100
+Message-ID: <2024010355-nemesis-universe-c895@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d05cb470663a2a1879277e544f69e660208f08f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010353-overview-departed-a99e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010355-nemesis-universe-c895@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
