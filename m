@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-9359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAF08231FF
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59191823261
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:06:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2226A1F2103A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE80AB24441
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096961C29C;
-	Wed,  3 Jan 2024 17:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5601C290;
+	Wed,  3 Jan 2024 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THDhLlkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qug/OlLp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C757D1BDFB;
-	Wed,  3 Jan 2024 17:01:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37120C433C9;
-	Wed,  3 Jan 2024 17:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B81BDFB;
+	Wed,  3 Jan 2024 17:06:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9CEC433C8;
+	Wed,  3 Jan 2024 17:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301276;
-	bh=gq6vuhZ70KbnWosI3ck3B2TWqrOC+/17Vlv5aBDIzqc=;
+	s=korg; t=1704301584;
+	bh=glnkvAJ29w4a0XG9y9tlaBo7Jz0gzMzC6pJoTbuQGcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THDhLlkDew9M6pO9T78Wj0PKB7c2K4ecXoLRD0gHorLESFDgCM+Zm1jjG45s7VbPr
-	 CrQgXvgZMo08ab6m7I+R4MfjUuGx/Wttz6NO0nxsUgHmFA1tuPOLCsihI+1IeVju4B
-	 2sPNcXzpN//o2P7XdVYYgnB1V0iB+2f4AyLQgStI=
+	b=qug/OlLpvAehZjy57abDtGltwDQEb6EGONc56T7b2+rxHH90sI2z4ypZ49Qm3O+0N
+	 LFkLFkFLzgTma0Uk4i/6KRhluVX/gF8+GexoM7M5a/RvNwGhYlPP3i4Bl6QXw9UcGW
+	 fYas3KxpuR4O7bT3sfVTh47liaWgWwgvYR3xg9pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 088/100] mm: migrate high-order folios in swap cache correctly
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 69/95] ksmbd: downgrade RWH lease caching state to RH for directory
 Date: Wed,  3 Jan 2024 17:55:17 +0100
-Message-ID: <20240103164909.353234854@linuxfoundation.org>
+Message-ID: <20240103164904.300137667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,78 +53,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit fc346d0a70a13d52fe1c4bc49516d83a42cd7c4c upstream.
+[ Upstream commit eb547407f3572d2110cb1194ecd8865b3371a7a4 ]
 
-Large folios occupy N consecutive entries in the swap cache instead of
-using multi-index entries like the page cache.  However, if a large folio
-is re-added to the LRU list, it can be migrated.  The migration code was
-not aware of the difference between the swap cache and the page cache and
-assumed that a single xas_store() would be sufficient.
+RWH(Read + Write + Handle) caching state is not supported for directory.
+ksmbd downgrade it to RH for directory if client send RWH caching lease
+state.
 
-This leaves potentially many stale pointers to the now-migrated folio in
-the swap cache, which can lead to almost arbitrary data corruption in the
-future.  This can also manifest as infinite loops with the RCU read lock
-held.
-
-[willy@infradead.org: modifications to the changelog & tweaked the fix]
-Fixes: 3417013e0d18 ("mm/migrate: Add folio_migrate_mapping()")
-Link: https://lkml.kernel.org/r/20231214045841.961776-1-willy@infradead.org
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Closes: https://lkml.kernel.org/r/1700569840-17327-1-git-send-email-quic_charante@quicinc.com
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/ksmbd/oplock.c  | 9 +++++++--
+ fs/ksmbd/oplock.h  | 2 +-
+ fs/ksmbd/smb2pdu.c | 8 ++++----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -388,6 +388,7 @@ int folio_migrate_mapping(struct address
- 	int dirty;
- 	int expected_count = folio_expected_refs(mapping, folio) + extra_count;
- 	long nr = folio_nr_pages(folio);
-+	long entries, i;
+diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
+index 24716dbe7108c..600312e2c6c21 100644
+--- a/fs/ksmbd/oplock.c
++++ b/fs/ksmbd/oplock.c
+@@ -1398,10 +1398,11 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+ /**
+  * parse_lease_state() - parse lease context containted in file open request
+  * @open_req:	buffer containing smb2 file open(create) request
++ * @is_dir:	whether leasing file is directory
+  *
+  * Return:  oplock state, -ENOENT if create lease context not found
+  */
+-struct lease_ctx_info *parse_lease_state(void *open_req)
++struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
+ {
+ 	struct create_context *cc;
+ 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
+@@ -1419,7 +1420,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
+ 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
  
- 	if (!mapping) {
- 		/* Anonymous page without mapping */
-@@ -425,8 +426,10 @@ int folio_migrate_mapping(struct address
- 			folio_set_swapcache(newfolio);
- 			newfolio->private = folio_get_private(folio);
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+-		lreq->req_state = lc->lcontext.LeaseState;
++		if (is_dir)
++			lreq->req_state = lc->lcontext.LeaseState &
++				~SMB2_LEASE_WRITE_CACHING_LE;
++		else
++			lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
+ 		lreq->epoch = lc->lcontext.Epoch;
+ 		lreq->duration = lc->lcontext.LeaseDuration;
+diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
+index ad31439c61fef..672127318c750 100644
+--- a/fs/ksmbd/oplock.h
++++ b/fs/ksmbd/oplock.h
+@@ -109,7 +109,7 @@ void opinfo_put(struct oplock_info *opinfo);
+ 
+ /* Lease related functions */
+ void create_lease_buf(u8 *rbuf, struct lease *lease);
+-struct lease_ctx_info *parse_lease_state(void *open_req);
++struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir);
+ __u8 smb2_map_lease_to_oplock(__le32 lease_state);
+ int lease_read_to_write(struct oplock_info *opinfo);
+ 
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 7ce5746f91674..6a3cd6ea3af18 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2729,10 +2729,6 @@ int smb2_open(struct ksmbd_work *work)
  		}
-+		entries = nr;
- 	} else {
- 		VM_BUG_ON_FOLIO(folio_test_swapcache(folio), folio);
-+		entries = 1;
  	}
  
- 	/* Move dirty while page refs frozen and newpage not yet exposed */
-@@ -436,7 +439,11 @@ int folio_migrate_mapping(struct address
- 		folio_set_dirty(newfolio);
+-	req_op_level = req->RequestedOplockLevel;
+-	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
+-		lc = parse_lease_state(req);
+-
+ 	if (le32_to_cpu(req->ImpersonationLevel) > le32_to_cpu(IL_DELEGATE_LE)) {
+ 		pr_err("Invalid impersonationlevel : 0x%x\n",
+ 		       le32_to_cpu(req->ImpersonationLevel));
+@@ -3212,6 +3208,10 @@ int smb2_open(struct ksmbd_work *work)
+ 		need_truncate = 1;
  	}
  
--	xas_store(&xas, newfolio);
-+	/* Swap cache still stores N entries instead of a high-order entry */
-+	for (i = 0; i < entries; i++) {
-+		xas_store(&xas, newfolio);
-+		xas_next(&xas);
-+	}
- 
- 	/*
- 	 * Drop cache reference from old page by unfreezing
++	req_op_level = req->RequestedOplockLevel;
++	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
++		lc = parse_lease_state(req, S_ISDIR(file_inode(filp)->i_mode));
++
+ 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
+ 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
+ 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
+-- 
+2.43.0
+
 
 
 
