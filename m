@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-9522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07C68232C1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3AB82325E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:06:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89AF91F2112E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85350B2319D
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FE01C283;
-	Wed,  3 Jan 2024 17:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F4E1BDF1;
+	Wed,  3 Jan 2024 17:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAU6vJXa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUvqfGIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E036F1BDEC;
-	Wed,  3 Jan 2024 17:11:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B88C433C7;
-	Wed,  3 Jan 2024 17:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124AF1BDDE;
+	Wed,  3 Jan 2024 17:06:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8871AC433C7;
+	Wed,  3 Jan 2024 17:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301873;
-	bh=DgVeq1KRqeXod0ETDD6488iwAEoIpkZE/qVgVxGoWCQ=;
+	s=korg; t=1704301574;
+	bh=SkHj784iS0dOcMZKyyi3aZjBjsy4QlgdcJLZwjRlHb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAU6vJXaVdQyRQO1mXf7AN3Ipr3HHYvz2oE/Fg/CVa+oXNw21AmYNzAkjcv+5rqMt
-	 2z9X73UpDnrx/kJzuP+0lcAALQQXqe5mAJgqfHoZ1/Unwt+oa7J+IYKBx01E9/Cj48
-	 /HHGnIW1qZCvE+RYyxsw/Ks0kV/wgaJ43VgKYFLg=
+	b=FUvqfGIYuKGnDsJEYUjEKsIbGsJiPv+F2EiMZVsL+bGPYrL7sQ6iM2b5ExBLyO2ID
+	 DfhGS/IXgX3lXEMVgYTLiSWToCatOlhnhusFkz4xH1ldb2f48Pqo00FWev4TbGNLlf
+	 TlaXm5jMuTZdDtmc0D8mWoyyVh7xcuO8mOrxlXSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Saarinen <jani.saarinen@intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 24/75] ALSA: hda/hdmi: add force-connect quirk for NUC5CPYB
-Date: Wed,  3 Jan 2024 17:55:05 +0100
-Message-ID: <20240103164846.836582201@linuxfoundation.org>
+	Alexander Atanasov <alexander.atanasov@virtuozzo.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 58/95] scsi: core: Always send batch on reset or error handling command
+Date: Wed,  3 Jan 2024 17:55:06 +0100
+Message-ID: <20240103164902.699731741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +51,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
 
-[ Upstream commit 3b1ff57e24a7bcd2e2a8426dd2013a80d1fa96eb ]
+commit 066c5b46b6eaf2f13f80c19500dbb3b84baabb33 upstream.
 
-Add one more older NUC model that requires quirk to force all pins to be
-connected. The display codec pins are not registered properly without
-the force-connect quirk. The codec will report only one pin as having
-external connectivity, but i915 finds all three connectors on the
-system, so the two drivers are not in sync.
+In commit 8930a6c20791 ("scsi: core: add support for request batching") the
+block layer bd->last flag was mapped to SCMD_LAST and used as an indicator
+to send the batch for the drivers that implement this feature. However, the
+error handling code was not updated accordingly.
 
-Issue found with DRM igt-gpu-tools test kms_hdmi_inject@inject-audio.
+scsi_send_eh_cmnd() is used to send error handling commands and request
+sense. The problem is that request sense comes as a single command that
+gets into the batch queue and times out. As a result the device goes
+offline after several failed resets. This was observed on virtio_scsi
+during a device resize operation.
 
-Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/3
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Saarinen <jani.saarinen@intel.com>
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+[  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
+[  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
+[  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
+
+To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd() and
+scsi_reset_ioctl().
+
+Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231208132127.2438067-2-kai.vehmanen@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Link: https://lore.kernel.org/r/20231215121008.2881653-1-alexander.atanasov@virtuozzo.com
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/scsi_error.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 3060dbf1daf58..0d1c6c4c1ee62 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -1970,6 +1970,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
- 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
- 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
- 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
-+	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
- 	{}
- };
--- 
-2.43.0
-
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1104,6 +1104,7 @@ retry:
+ 
+ 	scsi_log_send(scmd);
+ 	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
++	scmd->flags |= SCMD_LAST;
+ 
+ 	/*
+ 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+@@ -2397,6 +2398,7 @@ scsi_ioctl_reset(struct scsi_device *dev
+ 	scmd->cmnd = scsi_req(rq)->cmd;
+ 
+ 	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
++	scmd->flags |= SCMD_LAST;
+ 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
+ 
+ 	scmd->cmd_len			= 0;
 
 
 
