@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 954A3823311
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADF482328A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CF2528165B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A1E81F24800
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3286A1BDDD;
-	Wed,  3 Jan 2024 17:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204041C29C;
+	Wed,  3 Jan 2024 17:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUST4WDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em8CCjOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0D01BDEC;
-	Wed,  3 Jan 2024 17:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5458BC433C7;
-	Wed,  3 Jan 2024 17:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7701C295;
+	Wed,  3 Jan 2024 17:08:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076ECC433C7;
+	Wed,  3 Jan 2024 17:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302118;
-	bh=rgaEuJjgGt7y06EBrYABnXseaqKeVFMrNr6NAfYE47c=;
+	s=korg; t=1704301704;
+	bh=Gr5GOAgYgHy3g5efdcG969dObyrfCHvlyhzzCWcufOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hUST4WDfQ3ALEAjPksAMzx5ttmYktfV0Z4Mlic2JlAj8gcK62ONNTobVEElqX0a2n
-	 JzKdVsQyOPzg7El1sWGEVtzdKCMtECMhzLk6BIneP3xODHSpO3foXiI9TlGUtRCGWt
-	 gvv+xUwmktkFc7umE7ZfdRM//cMFDht5QLYX1CfE=
+	b=em8CCjOeqHnxHFFO61LZzKnMtOLnPXmkX25k6fE7gL+CQSBPRauX0ba9d1V2Dkg/g
+	 iv1zns3jU/tbWEo9/lUX2c93pKqGOz+ZCXAudlCZGWDqHbDDOtncUqCyj6uxe1+V9e
+	 Q5dDNlGaYCaWSho+EQxZcoKna9pUMpxvY/JIbYis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zizhi Wo <wozizhi@huawei.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 22/49] fs: cifs: Fix atime update check
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 94/95] device property: Allow const parameter to dev_fwnode()
 Date: Wed,  3 Jan 2024 17:55:42 +0100
-Message-ID: <20240103164838.409977982@linuxfoundation.org>
+Message-ID: <20240103164908.151824053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +53,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 01fe654f78fd1ea4df046ef76b07ba92a35f8dbe ]
+commit b295d484b97081feba72b071ffcb72fb4638ccfd upstream.
 
-Commit 9b9c5bea0b96 ("cifs: do not return atime less than mtime") indicates
-that in cifs, if atime is less than mtime, some apps will break.
-Therefore, it introduce a function to compare this two variables in two
-places where atime is updated. If atime is less than mtime, update it to
-mtime.
+It's not fully correct to take a const parameter pointer to a struct
+and return a non-const pointer to a member of that struct.
 
-However, the patch was handled incorrectly, resulting in atime and mtime
-being exactly equal. A previous commit 69738cfdfa70 ("fs: cifs: Fix atime
-update check vs mtime") fixed one place and forgot to fix another. Fix it.
+Instead, introduce a const version of the dev_fwnode() API which takes
+and returns const pointers and use it where it's applicable.
 
-Fixes: 9b9c5bea0b96 ("cifs: do not return atime less than mtime")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With this, convert dev_fwnode() to be a macro wrapper on top of const
+and non-const APIs that chooses one based on the type.
+
+Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20221004092129.19412-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/property.c  |   11 +++++++++--
+ include/linux/property.h |    7 ++++++-
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index cf17e3dd703e6..32a8525415d96 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -4671,7 +4671,7 @@ static int cifs_readpage_worker(struct file *file, struct page *page,
- 	/* we do not want atime to be less than mtime, it broke some apps */
- 	atime = inode_set_atime_to_ts(inode, current_time(inode));
- 	mtime = inode_get_mtime(inode);
--	if (timespec64_compare(&atime, &mtime))
-+	if (timespec64_compare(&atime, &mtime) < 0)
- 		inode_set_atime_to_ts(inode, inode_get_mtime(inode));
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -18,12 +18,19 @@
+ #include <linux/etherdevice.h>
+ #include <linux/phy.h>
  
- 	if (PAGE_SIZE > rc)
--- 
-2.43.0
-
+-struct fwnode_handle *dev_fwnode(const struct device *dev)
++struct fwnode_handle *__dev_fwnode(struct device *dev)
+ {
+ 	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
+ 		of_fwnode_handle(dev->of_node) : dev->fwnode;
+ }
+-EXPORT_SYMBOL_GPL(dev_fwnode);
++EXPORT_SYMBOL_GPL(__dev_fwnode);
++
++const struct fwnode_handle *__dev_fwnode_const(const struct device *dev)
++{
++	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
++		of_fwnode_handle(dev->of_node) : dev->fwnode;
++}
++EXPORT_SYMBOL_GPL(__dev_fwnode_const);
+ 
+ /**
+  * device_property_present - check if a property of a device is present
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -31,7 +31,12 @@ enum dev_dma_attr {
+ 	DEV_DMA_COHERENT,
+ };
+ 
+-struct fwnode_handle *dev_fwnode(const struct device *dev);
++const struct fwnode_handle *__dev_fwnode_const(const struct device *dev);
++struct fwnode_handle *__dev_fwnode(struct device *dev);
++#define dev_fwnode(dev)							\
++	_Generic((dev),							\
++		 const struct device *: __dev_fwnode_const,	\
++		 struct device *: __dev_fwnode)(dev)
+ 
+ bool device_property_present(struct device *dev, const char *propname);
+ int device_property_read_u8_array(struct device *dev, const char *propname,
 
 
 
