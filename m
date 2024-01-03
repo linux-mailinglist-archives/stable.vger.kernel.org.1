@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC448232E3
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67208232BF
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02374B24297
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D53581C23831
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF981C289;
-	Wed,  3 Jan 2024 17:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA881C284;
+	Wed,  3 Jan 2024 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT/fH086"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W12Ma0gG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743D21BDFB;
-	Wed,  3 Jan 2024 17:12:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF1EC433C8;
-	Wed,  3 Jan 2024 17:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928DB1BDEC;
+	Wed,  3 Jan 2024 17:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014D3C433C7;
+	Wed,  3 Jan 2024 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301977;
-	bh=+1tkok2SteLYX+UySW/Fv9wJFzMaunLK1znomRKTji8=;
+	s=korg; t=1704301864;
+	bh=eTU9np4hPkGBLTx6fzvmiN2XflmywGnmz1vzDDEmnoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yT/fH086b+IfjSgYxuqjdJI8ETyZDW7VDm6279AGqRHCQXvxzJmhc3KC6zlWrsnIY
-	 HhimQ9pLGKh0t29m+E51BAqg7z3qpFjnVHNZcI2hI/ftGHYdMJfQdkeL3bEHbtQ8Pq
-	 ojF6hMBMC954NWCeP3tgE/nEnp+mkNunggNILGpI=
+	b=W12Ma0gGcYxoV13UALzS1Dua+/zNsSlrJc6p/wvzPOKrbtBgqUAlCAW373ikdzFpg
+	 z80wZzGHPwl/BFuEqPns+nDvqixSScxvsWfuq/AihW4s3+dT0eCG0B8x8Vl6huYfAA
+	 ZQy6fuRsz+a2AAuOqmT2XLpmJJ/TT0F3PMPzcp5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/49] ksmbd: release interim response after sending status pending response
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	stable@kernel.org
+Subject: [PATCH 5.10 50/75] x86/alternatives: Sync core before enabling interrupts
 Date: Wed,  3 Jan 2024 17:55:31 +0100
-Message-ID: <20240103164836.749850826@linuxfoundation.org>
+Message-ID: <20240103164850.683241609@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 2a3f7857ec742e212d6cee7fbbf7b0e2ae7f5161 ]
+commit 3ea1704a92967834bf0e64ca1205db4680d04048 upstream.
 
-Add missing release async id and delete interim response entry after
-sending status pending response. This only cause when smb2 lease is enable.
+text_poke_early() does:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   local_irq_save(flags);
+   memcpy(addr, opcode, len);
+   local_irq_restore(flags);
+   sync_core();
+
+That's not really correct because the synchronization should happen before
+interrupts are re-enabled to ensure that a pending interrupt observes the
+complete update of the opcodes.
+
+It's not entirely clear whether the interrupt entry provides enough
+serialization already, but moving the sync_core() invocation into interrupt
+disabled region does no harm and is obviously correct.
+
+Fixes: 6fffacb30349 ("x86/alternatives, jumplabel: Use text_poke_early() before mm_init()")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/ZT6narvE%2BLxX%2B7Be@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/ksmbd_work.c | 3 +++
- fs/smb/server/oplock.c     | 3 ++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kernel/alternative.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/ksmbd_work.c b/fs/smb/server/ksmbd_work.c
-index 2510b9f3c8c14..d7c676c151e20 100644
---- a/fs/smb/server/ksmbd_work.c
-+++ b/fs/smb/server/ksmbd_work.c
-@@ -56,6 +56,9 @@ void ksmbd_free_work_struct(struct ksmbd_work *work)
- 	kfree(work->tr_buf);
- 	kvfree(work->request_buf);
- 	kfree(work->iov);
-+	if (!list_empty(&work->interim_entry))
-+		list_del(&work->interim_entry);
-+
- 	if (work->async_id)
- 		ksmbd_release_id(&work->conn->async_ida, work->async_id);
- 	kmem_cache_free(work_cache, work);
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 9bc0103720f57..50c68beb71d6c 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -833,7 +833,8 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
- 					     interim_entry);
- 			setup_async_work(in_work, NULL, NULL);
- 			smb2_send_interim_resp(in_work, STATUS_PENDING);
--			list_del(&in_work->interim_entry);
-+			list_del_init(&in_work->interim_entry);
-+			release_async_work(in_work);
- 		}
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
--- 
-2.43.0
-
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -1093,8 +1093,8 @@ void __init_or_module text_poke_early(vo
+ 	} else {
+ 		local_irq_save(flags);
+ 		memcpy(addr, opcode, len);
+-		local_irq_restore(flags);
+ 		sync_core();
++		local_irq_restore(flags);
+ 
+ 		/*
+ 		 * Could also do a CLFLUSH here to speed up CPU recovery; but
 
 
 
