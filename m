@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3AD823279
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D1D8232E6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5436E1C23666
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD4B1F24653
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62131C282;
-	Wed,  3 Jan 2024 17:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D86F1C291;
+	Wed,  3 Jan 2024 17:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nUQIAl4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xjml0hE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC9B1BDF1;
-	Wed,  3 Jan 2024 17:07:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0415AC433C8;
-	Wed,  3 Jan 2024 17:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0711BDFB;
+	Wed,  3 Jan 2024 17:13:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DC6C433C8;
+	Wed,  3 Jan 2024 17:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301657;
-	bh=puS8XXtqmSQIsa7tJk8BE1pUJsIsujy0ZOIPYT3wdTY=;
+	s=korg; t=1704301988;
+	bh=xHvKEesJmTsQhdhz4YTAvLDF4tP+BVuTQb808BXjdMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nUQIAl4GL+vOQX/dZgDbTWAtRdGEh46aShcxOm8QgxjkyR5L9z+es3XH0r7uOAlNk
-	 kgyzDXMnFHrbsRFQPwPH1LNz7CtqVuHuR70N3qkBn51tNH2YGgjgXHEKYpzREYd7t9
-	 ik0/aJ4/TbWCsND/t0SRPmKgaMHUF5Vd4MaMPHKw=
+	b=Xjml0hE2wTHRElKXhFqhnxzs1sa5b6IZt3Vf7zeCJ5yyuCGcyN+wqR4Hc6z100Fhr
+	 JUa8xXy2r0LPdSbTjrmPvgsG1lFF/quw1ElLfd0Mvo4mEidXOVWymAhMLnYihuTaoP
+	 wDqzxXDaFUYKBDnWdk0XETpgfIG4ElLZLUhg3Iz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.15 87/95] ring-buffer: Fix wake ups when buffer_percent is set to 100
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 15/49] ksmbd: set v2 lease capability
 Date: Wed,  3 Jan 2024 17:55:35 +0100
-Message-ID: <20240103164907.094357903@linuxfoundation.org>
+Message-ID: <20240103164837.376735981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +53,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 623b1f896fa8a669a277ee5a258307a16c7377a3 upstream.
+[ Upstream commit 18dd1c367c31d0a060f737d48345747662369b64 ]
 
-The tracefs file "buffer_percent" is to allow user space to set a
-water-mark on how much of the tracing ring buffer needs to be filled in
-order to wake up a blocked reader.
+Set SMB2_GLOBAL_CAP_DIRECTORY_LEASING to ->capabilities to inform server
+support directory lease to client.
 
- 0 - is to wait until any data is in the buffer
- 1 - is to wait for 1% of the sub buffers to be filled
- 50 - would be half of the sub buffers are filled with data
- 100 - is not to wake the waiter until the ring buffer is completely full
-
-Unfortunately the test for being full was:
-
-	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
-	return (dirty * 100) > (full * nr_pages);
-
-Where "full" is the value for "buffer_percent".
-
-There is two issues with the above when full == 100.
-
-1. dirty * 100 > 100 * nr_pages will never be true
-   That is, the above is basically saying that if the user sets
-   buffer_percent to 100, more pages need to be dirty than exist in the
-   ring buffer!
-
-2. The page that the writer is on is never considered dirty, as dirty
-   pages are only those that are full. When the writer goes to a new
-   sub-buffer, it clears the contents of that sub-buffer.
-
-That is, even if the check was ">=" it would still not be equal as the
-most pages that can be considered "dirty" is nr_pages - 1.
-
-To fix this, add one to dirty and use ">=" in the compare.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231226125902.4a057f1d@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 03329f9939781 ("tracing: Add tracefs file buffer_percentage")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/smb/server/oplock.c  | 4 ----
+ fs/smb/server/smb2ops.c | 9 ++++++---
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -897,9 +897,14 @@ static __always_inline bool full_hit(str
- 	if (!nr_pages || !full)
- 		return true;
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index ff5c83b1fb85c..5ef6af68d0de6 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1105,10 +1105,6 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+ 	bool prev_op_has_lease;
+ 	__le32 prev_op_state = 0;
  
--	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
-+	/*
-+	 * Add one as dirty will never equal nr_pages, as the sub-buffer
-+	 * that the writer is on is not counted as dirty.
-+	 * This is needed if "buffer_percent" is set to 100.
-+	 */
-+	dirty = ring_buffer_nr_dirty_pages(buffer, cpu) + 1;
+-	/* not support directory lease */
+-	if (S_ISDIR(file_inode(fp->filp)->i_mode))
+-		return 0;
+-
+ 	opinfo = alloc_opinfo(work, pid, tid);
+ 	if (!opinfo)
+ 		return -ENOMEM;
+diff --git a/fs/smb/server/smb2ops.c b/fs/smb/server/smb2ops.c
+index aed7704a06728..27a9dce3e03ab 100644
+--- a/fs/smb/server/smb2ops.c
++++ b/fs/smb/server/smb2ops.c
+@@ -221,7 +221,8 @@ void init_smb3_0_server(struct ksmbd_conn *conn)
+ 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC_LE;
  
--	return (dirty * 100) > (full * nr_pages);
-+	return (dirty * 100) >= (full * nr_pages);
- }
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
++			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
  
- /*
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION &&
+ 	    conn->cli_cap & SMB2_GLOBAL_CAP_ENCRYPTION)
+@@ -245,7 +246,8 @@ void init_smb3_02_server(struct ksmbd_conn *conn)
+ 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC_LE;
+ 
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
++			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
+ 
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+ 	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+@@ -270,7 +272,8 @@ int init_smb3_11_server(struct ksmbd_conn *conn)
+ 	conn->signing_algorithm = SIGNING_ALG_AES_CMAC_LE;
+ 
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_LEASES)
+-		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING;
++		conn->vals->capabilities |= SMB2_GLOBAL_CAP_LEASING |
++			SMB2_GLOBAL_CAP_DIRECTORY_LEASING;
+ 
+ 	if (server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION ||
+ 	    (!(server_conf.flags & KSMBD_GLOBAL_FLAG_SMB2_ENCRYPTION_OFF) &&
+-- 
+2.43.0
+
 
 
 
