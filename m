@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-9391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD645823224
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E27823228
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EBD6B2471E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAF7D28A6AA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5EC1C2AC;
-	Wed,  3 Jan 2024 17:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 439DC1C6B4;
+	Wed,  3 Jan 2024 17:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrpmVInN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LnJopCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220531C2A9;
-	Wed,  3 Jan 2024 17:03:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FAAC433C8;
-	Wed,  3 Jan 2024 17:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAE81C6B3;
+	Wed,  3 Jan 2024 17:03:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64881C433C9;
+	Wed,  3 Jan 2024 17:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301386;
-	bh=rXN936LNSou1IgGZttvKELmucuuVSAKb1CaGRWIFD54=;
+	s=korg; t=1704301392;
+	bh=cThOYKXj5aHaGsDfLJdZtqMgzYkF8c069S4fIhpURxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrpmVInN+r5YvJAAPRPOtCeIe0HTuS9N7+rpjFu2l4NX8aeqIr9n24igdWfXhe5/8
-	 lU+04GrNO8OLEoFw2KUXllJntS0kubNn8GZ15Gg2rWiJLWbROQm7bn75DuwonKCY5q
-	 eW/GGrs+nBz5p5QjxuwNQ/mvYVj0tmf9hSmpfMoM=
+	b=2LnJopCQe/f+QxFQ2GOVpjrXCN5c8qXWv7dIABFY7QqJe0VkNzh1sYDlV9/VSv1Lf
+	 CjpYV47wRUU4f3hMIHDmeyEbG9maDm7sRarbHzhb+lRp4jHnj/7RoDW5LjRK8u2XAh
+	 EYOAdwc65FxhIKQZfUtmvFB1MuUdo6Kfarpdc9BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 19/95] afs: Fix dynamic root lookup DNS check
-Date: Wed,  3 Jan 2024 17:54:27 +0100
-Message-ID: <20240103164857.013176880@linuxfoundation.org>
+Subject: [PATCH 5.15 20/95] net: check dev->gso_max_size in gso_features_check()
+Date: Wed,  3 Jan 2024 17:54:28 +0100
+Message-ID: <20240103164857.173284255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
 References: <20240103164853.921194838@linuxfoundation.org>
@@ -59,73 +57,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 74cef6872ceaefb5b6c5c60641371ea28702d358 ]
+[ Upstream commit 24ab059d2ebd62fdccc43794796f6ffbabe49ebc ]
 
-In the afs dynamic root directory, the ->lookup() function does a DNS check
-on the cell being asked for and if the DNS upcall reports an error it will
-report an error back to userspace (typically ENOENT).
+Some drivers might misbehave if TSO packets get too big.
 
-However, if a failed DNS upcall returns a new-style result, it will return
-a valid result, with the status field set appropriately to indicate the
-type of failure - and in that case, dns_query() doesn't return an error and
-we let stat() complete with no error - which can cause confusion in
-userspace as subsequent calls that trigger d_automount then fail with
-ENOENT.
+GVE for instance uses a 16bit field in its TX descriptor,
+and will do bad things if a packet is bigger than 2^16 bytes.
 
-Fix this by checking the status result from a valid dns_query() and
-returning an error if it indicates a failure.
+Linux TCP stack honors dev->gso_max_size, but there are
+other ways for too big packets to reach an ndo_start_xmit()
+handler : virtio_net, af_packet, GRO...
 
-Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server set")
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216637
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Add a generic check in gso_features_check() and fallback
+to GSO when needed.
+
+gso_max_size was added in the blamed commit.
+
+Fixes: 82cc1a7a5687 ("[NET]: Add per-connection option to set max TSO frame size")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231219125331.4127498-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dynroot.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ net/core/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index 4ddc4846a8072..96b404d9e13ac 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -113,6 +113,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
- 	struct afs_net *net = afs_d2net(dentry);
- 	const char *name = dentry->d_name.name;
- 	size_t len = dentry->d_name.len;
-+	char *result = NULL;
- 	int ret;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 8f4f355a963f8..8501645ff67dd 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3540,6 +3540,9 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	if (gso_segs > dev->gso_max_segs)
+ 		return features & ~NETIF_F_GSO_MASK;
  
- 	/* Names prefixed with a dot are R/W mounts. */
-@@ -130,9 +131,22 @@ static int afs_probe_cell_name(struct dentry *dentry)
- 	}
- 
- 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
--			NULL, NULL, false);
--	if (ret == -ENODATA || ret == -ENOKEY)
-+			&result, NULL, false);
-+	if (ret == -ENODATA || ret == -ENOKEY || ret == 0)
- 		ret = -ENOENT;
-+	if (ret > 0 && ret >= sizeof(struct dns_server_list_v1_header)) {
-+		struct dns_server_list_v1_header *v1 = (void *)result;
++	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
++		return features & ~NETIF_F_GSO_MASK;
 +
-+		if (v1->hdr.zero == 0 &&
-+		    v1->hdr.content == DNS_PAYLOAD_IS_SERVER_LIST &&
-+		    v1->hdr.version == 1 &&
-+		    (v1->status != DNS_LOOKUP_GOOD &&
-+		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD))
-+			return -ENOENT;
-+
-+	}
-+
-+	kfree(result);
- 	return ret;
- }
- 
+ 	if (!skb_shinfo(skb)->gso_type) {
+ 		skb_warn_bad_offload(skb);
+ 		return features & ~NETIF_F_GSO_MASK;
 -- 
 2.43.0
 
