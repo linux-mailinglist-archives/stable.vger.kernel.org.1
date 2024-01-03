@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F4782320A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF10823270
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A53BB23FD7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 494AB284986
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC65B1BDFD;
-	Wed,  3 Jan 2024 17:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8141C291;
+	Wed,  3 Jan 2024 17:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ux2wsVdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xfqgpHIU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44281BDDE;
-	Wed,  3 Jan 2024 17:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3333AC433C7;
-	Wed,  3 Jan 2024 17:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C231BDF1;
+	Wed,  3 Jan 2024 17:07:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80088C433C7;
+	Wed,  3 Jan 2024 17:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301311;
-	bh=RTk1o9RJyeYBiCdgk30iTMaM4Bxfk2jK/6hQ9UKf9UI=;
+	s=korg; t=1704301628;
+	bh=dP+Nbs228zegAiy49rG4d02sCTzftqspTbWOp65ReIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ux2wsVdPvi8n53V/q2QM8/Oc0kKMHPw2rCsCC6BVYsIt1Ijja8HfhtN3KKxcJgG6s
-	 i6FA8fRroKt12eZstT6akYQwMET+cLNsdC7WvIXKTCtFCtHK29jH7LrLFXV+XiYb7j
-	 xpLUlxjvgY8gEFTXrlAmcgXRFzVP6NjmdnufjFKU=
+	b=xfqgpHIUfpxOa+WbRhKCdkA+8OaBV4AwGEs+ekasd9L0FtH8yS+I1Z9yKBmgwCy7D
+	 diMJ15pVJGxntEjV3HzN5jPQdZF6KrlPl/2dYMRidomfW7hNYg2zyAaluO3tClMozY
+	 GZsRMD6Anxa/WIRf1zwYR01tvpo5+mCTT/cZJ5To=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 098/100] device property: Allow const parameter to dev_fwnode()
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 79/95] net: usb: ax88179_178a: avoid failed operations when device is disconnected
 Date: Wed,  3 Jan 2024 17:55:27 +0100
-Message-ID: <20240103164910.836644286@linuxfoundation.org>
+Message-ID: <20240103164905.903577470@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +53,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-commit b295d484b97081feba72b071ffcb72fb4638ccfd upstream.
+[ Upstream commit aef05e349bfd81c95adb4489639413fadbb74a83 ]
 
-It's not fully correct to take a const parameter pointer to a struct
-and return a non-const pointer to a member of that struct.
+When the device is disconnected we get the following messages showing
+failed operations:
+Nov 28 20:22:11 localhost kernel: usb 2-3: USB disconnect, device number 2
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: unregister 'ax88179_178a' usb-0000:02:00.0-3, ASIX AX88179 USB 3.0 Gigabit Ethernet
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to read reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to write reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0001: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
 
-Instead, introduce a const version of the dev_fwnode() API which takes
-and returns const pointers and use it where it's applicable.
+The reason is that although the device is detached, normal stop and
+unbind operations are commanded from the driver. These operations are
+not necessary in this situation, so avoid these logs when the device is
+detached if the result of the operation is -ENODEV and if the new flag
+informing about the disconnecting status is enabled.
 
-With this, convert dev_fwnode() to be a macro wrapper on top of const
-and non-const APIs that chooses one based on the type.
-
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20221004092129.19412-2-andriy.shevchenko@linux.intel.com
+cc:  <stable@vger.kernel.org>
+Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231207175007.263907-1-jtornosm@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/property.c  |   11 +++++++++--
- include/linux/property.h |    7 ++++++-
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -17,12 +17,19 @@
- #include <linux/property.h>
- #include <linux/phy.h>
- 
--struct fwnode_handle *dev_fwnode(const struct device *dev)
-+struct fwnode_handle *__dev_fwnode(struct device *dev)
- {
- 	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
- 		of_fwnode_handle(dev->of_node) : dev->fwnode;
- }
--EXPORT_SYMBOL_GPL(dev_fwnode);
-+EXPORT_SYMBOL_GPL(__dev_fwnode);
-+
-+const struct fwnode_handle *__dev_fwnode_const(const struct device *dev)
-+{
-+	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
-+		of_fwnode_handle(dev->of_node) : dev->fwnode;
-+}
-+EXPORT_SYMBOL_GPL(__dev_fwnode_const);
- 
- /**
-  * device_property_present - check if a property of a device is present
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -32,7 +32,12 @@ enum dev_dma_attr {
- 	DEV_DMA_COHERENT,
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 49d97ad376654..a2b1f9a0c6d9f 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -172,6 +172,7 @@ struct ax88179_data {
+ 	u8 in_pm;
+ 	u32 wol_supported;
+ 	u32 wolopts;
++	u8 disconnecting;
  };
  
--struct fwnode_handle *dev_fwnode(const struct device *dev);
-+const struct fwnode_handle *__dev_fwnode_const(const struct device *dev);
-+struct fwnode_handle *__dev_fwnode(struct device *dev);
-+#define dev_fwnode(dev)							\
-+	_Generic((dev),							\
-+		 const struct device *: __dev_fwnode_const,	\
-+		 struct device *: __dev_fwnode)(dev)
+ struct ax88179_int_data {
+@@ -207,6 +208,7 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ {
+ 	int ret;
+ 	int (*fn)(struct usbnet *, u8, u8, u16, u16, void *, u16);
++	struct ax88179_data *ax179_data = dev->driver_priv;
  
- bool device_property_present(struct device *dev, const char *propname);
- int device_property_read_u8_array(struct device *dev, const char *propname,
+ 	BUG_ON(!dev);
+ 
+@@ -218,7 +220,7 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ 	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 value, index, data, size);
+ 
+-	if (unlikely(ret < 0))
++	if (unlikely((ret < 0) && !(ret == -ENODEV && ax179_data->disconnecting)))
+ 		netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
+ 			    index, ret);
+ 
+@@ -230,6 +232,7 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ {
+ 	int ret;
+ 	int (*fn)(struct usbnet *, u8, u8, u16, u16, const void *, u16);
++	struct ax88179_data *ax179_data = dev->driver_priv;
+ 
+ 	BUG_ON(!dev);
+ 
+@@ -241,7 +244,7 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ 	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 value, index, data, size);
+ 
+-	if (unlikely(ret < 0))
++	if (unlikely((ret < 0) && !(ret == -ENODEV && ax179_data->disconnecting)))
+ 		netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
+ 			    index, ret);
+ 
+@@ -516,6 +519,20 @@ static int ax88179_resume(struct usb_interface *intf)
+ 	return usbnet_resume(intf);
+ }
+ 
++static void ax88179_disconnect(struct usb_interface *intf)
++{
++	struct usbnet *dev = usb_get_intfdata(intf);
++	struct ax88179_data *ax179_data;
++
++	if (!dev)
++		return;
++
++	ax179_data = dev->driver_priv;
++	ax179_data->disconnecting = 1;
++
++	usbnet_disconnect(intf);
++}
++
+ static void
+ ax88179_get_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
+ {
+@@ -1946,7 +1963,7 @@ static struct usb_driver ax88179_178a_driver = {
+ 	.suspend =	ax88179_suspend,
+ 	.resume =	ax88179_resume,
+ 	.reset_resume =	ax88179_resume,
+-	.disconnect =	usbnet_disconnect,
++	.disconnect =	ax88179_disconnect,
+ 	.supports_autosuspend = 1,
+ 	.disable_hub_initiated_lpm = 1,
+ };
+-- 
+2.43.0
+
 
 
 
