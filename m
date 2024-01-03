@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-9364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85235823204
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA47823281
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26DD3B24596
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60B11C23BA4
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B08F1C28F;
-	Wed,  3 Jan 2024 17:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD761C283;
+	Wed,  3 Jan 2024 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPveNRPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q74J6jB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F631BDDE;
-	Wed,  3 Jan 2024 17:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C48C433C8;
-	Wed,  3 Jan 2024 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A101BDFD;
+	Wed,  3 Jan 2024 17:08:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B22C433C8;
+	Wed,  3 Jan 2024 17:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301292;
-	bh=HyiWss7KkqTJQ0L+8tgllrKtouIxod7udqB2gW+6p7E=;
+	s=korg; t=1704301680;
+	bh=LBteSNl1QgzCFvlAeAYgoY6fzDeqRaqPRduPrMGG/Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPveNRPI18wERwz3EgG7VOspg+zKrebsO0PTZVx516VDn4BfgP3ciItLETWOCoBbP
-	 qjGuI7fg8u+l9yyfKFm1ftBx0GPons/TiK+tEWc7QK+qMipIZN/W5TfZz8zSGySONK
-	 aob1Lc0SVR+UQ60qHDN/apS8Fftj1H1QD2Vg35ZQ=
+	b=q74J6jB05ZlO2OlPjIT8UlUpR/KM100Jh9sueHN/r1K8KjnAvV+T0+gIVn41W0SG8
+	 tcFpMGCbiz8YQjpu2VeOXKyRTnHd6iBfdEb3I7Y5e+omwbeQtZWCDJCiNHoLF8s/Md
+	 XNgQp7oR0o7ANXlq9znQ6vzAe/v1RGLsDe0EHlTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/100] usb: fotg210-hcd: delete an incorrect bounds test
-Date: Wed,  3 Jan 2024 17:55:04 +0100
-Message-ID: <20240103164907.331990036@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.15 57/95] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+Date: Wed,  3 Jan 2024 17:55:05 +0100
+Message-ID: <20240103164902.559765449@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,68 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 7fbcd195e2b8cc952e4aeaeb50867b798040314c ]
+commit a2a8aefecbd0f87d6127951cef33b3def8439057 upstream.
 
-Here "temp" is the number of characters that we have written and "size"
-is the size of the buffer.  The intent was clearly to say that if we have
-written to the end of the buffer then stop.
+Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
+the format:
 
-However, for that to work the comparison should have been done on the
-original "size" value instead of the "size -= temp" value.  Not only
-will that not trigger when we want to, but there is a small chance that
-it will trigger incorrectly before we want it to and we break from the
-loop slightly earlier than intended.
+compatible = "fsl,imx28-ocotp", "fsl,ocotp";
 
-This code was recently changed from using snprintf() to scnprintf().  With
-snprintf() we likely would have continued looping and passed a negative
-size parameter to snprintf().  This would have triggered an annoying
-WARN().  Now that we have converted to scnprintf() "size" will never
-drop below 1 and there is no real need for this test.  We could change
-the condition to "if (temp <= 1) goto done;" but just deleting the test
-is cleanest.
+Document the "fsl,ocotp" entry to fix the following schema
+warning:
 
-Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
+efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
+from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
+
+Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
+Cc:  <Stable@vger.kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231215111358.316727-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/fotg210-hcd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
-index c4c1fbc12b4cd..dc968960769e1 100644
---- a/drivers/usb/host/fotg210-hcd.c
-+++ b/drivers/usb/host/fotg210-hcd.c
-@@ -429,8 +429,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 			temp = size;
- 		size -= temp;
- 		next += temp;
--		if (temp == size)
--			goto done;
- 	}
+--- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+@@ -14,9 +14,11 @@ allOf:
  
- 	temp = snprintf(next, size, "\n");
-@@ -440,7 +438,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 	size -= temp;
- 	next += temp;
+ properties:
+   compatible:
+-    enum:
+-      - fsl,imx23-ocotp
+-      - fsl,imx28-ocotp
++    items:
++      - enum:
++          - fsl,imx23-ocotp
++          - fsl,imx28-ocotp
++      - const: fsl,ocotp
  
--done:
- 	*sizep = size;
- 	*nextp = next;
- }
--- 
-2.43.0
-
+   "#address-cells":
+     const: 1
+@@ -40,7 +42,7 @@ additionalProperties: false
+ examples:
+   - |
+     ocotp: efuse@8002c000 {
+-        compatible = "fsl,imx28-ocotp";
++        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+         #address-cells = <1>;
+         #size-cells = <1>;
+         reg = <0x8002c000 0x2000>;
 
 
 
