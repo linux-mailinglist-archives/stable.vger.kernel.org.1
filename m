@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B4082324A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B01823293
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B826B245A7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EC6DB24334
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9088A1C29C;
-	Wed,  3 Jan 2024 17:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3361BDEC;
+	Wed,  3 Jan 2024 17:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f0oVPz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIqmCfkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585B01BDF0;
-	Wed,  3 Jan 2024 17:04:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D33C433C7;
-	Wed,  3 Jan 2024 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7572D1BDF4;
+	Wed,  3 Jan 2024 17:08:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED1AC433C8;
+	Wed,  3 Jan 2024 17:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301492;
-	bh=feYYiT6uAkZWbFpzlHamLS9OeaJTyi93KXd9Ym9k5U4=;
+	s=korg; t=1704301731;
+	bh=QO79e8Iv0M9amgOcwtTMbZwoehiQyA2q+QxERh/l/cA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0f0oVPz3/rrNqhOMdbNyJAxps5p2NFJjnTLaw1iVF2NVXi4k59St46ab5cFJS5mn9
-	 45qbrF9didHa3eDeas327cfKBUn6ec4tjMWwNgIiFQfr+k7eLMREvo/AghdzJ5GKGX
-	 jsbLsQ+mQSA+EMlL3RDYOs8z8/MowwBfPZwDOD0M=
+	b=VIqmCfkWdQcH4mj75hykln3cNLLIlurIcuROgOyC4Ke7a/0/SXNHGn/PAdaQFR75u
+	 jTwtLip1Fo6ffeFPSnqdKmsVCE8RauyP1PrflbO9qG6r+keDa9+lbM45qHsqumNcsL
+	 Um8Msw+KPomIiM/bwMQ2UcjGKAc9/t0lhPx0N5lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alper Ak <alperyasinak1@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 47/95] USB: serial: option: add Quectel EG912Y module support
+	Liu Jian <liujian56@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 14/75] net: check vlan filter feature in vlan_vids_add_by_dev() and vlan_vids_del_by_dev()
 Date: Wed,  3 Jan 2024 17:54:55 +0100
-Message-ID: <20240103164901.143562053@linuxfoundation.org>
+Message-ID: <20240103164845.386664600@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +53,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alper Ak <alperyasinak1@gmail.com>
+From: Liu Jian <liujian56@huawei.com>
 
-commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
+[ Upstream commit 01a564bab4876007ce35f312e16797dfe40e4823 ]
 
-Add Quectel EG912Y "DIAG, AT, MODEM"
+I got the below warning trace:
 
-0x6001: ECM / RNDIS + DIAG + AT + MODEM
+WARNING: CPU: 4 PID: 4056 at net/core/dev.c:11066 unregister_netdevice_many_notify
+CPU: 4 PID: 4056 Comm: ip Not tainted 6.7.0-rc4+ #15
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:unregister_netdevice_many_notify+0x9a4/0x9b0
+Call Trace:
+ rtnl_dellink
+ rtnetlink_rcv_msg
+ netlink_rcv_skb
+ netlink_unicast
+ netlink_sendmsg
+ __sock_sendmsg
+ ____sys_sendmsg
+ ___sys_sendmsg
+ __sys_sendmsg
+ do_syscall_64
+ entry_SYSCALL_64_after_hwframe
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6001 Rev= 3.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+It can be repoduced via:
 
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ip netns add ns1
+    ip netns exec ns1 ip link add bond0 type bond mode 0
+    ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+    ip netns exec ns1 ip link set bond_slave_1 master bond0
+[1] ip netns exec ns1 ethtool -K bond0 rx-vlan-filter off
+[2] ip netns exec ns1 ip link add link bond_slave_1 name bond_slave_1.0 type vlan id 0
+[3] ip netns exec ns1 ip link add link bond0 name bond0.0 type vlan id 0
+[4] ip netns exec ns1 ip link set bond_slave_1 nomaster
+[5] ip netns exec ns1 ip link del veth2
+    ip netns del ns1
+
+This is all caused by command [1] turning off the rx-vlan-filter function
+of bond0. The reason is the same as commit 01f4fd270870 ("bonding: Fix
+incorrect deletion of ETH_P_8021AD protocol vid from slaves"). Commands
+[2] [3] add the same vid to slave and master respectively, causing
+command [4] to empty slave->vlan_info. The following command [5] triggers
+this problem.
+
+To fix this problem, we should add VLAN_FILTER feature checks in
+vlan_vids_add_by_dev() and vlan_vids_del_by_dev() to prevent incorrect
+addition or deletion of vlan_vid information.
+
+Fixes: 348a1443cc43 ("vlan: introduce functions to do mass addition/deletion of vids by another device")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/8021q/vlan_core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -272,6 +272,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
-+#define QUECTEL_PRODUCT_EG912Y			0x6001
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
- #define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
-@@ -1244,6 +1245,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
+diff --git a/net/8021q/vlan_core.c b/net/8021q/vlan_core.c
+index 78ec2e1b14d15..43aea97c57620 100644
+--- a/net/8021q/vlan_core.c
++++ b/net/8021q/vlan_core.c
+@@ -406,6 +406,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 		return 0;
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+ 	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		err = vlan_vid_add(dev, vid_info->proto, vid_info->vid);
+ 		if (err)
+ 			goto unwind;
+@@ -416,6 +418,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 	list_for_each_entry_continue_reverse(vid_info,
+ 					     &vlan_info->vid_list,
+ 					     list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
+ 	}
+ 
+@@ -435,8 +439,11 @@ void vlan_vids_del_by_dev(struct net_device *dev,
+ 	if (!vlan_info)
+ 		return;
+ 
+-	list_for_each_entry(vid_info, &vlan_info->vid_list, list)
++	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
++	}
+ }
+ EXPORT_SYMBOL(vlan_vids_del_by_dev);
+ 
+-- 
+2.43.0
+
 
 
 
