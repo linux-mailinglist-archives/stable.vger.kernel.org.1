@@ -1,106 +1,81 @@
-Return-Path: <stable+bounces-9270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B97823044
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:13:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8C68230AE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4C98283672
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 15:13:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2731C23799
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 15:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75A61A72A;
-	Wed,  3 Jan 2024 15:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347D61A73F;
+	Wed,  3 Jan 2024 15:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TIUKMdGI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWO8kaBY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A941A71F;
-	Wed,  3 Jan 2024 15:13:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECBBC433CB;
-	Wed,  3 Jan 2024 15:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD731B26E;
+	Wed,  3 Jan 2024 15:38:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7673FC433C7;
+	Wed,  3 Jan 2024 15:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704294792;
-	bh=bFm0Z1sKJZItmcrSwYlr++E/l6Wo9Z9RcEYIw1gv8/k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=TIUKMdGIxBTc4tUVBKOOy03kAHheVOgCdA51aToMHMZ3YINlt8SR9K5e66IhWeB5U
-	 zxG67KSJBbgpwPAaQZff1JkqfEfErcjUrKEWcQx+7DCcDCNvcRAjVmemKiMiHx8n6V
-	 4dix+n/6EfSLm7kDjjlcnKTgdyh9wQGxqpO1aT8Ec7FSzHcrCvgeyL7b9IHpR2IMnC
-	 hs/h09zfO6J+pln+zbQCz9kEz+9vdjetSzsnVuyS0bhQPOD5Wg3zVo6y30skbhn4pn
-	 1C/BgAnXSyByvbAMPPs9eeEJFgaONm+1RmIACU2lPkn8cnZjrUQZhX8tQevBifBfFf
-	 QmmgCKVUQaRJA==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2cc9fa5e8e1so114008371fa.3;
-        Wed, 03 Jan 2024 07:13:12 -0800 (PST)
-X-Gm-Message-State: AOJu0YxHmCm3TXmE7jYJzpLvY5VRIi3LGCy987pZPjZmwJq3ra6rfXV/
-	dPu/KttpdmpJxPbNjUn4GltKf/KN4yxSAiLPYw==
-X-Google-Smtp-Source: AGHT+IFSlj6nZ8ZUfTGFMSFmV/q5bvx3ay0bqNUHIfGx+Gz9YS2Lv41/6TR2DLdMKsWU/APCPg4voqSUFRKuaq9MzdA=
-X-Received: by 2002:a2e:98d5:0:b0:2cc:843a:ec97 with SMTP id
- s21-20020a2e98d5000000b002cc843aec97mr7360555ljj.43.1704294790370; Wed, 03
- Jan 2024 07:13:10 -0800 (PST)
+	s=k20201202; t=1704296310;
+	bh=j4CKFm4QyoiuZcjYsJJZiQW0OE/euYVulADdZIAEL1A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KWO8kaBYwn1a66Tbdr8uOQXpPdSaCYuu/lYqEtzX3gdI2ZE6GorSXwAdT++E8Dh6X
+	 Yfb4jhy7k1ase4KReKPVGR4jybyWatsdTmO4AmBrZzUwp7xA0p9xDCkJC3D9ovLgyo
+	 +GGKfZ3XstirY1uJDLfJr6Oj4o1q96Ld+qJXjNpsIjRkQCHrk/j7B7TErDghU5SKGI
+	 rmbOuu0UsDahbZfK+IodTYC1Zrum7oTlm6HqLWJg2h8jf8rLyTq4EAREU4msGrbWmy
+	 soMU4njy6cPcODss5dTXRNBsRXxsV6Rlc/bGuZwN4SieXvkWgWmK3o8T9fmSIz3KtX
+	 zTL/NUubenr6g==
+Message-ID: <37a6dd80-6914-4865-967a-9dfa90f1adea@kernel.org>
+Date: Wed, 3 Jan 2024 08:38:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240103142051.111717-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240103142051.111717-1-krzysztof.kozlowski@linaro.org>
-From: Rob Herring <robh+dt@kernel.org>
-Date: Wed, 3 Jan 2024 08:12:58 -0700
-X-Gmail-Original-Message-ID: <CAL_JsqKAKNHz4wPuJPX7ULhVUz=KFRtNn=coWhs3d6LWk+jtGQ@mail.gmail.com>
-Message-ID: <CAL_JsqKAKNHz4wPuJPX7ULhVUz=KFRtNn=coWhs3d6LWk+jtGQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: thermal: correct thermal zone node name limit
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liviu Dudau <liviu.dudau@arm.com>, Sudeep Holla <sudeep.holla@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Amit Kucheria <amit.kucheria@linaro.org>, 
-	linux-pm@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 1/2] rtnetlink: allow to set iface down before
+ enslaving it
+Content-Language: en-US
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ Phil Sutter <phil@nwl.cc>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org
+References: <20240103094846.2397083-1-nicolas.dichtel@6wind.com>
+ <20240103094846.2397083-2-nicolas.dichtel@6wind.com>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <20240103094846.2397083-2-nicolas.dichtel@6wind.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 3, 2024 at 7:20=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> Linux kernel uses thermal zone node name during registering thermal
-> zones and has a hard-coded limit of 20 characters, including terminating
-> NUL byte.  The bindings expect node names to finish with '-thermal'
-> which is eight bytes long, thus we have only 11 characters for the reset
-> of the node name, not 12.
->
-> Reported-by: Rob Herring <robh@kernel.org>
-> Closes: https://lore.kernel.org/all/CAL_JsqKogbT_4DPd1n94xqeHaU_J8ve5K09W=
-OyVsRX3jxxUW3w@mail.gmail.com/
-> Fixes: 1202a442a31f ("dt-bindings: thermal: Add yaml bindings for thermal=
- zones")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On 1/3/24 2:48 AM, Nicolas Dichtel wrote:
+> The below commit adds support for:
+>> ip link set dummy0 down
+>> ip link set dummy0 master bond0 up
+> 
+> but breaks the opposite:
+>> ip link set dummy0 up
+>> ip link set dummy0 master bond0 down
+> 
+> Let's add a workaround to have both commands working.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Acked-by: Phil Sutter <phil@nwl.cc>
 > ---
->  Documentation/devicetree/bindings/thermal/thermal-zones.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml=
- b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> index 4a8dabc48170..bbc883fd4044 100644
-> --- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> +++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-> @@ -49,7 +49,7 @@ properties:
->        to take when the temperature crosses those thresholds.
->
->  patternProperties:
-> -  "^[a-zA-Z][a-zA-Z0-9\\-]{1,12}-thermal$":
-> +  "^[a-zA-Z][a-zA-Z0-9\\-]{1,11}-thermal$":
+>  net/core/rtnetlink.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
 
-Now off by 1 instead of 2. It should be 1 starting char, 1-10 chars,
-and 8 chars for "-thermal".
+Reviewed-by: David Ahern <dsahern@kernel.org>
 
-Can you also add a comment that this length is due to the kernel.
-
-Rob
 
