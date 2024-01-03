@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-9390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C6B823220
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 490098231C5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A561A28A6CB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A966FB23A00
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B138F1C2A3;
-	Wed,  3 Jan 2024 17:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBE91C292;
+	Wed,  3 Jan 2024 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fZkn82f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PB546HL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE091C291;
-	Wed,  3 Jan 2024 17:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CFC433C7;
-	Wed,  3 Jan 2024 17:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B111C294;
+	Wed,  3 Jan 2024 16:58:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09803C433C7;
+	Wed,  3 Jan 2024 16:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301383;
-	bh=qqQ7IR1WgxTxGnPjzL8muglyfPouZF0qieAR+oAH4+8=;
+	s=korg; t=1704301105;
+	bh=Jh1/QiPkcAUJWsL4UmG6W3ZVVqU8fPmULzrT1SsFc24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fZkn82fUNmLN+AcxbbB+azE7Lw9oXuNfNqUKk+joi8A1o1fRHn35pdzqf+Ezk4VX
-	 YPng1C4HI+3TIO4BAzmXkhdQMd6qw1bnsl9jyZgUk6cR2dBtk/flS98zMulNwvEuYq
-	 3w6UaViYbE/JZEYbMVHmatzzaqpvmXvBPM12diPc=
+	b=PB546HL04PeMDszhLkibY8jEm1OIKdC+itcBvnA1uIe0dfv8a8sC2RYeIdrz8cRrr
+	 BXIhjZ0ZbpFgxUOCYgm7wqrkpT7qMJFveZ0wwhj9qwrAiJgiuYBc1toYrxlj/5Y+2X
+	 lFSsR4V5ZHjIqEQgSkvVQwhT894RBry3ZdIsftrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	=?UTF-8?q?Atte=20Heikkil=C3=A4?= <atteh.mailbox@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/95] afs: Fix the dynamic roots d_delete to always delete unused dentries
+Subject: [PATCH 6.1 037/100] ksmbd: fix `force create mode and `force directory mode
 Date: Wed,  3 Jan 2024 17:54:26 +0100
-Message-ID: <20240103164856.880055576@linuxfoundation.org>
+Message-ID: <20240103164901.640075671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +52,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Atte Heikkilä <atteh.mailbox@gmail.com>
 
-[ Upstream commit 71f8b55bc30e82d6355e07811213d847981a32e2 ]
+[ Upstream commit 65656f5242e500dcfeffa6a0a1519eae14724f86 ]
 
-Fix the afs dynamic root's d_delete function to always delete unused
-dentries rather than only deleting them if they're positive.  With things
-as they stand upstream, negative dentries stemming from failed DNS lookups
-stick around preventing retries.
+`force create mode' and `force directory mode' should be bitwise ORed
+with the perms after `create mask' and `directory mask' have been
+applied, respectively.
 
-Fixes: 66c7e1d319a5 ("afs: Split the dynroot stuff out and give it its own ops tables")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Signed-off-by: Atte Heikkilä <atteh.mailbox@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dynroot.c | 13 +------------
- 1 file changed, 1 insertion(+), 12 deletions(-)
+ fs/smb/server/mgmt/share_config.h | 29 +++++++++++------------------
+ 1 file changed, 11 insertions(+), 18 deletions(-)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index b35c6081dbfe1..4ddc4846a8072 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -251,20 +251,9 @@ static int afs_dynroot_d_revalidate(struct dentry *dentry, unsigned int flags)
- 	return 1;
+diff --git a/fs/smb/server/mgmt/share_config.h b/fs/smb/server/mgmt/share_config.h
+index 3fd3382939421..5f591751b9236 100644
+--- a/fs/smb/server/mgmt/share_config.h
++++ b/fs/smb/server/mgmt/share_config.h
+@@ -34,29 +34,22 @@ struct ksmbd_share_config {
+ #define KSMBD_SHARE_INVALID_UID	((__u16)-1)
+ #define KSMBD_SHARE_INVALID_GID	((__u16)-1)
+ 
+-static inline int share_config_create_mode(struct ksmbd_share_config *share,
+-					   umode_t posix_mode)
++static inline umode_t
++share_config_create_mode(struct ksmbd_share_config *share,
++			 umode_t posix_mode)
+ {
+-	if (!share->force_create_mode) {
+-		if (!posix_mode)
+-			return share->create_mask;
+-		else
+-			return posix_mode & share->create_mask;
+-	}
+-	return share->force_create_mode & share->create_mask;
++	umode_t mode = (posix_mode ?: (umode_t)-1) & share->create_mask;
++
++	return mode | share->force_create_mode;
  }
  
--/*
-- * Allow the VFS to enquire as to whether a dentry should be unhashed (mustn't
-- * sleep)
-- * - called from dput() when d_count is going to 0.
-- * - return 1 to request dentry be unhashed, 0 otherwise
-- */
--static int afs_dynroot_d_delete(const struct dentry *dentry)
--{
--	return d_really_is_positive(dentry);
--}
--
- const struct dentry_operations afs_dynroot_dentry_operations = {
- 	.d_revalidate	= afs_dynroot_d_revalidate,
--	.d_delete	= afs_dynroot_d_delete,
-+	.d_delete	= always_delete_dentry,
- 	.d_release	= afs_d_release,
- 	.d_automount	= afs_d_automount,
- };
+-static inline int share_config_directory_mode(struct ksmbd_share_config *share,
+-					      umode_t posix_mode)
++static inline umode_t
++share_config_directory_mode(struct ksmbd_share_config *share,
++			    umode_t posix_mode)
+ {
+-	if (!share->force_directory_mode) {
+-		if (!posix_mode)
+-			return share->directory_mask;
+-		else
+-			return posix_mode & share->directory_mask;
+-	}
++	umode_t mode = (posix_mode ?: (umode_t)-1) & share->directory_mask;
+ 
+-	return share->force_directory_mode & share->directory_mask;
++	return mode | share->force_directory_mode;
+ }
+ 
+ static inline int test_share_config_flag(struct ksmbd_share_config *share,
 -- 
 2.43.0
 
