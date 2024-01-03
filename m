@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-9507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888D38232B1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3705823202
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACEB01C23E34
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F4CE28A683
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C8F1C290;
-	Wed,  3 Jan 2024 17:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A541C288;
+	Wed,  3 Jan 2024 17:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlU6JJ62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2XtZjgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3151BDEC;
-	Wed,  3 Jan 2024 17:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2FBC433C8;
-	Wed,  3 Jan 2024 17:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546F31BDDE;
+	Wed,  3 Jan 2024 17:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24B0C433C8;
+	Wed,  3 Jan 2024 17:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301819;
-	bh=CoheGX9+RO1Cc9f2s/2e1NftVeWbSU9Mx9QL7lHHdvo=;
+	s=korg; t=1704301286;
+	bh=039bW+5TbNROQRxI9Jb+FlQ01LjvR2CkIfbDyRiycSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlU6JJ62acVjh+AV2wmdBqN/wyeHtn1zzW4hHaWByQWSDfIjh2P+vVeKQiQ+zV4Ex
-	 Pfk3Ut+gNgYYXPVRdWBRITE7zIAtdnGCL4PvioOdvJca6v0weoxiHS1NUDxARLujKC
-	 irGUDHum/4sU60CN23l2399MHulUZWUArHVnhFLM=
+	b=H2XtZjgIaDb5XmTGF9wzuYuz7OQ4sHvIBg+3lUFaRQ5hwRQmvaQnPJ/QmL+CAm15B
+	 i3zX5L88iGwSaA0FiQFjCTloDtP1QNhIePV3NWezI9VSP4MdOvdJxqFpbBchkPWDsj
+	 td4qMxbgFAbsvD1FPLbV4zq+gWvgTGO9InjlHyKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Reinhard Speyerer <rspmn@arcor.de>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 39/75] USB: serial: option: add Quectel RM500Q R13 firmware support
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 091/100] ring-buffer: Fix wake ups when buffer_percent is set to 100
 Date: Wed,  3 Jan 2024 17:55:20 +0100
-Message-ID: <20240103164849.093275794@linuxfoundation.org>
+Message-ID: <20240103164909.786747835@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +54,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Reinhard Speyerer <rspmn@arcor.de>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 06f22cd6635bdae7d73566fca9879b2026a08e00 upstream.
+commit 623b1f896fa8a669a277ee5a258307a16c7377a3 upstream.
 
-Add support for Quectel RM500Q R13 firmware which uses Prot=40 for the
-NMEA port:
+The tracefs file "buffer_percent" is to allow user space to set a
+water-mark on how much of the tracing ring buffer needs to be filled in
+order to wake up a blocked reader.
 
-T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  8 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2c7c ProdID=0800 Rev= 4.14
-S:  Manufacturer=Quectel
-S:  Product=RM500Q-AE
-S:  SerialNumber=xxxxxxxx
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+ 0 - is to wait until any data is in the buffer
+ 1 - is to wait for 1% of the sub buffers to be filled
+ 50 - would be half of the sub buffers are filled with data
+ 100 - is not to wake the waiter until the ring buffer is completely full
 
-Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Unfortunately the test for being full was:
+
+	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
+	return (dirty * 100) > (full * nr_pages);
+
+Where "full" is the value for "buffer_percent".
+
+There is two issues with the above when full == 100.
+
+1. dirty * 100 > 100 * nr_pages will never be true
+   That is, the above is basically saying that if the user sets
+   buffer_percent to 100, more pages need to be dirty than exist in the
+   ring buffer!
+
+2. The page that the writer is on is never considered dirty, as dirty
+   pages are only those that are full. When the writer goes to a new
+   sub-buffer, it clears the contents of that sub-buffer.
+
+That is, even if the check was ">=" it would still not be equal as the
+most pages that can be considered "dirty" is nr_pages - 1.
+
+To fix this, add one to dirty and use ">=" in the compare.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231226125902.4a057f1d@gandalf.local.home
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 03329f9939781 ("tracing: Add tracefs file buffer_percentage")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ring_buffer.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1233,6 +1233,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, 0x0700, 0xff), /* BG95 */
- 	  .driver_info = RSVD(3) | ZLP },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x10),
- 	  .driver_info = ZLP },
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -935,9 +935,14 @@ static __always_inline bool full_hit(str
+ 	if (!nr_pages || !full)
+ 		return true;
+ 
+-	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
++	/*
++	 * Add one as dirty will never equal nr_pages, as the sub-buffer
++	 * that the writer is on is not counted as dirty.
++	 * This is needed if "buffer_percent" is set to 100.
++	 */
++	dirty = ring_buffer_nr_dirty_pages(buffer, cpu) + 1;
+ 
+-	return (dirty * 100) > (full * nr_pages);
++	return (dirty * 100) >= (full * nr_pages);
+ }
+ 
+ /*
 
 
 
