@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DE708232A0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B234F8231D9
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B39A8B22FEA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A561F24C03
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6EA1C288;
-	Wed,  3 Jan 2024 17:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B63D1C293;
+	Wed,  3 Jan 2024 16:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh1Ms3CS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYnMbmaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61051BDEC;
-	Wed,  3 Jan 2024 17:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7C6C433C7;
-	Wed,  3 Jan 2024 17:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E941BDEC;
+	Wed,  3 Jan 2024 16:59:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F07BC433C9;
+	Wed,  3 Jan 2024 16:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301762;
-	bh=gMSNqnY+Oetu4fiDGGSpF9/cJkzcXgJFFNE/jZ9n5As=;
+	s=korg; t=1704301167;
+	bh=i1qkNRi+ehNbC342ZreubvWPh653tg/ut0Ct5TCbUPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oh1Ms3CS+eYQhuBkvqV9lmgxXtFgmtYR11gEcKibKxkUps/LUrSjkMZkfIVR1qRmB
-	 VnlNd3mAYBgO76cZkV1tbyk/ZurRanRYFbFMI7GLzQTiEwVwiFdVywrZwIddLhyJvi
-	 xh/uua9Arco49HLQlBGbgqASlwZvqQ5Vqr+M5dkg=
+	b=CYnMbmaFLluHi0Gn6J9ZMmWaYlIBaC7ifvmZiA/r4eKf8LuSzvZeBYgYNOastQq4x
+	 qFZShxFjHf8qt0EcyhhWdNGIsDOKCqDM9v4esEKphOCf3OyPxbaM4GTAcbNVd+Rn2d
+	 KDOGBaQgFrJ8iXHRTYW8a5zGyMn33X2JNiK6de8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Kangjing Huang <huangkangjing@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/75] reset: Fix crash when freeing non-existent optional resets
+Subject: [PATCH 6.1 056/100] ksmbd: fix missing RDMA-capable flag for IPoIB device in ksmbd_rdma_capable_netdev()
 Date: Wed,  3 Jan 2024 17:54:45 +0100
-Message-ID: <20240103164843.633212603@linuxfoundation.org>
+Message-ID: <20240103164904.476747814@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +55,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Kangjing Huang <huangkangjing@gmail.com>
 
-[ Upstream commit 4a6756f56bcf8e64c87144a626ce53aea4899c0e ]
+[ Upstream commit ecce70cf17d91c3dd87a0c4ea00b2d1387729701 ]
 
-When obtaining one or more optional resets, non-existent resets are
-stored as NULL pointers, and all related error and cleanup paths need to
-take this into account.
+Physical ib_device does not have an underlying net_device, thus its
+association with IPoIB net_device cannot be retrieved via
+ops.get_netdev() or ib_device_get_by_netdev(). ksmbd reads physical
+ib_device port GUID from the lower 16 bytes of the hardware addresses on
+IPoIB net_device and match its underlying ib_device using ib_find_gid()
 
-Currently only reset_control_put() and reset_control_bulk_put()
-get this right.  All of __reset_control_bulk_get(),
-of_reset_control_array_get(), and reset_control_array_put() lack the
-proper checking, causing NULL pointer dereferences on failure or
-release.
-
-Fix this by moving the existing check from reset_control_bulk_put() to
-__reset_control_put_internal(), so it applies to all callers.
-The double check in reset_control_put() doesn't hurt.
-
-Fixes: 17c82e206d2a3cd8 ("reset: Add APIs to manage array of resets")
-Fixes: 48d71395896d54ee ("reset: Add reset_control_bulk API")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/2440edae7ca8534628cdbaf559ded288f2998178.1701276806.git.geert+renesas@glider.be
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Kangjing Huang <huangkangjing@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/transport_rdma.c | 40 +++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index f93388b9a4a1f..662867435fbe8 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -599,6 +599,9 @@ static void __reset_control_put_internal(struct reset_control *rstc)
- {
- 	lockdep_assert_held(&reset_list_mutex);
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 3b269e1f523a1..c5629a68c8b73 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -2140,8 +2140,7 @@ static int smb_direct_ib_client_add(struct ib_device *ib_dev)
+ 	if (ib_dev->node_type != RDMA_NODE_IB_CA)
+ 		smb_direct_port = SMB_DIRECT_PORT_IWARP;
  
-+	if (IS_ERR_OR_NULL(rstc))
-+		return;
+-	if (!ib_dev->ops.get_netdev ||
+-	    !rdma_frwr_is_supported(&ib_dev->attrs))
++	if (!rdma_frwr_is_supported(&ib_dev->attrs))
+ 		return 0;
+ 
+ 	smb_dev = kzalloc(sizeof(*smb_dev), GFP_KERNEL);
+@@ -2241,17 +2240,38 @@ bool ksmbd_rdma_capable_netdev(struct net_device *netdev)
+ 		for (i = 0; i < smb_dev->ib_dev->phys_port_cnt; i++) {
+ 			struct net_device *ndev;
+ 
+-			ndev = smb_dev->ib_dev->ops.get_netdev(smb_dev->ib_dev,
+-							       i + 1);
+-			if (!ndev)
+-				continue;
++			if (smb_dev->ib_dev->ops.get_netdev) {
++				ndev = smb_dev->ib_dev->ops.get_netdev(
++					smb_dev->ib_dev, i + 1);
++				if (!ndev)
++					continue;
+ 
+-			if (ndev == netdev) {
++				if (ndev == netdev) {
++					dev_put(ndev);
++					rdma_capable = true;
++					goto out;
++				}
+ 				dev_put(ndev);
+-				rdma_capable = true;
+-				goto out;
++			/* if ib_dev does not implement ops.get_netdev
++			 * check for matching infiniband GUID in hw_addr
++			 */
++			} else if (netdev->type == ARPHRD_INFINIBAND) {
++				struct netdev_hw_addr *ha;
++				union ib_gid gid;
++				u32 port_num;
++				int ret;
 +
- 	kref_put(&rstc->refcnt, __reset_control_release);
- }
- 
++				netdev_hw_addr_list_for_each(
++					ha, &netdev->dev_addrs) {
++					memcpy(&gid, ha->addr + 4, sizeof(gid));
++					ret = ib_find_gid(smb_dev->ib_dev, &gid,
++							  &port_num, NULL);
++					if (!ret) {
++						rdma_capable = true;
++						goto out;
++					}
++				}
+ 			}
+-			dev_put(ndev);
+ 		}
+ 	}
+ out:
 -- 
 2.43.0
 
