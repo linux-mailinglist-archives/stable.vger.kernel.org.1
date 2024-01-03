@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27ED8232A1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B52CB8231DC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8BEA1C23BA4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55562B23C85
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35571C28C;
-	Wed,  3 Jan 2024 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838021C2A0;
+	Wed,  3 Jan 2024 16:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjHg8hot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvFDGgjv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B74E1BDF1;
-	Wed,  3 Jan 2024 17:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6180C433C8;
-	Wed,  3 Jan 2024 17:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC0C1BDEC;
+	Wed,  3 Jan 2024 16:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488F2C433C8;
+	Wed,  3 Jan 2024 16:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301769;
-	bh=eCpKBMBU5Ia44spgZrgaY3QqH9dlKnTvWzOuvxCPcf0=;
+	s=korg; t=1704301174;
+	bh=lOLV/BQe5dIfFLtGMaRgJXW+Kh9Nuipn748Lpym+/E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CjHg8hotOBCEKEddsfurFgf6p2Zt85mVTnSQkNUBGnlgrfDwbrmJo/j8C68VBBfG5
-	 adFa+1FcsY1HdNbqHLAIdhdPUkWLRvptwN0YZVQ2tBblsy1mkxd98/636Hdtb+TDrU
-	 Ogu6R3/KKw9o+yxHXgYLwpQSJ3Flrdykie94lHC4=
+	b=tvFDGgjvkeQ1MlzR2yiiGITmZf/uOw50HEyDXaIb+22F/eZ6AqvWwhi8ZJfltORpA
+	 dyhDQj2FZ86xOoDE4r/b0epID95xjTj+CtVvY6KLmepnCAr+95rOJPGmNys9oT640s
+	 Nuq3/bQVO6r1zDIGWHZvY72LbO2IaU9YTG+FD0oc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/75] wifi: mac80211: mesh_plink: fix matches_local logic
+Subject: [PATCH 6.1 058/100] ksmbd: no need to wait for binded connection termination at logoff
 Date: Wed,  3 Jan 2024 17:54:47 +0100
-Message-ID: <20240103164843.903258151@linuxfoundation.org>
+Message-ID: <20240103164904.747237260@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8c386b166e2517cf3a123018e77941ec22625d0f ]
+[ Upstream commit 67797da8a4b82446d42c52b6ee1419a3100d78ff ]
 
-During refactoring the "else" here got lost, add it back.
+The connection could be binded to the existing session for Multichannel.
+session will be destroyed when binded connections are released.
+So no need to wait for that's connection at logoff.
 
-Fixes: c99a89edb106 ("mac80211: factor out plink event gathering")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231211085121.795480fa0e0b.I017d501196a5bbdcd9afd33338d342d6fe1edd79@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_plink.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/server/connection.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index aca26df7587dc..ee8b5013d67d7 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -1050,8 +1050,8 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
- 	case WLAN_SP_MESH_PEERING_OPEN:
- 		if (!matches_local)
- 			event = OPN_RJCT;
--		if (!mesh_plink_free_count(sdata) ||
--		    (sta->mesh->plid && sta->mesh->plid != plid))
-+		else if (!mesh_plink_free_count(sdata) ||
-+			 (sta->mesh->plid && sta->mesh->plid != plid))
- 			event = OPN_IGNR;
- 		else
- 			event = OPN_ACPT;
-@@ -1059,9 +1059,9 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
- 	case WLAN_SP_MESH_PEERING_CONFIRM:
- 		if (!matches_local)
- 			event = CNF_RJCT;
--		if (!mesh_plink_free_count(sdata) ||
--		    sta->mesh->llid != llid ||
--		    (sta->mesh->plid && sta->mesh->plid != plid))
-+		else if (!mesh_plink_free_count(sdata) ||
-+			 sta->mesh->llid != llid ||
-+			 (sta->mesh->plid && sta->mesh->plid != plid))
- 			event = CNF_IGNR;
- 		else
- 			event = CNF_ACPT;
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 4b38c3a285f60..b6fa1e285c401 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -167,23 +167,7 @@ void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
+ 
+ void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
+ {
+-	struct ksmbd_conn *bind_conn;
+-
+ 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
+-
+-	down_read(&conn_list_lock);
+-	list_for_each_entry(bind_conn, &conn_list, conns_list) {
+-		if (bind_conn == conn)
+-			continue;
+-
+-		if ((bind_conn->binding || xa_load(&bind_conn->sessions, sess_id)) &&
+-		    !ksmbd_conn_releasing(bind_conn) &&
+-		    atomic_read(&bind_conn->req_running)) {
+-			wait_event(bind_conn->req_running_q,
+-				atomic_read(&bind_conn->req_running) == 0);
+-		}
+-	}
+-	up_read(&conn_list_lock);
+ }
+ 
+ int ksmbd_conn_write(struct ksmbd_work *work)
 -- 
 2.43.0
 
