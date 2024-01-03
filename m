@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84ABF823211
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4472C8232C6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE40328A690
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2F11F2167B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8381BDFB;
-	Wed,  3 Jan 2024 17:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAFB1C28A;
+	Wed,  3 Jan 2024 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykPRDtWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwVaT77t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B1E1BDDE;
-	Wed,  3 Jan 2024 17:02:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5120C433C8;
-	Wed,  3 Jan 2024 17:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DC21BDEC;
+	Wed,  3 Jan 2024 17:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB9CC433C8;
+	Wed,  3 Jan 2024 17:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301339;
-	bh=dceIoPpqtYZ4RtClu5we23to+E5zVSZzu807ioZNxm0=;
+	s=korg; t=1704301891;
+	bh=k1EYbrxMZLNSrmGGbAbNzXr12PY6eO+3uXPDwE1Ox18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykPRDtWeftT2R6B+XLpddaBcmViCkD2dhHLMaYuMySbdjPD0lk7f3F6kkldarHRtj
-	 0M7hWPbLpX97y5zzuouAAISXBfdlMg0l9IPic0cpSIqfUBrL4prPkhApgblrwAPJ9f
-	 ZHIvM7H/ZwqML42TQUWPHSYcq1El+wTRVry5jM/8=
+	b=vwVaT77t7Jz5EK1nVDbzPWvDDFYnbuuY+UiH+1+SEJKNvGY1WgC8t2naloQ4LlgSq
+	 nlhf+0VNhJsvULm0pDqlL1ufKCIWDqkB8wxxiodhoNOhZSvngpDnQB5FxFRwPZY1vD
+	 VmpdMGFBZBX1b4jwf3b74QFeX65T5vP3QZim7WsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/100] linux/export: Ensure natural alignment of kcrctab array
-Date: Wed,  3 Jan 2024 17:55:09 +0100
-Message-ID: <20240103164908.112860386@linuxfoundation.org>
+Subject: [PATCH 5.10 29/75] interconnect: qcom: sm8250: Enable sync_state
+Date: Wed,  3 Jan 2024 17:55:10 +0100
+Message-ID: <20240103164847.570054712@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +53,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 753547de0daecbdbd1af3618987ddade325d9aaa ]
+[ Upstream commit bfc7db1cb94ad664546d70212699f8cc6c539e8c ]
 
-The ___kcrctab section holds an array of 32-bit CRC values.
-Add a .balign 4 to tell the linker the correct memory alignment.
+Add the generic icc sync_state callback to ensure interconnect votes
+are taken into account, instead of being pegged at maximum values.
 
-Fixes: f3304ecd7f06 ("linux/export: use inline assembler to populate symbol CRCs")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: b95b668eaaa2 ("interconnect: qcom: icc-rpmh: Add BCMs to commit list in pre_aggregate")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231130-topic-8250icc_syncstate-v1-1-7ce78ba6e04c@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/export-internal.h | 1 +
+ drivers/interconnect/qcom/sm8250.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/export-internal.h b/include/linux/export-internal.h
-index fe7e6ba918f10..29de29af9546c 100644
---- a/include/linux/export-internal.h
-+++ b/include/linux/export-internal.h
-@@ -12,6 +12,7 @@
- 
- #define SYMBOL_CRC(sym, crc, sec)   \
- 	asm(".section \"___kcrctab" sec "+" #sym "\",\"a\""	"\n" \
-+	    ".balign 4"						"\n" \
- 	    "__crc_" #sym ":"					"\n" \
- 	    ".long " #crc					"\n" \
- 	    ".previous"						"\n")
+diff --git a/drivers/interconnect/qcom/sm8250.c b/drivers/interconnect/qcom/sm8250.c
+index 40820043c8d36..cc558fec74e38 100644
+--- a/drivers/interconnect/qcom/sm8250.c
++++ b/drivers/interconnect/qcom/sm8250.c
+@@ -643,6 +643,7 @@ static struct platform_driver qnoc_driver = {
+ 	.driver = {
+ 		.name = "qnoc-sm8250",
+ 		.of_match_table = qnoc_of_match,
++		.sync_state = icc_sync_state,
+ 	},
+ };
+ module_platform_driver(qnoc_driver);
 -- 
 2.43.0
 
