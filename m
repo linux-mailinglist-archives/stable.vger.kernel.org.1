@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113218232C2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B64B882320D
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B270B244AA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F06C28A690
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDE61BDFF;
-	Wed,  3 Jan 2024 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDDE1BDFD;
+	Wed,  3 Jan 2024 17:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRBxbZxU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGRSS8Dn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366741BDFB;
-	Wed,  3 Jan 2024 17:11:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD079C433C7;
-	Wed,  3 Jan 2024 17:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861451BDE9;
+	Wed,  3 Jan 2024 17:02:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D748FC433C7;
+	Wed,  3 Jan 2024 17:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301877;
-	bh=ZSBbMoiF5PgLvF9YLEb0Fs7C8uHFXn4w18qRN2SAHzw=;
+	s=korg; t=1704301324;
+	bh=1R6q1UsL0Z65mhqrDPaDnim0bdk3yGpYSJfJJ6BnSAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRBxbZxUeqZKVindmgADkzexvSpxLhQxo7SJRBILQIYo0+TTpvcI6vC2AA2hQ8JpB
-	 XlrjOnXsE6oqoEnBGr+EjScRlWRXjWPJzhFviI+bIxYtcIZpMsFxquld9xPx+QrOCT
-	 qbIrqJKyt3aycQrYk3cS3+RYWqsBoj1GrTy3c/bQ=
+	b=rGRSS8DnJDN1wQDdYwKXaRgoCY52g8Axw+Znswj/yzXASfQQYkIWW0z+qEzEP+qa2
+	 O29Pr6i90bcJkevh/bVTiOHxOz4al5h/gpCgWNrP4hZuL4Xep9Ndne8qjgOJoQO0sn
+	 rCItkSHDts6rfn1XEoL4r6XIbZlXHMtAeZu+c89c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 25/75] smb: client: fix NULL deref in asn1_ber_decoder()
+Subject: [PATCH 6.1 077/100] iio: imu: adis16475: add spi_device_id table
 Date: Wed,  3 Jan 2024 17:55:06 +0100
-Message-ID: <20240103164846.973850503@linuxfoundation.org>
+Message-ID: <20240103164907.640036712@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,138 +54,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 90d025c2e953c11974e76637977c473200593a46 ]
+[ Upstream commit ee4d79055aeea27f1b8c42233cc0c90d0a8b5355 ]
 
-If server replied SMB2_NEGOTIATE with a zero SecurityBufferOffset,
-smb2_get_data_area() sets @len to non-zero but return NULL, so
-decode_negTokeninit() ends up being called with a NULL @security_blob:
+This prevents the warning message "SPI driver has no spi_device_id for..."
+when registering the driver. More importantly, it makes sure that
+module autoloading works as spi relies on spi: modaliases and not of.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 2 PID: 871 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:asn1_ber_decoder+0x173/0xc80
-  Code: 01 4c 39 2c 24 75 09 45 84 c9 0f 85 2f 03 00 00 48 8b 14 24 4c 29 ea 48 83 fa 01 0f 86 1e 07 00 00 48 8b 74 24 28 4d 8d 5d 01 <42> 0f b6 3c 2e 89 fa 40 88 7c 24 5c f7 d2 83 e2 1f 0f 84 3d 07 00
-  RSP: 0018:ffffc9000063f950 EFLAGS: 00010202
-  RAX: 0000000000000002 RBX: 0000000000000000 RCX: 000000000000004a
-  RDX: 000000000000004a RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000002 R11: 0000000000000001 R12: 0000000000000000
-  R13: 0000000000000000 R14: 000000000000004d R15: 0000000000000000
-  FS:  00007fce52b0fbc0(0000) GS:ffff88806ba00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 000000001ae64000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? __stack_depot_save+0x1e6/0x480
-   ? exc_page_fault+0x6f/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? asn1_ber_decoder+0x173/0xc80
-   ? check_object+0x40/0x340
-   decode_negTokenInit+0x1e/0x30 [cifs]
-   SMB2_negotiate+0xc99/0x17c0 [cifs]
-   ? smb2_negotiate+0x46/0x60 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   smb2_negotiate+0x46/0x60 [cifs]
-   cifs_negotiate_protocol+0xae/0x130 [cifs]
-   cifs_get_smb_ses+0x517/0x1040 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? queue_delayed_work_on+0x5d/0x90
-   cifs_mount_get_session+0x78/0x200 [cifs]
-   dfs_mount_share+0x13a/0x9f0 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0xbf/0x2b0
-   ? find_nls+0x16/0x80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_mount+0x7e/0x350 [cifs]
-   cifs_smb3_do_mount+0x128/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7fce52c2ab1e
+While at it, move the of_device_id table to it's natural place.
 
-Fix this by setting @len to zero when @off == 0 so callers won't
-attempt to dereference non-existing data areas.
-
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231102125258.3284830-1-nuno.sa@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2misc.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ drivers/iio/imu/adis16475.c | 117 ++++++++++++++++++++++--------------
+ 1 file changed, 72 insertions(+), 45 deletions(-)
 
-diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index be3df90bb2bcc..b98bba887f84b 100644
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -305,6 +305,9 @@ static const bool has_smb2_data_area[NUMBER_OF_SMB2_COMMANDS] = {
- char *
- smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
- {
-+	const int max_off = 4096;
-+	const int max_len = 128 * 1024;
-+
- 	*off = 0;
- 	*len = 0;
- 
-@@ -376,29 +379,20 @@ smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
- 	 * Invalid length or offset probably means data area is invalid, but
- 	 * we have little choice but to ignore the data area in this case.
- 	 */
--	if (*off > 4096) {
--		cifs_dbg(VFS, "offset %d too large, data area ignored\n", *off);
--		*len = 0;
--		*off = 0;
--	} else if (*off < 0) {
--		cifs_dbg(VFS, "negative offset %d to data invalid ignore data area\n",
--			 *off);
-+	if (unlikely(*off < 0 || *off > max_off ||
-+		     *len < 0 || *len > max_len)) {
-+		cifs_dbg(VFS, "%s: invalid data area (off=%d len=%d)\n",
-+			 __func__, *off, *len);
- 		*off = 0;
- 		*len = 0;
--	} else if (*len < 0) {
--		cifs_dbg(VFS, "negative data length %d invalid, data area ignored\n",
--			 *len);
--		*len = 0;
--	} else if (*len > 128 * 1024) {
--		cifs_dbg(VFS, "data area larger than 128K: %d\n", *len);
-+	} else if (*off == 0) {
- 		*len = 0;
- 	}
- 
- 	/* return pointer to beginning of data area, ie offset from SMB start */
--	if ((*off != 0) && (*len != 0))
-+	if (*off > 0 && *len > 0)
- 		return (char *)shdr + *off;
--	else
--		return NULL;
-+	return NULL;
+diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+index aec55f7e1f260..2d939773445d7 100644
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1243,50 +1243,6 @@ static int adis16475_config_irq_pin(struct adis16475 *st)
+ 	return 0;
  }
  
- /*
+-static const struct of_device_id adis16475_of_match[] = {
+-	{ .compatible = "adi,adis16470",
+-		.data = &adis16475_chip_info[ADIS16470] },
+-	{ .compatible = "adi,adis16475-1",
+-		.data = &adis16475_chip_info[ADIS16475_1] },
+-	{ .compatible = "adi,adis16475-2",
+-		.data = &adis16475_chip_info[ADIS16475_2] },
+-	{ .compatible = "adi,adis16475-3",
+-		.data = &adis16475_chip_info[ADIS16475_3] },
+-	{ .compatible = "adi,adis16477-1",
+-		.data = &adis16475_chip_info[ADIS16477_1] },
+-	{ .compatible = "adi,adis16477-2",
+-		.data = &adis16475_chip_info[ADIS16477_2] },
+-	{ .compatible = "adi,adis16477-3",
+-		.data = &adis16475_chip_info[ADIS16477_3] },
+-	{ .compatible = "adi,adis16465-1",
+-		.data = &adis16475_chip_info[ADIS16465_1] },
+-	{ .compatible = "adi,adis16465-2",
+-		.data = &adis16475_chip_info[ADIS16465_2] },
+-	{ .compatible = "adi,adis16465-3",
+-		.data = &adis16475_chip_info[ADIS16465_3] },
+-	{ .compatible = "adi,adis16467-1",
+-		.data = &adis16475_chip_info[ADIS16467_1] },
+-	{ .compatible = "adi,adis16467-2",
+-		.data = &adis16475_chip_info[ADIS16467_2] },
+-	{ .compatible = "adi,adis16467-3",
+-		.data = &adis16475_chip_info[ADIS16467_3] },
+-	{ .compatible = "adi,adis16500",
+-		.data = &adis16475_chip_info[ADIS16500] },
+-	{ .compatible = "adi,adis16505-1",
+-		.data = &adis16475_chip_info[ADIS16505_1] },
+-	{ .compatible = "adi,adis16505-2",
+-		.data = &adis16475_chip_info[ADIS16505_2] },
+-	{ .compatible = "adi,adis16505-3",
+-		.data = &adis16475_chip_info[ADIS16505_3] },
+-	{ .compatible = "adi,adis16507-1",
+-		.data = &adis16475_chip_info[ADIS16507_1] },
+-	{ .compatible = "adi,adis16507-2",
+-		.data = &adis16475_chip_info[ADIS16507_2] },
+-	{ .compatible = "adi,adis16507-3",
+-		.data = &adis16475_chip_info[ADIS16507_3] },
+-	{ },
+-};
+-MODULE_DEVICE_TABLE(of, adis16475_of_match);
+ 
+ static int adis16475_probe(struct spi_device *spi)
+ {
+@@ -1300,7 +1256,7 @@ static int adis16475_probe(struct spi_device *spi)
+ 
+ 	st = iio_priv(indio_dev);
+ 
+-	st->info = device_get_match_data(&spi->dev);
++	st->info = spi_get_device_match_data(spi);
+ 	if (!st->info)
+ 		return -EINVAL;
+ 
+@@ -1340,12 +1296,83 @@ static int adis16475_probe(struct spi_device *spi)
+ 	return 0;
+ }
+ 
++static const struct of_device_id adis16475_of_match[] = {
++	{ .compatible = "adi,adis16470",
++		.data = &adis16475_chip_info[ADIS16470] },
++	{ .compatible = "adi,adis16475-1",
++		.data = &adis16475_chip_info[ADIS16475_1] },
++	{ .compatible = "adi,adis16475-2",
++		.data = &adis16475_chip_info[ADIS16475_2] },
++	{ .compatible = "adi,adis16475-3",
++		.data = &adis16475_chip_info[ADIS16475_3] },
++	{ .compatible = "adi,adis16477-1",
++		.data = &adis16475_chip_info[ADIS16477_1] },
++	{ .compatible = "adi,adis16477-2",
++		.data = &adis16475_chip_info[ADIS16477_2] },
++	{ .compatible = "adi,adis16477-3",
++		.data = &adis16475_chip_info[ADIS16477_3] },
++	{ .compatible = "adi,adis16465-1",
++		.data = &adis16475_chip_info[ADIS16465_1] },
++	{ .compatible = "adi,adis16465-2",
++		.data = &adis16475_chip_info[ADIS16465_2] },
++	{ .compatible = "adi,adis16465-3",
++		.data = &adis16475_chip_info[ADIS16465_3] },
++	{ .compatible = "adi,adis16467-1",
++		.data = &adis16475_chip_info[ADIS16467_1] },
++	{ .compatible = "adi,adis16467-2",
++		.data = &adis16475_chip_info[ADIS16467_2] },
++	{ .compatible = "adi,adis16467-3",
++		.data = &adis16475_chip_info[ADIS16467_3] },
++	{ .compatible = "adi,adis16500",
++		.data = &adis16475_chip_info[ADIS16500] },
++	{ .compatible = "adi,adis16505-1",
++		.data = &adis16475_chip_info[ADIS16505_1] },
++	{ .compatible = "adi,adis16505-2",
++		.data = &adis16475_chip_info[ADIS16505_2] },
++	{ .compatible = "adi,adis16505-3",
++		.data = &adis16475_chip_info[ADIS16505_3] },
++	{ .compatible = "adi,adis16507-1",
++		.data = &adis16475_chip_info[ADIS16507_1] },
++	{ .compatible = "adi,adis16507-2",
++		.data = &adis16475_chip_info[ADIS16507_2] },
++	{ .compatible = "adi,adis16507-3",
++		.data = &adis16475_chip_info[ADIS16507_3] },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, adis16475_of_match);
++
++static const struct spi_device_id adis16475_ids[] = {
++	{ "adis16470", (kernel_ulong_t)&adis16475_chip_info[ADIS16470] },
++	{ "adis16475-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_1] },
++	{ "adis16475-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_2] },
++	{ "adis16475-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_3] },
++	{ "adis16477-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_1] },
++	{ "adis16477-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_2] },
++	{ "adis16477-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_3] },
++	{ "adis16465-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_1] },
++	{ "adis16465-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_2] },
++	{ "adis16465-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_3] },
++	{ "adis16467-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_1] },
++	{ "adis16467-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_2] },
++	{ "adis16467-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_3] },
++	{ "adis16500", (kernel_ulong_t)&adis16475_chip_info[ADIS16500] },
++	{ "adis16505-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_1] },
++	{ "adis16505-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_2] },
++	{ "adis16505-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_3] },
++	{ "adis16507-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_1] },
++	{ "adis16507-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_2] },
++	{ "adis16507-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_3] },
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, adis16475_ids);
++
+ static struct spi_driver adis16475_driver = {
+ 	.driver = {
+ 		.name = "adis16475",
+ 		.of_match_table = adis16475_of_match,
+ 	},
+ 	.probe = adis16475_probe,
++	.id_table = adis16475_ids,
+ };
+ module_spi_driver(adis16475_driver);
+ 
 -- 
 2.43.0
 
