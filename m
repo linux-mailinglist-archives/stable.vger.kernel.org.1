@@ -1,56 +1,47 @@
-Return-Path: <stable+bounces-9459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE1C823278
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B3B8232E5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A81A1C23BED
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9051F23281
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840641BDDE;
-	Wed,  3 Jan 2024 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD0B1BDEC;
+	Wed,  3 Jan 2024 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhECL/wD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4Tf3EwF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCB91BDFB;
-	Wed,  3 Jan 2024 17:07:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834F6C433C7;
-	Wed,  3 Jan 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3645F1BDF1;
+	Wed,  3 Jan 2024 17:13:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB06C433C7;
+	Wed,  3 Jan 2024 17:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301651;
-	bh=F+hulm2papHFDBMbDn1cc1qBohpQDFZmuzUWQrl1pJI=;
+	s=korg; t=1704301985;
+	bh=CqWWHHGCsz8QMWUdzUuiJyAtxnkXBC79rsgjHNE2o2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhECL/wDdZ+kytlhx1DxejJDT3Nd0tdMjFAtKupB+447kcYuXlczT88Qd5AklvvEk
-	 6TX7mNgs1qh3elqqTuuOvsGqCAI0g6b/0t0AE6WS14Z2mY7hTjxk8t31DQ+s4hjusD
-	 Y0sOwwVSeN8WYb+2nkPs5aC+gltiFxz2mB65b9rE=
+	b=U4Tf3EwF4vXn3uLVN/rbl/kK6y5SMIWljQvJNzgQF33Sh0q8Tnadlf752/NkDwgSf
+	 JCwb5MEJfAsk6I6b78b05rjiXGl/rC/AS9UhlKwL8B+1YLGOSh18Vf6y1dq0Pib2Q2
+	 /+JC9dqxpp01TlkRvIvt/WYoQCXVxELZvmOIva5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Christoph Hellwig <hch@infradead.org>,
-	Dave Chinner <david@fromorbit.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	yangerkun <yangerkun@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 86/95] mm/filemap: avoid buffered read/write race to read inconsistent data
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 14/49] ksmbd: set epoch in create context v2 lease
 Date: Wed,  3 Jan 2024 17:55:34 +0100
-Message-ID: <20240103164906.966616097@linuxfoundation.org>
+Message-ID: <20240103164837.240001747@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +53,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit e2c27b803bb664748e090d99042ac128b3f88d92 upstream.
+[ Upstream commit d045850b628aaf931fc776c90feaf824dca5a1cf ]
 
-The following concurrency may cause the data read to be inconsistent with
-the data on disk:
+To support v2 lease(directory lease), ksmbd set epoch in create context
+v2 lease response.
 
-             cpu1                           cpu2
-------------------------------|------------------------------
-                               // Buffered write 2048 from 0
-                               ext4_buffered_write_iter
-                                generic_perform_write
-                                 copy_page_from_iter_atomic
-                                 ext4_da_write_end
-                                  ext4_da_do_write_end
-                                   block_write_end
-                                    __block_commit_write
-                                     folio_mark_uptodate
-// Buffered read 4096 from 0          smp_wmb()
-ext4_file_read_iter                   set_bit(PG_uptodate, folio_flags)
- generic_file_read_iter            i_size_write // 2048
-  filemap_read                     unlock_page(page)
-   filemap_get_pages
-    filemap_get_read_batch
-    folio_test_uptodate(folio)
-     ret = test_bit(PG_uptodate, folio_flags)
-     if (ret)
-      smp_rmb();
-      // Ensure that the data in page 0-2048 is up-to-date.
-
-                               // New buffered write 2048 from 2048
-                               ext4_buffered_write_iter
-                                generic_perform_write
-                                 copy_page_from_iter_atomic
-                                 ext4_da_write_end
-                                  ext4_da_do_write_end
-                                   block_write_end
-                                    __block_commit_write
-                                     folio_mark_uptodate
-                                      smp_wmb()
-                                      set_bit(PG_uptodate, folio_flags)
-                                   i_size_write // 4096
-                                   unlock_page(page)
-
-   isize = i_size_read(inode) // 4096
-   // Read the latest isize 4096, but without smp_rmb(), there may be
-   // Load-Load disorder resulting in the data in the 2048-4096 range
-   // in the page is not up-to-date.
-   copy_page_to_iter
-   // copyout 4096
-
-In the concurrency above, we read the updated i_size, but there is no read
-barrier to ensure that the data in the page is the same as the i_size at
-this point, so we may copy the unsynchronized page out.  Hence adding the
-missing read memory barrier to fix this.
-
-This is a Load-Load reordering issue, which only occurs on some weak
-mem-ordering architectures (e.g.  ARM64, ALPHA), but not on strong
-mem-ordering architectures (e.g.  X86).  And theoretically the problem
-doesn't only happen on ext4, filesystems that call filemap_read() but
-don't hold inode lock (e.g.  btrfs, f2fs, ubifs ...) will have this
-problem, while filesystems with inode lock (e.g.  xfs, nfs) won't have
-this problem.
-
-Link: https://lkml.kernel.org/r/20231213062324.739009-1-libaokun1@huawei.com
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: yangerkun <yangerkun@huawei.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Zhang Yi <yi.zhang@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/smb/server/oplock.c | 5 ++++-
+ fs/smb/server/oplock.h | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2649,6 +2649,15 @@ ssize_t filemap_read(struct kiocb *iocb,
- 		end_offset = min_t(loff_t, isize, iocb->ki_pos + iter->count);
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 50c68beb71d6c..ff5c83b1fb85c 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -104,7 +104,7 @@ static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
+ 	lease->duration = lctx->duration;
+ 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
+ 	lease->version = lctx->version;
+-	lease->epoch = 0;
++	lease->epoch = le16_to_cpu(lctx->epoch);
+ 	INIT_LIST_HEAD(&opinfo->lease_entry);
+ 	opinfo->o_lease = lease;
  
- 		/*
-+		 * Pairs with a barrier in
-+		 * block_write_end()->mark_buffer_dirty() or other page
-+		 * dirtying routines like iomap_write_end() to ensure
-+		 * changes to page contents are visible before we see
-+		 * increased inode size.
-+		 */
-+		smp_rmb();
-+
-+		/*
- 		 * Once we start copying data, we don't want to be touching any
- 		 * cachelines that might be contended:
- 		 */
+@@ -1032,6 +1032,7 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
+ 	       SMB2_LEASE_KEY_SIZE);
+ 	lease2->duration = lease1->duration;
+ 	lease2->flags = lease1->flags;
++	lease2->epoch = lease1->epoch++;
+ }
+ 
+ static int add_lease_global_list(struct oplock_info *opinfo)
+@@ -1364,6 +1365,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
+ 		memcpy(buf->lcontext.LeaseKey, lease->lease_key,
+ 		       SMB2_LEASE_KEY_SIZE);
+ 		buf->lcontext.LeaseFlags = lease->flags;
++		buf->lcontext.Epoch = cpu_to_le16(++lease->epoch);
+ 		buf->lcontext.LeaseState = lease->state;
+ 		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
+ 		       SMB2_LEASE_KEY_SIZE);
+@@ -1423,6 +1425,7 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
+ 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
+ 		lreq->req_state = lc->lcontext.LeaseState;
+ 		lreq->flags = lc->lcontext.LeaseFlags;
++		lreq->epoch = lc->lcontext.Epoch;
+ 		lreq->duration = lc->lcontext.LeaseDuration;
+ 		memcpy(lreq->parent_lease_key, lc->lcontext.ParentLeaseKey,
+ 				SMB2_LEASE_KEY_SIZE);
+diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
+index 4b0fe6da76940..ad31439c61fef 100644
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -34,6 +34,7 @@ struct lease_ctx_info {
+ 	__le32			flags;
+ 	__le64			duration;
+ 	__u8			parent_lease_key[SMB2_LEASE_KEY_SIZE];
++	__le16			epoch;
+ 	int			version;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
