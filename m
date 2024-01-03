@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8468A823256
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916058231F5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B484B246A8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2094128A339
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522C51C288;
-	Wed,  3 Jan 2024 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853B81C282;
+	Wed,  3 Jan 2024 17:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYhhd0zA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tACcWVo/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C93F1C282;
-	Wed,  3 Jan 2024 17:05:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7935EC433C7;
-	Wed,  3 Jan 2024 17:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBB31BDF0;
+	Wed,  3 Jan 2024 17:00:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA36DC433C8;
+	Wed,  3 Jan 2024 17:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301532;
-	bh=ycAUI9yHLoXj8N+o5C+HkhZd04YFxIRMLDUmRo7xftM=;
+	s=korg; t=1704301247;
+	bh=PbF4ni26Qycu70EMkUEoeHiUfOCbFR1nDYhg3hLuNNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYhhd0zAyWKzZr19eLo/Vb7saLP2FGJyLa8I/yS6dnYhNHnm3vaX7XBGgqHCMeXzx
-	 Q2J3QdEEfDkRWekvACN8gXJr6wpxHt8XP13xpxT9D2UlkylN2KE5ZMbrgXtzlYePzp
-	 in5rrWvwlcdQ/mth1M3XeM+oG6TxE3HLeyT0EtGo=
+	b=tACcWVo/d21sz7PGMIpwapoca+RKzssCQnB+h2rVYSbUeRM64kXAI5nzBrMs3X0ah
+	 TOatpigqeDkyuph163dK3XuR0Dzdxlt9HmwC2ZOAMdtTt6AZVstLNgg4jwcWiR8MJa
+	 D5ycOd0owvSatRR2XhY2ss7Aq0GSizWBJFrIr0Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/95] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE
-Date: Wed,  3 Jan 2024 17:54:37 +0100
-Message-ID: <20240103164858.476525698@linuxfoundation.org>
+Subject: [PATCH 6.1 049/100] ksmbd: fix wrong error response status by using set_smb2_rsp_status()
+Date: Wed,  3 Jan 2024 17:54:38 +0100
+Message-ID: <20240103164903.423525522@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 13736654481198e519059d4a2e2e3b20fa9fdb3e ]
+[ Upstream commit be0f89d4419dc5413a1cf06db3671c9949be0d52 ]
 
-MS confirm that "AISi" name of SMB2_CREATE_ALLOCATION_SIZE in MS-SMB2
-specification is a typo. cifs/ksmbd have been using this wrong name from
-MS-SMB2. It should be "AlSi". Also It will cause problem when running
-smb2.create.open test in smbtorture against ksmbd.
+set_smb2_rsp_status() after __process_request() sets the wrong error
+status. This patch resets all iov vectors and sets the error status
+on clean one.
 
-Cc: stable@vger.kernel.org
-Fixes: 12197a7fdda9 ("Clarify SMB2/SMB3 create context and add missing ones")
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2pdu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/cifs/smb2pdu.h b/fs/cifs/smb2pdu.h
-index f32c99c9ba131..301c155c52677 100644
---- a/fs/cifs/smb2pdu.h
-+++ b/fs/cifs/smb2pdu.h
-@@ -779,7 +779,7 @@ struct smb2_tree_disconnect_rsp {
- #define SMB2_CREATE_SD_BUFFER			"SecD" /* security descriptor */
- #define SMB2_CREATE_DURABLE_HANDLE_REQUEST	"DHnQ"
- #define SMB2_CREATE_DURABLE_HANDLE_RECONNECT	"DHnC"
--#define SMB2_CREATE_ALLOCATION_SIZE		"AISi"
-+#define SMB2_CREATE_ALLOCATION_SIZE		"AlSi"
- #define SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST "MxAc"
- #define SMB2_CREATE_TIMEWARP_REQUEST		"TWrp"
- #define SMB2_CREATE_QUERY_ON_DISK_ID		"QFid"
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index aad08866746c8..c773272cd3ac2 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -230,11 +230,12 @@ void set_smb2_rsp_status(struct ksmbd_work *work, __le32 err)
+ {
+ 	struct smb2_hdr *rsp_hdr;
+ 
+-	if (work->next_smb2_rcv_hdr_off)
+-		rsp_hdr = ksmbd_resp_buf_next(work);
+-	else
+-		rsp_hdr = smb2_get_msg(work->response_buf);
++	rsp_hdr = smb2_get_msg(work->response_buf);
+ 	rsp_hdr->Status = err;
++
++	work->iov_idx = 0;
++	work->iov_cnt = 0;
++	work->next_smb2_rcv_hdr_off = 0;
+ 	smb2_set_err_rsp(work);
+ }
+ 
 -- 
 2.43.0
 
