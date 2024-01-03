@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA294823240
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19D98231DB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 873852838F7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6859F2884E8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2B61BDF1;
-	Wed,  3 Jan 2024 17:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFF71C2A9;
+	Wed,  3 Jan 2024 16:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeX83d8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iw5xZoK4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088D11C288;
-	Wed,  3 Jan 2024 17:04:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6316BC433C8;
-	Wed,  3 Jan 2024 17:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951521C2A1;
+	Wed,  3 Jan 2024 16:59:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A513CC433C8;
+	Wed,  3 Jan 2024 16:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301460;
-	bh=cGihLv3mHP3oHGC4/Gcab/J+g8+j0LVbz3DbfFO/ak8=;
+	s=korg; t=1704301178;
+	bh=7tsYaeKZl7Lbr3dC08EeEfcevsPa31uRbHuR0MruoEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PeX83d8iswG28efflXxl9PkdGotPOD3xFUr4fRh575Dtg+/PpsA1oW8GObUWn9+8N
-	 WxDqWZ3cWXJIPxcg91jwASfqteBOeVNXvOX8XuddDtckxy/Kh+t1AwuiwcX62EM/i9
-	 FJIlYfemqOW6Z3QCABh/u4jU2eIzbrk6lVkB5vhY=
+	b=Iw5xZoK4JayeYZDfV3PauNEKfFBiPBA+hNbxa7D09COoUHWXhzt4mVDD7p1ep69bZ
+	 QHlblQRWPi/PLx0+Cp3RjKtDW8RlNtNp6ffZolWs3j0Yy63+FJHpetxGqSMw/NKinn
+	 QjnRVjMc8vpkdyNJYonl69eZXIF3stOmb3oA6aOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yongjun <weiyongjun1@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/95] scsi: bnx2fc: Fix skb double free in bnx2fc_rcv()
-Date: Wed,  3 Jan 2024 17:54:47 +0100
-Message-ID: <20240103164859.983316386@linuxfoundation.org>
+Subject: [PATCH 6.1 059/100] ksmbd: fix kernel-doc comment of ksmbd_vfs_kern_path_locked()
+Date: Wed,  3 Jan 2024 17:54:48 +0100
+Message-ID: <20240103164904.960196885@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 08c94d80b2da481652fb633e79cbc41e9e326a91 ]
+[ Upstream commit f6049712e520287ad695e9d4f1572ab76807fa0c ]
 
-skb_share_check() already drops the reference to the skb when returning
-NULL. Using kfree_skb() in the error handling path leads to an skb double
-free.
+Fix argument list that the kdoc format and script verified in
+ksmbd_vfs_kern_path_locked().
 
-Fix this by removing the variable tmp_skb, and return directly when
-skb_share_check() returns NULL.
+fs/smb/server/vfs.c:1207: warning: Function parameter or member 'parent_path'
+not described in 'ksmbd_vfs_kern_path_locked'
 
-Fixes: 01a4cc4d0cd6 ("bnx2fc: do not add shared skbs to the fcoe_rx_list")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Link: https://lore.kernel.org/r/20221114110626.526643-1-weiyongjun@huaweicloud.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bnx2fc/bnx2fc_fcoe.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/smb/server/vfs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-index e2586472ecad4..6090434ad6f36 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-@@ -432,7 +432,6 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
- 	struct fcoe_ctlr *ctlr;
- 	struct fcoe_rcv_info *fr;
- 	struct fcoe_percpu_s *bg;
--	struct sk_buff *tmp_skb;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index e2e454eba4095..d4298a751d4a2 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1178,9 +1178,10 @@ static int ksmbd_vfs_lookup_in_dir(const struct path *dir, char *name,
  
- 	interface = container_of(ptype, struct bnx2fc_interface,
- 				 fcoe_packet_type);
-@@ -444,11 +443,9 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
- 		goto err;
- 	}
- 
--	tmp_skb = skb_share_check(skb, GFP_ATOMIC);
--	if (!tmp_skb)
--		goto err;
--
--	skb = tmp_skb;
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return -1;
- 
- 	if (unlikely(eth_hdr(skb)->h_proto != htons(ETH_P_FCOE))) {
- 		printk(KERN_ERR PFX "bnx2fc_rcv: Wrong FC type frame\n");
+ /**
+  * ksmbd_vfs_kern_path_locked() - lookup a file and get path info
+- * @name:	file path that is relative to share
+- * @flags:	lookup flags
+- * @path:	if lookup succeed, return path info
++ * @name:		file path that is relative to share
++ * @flags:		lookup flags
++ * @parent_path:	if lookup succeed, return parent_path info
++ * @path:		if lookup succeed, return path info
+  * @caseless:	caseless filename lookup
+  *
+  * Return:	0 on success, otherwise error
 -- 
 2.43.0
 
