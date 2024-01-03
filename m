@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21CE1823232
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95108231AE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D511F24C4D
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41540288532
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFD21C287;
-	Wed,  3 Jan 2024 17:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677571C296;
+	Wed,  3 Jan 2024 16:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYQ6s5c4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dNZljyh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586FF1BDFF;
-	Wed,  3 Jan 2024 17:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7756BC433C8;
-	Wed,  3 Jan 2024 17:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3075C1C289;
+	Wed,  3 Jan 2024 16:57:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB6AC433C8;
+	Wed,  3 Jan 2024 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301409;
-	bh=l4Fl0VxmK2rNm571kKx8EGWrdudXV015XAjL3C2eMoE=;
+	s=korg; t=1704301038;
+	bh=S/Zy7xJbAvdq1+F5PXIrKZmerwej7DyB4whHnXfyjZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYQ6s5c47BLCuCR4ch6jaB4Kk75QjY9dM1GcnZHPJE2nMP8YVei6dSXo3IyAuOFnD
-	 be0LyUYnHtHWOhgPZ1l6f/rsGfIaMsipbt8FFN8x/aUGlrl9gmA/56L0e/Xeuspsr6
-	 Vz9JytP3r/cBzg0XNoTyW58/35DTljSSCdI/viGA=
+	b=2dNZljyhL9g+RJAIkJ4P+IaFQbLU/6OX34LtCjoelza+XByOG8LlCW/vSuOo2bMRC
+	 MSI5DRNW43FZ0PpPH+wLU2IPuhFe78WP6VdjDIXdkhoGWGM6TZ/patLk9tYc4KnRnN
+	 fqhnUf/y0YzjAUqrxedXyAJhz2I9B8Lsh+yQomyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/95] reset: Fix crash when freeing non-existent optional resets
+Subject: [PATCH 6.1 022/100] ksmbd: fix posix_acls and acls dereferencing possible ERR_PTR()
 Date: Wed,  3 Jan 2024 17:54:11 +0100
-Message-ID: <20240103164854.400058582@linuxfoundation.org>
+Message-ID: <20240103164859.393352415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 4a6756f56bcf8e64c87144a626ce53aea4899c0e ]
+[ Upstream commit 25933573ef48f3586f559c2cac6c436c62dcf63f ]
 
-When obtaining one or more optional resets, non-existent resets are
-stored as NULL pointers, and all related error and cleanup paths need to
-take this into account.
+Dan reported the following error message:
 
-Currently only reset_control_put() and reset_control_bulk_put()
-get this right.  All of __reset_control_bulk_get(),
-of_reset_control_array_get(), and reset_control_array_put() lack the
-proper checking, causing NULL pointer dereferences on failure or
-release.
+fs/smb/server/smbacl.c:1296 smb_check_perm_dacl()
+    error: 'posix_acls' dereferencing possible ERR_PTR()
+fs/smb/server/vfs.c:1323 ksmbd_vfs_make_xattr_posix_acl()
+    error: 'posix_acls' dereferencing possible ERR_PTR()
+fs/smb/server/vfs.c:1830 ksmbd_vfs_inherit_posix_acl()
+    error: 'acls' dereferencing possible ERR_PTR()
 
-Fix this by moving the existing check from reset_control_bulk_put() to
-__reset_control_put_internal(), so it applies to all callers.
-The double check in reset_control_put() doesn't hurt.
+__get_acl() returns a mix of error pointers and NULL. This change it
+with IS_ERR_OR_NULL().
 
-Fixes: 17c82e206d2a3cd8 ("reset: Add APIs to manage array of resets")
-Fixes: 48d71395896d54ee ("reset: Add reset_control_bulk API")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/2440edae7ca8534628cdbaf559ded288f2998178.1701276806.git.geert+renesas@glider.be
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/server/smbacl.c | 4 ++--
+ fs/smb/server/vfs.c    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 61e6888826432..320412e513c07 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -806,6 +806,9 @@ static void __reset_control_put_internal(struct reset_control *rstc)
- {
- 	lockdep_assert_held(&reset_list_mutex);
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index c24df86eb112b..8c041e71cf156 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1313,7 +1313,7 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
  
-+	if (IS_ERR_OR_NULL(rstc))
-+		return;
-+
- 	kref_put(&rstc->refcnt, __reset_control_release);
- }
+ 	if (IS_ENABLED(CONFIG_FS_POSIX_ACL)) {
+ 		posix_acls = get_acl(d_inode(path->dentry), ACL_TYPE_ACCESS);
+-		if (posix_acls && !found) {
++		if (!IS_ERR_OR_NULL(posix_acls) && !found) {
+ 			unsigned int id = -1;
  
-@@ -1016,11 +1019,8 @@ EXPORT_SYMBOL_GPL(reset_control_put);
- void reset_control_bulk_put(int num_rstcs, struct reset_control_bulk_data *rstcs)
- {
- 	mutex_lock(&reset_list_mutex);
--	while (num_rstcs--) {
--		if (IS_ERR_OR_NULL(rstcs[num_rstcs].rstc))
--			continue;
-+	while (num_rstcs--)
- 		__reset_control_put_internal(rstcs[num_rstcs].rstc);
--	}
- 	mutex_unlock(&reset_list_mutex);
- }
- EXPORT_SYMBOL_GPL(reset_control_bulk_put);
+ 			pa_entry = posix_acls->a_entries;
+@@ -1337,7 +1337,7 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 				}
+ 			}
+ 		}
+-		if (posix_acls)
++		if (!IS_ERR_OR_NULL(posix_acls))
+ 			posix_acl_release(posix_acls);
+ 	}
+ 
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index ebcd5a312f10d..6d171f2757f15 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1322,7 +1322,7 @@ static struct xattr_smb_acl *ksmbd_vfs_make_xattr_posix_acl(struct user_namespac
+ 		return NULL;
+ 
+ 	posix_acls = get_acl(inode, acl_type);
+-	if (!posix_acls)
++	if (IS_ERR_OR_NULL(posix_acls))
+ 		return NULL;
+ 
+ 	smb_acl = kzalloc(sizeof(struct xattr_smb_acl) +
+@@ -1830,7 +1830,7 @@ int ksmbd_vfs_inherit_posix_acl(struct user_namespace *user_ns,
+ 		return -EOPNOTSUPP;
+ 
+ 	acls = get_acl(parent_inode, ACL_TYPE_DEFAULT);
+-	if (!acls)
++	if (IS_ERR_OR_NULL(acls))
+ 		return -ENOENT;
+ 	pace = acls->a_entries;
+ 
 -- 
 2.43.0
 
