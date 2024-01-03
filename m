@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B8A823262
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:06:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E925823200
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77FC41F24CEC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:06:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDAF328A550
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828831C280;
-	Wed,  3 Jan 2024 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9071BDFF;
+	Wed,  3 Jan 2024 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J68qGdBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uml3yC3T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF921BDFB;
-	Wed,  3 Jan 2024 17:06:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBEFFC433C7;
-	Wed,  3 Jan 2024 17:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649071BDF1;
+	Wed,  3 Jan 2024 17:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83561C433C9;
+	Wed,  3 Jan 2024 17:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301590;
-	bh=NzOr2QgLm4jbPkvejv5g/erAqgUulGqVMCBKk41v6bM=;
+	s=korg; t=1704301283;
+	bh=SLHTo2v3BQQFJT/kXWTL9DqNiGLFcIoM/JgjJy1SMws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J68qGdBO7/II3Q8kpATbLBQKAQXIlHLVSSsGsSLP/nbaAWMQe1JzvqBiv9YBzhXUh
-	 tq43ANIOmz03TPyYhwSf2Pd/M3ybCjGFbxBgoPprrLduwMoD9X7LSkNjldjQXeGmEL
-	 LSIRCGIpnm4i3rqvHR/kBDAOBDLgmopWAFbLhOmg=
+	b=Uml3yC3T7HBFl6avjk/VRS/JdhPh+NkIid/PIp0pDcQ0bTOclrrYC2zQQRntb05xP
+	 fSbX23kUeVM1Gsn3GpBadMhObKQOYMfZ9cMrAp+X9SPrHjQez73wOoRrkqjgkTMi2x
+	 F92NkyGabOayqmeDKvm630d8JtiCgfRaS8d7zL78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 71/95] ksmbd: lazy v2 lease break on smb2_write()
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 090/100] mm/memory-failure: check the mapcount of the precise page
 Date: Wed,  3 Jan 2024 17:55:19 +0100
-Message-ID: <20240103164904.583226756@linuxfoundation.org>
+Message-ID: <20240103164909.660353168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,129 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit c2a721eead71202a0d8ddd9b56ec8dce652c71d1 ]
+commit c79c5a0a00a9457718056b588f312baadf44e471 upstream.
 
-Don't immediately send directory lease break notification on smb2_write().
-Instead, It postpones it until smb2_close().
+A process may map only some of the pages in a folio, and might be missed
+if it maps the poisoned page but not the head page.  Or it might be
+unnecessarily hit if it maps the head page, but not the poisoned page.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231218135837.3310403-3-willy@infradead.org
+Fixes: 7af446a841a2 ("HWPOISON, hugetlb: enable error handling path for hugepage")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/oplock.c    | 45 ++++++++++++++++++++++++++++++++++++++++++--
- fs/ksmbd/oplock.h    |  1 +
- fs/ksmbd/vfs.c       |  3 +++
- fs/ksmbd/vfs_cache.h |  1 +
- 4 files changed, 48 insertions(+), 2 deletions(-)
+ mm/memory-failure.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index df6f00f58f19d..2da256259722d 100644
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -396,8 +396,8 @@ void close_id_del_oplock(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1421,7 +1421,7 @@ static bool hwpoison_user_mappings(struc
+ 	 * This check implies we don't kill processes if their pages
+ 	 * are in the swap cache early. Those are always late kills.
+ 	 */
+-	if (!page_mapped(hpage))
++	if (!page_mapped(p))
+ 		return true;
  
--	if (S_ISDIR(file_inode(fp->filp)->i_mode))
--		return;
-+	if (fp->reserve_lease_break)
-+		smb_lazy_parent_lease_break_close(fp);
- 
- 	opinfo = opinfo_get(fp);
- 	if (!opinfo)
-@@ -1127,6 +1127,47 @@ void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 	ksmbd_inode_put(p_ci);
- }
- 
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp)
-+{
-+	struct oplock_info *opinfo;
-+	struct ksmbd_inode *p_ci = NULL;
-+
-+	rcu_read_lock();
-+	opinfo = rcu_dereference(fp->f_opinfo);
-+	rcu_read_unlock();
-+
-+	if (!opinfo->is_lease || opinfo->o_lease->version != 2)
-+		return;
-+
-+	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
-+	if (!p_ci)
-+		return;
-+
-+	read_lock(&p_ci->m_lock);
-+	list_for_each_entry(opinfo, &p_ci->m_op_list, op_entry) {
-+		if (!opinfo->is_lease)
-+			continue;
-+
-+		if (opinfo->o_lease->state != SMB2_OPLOCK_LEVEL_NONE) {
-+			if (!atomic_inc_not_zero(&opinfo->refcount))
-+				continue;
-+
-+			atomic_inc(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				atomic_dec(&opinfo->conn->r_count);
-+				continue;
-+			}
-+			read_unlock(&p_ci->m_lock);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			opinfo_conn_put(opinfo);
-+			read_lock(&p_ci->m_lock);
-+		}
-+	}
-+	read_unlock(&p_ci->m_lock);
-+
-+	ksmbd_inode_put(p_ci);
-+}
-+
- /**
-  * smb_grant_oplock() - handle oplock/lease request on file open
-  * @work:		smb work
-diff --git a/fs/ksmbd/oplock.h b/fs/ksmbd/oplock.h
-index b64d1536882a1..5b93ea9196c01 100644
---- a/fs/ksmbd/oplock.h
-+++ b/fs/ksmbd/oplock.h
-@@ -129,4 +129,5 @@ int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
- void destroy_lease_table(struct ksmbd_conn *conn);
- void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 				      struct lease_ctx_info *lctx);
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp);
- #endif /* __KSMBD_OPLOCK_H */
-diff --git a/fs/ksmbd/vfs.c b/fs/ksmbd/vfs.c
-index a89529b21c866..173a488bfeee4 100644
---- a/fs/ksmbd/vfs.c
-+++ b/fs/ksmbd/vfs.c
-@@ -517,6 +517,9 @@ int ksmbd_vfs_write(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		}
+ 	if (PageKsm(p)) {
+@@ -1477,10 +1477,10 @@ static bool hwpoison_user_mappings(struc
+ 		try_to_unmap(folio, ttu);
  	}
  
-+	/* Reserve lease break for parent dir at closing time */
-+	fp->reserve_lease_break = true;
-+
- 	/* Do we need to break any of a levelII oplock? */
- 	smb_break_all_levII_oplock(work, fp, 1);
+-	unmap_success = !page_mapped(hpage);
++	unmap_success = !page_mapped(p);
+ 	if (!unmap_success)
+ 		pr_err("%#lx: failed to unmap page (mapcount=%d)\n",
+-		       pfn, page_mapcount(hpage));
++		       pfn, page_mapcount(p));
  
-diff --git a/fs/ksmbd/vfs_cache.h b/fs/ksmbd/vfs_cache.h
-index 4d4938d6029b6..a528f0cc775ae 100644
---- a/fs/ksmbd/vfs_cache.h
-+++ b/fs/ksmbd/vfs_cache.h
-@@ -105,6 +105,7 @@ struct ksmbd_file {
- 	struct ksmbd_readdir_data	readdir_data;
- 	int				dot_dotdot[2];
- 	unsigned int			f_state;
-+	bool				reserve_lease_break;
- };
- 
- static inline void set_ctx_actor(struct dir_context *ctx,
--- 
-2.43.0
-
+ 	/*
+ 	 * try_to_unmap() might put mlocked page in lru cache, so call
 
 
 
