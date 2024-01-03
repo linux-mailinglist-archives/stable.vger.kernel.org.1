@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-9562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B9C8232E9
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE28823207
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40FA1F24CFA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E26CB2455E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D2B1BDF1;
-	Wed,  3 Jan 2024 17:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C541BDDE;
+	Wed,  3 Jan 2024 17:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwM6OZn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ2WGPBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A3F1BDFE;
-	Wed,  3 Jan 2024 17:13:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAD2C433C8;
-	Wed,  3 Jan 2024 17:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD441BDF0;
+	Wed,  3 Jan 2024 17:01:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C98DC433C7;
+	Wed,  3 Jan 2024 17:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301999;
-	bh=UIBvRyQkITPL4Nu4Gp6xIUWN22xVMOSTQVrfwCfaHW4=;
+	s=korg; t=1704301299;
+	bh=anUIZahRW955cASBOCk3xjCctJz5uEUrcLcu6JsAYTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwM6OZn9bOWT2RJqnSnCYI0AanyoPdQZWj0di2M1Vd5ZyR8+QLGewXZVpvcrDCPdi
-	 V3UkttWfNUoUAYZ15yMFGFsFKs/VVxR3kNQ870t62YQlsxXhVwXVhhlgqr+xZtQ65a
-	 KlLv/LOZDm3FsrVnw+K+w7lMGdPs9ClgtLzNyPFQ=
+	b=cQ2WGPBru/MD0IikISYNUL7lbECFF+oNrLLbZNjaUhfg5KNsQQKTTv9hX5uhK5s5w
+	 lhzVhxarfeFhcjXmm/a/vxd39W0NJPF1e2EMcOXJB+qQvRkGYYIX08g4EO07odgZy8
+	 orLz8IZFBngBSm4ph/d5Rx3DwbydvOMXgYG3nLnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/49] ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
+	Kevin Rich <kevinrich1337@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 094/100] netfilter: nf_tables: skip set commit for deleted/destroyed sets
 Date: Wed,  3 Jan 2024 17:55:23 +0100
-Message-ID: <20240103164835.474316203@linuxfoundation.org>
+Message-ID: <20240103164910.247031578@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 3354db668808d5b6d7c5e0cb19ff4c9da4bb5e58 ]
+commit 7315dc1e122c85ffdfc8defffbb8f8b616c2eb1a upstream.
 
-Fix argument list that the kdoc format and script verified in
-ksmbd_vfs_setxattr().
+NFT_MSG_DELSET deactivates all elements in the set, skip
+set->ops->commit() to avoid the unnecessary clone (for the pipapo case)
+as well as the sync GC cycle, which could deactivate again expired
+elements in such set.
 
-fs/smb/server/vfs.c:929: warning: Function parameter or member 'path'
-not described in 'ksmbd_vfs_setxattr'
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c | 2 +-
+ net/netfilter/nf_tables_api.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 5a41c0b4e9335..183e36cda59ec 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -906,7 +906,7 @@ ssize_t ksmbd_vfs_getxattr(struct mnt_idmap *idmap,
- /**
-  * ksmbd_vfs_setxattr() - vfs helper for smb set extended attributes value
-  * @idmap:	idmap of the relevant mount
-- * @dentry:	dentry to set XATTR at
-+ * @path:	path of dentry to set XATTR at
-  * @attr_name:	xattr name for setxattr
-  * @attr_value:	xattr value to set
-  * @attr_size:	size of xattr value
--- 
-2.43.0
-
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9480,7 +9480,7 @@ static void nft_set_commit_update(struct
+ 	list_for_each_entry_safe(set, next, set_update_list, pending_update) {
+ 		list_del_init(&set->pending_update);
+ 
+-		if (!set->ops->commit)
++		if (!set->ops->commit || set->dead)
+ 			continue;
+ 
+ 		set->ops->commit(set);
 
 
 
