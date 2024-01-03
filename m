@@ -1,69 +1,48 @@
-Return-Path: <stable+bounces-9599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE21823313
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812DD8232CB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC401C21016
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 206DF1F23FA6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55ED41C29F;
-	Wed,  3 Jan 2024 17:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D121C290;
+	Wed,  3 Jan 2024 17:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPbd/xjX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0foa8ASY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2D91C280;
-	Wed,  3 Jan 2024 17:15:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C2BC433C8;
-	Wed,  3 Jan 2024 17:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481BE1BDFE;
+	Wed,  3 Jan 2024 17:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE2AC433C7;
+	Wed,  3 Jan 2024 17:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302128;
-	bh=MCNhrfDI3RwODeRKbyfert7mVx3uSI64sAo9RHkzpHk=;
+	s=korg; t=1704301906;
+	bh=cxEiGtM3B0yz7fO+6x7uqB/27fYjPTsHO5xj5vifAAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wPbd/xjX0L/eA3QW9weE6pq0DmfYsM2GFdB7ausyjjnDVHXMxHCLl2RoUCXfyfim5
-	 K8d21RkZ1Ucf2QR4HOuRntkA/twCWFNCdGj/4mstR61r7nlSGGCjmDnXidP166Kl5Q
-	 OdS5KJ+cccWy1lZTIBKkALv7LfKyINi2egWC51QY=
+	b=0foa8ASYhTYpjD4I1z4gShO7xFQTCimVAyI5fVAROSqm8PwNwCRds8zExuDja+Bfh
+	 yII7sb7HnPnGpYT1RNsVi9Gi8VaR1IYNKnfzHwRU8qf7PsIqqBzT831mbRRVDfVCYW
+	 H31+gjZln6Ouv1h4q1Ptkde4Oixf8MU3wJl35Nh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Eric DeVolder <eric_devolder@yahoo.com>,
-	Baoquan He <bhe@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Conor Dooley <conor@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Benjamin Block <bblock@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 25/49] kexec: select CRYPTO from KEXEC_FILE instead of depending on it
+Subject: [PATCH 5.10 64/75] scsi: core: Make scsi_get_lba() return the LBA
 Date: Wed,  3 Jan 2024 17:55:45 +0100
-Message-ID: <20240103164838.839905793@linuxfoundation.org>
+Message-ID: <20240103164852.800275980@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,75 +54,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit e63bde3d9417f8318d6dd0d0fafa35ebf307aabd ]
+[ Upstream commit d2c945f01d233085fedc9e3cf7ec180eaa2b7a85 ]
 
-All other users of crypto code use 'select' instead of 'depends on', so do
-the same thing with KEXEC_FILE for consistency.
+scsi_get_lba() confusingly returned the block layer sector number expressed
+in units of 512 bytes. Now that we have a more aptly named
+scsi_get_sector() function, make scsi_get_lba() return the actual LBA.
 
-In practice this makes very little difference as kernels with kexec
-support are very likely to also include some other feature that already
-selects both crypto and crypto_sha256, but being consistent here helps for
-usability as well as to avoid potential circular dependencies.
-
-This reverts the dependency back to what it was originally before commit
-74ca317c26a3f ("kexec: create a new config option CONFIG_KEXEC_FILE for
-new syscall"), which changed changed it with the comment "This should be
-safer as "select" is not recursive", but that appears to have been done in
-error, as "select" is indeed recursive, and there are no other
-dependencies that prevent CRYPTO_SHA256 from being selected here.
-
-Link: https://lkml.kernel.org/r/20231023110308.1202042-2-arnd@kernel.org
-Fixes: 74ca317c26a3f ("kexec: create a new config option CONFIG_KEXEC_FILE for new syscall")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Eric DeVolder <eric_devolder@yahoo.com>
-Tested-by: Eric DeVolder <eric_devolder@yahoo.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Conor Dooley <conor@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/20210609033929.3815-13-martin.petersen@oracle.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Message-Id: <20210609033929.3815-13-martin.petersen@oracle.com>
+Stable-dep-of: 066c5b46b6ea ("scsi: core: Always send batch on reset or error handling command")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/Kconfig.kexec | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/scsi/scsi_cmnd.h | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
-index d3b8a2b1b5732..37e488d5b4fc0 100644
---- a/kernel/Kconfig.kexec
-+++ b/kernel/Kconfig.kexec
-@@ -36,7 +36,8 @@ config KEXEC
- config KEXEC_FILE
- 	bool "Enable kexec file based system call"
- 	depends on ARCH_SUPPORTS_KEXEC_FILE
--	depends on CRYPTO_SHA256=y || !ARCH_SUPPORTS_KEXEC_PURGATORY
-+	select CRYPTO
-+	select CRYPTO_SHA256
- 	select KEXEC_CORE
- 	help
- 	  This is new version of kexec system call. This system call is
+diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
+index ddab0c580382b..162a53a39ac0d 100644
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -229,6 +229,13 @@ static inline sector_t scsi_get_sector(struct scsi_cmnd *scmd)
+ 	return blk_rq_pos(scmd->request);
+ }
+ 
++static inline sector_t scsi_get_lba(struct scsi_cmnd *scmd)
++{
++	unsigned int shift = ilog2(scmd->device->sector_size) - SECTOR_SHIFT;
++
++	return blk_rq_pos(scmd->request) >> shift;
++}
++
+ /*
+  * The operations below are hints that tell the controller driver how
+  * to handle I/Os with DIF or similar types of protection information.
+@@ -291,11 +298,6 @@ static inline unsigned char scsi_get_prot_type(struct scsi_cmnd *scmd)
+ 	return scmd->prot_type;
+ }
+ 
+-static inline sector_t scsi_get_lba(struct scsi_cmnd *scmd)
+-{
+-	return blk_rq_pos(scmd->request);
+-}
+-
+ static inline u32 scsi_prot_ref_tag(struct scsi_cmnd *scmd)
+ {
+ 	struct request *rq = blk_mq_rq_from_pdu(scmd);
 -- 
 2.43.0
 
