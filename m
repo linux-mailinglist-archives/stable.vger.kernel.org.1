@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BB08231F4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0D6823250
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526BFB23186
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104AF1F24CDD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50841C29C;
-	Wed,  3 Jan 2024 17:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501911C282;
+	Wed,  3 Jan 2024 17:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIBJ8dc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5DCZz9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9BA1C698;
-	Wed,  3 Jan 2024 17:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9520C433C8;
-	Wed,  3 Jan 2024 17:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0B01BDDE;
+	Wed,  3 Jan 2024 17:05:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 736E9C433C8;
+	Wed,  3 Jan 2024 17:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301240;
-	bh=hnz082Mm9Qypwkc3zmZgpxJ0SSClDk+qvR1QJnVaCJY=;
+	s=korg; t=1704301522;
+	bh=juedO3uxgbI/X7DA65F7CHvpNYwwohPVLX4kgjadh40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIBJ8dc2NS6dGC5MheuyaIyjuO13lxF8SekqVv+ggDfANgtotjJq83TTOeLF8QE4l
-	 6RfJ/BB0qGRrjttwX+J4Jpa8gbkS0Di71JZ9jeojdOhl/DE5mYSLkvPTb6SbyIwDBn
-	 AuKDp1K2p0hVWsT+Y0oWqqOTg+OJ7qEqXPj+JLjw=
+	b=X5DCZz9xvOIXoepblpd32/T1DleKrvihbMGP5Tg6jj703nPHInSKKf9Rj09WiBPNy
+	 1Tcyps9E7insHX48iVvrcHjoojn77pOfuNx19Lo8ERCv9X7UPzoC8G0Kcfk4i+Sjt4
+	 sz2XIEu0EIv6eFWY4uMGN5G4Hly/xqEq7ZhBAeD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	luosili <rootlab@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/100] ksmbd: fix race condition from parallel smb2 lock requests
+Subject: [PATCH 5.15 28/95] gpiolib: cdev: add gpio_device locking wrapper around gpio_ioctl()
 Date: Wed,  3 Jan 2024 17:54:36 +0100
-Message-ID: <20240103164903.119983473@linuxfoundation.org>
+Message-ID: <20240103164858.336925043@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,87 +53,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Kent Gibson <warthog618@gmail.com>
 
-[ Upstream commit 75ac9a3dd65f7eab4d12b0a0f744234b5300a491 ]
+[ Upstream commit 1d656bd259edb89dc1d9938ec5c5389867088546 ]
 
-There is a race condition issue between parallel smb2 lock request.
+While the GPIO cdev gpio_ioctl() call is in progress, the kernel can
+call gpiochip_remove() which will set gdev->chip to NULL, after which
+any subsequent access will cause a crash.
 
-                                            Time
-                                             +
-Thread A                                     | Thread A
-smb2_lock                                    | smb2_lock
-                                             |
- insert smb_lock to lock_list                |
- spin_unlock(&work->conn->llist_lock)        |
-                                             |
-                                             |   spin_lock(&conn->llist_lock);
-                                             |   kfree(cmp_lock);
-                                             |
- // UAF!                                     |
- list_add(&smb_lock->llist, &rollback_list)  +
+gpio_ioctl() was overlooked by the previous fix to protect syscalls
+(bdbbae241a04), so add protection for that.
 
-This patch swaps the line for adding the smb lock to the rollback list and
-adding the lock list of connection to fix the race issue.
-
-Reported-by: luosili <rootlab@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: bdbbae241a04 ("gpiolib: protect the GPIO device against being dropped while in use by user-space")
+Fixes: d7c51b47ac11 ("gpio: userspace ABI for reading/writing GPIO lines")
+Fixes: 3c0d9c635ae2 ("gpiolib: cdev: support GPIO_V2_GET_LINE_IOCTL and GPIO_V2_LINE_GET_VALUES_IOCTL")
+Fixes: aad955842d1c ("gpiolib: cdev: support GPIO_V2_GET_LINEINFO_IOCTL and GPIO_V2_GET_LINEINFO_WATCH_IOCTL")
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/gpio/gpiolib-cdev.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index e8c779fa354ca..a76529512acfb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -7038,10 +7038,6 @@ int smb2_lock(struct ksmbd_work *work)
+diff --git a/drivers/gpio/gpiolib-cdev.c b/drivers/gpio/gpiolib-cdev.c
+index 2a2e0691462bf..1db991cb2efce 100644
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -2224,10 +2224,7 @@ static int lineinfo_unwatch(struct gpio_chardev_data *cdev, void __user *ip)
+ 	return 0;
+ }
  
- 				ksmbd_debug(SMB,
- 					    "would have to wait for getting lock\n");
--				spin_lock(&work->conn->llist_lock);
--				list_add_tail(&smb_lock->clist,
--					      &work->conn->lock_list);
--				spin_unlock(&work->conn->llist_lock);
- 				list_add(&smb_lock->llist, &rollback_list);
+-/*
+- * gpio_ioctl() - ioctl handler for the GPIO chardev
+- */
+-static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++static long gpio_ioctl_unlocked(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct gpio_chardev_data *cdev = file->private_data;
+ 	struct gpio_device *gdev = cdev->gdev;
+@@ -2264,6 +2261,17 @@ static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	}
+ }
  
- 				argv = kmalloc(sizeof(void *), GFP_KERNEL);
-@@ -7073,9 +7069,6 @@ int smb2_lock(struct ksmbd_work *work)
- 
- 				if (work->state != KSMBD_WORK_ACTIVE) {
- 					list_del(&smb_lock->llist);
--					spin_lock(&work->conn->llist_lock);
--					list_del(&smb_lock->clist);
--					spin_unlock(&work->conn->llist_lock);
- 					locks_free_lock(flock);
- 
- 					if (work->state == KSMBD_WORK_CANCELLED) {
-@@ -7095,19 +7088,16 @@ int smb2_lock(struct ksmbd_work *work)
- 				}
- 
- 				list_del(&smb_lock->llist);
--				spin_lock(&work->conn->llist_lock);
--				list_del(&smb_lock->clist);
--				spin_unlock(&work->conn->llist_lock);
- 				release_async_work(work);
- 				goto retry;
- 			} else if (!rc) {
-+				list_add(&smb_lock->llist, &rollback_list);
- 				spin_lock(&work->conn->llist_lock);
- 				list_add_tail(&smb_lock->clist,
- 					      &work->conn->lock_list);
- 				list_add_tail(&smb_lock->flist,
- 					      &fp->lock_list);
- 				spin_unlock(&work->conn->llist_lock);
--				list_add(&smb_lock->llist, &rollback_list);
- 				ksmbd_debug(SMB, "successful in taking lock\n");
- 			} else {
- 				goto out;
++/*
++ * gpio_ioctl() - ioctl handler for the GPIO chardev
++ */
++static long gpio_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
++{
++	struct gpio_chardev_data *cdev = file->private_data;
++
++	return call_ioctl_locked(file, cmd, arg, cdev->gdev,
++				 gpio_ioctl_unlocked);
++}
++
+ #ifdef CONFIG_COMPAT
+ static long gpio_ioctl_compat(struct file *file, unsigned int cmd,
+ 			      unsigned long arg)
 -- 
 2.43.0
 
