@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D888A823210
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CB78232C4
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD021F248E0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E6DE285D5B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91151BDFF;
-	Wed,  3 Jan 2024 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6D71C28A;
+	Wed,  3 Jan 2024 17:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHQEH3lQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBSWZvDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B115D1BDE9;
-	Wed,  3 Jan 2024 17:02:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192F2C433C7;
-	Wed,  3 Jan 2024 17:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049781BDFB;
+	Wed,  3 Jan 2024 17:11:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF30C433C7;
+	Wed,  3 Jan 2024 17:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301332;
-	bh=u4ndsqQR4ZBoUBmLbhIPc2QCgo92jp7nxFut5o82jPc=;
+	s=korg; t=1704301882;
+	bh=b8VmRi5TJ4cWpUKUr1xZoBU5HtYlVgHQN5uhUtG3dCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHQEH3lQmmGqwIoCq1GcLyCRBtJEeuPTkN/ge+UfIDkxFbQSElhz91Zzv+JxEgWOq
-	 Kl22IwaOf0JTq1sVwgeYJhph+GkVfiVLIX+Vo2a/hnLbnCOf89Fcnoixs0O/AkiTda
-	 WAFEW3yqNMExHYF2yMRr8KzmdQNVxCDjGwnxBgcM=
+	b=eBSWZvDfk3McnlVmx8O/1H+paenvEJKCa5t1CyX7JvoBYftWicVQzoI814WzSFjyQ
+	 ai2P4PWZTebnpiocvph5jrlO+u3YxfzQKkTNVf3caYMAsbvOV1chBaki+RKK+jE/Yl
+	 MBPgR1icAd1+nSpAUrAM/AUOy8os0rHJDmaUprKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Georgi Djakov <djakov@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/100] nfsd: call nfsd_last_thread() before final nfsd_put()
+Subject: [PATCH 5.10 27/75] interconnect: Treat xlate() returning NULL node as an error
 Date: Wed,  3 Jan 2024 17:55:08 +0100
-Message-ID: <20240103164907.937015443@linuxfoundation.org>
+Message-ID: <20240103164847.273313681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-[ Upstream commit 2a501f55cd641eb4d3c16a2eab0d678693fac663 ]
+[ Upstream commit ad2ab1297d0c80899125a842bb7a078abfe1e6ce ]
 
-If write_ports_addfd or write_ports_addxprt fail, they call nfsd_put()
-without calling nfsd_last_thread().  This leaves nn->nfsd_serv pointing
-to a structure that has been freed.
+Currently, if provider->xlate() or provider->xlate_extended()
+"successfully" return a NULL node, then of_icc_get_from_provider() won't
+consider that an error and will successfully return the NULL node. This
+bypasses error handling in of_icc_get_by_index() and leads to NULL
+dereferences in path_find().
 
-So remove 'static' from nfsd_last_thread() and call it when the
-nfsd_serv is about to be destroyed.
+This could be avoided by ensuring provider callbacks always return an
+error for NULL nodes, but it's better to explicitly protect against this
+in the common framework.
 
-Fixes: ec52361df99b ("SUNRPC: stop using ->sv_nrthreads as a refcount")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 87e3031b6fbd ("interconnect: Allow endpoints translation via DT")
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Link: https://lore.kernel.org/r/20231025145829.11603-1-quic_mdtipton@quicinc.com
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 9 +++++++--
- fs/nfsd/nfsd.h   | 1 +
- fs/nfsd/nfssvc.c | 2 +-
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/interconnect/core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 573de0d49e172..b3b4542e31ed5 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -716,8 +716,10 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 
- 	err = svc_addsock(nn->nfsd_serv, net, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
- 
--	if (err >= 0 &&
--	    !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
-+	if (err < 0 && !nn->nfsd_serv->sv_nrthreads && !nn->keep_active)
-+		nfsd_last_thread(net);
-+	else if (err >= 0 &&
-+		 !nn->nfsd_serv->sv_nrthreads && !xchg(&nn->keep_active, 1))
- 		svc_get(nn->nfsd_serv);
- 
- 	nfsd_put(net);
-@@ -767,6 +769,9 @@ static ssize_t __write_ports_addxprt(char *buf, struct net *net, const struct cr
- 		svc_xprt_put(xprt);
+diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+index 7db6d0fc6ec2e..9390e22106631 100644
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -380,6 +380,9 @@ struct icc_node_data *of_icc_get_from_provider(struct of_phandle_args *spec)
  	}
- out_err:
-+	if (!nn->nfsd_serv->sv_nrthreads && !nn->keep_active)
-+		nfsd_last_thread(net);
+ 	mutex_unlock(&icc_lock);
+ 
++	if (!node)
++		return ERR_PTR(-EINVAL);
 +
- 	nfsd_put(net);
- 	return err;
- }
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index fddd70372e4cb..53166cce7062c 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -139,6 +139,7 @@ int nfsd_vers(struct nfsd_net *nn, int vers, enum vers_op change);
- int nfsd_minorversion(struct nfsd_net *nn, u32 minorversion, enum vers_op change);
- void nfsd_reset_versions(struct nfsd_net *nn);
- int nfsd_create_serv(struct net *net);
-+void nfsd_last_thread(struct net *net);
+ 	if (IS_ERR(node))
+ 		return ERR_CAST(node);
  
- extern int nfsd_max_blksize;
- 
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 6ac18399fed2b..d8662bdca5706 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -523,7 +523,7 @@ static struct notifier_block nfsd_inet6addr_notifier = {
- /* Only used under nfsd_mutex, so this atomic may be overkill: */
- static atomic_t nfsd_notifier_refcount = ATOMIC_INIT(0);
- 
--static void nfsd_last_thread(struct net *net)
-+void nfsd_last_thread(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 	struct svc_serv *serv = nn->nfsd_serv;
 -- 
 2.43.0
 
