@@ -1,46 +1,43 @@
-Return-Path: <stable+bounces-9521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B088232C0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958598232DF
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B6428583C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B879B1C23BFA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BAB1C280;
-	Wed,  3 Jan 2024 17:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85271C28C;
+	Wed,  3 Jan 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqzbvaxk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13eFLp+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D5F1BDEC;
-	Wed,  3 Jan 2024 17:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F208C433C7;
-	Wed,  3 Jan 2024 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B233E1BDEC;
+	Wed,  3 Jan 2024 17:12:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1888FC433C7;
+	Wed,  3 Jan 2024 17:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301867;
-	bh=QXz11bEnxNyVeiQXZLZAinQ1qFikTXlLh28Pl1qQ6rI=;
+	s=korg; t=1704301967;
+	bh=zWB5HO7cM6YGZFY4aPMFdg74vmaRnnbCIR2MDdtXz2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vqzbvaxktNTbqeXPC55klwQmWR8J9ckHFGVDo1i0uhgbLx7iUP5SXlj38Mbl9DNbd
-	 beEkTLRxiAnTz8vtdnYgj++Gva2BNablfMAPUpViqzucyKHul6/4x3Qt/Tlxfn3NPj
-	 +8TmBjxmTK+LAb14ceaKwFVFAR1y+wWUCYZ+tevk=
+	b=13eFLp+h+PoVl2SapMnrBJv2THD2tohZP2zueRmgKu1fVSMvoti3aRFZbkdL/6Ta5
+	 lgHghGyeENFAXB8FrKluglC2Xurrhs8UJJzhkSQ6d8VUm6RdswW3QIQcFnhxxt8nc0
+	 XC9iylV2H5vEbpUH9YsyljxE4tuxY9XrwF2SCgV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Hangyu Hua <hbh25y@gmail.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Alexey Panov <apanov@astralinux.ru>
-Subject: [PATCH 5.10 51/75] 9p/net: fix possible memory leak in p9_check_errors()
-Date: Wed,  3 Jan 2024 17:55:32 +0100
-Message-ID: <20240103164850.838030735@linuxfoundation.org>
+	Tony Lindgren <tony@atomide.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 52/75] ARM: dts: Fix occasional boot hang for am3 usb
+Date: Wed,  3 Jan 2024 17:55:33 +0100
+Message-ID: <20240103164851.004008763@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
 References: <20240103164842.953224409@linuxfoundation.org>
@@ -59,46 +56,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit ce07087964208eee2ca2f9ee4a98f8b5d9027fe6 upstream.
+[ Upstream commit 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb ]
 
-When p9pdu_readf() is called with "s?d" attribute, it allocates a pointer
-that will store a string. But when p9pdu_readf() fails while handling "d"
-then this pointer will not be freed in p9_check_errors().
+With subtle timings changes, we can now sometimes get an external abort on
+non-linefetch error booting am3 devices at sysc_reset(). This is because
+of a missing reset delay needed for the usb target module.
 
-Fixes: 51a87c552dfd ("9p: rework client code to use new protocol support functions")
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Message-ID: <20231027030302.11927-1-hbh25y@gmail.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Looks like we never enabled the delay earlier for am3, although a similar
+issue was seen earlier with a similar usb setup for dm814x as described in
+commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
+
+Cc: stable@vger.kernel.org
+Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218235
-Signed-off-by: Alexey Panov <apanov@astralinux.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/client.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/am33xx.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -520,11 +520,14 @@ static int p9_check_errors(struct p9_cli
- 		return 0;
- 
- 	if (!p9_is_proto_dotl(c)) {
--		char *ename;
-+		char *ename = NULL;
-+
- 		err = p9pdu_readf(&req->rc, c->proto_version, "s?d",
- 				  &ename, &ecode);
--		if (err)
-+		if (err) {
-+			kfree(ename);
- 			goto out_err;
-+		}
- 
- 		if (p9_is_proto_dotu(c) && ecode < 512)
- 			err = -ecode;
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index f09a61cac2dc9..3d064eb290997 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -347,6 +347,7 @@ usb: target-module@47400000 {
+ 					<SYSC_IDLE_NO>,
+ 					<SYSC_IDLE_SMART>,
+ 					<SYSC_IDLE_SMART_WKUP>;
++			ti,sysc-delay-us = <2>;
+ 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
+ 			clock-names = "fck";
+ 			#address-cells = <1>;
+-- 
+2.43.0
+
 
 
 
