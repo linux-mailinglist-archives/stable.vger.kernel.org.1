@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAA58232FA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2237D8232D6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC231F24EB2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6C50B21761
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F181C29D;
-	Wed,  3 Jan 2024 17:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126251C283;
+	Wed,  3 Jan 2024 17:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIw4q68C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZMopjV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D8A1C283;
-	Wed,  3 Jan 2024 17:14:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3299C433C7;
-	Wed,  3 Jan 2024 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6CC1BDEC;
+	Wed,  3 Jan 2024 17:12:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513DAC433C7;
+	Wed,  3 Jan 2024 17:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302058;
-	bh=X2d0zmnVA1fBrwPs7tqY3jGlS1x1v5jEFV3X+JbP/FI=;
+	s=korg; t=1704301939;
+	bh=t0wYXU7gCiA4IDqIjiceBxC065D2VhtSKcQXW4PX+1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIw4q68CKnGko0o8fsu4DbpXDNRqtjfwhTmo5xSf21fPdRXtVzd0fWf/W3twrLuaz
-	 DjjJUyStNy7zXtS7eQ8dA7C9FMhA3l32Px21HCsFc9J4jJdXLhqsdJXxJao9Cxf/iO
-	 hgMJuvC/ueU4BaRkmSs168Vrg6aEDtwgEv1F4jJI=
+	b=0ZMopjV1LBe0jdkZjt7BAuKE65HZVSjfZFH/j5bxfESdFkoPJv1q9zTaPNGpBf4UQ
+	 ZT1ahE9EaesRDk6naF5tNfrNP7xyGkwhgsg82jQVj7zB5twQd/ouztG4skBSjheMT5
+	 R+zkWpZs4+NKByXLQG7MXHMEycDmf9IQ2hvY6azY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 34/49] platform/x86/intel/pmc: Move GBE LTR ignore to suspend callback
-Date: Wed,  3 Jan 2024 17:55:54 +0100
-Message-ID: <20240103164840.309954973@linuxfoundation.org>
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Marcel Holtmann <marcel@holtmann.org>
+Subject: [PATCH 5.10 74/75] Bluetooth: SMP: Fix crash when receiving new connection when debug is enabled
+Date: Wed,  3 Jan 2024 17:55:55 +0100
+Message-ID: <20240103164854.140372742@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,185 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 70681aa0746ae61d7668b9f651221fad5e30c71e ]
+commit 995fca15b73ff8f92888cc2d5d95f17ffdac74ba upstream.
 
-Commit 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and
-core_configure()") caused a network performance regression due to the GBE
-LTR ignore that it added at probe. This was needed in order to allow the
-SoC to enter the deepest Package C state. To fix the regression and at
-least support PC10 during suspend, move the LTR ignore from probe to the
-suspend callback, and enable it again on resume. This solution will allow
-PC10 during suspend but restrict Package C entry at runtime to no deeper
-than PC8/9 while a network cable it attach to the PCH LAN.
+When receiving a new connection pchan->conn won't be initialized so the
+code cannot use bt_dev_dbg as the pointer to hci_dev won't be
+accessible.
 
-Fixes: 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and core_configure()")
-Signed-off-by: "David E. Box" <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20231223032548.1680738-6-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2e1614f7d61e4 ("Bluetooth: SMP: Convert BT_ERR/BT_DBG to bt_dev_err/bt_dev_dbg")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/pmc/adl.c  |  9 +++------
- drivers/platform/x86/intel/pmc/cnp.c  | 26 ++++++++++++++++++++------
- drivers/platform/x86/intel/pmc/core.h |  3 +++
- drivers/platform/x86/intel/pmc/mtl.c  |  9 +++------
- drivers/platform/x86/intel/pmc/tgl.c  |  9 ++++-----
- 5 files changed, 33 insertions(+), 23 deletions(-)
+ net/bluetooth/smp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/adl.c b/drivers/platform/x86/intel/pmc/adl.c
-index a887c388cf16d..606f7678bcb0a 100644
---- a/drivers/platform/x86/intel/pmc/adl.c
-+++ b/drivers/platform/x86/intel/pmc/adl.c
-@@ -314,16 +314,13 @@ int adl_core_init(struct pmc_dev *pmcdev)
- 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
- 	int ret;
- 
-+	pmcdev->suspend = cnl_suspend;
-+	pmcdev->resume = cnl_resume;
-+
- 	pmc->map = &adl_reg_map;
- 	ret = get_primary_reg_base(pmc);
- 	if (ret)
- 		return ret;
- 
--	/* Due to a hardware limitation, the GBE LTR blocks PC10
--	 * when a cable is attached. Tell the PMC to ignore it.
--	 */
--	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
--
- 	return 0;
- }
-diff --git a/drivers/platform/x86/intel/pmc/cnp.c b/drivers/platform/x86/intel/pmc/cnp.c
-index 10498204962cd..98b36651201a0 100644
---- a/drivers/platform/x86/intel/pmc/cnp.c
-+++ b/drivers/platform/x86/intel/pmc/cnp.c
-@@ -204,21 +204,35 @@ const struct pmc_reg_map cnp_reg_map = {
- 	.etr3_offset = ETR3_OFFSET,
- };
- 
-+void cnl_suspend(struct pmc_dev *pmcdev)
-+{
-+	/*
-+	 * Due to a hardware limitation, the GBE LTR blocks PC10
-+	 * when a cable is attached. To unblock PC10 during suspend,
-+	 * tell the PMC to ignore it.
-+	 */
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
-+}
-+
-+int cnl_resume(struct pmc_dev *pmcdev)
-+{
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 0);
-+
-+	return pmc_core_resume_common(pmcdev);
-+}
-+
- int cnp_core_init(struct pmc_dev *pmcdev)
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -3239,7 +3239,7 @@ static inline struct l2cap_chan *smp_new
  {
- 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
- 	int ret;
+ 	struct l2cap_chan *chan;
  
-+	pmcdev->suspend = cnl_suspend;
-+	pmcdev->resume = cnl_resume;
-+
- 	pmc->map = &cnp_reg_map;
- 	ret = get_primary_reg_base(pmc);
- 	if (ret)
- 		return ret;
+-	bt_dev_dbg(pchan->conn->hcon->hdev, "pchan %p", pchan);
++	BT_DBG("pchan %p", pchan);
  
--	/* Due to a hardware limitation, the GBE LTR blocks PC10
--	 * when a cable is attached. Tell the PMC to ignore it.
--	 */
--	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
--
- 	return 0;
+ 	chan = l2cap_chan_create();
+ 	if (!chan)
+@@ -3260,7 +3260,7 @@ static inline struct l2cap_chan *smp_new
+ 	 */
+ 	atomic_set(&chan->nesting, L2CAP_NESTING_SMP);
+ 
+-	bt_dev_dbg(pchan->conn->hcon->hdev, "created chan %p", chan);
++	BT_DBG("created chan %p", chan);
+ 
+ 	return chan;
  }
-diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
-index 71ba7d691d691..b66dacbfb94bf 100644
---- a/drivers/platform/x86/intel/pmc/core.h
-+++ b/drivers/platform/x86/intel/pmc/core.h
-@@ -502,6 +502,9 @@ int tgl_core_init(struct pmc_dev *pmcdev);
- int adl_core_init(struct pmc_dev *pmcdev);
- int mtl_core_init(struct pmc_dev *pmcdev);
- 
-+void cnl_suspend(struct pmc_dev *pmcdev);
-+int cnl_resume(struct pmc_dev *pmcdev);
-+
- #define pmc_for_each_mode(i, mode, pmcdev)		\
- 	for (i = 0, mode = pmcdev->lpm_en_modes[i];	\
- 	     i < pmcdev->num_lpm_modes;			\
-diff --git a/drivers/platform/x86/intel/pmc/mtl.c b/drivers/platform/x86/intel/pmc/mtl.c
-index 71dc11811e112..504e3e273c323 100644
---- a/drivers/platform/x86/intel/pmc/mtl.c
-+++ b/drivers/platform/x86/intel/pmc/mtl.c
-@@ -979,6 +979,8 @@ static void mtl_d3_fixup(void)
- static int mtl_resume(struct pmc_dev *pmcdev)
+@@ -3364,7 +3364,7 @@ static void smp_del_chan(struct l2cap_ch
  {
- 	mtl_d3_fixup();
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 0);
-+
- 	return pmc_core_resume_common(pmcdev);
- }
+ 	struct smp_dev *smp;
  
-@@ -989,6 +991,7 @@ int mtl_core_init(struct pmc_dev *pmcdev)
+-	bt_dev_dbg(chan->conn->hcon->hdev, "chan %p", chan);
++	BT_DBG("chan %p", chan);
  
- 	mtl_d3_fixup();
- 
-+	pmcdev->suspend = cnl_suspend;
- 	pmcdev->resume = mtl_resume;
- 
- 	pmcdev->regmap_list = mtl_pmc_info_list;
-@@ -1002,11 +1005,5 @@ int mtl_core_init(struct pmc_dev *pmcdev)
- 			return ret;
- 	}
- 
--	/* Due to a hardware limitation, the GBE LTR blocks PC10
--	 * when a cable is attached. Tell the PMC to ignore it.
--	 */
--	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
--
- 	return 0;
- }
-diff --git a/drivers/platform/x86/intel/pmc/tgl.c b/drivers/platform/x86/intel/pmc/tgl.c
-index 078263db24c7a..e88d3d00c8539 100644
---- a/drivers/platform/x86/intel/pmc/tgl.c
-+++ b/drivers/platform/x86/intel/pmc/tgl.c
-@@ -259,16 +259,15 @@ int tgl_core_init(struct pmc_dev *pmcdev)
- 	int ret;
- 
- 	pmc->map = &tgl_reg_map;
-+
-+	pmcdev->suspend = cnl_suspend;
-+	pmcdev->resume = cnl_resume;
-+
- 	ret = get_primary_reg_base(pmc);
- 	if (ret)
- 		return ret;
- 
- 	pmc_core_get_tgl_lpm_reqs(pmcdev->pdev);
--	/* Due to a hardware limitation, the GBE LTR blocks PC10
--	 * when a cable is attached. Tell the PMC to ignore it.
--	 */
--	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
- 
- 	return 0;
- }
--- 
-2.43.0
-
+ 	smp = chan->data;
+ 	if (smp) {
 
 
 
