@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487A08232E4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959A9823277
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D5251C23C4C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4436B285D67
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B1D1C28A;
-	Wed,  3 Jan 2024 17:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4079D1C282;
+	Wed,  3 Jan 2024 17:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udVR09zF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuJMNfBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9ED1BDFF;
-	Wed,  3 Jan 2024 17:13:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A01C433C8;
-	Wed,  3 Jan 2024 17:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B7F1BDFD;
+	Wed,  3 Jan 2024 17:07:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1ECC433C7;
+	Wed,  3 Jan 2024 17:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301983;
-	bh=YUEqzmVO6Y6qmgRD5P5oEbkVzKQEgx7Abx9808utIPs=;
+	s=korg; t=1704301647;
+	bh=DoZWHpHLXisL7cstHWcY6Uji471Zq7STr4gQ9i2ENrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udVR09zFIqzCGezopjm5zS01yGzOCODI1ICBg1nJcVHztphsmSCoVurJeMPrE/nd5
-	 MQcqoJk8x/BBOzFSp3jfrCoER/WFcPMlfJ2Iqzh2q3DW2SwepeL0dtfTLH1s2x8Sfo
-	 RJF80tNXOS7XJ8okFnQ7Xdmj2qYWfKCCdxDcZbwQ=
+	b=fuJMNfBSBgauXIFg+k955wdiD71/4pyivPnBy7+XS9kgtVbJ2h6fCts9vTVEIgMX0
+	 kzTJ2RGGwfTqMMJXQy6fPuAlEYeFeZY11sP8pu2jb/cGdWUKRg+sZReH5HIxGb4poB
+	 RTk+UHK5T77AxeoxrG7jtckDzt866Lku/VoWqLek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Hyunwoo Kim <v4bel@theori.io>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 13/49] ksmbd: dont update ->op_state as OPLOCK_STATE_NONE on error
+Subject: [PATCH 5.15 85/95] Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
 Date: Wed,  3 Jan 2024 17:55:33 +0100
-Message-ID: <20240103164837.063129795@linuxfoundation.org>
+Message-ID: <20240103164906.813368557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +53,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-[ Upstream commit cd80ce7e68f1624ac29cd0a6b057789d1236641e ]
+[ Upstream commit 2e07e8348ea454615e268222ae3fc240421be768 ]
 
-ksmbd set ->op_state as OPLOCK_STATE_NONE on lease break ack error.
-op_state of lease should not be updated because client can send lease
-break ack again. This patch fix smb2.lease.breaking2 test failure.
+This can cause a race with bt_sock_ioctl() because
+bt_sock_recvmsg() gets the skb from sk->sk_receive_queue
+and then frees it without holding lock_sock.
+A use-after-free for a skb occurs with the following flow.
+```
+bt_sock_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+bt_sock_ioctl() -> skb_peek()
+```
+Add lock_sock to bt_sock_recvmsg() to fix this issue.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/bluetooth/af_bluetooth.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index de71532651d97..5bff6746234d4 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8235,7 +8235,6 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
- 		return;
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index ce744b14d1a98..b7498e890f0b0 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -263,11 +263,14 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_OOB)
+ 		return -EOPNOTSUPP;
  
- err_out:
--	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
++	lock_sock(sk);
++
+ 	skb = skb_recv_datagram(sk, flags, noblock, &err);
+ 	if (!skb) {
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+-			return 0;
++			err = 0;
+ 
++		release_sock(sk);
+ 		return err;
+ 	}
+ 
+@@ -293,6 +296,8 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	skb_free_datagram(sk, skb);
+ 
++	release_sock(sk);
++
+ 	if (flags & MSG_TRUNC)
+ 		copied = skblen;
+ 
 -- 
 2.43.0
 
