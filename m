@@ -1,46 +1,43 @@
-Return-Path: <stable+bounces-9256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE03822B3E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:26:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5DA822B5F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B00CB22EEF
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:26:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3958B236BA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABCD18B00;
-	Wed,  3 Jan 2024 10:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D93E18C07;
+	Wed,  3 Jan 2024 10:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kujzUyew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1I+bCo6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665D918C17
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55928C433C7;
-	Wed,  3 Jan 2024 10:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB04819444
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:27:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D2DC433C8;
+	Wed,  3 Jan 2024 10:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704277562;
-	bh=gsSqaFEpjLn7EmKDYchK1z4vmtORrrg4hYPW2oLgNSw=;
+	s=korg; t=1704277633;
+	bh=U2ak+Qn/423h++xoN7IFG2I8zcB6zqnAKd73s6D/HaA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kujzUyewG3Ck8ovYg0qTJD8/aobnUSJwUhJnXsmvEPPSmsq+7U07tPzMFpXmxNT29
-	 P71wZw5C/++F8CzzmnxUeocRMHT7yaW3tSU9NF4m7uHuvXP5x+1qo+7xdvncmxuH6P
-	 SMCPepCgn3KZTJn1DwVG727PmDH6pyAS0m0ANBtY=
-Date: Wed, 3 Jan 2024 11:25:59 +0100
+	b=a1I+bCo6O+85w0KOoeD+KkgR9IheGIzBmdmePgrNPVCi6E0IEBlTFE1bp+xzXkWRM
+	 8qzAdicfYz5MPoVIpHK41Uj5uzAdBF+T+1JrgTvmQmxlFrTAVB6f19bFsl1cev8Igd
+	 YUxlQ6feygPIkpJs7ARkGJvF3BhuiqvSZx2KBGDs=
+Date: Wed, 3 Jan 2024 11:27:05 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: mark.rutland@arm.com, mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org, torvalds@linux-foundation.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] ring-buffer: Fix slowpath of interrupted
- event" failed to apply to 6.1-stable tree
-Message-ID: <2024010350-spinout-upheaval-abf6@gregkh>
-References: <2023123047-tuesday-whooping-6ae3@gregkh>
- <20231230165156.4fd2eef6@gandalf.local.home>
- <20231230172019.261b6059@gandalf.local.home>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: snitzer@kernel.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] dm-integrity: don't modify bio's
+ immutable bio_vec in" failed to apply to 4.14-stable tree
+Message-ID: <2024010358-refried-gnat-7122@gregkh>
+References: <2023123006-koala-satirical-e348@gregkh>
+ <39b21411-d7f4-5e47-9d4-5ef99bc4967f@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,19 +46,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231230172019.261b6059@gandalf.local.home>
+In-Reply-To: <39b21411-d7f4-5e47-9d4-5ef99bc4967f@redhat.com>
 
-On Sat, Dec 30, 2023 at 05:20:19PM -0500, Steven Rostedt wrote:
-> On Sat, 30 Dec 2023 16:51:56 -0500
-> Steven Rostedt <rostedt@goodmis.org> wrote:
+On Tue, Jan 02, 2024 at 03:10:42PM +0100, Mikulas Patocka wrote:
 > 
-> > Below is the patch for 6.1 of this change, and it depends on:
+> 
+> On Sat, 30 Dec 2023, gregkh@linuxfoundation.org wrote:
+> 
 > > 
-> > 20231230164736.3b8c86c4@gandalf.local.home
+> > The patch below does not apply to the 4.14-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
 > 
-> And this is for 5.15.
+> Hi
+> 
+> Here I'm sending backport of the patch
+> b86f4b790c998afdbc88fe1aa55cfe89c4068726 for the stable branch 4.14.
 
-Both now queued up, thanks.
+All now queued up, thanks.
 
 greg k-h
 
