@@ -1,64 +1,64 @@
-Return-Path: <stable+bounces-9603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC226823338
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A6F823339
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A14D285804
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAFB4285BC5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A4D1C28F;
-	Wed,  3 Jan 2024 17:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E9031C295;
+	Wed,  3 Jan 2024 17:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="vBlk83dB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nTYH5ehj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D790C1C284
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CED1C291
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 17:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a277339dcf4so494239166b.2
-        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 09:29:57 -0800 (PST)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55676f1faa9so2335060a12.0
+        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 09:30:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704302996; x=1704907796; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1704303001; x=1704907801; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZlwuQ9Xlo8ePc/4r6+pWqnNdOQQ9eRack09kFcT1q/o=;
-        b=vBlk83dB4QiD9v/z1IGQmcS/CcCbm4xDN7kWZC94ZnEl/ARzpAyUqy4XSOOI+JOIYR
-         yVBAWDgQLCNoNUd60l22ILlRxnu6GCpAOCd1AGeyM8RVWtxn4TlYgv1xhGeRqMMTQWUB
-         Ta2yaS2M55bMTk9zMishl9QmZDeQ2pfG14244/KGcwpxAd7kM2Qf3sogfQQJnWmtvZhe
-         5hnvBuUfjoe0ZvqvAHWLASxlZHVgTLsR8GMJCO+eazSdFE0bmJcS+44NMVSoiGPspuXu
-         Bhf1N3H25TwgHJo2lFJQtRTdZeDgiVaJAPwvVISQWiI+/H9Oj0WGt7MQni7Ll8M5sh7Y
-         R3pQ==
+        bh=xExI2X16lw4ENoFD9YU9VE9mID0XeZW+UOx0TBfL+OA=;
+        b=nTYH5ehjKXwSRM+5X4/WYm/8G66nMrvjTPeRIu/QTn/PA3jSmVoB8gXqx8kDaityS0
+         t18Hei2uy6dya6QCi0YUwGbKvizyc3kqStHQUrb8ZXZR4/olL2w5neYMeMnTK/nGX6GC
+         wLm0/S+g6lanj6X6GRGLnZfvaHrpQdTcJcvlHAoQuuoow8AWrJv6OetvFNDkhmEHXtiI
+         7kSM2E/qzhsZsJWJiooodqRFSnkbzrbwChO2ecva1IDYwR4a+A5vuSRR1/Amf9B1mx+d
+         KBE6nxgyGC05W7SoeyGwaf2gjV5zK6RNr9/2ym84yOGtSp4o+1kh6NnNEBL/TVg/vZWw
+         f9jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704302996; x=1704907796;
+        d=1e100.net; s=20230601; t=1704303001; x=1704907801;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZlwuQ9Xlo8ePc/4r6+pWqnNdOQQ9eRack09kFcT1q/o=;
-        b=vaUEnqr45RSRIFyBEPfp0+bj6UBpgpCL4+l//A/OInUvU3J6qnr6kZsIKIUr6sMHyp
-         AR9qYwhjuV278qA61RviwiUcwoUcwFx0A8x1l6CBSEuE1cJl0aqIsnLg9abtAs72gxCK
-         vEl+a1lly7hoseu4IFnpTAdY1yoNpPbJcJwkeF4INLnaW/pduBD3k2Cq/5pCPE+AZfyC
-         Ae51M+t3if18MKKK9JjLqZHtDQ02MMHByUczE/SbPN4Nk58AzskayWHrPCur/SWbyzXH
-         1phKrW8vk/ahyBlf+jKJQkZjigZJS8vx6mrJQK6LmtqbJCmVf5yMZeuOw5XL+1Xbd50t
-         ncwA==
-X-Gm-Message-State: AOJu0Yy2ddmvhP8R/hjrozsegClA2QfsXi423XRqFaBv+COCW7srau9O
-	QmTwb5c6VNIV0brTlbRPYDZDQiG67aCvhA==
-X-Google-Smtp-Source: AGHT+IG3bKLnWqG5R58BayQvhtQOd759v53bfy9vovK4eX16oj5kC2H2bhu2EZt24Z6VJdzp0DW1Zw==
-X-Received: by 2002:a17:906:31d7:b0:a27:aebf:32af with SMTP id f23-20020a17090631d700b00a27aebf32afmr3163012ejf.8.1704302996198;
-        Wed, 03 Jan 2024 09:29:56 -0800 (PST)
+        bh=xExI2X16lw4ENoFD9YU9VE9mID0XeZW+UOx0TBfL+OA=;
+        b=NbKfODwwcaNNTNhwSgPT9NUwCGW5cQusx4MOjV3pDjinHY+DXEnYhs7p3+BgJbNZ26
+         PokxMEdWqlHyUUGrk0KPlS8YfPtgROaFO12JfIs04QZeC2oMVD174ODafgfrF/iFV2Bj
+         oTyEDmXyuf4TrS9sRWEFXIOxO/5ddd8r/l6tZU18Kw9/i8AgrEaNYvG6zzh/RS1/6WAO
+         LnVmDddEot6Vu/2Zv+6A1egCjLszvAM8EWnodCsZigLuRQz9lXiM4Lq72h1UOc1df/DX
+         +mG4TLxoBZjK8u9nel5xkDjUVGziSjkHf3VzlD/+TIS4teSF7OUhEvph85H2Xn1CM6oI
+         jqfg==
+X-Gm-Message-State: AOJu0Yzqho9aBwYxtejP1rpu5e2ZomhGCCSEEeHICC4SA+QPvLV9yLE/
+	+8CzY7Tl82ahAsoq+rYU9davd/oWG6Dgp0JO460j6/qhi8g=
+X-Google-Smtp-Source: AGHT+IFqOeAaEwmwKJkGapQ+kJyHdM1V/imoHoiBKU+R0URkkHElgBCitLNEgWHwNzcCOSPnGfVvpA==
+X-Received: by 2002:a17:906:b7cf:b0:a28:c06d:2e0a with SMTP id fy15-20020a170906b7cf00b00a28c06d2e0amr98287ejb.70.1704303000895;
+        Wed, 03 Jan 2024 09:30:00 -0800 (PST)
 Received: from [192.168.199.125] (178235179036.dynamic-4-waw-k-1-3-0.vectranet.pl. [178.235.179.36])
-        by smtp.gmail.com with ESMTPSA id fv14-20020a170907508e00b00a269f8e8869sm12915828ejc.128.2024.01.03.09.29.55
+        by smtp.gmail.com with ESMTPSA id fv14-20020a170907508e00b00a269f8e8869sm12915828ejc.128.2024.01.03.09.29.59
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 09:29:55 -0800 (PST)
-Message-ID: <c336d05c-4d5e-4591-ae04-114eec801fff@linaro.org>
-Date: Wed, 3 Jan 2024 18:29:54 +0100
+        Wed, 03 Jan 2024 09:30:00 -0800 (PST)
+Message-ID: <1be48a82-ebc6-44b9-b56d-4629f6bc0f00@linaro.org>
+Date: Wed, 3 Jan 2024 18:29:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,13 +66,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 29/75] interconnect: qcom: sm8250: Enable sync_state
+Subject: Re: [PATCH 5.15 37/95] interconnect: qcom: sm8250: Enable sync_state
 Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, Georgi Djakov <djakov@kernel.org>,
  Sasha Levin <sashal@kernel.org>
-References: <20240103164842.953224409@linuxfoundation.org>
- <20240103164847.570054712@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
+ <20240103164859.619846763@linuxfoundation.org>
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  xsFNBF9ALYUBEADWAhxdTBWrwAgDQQzc1O/bJ5O7b6cXYxwbBd9xKP7MICh5YA0DcCjJSOum
@@ -109,12 +109,12 @@ Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
  bGqMHex48FVZhexNPYOd58EY9/7mL5u0sJmo+jTeb4JBgIbFPJCFyng4HwbniWgQJZ1WqaUC
  nas9J77uICis2WH7N8Bs9jy0wQYezNzqS+FxoNXmDQg2jetX8en4bO2Di7Pmx0jXA4TOb9TM
  izWDgYvmBE8=
-In-Reply-To: <20240103164847.570054712@linuxfoundation.org>
+In-Reply-To: <20240103164859.619846763@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 3.01.2024 17:55, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me know.
+On 3.01.2024 17:54, Greg Kroah-Hartman wrote:
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
