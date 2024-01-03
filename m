@@ -1,45 +1,43 @@
-Return-Path: <stable+bounces-9591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C281D823309
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7704282330E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAA5E1C23B2D
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 154FC1F24F49
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDC11C289;
-	Wed,  3 Jan 2024 17:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993AD1C691;
+	Wed,  3 Jan 2024 17:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gv37DpB7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPMapZdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98121BDFB;
-	Wed,  3 Jan 2024 17:15:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400B9C433C8;
-	Wed,  3 Jan 2024 17:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626EF1C68D;
+	Wed,  3 Jan 2024 17:15:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BBDC433C9;
+	Wed,  3 Jan 2024 17:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302102;
-	bh=wvluXl7O6TIaM19Qtkt98cdQJBlLEIF5C/fOHEYUeKM=;
+	s=korg; t=1704302109;
+	bh=DKheYmfR+EhUQB4jOzHJjYoFFOHc4rDwT89NJ9yCkcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gv37DpB7duJpA6mqRLCui9iYijN/2RbsKF7uU26ysyD0YhGy25NPrSI62SZv21Wr+
-	 pBVGP4FeJ5fJwqH3Qd7emvZvBlEvijVBt18SrmxAKLRs27S4cFd+QNW7nNyaoaU9LB
-	 YAg98Cuu5x+a4ZclVUbSqu7dRb9d60XII4CbwPUo=
+	b=lPMapZdFGMuCZd0LaKlTjFNia+d6oVLawcPw/8W1gGkh9+WHB2U+bbbPV/Zuuwh8o
+	 04Ytu2D8e5SQyKcTyXfrNNdUSW9uMrVntjnA20AcJ27oezO7a4wLDtIMgwxcC+9fuE
+	 JXKgCU7srMQlRJlsRygBFiFUiXmy4IudF0IRiFLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 46/49] tracing: Fix blocked reader of snapshot buffer
-Date: Wed,  3 Jan 2024 17:56:06 +0100
-Message-ID: <20240103164842.104860796@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?L=E9o=20Lam?= <leo@leolam.fr>
+Subject: [PATCH 6.6 47/49] wifi: cfg80211: fix CQM for non-range use
+Date: Wed,  3 Jan 2024 17:56:07 +0100
+Message-ID: <20240103164842.266156770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
 References: <20240103164834.970234661@linuxfoundation.org>
@@ -52,112 +50,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 39a7dc23a1ed0fe81141792a09449d124c5953bd upstream.
+commit 7e7efdda6adb385fbdfd6f819d76bc68c923c394 upstream.
 
-If an application blocks on the snapshot or snapshot_raw files, expecting
-to be woken up when a snapshot occurs, it will not happen. Or it may
-happen with an unexpected result.
+[note: this is commit 4a7e92551618f3737b305f62451353ee05662f57 reapplied;
+that commit had been reverted in 6.6.6 because it caused regressions, see
+https://lore.kernel.org/stable/2023121450-habitual-transpose-68a1@gregkh/
+for details]
 
-That result is that the application will be reading the main buffer
-instead of the snapshot buffer. That is because when the snapshot occurs,
-the main and snapshot buffers are swapped. But the reader has a descriptor
-still pointing to the buffer that it originally connected to.
+My prior race fix here broke CQM when ranges aren't used, as
+the reporting worker now requires the cqm_config to be set in
+the wdev, but isn't set when there's no range configured.
 
-This is fine for the main buffer readers, as they may be blocked waiting
-for a watermark to be hit, and when a snapshot occurs, the data that the
-main readers want is now on the snapshot buffer.
+Rather than continuing to special-case the range version, set
+the cqm_config always and configure accordingly, also tracking
+if range was used or not to be able to clear the configuration
+appropriately with the same API, which was actually not right
+if both were implemented by a driver for some reason, as is
+the case with mac80211 (though there the implementations are
+equivalent so it doesn't matter.)
 
-But for waiters of the snapshot buffer, they are waiting for an event to
-occur that will trigger the snapshot and they can then consume it quickly
-to save the snapshot before the next snapshot occurs. But to do this, they
-need to read the new snapshot buffer, not the old one that is now
-receiving new data.
-
-Also, it does not make sense to have a watermark "buffer_percent" on the
-snapshot buffer, as the snapshot buffer is static and does not receive new
-data except all at once.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231228095149.77f5b45d@gandalf.local.home
+Also, the original multiple-RSSI commit lost checking for the
+callback, so might have potentially crashed if a driver had
+neither implementation, and userspace tried to use it despite
+not being advertised as supported.
 
 Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: debdd57f5145f ("tracing: Make a snapshot feature available from userspace")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: "Léo Lam" <leo@leolam.fr>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c |    3 ++-
- kernel/trace/trace.c       |   20 +++++++++++++++++---
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ net/wireless/core.h    |    1 
+ net/wireless/nl80211.c |   50 ++++++++++++++++++++++++++++++-------------------
+ 2 files changed, 32 insertions(+), 19 deletions(-)
 
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -949,7 +949,8 @@ void ring_buffer_wake_waiters(struct tra
- 	/* make sure the waiters see the new index */
- 	smp_wmb();
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -299,6 +299,7 @@ struct cfg80211_cqm_config {
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
+ 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
++	bool use_range_api;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[] __counted_by(n_rssi_thresholds);
+ };
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12824,10 +12824,6 @@ static int cfg80211_cqm_rssi_update(stru
+ 	int i, n, low_index;
+ 	int err;
  
--	rb_wake_up_waiters(&rbwork->work);
-+	/* This can be called in any context */
-+	irq_work_queue(&rbwork->work);
- }
+-	/* RSSI reporting disabled? */
+-	if (!cqm_config)
+-		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
+-
+ 	/*
+ 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
+ 	 * event has been received yet, we should receive an event after a
+@@ -12902,18 +12898,6 @@ static int nl80211_set_cqm_rssi(struct g
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
  
- /**
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1893,6 +1893,9 @@ update_max_tr(struct trace_array *tr, st
- 	__update_max_tr(tr, tsk, cpu);
+-	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+-		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+-			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+-
+-		return rdev_set_cqm_rssi_config(rdev, dev,
+-						thresholds[0], hysteresis);
+-	}
+-
+-	if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
+-		return -EOPNOTSUPP;
+-
+ 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
+ 		n_thresholds = 0;
  
- 	arch_spin_unlock(&tr->max_lock);
+@@ -12921,6 +12905,20 @@ static int nl80211_set_cqm_rssi(struct g
+ 	old = rcu_dereference_protected(wdev->cqm_config,
+ 					lockdep_is_held(&wdev->mtx));
+ 
++	/* if already disabled just succeed */
++	if (!n_thresholds && !old)
++		return 0;
 +
-+	/* Any waiters on the old snapshot buffer need to wake up */
-+	ring_buffer_wake_waiters(tr->array_buffer.buffer, RING_BUFFER_ALL_CPUS);
- }
- 
- /**
-@@ -1944,12 +1947,23 @@ update_max_tr_single(struct trace_array
- 
- static int wait_on_pipe(struct trace_iterator *iter, int full)
- {
-+	int ret;
++	if (n_thresholds > 1) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
++		    !rdev->ops->set_cqm_rssi_range_config)
++			return -EOPNOTSUPP;
++	} else {
++		if (!rdev->ops->set_cqm_rssi_config)
++			return -EOPNOTSUPP;
++	}
 +
- 	/* Iterators are static, they should be filled or empty */
- 	if (trace_buffer_iter(iter, iter->cpu_file))
- 		return 0;
+ 	if (n_thresholds) {
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+@@ -12935,13 +12933,26 @@ static int nl80211_set_cqm_rssi(struct g
+ 		memcpy(cqm_config->rssi_thresholds, thresholds,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
++		cqm_config->use_range_api = n_thresholds > 1 ||
++					    !rdev->ops->set_cqm_rssi_config;
  
--	return ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file,
--				full);
-+	ret = ring_buffer_wait(iter->array_buffer->buffer, iter->cpu_file, full);
+ 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
 +
-+#ifdef CONFIG_TRACER_MAX_TRACE
-+	/*
-+	 * Make sure this is still the snapshot buffer, as if a snapshot were
-+	 * to happen, this would now be the main buffer.
-+	 */
-+	if (iter->snapshot)
-+		iter->array_buffer = &iter->tr->max_buffer;
-+#endif
-+	return ret;
- }
++		if (cqm_config->use_range_api)
++			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev,
++						       thresholds[0],
++						       hysteresis);
+ 	} else {
+ 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
++		/* if enabled as range also disable via range */
++		if (old->use_range_api)
++			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+ 	}
  
- #ifdef CONFIG_FTRACE_STARTUP_TEST
-@@ -8514,7 +8528,7 @@ tracing_buffers_splice_read(struct file
+-	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
+ 	if (err) {
+ 		rcu_assign_pointer(wdev->cqm_config, old);
+ 		kfree_rcu(cqm_config, rcu_head);
+@@ -19131,10 +19142,11 @@ void cfg80211_cqm_rssi_notify_work(struc
+ 	wdev_lock(wdev);
+ 	cqm_config = rcu_dereference_protected(wdev->cqm_config,
+ 					       lockdep_is_held(&wdev->mtx));
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		goto unlock;
  
- 		wait_index = READ_ONCE(iter->wait_index);
+-	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
++	if (cqm_config->use_range_api)
++		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
  
--		ret = wait_on_pipe(iter, iter->tr->buffer_percent);
-+		ret = wait_on_pipe(iter, iter->snapshot ? 0 : iter->tr->buffer_percent);
- 		if (ret)
- 			goto out;
- 
+ 	rssi_level = cqm_config->last_rssi_event_value;
+ 	rssi_event = cqm_config->last_rssi_event_type;
 
 
 
