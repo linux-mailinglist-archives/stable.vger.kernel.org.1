@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BAF823274
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7AB8232BD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EEFE1C23BF0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2276C1C2389B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A92E1C2A0;
-	Wed,  3 Jan 2024 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F511C28C;
+	Wed,  3 Jan 2024 17:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ticyLU6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP3J+kbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C261C28A;
-	Wed,  3 Jan 2024 17:07:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1F0C433C8;
-	Wed,  3 Jan 2024 17:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F320D1BDEC;
+	Wed,  3 Jan 2024 17:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A82EC433C8;
+	Wed,  3 Jan 2024 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301638;
-	bh=82gjV+xEuowcGTLupufgZLjtYWsQwIgyLIZWnZ/rQoE=;
+	s=korg; t=1704301857;
+	bh=jtU80mU9e7pM7ji8T7Wbtz24mFHCsDSq7DYnXe+MPgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ticyLU6sO2SH0O1qQ2o9K2KNhUSVJPiQl+kH/xvsiKgD8sUANizwBD6vNnMdvSSZp
-	 3b5bi1mBFkfvt7A6+LCxFrwv3SetZ3Laj4ehfaBiMGasf9uay+mzSX/wD0vWU1EAYK
-	 LUfgJLtW/vnRZiSHdxyMHsOAHx1BC3ug8ixmC4Wc=
+	b=MP3J+kbc5QwBNuo966774SxHDIPw+t8KF8qNmeR/BnBGMzgyRWpi1VTkclE+ZTJNq
+	 IEvjhhWDRwIxVvXBK5HiZulwNfESexFiGqZsBwZSeftuwSnpQuoSYwsaW4koLCNQpJ
+	 i6oXX3EJb6J9Okrc7jHbk2fM/InEaCMLzulMBlzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 82/95] iio: imu: adis16475: add spi_device_id table
+	Herve Codina <herve.codina@bootlin.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 5.10 49/75] lib/vsprintf: Fix %pfwf when current node refcount == 0
 Date: Wed,  3 Jan 2024 17:55:30 +0100
-Message-ID: <20240103164906.353530852@linuxfoundation.org>
+Message-ID: <20240103164850.539961124@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,181 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit ee4d79055aeea27f1b8c42233cc0c90d0a8b5355 ]
+commit 5c47251e8c4903111608ddcba2a77c0c425c247c upstream.
 
-This prevents the warning message "SPI driver has no spi_device_id for..."
-when registering the driver. More importantly, it makes sure that
-module autoloading works as spi relies on spi: modaliases and not of.
+A refcount issue can appeared in __fwnode_link_del() due to the
+pr_debug() call:
+  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+  Call Trace:
+  <TASK>
+  ...
+  of_node_get+0x1e/0x30
+  of_fwnode_get+0x28/0x40
+  fwnode_full_name_string+0x34/0x90
+  fwnode_string+0xdb/0x140
+  ...
+  vsnprintf+0x17b/0x630
+  ...
+  __fwnode_link_del+0x25/0xa0
+  fwnode_links_purge+0x39/0xb0
+  of_node_release+0xd9/0x180
+  ...
 
-While at it, move the of_device_id table to it's natural place.
+Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+is called because the of_node refcount reached 0.
+>From of_node_release() several function calls are done and lead to
+a pr_debug() calls with %pfwf to print the fwnode full name.
+The issue is not present if we change %pfwf to %pfwP.
 
-Fixes: fff7352bf7a3c ("iio: imu: Add support for adis16475")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231102125258.3284830-1-nuno.sa@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To print the full name, %pfwf iterates over the current node and its
+parents and obtain/drop a reference to all nodes involved.
+
+In order to allow to print the full name (%pfwf) of a node while it is
+being destroyed, do not obtain/drop a reference to this current node.
+
+Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20231114152655.409331-1-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/adis16475.c | 117 ++++++++++++++++++++++--------------
- 1 file changed, 72 insertions(+), 45 deletions(-)
+ lib/vsprintf.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index 9d28534db3b08..a3b9745dd1760 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -1273,50 +1273,6 @@ static int adis16475_config_irq_pin(struct adis16475 *st)
- 	return 0;
- }
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -1984,15 +1984,20 @@ char *fwnode_full_name_string(struct fwn
  
--static const struct of_device_id adis16475_of_match[] = {
--	{ .compatible = "adi,adis16470",
--		.data = &adis16475_chip_info[ADIS16470] },
--	{ .compatible = "adi,adis16475-1",
--		.data = &adis16475_chip_info[ADIS16475_1] },
--	{ .compatible = "adi,adis16475-2",
--		.data = &adis16475_chip_info[ADIS16475_2] },
--	{ .compatible = "adi,adis16475-3",
--		.data = &adis16475_chip_info[ADIS16475_3] },
--	{ .compatible = "adi,adis16477-1",
--		.data = &adis16475_chip_info[ADIS16477_1] },
--	{ .compatible = "adi,adis16477-2",
--		.data = &adis16475_chip_info[ADIS16477_2] },
--	{ .compatible = "adi,adis16477-3",
--		.data = &adis16475_chip_info[ADIS16477_3] },
--	{ .compatible = "adi,adis16465-1",
--		.data = &adis16475_chip_info[ADIS16465_1] },
--	{ .compatible = "adi,adis16465-2",
--		.data = &adis16475_chip_info[ADIS16465_2] },
--	{ .compatible = "adi,adis16465-3",
--		.data = &adis16475_chip_info[ADIS16465_3] },
--	{ .compatible = "adi,adis16467-1",
--		.data = &adis16475_chip_info[ADIS16467_1] },
--	{ .compatible = "adi,adis16467-2",
--		.data = &adis16475_chip_info[ADIS16467_2] },
--	{ .compatible = "adi,adis16467-3",
--		.data = &adis16475_chip_info[ADIS16467_3] },
--	{ .compatible = "adi,adis16500",
--		.data = &adis16475_chip_info[ADIS16500] },
--	{ .compatible = "adi,adis16505-1",
--		.data = &adis16475_chip_info[ADIS16505_1] },
--	{ .compatible = "adi,adis16505-2",
--		.data = &adis16475_chip_info[ADIS16505_2] },
--	{ .compatible = "adi,adis16505-3",
--		.data = &adis16475_chip_info[ADIS16505_3] },
--	{ .compatible = "adi,adis16507-1",
--		.data = &adis16475_chip_info[ADIS16507_1] },
--	{ .compatible = "adi,adis16507-2",
--		.data = &adis16475_chip_info[ADIS16507_2] },
--	{ .compatible = "adi,adis16507-3",
--		.data = &adis16475_chip_info[ADIS16507_3] },
--	{ },
--};
--MODULE_DEVICE_TABLE(of, adis16475_of_match);
+ 	/* Loop starting from the root node to the current node. */
+ 	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+-		struct fwnode_handle *__fwnode =
+-			fwnode_get_nth_parent(fwnode, depth);
++		/*
++		 * Only get a reference for other nodes (i.e. parent nodes).
++		 * fwnode refcount may be 0 here.
++		 */
++		struct fwnode_handle *__fwnode = depth ?
++			fwnode_get_nth_parent(fwnode, depth) : fwnode;
  
- static int adis16475_probe(struct spi_device *spi)
- {
-@@ -1330,7 +1286,7 @@ static int adis16475_probe(struct spi_device *spi)
+ 		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
+ 			     default_str_spec);
+ 		buf = string(buf, end, fwnode_get_name(__fwnode),
+ 			     default_str_spec);
  
- 	st = iio_priv(indio_dev);
+-		fwnode_handle_put(__fwnode);
++		if (depth)
++			fwnode_handle_put(__fwnode);
+ 	}
  
--	st->info = device_get_match_data(&spi->dev);
-+	st->info = spi_get_device_match_data(spi);
- 	if (!st->info)
- 		return -EINVAL;
- 
-@@ -1370,12 +1326,83 @@ static int adis16475_probe(struct spi_device *spi)
- 	return 0;
- }
- 
-+static const struct of_device_id adis16475_of_match[] = {
-+	{ .compatible = "adi,adis16470",
-+		.data = &adis16475_chip_info[ADIS16470] },
-+	{ .compatible = "adi,adis16475-1",
-+		.data = &adis16475_chip_info[ADIS16475_1] },
-+	{ .compatible = "adi,adis16475-2",
-+		.data = &adis16475_chip_info[ADIS16475_2] },
-+	{ .compatible = "adi,adis16475-3",
-+		.data = &adis16475_chip_info[ADIS16475_3] },
-+	{ .compatible = "adi,adis16477-1",
-+		.data = &adis16475_chip_info[ADIS16477_1] },
-+	{ .compatible = "adi,adis16477-2",
-+		.data = &adis16475_chip_info[ADIS16477_2] },
-+	{ .compatible = "adi,adis16477-3",
-+		.data = &adis16475_chip_info[ADIS16477_3] },
-+	{ .compatible = "adi,adis16465-1",
-+		.data = &adis16475_chip_info[ADIS16465_1] },
-+	{ .compatible = "adi,adis16465-2",
-+		.data = &adis16475_chip_info[ADIS16465_2] },
-+	{ .compatible = "adi,adis16465-3",
-+		.data = &adis16475_chip_info[ADIS16465_3] },
-+	{ .compatible = "adi,adis16467-1",
-+		.data = &adis16475_chip_info[ADIS16467_1] },
-+	{ .compatible = "adi,adis16467-2",
-+		.data = &adis16475_chip_info[ADIS16467_2] },
-+	{ .compatible = "adi,adis16467-3",
-+		.data = &adis16475_chip_info[ADIS16467_3] },
-+	{ .compatible = "adi,adis16500",
-+		.data = &adis16475_chip_info[ADIS16500] },
-+	{ .compatible = "adi,adis16505-1",
-+		.data = &adis16475_chip_info[ADIS16505_1] },
-+	{ .compatible = "adi,adis16505-2",
-+		.data = &adis16475_chip_info[ADIS16505_2] },
-+	{ .compatible = "adi,adis16505-3",
-+		.data = &adis16475_chip_info[ADIS16505_3] },
-+	{ .compatible = "adi,adis16507-1",
-+		.data = &adis16475_chip_info[ADIS16507_1] },
-+	{ .compatible = "adi,adis16507-2",
-+		.data = &adis16475_chip_info[ADIS16507_2] },
-+	{ .compatible = "adi,adis16507-3",
-+		.data = &adis16475_chip_info[ADIS16507_3] },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, adis16475_of_match);
-+
-+static const struct spi_device_id adis16475_ids[] = {
-+	{ "adis16470", (kernel_ulong_t)&adis16475_chip_info[ADIS16470] },
-+	{ "adis16475-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_1] },
-+	{ "adis16475-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_2] },
-+	{ "adis16475-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16475_3] },
-+	{ "adis16477-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_1] },
-+	{ "adis16477-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_2] },
-+	{ "adis16477-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16477_3] },
-+	{ "adis16465-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_1] },
-+	{ "adis16465-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_2] },
-+	{ "adis16465-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16465_3] },
-+	{ "adis16467-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_1] },
-+	{ "adis16467-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_2] },
-+	{ "adis16467-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_3] },
-+	{ "adis16500", (kernel_ulong_t)&adis16475_chip_info[ADIS16500] },
-+	{ "adis16505-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_1] },
-+	{ "adis16505-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_2] },
-+	{ "adis16505-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_3] },
-+	{ "adis16507-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_1] },
-+	{ "adis16507-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_2] },
-+	{ "adis16507-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16507_3] },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, adis16475_ids);
-+
- static struct spi_driver adis16475_driver = {
- 	.driver = {
- 		.name = "adis16475",
- 		.of_match_table = adis16475_of_match,
- 	},
- 	.probe = adis16475_probe,
-+	.id_table = adis16475_ids,
- };
- module_spi_driver(adis16475_driver);
- 
--- 
-2.43.0
-
+ 	return buf;
 
 
 
