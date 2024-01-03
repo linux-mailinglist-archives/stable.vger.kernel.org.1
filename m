@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A41F823285
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007258232DC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DDC1F24D45
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137CA1C23BDF
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9911BDFB;
-	Wed,  3 Jan 2024 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3A81C289;
+	Wed,  3 Jan 2024 17:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khs1Xb0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKUeVgUd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FCE1BDF1;
-	Wed,  3 Jan 2024 17:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DA7C433C8;
-	Wed,  3 Jan 2024 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064341BDEC;
+	Wed,  3 Jan 2024 17:12:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7027AC433C8;
+	Wed,  3 Jan 2024 17:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301694;
-	bh=B5t1yCGspmnwWDTDzgUDz1sb/V6j/54pJBamF/lP+u8=;
+	s=korg; t=1704301958;
+	bh=pvBMXe7aWJF7Ei0AReX6LrMYvvmf8D3pEZJ/30J8yqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=khs1Xb0RtI5BjA8aPZcSjAX4yL+43RlJFEhs23feBS/5xUd4cvbrvO2/rQZIJ9ju/
-	 YbWctRGgqMPgDB7pNO4k+Mu2p7c4WT6qhe7MvJXHhcarjPUezenwZ/IlFk3NUOE3PC
-	 UHX7vm77Bw+rlHy/az1hz2Ukky8b1rs4/TCBSGHo=
+	b=xKUeVgUdYSpNvT55Jlt1fR0+hVy6zXx2ksvolGeOKd0qxRwQh/m+90L73RTDIBP+r
+	 DBxXDHSQu4tO0yYcuRH15i2NqNqybbXDdqoYtLGhN+RWppAv68JqJWrl9zzKqdhDiK
+	 +9Pxr3IXYD1QMYneXF4WdrxI8AKQ9nUFtyXXAEjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Rich <kevinrich1337@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 91/95] netfilter: nf_tables: skip set commit for deleted/destroyed sets
-Date: Wed,  3 Jan 2024 17:55:39 +0100
-Message-ID: <20240103164907.689885824@linuxfoundation.org>
+	Hyunwoo Kim <v4bel@theori.io>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 59/75] Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
+Date: Wed,  3 Jan 2024 17:55:40 +0100
+Message-ID: <20240103164852.046672265@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Hyunwoo Kim <v4bel@theori.io>
 
-commit 7315dc1e122c85ffdfc8defffbb8f8b616c2eb1a upstream.
+[ Upstream commit 2e07e8348ea454615e268222ae3fc240421be768 ]
 
-NFT_MSG_DELSET deactivates all elements in the set, skip
-set->ops->commit() to avoid the unnecessary clone (for the pipapo case)
-as well as the sync GC cycle, which could deactivate again expired
-elements in such set.
+This can cause a race with bt_sock_ioctl() because
+bt_sock_recvmsg() gets the skb from sk->sk_receive_queue
+and then frees it without holding lock_sock.
+A use-after-free for a skb occurs with the following flow.
+```
+bt_sock_recvmsg() -> skb_recv_datagram() -> skb_free_datagram()
+bt_sock_ioctl() -> skb_peek()
+```
+Add lock_sock to bt_sock_recvmsg() to fix this issue.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Reported-by: Kevin Rich <kevinrich1337@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Hyunwoo Kim <v4bel@theori.io>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/af_bluetooth.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9256,7 +9256,7 @@ static void nft_set_commit_update(struct
- 	list_for_each_entry_safe(set, next, set_update_list, pending_update) {
- 		list_del_init(&set->pending_update);
+diff --git a/net/bluetooth/af_bluetooth.c b/net/bluetooth/af_bluetooth.c
+index 2f87f57e7a4fd..14a917e70f3ee 100644
+--- a/net/bluetooth/af_bluetooth.c
++++ b/net/bluetooth/af_bluetooth.c
+@@ -263,11 +263,14 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	if (flags & MSG_OOB)
+ 		return -EOPNOTSUPP;
  
--		if (!set->ops->commit)
-+		if (!set->ops->commit || set->dead)
- 			continue;
++	lock_sock(sk);
++
+ 	skb = skb_recv_datagram(sk, flags, noblock, &err);
+ 	if (!skb) {
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN)
+-			return 0;
++			err = 0;
  
- 		set->ops->commit(set);
++		release_sock(sk);
+ 		return err;
+ 	}
+ 
+@@ -293,6 +296,8 @@ int bt_sock_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	skb_free_datagram(sk, skb);
+ 
++	release_sock(sk);
++
+ 	if (flags & MSG_TRUNC)
+ 		copied = skblen;
+ 
+-- 
+2.43.0
+
 
 
 
