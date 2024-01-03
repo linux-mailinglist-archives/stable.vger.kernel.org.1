@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BF38232F4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78F638232CE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0FA1C23C5E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 175F11F248C3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0441C290;
-	Wed,  3 Jan 2024 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F011C280;
+	Wed,  3 Jan 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlF2S3OS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4ttz9nV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1655A1C289;
-	Wed,  3 Jan 2024 17:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88035C433C7;
-	Wed,  3 Jan 2024 17:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9051BDEC;
+	Wed,  3 Jan 2024 17:11:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD64C433C7;
+	Wed,  3 Jan 2024 17:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302039;
-	bh=eakYzrOoQXP2RcTRUiC2Dqh6EgSJdWLRywD+d3F4XKc=;
+	s=korg; t=1704301915;
+	bh=nnFAqWh8bShpGzHYebm63UbGqKksAM4n/SEBVE325YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mlF2S3OS0O3uYFozl7hkFS/1iSiP6p+PNYrrJPRySlQNwdyq02EbBhc+0ZXg8pqNJ
-	 j1qL/PSyjHoGI+PdVy1gOhwDQM47HxekPEDWnkakyACnP0K4MSOTwudQKwHghT1I96
-	 BKJamMweoJBI5WaSf/oEc3CyTZw2UbDM3L7yex54=
+	b=n4ttz9nVkdPtPz/co+5TLZN+/02YZQjV+Q/91TZOTtbEXETUD8DAESxeNDWKTKSM+
+	 Aa5CvMpyxSQ6rHot/vgW0grfDEGB54zqZbvg9QIUpdUg1ltpeIG3w7TI3JVkrAtPhZ
+	 mod4KUo6aSQaEQaQPT6UL2Gcy0L+lRkYC1hSZ6sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Atanasov <alexander.atanasov@virtuozzo.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 28/49] mptcp: refactor sndbuf auto-tuning
+Subject: [PATCH 5.10 67/75] scsi: core: Always send batch on reset or error handling command
 Date: Wed,  3 Jan 2024 17:55:48 +0100
-Message-ID: <20240103164839.340039748@linuxfoundation.org>
+Message-ID: <20240103164853.240209807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,259 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
 
-[ Upstream commit 8005184fd1ca6aeb3fea36f4eb9463fc1b90c114 ]
+[ Upstream commit 066c5b46b6eaf2f13f80c19500dbb3b84baabb33 ]
 
-The MPTCP protocol account for the data enqueued on all the subflows
-to the main socket send buffer, while the send buffer auto-tuning
-algorithm set the main socket send buffer size as the max size among
-the subflows.
+In commit 8930a6c20791 ("scsi: core: add support for request batching") the
+block layer bd->last flag was mapped to SCMD_LAST and used as an indicator
+to send the batch for the drivers that implement this feature. However, the
+error handling code was not updated accordingly.
 
-That causes bad performances when at least one subflow is sndbuf
-limited, e.g. due to very high latency, as the MPTCP scheduler can't
-even fill such buffer.
+scsi_send_eh_cmnd() is used to send error handling commands and request
+sense. The problem is that request sense comes as a single command that
+gets into the batch queue and times out. As a result the device goes
+offline after several failed resets. This was observed on virtio_scsi
+during a device resize operation.
 
-Change the send-buffer auto-tuning algorithm to compute the main socket
-send buffer size as the sum of all the subflows buffer size.
+[  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
+[  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
+[  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
 
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231023-send-net-next-20231023-2-v1-9-9dc60939d371@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
+To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd() and
+scsi_reset_ioctl().
+
+Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+Link: https://lore.kernel.org/r/20231215121008.2881653-1-alexander.atanasov@virtuozzo.com
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 18 +++++++++++++--
- net/mptcp/protocol.h | 54 ++++++++++++++++++++++++++++++++++++++++----
- net/mptcp/sockopt.c  |  5 +++-
- net/mptcp/subflow.c  |  3 +--
- 4 files changed, 70 insertions(+), 10 deletions(-)
+ drivers/scsi/scsi_error.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index c1527f520dce3..44499e49d76e6 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -893,6 +893,7 @@ static bool __mptcp_finish_join(struct mptcp_sock *msk, struct sock *ssk)
- 	mptcp_sockopt_sync_locked(msk, ssk);
- 	mptcp_subflow_joined(msk, ssk);
- 	mptcp_stop_tout_timer(sk);
-+	__mptcp_propagate_sndbuf(sk, ssk);
- 	return true;
- }
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 93374173b9579..30eb8769dbab9 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1068,6 +1068,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, unsigned char *cmnd,
  
-@@ -1079,15 +1080,16 @@ static void mptcp_enter_memory_pressure(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 	bool first = true;
+ 	scsi_log_send(scmd);
+ 	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
++	scmd->flags |= SCMD_LAST;
  
--	sk_stream_moderate_sndbuf(sk);
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 	/*
+ 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+@@ -2359,6 +2360,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
+ 	scmd->cmnd = scsi_req(rq)->cmd;
  
- 		if (first)
- 			tcp_enter_memory_pressure(ssk);
- 		sk_stream_moderate_sndbuf(ssk);
-+
- 		first = false;
- 	}
-+	__mptcp_sync_sndbuf(sk);
- }
+ 	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
++	scmd->flags |= SCMD_LAST;
+ 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
  
- /* ensure we get enough memory for the frag hdr, beyond some minimal amount of
-@@ -2452,6 +2454,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 		WRITE_ONCE(msk->first, NULL);
- 
- out:
-+	__mptcp_sync_sndbuf(sk);
- 	if (need_push)
- 		__mptcp_push_pending(sk, 0);
- 
-@@ -3223,7 +3226,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	 * uses the correct data
- 	 */
- 	mptcp_copy_inaddrs(nsk, ssk);
--	mptcp_propagate_sndbuf(nsk, ssk);
-+	__mptcp_propagate_sndbuf(nsk, ssk);
- 
- 	mptcp_rcv_space_init(msk, ssk);
- 	bh_unlock_sock(nsk);
-@@ -3401,6 +3404,8 @@ static void mptcp_release_cb(struct sock *sk)
- 			__mptcp_set_connected(sk);
- 		if (__test_and_clear_bit(MPTCP_ERROR_REPORT, &msk->cb_flags))
- 			__mptcp_error_report(sk);
-+		if (__test_and_clear_bit(MPTCP_SYNC_SNDBUF, &msk->cb_flags))
-+			__mptcp_sync_sndbuf(sk);
- 	}
- 
- 	__mptcp_update_rmem(sk);
-@@ -3445,6 +3450,14 @@ void mptcp_subflow_process_delegated(struct sock *ssk, long status)
- 			__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
- 		mptcp_data_unlock(sk);
- 	}
-+	if (status & BIT(MPTCP_DELEGATE_SNDBUF)) {
-+		mptcp_data_lock(sk);
-+		if (!sock_owned_by_user(sk))
-+			__mptcp_sync_sndbuf(sk);
-+		else
-+			__set_bit(MPTCP_SYNC_SNDBUF, &mptcp_sk(sk)->cb_flags);
-+		mptcp_data_unlock(sk);
-+	}
- 	if (status & BIT(MPTCP_DELEGATE_ACK))
- 		schedule_3rdack_retransmission(ssk);
- }
-@@ -3529,6 +3542,7 @@ bool mptcp_finish_join(struct sock *ssk)
- 	/* active subflow, already present inside the conn_list */
- 	if (!list_empty(&subflow->node)) {
- 		mptcp_subflow_joined(msk, ssk);
-+		mptcp_propagate_sndbuf(parent, ssk);
- 		return true;
- 	}
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 3612545fa62e0..40866acd91ad5 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -123,6 +123,7 @@
- #define MPTCP_RETRANSMIT	4
- #define MPTCP_FLUSH_JOIN_LIST	5
- #define MPTCP_CONNECTED		6
-+#define MPTCP_SYNC_SNDBUF	7
- 
- struct mptcp_skb_cb {
- 	u64 map_seq;
-@@ -447,6 +448,7 @@ DECLARE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- #define MPTCP_DELEGATE_SCHEDULED	0
- #define MPTCP_DELEGATE_SEND		1
- #define MPTCP_DELEGATE_ACK		2
-+#define MPTCP_DELEGATE_SNDBUF		3
- 
- #define MPTCP_DELEGATE_ACTIONS_MASK	(~BIT(MPTCP_DELEGATE_SCHEDULED))
- /* MPTCP subflow context */
-@@ -520,6 +522,9 @@ struct mptcp_subflow_context {
- 
- 	u32	setsockopt_seq;
- 	u32	stale_rcv_tstamp;
-+	int     cached_sndbuf;	    /* sndbuf size when last synced with the msk sndbuf,
-+				     * protected by the msk socket lock
-+				     */
- 
- 	struct	sock *tcp_sock;	    /* tcp sk backpointer */
- 	struct	sock *conn;	    /* parent mptcp_sock */
-@@ -762,13 +767,52 @@ static inline bool mptcp_data_fin_enabled(const struct mptcp_sock *msk)
- 	       READ_ONCE(msk->write_seq) == READ_ONCE(msk->snd_nxt);
- }
- 
--static inline bool mptcp_propagate_sndbuf(struct sock *sk, struct sock *ssk)
-+static inline void __mptcp_sync_sndbuf(struct sock *sk)
- {
--	if ((sk->sk_userlocks & SOCK_SNDBUF_LOCK) || ssk->sk_sndbuf <= READ_ONCE(sk->sk_sndbuf))
--		return false;
-+	struct mptcp_subflow_context *subflow;
-+	int ssk_sndbuf, new_sndbuf;
-+
-+	if (sk->sk_userlocks & SOCK_SNDBUF_LOCK)
-+		return;
-+
-+	new_sndbuf = sock_net(sk)->ipv4.sysctl_tcp_wmem[0];
-+	mptcp_for_each_subflow(mptcp_sk(sk), subflow) {
-+		ssk_sndbuf =  READ_ONCE(mptcp_subflow_tcp_sock(subflow)->sk_sndbuf);
-+
-+		subflow->cached_sndbuf = ssk_sndbuf;
-+		new_sndbuf += ssk_sndbuf;
-+	}
-+
-+	/* the msk max wmem limit is <nr_subflows> * tcp wmem[2] */
-+	WRITE_ONCE(sk->sk_sndbuf, new_sndbuf);
-+}
-+
-+/* The called held both the msk socket and the subflow socket locks,
-+ * possibly under BH
-+ */
-+static inline void __mptcp_propagate_sndbuf(struct sock *sk, struct sock *ssk)
-+{
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+
-+	if (READ_ONCE(ssk->sk_sndbuf) != subflow->cached_sndbuf)
-+		__mptcp_sync_sndbuf(sk);
-+}
-+
-+/* the caller held only the subflow socket lock, either in process or
-+ * BH context. Additionally this can be called under the msk data lock,
-+ * so we can't acquire such lock here: let the delegate action acquires
-+ * the needed locks in suitable order.
-+ */
-+static inline void mptcp_propagate_sndbuf(struct sock *sk, struct sock *ssk)
-+{
-+	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+
-+	if (likely(READ_ONCE(ssk->sk_sndbuf) == subflow->cached_sndbuf))
-+		return;
- 
--	WRITE_ONCE(sk->sk_sndbuf, ssk->sk_sndbuf);
--	return true;
-+	local_bh_disable();
-+	mptcp_subflow_delegate(subflow, MPTCP_DELEGATE_SNDBUF);
-+	local_bh_enable();
- }
- 
- static inline void mptcp_write_space(struct sock *sk)
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 7539b9c8c2fb4..116e3008231bd 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -95,6 +95,7 @@ static void mptcp_sol_socket_sync_intval(struct mptcp_sock *msk, int optname, in
- 		case SO_SNDBUFFORCE:
- 			ssk->sk_userlocks |= SOCK_SNDBUF_LOCK;
- 			WRITE_ONCE(ssk->sk_sndbuf, sk->sk_sndbuf);
-+			mptcp_subflow_ctx(ssk)->cached_sndbuf = sk->sk_sndbuf;
- 			break;
- 		case SO_RCVBUF:
- 		case SO_RCVBUFFORCE:
-@@ -1418,8 +1419,10 @@ static void sync_socket_options(struct mptcp_sock *msk, struct sock *ssk)
- 
- 	if (sk->sk_userlocks & tx_rx_locks) {
- 		ssk->sk_userlocks |= sk->sk_userlocks & tx_rx_locks;
--		if (sk->sk_userlocks & SOCK_SNDBUF_LOCK)
-+		if (sk->sk_userlocks & SOCK_SNDBUF_LOCK) {
- 			WRITE_ONCE(ssk->sk_sndbuf, sk->sk_sndbuf);
-+			mptcp_subflow_ctx(ssk)->cached_sndbuf = sk->sk_sndbuf;
-+		}
- 		if (sk->sk_userlocks & SOCK_RCVBUF_LOCK)
- 			WRITE_ONCE(ssk->sk_rcvbuf, sk->sk_rcvbuf);
- 	}
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 9c1f8d1d63d24..d8827427ffc84 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -421,6 +421,7 @@ static bool subflow_use_different_dport(struct mptcp_sock *msk, const struct soc
- 
- void __mptcp_set_connected(struct sock *sk)
- {
-+	__mptcp_propagate_sndbuf(sk, mptcp_sk(sk)->first);
- 	if (sk->sk_state == TCP_SYN_SENT) {
- 		inet_sk_state_store(sk, TCP_ESTABLISHED);
- 		sk->sk_state_change(sk);
-@@ -472,7 +473,6 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		return;
- 
- 	msk = mptcp_sk(parent);
--	mptcp_propagate_sndbuf(parent, sk);
- 	subflow->rel_write_seq = 1;
- 	subflow->conn_finished = 1;
- 	subflow->ssn_offset = TCP_SKB_CB(skb)->seq;
-@@ -1728,7 +1728,6 @@ static void subflow_state_change(struct sock *sk)
- 
- 	msk = mptcp_sk(parent);
- 	if (subflow_simultaneous_connect(sk)) {
--		mptcp_propagate_sndbuf(parent, sk);
- 		mptcp_do_fallback(sk);
- 		mptcp_rcv_space_init(msk, sk);
- 		pr_fallback(msk);
+ 	scmd->cmd_len			= 0;
 -- 
 2.43.0
 
