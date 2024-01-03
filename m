@@ -1,110 +1,131 @@
-Return-Path: <stable+bounces-9613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A07282356B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 20:15:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72AA18235BE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 20:43:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB6E1C23CD5
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 19:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C2E9287663
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 19:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B611C1CF82;
-	Wed,  3 Jan 2024 19:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIunxPK1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF811CF82;
+	Wed,  3 Jan 2024 19:43:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992EA1CAA8;
-	Wed,  3 Jan 2024 19:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5ca1b4809b5so3247034a12.3;
-        Wed, 03 Jan 2024 11:15:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704309342; x=1704914142; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=THg77ifkb1nWeoB2+qgVSINTgAapw6XOZvKpasqorLI=;
-        b=YIunxPK1b3eLxlZhuxAh1eHDZWfLOmnNgsBTmKGruKXlGxHTT2IMKs2czJh4zTmjOh
-         8ZT7Jk/gP+qD4J2+rdMlyEx++uEo0Ipu09wH5RuIgAwafjrodKesHXSMBKXYBSqYML4o
-         DKqESxGDbQF5qt7HCFLhIvrjtsEqfn0qDFy+ioXm7PbHXQYKOSHyD9YlO/qso7uKXlRB
-         q/Jw4/u59wV5/OaENz412aAdGA6JsRmxCOl4nvR4Ua0CJ74FnIR21wrV1CSvzk0QimhC
-         xGfNQ5LJ3d/n9rNKlfZNhS9ib7D0hos9tsgwaj4CaAAH1HBGHldDpUyyRbObpoFrUfiA
-         C3Mg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704309342; x=1704914142;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=THg77ifkb1nWeoB2+qgVSINTgAapw6XOZvKpasqorLI=;
-        b=eCprM6q8oZnZ6KWkcUIXtKvw103XFR683Bhe+FcEnI1reiUu5hJIa0dGFVqSQrzccy
-         PezaFURaUoTQGFA+GM4st6BQkCxLIKuRlxvfp9gEgXAgigjr273Wq7CbQrhSj65c+2a4
-         WM7IEB0DQXwwCPkDV4lea7LaYQtxWcNTIWyytCqR37tVjf+kQivjZgXmBpNKNF5yUcmd
-         HZmWudH39V0QvT+Haox14DtYlPPOUFNWiW0xkkbdmfz86xyRCIiL8EGn6Sd9TEfu9Yt3
-         XYSgqgkR0z/dn9kbR8wLO3o9KIKY+xRiqhnCZObyW84JEhUzDYiEqmA41N2OOrZcxFJk
-         W69w==
-X-Gm-Message-State: AOJu0Yx4JTN2D8mgWJDFGECCWRcPi7id1ApJn8dnxSNQlSA2ITXPC4HL
-	AZKfgEpjNopcdZzT/1E1v5I=
-X-Google-Smtp-Source: AGHT+IHa3Md31dvmuaHFAtSG1dwhs2s1EzBoOiqYuNjpKGoKqEynfIKWI6zeugxZ4FTv85lFr45hyw==
-X-Received: by 2002:a05:6a20:9799:b0:197:1075:b51f with SMTP id hx25-20020a056a20979900b001971075b51fmr2250052pzc.122.1704309341901;
-        Wed, 03 Jan 2024 11:15:41 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id du8-20020a056a002b4800b006daa809584csm3473076pfb.182.2024.01.03.11.15.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 11:15:41 -0800 (PST)
-Message-ID: <9b783291-d6ba-46b3-8e91-8deab3f3f777@gmail.com>
-Date: Wed, 3 Jan 2024 11:15:39 -0800
+Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BCD1399;
+	Wed,  3 Jan 2024 19:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c--e.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c--e.de
+Received: by cae.in-ulm.de (Postfix, from userid 1000)
+	id A6513140915; Wed,  3 Jan 2024 20:43:12 +0100 (CET)
+Date: Wed, 3 Jan 2024 20:43:12 +0100
+From: Christian Ehrhardt <lk@c--e.de>
+To: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] usb: typec: class: fix typec_altmode_put_partner to
+ put plugs
+Message-ID: <ZZW40CsR+Ruu8dDS@cae.in-ulm.de>
+References: <20240103181754.2492492-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/95] 5.15.146-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240103164853.921194838@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240103181754.2492492-2-rdbabiera@google.com>
 
-On 1/3/24 08:54, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.146 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jan 03, 2024 at 06:17:55PM +0000, RD Babiera wrote:
+> When typec_altmode_put_partner is called by a plug altmode upon release,
+> the port altmode the plug belongs to will not remove its reference to the
+> plug. The check to see if the altmode being released is a plug evaluates
+> against the released altmode's partner instead of the calling altmode, so
+> change adev in typec_altmode_put_partner to properly refer to the altmode
+> being released.
 > 
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
+> Because typec_altmode_set_partner calls get_device() on the port altmode,
+> add partner_adev that points to the port altmode in typec_put_partner to
+> call put_device() on. typec_altmode_set_partner is not called for port
+> altmodes, so add a check in typec_altmode_release to prevent
+> typec_altmode_put_partner() calls on port altmode release.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.146-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+> Cc: stable@vger.kernel.org
+> Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+> Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I was able to reproduce the bug of the original report from here
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+https://lore.kernel.org/all/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
+
+(with some hacks) and verified that this change on top of a revert
+of b17b7fe6dd (already in linux-usb) fixes the original bug.
+The test does not excercise the code that deals with cable plugs,
+though. Thus:
+
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+
+Given that this is otherwise a 6.7 regression it might be
+a good idea to consider this for 6.7?
+
+> ---
+> Changes since v3:
+> * added partner_adev to properly put_device() on port altmode.
+> ---
+>  drivers/usb/typec/class.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 4d11f2b536fa..015aa9253353 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -263,11 +263,13 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+>  {
+>  	struct altmode *partner = altmode->partner;
+>  	struct typec_altmode *adev;
+> +	struct typec_altmode *partner_adev;
+>  
+>  	if (!partner)
+>  		return;
+>  
+> -	adev = &partner->adev;
+> +	adev = &altmode->adev;
+> +	partner_adev = &partner->adev;
+>  
+>  	if (is_typec_plug(adev->dev.parent)) {
+>  		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+> @@ -276,7 +278,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+>  	} else {
+>  		partner->partner = NULL;
+>  	}
+> -	put_device(&adev->dev);
+> +	put_device(&partner_adev->dev);
+>  }
+>  
+>  /**
+> @@ -497,7 +499,8 @@ static void typec_altmode_release(struct device *dev)
+>  {
+>  	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+>  
+> -	typec_altmode_put_partner(alt);
+> +	if (!is_typec_port(dev->parent))
+> +		typec_altmode_put_partner(alt);
+>  
+>  	altmode_id_remove(alt->adev.dev.parent, alt->id);
+>  	kfree(alt);
+> 
+> base-commit: e7d3b9f28654dbfce7e09f8028210489adaf6a33
+> -- 
+> 2.43.0.472.g3155946c3a-goog
+> 
+> 
+
+regards   Christian
 
 
