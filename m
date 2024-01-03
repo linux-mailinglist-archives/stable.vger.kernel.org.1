@@ -1,180 +1,118 @@
-Return-Path: <stable+bounces-9263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A48D8822D80
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 13:49:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63CE4822EB8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 14:41:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8041F24391
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 12:49:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1485283085
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 13:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68C31944B;
-	Wed,  3 Jan 2024 12:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF8919BD8;
+	Wed,  3 Jan 2024 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M4eUVlXl"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kLhrPyd4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB802199A0;
-	Wed,  3 Jan 2024 12:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50ea9db9e12so58356e87.0;
-        Wed, 03 Jan 2024 04:49:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704286179; x=1704890979; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wlvdoIdh11FpuRMZ6FedfzqCuHP7jE4LAthy5mimGQ4=;
-        b=M4eUVlXlnNKPbawHLNel63bX+s5Co1T15fJ/5Z+gIQ94DNktS4t2uaypEeH25Vliwt
-         254Ku5dJvFvW0T8XEpvHicUNXXFUADvqJdE8Wszu4MrlHz4nsiuQYiFO/Pgwn4+4uLmR
-         NHYlCj7onUVHPLmvj2n6+eRoY1OVpfDqK5sHD1rfvl0fuNkGP+8n7W4szRSsiW73r1hR
-         KFNAjpy4Ef92gdCNlKinXmZVJFGXc67PKXGajSGLgdKdLVt8mInhxCV/0FJwom4BMF7B
-         j/NiA+VdjoG8AiTS6LKHKAx4qAbP1lhEVmbXhQRa5h/SeIjfO8n5gSgPyHbO8Aj2B0D9
-         mmBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704286179; x=1704890979;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wlvdoIdh11FpuRMZ6FedfzqCuHP7jE4LAthy5mimGQ4=;
-        b=fO9Z0xGa6xx7MInb/O3Ahqe9l+/Kfkorxd+AkLj2sZJvBolyIcDj+6iWkyw7jrid69
-         EgntWHc+VeU5v2zAcx1x47VTNBNzXO+RaFaKbdrgXTIHYd9owyetgV5cVmP60WVOlPyy
-         P9r7Ua9ba1h29+l7AmnGkyWwsmbMq2iSP6fJ+BiLVx9B7YD7plr/fvHcl9usx/XjLERV
-         cxiB/HvJYP8VHbQONZTSd6gphiYRbArtHQwupKdENNYvfkJm0s+ij6XNPiAGDj4Fxl9V
-         0uuPXaTT1aYrqTWnpIrNs1O0RpVfoFNTEQNEQW8pBBS+HJ6/h+mpcO+t1dhCkIXzFhNZ
-         AxsQ==
-X-Gm-Message-State: AOJu0YwGCtm/2jan1+dGwrJO+37u7jyEF9iSUWSsP6wNY312Ghzl3+Jf
-	b+fJPW6d5pw4nTNCvQrHhVxDrllRpuUKJSZzRoA=
-X-Google-Smtp-Source: AGHT+IF5nUu5SjTdeixsvM0AnrVzAg36rJLUQKIKz0wXFwrkqJgkNYNb/njuK9ibM12aGzMMq1XCAbpPloAxjBeWqfA=
-X-Received: by 2002:a05:6512:98a:b0:50e:3b0b:8cd1 with SMTP id
- w10-20020a056512098a00b0050e3b0b8cd1mr6626174lft.95.1704286178705; Wed, 03
- Jan 2024 04:49:38 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68E199B6;
+	Wed,  3 Jan 2024 13:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4032T7WG005087;
+	Wed, 3 Jan 2024 05:37:52 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=pfpt0220; bh=zh+AyINX
+	Tu/Vu+J5ZWs/mnBjeWFhJ2utrKdUpD3dDh8=; b=kLhrPyd4G7oi/JGNrMbhn/Ue
+	b25wiCm4ozjXAFfD8PoY7I1QyXbe1S5Xa70gmaScrintawXW6QpDa5NTWSR4fr/K
+	ktEDcsrmLL5XxgozDrIKSoH67aK9xIWjq4eMJh12CCXrkPiW+IhZ7lETFeHOCmk7
+	UsqAud5oLXK3dJy+MjF9+OnuyjQoJO81I+tMWabuZUiROz61YQ9iTo8xLbz/PSvd
+	deGeUwq+a4POknU0j/jKyXBa6/idh9X2BAoHQ2yIXo3AdvTdsI4MAqDMOHpnFh0e
+	z69rtQk25+8ECP5/LhjBLq8sKgc9x/P5QUnAdIExfQyJxNM3bPiR7gcxKukQxg==
+Received: from dc5-exch02.marvell.com ([199.233.59.182])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3vcxu5tqst-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+	Wed, 03 Jan 2024 05:37:52 -0800 (PST)
+Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH02.marvell.com
+ (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 3 Jan
+ 2024 05:37:51 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
+ (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
+ Transport; Wed, 3 Jan 2024 05:37:51 -0800
+Received: from dc3lp-swdev041.marvell.com (dc3lp-swdev041.marvell.com [10.6.60.191])
+	by maili.marvell.com (Postfix) with ESMTP id 109093F708E;
+	Wed,  3 Jan 2024 05:37:47 -0800 (PST)
+From: Elad Nachman <enachman@marvell.com>
+To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
+        <vadym.kochan@plvision.eu>, <aviramd@marvell.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+CC: <enachman@marvell.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] mtd: rawnand: marvell: fix layouts
+Date: Wed, 3 Jan 2024 15:37:40 +0200
+Message-ID: <20240103133740.1233405-1-enachman@marvell.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
- <20240102150350.3180741-1-mwalle@kernel.org> <CAJpcXm7W2vckakdFYiT4jssea-AzrZMsjHijfa+QpfzDVL+E3A@mail.gmail.com>
- <5e13f5e2da9c4f8fc0d4da2ab4b40383@kernel.org>
-In-Reply-To: <5e13f5e2da9c4f8fc0d4da2ab4b40383@kernel.org>
-From: Benjamin Bara <bbara93@gmail.com>
-Date: Wed, 3 Jan 2024 13:49:27 +0100
-Message-ID: <CAJpcXm5gFMYnJ9bSA9nOXhKoibfedxjhRfu92dCmi6sVG3e=7Q@mail.gmail.com>
-Subject: Re: [PATCH v7 2/5] Re: i2c: core: run atomic i2c xfer when !preemptible
-To: Michael Walle <mwalle@kernel.org>
-Cc: benjamin.bara@skidata.com, dmitry.osipenko@collabora.com, 
-	jonathanh@nvidia.com, lee@kernel.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org, nm@ti.com, 
-	peterz@infradead.org, rafael.j.wysocki@intel.com, richard.leitner@linux.dev, 
-	stable@vger.kernel.org, treding@nvidia.com, wsa+renesas@sang-engineering.com, 
-	wsa@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: v1EW8NBQjlMtvzdifc8-WQV5sv3PL5qF
+X-Proofpoint-GUID: v1EW8NBQjlMtvzdifc8-WQV5sv3PL5qF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
 
-Hi Michael,
+From: Elad Nachman <enachman@marvell.com>
 
-On Wed, 3 Jan 2024 at 10:20, Michael Walle <mwalle@kernel.org> wrote:
-> >> With preemption disabled, this boils down to
-> >>   return system_state > SYSTEM_RUNNING (&& !0)
-> >>
-> >> and will then generate a backtrace splash on each reboot on our
-> >> board:
-> >>
-> >> # reboot -f
-> >> [   12.687169] No atomic I2C transfer handler for 'i2c-0'
-> >> ...
-> >> [   12.806359] Call trace:
-> >> [   12.808793]  i2c_smbus_xfer+0x100/0x118
-> >> ...
-> >>
-> >> I'm not sure if this is now the expected behavior or not. There will
-> >> be
-> >> no backtraces, if I build a preemptible kernel, nor will there be
-> >> backtraces if I revert this patch.
-> >
-> >
-> > thanks for the report.
-> >
-> > In your case, the warning comes from shutting down a regulator during
-> > device_shutdown(), so nothing really problematic here.
->
-> I tend to disagree. Yes it's not problematic. But from a users point of
-> view, you get a splash of *many* backtraces on every reboot. Btw, one
-> should really turn this into a WARN_ONCE(). But even in this case you
-> might scare users which will eventually lead to more bug reports.
+The check in nand_base.c, nand_scan_tail() : has the following code:
+(ecc->steps * ecc->size != mtd->writesize) which fails for some NAND chips.
+Remove ECC entries in this driver which are not integral multiplications,
+and adjust the number of chunks for entries which fails the above
+calculation so it will calculate correctly (this was previously done
+automatically before the check and was removed in a later commit).
 
-Sure, but the correct "fix" would be to implement an atomic handler if
-the i2c is used during this late stage. I just meant that the
-device_shutdown() is less problematic than the actual reboot handler.
-Your PMIC seems to not have a reboot handler (registered (yet)), and is
-therefore not "affected".
+Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Elad Nachman <enachman@marvell.com>
+---
+ drivers/mtd/nand/raw/marvell_nand.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-> > However, later in
-> > the "restart sequence", IRQs are disabled before the restart handlers
-> > are called. If the reboot handlers would rely on irq-based
-> > ("non-atomic") i2c transfer, they might not work properly.
->
-> I get this from a technical point of view and agree that the correct
-> fix is to add the atomic variant to the i2c driver, which begs the
-> question, if adding the atomic variant to the driver will be considered
-> as a Fixes patch.
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index a46698744850..5b0f5a9cef81 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -290,16 +290,13 @@ static const struct marvell_hw_ecc_layout marvell_nfc_layouts[] = {
+ 	MARVELL_LAYOUT( 2048,   512,  4,  1,  1, 2048, 32, 30,  0,  0,  0),
+ 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,32, 30),
+ 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,64, 30),
+-	MARVELL_LAYOUT( 2048,   512,  12, 3,  2, 704,   0, 30,640,  0, 30),
+-	MARVELL_LAYOUT( 2048,   512,  16, 5,  4, 512,   0, 30,  0, 32, 30),
++	MARVELL_LAYOUT( 2048,   512,  16, 4,  4, 512,   0, 30,  0, 32, 30),
+ 	MARVELL_LAYOUT( 4096,   512,  4,  2,  2, 2048, 32, 30,  0,  0,  0),
+-	MARVELL_LAYOUT( 4096,   512,  8,  5,  4, 1024,  0, 30,  0, 64, 30),
+-	MARVELL_LAYOUT( 4096,   512,  12, 6,  5, 704,   0, 30,576, 32, 30),
+-	MARVELL_LAYOUT( 4096,   512,  16, 9,  8, 512,   0, 30,  0, 32, 30),
++	MARVELL_LAYOUT( 4096,   512,  8,  4,  4, 1024,  0, 30,  0, 64, 30),
++	MARVELL_LAYOUT( 4096,   512,  16, 8,  8, 512,   0, 30,  0, 32, 30),
+ 	MARVELL_LAYOUT( 8192,   512,  4,  4,  4, 2048,  0, 30,  0,  0,  0),
+-	MARVELL_LAYOUT( 8192,   512,  8,  9,  8, 1024,  0, 30,  0, 160, 30),
+-	MARVELL_LAYOUT( 8192,   512,  12, 12, 11, 704,  0, 30,448,  64, 30),
+-	MARVELL_LAYOUT( 8192,   512,  16, 17, 16, 512,  0, 30,  0,  32, 30),
++	MARVELL_LAYOUT( 8192,   512,  8,  8,  8, 1024,  0, 30,  0, 160, 30),
++	MARVELL_LAYOUT( 8192,   512,  16, 16, 16, 512,  0, 30,  0,  32, 30),
+ };
+ 
+ /**
+-- 
+2.25.1
 
-I can add a Fixes when I post it. Although the initial patch just makes
-the actual problem "noisier".
-
-> Do I get it correct, that in my case the interrupts are still enabled?
-> Otherwise I'd have gotten this warning even before your patch, correct?
-
-Yes, device_shutdown() is called during
-kernel_{shutdown,restart}_prepare(), before
-machine_{power_off,restart}() is called. The interrupts should therefore
-still be enabled in your case.
-
-> Excuse my ignorance, but when are the interrupts actually disabled
-> during shutdown?
-
-This is usually one of the first things done in machine_restart(),
-before the architecture-specific restart handlers are called (which
-might use i2c). Same for machine_power_off().
-
-> >> OTOH, the driver I'm using (drivers/i2c/busses/i2c-mt65xx.c) has no
-> >> *_atomic(). So the warning is correct. There is also [1], which seems
-> >> to
-> >> be the same issue I'm facing.
-> >>
-> >> -michael
-> >>
-> >> [1]
-> >> https://lore.kernel.org/linux-i2c/13271b9b-4132-46ef-abf8-2c311967bb46@mailbox.org/
-> >
-> >
-> > I tried to implement an atomic handler for the mt65xx, but I don't have
-> > the respective hardware available to test it. I decided to use a
-> > similar
-> > approach as done in drivers/i2c/busses/i2c-rk3x.c, which calls the IRQ
-> > handler in a while loop if an atomic xfer is requested. IMHO, this
-> > should work with IRQs enabled and disabled, but I am not sure if this
-> > is
-> > the best approach...
->
-> Thanks for already looking into that. Do you want to submit it as an
-> actual patch? If so, you can add
->
-> Tested-by: Michael Walle <mwalle@kernel.org>
-
-Yes, I can do that - thanks for the quick feedback.
-
-> But again, it would be nice if we somehow can get rid of this huge
-> splash
-> of backtraces on 6.7.x (I guess it's already too late 6.7).
-
-IMHO, converting the error to WARN_ONCE() makes sense to reduce the
-noise, but helps having more reliable reboot handling via i2c. Do you
-think this is a sufficient "short-term solution" to reduce the noise
-before the missing atomic handlers are actually implemented?
 
