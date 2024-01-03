@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-9372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695C182320C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135148232E1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03DF328A5AC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E631F23200
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74E11BDFB;
-	Wed,  3 Jan 2024 17:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878B51C284;
+	Wed,  3 Jan 2024 17:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTMWkU5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gsdbxdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710351BDE9;
-	Wed,  3 Jan 2024 17:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC82C433CB;
-	Wed,  3 Jan 2024 17:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFD31BDFB;
+	Wed,  3 Jan 2024 17:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2B6C433C7;
+	Wed,  3 Jan 2024 17:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301317;
-	bh=mexe57NhYOYwMpEvaNV9XwWtqj5sE9mBh6L31A0Yzvg=;
+	s=korg; t=1704301973;
+	bh=pmLEMQS6Wg8W3uU0uEC5fY+IQFYCgDBe3RmsTavmwjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WTMWkU5uzj/DZgtZ2cAqkfL/NdjFKoQ1xwzdI7OMLEQ7p7qbT3QwQ+hri45oqvwxn
-	 YfBAAVFTFLjtFKReXJMXxP0cu6QX50E8871y4iNWQmc01KY2uRCaGCKhjYG0BKKlJA
-	 sO5nNQcNlEd//yrZYlmPRXOXByngOfWwpYB3BXZ0=
+	b=2gsdbxdI89uVfDL+xq3YXI8RPG4Ca7uxw8yGVO7wrYCEg+4wYEe7cFvVQPeAsUAjU
+	 a8eTn8oglv0Hr6S1YuzgunXZ2LyaV0+6mXmxHguOn4Rl+ZggYg2logyl71vf39YZcK
+	 zO2TFBSgWRmeVw1H95G2ORJo/IZLHbOO8279RMZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francis Laniel <flaniel@linux.microsoft.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Hao Wei Tee <angelsl@in04.sg>
-Subject: [PATCH 6.1 100/100] tracing/kprobes: Fix symbol counting logic by looking at modules as well
-Date: Wed,  3 Jan 2024 17:55:29 +0100
-Message-ID: <20240103164911.126685591@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 10/49] ksmbd: move oplock handling after unlock parent dir
+Date: Wed,  3 Jan 2024 17:55:30 +0100
+Message-ID: <20240103164836.596603759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,76 +53,368 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
+[ Upstream commit 2e450920d58b4991a436c8cecf3484bcacd8e535 ]
 
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
+ksmbd should process secound parallel smb2 create request during waiting
+oplock break ack. parent lock range that is too large in smb2_open() causes
+smb2_open() to be serialized. Move the oplock handling to the bottom of
+smb2_open() and make it called after parent unlock. This fixes the failure
+of smb2.lease.breaking1 testcase.
 
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
-
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
-
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Hao Wei Tee <angelsl@in04.sg>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c |   25 +++++++++++++++++++++----
- 1 file changed, 21 insertions(+), 4 deletions(-)
+ fs/smb/server/smb2pdu.c | 121 +++++++++++++++++++++-------------------
+ 1 file changed, 65 insertions(+), 56 deletions(-)
 
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -714,14 +714,31 @@ static int count_symbols(void *data, uns
- 	return 0;
- }
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 28b61dad27498..e58504d0e9c1e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2691,7 +2691,7 @@ int smb2_open(struct ksmbd_work *work)
+ 		    *(char *)req->Buffer == '\\') {
+ 			pr_err("not allow directory name included leading slash\n");
+ 			rc = -EINVAL;
+-			goto err_out1;
++			goto err_out2;
+ 		}
  
-+struct sym_count_ctx {
-+	unsigned int count;
-+	const char *name;
-+};
-+
-+static int count_mod_symbols(void *data, const char *name,
-+			     struct module *module, unsigned long unused)
-+{
-+	struct sym_count_ctx *ctx = data;
-+
-+	if (strcmp(name, ctx->name) == 0)
-+		ctx->count++;
-+
-+	return 0;
-+}
-+
- static unsigned int number_of_same_symbols(char *func_name)
- {
--	unsigned int count;
-+	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
-+
-+	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
+ 		name = smb2_get_name(req->Buffer,
+@@ -2702,7 +2702,7 @@ int smb2_open(struct ksmbd_work *work)
+ 			if (rc != -ENOMEM)
+ 				rc = -ENOENT;
+ 			name = NULL;
+-			goto err_out1;
++			goto err_out2;
+ 		}
  
--	count = 0;
--	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
-+	module_kallsyms_on_each_symbol(count_mod_symbols, &ctx);
+ 		ksmbd_debug(SMB, "converted name = %s\n", name);
+@@ -2710,28 +2710,28 @@ int smb2_open(struct ksmbd_work *work)
+ 			if (!test_share_config_flag(work->tcon->share_conf,
+ 						    KSMBD_SHARE_FLAG_STREAMS)) {
+ 				rc = -EBADF;
+-				goto err_out1;
++				goto err_out2;
+ 			}
+ 			rc = parse_stream_name(name, &stream_name, &s_type);
+ 			if (rc < 0)
+-				goto err_out1;
++				goto err_out2;
+ 		}
  
--	return count;
-+	return ctx.count;
- }
+ 		rc = ksmbd_validate_filename(name);
+ 		if (rc < 0)
+-			goto err_out1;
++			goto err_out2;
  
- static int __trace_kprobe_create(int argc, const char *argv[])
+ 		if (ksmbd_share_veto_filename(share, name)) {
+ 			rc = -ENOENT;
+ 			ksmbd_debug(SMB, "Reject open(), vetoed file: %s\n",
+ 				    name);
+-			goto err_out1;
++			goto err_out2;
+ 		}
+ 	} else {
+ 		name = kstrdup("", GFP_KERNEL);
+ 		if (!name) {
+ 			rc = -ENOMEM;
+-			goto err_out1;
++			goto err_out2;
+ 		}
+ 	}
+ 
+@@ -2744,14 +2744,14 @@ int smb2_open(struct ksmbd_work *work)
+ 		       le32_to_cpu(req->ImpersonationLevel));
+ 		rc = -EIO;
+ 		rsp->hdr.Status = STATUS_BAD_IMPERSONATION_LEVEL;
+-		goto err_out1;
++		goto err_out2;
+ 	}
+ 
+ 	if (req->CreateOptions && !(req->CreateOptions & CREATE_OPTIONS_MASK_LE)) {
+ 		pr_err("Invalid create options : 0x%x\n",
+ 		       le32_to_cpu(req->CreateOptions));
+ 		rc = -EINVAL;
+-		goto err_out1;
++		goto err_out2;
+ 	} else {
+ 		if (req->CreateOptions & FILE_SEQUENTIAL_ONLY_LE &&
+ 		    req->CreateOptions & FILE_RANDOM_ACCESS_LE)
+@@ -2761,13 +2761,13 @@ int smb2_open(struct ksmbd_work *work)
+ 		    (FILE_OPEN_BY_FILE_ID_LE | CREATE_TREE_CONNECTION |
+ 		     FILE_RESERVE_OPFILTER_LE)) {
+ 			rc = -EOPNOTSUPP;
+-			goto err_out1;
++			goto err_out2;
+ 		}
+ 
+ 		if (req->CreateOptions & FILE_DIRECTORY_FILE_LE) {
+ 			if (req->CreateOptions & FILE_NON_DIRECTORY_FILE_LE) {
+ 				rc = -EINVAL;
+-				goto err_out1;
++				goto err_out2;
+ 			} else if (req->CreateOptions & FILE_NO_COMPRESSION_LE) {
+ 				req->CreateOptions = ~(FILE_NO_COMPRESSION_LE);
+ 			}
+@@ -2779,21 +2779,21 @@ int smb2_open(struct ksmbd_work *work)
+ 		pr_err("Invalid create disposition : 0x%x\n",
+ 		       le32_to_cpu(req->CreateDisposition));
+ 		rc = -EINVAL;
+-		goto err_out1;
++		goto err_out2;
+ 	}
+ 
+ 	if (!(req->DesiredAccess & DESIRED_ACCESS_MASK)) {
+ 		pr_err("Invalid desired access : 0x%x\n",
+ 		       le32_to_cpu(req->DesiredAccess));
+ 		rc = -EACCES;
+-		goto err_out1;
++		goto err_out2;
+ 	}
+ 
+ 	if (req->FileAttributes && !(req->FileAttributes & FILE_ATTRIBUTE_MASK_LE)) {
+ 		pr_err("Invalid file attribute : 0x%x\n",
+ 		       le32_to_cpu(req->FileAttributes));
+ 		rc = -EINVAL;
+-		goto err_out1;
++		goto err_out2;
+ 	}
+ 
+ 	if (req->CreateContextsOffset) {
+@@ -2801,19 +2801,19 @@ int smb2_open(struct ksmbd_work *work)
+ 		context = smb2_find_context_vals(req, SMB2_CREATE_EA_BUFFER, 4);
+ 		if (IS_ERR(context)) {
+ 			rc = PTR_ERR(context);
+-			goto err_out1;
++			goto err_out2;
+ 		} else if (context) {
+ 			ea_buf = (struct create_ea_buf_req *)context;
+ 			if (le16_to_cpu(context->DataOffset) +
+ 			    le32_to_cpu(context->DataLength) <
+ 			    sizeof(struct create_ea_buf_req)) {
+ 				rc = -EINVAL;
+-				goto err_out1;
++				goto err_out2;
+ 			}
+ 			if (req->CreateOptions & FILE_NO_EA_KNOWLEDGE_LE) {
+ 				rsp->hdr.Status = STATUS_ACCESS_DENIED;
+ 				rc = -EACCES;
+-				goto err_out1;
++				goto err_out2;
+ 			}
+ 		}
+ 
+@@ -2821,7 +2821,7 @@ int smb2_open(struct ksmbd_work *work)
+ 						 SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST, 4);
+ 		if (IS_ERR(context)) {
+ 			rc = PTR_ERR(context);
+-			goto err_out1;
++			goto err_out2;
+ 		} else if (context) {
+ 			ksmbd_debug(SMB,
+ 				    "get query maximal access context\n");
+@@ -2832,11 +2832,11 @@ int smb2_open(struct ksmbd_work *work)
+ 						 SMB2_CREATE_TIMEWARP_REQUEST, 4);
+ 		if (IS_ERR(context)) {
+ 			rc = PTR_ERR(context);
+-			goto err_out1;
++			goto err_out2;
+ 		} else if (context) {
+ 			ksmbd_debug(SMB, "get timewarp context\n");
+ 			rc = -EBADF;
+-			goto err_out1;
++			goto err_out2;
+ 		}
+ 
+ 		if (tcon->posix_extensions) {
+@@ -2844,7 +2844,7 @@ int smb2_open(struct ksmbd_work *work)
+ 							 SMB2_CREATE_TAG_POSIX, 16);
+ 			if (IS_ERR(context)) {
+ 				rc = PTR_ERR(context);
+-				goto err_out1;
++				goto err_out2;
+ 			} else if (context) {
+ 				struct create_posix *posix =
+ 					(struct create_posix *)context;
+@@ -2852,7 +2852,7 @@ int smb2_open(struct ksmbd_work *work)
+ 				    le32_to_cpu(context->DataLength) <
+ 				    sizeof(struct create_posix) - 4) {
+ 					rc = -EINVAL;
+-					goto err_out1;
++					goto err_out2;
+ 				}
+ 				ksmbd_debug(SMB, "get posix context\n");
+ 
+@@ -2864,7 +2864,7 @@ int smb2_open(struct ksmbd_work *work)
+ 
+ 	if (ksmbd_override_fsids(work)) {
+ 		rc = -ENOMEM;
+-		goto err_out1;
++		goto err_out2;
+ 	}
+ 
+ 	rc = ksmbd_vfs_kern_path_locked(work, name, LOOKUP_NO_SYMLINKS,
+@@ -3177,11 +3177,6 @@ int smb2_open(struct ksmbd_work *work)
+ 
+ 	fp->attrib_only = !(req->DesiredAccess & ~(FILE_READ_ATTRIBUTES_LE |
+ 			FILE_WRITE_ATTRIBUTES_LE | FILE_SYNCHRONIZE_LE));
+-	if (!S_ISDIR(file_inode(filp)->i_mode) && open_flags & O_TRUNC &&
+-	    !fp->attrib_only && !stream_name) {
+-		smb_break_all_oplock(work, fp);
+-		need_truncate = 1;
+-	}
+ 
+ 	/* fp should be searchable through ksmbd_inode.m_fp_list
+ 	 * after daccess, saccess, attrib_only, and stream are
+@@ -3197,13 +3192,39 @@ int smb2_open(struct ksmbd_work *work)
+ 		goto err_out;
+ 	}
+ 
++	rc = ksmbd_vfs_getattr(&path, &stat);
++	if (rc)
++		goto err_out;
++
++	if (stat.result_mask & STATX_BTIME)
++		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
++	else
++		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
++	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
++		fp->f_ci->m_fattr =
++			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
++
++	if (!created)
++		smb2_update_xattrs(tcon, &path, fp);
++	else
++		smb2_new_xattrs(tcon, &path, fp);
++
++	if (file_present || created)
++		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
++
++	if (!S_ISDIR(file_inode(filp)->i_mode) && open_flags & O_TRUNC &&
++	    !fp->attrib_only && !stream_name) {
++		smb_break_all_oplock(work, fp);
++		need_truncate = 1;
++	}
++
+ 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
+ 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
+ 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
+ 	     !(conn->vals->capabilities & SMB2_GLOBAL_CAP_LEASING))) {
+ 		if (share_ret < 0 && !S_ISDIR(file_inode(fp->filp)->i_mode)) {
+ 			rc = share_ret;
+-			goto err_out;
++			goto err_out1;
+ 		}
+ 	} else {
+ 		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
+@@ -3213,7 +3234,7 @@ int smb2_open(struct ksmbd_work *work)
+ 				    name, req_op_level, lc->req_state);
+ 			rc = find_same_lease_key(sess, fp->f_ci, lc);
+ 			if (rc)
+-				goto err_out;
++				goto err_out1;
+ 		} else if (open_flags == O_RDONLY &&
+ 			   (req_op_level == SMB2_OPLOCK_LEVEL_BATCH ||
+ 			    req_op_level == SMB2_OPLOCK_LEVEL_EXCLUSIVE))
+@@ -3224,12 +3245,18 @@ int smb2_open(struct ksmbd_work *work)
+ 				      le32_to_cpu(req->hdr.Id.SyncId.TreeId),
+ 				      lc, share_ret);
+ 		if (rc < 0)
+-			goto err_out;
++			goto err_out1;
+ 	}
+ 
+ 	if (req->CreateOptions & FILE_DELETE_ON_CLOSE_LE)
+ 		ksmbd_fd_set_delete_on_close(fp, file_info);
+ 
++	if (need_truncate) {
++		rc = smb2_create_truncate(&fp->filp->f_path);
++		if (rc)
++			goto err_out1;
++	}
++
+ 	if (req->CreateContextsOffset) {
+ 		struct create_alloc_size_req *az_req;
+ 
+@@ -3237,7 +3264,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					SMB2_CREATE_ALLOCATION_SIZE, 4);
+ 		if (IS_ERR(az_req)) {
+ 			rc = PTR_ERR(az_req);
+-			goto err_out;
++			goto err_out1;
+ 		} else if (az_req) {
+ 			loff_t alloc_size;
+ 			int err;
+@@ -3246,7 +3273,7 @@ int smb2_open(struct ksmbd_work *work)
+ 			    le32_to_cpu(az_req->ccontext.DataLength) <
+ 			    sizeof(struct create_alloc_size_req)) {
+ 				rc = -EINVAL;
+-				goto err_out;
++				goto err_out1;
+ 			}
+ 			alloc_size = le64_to_cpu(az_req->AllocationSize);
+ 			ksmbd_debug(SMB,
+@@ -3264,30 +3291,13 @@ int smb2_open(struct ksmbd_work *work)
+ 		context = smb2_find_context_vals(req, SMB2_CREATE_QUERY_ON_DISK_ID, 4);
+ 		if (IS_ERR(context)) {
+ 			rc = PTR_ERR(context);
+-			goto err_out;
++			goto err_out1;
+ 		} else if (context) {
+ 			ksmbd_debug(SMB, "get query on disk id context\n");
+ 			query_disk_id = 1;
+ 		}
+ 	}
+ 
+-	rc = ksmbd_vfs_getattr(&path, &stat);
+-	if (rc)
+-		goto err_out;
+-
+-	if (stat.result_mask & STATX_BTIME)
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
+-	else
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
+-	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
+-		fp->f_ci->m_fattr =
+-			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
+-
+-	if (!created)
+-		smb2_update_xattrs(tcon, &path, fp);
+-	else
+-		smb2_new_xattrs(tcon, &path, fp);
+-
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(89);
+@@ -3394,14 +3404,13 @@ int smb2_open(struct ksmbd_work *work)
+ 	}
+ 
+ err_out:
+-	if (file_present || created)
++	if (rc && (file_present || created))
+ 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+-	if (fp && need_truncate)
+-		rc = smb2_create_truncate(&fp->filp->f_path);
+-
+-	ksmbd_revert_fsids(work);
+ err_out1:
++	ksmbd_revert_fsids(work);
++
++err_out2:
+ 	if (!rc) {
+ 		ksmbd_update_fstate(&work->sess->file_table, fp, FP_INITED);
+ 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp, iov_len);
+-- 
+2.43.0
+
 
 
 
