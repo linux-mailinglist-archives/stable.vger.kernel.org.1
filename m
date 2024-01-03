@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-9446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE473823267
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:06:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B9C8232E9
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88844286EFB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:06:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40FA1F24CFA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D531BDF4;
-	Wed,  3 Jan 2024 17:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D2B1BDF1;
+	Wed,  3 Jan 2024 17:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGfXzxyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwM6OZn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9891BDF1;
-	Wed,  3 Jan 2024 17:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8CBC433C7;
-	Wed,  3 Jan 2024 17:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A3F1BDFE;
+	Wed,  3 Jan 2024 17:13:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAD2C433C8;
+	Wed,  3 Jan 2024 17:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301602;
-	bh=TTvivtZlDUsaeVNLtZhoVzszUWwHMDfTIo561PEaqTk=;
+	s=korg; t=1704301999;
+	bh=UIBvRyQkITPL4Nu4Gp6xIUWN22xVMOSTQVrfwCfaHW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGfXzxyTlZHGBEVGePnCd+TAk8nZ+mpKTuEZKA9uyznd4kbgq25S2rdZo+yY8ANIc
-	 nxUPcz/NwOmKzp4giNOqWqRC1GwrGJeBsP5aONgv/sutfY7NFbwhKzJjFo7UeRx36I
-	 72lBnX5pSggGtaVWV0IqlKlI1whTHL7/TmA/g6M4=
+	b=dwM6OZn9bOWT2RJqnSnCYI0AanyoPdQZWj0di2M1Vd5ZyR8+QLGewXZVpvcrDCPdi
+	 V3UkttWfNUoUAYZ15yMFGFsFKs/VVxR3kNQ870t62YQlsxXhVwXVhhlgqr+xZtQ65a
+	 KlLv/LOZDm3FsrVnw+K+w7lMGdPs9ClgtLzNyPFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
+	kernel test robot <lkp@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 74/95] ARM: dts: Fix occasional boot hang for am3 usb
-Date: Wed,  3 Jan 2024 17:55:22 +0100
-Message-ID: <20240103164905.108506952@linuxfoundation.org>
+Subject: [PATCH 6.6 03/49] ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
+Date: Wed,  3 Jan 2024 17:55:23 +0100
+Message-ID: <20240103164835.474316203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb ]
+[ Upstream commit 3354db668808d5b6d7c5e0cb19ff4c9da4bb5e58 ]
 
-With subtle timings changes, we can now sometimes get an external abort on
-non-linefetch error booting am3 devices at sysc_reset(). This is because
-of a missing reset delay needed for the usb target module.
+Fix argument list that the kdoc format and script verified in
+ksmbd_vfs_setxattr().
 
-Looks like we never enabled the delay earlier for am3, although a similar
-issue was seen earlier with a similar usb setup for dm814x as described in
-commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
+fs/smb/server/vfs.c:929: warning: Function parameter or member 'path'
+not described in 'ksmbd_vfs_setxattr'
 
-Cc: stable@vger.kernel.org
-Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am33xx.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/vfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index f53695ecbb782..7daf6ae2cd9af 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -349,6 +349,7 @@ usb: target-module@47400000 {
- 					<SYSC_IDLE_NO>,
- 					<SYSC_IDLE_SMART>,
- 					<SYSC_IDLE_SMART_WKUP>;
-+			ti,sysc-delay-us = <2>;
- 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
- 			clock-names = "fck";
- 			#address-cells = <1>;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 5a41c0b4e9335..183e36cda59ec 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -906,7 +906,7 @@ ssize_t ksmbd_vfs_getxattr(struct mnt_idmap *idmap,
+ /**
+  * ksmbd_vfs_setxattr() - vfs helper for smb set extended attributes value
+  * @idmap:	idmap of the relevant mount
+- * @dentry:	dentry to set XATTR at
++ * @path:	path of dentry to set XATTR at
+  * @attr_name:	xattr name for setxattr
+  * @attr_value:	xattr value to set
+  * @attr_size:	size of xattr value
 -- 
 2.43.0
 
