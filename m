@@ -1,288 +1,240 @@
-Return-Path: <stable+bounces-9267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F576822F62
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 15:26:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62CEA822FC3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 15:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE97D1F2453C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 14:26:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6DB1285E7A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 14:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B921A593;
-	Wed,  3 Jan 2024 14:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBAF1A5AC;
+	Wed,  3 Jan 2024 14:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udOqa7YP"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="SLkRi/hg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2086.outbound.protection.outlook.com [40.107.223.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEBE1A587;
-	Wed,  3 Jan 2024 14:26:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA331C433C7;
-	Wed,  3 Jan 2024 14:26:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704291971;
-	bh=Us1U4ekKUZYhDZM+/JiE/lHdH9RPsrOOu25MquneZRQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udOqa7YP6ola/DrR4YwY5Luv39v8BkcG3aSJ3dzErw27tHAFgCb4mt3HB2c1F0/B9
-	 wEE4LYYJURI8nUIkBX9efDqXSOnZYiqBdFnOtKBrDhQ4HE2BeRJAqVeEw1hENvsySs
-	 HUInTYFxAYzrUHIanQAr1DH1JsplQrJB9bijTUiZ04FIUU2T4vue8tXuBe0S0NxwLW
-	 F0B0s5a4hihoOxHlLmJFAWiHZvYHe2eZoJ7BNjFDOIRsxb2/ilgL3O6dhtw++Omwf1
-	 21GWy+zw21a8rTe/HxTcfcBh9lJs90kieBNMg3Akx7Ld8/gz57zJFfPNT+rzd+lNnA
-	 aNX5hNF2dsYTg==
-From: Jiri Olsa <jolsa@kernel.org>
-To: stable@vger.kernel.org
-Cc: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Lee Jones <lee@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH stable 5.15 1/1] bpf: Fix prog_array_map_poke_run map poke update
-Date: Wed,  3 Jan 2024 15:25:57 +0100
-Message-ID: <20240103142557.4009040-2-jolsa@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103142557.4009040-1-jolsa@kernel.org>
-References: <20240103142557.4009040-1-jolsa@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6951A705
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 14:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PjE0uebt4iL6PAg0/emZLAlm+hy12Bw9gKAFTRyteArDETvoJ5oc2gC7/NUxOXGsWsC6Lhqj2DOQJzGCYdIjvdsQVELJAhRC5/oaCSndI79i76o3+dDWu1apHUgOj7GVav0Z5jV9JRkLUCZ2W4zHOzOJ9ZpyODXhoJz1CX695sBgcha2kx9zjT+HpWQ2oWoaxNSVjhxhbLEEV/WPMPjC4XrhhNaSJKP0vsidYURuK7e0U43M5ghCETv1k8WydXBkrs3xAFRgPBwb+bW0wtyaNlkiO/C/jlFDUq+JZHxrA+iN4PGOcRit+yL9ch4ZYk2RhhJ728osxlvL2XEUl26jqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=312koKZs2vvKJWitshWnZ6CzYUthciDe2ok8bOkMtJE=;
+ b=Y2Uu7JGNyaU/IqcH1qiy6LpUOE6xCtSMnZADjNDOaRbnJVBuYS7vkEtsVSe1l+9HlZyP3FAhnnwWkgU6zuEWup6T9YkcjXUf/x3VV5VUJOzSGGz/NcLx1EfPDPwa49SOJs/JVWY2NnUQr4bSC962d5nyw5ZM8+QdpWzay2vtyELHtIS84cOh5R+WTvd165tf/kp/0OuJ4dH32evqiaPvuXTnGM7+eBTFSQ3YQODSwoXnap/nDbwPHj07ksVFRxd9Cud5BGmY6I671MNpL5gU83VRpC+jWZMy/iIPPOrbZ8Ru+T9H9ATR3iGZ7+ALIPAYPjz3JJovqRgfNsOpeORB1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=312koKZs2vvKJWitshWnZ6CzYUthciDe2ok8bOkMtJE=;
+ b=SLkRi/hgt2tTiVvR/LwVFmmGZaCpoM/POaEBZH39MMeo5wsVkuZLd+bW5Q7RqRg5nkx7go+Nhq0CYythjkG9OODHhmW71m3xUF3P2nkypC+9Moh9+I3C+1yPmmtvl6wMvyhJNk7ndT+oMFKz5CwvwHsT9L/5Wpg6cXlHkgPwEmc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) by
+ CH3PR12MB8933.namprd12.prod.outlook.com (2603:10b6:610:17a::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Wed, 3 Jan
+ 2024 14:44:21 +0000
+Received: from DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5358:4ba6:417e:c368]) by DM4PR12MB6280.namprd12.prod.outlook.com
+ ([fe80::5358:4ba6:417e:c368%6]) with mapi id 15.20.7135.023; Wed, 3 Jan 2024
+ 14:44:21 +0000
+Message-ID: <e8d478fe-a66b-4165-b2bc-ca5b263034c5@amd.com>
+Date: Wed, 3 Jan 2024 09:44:18 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] drm/amd/display: fix bandwidth validation failure on
+ DCN 2.1
+Content-Language: en-US
+To: Melissa Wen <mwen@igalia.com>, Harry Wentland <harry.wentland@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>, sunpeng.li@amd.com,
+ christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+ daniel@ffwll.ch, qingqing.zhuo@amd.com
+Cc: Alex Hung <alex.hung@amd.com>, dri-devel@lists.freedesktop.org,
+ Daniel Wheeler <daniel.wheeler@amd.com>, amd-gfx@lists.freedesktop.org,
+ kernel-dev@igalia.com, "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20231229163821.144599-1-mwen@igalia.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+In-Reply-To: <20231229163821.144599-1-mwen@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0314.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6c::27) To DM4PR12MB6280.namprd12.prod.outlook.com
+ (2603:10b6:8:a2::11)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB6280:EE_|CH3PR12MB8933:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0d153564-e98a-4ae0-a196-08dc0c6a790a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	tjMuPTYRrnxPnt3j9Mz3p75qCa+e8C53gillcw4SYPbHbpzZUK0cMKykM/3QxjPQlvA5Ymz33NLuCYqDsII2FYVfuD0+sdYaivk14h51jCElHLISKPTazxZ0KKWPaq4l0W24C8HgkfeJBiiQO9eAef1wPuVpyxX7qdd3zdRX87//3Yl+CHSAveYICJAF2CZxRDxUNSSBO18jlE16QuQ3FJJTCyVC3KsnTIMkbqrVuIxbAcDUDeF6yufHwtBdSL9299L4ezMN5GJ7hHeb/ijZRqfWWTSf3/CFJFV+giKmWkctwzCg1Gu4tbGN7jwm8TtUfhDOdjm2rz7Dh1wAW16LI5RoWTeMD+EJCUv9UVNgzIGUUXGD79GBgItWyeBIce0SVi5sCHtdHAaTsAYuNRneGfm0MWHP6EcSwBQ83zGgn/Pbudqni6AwlX2nVu/gsiFqQAsanB6qCpmZqGvgltvo1FEnRvjRUWQORnyr2vjM76gm+B6pAvKWTSPTp7ZoPbqvIl1mD7SifzbEzqJc03r4AO2Mk716h5SgxuYnav7npP3Qvw9r7xwP1EgyqUenMLmKAN/a60ekPwAoBelyeD3u9Y5F2ewqZh9TeYIqE35MD9TrD6lR9OZ1vLwZoRDrEk2q758SgZ0PeegdMWTuBNaIZF+5bHgA7HPrn/xbuCAn+44vemFqpNy6dF5KzZOVymUA
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6280.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(136003)(376002)(396003)(346002)(366004)(230173577357003)(230273577357003)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(83380400001)(2616005)(26005)(41300700001)(38100700002)(8936002)(54906003)(44832011)(8676002)(110136005)(316002)(5660300002)(6666004)(4326008)(2906002)(966005)(478600001)(6636002)(53546011)(6486002)(66946007)(6506007)(66476007)(6512007)(86362001)(66556008)(31696002)(31686004)(36756003)(921011)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZWRBZ1FRMFlFZmxwTlJqMndHWDZrN0FhSGY4enVjME4ydHlTNVF5WWl5cjJO?=
+ =?utf-8?B?YWlnUHZEL2JrMTk4cEJCaXE4dzlIc3BPTzQ5RUlGS1o3cmJDcHMzUlJZTzgy?=
+ =?utf-8?B?YWcyd1Y4N2xpZDNhNVZSbkpOaTQ4MFpqTVJoaFlxVEhhM2NlU1A1ZFdYTXRR?=
+ =?utf-8?B?QlcvWlU3QWVXVzhZU0pGUVhYOFhyeE5hS3lld0lUSHQrN09DRkVPcGdFQ3B2?=
+ =?utf-8?B?V2lLTytwVzJKVldHc1A3WGVUNDZKd0VTUXluWVRmcGhPendPR2pPR1o0WDVz?=
+ =?utf-8?B?QUJYUWQ2dCt2YzJiUmc3dXZFUzJxWTBaQWxtMjh0Z2lBYUw4MUJxUUxwUnN3?=
+ =?utf-8?B?VkkwM0hWYWRhbkFLcjR0bTFOTGVJVFNyTzFLNEozcXl2VE50eXU5d1k0Q3NS?=
+ =?utf-8?B?R29NZVFVSnFjYVQwd3Z4dXYxYkVNM3AwMjB1ZUdDbHhYWFhscXJyb2tTZ04r?=
+ =?utf-8?B?LzY0eHRseU5ENjZLQ3IvZFZJOENlOWxrem1qSXNQeUZrWmZra2VkSkwwdlBJ?=
+ =?utf-8?B?NE9UYldyYVRjdVBJOUhSbnlteElIZFNpWG9BZERrQmtGUlR6dURHdUJhQmVl?=
+ =?utf-8?B?UDRkV0xYd204VTlaam94UUdzanZqSFdTS3lKNERUV25YNHpab2dVMG9tZ25J?=
+ =?utf-8?B?K20ySkNlTXhUcFdiakFhbHVaRDl6akU0SzRhVXcrNUFyVnBKQnBRdHkwRWM0?=
+ =?utf-8?B?TVFXVXZ1WHhuS0RPYnlleHpMSEtJaHM0MncxRUdrWTJqVDZ3YXdEcVhlKzI5?=
+ =?utf-8?B?OW5yUjJVOHR0dEZ6dkxVSnhEbFVGQUlDcGVhQjBjWDhWR0xPM0RDVStocms4?=
+ =?utf-8?B?enJQN0M0ZHJYLzE3NWtRMEVIejVCalRFTGM2L3JtTkEyeUptYnY0ZmhNek55?=
+ =?utf-8?B?WHBjT0IzZVhrcjZ0dldKV1p5ZFphTktGanY5d0tkZGhydGozVWxZZFljQ3JX?=
+ =?utf-8?B?cXVkVkduK055aks2TnpzT2hqMGpDVGErRUpEWk1IYy9Ea0xjQTdvVE1oTzFT?=
+ =?utf-8?B?cDhhWm4waHh4VDl3NFZhTHdkSHhFWVpLbjNmVWpsSU11Q0RGZUdLTndhOWFa?=
+ =?utf-8?B?VFIvam5KanY1Ymh2R3NWS0hKV0Z1OXhHVXdRSUluT3ZuOXloRWpVcGFoejZq?=
+ =?utf-8?B?N2QvbDFiN3FCdU9Ba1VLTDhyLzlqNE1vcmZTKzUySlloK3ZiTHhtT1hPNlU4?=
+ =?utf-8?B?Ny92QitHcW1oZEI1N1FBTVE2dnZKV3pqdmFzdk80SXBKQ2ltcUFsaWVSbjlo?=
+ =?utf-8?B?VjJxV04vVlZwM3hiTmkzMkp4WFZwU3d0bXlIM0FUT3RiY2RsMnMvRy9JOHpO?=
+ =?utf-8?B?UUVPd0F0VGlud2lqL1NVNzhxZzAyTVpjVFpjQTFENTNRZnNzOWlORnFCZGU0?=
+ =?utf-8?B?bUN5TjFMRTExUUZDcW56ejNtYVJYQlU4cndaUk1DVUplWmw4UjFoVklqWnJ1?=
+ =?utf-8?B?REhONUgvZzA3WnU3WmhvQUpQSysrRjQ1VmN5d0hRWGJLenkrY2VRZHVOTXZi?=
+ =?utf-8?B?NXc3dTFINmNxZkFkbDRhSUlUY2MrMy9ZU1FBeWhMRXZsUFR5R1VJUkkyR051?=
+ =?utf-8?B?ZS9PMkhaNVNWTmhPNzB4QkwwalVDQ3JzcmJqTCtEWE9nOWtRUEMyQllNSzhS?=
+ =?utf-8?B?emo5MFVseE12akMwZzB0VFVkWVFvU0VVZzErRWl6Z0lXRFhPSzRTRHAvcWkx?=
+ =?utf-8?B?VFlGOXNqaUU3SGd2QWhhb3Q1TmNjNFpZc0Q2RzVtNHJsVFRub2dxaVEzbjd6?=
+ =?utf-8?B?K3VreXNNb2xTZVNGSzJPRjVuY1llWlZjLzVVNW10NFdRdmxYcVlyaW80dWZV?=
+ =?utf-8?B?N04zVC9zSmh4QitnYk5uak9rZmFpTVVwODVRU1NYR0NFSDNqNmQvK29iWTRM?=
+ =?utf-8?B?Z285WElVWFFQOTRDV1RSQjZhVi90UnJBWVRTeDRiVnZhVExMc28yZ0Jtai8z?=
+ =?utf-8?B?OXlWaGFZZmNoaTFyMWdmeE9lRVA4T1R2ODVMRzZEQm1KZEpCeFRMUFVSMHZ6?=
+ =?utf-8?B?UGdLYms3UHMwSHNSdzFja3hDK0Z6ZFlUcURHVnFTL0NmZ2hudm5tbzU2VkJw?=
+ =?utf-8?B?aTFDYUdUYWFEbFQxNlplQ2VsWW4zNWlxblVWTXYxa0Z5dkNGWWJISFRRb2FM?=
+ =?utf-8?Q?K+5nQRAfYWS8AdE1Vg+JAHp6g?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d153564-e98a-4ae0-a196-08dc0c6a790a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6280.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2024 14:44:21.8272
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tW4WBhVhBPghAQZDbVhaCGxc7Esdb2SFI5cxkJvgweIW879wj1f7VWuM2hxaLqi3cgEKvwMV9L8/4aXn86Ddag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8933
 
-commit 4b7de801606e504e69689df71475d27e35336fb3 upstream.
+On 12/29/23 11:25, Melissa Wen wrote:
+> IGT `amdgpu/amd_color/crtc-lut-accuracy` fails right at the beginning of
+> the test execution, during atomic check, because DC rejects the
+> bandwidth state for a fb sizing 64x64. The test was previously working
+> with the deprecated dc_commit_state(). Now using
+> dc_validate_with_context() approach, the atomic check needs to perform a
+> full state validation. Therefore, set fast_validation to false in the
+> dc_validate_global_state call for atomic check.
+> 
+> Fixes: b8272241ff9d ("drm/amd/display: Drop dc_commit_state in favor of dc_commit_streams")
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> ---
+> 
+> Hi,
+> 
+> It's a long story. I was inspecting this bug report:
+> - https://gitlab.freedesktop.org/drm/amd/-/issues/2016
+> and noticed the IGT test `igt@amdgpu/amd_color@crtc-lut-accuracy`
+> mentioned there wasn't even being executed on a laptop with DCN 2.1
+> (HP HP ENVY x360 Convertible 13-ay1xxx/8929). The test fails right at
+> the beginning due to an atomic check rejection, as below:
+> 
+> Starting subtest: crtc-lut-accuracy
+> (amd_color:14772) igt_kms-CRITICAL: Test assertion failure function igt_display_commit_atomic, file ../lib/igt_kms.c:4530:
+> (amd_color:14772) igt_kms-CRITICAL: Failed assertion: ret == 0
+> (amd_color:14772) igt_kms-CRITICAL: Last errno: 22, Invalid argument
+> (amd_color:14772) igt_kms-CRITICAL: error: -22 != 0
+> Stack trace:
+>    #0 ../lib/igt_core.c:1989 __igt_fail_assert()
+>    #1 [igt_display_commit_atomic+0x44]
+>    #2 ../tests/amdgpu/amd_color.c:159 __igt_unique____real_main395()
+>    #3 ../tests/amdgpu/amd_color.c:395 main()
+>    #4 ../sysdeps/nptl/libc_start_call_main.h:74 __libc_start_call_main()
+>    #5 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+>    #6 [_start+0x21]
+> Subtest crtc-lut-accuracy failed.
+> 
+> Checking dmesg, we can see that a bandwidth validation failure causes
+> the atomic check rejection:
+> 
+> [  711.147663] amdgpu 0000:04:00.0: [drm] Mode Validation Warning: Unknown Status failed validation.
+> [  711.147667] [drm:amdgpu_dm_atomic_check [amdgpu]] DC global validation failure: Bandwidth validation failure (BW and Watermark) (13)
+> [  711.147772] [drm:amdgpu_irq_dispatch [amdgpu]] Unregistered interrupt src_id: 243 of client_id:8
+> [  711.148033] [drm:amdgpu_dm_atomic_check [amdgpu]] Atomic check failed with err: -22
+> 
+> I also noticed that the atomic check doesn't fail if I change the fb
+> width and height used in the test from 64 to 66, and I can get the test
+> execution back (and with success). However, I recall that all test cases
+> of IGT `amd_color` were working in the past, so I bisected and found the
+> first bad commit:
+> 
+> b8272241ff9d drm/amd/display: Drop dc_commit_state in favor of dc_commit_streams
+> 
+> Bringing the `dc_commit_state` machinery back also prevents the
+> bandwidth validation failure, but the commit above says
+> dc_commit_streams validation is more complete than dc_commit_state, so I
+> discarded this approach.
+> 
+> After some debugging and code inspection, I found out that avoiding fast
+> validation on dc_validate_global_state during atomic check solves the
+> issue, but I'm not sure if this change may affect performance. I
+> compared exec time of some IGT tests and didn't see any differences, but
+> I recognize it doesn't provide enough evidence.
+> 
+> What do you think about this change? Should I examine other things? Do
+> you see any potential issue that I should investigate? Could you
+> recommend a better approach to assess any side-effect of not enabling
+> fast validation in the atomic check?
+> 
+> Please, let me know your thoughts.
 
-[ The patch differs from upstream by calling __bpf_arch_text_poke with
-  text_live=true, because 5.15 does not have commit 1022a5498f6f ]
+We shouldn't be doing fast updates when lock_and_validation_needed is
+true, so this seems to be correct.
 
-Lee pointed out issue found by syscaller [0] hitting BUG in prog array
-map poke update in prog_array_map_poke_run function due to error value
-returned from bpf_arch_text_poke function.
+Which is to say, applied, thanks!
 
-There's race window where bpf_arch_text_poke can fail due to missing
-bpf program kallsym symbols, which is accounted for with check for
--EINVAL in that BUG_ON call.
+Cc: stable@vger.kernel.org
 
-The problem is that in such case we won't update the tail call jump
-and cause imbalance for the next tail call update check which will
-fail with -EBUSY in bpf_arch_text_poke.
-
-I'm hitting following race during the program load:
-
-  CPU 0                             CPU 1
-
-  bpf_prog_load
-    bpf_check
-      do_misc_fixups
-        prog_array_map_poke_track
-
-                                    map_update_elem
-                                      bpf_fd_array_map_update_elem
-                                        prog_array_map_poke_run
-
-                                          bpf_arch_text_poke returns -EINVAL
-
-    bpf_prog_kallsyms_add
-
-After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
-poke update fails on expected jump instruction check in bpf_arch_text_poke
-with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
-
-Similar race exists on the program unload.
-
-Fixing this by moving the update to bpf_arch_poke_desc_update function which
-makes sure we call __bpf_arch_text_poke that skips the bpf address check.
-
-Each architecture has slightly different approach wrt looking up bpf address
-in bpf_arch_text_poke, so instead of splitting the function or adding new
-'checkip' argument in previous version, it seems best to move the whole
-map_poke_run update as arch specific code.
-
-  [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
-
-Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
-Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20231206083041.1306660-2-jolsa@kernel.org
----
- arch/x86/net/bpf_jit_comp.c | 46 +++++++++++++++++++++++++++++
- include/linux/bpf.h         |  3 ++
- kernel/bpf/arraymap.c       | 58 +++++++------------------------------
- 3 files changed, 59 insertions(+), 48 deletions(-)
-
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index dccaab2113f9..ee6e3cda1738 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -2403,3 +2403,49 @@ bool bpf_jit_supports_kfunc_call(void)
- {
- 	return true;
- }
-+
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	u8 *old_addr, *new_addr, *old_bypass_addr;
-+	int ret;
-+
-+	old_bypass_addr = old ? NULL : poke->bypass_addr;
-+	old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
-+	new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
-+
-+	/*
-+	 * On program loading or teardown, the program's kallsym entry
-+	 * might not be in place, so we use __bpf_arch_text_poke to skip
-+	 * the kallsyms check.
-+	 */
-+	if (new) {
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, new_addr, true);
-+		BUG_ON(ret < 0);
-+		if (!old) {
-+			ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+						   BPF_MOD_JUMP,
-+						   poke->bypass_addr,
-+						   NULL, true);
-+			BUG_ON(ret < 0);
-+		}
-+	} else {
-+		ret = __bpf_arch_text_poke(poke->tailcall_bypass,
-+					   BPF_MOD_JUMP,
-+					   old_bypass_addr,
-+					   poke->bypass_addr, true);
-+		BUG_ON(ret < 0);
-+		/* let other CPUs finish the execution of program
-+		 * so that it will not possible to expose them
-+		 * to invalid nop, stack unwind, nop state
-+		 */
-+		if (!ret)
-+			synchronize_rcu();
-+		ret = __bpf_arch_text_poke(poke->tailcall_target,
-+					   BPF_MOD_JUMP,
-+					   old_addr, NULL, true);
-+		BUG_ON(ret < 0);
-+	}
-+}
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 9ab087d73ab3..00c615fc8ec3 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2280,6 +2280,9 @@ enum bpf_text_poke_type {
- int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
- 		       void *addr1, void *addr2);
- 
-+void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+			       struct bpf_prog *new, struct bpf_prog *old);
-+
- struct btf_id_set;
- bool btf_id_set_contains(const struct btf_id_set *set, u32 id);
- 
-diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
-index 88014cd31b28..23ffb8f0b5d7 100644
---- a/kernel/bpf/arraymap.c
-+++ b/kernel/bpf/arraymap.c
-@@ -957,11 +957,16 @@ static void prog_array_map_poke_untrack(struct bpf_map *map,
- 	mutex_unlock(&aux->poke_mutex);
- }
- 
-+void __weak bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
-+				      struct bpf_prog *new, struct bpf_prog *old)
-+{
-+	WARN_ON_ONCE(1);
-+}
-+
- static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 				    struct bpf_prog *old,
- 				    struct bpf_prog *new)
- {
--	u8 *old_addr, *new_addr, *old_bypass_addr;
- 	struct prog_poke_elem *elem;
- 	struct bpf_array_aux *aux;
- 
-@@ -970,7 +975,7 @@ static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 
- 	list_for_each_entry(elem, &aux->poke_progs, list) {
- 		struct bpf_jit_poke_descriptor *poke;
--		int i, ret;
-+		int i;
- 
- 		for (i = 0; i < elem->aux->size_poke_tab; i++) {
- 			poke = &elem->aux->poke_tab[i];
-@@ -989,21 +994,10 @@ static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 			 *    activated, so tail call updates can arrive from here
- 			 *    while JIT is still finishing its final fixup for
- 			 *    non-activated poke entries.
--			 * 3) On program teardown, the program's kallsym entry gets
--			 *    removed out of RCU callback, but we can only untrack
--			 *    from sleepable context, therefore bpf_arch_text_poke()
--			 *    might not see that this is in BPF text section and
--			 *    bails out with -EINVAL. As these are unreachable since
--			 *    RCU grace period already passed, we simply skip them.
--			 * 4) Also programs reaching refcount of zero while patching
-+			 * 3) Also programs reaching refcount of zero while patching
- 			 *    is in progress is okay since we're protected under
- 			 *    poke_mutex and untrack the programs before the JIT
--			 *    buffer is freed. When we're still in the middle of
--			 *    patching and suddenly kallsyms entry of the program
--			 *    gets evicted, we just skip the rest which is fine due
--			 *    to point 3).
--			 * 5) Any other error happening below from bpf_arch_text_poke()
--			 *    is a unexpected bug.
-+			 *    buffer is freed.
- 			 */
- 			if (!READ_ONCE(poke->tailcall_target_stable))
- 				continue;
-@@ -1013,39 +1007,7 @@ static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
- 			    poke->tail_call.key != key)
- 				continue;
- 
--			old_bypass_addr = old ? NULL : poke->bypass_addr;
--			old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
--			new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
--
--			if (new) {
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, new_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				if (!old) {
--					ret = bpf_arch_text_poke(poke->tailcall_bypass,
--								 BPF_MOD_JUMP,
--								 poke->bypass_addr,
--								 NULL);
--					BUG_ON(ret < 0 && ret != -EINVAL);
--				}
--			} else {
--				ret = bpf_arch_text_poke(poke->tailcall_bypass,
--							 BPF_MOD_JUMP,
--							 old_bypass_addr,
--							 poke->bypass_addr);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--				/* let other CPUs finish the execution of program
--				 * so that it will not possible to expose them
--				 * to invalid nop, stack unwind, nop state
--				 */
--				if (!ret)
--					synchronize_rcu();
--				ret = bpf_arch_text_poke(poke->tailcall_target,
--							 BPF_MOD_JUMP,
--							 old_addr, NULL);
--				BUG_ON(ret < 0 && ret != -EINVAL);
--			}
-+			bpf_arch_poke_desc_update(poke, new, old);
- 		}
- 	}
- }
+> 
+> Happy New Year!
+> 
+> Melissa
+> 
+>   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> index 2845c884398e..4f51a7ad7a3c 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> @@ -10745,7 +10745,7 @@ static int amdgpu_dm_atomic_check(struct drm_device *dev,
+>   			DRM_DEBUG_DRIVER("drm_dp_mst_atomic_check() failed\n");
+>   			goto fail;
+>   		}
+> -		status = dc_validate_global_state(dc, dm_state->context, true);
+> +		status = dc_validate_global_state(dc, dm_state->context, false);
+>   		if (status != DC_OK) {
+>   			DRM_DEBUG_DRIVER("DC global validation failure: %s (%d)",
+>   				       dc_status_to_str(status), status);
 -- 
-2.43.0
+Hamza
 
 
