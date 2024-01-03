@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821C1822ADE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1EA822AE1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27AE42822FA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD146282781
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9AC1864A;
-	Wed,  3 Jan 2024 10:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD101864A;
+	Wed,  3 Jan 2024 10:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vm/O8NhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EusNMIzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B694C18632
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:03:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CF7C433CA;
-	Wed,  3 Jan 2024 10:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740CE18632
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:03:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC48C433C8;
+	Wed,  3 Jan 2024 10:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704276196;
-	bh=QhFhQ2A+kAmXTj9aME00M6/XrAc3xWPZSQCILS68L8o=;
+	s=korg; t=1704276206;
+	bh=9125fXrG9phlLEkDmsmsUkNo1MDWEdKLDG/QytcynRs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Vm/O8NhFbCI05FkwSLifaRUfBC/l4VFurxlJP4yK+W5rQ0HpTSLcKC0pF5OClrgqo
-	 Z8JyoRu6TemkKnn0bij6CNQm45H3LfAV2KbrCG7ti+vGS7eAweBPRQpVKJWvxCGF8Z
-	 /x1M/GiwhQTC9I3RPJueW0duApiG7PZ2NnvF/Drw=
-Subject: FAILED: patch "[PATCH] tracing: Fix blocked reader of snapshot buffer" failed to apply to 5.4-stable tree
+	b=EusNMIzT76FIBQUpLOhK49DakDMVlVa3zj5dUrKeyEBfPcgAwkguId3TUfl5qq3Mt
+	 AClDKJIIO70ZmMPWh9aMFeIcZnabNKgnhTmMd1RY/wqG8L8qwGihGEjgLIF5Dun7ID
+	 WQcZDrY+YdDwn4uoOp0+NztBPvWjhv73J0rdMdBw=
+Subject: FAILED: patch "[PATCH] tracing: Fix blocked reader of snapshot buffer" failed to apply to 4.19-stable tree
 To: rostedt@goodmis.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 03 Jan 2024 11:03:13 +0100
-Message-ID: <2024010313-employed-ludicrous-02a3@gregkh>
+Date: Wed, 03 Jan 2024 11:03:14 +0100
+Message-ID: <2024010314-finalize-yonder-1241@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 39a7dc23a1ed0fe81141792a09449d124c5953bd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010313-employed-ludicrous-02a3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010314-finalize-yonder-1241@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,9 @@ efbbdaa22bb7 ("tracing: Show real address for trace event arguments")
 8e99cf91b99b ("tracing: Do not allocate buffer in trace_find_next_entry() in atomic")
 ff895103a84a ("tracing: Save off entry when peeking at next entry")
 1c5eb4481e01 ("tracing: Rename trace_buffer to array_buffer")
+a47b53e95acc ("tracing: Rename tracing_reset() to tracing_reset_cpu()")
+46cc0b44428d ("tracing/snapshot: Resize spare buffer if size changed")
+d2d8b146043a ("Merge tag 'trace-v5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
 
 thanks,
 
