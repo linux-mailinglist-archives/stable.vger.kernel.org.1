@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19D98231DB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE648232A3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6859F2884E8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63B4EB233FC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFF71C2A9;
-	Wed,  3 Jan 2024 16:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8B1C294;
+	Wed,  3 Jan 2024 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iw5xZoK4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbDRK3Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951521C2A1;
-	Wed,  3 Jan 2024 16:59:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A513CC433C8;
-	Wed,  3 Jan 2024 16:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224F21C292;
+	Wed,  3 Jan 2024 17:09:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C06AC433C7;
+	Wed,  3 Jan 2024 17:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301178;
-	bh=7tsYaeKZl7Lbr3dC08EeEfcevsPa31uRbHuR0MruoEE=;
+	s=korg; t=1704301772;
+	bh=zkQZq91K7PDQ2FBVHIhPRQG4x6iCYvLgYLemB/pWHWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iw5xZoK4JayeYZDfV3PauNEKfFBiPBA+hNbxa7D09COoUHWXhzt4mVDD7p1ep69bZ
-	 QHlblQRWPi/PLx0+Cp3RjKtDW8RlNtNp6ffZolWs3j0Yy63+FJHpetxGqSMw/NKinn
-	 QjnRVjMc8vpkdyNJYonl69eZXIF3stOmb3oA6aOg=
+	b=bbDRK3QfP4P2eLzkL0NKiSaZwEFJROiCzPZrfdGGNRGmbPMBBFUSc5EGnxo66MWvy
+	 TLCU6WYgQxz4diSvFkpKfSfuPOIc3l45QVZYR1O+MQvicBrVA4jAUhrIaWMpuJtSuw
+	 +xsqzq5aMe3+kAuuPciX/78V8e+74m8lle4UCLI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/100] ksmbd: fix kernel-doc comment of ksmbd_vfs_kern_path_locked()
+Subject: [PATCH 5.10 07/75] Revert "net/mlx5e: fix double free of encap_header"
 Date: Wed,  3 Jan 2024 17:54:48 +0100
-Message-ID: <20240103164904.960196885@linuxfoundation.org>
+Message-ID: <20240103164844.060005711@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +53,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit f6049712e520287ad695e9d4f1572ab76807fa0c ]
+[ Upstream commit 5d089684dc434a31e08d32f0530066d0025c52e4 ]
 
-Fix argument list that the kdoc format and script verified in
-ksmbd_vfs_kern_path_locked().
+This reverts commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1.
 
-fs/smb/server/vfs.c:1207: warning: Function parameter or member 'parent_path'
-not described in 'ksmbd_vfs_kern_path_locked'
+This patch is causing a null ptr issue, the proper fix is in the next
+patch.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 6f9b1a073166 ("net/mlx5e: fix double free of encap_header")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index e2e454eba4095..d4298a751d4a2 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1178,9 +1178,10 @@ static int ksmbd_vfs_lookup_in_dir(const struct path *dir, char *name,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+index 05bcd69994eca..90930e54b6f28 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+@@ -267,6 +267,9 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
  
- /**
-  * ksmbd_vfs_kern_path_locked() - lookup a file and get path info
-- * @name:	file path that is relative to share
-- * @flags:	lookup flags
-- * @path:	if lookup succeed, return path info
-+ * @name:		file path that is relative to share
-+ * @flags:		lookup flags
-+ * @parent_path:	if lookup succeed, return parent_path info
-+ * @path:		if lookup succeed, return path info
-  * @caseless:	caseless filename lookup
-  *
-  * Return:	0 on success, otherwise error
++	e->encap_size = ipv4_encap_size;
++	e->encap_header = encap_header;
++
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -283,8 +286,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
+ 
+-	e->encap_size = ipv4_encap_size;
+-	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	mlx5e_route_lookup_ipv4_put(route_dev, n);
+@@ -430,6 +431,9 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
+ 
++	e->encap_size = ipv6_encap_size;
++	e->encap_header = encap_header;
++
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -447,8 +451,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
+ 
+-	e->encap_size = ipv6_encap_size;
+-	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	mlx5e_route_lookup_ipv6_put(route_dev, n);
 -- 
 2.43.0
 
