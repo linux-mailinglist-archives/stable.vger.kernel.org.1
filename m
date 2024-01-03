@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-9332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF9B8231DE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DBF823231
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841AE1C23BED
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F041C23666
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5C41C281;
-	Wed,  3 Jan 2024 16:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B6F1C290;
+	Wed,  3 Jan 2024 17:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuOXVvGp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7DxzuBF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E101B29F;
-	Wed,  3 Jan 2024 16:59:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C46DC433C7;
-	Wed,  3 Jan 2024 16:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAC61C282;
+	Wed,  3 Jan 2024 17:03:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A7EC433C7;
+	Wed,  3 Jan 2024 17:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301185;
-	bh=2cEUtNwNo/9bXvmzyuq8zpa7w2D3f7PBUXOqLj+T4vI=;
+	s=korg; t=1704301405;
+	bh=NWKClQASbiyC1elGymUgUI0GH21BwGK+nJ+3N5SEmro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SuOXVvGpBA96kC9cKuK5Ys8JgmnVCc//kTJcjhYHnqfI48W1nquCz0kUCLMEHqNsF
-	 IBV3unSMBarbk7tHtTaKy6IISIR+AaUFriYQcveHb3TRDx3kfyH6AFqSwfHK9WKSAs
-	 BY9D84O5cltoAuq1Gb7cX7rMACvYmGHFhW/9Vi8I=
+	b=K7DxzuBFoa5pv9D4/RUWJfGLQPg97n0P1Oaq9UunUgumaxzzSxxpliZqnNAbglf3U
+	 pEljlkJCOg4V8lHVrzN4aRpq+YmBGShGukH0IV93e1L6/mBQUtoWLc2MlufY1GAujO
+	 RKSCPhMYTziq4/JoIWMyI1OZ4gj7BD/7vJhr32LQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/100] ksmbd: return invalid parameter error response if smb2 request is invalid
+Subject: [PATCH 5.15 24/95] afs: Fix use-after-free due to get/remove race in volume tree
 Date: Wed,  3 Jan 2024 17:54:32 +0100
-Message-ID: <20240103164902.510162435@linuxfoundation.org>
+Message-ID: <20240103164857.740565772@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,104 +56,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit f2f11fca5d7112e2f91c4854cddd68a059fdaa4a ]
+[ Upstream commit 9a6b294ab496650e9f270123730df37030911b55 ]
 
-If smb2 request from client is invalid, The following kernel oops could
-happen. The patch e2b76ab8b5c9: "ksmbd: add support for read compound"
-leads this issue. When request is invalid, It doesn't set anything in
-the response buffer. This patch add missing set invalid parameter error
-response.
+When an afs_volume struct is put, its refcount is reduced to 0 before
+the cell->volume_lock is taken and the volume removed from the
+cell->volumes tree.
 
-[  673.085542] ksmbd: cli req too short, len 184 not 142. cmd:5 mid:109
-[  673.085580] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  673.085591] #PF: supervisor read access in kernel mode
-[  673.085600] #PF: error_code(0x0000) - not-present page
-[  673.085608] PGD 0 P4D 0
-[  673.085620] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[  673.085631] CPU: 3 PID: 1039 Comm: kworker/3:0 Not tainted 6.6.0-rc2-tmt #16
-[  673.085643] Hardware name: AZW U59/U59, BIOS JTKT001 05/05/2022
-[  673.085651] Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
-[  673.085719] RIP: 0010:ksmbd_conn_write+0x68/0xc0 [ksmbd]
-[  673.085808] RAX: 0000000000000000 RBX: ffff88811ade4f00 RCX: 0000000000000000
-[  673.085817] RDX: 0000000000000000 RSI: ffff88810c2a9780 RDI: ffff88810c2a9ac0
-[  673.085826] RBP: ffffc900005e3e00 R08: 0000000000000000 R09: 0000000000000000
-[  673.085834] R10: ffffffffa3168160 R11: 63203a64626d736b R12: ffff8881057c8800
-[  673.085842] R13: ffff8881057c8820 R14: ffff8882781b2380 R15: ffff8881057c8800
-[  673.085852] FS:  0000000000000000(0000) GS:ffff888278180000(0000) knlGS:0000000000000000
-[  673.085864] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  673.085872] CR2: 0000000000000000 CR3: 000000015b63c000 CR4: 0000000000350ee0
-[  673.085883] Call Trace:
-[  673.085890]  <TASK>
-[  673.085900]  ? show_regs+0x6a/0x80
-[  673.085916]  ? __die+0x25/0x70
-[  673.085926]  ? page_fault_oops+0x154/0x4b0
-[  673.085938]  ? tick_nohz_tick_stopped+0x18/0x50
-[  673.085954]  ? __irq_work_queue_local+0xba/0x140
-[  673.085967]  ? do_user_addr_fault+0x30f/0x6c0
-[  673.085979]  ? exc_page_fault+0x79/0x180
-[  673.085992]  ? asm_exc_page_fault+0x27/0x30
-[  673.086009]  ? ksmbd_conn_write+0x68/0xc0 [ksmbd]
-[  673.086067]  ? ksmbd_conn_write+0x46/0xc0 [ksmbd]
-[  673.086123]  handle_ksmbd_work+0x28d/0x4b0 [ksmbd]
-[  673.086177]  process_one_work+0x178/0x350
-[  673.086193]  ? __pfx_worker_thread+0x10/0x10
-[  673.086202]  worker_thread+0x2f3/0x420
-[  673.086210]  ? _raw_spin_unlock_irqrestore+0x27/0x50
-[  673.086222]  ? __pfx_worker_thread+0x10/0x10
-[  673.086230]  kthread+0x103/0x140
-[  673.086242]  ? __pfx_kthread+0x10/0x10
-[  673.086253]  ret_from_fork+0x39/0x60
-[  673.086263]  ? __pfx_kthread+0x10/0x10
-[  673.086274]  ret_from_fork_asm+0x1b/0x30
+Unfortunately, this means that the lookup code can race and see a volume
+with a zero ref in the tree, resulting in a use-after-free:
 
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Reported-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+    refcount_t: addition on 0; use-after-free.
+    WARNING: CPU: 3 PID: 130782 at lib/refcount.c:25 refcount_warn_saturate+0x7a/0xda
+    ...
+    RIP: 0010:refcount_warn_saturate+0x7a/0xda
+    ...
+    Call Trace:
+     afs_get_volume+0x3d/0x55
+     afs_create_volume+0x126/0x1de
+     afs_validate_fc+0xfe/0x130
+     afs_get_tree+0x20/0x2e5
+     vfs_get_tree+0x1d/0xc9
+     do_new_mount+0x13b/0x22e
+     do_mount+0x5d/0x8a
+     __do_sys_mount+0x100/0x12a
+     do_syscall_64+0x3a/0x94
+     entry_SYSCALL_64_after_hwframe+0x62/0x6a
+
+Fix this by:
+
+ (1) When putting, use a flag to indicate if the volume has been removed
+     from the tree and skip the rb_erase if it has.
+
+ (2) When looking up, use a conditional ref increment and if it fails
+     because the refcount is 0, replace the node in the tree and set the
+     removal flag.
+
+Fixes: 20325960f875 ("afs: Reorganise volume and server trees to be rooted on the cell")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/server.c   | 4 +++-
- fs/smb/server/smb2misc.c | 4 +---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/afs/internal.h |  2 ++
+ fs/afs/volume.c   | 26 +++++++++++++++++++++++---
+ 2 files changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index f5d8e405cf6fd..633383e55723c 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -115,8 +115,10 @@ static int __process_request(struct ksmbd_work *work, struct ksmbd_conn *conn,
- 	if (check_conn_state(work))
- 		return SERVER_HANDLER_CONTINUE;
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index b29e9c206f782..0c03877cdaf7e 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -589,6 +589,7 @@ struct afs_volume {
+ #define AFS_VOLUME_OFFLINE	4	/* - T if volume offline notice given */
+ #define AFS_VOLUME_BUSY		5	/* - T if volume busy notice given */
+ #define AFS_VOLUME_MAYBE_NO_IBULK 6	/* - T if some servers don't have InlineBulkStatus */
++#define AFS_VOLUME_RM_TREE	7	/* - Set if volume removed from cell->volumes */
+ #ifdef CONFIG_AFS_FSCACHE
+ 	struct fscache_cookie	*cache;		/* caching cookie */
+ #endif
+@@ -1507,6 +1508,7 @@ extern struct afs_vlserver_list *afs_extract_vlserver_list(struct afs_cell *,
+ extern struct afs_volume *afs_create_volume(struct afs_fs_context *);
+ extern void afs_activate_volume(struct afs_volume *);
+ extern void afs_deactivate_volume(struct afs_volume *);
++bool afs_try_get_volume(struct afs_volume *volume, enum afs_volume_trace reason);
+ extern struct afs_volume *afs_get_volume(struct afs_volume *, enum afs_volume_trace);
+ extern void afs_put_volume(struct afs_net *, struct afs_volume *, enum afs_volume_trace);
+ extern int afs_check_volume_status(struct afs_volume *, struct afs_operation *);
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index 32941bffa2ec1..137a970c19fb3 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -33,8 +33,13 @@ static struct afs_volume *afs_insert_volume_into_cell(struct afs_cell *cell,
+ 		} else if (p->vid > volume->vid) {
+ 			pp = &(*pp)->rb_right;
+ 		} else {
+-			volume = afs_get_volume(p, afs_volume_trace_get_cell_insert);
+-			goto found;
++			if (afs_try_get_volume(p, afs_volume_trace_get_cell_insert)) {
++				volume = p;
++				goto found;
++			}
++
++			set_bit(AFS_VOLUME_RM_TREE, &volume->flags);
++			rb_replace_node_rcu(&p->cell_node, &volume->cell_node, &cell->volumes);
+ 		}
+ 	}
  
--	if (ksmbd_verify_smb_message(work))
-+	if (ksmbd_verify_smb_message(work)) {
-+		conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
- 		return SERVER_HANDLER_ABORT;
-+	}
- 
- 	command = conn->ops->get_cmd_val(work);
- 	*cmd = command;
-diff --git a/fs/smb/server/smb2misc.c b/fs/smb/server/smb2misc.c
-index e881df1d10cbd..23bd3d1209dfa 100644
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -440,10 +440,8 @@ int ksmbd_smb2_check_message(struct ksmbd_work *work)
- 
- validate_credit:
- 	if ((work->conn->vals->capabilities & SMB2_GLOBAL_CAP_LARGE_MTU) &&
--	    smb2_validate_credit_charge(work->conn, hdr)) {
--		work->conn->ops->set_rsp_status(work, STATUS_INVALID_PARAMETER);
-+	    smb2_validate_credit_charge(work->conn, hdr))
- 		return 1;
--	}
- 
- 	return 0;
+@@ -57,7 +62,8 @@ static void afs_remove_volume_from_cell(struct afs_volume *volume)
+ 				 afs_volume_trace_remove);
+ 		write_seqlock(&cell->volume_lock);
+ 		hlist_del_rcu(&volume->proc_link);
+-		rb_erase(&volume->cell_node, &cell->volumes);
++		if (!test_and_set_bit(AFS_VOLUME_RM_TREE, &volume->flags))
++			rb_erase(&volume->cell_node, &cell->volumes);
+ 		write_sequnlock(&cell->volume_lock);
+ 	}
  }
+@@ -236,6 +242,20 @@ static void afs_destroy_volume(struct afs_net *net, struct afs_volume *volume)
+ 	_leave(" [destroyed]");
+ }
+ 
++/*
++ * Try to get a reference on a volume record.
++ */
++bool afs_try_get_volume(struct afs_volume *volume, enum afs_volume_trace reason)
++{
++	int r;
++
++	if (__refcount_inc_not_zero(&volume->ref, &r)) {
++		trace_afs_volume(volume->vid, r + 1, reason);
++		return true;
++	}
++	return false;
++}
++
+ /*
+  * Get a reference on a volume record.
+  */
 -- 
 2.43.0
 
