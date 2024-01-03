@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DB58231FD
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF908232AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE457B22E72
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EB281C23D6F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6821C2AF;
-	Wed,  3 Jan 2024 17:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBDD1C29D;
+	Wed,  3 Jan 2024 17:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4JY+0pw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6lBr76U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953D21C296;
-	Wed,  3 Jan 2024 17:01:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E13C433C7;
-	Wed,  3 Jan 2024 17:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156F71BDFB;
+	Wed,  3 Jan 2024 17:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F523C433C7;
+	Wed,  3 Jan 2024 17:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301267;
-	bh=76kPto4apcf6hlcilp4n9G5f13jkFje8uYa+VPya6cU=;
+	s=korg; t=1704301799;
+	bh=KROAdTLUO3ysEQWlctyqGlSejRzkzt+dTnEh6uffDqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4JY+0pwXGisHLShyO0XXFmQ8TMO7X9rA0KvWXJF2zQV5+SfZKqmUZTR3cVYs2vPY
-	 /ht0GKQ89vdENFwu5cqxfhLBbRzIuW8MQD0kCT2qap+BFjruJT4gnlzRNOTo7zhvIQ
-	 L1i1vrf/Z4uEAwxI1TQ6YgYXHui3PfbG5pTMD51E=
+	b=B6lBr76U3qTKqeiuv1vfeAzqw2eXJvr1vmVMkN/oUhtY0GDfwc8PYsm1G790v2uKK
+	 beYStRspaDeu9VU58lFHsG+4xh7oWoOCeBcQ/3WqEpcGOegzIh+xytdugSBW7CaPEP
+	 BXj2eZFAD48ct5Cdwg9yfz5B+IOa67orvoC5tZAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Chaoming <lometsj@live.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 085/100] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+	Wadim Egorov <w.egorov@phytec.de>,
+	Bhavya Kapoor <b-kapoor@ti.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 33/75] iio: adc: ti_am335x_adc: Fix return value check of tiadc_request_dma()
 Date: Wed,  3 Jan 2024 17:55:14 +0100
-Message-ID: <20240103164908.856549185@linuxfoundation.org>
+Message-ID: <20240103164848.179970223@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,61 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Wadim Egorov <w.egorov@phytec.de>
 
-commit d10c77873ba1e9e6b91905018e29e196fd5f863d upstream.
+commit 60576e84c187043cef11f11d015249e71151d35a upstream.
 
-If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
-ksmbd_check_message doesn't validate request buffer it correctly.
-So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
-in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
-of the two sums (Name and CreateContext size) as the offset and length of
-the data area.
+Fix wrong handling of a DMA request where the probing only failed
+if -EPROPE_DEFER was returned. Instead, let us fail if a non -ENODEV
+value is returned. This makes DMAs explicitly optional. Even if the
+DMA request is unsuccessfully, the ADC can still work properly.
+We do also handle the defer probe case by making use of dev_err_probe().
 
-Reported-by: Yang Chaoming <lometsj@live.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+Reviewed-by: Bhavya Kapoor <b-kapoor@ti.com>
+Link: https://lore.kernel.org/r/20230925134427.214556-1-w.egorov@phytec.de
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2misc.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ti_am335x_adc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2misc.c
-+++ b/fs/smb/server/smb2misc.c
-@@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsign
- 		break;
- 	case SMB2_CREATE:
- 	{
-+		unsigned short int name_off =
-+			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
-+		unsigned short int name_len =
-+			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-+
- 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
- 			*off = le32_to_cpu(((struct smb2_create_req *)
- 				hdr)->CreateContextsOffset);
- 			*len = le32_to_cpu(((struct smb2_create_req *)
- 				hdr)->CreateContextsLength);
--			break;
-+			if (!name_len)
-+				break;
-+
-+			if (name_off + name_len < (u64)*off + *len)
-+				break;
- 		}
+--- a/drivers/iio/adc/ti_am335x_adc.c
++++ b/drivers/iio/adc/ti_am335x_adc.c
+@@ -640,8 +640,10 @@ static int tiadc_probe(struct platform_d
+ 	platform_set_drvdata(pdev, indio_dev);
  
--		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
--		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
-+		*off = name_off;
-+		*len = name_len;
- 		break;
- 	}
- 	case SMB2_QUERY_INFO:
+ 	err = tiadc_request_dma(pdev, adc_dev);
+-	if (err && err == -EPROBE_DEFER)
++	if (err && err != -ENODEV) {
++		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
+ 		goto err_dma;
++	}
+ 
+ 	return 0;
+ 
 
 
 
