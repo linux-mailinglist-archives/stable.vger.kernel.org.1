@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCC68232EC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3E88232BA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE3B281FC5
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB65B28568B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88181BDF1;
-	Wed,  3 Jan 2024 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925B71C29D;
+	Wed,  3 Jan 2024 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/Jh7j9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDXCQUw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07C31BDFE;
-	Wed,  3 Jan 2024 17:13:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D3C433C7;
-	Wed,  3 Jan 2024 17:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA581BDF4;
+	Wed,  3 Jan 2024 17:10:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68DAC433C8;
+	Wed,  3 Jan 2024 17:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302014;
-	bh=MOk+YhFlL2hk2ZCCdRxFC9hzwQK3oAynEQT66I5TBZc=;
+	s=korg; t=1704301846;
+	bh=Va40opf8b6JlRcW6OZTxP5GE31VcKt2jmHhUl45IfS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/Jh7j9HsK3hqnLrDhIvBK6jGKhLdCXEAM4vMlQtC1fwiyYYncTpVOU+/ZXwfvyp4
-	 qWk/HQPyXI6Qg/UU5Zm8ooQ5EylV3+X6xeVVNNH76VtoEUN3NAnK2nBfTwqxp0Sewq
-	 J0iKAXePetlvjb9OqJVdY7MCaXHz6xYdeRQGsKuU=
+	b=zDXCQUw9F/MCOrvkvSVxMZ7fNMkHS59W8BiiwJnVcrIZLsrOIF7dwe3cGbDnFOxfR
+	 vKOEmkLMohTpbHKeN2ObELcKWNd2d0FxukAzGr/1OrJ+m9YuVq2/XjPRbI5JoS4Zu/
+	 mkrt4QFcBrv6JzjjYu4lX2NpgFMD5qfcp1wYhrLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/49] ksmbd: no need to wait for binded connection termination at logoff
-Date: Wed,  3 Jan 2024 17:55:26 +0100
-Message-ID: <20240103164835.933166888@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 46/75] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+Date: Wed,  3 Jan 2024 17:55:27 +0100
+Message-ID: <20240103164850.120000123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 67797da8a4b82446d42c52b6ee1419a3100d78ff ]
+commit a2a8aefecbd0f87d6127951cef33b3def8439057 upstream.
 
-The connection could be binded to the existing session for Multichannel.
-session will be destroyed when binded connections are released.
-So no need to wait for that's connection at logoff.
+Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
+the format:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+
+Document the "fsl,ocotp" entry to fix the following schema
+warning:
+
+efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
+from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
+
+Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
+Cc:  <Stable@vger.kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231215111358.316727-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 4b38c3a285f60..b6fa1e285c401 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -167,23 +167,7 @@ void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
+--- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
++++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
+@@ -14,9 +14,11 @@ allOf:
  
- void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
- {
--	struct ksmbd_conn *bind_conn;
--
- 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
--
--	down_read(&conn_list_lock);
--	list_for_each_entry(bind_conn, &conn_list, conns_list) {
--		if (bind_conn == conn)
--			continue;
--
--		if ((bind_conn->binding || xa_load(&bind_conn->sessions, sess_id)) &&
--		    !ksmbd_conn_releasing(bind_conn) &&
--		    atomic_read(&bind_conn->req_running)) {
--			wait_event(bind_conn->req_running_q,
--				atomic_read(&bind_conn->req_running) == 0);
--		}
--	}
--	up_read(&conn_list_lock);
- }
+ properties:
+   compatible:
+-    enum:
+-      - fsl,imx23-ocotp
+-      - fsl,imx28-ocotp
++    items:
++      - enum:
++          - fsl,imx23-ocotp
++          - fsl,imx28-ocotp
++      - const: fsl,ocotp
  
- int ksmbd_conn_write(struct ksmbd_work *work)
--- 
-2.43.0
-
+   "#address-cells":
+     const: 1
+@@ -40,7 +42,7 @@ additionalProperties: false
+ examples:
+   - |
+     ocotp: efuse@8002c000 {
+-        compatible = "fsl,imx28-ocotp";
++        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
+         #address-cells = <1>;
+         #size-cells = <1>;
+         reg = <0x8002c000 0x2000>;
 
 
 
