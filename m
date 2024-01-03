@@ -1,88 +1,107 @@
-Return-Path: <stable+bounces-9233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8020382284E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 07:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 123A682298F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 09:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 556FAB22C4A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 06:19:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714A9B215C2
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 08:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9748B179A7;
-	Wed,  3 Jan 2024 06:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9072C18041;
+	Wed,  3 Jan 2024 08:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QmtqBEIU"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FUWLmozv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319A517998;
-	Wed,  3 Jan 2024 06:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-5ea3a721024so14633667b3.1;
-        Tue, 02 Jan 2024 22:19:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704262740; x=1704867540; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vdZd9FKU5uknJ79LRTb9iEU//CciNHZyx0SVdXO9d9I=;
-        b=QmtqBEIUhQ5gpBqut7QBnfq+AX0oejSq7yTsu3zEzOKSGdEEXYNv985p//kQdW/s5u
-         7iZUTPQ8KapbL0dpfRKXbUr+4YKW3gkRMXDeeusoSP8vhTo3quZ5R6uEYCtllIbm94Eq
-         sIYERrd4LM86sMPoLrlDgM/DyZsUzy+pu5fftrLeK7ffKVdapl6cYXjdBlLqJaAgD3EN
-         7MGKCste5Z1cwEYz5qiKgJ+MFEL/5beCgmWPnrNrxEeujubHQSnJfqZz3b+D/JkrP580
-         w+CYCyBhTQV0baymWTlijSPTv+JQN7lii4cF+4IAiQ//oOuIP9d0JpCt75EO4UQ3qIoN
-         uiCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704262740; x=1704867540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vdZd9FKU5uknJ79LRTb9iEU//CciNHZyx0SVdXO9d9I=;
-        b=KH+N9CLY4CczMqSmQVvOCAZD+Ib0U/aJTl9kqfpqiU047+7qRPbqP5mpja6UGICYUr
-         cBZX5Xg+FpPEmazRazKhI+dLQzXgemRhrkfXJwlwFFVWKRP+JWpr8DtjxAwX7nZu5tSh
-         eIfKIzXcfTQdqUKn62Kss288X5XMgeaC2HoR64jBVkRKZBpvqgqbtvm+eKu/oJwxExoE
-         hMNRp3aB+SD1AQ00Q8hCmmN2iu0N9c0yqE8LeehJVrvS3IvYIZIsW+pr5SJjTBSvAGMv
-         ueqm3x/RHbucIFIe4c4m68nqDo0v06qLYsc94U26/AKIUPytQDKzEslFWFlk9bE9BDOQ
-         Llxg==
-X-Gm-Message-State: AOJu0YwDXNaDZcwiHR6AcfFMi01QmbZbEU00fKh3Y6ZQc6r8U59ER76g
-	d9z4Gozh3AkHu5ndFULFrK1vqHIQ9a19B9g8gioIMXeldqY=
-X-Google-Smtp-Source: AGHT+IEIXeu9HSBQzFHxVZ9hQpzXoBwdwRe2qF7QTxxcLb7knkOrHT0xgO+k6e51XcOd2spumACkVhg4NcR3IIYGUNw=
-X-Received: by 2002:a25:734b:0:b0:dbd:c479:b6b7 with SMTP id
- o72-20020a25734b000000b00dbdc479b6b7mr16999725ybc.0.1704262740227; Tue, 02
- Jan 2024 22:19:00 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D2B18032;
+	Wed,  3 Jan 2024 08:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7FAA7E000A;
+	Wed,  3 Jan 2024 08:40:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1704271219;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mbyKDE6LxBB4pt4rAudS3Wo2lvqVspXh6sWUjAjOt3o=;
+	b=FUWLmozv1lOWyRPl125r4yShizx8ZyjVEHwaVOariUJ7aXLVKDjpme/ubSiIwoqsb3nsdJ
+	MtbyWBEq5ox8YUvWRRiRa3icEdGyTgTkPXYPRkyvIgUl96BAAf0KVyMtjC2mWFeqHxrTtD
+	TvwTraBrLZvEI27cbHvuio22KdPXODO98rMo90wSFiN1ojp6FTmmhlN2p7B8odtybhjuyK
+	ZV1vB3xRuVxiz47x6T+5D9MtRpNpQrzFKa4CsP9E5gO2G6mOdjPkpnsaxzPOfPnvojuO/i
+	FvciG0Xd49tOV6gjichyIgNN5LHpMPldNPy09HTevxOnQHYt1tNsPXzUs7yybA==
+Date: Wed, 3 Jan 2024 09:40:40 +0100 (CET)
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Florian Fainelli <f.fainelli@gmail.com>
+cc: Romain Gantois <romain.gantois@bootlin.com>, 
+    Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+    Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, 
+    Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+    Miquel Raynal <miquel.raynal@bootlin.com>, 
+    Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+    Sylvain Girard <sylvain.girard@se.com>, 
+    Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+    Pascal EBERHARD <pascal.eberhard@se.com>, 
+    Richard Tresidder <rtresidd@electromag.com.au>, 
+    Linus Walleij <linus.walleij@linaro.org>, netdev@vger.kernel.org, 
+    linux-stm32@st-md-mailman.stormreply.com, 
+    linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v2 1/1] net: stmmac: Prevent DSA tags from breaking
+ COE on stmmac
+In-Reply-To: <e2250240-db19-4cb6-93ca-2384a382cdd5@gmail.com>
+Message-ID: <753d4eab-5699-91e3-05a4-d0e03f7052e6@bootlin.com>
+References: <20240102162718.268271-1-romain.gantois@bootlin.com> <20240102162718.268271-2-romain.gantois@bootlin.com> <e2250240-db19-4cb6-93ca-2384a382cdd5@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
- <d4b227de-d609-aef2-888b-203dbcf06707@landley.net> <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
- <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com> <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
- <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com> <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
- <CAPnZJGBdwSBeKUK-An8n-eDJdrrA-rnKPMX16cFDfwx8wxQiwA@mail.gmail.com> <93564d28-5c56-6c8e-3052-0171c2bef43b@landley.net>
-In-Reply-To: <93564d28-5c56-6c8e-3052-0171c2bef43b@landley.net>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Wed, 3 Jan 2024 09:18:24 +0300
-Message-ID: <CAPnZJGBDK=61U15VTnnRzSXxxhPMutrjqMX9-Oq8CKZaqOo0RA@mail.gmail.com>
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
-To: Rob Landley <rob@landley.net>
-Cc: Stefan Berger <stefanb@linux.ibm.com>, gregkh@linuxfoundation.org, 
-	initramfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, zohar@linux.ibm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+X-GND-Sasl: romain.gantois@bootlin.com
 
-On Mon, Jan 1, 2024 at 8:42=E2=80=AFPM Rob Landley <rob@landley.net> wrote:
-> You all know your use case(s) better than I do, and I may not
-> have understood your attempt to communicate it to me.
-I don't have any personal use cases at all. I proposed rdrootfstype=3D
-by aesthetic reasons.
+Hi Florian,
 
---=20
-Askar Safin
+On Tue, 2 Jan 2024, Florian Fainelli wrote:
+
+...
+> > Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+> > Closes:
+> > https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
+> > Reported-by: Romain Gantois <romain.gantois@bootlin.com>
+> > Closes:
+> > https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
+> 
+> Fairly sure those should be Link: and Closes: should be used for bug tracker
+> entries.
+
+ACK
+
+> > +	return (proto == htons(ETH_P_IP)) || (proto == htons(ETH_P_IPV6)) ||
+> > +		(proto == htons(ETH_P_8021Q));
+> 
+> Do you need to include ETH_P_8021AD in that list as well or is not stmmac
+> capable of checksuming beyond a single VLAN tag?
+
+The datasheet for my Ethernet controller doesn't mention 802.1ad tag 
+handling and I ran some loopback tests that showed that this controller doesn't 
+recognize 802.1ad frames as vlan frames. I also haven't seen anything in the 
+stmmac driver that suggests that 802.1ad offloading is supported. Maybe the 
+stmmac maintainers could weigh in on this?
+
+Best Regards,
+
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
