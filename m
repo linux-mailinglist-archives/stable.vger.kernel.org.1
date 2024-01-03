@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B843B8231FB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1FA5823280
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AA7BB2450F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7322BB2356F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5A61C2A9;
-	Wed,  3 Jan 2024 17:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87721C280;
+	Wed,  3 Jan 2024 17:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTjDii/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2A4a+CV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53061C29F;
-	Wed,  3 Jan 2024 17:01:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464E0C433C7;
-	Wed,  3 Jan 2024 17:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C241BDF1;
+	Wed,  3 Jan 2024 17:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7733C433C7;
+	Wed,  3 Jan 2024 17:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301263;
-	bh=jCRqCEd3uw8C3Frvc6C02muV4II/JO1aYKeBG/EA7Mg=;
+	s=korg; t=1704301677;
+	bh=m3efA7YfqUcQrbPdhhJiyAsA65OQsjZjOcJW2k5bEWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tTjDii/5Zy7BIl4/M6Sb/GGBzkaCJINNPe9KdkOY9E5O+6CLvvL5XtFHFzn8Org4M
-	 R+2NmCJnLdGxUPl9uUA+vEBJmKyXx6fOSiOXYCHjQpwmqYm+hIe8O0aLP7a+Us+HOH
-	 9CevhYtFNV94V5w16g5F4iiAnw/xjrUUnxvbbxKE=
+	b=K2A4a+CVqbi0GoFVeMi8w+EoKCQlSyW3F5hbH8TtC+8ACIWm1Ex9+cbq5L2tPwA3l
+	 qje5zUf9zKYAjQ9PSspu0DRrnh/qGTMDfM9NSjxmnkxcVsFFlUjwYXAtQ+fOA3B0Hh
+	 977wnbIdyIRPQMXTO8KC99/JIkjN63A2gKpbJ40Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/100] block: renumber QUEUE_FLAG_HW_WC
-Date: Wed,  3 Jan 2024 17:55:13 +0100
-Message-ID: <20240103164908.719444751@linuxfoundation.org>
+Subject: [PATCH 5.15 66/95] ksmbd: have a dependency on cifs ARC4
+Date: Wed,  3 Jan 2024 17:55:14 +0100
+Message-ID: <20240103164903.899925729@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 02d374f3418df577c850f0cd45c3da9245ead547 ]
+Omitted the change that has a dependency on cifs ARC4 from backporting
+commit f9929ef6a2a5("ksmbd: add support for key exchange").
+This patch make ksmbd have a dependeny on cifs ARC4.
 
-For the QUEUE_FLAG_HW_WC to actually work, it needs to have a separate
-number from QUEUE_FLAG_FUA, doh.
-
-Fixes: 43c9835b144c ("block: don't allow enabling a cache on devices that don't support it")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231226081524.180289-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: c5049d2d73b2 ("ksmbd: add support for key exchange")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 57674b3c58774..07a7eeef47d39 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -565,7 +565,7 @@ struct request_queue {
- #define QUEUE_FLAG_NOXMERGES	9	/* No extended merges */
- #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
- #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
--#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
-+#define QUEUE_FLAG_HW_WC	13	/* Write back caching supported */
- #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
- #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
- #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
+diff --git a/fs/Kconfig b/fs/Kconfig
+index a6313a969bc5f..971339ecc1a2b 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -369,8 +369,8 @@ source "fs/ksmbd/Kconfig"
+ 
+ config SMBFS_COMMON
+ 	tristate
+-	default y if CIFS=y
+-	default m if CIFS=m
++	default y if CIFS=y || SMB_SERVER=y
++	default m if CIFS=m || SMB_SERVER=m
+ 
+ source "fs/coda/Kconfig"
+ source "fs/afs/Kconfig"
 -- 
 2.43.0
 
