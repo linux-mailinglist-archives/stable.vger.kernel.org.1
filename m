@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD73A823234
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96CA8231B1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E3C1F24C7B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9EAC1C234CC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF5B1C29F;
-	Wed,  3 Jan 2024 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8081BDFA;
+	Wed,  3 Jan 2024 16:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgIUhvrt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm+FwADC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C471BDF4;
-	Wed,  3 Jan 2024 17:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0397AC433C7;
-	Wed,  3 Jan 2024 17:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9F31C283;
+	Wed,  3 Jan 2024 16:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63305C433C8;
+	Wed,  3 Jan 2024 16:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301423;
-	bh=QMXvUTq1/OKdbql+VbJQ2UOeUfIqZhVEhBkQ0hbvpDQ=;
+	s=korg; t=1704301051;
+	bh=/o0t0KvLGm4hOQ8/iBEtBSKochMl/OITxABXwO7MDb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgIUhvrtt6FQY4DjOjzLrdRxl3aux6f/qP8TNhdd9qDGlDROj4rTBgntaSZJAVvIL
-	 JaKcbNTRP/nhPVudPlkzi9wzu2IelPEED5nfTyMaqdrmKMpvLBiDujhgqcW1PkrDF+
-	 3WJDoiUcilXKk8PM7yEf+laHh1yzrBWdf7UP/WUY=
+	b=zm+FwADCTOoSxCpgQKRm2LB1kRBAXCrj9xrBVy+lEnYFjRHi9jZhVr09y+UzUJZry
+	 jmgDUSRqk4ydHfDj3N/6SctPlobJKMqlATH6YIZY8tEvluiT3zgbLLnZLQ99yA7cWh
+	 9KO/rb/0XYKTPqf+aZ504b/thBQULq5nHh12RI3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/95] wifi: mac80211: mesh_plink: fix matches_local logic
+Subject: [PATCH 6.1 025/100] ksmbd: use kzalloc() instead of __GFP_ZERO
 Date: Wed,  3 Jan 2024 17:54:14 +0100
-Message-ID: <20240103164854.979979410@linuxfoundation.org>
+Message-ID: <20240103164859.819980807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +55,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 8c386b166e2517cf3a123018e77941ec22625d0f ]
+[ Upstream commit f87d4f85f43f0d4b12ef64b015478d8053e1a33e ]
 
-During refactoring the "else" here got lost, add it back.
+Use kzalloc() instead of __GFP_ZERO.
 
-Fixes: c99a89edb106 ("mac80211: factor out plink event gathering")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231211085121.795480fa0e0b.I017d501196a5bbdcd9afd33338d342d6fe1edd79@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_plink.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/server/smb_common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index a829470dd59ed..44ce979a9fd54 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -1050,8 +1050,8 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
- 	case WLAN_SP_MESH_PEERING_OPEN:
- 		if (!matches_local)
- 			event = OPN_RJCT;
--		if (!mesh_plink_free_count(sdata) ||
--		    (sta->mesh->plid && sta->mesh->plid != plid))
-+		else if (!mesh_plink_free_count(sdata) ||
-+			 (sta->mesh->plid && sta->mesh->plid != plid))
- 			event = OPN_IGNR;
- 		else
- 			event = OPN_ACPT;
-@@ -1059,9 +1059,9 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
- 	case WLAN_SP_MESH_PEERING_CONFIRM:
- 		if (!matches_local)
- 			event = CNF_RJCT;
--		if (!mesh_plink_free_count(sdata) ||
--		    sta->mesh->llid != llid ||
--		    (sta->mesh->plid && sta->mesh->plid != plid))
-+		else if (!mesh_plink_free_count(sdata) ||
-+			 sta->mesh->llid != llid ||
-+			 (sta->mesh->plid && sta->mesh->plid != plid))
- 			event = CNF_IGNR;
- 		else
- 			event = CNF_ACPT;
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index adc41b57b84c6..62c33d3357fe1 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -359,8 +359,8 @@ static int smb1_check_user_session(struct ksmbd_work *work)
+  */
+ static int smb1_allocate_rsp_buf(struct ksmbd_work *work)
+ {
+-	work->response_buf = kmalloc(MAX_CIFS_SMALL_BUFFER_SIZE,
+-			GFP_KERNEL | __GFP_ZERO);
++	work->response_buf = kzalloc(MAX_CIFS_SMALL_BUFFER_SIZE,
++			GFP_KERNEL);
+ 	work->response_sz = MAX_CIFS_SMALL_BUFFER_SIZE;
+ 
+ 	if (!work->response_buf) {
 -- 
 2.43.0
 
