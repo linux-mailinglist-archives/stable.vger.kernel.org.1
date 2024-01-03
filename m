@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7D28232DB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E26AF8232FF
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63BF31C238B1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69CBBB231AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB491C284;
-	Wed,  3 Jan 2024 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281C91C29F;
+	Wed,  3 Jan 2024 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiBUnodl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfbIDSjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159D11BDEC;
-	Wed,  3 Jan 2024 17:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8336FC433C7;
-	Wed,  3 Jan 2024 17:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B6F1C294;
+	Wed,  3 Jan 2024 17:14:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D16C433CB;
+	Wed,  3 Jan 2024 17:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301955;
-	bh=u6O67X+87VQdwts7KXYUaSUdQv2WRoShggxG5zYbB2c=;
+	s=korg; t=1704302068;
+	bh=KHK38ZtqLGsFFqjqIUq7VwjguTMsjGq+j1EUUgR8uqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oiBUnodltkRlrGIw3CqcSFd97sj7ikfQiFZ4wDDSevttr1fpDtJhJBG7P4FUwlXBN
-	 LfcDL6ur5PEuW6y9VZFGQaSv+a/VdD5pXtr0HxuSIJ7ihAvE++swqskwHrWa1KCGyI
-	 iAmmyXjJfBNacsLrJnDkV44/uS4+/KDeE1MR0qP8=
+	b=vfbIDSjNbhu6D6NqSR0acYrN4V/YEkb439qiqA9WlDmk2uJ3L83vZbU8y2ZicgY0f
+	 D6CgDfyn4OC/uGD0I9hFPR+LvYnqx+cPkcRA7pz2ob0vaXUTdURit4yLoWChZZb2aB
+	 kbn6VhU3vX/3MHCa7MAEOw/noXHUjc/3tihoVq9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	j51569436@gmail.com,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 58/75] smb: client: fix OOB in smbCalcSize()
+Subject: [PATCH 6.6 19/49] ksmbd: avoid duplicate opinfo_put() call on error of smb21_lease_break_ack()
 Date: Wed,  3 Jan 2024 17:55:39 +0100
-Message-ID: <20240103164851.896520883@linuxfoundation.org>
+Message-ID: <20240103164837.979932773@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,86 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b35858b3786ddbb56e1c35138ba25d6adf8d0bef ]
+[ Upstream commit 658609d9a618d8881bf549b5893c0ba8fcff4526 ]
 
-Validate @smb->WordCount to avoid reading off the end of @smb and thus
-causing the following KASAN splat:
+opinfo_put() could be called twice on error of smb21_lease_break_ack().
+It will cause UAF issue if opinfo is referenced on other places.
 
-  BUG: KASAN: slab-out-of-bounds in smbCalcSize+0x32/0x40 [cifs]
-  Read of size 2 at addr ffff88801c024ec5 by task cifsd/1328
-
-  CPU: 1 PID: 1328 Comm: cifsd Not tainted 6.7.0-rc5 #9
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xd8/0x110
-   ? smbCalcSize+0x32/0x40 [cifs]
-   ? smbCalcSize+0x32/0x40 [cifs]
-   kasan_check_range+0x105/0x1b0
-   smbCalcSize+0x32/0x40 [cifs]
-   checkSMB+0x162/0x370 [cifs]
-   ? __pfx_checkSMB+0x10/0x10 [cifs]
-   cifs_handle_standard+0xbc/0x2f0 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_demultiplex_thread+0xed1/0x1360 [cifs]
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? __pfx_lock_release+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? mark_held_locks+0x1a/0x90
-   ? lockdep_hardirqs_on_prepare+0x136/0x210
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? __kthread_parkme+0xce/0xf0
-   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
-   kthread+0x18d/0x1d0
-   ? kthread+0xdb/0x1d0
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork+0x34/0x60
-   ? __pfx_kthread+0x10/0x10
-   ret_from_fork_asm+0x1b/0x30
-   </TASK>
-
-This fixes CVE-2023-6606.
-
-Reported-by: j51569436@gmail.com
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218218
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/misc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/server/smb2pdu.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
-index 9044b0fca9a3d..2d46018b02839 100644
---- a/fs/cifs/misc.c
-+++ b/fs/cifs/misc.c
-@@ -353,6 +353,10 @@ checkSMB(char *buf, unsigned int total_read, struct TCP_Server_Info *server)
- 			cifs_dbg(VFS, "Length less than smb header size\n");
- 		}
- 		return -EIO;
-+	} else if (total_read < sizeof(*smb) + 2 * smb->WordCount) {
-+		cifs_dbg(VFS, "%s: can't read BCC due to invalid WordCount(%u)\n",
-+			 __func__, smb->WordCount);
-+		return -EIO;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index cbd5c5572217d..fbd708bb4a5b2 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -8219,6 +8219,11 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
+ 			    le32_to_cpu(req->LeaseState));
  	}
  
- 	/* otherwise, there is enough to get to the BCC */
++	if (ret < 0) {
++		rsp->hdr.Status = err;
++		goto err_out;
++	}
++
+ 	lease_state = lease->state;
+ 	opinfo->op_state = OPLOCK_STATE_NONE;
+ 	wake_up_interruptible_all(&opinfo->oplock_q);
+@@ -8226,11 +8231,6 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
+ 	wake_up_interruptible_all(&opinfo->oplock_brk);
+ 	opinfo_put(opinfo);
+ 
+-	if (ret < 0) {
+-		rsp->hdr.Status = err;
+-		goto err_out;
+-	}
+-
+ 	rsp->StructureSize = cpu_to_le16(36);
+ 	rsp->Reserved = 0;
+ 	rsp->Flags = 0;
 -- 
 2.43.0
 
