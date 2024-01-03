@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A6688232EF
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26DAB823273
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25F71C23C52
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEF8F1F24D0A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FB11C288;
-	Wed,  3 Jan 2024 17:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540481C29D;
+	Wed,  3 Jan 2024 17:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGBIwnqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yw0gOrlf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D6B1BDFE;
-	Wed,  3 Jan 2024 17:13:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FDEC433C7;
-	Wed,  3 Jan 2024 17:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9711C294;
+	Wed,  3 Jan 2024 17:07:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77275C433C7;
+	Wed,  3 Jan 2024 17:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302023;
-	bh=mUGcUaShMupeI4BiFOVKdXXZXPfga/lKQ7YQLbcqG2c=;
+	s=korg; t=1704301634;
+	bh=t0liVBdPmng35TdNoGIzS+p6jPmoKQg+yh9V9ie9YXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JGBIwnqfbyNw2RaxmrRujSFlzaJhoaZvAIbo12SqarelHx6H8Y7/oxIZTDXhgIhx3
-	 CKYA0BMmAUbYyNrYKFtdckrFOutH8Zzf+wabKT3waLJxdhYDLN25Gva4AxX74tFSNI
-	 srnPtnl00Idn4mTsgpEhzY0fb0ebmFgTaqUY0pB8=
+	b=Yw0gOrlfa53MtL/WUbGsQFFL+r7WvtJDzJv8AhdN+0wkhWSs/8Kc0B8jtEe9b6ciV
+	 RnJ4tUJ13aajUcwt3wF30ftZOmqrfZMec26nNPUGw8Qqe3lMhhdozzGPVxjNBC2z3C
+	 8ZKUDbp4a01GShQnwbvyQjyie40ek3uGGwzVzLas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/49] ksmbd: separately allocate ci per dentry
+Subject: [PATCH 5.15 81/95] spi: Introduce spi_get_device_match_data() helper
 Date: Wed,  3 Jan 2024 17:55:29 +0100
-Message-ID: <20240103164836.426657733@linuxfoundation.org>
+Message-ID: <20240103164906.216472937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,183 +53,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4274a9dc6aeb9fea66bffba15697a35ae8983b6a ]
+[ Upstream commit aea672d054a21782ed8450c75febb6ba3c208ca4 ]
 
-xfstests generic/002 test fail when enabling smb2 leases feature.
-This test create hard link file, but removeal failed.
-ci has a file open count to count file open through the smb client,
-but in the case of hard link files, The allocation of ci per inode
-cause incorrectly open count for file deletion. This patch allocate
-ci per dentry to counts open counts for hard link.
+The proposed spi_get_device_match_data() helper is for retrieving
+a driver data associated with the ID in an ID table. First, it tries
+to get driver data of the device enumerated by firmware interface
+(usually Device Tree or ACPI). If none is found it falls back to
+the SPI ID table matching.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20221020195421.10482-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c   |  2 +-
- fs/smb/server/vfs.c       |  2 +-
- fs/smb/server/vfs_cache.c | 33 +++++++++++++--------------------
- fs/smb/server/vfs_cache.h |  6 +++---
- 4 files changed, 18 insertions(+), 25 deletions(-)
+ drivers/spi/spi.c       | 12 ++++++++++++
+ include/linux/spi/spi.h |  3 +++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 2b248d45d40ae..28b61dad27498 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3039,7 +3039,7 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 	}
- 
--	rc = ksmbd_query_inode_status(d_inode(path.dentry->d_parent));
-+	rc = ksmbd_query_inode_status(path.dentry->d_parent);
- 	if (rc == KSMBD_INODE_STATUS_PENDING_DELETE) {
- 		rc = -EBUSY;
- 		goto err_out;
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 533257b46fc17..9091dcd7a3102 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -719,7 +719,7 @@ int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
- 		goto out3;
- 	}
- 
--	parent_fp = ksmbd_lookup_fd_inode(d_inode(old_child->d_parent));
-+	parent_fp = ksmbd_lookup_fd_inode(old_child->d_parent);
- 	if (parent_fp) {
- 		if (parent_fp->daccess & FILE_DELETE_LE) {
- 			pr_err("parent dir is opened with delete access\n");
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index c91eac6514dd9..ddf233994ddbb 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -66,14 +66,14 @@ static unsigned long inode_hash(struct super_block *sb, unsigned long hashval)
- 	return tmp & inode_hash_mask;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 06dd1be54925e..d4b186a35bb22 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -335,6 +335,18 @@ const struct spi_device_id *spi_get_device_id(const struct spi_device *sdev)
  }
+ EXPORT_SYMBOL_GPL(spi_get_device_id);
  
--static struct ksmbd_inode *__ksmbd_inode_lookup(struct inode *inode)
-+static struct ksmbd_inode *__ksmbd_inode_lookup(struct dentry *de)
++const void *spi_get_device_match_data(const struct spi_device *sdev)
++{
++	const void *match;
++
++	match = device_get_match_data(&sdev->dev);
++	if (match)
++		return match;
++
++	return (const void *)spi_get_device_id(sdev)->driver_data;
++}
++EXPORT_SYMBOL_GPL(spi_get_device_match_data);
++
+ static int spi_match_device(struct device *dev, struct device_driver *drv)
  {
- 	struct hlist_head *head = inode_hashtable +
--		inode_hash(inode->i_sb, inode->i_ino);
-+		inode_hash(d_inode(de)->i_sb, (unsigned long)de);
- 	struct ksmbd_inode *ci = NULL, *ret_ci = NULL;
+ 	const struct spi_device	*spi = to_spi_device(dev);
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 6b0b686f6f904..9ab3dab9568ae 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1499,6 +1499,9 @@ extern void spi_unregister_device(struct spi_device *spi);
+ extern const struct spi_device_id *
+ spi_get_device_id(const struct spi_device *sdev);
  
- 	hlist_for_each_entry(ci, head, m_hash) {
--		if (ci->m_inode == inode) {
-+		if (ci->m_de == de) {
- 			if (atomic_inc_not_zero(&ci->m_count))
- 				ret_ci = ci;
- 			break;
-@@ -84,26 +84,16 @@ static struct ksmbd_inode *__ksmbd_inode_lookup(struct inode *inode)
- 
- static struct ksmbd_inode *ksmbd_inode_lookup(struct ksmbd_file *fp)
++extern const void *
++spi_get_device_match_data(const struct spi_device *sdev);
++
+ static inline bool
+ spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
  {
--	return __ksmbd_inode_lookup(file_inode(fp->filp));
-+	return __ksmbd_inode_lookup(fp->filp->f_path.dentry);
- }
- 
--static struct ksmbd_inode *ksmbd_inode_lookup_by_vfsinode(struct inode *inode)
--{
--	struct ksmbd_inode *ci;
--
--	read_lock(&inode_hash_lock);
--	ci = __ksmbd_inode_lookup(inode);
--	read_unlock(&inode_hash_lock);
--	return ci;
--}
--
--int ksmbd_query_inode_status(struct inode *inode)
-+int ksmbd_query_inode_status(struct dentry *dentry)
- {
- 	struct ksmbd_inode *ci;
- 	int ret = KSMBD_INODE_STATUS_UNKNOWN;
- 
- 	read_lock(&inode_hash_lock);
--	ci = __ksmbd_inode_lookup(inode);
-+	ci = __ksmbd_inode_lookup(dentry);
- 	if (ci) {
- 		ret = KSMBD_INODE_STATUS_OK;
- 		if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
-@@ -143,7 +133,7 @@ void ksmbd_fd_set_delete_on_close(struct ksmbd_file *fp,
- static void ksmbd_inode_hash(struct ksmbd_inode *ci)
- {
- 	struct hlist_head *b = inode_hashtable +
--		inode_hash(ci->m_inode->i_sb, ci->m_inode->i_ino);
-+		inode_hash(d_inode(ci->m_de)->i_sb, (unsigned long)ci->m_de);
- 
- 	hlist_add_head(&ci->m_hash, b);
- }
-@@ -157,7 +147,6 @@ static void ksmbd_inode_unhash(struct ksmbd_inode *ci)
- 
- static int ksmbd_inode_init(struct ksmbd_inode *ci, struct ksmbd_file *fp)
- {
--	ci->m_inode = file_inode(fp->filp);
- 	atomic_set(&ci->m_count, 1);
- 	atomic_set(&ci->op_count, 0);
- 	atomic_set(&ci->sop_count, 0);
-@@ -166,6 +155,7 @@ static int ksmbd_inode_init(struct ksmbd_inode *ci, struct ksmbd_file *fp)
- 	INIT_LIST_HEAD(&ci->m_fp_list);
- 	INIT_LIST_HEAD(&ci->m_op_list);
- 	rwlock_init(&ci->m_lock);
-+	ci->m_de = fp->filp->f_path.dentry;
- 	return 0;
- }
- 
-@@ -488,12 +478,15 @@ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid)
- 	return fp;
- }
- 
--struct ksmbd_file *ksmbd_lookup_fd_inode(struct inode *inode)
-+struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry)
- {
- 	struct ksmbd_file	*lfp;
- 	struct ksmbd_inode	*ci;
-+	struct inode		*inode = d_inode(dentry);
- 
--	ci = ksmbd_inode_lookup_by_vfsinode(inode);
-+	read_lock(&inode_hash_lock);
-+	ci = __ksmbd_inode_lookup(dentry);
-+	read_unlock(&inode_hash_lock);
- 	if (!ci)
- 		return NULL;
- 
-diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
-index 03d0bf941216f..8325cf4527c46 100644
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -51,7 +51,7 @@ struct ksmbd_inode {
- 	atomic_t			op_count;
- 	/* opinfo count for streams */
- 	atomic_t			sop_count;
--	struct inode			*m_inode;
-+	struct dentry			*m_de;
- 	unsigned int			m_flags;
- 	struct hlist_node		m_hash;
- 	struct list_head		m_fp_list;
-@@ -140,7 +140,7 @@ struct ksmbd_file *ksmbd_lookup_fd_slow(struct ksmbd_work *work, u64 id,
- void ksmbd_fd_put(struct ksmbd_work *work, struct ksmbd_file *fp);
- struct ksmbd_file *ksmbd_lookup_durable_fd(unsigned long long id);
- struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
--struct ksmbd_file *ksmbd_lookup_fd_inode(struct inode *inode);
-+struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
- unsigned int ksmbd_open_durable_fd(struct ksmbd_file *fp);
- struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp);
- void ksmbd_close_tree_conn_fds(struct ksmbd_work *work);
-@@ -164,7 +164,7 @@ enum KSMBD_INODE_STATUS {
- 	KSMBD_INODE_STATUS_PENDING_DELETE,
- };
- 
--int ksmbd_query_inode_status(struct inode *inode);
-+int ksmbd_query_inode_status(struct dentry *dentry);
- bool ksmbd_inode_pending_delete(struct ksmbd_file *fp);
- void ksmbd_set_inode_pending_delete(struct ksmbd_file *fp);
- void ksmbd_clear_inode_pending_delete(struct ksmbd_file *fp);
 -- 
 2.43.0
 
