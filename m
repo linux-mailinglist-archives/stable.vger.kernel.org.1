@@ -1,130 +1,110 @@
-Return-Path: <stable+bounces-9617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1444823743
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 22:50:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E45582376C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 23:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205361C2435B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 21:50:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB2F1287060
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 22:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40BF1DA27;
-	Wed,  3 Jan 2024 21:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F541DA34;
+	Wed,  3 Jan 2024 22:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="E+QhrLv6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRdz+HzB"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07391DA23;
-	Wed,  3 Jan 2024 21:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 403LcQHL016677;
-	Wed, 3 Jan 2024 21:49:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=uHNnF/bZ94LqrAIEs8WqP6zxB4HkEIdKigzoxp3FnMs=; b=E+
-	QhrLv61P/gb9vrQFMdMoQ75FQns6tuA4gOqTCkEb8LgZ2jBTGN3NL1hgalFe3R1q
-	wHqgvy+xSpWbFqrC5YDCqlLZ4MAEdTajbYJ/wLGVqEf9YoBytd/AjmN2nMaHsY5N
-	DqQAuXfapmYvUArEKuLQFG4e7En0zHTxMAnX4YBw/wzVPu3OCL2udExg+48SkUgN
-	7tueCNbWpO1XwAQmaT9q0B4Nu/yC0UCGUHDJzQwQVT+o4cGfcnkmEkmfH47WFzDs
-	8GSv0KfqdafubHDHu7Pv37E0pRlIYRrtKe0CIWyCux/2t9dB6VDEyyhpS3keWCA9
-	dqipJh4/Syf/plxvoZyQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vdchnge8x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jan 2024 21:49:56 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 403LntAI026012
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 3 Jan 2024 21:49:56 GMT
-Received: from hu-wcheng-lv.qualcomm.com (10.49.16.6) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 3 Jan 2024 13:49:55 -0800
-From: Wesley Cheng <quic_wcheng@quicinc.com>
-To: <gregkh@linuxfoundation.org>, <Thinh.Nguyen@synopsys.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        Wesley Cheng
-	<quic_wcheng@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
-Date: Wed, 3 Jan 2024 13:49:46 -0800
-Message-ID: <20240103214946.2596-1-quic_wcheng@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21941DA30;
+	Wed,  3 Jan 2024 22:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6d99980b2e0so7456527b3a.2;
+        Wed, 03 Jan 2024 14:04:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704319471; x=1704924271; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=O7iewc9p+e5BRzaH3h+6ugVYrcUX2L5YJYU1XW/tpRA=;
+        b=hRdz+HzB7tMFBLxG06bOambmGe31aeJxWp8mkXdNfEqQLF2ZQPq+iVTUrtKKCQKRXo
+         4rwO7ucZhRFmtYO+OMA8T28TbEsz1EVeGjJo3uYC89/CVcH72rqwUm6Q8s5q1hvoJ/zL
+         1Mu2t2McQi0vNh3CynEpGgWazmsNkNTM/hnxO6Z4FVj10e0fSQERoQzlfGs4XShCzbv+
+         +ecp4AafQ/qZQlx4nUnia+u4e572+ruqRvgECwxIjCK+H5ENST/aJWxcC16vl/EPwPp5
+         h+NyvsV1kl5uJDBy2xqAnL+yAKDOHNgryDQCWrK/sWGGkqBabb54YTucLJUWrovlN9Vw
+         XWNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704319471; x=1704924271;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O7iewc9p+e5BRzaH3h+6ugVYrcUX2L5YJYU1XW/tpRA=;
+        b=Ue0pXw7kjBLiSDBtK0hXUjMDhNDJfeauSj1z7JXdXDaIbeVymHzNyxWwXghTVGecZJ
+         XQtpMk6xP5AetaOGJ4OhhWCv5hJSw3svKHKAiCYr6qSHUl5qBhkwLdmtZMYfGIyEmamY
+         H9ZxeEBGNdcg2iqrvniIVTJHDVI0Rcahb26TedguRx8LaPAMF9+wA18sDhzipFCbnyG7
+         Mwe5KdNMJH8uSwy6NeAM8Y2/RmgMKjFGSLte06Fmf8ZqlEjMwT+1utzCjk/11oS9tbIH
+         +LCzX1Cah4ksvy7cPmaMJqZbmPkcFK1aPQjI5x7bY1wWbzCBy56Ddait8DHJWBG+DJ4C
+         HPoQ==
+X-Gm-Message-State: AOJu0YzG6P8L0CWIkwDqjpb43IZY7P/MeAqPFS69kfQqnA3Xx3ddu9NU
+	Yp5DWhTRMTqM5ZXQHxvND0k=
+X-Google-Smtp-Source: AGHT+IGFAU/chI/igQ3rX6cuspXRekK0D0+GMOnXBB/fR5lCzwlRPqDmltazxxBLKaSkiMUBVHC+1A==
+X-Received: by 2002:a05:6a00:3989:b0:6d9:e91c:a5bc with SMTP id fi9-20020a056a00398900b006d9e91ca5bcmr13608036pfb.38.1704319470948;
+        Wed, 03 Jan 2024 14:04:30 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id u36-20020a056a0009a400b006d9b3b38525sm17876588pfg.161.2024.01.03.14.04.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 03 Jan 2024 14:04:29 -0800 (PST)
+Message-ID: <c0525f2a-3871-4500-b941-a35e1224a4f6@gmail.com>
+Date: Wed, 3 Jan 2024 14:04:28 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: YFXwFkLpgfQ5ub3fwda2QtO2dozwio8I
-X-Proofpoint-GUID: YFXwFkLpgfQ5ub3fwda2QtO2dozwio8I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 malwarescore=0 adultscore=0 clxscore=1011
- suspectscore=0 impostorscore=0 mlxscore=0 spamscore=0 bulkscore=0
- mlxlogscore=906 lowpriorityscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2311290000 definitions=main-2401030176
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240103164834.970234661@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+On 1/3/24 08:55, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.10 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
----
-changes from v1:
-- CC'ed stable
-
- drivers/usb/dwc3/gadget.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 858fe4c299b7..de6056277f94 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3973,6 +3973,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
- 
- 	dwc3_ep0_reset_state(dwc);
-+
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
- }
- 
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
 
