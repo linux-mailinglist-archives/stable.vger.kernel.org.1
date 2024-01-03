@@ -1,103 +1,121 @@
-Return-Path: <stable+bounces-9277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF9D1823163
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:40:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8085182316A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4911F2444B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:40:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6C931C23B12
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBA61BDD1;
-	Wed,  3 Jan 2024 16:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA20B1BDED;
+	Wed,  3 Jan 2024 16:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="pBg3VUjH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="39qkwTrs"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="avZqKUSp"
 X-Original-To: stable@vger.kernel.org
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F831C282;
-	Wed,  3 Jan 2024 16:40:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailout.nyi.internal (Postfix) with ESMTP id A76C75C021B;
-	Wed,  3 Jan 2024 11:40:28 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 03 Jan 2024 11:40:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1704300028; x=1704386428; bh=mgO8GbUsZ3
-	m6H3/C83cOc0dMTQ0nYbSwhaYENp9Au0E=; b=pBg3VUjH6TKpqlvjdLLvvJbA69
-	K6WgPH8Lr5C25DC5yKqehYFjDWqrhIsPQWos8uCn+xkP7Ev7KCyyaZ8mlcBh63nh
-	E9soAlVTnQ8KrrCpxTjMwblOHbbtLILqEwj1AH2RtZN4woC3J17VQRTQJ8cqnTr0
-	3Lp5MRLbDF/w+SGHs34RSapGVb7W/kEPMNU2JOhBLvDKQIn/MqNmjFbMmlWp8p6b
-	TOyFhyZtFxK1gyoDX2tn7P7Bpmy950lhxrvK1f/DztngP8LcBKh2p2apyXJoDLbQ
-	7TLqJTrxFFjOuaVT2X6hhTpR6FwCCCpg6p5FjPgZIqIG1RAGlG/fAZSJ+p4g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1704300028; x=1704386428; bh=mgO8GbUsZ3m6H3/C83cOc0dMTQ0n
-	YbSwhaYENp9Au0E=; b=39qkwTrsaHegDdyRt6LBmIc6oeUpivK/UDYcVGhbp6d/
-	M+pfIdh6jeDIXtIwOH6awJQUqXjNDVePzmd0gkT501L96AKSPD2vYqr/2W4ISxvu
-	nd8bMtPV7klb/yiRW8NCxIXS4V/YVvk0oHyGwe+twTbovsoBkSjz+wtTRtQYD3rL
-	FzzHAKK7ni38lZxW913ztDqi0G8Y1RdC6NLiBTZ/8ZEQOO+wrEBuqUWtPI1qYPY8
-	MEC10g8e59U5KFXkhvzPzVDxN5s4y/V4ZQ8g7kvXgfwGvEdK47AjovmY0GTyfUY5
-	zmcoPfZRYZooiW8eKgyrcsVyyrewfn+wl8d48Fs41Q==
-X-ME-Sender: <xms:_I2VZf0eXnuLQcjGHDeiWoXHyHMxe8f-4srMruqn6o6qEgG5I5nCjQ>
-    <xme:_I2VZeGbHFaE__fLijDN7_5WOD60UvK2aqEn0_XV_wIGozKMqLMA-J4LEwLQRCBMr
-    AnXrcDac4vSHw>
-X-ME-Received: <xmr:_I2VZf7cBicfQF8LVi90JlJ06StrnTv6x-T1S0Qq28LZL6FZ0tMX9_zS_CjsXVIjjkmDUnE-OBIAKMpcN98ss1tK3EaZp5mtpA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeghedgledvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:_I2VZU24gwvtOi3bFMraElAY_c4NCXABRdgiWyrmRe5ABpJiEJkTLg>
-    <xmx:_I2VZSFr6id8uY1Yg6oUXkrQUrvM9LsU8I3kSnyPImkAzt73WkDfwQ>
-    <xmx:_I2VZV_fYXzhXqhOyMUXJAKQ3h7xl-eTeqdGvZBXs_UcsmdZeNnfuA>
-    <xmx:_I2VZa8HtnLgBCFpHI5MjKQ-UteaXOedNBKRiVEP0osuaU8id_quYg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jan 2024 11:40:27 -0500 (EST)
-Date: Wed, 3 Jan 2024 17:40:25 +0100
-From: Greg KH <greg@kroah.com>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org, Lee Jones <lee@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>
-Subject: Re: [PATCH stable 5.15 0/1] bpf: Fix map poke update
-Message-ID: <2024010309-oxidizing-dinginess-c48a@gregkh>
-References: <20240103142557.4009040-1-jolsa@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1331BDC3
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 16:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-5e7409797a1so90313197b3.0
+        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 08:42:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704300150; x=1704904950; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kqB6CGz4FhyOFOssBdp4zvBdwCCulsiEvCo2tFN0c8g=;
+        b=avZqKUSpV40gCfPgU1zk33tqmxI2LVpaTcIGXW/cL2e7x5yxQNm4LA7g21KvhlCNOS
+         gsxsIGr26yy/a3hopEkFN8U6Mf87AfphaPVE/D2rvA/lDZcrUqkgxyuVDyGTuoKlm12b
+         +oceCDbOoIPLg7xSEsELCng/F+3fRkxalKo9UerlRAwWSEjLRV5NCO4iCKLwsgVorAwE
+         o7GjYZVAivc8K1RLu54R2BZy72AvefcyUAEMbTk1Pm6dMol2nVlFSmYCoCo5Cd3TYMeo
+         QeKbgfEG8abBNsJZRHUTD4HtHM7jns2JoTpFm6xnwLY3zGU4lC4rGMxV6tJj2TOctiY2
+         gy7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704300150; x=1704904950;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kqB6CGz4FhyOFOssBdp4zvBdwCCulsiEvCo2tFN0c8g=;
+        b=iy2Ybf4/YNhb8vpNiXoMM4gm3PLoQ+a4KhzuDT2bKBDN0wihXvQlUylK3cw6SRrm1O
+         cUgARWvk7WNGLrBy4M34W3G9jIZaXGX3jvowsTAK24ZN0K5ArHqbB3w1fjyKfWc3HZH0
+         AgVND7Yb+dM733B2wS819vksRSzOlGod7oQ/TWUQwqloeQ5SCRMOogppyh6uEoFRVkEy
+         9axJQYJQd7ZPNNNmsFh6rJR14SUpIh9xxC2HRmPgLIw0UqL5C7rwmlH1rgJgMWhFrsPn
+         Z8Bzb1vj13aqFHVs7egbdTjhWebDM5WT9BqUyOFlryMXII6dCUG4p3O0Z1rnIAOWCI8K
+         6YlA==
+X-Gm-Message-State: AOJu0YzT3MWjM4TZ97bReQBAh1uzI1EP97xGcIZj2Nsr4Z64uu8ynT9s
+	sfDJcPT37XnxyftOpyVMvIZFMkOa1FDZFNy1wFHyq6Wp3x2obA==
+X-Google-Smtp-Source: AGHT+IHG+3CJMzix7RqUcr1RTs3drNiVmJl0PBwHoasrhFF9x4L1y3cMk/tajLBq5aD9vYZ+fjVlbqGseYGu5CnZocY=
+X-Received: by 2002:a05:690c:2848:b0:5ec:91e:9d68 with SMTP id
+ ed8-20020a05690c284800b005ec091e9d68mr7280168ywb.18.1704300149634; Wed, 03
+ Jan 2024 08:42:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103142557.4009040-1-jolsa@kernel.org>
+References: <20240102162718.268271-1-romain.gantois@bootlin.com>
+ <20240102162718.268271-2-romain.gantois@bootlin.com> <CACRpkdZjOBpD6HoobgMBA27dS+uz5pqb8otL+fGtMvsywYBTPA@mail.gmail.com>
+ <d3d73e26-10a9-bd2b-ff44-cbdc72e1f6ee@bootlin.com>
+In-Reply-To: <d3d73e26-10a9-bd2b-ff44-cbdc72e1f6ee@bootlin.com>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 3 Jan 2024 17:42:18 +0100
+Message-ID: <CACRpkdbbPg0f0LSPrAhZ4cEajEx0W-FjkSjfZnJ_Lam-QQ=E2Q@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] net: stmmac: Prevent DSA tags from breaking
+ COE on stmmac
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Miquel Raynal <miquel.raynal@bootlin.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Sylvain Girard <sylvain.girard@se.com>, 
+	Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+	Pascal EBERHARD <pascal.eberhard@se.com>, Richard Tresidder <rtresidd@electromag.com.au>, 
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 03, 2024 at 03:25:56PM +0100, Jiri Olsa wrote:
-> hi,
-> sending the 5.15 backport of map poke update fix [1].
-> 
-> It's not straight backport, the details are in changelog. I also backported
-> the bpf selftest [2] to reproduce the issue and verify the fix, but it's more
-> deviated from the upstream so I decided not to post it. Also I had to fix bpf
-> selftests on other place to be able to compile them.
+On Wed, Jan 3, 2024 at 10:11=E2=80=AFAM Romain Gantois
+<romain.gantois@bootlin.com> wrote:
+> On Tue, 2 Jan 2024, Linus Walleij wrote:
+> ...
+> > > +static inline bool stmmac_has_ip_ethertype(struct sk_buff *skb)
+> > > +{
+> > > +       __be16 proto =3D eth_header_parse_protocol(skb);
+> >
+> > I made a new function for this in my patch
+> > https://lore.kernel.org/netdev/20231222-new-gemini-ethernet-regression-=
+v4-2-a36e71b0f32b@linaro.org/
+> >
+> > I was careful to add if (!pskb_may_pull(skb, ETH_HLEN)) because Eric
+> > was very specific about this, I suppose you could get fragment frames t=
+hat
+> > are smaller than an ethernet header.
+>
+> Okay nice, then I'll rewrite this series to use the new function once you=
+r
+> changes make it in.
 
-Thanks, now queue dup.
+I just rewrote my patch to use eth_header_parse_protocol() instead.
+I should not invent a new version of something that already exist.
 
-greg k-h
+> > Should we add an if (!pskb_may_pull(skb, ETH_HLEN)) to
+> > eth_header_parse_protocol()?
+>
+> That does sound logical to me but I couldn't tell you what the impact on =
+current
+> callers would be. The net maintainers will probably have a better idea of=
+ this.
+
+I can propose a separate patch for this with RFC.
+
+Yours,
+Linus Walleij
 
