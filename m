@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA788231C3
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:58:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E82E9823221
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30869289098
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56D0EB22EE8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4139A1C2A0;
-	Wed,  3 Jan 2024 16:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A861C294;
+	Wed,  3 Jan 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/qs9/fV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlJqVaWl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F6C1C294;
-	Wed,  3 Jan 2024 16:58:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723A1C433C8;
-	Wed,  3 Jan 2024 16:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7EC1BDEC;
+	Wed,  3 Jan 2024 17:03:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77DEC433C8;
+	Wed,  3 Jan 2024 17:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301101;
-	bh=swCnAicNF1MjPvH5m6TSfz09JgIhYvEMfd1z+WUU5kI=;
+	s=korg; t=1704301380;
+	bh=fZZuifj9MC0W/SPGFXgPs+Ofhup+gbzQJF1tEwhr3AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/qs9/fVwmEn0jEXxg8BVFHYBxE4TIK2p0mFyCEWTHsWgz87xPsPdOa9Q3dvjMzR+
-	 SRgkCjJ6RIHgaput3y73cMdMNa/ZT/3u+epWM0yF1rY/Fs6YzvOWE6x9LnzpbLDduz
-	 cISpdiqlaDf6EqVU0PEdA2Ybdh+d885cvOAAObrA=
+	b=UlJqVaWlDcjlmuiocKl6rGSRZtCXi4mP6PLYQWWio4h7xMI2pk2pyTpWNlsuIx2Ml
+	 gDYF3DxPuxULWBSuaxRE+W88W6onjIEfgi+8Px9PQPiVDLcTTxFPUcTMP6Ypa/GsJR
+	 u8nURazx8P9ybbGEDowdfYn8MT69cj8Grzrox2Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Liu Jian <liujian56@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/100] ksmbd: fix wrong interim response on compound
+Subject: [PATCH 5.15 17/95] net: check vlan filter feature in vlan_vids_add_by_dev() and vlan_vids_del_by_dev()
 Date: Wed,  3 Jan 2024 17:54:25 +0100
-Message-ID: <20240103164901.483571909@linuxfoundation.org>
+Message-ID: <20240103164856.696764823@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,166 +53,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 041bba4414cda37d00063952c9bff9c3d5812a19 ]
+[ Upstream commit 01a564bab4876007ce35f312e16797dfe40e4823 ]
 
-If smb2_lock or smb2_open request is compound, ksmbd could send wrong
-interim response to client. ksmbd allocate new interim buffer instead of
-using resonse buffer to support compound request.
+I got the below warning trace:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+WARNING: CPU: 4 PID: 4056 at net/core/dev.c:11066 unregister_netdevice_many_notify
+CPU: 4 PID: 4056 Comm: ip Not tainted 6.7.0-rc4+ #15
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:unregister_netdevice_many_notify+0x9a4/0x9b0
+Call Trace:
+ rtnl_dellink
+ rtnetlink_rcv_msg
+ netlink_rcv_skb
+ netlink_unicast
+ netlink_sendmsg
+ __sock_sendmsg
+ ____sys_sendmsg
+ ___sys_sendmsg
+ __sys_sendmsg
+ do_syscall_64
+ entry_SYSCALL_64_after_hwframe
+
+It can be repoduced via:
+
+    ip netns add ns1
+    ip netns exec ns1 ip link add bond0 type bond mode 0
+    ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+    ip netns exec ns1 ip link set bond_slave_1 master bond0
+[1] ip netns exec ns1 ethtool -K bond0 rx-vlan-filter off
+[2] ip netns exec ns1 ip link add link bond_slave_1 name bond_slave_1.0 type vlan id 0
+[3] ip netns exec ns1 ip link add link bond0 name bond0.0 type vlan id 0
+[4] ip netns exec ns1 ip link set bond_slave_1 nomaster
+[5] ip netns exec ns1 ip link del veth2
+    ip netns del ns1
+
+This is all caused by command [1] turning off the rx-vlan-filter function
+of bond0. The reason is the same as commit 01f4fd270870 ("bonding: Fix
+incorrect deletion of ETH_P_8021AD protocol vid from slaves"). Commands
+[2] [3] add the same vid to slave and master respectively, causing
+command [4] to empty slave->vlan_info. The following command [5] triggers
+this problem.
+
+To fix this problem, we should add VLAN_FILTER feature checks in
+vlan_vids_add_by_dev() and vlan_vids_del_by_dev() to prevent incorrect
+addition or deletion of vlan_vid information.
+
+Fixes: 348a1443cc43 ("vlan: introduce functions to do mass addition/deletion of vids by another device")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/ksmbd_work.c | 10 ++++++----
- fs/smb/server/ksmbd_work.h |  2 +-
- fs/smb/server/oplock.c     | 14 ++------------
- fs/smb/server/smb2pdu.c    | 26 +++++++++++++++++---------
- 4 files changed, 26 insertions(+), 26 deletions(-)
+ net/8021q/vlan_core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/ksmbd_work.c b/fs/smb/server/ksmbd_work.c
-index f49c2e01ea9fc..51def3ca74c01 100644
---- a/fs/smb/server/ksmbd_work.c
-+++ b/fs/smb/server/ksmbd_work.c
-@@ -160,9 +160,11 @@ int ksmbd_iov_pin_rsp_read(struct ksmbd_work *work, void *ib, int len,
- 	return __ksmbd_iov_pin_rsp(work, ib, len, aux_buf, aux_size);
- }
+diff --git a/net/8021q/vlan_core.c b/net/8021q/vlan_core.c
+index 59bc13b5f14f6..8710d5d7d3c18 100644
+--- a/net/8021q/vlan_core.c
++++ b/net/8021q/vlan_core.c
+@@ -407,6 +407,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 		return 0;
  
--void ksmbd_iov_reset(struct ksmbd_work *work)
-+int allocate_interim_rsp_buf(struct ksmbd_work *work)
- {
--	work->iov_idx = 0;
--	work->iov_cnt = 0;
--	*(__be32 *)work->iov[0].iov_base = 0;
-+	work->response_buf = kzalloc(MAX_CIFS_SMALL_BUFFER_SIZE, GFP_KERNEL);
-+	if (!work->response_buf)
-+		return -ENOMEM;
-+	work->response_sz = MAX_CIFS_SMALL_BUFFER_SIZE;
-+	return 0;
- }
-diff --git a/fs/smb/server/ksmbd_work.h b/fs/smb/server/ksmbd_work.h
-index 255157eb26dc4..8ca2c813246e6 100644
---- a/fs/smb/server/ksmbd_work.h
-+++ b/fs/smb/server/ksmbd_work.h
-@@ -131,5 +131,5 @@ bool ksmbd_queue_work(struct ksmbd_work *work);
- int ksmbd_iov_pin_rsp_read(struct ksmbd_work *work, void *ib, int len,
- 			   void *aux_buf, unsigned int aux_size);
- int ksmbd_iov_pin_rsp(struct ksmbd_work *work, void *ib, int len);
--void ksmbd_iov_reset(struct ksmbd_work *work);
-+int allocate_interim_rsp_buf(struct ksmbd_work *work);
- #endif /* __KSMBD_WORK_H__ */
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 4e12e3031bc53..90a035c27130f 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -616,15 +616,6 @@ static int oplock_break_pending(struct oplock_info *opinfo, int req_op_level)
- 	return 0;
- }
- 
--static inline int allocate_oplock_break_buf(struct ksmbd_work *work)
--{
--	work->response_buf = kzalloc(MAX_CIFS_SMALL_BUFFER_SIZE, GFP_KERNEL);
--	if (!work->response_buf)
--		return -ENOMEM;
--	work->response_sz = MAX_CIFS_SMALL_BUFFER_SIZE;
--	return 0;
--}
--
- /**
-  * __smb2_oplock_break_noti() - send smb2 oplock break cmd from conn
-  * to client
-@@ -647,7 +638,7 @@ static void __smb2_oplock_break_noti(struct work_struct *wk)
- 	if (!fp)
- 		goto out;
- 
--	if (allocate_oplock_break_buf(work)) {
-+	if (allocate_interim_rsp_buf(work)) {
- 		pr_err("smb2_allocate_rsp_buf failed! ");
- 		ksmbd_fd_put(work, fp);
- 		goto out;
-@@ -752,7 +743,7 @@ static void __smb2_lease_break_noti(struct work_struct *wk)
- 	struct lease_break_info *br_info = work->request_buf;
- 	struct smb2_hdr *rsp_hdr;
- 
--	if (allocate_oplock_break_buf(work)) {
-+	if (allocate_interim_rsp_buf(work)) {
- 		ksmbd_debug(OPLOCK, "smb2_allocate_rsp_buf failed! ");
- 		goto out;
- 	}
-@@ -843,7 +834,6 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
- 			setup_async_work(in_work, NULL, NULL);
- 			smb2_send_interim_resp(in_work, STATUS_PENDING);
- 			list_del(&in_work->interim_entry);
--			ksmbd_iov_reset(in_work);
- 		}
- 		INIT_WORK(&work->work, __smb2_lease_break_noti);
- 		ksmbd_queue_work(work);
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 0a40b793cedf4..dfb4fd4cb42f6 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -152,8 +152,8 @@ void smb2_set_err_rsp(struct ksmbd_work *work)
- 		err_rsp->ByteCount = 0;
- 		err_rsp->ErrorData[0] = 0;
- 		err = ksmbd_iov_pin_rsp(work, (void *)err_rsp,
--				  work->conn->vals->header_size +
--				  SMB2_ERROR_STRUCTURE_SIZE2);
-+					__SMB2_HEADER_STRUCTURE_SIZE +
-+						SMB2_ERROR_STRUCTURE_SIZE2);
+ 	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		err = vlan_vid_add(dev, vid_info->proto, vid_info->vid);
  		if (err)
- 			work->send_no_response = 1;
+ 			goto unwind;
+@@ -417,6 +419,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 	list_for_each_entry_continue_reverse(vid_info,
+ 					     &vlan_info->vid_list,
+ 					     list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
  	}
-@@ -709,13 +709,24 @@ void release_async_work(struct ksmbd_work *work)
- void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
- {
- 	struct smb2_hdr *rsp_hdr;
-+	struct ksmbd_work *in_work = ksmbd_alloc_work_struct();
  
--	rsp_hdr = ksmbd_resp_buf_next(work);
--	smb2_set_err_rsp(work);
-+	if (allocate_interim_rsp_buf(in_work)) {
-+		pr_err("smb_allocate_rsp_buf failed!\n");
-+		ksmbd_free_work_struct(in_work);
-+		return;
+@@ -436,8 +440,11 @@ void vlan_vids_del_by_dev(struct net_device *dev,
+ 	if (!vlan_info)
+ 		return;
+ 
+-	list_for_each_entry(vid_info, &vlan_info->vid_list, list)
++	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
 +	}
-+
-+	in_work->conn = work->conn;
-+	memcpy(smb2_get_msg(in_work->response_buf), ksmbd_resp_buf_next(work),
-+	       __SMB2_HEADER_STRUCTURE_SIZE);
-+
-+	rsp_hdr = smb2_get_msg(in_work->response_buf);
-+	smb2_set_err_rsp(in_work);
- 	rsp_hdr->Status = status;
- 
--	ksmbd_conn_write(work);
--	rsp_hdr->Status = 0;
-+	ksmbd_conn_write(in_work);
-+	ksmbd_free_work_struct(in_work);
  }
+ EXPORT_SYMBOL(vlan_vids_del_by_dev);
  
- static __le32 smb2_get_reparse_tag_special_file(umode_t mode)
-@@ -7050,8 +7061,6 @@ int smb2_lock(struct ksmbd_work *work)
- 				list_del(&work->fp_entry);
- 				spin_unlock(&fp->f_lock);
- 
--				ksmbd_iov_reset(work);
--
- 				if (work->state != KSMBD_WORK_ACTIVE) {
- 					list_del(&smb_lock->llist);
- 					spin_lock(&work->conn->llist_lock);
-@@ -7069,7 +7078,6 @@ int smb2_lock(struct ksmbd_work *work)
- 						goto out;
- 					}
- 
--					init_smb2_rsp_hdr(work);
- 					rsp->hdr.Status =
- 						STATUS_RANGE_NOT_LOCKED;
- 					kfree(smb_lock);
 -- 
 2.43.0
 
