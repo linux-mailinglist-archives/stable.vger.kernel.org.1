@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4472C8232C6
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D70D82327C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2F11F2167B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B6A11C23BD2
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BAFB1C28A;
-	Wed,  3 Jan 2024 17:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4B01BDFF;
+	Wed,  3 Jan 2024 17:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwVaT77t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWpJUXBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12DC21BDEC;
-	Wed,  3 Jan 2024 17:11:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB9CC433C8;
-	Wed,  3 Jan 2024 17:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A321BDF1;
+	Wed,  3 Jan 2024 17:07:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5D1C433C8;
+	Wed,  3 Jan 2024 17:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301891;
-	bh=k1EYbrxMZLNSrmGGbAbNzXr12PY6eO+3uXPDwE1Ox18=;
+	s=korg; t=1704301664;
+	bh=6twLxMRZaUQj0DVREVh+mGZqG9/+e2AFVBijrhgCVEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwVaT77t7Jz5EK1nVDbzPWvDDFYnbuuY+UiH+1+SEJKNvGY1WgC8t2naloQ4LlgSq
-	 nlhf+0VNhJsvULm0pDqlL1ufKCIWDqkB8wxxiodhoNOhZSvngpDnQB5FxFRwPZY1vD
-	 VmpdMGFBZBX1b4jwf3b74QFeX65T5vP3QZim7WsY=
+	b=LWpJUXBK+6GGJaWgXsBCrbUbZ4C/9IrKBRFGQaNhA7J+/1EQhDZTleFtZZbdYSlwF
+	 uWGDWEqZtegiQ1v0jT2u7RnVWsHwuNdRCqQKYhwp+tXtZeNwFuoeIdJNYMQkfdui33
+	 nluuE5y4sKT9mDR5GMOvKznjOegrcpf6WT2WOZT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 29/75] interconnect: qcom: sm8250: Enable sync_state
+	Herve Codina <herve.codina@bootlin.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Petr Mladek <pmladek@suse.com>
+Subject: [PATCH 5.15 62/95] lib/vsprintf: Fix %pfwf when current node refcount == 0
 Date: Wed,  3 Jan 2024 17:55:10 +0100
-Message-ID: <20240103164847.570054712@linuxfoundation.org>
+Message-ID: <20240103164903.243229544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit bfc7db1cb94ad664546d70212699f8cc6c539e8c ]
+commit 5c47251e8c4903111608ddcba2a77c0c425c247c upstream.
 
-Add the generic icc sync_state callback to ensure interconnect votes
-are taken into account, instead of being pegged at maximum values.
+A refcount issue can appeared in __fwnode_link_del() due to the
+pr_debug() call:
+  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+  Call Trace:
+  <TASK>
+  ...
+  of_node_get+0x1e/0x30
+  of_fwnode_get+0x28/0x40
+  fwnode_full_name_string+0x34/0x90
+  fwnode_string+0xdb/0x140
+  ...
+  vsnprintf+0x17b/0x630
+  ...
+  __fwnode_link_del+0x25/0xa0
+  fwnode_links_purge+0x39/0xb0
+  of_node_release+0xd9/0x180
+  ...
 
-Fixes: b95b668eaaa2 ("interconnect: qcom: icc-rpmh: Add BCMs to commit list in pre_aggregate")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231130-topic-8250icc_syncstate-v1-1-7ce78ba6e04c@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+is called because the of_node refcount reached 0.
+>From of_node_release() several function calls are done and lead to
+a pr_debug() calls with %pfwf to print the fwnode full name.
+The issue is not present if we change %pfwf to %pfwP.
+
+To print the full name, %pfwf iterates over the current node and its
+parents and obtain/drop a reference to all nodes involved.
+
+In order to allow to print the full name (%pfwf) of a node while it is
+being destroyed, do not obtain/drop a reference to this current node.
+
+Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20231114152655.409331-1-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/qcom/sm8250.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/vsprintf.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/interconnect/qcom/sm8250.c b/drivers/interconnect/qcom/sm8250.c
-index 40820043c8d36..cc558fec74e38 100644
---- a/drivers/interconnect/qcom/sm8250.c
-+++ b/drivers/interconnect/qcom/sm8250.c
-@@ -643,6 +643,7 @@ static struct platform_driver qnoc_driver = {
- 	.driver = {
- 		.name = "qnoc-sm8250",
- 		.of_match_table = qnoc_of_match,
-+		.sync_state = icc_sync_state,
- 	},
- };
- module_platform_driver(qnoc_driver);
--- 
-2.43.0
-
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2111,15 +2111,20 @@ char *fwnode_full_name_string(struct fwn
+ 
+ 	/* Loop starting from the root node to the current node. */
+ 	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+-		struct fwnode_handle *__fwnode =
+-			fwnode_get_nth_parent(fwnode, depth);
++		/*
++		 * Only get a reference for other nodes (i.e. parent nodes).
++		 * fwnode refcount may be 0 here.
++		 */
++		struct fwnode_handle *__fwnode = depth ?
++			fwnode_get_nth_parent(fwnode, depth) : fwnode;
+ 
+ 		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
+ 			     default_str_spec);
+ 		buf = string(buf, end, fwnode_get_name(__fwnode),
+ 			     default_str_spec);
+ 
+-		fwnode_handle_put(__fwnode);
++		if (depth)
++			fwnode_handle_put(__fwnode);
+ 	}
+ 
+ 	return buf;
 
 
 
