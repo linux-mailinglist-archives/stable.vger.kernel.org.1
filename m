@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-9289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC91D8231A7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:57:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6A18231BA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C977B2189E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7301F2474F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3828B1BDF0;
-	Wed,  3 Jan 2024 16:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6BDB1C691;
+	Wed,  3 Jan 2024 16:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B02HFAg2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZMeUuCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0276B1BDE9;
-	Wed,  3 Jan 2024 16:57:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B64C433C7;
-	Wed,  3 Jan 2024 16:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9A81C695;
+	Wed,  3 Jan 2024 16:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22C4C433C9;
+	Wed,  3 Jan 2024 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301023;
-	bh=NggYCZjo2btjVkyrPfyndi3XJdZyNOOkC69eKn572tQ=;
+	s=korg; t=1704301065;
+	bh=RcGEdjHRSakFuysbIqnZbD4z3zSHdXSH148+MbE5R7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B02HFAg2m44+79n7wtTByS8ensrj2Nx92avyuMhKxzgBHW9KyJDnd7JEKZiqfcX5Y
-	 x08ZldeFnuhLteLgWJ10PVcBcPzlQ6YX48hxLly1ah+vNwP5uOZW2K2XODpujYuMOY
-	 +LbwiHC93KO56/MW5Y4+GQcGTBDlvqs97MzWMma4=
+	b=2ZMeUuCy7zYdDjFlfSmoQZk2O80GuKnCCYijhHu3TA0dU8lG6+MpkWSHa3HW6J3S0
+	 4KUcJVDrasdIQ9bk/oy3P403vJdr+bDg2gOlNJesx4XjlEKUB4zDNhclYwTuSW0PeT
+	 +O1EAQitRhQteagcP4DUKAn45DLDXTgeMoyQUOEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/100] ksmbd: Fix spelling mistake "excceed" -> "exceeded"
-Date: Wed,  3 Jan 2024 17:53:59 +0100
-Message-ID: <20240103164857.699786929@linuxfoundation.org>
+Subject: [PATCH 6.1 011/100] ksmbd: Fix parameter name and comment mismatch
+Date: Wed,  3 Jan 2024 17:54:00 +0100
+Message-ID: <20240103164857.846604696@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
 References: <20240103164856.169912722@linuxfoundation.org>
@@ -58,33 +60,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit 7a17c61ee3b2683c40090179c273f4701fca9677 ]
+[ Upstream commit 63f09a9986eb58578ed6ad0e27a6e2c54e49f797 ]
 
-There is a spelling mistake in an error message. Fix it.
+fs/ksmbd/vfs.c:965: warning: Function parameter or member 'attr_value' not described in 'ksmbd_vfs_setxattr'.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3946
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/vfs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index e885e0eb0dc35..ffbf14d024191 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -345,7 +345,7 @@ int ksmbd_conn_handler_loop(void *p)
- 			max_allowed_pdu_size = SMB3_MAX_MSGSIZE;
- 
- 		if (pdu_size > max_allowed_pdu_size) {
--			pr_err_ratelimited("PDU length(%u) excceed maximum allowed pdu size(%u) on connection(%d)\n",
-+			pr_err_ratelimited("PDU length(%u) exceeded maximum allowed pdu size(%u) on connection(%d)\n",
- 					pdu_size, max_allowed_pdu_size,
- 					READ_ONCE(conn->status));
- 			break;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 36914db8b6616..187d31d984946 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -951,9 +951,9 @@ ssize_t ksmbd_vfs_getxattr(struct user_namespace *user_ns,
+  * ksmbd_vfs_setxattr() - vfs helper for smb set extended attributes value
+  * @user_ns:	user namespace
+  * @dentry:	dentry to set XATTR at
+- * @name:	xattr name for setxattr
+- * @value:	xattr value to set
+- * @size:	size of xattr value
++ * @attr_name:	xattr name for setxattr
++ * @attr_value:	xattr value to set
++ * @attr_size:	size of xattr value
+  * @flags:	destination buffer length
+  *
+  * Return:	0 on success, otherwise error
 -- 
 2.43.0
 
