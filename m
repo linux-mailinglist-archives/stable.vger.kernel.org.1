@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2028232F8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CD58232D2
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D03328278E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E18151F21714
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED051C2A0;
-	Wed,  3 Jan 2024 17:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE371C280;
+	Wed,  3 Jan 2024 17:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsCxH1Wu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYESnpZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D521C29C;
-	Wed,  3 Jan 2024 17:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D486C433C8;
-	Wed,  3 Jan 2024 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87271BDFB;
+	Wed,  3 Jan 2024 17:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D909C433C8;
+	Wed,  3 Jan 2024 17:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302051;
-	bh=HZA4PhY1KPmZmPMzQ7da314sbUMCmCWrJXqx9L8mdY8=;
+	s=korg; t=1704301927;
+	bh=tzSj9hVyvvHef93Y070UoNqVtnACJiLmtRf/TjnNsYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vsCxH1WuUtwuklXR3bYJZ9VqdlL+sqwPvdTscbcwWHjtgqILrGbAZ2jvO59B2i2J3
-	 4UembLczskjkvWioyXzlPZ1fzWqOWFzZVCCaEyqiDev2+c95bFFwZJzoCy9AmXihCm
-	 /sKYmtjgRXjDKkW3S+Qzpu0tGFGtFpeRBDReZves=
+	b=TYESnpZdNPyfRv176wIgwXcKj7AKaHL/bAWMd+P0vFQ09x2uXefQuZLzdWu++y7HR
+	 keb7i1UQkMLcbwRqQZxw8I30Y4qrKQJeNVL31qr40qnOSSbCxSVpPKIVZ2i9j6jbnI
+	 UFf9GuIkZCSj/+Tm9raOSI48yfzS7C/x3DVVc0YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/49] platform/x86/intel/pmc: Add suspend callback
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.10 71/75] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
 Date: Wed,  3 Jan 2024 17:55:52 +0100
-Message-ID: <20240103164840.026750158@linuxfoundation.org>
+Message-ID: <20240103164853.737021681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,72 +50,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 7c13f365aee68b01e7e68ee293a71fdc7571c111 ]
+commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
 
-Add a suspend callback to struct pmc for performing platform specific tasks
-before device suspend. This is needed in order to perform GBE LTR ignore on
-certain platforms at suspend-time instead of at probe-time and replace the
-GBE LTR ignore removal that was done in order to fix a bug introduced by
-commit 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and
-core_configure()").
+__bio_for_each_segment assumes that the first struct bio_vec argument
+doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+code changes the bio_vec with "bv.bv_len -= pos". When this code path
+is taken, the iterator would be out of sync and dm-integrity would
+report errors. This happens if the machine is out of memory and
+"kmalloc" fails.
 
-Fixes: 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and core_configure()")
-Signed-off-by: "David E. Box" <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20231223032548.1680738-4-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this bug by making a copy of "bv" and changing the copy instead.
+
+Fixes: 7eada909bfd7 ("dm: add integrity target")
+Cc: stable@vger.kernel.org	# v4.12+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/pmc/core.c | 3 +++
- drivers/platform/x86/intel/pmc/core.h | 2 ++
- 2 files changed, 5 insertions(+)
+ drivers/md/dm-integrity.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index e95d3011b9997..5ab470d87ad7e 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -1279,6 +1279,9 @@ static __maybe_unused int pmc_core_suspend(struct device *dev)
- 	struct pmc_dev *pmcdev = dev_get_drvdata(dev);
- 	struct pmc *pmc = pmcdev->pmcs[PMC_IDX_MAIN];
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -1657,11 +1657,12 @@ static void integrity_metadata(struct wo
+ 		sectors_to_process = dio->range.n_sectors;
  
-+	if (pmcdev->suspend)
-+		pmcdev->suspend(pmcdev);
-+
- 	/* Check if the syspend will actually use S0ix */
- 	if (pm_suspend_via_firmware())
- 		return 0;
-diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
-index 0729f593c6a75..38d888e3afa63 100644
---- a/drivers/platform/x86/intel/pmc/core.h
-+++ b/drivers/platform/x86/intel/pmc/core.h
-@@ -363,6 +363,7 @@ struct pmc {
-  * @s0ix_counter:	S0ix residency (step adjusted)
-  * @num_lpm_modes:	Count of enabled modes
-  * @lpm_en_modes:	Array of enabled modes from lowest to highest priority
-+ * @suspend:		Function to perform platform specific suspend
-  * @resume:		Function to perform platform specific resume
-  *
-  * pmc_dev contains info about power management controller device.
-@@ -379,6 +380,7 @@ struct pmc_dev {
- 	u64 s0ix_counter;
- 	int num_lpm_modes;
- 	int lpm_en_modes[LPM_MAX_NUM_MODES];
-+	void (*suspend)(struct pmc_dev *pmcdev);
- 	int (*resume)(struct pmc_dev *pmcdev);
+ 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned pos;
+ 			char *mem, *checksums_ptr;
  
- 	bool has_die_c6;
--- 
-2.43.0
-
+ again:
+-			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
++			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1670,7 +1671,7 @@ again:
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_atomic(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1691,9 +1692,9 @@ again:
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
 
 
 
