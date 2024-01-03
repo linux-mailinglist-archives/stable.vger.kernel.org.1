@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-9594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F3C82330F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B608823317
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CB761C23C7D
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE34A1F24D04
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C11C292;
-	Wed,  3 Jan 2024 17:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB5E1C292;
+	Wed,  3 Jan 2024 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfeQj6hE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI49lt1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB711C288;
-	Wed,  3 Jan 2024 17:15:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2026C433C7;
-	Wed,  3 Jan 2024 17:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2881C283;
+	Wed,  3 Jan 2024 17:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31230C433C8;
+	Wed,  3 Jan 2024 17:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302112;
-	bh=feBZZWN+3KWQPsQXfC+c+sYfV3w3de3RJDINbNtvdKU=;
+	s=korg; t=1704302138;
+	bh=mk2Uy7do4g6sGnphQsxWzMkpBCdLAKoC8AwQIsgs42Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfeQj6hE+Wssnssb0i2+5vECJTRyoy4CSAduaejxt5syxHu7r7WtRG6MD7gqoDRPT
-	 o3SaG9hRcLIoU2BA84uJWO0LJfahnApCK6mIG5Sa8gHCHztGPQYmKp/Ty9IMLrT2HT
-	 SMIYF/J0KzAdytk4cSEjyh9Mqu8LmaGzV817ZXOc=
+	b=vI49lt1JiAlMiguJrX1zRnopckcfiUILnaseRKKk3YOh74Pqu91m/Qjoq9qTf8dhJ
+	 mO6otU5GjLmoZfwwEtKPkVe7LmH9j+oxsZzVHsmZztp98avce2Ay8Arh/pTmP9OI8m
+	 X+jSJ7bwnyiCyKPy5Q6xTVXOeyp+zD8nZkTissDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?L=E9o=20Lam?= <leo@leolam.fr>,
-	=?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 48/49] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
-Date: Wed,  3 Jan 2024 17:56:08 +0100
-Message-ID: <20240103164842.436855460@linuxfoundation.org>
+	Kevin Rich <kevinrich1337@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 49/49] netfilter: nf_tables: skip set commit for deleted/destroyed sets
+Date: Wed,  3 Jan 2024 17:56:09 +0100
+Message-ID: <20240103164842.593448811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
 References: <20240103164834.970234661@linuxfoundation.org>
@@ -51,85 +50,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Léo Lam" <leo@leolam.fr>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Commit 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use"
-backported to 6.6.x) causes nl80211_set_cqm_rssi not to release the
-wdev lock in some of the error paths.
+commit 7315dc1e122c85ffdfc8defffbb8f8b616c2eb1a upstream.
 
-Of course, the ensuing deadlock causes userland network managers to
-break pretty badly, and on typical systems this also causes lockups on
-on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
+NFT_MSG_DELSET deactivates all elements in the set, skip
+set->ops->commit() to avoid the unnecessary clone (for the pipapo case)
+as well as the sync GC cycle, which could deactivate again expired
+elements in such set.
 
-The upstream commit 7e7efdda6adb ("wifi: cfg80211: fix CQM for non-range
-use"), committed in November 2023, is completely fine because there was
-another commit in August 2023 that removed the wdev lock:
-see commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex").
-
-The reason things broke in 6.6.5 is that commit 4338058f6009 was applied
-without also applying 076fc8775daf.
-
-Commit 076fc8775daf ("wifi: cfg80211: remove wdev mutex") is a rather
-large commit; adjusting the error handling (which is what this commit does)
-yields a much simpler patch and was tested to work properly.
-
-Fix the deadlock by releasing the lock before returning.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
-[2] https://bbs.archlinux.org/viewtopic.php?id=290976
-[3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
-
-Link: https://lore.kernel.org/stable/e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org/
-Fixes: 008afb9f3d57 ("wifi: cfg80211: fix CQM for non-range use")
-Tested-by: "Léo Lam" <leo@leolam.fr>
-Tested-by: Philip MÃ¼ller <philm@manjaro.org>
-Cc: stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: "Léo Lam" <leo@leolam.fr>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Reported-by: Kevin Rich <kevinrich1337@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c |   18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12906,17 +12906,23 @@ static int nl80211_set_cqm_rssi(struct g
- 					lockdep_is_held(&wdev->mtx));
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9849,7 +9849,7 @@ static void nft_set_commit_update(struct
+ 	list_for_each_entry_safe(set, next, set_update_list, pending_update) {
+ 		list_del_init(&set->pending_update);
  
- 	/* if already disabled just succeed */
--	if (!n_thresholds && !old)
--		return 0;
-+	if (!n_thresholds && !old) {
-+		err = 0;
-+		goto unlock;
-+	}
+-		if (!set->ops->commit)
++		if (!set->ops->commit || set->dead)
+ 			continue;
  
- 	if (n_thresholds > 1) {
- 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
- 					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
--		    !rdev->ops->set_cqm_rssi_range_config)
--			return -EOPNOTSUPP;
-+		    !rdev->ops->set_cqm_rssi_range_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	} else {
--		if (!rdev->ops->set_cqm_rssi_config)
--			return -EOPNOTSUPP;
-+		if (!rdev->ops->set_cqm_rssi_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	}
- 
- 	if (n_thresholds) {
+ 		set->ops->commit(set);
 
 
 
