@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FA5823280
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DB58231FD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7322BB2356F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE457B22E72
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87721C280;
-	Wed,  3 Jan 2024 17:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6821C2AF;
+	Wed,  3 Jan 2024 17:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2A4a+CV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4JY+0pw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C241BDF1;
-	Wed,  3 Jan 2024 17:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7733C433C7;
-	Wed,  3 Jan 2024 17:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953D21C296;
+	Wed,  3 Jan 2024 17:01:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E13C433C7;
+	Wed,  3 Jan 2024 17:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301677;
-	bh=m3efA7YfqUcQrbPdhhJiyAsA65OQsjZjOcJW2k5bEWA=;
+	s=korg; t=1704301267;
+	bh=76kPto4apcf6hlcilp4n9G5f13jkFje8uYa+VPya6cU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2A4a+CVqbi0GoFVeMi8w+EoKCQlSyW3F5hbH8TtC+8ACIWm1Ex9+cbq5L2tPwA3l
-	 qje5zUf9zKYAjQ9PSspu0DRrnh/qGTMDfM9NSjxmnkxcVsFFlUjwYXAtQ+fOA3B0Hh
-	 977wnbIdyIRPQMXTO8KC99/JIkjN63A2gKpbJ40Y=
+	b=V4JY+0pwXGisHLShyO0XXFmQ8TMO7X9rA0KvWXJF2zQV5+SfZKqmUZTR3cVYs2vPY
+	 /ht0GKQ89vdENFwu5cqxfhLBbRzIuW8MQD0kCT2qap+BFjruJT4gnlzRNOTo7zhvIQ
+	 L1i1vrf/Z4uEAwxI1TQ6YgYXHui3PfbG5pTMD51E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Yang Chaoming <lometsj@live.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 66/95] ksmbd: have a dependency on cifs ARC4
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 085/100] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
 Date: Wed,  3 Jan 2024 17:55:14 +0100
-Message-ID: <20240103164903.899925729@linuxfoundation.org>
+Message-ID: <20240103164908.856549185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +53,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-Omitted the change that has a dependency on cifs ARC4 from backporting
-commit f9929ef6a2a5("ksmbd: add support for key exchange").
-This patch make ksmbd have a dependeny on cifs ARC4.
+commit d10c77873ba1e9e6b91905018e29e196fd5f863d upstream.
 
-Fixes: c5049d2d73b2 ("ksmbd: add support for key exchange")
+If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
+ksmbd_check_message doesn't validate request buffer it correctly.
+So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
+in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
+of the two sums (Name and CreateContext size) as the offset and length of
+the data area.
+
+Reported-by: Yang Chaoming <lometsj@live.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2misc.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index a6313a969bc5f..971339ecc1a2b 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -369,8 +369,8 @@ source "fs/ksmbd/Kconfig"
+--- a/fs/smb/server/smb2misc.c
++++ b/fs/smb/server/smb2misc.c
+@@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsign
+ 		break;
+ 	case SMB2_CREATE:
+ 	{
++		unsigned short int name_off =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
++		unsigned short int name_len =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++
+ 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
+ 			*off = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsOffset);
+ 			*len = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsLength);
+-			break;
++			if (!name_len)
++				break;
++
++			if (name_off + name_len < (u64)*off + *len)
++				break;
+ 		}
  
- config SMBFS_COMMON
- 	tristate
--	default y if CIFS=y
--	default m if CIFS=m
-+	default y if CIFS=y || SMB_SERVER=y
-+	default m if CIFS=m || SMB_SERVER=m
- 
- source "fs/coda/Kconfig"
- source "fs/afs/Kconfig"
--- 
-2.43.0
-
+-		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+-		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++		*off = name_off;
++		*len = name_len;
+ 		break;
+ 	}
+ 	case SMB2_QUERY_INFO:
 
 
 
