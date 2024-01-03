@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FD982327F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B843B8231FB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197041F24D4B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AA7BB2450F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACE71BDFB;
-	Wed,  3 Jan 2024 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5A61C2A9;
+	Wed,  3 Jan 2024 17:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azjUKn3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTjDii/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FAA1BDF1;
-	Wed,  3 Jan 2024 17:07:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AED4C433C8;
-	Wed,  3 Jan 2024 17:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53061C29F;
+	Wed,  3 Jan 2024 17:01:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464E0C433C7;
+	Wed,  3 Jan 2024 17:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301674;
-	bh=oWsuWTO9BShKTMuZGdzwj3drSH4VlIPE8H5lSufB0FQ=;
+	s=korg; t=1704301263;
+	bh=jCRqCEd3uw8C3Frvc6C02muV4II/JO1aYKeBG/EA7Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azjUKn3XiK6Qk+XKYVXJcwo5BevI+ow5K+jYlQUfNGEhiXJ+ToLO2ItoCZPkXVMdb
-	 DPcgTga9qVE0EIjlAzAwjoc+U6UoV4GXEFaOemr2/aOGOSPaMHt3JtXoXNzkvASEPY
-	 bZ6NUcClO1QS1a9eDhV52+rgehjpcDd6vY6IzmGM=
+	b=tTjDii/5Zy7BIl4/M6Sb/GGBzkaCJINNPe9KdkOY9E5O+6CLvvL5XtFHFzn8Org4M
+	 R+2NmCJnLdGxUPl9uUA+vEBJmKyXx6fOSiOXYCHjQpwmqYm+hIe8O0aLP7a+Us+HOH
+	 9CevhYtFNV94V5w16g5F4iiAnw/xjrUUnxvbbxKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 5.15 65/95] fuse: share lookup state between submount and its parent
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 084/100] block: renumber QUEUE_FLAG_HW_WC
 Date: Wed,  3 Jan 2024 17:55:13 +0100
-Message-ID: <20240103164903.718010233@linuxfoundation.org>
+Message-ID: <20240103164908.719444751@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,227 +53,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit c4d361f66ac91db8fc65061a9671682f61f4ca9d upstream.
+[ Upstream commit 02d374f3418df577c850f0cd45c3da9245ead547 ]
 
-Fuse submounts do not perform a lookup for the nodeid that they inherit
-from their parent.  Instead, the code decrements the nlookup on the
-submount's fuse_inode when it is instantiated, and no forget is
-performed when a submount root is evicted.
+For the QUEUE_FLAG_HW_WC to actually work, it needs to have a separate
+number from QUEUE_FLAG_FUA, doh.
 
-Trouble arises when the submount's parent is evicted despite the
-submount itself being in use.  In this author's case, the submount was
-in a container and deatched from the initial mount namespace via a
-MNT_DEATCH operation.  When memory pressure triggered the shrinker, the
-inode from the parent was evicted, which triggered enough forgets to
-render the submount's nodeid invalid.
-
-Since submounts should still function, even if their parent goes away,
-solve this problem by sharing refcounted state between the parent and
-its submount.  When all of the references on this shared state reach
-zero, it's safe to forget the final lookup of the fuse nodeid.
-
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Cc: stable@vger.kernel.org
-Fixes: 1866d779d5d2 ("fuse: Allow fuse_fill_super_common() for submounts")
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 43c9835b144c ("block: don't allow enabling a cache on devices that don't support it")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231226081524.180289-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/fuse_i.h |   15 +++++++++++
- fs/fuse/inode.c  |   75 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
- 2 files changed, 87 insertions(+), 3 deletions(-)
+ include/linux/blkdev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -63,6 +63,19 @@ struct fuse_forget_link {
- 	struct fuse_forget_link *next;
- };
- 
-+/* Submount lookup tracking */
-+struct fuse_submount_lookup {
-+	/** Refcount */
-+	refcount_t count;
-+
-+	/** Unique ID, which identifies the inode between userspace
-+	 * and kernel */
-+	u64 nodeid;
-+
-+	/** The request used for sending the FORGET message */
-+	struct fuse_forget_link *forget;
-+};
-+
- /** FUSE inode */
- struct fuse_inode {
- 	/** Inode data */
-@@ -155,6 +168,8 @@ struct fuse_inode {
- 	 */
- 	struct fuse_inode_dax *dax;
- #endif
-+	/** Submount specific lookup tracking */
-+	struct fuse_submount_lookup *submount_lookup;
- };
- 
- /** FUSE inode state bits */
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -69,6 +69,24 @@ struct fuse_forget_link *fuse_alloc_forg
- 	return kzalloc(sizeof(struct fuse_forget_link), GFP_KERNEL_ACCOUNT);
- }
- 
-+static struct fuse_submount_lookup *fuse_alloc_submount_lookup(void)
-+{
-+	struct fuse_submount_lookup *sl;
-+
-+	sl = kzalloc(sizeof(struct fuse_submount_lookup), GFP_KERNEL_ACCOUNT);
-+	if (!sl)
-+		return NULL;
-+	sl->forget = fuse_alloc_forget();
-+	if (!sl->forget)
-+		goto out_free;
-+
-+	return sl;
-+
-+out_free:
-+	kfree(sl);
-+	return NULL;
-+}
-+
- static struct inode *fuse_alloc_inode(struct super_block *sb)
- {
- 	struct fuse_inode *fi;
-@@ -84,6 +102,7 @@ static struct inode *fuse_alloc_inode(st
- 	fi->attr_version = 0;
- 	fi->orig_ino = 0;
- 	fi->state = 0;
-+	fi->submount_lookup = NULL;
- 	mutex_init(&fi->mutex);
- 	spin_lock_init(&fi->lock);
- 	fi->forget = fuse_alloc_forget();
-@@ -114,6 +133,17 @@ static void fuse_free_inode(struct inode
- 	kmem_cache_free(fuse_inode_cachep, fi);
- }
- 
-+static void fuse_cleanup_submount_lookup(struct fuse_conn *fc,
-+					 struct fuse_submount_lookup *sl)
-+{
-+	if (!refcount_dec_and_test(&sl->count))
-+		return;
-+
-+	fuse_queue_forget(fc, sl->forget, sl->nodeid, 1);
-+	sl->forget = NULL;
-+	kfree(sl);
-+}
-+
- static void fuse_evict_inode(struct inode *inode)
- {
- 	struct fuse_inode *fi = get_fuse_inode(inode);
-@@ -133,6 +163,11 @@ static void fuse_evict_inode(struct inod
- 					  fi->nlookup);
- 			fi->forget = NULL;
- 		}
-+
-+		if (fi->submount_lookup) {
-+			fuse_cleanup_submount_lookup(fc, fi->submount_lookup);
-+			fi->submount_lookup = NULL;
-+		}
- 	}
- 	if (S_ISREG(inode->i_mode) && !fuse_is_bad(inode)) {
- 		WARN_ON(!list_empty(&fi->write_files));
-@@ -279,6 +314,13 @@ void fuse_change_attributes(struct inode
- 	}
- }
- 
-+static void fuse_init_submount_lookup(struct fuse_submount_lookup *sl,
-+				      u64 nodeid)
-+{
-+	sl->nodeid = nodeid;
-+	refcount_set(&sl->count, 1);
-+}
-+
- static void fuse_init_inode(struct inode *inode, struct fuse_attr *attr)
- {
- 	inode->i_mode = attr->mode & S_IFMT;
-@@ -336,12 +378,22 @@ struct inode *fuse_iget(struct super_blo
- 	 */
- 	if (fc->auto_submounts && (attr->flags & FUSE_ATTR_SUBMOUNT) &&
- 	    S_ISDIR(attr->mode)) {
-+		struct fuse_inode *fi;
-+
- 		inode = new_inode(sb);
- 		if (!inode)
- 			return NULL;
- 
- 		fuse_init_inode(inode, attr);
--		get_fuse_inode(inode)->nodeid = nodeid;
-+		fi = get_fuse_inode(inode);
-+		fi->nodeid = nodeid;
-+		fi->submount_lookup = fuse_alloc_submount_lookup();
-+		if (!fi->submount_lookup) {
-+			iput(inode);
-+			return NULL;
-+		}
-+		/* Sets nlookup = 1 on fi->submount_lookup->nlookup */
-+		fuse_init_submount_lookup(fi->submount_lookup, nodeid);
- 		inode->i_flags |= S_AUTOMOUNT;
- 		goto done;
- 	}
-@@ -364,11 +416,11 @@ retry:
- 		iput(inode);
- 		goto retry;
- 	}
--done:
- 	fi = get_fuse_inode(inode);
- 	spin_lock(&fi->lock);
- 	fi->nlookup++;
- 	spin_unlock(&fi->lock);
-+done:
- 	fuse_change_attributes(inode, attr, attr_valid, attr_version);
- 
- 	return inode;
-@@ -1380,6 +1432,8 @@ static int fuse_fill_super_submount(stru
- 	struct super_block *parent_sb = parent_fi->inode.i_sb;
- 	struct fuse_attr root_attr;
- 	struct inode *root;
-+	struct fuse_submount_lookup *sl;
-+	struct fuse_inode *fi;
- 
- 	fuse_sb_defaults(sb);
- 	fm->sb = sb;
-@@ -1402,12 +1456,27 @@ static int fuse_fill_super_submount(stru
- 	 * its nlookup should not be incremented.  fuse_iget() does
- 	 * that, though, so undo it here.
- 	 */
--	get_fuse_inode(root)->nlookup--;
-+	fi = get_fuse_inode(root);
-+	fi->nlookup--;
-+
- 	sb->s_d_op = &fuse_dentry_operations;
- 	sb->s_root = d_make_root(root);
- 	if (!sb->s_root)
- 		return -ENOMEM;
- 
-+	/*
-+	 * Grab the parent's submount_lookup pointer and take a
-+	 * reference on the shared nlookup from the parent.  This is to
-+	 * prevent the last forget for this nodeid from getting
-+	 * triggered until all users have finished with it.
-+	 */
-+	sl = parent_fi->submount_lookup;
-+	WARN_ON(!sl);
-+	if (sl) {
-+		refcount_inc(&sl->count);
-+		fi->submount_lookup = sl;
-+	}
-+
- 	return 0;
- }
- 
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 57674b3c58774..07a7eeef47d39 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -565,7 +565,7 @@ struct request_queue {
+ #define QUEUE_FLAG_NOXMERGES	9	/* No extended merges */
+ #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
+ #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
+-#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
++#define QUEUE_FLAG_HW_WC	13	/* Write back caching supported */
+ #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
+ #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
+ #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
+-- 
+2.43.0
+
 
 
 
