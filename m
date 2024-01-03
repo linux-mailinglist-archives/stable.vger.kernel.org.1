@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE40823271
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCC68232EC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B75D1B248DE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE3B281FC5
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1803D1C28C;
-	Wed,  3 Jan 2024 17:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D88181BDF1;
+	Wed,  3 Jan 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI1PJMkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/Jh7j9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19801BDDE;
-	Wed,  3 Jan 2024 17:07:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396C5C433C7;
-	Wed,  3 Jan 2024 17:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07C31BDFE;
+	Wed,  3 Jan 2024 17:13:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D3C433C7;
+	Wed,  3 Jan 2024 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301623;
-	bh=gcDd5YkCmCMk627nWi9lxJ5lzVVYhJQDeCXhEeytWWY=;
+	s=korg; t=1704302014;
+	bh=MOk+YhFlL2hk2ZCCdRxFC9hzwQK3oAynEQT66I5TBZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZI1PJMkZ4gKepHkIkp6p1+drVKqaxRb3+l99SEItNh4qnGa9fdwvt+LaKMXDrm4+/
-	 8hlNxV7vy1yz8kJvEYPdUZRpygmywzGNwXUuu//dCYJqvwrJrQtEcsq8xf1HuaHDeu
-	 ByqFkVVAzygAO6q0K8kHm0vy40DhBAoIdWOcTrpE=
+	b=I/Jh7j9HsK3hqnLrDhIvBK6jGKhLdCXEAM4vMlQtC1fwiyYYncTpVOU+/ZXwfvyp4
+	 qWk/HQPyXI6Qg/UU5Zm8ooQ5EylV3+X6xeVVNNH76VtoEUN3NAnK2nBfTwqxp0Sewq
+	 J0iKAXePetlvjb9OqJVdY7MCaXHz6xYdeRQGsKuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justinpopo6@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 78/95] net: usb: ax88179_178a: wol optimizations
+Subject: [PATCH 6.6 06/49] ksmbd: no need to wait for binded connection termination at logoff
 Date: Wed,  3 Jan 2024 17:55:26 +0100
-Message-ID: <20240103164905.729905960@linuxfoundation.org>
+Message-ID: <20240103164835.933166888@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,129 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justinpopo6@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 5050531610a64f08461e0c309db80ca51b779fd5 ]
+[ Upstream commit 67797da8a4b82446d42c52b6ee1419a3100d78ff ]
 
-- Check if wol is supported on reset instead of everytime get_wol
-is called.
-- Save wolopts in private data instead of relying on the HW to save it.
-- Defer enabling WoL until suspend instead of enabling it everytime
-set_wol is called.
+The connection could be binded to the existing session for Multichannel.
+session will be destroyed when binded connections are released.
+So no need to wait for that's connection at logoff.
 
-Signed-off-by: Justin Chen <justinpopo6@gmail.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: aef05e349bfd ("net: usb: ax88179_178a: avoid failed operations when device is disconnected")
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 52 ++++++++++++++++++----------------
- 1 file changed, 28 insertions(+), 24 deletions(-)
+ fs/smb/server/connection.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index bd258c4e13948..49d97ad376654 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -170,6 +170,8 @@ struct ax88179_data {
- 	u16 rxctl;
- 	u16 reserved;
- 	u8 in_pm;
-+	u32 wol_supported;
-+	u32 wolopts;
- };
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 4b38c3a285f60..b6fa1e285c401 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -167,23 +167,7 @@ void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
  
- struct ax88179_int_data {
-@@ -399,6 +401,7 @@ ax88179_phy_write_mmd_indirect(struct usbnet *dev, u16 prtad, u16 devad,
- static int ax88179_suspend(struct usb_interface *intf, pm_message_t message)
+ void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
  {
- 	struct usbnet *dev = usb_get_intfdata(intf);
-+	struct ax88179_data *priv = dev->driver_priv;
- 	u16 tmp16;
- 	u8 tmp8;
- 
-@@ -406,6 +409,19 @@ static int ax88179_suspend(struct usb_interface *intf, pm_message_t message)
- 
- 	usbnet_suspend(intf, message);
- 
-+	/* Enable WoL */
-+	if (priv->wolopts) {
-+		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD,
-+				 1, 1, &tmp8);
-+		if (priv->wolopts & WAKE_PHY)
-+			tmp8 |= AX_MONITOR_MODE_RWLC;
-+		if (priv->wolopts & WAKE_MAGIC)
-+			tmp8 |= AX_MONITOR_MODE_RWMP;
-+
-+		ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD,
-+				  1, 1, &tmp8);
-+	}
-+
- 	/* Disable RX path */
- 	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
- 			 2, 2, &tmp16);
-@@ -504,40 +520,22 @@ static void
- ax88179_get_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
- {
- 	struct usbnet *dev = netdev_priv(net);
--	u8 opt;
+-	struct ksmbd_conn *bind_conn;
 -
--	if (ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD,
--			     1, 1, &opt) < 0) {
--		wolinfo->supported = 0;
--		wolinfo->wolopts = 0;
--		return;
+ 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
+-
+-	down_read(&conn_list_lock);
+-	list_for_each_entry(bind_conn, &conn_list, conns_list) {
+-		if (bind_conn == conn)
+-			continue;
+-
+-		if ((bind_conn->binding || xa_load(&bind_conn->sessions, sess_id)) &&
+-		    !ksmbd_conn_releasing(bind_conn) &&
+-		    atomic_read(&bind_conn->req_running)) {
+-			wait_event(bind_conn->req_running_q,
+-				atomic_read(&bind_conn->req_running) == 0);
+-		}
 -	}
-+	struct ax88179_data *priv = dev->driver_priv;
- 
--	wolinfo->supported = WAKE_PHY | WAKE_MAGIC;
--	wolinfo->wolopts = 0;
--	if (opt & AX_MONITOR_MODE_RWLC)
--		wolinfo->wolopts |= WAKE_PHY;
--	if (opt & AX_MONITOR_MODE_RWMP)
--		wolinfo->wolopts |= WAKE_MAGIC;
-+	wolinfo->supported = priv->wol_supported;
-+	wolinfo->wolopts = priv->wolopts;
+-	up_read(&conn_list_lock);
  }
  
- static int
- ax88179_set_wol(struct net_device *net, struct ethtool_wolinfo *wolinfo)
- {
- 	struct usbnet *dev = netdev_priv(net);
--	u8 opt = 0;
-+	struct ax88179_data *priv = dev->driver_priv;
- 
--	if (wolinfo->wolopts & ~(WAKE_PHY | WAKE_MAGIC))
-+	if (wolinfo->wolopts & ~(priv->wol_supported))
- 		return -EINVAL;
- 
--	if (wolinfo->wolopts & WAKE_PHY)
--		opt |= AX_MONITOR_MODE_RWLC;
--	if (wolinfo->wolopts & WAKE_MAGIC)
--		opt |= AX_MONITOR_MODE_RWMP;
--
--	if (ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD,
--			      1, 1, &opt) < 0)
--		return -EINVAL;
-+	priv->wolopts = wolinfo->wolopts;
- 
- 	return 0;
- }
-@@ -1727,6 +1725,12 @@ static int ax88179_reset(struct usbnet *dev)
- 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
- 			  2, 2, tmp16);
- 
-+	/* Check if WoL is supported */
-+	ax179_data->wol_supported = 0;
-+	if (ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MONITOR_MOD,
-+			     1, 1, &tmp) > 0)
-+		ax179_data->wol_supported = WAKE_MAGIC | WAKE_PHY;
-+
- 	ax88179_led_setting(dev);
- 
- 	ax179_data->eee_enabled = 0;
+ int ksmbd_conn_write(struct ksmbd_work *work)
 -- 
 2.43.0
 
