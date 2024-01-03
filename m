@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCE648232A3
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5607823241
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63B4EB233FC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60AAC1F24CBD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8B1C294;
-	Wed,  3 Jan 2024 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CAC51C289;
+	Wed,  3 Jan 2024 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbDRK3Qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3YEUhFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224F21C292;
-	Wed,  3 Jan 2024 17:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C06AC433C7;
-	Wed,  3 Jan 2024 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C903F1BDFF;
+	Wed,  3 Jan 2024 17:04:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30375C433C7;
+	Wed,  3 Jan 2024 17:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301772;
-	bh=zkQZq91K7PDQ2FBVHIhPRQG4x6iCYvLgYLemB/pWHWY=;
+	s=korg; t=1704301464;
+	bh=XUUANeP7CKr8SXNmD6YdrSdTJiJiPlJQB01+NO0cwuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbDRK3QfP4P2eLzkL0NKiSaZwEFJROiCzPZrfdGGNRGmbPMBBFUSc5EGnxo66MWvy
-	 TLCU6WYgQxz4diSvFkpKfSfuPOIc3l45QVZYR1O+MQvicBrVA4jAUhrIaWMpuJtSuw
-	 +xsqzq5aMe3+kAuuPciX/78V8e+74m8lle4UCLI8=
+	b=m3YEUhFdojrrASHsJk1mSFwiK9RTIZBkF8grK3iaAYufn4QKRS3lfOLcD5CCVu9cW
+	 EzKbjsVhb/p8HXxc9mbxrWV8DLCZQAzXJBZGs7KbpiXutWAdRVsKh4g0N0EylP80ij
+	 qm5Yp8WUJLDFTPMa9tcOS8+FX3omOp2CUTwhmytw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/75] Revert "net/mlx5e: fix double free of encap_header"
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 40/95] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
 Date: Wed,  3 Jan 2024 17:54:48 +0100
-Message-ID: <20240103164844.060005711@linuxfoundation.org>
+Message-ID: <20240103164900.179921397@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,72 +53,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 5d089684dc434a31e08d32f0530066d0025c52e4 ]
+commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
 
-This reverts commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1.
+The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
+associated to an index that is used to select the right measurement
+resolution and its corresponding measurement time. The current
+implementation selects the measurement resolution and the temperature
+measurement time properly, but it does not select the right humidity
+measurement time in all cases.
 
-This patch is causing a null ptr issue, the proper fix is in the next
-patch.
+In summary, the 40 and 70 humidity measurement times are swapped.
 
-Fixes: 6f9b1a073166 ("net/mlx5e: fix double free of encap_header")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason for that is probably the unusual coding for the measurement
+resolution. According to the datasheet, the bits [7,0] of the "user
+register" are used as follows to select the bit resolution:
+
+--------------------------------------------------
+| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
+--------------------------------------------------
+|   0   |   0   | 12 |  14  |  16000   |  50000  |
+--------------------------------------------------
+|   0   |   1   | 8  |  12  |  3000    |  13000  |
+--------------------------------------------------
+|   1   |   0   | 10 |  13  |  5000    |  25000  |
+--------------------------------------------------
+|   1   |   1   | 11 |  11  |  8000    |  7000   |
+--------------------------------------------------
+*This table is available in the official datasheet, page 13/21. I have
+just appended the times provided in the humidity/temperature tables,
+pages 3/21, 5/21. Note that always a pair of resolutions is selected.
+
+The sampling frequencies [20, 40, 70, 120] are assigned to a linear
+index [0..3] which is then coded as follows [1]:
+
+Index    [7,0]
+--------------
+idx 0     0,0
+idx 1     1,0
+idx 2     0,1
+idx 3     1,1
+
+That is done that way because the temperature measurements are being
+used as the reference for the sampling frequency (the frequencies and
+the temperature measurement times are correlated), so increasing the
+index always reduces the temperature measurement time and its
+resolution. Therefore, the temperature measurement time array is as
+simple as [50000, 25000, 13000, 7000]
+
+On the other hand, the humidity resolution cannot follow the same
+pattern because of the way it is coded in the "user register", where
+both resolutions are selected at the same time. The humidity measurement
+time array is the following: [16000, 3000, 5000, 8000], which defines
+the following assignments:
+
+Index    [7,0]    Trh
+-----------------------
+idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
+idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
+idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
+idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
+
+The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
+which is not the case for the reason explained above.
+
+So a simple modification is required to obtain the right humidity
+measurement time array, swapping the values in the positions 1 and 2.
+
+The right table should be the following: [16000, 5000, 3000, 8000]
+
+Fix the humidity measurement time array with the right idex/value
+coding.
+
+[1] The actual code that makes this coding and assigns it to the current
+value of the "user register" is the following:
+config_reg &= 0x7E;
+config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
+
+Fixes: d574a87cc311 ("Add meas-spec sensors common part")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index 05bcd69994eca..90930e54b6f28 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -267,6 +267,9 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+--- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
++++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+@@ -15,8 +15,8 @@
+ /* Conversion times in us */
+ static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
+ 						       13000, 7000 };
+-static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
+-						       5000, 8000 };
++static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
++						       3000, 8000 };
+ static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
+ 						     4100, 8220, 16440 };
  
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -283,8 +286,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
- 
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	mlx5e_route_lookup_ipv4_put(route_dev, n);
-@@ -430,6 +431,9 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
- 
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -447,8 +451,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
- 
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	mlx5e_route_lookup_ipv6_put(route_dev, n);
--- 
-2.43.0
-
 
 
 
