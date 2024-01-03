@@ -1,45 +1,43 @@
-Return-Path: <stable+bounces-9427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C51823251
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135F0823252
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAC0B2484A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 997B4B21E69
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B321BDF4;
-	Wed,  3 Jan 2024 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E7D1BDFF;
+	Wed,  3 Jan 2024 17:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="No8gxsHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra6WPRSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303F91BDDE;
-	Wed,  3 Jan 2024 17:05:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85645C433C8;
-	Wed,  3 Jan 2024 17:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6D91BDE3;
+	Wed,  3 Jan 2024 17:05:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6771C433C7;
+	Wed,  3 Jan 2024 17:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301519;
-	bh=etUMQWVrq4QUvt5PoN3nHtQnNDynevjcu8c9JbZZOAY=;
+	s=korg; t=1704301526;
+	bh=YOqqI5d09TvgQVlAILcQPQzw0FxUJEi4vwcyCs2q/5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=No8gxsHggFi1h71GGdNEkw9rgX05fThL7cc9fxDuBBDhjqGA2Qm5jPBd38+eynOJC
-	 2CtuVo8HP+L3HhAYxuhd0VzFxNK7oFmErweeX+BI+tX5fOPL/Z+WHnN+TL83g6XErv
-	 MihbJEojBMNEZmpvp9ZSfaX6bnquOv7NZHTRQylA=
+	b=Ra6WPRSzNp0I6brjyxGU5V185uKw4kiT2URL+mdt4IHc9pmVkCg76znckn5nPAskS
+	 9YEriGg4n24sfni8fj+h98ddp521ZpBiIBEjnE+nRFHmNWk1AJ2MfuhKMpPj0fCfx3
+	 YWQ8HorF1mn0ex7zPXqJ4OX1k36Enat9qxUrAJmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Simon Horman <horms@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 5.15 54/95] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
-Date: Wed,  3 Jan 2024 17:55:02 +0100
-Message-ID: <20240103164902.133391465@linuxfoundation.org>
+	Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.15 55/95] net: rfkill: gpio: set GPIO direction
+Date: Wed,  3 Jan 2024 17:55:03 +0100
+Message-ID: <20240103164902.276642211@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
 References: <20240103164853.921194838@linuxfoundation.org>
@@ -58,83 +56,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
+commit 23484d817082c3005252d8edfc8292c8a1006b5b upstream.
 
-If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
-the error path is not handled properly. *wnames or members of *wnames
-array may be left uninitialized and invalidly freed.
+Fix the undefined usage of the GPIO consumer API after retrieving the
+GPIO description with GPIO_ASIS. The API documentation mentions that
+GPIO_ASIS won't set a GPIO direction and requires the user to set a
+direction before using the GPIO.
 
-Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
-*wnames array element to NULL and nullify the failing *wnames element so
-that the error path freeing loop stops on the first NULL element and
-doesn't proceed further.
+This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
+able to enabled/disable a device, presumably because the GPIO controller
+was never configured for the output direction.
 
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
+Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Link: https://msgid.link/20231207075835.3091694-1-r.czerwinski@pengutronix.de
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/9p/protocol.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ net/rfkill/rfkill-gpio.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/9p/protocol.c
-+++ b/net/9p/protocol.c
-@@ -230,6 +230,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 				uint16_t *nwname = va_arg(ap, uint16_t *);
- 				char ***wnames = va_arg(ap, char ***);
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -116,6 +116,14 @@ static int rfkill_gpio_probe(struct plat
+ 		return -EINVAL;
+ 	}
  
-+				*wnames = NULL;
++	ret = gpiod_direction_output(rfkill->reset_gpio, true);
++	if (ret)
++		return ret;
 +
- 				errcode = p9pdu_readf(pdu, proto_version,
- 								"w", nwname);
- 				if (!errcode) {
-@@ -239,6 +241,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 							  GFP_NOFS);
- 					if (!*wnames)
- 						errcode = -ENOMEM;
-+					else
-+						(*wnames)[0] = NULL;
- 				}
- 
- 				if (!errcode) {
-@@ -250,8 +254,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 								proto_version,
- 								"s",
- 								&(*wnames)[i]);
--						if (errcode)
-+						if (errcode) {
-+							(*wnames)[i] = NULL;
- 							break;
-+						}
- 					}
- 				}
- 
-@@ -259,11 +265,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 					if (*wnames) {
- 						int i;
- 
--						for (i = 0; i < *nwname; i++)
-+						for (i = 0; i < *nwname; i++) {
-+							if (!(*wnames)[i])
-+								break;
- 							kfree((*wnames)[i]);
-+						}
-+						kfree(*wnames);
-+						*wnames = NULL;
- 					}
--					kfree(*wnames);
--					*wnames = NULL;
- 				}
- 			}
- 			break;
++	ret = gpiod_direction_output(rfkill->shutdown_gpio, true);
++	if (ret)
++		return ret;
++
+ 	rfkill->rfkill_dev = rfkill_alloc(rfkill->name, &pdev->dev,
+ 					  rfkill->type, &rfkill_gpio_ops,
+ 					  rfkill);
 
 
 
