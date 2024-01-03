@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 117CD8232F9
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0705F8232D4
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E501F24C53
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E7641C238B1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315911C2A3;
-	Wed,  3 Jan 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1667B1C288;
+	Wed,  3 Jan 2024 17:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqMr+EkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H7PLWHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC43F1C284;
-	Wed,  3 Jan 2024 17:14:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E555C433C7;
-	Wed,  3 Jan 2024 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31351BDFE;
+	Wed,  3 Jan 2024 17:12:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A4DC433C9;
+	Wed,  3 Jan 2024 17:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302054;
-	bh=0w91XEDJWimXsMzCxA18HGUGd5VxmG4g3SkUhStJs9o=;
+	s=korg; t=1704301933;
+	bh=cg6S25Bo2CgcC406vTqL7415YPvYEoazKqeKklodiMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqMr+EkO/+xhnXwBTh4HeHVf8Y+S48ksMpCrzPZtHAzEVTM3clBLgsne/Rvm6gHTe
-	 AdhdJFgNpWlXsdPeeRJgeLL33O+aVPWQTE0Oo+pwbw3thARrUfD2cMBOLkTK661Twk
-	 /XimWOff7d+VvEehmv27IW+VoLn2Z6V+vEK4j6Ac=
+	b=2H7PLWHuuFtUFL0Hd9+3XtNCe5qN6AU5SUmD7SsSI8KbMI06qMpGhRvordrPmsUqH
+	 E5HGbdeaGpt7/Loa3PAFRQsxrhqxbQlsq2TMGxyn3pOSPzRutGQXxauVqjsw/rWyOD
+	 bi3g2iNzgybUKEhzemzT/UydUo4kZHlw0OPRwB2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David E. Box" <david.e.box@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/49] platform/x86/intel/pmc: Allow reenabling LTRs
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Francis Laniel <flaniel@linux.microsoft.com>
+Subject: [PATCH 5.10 72/75] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
 Date: Wed,  3 Jan 2024 17:55:53 +0100
-Message-ID: <20240103164840.170043803@linuxfoundation.org>
+Message-ID: <20240103164853.860066253@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,141 +50,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David E. Box <david.e.box@linux.intel.com>
+From: Francis Laniel <flaniel@linux.microsoft.com>
 
-[ Upstream commit 6f9cc5c1f94daa98846b2073733d03ced709704b ]
+commit b022f0c7e404887a7c5229788fc99eff9f9a80d5 upstream.
 
-Commit 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and
-core_configure()") caused a network performance regression due to the GBE
-LTR ignore that it added during probe. The fix will move the ignore to
-occur at suspend-time (so as to not affect suspend power). This will
-require the ability to enable the LTR again on resume. Modify
-pmc_core_send_ltr_ignore() to allow enabling an LTR.
+When a kprobe is attached to a function that's name is not unique (is
+static and shares the name with other functions in the kernel), the
+kprobe is attached to the first function it finds. This is a bug as the
+function that it is attaching to is not necessarily the one that the
+user wants to attach to.
 
-Fixes: 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and core_configure()")
-Signed-off-by: "David E. Box" <david.e.box@linux.intel.com>
-Link: https://lore.kernel.org/r/20231223032548.1680738-5-david.e.box@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead of blindly picking a function to attach to what is ambiguous,
+error with EADDRNOTAVAIL to let the user know that this function is not
+unique, and that the user must use another unique function with an
+address offset to get to the function they want to attach to.
+
+Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
+
+Cc: stable@vger.kernel.org
+Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/pmc/adl.c  | 2 +-
- drivers/platform/x86/intel/pmc/cnp.c  | 2 +-
- drivers/platform/x86/intel/pmc/core.c | 9 ++++++---
- drivers/platform/x86/intel/pmc/core.h | 2 +-
- drivers/platform/x86/intel/pmc/mtl.c  | 2 +-
- drivers/platform/x86/intel/pmc/tgl.c  | 2 +-
- 6 files changed, 11 insertions(+), 8 deletions(-)
+ kernel/trace/trace_kprobe.c |   74 ++++++++++++++++++++++++++++++++++++++++++++
+ kernel/trace/trace_probe.h  |    1 
+ 2 files changed, 75 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/pmc/adl.c b/drivers/platform/x86/intel/pmc/adl.c
-index 5006008e01bea..a887c388cf16d 100644
---- a/drivers/platform/x86/intel/pmc/adl.c
-+++ b/drivers/platform/x86/intel/pmc/adl.c
-@@ -323,7 +323,7 @@ int adl_core_init(struct pmc_dev *pmcdev)
- 	 * when a cable is attached. Tell the PMC to ignore it.
- 	 */
- 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3);
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
- 
- 	return 0;
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -715,6 +715,36 @@ static inline void sanitize_event_name(c
+ 			*name = '_';
  }
-diff --git a/drivers/platform/x86/intel/pmc/cnp.c b/drivers/platform/x86/intel/pmc/cnp.c
-index 420aaa1d7c769..10498204962cd 100644
---- a/drivers/platform/x86/intel/pmc/cnp.c
-+++ b/drivers/platform/x86/intel/pmc/cnp.c
-@@ -218,7 +218,7 @@ int cnp_core_init(struct pmc_dev *pmcdev)
- 	 * when a cable is attached. Tell the PMC to ignore it.
- 	 */
- 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3);
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
  
- 	return 0;
- }
-diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
-index 5ab470d87ad7e..022afb97d531c 100644
---- a/drivers/platform/x86/intel/pmc/core.c
-+++ b/drivers/platform/x86/intel/pmc/core.c
-@@ -460,7 +460,7 @@ static int pmc_core_pll_show(struct seq_file *s, void *unused)
- }
- DEFINE_SHOW_ATTRIBUTE(pmc_core_pll);
- 
--int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value)
-+int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value, int ignore)
++struct count_symbols_struct {
++	const char *func_name;
++	unsigned int count;
++};
++
++static int count_symbols(void *data, const char *name, struct module *unused0,
++			 unsigned long unused1)
++{
++	struct count_symbols_struct *args = data;
++
++	if (strcmp(args->func_name, name))
++		return 0;
++
++	args->count++;
++
++	return 0;
++}
++
++static unsigned int number_of_same_symbols(char *func_name)
++{
++	struct count_symbols_struct args = {
++		.func_name = func_name,
++		.count = 0,
++	};
++
++	kallsyms_on_each_symbol(count_symbols, &args);
++
++	return args.count;
++}
++
+ static int trace_kprobe_create(int argc, const char *argv[])
  {
- 	struct pmc *pmc;
- 	const struct pmc_reg_map *map;
-@@ -498,7 +498,10 @@ int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value)
- 	mutex_lock(&pmcdev->lock);
+ 	/*
+@@ -842,6 +872,31 @@ static int trace_kprobe_create(int argc,
+ 		}
+ 	}
  
- 	reg = pmc_core_reg_read(pmc, map->ltr_ignore_offset);
--	reg |= BIT(ltr_index);
-+	if (ignore)
-+		reg |= BIT(ltr_index);
-+	else
-+		reg &= ~BIT(ltr_index);
- 	pmc_core_reg_write(pmc, map->ltr_ignore_offset, reg);
- 
- 	mutex_unlock(&pmcdev->lock);
-@@ -521,7 +524,7 @@ static ssize_t pmc_core_ltr_ignore_write(struct file *file,
- 	if (err)
- 		return err;
- 
--	err = pmc_core_send_ltr_ignore(pmcdev, value);
-+	err = pmc_core_send_ltr_ignore(pmcdev, value, 1);
- 
- 	return err == 0 ? count : err;
++	if (symbol && !strchr(symbol, ':')) {
++		unsigned int count;
++
++		count = number_of_same_symbols(symbol);
++		if (count > 1) {
++			/*
++			 * Users should use ADDR to remove the ambiguity of
++			 * using KSYM only.
++			 */
++			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
++			ret = -EADDRNOTAVAIL;
++
++			goto error;
++		} else if (count == 0) {
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			trace_probe_log_err(0, BAD_PROBE_ADDR);
++			ret = -ENOENT;
++
++			goto error;
++		}
++	}
++
+ 	trace_probe_log_set_index(0);
+ 	if (event) {
+ 		ret = traceprobe_parse_event_name(&event, &group, buf,
+@@ -1805,6 +1860,7 @@ static int unregister_kprobe_event(struc
  }
-diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
-index 38d888e3afa63..71ba7d691d691 100644
---- a/drivers/platform/x86/intel/pmc/core.h
-+++ b/drivers/platform/x86/intel/pmc/core.h
-@@ -488,7 +488,7 @@ extern const struct pmc_bit_map *mtl_ioem_lpm_maps[];
- extern const struct pmc_reg_map mtl_ioem_reg_map;
  
- extern void pmc_core_get_tgl_lpm_reqs(struct platform_device *pdev);
--extern int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value);
-+int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value, int ignore);
+ #ifdef CONFIG_PERF_EVENTS
++
+ /* create a trace_kprobe, but don't add it to global lists */
+ struct trace_event_call *
+ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1814,6 +1870,24 @@ create_local_trace_kprobe(char *func, vo
+ 	int ret;
+ 	char *event;
  
- int pmc_core_resume_common(struct pmc_dev *pmcdev);
- int get_primary_reg_base(struct pmc *pmc);
-diff --git a/drivers/platform/x86/intel/pmc/mtl.c b/drivers/platform/x86/intel/pmc/mtl.c
-index 2204bc666980e..71dc11811e112 100644
---- a/drivers/platform/x86/intel/pmc/mtl.c
-+++ b/drivers/platform/x86/intel/pmc/mtl.c
-@@ -1006,7 +1006,7 @@ int mtl_core_init(struct pmc_dev *pmcdev)
- 	 * when a cable is attached. Tell the PMC to ignore it.
- 	 */
- 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3);
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
- 
- 	return 0;
- }
-diff --git a/drivers/platform/x86/intel/pmc/tgl.c b/drivers/platform/x86/intel/pmc/tgl.c
-index 2449940102db4..078263db24c7a 100644
---- a/drivers/platform/x86/intel/pmc/tgl.c
-+++ b/drivers/platform/x86/intel/pmc/tgl.c
-@@ -268,7 +268,7 @@ int tgl_core_init(struct pmc_dev *pmcdev)
- 	 * when a cable is attached. Tell the PMC to ignore it.
- 	 */
- 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
--	pmc_core_send_ltr_ignore(pmcdev, 3);
-+	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
- 
- 	return 0;
- }
--- 
-2.43.0
-
++	if (func) {
++		unsigned int count;
++
++		count = number_of_same_symbols(func);
++		if (count > 1)
++			/*
++			 * Users should use addr to remove the ambiguity of
++			 * using func only.
++			 */
++			return ERR_PTR(-EADDRNOTAVAIL);
++		else if (count == 0)
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			return ERR_PTR(-ENOENT);
++	}
++
+ 	/*
+ 	 * local trace_kprobes are not added to dyn_event, so they are never
+ 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -390,6 +390,7 @@ extern int traceprobe_define_arg_fields(
+ 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
+ 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
+ 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
++	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
+ 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
+ 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
 
 
 
