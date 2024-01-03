@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-9310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B908231C4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:58:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD645823224
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A30E1C23B2D
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6EBD6B2471E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998AE1BDEC;
-	Wed,  3 Jan 2024 16:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5EC1C2AC;
+	Wed,  3 Jan 2024 17:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3bTTZHL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrpmVInN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608741BDFD;
-	Wed,  3 Jan 2024 16:58:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EADC433C8;
-	Wed,  3 Jan 2024 16:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220531C2A9;
+	Wed,  3 Jan 2024 17:03:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28FAAC433C8;
+	Wed,  3 Jan 2024 17:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301109;
-	bh=MKHEJS/mngEt7/nkvGahsZt9FCDPVWdp0htSgfm03Pc=;
+	s=korg; t=1704301386;
+	bh=rXN936LNSou1IgGZttvKELmucuuVSAKb1CaGRWIFD54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3bTTZHLySzu07OeK6BBj3OIJYsgF2Y9qdhkUrNH5+hKGsJMBSqFExWY9uAWxt1ZD
-	 Ljayc5G0EcfgpoTi8o+UZjz91JxLR/2+LiaVBm92U9A/XVgznlp7hwrrjbLQCHaglt
-	 trZup4ArDHwXU7mko40qaKfwqpvIw/TDpP0t5iBs=
+	b=KrpmVInN+r5YvJAAPRPOtCeIe0HTuS9N7+rpjFu2l4NX8aeqIr9n24igdWfXhe5/8
+	 lU+04GrNO8OLEoFw2KUXllJntS0kubNn8GZ15Gg2rWiJLWbROQm7bn75DuwonKCY5q
+	 eW/GGrs+nBz5p5QjxuwNQ/mvYVj0tmf9hSmpfMoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/100] ksmbd: Fix one kernel-doc comment
+Subject: [PATCH 5.15 19/95] afs: Fix dynamic root lookup DNS check
 Date: Wed,  3 Jan 2024 17:54:27 +0100
-Message-ID: <20240103164901.796823022@linuxfoundation.org>
+Message-ID: <20240103164857.013176880@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,37 +55,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit bf26f1b4e0918f017775edfeacf6d867204b680b ]
+[ Upstream commit 74cef6872ceaefb5b6c5c60641371ea28702d358 ]
 
-Fix one kernel-doc comment to silence the warning:
-fs/smb/server/smb2pdu.c:4160: warning: Excess function parameter 'infoclass_size' description in 'buffer_check_err'
+In the afs dynamic root directory, the ->lookup() function does a DNS check
+on the cell being asked for and if the DNS upcall reports an error it will
+report an error back to userspace (typically ENOENT).
 
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+However, if a failed DNS upcall returns a new-style result, it will return
+a valid result, with the status field set appropriately to indicate the
+type of failure - and in that case, dns_query() doesn't return an error and
+we let stat() complete with no error - which can cause confusion in
+userspace as subsequent calls that trigger d_automount then fail with
+ENOENT.
+
+Fix this by checking the status result from a valid dns_query() and
+returning an error if it indicates a failure.
+
+Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server set")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/afs/dynroot.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index dfb4fd4cb42f6..0fed613956f7a 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4156,7 +4156,6 @@ int smb2_query_dir(struct ksmbd_work *work)
-  * @reqOutputBufferLength:	max buffer length expected in command response
-  * @rsp:		query info response buffer contains output buffer length
-  * @rsp_org:		base response buffer pointer in case of chained response
-- * @infoclass_size:	query info class response buffer size
-  *
-  * Return:	0 on success, otherwise error
-  */
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index 4ddc4846a8072..96b404d9e13ac 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -113,6 +113,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	struct afs_net *net = afs_d2net(dentry);
+ 	const char *name = dentry->d_name.name;
+ 	size_t len = dentry->d_name.len;
++	char *result = NULL;
+ 	int ret;
+ 
+ 	/* Names prefixed with a dot are R/W mounts. */
+@@ -130,9 +131,22 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	}
+ 
+ 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
+-			NULL, NULL, false);
+-	if (ret == -ENODATA || ret == -ENOKEY)
++			&result, NULL, false);
++	if (ret == -ENODATA || ret == -ENOKEY || ret == 0)
+ 		ret = -ENOENT;
++	if (ret > 0 && ret >= sizeof(struct dns_server_list_v1_header)) {
++		struct dns_server_list_v1_header *v1 = (void *)result;
++
++		if (v1->hdr.zero == 0 &&
++		    v1->hdr.content == DNS_PAYLOAD_IS_SERVER_LIST &&
++		    v1->hdr.version == 1 &&
++		    (v1->status != DNS_LOOKUP_GOOD &&
++		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD))
++			return -ENOENT;
++
++	}
++
++	kfree(result);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
