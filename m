@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA47823281
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD0182320E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60B11C23BA4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 599211C228DB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD761C283;
-	Wed,  3 Jan 2024 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D941C281;
+	Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q74J6jB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG7a7xss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A101BDFD;
-	Wed,  3 Jan 2024 17:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58B22C433C8;
-	Wed,  3 Jan 2024 17:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF721BDEC;
+	Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA303C433C8;
+	Wed,  3 Jan 2024 17:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301680;
-	bh=LBteSNl1QgzCFvlAeAYgoY6fzDeqRaqPRduPrMGG/Sc=;
+	s=korg; t=1704301321;
+	bh=17R4zPop7ed6EcAIS5zj1PFkiuXnPelZ5EZeVkGE+jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q74J6jB05ZlO2OlPjIT8UlUpR/KM100Jh9sueHN/r1K8KjnAvV+T0+gIVn41W0SG8
-	 tcFpMGCbiz8YQjpu2VeOXKyRTnHd6iBfdEb3I7Y5e+omwbeQtZWCDJCiNHoLF8s/Md
-	 XNgQp7oR0o7ANXlq9znQ6vzAe/v1RGLsDe0EHlTE=
+	b=AG7a7xssOamnGddj3N3ZexmY3KWz7E5iVyONxIe+lxYgCMe6FqZiGhVcqXD4iLA/X
+	 W6xBFO9o2BBlAeEzbfjYdA6OSs0a3G5gEHxmPlfvdVESamqFfUFa2/4qw8+wVTEccm
+	 d07tD93TETWOr/n8wa+jQjLJ6X5EmD1wHFnATv28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Fabio Estevam <festevam@denx.de>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.15 57/95] dt-bindings: nvmem: mxs-ocotp: Document fsl,ocotp
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 076/100] spi: Introduce spi_get_device_match_data() helper
 Date: Wed,  3 Jan 2024 17:55:05 +0100
-Message-ID: <20240103164902.559765449@linuxfoundation.org>
+Message-ID: <20240103164907.483411209@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +53,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit a2a8aefecbd0f87d6127951cef33b3def8439057 upstream.
+[ Upstream commit aea672d054a21782ed8450c75febb6ba3c208ca4 ]
 
-Both imx23.dtsi and imx28.dtsi describe the OCOTP nodes in
-the format:
+The proposed spi_get_device_match_data() helper is for retrieving
+a driver data associated with the ID in an ID table. First, it tries
+to get driver data of the device enumerated by firmware interface
+(usually Device Tree or ACPI). If none is found it falls back to
+the SPI ID table matching.
 
-compatible = "fsl,imx28-ocotp", "fsl,ocotp";
-
-Document the "fsl,ocotp" entry to fix the following schema
-warning:
-
-efuse@8002c000: compatible: ['fsl,imx23-ocotp', 'fsl,ocotp'] is too long
-from schema $id: http://devicetree.org/schemas/nvmem/mxs-ocotp.yaml#
-
-Fixes: 2c504460f502 ("dt-bindings: nvmem: Convert MXS OCOTP to json-schema")
-Cc:  <Stable@vger.kernel.org>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231215111358.316727-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20221020195421.10482-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/spi/spi.c       | 12 ++++++++++++
+ include/linux/spi/spi.h |  3 +++
+ 2 files changed, 15 insertions(+)
 
---- a/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
-+++ b/Documentation/devicetree/bindings/nvmem/mxs-ocotp.yaml
-@@ -14,9 +14,11 @@ allOf:
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 5d046be8b2dd5..dfce0f7d4c640 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -360,6 +360,18 @@ const struct spi_device_id *spi_get_device_id(const struct spi_device *sdev)
+ }
+ EXPORT_SYMBOL_GPL(spi_get_device_id);
  
- properties:
-   compatible:
--    enum:
--      - fsl,imx23-ocotp
--      - fsl,imx28-ocotp
-+    items:
-+      - enum:
-+          - fsl,imx23-ocotp
-+          - fsl,imx28-ocotp
-+      - const: fsl,ocotp
++const void *spi_get_device_match_data(const struct spi_device *sdev)
++{
++	const void *match;
++
++	match = device_get_match_data(&sdev->dev);
++	if (match)
++		return match;
++
++	return (const void *)spi_get_device_id(sdev)->driver_data;
++}
++EXPORT_SYMBOL_GPL(spi_get_device_match_data);
++
+ static int spi_match_device(struct device *dev, struct device_driver *drv)
+ {
+ 	const struct spi_device	*spi = to_spi_device(dev);
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index 877395e075afe..635a05c30283c 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -1515,6 +1515,9 @@ extern void spi_unregister_device(struct spi_device *spi);
+ extern const struct spi_device_id *
+ spi_get_device_id(const struct spi_device *sdev);
  
-   "#address-cells":
-     const: 1
-@@ -40,7 +42,7 @@ additionalProperties: false
- examples:
-   - |
-     ocotp: efuse@8002c000 {
--        compatible = "fsl,imx28-ocotp";
-+        compatible = "fsl,imx28-ocotp", "fsl,ocotp";
-         #address-cells = <1>;
-         #size-cells = <1>;
-         reg = <0x8002c000 0x2000>;
++extern const void *
++spi_get_device_match_data(const struct spi_device *sdev);
++
+ static inline bool
+ spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
+ {
+-- 
+2.43.0
+
 
 
 
