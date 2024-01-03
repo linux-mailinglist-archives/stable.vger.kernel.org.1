@@ -1,372 +1,203 @@
-Return-Path: <stable+bounces-9258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C208B822B69
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:30:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF927822B80
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4619E1F240E8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:30:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52480285301
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF2B18B0B;
-	Wed,  3 Jan 2024 10:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B02A18C27;
+	Wed,  3 Jan 2024 10:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZfxVjac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3QEiHnk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6550118C07
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB60C433C8;
-	Wed,  3 Jan 2024 10:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE8118C1B;
+	Wed,  3 Jan 2024 10:40:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165B3C433C7;
+	Wed,  3 Jan 2024 10:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704277838;
-	bh=M5z1TlkVwdGeOaEQsHbUscdNydyFfNpondYcI3vJHOs=;
-	h=Subject:To:Cc:From:Date:From;
-	b=EZfxVjacdKuGRrtfBIB/bKXLYZrteegZOS3dC9+6pFK/KgOaQoTqHPY/69LSBhHO7
-	 duJf8Hd7FwLbS1fIegMrDDYzuzBMjsEyMl8wDoj4m436Rwu2rfU5Xv3A1BQO097s7r
-	 FEeY0Vr6SkblCcNhedMnK8Wd/F9VFLxcuCSXXBx0=
-Subject: FAILED: patch "[PATCH] ftrace: Fix modification of direct_function hash while in use" failed to apply to 6.1-stable tree
-To: rostedt@goodmis.org,ast@kernel.org,daniel@iogearbox.net,jolsa@kernel.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Wed, 03 Jan 2024 11:30:34 +0100
-Message-ID: <2024010334-spirits-undusted-6eb5@gregkh>
+	s=korg; t=1704278434;
+	bh=fheAqMatwRrISyd1ahn+yz1ZsaJahqjgwDAxLoGQ3vY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R3QEiHnkFQTZ+BvEoS69ILpjNOsaRB7putWeAs8yJe0IcM4SOl9ODLyMlQVgXrBWw
+	 FbHKU7850bDXT1/32WYjTI1mfy4A6NPNVTPklhnUgnXHfQYCSYJJI99Pals52B8f2U
+	 ASNOGt8KCwb2GtQVI2E54ppQdfEup8RzwxZxlIb4=
+Date: Wed, 3 Jan 2024 11:40:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	patches@lists.linux.dev,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Christoph Hellwig <hch@lst.de>, Huacai Chen <chenhuacai@kernel.org>,
+	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH 5.10 81/97] MIPS: Loongson64: Enable DMA noncoherent
+ support
+Message-ID: <2024010325-frisk-patchwork-b450@gregkh>
+References: <20231211182019.802717483@linuxfoundation.org>
+ <20231211182023.277870337@linuxfoundation.org>
+ <ZZBx01WttA3R1XjI@eldamar.lan>
+ <8d70aead-6ed5-4d53-b920-d12167787f0b@app.fastmail.com>
+ <ZZE1X8m5PXJExffG@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZZE1X8m5PXJExffG@eldamar.lan>
 
+On Sun, Dec 31, 2023 at 10:33:19AM +0100, Salvatore Bonaccorso wrote:
+> Hi,
+> 
+> On Sat, Dec 30, 2023 at 11:16:41PM +0000, Jiaxun Yang wrote:
+> > 
+> > 
+> > 在2023年12月30日十二月 下午7:38，Salvatore Bonaccorso写道：
+> > > Hi,
+> > >
+> > > On Mon, Dec 11, 2023 at 07:22:24PM +0100, Greg Kroah-Hartman wrote:
+> > >> 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > >> 
+> > >> ------------------
+> > >> 
+> > >> From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > >> 
+> > >> commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
+> > >> 
+> > >> There are some Loongson64 systems come with broken coherent DMA
+> > >> support, firmware will set a bit in boot_param and pass nocoherentio
+> > >> in cmdline.
+> > >> 
+> > >> However nonconherent support was missed out when spin off Loongson-2EF
+> > >> form Loongson64, and that boot_param change never made itself into
+> > >> upstream.
+> > >> 
+> > >> Support DMA noncoherent properly to get those systems working.
+> > >> 
+> > >> Cc: stable@vger.kernel.org
+> > >> Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
+> > >> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> > >> Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> > >> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > >> ---
+> > >>  arch/mips/Kconfig                                  |    2 ++
+> > >>  arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
+> > >>  arch/mips/loongson64/env.c                         |   10 +++++++++-
+> > >>  3 files changed, 13 insertions(+), 2 deletions(-)
+> > >> 
+> > >> --- a/arch/mips/Kconfig
+> > >> +++ b/arch/mips/Kconfig
+> > >> @@ -468,6 +468,7 @@ config MACH_LOONGSON2EF
+> > >>  
+> > >>  config MACH_LOONGSON64
+> > >>  	bool "Loongson 64-bit family of machines"
+> > >> +	select ARCH_DMA_DEFAULT_COHERENT
+> > >>  	select ARCH_SPARSEMEM_ENABLE
+> > >>  	select ARCH_MIGHT_HAVE_PC_PARPORT
+> > >>  	select ARCH_MIGHT_HAVE_PC_SERIO
+> > >> @@ -1379,6 +1380,7 @@ config CPU_LOONGSON64
+> > >>  	select CPU_SUPPORTS_MSA
+> > >>  	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
+> > >>  	select CPU_MIPSR2_IRQ_VI
+> > >> +	select DMA_NONCOHERENT
+> > >>  	select WEAK_ORDERING
+> > >>  	select WEAK_REORDERING_BEYOND_LLSC
+> > >>  	select MIPS_ASID_BITS_VARIABLE
+> > >> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
+> > >> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
+> > >> @@ -117,7 +117,8 @@ struct irq_source_routing_table {
+> > >>  	u64 pci_io_start_addr;
+> > >>  	u64 pci_io_end_addr;
+> > >>  	u64 pci_config_addr;
+> > >> -	u32 dma_mask_bits;
+> > >> +	u16 dma_mask_bits;
+> > >> +	u16 dma_noncoherent;
+> > >>  } __packed;
+> > >>  
+> > >>  struct interface_info {
+> > >> --- a/arch/mips/loongson64/env.c
+> > >> +++ b/arch/mips/loongson64/env.c
+> > >> @@ -13,6 +13,8 @@
+> > >>   * Copyright (C) 2009 Lemote Inc.
+> > >>   * Author: Wu Zhangjin, wuzhangjin@gmail.com
+> > >>   */
+> > >> +
+> > >> +#include <linux/dma-map-ops.h>
+> > >>  #include <linux/export.h>
+> > >>  #include <linux/pci_ids.h>
+> > >>  #include <asm/bootinfo.h>
+> > >> @@ -131,8 +133,14 @@ void __init prom_init_env(void)
+> > >>  	loongson_sysconf.pci_io_base = eirq_source->pci_io_start_addr;
+> > >>  	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
+> > >>  	if (loongson_sysconf.dma_mask_bits < 32 ||
+> > >> -		loongson_sysconf.dma_mask_bits > 64)
+> > >> +			loongson_sysconf.dma_mask_bits > 64) {
+> > >>  		loongson_sysconf.dma_mask_bits = 32;
+> > >> +		dma_default_coherent = true;
+> > >> +	} else {
+> > >> +		dma_default_coherent = !eirq_source->dma_noncoherent;
+> > >> +	}
+> > >> +
+> > >> +	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
+> > >>  
+> > >>  	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
+> > >>  	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
+> > >
+> > > While preparing an update for Debian and finally building for all
+> > > supported architecture, the builds for mipsel and mips64el were
+> > > failing with:
+> > >
+> > > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c: In function 
+> > > 'prom_init_env':
+> > > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: error: 
+> > > 'dma_default_coherent' undeclared (first use in this function); did you 
+> > > mean 'dma_free_coherent'?
+> > >   138 |   dma_default_coherent = true;
+> > >       |   ^~~~~~~~~~~~~~~~~~~~
+> > >       |   dma_free_coherent
+> > > /<<PKGBUILDDIR>>/arch/mips/loongson64/env.c:138:3: note: each 
+> > > undeclared identifier is reported only once for each function it 
+> > > appears in
+> > > make[6]: *** [/<<PKGBUILDDIR>>/scripts/Makefile.build:291: 
+> > > arch/mips/loongson64/env.o] Error 1
+> > > make[6]: *** Waiting for unfinished jobs....
+> > >
+> > > Is here a prerequisite missing for the commit?
+> > >
+> > > Backporting though 6d4e9a8efe3d ("driver core: lift dma_default_coherent into
+> > > common code") which is from 5.12-rc1 though seems too intrusive, correct? Would
+> > > the alternative be to just revert the 3ee7e2faef87 ("MIPS: Loongson64: Enable
+> > > DMA noncoherent support") commit which landed in 5.10.204?
+> > 
+> > Hi,
+> > 
+> > Sorry for not spotting the issue in the first place.
+> > 
+> > It actually requires more dependencies such as c00a60d6f4a1 ("of: address: always
+> > use dma_default_coherent for default coherency").
+> > 
+> > I'll try to produce a backport series but better to drop this patch from stable
+> > for now.
+> 
+> Thanks a lot for your quick reply! 
+> 
+> So I guess it only needs a revert for now from 5.10.y correct?
+> 
+> Greg, possible to already queue up the revert for 5.10.y for the next
+> upload?
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x d05cb470663a2a1879277e544f69e660208f08f2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010334-spirits-undusted-6eb5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-
-thanks,
+Now reverted, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From d05cb470663a2a1879277e544f69e660208f08f2 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Fri, 29 Dec 2023 11:51:34 -0500
-Subject: [PATCH] ftrace: Fix modification of direct_function hash while in use
-
-Masami Hiramatsu reported a memory leak in register_ftrace_direct() where
-if the number of new entries are added is large enough to cause two
-allocations in the loop:
-
-        for (i = 0; i < size; i++) {
-                hlist_for_each_entry(entry, &hash->buckets[i], hlist) {
-                        new = ftrace_add_rec_direct(entry->ip, addr, &free_hash);
-                        if (!new)
-                                goto out_remove;
-                        entry->direct = addr;
-                }
-        }
-
-Where ftrace_add_rec_direct() has:
-
-        if (ftrace_hash_empty(direct_functions) ||
-            direct_functions->count > 2 * (1 << direct_functions->size_bits)) {
-                struct ftrace_hash *new_hash;
-                int size = ftrace_hash_empty(direct_functions) ? 0 :
-                        direct_functions->count + 1;
-
-                if (size < 32)
-                        size = 32;
-
-                new_hash = dup_hash(direct_functions, size);
-                if (!new_hash)
-                        return NULL;
-
-                *free_hash = direct_functions;
-                direct_functions = new_hash;
-        }
-
-The "*free_hash = direct_functions;" can happen twice, losing the previous
-allocation of direct_functions.
-
-But this also exposed a more serious bug.
-
-The modification of direct_functions above is not safe. As
-direct_functions can be referenced at any time to find what direct caller
-it should call, the time between:
-
-                new_hash = dup_hash(direct_functions, size);
- and
-                direct_functions = new_hash;
-
-can have a race with another CPU (or even this one if it gets interrupted),
-and the entries being moved to the new hash are not referenced.
-
-That's because the "dup_hash()" is really misnamed and is really a
-"move_hash()". It moves the entries from the old hash to the new one.
-
-Now even if that was changed, this code is not proper as direct_functions
-should not be updated until the end. That is the best way to handle
-function reference changes, and is the way other parts of ftrace handles
-this.
-
-The following is done:
-
- 1. Change add_hash_entry() to return the entry it created and inserted
-    into the hash, and not just return success or not.
-
- 2. Replace ftrace_add_rec_direct() with add_hash_entry(), and remove
-    the former.
-
- 3. Allocate a "new_hash" at the start that is made for holding both the
-    new hash entries as well as the existing entries in direct_functions.
-
- 4. Copy (not move) the direct_function entries over to the new_hash.
-
- 5. Copy the entries of the added hash to the new_hash.
-
- 6. If everything succeeds, then use rcu_pointer_assign() to update the
-    direct_functions with the new_hash.
-
-This simplifies the code and fixes both the memory leak as well as the
-race condition mentioned above.
-
-Link: https://lore.kernel.org/all/170368070504.42064.8960569647118388081.stgit@devnote2/
-Link: https://lore.kernel.org/linux-trace-kernel/20231229115134.08dd5174@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Fixes: 763e34e74bb7d ("ftrace: Add register_ftrace_direct()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 8de8bec5f366..b01ae7d36021 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -1183,18 +1183,19 @@ static void __add_hash_entry(struct ftrace_hash *hash,
- 	hash->count++;
- }
- 
--static int add_hash_entry(struct ftrace_hash *hash, unsigned long ip)
-+static struct ftrace_func_entry *
-+add_hash_entry(struct ftrace_hash *hash, unsigned long ip)
- {
- 	struct ftrace_func_entry *entry;
- 
- 	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
- 	if (!entry)
--		return -ENOMEM;
-+		return NULL;
- 
- 	entry->ip = ip;
- 	__add_hash_entry(hash, entry);
- 
--	return 0;
-+	return entry;
- }
- 
- static void
-@@ -1349,7 +1350,6 @@ alloc_and_copy_ftrace_hash(int size_bits, struct ftrace_hash *hash)
- 	struct ftrace_func_entry *entry;
- 	struct ftrace_hash *new_hash;
- 	int size;
--	int ret;
- 	int i;
- 
- 	new_hash = alloc_ftrace_hash(size_bits);
-@@ -1366,8 +1366,7 @@ alloc_and_copy_ftrace_hash(int size_bits, struct ftrace_hash *hash)
- 	size = 1 << hash->size_bits;
- 	for (i = 0; i < size; i++) {
- 		hlist_for_each_entry(entry, &hash->buckets[i], hlist) {
--			ret = add_hash_entry(new_hash, entry->ip);
--			if (ret < 0)
-+			if (add_hash_entry(new_hash, entry->ip) == NULL)
- 				goto free_hash;
- 		}
- 	}
-@@ -2536,7 +2535,7 @@ ftrace_find_unique_ops(struct dyn_ftrace *rec)
- 
- #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
- /* Protected by rcu_tasks for reading, and direct_mutex for writing */
--static struct ftrace_hash *direct_functions = EMPTY_HASH;
-+static struct ftrace_hash __rcu *direct_functions = EMPTY_HASH;
- static DEFINE_MUTEX(direct_mutex);
- int ftrace_direct_func_count;
- 
-@@ -2555,39 +2554,6 @@ unsigned long ftrace_find_rec_direct(unsigned long ip)
- 	return entry->direct;
- }
- 
--static struct ftrace_func_entry*
--ftrace_add_rec_direct(unsigned long ip, unsigned long addr,
--		      struct ftrace_hash **free_hash)
--{
--	struct ftrace_func_entry *entry;
--
--	if (ftrace_hash_empty(direct_functions) ||
--	    direct_functions->count > 2 * (1 << direct_functions->size_bits)) {
--		struct ftrace_hash *new_hash;
--		int size = ftrace_hash_empty(direct_functions) ? 0 :
--			direct_functions->count + 1;
--
--		if (size < 32)
--			size = 32;
--
--		new_hash = dup_hash(direct_functions, size);
--		if (!new_hash)
--			return NULL;
--
--		*free_hash = direct_functions;
--		direct_functions = new_hash;
--	}
--
--	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
--	if (!entry)
--		return NULL;
--
--	entry->ip = ip;
--	entry->direct = addr;
--	__add_hash_entry(direct_functions, entry);
--	return entry;
--}
--
- static void call_direct_funcs(unsigned long ip, unsigned long pip,
- 			      struct ftrace_ops *ops, struct ftrace_regs *fregs)
- {
-@@ -4223,8 +4189,8 @@ enter_record(struct ftrace_hash *hash, struct dyn_ftrace *rec, int clear_filter)
- 		/* Do nothing if it exists */
- 		if (entry)
- 			return 0;
--
--		ret = add_hash_entry(hash, rec->ip);
-+		if (add_hash_entry(hash, rec->ip) == NULL)
-+			ret = -ENOMEM;
- 	}
- 	return ret;
- }
-@@ -5266,7 +5232,8 @@ __ftrace_match_addr(struct ftrace_hash *hash, unsigned long ip, int remove)
- 		return 0;
- 	}
- 
--	return add_hash_entry(hash, ip);
-+	entry = add_hash_entry(hash, ip);
-+	return entry ? 0 :  -ENOMEM;
- }
- 
- static int
-@@ -5410,7 +5377,7 @@ static void remove_direct_functions_hash(struct ftrace_hash *hash, unsigned long
-  */
- int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- {
--	struct ftrace_hash *hash, *free_hash = NULL;
-+	struct ftrace_hash *hash, *new_hash = NULL, *free_hash = NULL;
- 	struct ftrace_func_entry *entry, *new;
- 	int err = -EBUSY, size, i;
- 
-@@ -5436,17 +5403,44 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 		}
- 	}
- 
--	/* ... and insert them to direct_functions hash. */
- 	err = -ENOMEM;
-+
-+	/* Make a copy hash to place the new and the old entries in */
-+	size = hash->count + direct_functions->count;
-+	if (size > 32)
-+		size = 32;
-+	new_hash = alloc_ftrace_hash(fls(size));
-+	if (!new_hash)
-+		goto out_unlock;
-+
-+	/* Now copy over the existing direct entries */
-+	size = 1 << direct_functions->size_bits;
-+	for (i = 0; i < size; i++) {
-+		hlist_for_each_entry(entry, &direct_functions->buckets[i], hlist) {
-+			new = add_hash_entry(new_hash, entry->ip);
-+			if (!new)
-+				goto out_unlock;
-+			new->direct = entry->direct;
-+		}
-+	}
-+
-+	/* ... and add the new entries */
-+	size = 1 << hash->size_bits;
- 	for (i = 0; i < size; i++) {
- 		hlist_for_each_entry(entry, &hash->buckets[i], hlist) {
--			new = ftrace_add_rec_direct(entry->ip, addr, &free_hash);
-+			new = add_hash_entry(new_hash, entry->ip);
- 			if (!new)
--				goto out_remove;
-+				goto out_unlock;
-+			/* Update both the copy and the hash entry */
-+			new->direct = addr;
- 			entry->direct = addr;
- 		}
- 	}
- 
-+	free_hash = direct_functions;
-+	rcu_assign_pointer(direct_functions, new_hash);
-+	new_hash = NULL;
-+
- 	ops->func = call_direct_funcs;
- 	ops->flags = MULTI_FLAGS;
- 	ops->trampoline = FTRACE_REGS_ADDR;
-@@ -5454,17 +5448,17 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 
- 	err = register_ftrace_function_nolock(ops);
- 
-- out_remove:
--	if (err)
--		remove_direct_functions_hash(hash, addr);
--
-  out_unlock:
- 	mutex_unlock(&direct_mutex);
- 
--	if (free_hash) {
-+	if (free_hash && free_hash != EMPTY_HASH) {
- 		synchronize_rcu_tasks();
- 		free_ftrace_hash(free_hash);
- 	}
-+
-+	if (new_hash)
-+		free_ftrace_hash(new_hash);
-+
- 	return err;
- }
- EXPORT_SYMBOL_GPL(register_ftrace_direct);
-@@ -6309,7 +6303,7 @@ ftrace_graph_set_hash(struct ftrace_hash *hash, char *buffer)
- 
- 				if (entry)
- 					continue;
--				if (add_hash_entry(hash, rec->ip) < 0)
-+				if (add_hash_entry(hash, rec->ip) == NULL)
- 					goto out;
- 			} else {
- 				if (entry) {
-
 
