@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-9494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A82D8232A2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91EC78231DD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCBFE2821B1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31F32B222BD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8DB1C296;
-	Wed,  3 Jan 2024 17:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077A31C28C;
+	Wed,  3 Jan 2024 16:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlNUOu+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY3egeys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072481C280;
-	Wed,  3 Jan 2024 17:09:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60774C433C7;
-	Wed,  3 Jan 2024 17:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31C11C281;
+	Wed,  3 Jan 2024 16:59:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C69C433C7;
+	Wed,  3 Jan 2024 16:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301775;
-	bh=6/u/YvHfh7j0IyEp3zunlwM75jIiPC+WCy2Jar4ydnY=;
+	s=korg; t=1704301181;
+	bh=5ntr9kDPwKuWehfoPh38upSfjsTFBd8UFKNeKProRmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlNUOu+yoEEwobQHO4C+OBHndy4y+yse2wHEVtE9PWAitYnMbJQJhA79EMXFvVkG3
-	 5ZYV7JzS7NhS1nkVtc7C0y74ejR7bS+/RviGFuAZhodKGKhXEVDsV8DDET2dGjJQCI
-	 TKf4y8+iyejCdXEZndXflsz13tAOHM8WJa6w1/PU=
+	b=nY3egeysRGt1rL50eVyx+gBkqG/kaBJT9DztpIzgytCan84hd0kVS6FDVYjvoU3ah
+	 nn/RXt2+Uy26cpj9w7AivIOmiZELHRb3YrVy+PhqKEXKlG9xSjZYJ2TrWN5T5ZtmZy
+	 CuflMWinhU1NDSIWPL5cPaCQf1hxI4+bkdI2ZZbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ding Hui <dinghui@sangfor.com.cn>,
-	Shifeng Li <lishifeng@sangfor.com.cn>,
-	Simon Horman <horms@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Zongmin Zhou <zhouzongmin@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/75] net/mlx5e: Fix slab-out-of-bounds in mlx5_query_nic_vport_mac_list()
+Subject: [PATCH 6.1 060/100] ksmbd: prevent memory leak on error return
 Date: Wed,  3 Jan 2024 17:54:49 +0100
-Message-ID: <20240103164844.223078120@linuxfoundation.org>
+Message-ID: <20240103164905.103456521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +56,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shifeng Li <lishifeng@sangfor.com.cn>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-[ Upstream commit ddb38ddff9c71026bad481b791a94d446ee37603 ]
+[ Upstream commit 90044481e7cca6cb3125b3906544954a25f1309f ]
 
-Out_sz that the size of out buffer is calculated using query_nic_vport
-_context_in structure when driver query the MAC list. However query_nic
-_vport_context_in structure is smaller than query_nic_vport_context_out.
-When allowed_list_size is greater than 96, calling ether_addr_copy() will
-trigger an slab-out-of-bounds.
+When allocated memory for 'new' failed,just return
+will cause memory leak of 'ar'.
 
-[ 1170.055866] BUG: KASAN: slab-out-of-bounds in mlx5_query_nic_vport_mac_list+0x481/0x4d0 [mlx5_core]
-[ 1170.055869] Read of size 4 at addr ffff88bdbc57d912 by task kworker/u128:1/461
-[ 1170.055870]
-[ 1170.055932] Workqueue: mlx5_esw_wq esw_vport_change_handler [mlx5_core]
-[ 1170.055936] Call Trace:
-[ 1170.055949]  dump_stack+0x8b/0xbb
-[ 1170.055958]  print_address_description+0x6a/0x270
-[ 1170.055961]  kasan_report+0x179/0x2c0
-[ 1170.056061]  mlx5_query_nic_vport_mac_list+0x481/0x4d0 [mlx5_core]
-[ 1170.056162]  esw_update_vport_addr_list+0x2c5/0xcd0 [mlx5_core]
-[ 1170.056257]  esw_vport_change_handle_locked+0xd08/0x1a20 [mlx5_core]
-[ 1170.056377]  esw_vport_change_handler+0x6b/0x90 [mlx5_core]
-[ 1170.056381]  process_one_work+0x65f/0x12d0
-[ 1170.056383]  worker_thread+0x87/0xb50
-[ 1170.056390]  kthread+0x2e9/0x3a0
-[ 1170.056394]  ret_from_fork+0x1f/0x40
-
-Fixes: e16aea2744ab ("net/mlx5: Introduce access functions to modify/query vport mac lists")
-Cc: Ding Hui <dinghui@sangfor.com.cn>
-Signed-off-by: Shifeng Li <lishifeng@sangfor.com.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 1819a9042999 ("ksmbd: reorganize ksmbd_iov_pin_rsp()")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311031837.H3yo7JVl-lkp@intel.com/
+Signed-off-by: Zongmin Zhou<zhouzongmin@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/vport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/ksmbd_work.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-index fc91bbf7d0c37..e77cf11356c07 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -276,7 +276,7 @@ int mlx5_query_nic_vport_mac_list(struct mlx5_core_dev *dev,
- 		req_list_size = max_list_size;
+diff --git a/fs/smb/server/ksmbd_work.c b/fs/smb/server/ksmbd_work.c
+index a2ed441e837ae..2510b9f3c8c14 100644
+--- a/fs/smb/server/ksmbd_work.c
++++ b/fs/smb/server/ksmbd_work.c
+@@ -106,7 +106,7 @@ static inline void __ksmbd_iov_pin(struct ksmbd_work *work, void *ib,
+ static int __ksmbd_iov_pin_rsp(struct ksmbd_work *work, void *ib, int len,
+ 			       void *aux_buf, unsigned int aux_size)
+ {
+-	struct aux_read *ar;
++	struct aux_read *ar = NULL;
+ 	int need_iov_cnt = 1;
+ 
+ 	if (aux_size) {
+@@ -123,8 +123,11 @@ static int __ksmbd_iov_pin_rsp(struct ksmbd_work *work, void *ib, int len,
+ 		new = krealloc(work->iov,
+ 			       sizeof(struct kvec) * work->iov_alloc_cnt,
+ 			       GFP_KERNEL | __GFP_ZERO);
+-		if (!new)
++		if (!new) {
++			kfree(ar);
++			work->iov_alloc_cnt -= 4;
+ 			return -ENOMEM;
++		}
+ 		work->iov = new;
  	}
  
--	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_in) +
-+	out_sz = MLX5_ST_SZ_BYTES(query_nic_vport_context_out) +
- 			req_list_size * MLX5_ST_SZ_BYTES(mac_address_layout);
- 
- 	out = kzalloc(out_sz, GFP_KERNEL);
 -- 
 2.43.0
 
