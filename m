@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C20E8231ED
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:00:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFD1823295
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA648B24345
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:00:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9D01F24D6C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879D91C282;
-	Wed,  3 Jan 2024 17:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838861BDFD;
+	Wed,  3 Jan 2024 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exEiAmki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lca/8V25"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516771BDE9;
-	Wed,  3 Jan 2024 17:00:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929C4C433C8;
-	Wed,  3 Jan 2024 17:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5171BDF1;
+	Wed,  3 Jan 2024 17:09:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8729C433C7;
+	Wed,  3 Jan 2024 17:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301217;
-	bh=c8XkmQgLqCP9lX5CwrZpNMBNe4zKPuk23MU+pVA1GiY=;
+	s=korg; t=1704301741;
+	bh=m7Rt070RwdndxNoJnGlxfernv2QtdcQk3Yw+fCR7oQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exEiAmki4YowFoYDhtejF68GHTgSTdsYJKRr/SGTiNBLpSIdg2pSX5q4jOR1Ubb3z
-	 YoOeAjW2uYTsceaoU1Z8EYbCKB1Ykv46jnIvEuknC/VSokwgx54qxFKO6xo5tViHYe
-	 sysg5cY8rmL5aX3ZZ+j2LA3uaDwgUt8UND4Qz5C4=
+	b=lca/8V25a7+4ULScbi6Ulf0Miz0JNIC0QYLDFWMugFQ9sI9lLABytMfpkjlXoftj9
+	 kGD2jP57ggb5/ktTazebrbLrMGj0yiME3y9dgpZc5/A0TrsfXOUC9sKVQ0CpnNF94l
+	 nmtj/KcPw2OqFJotuuaTuUrGe7xgpoI2t7onfnDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/100] ksmbd: downgrade RWH lease caching state to RH for directory
+Subject: [PATCH 5.10 17/75] net: warn if gso_type isnt set for a GSO SKB
 Date: Wed,  3 Jan 2024 17:54:58 +0100
-Message-ID: <20240103164906.493337826@linuxfoundation.org>
+Message-ID: <20240103164845.836656166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,96 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit eb547407f3572d2110cb1194ecd8865b3371a7a4 ]
+[ Upstream commit 1d155dfdf50efc2b0793bce93c06d1a5b23d0877 ]
 
-RWH(Read + Write + Handle) caching state is not supported for directory.
-ksmbd downgrade it to RH for directory if client send RWH caching lease
-state.
+In bug report [0] a warning in r8169 driver was reported that was
+caused by an invalid GSO SKB (gso_type was 0). See [1] for a discussion
+about this issue. Still the origin of the invalid GSO SKB isn't clear.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+It shouldn't be a network drivers task to check for invalid GSO SKB's.
+Also, even if issue [0] can be fixed, we can't be sure that a
+similar issue doesn't pop up again at another place.
+Therefore let gso_features_check() check for such invalid GSO SKB's.
+
+[0] https://bugzilla.kernel.org/show_bug.cgi?id=209423
+[1] https://www.spinics.net/lists/netdev/msg690794.html
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/97c78d21-7f0b-d843-df17-3589f224d2cf@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c  | 9 +++++++--
- fs/smb/server/oplock.h  | 2 +-
- fs/smb/server/smb2pdu.c | 8 ++++----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ net/core/dev.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 7346cbfbff6b0..f8ac539b2164b 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1398,10 +1398,11 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
- /**
-  * parse_lease_state() - parse lease context containted in file open request
-  * @open_req:	buffer containing smb2 file open(create) request
-+ * @is_dir:	whether leasing file is directory
-  *
-  * Return:  oplock state, -ENOENT if create lease context not found
-  */
--struct lease_ctx_info *parse_lease_state(void *open_req)
-+struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
- {
- 	struct create_context *cc;
- 	struct smb2_create_req *req = (struct smb2_create_req *)open_req;
-@@ -1419,7 +1420,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req)
- 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 3fc27b52bf429..34f80946d2c72 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3523,6 +3523,11 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	if (gso_segs > dev->gso_max_segs)
+ 		return features & ~NETIF_F_GSO_MASK;
  
- 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
--		lreq->req_state = lc->lcontext.LeaseState;
-+		if (is_dir)
-+			lreq->req_state = lc->lcontext.LeaseState &
-+				~SMB2_LEASE_WRITE_CACHING_LE;
-+		else
-+			lreq->req_state = lc->lcontext.LeaseState;
- 		lreq->flags = lc->lcontext.LeaseFlags;
- 		lreq->epoch = lc->lcontext.Epoch;
- 		lreq->duration = lc->lcontext.LeaseDuration;
-diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
-index ad31439c61fef..672127318c750 100644
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -109,7 +109,7 @@ void opinfo_put(struct oplock_info *opinfo);
- 
- /* Lease related functions */
- void create_lease_buf(u8 *rbuf, struct lease *lease);
--struct lease_ctx_info *parse_lease_state(void *open_req);
-+struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir);
- __u8 smb2_map_lease_to_oplock(__le32 lease_state);
- int lease_read_to_write(struct oplock_info *opinfo);
- 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 6a698a6036bb2..d7235c5e2e4d8 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2732,10 +2732,6 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 	}
- 
--	req_op_level = req->RequestedOplockLevel;
--	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
--		lc = parse_lease_state(req);
--
- 	if (le32_to_cpu(req->ImpersonationLevel) > le32_to_cpu(IL_DELEGATE)) {
- 		pr_err("Invalid impersonationlevel : 0x%x\n",
- 		       le32_to_cpu(req->ImpersonationLevel));
-@@ -3215,6 +3211,10 @@ int smb2_open(struct ksmbd_work *work)
- 		need_truncate = 1;
- 	}
- 
-+	req_op_level = req->RequestedOplockLevel;
-+	if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
-+		lc = parse_lease_state(req, S_ISDIR(file_inode(filp)->i_mode));
++	if (!skb_shinfo(skb)->gso_type) {
++		skb_warn_bad_offload(skb);
++		return features & ~NETIF_F_GSO_MASK;
++	}
 +
- 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
- 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
- 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
+ 	/* Support for GSO partial features requires software
+ 	 * intervention before we can actually process the packets
+ 	 * so we need to strip support for any partial features now
 -- 
 2.43.0
 
