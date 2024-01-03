@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6933B8231EC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:00:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2173D82324E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1182D289E39
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:00:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37EF41C23682
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8371C283;
-	Wed,  3 Jan 2024 17:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17F51C288;
+	Wed,  3 Jan 2024 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z18pV8na"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UToZByXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968801BDFF;
-	Wed,  3 Jan 2024 17:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F5EC433C7;
-	Wed,  3 Jan 2024 17:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897331BDF0;
+	Wed,  3 Jan 2024 17:05:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2919C433C9;
+	Wed,  3 Jan 2024 17:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301220;
-	bh=AmEOrg+rRPhtuMj1XSjGq/3uIQSBZAquP9FwHwE40N4=;
+	s=korg; t=1704301508;
+	bh=NwsGEYij8kakRWhXIT042YOgdjZk3ldbFYLpnzuDap8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z18pV8naL7VWFc7L0dkOb1k/k0A6f4WgNAceL2FnnOKtAgNnYAT7aLK8cLocwnw9B
-	 T2ASiaAE6gXPTQbEMabK9SNLJA5/755vw2PNWvO7szKV7Aw9dae5E5Wlmt/3+d0LCV
-	 2nQbgniEV0D9gOtwpP6RUiGEumnlUy4WGFfU0TMQ=
+	b=UToZByXGUt0vdQEWvg8OH/vm8sQdgQOphGdAlTaFhq2k26Mf8MidEVSdMKYIgP0BX
+	 K9qT9iqQTI1VFqL7DVVX6uPJaKdIcJ/nhSnr/8ddyJcsP6oWauLxQ9SgevcssreRQp
+	 tfI38kvTgJVRKlrzkEH9pAASlYQshfQxjTobbY5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/100] ksmbd: send v2 lease break notification for directory
-Date: Wed,  3 Jan 2024 17:54:59 +0100
-Message-ID: <20240103164906.633507196@linuxfoundation.org>
+	Xiao Yao <xiaoyao@rock-chips.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 52/95] Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE
+Date: Wed,  3 Jan 2024 17:55:00 +0100
+Message-ID: <20240103164901.842786435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,235 +52,261 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Xiao Yao <xiaoyao@rock-chips.com>
 
-[ Upstream commit d47d9886aeef79feba7adac701a510d65f3682b5 ]
+commit 59b047bc98084f8af2c41483e4d68a5adf2fa7f7 upstream.
 
-If client send different parent key, different client guid, or there is
-no parent lease key flags in create context v2 lease, ksmbd send lease
-break to client.
+If two Bluetooth devices both support BR/EDR and BLE, and also
+support Secure Connections, then they only need to pair once.
+The LTK generated during the LE pairing process may be converted
+into a BR/EDR link key for BR/EDR transport, and conversely, a
+link key generated during the BR/EDR SSP pairing process can be
+converted into an LTK for LE transport. Hence, the link type of
+the link key and LTK is not fixed, they can be either an LE LINK
+or an ACL LINK.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, in the mgmt_new_irk/ltk/crsk/link_key functions, the
+link type is fixed, which could lead to incorrect address types
+being reported to the application layer. Therefore, it is necessary
+to add link_type/addr_type to the smp_irk/ltk/crsk and link_key,
+to ensure the generation of the correct address type.
+
+SMP over BREDR:
+Before Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+        BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+
+After Fix:
+> ACL Data RX: Handle 11 flags 0x02 dlen 12
+      BR/EDR SMP: Identity Address Information (0x09) len 7
+        Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 00:00:00:00:00:00 (Non-Resolvable)
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+
+SMP over LE:
+Before Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5F:5C:07:37:47:D5 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        BR/EDR Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
+
+After Fix:
+@ MGMT Event: New Identity Resolving Key (0x0018) plen 30
+        Random address: 5E:03:1C:00:38:21 (Resolvable)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+@ MGMT Event: New Long Term Key (0x000a) plen 37
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated key from P-256 (0x03)
+@ MGMT Event: New Link Key (0x0009) plen 26
+        Store hint: Yes (0x01)
+        LE Address: F8:7D:76:F2:12:F3 (OUI F8-7D-76)
+        Key type: Authenticated Combination key from P-256 (0x08)
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Xiao Yao <xiaoyao@rock-chips.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/common/smb2pdu.h   |  1 +
- fs/smb/server/oplock.c    | 56 +++++++++++++++++++++++++++++++++++----
- fs/smb/server/oplock.h    |  4 +++
- fs/smb/server/smb2pdu.c   |  7 +++++
- fs/smb/server/vfs_cache.c | 13 ++++++++-
- fs/smb/server/vfs_cache.h |  2 ++
- 6 files changed, 77 insertions(+), 6 deletions(-)
+ include/net/bluetooth/hci_core.h |    5 +++++
+ net/bluetooth/mgmt.c             |   25 ++++++++++++++++++-------
+ net/bluetooth/smp.c              |    7 +++++++
+ 3 files changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/fs/smb/common/smb2pdu.h b/fs/smb/common/smb2pdu.h
-index c8a4014f9d395..07549957b3099 100644
---- a/fs/smb/common/smb2pdu.h
-+++ b/fs/smb/common/smb2pdu.h
-@@ -1196,6 +1196,7 @@ struct create_posix {
- #define SMB2_LEASE_WRITE_CACHING_LE		cpu_to_le32(0x04)
- 
- #define SMB2_LEASE_FLAG_BREAK_IN_PROGRESS_LE	cpu_to_le32(0x02)
-+#define SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE	cpu_to_le32(0x04)
- 
- #define SMB2_LEASE_KEY_SIZE			16
- 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index f8ac539b2164b..4a8745b3e8304 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -102,6 +102,7 @@ static int alloc_lease(struct oplock_info *opinfo, struct lease_ctx_info *lctx)
- 	lease->new_state = 0;
- 	lease->flags = lctx->flags;
- 	lease->duration = lctx->duration;
-+	lease->is_dir = lctx->is_dir;
- 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
- 	lease->version = lctx->version;
- 	lease->epoch = le16_to_cpu(lctx->epoch);
-@@ -543,12 +544,13 @@ static struct oplock_info *same_client_has_lease(struct ksmbd_inode *ci,
- 			/* upgrading lease */
- 			if ((atomic_read(&ci->op_count) +
- 			     atomic_read(&ci->sop_count)) == 1) {
--				if (lease->state ==
--				    (lctx->req_state & lease->state)) {
-+				if (lease->state != SMB2_LEASE_NONE_LE &&
-+				    lease->state == (lctx->req_state & lease->state)) {
- 					lease->state |= lctx->req_state;
- 					if (lctx->req_state &
- 						SMB2_LEASE_WRITE_CACHING_LE)
- 						lease_read_to_write(opinfo);
-+
- 				}
- 			} else if ((atomic_read(&ci->op_count) +
- 				    atomic_read(&ci->sop_count)) > 1) {
-@@ -900,7 +902,8 @@ static int oplock_break(struct oplock_info *brk_opinfo, int req_op_level)
- 					lease->new_state =
- 						SMB2_LEASE_READ_CACHING_LE;
- 			} else {
--				if (lease->state & SMB2_LEASE_HANDLE_CACHING_LE)
-+				if (lease->state & SMB2_LEASE_HANDLE_CACHING_LE &&
-+						!lease->is_dir)
- 					lease->new_state =
- 						SMB2_LEASE_READ_CACHING_LE;
- 				else
-@@ -1082,6 +1085,48 @@ static void set_oplock_level(struct oplock_info *opinfo, int level,
- 	}
- }
- 
-+void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
-+				      struct lease_ctx_info *lctx)
-+{
-+	struct oplock_info *opinfo;
-+	struct ksmbd_inode *p_ci = NULL;
-+
-+	if (lctx->version != 2)
-+		return;
-+
-+	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
-+	if (!p_ci)
-+		return;
-+
-+	read_lock(&p_ci->m_lock);
-+	list_for_each_entry(opinfo, &p_ci->m_op_list, op_entry) {
-+		if (!opinfo->is_lease)
-+			continue;
-+
-+		if (opinfo->o_lease->state != SMB2_OPLOCK_LEVEL_NONE &&
-+		    (!(lctx->flags & SMB2_LEASE_FLAG_PARENT_LEASE_KEY_SET_LE) ||
-+		     !compare_guid_key(opinfo, fp->conn->ClientGUID,
-+				      lctx->parent_lease_key))) {
-+			if (!atomic_inc_not_zero(&opinfo->refcount))
-+				continue;
-+
-+			atomic_inc(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				atomic_dec(&opinfo->conn->r_count);
-+				continue;
-+			}
-+
-+			read_unlock(&p_ci->m_lock);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			opinfo_conn_put(opinfo);
-+			read_lock(&p_ci->m_lock);
-+		}
-+	}
-+	read_unlock(&p_ci->m_lock);
-+
-+	ksmbd_inode_put(p_ci);
-+}
-+
- /**
-  * smb_grant_oplock() - handle oplock/lease request on file open
-  * @work:		smb work
-@@ -1420,10 +1465,11 @@ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
- 		struct create_lease_v2 *lc = (struct create_lease_v2 *)cc;
- 
- 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
--		if (is_dir)
-+		if (is_dir) {
- 			lreq->req_state = lc->lcontext.LeaseState &
- 				~SMB2_LEASE_WRITE_CACHING_LE;
--		else
-+			lreq->is_dir = true;
-+		} else
- 			lreq->req_state = lc->lcontext.LeaseState;
- 		lreq->flags = lc->lcontext.LeaseFlags;
- 		lreq->epoch = lc->lcontext.Epoch;
-diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
-index 672127318c750..b64d1536882a1 100644
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -36,6 +36,7 @@ struct lease_ctx_info {
- 	__u8			parent_lease_key[SMB2_LEASE_KEY_SIZE];
- 	__le16			epoch;
- 	int			version;
-+	bool			is_dir;
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -176,6 +176,7 @@ struct blocked_key {
+ struct smp_csrk {
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[16];
+ };
+@@ -185,6 +186,7 @@ struct smp_ltk {
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
+ 	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 authenticated;
+ 	u8 type;
+ 	u8 enc_size;
+@@ -199,6 +201,7 @@ struct smp_irk {
+ 	bdaddr_t rpa;
+ 	bdaddr_t bdaddr;
+ 	u8 addr_type;
++	u8 link_type;
+ 	u8 val[16];
  };
  
- struct lease_table {
-@@ -54,6 +55,7 @@ struct lease {
- 	__u8			parent_lease_key[SMB2_LEASE_KEY_SIZE];
- 	int			version;
- 	unsigned short		epoch;
-+	bool			is_dir;
- 	struct lease_table	*l_lb;
- };
+@@ -206,6 +209,8 @@ struct link_key {
+ 	struct list_head list;
+ 	struct rcu_head rcu;
+ 	bdaddr_t bdaddr;
++	u8 bdaddr_type;
++	u8 link_type;
+ 	u8 type;
+ 	u8 val[HCI_LINK_KEY_SIZE];
+ 	u8 pin_len;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2378,7 +2378,8 @@ static int load_link_keys(struct sock *s
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_link_key_info *key = &cp->keys[i];
  
-@@ -125,4 +127,6 @@ struct oplock_info *lookup_lease_in_table(struct ksmbd_conn *conn,
- int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
- 			struct lease_ctx_info *lctx);
- void destroy_lease_table(struct ksmbd_conn *conn);
-+void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
-+				      struct lease_ctx_info *lctx);
- #endif /* __KSMBD_OPLOCK_H */
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index d7235c5e2e4d8..23e2c031cf2e5 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3225,6 +3225,13 @@ int smb2_open(struct ksmbd_work *work)
+-		if (key->addr.type != BDADDR_BREDR || key->type > 0x08)
++		/* Considering SMP over BREDR/LE, there is no need to check addr_type */
++		if (key->type > 0x08)
+ 			return mgmt_cmd_status(sk, hdev->id,
+ 					       MGMT_OP_LOAD_LINK_KEYS,
+ 					       MGMT_STATUS_INVALID_PARAMS);
+@@ -6180,6 +6181,7 @@ static int load_irks(struct sock *sk, st
+ 
+ 	for (i = 0; i < irk_count; i++) {
+ 		struct mgmt_irk_info *irk = &cp->irks[i];
++		u8 addr_type = le_addr_type(irk->addr.type);
+ 
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_IRK,
+@@ -6189,8 +6191,12 @@ static int load_irks(struct sock *sk, st
+ 			continue;
  		}
- 	} else {
- 		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
-+			/*
-+			 * Compare parent lease using parent key. If there is no
-+			 * a lease that has same parent key, Send lease break
-+			 * notification.
-+			 */
-+			smb_send_parent_lease_break_noti(fp, lc);
-+
- 			req_op_level = smb2_map_lease_to_oplock(lc->req_state);
- 			ksmbd_debug(SMB,
- 				    "lease req for(%s) req oplock state 0x%x, lease state 0x%x\n",
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 774a387fccced..2528ce8aeebbe 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -86,6 +86,17 @@ static struct ksmbd_inode *ksmbd_inode_lookup(struct ksmbd_file *fp)
- 	return __ksmbd_inode_lookup(fp->filp->f_path.dentry);
- }
  
-+struct ksmbd_inode *ksmbd_inode_lookup_lock(struct dentry *d)
-+{
-+	struct ksmbd_inode *ci;
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (irk->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
 +
-+	read_lock(&inode_hash_lock);
-+	ci = __ksmbd_inode_lookup(d);
-+	read_unlock(&inode_hash_lock);
-+
-+	return ci;
-+}
-+
- int ksmbd_query_inode_status(struct dentry *dentry)
- {
- 	struct ksmbd_inode *ci;
-@@ -198,7 +209,7 @@ static void ksmbd_inode_free(struct ksmbd_inode *ci)
- 	kfree(ci);
- }
+ 		hci_add_irk(hdev, &irk->addr.bdaddr,
+-			    le_addr_type(irk->addr.type), irk->val,
++			    addr_type, irk->val,
+ 			    BDADDR_ANY);
+ 	}
  
--static void ksmbd_inode_put(struct ksmbd_inode *ci)
-+void ksmbd_inode_put(struct ksmbd_inode *ci)
- {
- 	if (atomic_dec_and_test(&ci->m_count))
- 		ksmbd_inode_free(ci);
-diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
-index 8325cf4527c46..4d4938d6029b6 100644
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -138,6 +138,8 @@ struct ksmbd_file *ksmbd_lookup_foreign_fd(struct ksmbd_work *work, u64 id);
- struct ksmbd_file *ksmbd_lookup_fd_slow(struct ksmbd_work *work, u64 id,
- 					u64 pid);
- void ksmbd_fd_put(struct ksmbd_work *work, struct ksmbd_file *fp);
-+struct ksmbd_inode *ksmbd_inode_lookup_lock(struct dentry *d);
-+void ksmbd_inode_put(struct ksmbd_inode *ci);
- struct ksmbd_file *ksmbd_lookup_durable_fd(unsigned long long id);
- struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
- struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
--- 
-2.43.0
-
+@@ -6271,6 +6277,7 @@ static int load_long_term_keys(struct so
+ 	for (i = 0; i < key_count; i++) {
+ 		struct mgmt_ltk_info *key = &cp->keys[i];
+ 		u8 type, authenticated;
++		u8 addr_type = le_addr_type(key->addr.type);
+ 
+ 		if (hci_is_blocked_key(hdev,
+ 				       HCI_BLOCKED_KEY_TYPE_LTK,
+@@ -6305,8 +6312,12 @@ static int load_long_term_keys(struct so
+ 			continue;
+ 		}
+ 
++		/* When using SMP over BR/EDR, the addr type should be set to BREDR */
++		if (key->addr.type == BDADDR_BREDR)
++			addr_type = BDADDR_BREDR;
++
+ 		hci_add_ltk(hdev, &key->addr.bdaddr,
+-			    le_addr_type(key->addr.type), type, authenticated,
++			    addr_type, type, authenticated,
+ 			    key->val, key->enc_size, key->ediv, key->rand);
+ 	}
+ 
+@@ -8673,7 +8684,7 @@ void mgmt_new_link_key(struct hci_dev *h
+ 
+ 	ev.store_hint = persistent;
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = BDADDR_BREDR;
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = key->type;
+ 	memcpy(ev.key.val, key->val, HCI_LINK_KEY_SIZE);
+ 	ev.key.pin_len = key->pin_len;
+@@ -8724,7 +8735,7 @@ void mgmt_new_ltk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &key->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, key->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(key->link_type, key->bdaddr_type);
+ 	ev.key.type = mgmt_ltk_type(key);
+ 	ev.key.enc_size = key->enc_size;
+ 	ev.key.ediv = key->ediv;
+@@ -8753,7 +8764,7 @@ void mgmt_new_irk(struct hci_dev *hdev,
+ 
+ 	bacpy(&ev.rpa, &irk->rpa);
+ 	bacpy(&ev.irk.addr.bdaddr, &irk->bdaddr);
+-	ev.irk.addr.type = link_to_bdaddr(LE_LINK, irk->addr_type);
++	ev.irk.addr.type = link_to_bdaddr(irk->link_type, irk->addr_type);
+ 	memcpy(ev.irk.val, irk->val, sizeof(irk->val));
+ 
+ 	mgmt_event(MGMT_EV_NEW_IRK, hdev, &ev, sizeof(ev), NULL);
+@@ -8782,7 +8793,7 @@ void mgmt_new_csrk(struct hci_dev *hdev,
+ 		ev.store_hint = persistent;
+ 
+ 	bacpy(&ev.key.addr.bdaddr, &csrk->bdaddr);
+-	ev.key.addr.type = link_to_bdaddr(LE_LINK, csrk->bdaddr_type);
++	ev.key.addr.type = link_to_bdaddr(csrk->link_type, csrk->bdaddr_type);
+ 	ev.key.type = csrk->type;
+ 	memcpy(ev.key.val, csrk->val, sizeof(csrk->val));
+ 
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -1058,6 +1058,7 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->remote_irk) {
++		smp->remote_irk->link_type = hcon->type;
+ 		mgmt_new_irk(hdev, smp->remote_irk, persistent);
+ 
+ 		/* Now that user space can be considered to know the
+@@ -1072,24 +1073,28 @@ static void smp_notify_keys(struct l2cap
+ 	}
+ 
+ 	if (smp->csrk) {
++		smp->csrk->link_type = hcon->type;
+ 		smp->csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->csrk, persistent);
+ 	}
+ 
+ 	if (smp->responder_csrk) {
++		smp->responder_csrk->link_type = hcon->type;
+ 		smp->responder_csrk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
+ 		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
+ 	}
+ 
+ 	if (smp->ltk) {
++		smp->ltk->link_type = hcon->type;
+ 		smp->ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->ltk, persistent);
+ 	}
+ 
+ 	if (smp->responder_ltk) {
++		smp->responder_ltk->link_type = hcon->type;
+ 		smp->responder_ltk->bdaddr_type = hcon->dst_type;
+ 		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
+ 		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
+@@ -1109,6 +1114,8 @@ static void smp_notify_keys(struct l2cap
+ 		key = hci_add_link_key(hdev, smp->conn->hcon, &hcon->dst,
+ 				       smp->link_key, type, 0, &persistent);
+ 		if (key) {
++			key->link_type = hcon->type;
++			key->bdaddr_type = hcon->dst_type;
+ 			mgmt_new_link_key(hdev, key, persistent);
+ 
+ 			/* Don't keep debug keys around if the relevant
 
 
 
