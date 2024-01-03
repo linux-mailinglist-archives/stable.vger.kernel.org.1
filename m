@@ -1,104 +1,305 @@
-Return-Path: <stable+bounces-9506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011338232AF
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023718232F0
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11C661C23CF3
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CEFE281ED8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C72C1BDF1;
-	Wed,  3 Jan 2024 17:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA4B1C28A;
+	Wed,  3 Jan 2024 17:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqQ1wlbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTvHvCgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96EA1BDDE;
-	Wed,  3 Jan 2024 17:10:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 507DCC433C8;
-	Wed,  3 Jan 2024 17:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66A91BDEC;
+	Wed,  3 Jan 2024 17:13:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6530AC433C7;
+	Wed,  3 Jan 2024 17:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301815;
-	bh=PGjcpaIT+Y/ZzNXDqTh+yrMUP+ow7UyKeUDjejvM4Wk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GqQ1wlbrSnObVQvoAnXlUaxbpO8sw/3gW9qoZqP2dBHlgBAnRRqH3u3FH4/duNrjq
-	 jNW9p8sxw6TerTtaCqumGoYnL7nUZWkz+Ee6+YHRiMqmIHNqNKP+9cUhT0E8RxPytR
-	 6cuQgcaEiAAswocu1i614zCEZ8teg9aby0ux8ekY=
+	s=korg; t=1704302030;
+	bh=EioX0AUTWUdeEWIVw4qvIAjmfJF5FH7ueR1brcr2ctQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fTvHvCgkCuFJAwPRw0H8s9BH0cbKJtyZB/bbtr/Ph8Vn8hh+geudb1Cfqpk+AAh+3
+	 X82PUz6LDPrvq7JjwHcNkpUC0RMllFKvRg3Iu4BvAW6IEW1OK9Xk64mcb9oEUg+iUO
+	 XfG20pwXRGuIVfZZQyhj150bq1V8a+daVQ5zVMO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 38/75] USB: serial: option: add Foxconn T99W265 with new baseline
-Date: Wed,  3 Jan 2024 17:55:19 +0100
-Message-ID: <20240103164848.946542046@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: [PATCH 6.6 00/49] 6.6.10-rc1 review
+Date: Wed,  3 Jan 2024 17:55:20 +0100
+Message-ID: <20240103164834.970234661@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.10-rc1
+X-KernelTest-Deadline: 2024-01-05T16:48+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.6.10 release.
+There are 49 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+Anything received after that time might be too late.
 
-From: Slark Xiao <slark_xiao@163.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-commit 13fde9ac23ca8c6d1ac13cc9eefe1f1ac3ee30a4 upstream.
+thanks,
 
-This ID was added based on latest SDX12 code base line, and we
-made some changes with previous 0489:e0db.
+greg k-h
 
-Test evidence as below:
-T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  2
-P:  Vendor=0489 ProdID=e0da Rev=05.04
-S:  Manufacturer=Qualcomm
-S:  Product=Qualcomm Snapdragon X12
-S:  SerialNumber=2bda65fb
-C:  #Ifs= 6 Cfg#= 2 Atr=a0 MxPwr=896mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+-------------
+Pseudo-Shortlog of commits:
 
-0&1: MBIM, 2: Modem, 3:GNSS, 4:Diag, 5:ADB
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.10-rc1
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nf_tables: skip set commit for deleted/destroyed sets
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2244,6 +2244,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
- 	{ USB_DEVICE(0x0489, 0xe0b5),						/* Foxconn T77W968 ESIM */
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0da, 0xff),                     /* Foxconn T99W265 MBIM variant */
-+	  .driver_info = RSVD(3) | RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
+Léo Lam <leo@leolam.fr>
+    wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
+
+Johannes Berg <johannes.berg@intel.com>
+    wifi: cfg80211: fix CQM for non-range use
+
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    tracing: Fix blocked reader of snapshot buffer
+
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    ftrace: Fix modification of direct_function hash while in use
+
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    ring-buffer: Fix wake ups when buffer_percent is set to 100
+
+Keith Busch <kbusch@kernel.org>
+    Revert "nvme-fc: fix race between error recovery and creating association"
+
+Matthew Wilcox (Oracle) <willy@infradead.org>
+    mm/memory-failure: check the mapcount of the precise page
+
+Matthew Wilcox (Oracle) <willy@infradead.org>
+    mm/memory-failure: cast index to loff_t before shifting it
+
+Charan Teja Kalla <quic_charante@quicinc.com>
+    mm: migrate high-order folios in swap cache correctly
+
+Baokun Li <libaokun1@huawei.com>
+    mm/filemap: avoid buffered read/write race to read inconsistent data
+
+Muhammad Usama Anjum <usama.anjum@collabora.com>
+    selftests: secretmem: floor the memory size to the multiple of page_size
+
+Sidhartha Kumar <sidhartha.kumar@oracle.com>
+    maple_tree: do not preallocate nodes for slot stores
+
+Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+    platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+
+David E. Box <david.e.box@linux.intel.com>
+    platform/x86/intel/pmc: Move GBE LTR ignore to suspend callback
+
+David E. Box <david.e.box@linux.intel.com>
+    platform/x86/intel/pmc: Allow reenabling LTRs
+
+David E. Box <david.e.box@linux.intel.com>
+    platform/x86/intel/pmc: Add suspend callback
+
+Christoph Hellwig <hch@lst.de>
+    block: renumber QUEUE_FLAG_HW_WC
+
+Paolo Abeni <pabeni@redhat.com>
+    mptcp: fix inconsistent state on fastopen race
+
+Paolo Abeni <pabeni@redhat.com>
+    mptcp: fix possible NULL pointer dereference on close
+
+Paolo Abeni <pabeni@redhat.com>
+    mptcp: refactor sndbuf auto-tuning
+
+Helge Deller <deller@gmx.de>
+    linux/export: Ensure natural alignment of kcrctab array
+
+Helge Deller <deller@gmx.de>
+    linux/export: Fix alignment for 64-bit ksymtab entries
+
+Arnd Bergmann <arnd@arndb.de>
+    kexec: select CRYPTO from KEXEC_FILE instead of depending on it
+
+Arnd Bergmann <arnd@arndb.de>
+    kexec: fix KEXEC_FILE dependencies
+
+Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+    virtio_ring: fix syncs DMA memory with different direction
+
+Zizhi Wo <wozizhi@huawei.com>
+    fs: cifs: Fix atime update check
+
+Jeff Layton <jlayton@kernel.org>
+    client: convert to new timestamp accessors
+
+Jeff Layton <jlayton@kernel.org>
+    fs: new accessor methods for atime and mtime
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: avoid duplicate opinfo_put() call on error of smb21_lease_break_ack()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: lazy v2 lease break on smb2_write()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: send v2 lease break notification for directory
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: downgrade RWH lease caching state to RH for directory
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: set v2 lease capability
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: set epoch in create context v2 lease
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: don't update ->op_state as OPLOCK_STATE_NONE on error
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: release interim response after sending status pending response
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: move oplock handling after unlock parent dir
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: separately allocate ci per dentry
+
+Zongmin Zhou <zhouzongmin@kylinos.cn>
+    ksmbd: prevent memory leak on error return
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix kernel-doc comment of ksmbd_vfs_kern_path_locked()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: no need to wait for binded connection termination at logoff
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: add support for surrogate pair conversion
+
+Kangjing Huang <huangkangjing@gmail.com>
+    ksmbd: fix missing RDMA-capable flag for IPoIB device in ksmbd_rdma_capable_netdev()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: reorganize ksmbd_iov_pin_rsp()
+
+Cheng-Han Wu <hank20010209@gmail.com>
+    ksmbd: Remove unused field in ksmbd_user struct
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                  |   4 +-
+ arch/powerpc/Kconfig                      |   4 +-
+ arch/riscv/Kconfig                        |   4 +-
+ arch/s390/Kconfig                         |   4 +-
+ arch/x86/Kconfig                          |   4 +-
+ drivers/nvme/host/fc.c                    |  21 +--
+ drivers/platform/x86/intel/pmc/adl.c      |   9 +-
+ drivers/platform/x86/intel/pmc/cnp.c      |  26 ++-
+ drivers/platform/x86/intel/pmc/core.c     |  12 +-
+ drivers/platform/x86/intel/pmc/core.h     |   7 +-
+ drivers/platform/x86/intel/pmc/mtl.c      |   9 +-
+ drivers/platform/x86/intel/pmc/tgl.c      |   9 +-
+ drivers/platform/x86/p2sb.c               | 178 ++++++++++++++++-----
+ drivers/virtio/virtio_ring.c              |   6 +-
+ fs/libfs.c                                |  41 +++--
+ fs/smb/client/file.c                      |  18 ++-
+ fs/smb/client/fscache.h                   |   6 +-
+ fs/smb/client/inode.c                     |  17 +-
+ fs/smb/client/smb2ops.c                   |   6 +-
+ fs/smb/common/smb2pdu.h                   |   1 +
+ fs/smb/server/connection.c                |  16 --
+ fs/smb/server/ksmbd_work.c                |  51 +++---
+ fs/smb/server/mgmt/user_config.h          |   1 -
+ fs/smb/server/oplock.c                    | 118 ++++++++++++--
+ fs/smb/server/oplock.h                    |   8 +-
+ fs/smb/server/smb2misc.c                  |  15 +-
+ fs/smb/server/smb2ops.c                   |   9 +-
+ fs/smb/server/smb2pdu.c                   | 258 ++++++++++++++++--------------
+ fs/smb/server/transport_rdma.c            |  40 +++--
+ fs/smb/server/unicode.c                   | 187 ++++++++++++++++------
+ fs/smb/server/vfs.c                       |  14 +-
+ fs/smb/server/vfs_cache.c                 |  30 ++--
+ fs/smb/server/vfs_cache.h                 |   9 +-
+ include/linux/blkdev.h                    |   2 +-
+ include/linux/export-internal.h           |   6 +-
+ include/linux/fs.h                        |  85 ++++++++--
+ kernel/Kconfig.kexec                      |   2 +
+ kernel/trace/ftrace.c                     | 100 ++++++------
+ kernel/trace/ring_buffer.c                |  12 +-
+ kernel/trace/trace.c                      |  20 ++-
+ lib/maple_tree.c                          |  11 ++
+ mm/filemap.c                              |   9 ++
+ mm/memory-failure.c                       |   8 +-
+ mm/migrate.c                              |   9 +-
+ net/mptcp/protocol.c                      |  27 +++-
+ net/mptcp/protocol.h                      |  63 +++++++-
+ net/mptcp/sockopt.c                       |   5 +-
+ net/mptcp/subflow.c                       |  29 ++--
+ net/netfilter/nf_tables_api.c             |   2 +-
+ net/wireless/core.h                       |   1 +
+ net/wireless/nl80211.c                    |  56 ++++---
+ tools/testing/radix-tree/maple.c          |   2 +-
+ tools/testing/selftests/mm/memfd_secret.c |   3 +
+ 53 files changed, 1070 insertions(+), 524 deletions(-)
 
 
 
