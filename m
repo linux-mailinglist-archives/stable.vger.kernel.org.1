@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-9261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2784D822BFC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 12:19:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13C9C822C37
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 12:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB2D1C21BF1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:19:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D60B2187F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D903218E16;
-	Wed,  3 Jan 2024 11:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B8518E2D;
+	Wed,  3 Jan 2024 11:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iUJmz+cW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TuM7SuXL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7BA18E0C;
-	Wed,  3 Jan 2024 11:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFBF18EA0;
+	Wed,  3 Jan 2024 11:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704280791; x=1735816791;
+  t=1704281791; x=1735817791;
   h=date:from:to:cc:subject:in-reply-to:message-id:
    references:mime-version;
-  bh=BN4G4B17WwmtxZfwQRC+8qZ6+KYHHxYIaVabnY6Z5v8=;
-  b=iUJmz+cWf8c7u5PdHvduyBhBFPFAAm+/XQRH+fYHjodr8SQczYKYG+yI
-   zrk90iGdwroZlrYMSNdr3//gwjy6RuS2utsvsK6DmHOI7OkUYEoGDGOfa
-   rfUl5ZsSS2G0zSRePRGRiT6ZaFNLHIUEHLONaIiG2Mo5hz0GjeN3lL/QS
-   Dy4VKsTroa5y4CHXpOTfjUaa8NaNowBr+2QfemDVA6APjdeszpzZYE+lT
-   neRt/ILFJLFPO5fGnpdLadtPNG+9nGr2Oieq6ILcocbcP83idzvpsoSfH
-   MelfZX2fteDou96ojWhzAFg4OJjjCrS0bEq1mr9EgNH8z0dx8qJmDQQyE
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="4342999"
+  bh=si5XuoGly074gF+mu6B8SR8aurH5zdG6CC2onKMC8og=;
+  b=TuM7SuXLj8MYvTThn52S+Y0XOBTWGt9MSeoWr2PWNd2EVuV4W0uyOu1H
+   grtHqHK0G1Dtb5T7rhhxyG2A5bjKlToy4FJ03/Hc0X17ljUlIkJhso62Q
+   FyRzms9Gk4+SOaXPLGn+oyT3f72lgTeR5MCgXCkFS16wIqJ3i5/dCgG6u
+   604REbF4uEodN/SsoWQz0ZQsAUWkLJ/MaHHrVv831SE3VnH91aFM/+cpX
+   ki9sSDfaRKyUfMyCttAn0VtzOhntR/2iTUaDInnEY4EjV1kUjBEGXwTzs
+   17A079cOCU2X4idbFFJfyEX3U9raghpYNH/U8rouKO3n5CEL7MRXHAWyu
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="394149634"
 X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; 
-   d="scan'208";a="4342999"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 03:19:50 -0800
+   d="scan'208";a="394149634"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 03:36:30 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10941"; a="779965501"
 X-IronPort-AV: E=Sophos;i="6.04,327,1695711600"; 
-   d="scan'208";a="779965501"
+   d="scan'208";a="22071222"
 Received: from bergbenj-mobl1.ger.corp.intel.com ([10.251.211.32])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 03:19:45 -0800
-Date: Wed, 3 Jan 2024 13:19:43 +0200 (EET)
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2024 03:36:26 -0800
+Date: Wed, 3 Jan 2024 13:36:23 +0200 (EET)
 From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -58,104 +57,136 @@ cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
     linux-serial <linux-serial@vger.kernel.org>, LinoSanfilippo@gmx.de, 
     Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com, 
     stable@vger.kernel.org
-Subject: Re: [PATCH v7 5/7] serial: core, imx: do not set RS485 enabled if
- it is not supported
-In-Reply-To: <20240103061818.564-6-l.sanfilippo@kunbus.com>
-Message-ID: <75c0cbd4-7cec-a415-bfba-376f035f76@linux.intel.com>
-References: <20240103061818.564-1-l.sanfilippo@kunbus.com> <20240103061818.564-6-l.sanfilippo@kunbus.com>
+Subject: Re: [PATCH v7 6/7] serial: omap: do not override settings for RS485
+ support
+In-Reply-To: <20240103061818.564-7-l.sanfilippo@kunbus.com>
+Message-ID: <c88034d4-cb5-b64e-7a76-194ef35f28@linux.intel.com>
+References: <20240103061818.564-1-l.sanfilippo@kunbus.com> <20240103061818.564-7-l.sanfilippo@kunbus.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-84096764-1704280789=:1706"
+Content-Type: multipart/mixed; boundary="8323329-729757387-1704281789=:1706"
 
   This message is in MIME format.  The first part should be readable text,
   while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-84096764-1704280789=:1706
-Content-Type: text/plain; charset=UTF-8
+--8323329-729757387-1704281789=:1706
+Content-Type: text/plain; charset=ISO-8859-15
 Content-Transfer-Encoding: 8BIT
 
 On Wed, 3 Jan 2024, Lino Sanfilippo wrote:
 
-> If the imx driver cannot support RS485 it nullifies the ports
-> rs485_supported structure. But it still calls uart_get_rs485_mode() which
-> may set the RS485_ENABLED flag nevertheless.
+> The drivers RS485 support is deactivated if there is no RTS GPIO available.
+> This is done by nullifying the ports rs485_supported struct. After that
+> however the settings in serial_omap_rs485_supported are assigned to the
+> same structure unconditionally, which results in an unintended reactivation
+> of RS485 support.
 > 
-> This may lead to an attempt to configure RS485 even if it is not supported
-> when the flag is evaluated in uart_configure_port() at port startup.
+> Fix this by moving the assignment to the beginning of
+> serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
+> called.
+
+This doesn't seem to accurately reflect what the problem is (which you 
+correctly described in the paragraph above this). The problem doesn't seem 
+to have anything to do with the placement of uart_get_rs485_mode() call 
+but the if (IS_ERR(up->rts_gpiod)) block that clears rs485_supported?
+
+A future work item that came to my mind while reviewing this: I suppose 
+uart_disable_rs485_support() could be added into core which memsets  
+rs485_supported and rs485 to zero so this driver could just call it.
+
+> Also replace the assignment of rs485_config() to have the complete RS485
+> setup in one function.
 > 
-> Avoid this by bailing out of uart_get_rs485_mode() if the RS485_ENABLED
-> flag is not supported by the caller.
-> 
-> With this fix a check for RTS availability is now obsolete in the imx
-> driver, since it can not evaluate to true any more. So remove this check.
-> 
-> Furthermore the explicit nullifcation of rs485_supported is not needed,
-> since the memory has already been set to zeros at allocation. So remove
-> this, too.
-> 
-> Fixes: 00d7a00e2a6f ("serial: imx: Fill in rs485_supported")
-> Cc: Shawn Guo <shawnguo@kernel.org>
-> Cc: Sascha Hauer <s.hauer@pengutronix.de>
+> Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
 > Cc: stable@vger.kernel.org
-> Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 > Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 > ---
->  drivers/tty/serial/imx.c         | 7 -------
->  drivers/tty/serial/serial_core.c | 3 +++
->  2 files changed, 3 insertions(+), 7 deletions(-)
+>  drivers/tty/serial/omap-serial.c | 27 ++++++++++++++-------------
+>  1 file changed, 14 insertions(+), 13 deletions(-)
 > 
-> diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-> index 9cffeb23112b..198ce7e7bc8b 100644
-> --- a/drivers/tty/serial/imx.c
-> +++ b/drivers/tty/serial/imx.c
-> @@ -2206,7 +2206,6 @@ static enum hrtimer_restart imx_trigger_stop_tx(struct hrtimer *t)
->  	return HRTIMER_NORESTART;
+> diff --git a/drivers/tty/serial/omap-serial.c b/drivers/tty/serial/omap-serial.c
+> index ad4c1c5d0a7f..f4c6ff806465 100644
+> --- a/drivers/tty/serial/omap-serial.c
+> +++ b/drivers/tty/serial/omap-serial.c
+> @@ -1483,6 +1483,13 @@ static struct omap_uart_port_info *of_get_uart_port_info(struct device *dev)
+>  	return omap_up_info;
 >  }
 >  
-> -static const struct serial_rs485 imx_no_rs485 = {};	/* No RS485 if no RTS */
->  static const struct serial_rs485 imx_rs485_supported = {
->  	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
->  		 SER_RS485_RX_DURING_TX,
-> @@ -2290,8 +2289,6 @@ static int imx_uart_probe(struct platform_device *pdev)
->  	/* RTS is required to control the RS485 transmitter */
->  	if (sport->have_rtscts || sport->have_rtsgpio)
->  		sport->port.rs485_supported = imx_rs485_supported;
-> -	else
-> -		sport->port.rs485_supported = imx_no_rs485;
->  	sport->port.flags = UPF_BOOT_AUTOCONF;
->  	timer_setup(&sport->timer, imx_uart_timeout, 0);
+> +static const struct serial_rs485 serial_omap_rs485_supported = {
+> +	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
+> +		 SER_RS485_RX_DURING_TX,
+> +	.delay_rts_before_send = 1,
+> +	.delay_rts_after_send = 1,
+> +};
+> +
+>  static int serial_omap_probe_rs485(struct uart_omap_port *up,
+>  				   struct device *dev)
+>  {
+> @@ -1497,6 +1504,9 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
+>  	if (!np)
+>  		return 0;
 >  
-> @@ -2328,10 +2325,6 @@ static int imx_uart_probe(struct platform_device *pdev)
+> +	up->port.rs485_config = serial_omap_config_rs485;
+> +	up->port.rs485_supported = serial_omap_rs485_supported;
+> +
+>  	ret = uart_get_rs485_mode(&up->port);
+>  	if (ret)
 >  		return ret;
+> @@ -1531,13 +1541,6 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
+>  	return 0;
+>  }
+>  
+> -static const struct serial_rs485 serial_omap_rs485_supported = {
+> -	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
+> -		 SER_RS485_RX_DURING_TX,
+> -	.delay_rts_before_send = 1,
+> -	.delay_rts_after_send = 1,
+> -};
+> -
+>  static int serial_omap_probe(struct platform_device *pdev)
+>  {
+>  	struct omap_uart_port_info *omap_up_info = dev_get_platdata(&pdev->dev);
+> @@ -1604,17 +1607,11 @@ static int serial_omap_probe(struct platform_device *pdev)
+>  		dev_info(up->port.dev, "no wakeirq for uart%d\n",
+>  			 up->port.line);
+>  
+> -	ret = serial_omap_probe_rs485(up, &pdev->dev);
+> -	if (ret < 0)
+> -		goto err_rs485;
+> -
+>  	sprintf(up->name, "OMAP UART%d", up->port.line);
+>  	up->port.mapbase = mem->start;
+>  	up->port.membase = base;
+>  	up->port.flags = omap_up_info->flags;
+>  	up->port.uartclk = omap_up_info->uartclk;
+> -	up->port.rs485_config = serial_omap_config_rs485;
+> -	up->port.rs485_supported = serial_omap_rs485_supported;
+>  	if (!up->port.uartclk) {
+>  		up->port.uartclk = DEFAULT_CLK_SPEED;
+>  		dev_warn(&pdev->dev,
+> @@ -1622,6 +1619,10 @@ static int serial_omap_probe(struct platform_device *pdev)
+>  			 DEFAULT_CLK_SPEED);
 >  	}
 >  
-> -	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
-> -	    (!sport->have_rtscts && !sport->have_rtsgpio))
-> -		dev_err(&pdev->dev, "no RTS control, disabling rs485\n");
-> -
->  	/*
->  	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
->  	 * signal cannot be set low during transmission in case the
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index 28bcbc686c67..93e4e1693601 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -3600,6 +3600,9 @@ int uart_get_rs485_mode(struct uart_port *port)
->  	u32 rs485_delay[2];
->  	int ret;
->  
-> +	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
-> +		return 0;
+> +	ret = serial_omap_probe_rs485(up, &pdev->dev);
+> +	if (ret < 0)
+> +		goto err_rs485;
 > +
+>  	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+>  	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+>  	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
 
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Moving of serial_omap_probe_rs485() later in serial_omap_probe() doesn't 
+seem anymore required but I guess it doesn't hurt either.
+
+Reviewed-by: Ilpo J�rvinen <ilpo.jarvinen@linux.intel.com>
 
 -- 
  i.
 
---8323329-84096764-1704280789=:1706--
+--8323329-729757387-1704281789=:1706--
 
