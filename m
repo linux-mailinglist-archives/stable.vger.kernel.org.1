@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D70D82327C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DDB823212
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B6A11C23BD2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 222DB28A2F6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4B01BDFF;
-	Wed,  3 Jan 2024 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052ED1BDFF;
+	Wed,  3 Jan 2024 17:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWpJUXBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyqmPDc6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A321BDF1;
-	Wed,  3 Jan 2024 17:07:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5D1C433C8;
-	Wed,  3 Jan 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05F41BDDE;
+	Wed,  3 Jan 2024 17:02:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C499C433C8;
+	Wed,  3 Jan 2024 17:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301664;
-	bh=6twLxMRZaUQj0DVREVh+mGZqG9/+e2AFVBijrhgCVEY=;
+	s=korg; t=1704301342;
+	bh=tGYPz9V0O4H55/RhyTr936i/52vPNUlQFl133j+9ppU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWpJUXBK+6GGJaWgXsBCrbUbZ4C/9IrKBRFGQaNhA7J+/1EQhDZTleFtZZbdYSlwF
-	 uWGDWEqZtegiQ1v0jT2u7RnVWsHwuNdRCqQKYhwp+tXtZeNwFuoeIdJNYMQkfdui33
-	 nluuE5y4sKT9mDR5GMOvKznjOegrcpf6WT2WOZT0=
+	b=GyqmPDc63p5IplRcNS48yrbvJeCY9oRreLfTZ93BU5ZkcuiPKyJyF7sU5iDv7sR8o
+	 pHoX4mKbZhX3qVbvVM4t1VTo1J+5Lf9ka9RQ3RWNgucV/2UJ4dSOCAJA4sAJjrl4TE
+	 oAcjuZpsXB/lY/MJaorBgifgyEg0SrAczQNwHBxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Petr Mladek <pmladek@suse.com>
-Subject: [PATCH 5.15 62/95] lib/vsprintf: Fix %pfwf when current node refcount == 0
+	Tudor Ambarus <tudor.ambarus@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/100] spi: Reintroduce spi_set_cs_timing()
 Date: Wed,  3 Jan 2024 17:55:10 +0100
-Message-ID: <20240103164903.243229544@linuxfoundation.org>
+Message-ID: <20240103164908.259988352@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +53,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Tudor Ambarus <tudor.ambarus@microchip.com>
 
-commit 5c47251e8c4903111608ddcba2a77c0c425c247c upstream.
+[ Upstream commit 684a47847ae639689e7b823251975348a8e5434f ]
 
-A refcount issue can appeared in __fwnode_link_del() due to the
-pr_debug() call:
-  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
-  Call Trace:
-  <TASK>
-  ...
-  of_node_get+0x1e/0x30
-  of_fwnode_get+0x28/0x40
-  fwnode_full_name_string+0x34/0x90
-  fwnode_string+0xdb/0x140
-  ...
-  vsnprintf+0x17b/0x630
-  ...
-  __fwnode_link_del+0x25/0xa0
-  fwnode_links_purge+0x39/0xb0
-  of_node_release+0xd9/0x180
-  ...
+commit 4ccf359849ce ("spi: remove spi_set_cs_timing()"), removed the
+method as noboby used it. Nobody used it probably because some SPI
+controllers use some default large cs-setup time that covers the usual
+cs-setup time required by the spi devices. There are though SPI controllers
+that have a smaller granularity for the cs-setup time and their default
+value can't fulfill the spi device requirements. That's the case for the
+at91 QSPI IPs where the default cs-setup time is half of the QSPI clock
+period. This was observed when using an sst26vf064b SPI NOR flash which
+needs a spi-cs-setup-ns = <7>; in order to be operated close to its maximum
+104 MHz frequency.
 
-Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
-is called because the of_node refcount reached 0.
->From of_node_release() several function calls are done and lead to
-a pr_debug() calls with %pfwf to print the fwnode full name.
-The issue is not present if we change %pfwf to %pfwP.
+Call spi_set_cs_timing() in spi_setup() just before calling spi_set_cs(),
+as the latter needs the CS timings already set.
+If spi->controller->set_cs_timing is not set, the method will return 0.
+There's no functional impact expected for the existing drivers. Even if the
+spi-mt65xx.c and spi-tegra114.c drivers set the set_cs_timing method,
+there's no user for them as of now. The only tested user of this support
+will be a SPI NOR flash that comunicates with the Atmel QSPI controller for
+which the support follows in the next patches.
 
-To print the full name, %pfwf iterates over the current node and its
-parents and obtain/drop a reference to all nodes involved.
+One will notice that this support is a bit different from the one that was
+removed in commit 4ccf359849ce ("spi: remove spi_set_cs_timing()"),
+because this patch adapts to the changes done after the removal: the move
+of the cs delays to the spi device, the retirement of the lelgacy GPIO
+handling. The mutex handling was removed from spi_set_cs_timing() because
+we now always call spi_set_cs_timing() in spi_setup(), which already
+handles the spi->controller->io_mutex, so use the mutex handling from
+spi_setup().
 
-In order to allow to print the full name (%pfwf) of a node while it is
-being destroyed, do not obtain/drop a reference to this current node.
-
-Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20231114152655.409331-1-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@microchip.com>
+Link: https://lore.kernel.org/r/20221117105249.115649-4-tudor.ambarus@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/vsprintf.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c | 37 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -2111,15 +2111,20 @@ char *fwnode_full_name_string(struct fwn
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index dfce0f7d4c640..f1ed2863a183e 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3623,6 +3623,37 @@ static int __spi_validate_bits_per_word(struct spi_controller *ctlr,
+ 	return 0;
+ }
  
- 	/* Loop starting from the root node to the current node. */
- 	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
--		struct fwnode_handle *__fwnode =
--			fwnode_get_nth_parent(fwnode, depth);
-+		/*
-+		 * Only get a reference for other nodes (i.e. parent nodes).
-+		 * fwnode refcount may be 0 here.
-+		 */
-+		struct fwnode_handle *__fwnode = depth ?
-+			fwnode_get_nth_parent(fwnode, depth) : fwnode;
- 
- 		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
- 			     default_str_spec);
- 		buf = string(buf, end, fwnode_get_name(__fwnode),
- 			     default_str_spec);
- 
--		fwnode_handle_put(__fwnode);
-+		if (depth)
-+			fwnode_handle_put(__fwnode);
++/**
++ * spi_set_cs_timing - configure CS setup, hold, and inactive delays
++ * @spi: the device that requires specific CS timing configuration
++ *
++ * Return: zero on success, else a negative error code.
++ */
++static int spi_set_cs_timing(struct spi_device *spi)
++{
++	struct device *parent = spi->controller->dev.parent;
++	int status = 0;
++
++	if (spi->controller->set_cs_timing && !spi->cs_gpiod) {
++		if (spi->controller->auto_runtime_pm) {
++			status = pm_runtime_get_sync(parent);
++			if (status < 0) {
++				pm_runtime_put_noidle(parent);
++				dev_err(&spi->controller->dev, "Failed to power device: %d\n",
++					status);
++				return status;
++			}
++
++			status = spi->controller->set_cs_timing(spi);
++			pm_runtime_mark_last_busy(parent);
++			pm_runtime_put_autosuspend(parent);
++		} else {
++			status = spi->controller->set_cs_timing(spi);
++		}
++	}
++	return status;
++}
++
+ /**
+  * spi_setup - setup SPI mode and clock rate
+  * @spi: the device whose settings are being modified
+@@ -3719,6 +3750,12 @@ int spi_setup(struct spi_device *spi)
+ 		}
  	}
  
- 	return buf;
++	status = spi_set_cs_timing(spi);
++	if (status) {
++		mutex_unlock(&spi->controller->io_mutex);
++		return status;
++	}
++
+ 	if (spi->controller->auto_runtime_pm && spi->controller->set_cs) {
+ 		status = pm_runtime_resume_and_get(spi->controller->dev.parent);
+ 		if (status < 0) {
+-- 
+2.43.0
+
 
 
 
