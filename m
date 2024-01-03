@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647D88231BC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:58:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA88823219
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7E91C23BAE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C46A21F24C17
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3651C291;
-	Wed,  3 Jan 2024 16:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613631C283;
+	Wed,  3 Jan 2024 17:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xip+gACu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Fjc0WX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F261CA96;
-	Wed,  3 Jan 2024 16:57:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C39C433C8;
-	Wed,  3 Jan 2024 16:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294961BDF1;
+	Wed,  3 Jan 2024 17:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84543C433C7;
+	Wed,  3 Jan 2024 17:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301068;
-	bh=ux2DAD8x0gULmepthuyJf9P9pCsdPRCMGDcXEs1XXhw=;
+	s=korg; t=1704301360;
+	bh=L9P1erfDwbjhN3BL+EUn6s0/JjuQwXTTG7+kzdc5ik4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xip+gACuuKmGeRnkQ518Teh/9OM6dGUuOD8sL+4goV2unFYuMWlzD5RCeYohsQ/Sk
-	 PzxSOiVYmWY6bi1IBNMibWYJLxe7mie6eXJAQYUs1IYVYcOweC/q46Oi3kmoX/ewDf
-	 AmXqLgtXPhtTJozFBOu0KosOArQpHLl68q0pqBVc=
+	b=k/Fjc0WXhH5SpFPMPCu3iu+CEE+DQDBXq6I1Y9Q7OQQqThBMbTPMaduzK9Y3PBIST
+	 ecaaIWNE55SQwK/zwxA2Spp5lKmxaWRTZmUi9sdzon+9d1VyVFFA5MTL5EhzwErffs
+	 nVqfki4f/1C/XCpX5iwxqXWOsre5X5aZhDpF1nYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Hongfei <luhongfei@vivo.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Feras Daoud <ferasda@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/100] ksmbd: Replace the ternary conditional operator with min()
-Date: Wed,  3 Jan 2024 17:54:18 +0100
-Message-ID: <20240103164900.449744909@linuxfoundation.org>
+Subject: [PATCH 5.15 11/95] net/mlx5: Fix fw tracer first block check
+Date: Wed,  3 Jan 2024 17:54:19 +0100
+Message-ID: <20240103164855.790445995@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,38 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Hongfei <luhongfei@vivo.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit f65fadb0422537d73f9a6472861852dc2f7a6a5b ]
+[ Upstream commit 4261edf11cb7c9224af713a102e5616329306932 ]
 
-It would be better to replace the traditional ternary conditional
-operator with min() in compare_sids.
+While handling new traces, to verify it is not the first block being
+written, last_timestamp is checked. But instead of checking it is non
+zero it is verified to be zero. Fix to verify last_timestamp is not
+zero.
 
-Signed-off-by: Lu Hongfei <luhongfei@vivo.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c71ad41ccb0c ("net/mlx5: FW tracer, events handling")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Feras Daoud <ferasda@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 8fe2592c5525f..03f19d3de2a17 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -97,7 +97,7 @@ int compare_sids(const struct smb_sid *ctsid, const struct smb_sid *cwsid)
- 	/* compare all of the subauth values if any */
- 	num_sat = ctsid->num_subauth;
- 	num_saw = cwsid->num_subauth;
--	num_subauth = num_sat < num_saw ? num_sat : num_saw;
-+	num_subauth = min(num_sat, num_saw);
- 	if (num_subauth) {
- 		for (i = 0; i < num_subauth; ++i) {
- 			if (ctsid->sub_auth[i] != cwsid->sub_auth[i]) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index b69ab30ecf03b..efa2e0a8fa1d1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -691,7 +691,7 @@ static void mlx5_fw_tracer_handle_traces(struct work_struct *work)
+ 
+ 	while (block_timestamp > tracer->last_timestamp) {
+ 		/* Check block override if it's not the first block */
+-		if (!tracer->last_timestamp) {
++		if (tracer->last_timestamp) {
+ 			u64 *ts_event;
+ 			/* To avoid block override be the HW in case of buffer
+ 			 * wraparound, the time stamp of the previous block
 -- 
 2.43.0
 
