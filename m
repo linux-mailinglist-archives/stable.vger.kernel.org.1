@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A28823248
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2C58231E3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7458B24395
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAD8EB23EBD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5E21BDF4;
-	Wed,  3 Jan 2024 17:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E241B29F;
+	Wed,  3 Jan 2024 17:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0H8A8Tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSc7A2pU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C935F1C298;
-	Wed,  3 Jan 2024 17:04:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC1DC433C7;
-	Wed,  3 Jan 2024 17:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF35F1BDF0;
+	Wed,  3 Jan 2024 16:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4557CC433C9;
+	Wed,  3 Jan 2024 16:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301485;
-	bh=nshPneWRoPHfIE0+rwuHX4Qi5CNZ6259GzlBNhwRns8=;
+	s=korg; t=1704301199;
+	bh=Fes0dtBzTS+pDdqH7R12xWIludd9ozPh9wtPvGJbCWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0H8A8TjjRBh0T96sAM5Fq6Cjle5g+agBBI5vGNh8vR5wnANFaYzr8xwf0iP2aEDT
-	 sSNOz+c46M+iPABmBp2YD/d/2TAmwschHvUPmDOC4/Nip8L56RszaIFDhywBQibV8o
-	 gMtCvzHiTbuClN+UDldz0jufDslwwMU8o3RvdrxI=
+	b=WSc7A2pUV92a7R6To2jUOX294OE7rL5zH8ES/Ck3EROwEO9cQ9wCbtUmraKQ119KA
+	 vIH1gY/CZ0YTEBhxBStRNPFuQWaaanjZ5KsfCtPthQzdHv1lUPPQeS/3+DOKzQYu1/
+	 AxGwWvQzwtonczgJ2lH/hRdSRSELxVVxJamR6198=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 45/95] wifi: cfg80211: fix certs build to not depend on file order
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/100] ksmbd: release interim response after sending status pending response
 Date: Wed,  3 Jan 2024 17:54:53 +0100
-Message-ID: <20240103164900.856217047@linuxfoundation.org>
+Message-ID: <20240103164905.686842335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 3c2a8ebe3fe66a5f77d4c164a0bea8e2ff37b455 upstream.
+[ Upstream commit 2a3f7857ec742e212d6cee7fbbf7b0e2ae7f5161 ]
 
-The file for the new certificate (Chen-Yu Tsai's) didn't
-end with a comma, so depending on the file order in the
-build rule, we'd end up with invalid C when concatenating
-the (now two) certificates. Fix that.
+Add missing release async id and delete interim response entry after
+sending status pending response. This only cause when smb2 lease is enable.
 
-Cc: stable@vger.kernel.org
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: fb768d3b13ff ("wifi: cfg80211: Add my certificate")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/certs/wens.hex |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/ksmbd_work.c | 3 +++
+ fs/smb/server/oplock.c     | 3 ++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/wireless/certs/wens.hex
-+++ b/net/wireless/certs/wens.hex
-@@ -84,4 +84,4 @@
- 0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
- 0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
- 0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
--0x45, 0x4e, 0xc3
-+0x45, 0x4e, 0xc3,
+diff --git a/fs/smb/server/ksmbd_work.c b/fs/smb/server/ksmbd_work.c
+index 2510b9f3c8c14..d7c676c151e20 100644
+--- a/fs/smb/server/ksmbd_work.c
++++ b/fs/smb/server/ksmbd_work.c
+@@ -56,6 +56,9 @@ void ksmbd_free_work_struct(struct ksmbd_work *work)
+ 	kfree(work->tr_buf);
+ 	kvfree(work->request_buf);
+ 	kfree(work->iov);
++	if (!list_empty(&work->interim_entry))
++		list_del(&work->interim_entry);
++
+ 	if (work->async_id)
+ 		ksmbd_release_id(&work->conn->async_ida, work->async_id);
+ 	kmem_cache_free(work_cache, work);
+diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
+index 90a035c27130f..4c74e8ea9649a 100644
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -833,7 +833,8 @@ static int smb2_lease_break_noti(struct oplock_info *opinfo)
+ 					     interim_entry);
+ 			setup_async_work(in_work, NULL, NULL);
+ 			smb2_send_interim_resp(in_work, STATUS_PENDING);
+-			list_del(&in_work->interim_entry);
++			list_del_init(&in_work->interim_entry);
++			release_async_work(in_work);
+ 		}
+ 		INIT_WORK(&work->work, __smb2_lease_break_noti);
+ 		ksmbd_queue_work(work);
+-- 
+2.43.0
+
 
 
 
