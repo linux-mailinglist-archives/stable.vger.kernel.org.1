@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-9573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D978232F7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DE08232CF
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730DC1F24F21
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EEE3B236B6
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD3B1C280;
-	Wed,  3 Jan 2024 17:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3141C290;
+	Wed,  3 Jan 2024 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHGIOokt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+rMKAuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EF01C283;
-	Wed,  3 Jan 2024 17:14:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B16C433C8;
-	Wed,  3 Jan 2024 17:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25791BDF1;
+	Wed,  3 Jan 2024 17:11:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5EBC433C8;
+	Wed,  3 Jan 2024 17:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302043;
-	bh=6en+hcZ+f7IgY+GNzEA/SoAzvrDGaX/2pT3LfJGoXDQ=;
+	s=korg; t=1704301918;
+	bh=r4FGrclJvuq242kWlbmBzKL+xYUu3uyBFgYvQqZNSpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHGIOoktPmBDrhtcRizI3ap3O1tZUL6xhs0XxiBULpBMKp4UNY7XE20dg1kpcgEOX
-	 aBEwaf7q0qBwu5TEWjzcE3RDk9HJNLTCoxxwobJVaEnfKoHKmAUurFZsO43gB4vQw0
-	 BU2rHOPZlqJPD7QhsXtUakSmp/ptUI+m9XYnw8gE=
+	b=F+rMKAuPGshS0rK/s/rLvVBtAmqxb/6SJ/vrbC3idncpv73Qx1gAq8WIJBixGYjFt
+	 Ipndkj6RXMZ6+zciKNfP3c2kB8EEfOfRkFYAKOaKpb5O514J0uwE+G9GWA227PWEBB
+	 +MKyKlKDTTqQcGAJtvHtr2C/y36p+25lJul/RKT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9dfbaedb6e6baca57a32@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 29/49] mptcp: fix possible NULL pointer dereference on close
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 68/75] ring-buffer: Fix wake ups when buffer_percent is set to 100
 Date: Wed,  3 Jan 2024 17:55:49 +0100
-Message-ID: <20240103164839.496350830@linuxfoundation.org>
+Message-ID: <20240103164853.369923277@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,115 +54,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit d109a7767273d1706b541c22b83a0323823dfde4 ]
+commit 623b1f896fa8a669a277ee5a258307a16c7377a3 upstream.
 
-After the blamed commit below, the MPTCP release callback can
-dereference the first subflow pointer via __mptcp_set_connected()
-and send buffer auto-tuning. Such pointer is always expected to be
-valid, except at socket destruction time, when the first subflow is
-deleted and the pointer zeroed.
+The tracefs file "buffer_percent" is to allow user space to set a
+water-mark on how much of the tracing ring buffer needs to be filled in
+order to wake up a blocked reader.
 
-If the connect event is handled by the release callback while the
-msk socket is finally released, MPTCP hits the following splat:
+ 0 - is to wait until any data is in the buffer
+ 1 - is to wait for 1% of the sub buffers to be filled
+ 50 - would be half of the sub buffers are filled with data
+ 100 - is not to wake the waiter until the ring buffer is completely full
 
-  general protection fault, probably for non-canonical address 0xdffffc00000000f2: 0000 [#1] PREEMPT SMP KASAN
-  KASAN: null-ptr-deref in range [0x0000000000000790-0x0000000000000797]
-  CPU: 1 PID: 26719 Comm: syz-executor.2 Not tainted 6.6.0-syzkaller-10102-gff269e2cd5ad #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
-  RIP: 0010:mptcp_subflow_ctx net/mptcp/protocol.h:542 [inline]
-  RIP: 0010:__mptcp_propagate_sndbuf net/mptcp/protocol.h:813 [inline]
-  RIP: 0010:__mptcp_set_connected+0x57/0x3e0 net/mptcp/subflow.c:424
-  RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffffff8a62323c
-  RDX: 00000000000000f2 RSI: ffffffff8a630116 RDI: 0000000000000790
-  RBP: ffff88803334b100 R08: 0000000000000001 R09: 0000000000000000
-  R10: 0000000000000001 R11: 0000000000000034 R12: ffff88803334b198
-  R13: ffff888054f0b018 R14: 0000000000000000 R15: ffff88803334b100
-  FS:  0000000000000000(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fbcb4f75198 CR3: 000000006afb5000 CR4: 00000000003506f0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   <TASK>
-   mptcp_release_cb+0xa2c/0xc40 net/mptcp/protocol.c:3405
-   release_sock+0xba/0x1f0 net/core/sock.c:3537
-   mptcp_close+0x32/0xf0 net/mptcp/protocol.c:3084
-   inet_release+0x132/0x270 net/ipv4/af_inet.c:433
-   inet6_release+0x4f/0x70 net/ipv6/af_inet6.c:485
-   __sock_release+0xae/0x260 net/socket.c:659
-   sock_close+0x1c/0x20 net/socket.c:1419
-   __fput+0x270/0xbb0 fs/file_table.c:394
-   task_work_run+0x14d/0x240 kernel/task_work.c:180
-   exit_task_work include/linux/task_work.h:38 [inline]
-   do_exit+0xa92/0x2a20 kernel/exit.c:876
-   do_group_exit+0xd4/0x2a0 kernel/exit.c:1026
-   get_signal+0x23ba/0x2790 kernel/signal.c:2900
-   arch_do_signal_or_restart+0x90/0x7f0 arch/x86/kernel/signal.c:309
-   exit_to_user_mode_loop kernel/entry/common.c:168 [inline]
-   exit_to_user_mode_prepare+0x11f/0x240 kernel/entry/common.c:204
-   __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
-   syscall_exit_to_user_mode+0x1d/0x60 kernel/entry/common.c:296
-   do_syscall_64+0x4b/0x110 arch/x86/entry/common.c:88
-   entry_SYSCALL_64_after_hwframe+0x63/0x6b
-  RIP: 0033:0x7fb515e7cae9
-  Code: Unable to access opcode bytes at 0x7fb515e7cabf.
-  RSP: 002b:00007fb516c560c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: 000000000000003c RBX: 00007fb515f9c120 RCX: 00007fb515e7cae9
-  RDX: 0000000000000000 RSI: 0000000020000140 RDI: 0000000000000006
-  RBP: 00007fb515ec847a R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000000000000006e R14: 00007fb515f9c120 R15: 00007ffc631eb968
-   </TASK>
+Unfortunately the test for being full was:
 
-To avoid sparkling unneeded conditionals, address the issue explicitly
-checking msk->first only in the critical place.
+	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
+	return (dirty * 100) > (full * nr_pages);
 
-Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Where "full" is the value for "buffer_percent".
+
+There is two issues with the above when full == 100.
+
+1. dirty * 100 > 100 * nr_pages will never be true
+   That is, the above is basically saying that if the user sets
+   buffer_percent to 100, more pages need to be dirty than exist in the
+   ring buffer!
+
+2. The page that the writer is on is never considered dirty, as dirty
+   pages are only those that are full. When the writer goes to a new
+   sub-buffer, it clears the contents of that sub-buffer.
+
+That is, even if the check was ">=" it would still not be equal as the
+most pages that can be considered "dirty" is nr_pages - 1.
+
+To fix this, add one to dirty and use ">=" in the compare.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231226125902.4a057f1d@gandalf.local.home
+
 Cc: stable@vger.kernel.org
-Reported-by: <syzbot+9dfbaedb6e6baca57a32@syzkaller.appspotmail.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/454
-Reported-by: Eric Dumazet <edumazet@google.com>
-Closes: https://lore.kernel.org/netdev/CANn89iLZUA6S2a=K8GObnS62KK6Jt4B7PsAs7meMFooM8xaTgw@mail.gmail.com/
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-2-7b9cd6a7b7f4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 4fd19a307016 ("mptcp: fix inconsistent state on fastopen race")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 03329f9939781 ("tracing: Add tracefs file buffer_percentage")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 44499e49d76e6..dc030551cac13 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3397,10 +3397,11 @@ static void mptcp_release_cb(struct sock *sk)
- 	if (__test_and_clear_bit(MPTCP_CLEAN_UNA, &msk->cb_flags))
- 		__mptcp_clean_una_wakeup(sk);
- 	if (unlikely(msk->cb_flags)) {
--		/* be sure to set the current sk state before tacking actions
--		 * depending on sk_state, that is processing MPTCP_ERROR_REPORT
-+		/* be sure to set the current sk state before taking actions
-+		 * depending on sk_state (MPTCP_ERROR_REPORT)
-+		 * On sk release avoid actions depending on the first subflow
- 		 */
--		if (__test_and_clear_bit(MPTCP_CONNECTED, &msk->cb_flags))
-+		if (__test_and_clear_bit(MPTCP_CONNECTED, &msk->cb_flags) && msk->first)
- 			__mptcp_set_connected(sk);
- 		if (__test_and_clear_bit(MPTCP_ERROR_REPORT, &msk->cb_flags))
- 			__mptcp_error_report(sk);
--- 
-2.43.0
-
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -810,9 +810,14 @@ static __always_inline bool full_hit(str
+ 	if (!nr_pages || !full)
+ 		return true;
+ 
+-	dirty = ring_buffer_nr_dirty_pages(buffer, cpu);
++	/*
++	 * Add one as dirty will never equal nr_pages, as the sub-buffer
++	 * that the writer is on is not counted as dirty.
++	 * This is needed if "buffer_percent" is set to 100.
++	 */
++	dirty = ring_buffer_nr_dirty_pages(buffer, cpu) + 1;
+ 
+-	return (dirty * 100) > (full * nr_pages);
++	return (dirty * 100) >= (full * nr_pages);
+ }
+ 
+ /*
 
 
 
