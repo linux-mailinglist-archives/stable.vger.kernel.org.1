@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-9546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B208232D9
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF514823284
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068721F2243B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFA3E281EE3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5681C288;
-	Wed,  3 Jan 2024 17:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978901C2AF;
+	Wed,  3 Jan 2024 17:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFtuZZp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCtaqqZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FFD1BDFF;
-	Wed,  3 Jan 2024 17:12:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490FFC433C7;
-	Wed,  3 Jan 2024 17:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8001C2A8;
+	Wed,  3 Jan 2024 17:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8645C433C8;
+	Wed,  3 Jan 2024 17:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301949;
-	bh=amxlM//yk3V75Dk33MiFlqeWwVOiEKnCg/Z2tcBKfOE=;
+	s=korg; t=1704301684;
+	bh=omO9YTWPlyf7Ih5IRBzUfiJDc73eXD9arv8aJeZixq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFtuZZp7xn3dMMB4DFBWxswz8eSQIvR3HwDfRO3RdDmBZOd6k94ghPHol151lNye7
-	 9cNZPqTZKZGB+f2QcDTdxzta+Fwn4qJlYkqW3bl7PzCra4VXnoPf5bpHiODxYDiwMt
-	 Hljov0iusvSTeVULiUqoVDi2OcHoXOGfZAFyAa0k=
+	b=mCtaqqZ731+BBgeLZJSvlphdfjxFfyNU+x/VAAOhLaOePq37tfHSh3k2IWuR7TPEX
+	 c9IpG5pqoH05KpniK3aE1cz3ngHwkC8AtFZBh4kUGhtpcSVEY2JAiFMdsvSemwHDqW
+	 f5u99+s12lDt4odXMbaUQMa86YbXVscxB3rrYBdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 56/75] usb: fotg210-hcd: delete an incorrect bounds test
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 89/95] ring-buffer: Remove useless update to write_stamp in rb_try_to_discard()
 Date: Wed,  3 Jan 2024 17:55:37 +0100
-Message-ID: <20240103164851.586757876@linuxfoundation.org>
+Message-ID: <20240103164907.409614313@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,68 +56,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 7fbcd195e2b8cc952e4aeaeb50867b798040314c ]
+commit 083e9f65bd215582bf8f6a920db729fadf16704f upstream.
 
-Here "temp" is the number of characters that we have written and "size"
-is the size of the buffer.  The intent was clearly to say that if we have
-written to the end of the buffer then stop.
+When filtering is enabled, a temporary buffer is created to place the
+content of the trace event output so that the filter logic can decide
+from the trace event output if the trace event should be filtered out or
+not. If it is to be filtered out, the content in the temporary buffer is
+simply discarded, otherwise it is written into the trace buffer.
 
-However, for that to work the comparison should have been done on the
-original "size" value instead of the "size -= temp" value.  Not only
-will that not trigger when we want to, but there is a small chance that
-it will trigger incorrectly before we want it to and we break from the
-loop slightly earlier than intended.
+But if an interrupt were to come in while a previous event was using that
+temporary buffer, the event written by the interrupt would actually go
+into the ring buffer itself to prevent corrupting the data on the
+temporary buffer. If the event is to be filtered out, the event in the
+ring buffer is discarded, or if it fails to discard because another event
+were to have already come in, it is turned into padding.
 
-This code was recently changed from using snprintf() to scnprintf().  With
-snprintf() we likely would have continued looping and passed a negative
-size parameter to snprintf().  This would have triggered an annoying
-WARN().  Now that we have converted to scnprintf() "size" will never
-drop below 1 and there is no real need for this test.  We could change
-the condition to "if (temp <= 1) goto done;" but just deleting the test
-is cleanest.
+The update to the write_stamp in the rb_try_to_discard() happens after a
+fix was made to force the next event after the discard to use an absolute
+timestamp by setting the before_stamp to zero so it does not match the
+write_stamp (which causes an event to use the absolute timestamp).
 
-Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
+But there's an effort in rb_try_to_discard() to put back the write_stamp
+to what it was before the event was added. But this is useless and
+wasteful because nothing is going to be using that write_stamp for
+calculations as it still will not match the before_stamp.
+
+Remove this useless update, and in doing so, we remove another
+cmpxchg64()!
+
+Also update the comments to reflect this change as well as remove some
+extra white space in another comment.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231215081810.1f4f38fe@rorschach.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Vincent Donnefort   <vdonnefort@google.com>
+Fixes: b2dd797543cf ("ring-buffer: Force absolute timestamp on discard of event")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/fotg210-hcd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/trace/ring_buffer.c |   47 ++++++++++-----------------------------------
+ 1 file changed, 11 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
-index ff0b3457fd342..de925433d4c5f 100644
---- a/drivers/usb/host/fotg210-hcd.c
-+++ b/drivers/usb/host/fotg210-hcd.c
-@@ -429,8 +429,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 			temp = size;
- 		size -= temp;
- 		next += temp;
--		if (temp == size)
--			goto done;
- 	}
- 
- 	temp = snprintf(next, size, "\n");
-@@ -440,7 +438,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 	size -= temp;
- 	next += temp;
- 
--done:
- 	*sizep = size;
- 	*nextp = next;
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2942,25 +2942,6 @@ static unsigned rb_calculate_event_lengt
+ 	return length;
  }
--- 
-2.43.0
-
+ 
+-static u64 rb_time_delta(struct ring_buffer_event *event)
+-{
+-	switch (event->type_len) {
+-	case RINGBUF_TYPE_PADDING:
+-		return 0;
+-
+-	case RINGBUF_TYPE_TIME_EXTEND:
+-		return rb_event_time_stamp(event);
+-
+-	case RINGBUF_TYPE_TIME_STAMP:
+-		return 0;
+-
+-	case RINGBUF_TYPE_DATA:
+-		return event->time_delta;
+-	default:
+-		return 0;
+-	}
+-}
+-
+ static inline int
+ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
+ 		  struct ring_buffer_event *event)
+@@ -2969,8 +2950,6 @@ rb_try_to_discard(struct ring_buffer_per
+ 	struct buffer_page *bpage;
+ 	unsigned long index;
+ 	unsigned long addr;
+-	u64 write_stamp;
+-	u64 delta;
+ 
+ 	new_index = rb_event_index(event);
+ 	old_index = new_index + rb_event_ts_length(event);
+@@ -2979,14 +2958,10 @@ rb_try_to_discard(struct ring_buffer_per
+ 
+ 	bpage = READ_ONCE(cpu_buffer->tail_page);
+ 
+-	delta = rb_time_delta(event);
+-
+-	if (!rb_time_read(&cpu_buffer->write_stamp, &write_stamp))
+-		return 0;
+-
+-	/* Make sure the write stamp is read before testing the location */
+-	barrier();
+-
++	/*
++	 * Make sure the tail_page is still the same and
++	 * the next write location is the end of this event
++	 */
+ 	if (bpage->page == (void *)addr && rb_page_write(bpage) == old_index) {
+ 		unsigned long write_mask =
+ 			local_read(&bpage->write) & ~RB_WRITE_MASK;
+@@ -2997,20 +2972,20 @@ rb_try_to_discard(struct ring_buffer_per
+ 		 * to make sure that the next event adds an absolute
+ 		 * value and does not rely on the saved write stamp, which
+ 		 * is now going to be bogus.
++		 *
++		 * By setting the before_stamp to zero, the next event
++		 * is not going to use the write_stamp and will instead
++		 * create an absolute timestamp. This means there's no
++		 * reason to update the wirte_stamp!
+ 		 */
+ 		rb_time_set(&cpu_buffer->before_stamp, 0);
+ 
+-		/* Something came in, can't discard */
+-		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
+-				       write_stamp, write_stamp - delta))
+-			return 0;
+-
+ 		/*
+ 		 * If an event were to come in now, it would see that the
+ 		 * write_stamp and the before_stamp are different, and assume
+ 		 * that this event just added itself before updating
+ 		 * the write stamp. The interrupting event will fix the
+-		 * write stamp for us, and use the before stamp as its delta.
++		 * write stamp for us, and use an absolute timestamp.
+ 		 */
+ 
+ 		/*
+@@ -3449,7 +3424,7 @@ static void check_buffer(struct ring_buf
+ 		return;
+ 
+ 	/*
+-	 * If this interrupted another event, 
++	 * If this interrupted another event,
+ 	 */
+ 	if (atomic_inc_return(this_cpu_ptr(&checking)) != 1)
+ 		goto out;
 
 
 
