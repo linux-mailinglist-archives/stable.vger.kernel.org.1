@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35F18232B5
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6782326C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61BAD1F24DEE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5FD1F24CCE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831E81C288;
-	Wed,  3 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE951C2B2;
+	Wed,  3 Jan 2024 17:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbWimC6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsiBvFTN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1E61BDEC;
-	Wed,  3 Jan 2024 17:10:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8E9C433C7;
-	Wed,  3 Jan 2024 17:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1491C2AC;
+	Wed,  3 Jan 2024 17:06:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FEBC433C7;
+	Wed,  3 Jan 2024 17:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301832;
-	bh=bmRQXjW8W6iy5DHL/ykuavClNfy0mv/gOZLvAg6Tu08=;
+	s=korg; t=1704301606;
+	bh=gF40C3ZArQ3fEKzjmKH69t1CV36QWgaDKIT6+kOy4O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbWimC6UEwrjSvVVXfDmUyBLz00P1U2zLPvFZ9EAllSOCGa85/tDhMjG/rK90GAAT
-	 3Rgy01BSqvffDjhZofqpqKATsoV8dy9ko+wmAx9nghA2EYwR+iAauCljskqY6jqHEg
-	 bmsCZo2koaigi1vWuYIHwMtNFkG1zteyzcbzyhJU=
+	b=BsiBvFTNpLzqd/cs2ZUPCdQSShUj5QnVPJpniKmCEn99oE8tLIbMtyYEweD4v+4op
+	 od0cL+7VTVUvMQzeVHEL08bll+F7Qu3JC72Q6a4/3LVlptTsQrj9zA6z60v3+mE5ce
+	 Iq3QIr549Fnq/l9A88wzKUpvEcQ3f5ZF/iKEhXpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 42/75] Input: soc_button_array - add mapping for airplane mode button
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 75/95] usb: fotg210-hcd: delete an incorrect bounds test
 Date: Wed,  3 Jan 2024 17:55:23 +0100
-Message-ID: <20240103164849.520161811@linuxfoundation.org>
+Message-ID: <20240103164905.280009769@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +55,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ea3715941a9b7d816a1e9096ac0577900af2a69e upstream.
+[ Upstream commit 7fbcd195e2b8cc952e4aeaeb50867b798040314c ]
 
-This add a mapping for the airplane mode button on the TUXEDO Pulse Gen3.
+Here "temp" is the number of characters that we have written and "size"
+is the size of the buffer.  The intent was clearly to say that if we have
+written to the end of the buffer then stop.
 
-While it is physically a key it behaves more like a switch, sending a key
-down on first press and a key up on 2nd press. Therefor the switch event
-is used here. Besides this behaviour it uses the HID usage-id 0xc6
-(Wireless Radio Button) and not 0xc8 (Wireless Radio Slider Switch), but
-since neither 0xc6 nor 0xc8 are currently implemented at all in
-soc_button_array this not to standard behaviour is not put behind a quirk
-for the moment.
+However, for that to work the comparison should have been done on the
+original "size" value instead of the "size -= temp" value.  Not only
+will that not trigger when we want to, but there is a small chance that
+it will trigger incorrectly before we want it to and we break from the
+loop slightly earlier than intended.
 
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://lore.kernel.org/r/20231215171718.80229-1-wse@tuxedocomputers.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+This code was recently changed from using snprintf() to scnprintf().  With
+snprintf() we likely would have continued looping and passed a negative
+size parameter to snprintf().  This would have triggered an annoying
+WARN().  Now that we have converted to scnprintf() "size" will never
+drop below 1 and there is no real need for this test.  We could change
+the condition to "if (temp <= 1) goto done;" but just deleting the test
+is cleanest.
+
+Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/soc_button_array.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/fotg210-hcd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/input/misc/soc_button_array.c
-+++ b/drivers/input/misc/soc_button_array.c
-@@ -299,6 +299,11 @@ static int soc_button_parse_btn_desc(str
- 		info->name = "power";
- 		info->event_code = KEY_POWER;
- 		info->wakeup = true;
-+	} else if (upage == 0x01 && usage == 0xc6) {
-+		info->name = "airplane mode switch";
-+		info->event_type = EV_SW;
-+		info->event_code = SW_RFKILL_ALL;
-+		info->active_low = false;
- 	} else if (upage == 0x01 && usage == 0xca) {
- 		info->name = "rotation lock switch";
- 		info->event_type = EV_SW;
+diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
+index d9a3fd8af7a01..b0b6caaa29bd4 100644
+--- a/drivers/usb/host/fotg210-hcd.c
++++ b/drivers/usb/host/fotg210-hcd.c
+@@ -429,8 +429,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 			temp = size;
+ 		size -= temp;
+ 		next += temp;
+-		if (temp == size)
+-			goto done;
+ 	}
+ 
+ 	temp = snprintf(next, size, "\n");
+@@ -440,7 +438,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 	size -= temp;
+ 	next += temp;
+ 
+-done:
+ 	*sizep = size;
+ 	*nextp = next;
+ }
+-- 
+2.43.0
+
 
 
 
