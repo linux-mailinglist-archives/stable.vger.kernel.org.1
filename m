@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DACC8231B0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:57:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD73A823234
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2878A2885FD
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:57:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E3C1F24C7B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260441BDF1;
-	Wed,  3 Jan 2024 16:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF5B1C29F;
+	Wed,  3 Jan 2024 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B53htcAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgIUhvrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E256F1BDEC;
-	Wed,  3 Jan 2024 16:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F99CC433C9;
-	Wed,  3 Jan 2024 16:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C471BDF4;
+	Wed,  3 Jan 2024 17:03:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0397AC433C7;
+	Wed,  3 Jan 2024 17:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301044;
-	bh=vyI8Y1hu54plw2Z/XU4Ti2UunlnUmmtuPxdkA2arm7E=;
+	s=korg; t=1704301423;
+	bh=QMXvUTq1/OKdbql+VbJQ2UOeUfIqZhVEhBkQ0hbvpDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B53htcAB1NcVSn8Bmj3n6nP7BONm0WnHkOM+6IyaJbo0bOlQ+97zt2DN0LNQzeRkE
-	 kBU3veyw5aGnh0IuWZijJzatwMiue/z3O+Ok69HKqWa0ZA/dLFqXe7P6V6sWdHZL/f
-	 A5IOuaxs/hoXS6mInsCU155xNJTU5VptM+bLw6V8=
+	b=NgIUhvrtt6FQY4DjOjzLrdRxl3aux6f/qP8TNhdd9qDGlDROj4rTBgntaSZJAVvIL
+	 JaKcbNTRP/nhPVudPlkzi9wzu2IelPEED5nfTyMaqdrmKMpvLBiDujhgqcW1PkrDF+
+	 3WJDoiUcilXKk8PM7yEf+laHh1yzrBWdf7UP/WUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Steve French <stfrench@microsoft.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/100] ksmbd: remove unused ksmbd_tree_conn_share function
-Date: Wed,  3 Jan 2024 17:54:13 +0100
-Message-ID: <20240103164859.660085300@linuxfoundation.org>
+Subject: [PATCH 5.15 06/95] wifi: mac80211: mesh_plink: fix matches_local logic
+Date: Wed,  3 Jan 2024 17:54:14 +0100
+Message-ID: <20240103164854.979979410@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7bd9f0876fdef00f4e155be35e6b304981a53f80 ]
+[ Upstream commit 8c386b166e2517cf3a123018e77941ec22625d0f ]
 
-Remove unused ksmbd_tree_conn_share function.
+During refactoring the "else" here got lost, add it back.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c99a89edb106 ("mac80211: factor out plink event gathering")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231211085121.795480fa0e0b.I017d501196a5bbdcd9afd33338d342d6fe1edd79@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/tree_connect.c | 11 -----------
- fs/smb/server/mgmt/tree_connect.h |  3 ---
- 2 files changed, 14 deletions(-)
+ net/mac80211/mesh_plink.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
-index f07a05f376513..408cddf2f094a 100644
---- a/fs/smb/server/mgmt/tree_connect.c
-+++ b/fs/smb/server/mgmt/tree_connect.c
-@@ -120,17 +120,6 @@ struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
- 	return tcon;
- }
- 
--struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
--						 unsigned int id)
--{
--	struct ksmbd_tree_connect *tc;
--
--	tc = ksmbd_tree_conn_lookup(sess, id);
--	if (tc)
--		return tc->share_conf;
--	return NULL;
--}
--
- int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess)
- {
- 	int ret = 0;
-diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
-index 700df36cf3e30..562d647ad9fad 100644
---- a/fs/smb/server/mgmt/tree_connect.h
-+++ b/fs/smb/server/mgmt/tree_connect.h
-@@ -53,9 +53,6 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
- struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
- 						  unsigned int id);
- 
--struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
--						 unsigned int id);
--
- int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess);
- 
- #endif /* __TREE_CONNECT_MANAGEMENT_H__ */
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index a829470dd59ed..44ce979a9fd54 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -1050,8 +1050,8 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
+ 	case WLAN_SP_MESH_PEERING_OPEN:
+ 		if (!matches_local)
+ 			event = OPN_RJCT;
+-		if (!mesh_plink_free_count(sdata) ||
+-		    (sta->mesh->plid && sta->mesh->plid != plid))
++		else if (!mesh_plink_free_count(sdata) ||
++			 (sta->mesh->plid && sta->mesh->plid != plid))
+ 			event = OPN_IGNR;
+ 		else
+ 			event = OPN_ACPT;
+@@ -1059,9 +1059,9 @@ mesh_plink_get_event(struct ieee80211_sub_if_data *sdata,
+ 	case WLAN_SP_MESH_PEERING_CONFIRM:
+ 		if (!matches_local)
+ 			event = CNF_RJCT;
+-		if (!mesh_plink_free_count(sdata) ||
+-		    sta->mesh->llid != llid ||
+-		    (sta->mesh->plid && sta->mesh->plid != plid))
++		else if (!mesh_plink_free_count(sdata) ||
++			 sta->mesh->llid != llid ||
++			 (sta->mesh->plid && sta->mesh->plid != plid))
+ 			event = CNF_IGNR;
+ 		else
+ 			event = CNF_ACPT;
 -- 
 2.43.0
 
