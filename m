@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D57823215
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C51823251
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E482828A64B
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAC0B2484A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15201C2A8;
-	Wed,  3 Jan 2024 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B321BDF4;
+	Wed,  3 Jan 2024 17:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKr+h4wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="No8gxsHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D81C29D;
-	Wed,  3 Jan 2024 17:02:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3784C433CB;
-	Wed,  3 Jan 2024 17:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303F91BDDE;
+	Wed,  3 Jan 2024 17:05:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85645C433C8;
+	Wed,  3 Jan 2024 17:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301349;
-	bh=qJ9YevK3XF+SrxamcaV/DVjQd8iygkrWLQnSkxM498M=;
+	s=korg; t=1704301519;
+	bh=etUMQWVrq4QUvt5PoN3nHtQnNDynevjcu8c9JbZZOAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKr+h4wzF/2twogfKVpftKKBT50eS4NLr97WYSr1J1rT4+HcRUBzB4v5HglMmcbel
-	 XQDezCcqfZxcdnEDWPC6K6Jf+V/V1YV/8AnZhV1S+4xQLnizUqaMEIv00u7aktlvTx
-	 LA+tga4qA8JZs4JxeTm1A30IjQSV6IYC7VHyF95k=
+	b=No8gxsHggFi1h71GGdNEkw9rgX05fThL7cc9fxDuBBDhjqGA2Qm5jPBd38+eynOJC
+	 2CtuVo8HP+L3HhAYxuhd0VzFxNK7oFmErweeX+BI+tX5fOPL/Z+WHnN+TL83g6XErv
+	 MihbJEojBMNEZmpvp9ZSfaX6bnquOv7NZHTRQylA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/100] ksmbd: fix wrong allocation size update in smb2_open()
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Simon Horman <horms@kernel.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 5.15 54/95] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
 Date: Wed,  3 Jan 2024 17:55:02 +0100
-Message-ID: <20240103164907.050108877@linuxfoundation.org>
+Message-ID: <20240103164902.133391465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,89 +54,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit a9f106c765c12d2f58aa33431bd8ce8e9d8a404a ]
+commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
 
-When client send SMB2_CREATE_ALLOCATION_SIZE create context, ksmbd update
-old size to ->AllocationSize in smb2 create response. ksmbd_vfs_getattr()
-should be called after it to get updated stat result.
+If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
+the error path is not handled properly. *wnames or members of *wnames
+array may be left uninitialized and invalidly freed.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
+*wnames array element to NULL and nullify the failing *wnames element so
+that the error path freeing loop stops on the first NULL element and
+doesn't proceed further.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 36 ++++++++++++++++++------------------
- 1 file changed, 18 insertions(+), 18 deletions(-)
+ net/9p/protocol.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 2eea811fc8cb0..ea48dd06d4da3 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2516,7 +2516,7 @@ static void smb2_new_xattrs(struct ksmbd_tree_connect *tcon, const struct path *
- 	da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
- 		XATTR_DOSINFO_ITIME;
+--- a/net/9p/protocol.c
++++ b/net/9p/protocol.c
+@@ -230,6 +230,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 				uint16_t *nwname = va_arg(ap, uint16_t *);
+ 				char ***wnames = va_arg(ap, char ***);
  
--	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, false);
-+	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, true);
- 	if (rc)
- 		ksmbd_debug(SMB, "failed to store file attribute into xattr\n");
- }
-@@ -3185,23 +3185,6 @@ int smb2_open(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
--	rc = ksmbd_vfs_getattr(&path, &stat);
--	if (rc)
--		goto err_out;
--
--	if (stat.result_mask & STATX_BTIME)
--		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
--	else
--		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
--	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
--		fp->f_ci->m_fattr =
--			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
--
--	if (!created)
--		smb2_update_xattrs(tcon, &path, fp);
--	else
--		smb2_new_xattrs(tcon, &path, fp);
--
- 	if (file_present || created)
- 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
- 
-@@ -3302,6 +3285,23 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 	}
- 
-+	rc = ksmbd_vfs_getattr(&path, &stat);
-+	if (rc)
-+		goto err_out1;
++				*wnames = NULL;
 +
-+	if (stat.result_mask & STATX_BTIME)
-+		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
-+	else
-+		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
-+	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
-+		fp->f_ci->m_fattr =
-+			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
-+
-+	if (!created)
-+		smb2_update_xattrs(tcon, &path, fp);
-+	else
-+		smb2_new_xattrs(tcon, &path, fp);
-+
- 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+ 				errcode = p9pdu_readf(pdu, proto_version,
+ 								"w", nwname);
+ 				if (!errcode) {
+@@ -239,6 +241,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 							  GFP_NOFS);
+ 					if (!*wnames)
+ 						errcode = -ENOMEM;
++					else
++						(*wnames)[0] = NULL;
+ 				}
  
- 	rsp->StructureSize = cpu_to_le16(89);
--- 
-2.43.0
-
+ 				if (!errcode) {
+@@ -250,8 +254,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 								proto_version,
+ 								"s",
+ 								&(*wnames)[i]);
+-						if (errcode)
++						if (errcode) {
++							(*wnames)[i] = NULL;
+ 							break;
++						}
+ 					}
+ 				}
+ 
+@@ -259,11 +265,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 					if (*wnames) {
+ 						int i;
+ 
+-						for (i = 0; i < *nwname; i++)
++						for (i = 0; i < *nwname; i++) {
++							if (!(*wnames)[i])
++								break;
+ 							kfree((*wnames)[i]);
++						}
++						kfree(*wnames);
++						*wnames = NULL;
+ 					}
+-					kfree(*wnames);
+-					*wnames = NULL;
+ 				}
+ 			}
+ 			break;
 
 
 
