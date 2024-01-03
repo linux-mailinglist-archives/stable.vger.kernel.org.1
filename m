@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E7CA82323D
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD9E8231D7
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89327B24243
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6641C23BB0
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0346E1C2BB;
-	Wed,  3 Jan 2024 17:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECAC1C287;
+	Wed,  3 Jan 2024 16:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PB1AQpzt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E57Q2zQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16631C289;
-	Wed,  3 Jan 2024 17:04:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEF6C433C8;
-	Wed,  3 Jan 2024 17:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3581BDFA;
+	Wed,  3 Jan 2024 16:59:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30024C433C8;
+	Wed,  3 Jan 2024 16:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301445;
-	bh=deShfhui+8mNbKNbEA1zgk0drPGubqM5EAmW6/v0XO4=;
+	s=korg; t=1704301157;
+	bh=Lwn82tvy5vk+yDa0kAGYOLQbujeSbfrB1MpFfOJSySQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PB1AQpzt6QmFpTqC4mj8agdgFQTCpRI4POD+gwuA5LB0/JSr6Ulg1oDzok2DUa4nr
-	 WDMbu0cxgsfTud9pc+TChjvFJIBjAuRgtLlG+vNj2PIqaPxMyrEA+k6VyHgXefMY4w
-	 rKi873kG/TZDjg3EP6bicd9h0BjwD8mmQKTf4nEU=
+	b=E57Q2zQwAWiEJt0SHRy4PF9v+J9QbrMYiQnn3FXfZSG22tULWqgqE5d+eDkQ9bAOe
+	 N+47Lmk/Z/eI95EFYHYDuccC5D2M/TEjznL7CiVT1LXqDClN0rR8wAMfzIVmMLG+nz
+	 YjYouoMzKG4ZhIT44T09Tasl9Aajnq3g6qyd0nno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Georgi Djakov <djakov@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/95] interconnect: Treat xlate() returning NULL node as an error
+Subject: [PATCH 6.1 054/100] ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
 Date: Wed,  3 Jan 2024 17:54:43 +0100
-Message-ID: <20240103164859.342838418@linuxfoundation.org>
+Message-ID: <20240103164904.203412269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit ad2ab1297d0c80899125a842bb7a078abfe1e6ce ]
+[ Upstream commit 3354db668808d5b6d7c5e0cb19ff4c9da4bb5e58 ]
 
-Currently, if provider->xlate() or provider->xlate_extended()
-"successfully" return a NULL node, then of_icc_get_from_provider() won't
-consider that an error and will successfully return the NULL node. This
-bypasses error handling in of_icc_get_by_index() and leads to NULL
-dereferences in path_find().
+Fix argument list that the kdoc format and script verified in
+ksmbd_vfs_setxattr().
 
-This could be avoided by ensuring provider callbacks always return an
-error for NULL nodes, but it's better to explicitly protect against this
-in the common framework.
+fs/smb/server/vfs.c:929: warning: Function parameter or member 'path'
+not described in 'ksmbd_vfs_setxattr'
 
-Fixes: 87e3031b6fbd ("interconnect: Allow endpoints translation via DT")
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Link: https://lore.kernel.org/r/20231025145829.11603-1-quic_mdtipton@quicinc.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/vfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
-index b7c41bd7409cd..aadb2b97498a0 100644
---- a/drivers/interconnect/core.c
-+++ b/drivers/interconnect/core.c
-@@ -382,6 +382,9 @@ struct icc_node_data *of_icc_get_from_provider(struct of_phandle_args *spec)
- 	}
- 	mutex_unlock(&icc_lock);
- 
-+	if (!node)
-+		return ERR_PTR(-EINVAL);
-+
- 	if (IS_ERR(node))
- 		return ERR_CAST(node);
- 
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 6f54ea1df0c58..071c344dd0333 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -920,7 +920,7 @@ ssize_t ksmbd_vfs_getxattr(struct user_namespace *user_ns,
+ /**
+  * ksmbd_vfs_setxattr() - vfs helper for smb set extended attributes value
+  * @user_ns:	user namespace
+- * @dentry:	dentry to set XATTR at
++ * @path:	path of dentry to set XATTR at
+  * @attr_name:	xattr name for setxattr
+  * @attr_value:	xattr value to set
+  * @attr_size:	size of xattr value
 -- 
 2.43.0
 
