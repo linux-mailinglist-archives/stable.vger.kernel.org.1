@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-9551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B998232DE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9FD82328B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F9D1C23C29
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBEC11F24D71
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F241C1C280;
-	Wed,  3 Jan 2024 17:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297711C292;
+	Wed,  3 Jan 2024 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbGyoDKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9Zb5mkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA531BDF1;
-	Wed,  3 Jan 2024 17:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D0DC433C7;
-	Wed,  3 Jan 2024 17:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54671C688;
+	Wed,  3 Jan 2024 17:08:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B121C433C8;
+	Wed,  3 Jan 2024 17:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301964;
-	bh=lVtIHogaV19bicU5tfDSNxDMAKRgmBiVWbM3WICmV5Q=;
+	s=korg; t=1704301707;
+	bh=ESkP13U2f3b1gAqPsM77r/gNz+ot+beeWSGFgEbqrcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbGyoDKeg6uvfZeOGvtv0q5kNoJI75PyUuSBrhQi74ARLIdnOmuyppBxRsx3IxOHx
-	 ik9puc9+Ii25T9CtYwAMEMgLU8if/9bRuycs+TzN/lLiMzs5LXdSWwW0AW2migGJgI
-	 nENZXQSqqtRmQZ3k8k9m86JoOokwuRfDGwm7DqBk=
+	b=f9Zb5mkWjQOBGxbD1p7e1sDnIaxnEl4vpa6OULUGaXMoPoiYQvN1X0E4HNOdJc9ME
+	 stHoImblRB1r7rPF4tgPJV3WNvb4/yU84VLtJJiBMlDxpb0j0NQ1rgOJwfCbqtRcVW
+	 SX8d7ZZflE25aLheiWsTlH/3kkVg8Idnz6Hly3r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Sneddon <dan.sneddon@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 61/75] spi: atmel: Fix CS and initialization bug
-Date: Wed,  3 Jan 2024 17:55:42 +0100
-Message-ID: <20240103164852.329991240@linuxfoundation.org>
+	syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com,
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Lee Jones <lee@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Subject: [PATCH 5.15 95/95] bpf: Fix prog_array_map_poke_run map poke update
+Date: Wed,  3 Jan 2024 17:55:43 +0100
+Message-ID: <20240103164908.330992910@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +56,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Sneddon <dan.sneddon@microchip.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 69e1818ad27bae167eeaaf6829d4a08900ef5153 ]
+commit 4b7de801606e504e69689df71475d27e35336fb3 upstream.
 
-Commit 5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer
-method") switched to using transfer_one and set_cs.  The
-core doesn't call set_cs when the chip select lines are gpios.  Add the
-SPI_MASTER_GPIO_SS flag to the driver to ensure the calls to set_cs
-happen since the driver programs configuration registers there.
+Lee pointed out issue found by syscaller [0] hitting BUG in prog array
+map poke update in prog_array_map_poke_run function due to error value
+returned from bpf_arch_text_poke function.
 
-Fixes: 5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer method")
+There's race window where bpf_arch_text_poke can fail due to missing
+bpf program kallsym symbols, which is accounted for with check for
+-EINVAL in that BUG_ON call.
 
-Signed-off-by: Dan Sneddon <dan.sneddon@microchip.com>
-Link: https://lore.kernel.org/r/20210629192218.32125-1-dan.sneddon@microchip.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem is that in such case we won't update the tail call jump
+and cause imbalance for the next tail call update check which will
+fail with -EBUSY in bpf_arch_text_poke.
+
+I'm hitting following race during the program load:
+
+  CPU 0                             CPU 1
+
+  bpf_prog_load
+    bpf_check
+      do_misc_fixups
+        prog_array_map_poke_track
+
+                                    map_update_elem
+                                      bpf_fd_array_map_update_elem
+                                        prog_array_map_poke_run
+
+                                          bpf_arch_text_poke returns -EINVAL
+
+    bpf_prog_kallsyms_add
+
+After bpf_arch_text_poke (CPU 1) fails to update the tail call jump, the next
+poke update fails on expected jump instruction check in bpf_arch_text_poke
+with -EBUSY and triggers the BUG_ON in prog_array_map_poke_run.
+
+Similar race exists on the program unload.
+
+Fixing this by moving the update to bpf_arch_poke_desc_update function which
+makes sure we call __bpf_arch_text_poke that skips the bpf address check.
+
+Each architecture has slightly different approach wrt looking up bpf address
+in bpf_arch_text_poke, so instead of splitting the function or adding new
+'checkip' argument in previous version, it seems best to move the whole
+map_poke_run update as arch specific code.
+
+  [0] https://syzkaller.appspot.com/bug?extid=97a4fe20470e9bc30810
+
+Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
+Reported-by: syzbot+97a4fe20470e9bc30810@syzkaller.appspotmail.com
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/bpf/20231206083041.1306660-2-jolsa@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-atmel.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/x86/net/bpf_jit_comp.c |   46 ++++++++++++++++++++++++++++++++++
+ include/linux/bpf.h         |    3 ++
+ kernel/bpf/arraymap.c       |   58 +++++++-------------------------------------
+ 3 files changed, 59 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 2dba2089f2b7e..19499131e5676 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -352,8 +352,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
- 		}
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -2403,3 +2403,49 @@ bool bpf_jit_supports_kfunc_call(void)
+ {
+ 	return true;
+ }
++
++void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
++			       struct bpf_prog *new, struct bpf_prog *old)
++{
++	u8 *old_addr, *new_addr, *old_bypass_addr;
++	int ret;
++
++	old_bypass_addr = old ? NULL : poke->bypass_addr;
++	old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
++	new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
++
++	/*
++	 * On program loading or teardown, the program's kallsym entry
++	 * might not be in place, so we use __bpf_arch_text_poke to skip
++	 * the kallsyms check.
++	 */
++	if (new) {
++		ret = __bpf_arch_text_poke(poke->tailcall_target,
++					   BPF_MOD_JUMP,
++					   old_addr, new_addr, true);
++		BUG_ON(ret < 0);
++		if (!old) {
++			ret = __bpf_arch_text_poke(poke->tailcall_bypass,
++						   BPF_MOD_JUMP,
++						   poke->bypass_addr,
++						   NULL, true);
++			BUG_ON(ret < 0);
++		}
++	} else {
++		ret = __bpf_arch_text_poke(poke->tailcall_bypass,
++					   BPF_MOD_JUMP,
++					   old_bypass_addr,
++					   poke->bypass_addr, true);
++		BUG_ON(ret < 0);
++		/* let other CPUs finish the execution of program
++		 * so that it will not possible to expose them
++		 * to invalid nop, stack unwind, nop state
++		 */
++		if (!ret)
++			synchronize_rcu();
++		ret = __bpf_arch_text_poke(poke->tailcall_target,
++					   BPF_MOD_JUMP,
++					   old_addr, NULL, true);
++		BUG_ON(ret < 0);
++	}
++}
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2280,6 +2280,9 @@ enum bpf_text_poke_type {
+ int bpf_arch_text_poke(void *ip, enum bpf_text_poke_type t,
+ 		       void *addr1, void *addr2);
  
- 		mr = spi_readl(as, MR);
--		if (spi->cs_gpiod)
--			gpiod_set_value(spi->cs_gpiod, 1);
- 	} else {
- 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
- 		int i;
-@@ -369,8 +367,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
++void bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
++			       struct bpf_prog *new, struct bpf_prog *old);
++
+ struct btf_id_set;
+ bool btf_id_set_contains(const struct btf_id_set *set, u32 id);
  
- 		mr = spi_readl(as, MR);
- 		mr = SPI_BFINS(PCS, ~(1 << chip_select), mr);
--		if (spi->cs_gpiod)
--			gpiod_set_value(spi->cs_gpiod, 1);
- 		spi_writel(as, MR, mr);
- 	}
- 
-@@ -400,8 +396,6 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
- 
- 	if (!spi->cs_gpiod)
- 		spi_writel(as, CR, SPI_BIT(LASTXFER));
--	else
--		gpiod_set_value(spi->cs_gpiod, 0);
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -957,11 +957,16 @@ static void prog_array_map_poke_untrack(
+ 	mutex_unlock(&aux->poke_mutex);
  }
  
- static void atmel_spi_lock(struct atmel_spi *as) __acquires(&as->lock)
-@@ -1498,7 +1492,8 @@ static int atmel_spi_probe(struct platform_device *pdev)
- 	master->bus_num = pdev->id;
- 	master->num_chipselect = 4;
- 	master->setup = atmel_spi_setup;
--	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
-+	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX |
-+			SPI_MASTER_GPIO_SS);
- 	master->transfer_one = atmel_spi_one_transfer;
- 	master->set_cs = atmel_spi_set_cs;
- 	master->cleanup = atmel_spi_cleanup;
--- 
-2.43.0
-
++void __weak bpf_arch_poke_desc_update(struct bpf_jit_poke_descriptor *poke,
++				      struct bpf_prog *new, struct bpf_prog *old)
++{
++	WARN_ON_ONCE(1);
++}
++
+ static void prog_array_map_poke_run(struct bpf_map *map, u32 key,
+ 				    struct bpf_prog *old,
+ 				    struct bpf_prog *new)
+ {
+-	u8 *old_addr, *new_addr, *old_bypass_addr;
+ 	struct prog_poke_elem *elem;
+ 	struct bpf_array_aux *aux;
+ 
+@@ -970,7 +975,7 @@ static void prog_array_map_poke_run(stru
+ 
+ 	list_for_each_entry(elem, &aux->poke_progs, list) {
+ 		struct bpf_jit_poke_descriptor *poke;
+-		int i, ret;
++		int i;
+ 
+ 		for (i = 0; i < elem->aux->size_poke_tab; i++) {
+ 			poke = &elem->aux->poke_tab[i];
+@@ -989,21 +994,10 @@ static void prog_array_map_poke_run(stru
+ 			 *    activated, so tail call updates can arrive from here
+ 			 *    while JIT is still finishing its final fixup for
+ 			 *    non-activated poke entries.
+-			 * 3) On program teardown, the program's kallsym entry gets
+-			 *    removed out of RCU callback, but we can only untrack
+-			 *    from sleepable context, therefore bpf_arch_text_poke()
+-			 *    might not see that this is in BPF text section and
+-			 *    bails out with -EINVAL. As these are unreachable since
+-			 *    RCU grace period already passed, we simply skip them.
+-			 * 4) Also programs reaching refcount of zero while patching
++			 * 3) Also programs reaching refcount of zero while patching
+ 			 *    is in progress is okay since we're protected under
+ 			 *    poke_mutex and untrack the programs before the JIT
+-			 *    buffer is freed. When we're still in the middle of
+-			 *    patching and suddenly kallsyms entry of the program
+-			 *    gets evicted, we just skip the rest which is fine due
+-			 *    to point 3).
+-			 * 5) Any other error happening below from bpf_arch_text_poke()
+-			 *    is a unexpected bug.
++			 *    buffer is freed.
+ 			 */
+ 			if (!READ_ONCE(poke->tailcall_target_stable))
+ 				continue;
+@@ -1013,39 +1007,7 @@ static void prog_array_map_poke_run(stru
+ 			    poke->tail_call.key != key)
+ 				continue;
+ 
+-			old_bypass_addr = old ? NULL : poke->bypass_addr;
+-			old_addr = old ? (u8 *)old->bpf_func + poke->adj_off : NULL;
+-			new_addr = new ? (u8 *)new->bpf_func + poke->adj_off : NULL;
+-
+-			if (new) {
+-				ret = bpf_arch_text_poke(poke->tailcall_target,
+-							 BPF_MOD_JUMP,
+-							 old_addr, new_addr);
+-				BUG_ON(ret < 0 && ret != -EINVAL);
+-				if (!old) {
+-					ret = bpf_arch_text_poke(poke->tailcall_bypass,
+-								 BPF_MOD_JUMP,
+-								 poke->bypass_addr,
+-								 NULL);
+-					BUG_ON(ret < 0 && ret != -EINVAL);
+-				}
+-			} else {
+-				ret = bpf_arch_text_poke(poke->tailcall_bypass,
+-							 BPF_MOD_JUMP,
+-							 old_bypass_addr,
+-							 poke->bypass_addr);
+-				BUG_ON(ret < 0 && ret != -EINVAL);
+-				/* let other CPUs finish the execution of program
+-				 * so that it will not possible to expose them
+-				 * to invalid nop, stack unwind, nop state
+-				 */
+-				if (!ret)
+-					synchronize_rcu();
+-				ret = bpf_arch_text_poke(poke->tailcall_target,
+-							 BPF_MOD_JUMP,
+-							 old_addr, NULL);
+-				BUG_ON(ret < 0 && ret != -EINVAL);
+-			}
++			bpf_arch_poke_desc_update(poke, new, old);
+ 		}
+ 	}
+ }
 
 
 
