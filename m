@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 927E38231C1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:58:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F023282321E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01B49B22AD0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:58:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 801BFB2441F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231F1C288;
-	Wed,  3 Jan 2024 16:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27EF21C29C;
+	Wed,  3 Jan 2024 17:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3N010am"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrHAXSF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084701BDF0;
-	Wed,  3 Jan 2024 16:58:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7B3C433C7;
-	Wed,  3 Jan 2024 16:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3971C294;
+	Wed,  3 Jan 2024 17:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42354C433C8;
+	Wed,  3 Jan 2024 17:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301089;
-	bh=TIdopxN/y/3AFv7mb2BK5yUXqqe1pd2ABtCO8aIH520=;
+	s=korg; t=1704301369;
+	bh=qfzqOT2peKPHuXFO7Fyazf78B6766zxyg5VPHml1BNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f3N010amK238mnPMDTCrNX9rAklkB+H4Ce6TD9zbwehwzNml81BDGQbBj1GMO8rey
-	 QeMdhEf0TBTZgfrUmTU0MzVP75Y7RcKNTkHUs1NOqLBPqhy2B/wvx9wftm9ZR7pbHt
-	 Rc5n3wGmja4vBsvyQY2Ug4KDz84VLgTYjvb6+UVI=
+	b=BrHAXSF5apnaAwHWEAHmj66WeF5dGz04nzqc1y7vt8Z9F2jHqwuzhG/t5iHWiYW1X
+	 7Ai8kac6QZSCl1gqIiWG6HSrrZnzaL2ZIR3WHFtM8xitCwv/KC6zsdDs40r2e9SeBr
+	 OTdzl/PMqwRwDIC9ByG13fSDkCo0V7cgO6s5mxaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Suman Ghosh <sumang@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/100] ksmbd: check if a mount point is crossed during path lookup
+Subject: [PATCH 5.15 14/95] ethernet: atheros: fix a memleak in atl1e_setup_ring_resources
 Date: Wed,  3 Jan 2024 17:54:22 +0100
-Message-ID: <20240103164901.053601982@linuxfoundation.org>
+Message-ID: <20240103164856.249824140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,305 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 2b57a4322b1b14348940744fdc02f9a86cbbdbeb ]
+[ Upstream commit 309fdb1c33fe726d92d0030481346f24e1b01f07 ]
 
-Since commit 74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and
-->d_name"), ksmbd can not lookup cross mount points. If last component is
-a cross mount point during path lookup, check if it is crossed to follow it
-down. And allow path lookup to cross a mount point when a crossmnt
-parameter is set to 'yes' in smb.conf.
+In the error handling of 'offset > adapter->ring_size', the
+tx_ring->tx_buffer allocated by kzalloc should be freed,
+instead of 'goto failed' instantly.
 
-Cc: stable@vger.kernel.org
-Fixes: 74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a6a5325239c2 ("atl1e: Atheros L1E Gigabit Ethernet driver")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/ksmbd_netlink.h |  3 +-
- fs/smb/server/smb2pdu.c       | 27 +++++++++-------
- fs/smb/server/vfs.c           | 58 ++++++++++++++++++++---------------
- fs/smb/server/vfs.h           |  4 +--
- 4 files changed, 53 insertions(+), 39 deletions(-)
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/ksmbd_netlink.h b/fs/smb/server/ksmbd_netlink.h
-index fb8b2d566efb6..b7521e41402e0 100644
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -352,7 +352,8 @@ enum KSMBD_TREE_CONN_STATUS {
- #define KSMBD_SHARE_FLAG_STREAMS		BIT(11)
- #define KSMBD_SHARE_FLAG_FOLLOW_SYMLINKS	BIT(12)
- #define KSMBD_SHARE_FLAG_ACL_XATTR		BIT(13)
--#define KSMBD_SHARE_FLAG_UPDATE		BIT(14)
-+#define KSMBD_SHARE_FLAG_UPDATE			BIT(14)
-+#define KSMBD_SHARE_FLAG_CROSSMNT		BIT(15)
- 
- /*
-  * Tree connect request flags.
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 10d51256858ff..687e59cb0c8c8 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2475,8 +2475,9 @@ static void smb2_update_xattrs(struct ksmbd_tree_connect *tcon,
- 	}
- }
- 
--static int smb2_creat(struct ksmbd_work *work, struct path *path, char *name,
--		      int open_flags, umode_t posix_mode, bool is_dir)
-+static int smb2_creat(struct ksmbd_work *work, struct path *parent_path,
-+		      struct path *path, char *name, int open_flags,
-+		      umode_t posix_mode, bool is_dir)
- {
- 	struct ksmbd_tree_connect *tcon = work->tcon;
- 	struct ksmbd_share_config *share = tcon->share_conf;
-@@ -2503,7 +2504,7 @@ static int smb2_creat(struct ksmbd_work *work, struct path *path, char *name,
- 			return rc;
+diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+index db13311e77e73..dc1165f11b6eb 100644
+--- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
++++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
+@@ -866,10 +866,13 @@ static int atl1e_setup_ring_resources(struct atl1e_adapter *adapter)
+ 		netdev_err(adapter->netdev, "offset(%d) > ring size(%d) !!\n",
+ 			   offset, adapter->ring_size);
+ 		err = -1;
+-		goto failed;
++		goto free_buffer;
  	}
  
--	rc = ksmbd_vfs_kern_path_locked(work, name, 0, path, 0);
-+	rc = ksmbd_vfs_kern_path_locked(work, name, 0, parent_path, path, 0);
- 	if (rc) {
- 		pr_err("cannot get linux path (%s), err = %d\n",
- 		       name, rc);
-@@ -2573,7 +2574,7 @@ int smb2_open(struct ksmbd_work *work)
- 	struct ksmbd_tree_connect *tcon = work->tcon;
- 	struct smb2_create_req *req;
- 	struct smb2_create_rsp *rsp;
--	struct path path;
-+	struct path path, parent_path;
- 	struct ksmbd_share_config *share = tcon->share_conf;
- 	struct ksmbd_file *fp = NULL;
- 	struct file *filp = NULL;
-@@ -2794,7 +2795,8 @@ int smb2_open(struct ksmbd_work *work)
- 		goto err_out1;
- 	}
- 
--	rc = ksmbd_vfs_kern_path_locked(work, name, LOOKUP_NO_SYMLINKS, &path, 1);
-+	rc = ksmbd_vfs_kern_path_locked(work, name, LOOKUP_NO_SYMLINKS,
-+					&parent_path, &path, 1);
- 	if (!rc) {
- 		file_present = true;
- 
-@@ -2914,7 +2916,8 @@ int smb2_open(struct ksmbd_work *work)
- 
- 	/*create file if not present */
- 	if (!file_present) {
--		rc = smb2_creat(work, &path, name, open_flags, posix_mode,
-+		rc = smb2_creat(work, &parent_path, &path, name, open_flags,
-+				posix_mode,
- 				req->CreateOptions & FILE_DIRECTORY_FILE_LE);
- 		if (rc) {
- 			if (rc == -ENOENT) {
-@@ -3329,8 +3332,9 @@ int smb2_open(struct ksmbd_work *work)
- 
- err_out:
- 	if (file_present || created) {
--		inode_unlock(d_inode(path.dentry->d_parent));
--		dput(path.dentry);
-+		inode_unlock(d_inode(parent_path.dentry));
-+		path_put(&path);
-+		path_put(&parent_path);
- 	}
- 	ksmbd_revert_fsids(work);
- err_out1:
-@@ -5553,7 +5557,7 @@ static int smb2_create_link(struct ksmbd_work *work,
- 			    struct nls_table *local_nls)
- {
- 	char *link_name = NULL, *target_name = NULL, *pathname = NULL;
--	struct path path;
-+	struct path path, parent_path;
- 	bool file_present = false;
- 	int rc;
- 
-@@ -5583,7 +5587,7 @@ static int smb2_create_link(struct ksmbd_work *work,
- 
- 	ksmbd_debug(SMB, "target name is %s\n", target_name);
- 	rc = ksmbd_vfs_kern_path_locked(work, link_name, LOOKUP_NO_SYMLINKS,
--					&path, 0);
-+					&parent_path, &path, 0);
- 	if (rc) {
- 		if (rc != -ENOENT)
- 			goto out;
-@@ -5613,8 +5617,9 @@ static int smb2_create_link(struct ksmbd_work *work,
- 		rc = -EINVAL;
- out:
- 	if (file_present) {
--		inode_unlock(d_inode(path.dentry->d_parent));
-+		inode_unlock(d_inode(parent_path.dentry));
- 		path_put(&path);
-+		path_put(&parent_path);
- 	}
- 	if (!IS_ERR(link_name))
- 		kfree(link_name);
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 73ce3fb6e4054..1752a6c10bcc9 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -64,13 +64,13 @@ int ksmbd_vfs_lock_parent(struct dentry *parent, struct dentry *child)
- 
- static int ksmbd_vfs_path_lookup_locked(struct ksmbd_share_config *share_conf,
- 					char *pathname, unsigned int flags,
-+					struct path *parent_path,
- 					struct path *path)
- {
- 	struct qstr last;
- 	struct filename *filename;
- 	struct path *root_share_path = &share_conf->vfs_path;
- 	int err, type;
--	struct path parent_path;
- 	struct dentry *d;
- 
- 	if (pathname[0] == '\0') {
-@@ -85,7 +85,7 @@ static int ksmbd_vfs_path_lookup_locked(struct ksmbd_share_config *share_conf,
- 		return PTR_ERR(filename);
- 
- 	err = vfs_path_parent_lookup(filename, flags,
--				     &parent_path, &last, &type,
-+				     parent_path, &last, &type,
- 				     root_share_path);
- 	if (err) {
- 		putname(filename);
-@@ -93,13 +93,13 @@ static int ksmbd_vfs_path_lookup_locked(struct ksmbd_share_config *share_conf,
- 	}
- 
- 	if (unlikely(type != LAST_NORM)) {
--		path_put(&parent_path);
-+		path_put(parent_path);
- 		putname(filename);
- 		return -ENOENT;
- 	}
- 
--	inode_lock_nested(parent_path.dentry->d_inode, I_MUTEX_PARENT);
--	d = lookup_one_qstr_excl(&last, parent_path.dentry, 0);
-+	inode_lock_nested(parent_path->dentry->d_inode, I_MUTEX_PARENT);
-+	d = lookup_one_qstr_excl(&last, parent_path->dentry, 0);
- 	if (IS_ERR(d))
- 		goto err_out;
- 
-@@ -109,15 +109,22 @@ static int ksmbd_vfs_path_lookup_locked(struct ksmbd_share_config *share_conf,
- 	}
- 
- 	path->dentry = d;
--	path->mnt = share_conf->vfs_path.mnt;
--	path_put(&parent_path);
--	putname(filename);
-+	path->mnt = mntget(parent_path->mnt);
-+
-+	if (test_share_config_flag(share_conf, KSMBD_SHARE_FLAG_CROSSMNT)) {
-+		err = follow_down(path);
-+		if (err < 0) {
-+			path_put(path);
-+			goto err_out;
-+		}
-+	}
- 
-+	putname(filename);
  	return 0;
- 
- err_out:
--	inode_unlock(parent_path.dentry->d_inode);
--	path_put(&parent_path);
-+	inode_unlock(d_inode(parent_path->dentry));
-+	path_put(parent_path);
- 	putname(filename);
- 	return -ENOENT;
- }
-@@ -1196,14 +1203,14 @@ static int ksmbd_vfs_lookup_in_dir(const struct path *dir, char *name,
-  * Return:	0 on success, otherwise error
-  */
- int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
--			       unsigned int flags, struct path *path,
--			       bool caseless)
-+			       unsigned int flags, struct path *parent_path,
-+			       struct path *path, bool caseless)
- {
- 	struct ksmbd_share_config *share_conf = work->tcon->share_conf;
- 	int err;
--	struct path parent_path;
- 
--	err = ksmbd_vfs_path_lookup_locked(share_conf, name, flags, path);
-+	err = ksmbd_vfs_path_lookup_locked(share_conf, name, flags, parent_path,
-+					   path);
- 	if (!err)
- 		return 0;
- 
-@@ -1218,10 +1225,10 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 		path_len = strlen(filepath);
- 		remain_len = path_len;
- 
--		parent_path = share_conf->vfs_path;
--		path_get(&parent_path);
-+		*parent_path = share_conf->vfs_path;
-+		path_get(parent_path);
- 
--		while (d_can_lookup(parent_path.dentry)) {
-+		while (d_can_lookup(parent_path->dentry)) {
- 			char *filename = filepath + path_len - remain_len;
- 			char *next = strchrnul(filename, '/');
- 			size_t filename_len = next - filename;
-@@ -1230,7 +1237,7 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 			if (filename_len == 0)
- 				break;
- 
--			err = ksmbd_vfs_lookup_in_dir(&parent_path, filename,
-+			err = ksmbd_vfs_lookup_in_dir(parent_path, filename,
- 						      filename_len,
- 						      work->conn->um);
- 			if (err)
-@@ -1247,8 +1254,8 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 				goto out2;
- 			else if (is_last)
- 				goto out1;
--			path_put(&parent_path);
--			parent_path = *path;
-+			path_put(parent_path);
-+			*parent_path = *path;
- 
- 			next[0] = '/';
- 			remain_len -= filename_len + 1;
-@@ -1256,16 +1263,17 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 
- 		err = -EINVAL;
- out2:
--		path_put(&parent_path);
-+		path_put(parent_path);
- out1:
- 		kfree(filepath);
- 	}
- 
- 	if (!err) {
--		err = ksmbd_vfs_lock_parent(parent_path.dentry, path->dentry);
--		if (err)
--			dput(path->dentry);
--		path_put(&parent_path);
-+		err = ksmbd_vfs_lock_parent(parent_path->dentry, path->dentry);
-+		if (err) {
-+			path_put(path);
-+			path_put(parent_path);
-+		}
- 	}
- 	return err;
- }
-diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
-index 3e3c92d22e3eb..a7cc0aad6d576 100644
---- a/fs/smb/server/vfs.h
-+++ b/fs/smb/server/vfs.h
-@@ -115,8 +115,8 @@ int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
- int ksmbd_vfs_remove_xattr(struct user_namespace *user_ns,
- 			   const struct path *path, char *attr_name);
- int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
--			       unsigned int flags, struct path *path,
--			       bool caseless);
-+			       unsigned int flags, struct path *parent_path,
-+			       struct path *path, bool caseless);
- struct dentry *ksmbd_vfs_kern_path_create(struct ksmbd_work *work,
- 					  const char *name,
- 					  unsigned int flags,
++free_buffer:
++	kfree(tx_ring->tx_buffer);
++	tx_ring->tx_buffer = NULL;
+ failed:
+ 	if (adapter->ring_vir_addr != NULL) {
+ 		dma_free_coherent(&pdev->dev, adapter->ring_size,
 -- 
 2.43.0
 
