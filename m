@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-9497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4280F8232A7
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D57823215
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81FBCB24303
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E482828A64B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EF21C684;
-	Wed,  3 Jan 2024 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15201C2A8;
+	Wed,  3 Jan 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yu+l0moB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKr+h4wz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43671C683;
-	Wed,  3 Jan 2024 17:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3908DC433C8;
-	Wed,  3 Jan 2024 17:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D81C29D;
+	Wed,  3 Jan 2024 17:02:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3784C433CB;
+	Wed,  3 Jan 2024 17:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301785;
-	bh=FoguegmfsESobRJZPHsZhjzXX8cOCRHCRLWGesh8ytU=;
+	s=korg; t=1704301349;
+	bh=qJ9YevK3XF+SrxamcaV/DVjQd8iygkrWLQnSkxM498M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yu+l0moBM7APIcqedGgDXSxl0lB7Tck9ufztzvG0Y7E3Ok5J+us01+0jTohvVnIf1
-	 Drhe3NXDOJNq7obC5QsR+A8VR1PtI5Dq/xDLOXCDAU7yrUJsBAVl3d3D8K8QeN1vn/
-	 3RMYMFyQOCzdFnLFo8DdewWLxCBDMdy56W67VUAg=
+	b=sKr+h4wzF/2twogfKVpftKKBT50eS4NLr97WYSr1J1rT4+HcRUBzB4v5HglMmcbel
+	 XQDezCcqfZxcdnEDWPC6K6Jf+V/V1YV/8AnZhV1S+4xQLnizUqaMEIv00u7aktlvTx
+	 LA+tga4qA8JZs4JxeTm1A30IjQSV6IYC7VHyF95k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quan Nguyen <quan@os.amperecomputing.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 21/75] i2c: aspeed: Handle the coalesced stop conditions with the start conditions.
+Subject: [PATCH 6.1 073/100] ksmbd: fix wrong allocation size update in smb2_open()
 Date: Wed,  3 Jan 2024 17:55:02 +0100
-Message-ID: <20240103164846.397771078@linuxfoundation.org>
+Message-ID: <20240103164907.050108877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,116 +53,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quan Nguyen <quan@os.amperecomputing.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b4cc1cbba5195a4dd497cf2f8f09e7807977d543 ]
+[ Upstream commit a9f106c765c12d2f58aa33431bd8ce8e9d8a404a ]
 
-Some masters may drive the transfers with low enough latency between
-the nak/stop phase of the current command and the start/address phase
-of the following command that the interrupts are coalesced by the
-time we process them.
-Handle the stop conditions before processing SLAVE_MATCH to fix the
-complaints that sometimes occur below.
+When client send SMB2_CREATE_ALLOCATION_SIZE create context, ksmbd update
+old size to ->AllocationSize in smb2 create response. ksmbd_vfs_getattr()
+should be called after it to get updated stat result.
 
-"aspeed-i2c-bus 1e78a040.i2c-bus: irq handled != irq. Expected
-0x00000086, but was 0x00000084"
-
-Fixes: f9eb91350bb2 ("i2c: aspeed: added slave support for Aspeed I2C driver")
-Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c | 48 ++++++++++++++++++++++-----------
- 1 file changed, 32 insertions(+), 16 deletions(-)
+ fs/smb/server/smb2pdu.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
-index a1bc8a2c3eadc..b915dfcff00d8 100644
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -250,18 +250,46 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
- 	if (!slave)
- 		return 0;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 2eea811fc8cb0..ea48dd06d4da3 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2516,7 +2516,7 @@ static void smb2_new_xattrs(struct ksmbd_tree_connect *tcon, const struct path *
+ 	da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
+ 		XATTR_DOSINFO_ITIME;
  
--	command = readl(bus->base + ASPEED_I2C_CMD_REG);
-+	/*
-+	 * Handle stop conditions early, prior to SLAVE_MATCH. Some masters may drive
-+	 * transfers with low enough latency between the nak/stop phase of the current
-+	 * command and the start/address phase of the following command that the
-+	 * interrupts are coalesced by the time we process them.
-+	 */
-+	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
-+		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
-+		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
-+	}
-+
-+	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
-+	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
-+		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
-+		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
-+	}
-+
-+	/* Propagate any stop conditions to the slave implementation. */
-+	if (bus->slave_state == ASPEED_I2C_SLAVE_STOP) {
-+		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
-+		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
-+	}
- 
--	/* Slave was requested, restart state machine. */
-+	/*
-+	 * Now that we've dealt with any potentially coalesced stop conditions,
-+	 * address any start conditions.
-+	 */
- 	if (irq_status & ASPEED_I2CD_INTR_SLAVE_MATCH) {
- 		irq_handled |= ASPEED_I2CD_INTR_SLAVE_MATCH;
- 		bus->slave_state = ASPEED_I2C_SLAVE_START;
+-	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, false);
++	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, true);
+ 	if (rc)
+ 		ksmbd_debug(SMB, "failed to store file attribute into xattr\n");
+ }
+@@ -3185,23 +3185,6 @@ int smb2_open(struct ksmbd_work *work)
+ 		goto err_out;
  	}
  
--	/* Slave is not currently active, irq was for someone else. */
-+	/*
-+	 * If the slave has been stopped and not started then slave interrupt
-+	 * handling is complete.
-+	 */
- 	if (bus->slave_state == ASPEED_I2C_SLAVE_INACTIVE)
- 		return irq_handled;
- 
-+	command = readl(bus->base + ASPEED_I2C_CMD_REG);
- 	dev_dbg(bus->dev, "slave irq status 0x%08x, cmd 0x%08x\n",
- 		irq_status, command);
- 
-@@ -280,17 +308,6 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
- 		irq_handled |= ASPEED_I2CD_INTR_RX_DONE;
- 	}
- 
--	/* Slave was asked to stop. */
--	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
--		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
--		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
--	}
--	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
--	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
--		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
--		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
--	}
+-	rc = ksmbd_vfs_getattr(&path, &stat);
+-	if (rc)
+-		goto err_out;
 -
- 	switch (bus->slave_state) {
- 	case ASPEED_I2C_SLAVE_READ_REQUESTED:
- 		if (unlikely(irq_status & ASPEED_I2CD_INTR_TX_ACK))
-@@ -319,8 +336,7 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
- 		i2c_slave_event(slave, I2C_SLAVE_WRITE_RECEIVED, &value);
- 		break;
- 	case ASPEED_I2C_SLAVE_STOP:
--		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
--		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
-+		/* Stop event handling is done early. Unreachable. */
- 		break;
- 	case ASPEED_I2C_SLAVE_START:
- 		/* Slave was just started. Waiting for the next event. */;
+-	if (stat.result_mask & STATX_BTIME)
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
+-	else
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
+-	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
+-		fp->f_ci->m_fattr =
+-			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
+-
+-	if (!created)
+-		smb2_update_xattrs(tcon, &path, fp);
+-	else
+-		smb2_new_xattrs(tcon, &path, fp);
+-
+ 	if (file_present || created)
+ 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+@@ -3302,6 +3285,23 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
++	rc = ksmbd_vfs_getattr(&path, &stat);
++	if (rc)
++		goto err_out1;
++
++	if (stat.result_mask & STATX_BTIME)
++		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
++	else
++		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
++	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
++		fp->f_ci->m_fattr =
++			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
++
++	if (!created)
++		smb2_update_xattrs(tcon, &path, fp);
++	else
++		smb2_new_xattrs(tcon, &path, fp);
++
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(89);
 -- 
 2.43.0
 
