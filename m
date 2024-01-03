@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-9429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135F0823252
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9764F8231F9
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:01:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 997B4B21E69
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07A2528A3CD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:01:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E7D1BDFF;
-	Wed,  3 Jan 2024 17:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123F81C290;
+	Wed,  3 Jan 2024 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra6WPRSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDT4gAxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6D91BDE3;
-	Wed,  3 Jan 2024 17:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6771C433C7;
-	Wed,  3 Jan 2024 17:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8BF1BDE9;
+	Wed,  3 Jan 2024 17:00:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3566AC433C8;
+	Wed,  3 Jan 2024 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301526;
-	bh=YOqqI5d09TvgQVlAILcQPQzw0FxUJEi4vwcyCs2q/5g=;
+	s=korg; t=1704301256;
+	bh=NLVg6YaXVnafHpRGS5vGUtmVVekAdvBMku189kjTHVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ra6WPRSzNp0I6brjyxGU5V185uKw4kiT2URL+mdt4IHc9pmVkCg76znckn5nPAskS
-	 9YEriGg4n24sfni8fj+h98ddp521ZpBiIBEjnE+nRFHmNWk1AJ2MfuhKMpPj0fCfx3
-	 YWQ8HorF1mn0ex7zPXqJ4OX1k36Enat9qxUrAJmY=
+	b=fDT4gAxRaahUwmH6zfUAFBFdRG035q2WjrKbCxF3tit2LX/SYLqgkKtc9uHHOznSP
+	 30B4lnDscsu9Ov4nzx0j2seNp3BD3s+5ImLK5E5TPDwCyd8fAHMchQlPSCIJkytNTl
+	 Dl1+HtdvfQFlCFYECpEYx3JvmmszDJ77geWrI4WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 55/95] net: rfkill: gpio: set GPIO direction
+	Tony Lindgren <tony@atomide.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/100] ARM: dts: Fix occasional boot hang for am3 usb
 Date: Wed,  3 Jan 2024 17:55:03 +0100
-Message-ID: <20240103164902.276642211@linuxfoundation.org>
+Message-ID: <20240103164907.203631543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +52,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 23484d817082c3005252d8edfc8292c8a1006b5b upstream.
+[ Upstream commit 9b6a51aab5f5f9f71d2fa16e8b4d530e1643dfcb ]
 
-Fix the undefined usage of the GPIO consumer API after retrieving the
-GPIO description with GPIO_ASIS. The API documentation mentions that
-GPIO_ASIS won't set a GPIO direction and requires the user to set a
-direction before using the GPIO.
+With subtle timings changes, we can now sometimes get an external abort on
+non-linefetch error booting am3 devices at sysc_reset(). This is because
+of a missing reset delay needed for the usb target module.
 
-This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
-able to enabled/disable a device, presumably because the GPIO controller
-was never configured for the output direction.
+Looks like we never enabled the delay earlier for am3, although a similar
+issue was seen earlier with a similar usb setup for dm814x as described in
+commit ebf244148092 ("ARM: OMAP2+: Use srst_udelay for USB on dm814x").
 
-Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Link: https://msgid.link/20231207075835.3091694-1-r.czerwinski@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0782e8572ce4 ("ARM: dts: Probe am335x musb with ti-sysc")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm/boot/dts/am33xx.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -116,6 +116,14 @@ static int rfkill_gpio_probe(struct plat
- 		return -EINVAL;
- 	}
- 
-+	ret = gpiod_direction_output(rfkill->reset_gpio, true);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpiod_direction_output(rfkill->shutdown_gpio, true);
-+	if (ret)
-+		return ret;
-+
- 	rfkill->rfkill_dev = rfkill_alloc(rfkill->name, &pdev->dev,
- 					  rfkill->type, &rfkill_gpio_ops,
- 					  rfkill);
+diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
+index 32d397b3950b9..b2e7f6a710740 100644
+--- a/arch/arm/boot/dts/am33xx.dtsi
++++ b/arch/arm/boot/dts/am33xx.dtsi
+@@ -349,6 +349,7 @@ usb: target-module@47400000 {
+ 					<SYSC_IDLE_NO>,
+ 					<SYSC_IDLE_SMART>,
+ 					<SYSC_IDLE_SMART_WKUP>;
++			ti,sysc-delay-us = <2>;
+ 			clocks = <&l3s_clkctrl AM3_L3S_USB_OTG_HS_CLKCTRL 0>;
+ 			clock-names = "fck";
+ 			#address-cells = <1>;
+-- 
+2.43.0
+
 
 
 
