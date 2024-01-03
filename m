@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-9509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0A38232B4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:10:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D362D823265
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B41421C2388F
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B763286EDE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13431C283;
-	Wed,  3 Jan 2024 17:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84081BDFD;
+	Wed,  3 Jan 2024 17:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mneLOMU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHIVSkQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2F71BDEC;
-	Wed,  3 Jan 2024 17:10:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D58CDC433C7;
-	Wed,  3 Jan 2024 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C9E1BDFB;
+	Wed,  3 Jan 2024 17:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79530C433C7;
+	Wed,  3 Jan 2024 17:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301826;
-	bh=YII6fZA+QwF3S8bzAmEsZ18I1kvhtDJu6BKIXnS+3eo=;
+	s=korg; t=1704301597;
+	bh=xise2XkhW4SkJ/b1paNB+6PnqX3RdDN6OFPVQ6ZFIlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mneLOMU+2HdGwT62NuSkDuaGUTRHnQYK8Ef36/XB9Ni90Nzx/QdEi/jacZJDFXhdY
-	 TArrAwN/u7dUmM3Q41pvRIQ8aUxhB2/NkloRJ/wGXncbdcM7i3bwhNYFJ4VQLqYo8r
-	 4l9Ssc0oDFo16hc1tO10uOUJlF2x4rBVHxE7rFsA=
+	b=MHIVSkQli/+l8eFgzDVlgaHKqMJFVD43ZU6D4Pkke+tlEsfY+PCMYFEdeH0sSreN0
+	 3L3GaOoOizpotdxOckUlAz3gMZFQphci75SQRnfeF+EO0Mnn4QyFkJfyeLlYttX02t
+	 fwcAxqPVXYpqWuvRIg+meRQWzxbxUUUkpQae2BZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 40/75] Bluetooth: hci_event: Fix not checking if HCI_OP_INQUIRY has been sent
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 73/95] ksmbd: fix wrong allocation size update in smb2_open()
 Date: Wed,  3 Jan 2024 17:55:21 +0100
-Message-ID: <20240103164849.223142864@linuxfoundation.org>
+Message-ID: <20240103164904.956737861@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +53,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 99e67d46e5ff3c7c901af6009edec72d3d363be8 upstream.
+[ Upstream commit a9f106c765c12d2f58aa33431bd8ce8e9d8a404a ]
 
-Before setting HCI_INQUIRY bit check if HCI_OP_INQUIRY was really sent
-otherwise the controller maybe be generating invalid events or, more
-likely, it is a result of fuzzing tools attempting to test the right
-behavior of the stack when unexpected events are generated.
+When client send SMB2_CREATE_ALLOCATION_SIZE create context, ksmbd update
+old size to ->AllocationSize in smb2 create response. ksmbd_vfs_getattr()
+should be called after it to get updated stat result.
 
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218151
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ksmbd/smb2pdu.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -1834,7 +1834,8 @@ static void hci_cs_inquiry(struct hci_de
- 		return;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index e1c640ed7acc3..8875c04e83827 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2516,7 +2516,7 @@ static void smb2_new_xattrs(struct ksmbd_tree_connect *tcon, const struct path *
+ 	da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
+ 		XATTR_DOSINFO_ITIME;
+ 
+-	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, false);
++	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_user_ns(path->mnt), path, &da, true);
+ 	if (rc)
+ 		ksmbd_debug(SMB, "failed to store file attribute into xattr\n");
+ }
+@@ -3182,23 +3182,6 @@ int smb2_open(struct ksmbd_work *work)
+ 		goto err_out;
  	}
  
--	set_bit(HCI_INQUIRY, &hdev->flags);
-+	if (hci_sent_cmd_data(hdev, HCI_OP_INQUIRY))
-+		set_bit(HCI_INQUIRY, &hdev->flags);
- }
+-	rc = ksmbd_vfs_getattr(&path, &stat);
+-	if (rc)
+-		goto err_out;
+-
+-	if (stat.result_mask & STATX_BTIME)
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
+-	else
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
+-	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
+-		fp->f_ci->m_fattr =
+-			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
+-
+-	if (!created)
+-		smb2_update_xattrs(tcon, &path, fp);
+-	else
+-		smb2_new_xattrs(tcon, &path, fp);
+-
+ 	if (file_present || created)
+ 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
  
- static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
+@@ -3299,6 +3282,23 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
++	rc = ksmbd_vfs_getattr(&path, &stat);
++	if (rc)
++		goto err_out1;
++
++	if (stat.result_mask & STATX_BTIME)
++		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
++	else
++		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
++	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
++		fp->f_ci->m_fattr =
++			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
++
++	if (!created)
++		smb2_update_xattrs(tcon, &path, fp);
++	else
++		smb2_new_xattrs(tcon, &path, fp);
++
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(89);
+-- 
+2.43.0
+
 
 
 
