@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-9250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1EA822AE1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9B9822AE2
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 11:03:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD146282781
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7F74283316
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 10:03:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD101864A;
-	Wed,  3 Jan 2024 10:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C447518623;
+	Wed,  3 Jan 2024 10:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EusNMIzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLNdg8q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740CE18632
-	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:03:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC48C433C8;
-	Wed,  3 Jan 2024 10:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4A318653
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 10:03:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF3ABC433C8;
+	Wed,  3 Jan 2024 10:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704276206;
-	bh=9125fXrG9phlLEkDmsmsUkNo1MDWEdKLDG/QytcynRs=;
+	s=korg; t=1704276209;
+	bh=8E/0BnUsaPe2XOQkG0wiPMK/6tkt0P0XMKSEpzREJBI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EusNMIzT76FIBQUpLOhK49DakDMVlVa3zj5dUrKeyEBfPcgAwkguId3TUfl5qq3Mt
-	 AClDKJIIO70ZmMPWh9aMFeIcZnabNKgnhTmMd1RY/wqG8L8qwGihGEjgLIF5Dun7ID
-	 WQcZDrY+YdDwn4uoOp0+NztBPvWjhv73J0rdMdBw=
-Subject: FAILED: patch "[PATCH] tracing: Fix blocked reader of snapshot buffer" failed to apply to 4.19-stable tree
+	b=FLNdg8q7LuRndYkPr0XahEKGHAd7rLNd/qrrf434t++eJaABiWjtNnQb/Agu0Jdfo
+	 N8gq69zpUVlEYz6qq8JY5KjsMnn86J/RhHhXCO0bHSz8AyOVuF61/6Co46O191fRA0
+	 RD9NKUzUlgxINB95ZehcAAqqDPTrpbDhcLUWvy6E=
+Subject: FAILED: patch "[PATCH] tracing: Fix blocked reader of snapshot buffer" failed to apply to 4.14-stable tree
 To: rostedt@goodmis.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 03 Jan 2024 11:03:14 +0100
-Message-ID: <2024010314-finalize-yonder-1241@gregkh>
+Date: Wed, 03 Jan 2024 11:03:16 +0100
+Message-ID: <2024010316-scrambled-backless-32db@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 39a7dc23a1ed0fe81141792a09449d124c5953bd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010314-finalize-yonder-1241@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024010316-scrambled-backless-32db@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
