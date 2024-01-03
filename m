@@ -1,61 +1,84 @@
-Return-Path: <stable+bounces-9264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CE4822EB8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 14:41:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C16822F50
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 15:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1485283085
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 13:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 753A0285307
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 14:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF8919BD8;
-	Wed,  3 Jan 2024 13:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAE61A58F;
+	Wed,  3 Jan 2024 14:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="kLhrPyd4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hNp/NtiO"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E68E199B6;
-	Wed,  3 Jan 2024 13:38:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4032T7WG005087;
-	Wed, 3 Jan 2024 05:37:52 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=pfpt0220; bh=zh+AyINX
-	Tu/Vu+J5ZWs/mnBjeWFhJ2utrKdUpD3dDh8=; b=kLhrPyd4G7oi/JGNrMbhn/Ue
-	b25wiCm4ozjXAFfD8PoY7I1QyXbe1S5Xa70gmaScrintawXW6QpDa5NTWSR4fr/K
-	ktEDcsrmLL5XxgozDrIKSoH67aK9xIWjq4eMJh12CCXrkPiW+IhZ7lETFeHOCmk7
-	UsqAud5oLXK3dJy+MjF9+OnuyjQoJO81I+tMWabuZUiROz61YQ9iTo8xLbz/PSvd
-	deGeUwq+a4POknU0j/jKyXBa6/idh9X2BAoHQ2yIXo3AdvTdsI4MAqDMOHpnFh0e
-	z69rtQk25+8ECP5/LhjBLq8sKgc9x/P5QUnAdIExfQyJxNM3bPiR7gcxKukQxg==
-Received: from dc5-exch02.marvell.com ([199.233.59.182])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3vcxu5tqst-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jan 2024 05:37:52 -0800 (PST)
-Received: from DC5-EXCH01.marvell.com (10.69.176.38) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Wed, 3 Jan
- 2024 05:37:51 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH01.marvell.com
- (10.69.176.38) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
- Transport; Wed, 3 Jan 2024 05:37:51 -0800
-Received: from dc3lp-swdev041.marvell.com (dc3lp-swdev041.marvell.com [10.6.60.191])
-	by maili.marvell.com (Postfix) with ESMTP id 109093F708E;
-	Wed,  3 Jan 2024 05:37:47 -0800 (PST)
-From: Elad Nachman <enachman@marvell.com>
-To: <miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>,
-        <vadym.kochan@plvision.eu>, <aviramd@marvell.com>,
-        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-CC: <enachman@marvell.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2] mtd: rawnand: marvell: fix layouts
-Date: Wed, 3 Jan 2024 15:37:40 +0200
-Message-ID: <20240103133740.1233405-1-enachman@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C511A58E
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 14:20:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a27733ae1dfso535835366b.3
+        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 06:20:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704291655; x=1704896455; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bvb45RnFS+kEP29Py4mFpvqfYdOepUjValoNOpE4LSM=;
+        b=hNp/NtiOQtzccHHjdpw2r09WJiL5xuh9EBIvPBrj4WAVE028+NCWgXSP9tB3VrsN/5
+         gNDkhFZfoXD2DOqM4p/rQL+q4LxNq5At5ngOBvZSw/qq/WbdJnBL50rh64Mh/xxP9PsK
+         TJ8GSSze4mi60G9gPFAgVlDVAF8wsRDFdL4cUq+mwtvJ+1pNepb+raBkWCd/p6Tsge27
+         n7ZCFclh0EQ8UZ46ckixFOrt0XaaDmjXL+AbDe8eqtyMqYb3wwiSQJUoSkzlkpJr3Z0r
+         So/0CQtwPl0/Yei4nwiUc3Ias3jiXNIXDM/gFte+1TL8elUkleAACcCADKMraVl7w5xD
+         z9Hw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704291655; x=1704896455;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Bvb45RnFS+kEP29Py4mFpvqfYdOepUjValoNOpE4LSM=;
+        b=bVxiZRDwRmBIBz0eWd/uxyMVUfwsuYfxk4c1XDoDyripWUtJhZnzfVyFrA9Dbscqvh
+         LoKx1xSKqmhWVrzSzNBWAHXdWRjXP9Y3wyY6nQFWZ05+r9TNewnVd1bm2KPLQfmq6bO+
+         otOGpjLxf1GXl3X5vgVqjnwal9F15mwUqBXKozMN1SC10dGATtf6s6/bWKyH6D7yN9yN
+         +/f5IscodQysgTgfbBmJ1QA/8S27WCDbhFW4ub0vDsW34/qwCX7x0xGUui9xmneMgoJj
+         +JBKWOk9BfEsv3QMsRCjHvKBGrB3nJGbvECkaViy+aZVPQ2ddEUNUEcCC7j0r6RfDLrm
+         mLww==
+X-Gm-Message-State: AOJu0YzbQa0NoiI5DJkYLqv/9qPnFPWijzFhxy8nc9x+xp0LPSI9brv0
+	+RUb3BM3YVQPoxagYgQb/2gzR8BkzKyRtw==
+X-Google-Smtp-Source: AGHT+IHDZT4bLFqR/GRWN08QLzEICPW0/x7Ga9yWw7doPWkQ11xe2R+5lwJ4fdglYrnv/j5X1LRe6A==
+X-Received: by 2002:a17:906:3:b0:a27:908b:e6b2 with SMTP id 3-20020a170906000300b00a27908be6b2mr1793479eja.35.1704291655000;
+        Wed, 03 Jan 2024 06:20:55 -0800 (PST)
+Received: from krzk-bin.. ([178.197.218.27])
+        by smtp.gmail.com with ESMTPSA id ka24-20020a170907921800b00a26abf393d0sm12229325ejb.138.2024.01.03.06.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jan 2024 06:20:54 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Amit Kucheria <amit.kucheria@linaro.org>,
+	linux-pm@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] dt-bindings: thermal: correct thermal zone node name limit
+Date: Wed,  3 Jan 2024 15:20:50 +0100
+Message-Id: <20240103142051.111717-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,56 +86,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: v1EW8NBQjlMtvzdifc8-WQV5sv3PL5qF
-X-Proofpoint-GUID: v1EW8NBQjlMtvzdifc8-WQV5sv3PL5qF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
 
-From: Elad Nachman <enachman@marvell.com>
+Linux kernel uses thermal zone node name during registering thermal
+zones and has a hard-coded limit of 20 characters, including terminating
+NUL byte.  The bindings expect node names to finish with '-thermal'
+which is eight bytes long, thus we have only 11 characters for the reset
+of the node name, not 12.
 
-The check in nand_base.c, nand_scan_tail() : has the following code:
-(ecc->steps * ecc->size != mtd->writesize) which fails for some NAND chips.
-Remove ECC entries in this driver which are not integral multiplications,
-and adjust the number of chunks for entries which fails the above
-calculation so it will calculate correctly (this was previously done
-automatically before the check and was removed in a later commit).
-
-Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
+Reported-by: Rob Herring <robh@kernel.org>
+Closes: https://lore.kernel.org/all/CAL_JsqKogbT_4DPd1n94xqeHaU_J8ve5K09WOyVsRX3jxxUW3w@mail.gmail.com/
+Fixes: 1202a442a31f ("dt-bindings: thermal: Add yaml bindings for thermal zones")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ Documentation/devicetree/bindings/thermal/thermal-zones.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
-index a46698744850..5b0f5a9cef81 100644
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -290,16 +290,13 @@ static const struct marvell_hw_ecc_layout marvell_nfc_layouts[] = {
- 	MARVELL_LAYOUT( 2048,   512,  4,  1,  1, 2048, 32, 30,  0,  0,  0),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,32, 30),
- 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,64, 30),
--	MARVELL_LAYOUT( 2048,   512,  12, 3,  2, 704,   0, 30,640,  0, 30),
--	MARVELL_LAYOUT( 2048,   512,  16, 5,  4, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 2048,   512,  16, 4,  4, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 4096,   512,  4,  2,  2, 2048, 32, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 4096,   512,  8,  5,  4, 1024,  0, 30,  0, 64, 30),
--	MARVELL_LAYOUT( 4096,   512,  12, 6,  5, 704,   0, 30,576, 32, 30),
--	MARVELL_LAYOUT( 4096,   512,  16, 9,  8, 512,   0, 30,  0, 32, 30),
-+	MARVELL_LAYOUT( 4096,   512,  8,  4,  4, 1024,  0, 30,  0, 64, 30),
-+	MARVELL_LAYOUT( 4096,   512,  16, 8,  8, 512,   0, 30,  0, 32, 30),
- 	MARVELL_LAYOUT( 8192,   512,  4,  4,  4, 2048,  0, 30,  0,  0,  0),
--	MARVELL_LAYOUT( 8192,   512,  8,  9,  8, 1024,  0, 30,  0, 160, 30),
--	MARVELL_LAYOUT( 8192,   512,  12, 12, 11, 704,  0, 30,448,  64, 30),
--	MARVELL_LAYOUT( 8192,   512,  16, 17, 16, 512,  0, 30,  0,  32, 30),
-+	MARVELL_LAYOUT( 8192,   512,  8,  8,  8, 1024,  0, 30,  0, 160, 30),
-+	MARVELL_LAYOUT( 8192,   512,  16, 16, 16, 512,  0, 30,  0,  32, 30),
- };
+diff --git a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
+index 4a8dabc48170..bbc883fd4044 100644
+--- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
++++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
+@@ -49,7 +49,7 @@ properties:
+       to take when the temperature crosses those thresholds.
  
- /**
+ patternProperties:
+-  "^[a-zA-Z][a-zA-Z0-9\\-]{1,12}-thermal$":
++  "^[a-zA-Z][a-zA-Z0-9\\-]{1,11}-thermal$":
+     type: object
+     description:
+       Each thermal zone node contains information about how frequently it
 -- 
-2.25.1
+2.34.1
 
 
