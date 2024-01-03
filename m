@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A482823235
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:04:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DACC8231B0
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:57:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D064AB232E9
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2878A2885FD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE181C298;
-	Wed,  3 Jan 2024 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260441BDF1;
+	Wed,  3 Jan 2024 16:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qGIjRcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B53htcAB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914301BDEC;
-	Wed,  3 Jan 2024 17:03:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F135C433C8;
-	Wed,  3 Jan 2024 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E256F1BDEC;
+	Wed,  3 Jan 2024 16:57:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F99CC433C9;
+	Wed,  3 Jan 2024 16:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301420;
-	bh=bP0H18zVQ9hZ4k+ggaB9p4krsajKTsWtVoKjEC+Og5c=;
+	s=korg; t=1704301044;
+	bh=vyI8Y1hu54plw2Z/XU4Ti2UunlnUmmtuPxdkA2arm7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qGIjRcuZ0okFde3J4UNU6abTsCruxq16h1o6sSuh5q9kZ2dl/9RhRR15msHNTR80
-	 2ax5i3/FGwTgCc2KMWVyVeGkIxGciP8KGeUb6Zc9yhGoAEgNpPnYXOPP7MfrG7oVTC
-	 hwML1sW3PUXhlsHbufFe4fWI42pUhGn11LGviMRA=
+	b=B53htcAB1NcVSn8Bmj3n6nP7BONm0WnHkOM+6IyaJbo0bOlQ+97zt2DN0LNQzeRkE
+	 kBU3veyw5aGnh0IuWZijJzatwMiue/z3O+Ok69HKqWa0ZA/dLFqXe7P6V6sWdHZL/f
+	 A5IOuaxs/hoXS6mInsCU155xNJTU5VptM+bLw6V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Norris <briannorris@chromium.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 05/95] wifi: iwlwifi: pcie: add another missing bh-disable for rxq->lock
+Subject: [PATCH 6.1 024/100] ksmbd: remove unused ksmbd_tree_conn_share function
 Date: Wed,  3 Jan 2024 17:54:13 +0100
-Message-ID: <20240103164854.686787751@linuxfoundation.org>
+Message-ID: <20240103164859.660085300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +54,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a4754182dc936b97ec7e9f6b08cdf7ed97ef9069 ]
+[ Upstream commit 7bd9f0876fdef00f4e155be35e6b304981a53f80 ]
 
-Evidently I had only looked at all the ones in rx.c, and missed this.
-Add bh-disable to this use of the rxq->lock as well.
+Remove unused ksmbd_tree_conn_share function.
 
-Fixes: 25edc8f259c7 ("iwlwifi: pcie: properly implement NAPI")
-Reported-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231208183100.e79ad3dae649.I8f19713c4383707f8be7fc20ff5cc1ecf12429bb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/mgmt/tree_connect.c | 11 -----------
+ fs/smb/server/mgmt/tree_connect.h |  3 ---
+ 2 files changed, 14 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index b7b2d28b3e436..8a19463bc81c1 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2960,7 +2960,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
- 	struct iwl_rxq *rxq = &trans_pcie->rxq[0];
- 	u32 i, r, j, rb_len = 0;
- 
--	spin_lock(&rxq->lock);
-+	spin_lock_bh(&rxq->lock);
- 
- 	r = le16_to_cpu(iwl_get_closed_rb_stts(trans, rxq)) & 0x0FFF;
- 
-@@ -2984,7 +2984,7 @@ static u32 iwl_trans_pcie_dump_rbs(struct iwl_trans *trans,
- 		*data = iwl_fw_error_next_data(*data);
- 	}
- 
--	spin_unlock(&rxq->lock);
-+	spin_unlock_bh(&rxq->lock);
- 
- 	return rb_len;
+diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
+index f07a05f376513..408cddf2f094a 100644
+--- a/fs/smb/server/mgmt/tree_connect.c
++++ b/fs/smb/server/mgmt/tree_connect.c
+@@ -120,17 +120,6 @@ struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
+ 	return tcon;
  }
+ 
+-struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
+-						 unsigned int id)
+-{
+-	struct ksmbd_tree_connect *tc;
+-
+-	tc = ksmbd_tree_conn_lookup(sess, id);
+-	if (tc)
+-		return tc->share_conf;
+-	return NULL;
+-}
+-
+ int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess)
+ {
+ 	int ret = 0;
+diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
+index 700df36cf3e30..562d647ad9fad 100644
+--- a/fs/smb/server/mgmt/tree_connect.h
++++ b/fs/smb/server/mgmt/tree_connect.h
+@@ -53,9 +53,6 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+ struct ksmbd_tree_connect *ksmbd_tree_conn_lookup(struct ksmbd_session *sess,
+ 						  unsigned int id);
+ 
+-struct ksmbd_share_config *ksmbd_tree_conn_share(struct ksmbd_session *sess,
+-						 unsigned int id);
+-
+ int ksmbd_tree_conn_session_logoff(struct ksmbd_session *sess);
+ 
+ #endif /* __TREE_CONNECT_MANAGEMENT_H__ */
 -- 
 2.43.0
 
