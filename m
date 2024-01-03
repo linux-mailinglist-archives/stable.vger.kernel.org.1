@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2237D8232D6
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB87A8232FB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6C50B21761
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AB1B2825CC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126251C283;
-	Wed,  3 Jan 2024 17:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397F11BDFF;
+	Wed,  3 Jan 2024 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZMopjV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqZ1HT+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6CC1BDEC;
-	Wed,  3 Jan 2024 17:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513DAC433C7;
-	Wed,  3 Jan 2024 17:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023421BDEC;
+	Wed,  3 Jan 2024 17:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613B3C433C7;
+	Wed,  3 Jan 2024 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301939;
-	bh=t0wYXU7gCiA4IDqIjiceBxC065D2VhtSKcQXW4PX+1s=;
+	s=korg; t=1704302061;
+	bh=1s/2uPNyoRJFGLEyaIYd0EofCUpGIRM7Gp82C3tOVmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZMopjV1LBe0jdkZjt7BAuKE65HZVSjfZFH/j5bxfESdFkoPJv1q9zTaPNGpBf4UQ
-	 ZT1ahE9EaesRDk6naF5tNfrNP7xyGkwhgsg82jQVj7zB5twQd/ouztG4skBSjheMT5
-	 R+zkWpZs4+NKByXLQG7MXHMEycDmf9IQ2hvY6azY=
+	b=hqZ1HT+OZzXtKP5AIaH64PKcqe7z2EEIJmbwsg1VOH/ffM9pCoc5Dzi7oXE2fpMbh
+	 ZOyGWdfKuRzV3/NfvShB3K0950SJb/SOvomeDNyYMUzeTclmsKXh1nal9/iD8poVfA
+	 phm0YIjUkO4xWLTLboKVV1PbuIyZTN+sU8l1GoZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Marcel Holtmann <marcel@holtmann.org>
-Subject: [PATCH 5.10 74/75] Bluetooth: SMP: Fix crash when receiving new connection when debug is enabled
+	Yang Chaoming <lometsj@live.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 35/49] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
 Date: Wed,  3 Jan 2024 17:55:55 +0100
-Message-ID: <20240103164854.140372742@linuxfoundation.org>
+Message-ID: <20240103164840.483117074@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +53,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 995fca15b73ff8f92888cc2d5d95f17ffdac74ba upstream.
+commit d10c77873ba1e9e6b91905018e29e196fd5f863d upstream.
 
-When receiving a new connection pchan->conn won't be initialized so the
-code cannot use bt_dev_dbg as the pointer to hci_dev won't be
-accessible.
+If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
+ksmbd_check_message doesn't validate request buffer it correctly.
+So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
+in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
+of the two sums (Name and CreateContext size) as the offset and length of
+the data area.
 
-Fixes: 2e1614f7d61e4 ("Bluetooth: SMP: Convert BT_ERR/BT_DBG to bt_dev_err/bt_dev_dbg")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Reported-by: Yang Chaoming <lometsj@live.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/smp.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2misc.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -3239,7 +3239,7 @@ static inline struct l2cap_chan *smp_new
- {
- 	struct l2cap_chan *chan;
+--- a/fs/smb/server/smb2misc.c
++++ b/fs/smb/server/smb2misc.c
+@@ -106,16 +106,25 @@ static int smb2_get_data_area_len(unsign
+ 		break;
+ 	case SMB2_CREATE:
+ 	{
++		unsigned short int name_off =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
++		unsigned short int name_len =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++
+ 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
+ 			*off = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsOffset);
+ 			*len = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsLength);
+-			break;
++			if (!name_len)
++				break;
++
++			if (name_off + name_len < (u64)*off + *len)
++				break;
+ 		}
  
--	bt_dev_dbg(pchan->conn->hcon->hdev, "pchan %p", pchan);
-+	BT_DBG("pchan %p", pchan);
- 
- 	chan = l2cap_chan_create();
- 	if (!chan)
-@@ -3260,7 +3260,7 @@ static inline struct l2cap_chan *smp_new
- 	 */
- 	atomic_set(&chan->nesting, L2CAP_NESTING_SMP);
- 
--	bt_dev_dbg(pchan->conn->hcon->hdev, "created chan %p", chan);
-+	BT_DBG("created chan %p", chan);
- 
- 	return chan;
- }
-@@ -3364,7 +3364,7 @@ static void smp_del_chan(struct l2cap_ch
- {
- 	struct smp_dev *smp;
- 
--	bt_dev_dbg(chan->conn->hcon->hdev, "chan %p", chan);
-+	BT_DBG("chan %p", chan);
- 
- 	smp = chan->data;
- 	if (smp) {
+-		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+-		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++		*off = name_off;
++		*len = name_len;
+ 		break;
+ 	}
+ 	case SMB2_QUERY_INFO:
 
 
 
