@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CD58232D2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 117CD8232F9
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E18151F21714
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E501F24C53
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE371C280;
-	Wed,  3 Jan 2024 17:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315911C2A3;
+	Wed,  3 Jan 2024 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYESnpZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqMr+EkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87271BDFB;
-	Wed,  3 Jan 2024 17:12:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D909C433C8;
-	Wed,  3 Jan 2024 17:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC43F1C284;
+	Wed,  3 Jan 2024 17:14:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E555C433C7;
+	Wed,  3 Jan 2024 17:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301927;
-	bh=tzSj9hVyvvHef93Y070UoNqVtnACJiLmtRf/TjnNsYc=;
+	s=korg; t=1704302054;
+	bh=0w91XEDJWimXsMzCxA18HGUGd5VxmG4g3SkUhStJs9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYESnpZdNPyfRv176wIgwXcKj7AKaHL/bAWMd+P0vFQ09x2uXefQuZLzdWu++y7HR
-	 keb7i1UQkMLcbwRqQZxw8I30Y4qrKQJeNVL31qr40qnOSSbCxSVpPKIVZ2i9j6jbnI
-	 UFf9GuIkZCSj/+Tm9raOSI48yfzS7C/x3DVVc0YQ=
+	b=sqMr+EkO/+xhnXwBTh4HeHVf8Y+S48ksMpCrzPZtHAzEVTM3clBLgsne/Rvm6gHTe
+	 AdhdJFgNpWlXsdPeeRJgeLL33O+aVPWQTE0Oo+pwbw3thARrUfD2cMBOLkTK661Twk
+	 /XimWOff7d+VvEehmv27IW+VoLn2Z6V+vEK4j6Ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.10 71/75] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
-Date: Wed,  3 Jan 2024 17:55:52 +0100
-Message-ID: <20240103164853.737021681@linuxfoundation.org>
+	"David E. Box" <david.e.box@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 33/49] platform/x86/intel/pmc: Allow reenabling LTRs
+Date: Wed,  3 Jan 2024 17:55:53 +0100
+Message-ID: <20240103164840.170043803@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,73 +51,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: David E. Box <david.e.box@linux.intel.com>
 
-commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
+[ Upstream commit 6f9cc5c1f94daa98846b2073733d03ced709704b ]
 
-__bio_for_each_segment assumes that the first struct bio_vec argument
-doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
-(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
-code changes the bio_vec with "bv.bv_len -= pos". When this code path
-is taken, the iterator would be out of sync and dm-integrity would
-report errors. This happens if the machine is out of memory and
-"kmalloc" fails.
+Commit 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and
+core_configure()") caused a network performance regression due to the GBE
+LTR ignore that it added during probe. The fix will move the ignore to
+occur at suspend-time (so as to not affect suspend power). This will
+require the ability to enable the LTR again on resume. Modify
+pmc_core_send_ltr_ignore() to allow enabling an LTR.
 
-Fix this bug by making a copy of "bv" and changing the copy instead.
-
-Fixes: 7eada909bfd7 ("dm: add integrity target")
-Cc: stable@vger.kernel.org	# v4.12+
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 804951203aa5 ("platform/x86:intel/pmc: Combine core_init() and core_configure()")
+Signed-off-by: "David E. Box" <david.e.box@linux.intel.com>
+Link: https://lore.kernel.org/r/20231223032548.1680738-5-david.e.box@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/pmc/adl.c  | 2 +-
+ drivers/platform/x86/intel/pmc/cnp.c  | 2 +-
+ drivers/platform/x86/intel/pmc/core.c | 9 ++++++---
+ drivers/platform/x86/intel/pmc/core.h | 2 +-
+ drivers/platform/x86/intel/pmc/mtl.c  | 2 +-
+ drivers/platform/x86/intel/pmc/tgl.c  | 2 +-
+ 6 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -1657,11 +1657,12 @@ static void integrity_metadata(struct wo
- 		sectors_to_process = dio->range.n_sectors;
+diff --git a/drivers/platform/x86/intel/pmc/adl.c b/drivers/platform/x86/intel/pmc/adl.c
+index 5006008e01bea..a887c388cf16d 100644
+--- a/drivers/platform/x86/intel/pmc/adl.c
++++ b/drivers/platform/x86/intel/pmc/adl.c
+@@ -323,7 +323,7 @@ int adl_core_init(struct pmc_dev *pmcdev)
+ 	 * when a cable is attached. Tell the PMC to ignore it.
+ 	 */
+ 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
+-	pmc_core_send_ltr_ignore(pmcdev, 3);
++	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
  
- 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
-+			struct bio_vec bv_copy = bv;
- 			unsigned pos;
- 			char *mem, *checksums_ptr;
+ 	return 0;
+ }
+diff --git a/drivers/platform/x86/intel/pmc/cnp.c b/drivers/platform/x86/intel/pmc/cnp.c
+index 420aaa1d7c769..10498204962cd 100644
+--- a/drivers/platform/x86/intel/pmc/cnp.c
++++ b/drivers/platform/x86/intel/pmc/cnp.c
+@@ -218,7 +218,7 @@ int cnp_core_init(struct pmc_dev *pmcdev)
+ 	 * when a cable is attached. Tell the PMC to ignore it.
+ 	 */
+ 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
+-	pmc_core_send_ltr_ignore(pmcdev, 3);
++	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
  
- again:
--			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
-+			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
- 			pos = 0;
- 			checksums_ptr = checksums;
- 			do {
-@@ -1670,7 +1671,7 @@ again:
- 				sectors_to_process -= ic->sectors_per_block;
- 				pos += ic->sectors_per_block << SECTOR_SHIFT;
- 				sector += ic->sectors_per_block;
--			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
-+			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
- 			kunmap_atomic(mem);
+ 	return 0;
+ }
+diff --git a/drivers/platform/x86/intel/pmc/core.c b/drivers/platform/x86/intel/pmc/core.c
+index 5ab470d87ad7e..022afb97d531c 100644
+--- a/drivers/platform/x86/intel/pmc/core.c
++++ b/drivers/platform/x86/intel/pmc/core.c
+@@ -460,7 +460,7 @@ static int pmc_core_pll_show(struct seq_file *s, void *unused)
+ }
+ DEFINE_SHOW_ATTRIBUTE(pmc_core_pll);
  
- 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
-@@ -1691,9 +1692,9 @@ again:
- 			if (!sectors_to_process)
- 				break;
+-int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value)
++int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value, int ignore)
+ {
+ 	struct pmc *pmc;
+ 	const struct pmc_reg_map *map;
+@@ -498,7 +498,10 @@ int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value)
+ 	mutex_lock(&pmcdev->lock);
  
--			if (unlikely(pos < bv.bv_len)) {
--				bv.bv_offset += pos;
--				bv.bv_len -= pos;
-+			if (unlikely(pos < bv_copy.bv_len)) {
-+				bv_copy.bv_offset += pos;
-+				bv_copy.bv_len -= pos;
- 				goto again;
- 			}
- 		}
+ 	reg = pmc_core_reg_read(pmc, map->ltr_ignore_offset);
+-	reg |= BIT(ltr_index);
++	if (ignore)
++		reg |= BIT(ltr_index);
++	else
++		reg &= ~BIT(ltr_index);
+ 	pmc_core_reg_write(pmc, map->ltr_ignore_offset, reg);
+ 
+ 	mutex_unlock(&pmcdev->lock);
+@@ -521,7 +524,7 @@ static ssize_t pmc_core_ltr_ignore_write(struct file *file,
+ 	if (err)
+ 		return err;
+ 
+-	err = pmc_core_send_ltr_ignore(pmcdev, value);
++	err = pmc_core_send_ltr_ignore(pmcdev, value, 1);
+ 
+ 	return err == 0 ? count : err;
+ }
+diff --git a/drivers/platform/x86/intel/pmc/core.h b/drivers/platform/x86/intel/pmc/core.h
+index 38d888e3afa63..71ba7d691d691 100644
+--- a/drivers/platform/x86/intel/pmc/core.h
++++ b/drivers/platform/x86/intel/pmc/core.h
+@@ -488,7 +488,7 @@ extern const struct pmc_bit_map *mtl_ioem_lpm_maps[];
+ extern const struct pmc_reg_map mtl_ioem_reg_map;
+ 
+ extern void pmc_core_get_tgl_lpm_reqs(struct platform_device *pdev);
+-extern int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value);
++int pmc_core_send_ltr_ignore(struct pmc_dev *pmcdev, u32 value, int ignore);
+ 
+ int pmc_core_resume_common(struct pmc_dev *pmcdev);
+ int get_primary_reg_base(struct pmc *pmc);
+diff --git a/drivers/platform/x86/intel/pmc/mtl.c b/drivers/platform/x86/intel/pmc/mtl.c
+index 2204bc666980e..71dc11811e112 100644
+--- a/drivers/platform/x86/intel/pmc/mtl.c
++++ b/drivers/platform/x86/intel/pmc/mtl.c
+@@ -1006,7 +1006,7 @@ int mtl_core_init(struct pmc_dev *pmcdev)
+ 	 * when a cable is attached. Tell the PMC to ignore it.
+ 	 */
+ 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
+-	pmc_core_send_ltr_ignore(pmcdev, 3);
++	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/platform/x86/intel/pmc/tgl.c b/drivers/platform/x86/intel/pmc/tgl.c
+index 2449940102db4..078263db24c7a 100644
+--- a/drivers/platform/x86/intel/pmc/tgl.c
++++ b/drivers/platform/x86/intel/pmc/tgl.c
+@@ -268,7 +268,7 @@ int tgl_core_init(struct pmc_dev *pmcdev)
+ 	 * when a cable is attached. Tell the PMC to ignore it.
+ 	 */
+ 	dev_dbg(&pmcdev->pdev->dev, "ignoring GBE LTR\n");
+-	pmc_core_send_ltr_ignore(pmcdev, 3);
++	pmc_core_send_ltr_ignore(pmcdev, 3, 1);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
