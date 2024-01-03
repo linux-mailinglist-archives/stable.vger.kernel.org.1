@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4418232F2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:14:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7D28232DB
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47DED1F24B87
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:14:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63BF31C238B1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEE61BDFB;
-	Wed,  3 Jan 2024 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB491C284;
+	Wed,  3 Jan 2024 17:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09agqCaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiBUnodl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B681C693;
-	Wed,  3 Jan 2024 17:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F29C433C7;
-	Wed,  3 Jan 2024 17:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159D11BDEC;
+	Wed,  3 Jan 2024 17:12:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8336FC433C7;
+	Wed,  3 Jan 2024 17:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704302034;
-	bh=tNJatK4eiSyrihJHJlLOfQ+0DbFIAWiQObLt79jEJEI=;
+	s=korg; t=1704301955;
+	bh=u6O67X+87VQdwts7KXYUaSUdQv2WRoShggxG5zYbB2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09agqCaI8phns0k+WkK/4horOgdWsSR4gr7/mJSN7RFD/7Q+QCrkAACv5zAFIRqc8
-	 f7e+qsJA+1dR82XVnNssMrQpe9bvmcxF2Fy79v8pnlEYZm5dG0hB29FkG8FAanMz8h
-	 5jk3kGQl9O5YQFnWNXRebhG/ikaLXZg3d9F3aUqY=
+	b=oiBUnodltkRlrGIw3CqcSFd97sj7ikfQiFZ4wDDSevttr1fpDtJhJBG7P4FUwlXBN
+	 LfcDL6ur5PEuW6y9VZFGQaSv+a/VdD5pXtr0HxuSIJ7ihAvE++swqskwHrWa1KCGyI
+	 iAmmyXjJfBNacsLrJnDkV44/uS4+/KDeE1MR0qP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	j51569436@gmail.com,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 18/49] ksmbd: lazy v2 lease break on smb2_write()
-Date: Wed,  3 Jan 2024 17:55:38 +0100
-Message-ID: <20240103164837.827495640@linuxfoundation.org>
+Subject: [PATCH 5.10 58/75] smb: client: fix OOB in smbCalcSize()
+Date: Wed,  3 Jan 2024 17:55:39 +0100
+Message-ID: <20240103164851.896520883@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,126 +54,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit c2a721eead71202a0d8ddd9b56ec8dce652c71d1 ]
+[ Upstream commit b35858b3786ddbb56e1c35138ba25d6adf8d0bef ]
 
-Don't immediately send directory lease break notification on smb2_write().
-Instead, It postpones it until smb2_close().
+Validate @smb->WordCount to avoid reading off the end of @smb and thus
+causing the following KASAN splat:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+  BUG: KASAN: slab-out-of-bounds in smbCalcSize+0x32/0x40 [cifs]
+  Read of size 2 at addr ffff88801c024ec5 by task cifsd/1328
+
+  CPU: 1 PID: 1328 Comm: cifsd Not tainted 6.7.0-rc5 #9
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x4a/0x80
+   print_report+0xcf/0x650
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __phys_addr+0x46/0x90
+   kasan_report+0xd8/0x110
+   ? smbCalcSize+0x32/0x40 [cifs]
+   ? smbCalcSize+0x32/0x40 [cifs]
+   kasan_check_range+0x105/0x1b0
+   smbCalcSize+0x32/0x40 [cifs]
+   checkSMB+0x162/0x370 [cifs]
+   ? __pfx_checkSMB+0x10/0x10 [cifs]
+   cifs_handle_standard+0xbc/0x2f0 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   cifs_demultiplex_thread+0xed1/0x1360 [cifs]
+   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lockdep_hardirqs_on_prepare+0x136/0x210
+   ? __pfx_lock_release+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? mark_held_locks+0x1a/0x90
+   ? lockdep_hardirqs_on_prepare+0x136/0x210
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __kthread_parkme+0xce/0xf0
+   ? __pfx_cifs_demultiplex_thread+0x10/0x10 [cifs]
+   kthread+0x18d/0x1d0
+   ? kthread+0xdb/0x1d0
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork+0x34/0x60
+   ? __pfx_kthread+0x10/0x10
+   ret_from_fork_asm+0x1b/0x30
+   </TASK>
+
+This fixes CVE-2023-6606.
+
+Reported-by: j51569436@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218218
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c    | 45 +++++++++++++++++++++++++++++++++++++--
- fs/smb/server/oplock.h    |  1 +
- fs/smb/server/vfs.c       |  3 +++
- fs/smb/server/vfs_cache.h |  1 +
- 4 files changed, 48 insertions(+), 2 deletions(-)
+ fs/cifs/misc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 147d98427ce89..562b180459a1a 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -396,8 +396,8 @@ void close_id_del_oplock(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
- 
--	if (S_ISDIR(file_inode(fp->filp)->i_mode))
--		return;
-+	if (fp->reserve_lease_break)
-+		smb_lazy_parent_lease_break_close(fp);
- 
- 	opinfo = opinfo_get(fp);
- 	if (!opinfo)
-@@ -1127,6 +1127,47 @@ void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 	ksmbd_inode_put(p_ci);
- }
- 
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp)
-+{
-+	struct oplock_info *opinfo;
-+	struct ksmbd_inode *p_ci = NULL;
-+
-+	rcu_read_lock();
-+	opinfo = rcu_dereference(fp->f_opinfo);
-+	rcu_read_unlock();
-+
-+	if (!opinfo->is_lease || opinfo->o_lease->version != 2)
-+		return;
-+
-+	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
-+	if (!p_ci)
-+		return;
-+
-+	read_lock(&p_ci->m_lock);
-+	list_for_each_entry(opinfo, &p_ci->m_op_list, op_entry) {
-+		if (!opinfo->is_lease)
-+			continue;
-+
-+		if (opinfo->o_lease->state != SMB2_OPLOCK_LEVEL_NONE) {
-+			if (!atomic_inc_not_zero(&opinfo->refcount))
-+				continue;
-+
-+			atomic_inc(&opinfo->conn->r_count);
-+			if (ksmbd_conn_releasing(opinfo->conn)) {
-+				atomic_dec(&opinfo->conn->r_count);
-+				continue;
-+			}
-+			read_unlock(&p_ci->m_lock);
-+			oplock_break(opinfo, SMB2_OPLOCK_LEVEL_NONE);
-+			opinfo_conn_put(opinfo);
-+			read_lock(&p_ci->m_lock);
-+		}
-+	}
-+	read_unlock(&p_ci->m_lock);
-+
-+	ksmbd_inode_put(p_ci);
-+}
-+
- /**
-  * smb_grant_oplock() - handle oplock/lease request on file open
-  * @work:		smb work
-diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
-index b64d1536882a1..5b93ea9196c01 100644
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -129,4 +129,5 @@ int find_same_lease_key(struct ksmbd_session *sess, struct ksmbd_inode *ci,
- void destroy_lease_table(struct ksmbd_conn *conn);
- void smb_send_parent_lease_break_noti(struct ksmbd_file *fp,
- 				      struct lease_ctx_info *lctx);
-+void smb_lazy_parent_lease_break_close(struct ksmbd_file *fp);
- #endif /* __KSMBD_OPLOCK_H */
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 9091dcd7a3102..4277750a6da1b 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -517,6 +517,9 @@ int ksmbd_vfs_write(struct ksmbd_work *work, struct ksmbd_file *fp,
+diff --git a/fs/cifs/misc.c b/fs/cifs/misc.c
+index 9044b0fca9a3d..2d46018b02839 100644
+--- a/fs/cifs/misc.c
++++ b/fs/cifs/misc.c
+@@ -353,6 +353,10 @@ checkSMB(char *buf, unsigned int total_read, struct TCP_Server_Info *server)
+ 			cifs_dbg(VFS, "Length less than smb header size\n");
  		}
+ 		return -EIO;
++	} else if (total_read < sizeof(*smb) + 2 * smb->WordCount) {
++		cifs_dbg(VFS, "%s: can't read BCC due to invalid WordCount(%u)\n",
++			 __func__, smb->WordCount);
++		return -EIO;
  	}
  
-+	/* Reserve lease break for parent dir at closing time */
-+	fp->reserve_lease_break = true;
-+
- 	/* Do we need to break any of a levelII oplock? */
- 	smb_break_all_levII_oplock(work, fp, 1);
- 
-diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
-index 4d4938d6029b6..a528f0cc775ae 100644
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -105,6 +105,7 @@ struct ksmbd_file {
- 	struct ksmbd_readdir_data	readdir_data;
- 	int				dot_dotdot[2];
- 	unsigned int			f_state;
-+	bool				reserve_lease_break;
- };
- 
- static inline void set_ctx_actor(struct dir_context *ctx,
+ 	/* otherwise, there is enough to get to the BCC */
 -- 
 2.43.0
 
