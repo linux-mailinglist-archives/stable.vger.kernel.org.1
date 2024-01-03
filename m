@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF0C8231E4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:00:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B4082324A
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F7A91F2467E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:00:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B826B245A7
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6DC1BDFF;
-	Wed,  3 Jan 2024 17:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9088A1C29C;
+	Wed,  3 Jan 2024 17:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUQzu1Xk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f0oVPz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167BF1BDEC;
-	Wed,  3 Jan 2024 17:00:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822A8C433C8;
-	Wed,  3 Jan 2024 17:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585B01BDF0;
+	Wed,  3 Jan 2024 17:04:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D33C433C7;
+	Wed,  3 Jan 2024 17:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301202;
-	bh=W69PHbd9F0glYiY8lRHmyGx1rKFnHRiEboyXxJio0PI=;
+	s=korg; t=1704301492;
+	bh=feYYiT6uAkZWbFpzlHamLS9OeaJTyi93KXd9Ym9k5U4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUQzu1XkWJcSAJl5uIWQiWSX5qtMNrgA/2PjV5tk8zC6x3qw7ngfS0vFNB6DMl9Q4
-	 btTvy1IfTptUJGqhPa1dEbhXXnjU9zynSkQ0Je0ED8kZCnNeGxsRnBL1Qftl+4Pvw1
-	 HPdiSqDpvrVkewr8IJSAUP/ZoHkwQbxvzWbhw+XI=
+	b=0f0oVPz3/rrNqhOMdbNyJAxps5p2NFJjnTLaw1iVF2NVXi4k59St46ab5cFJS5mn9
+	 45qbrF9didHa3eDeas327cfKBUn6ec4tjMWwNgIiFQfr+k7eLMREvo/AghdzJ5GKGX
+	 jsbLsQ+mQSA+EMlL3RDYOs8z8/MowwBfPZwDOD0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/100] ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
-Date: Wed,  3 Jan 2024 17:54:54 +0100
-Message-ID: <20240103164905.834900185@linuxfoundation.org>
+	Alper Ak <alperyasinak1@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 47/95] USB: serial: option: add Quectel EG912Y module support
+Date: Wed,  3 Jan 2024 17:54:55 +0100
+Message-ID: <20240103164901.143562053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Alper Ak <alperyasinak1@gmail.com>
 
-[ Upstream commit 9ac45ac7cf65b0623ceeab9b28b307a08efa22dc ]
+commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
 
-Directly set SMB2_FLAGS_ASYNC_COMMAND flags and AsyncId in smb2 header of
-interim response instead of current response header.
+Add Quectel EG912Y "DIAG, AT, MODEM"
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x6001: ECM / RNDIS + DIAG + AT + MODEM
+
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=6001 Rev= 3.18
+S:  Manufacturer=Android
+S:  Product=Android
+S:  SerialNumber=0000
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 3d965be412751..2ba5e685dd3fe 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -657,13 +657,9 @@ smb2_get_name(const char *src, const int maxlen, struct nls_table *local_nls)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -272,6 +272,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_RM500Q			0x0800
+ #define QUECTEL_PRODUCT_RM520N			0x0801
+ #define QUECTEL_PRODUCT_EC200U			0x0901
++#define QUECTEL_PRODUCT_EG912Y			0x6001
+ #define QUECTEL_PRODUCT_EC200S_CN		0x6002
+ #define QUECTEL_PRODUCT_EC200A			0x6005
+ #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
+@@ -1244,6 +1245,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
  
- int setup_async_work(struct ksmbd_work *work, void (*fn)(void **), void **arg)
- {
--	struct smb2_hdr *rsp_hdr;
- 	struct ksmbd_conn *conn = work->conn;
- 	int id;
- 
--	rsp_hdr = ksmbd_resp_buf_next(work);
--	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
--
- 	id = ksmbd_acquire_async_msg_id(&conn->async_ida);
- 	if (id < 0) {
- 		pr_err("Failed to alloc async message id\n");
-@@ -671,7 +667,6 @@ int setup_async_work(struct ksmbd_work *work, void (*fn)(void **), void **arg)
- 	}
- 	work->asynchronous = true;
- 	work->async_id = id;
--	rsp_hdr->Id.AsyncId = cpu_to_le64(id);
- 
- 	ksmbd_debug(SMB,
- 		    "Send interim Response to inform async request id : %d\n",
-@@ -723,6 +718,8 @@ void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
- 	       __SMB2_HEADER_STRUCTURE_SIZE);
- 
- 	rsp_hdr = smb2_get_msg(in_work->response_buf);
-+	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
-+	rsp_hdr->Id.AsyncId = cpu_to_le64(work->async_id);
- 	smb2_set_err_rsp(in_work);
- 	rsp_hdr->Status = status;
- 
--- 
-2.43.0
-
+ 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
 
 
 
