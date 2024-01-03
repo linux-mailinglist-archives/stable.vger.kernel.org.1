@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-9526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465068232C5
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5E782327B
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD13CB231AC
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF121C23BCA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513C11C283;
-	Wed,  3 Jan 2024 17:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474DD1BDFC;
+	Wed,  3 Jan 2024 17:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdFELuMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ja2aORFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5441BDFB;
-	Wed,  3 Jan 2024 17:11:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34E30C433C9;
-	Wed,  3 Jan 2024 17:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100D01BDDE;
+	Wed,  3 Jan 2024 17:07:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C97C433C7;
+	Wed,  3 Jan 2024 17:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301887;
-	bh=MXTGB5m5O+esJpPsT4TR5umedLG9waKmlg843CgExqc=;
+	s=korg; t=1704301660;
+	bh=Y6XLQSf3n9n6k9r3mTOPK/ddLmZY7ureyQyeR43OK7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdFELuMZ+5dUb3wgU5IfSrE4/56TYlqlVDjrmziewFScHqOCKVc3+kLnTMMTPRI9f
-	 2jA4067tG8Q0yqI4apf+PjqGfdNedDIq0B/rLY1+/WSqb4zom1HrV6NfFGelcLkdZw
-	 2Ad7PC5IEQ0yq3Ns2F8i6spR39KdDc3UL0H5omf4=
+	b=ja2aORFZPGKihW35Ln1l8EUhp1bV0m9c0m43Koq5HaEJyu68daBiadJwIEcbEAedQ
+	 AjGYd8ObHDb0KnIkUEXKCV/z42JeSMsmvhv2VjW7egPJgndXnN/Rhgutn0PSJsyyM0
+	 4CasnF4zpv9TcbHGxWQdl0PgL6KP9OZ2gdbz9v0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/75] iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
+	stable@kernel.org,
+	Riwen Lu <luriwen@kylinos.cn>,
+	xiongxin <xiongxin@kylinos.cn>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 5.15 61/95] gpio: dwapb: mask/unmask IRQ when disable/enale it
 Date: Wed,  3 Jan 2024 17:55:09 +0100
-Message-ID: <20240103164847.419851960@linuxfoundation.org>
+Message-ID: <20240103164903.109982411@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +56,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: xiongxin <xiongxin@kylinos.cn>
 
-[ Upstream commit c3df0e29fb7788c4b3ddf37d5ed87dda2b822943 ]
+commit 1cc3542c76acb5f59001e3e562eba672f1983355 upstream.
 
-inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
-true value rather than only return IIO_VAL_INT.
+In the hardware implementation of the I2C HID driver based on DesignWare
+GPIO IRQ chip, when the user continues to use the I2C HID device in the
+suspend process, the I2C HID interrupt will be masked after the resume
+process is finished.
 
-Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231030020218.65728-1-suhui@nfschina.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because the disable_irq()/enable_irq() of the DesignWare GPIO
+driver does not synchronize the IRQ mask register state. In normal use
+of the I2C HID procedure, the GPIO IRQ irq_mask()/irq_unmask() functions
+are called in pairs. In case of an exception, i2c_hid_core_suspend()
+calls disable_irq() to disable the GPIO IRQ. With low probability, this
+causes irq_unmask() to not be called, which causes the GPIO IRQ to be
+masked and not unmasked in enable_irq(), raising an exception.
+
+Add synchronization to the masked register state in the
+dwapb_irq_enable()/dwapb_irq_disable() function. mask the GPIO IRQ
+before disabling it. After enabling the GPIO IRQ, unmask the IRQ.
+
+Fixes: 7779b3455697 ("gpio: add a driver for the Synopsys DesignWare APB GPIO block")
+Cc: stable@kernel.org
+Co-developed-by: Riwen Lu <luriwen@kylinos.cn>
+Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
+Signed-off-by: xiongxin <xiongxin@kylinos.cn>
+Acked-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-dwapb.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index ae391ec4a7275..533c71a0dd01a 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -707,13 +707,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
- 			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
- 		case IIO_ACCEL:
- 			mutex_lock(&st->lock);
- 			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
+--- a/drivers/gpio/gpio-dwapb.c
++++ b/drivers/gpio/gpio-dwapb.c
+@@ -277,13 +277,15 @@ static void dwapb_irq_enable(struct irq_
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
++	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 	u32 val;
  
- 		default:
- 			return -EINVAL;
--- 
-2.43.0
-
+ 	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+-	val = dwapb_read(gpio, GPIO_INTEN);
+-	val |= BIT(irqd_to_hwirq(d));
++	val = dwapb_read(gpio, GPIO_INTEN) | BIT(hwirq);
+ 	dwapb_write(gpio, GPIO_INTEN, val);
++	val = dwapb_read(gpio, GPIO_INTMASK) & ~BIT(hwirq);
++	dwapb_write(gpio, GPIO_INTMASK, val);
+ 	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+ }
+ 
+@@ -291,12 +293,14 @@ static void dwapb_irq_disable(struct irq
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct dwapb_gpio *gpio = to_dwapb_gpio(gc);
++	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+ 	unsigned long flags;
+ 	u32 val;
+ 
+ 	raw_spin_lock_irqsave(&gc->bgpio_lock, flags);
+-	val = dwapb_read(gpio, GPIO_INTEN);
+-	val &= ~BIT(irqd_to_hwirq(d));
++	val = dwapb_read(gpio, GPIO_INTMASK) | BIT(hwirq);
++	dwapb_write(gpio, GPIO_INTMASK, val);
++	val = dwapb_read(gpio, GPIO_INTEN) & ~BIT(hwirq);
+ 	dwapb_write(gpio, GPIO_INTEN, val);
+ 	raw_spin_unlock_irqrestore(&gc->bgpio_lock, flags);
+ }
 
 
 
