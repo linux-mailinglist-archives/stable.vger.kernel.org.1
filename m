@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E825A823296
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 883F582324D
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F44C281C6C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3361C237D8
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9241BDFF;
-	Wed,  3 Jan 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1551C2AD;
+	Wed,  3 Jan 2024 17:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmXArEx7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZolL4A0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EF61BDF1;
-	Wed,  3 Jan 2024 17:09:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E47C433C8;
-	Wed,  3 Jan 2024 17:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747981BDF0;
+	Wed,  3 Jan 2024 17:05:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF112C433C8;
+	Wed,  3 Jan 2024 17:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301744;
-	bh=16vf15VCvczniSb5DLhhHnUWMbYd92TxBmtWOWxqT0I=;
+	s=korg; t=1704301505;
+	bh=8BrzviSQVdbMNI98WFe/6SWgmwKgOVioADmEYKHEgPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmXArEx7+rQfMtNvmeo3I00jscwr7Md3v0xzUIclK8xKitDREvb71ptyRzvb6cKnG
-	 XHryVqxXRVLeExb1SJB7e+3/s47r+jMez8AWN/+Fqm3IxPDLrKcSXZvhBoz2v3J1vR
-	 ZjMW/e2DYfpwKIOZivrikeTlfZOWC3bv1qMdoOiA=
+	b=ZolL4A0zgSUXxStIzXFudE1l1rxfS2spxvsfTAJNWUS57SqIT+J3ZBXg0fmgV7hI4
+	 YXAi45cchwUYJn3ib2sdrfPslAx9ADRupU1gh6Uot5NSWRTBKlXWUnTOtOz0oFR03q
+	 nWIBF8KSrjRXJ4Eqwjoxuv/5WnYrH8QAHG5cKXg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/75] net: check dev->gso_max_size in gso_features_check()
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 51/95] Bluetooth: L2CAP: Send reject on command corrupted request
 Date: Wed,  3 Jan 2024 17:54:59 +0100
-Message-ID: <20240103164845.966439896@linuxfoundation.org>
+Message-ID: <20240103164901.726684568@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +50,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit 24ab059d2ebd62fdccc43794796f6ffbabe49ebc ]
+commit 78b99eb1faa7371bf9c534690f26a71b6996622d upstream.
 
-Some drivers might misbehave if TSO packets get too big.
+L2CAP/COS/CED/BI-02-C PTS test send a malformed L2CAP signaling packet
+with 2 commands in it (a connection request and an unknown command) and
+expect to get a connection response packet and a command reject packet.
+The second is currently not sent.
 
-GVE for instance uses a 16bit field in its TX descriptor,
-and will do bad things if a packet is bigger than 2^16 bytes.
-
-Linux TCP stack honors dev->gso_max_size, but there are
-other ways for too big packets to reach an ndo_start_xmit()
-handler : virtio_net, af_packet, GRO...
-
-Add a generic check in gso_features_check() and fallback
-to GSO when needed.
-
-gso_max_size was added in the blamed commit.
-
-Fixes: 82cc1a7a5687 ("[NET]: Add per-connection option to set max TSO frame size")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231219125331.4127498-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/l2cap_core.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 34f80946d2c72..fc881d60a9dcc 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3523,6 +3523,9 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > dev->gso_max_segs)
- 		return features & ~NETIF_F_GSO_MASK;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6493,6 +6493,14 @@ drop:
+ 	kfree_skb(skb);
+ }
  
-+	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
-+		return features & ~NETIF_F_GSO_MASK;
++static inline void l2cap_sig_send_rej(struct l2cap_conn *conn, u16 ident)
++{
++	struct l2cap_cmd_rej_unk rej;
 +
- 	if (!skb_shinfo(skb)->gso_type) {
- 		skb_warn_bad_offload(skb);
- 		return features & ~NETIF_F_GSO_MASK;
--- 
-2.43.0
-
++	rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
++	l2cap_send_cmd(conn, ident, L2CAP_COMMAND_REJ, sizeof(rej), &rej);
++}
++
+ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 				     struct sk_buff *skb)
+ {
+@@ -6518,23 +6526,24 @@ static inline void l2cap_sig_channel(str
+ 
+ 		if (len > skb->len || !cmd->ident) {
+ 			BT_DBG("corrupted command");
++			l2cap_sig_send_rej(conn, cmd->ident);
+ 			break;
+ 		}
+ 
+ 		err = l2cap_bredr_sig_cmd(conn, cmd, len, skb->data);
+ 		if (err) {
+-			struct l2cap_cmd_rej_unk rej;
+-
+ 			BT_ERR("Wrong link type (%d)", err);
+-
+-			rej.reason = cpu_to_le16(L2CAP_REJ_NOT_UNDERSTOOD);
+-			l2cap_send_cmd(conn, cmd->ident, L2CAP_COMMAND_REJ,
+-				       sizeof(rej), &rej);
++			l2cap_sig_send_rej(conn, cmd->ident);
+ 		}
+ 
+ 		skb_pull(skb, len);
+ 	}
+ 
++	if (skb->len > 0) {
++		BT_DBG("corrupted command");
++		l2cap_sig_send_rej(conn, 0);
++	}
++
+ drop:
+ 	kfree_skb(skb);
+ }
 
 
 
