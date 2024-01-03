@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-9447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED6782326C
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ABE78232EA
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5FD1F24CCE
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F15F1C238A4
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE951C2B2;
-	Wed,  3 Jan 2024 17:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F21C290;
+	Wed,  3 Jan 2024 17:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsiBvFTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MD26wY0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1491C2AC;
-	Wed,  3 Jan 2024 17:06:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FEBC433C7;
-	Wed,  3 Jan 2024 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC971BDEC;
+	Wed,  3 Jan 2024 17:13:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23407C433C8;
+	Wed,  3 Jan 2024 17:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301606;
-	bh=gF40C3ZArQ3fEKzjmKH69t1CV36QWgaDKIT6+kOy4O0=;
+	s=korg; t=1704302002;
+	bh=ou7XetbFfL4sxZb7MBoOKTOVXuHl/tav7fYDxbm2Wco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsiBvFTNpLzqd/cs2ZUPCdQSShUj5QnVPJpniKmCEn99oE8tLIbMtyYEweD4v+4op
-	 od0cL+7VTVUvMQzeVHEL08bll+F7Qu3JC72Q6a4/3LVlptTsQrj9zA6z60v3+mE5ce
-	 Iq3QIr549Fnq/l9A88wzKUpvEcQ3f5ZF/iKEhXpc=
+	b=MD26wY0OgAE6zYXL+VsCb5mTuePk9SavDvvzdYoNam4JFs3X8CrJ2TjTr5GRppaav
+	 V3Rnaku8USCahRugYGzfFOcPz/avqMjLIk0SMcP/9Vguha9IsfJD7krQrvaSK6P75w
+	 i7ltqNJOujUT4l9tllhARQV2Yq9K/ahfh4vBzwLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Kangjing Huang <huangkangjing@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 75/95] usb: fotg210-hcd: delete an incorrect bounds test
-Date: Wed,  3 Jan 2024 17:55:23 +0100
-Message-ID: <20240103164905.280009769@linuxfoundation.org>
+Subject: [PATCH 6.6 04/49] ksmbd: fix missing RDMA-capable flag for IPoIB device in ksmbd_rdma_capable_netdev()
+Date: Wed,  3 Jan 2024 17:55:24 +0100
+Message-ID: <20240103164835.626118820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+References: <20240103164834.970234661@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +55,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kangjing Huang <huangkangjing@gmail.com>
 
-[ Upstream commit 7fbcd195e2b8cc952e4aeaeb50867b798040314c ]
+[ Upstream commit ecce70cf17d91c3dd87a0c4ea00b2d1387729701 ]
 
-Here "temp" is the number of characters that we have written and "size"
-is the size of the buffer.  The intent was clearly to say that if we have
-written to the end of the buffer then stop.
+Physical ib_device does not have an underlying net_device, thus its
+association with IPoIB net_device cannot be retrieved via
+ops.get_netdev() or ib_device_get_by_netdev(). ksmbd reads physical
+ib_device port GUID from the lower 16 bytes of the hardware addresses on
+IPoIB net_device and match its underlying ib_device using ib_find_gid()
 
-However, for that to work the comparison should have been done on the
-original "size" value instead of the "size -= temp" value.  Not only
-will that not trigger when we want to, but there is a small chance that
-it will trigger incorrectly before we want it to and we break from the
-loop slightly earlier than intended.
-
-This code was recently changed from using snprintf() to scnprintf().  With
-snprintf() we likely would have continued looping and passed a negative
-size parameter to snprintf().  This would have triggered an annoying
-WARN().  Now that we have converted to scnprintf() "size" will never
-drop below 1 and there is no real need for this test.  We could change
-the condition to "if (temp <= 1) goto done;" but just deleting the test
-is cleanest.
-
-Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Lee Jones <lee@kernel.org>
-Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kangjing Huang <huangkangjing@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/fotg210-hcd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ fs/smb/server/transport_rdma.c | 40 +++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
-index d9a3fd8af7a01..b0b6caaa29bd4 100644
---- a/drivers/usb/host/fotg210-hcd.c
-+++ b/drivers/usb/host/fotg210-hcd.c
-@@ -429,8 +429,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 			temp = size;
- 		size -= temp;
- 		next += temp;
--		if (temp == size)
--			goto done;
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 3b269e1f523a1..c5629a68c8b73 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -2140,8 +2140,7 @@ static int smb_direct_ib_client_add(struct ib_device *ib_dev)
+ 	if (ib_dev->node_type != RDMA_NODE_IB_CA)
+ 		smb_direct_port = SMB_DIRECT_PORT_IWARP;
+ 
+-	if (!ib_dev->ops.get_netdev ||
+-	    !rdma_frwr_is_supported(&ib_dev->attrs))
++	if (!rdma_frwr_is_supported(&ib_dev->attrs))
+ 		return 0;
+ 
+ 	smb_dev = kzalloc(sizeof(*smb_dev), GFP_KERNEL);
+@@ -2241,17 +2240,38 @@ bool ksmbd_rdma_capable_netdev(struct net_device *netdev)
+ 		for (i = 0; i < smb_dev->ib_dev->phys_port_cnt; i++) {
+ 			struct net_device *ndev;
+ 
+-			ndev = smb_dev->ib_dev->ops.get_netdev(smb_dev->ib_dev,
+-							       i + 1);
+-			if (!ndev)
+-				continue;
++			if (smb_dev->ib_dev->ops.get_netdev) {
++				ndev = smb_dev->ib_dev->ops.get_netdev(
++					smb_dev->ib_dev, i + 1);
++				if (!ndev)
++					continue;
+ 
+-			if (ndev == netdev) {
++				if (ndev == netdev) {
++					dev_put(ndev);
++					rdma_capable = true;
++					goto out;
++				}
+ 				dev_put(ndev);
+-				rdma_capable = true;
+-				goto out;
++			/* if ib_dev does not implement ops.get_netdev
++			 * check for matching infiniband GUID in hw_addr
++			 */
++			} else if (netdev->type == ARPHRD_INFINIBAND) {
++				struct netdev_hw_addr *ha;
++				union ib_gid gid;
++				u32 port_num;
++				int ret;
++
++				netdev_hw_addr_list_for_each(
++					ha, &netdev->dev_addrs) {
++					memcpy(&gid, ha->addr + 4, sizeof(gid));
++					ret = ib_find_gid(smb_dev->ib_dev, &gid,
++							  &port_num, NULL);
++					if (!ret) {
++						rdma_capable = true;
++						goto out;
++					}
++				}
+ 			}
+-			dev_put(ndev);
+ 		}
  	}
- 
- 	temp = snprintf(next, size, "\n");
-@@ -440,7 +438,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
- 	size -= temp;
- 	next += temp;
- 
--done:
- 	*sizep = size;
- 	*nextp = next;
- }
+ out:
 -- 
 2.43.0
 
