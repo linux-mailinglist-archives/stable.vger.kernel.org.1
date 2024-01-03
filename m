@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-9454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26DAB823273
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:07:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 695C182320C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEF8F1F24D0A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03DF328A5AC
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540481C29D;
-	Wed,  3 Jan 2024 17:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74E11BDFB;
+	Wed,  3 Jan 2024 17:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yw0gOrlf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTMWkU5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9711C294;
-	Wed,  3 Jan 2024 17:07:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77275C433C7;
-	Wed,  3 Jan 2024 17:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710351BDE9;
+	Wed,  3 Jan 2024 17:01:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC82C433CB;
+	Wed,  3 Jan 2024 17:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301634;
-	bh=t0liVBdPmng35TdNoGIzS+p6jPmoKQg+yh9V9ie9YXI=;
+	s=korg; t=1704301317;
+	bh=mexe57NhYOYwMpEvaNV9XwWtqj5sE9mBh6L31A0Yzvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yw0gOrlfa53MtL/WUbGsQFFL+r7WvtJDzJv8AhdN+0wkhWSs/8Kc0B8jtEe9b6ciV
-	 RnJ4tUJ13aajUcwt3wF30ftZOmqrfZMec26nNPUGw8Qqe3lMhhdozzGPVxjNBC2z3C
-	 8ZKUDbp4a01GShQnwbvyQjyie40ek3uGGwzVzLas=
+	b=WTMWkU5uzj/DZgtZ2cAqkfL/NdjFKoQ1xwzdI7OMLEQ7p7qbT3QwQ+hri45oqvwxn
+	 YfBAAVFTFLjtFKReXJMXxP0cu6QX50E8871y4iNWQmc01KY2uRCaGCKhjYG0BKKlJA
+	 sO5nNQcNlEd//yrZYlmPRXOXByngOfWwpYB3BXZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 81/95] spi: Introduce spi_get_device_match_data() helper
+	Francis Laniel <flaniel@linux.microsoft.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Hao Wei Tee <angelsl@in04.sg>
+Subject: [PATCH 6.1 100/100] tracing/kprobes: Fix symbol counting logic by looking at modules as well
 Date: Wed,  3 Jan 2024 17:55:29 +0100
-Message-ID: <20240103164906.216472937@linuxfoundation.org>
+Message-ID: <20240103164911.126685591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+References: <20240103164856.169912722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +56,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit aea672d054a21782ed8450c75febb6ba3c208ca4 ]
+commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
 
-The proposed spi_get_device_match_data() helper is for retrieving
-a driver data associated with the ID in an ID table. First, it tries
-to get driver data of the device enumerated by firmware interface
-(usually Device Tree or ACPI). If none is found it falls back to
-the SPI ID table matching.
+Recent changes to count number of matching symbols when creating
+a kprobe event failed to take into account kernel modules. As such, it
+breaks kprobes on kernel module symbols, by assuming there is no match.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20221020195421.10482-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this my calling module_kallsyms_on_each_symbol() in addition to
+kallsyms_on_each_match_symbol() to perform a proper counting.
+
+Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+
+Cc: Francis Laniel <flaniel@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hao Wei Tee <angelsl@in04.sg>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c       | 12 ++++++++++++
- include/linux/spi/spi.h |  3 +++
- 2 files changed, 15 insertions(+)
+ kernel/trace/trace_kprobe.c |   25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 06dd1be54925e..d4b186a35bb22 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -335,6 +335,18 @@ const struct spi_device_id *spi_get_device_id(const struct spi_device *sdev)
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -714,14 +714,31 @@ static int count_symbols(void *data, uns
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(spi_get_device_id);
  
-+const void *spi_get_device_match_data(const struct spi_device *sdev)
++struct sym_count_ctx {
++	unsigned int count;
++	const char *name;
++};
++
++static int count_mod_symbols(void *data, const char *name,
++			     struct module *module, unsigned long unused)
 +{
-+	const void *match;
++	struct sym_count_ctx *ctx = data;
 +
-+	match = device_get_match_data(&sdev->dev);
-+	if (match)
-+		return match;
++	if (strcmp(name, ctx->name) == 0)
++		ctx->count++;
 +
-+	return (const void *)spi_get_device_id(sdev)->driver_data;
++	return 0;
 +}
-+EXPORT_SYMBOL_GPL(spi_get_device_match_data);
 +
- static int spi_match_device(struct device *dev, struct device_driver *drv)
+ static unsigned int number_of_same_symbols(char *func_name)
  {
- 	const struct spi_device	*spi = to_spi_device(dev);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 6b0b686f6f904..9ab3dab9568ae 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1499,6 +1499,9 @@ extern void spi_unregister_device(struct spi_device *spi);
- extern const struct spi_device_id *
- spi_get_device_id(const struct spi_device *sdev);
+-	unsigned int count;
++	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
++
++	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
  
-+extern const void *
-+spi_get_device_match_data(const struct spi_device *sdev);
-+
- static inline bool
- spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
- {
--- 
-2.43.0
-
+-	count = 0;
+-	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
++	module_kallsyms_on_each_symbol(count_mod_symbols, &ctx);
+ 
+-	return count;
++	return ctx.count;
+ }
+ 
+ static int __trace_kprobe_create(int argc, const char *argv[])
 
 
 
