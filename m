@@ -1,86 +1,115 @@
-Return-Path: <stable+bounces-9228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2628225E6
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 01:20:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B7FC8225EE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 01:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3719F1F235C0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 00:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B83B28463C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 00:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1BF64B;
-	Wed,  3 Jan 2024 00:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11EF36D;
+	Wed,  3 Jan 2024 00:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f5qKZiw/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FmlhH5D6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAB6364;
-	Wed,  3 Jan 2024 00:20:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 05128C433C9;
-	Wed,  3 Jan 2024 00:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE47364
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 00:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479E5C433CA
+	for <stable@vger.kernel.org>; Wed,  3 Jan 2024 00:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704241225;
-	bh=m/YtIRosK7AiMzo6ZLongGReudykuxF9y3ocqvW6R7w=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=f5qKZiw/REbZx47AsPFOpYVfyQYr32QPrNhfBtyzcTaphRYlUbroehMv2hNScRNhP
-	 rxMsxFIwiSHP1yw/oMsB52n7JiwqO8s8fD7i/kYSaOPI3y+MoOEximvmH2327LC0tL
-	 RcT9II93mmm4tlh4g8bQ1oFk+Y6f9JPiN/X3iwdwexfDR6Uwdal3gOk0e9TzN4qZgk
-	 GlMi47EwYWPVAT/49vEYXz+L8avtnc3vJB2Iil7P8MlwxSjfovGFJ+fE3LOudxyqbB
-	 WH71HeARxawo+kOb8ek5gTMpf8N1kYkvKSZf1rZOJL5Kv9VXcKCrerdJ0cvixsmZ2o
-	 mn6YI6MADHfaQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DC903DCB6D1;
-	Wed,  3 Jan 2024 00:20:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1704241758;
+	bh=kxfwKYt+hEkj7gYJnIe4RDLWgUV1ATQ7v7O6ddUgemg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=FmlhH5D6f+3NRQ/4aWD9TXZzbgcD2RP0/jy8UajyTT1v2AUEYyYWP4Bcw6kOZzR9X
+	 KKWJKAZ9PyKuYKijNqWcym11JypZmODKe5wHsgHkj1hREf+ZFOIdDzJMj5dJWEpSXQ
+	 wmYPejzcSay7ZoZre2GoOrWCpQcv4BtyD26tnwFPhoR9Xz/Kl9C2jN3vgwe0AGd4Tt
+	 GJcdMQtOskJcXVdetOSjMzSzbZs/K41xNNV3xpmGBTX2KzPbgT63fR7IZdh4pV+H4o
+	 Tha+tYYfKUgDzdL7HOQ05Cyqx5XIXEfB4mochYy3pguPEVaY0gv1Syc+e6viW2yIC/
+	 XWf58rTpODoWA==
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6dc20b4595bso2866993a34.0
+        for <stable@vger.kernel.org>; Tue, 02 Jan 2024 16:29:18 -0800 (PST)
+X-Gm-Message-State: AOJu0Yya0bCNPTLMn9sjnyiUS8x4+CnhvbleMeULr2CHWdHr/u+0s0wV
+	zLh5TjZuK4hqnopEoKBOf2gbvLYGR9yWUaukBws=
+X-Google-Smtp-Source: AGHT+IEF7lI/f1VMA5bxWdVjxw3wO+4a/39VOFTNgW6aydlVwIUwSsHkIfnLDiZr2dhJxxYdamNisB0xZ9RDxdvrpNU=
+X-Received: by 2002:a05:6830:2784:b0:6dc:3dae:dcb9 with SMTP id
+ x4-20020a056830278400b006dc3daedcb9mr4253773otu.28.1704241757564; Tue, 02 Jan
+ 2024 16:29:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] mptcp: new reviewer and prevent a warning
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170424122489.12524.14018674920048838370.git-patchwork-notify@kernel.org>
-Date: Wed, 03 Jan 2024 00:20:24 +0000
-References: <20231226-upstream-net-20231226-mptcp-prevent-warn-v1-0-1404dcc431ea@kernel.org>
-In-Reply-To: <20231226-upstream-net-20231226-mptcp-prevent-warn-v1-0-1404dcc431ea@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang.tang@linux.dev,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org, stable@vger.kernel.org,
- syzbot+5a01c3a666e726bc8752@syzkaller.appspotmail.com
+Received: by 2002:a8a:d42:0:b0:511:f2c1:11ee with HTTP; Tue, 2 Jan 2024
+ 16:29:16 -0800 (PST)
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Wed, 3 Jan 2024 09:29:16 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd9kQaQYwBuc_=gMi2mKz3aggjxDvkbTCtYM_oJ5i0Rq4Q@mail.gmail.com>
+Message-ID: <CAKYAXd9kQaQYwBuc_=gMi2mKz3aggjxDvkbTCtYM_oJ5i0Rq4Q@mail.gmail.com>
+Subject: [PATCH 5.15.y ] ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+To: gregkh@linuxfoundation.org
+Cc: lometsj@live.com, stfrench@microsoft.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+[ Upstream commit d10c77873ba1e9e6b91905018e29e196fd5f863d ]
 
-On Tue, 26 Dec 2023 13:10:16 +0100 you wrote:
-> Patch 1 adds MPTCP long time contributor -- Geliang Tang -- as a new
-> reviewer for the project. Thanks!
-> 
-> Patch 2 prevents a warning when TCP Diag is used to close internal MPTCP
-> listener subflows. This is a correction for a patch introduced in v6.4
-> which was fixing an issue from v5.17.
-> 
-> [...]
+If ->NameOffset/Length is bigger than ->CreateContextsOffset/Length,
+ksmbd_check_message doesn't validate request buffer it correctly.
+So slab-out-of-bounds warning from calling smb_strndup_from_utf16()
+in smb2_open() could happen. If ->NameLength is non-zero, Set the larger
+of the two sums (Name and CreateContext size) as the offset and length of
+the data area.
 
-Here is the summary with links:
-  - [net,1/2] MAINTAINERS: add Geliang as reviewer for MPTCP
-    https://git.kernel.org/netdev/net/c/118ba479d02c
-  - [net,2/2] mptcp: prevent tcp diag from closing listener subflows
-    https://git.kernel.org/netdev/net/c/4c0288299fd0
+Reported-by: Yang Chaoming <lometsj@live.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+---
+ fs/ksmbd/smb2misc.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-You are awesome, thank you!
+diff --git a/fs/ksmbd/smb2misc.c b/fs/ksmbd/smb2misc.c
+index 39e523f115d2..4d1211bde190 100644
+--- a/fs/ksmbd/smb2misc.c
++++ b/fs/ksmbd/smb2misc.c
+@@ -107,16 +107,25 @@ static int smb2_get_data_area_len(unsigned int
+*off, unsigned int *len,
+ 		break;
+ 	case SMB2_CREATE:
+ 	{
++		unsigned short int name_off =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
++		unsigned short int name_len =
++			le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++
+ 		if (((struct smb2_create_req *)hdr)->CreateContextsLength) {
+ 			*off = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsOffset);
+ 			*len = le32_to_cpu(((struct smb2_create_req *)
+ 				hdr)->CreateContextsLength);
+-			break;
++			if (!name_len)
++				break;
++
++			if (name_off + name_len < (u64)*off + *len)
++				break;
+ 		}
+
+-		*off = le16_to_cpu(((struct smb2_create_req *)hdr)->NameOffset);
+-		*len = le16_to_cpu(((struct smb2_create_req *)hdr)->NameLength);
++		*off = name_off;
++		*len = name_len;
+ 		break;
+ 	}
+ 	case SMB2_QUERY_INFO:
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.34.1
 
