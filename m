@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADF482328A
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B998232DE
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A1E81F24800
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F9D1C23C29
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204041C29C;
-	Wed,  3 Jan 2024 17:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F241C1C280;
+	Wed,  3 Jan 2024 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em8CCjOe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbGyoDKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7701C295;
-	Wed,  3 Jan 2024 17:08:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076ECC433C7;
-	Wed,  3 Jan 2024 17:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA531BDF1;
+	Wed,  3 Jan 2024 17:12:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23D0DC433C7;
+	Wed,  3 Jan 2024 17:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301704;
-	bh=Gr5GOAgYgHy3g5efdcG969dObyrfCHvlyhzzCWcufOY=;
+	s=korg; t=1704301964;
+	bh=lVtIHogaV19bicU5tfDSNxDMAKRgmBiVWbM3WICmV5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=em8CCjOeqHnxHFFO61LZzKnMtOLnPXmkX25k6fE7gL+CQSBPRauX0ba9d1V2Dkg/g
-	 iv1zns3jU/tbWEo9/lUX2c93pKqGOz+ZCXAudlCZGWDqHbDDOtncUqCyj6uxe1+V9e
-	 Q5dDNlGaYCaWSho+EQxZcoKna9pUMpxvY/JIbYis=
+	b=lbGyoDKeg6uvfZeOGvtv0q5kNoJI75PyUuSBrhQi74ARLIdnOmuyppBxRsx3IxOHx
+	 ik9puc9+Ii25T9CtYwAMEMgLU8if/9bRuycs+TzN/lLiMzs5LXdSWwW0AW2migGJgI
+	 nENZXQSqqtRmQZ3k8k9m86JoOokwuRfDGwm7DqBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 94/95] device property: Allow const parameter to dev_fwnode()
+	Dan Sneddon <dan.sneddon@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 61/75] spi: atmel: Fix CS and initialization bug
 Date: Wed,  3 Jan 2024 17:55:42 +0100
-Message-ID: <20240103164908.151824053@linuxfoundation.org>
+Message-ID: <20240103164852.329991240@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-References: <20240103164853.921194838@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +53,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dan Sneddon <dan.sneddon@microchip.com>
 
-commit b295d484b97081feba72b071ffcb72fb4638ccfd upstream.
+[ Upstream commit 69e1818ad27bae167eeaaf6829d4a08900ef5153 ]
 
-It's not fully correct to take a const parameter pointer to a struct
-and return a non-const pointer to a member of that struct.
+Commit 5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer
+method") switched to using transfer_one and set_cs.  The
+core doesn't call set_cs when the chip select lines are gpios.  Add the
+SPI_MASTER_GPIO_SS flag to the driver to ensure the calls to set_cs
+happen since the driver programs configuration registers there.
 
-Instead, introduce a const version of the dev_fwnode() API which takes
-and returns const pointers and use it where it's applicable.
+Fixes: 5fa5e6dec762 ("spi: atmel: Switch to transfer_one transfer method")
 
-With this, convert dev_fwnode() to be a macro wrapper on top of const
-and non-const APIs that chooses one based on the type.
-
-Suggested-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Fixes: aade55c86033 ("device property: Add const qualifier to device_get_match_data() parameter")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20221004092129.19412-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dan Sneddon <dan.sneddon@microchip.com>
+Link: https://lore.kernel.org/r/20210629192218.32125-1-dan.sneddon@microchip.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: fc70d643a2f6 ("spi: atmel: Fix clock issue when using devices with different polarities")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/property.c  |   11 +++++++++--
- include/linux/property.h |    7 ++++++-
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ drivers/spi/spi-atmel.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -18,12 +18,19 @@
- #include <linux/etherdevice.h>
- #include <linux/phy.h>
+diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
+index 2dba2089f2b7e..19499131e5676 100644
+--- a/drivers/spi/spi-atmel.c
++++ b/drivers/spi/spi-atmel.c
+@@ -352,8 +352,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 		}
  
--struct fwnode_handle *dev_fwnode(const struct device *dev)
-+struct fwnode_handle *__dev_fwnode(struct device *dev)
- {
- 	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
- 		of_fwnode_handle(dev->of_node) : dev->fwnode;
+ 		mr = spi_readl(as, MR);
+-		if (spi->cs_gpiod)
+-			gpiod_set_value(spi->cs_gpiod, 1);
+ 	} else {
+ 		u32 cpol = (spi->mode & SPI_CPOL) ? SPI_BIT(CPOL) : 0;
+ 		int i;
+@@ -369,8 +367,6 @@ static void cs_activate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 		mr = spi_readl(as, MR);
+ 		mr = SPI_BFINS(PCS, ~(1 << chip_select), mr);
+-		if (spi->cs_gpiod)
+-			gpiod_set_value(spi->cs_gpiod, 1);
+ 		spi_writel(as, MR, mr);
+ 	}
+ 
+@@ -400,8 +396,6 @@ static void cs_deactivate(struct atmel_spi *as, struct spi_device *spi)
+ 
+ 	if (!spi->cs_gpiod)
+ 		spi_writel(as, CR, SPI_BIT(LASTXFER));
+-	else
+-		gpiod_set_value(spi->cs_gpiod, 0);
  }
--EXPORT_SYMBOL_GPL(dev_fwnode);
-+EXPORT_SYMBOL_GPL(__dev_fwnode);
-+
-+const struct fwnode_handle *__dev_fwnode_const(const struct device *dev)
-+{
-+	return IS_ENABLED(CONFIG_OF) && dev->of_node ?
-+		of_fwnode_handle(dev->of_node) : dev->fwnode;
-+}
-+EXPORT_SYMBOL_GPL(__dev_fwnode_const);
  
- /**
-  * device_property_present - check if a property of a device is present
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -31,7 +31,12 @@ enum dev_dma_attr {
- 	DEV_DMA_COHERENT,
- };
- 
--struct fwnode_handle *dev_fwnode(const struct device *dev);
-+const struct fwnode_handle *__dev_fwnode_const(const struct device *dev);
-+struct fwnode_handle *__dev_fwnode(struct device *dev);
-+#define dev_fwnode(dev)							\
-+	_Generic((dev),							\
-+		 const struct device *: __dev_fwnode_const,	\
-+		 struct device *: __dev_fwnode)(dev)
- 
- bool device_property_present(struct device *dev, const char *propname);
- int device_property_read_u8_array(struct device *dev, const char *propname,
+ static void atmel_spi_lock(struct atmel_spi *as) __acquires(&as->lock)
+@@ -1498,7 +1492,8 @@ static int atmel_spi_probe(struct platform_device *pdev)
+ 	master->bus_num = pdev->id;
+ 	master->num_chipselect = 4;
+ 	master->setup = atmel_spi_setup;
+-	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX);
++	master->flags = (SPI_MASTER_MUST_RX | SPI_MASTER_MUST_TX |
++			SPI_MASTER_GPIO_SS);
+ 	master->transfer_one = atmel_spi_one_transfer;
+ 	master->set_cs = atmel_spi_set_cs;
+ 	master->cleanup = atmel_spi_cleanup;
+-- 
+2.43.0
+
 
 
 
