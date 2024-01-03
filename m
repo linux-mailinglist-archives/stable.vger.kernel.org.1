@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-9335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F92F8231E1
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:00:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DF782328F
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2828A1F2467E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:00:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45785B22DD7
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404671C283;
-	Wed,  3 Jan 2024 16:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586361C289;
+	Wed,  3 Jan 2024 17:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJruPAJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDOYroT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07EDC1BDF0;
-	Wed,  3 Jan 2024 16:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9C8C433C7;
-	Wed,  3 Jan 2024 16:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223001BDDE;
+	Wed,  3 Jan 2024 17:08:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364EDC433C8;
+	Wed,  3 Jan 2024 17:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301195;
-	bh=lWGGZFxcgwAoMczuiWIAOMSoGprm6n/n3/y+Bowws3I=;
+	s=korg; t=1704301721;
+	bh=UdFWLXS1czsxeDz+SoEcrJcRGXNZJTVE6ma8I1Nn1wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJruPAJvhBhQNVelpD3bWv+p0a3rP3tcB918LdjE8Ohy2cxbg5DppGA+dpLW2pr15
-	 t8GjQVbMyUcFfx5lX0LspnawPyqYoGo0hQuPYunm1L6fYNgYQe1JAPfzeg0nqC9uY1
-	 85gZ6l8gPdXPWMnz9Yrdze6BW4vGQ9PzxmUtCHCs=
+	b=zDOYroT8yM7wQuFLUzmGBlamV9x/JbQjWVaoJEtFY0pdXCjbMg0Su6e/1iNEzKZ+H
+	 ed/1zZQp4jI8/JaFHpN5n9owSN4t1VBbge2xsuqTUO48dc4qW+aqyLFDLa1u7tiv7W
+	 8w+x9nPN2/eIStPyR6/5cJ/LT53PdH18gsnZ5G4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/100] ksmbd: move oplock handling after unlock parent dir
+Subject: [PATCH 5.10 11/75] net: sched: ife: fix potential use-after-free
 Date: Wed,  3 Jan 2024 17:54:52 +0100
-Message-ID: <20240103164905.550060089@linuxfoundation.org>
+Message-ID: <20240103164844.683957911@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,365 +56,240 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2e450920d58b4991a436c8cecf3484bcacd8e535 ]
+[ Upstream commit 19391a2ca98baa7b80279306cdf7dd43f81fa595 ]
 
-ksmbd should process secound parallel smb2 create request during waiting
-oplock break ack. parent lock range that is too large in smb2_open() causes
-smb2_open() to be serialized. Move the oplock handling to the bottom of
-smb2_open() and make it called after parent unlock. This fixes the failure
-of smb2.lease.breaking1 testcase.
+ife_decode() calls pskb_may_pull() two times, we need to reload
+ifehdr after the second one, or risk use-after-free as reported
+by syzbot:
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+BUG: KASAN: slab-use-after-free in __ife_tlv_meta_valid net/ife/ife.c:108 [inline]
+BUG: KASAN: slab-use-after-free in ife_tlv_meta_decode+0x1d1/0x210 net/ife/ife.c:131
+Read of size 2 at addr ffff88802d7300a4 by task syz-executor.5/22323
+
+CPU: 0 PID: 22323 Comm: syz-executor.5 Not tainted 6.7.0-rc3-syzkaller-00804-g074ac38d5b95 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+print_address_description mm/kasan/report.c:364 [inline]
+print_report+0xc4/0x620 mm/kasan/report.c:475
+kasan_report+0xda/0x110 mm/kasan/report.c:588
+__ife_tlv_meta_valid net/ife/ife.c:108 [inline]
+ife_tlv_meta_decode+0x1d1/0x210 net/ife/ife.c:131
+tcf_ife_decode net/sched/act_ife.c:739 [inline]
+tcf_ife_act+0x4e3/0x1cd0 net/sched/act_ife.c:879
+tc_act include/net/tc_wrapper.h:221 [inline]
+tcf_action_exec+0x1ac/0x620 net/sched/act_api.c:1079
+tcf_exts_exec include/net/pkt_cls.h:344 [inline]
+mall_classify+0x201/0x310 net/sched/cls_matchall.c:42
+tc_classify include/net/tc_wrapper.h:227 [inline]
+__tcf_classify net/sched/cls_api.c:1703 [inline]
+tcf_classify+0x82f/0x1260 net/sched/cls_api.c:1800
+hfsc_classify net/sched/sch_hfsc.c:1147 [inline]
+hfsc_enqueue+0x315/0x1060 net/sched/sch_hfsc.c:1546
+dev_qdisc_enqueue+0x3f/0x230 net/core/dev.c:3739
+__dev_xmit_skb net/core/dev.c:3828 [inline]
+__dev_queue_xmit+0x1de1/0x3d30 net/core/dev.c:4311
+dev_queue_xmit include/linux/netdevice.h:3165 [inline]
+packet_xmit+0x237/0x350 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3081 [inline]
+packet_sendmsg+0x24aa/0x5200 net/packet/af_packet.c:3113
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7fe9acc7cae9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fe9ada450c8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007fe9acd9bf80 RCX: 00007fe9acc7cae9
+RDX: 000000000000fce0 RSI: 00000000200002c0 RDI: 0000000000000003
+RBP: 00007fe9accc847a R08: 0000000020000140 R09: 0000000000000014
+R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fe9acd9bf80 R15: 00007ffd5427ae78
+</TASK>
+
+Allocated by task 22323:
+kasan_save_stack+0x33/0x50 mm/kasan/common.c:45
+kasan_set_track+0x25/0x30 mm/kasan/common.c:52
+____kasan_kmalloc mm/kasan/common.c:374 [inline]
+__kasan_kmalloc+0xa2/0xb0 mm/kasan/common.c:383
+kasan_kmalloc include/linux/kasan.h:198 [inline]
+__do_kmalloc_node mm/slab_common.c:1007 [inline]
+__kmalloc_node_track_caller+0x5a/0x90 mm/slab_common.c:1027
+kmalloc_reserve+0xef/0x260 net/core/skbuff.c:582
+__alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+alloc_skb include/linux/skbuff.h:1298 [inline]
+alloc_skb_with_frags+0xe4/0x710 net/core/skbuff.c:6331
+sock_alloc_send_pskb+0x7e4/0x970 net/core/sock.c:2780
+packet_alloc_skb net/packet/af_packet.c:2930 [inline]
+packet_snd net/packet/af_packet.c:3024 [inline]
+packet_sendmsg+0x1e2a/0x5200 net/packet/af_packet.c:3113
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Freed by task 22323:
+kasan_save_stack+0x33/0x50 mm/kasan/common.c:45
+kasan_set_track+0x25/0x30 mm/kasan/common.c:52
+kasan_save_free_info+0x2b/0x40 mm/kasan/generic.c:522
+____kasan_slab_free mm/kasan/common.c:236 [inline]
+____kasan_slab_free+0x15b/0x1b0 mm/kasan/common.c:200
+kasan_slab_free include/linux/kasan.h:164 [inline]
+slab_free_hook mm/slub.c:1800 [inline]
+slab_free_freelist_hook+0x114/0x1e0 mm/slub.c:1826
+slab_free mm/slub.c:3809 [inline]
+__kmem_cache_free+0xc0/0x180 mm/slub.c:3822
+skb_kfree_head net/core/skbuff.c:950 [inline]
+skb_free_head+0x110/0x1b0 net/core/skbuff.c:962
+pskb_expand_head+0x3c5/0x1170 net/core/skbuff.c:2130
+__pskb_pull_tail+0xe1/0x1830 net/core/skbuff.c:2655
+pskb_may_pull_reason include/linux/skbuff.h:2685 [inline]
+pskb_may_pull include/linux/skbuff.h:2693 [inline]
+ife_decode+0x394/0x4f0 net/ife/ife.c:82
+tcf_ife_decode net/sched/act_ife.c:727 [inline]
+tcf_ife_act+0x43b/0x1cd0 net/sched/act_ife.c:879
+tc_act include/net/tc_wrapper.h:221 [inline]
+tcf_action_exec+0x1ac/0x620 net/sched/act_api.c:1079
+tcf_exts_exec include/net/pkt_cls.h:344 [inline]
+mall_classify+0x201/0x310 net/sched/cls_matchall.c:42
+tc_classify include/net/tc_wrapper.h:227 [inline]
+__tcf_classify net/sched/cls_api.c:1703 [inline]
+tcf_classify+0x82f/0x1260 net/sched/cls_api.c:1800
+hfsc_classify net/sched/sch_hfsc.c:1147 [inline]
+hfsc_enqueue+0x315/0x1060 net/sched/sch_hfsc.c:1546
+dev_qdisc_enqueue+0x3f/0x230 net/core/dev.c:3739
+__dev_xmit_skb net/core/dev.c:3828 [inline]
+__dev_queue_xmit+0x1de1/0x3d30 net/core/dev.c:4311
+dev_queue_xmit include/linux/netdevice.h:3165 [inline]
+packet_xmit+0x237/0x350 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3081 [inline]
+packet_sendmsg+0x24aa/0x5200 net/packet/af_packet.c:3113
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+__do_sys_sendto net/socket.c:2202 [inline]
+__se_sys_sendto net/socket.c:2198 [inline]
+__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+The buggy address belongs to the object at ffff88802d730000
+which belongs to the cache kmalloc-8k of size 8192
+The buggy address is located 164 bytes inside of
+freed 8192-byte region [ffff88802d730000, ffff88802d732000)
+
+The buggy address belongs to the physical page:
+page:ffffea0000b5cc00 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2d730
+head:ffffea0000b5cc00 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+flags: 0xfff00000000840(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000840 ffff888013042280 dead000000000122 0000000000000000
+raw: 0000000000000000 0000000080020002 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Unmovable, gfp_mask 0x1d20c0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC|__GFP_HARDWALL), pid 22323, tgid 22320 (syz-executor.5), ts 950317230369, free_ts 950233467461
+set_page_owner include/linux/page_owner.h:31 [inline]
+post_alloc_hook+0x2d0/0x350 mm/page_alloc.c:1544
+prep_new_page mm/page_alloc.c:1551 [inline]
+get_page_from_freelist+0xa28/0x3730 mm/page_alloc.c:3319
+__alloc_pages+0x22e/0x2420 mm/page_alloc.c:4575
+alloc_pages_mpol+0x258/0x5f0 mm/mempolicy.c:2133
+alloc_slab_page mm/slub.c:1870 [inline]
+allocate_slab mm/slub.c:2017 [inline]
+new_slab+0x283/0x3c0 mm/slub.c:2070
+___slab_alloc+0x979/0x1500 mm/slub.c:3223
+__slab_alloc.constprop.0+0x56/0xa0 mm/slub.c:3322
+__slab_alloc_node mm/slub.c:3375 [inline]
+slab_alloc_node mm/slub.c:3468 [inline]
+__kmem_cache_alloc_node+0x131/0x310 mm/slub.c:3517
+__do_kmalloc_node mm/slab_common.c:1006 [inline]
+__kmalloc_node_track_caller+0x4a/0x90 mm/slab_common.c:1027
+kmalloc_reserve+0xef/0x260 net/core/skbuff.c:582
+__alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+alloc_skb include/linux/skbuff.h:1298 [inline]
+alloc_skb_with_frags+0xe4/0x710 net/core/skbuff.c:6331
+sock_alloc_send_pskb+0x7e4/0x970 net/core/sock.c:2780
+packet_alloc_skb net/packet/af_packet.c:2930 [inline]
+packet_snd net/packet/af_packet.c:3024 [inline]
+packet_sendmsg+0x1e2a/0x5200 net/packet/af_packet.c:3113
+sock_sendmsg_nosec net/socket.c:730 [inline]
+__sock_sendmsg+0xd5/0x180 net/socket.c:745
+__sys_sendto+0x255/0x340 net/socket.c:2190
+page last free stack trace:
+reset_page_owner include/linux/page_owner.h:24 [inline]
+free_pages_prepare mm/page_alloc.c:1144 [inline]
+free_unref_page_prepare+0x53c/0xb80 mm/page_alloc.c:2354
+free_unref_page+0x33/0x3b0 mm/page_alloc.c:2494
+__unfreeze_partials+0x226/0x240 mm/slub.c:2655
+qlink_free mm/kasan/quarantine.c:168 [inline]
+qlist_free_all+0x6a/0x170 mm/kasan/quarantine.c:187
+kasan_quarantine_reduce+0x18e/0x1d0 mm/kasan/quarantine.c:294
+__kasan_slab_alloc+0x65/0x90 mm/kasan/common.c:305
+kasan_slab_alloc include/linux/kasan.h:188 [inline]
+slab_post_alloc_hook mm/slab.h:763 [inline]
+slab_alloc_node mm/slub.c:3478 [inline]
+slab_alloc mm/slub.c:3486 [inline]
+__kmem_cache_alloc_lru mm/slub.c:3493 [inline]
+kmem_cache_alloc_lru+0x219/0x6f0 mm/slub.c:3509
+alloc_inode_sb include/linux/fs.h:2937 [inline]
+ext4_alloc_inode+0x28/0x650 fs/ext4/super.c:1408
+alloc_inode+0x5d/0x220 fs/inode.c:261
+new_inode_pseudo fs/inode.c:1006 [inline]
+new_inode+0x22/0x260 fs/inode.c:1032
+__ext4_new_inode+0x333/0x5200 fs/ext4/ialloc.c:958
+ext4_symlink+0x5d7/0xa20 fs/ext4/namei.c:3398
+vfs_symlink fs/namei.c:4464 [inline]
+vfs_symlink+0x3e5/0x620 fs/namei.c:4448
+do_symlinkat+0x25f/0x310 fs/namei.c:4490
+__do_sys_symlinkat fs/namei.c:4506 [inline]
+__se_sys_symlinkat fs/namei.c:4503 [inline]
+__x64_sys_symlinkat+0x97/0xc0 fs/namei.c:4503
+do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+
+Fixes: d57493d6d1be ("net: sched: ife: check on metadata length")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 121 +++++++++++++++++++++-------------------
- 1 file changed, 65 insertions(+), 56 deletions(-)
+ net/ife/ife.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ff4cc39b85c72..3d965be412751 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2691,7 +2691,7 @@ int smb2_open(struct ksmbd_work *work)
- 		    *(char *)req->Buffer == '\\') {
- 			pr_err("not allow directory name included leading slash\n");
- 			rc = -EINVAL;
--			goto err_out1;
-+			goto err_out2;
- 		}
+diff --git a/net/ife/ife.c b/net/ife/ife.c
+index 13bbf8cb6a396..be05b690b9ef2 100644
+--- a/net/ife/ife.c
++++ b/net/ife/ife.c
+@@ -82,6 +82,7 @@ void *ife_decode(struct sk_buff *skb, u16 *metalen)
+ 	if (unlikely(!pskb_may_pull(skb, total_pull)))
+ 		return NULL;
  
- 		name = smb2_get_name(req->Buffer,
-@@ -2702,7 +2702,7 @@ int smb2_open(struct ksmbd_work *work)
- 			if (rc != -ENOMEM)
- 				rc = -ENOENT;
- 			name = NULL;
--			goto err_out1;
-+			goto err_out2;
- 		}
- 
- 		ksmbd_debug(SMB, "converted name = %s\n", name);
-@@ -2710,28 +2710,28 @@ int smb2_open(struct ksmbd_work *work)
- 			if (!test_share_config_flag(work->tcon->share_conf,
- 						    KSMBD_SHARE_FLAG_STREAMS)) {
- 				rc = -EBADF;
--				goto err_out1;
-+				goto err_out2;
- 			}
- 			rc = parse_stream_name(name, &stream_name, &s_type);
- 			if (rc < 0)
--				goto err_out1;
-+				goto err_out2;
- 		}
- 
- 		rc = ksmbd_validate_filename(name);
- 		if (rc < 0)
--			goto err_out1;
-+			goto err_out2;
- 
- 		if (ksmbd_share_veto_filename(share, name)) {
- 			rc = -ENOENT;
- 			ksmbd_debug(SMB, "Reject open(), vetoed file: %s\n",
- 				    name);
--			goto err_out1;
-+			goto err_out2;
- 		}
- 	} else {
- 		name = kstrdup("", GFP_KERNEL);
- 		if (!name) {
- 			rc = -ENOMEM;
--			goto err_out1;
-+			goto err_out2;
- 		}
- 	}
- 
-@@ -2744,14 +2744,14 @@ int smb2_open(struct ksmbd_work *work)
- 		       le32_to_cpu(req->ImpersonationLevel));
- 		rc = -EIO;
- 		rsp->hdr.Status = STATUS_BAD_IMPERSONATION_LEVEL;
--		goto err_out1;
-+		goto err_out2;
- 	}
- 
- 	if (req->CreateOptions && !(req->CreateOptions & CREATE_OPTIONS_MASK_LE)) {
- 		pr_err("Invalid create options : 0x%x\n",
- 		       le32_to_cpu(req->CreateOptions));
- 		rc = -EINVAL;
--		goto err_out1;
-+		goto err_out2;
- 	} else {
- 		if (req->CreateOptions & FILE_SEQUENTIAL_ONLY_LE &&
- 		    req->CreateOptions & FILE_RANDOM_ACCESS_LE)
-@@ -2761,13 +2761,13 @@ int smb2_open(struct ksmbd_work *work)
- 		    (FILE_OPEN_BY_FILE_ID_LE | CREATE_TREE_CONNECTION |
- 		     FILE_RESERVE_OPFILTER_LE)) {
- 			rc = -EOPNOTSUPP;
--			goto err_out1;
-+			goto err_out2;
- 		}
- 
- 		if (req->CreateOptions & FILE_DIRECTORY_FILE_LE) {
- 			if (req->CreateOptions & FILE_NON_DIRECTORY_FILE_LE) {
- 				rc = -EINVAL;
--				goto err_out1;
-+				goto err_out2;
- 			} else if (req->CreateOptions & FILE_NO_COMPRESSION_LE) {
- 				req->CreateOptions = ~(FILE_NO_COMPRESSION_LE);
- 			}
-@@ -2779,21 +2779,21 @@ int smb2_open(struct ksmbd_work *work)
- 		pr_err("Invalid create disposition : 0x%x\n",
- 		       le32_to_cpu(req->CreateDisposition));
- 		rc = -EINVAL;
--		goto err_out1;
-+		goto err_out2;
- 	}
- 
- 	if (!(req->DesiredAccess & DESIRED_ACCESS_MASK)) {
- 		pr_err("Invalid desired access : 0x%x\n",
- 		       le32_to_cpu(req->DesiredAccess));
- 		rc = -EACCES;
--		goto err_out1;
-+		goto err_out2;
- 	}
- 
- 	if (req->FileAttributes && !(req->FileAttributes & FILE_ATTRIBUTE_MASK_LE)) {
- 		pr_err("Invalid file attribute : 0x%x\n",
- 		       le32_to_cpu(req->FileAttributes));
- 		rc = -EINVAL;
--		goto err_out1;
-+		goto err_out2;
- 	}
- 
- 	if (req->CreateContextsOffset) {
-@@ -2801,19 +2801,19 @@ int smb2_open(struct ksmbd_work *work)
- 		context = smb2_find_context_vals(req, SMB2_CREATE_EA_BUFFER, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
--			goto err_out1;
-+			goto err_out2;
- 		} else if (context) {
- 			ea_buf = (struct create_ea_buf_req *)context;
- 			if (le16_to_cpu(context->DataOffset) +
- 			    le32_to_cpu(context->DataLength) <
- 			    sizeof(struct create_ea_buf_req)) {
- 				rc = -EINVAL;
--				goto err_out1;
-+				goto err_out2;
- 			}
- 			if (req->CreateOptions & FILE_NO_EA_KNOWLEDGE_LE) {
- 				rsp->hdr.Status = STATUS_ACCESS_DENIED;
- 				rc = -EACCES;
--				goto err_out1;
-+				goto err_out2;
- 			}
- 		}
- 
-@@ -2821,7 +2821,7 @@ int smb2_open(struct ksmbd_work *work)
- 						 SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
--			goto err_out1;
-+			goto err_out2;
- 		} else if (context) {
- 			ksmbd_debug(SMB,
- 				    "get query maximal access context\n");
-@@ -2832,11 +2832,11 @@ int smb2_open(struct ksmbd_work *work)
- 						 SMB2_CREATE_TIMEWARP_REQUEST, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
--			goto err_out1;
-+			goto err_out2;
- 		} else if (context) {
- 			ksmbd_debug(SMB, "get timewarp context\n");
- 			rc = -EBADF;
--			goto err_out1;
-+			goto err_out2;
- 		}
- 
- 		if (tcon->posix_extensions) {
-@@ -2844,7 +2844,7 @@ int smb2_open(struct ksmbd_work *work)
- 							 SMB2_CREATE_TAG_POSIX, 16);
- 			if (IS_ERR(context)) {
- 				rc = PTR_ERR(context);
--				goto err_out1;
-+				goto err_out2;
- 			} else if (context) {
- 				struct create_posix *posix =
- 					(struct create_posix *)context;
-@@ -2852,7 +2852,7 @@ int smb2_open(struct ksmbd_work *work)
- 				    le32_to_cpu(context->DataLength) <
- 				    sizeof(struct create_posix) - 4) {
- 					rc = -EINVAL;
--					goto err_out1;
-+					goto err_out2;
- 				}
- 				ksmbd_debug(SMB, "get posix context\n");
- 
-@@ -2864,7 +2864,7 @@ int smb2_open(struct ksmbd_work *work)
- 
- 	if (ksmbd_override_fsids(work)) {
- 		rc = -ENOMEM;
--		goto err_out1;
-+		goto err_out2;
- 	}
- 
- 	rc = ksmbd_vfs_kern_path_locked(work, name, LOOKUP_NO_SYMLINKS,
-@@ -3177,11 +3177,6 @@ int smb2_open(struct ksmbd_work *work)
- 
- 	fp->attrib_only = !(req->DesiredAccess & ~(FILE_READ_ATTRIBUTES_LE |
- 			FILE_WRITE_ATTRIBUTES_LE | FILE_SYNCHRONIZE_LE));
--	if (!S_ISDIR(file_inode(filp)->i_mode) && open_flags & O_TRUNC &&
--	    !fp->attrib_only && !stream_name) {
--		smb_break_all_oplock(work, fp);
--		need_truncate = 1;
--	}
- 
- 	/* fp should be searchable through ksmbd_inode.m_fp_list
- 	 * after daccess, saccess, attrib_only, and stream are
-@@ -3197,13 +3192,39 @@ int smb2_open(struct ksmbd_work *work)
- 		goto err_out;
- 	}
- 
-+	rc = ksmbd_vfs_getattr(&path, &stat);
-+	if (rc)
-+		goto err_out;
-+
-+	if (stat.result_mask & STATX_BTIME)
-+		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
-+	else
-+		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
-+	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
-+		fp->f_ci->m_fattr =
-+			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
-+
-+	if (!created)
-+		smb2_update_xattrs(tcon, &path, fp);
-+	else
-+		smb2_new_xattrs(tcon, &path, fp);
-+
-+	if (file_present || created)
-+		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
-+
-+	if (!S_ISDIR(file_inode(filp)->i_mode) && open_flags & O_TRUNC &&
-+	    !fp->attrib_only && !stream_name) {
-+		smb_break_all_oplock(work, fp);
-+		need_truncate = 1;
-+	}
-+
- 	share_ret = ksmbd_smb_check_shared_mode(fp->filp, fp);
- 	if (!test_share_config_flag(work->tcon->share_conf, KSMBD_SHARE_FLAG_OPLOCKS) ||
- 	    (req_op_level == SMB2_OPLOCK_LEVEL_LEASE &&
- 	     !(conn->vals->capabilities & SMB2_GLOBAL_CAP_LEASING))) {
- 		if (share_ret < 0 && !S_ISDIR(file_inode(fp->filp)->i_mode)) {
- 			rc = share_ret;
--			goto err_out;
-+			goto err_out1;
- 		}
- 	} else {
- 		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
-@@ -3213,7 +3234,7 @@ int smb2_open(struct ksmbd_work *work)
- 				    name, req_op_level, lc->req_state);
- 			rc = find_same_lease_key(sess, fp->f_ci, lc);
- 			if (rc)
--				goto err_out;
-+				goto err_out1;
- 		} else if (open_flags == O_RDONLY &&
- 			   (req_op_level == SMB2_OPLOCK_LEVEL_BATCH ||
- 			    req_op_level == SMB2_OPLOCK_LEVEL_EXCLUSIVE))
-@@ -3224,12 +3245,18 @@ int smb2_open(struct ksmbd_work *work)
- 				      le32_to_cpu(req->hdr.Id.SyncId.TreeId),
- 				      lc, share_ret);
- 		if (rc < 0)
--			goto err_out;
-+			goto err_out1;
- 	}
- 
- 	if (req->CreateOptions & FILE_DELETE_ON_CLOSE_LE)
- 		ksmbd_fd_set_delete_on_close(fp, file_info);
- 
-+	if (need_truncate) {
-+		rc = smb2_create_truncate(&fp->filp->f_path);
-+		if (rc)
-+			goto err_out1;
-+	}
-+
- 	if (req->CreateContextsOffset) {
- 		struct create_alloc_size_req *az_req;
- 
-@@ -3237,7 +3264,7 @@ int smb2_open(struct ksmbd_work *work)
- 					SMB2_CREATE_ALLOCATION_SIZE, 4);
- 		if (IS_ERR(az_req)) {
- 			rc = PTR_ERR(az_req);
--			goto err_out;
-+			goto err_out1;
- 		} else if (az_req) {
- 			loff_t alloc_size;
- 			int err;
-@@ -3246,7 +3273,7 @@ int smb2_open(struct ksmbd_work *work)
- 			    le32_to_cpu(az_req->ccontext.DataLength) <
- 			    sizeof(struct create_alloc_size_req)) {
- 				rc = -EINVAL;
--				goto err_out;
-+				goto err_out1;
- 			}
- 			alloc_size = le64_to_cpu(az_req->AllocationSize);
- 			ksmbd_debug(SMB,
-@@ -3264,30 +3291,13 @@ int smb2_open(struct ksmbd_work *work)
- 		context = smb2_find_context_vals(req, SMB2_CREATE_QUERY_ON_DISK_ID, 4);
- 		if (IS_ERR(context)) {
- 			rc = PTR_ERR(context);
--			goto err_out;
-+			goto err_out1;
- 		} else if (context) {
- 			ksmbd_debug(SMB, "get query on disk id context\n");
- 			query_disk_id = 1;
- 		}
- 	}
- 
--	rc = ksmbd_vfs_getattr(&path, &stat);
--	if (rc)
--		goto err_out;
--
--	if (stat.result_mask & STATX_BTIME)
--		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
--	else
--		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
--	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
--		fp->f_ci->m_fattr =
--			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
--
--	if (!created)
--		smb2_update_xattrs(tcon, &path, fp);
--	else
--		smb2_new_xattrs(tcon, &path, fp);
--
- 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
- 
- 	rsp->StructureSize = cpu_to_le16(89);
-@@ -3394,14 +3404,13 @@ int smb2_open(struct ksmbd_work *work)
- 	}
- 
- err_out:
--	if (file_present || created)
-+	if (rc && (file_present || created))
- 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
- 
--	if (fp && need_truncate)
--		rc = smb2_create_truncate(&fp->filp->f_path);
--
--	ksmbd_revert_fsids(work);
- err_out1:
-+	ksmbd_revert_fsids(work);
-+
-+err_out2:
- 	if (!rc) {
- 		ksmbd_update_fstate(&work->sess->file_table, fp, FP_INITED);
- 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp, iov_len);
++	ifehdr = (struct ifeheadr *)(skb->data + skb->dev->hard_header_len);
+ 	skb_set_mac_header(skb, total_pull);
+ 	__skb_pull(skb, total_pull);
+ 	*metalen = ifehdrln - IFE_METAHDRLEN;
 -- 
 2.43.0
 
