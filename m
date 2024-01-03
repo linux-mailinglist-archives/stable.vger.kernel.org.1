@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE8D8232E2
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:13:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B088232C0
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1DCE1C23BA0
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:13:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81B6428583C
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5D41C283;
-	Wed,  3 Jan 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BAB1C280;
+	Wed,  3 Jan 2024 17:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bv1nYESf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqzbvaxk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441A61BDF1;
-	Wed,  3 Jan 2024 17:13:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CF6C433C7;
-	Wed,  3 Jan 2024 17:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D5F1BDEC;
+	Wed,  3 Jan 2024 17:11:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F208C433C7;
+	Wed,  3 Jan 2024 17:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301980;
-	bh=vJEYn18HCkJx+JDpNdZijEzvZHRdbguVimER5tWylK0=;
+	s=korg; t=1704301867;
+	bh=QXz11bEnxNyVeiQXZLZAinQ1qFikTXlLh28Pl1qQ6rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bv1nYESfnF8JbtZSo10/wnnlDVykc5gdQCDqyFNKKDwwUvqedmYcyEBJQTVM2oadD
-	 wlvAnbJ4laqstwXQoNEuxs8IQsTyxxxYkMF7i1QPWH1ARKzAwVzJQ2Uwv9MGp2yl7M
-	 aev0rfR9Zm/gfszkFLq5o0pbdV58C1W3j+lLQHcQ=
+	b=vqzbvaxktNTbqeXPC55klwQmWR8J9ckHFGVDo1i0uhgbLx7iUP5SXlj38Mbl9DNbd
+	 beEkTLRxiAnTz8vtdnYgj++Gva2BNablfMAPUpViqzucyKHul6/4x3Qt/Tlxfn3NPj
+	 +8TmBjxmTK+LAb14ceaKwFVFAR1y+wWUCYZ+tevk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 12/49] ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Hangyu Hua <hbh25y@gmail.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Alexey Panov <apanov@astralinux.ru>
+Subject: [PATCH 5.10 51/75] 9p/net: fix possible memory leak in p9_check_errors()
 Date: Wed,  3 Jan 2024 17:55:32 +0100
-Message-ID: <20240103164836.889898134@linuxfoundation.org>
+Message-ID: <20240103164850.838030735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +55,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 9ac45ac7cf65b0623ceeab9b28b307a08efa22dc ]
+commit ce07087964208eee2ca2f9ee4a98f8b5d9027fe6 upstream.
 
-Directly set SMB2_FLAGS_ASYNC_COMMAND flags and AsyncId in smb2 header of
-interim response instead of current response header.
+When p9pdu_readf() is called with "s?d" attribute, it allocates a pointer
+that will store a string. But when p9pdu_readf() fails while handling "d"
+then this pointer will not be freed in p9_check_errors().
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 51a87c552dfd ("9p: rework client code to use new protocol support functions")
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Message-ID: <20231027030302.11927-1-hbh25y@gmail.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218235
+Signed-off-by: Alexey Panov <apanov@astralinux.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/9p/client.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index e58504d0e9c1e..de71532651d97 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -657,13 +657,9 @@ smb2_get_name(const char *src, const int maxlen, struct nls_table *local_nls)
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -520,11 +520,14 @@ static int p9_check_errors(struct p9_cli
+ 		return 0;
  
- int setup_async_work(struct ksmbd_work *work, void (*fn)(void **), void **arg)
- {
--	struct smb2_hdr *rsp_hdr;
- 	struct ksmbd_conn *conn = work->conn;
- 	int id;
+ 	if (!p9_is_proto_dotl(c)) {
+-		char *ename;
++		char *ename = NULL;
++
+ 		err = p9pdu_readf(&req->rc, c->proto_version, "s?d",
+ 				  &ename, &ecode);
+-		if (err)
++		if (err) {
++			kfree(ename);
+ 			goto out_err;
++		}
  
--	rsp_hdr = ksmbd_resp_buf_next(work);
--	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
--
- 	id = ksmbd_acquire_async_msg_id(&conn->async_ida);
- 	if (id < 0) {
- 		pr_err("Failed to alloc async message id\n");
-@@ -671,7 +667,6 @@ int setup_async_work(struct ksmbd_work *work, void (*fn)(void **), void **arg)
- 	}
- 	work->asynchronous = true;
- 	work->async_id = id;
--	rsp_hdr->Id.AsyncId = cpu_to_le64(id);
- 
- 	ksmbd_debug(SMB,
- 		    "Send interim Response to inform async request id : %d\n",
-@@ -723,6 +718,8 @@ void smb2_send_interim_resp(struct ksmbd_work *work, __le32 status)
- 	       __SMB2_HEADER_STRUCTURE_SIZE);
- 
- 	rsp_hdr = smb2_get_msg(in_work->response_buf);
-+	rsp_hdr->Flags |= SMB2_FLAGS_ASYNC_COMMAND;
-+	rsp_hdr->Id.AsyncId = cpu_to_le64(work->async_id);
- 	smb2_set_err_rsp(in_work);
- 	rsp_hdr->Status = status;
- 
--- 
-2.43.0
-
+ 		if (p9_is_proto_dotu(c) && ecode < 512)
+ 			err = -ecode;
 
 
 
