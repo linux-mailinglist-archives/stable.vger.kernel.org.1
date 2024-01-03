@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-9529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49FE8232C8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BCA8232D3
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BE99285FDA
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DE482866D4
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD9A1C291;
-	Wed,  3 Jan 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDB1B1C284;
+	Wed,  3 Jan 2024 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeNk9qzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s32C8XbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A6E1BDFB;
-	Wed,  3 Jan 2024 17:11:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B24C433C8;
-	Wed,  3 Jan 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DAD1BDEC;
+	Wed,  3 Jan 2024 17:12:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3275EC433C8;
+	Wed,  3 Jan 2024 17:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301897;
-	bh=TB45Neuzc9W+w9Gfe5A9/EhEc4IHvVK3iiCMDiHPePU=;
+	s=korg; t=1704301930;
+	bh=NTNAgQycTYteId1YyMvkJkfvBJyhayEUqGiwYC7IxRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TeNk9qzWQf4PNxtXdh8C98D+qneyCtOT8XK7LoEYimway4pQHZO0m8Z4Cl3rWuNX+
-	 PNzVfPgdIRMqpSGNsw5edJhbXyfm0MZGiVKAXddG5Uddx0lU1iuiKnoFPCygTBxFuH
-	 wIhhLXUEx59YkqSCPv4FlrStrUc9P32imcsw3Reg=
+	b=s32C8XbL7WBHsIAOJeWEiNRr1nHA3DCiOOY0J+GmgX19z3iH909K2nhTnWyQtSe13
+	 ClFlGz6soCqb9pruI2I2WpY1r/dMnAfysR+1SRrjUu2K7ZT6atlOktOdlTU8a3vPHg
+	 bpl2MUtbwsQhutdtvoAeFUgJDM/9sCt7aJJ4swNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Archie Pusaka <apusaka@chromium.org>,
 	Marcel Holtmann <marcel@holtmann.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 53/75] Bluetooth: SMP: Convert BT_ERR/BT_DBG to bt_dev_err/bt_dev_dbg
-Date: Wed,  3 Jan 2024 17:55:34 +0100
-Message-ID: <20240103164851.157316190@linuxfoundation.org>
+Subject: [PATCH 5.10 54/75] Bluetooth: use inclusive language in SMP
+Date: Wed,  3 Jan 2024 17:55:35 +0100
+Message-ID: <20240103164851.282988051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
 References: <20240103164842.953224409@linuxfoundation.org>
@@ -57,446 +57,314 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Archie Pusaka <apusaka@chromium.org>
 
-[ Upstream commit 2e1614f7d61e407f1a8e7935a2903a6fa3cb0b11 ]
+[ Upstream commit fad646e16d3cafd67d3cfff8e66f77401190957e ]
 
-This converts instances of BT_ERR and BT_DBG to bt_dev_err and
-bt_dev_dbg which can be enabled at runtime when BT_FEATURE_DEBUG is
-enabled.
+This patch replaces some non-inclusive terms based on the appropriate
+language mapping table compiled by the Bluetooth SIG:
+https://specificationrefs.bluetooth.com/language-mapping/Appropriate_Language_Mapping_Table.pdf
 
-Note: Not all instances could be converted as some are exercised by
-selftest.
+Specifically, these terms are replaced:
+master -> initiator
+slave  -> responder
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Archie Pusaka <apusaka@chromium.org>
 Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
 Stable-dep-of: 59b047bc9808 ("Bluetooth: MGMT/SMP: Fix address type when using SMP over BREDR/LE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 98 ++++++++++++++++++++++++---------------------
- 1 file changed, 52 insertions(+), 46 deletions(-)
+ include/net/bluetooth/mgmt.h |  2 +-
+ net/bluetooth/mgmt.c         | 10 +++---
+ net/bluetooth/smp.c          | 66 +++++++++++++++++++-----------------
+ net/bluetooth/smp.h          |  6 ++--
+ 4 files changed, 43 insertions(+), 41 deletions(-)
 
+diff --git a/include/net/bluetooth/mgmt.h b/include/net/bluetooth/mgmt.h
+index 6b55155e05e97..faaba22e0d386 100644
+--- a/include/net/bluetooth/mgmt.h
++++ b/include/net/bluetooth/mgmt.h
+@@ -202,7 +202,7 @@ struct mgmt_cp_load_link_keys {
+ struct mgmt_ltk_info {
+ 	struct mgmt_addr_info addr;
+ 	__u8	type;
+-	__u8	master;
++	__u8	initiator;
+ 	__u8	enc_size;
+ 	__le16	ediv;
+ 	__le64	rand;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 878bf73822449..c62ea4c954645 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5939,7 +5939,7 @@ static int load_irks(struct sock *sk, struct hci_dev *hdev, void *cp_data,
+ 
+ static bool ltk_is_valid(struct mgmt_ltk_info *key)
+ {
+-	if (key->master != 0x00 && key->master != 0x01)
++	if (key->initiator != 0x00 && key->initiator != 0x01)
+ 		return false;
+ 
+ 	switch (key->addr.type) {
+@@ -6017,11 +6017,11 @@ static int load_long_term_keys(struct sock *sk, struct hci_dev *hdev,
+ 		switch (key->type) {
+ 		case MGMT_LTK_UNAUTHENTICATED:
+ 			authenticated = 0x00;
+-			type = key->master ? SMP_LTK : SMP_LTK_SLAVE;
++			type = key->initiator ? SMP_LTK : SMP_LTK_RESPONDER;
+ 			break;
+ 		case MGMT_LTK_AUTHENTICATED:
+ 			authenticated = 0x01;
+-			type = key->master ? SMP_LTK : SMP_LTK_SLAVE;
++			type = key->initiator ? SMP_LTK : SMP_LTK_RESPONDER;
+ 			break;
+ 		case MGMT_LTK_P256_UNAUTH:
+ 			authenticated = 0x00;
+@@ -8055,7 +8055,7 @@ static u8 mgmt_ltk_type(struct smp_ltk *ltk)
+ {
+ 	switch (ltk->type) {
+ 	case SMP_LTK:
+-	case SMP_LTK_SLAVE:
++	case SMP_LTK_RESPONDER:
+ 		if (ltk->authenticated)
+ 			return MGMT_LTK_AUTHENTICATED;
+ 		return MGMT_LTK_UNAUTHENTICATED;
+@@ -8101,7 +8101,7 @@ void mgmt_new_ltk(struct hci_dev *hdev, struct smp_ltk *key, bool persistent)
+ 	ev.key.rand = key->rand;
+ 
+ 	if (key->type == SMP_LTK)
+-		ev.key.master = 1;
++		ev.key.initiator = 1;
+ 
+ 	/* Make sure we copy only the significant bytes based on the
+ 	 * encryption key size, and set the rest of the value to zeroes.
 diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index b7374dbee23a3..1c1dc2d2b7d59 100644
+index 1c1dc2d2b7d59..af6cc2e8c0284 100644
 --- a/net/bluetooth/smp.c
 +++ b/net/bluetooth/smp.c
-@@ -596,7 +596,7 @@ static void smp_send_cmd(struct l2cap_conn *conn, u8 code, u16 len, void *data)
- 	if (!chan)
- 		return;
+@@ -112,9 +112,9 @@ struct smp_chan {
+ 	u8		id_addr_type;
+ 	u8		irk[16];
+ 	struct smp_csrk	*csrk;
+-	struct smp_csrk	*slave_csrk;
++	struct smp_csrk	*responder_csrk;
+ 	struct smp_ltk	*ltk;
+-	struct smp_ltk	*slave_ltk;
++	struct smp_ltk	*responder_ltk;
+ 	struct smp_irk	*remote_irk;
+ 	u8		*link_key;
+ 	unsigned long	flags;
+@@ -754,7 +754,7 @@ static void smp_chan_destroy(struct l2cap_conn *conn)
+ 	mgmt_smp_complete(hcon, complete);
  
--	BT_DBG("code 0x%2.2x", code);
-+	bt_dev_dbg(conn->hcon->hdev, "code 0x%2.2x", code);
+ 	kfree_sensitive(smp->csrk);
+-	kfree_sensitive(smp->slave_csrk);
++	kfree_sensitive(smp->responder_csrk);
+ 	kfree_sensitive(smp->link_key);
  
- 	iv[0].iov_base = &code;
- 	iv[0].iov_len = 1;
-@@ -860,7 +860,8 @@ static int tk_request(struct l2cap_conn *conn, u8 remote_oob, u8 auth,
- 	memset(smp->tk, 0, sizeof(smp->tk));
- 	clear_bit(SMP_FLAG_TK_VALID, &smp->flags);
+ 	crypto_free_shash(smp->tfm_cmac);
+@@ -777,9 +777,9 @@ static void smp_chan_destroy(struct l2cap_conn *conn)
+ 			kfree_rcu(smp->ltk, rcu);
+ 		}
  
--	BT_DBG("tk_request: auth:%d lcl:%d rem:%d", auth, local_io, remote_io);
-+	bt_dev_dbg(hcon->hdev, "auth:%d lcl:%d rem:%d", auth, local_io,
-+		   remote_io);
+-		if (smp->slave_ltk) {
+-			list_del_rcu(&smp->slave_ltk->list);
+-			kfree_rcu(smp->slave_ltk, rcu);
++		if (smp->responder_ltk) {
++			list_del_rcu(&smp->responder_ltk->list);
++			kfree_rcu(smp->responder_ltk, rcu);
+ 		}
  
- 	/* If neither side wants MITM, either "just" confirm an incoming
- 	 * request or use just-works for outgoing ones. The JUST_CFM
-@@ -925,7 +926,7 @@ static int tk_request(struct l2cap_conn *conn, u8 remote_oob, u8 auth,
- 		get_random_bytes(&passkey, sizeof(passkey));
- 		passkey %= 1000000;
- 		put_unaligned_le32(passkey, smp->tk);
--		BT_DBG("PassKey: %d", passkey);
-+		bt_dev_dbg(hcon->hdev, "PassKey: %d", passkey);
- 		set_bit(SMP_FLAG_TK_VALID, &smp->flags);
- 	}
- 
-@@ -950,7 +951,7 @@ static u8 smp_confirm(struct smp_chan *smp)
- 	struct smp_cmd_pairing_confirm cp;
+ 		if (smp->remote_irk) {
+@@ -980,7 +980,7 @@ static u8 smp_random(struct smp_chan *smp)
  	int ret;
  
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(conn->hcon->hdev, "conn %p", conn);
- 
- 	ret = smp_c1(smp->tk, smp->prnd, smp->preq, smp->prsp,
- 		     conn->hcon->init_addr_type, &conn->hcon->init_addr,
-@@ -978,7 +979,8 @@ static u8 smp_random(struct smp_chan *smp)
- 	u8 confirm[16];
- 	int ret;
- 
--	BT_DBG("conn %p %s", conn, conn->hcon->out ? "master" : "slave");
-+	bt_dev_dbg(conn->hcon->hdev, "conn %p %s", conn,
-+		   conn->hcon->out ? "master" : "slave");
+ 	bt_dev_dbg(conn->hcon->hdev, "conn %p %s", conn,
+-		   conn->hcon->out ? "master" : "slave");
++		   conn->hcon->out ? "initiator" : "responder");
  
  	ret = smp_c1(smp->tk, smp->rrnd, smp->preq, smp->prsp,
  		     hcon->init_addr_type, &hcon->init_addr,
-@@ -1237,7 +1239,7 @@ static void smp_distribute_keys(struct smp_chan *smp)
- 	struct hci_dev *hdev = hcon->hdev;
- 	__u8 *keydist;
+@@ -1022,8 +1022,8 @@ static u8 smp_random(struct smp_chan *smp)
+ 		else
+ 			auth = 0;
  
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	rsp = (void *) &smp->prsp[1];
- 
-@@ -1267,7 +1269,7 @@ static void smp_distribute_keys(struct smp_chan *smp)
- 		*keydist &= ~SMP_SC_NO_DIST;
+-		/* Even though there's no _SLAVE suffix this is the
+-		 * slave STK we're adding for later lookup (the master
++		/* Even though there's no _RESPONDER suffix this is the
++		 * responder STK we're adding for later lookup (the initiator
+ 		 * STK never needs to be stored).
+ 		 */
+ 		hci_add_ltk(hcon->hdev, &hcon->dst, hcon->dst_type,
+@@ -1078,10 +1078,10 @@ static void smp_notify_keys(struct l2cap_conn *conn)
+ 		mgmt_new_csrk(hdev, smp->csrk, persistent);
  	}
  
--	BT_DBG("keydist 0x%x", *keydist);
-+	bt_dev_dbg(hdev, "keydist 0x%x", *keydist);
+-	if (smp->slave_csrk) {
+-		smp->slave_csrk->bdaddr_type = hcon->dst_type;
+-		bacpy(&smp->slave_csrk->bdaddr, &hcon->dst);
+-		mgmt_new_csrk(hdev, smp->slave_csrk, persistent);
++	if (smp->responder_csrk) {
++		smp->responder_csrk->bdaddr_type = hcon->dst_type;
++		bacpy(&smp->responder_csrk->bdaddr, &hcon->dst);
++		mgmt_new_csrk(hdev, smp->responder_csrk, persistent);
+ 	}
+ 
+ 	if (smp->ltk) {
+@@ -1090,10 +1090,10 @@ static void smp_notify_keys(struct l2cap_conn *conn)
+ 		mgmt_new_ltk(hdev, smp->ltk, persistent);
+ 	}
+ 
+-	if (smp->slave_ltk) {
+-		smp->slave_ltk->bdaddr_type = hcon->dst_type;
+-		bacpy(&smp->slave_ltk->bdaddr, &hcon->dst);
+-		mgmt_new_ltk(hdev, smp->slave_ltk, persistent);
++	if (smp->responder_ltk) {
++		smp->responder_ltk->bdaddr_type = hcon->dst_type;
++		bacpy(&smp->responder_ltk->bdaddr, &hcon->dst);
++		mgmt_new_ltk(hdev, smp->responder_ltk, persistent);
+ 	}
+ 
+ 	if (smp->link_key) {
+@@ -1273,7 +1273,7 @@ static void smp_distribute_keys(struct smp_chan *smp)
  
  	if (*keydist & SMP_DIST_ENC_KEY) {
  		struct smp_cmd_encrypt_info enc;
-@@ -1367,13 +1369,14 @@ static void smp_timeout(struct work_struct *work)
- 					    security_timer.work);
- 	struct l2cap_conn *conn = smp->conn;
+-		struct smp_cmd_master_ident ident;
++		struct smp_cmd_initiator_ident ident;
+ 		struct smp_ltk *ltk;
+ 		u8 authenticated;
+ 		__le16 ediv;
+@@ -1294,14 +1294,15 @@ static void smp_distribute_keys(struct smp_chan *smp)
  
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(conn->hcon->hdev, "conn %p", conn);
+ 		authenticated = hcon->sec_level == BT_SECURITY_HIGH;
+ 		ltk = hci_add_ltk(hdev, &hcon->dst, hcon->dst_type,
+-				  SMP_LTK_SLAVE, authenticated, enc.ltk,
++				  SMP_LTK_RESPONDER, authenticated, enc.ltk,
+ 				  smp->enc_key_size, ediv, rand);
+-		smp->slave_ltk = ltk;
++		smp->responder_ltk = ltk;
  
- 	hci_disconnect(conn->hcon, HCI_ERROR_REMOTE_USER_TERM);
- }
+ 		ident.ediv = ediv;
+ 		ident.rand = rand;
  
- static struct smp_chan *smp_chan_create(struct l2cap_conn *conn)
- {
-+	struct hci_conn *hcon = conn->hcon;
- 	struct l2cap_chan *chan = conn->smp;
- 	struct smp_chan *smp;
+-		smp_send_cmd(conn, SMP_CMD_MASTER_IDENT, sizeof(ident), &ident);
++		smp_send_cmd(conn, SMP_CMD_INITIATOR_IDENT, sizeof(ident),
++			     &ident);
  
-@@ -1383,13 +1386,13 @@ static struct smp_chan *smp_chan_create(struct l2cap_conn *conn)
- 
- 	smp->tfm_cmac = crypto_alloc_shash("cmac(aes)", 0, 0);
- 	if (IS_ERR(smp->tfm_cmac)) {
--		BT_ERR("Unable to create CMAC crypto context");
-+		bt_dev_err(hcon->hdev, "Unable to create CMAC crypto context");
- 		goto zfree_smp;
+ 		*keydist &= ~SMP_DIST_ENC_KEY;
  	}
+@@ -1344,7 +1345,7 @@ static void smp_distribute_keys(struct smp_chan *smp)
+ 				csrk->type = MGMT_CSRK_LOCAL_UNAUTHENTICATED;
+ 			memcpy(csrk->val, sign.csrk, sizeof(csrk->val));
+ 		}
+-		smp->slave_csrk = csrk;
++		smp->responder_csrk = csrk;
  
- 	smp->tfm_ecdh = crypto_alloc_kpp("ecdh", 0, 0);
- 	if (IS_ERR(smp->tfm_ecdh)) {
--		BT_ERR("Unable to create ECDH crypto context");
-+		bt_dev_err(hcon->hdev, "Unable to create ECDH crypto context");
- 		goto free_shash;
- 	}
+ 		smp_send_cmd(conn, SMP_CMD_SIGN_INFO, sizeof(sign), &sign);
  
-@@ -1400,7 +1403,7 @@ static struct smp_chan *smp_chan_create(struct l2cap_conn *conn)
+@@ -2049,7 +2050,7 @@ static int fixup_sc_false_positive(struct smp_chan *smp)
+ 	struct smp_cmd_pairing *req, *rsp;
+ 	u8 auth;
  
- 	INIT_DELAYED_WORK(&smp->security_timer, smp_timeout);
+-	/* The issue is only observed when we're in slave role */
++	/* The issue is only observed when we're in responder role */
+ 	if (hcon->out)
+ 		return SMP_UNSPECIFIED;
  
--	hci_conn_hold(conn->hcon);
-+	hci_conn_hold(hcon);
+@@ -2085,7 +2086,8 @@ static u8 smp_cmd_pairing_confirm(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	struct hci_conn *hcon = conn->hcon;
+ 	struct hci_dev *hdev = hcon->hdev;
  
- 	return smp;
- 
-@@ -1565,8 +1568,8 @@ static u8 sc_passkey_round(struct smp_chan *smp, u8 smp_op)
- 		if (!hcon->out)
- 			return 0;
- 
--		BT_DBG("%s Starting passkey round %u", hdev->name,
--		       smp->passkey_round + 1);
-+		bt_dev_dbg(hdev, "Starting passkey round %u",
-+			   smp->passkey_round + 1);
- 
- 		SMP_ALLOW_CMD(smp, SMP_CMD_PAIRING_CONFIRM);
- 
-@@ -1626,7 +1629,7 @@ int smp_user_confirm_reply(struct hci_conn *hcon, u16 mgmt_op, __le32 passkey)
- 	u32 value;
- 	int err;
- 
--	BT_DBG("");
-+	bt_dev_dbg(conn->hcon->hdev, "");
- 
- 	if (!conn)
- 		return -ENOTCONN;
-@@ -1652,7 +1655,7 @@ int smp_user_confirm_reply(struct hci_conn *hcon, u16 mgmt_op, __le32 passkey)
- 	case MGMT_OP_USER_PASSKEY_REPLY:
- 		value = le32_to_cpu(passkey);
- 		memset(smp->tk, 0, sizeof(smp->tk));
--		BT_DBG("PassKey: %d", value);
-+		bt_dev_dbg(conn->hcon->hdev, "PassKey: %d", value);
- 		put_unaligned_le32(value, smp->tk);
- 		fallthrough;
- 	case MGMT_OP_USER_CONFIRM_REPLY:
-@@ -1734,7 +1737,7 @@ static u8 smp_cmd_pairing_req(struct l2cap_conn *conn, struct sk_buff *skb)
- 	u8 key_size, auth, sec_level;
- 	int ret;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*req))
- 		return SMP_INVALID_PARAMS;
-@@ -1888,7 +1891,7 @@ static u8 sc_send_public_key(struct smp_chan *smp)
- 	}
- 
- 	if (hci_dev_test_flag(hdev, HCI_USE_DEBUG_KEYS)) {
--		BT_DBG("Using debug keys");
-+		bt_dev_dbg(hdev, "Using debug keys");
- 		if (set_ecdh_privkey(smp->tfm_ecdh, debug_sk))
- 			return SMP_UNSPECIFIED;
- 		memcpy(smp->local_pk, debug_pk, 64);
-@@ -1925,7 +1928,7 @@ static u8 smp_cmd_pairing_rsp(struct l2cap_conn *conn, struct sk_buff *skb)
- 	u8 key_size, auth;
- 	int ret;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*rsp))
- 		return SMP_INVALID_PARAMS;
-@@ -2020,7 +2023,7 @@ static u8 sc_check_confirm(struct smp_chan *smp)
- {
- 	struct l2cap_conn *conn = smp->conn;
- 
--	BT_DBG("");
-+	bt_dev_dbg(conn->hcon->hdev, "");
- 
- 	if (smp->method == REQ_PASSKEY || smp->method == DSP_PASSKEY)
- 		return sc_passkey_round(smp, SMP_CMD_PAIRING_CONFIRM);
-@@ -2079,8 +2082,10 @@ static u8 smp_cmd_pairing_confirm(struct l2cap_conn *conn, struct sk_buff *skb)
- {
- 	struct l2cap_chan *chan = conn->smp;
- 	struct smp_chan *smp = chan->data;
-+	struct hci_conn *hcon = conn->hcon;
-+	struct hci_dev *hdev = hcon->hdev;
- 
--	BT_DBG("conn %p %s", conn, conn->hcon->out ? "master" : "slave");
-+	bt_dev_dbg(hdev, "conn %p %s", conn, hcon->out ? "master" : "slave");
+-	bt_dev_dbg(hdev, "conn %p %s", conn, hcon->out ? "master" : "slave");
++	bt_dev_dbg(hdev, "conn %p %s", conn,
++		   hcon->out ? "initiator" : "responder");
  
  	if (skb->len < sizeof(smp->pcnf))
  		return SMP_INVALID_PARAMS;
-@@ -2095,7 +2100,7 @@ static u8 smp_cmd_pairing_confirm(struct l2cap_conn *conn, struct sk_buff *skb)
- 		if (test_bit(SMP_FLAG_REMOTE_PK, &smp->flags))
- 			return sc_check_confirm(smp);
+@@ -2252,7 +2254,7 @@ static bool smp_ltk_encrypt(struct l2cap_conn *conn, u8 sec_level)
+ 	hci_le_start_enc(hcon, key->ediv, key->rand, key->val, key->enc_size);
+ 	hcon->enc_key_size = key->enc_size;
  
--		BT_ERR("Unexpected SMP Pairing Confirm");
-+		bt_dev_err(hdev, "Unexpected SMP Pairing Confirm");
+-	/* We never store STKs for master role, so clear this flag */
++	/* We never store STKs for initiator role, so clear this flag */
+ 	clear_bit(HCI_CONN_STK_ENCRYPT, &hcon->flags);
  
- 		ret = fixup_sc_false_positive(smp);
- 		if (ret)
-@@ -2126,7 +2131,7 @@ static u8 smp_cmd_pairing_random(struct l2cap_conn *conn, struct sk_buff *skb)
- 	u32 passkey;
- 	int err;
+ 	return true;
+@@ -2468,7 +2470,7 @@ int smp_cancel_and_remove_pairing(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 		/* Set keys to NULL to make sure smp_failure() does not try to
+ 		 * remove and free already invalidated rcu list entries. */
+ 		smp->ltk = NULL;
+-		smp->slave_ltk = NULL;
++		smp->responder_ltk = NULL;
+ 		smp->remote_irk = NULL;
  
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hcon->hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(smp->rrnd))
+ 		if (test_bit(SMP_FLAG_COMPLETE, &smp->flags))
+@@ -2504,7 +2506,7 @@ static int smp_cmd_encrypt_info(struct l2cap_conn *conn, struct sk_buff *skb)
  		return SMP_INVALID_PARAMS;
-@@ -2285,7 +2290,7 @@ static u8 smp_cmd_security_req(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_chan *smp;
- 	u8 sec_level, auth;
+ 	}
  
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
+-	SMP_ALLOW_CMD(smp, SMP_CMD_MASTER_IDENT);
++	SMP_ALLOW_CMD(smp, SMP_CMD_INITIATOR_IDENT);
  
- 	if (skb->len < sizeof(*rp))
- 		return SMP_INVALID_PARAMS;
-@@ -2348,7 +2353,8 @@ int smp_conn_security(struct hci_conn *hcon, __u8 sec_level)
- 	__u8 authreq;
- 	int ret;
+ 	skb_pull(skb, sizeof(*rp));
  
--	BT_DBG("conn %p hcon %p level 0x%2.2x", conn, hcon, sec_level);
-+	bt_dev_dbg(hcon->hdev, "conn %p hcon %p level 0x%2.2x", conn, hcon,
-+		   sec_level);
- 
- 	/* This may be NULL if there's an unexpected disconnection */
- 	if (!conn)
-@@ -2484,7 +2490,7 @@ static int smp_cmd_encrypt_info(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct l2cap_chan *chan = conn->smp;
- 	struct smp_chan *smp = chan->data;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(conn->hcon->hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*rp))
- 		return SMP_INVALID_PARAMS;
-@@ -2517,7 +2523,7 @@ static int smp_cmd_master_ident(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_ltk *ltk;
- 	u8 authenticated;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*rp))
- 		return SMP_INVALID_PARAMS;
-@@ -2549,7 +2555,7 @@ static int smp_cmd_ident_info(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct l2cap_chan *chan = conn->smp;
- 	struct smp_chan *smp = chan->data;
- 
--	BT_DBG("");
-+	bt_dev_dbg(conn->hcon->hdev, "");
- 
- 	if (skb->len < sizeof(*info))
- 		return SMP_INVALID_PARAMS;
-@@ -2581,7 +2587,7 @@ static int smp_cmd_ident_addr_info(struct l2cap_conn *conn,
- 	struct hci_conn *hcon = conn->hcon;
- 	bdaddr_t rpa;
- 
--	BT_DBG("");
-+	bt_dev_dbg(hcon->hdev, "");
- 
- 	if (skb->len < sizeof(*info))
- 		return SMP_INVALID_PARAMS;
-@@ -2648,7 +2654,7 @@ static int smp_cmd_sign_info(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_chan *smp = chan->data;
- 	struct smp_csrk *csrk;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(conn->hcon->hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*rp))
- 		return SMP_INVALID_PARAMS;
-@@ -2728,7 +2734,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 	struct smp_cmd_pairing_confirm cfm;
- 	int err;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*key))
- 		return SMP_INVALID_PARAMS;
-@@ -2792,7 +2798,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 
- 	smp->method = sc_select_method(smp);
- 
--	BT_DBG("%s selected method 0x%02x", hdev->name, smp->method);
-+	bt_dev_dbg(hdev, "selected method 0x%02x", smp->method);
- 
- 	/* JUST_WORKS and JUST_CFM result in an unauthenticated key */
- 	if (smp->method == JUST_WORKS || smp->method == JUST_CFM)
-@@ -2867,7 +2873,7 @@ static int smp_cmd_dhkey_check(struct l2cap_conn *conn, struct sk_buff *skb)
- 	u8 io_cap[3], r[16], e[16];
- 	int err;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hcon->hdev, "conn %p", conn);
- 
- 	if (skb->len < sizeof(*check))
- 		return SMP_INVALID_PARAMS;
-@@ -2927,7 +2933,7 @@ static int smp_cmd_keypress_notify(struct l2cap_conn *conn,
- {
- 	struct smp_cmd_keypress_notify *kp = (void *) skb->data;
- 
--	BT_DBG("value 0x%02x", kp->value);
-+	bt_dev_dbg(conn->hcon->hdev, "value 0x%02x", kp->value);
- 
+@@ -2513,9 +2515,9 @@ static int smp_cmd_encrypt_info(struct l2cap_conn *conn, struct sk_buff *skb)
  	return 0;
  }
-@@ -3024,7 +3030,7 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
+ 
+-static int smp_cmd_master_ident(struct l2cap_conn *conn, struct sk_buff *skb)
++static int smp_cmd_initiator_ident(struct l2cap_conn *conn, struct sk_buff *skb)
+ {
+-	struct smp_cmd_master_ident *rp = (void *) skb->data;
++	struct smp_cmd_initiator_ident *rp = (void *)skb->data;
+ 	struct l2cap_chan *chan = conn->smp;
+ 	struct smp_chan *smp = chan->data;
+ 	struct hci_dev *hdev = conn->hcon->hdev;
+@@ -2914,7 +2916,7 @@ static int smp_cmd_dhkey_check(struct l2cap_conn *conn, struct sk_buff *skb)
+ 			return 0;
+ 		}
+ 
+-		/* Slave sends DHKey check as response to master */
++		/* Responder sends DHKey check as response to initiator */
+ 		sc_dhkey_check(smp);
+ 	}
+ 
+@@ -3001,8 +3003,8 @@ static int smp_sig_channel(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		reason = smp_cmd_encrypt_info(conn, skb);
  		break;
  
- 	default:
--		BT_DBG("Unknown command code 0x%2.2x", code);
-+		bt_dev_dbg(hcon->hdev, "Unknown command code 0x%2.2x", code);
- 		reason = SMP_CMD_NOTSUPP;
- 		goto done;
- 	}
-@@ -3049,7 +3055,7 @@ static void smp_teardown_cb(struct l2cap_chan *chan, int err)
- {
- 	struct l2cap_conn *conn = chan->conn;
+-	case SMP_CMD_MASTER_IDENT:
+-		reason = smp_cmd_master_ident(conn, skb);
++	case SMP_CMD_INITIATOR_IDENT:
++		reason = smp_cmd_initiator_ident(conn, skb);
+ 		break;
  
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(conn->hcon->hdev, "chan %p", chan);
+ 	case SMP_CMD_IDENT_INFO:
+diff --git a/net/bluetooth/smp.h b/net/bluetooth/smp.h
+index 121edadd5f8da..5fe68e255cb29 100644
+--- a/net/bluetooth/smp.h
++++ b/net/bluetooth/smp.h
+@@ -79,8 +79,8 @@ struct smp_cmd_encrypt_info {
+ 	__u8	ltk[16];
+ } __packed;
  
- 	if (chan->data)
- 		smp_chan_destroy(conn);
-@@ -3066,7 +3072,7 @@ static void bredr_pairing(struct l2cap_chan *chan)
- 	struct smp_cmd_pairing req;
- 	struct smp_chan *smp;
- 
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(hdev, "chan %p", chan);
- 
- 	/* Only new pairings are interesting */
- 	if (!test_bit(HCI_CONN_NEW_LINK_KEY, &hcon->flags))
-@@ -3113,7 +3119,7 @@ static void bredr_pairing(struct l2cap_chan *chan)
- 
- 	set_bit(SMP_FLAG_SC, &smp->flags);
- 
--	BT_DBG("%s starting SMP over BR/EDR", hdev->name);
-+	bt_dev_dbg(hdev, "starting SMP over BR/EDR");
- 
- 	/* Prepare and send the BR/EDR SMP Pairing Request */
- 	build_bredr_pairing_cmd(smp, &req, NULL);
-@@ -3131,7 +3137,7 @@ static void smp_resume_cb(struct l2cap_chan *chan)
- 	struct l2cap_conn *conn = chan->conn;
- 	struct hci_conn *hcon = conn->hcon;
- 
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(hcon->hdev, "chan %p", chan);
- 
- 	if (hcon->type == ACL_LINK) {
- 		bredr_pairing(chan);
-@@ -3154,7 +3160,7 @@ static void smp_ready_cb(struct l2cap_chan *chan)
- 	struct l2cap_conn *conn = chan->conn;
- 	struct hci_conn *hcon = conn->hcon;
- 
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(hcon->hdev, "chan %p", chan);
- 
- 	/* No need to call l2cap_chan_hold() here since we already own
- 	 * the reference taken in smp_new_conn_cb(). This is just the
-@@ -3172,7 +3178,7 @@ static int smp_recv_cb(struct l2cap_chan *chan, struct sk_buff *skb)
- {
- 	int err;
- 
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(chan->conn->hcon->hdev, "chan %p", chan);
- 
- 	err = smp_sig_channel(chan, skb);
- 	if (err) {
-@@ -3224,7 +3230,7 @@ static inline struct l2cap_chan *smp_new_conn_cb(struct l2cap_chan *pchan)
- {
- 	struct l2cap_chan *chan;
- 
--	BT_DBG("pchan %p", pchan);
-+	bt_dev_dbg(pchan->conn->hcon->hdev, "pchan %p", pchan);
- 
- 	chan = l2cap_chan_create();
- 	if (!chan)
-@@ -3245,7 +3251,7 @@ static inline struct l2cap_chan *smp_new_conn_cb(struct l2cap_chan *pchan)
- 	 */
- 	atomic_set(&chan->nesting, L2CAP_NESTING_SMP);
- 
--	BT_DBG("created chan %p", chan);
-+	bt_dev_dbg(pchan->conn->hcon->hdev, "created chan %p", chan);
- 
- 	return chan;
- }
-@@ -3286,14 +3292,14 @@ static struct l2cap_chan *smp_add_cid(struct hci_dev *hdev, u16 cid)
- 
- 	tfm_cmac = crypto_alloc_shash("cmac(aes)", 0, 0);
- 	if (IS_ERR(tfm_cmac)) {
--		BT_ERR("Unable to create CMAC crypto context");
-+		bt_dev_err(hdev, "Unable to create CMAC crypto context");
- 		kfree_sensitive(smp);
- 		return ERR_CAST(tfm_cmac);
- 	}
- 
- 	tfm_ecdh = crypto_alloc_kpp("ecdh", 0, 0);
- 	if (IS_ERR(tfm_ecdh)) {
--		BT_ERR("Unable to create ECDH crypto context");
-+		bt_dev_err(hdev, "Unable to create ECDH crypto context");
- 		crypto_free_shash(tfm_cmac);
- 		kfree_sensitive(smp);
- 		return ERR_CAST(tfm_ecdh);
-@@ -3349,7 +3355,7 @@ static void smp_del_chan(struct l2cap_chan *chan)
- {
- 	struct smp_dev *smp;
- 
--	BT_DBG("chan %p", chan);
-+	bt_dev_dbg(chan->conn->hcon->hdev, "chan %p", chan);
- 
- 	smp = chan->data;
- 	if (smp) {
-@@ -3422,7 +3428,7 @@ int smp_register(struct hci_dev *hdev)
- {
- 	struct l2cap_chan *chan;
- 
--	BT_DBG("%s", hdev->name);
-+	bt_dev_dbg(hdev, "");
- 
- 	/* If the controller does not support Low Energy operation, then
- 	 * there is also no need to register any SMP channel.
+-#define SMP_CMD_MASTER_IDENT	0x07
+-struct smp_cmd_master_ident {
++#define SMP_CMD_INITIATOR_IDENT	0x07
++struct smp_cmd_initiator_ident {
+ 	__le16	ediv;
+ 	__le64	rand;
+ } __packed;
+@@ -146,7 +146,7 @@ struct smp_cmd_keypress_notify {
+ enum {
+ 	SMP_STK,
+ 	SMP_LTK,
+-	SMP_LTK_SLAVE,
++	SMP_LTK_RESPONDER,
+ 	SMP_LTK_P256,
+ 	SMP_LTK_P256_DEBUG,
+ };
 -- 
 2.43.0
 
