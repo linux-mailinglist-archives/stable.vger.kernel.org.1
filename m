@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD0182320E
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:02:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07C68232C1
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 599211C228DB
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:02:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89AF91F2112E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D941C281;
-	Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FE01C283;
+	Wed,  3 Jan 2024 17:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG7a7xss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAU6vJXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF721BDEC;
-	Wed,  3 Jan 2024 17:02:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA303C433C8;
-	Wed,  3 Jan 2024 17:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E036F1BDEC;
+	Wed,  3 Jan 2024 17:11:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B88C433C7;
+	Wed,  3 Jan 2024 17:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301321;
-	bh=17R4zPop7ed6EcAIS5zj1PFkiuXnPelZ5EZeVkGE+jY=;
+	s=korg; t=1704301873;
+	bh=DgVeq1KRqeXod0ETDD6488iwAEoIpkZE/qVgVxGoWCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AG7a7xssOamnGddj3N3ZexmY3KWz7E5iVyONxIe+lxYgCMe6FqZiGhVcqXD4iLA/X
-	 W6xBFO9o2BBlAeEzbfjYdA6OSs0a3G5gEHxmPlfvdVESamqFfUFa2/4qw8+wVTEccm
-	 d07tD93TETWOr/n8wa+jQjLJ6X5EmD1wHFnATv28=
+	b=wAU6vJXaVdQyRQO1mXf7AN3Ipr3HHYvz2oE/Fg/CVa+oXNw21AmYNzAkjcv+5rqMt
+	 2z9X73UpDnrx/kJzuP+0lcAALQQXqe5mAJgqfHoZ1/Unwt+oa7J+IYKBx01E9/Cj48
+	 /HHGnIW1qZCvE+RYyxsw/Ks0kV/wgaJ43VgKYFLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Saarinen <jani.saarinen@intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/100] spi: Introduce spi_get_device_match_data() helper
+Subject: [PATCH 5.10 24/75] ALSA: hda/hdmi: add force-connect quirk for NUC5CPYB
 Date: Wed,  3 Jan 2024 17:55:05 +0100
-Message-ID: <20240103164907.483411209@linuxfoundation.org>
+Message-ID: <20240103164846.836582201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,69 +53,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit aea672d054a21782ed8450c75febb6ba3c208ca4 ]
+[ Upstream commit 3b1ff57e24a7bcd2e2a8426dd2013a80d1fa96eb ]
 
-The proposed spi_get_device_match_data() helper is for retrieving
-a driver data associated with the ID in an ID table. First, it tries
-to get driver data of the device enumerated by firmware interface
-(usually Device Tree or ACPI). If none is found it falls back to
-the SPI ID table matching.
+Add one more older NUC model that requires quirk to force all pins to be
+connected. The display codec pins are not registered properly without
+the force-connect quirk. The codec will report only one pin as having
+external connectivity, but i915 finds all three connectors on the
+system, so the two drivers are not in sync.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20221020195421.10482-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: ee4d79055aee ("iio: imu: adis16475: add spi_device_id table")
+Issue found with DRM igt-gpu-tools test kms_hdmi_inject@inject-audio.
+
+Link: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/3
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Saarinen <jani.saarinen@intel.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231208132127.2438067-2-kai.vehmanen@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c       | 12 ++++++++++++
- include/linux/spi/spi.h |  3 +++
- 2 files changed, 15 insertions(+)
+ sound/pci/hda/patch_hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 5d046be8b2dd5..dfce0f7d4c640 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -360,6 +360,18 @@ const struct spi_device_id *spi_get_device_id(const struct spi_device *sdev)
- }
- EXPORT_SYMBOL_GPL(spi_get_device_id);
- 
-+const void *spi_get_device_match_data(const struct spi_device *sdev)
-+{
-+	const void *match;
-+
-+	match = device_get_match_data(&sdev->dev);
-+	if (match)
-+		return match;
-+
-+	return (const void *)spi_get_device_id(sdev)->driver_data;
-+}
-+EXPORT_SYMBOL_GPL(spi_get_device_match_data);
-+
- static int spi_match_device(struct device *dev, struct device_driver *drv)
- {
- 	const struct spi_device	*spi = to_spi_device(dev);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index 877395e075afe..635a05c30283c 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -1515,6 +1515,9 @@ extern void spi_unregister_device(struct spi_device *spi);
- extern const struct spi_device_id *
- spi_get_device_id(const struct spi_device *sdev);
- 
-+extern const void *
-+spi_get_device_match_data(const struct spi_device *sdev);
-+
- static inline bool
- spi_transfer_is_last(struct spi_controller *ctlr, struct spi_transfer *xfer)
- {
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 3060dbf1daf58..0d1c6c4c1ee62 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1970,6 +1970,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x8086, 0x2060, "Intel NUC5CPYB", 1),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
+ };
 -- 
 2.43.0
 
