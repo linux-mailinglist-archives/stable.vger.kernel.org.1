@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50B98231D8
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:59:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD2D282329E
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 18:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99E61C20CC4
-	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 16:59:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6C11F24DBD
+	for <lists+stable@lfdr.de>; Wed,  3 Jan 2024 17:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C8A1C280;
-	Wed,  3 Jan 2024 16:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7791C2AF;
+	Wed,  3 Jan 2024 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCtBlHzC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbHsYJEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E402E1BDEC;
-	Wed,  3 Jan 2024 16:59:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346B0C433C7;
-	Wed,  3 Jan 2024 16:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EB81BDF1;
+	Wed,  3 Jan 2024 17:09:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCD6C433C8;
+	Wed,  3 Jan 2024 17:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301163;
-	bh=XKWW1mA68MiITNszjVgpMhbG89QxduenAawTDP/wRPk=;
+	s=korg; t=1704301759;
+	bh=/2470QHDFwEmrRiI+GQUrXcTU5h2Pjj/F0umj2cacm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCtBlHzCqvbqhE1guLlGGx09RIRKjUxjgK+OSWQYUuDA51y/ltJmWfzmyKMHMmMEz
-	 EqteJ/N3iMBZRTsEju+ZwvjFX81upYP5h3teQHGkvL/R8ALzNCTYYWtQWLHorhr+E2
-	 MqJl3e6Mn43L6llljGh9yNLBkrwwC5L/m6XzEhEQ=
+	b=TbHsYJEgY8N78NPBnThH2kB+JcdzFxBxqxtMa/oB6yvYNmAhA3oi7ETMZL6WPAoze
+	 Vmv/Xi4LFIPDTjJTve3JZcICHf8U6v66N3ut66wAYuzXyXmaQPHGNLaP4Vjbj5PPo7
+	 lSz88IgwrxJWNJ0nmN2GSeDCDLOgDI49OBaEmok0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/100] ksmbd: fix recursive locking in vfs helpers
+Subject: [PATCH 5.10 03/75] ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
 Date: Wed,  3 Jan 2024 17:54:44 +0100
-Message-ID: <20240103164904.339806348@linuxfoundation.org>
+Message-ID: <20240103164843.483332011@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,147 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 807252f028c59b9a3bac4d62ad84761548c10f11 ]
+[ Upstream commit c72b9c33ef9695ad7ce7a6eb39a9df8a01b70796 ]
 
-Running smb2.rename test from Samba smbtorture suite against a kernel built
-with lockdep triggers a "possible recursive locking detected" warning.
+kasprintf() returns a pointer to dynamically allocated memory which can
+be NULL upon failure. When 'soc_dev_attr->family' is NULL,it'll trigger
+the null pointer dereference issue, such as in 'soc_info_show'.
 
-This is because mnt_want_write() is called twice with no mnt_drop_write()
-in between:
-  -> ksmbd_vfs_mkdir()
-    -> ksmbd_vfs_kern_path_create()
-       -> kern_path_create()
-          -> filename_create()
-            -> mnt_want_write()
-       -> mnt_want_write()
+And when 'soc_device_register' fails, it's necessary to release
+'soc_dev_attr->family' to avoid memory leaks.
 
-Fix this by removing the mnt_want_write/mnt_drop_write calls from vfs
-helpers that call kern_path_create().
-
-Full lockdep trace below:
-
-============================================
-WARNING: possible recursive locking detected
-6.6.0-rc5 #775 Not tainted
---------------------------------------------
-kworker/1:1/32 is trying to acquire lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: ksmbd_vfs_mkdir+0xe1/0x410
-
-but task is already holding lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(sb_writers#5);
-  lock(sb_writers#5);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by kworker/1:1/32:
- #0: ffff8880064e4138 ((wq_completion)ksmbd-io){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #1: ffff888005b0fdd0 ((work_completion)(&work->work)){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #2: ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
- #3: ffff8880057ce760 (&type->i_mutex_dir_key#3/1){+.+.}-{3:3}, at: filename_create+0x123/0x260
-
-Cc: stable@vger.kernel.org
-Fixes: 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 6770b2114325 ("ARM: OMAP2+: Export SoC information to userspace")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Message-ID: <20231123145237.609442-1-chentao@kylinos.cn>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c | 23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ arch/arm/mach-omap2/id.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 071c344dd0333..e2e454eba4095 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -174,10 +174,6 @@ int ksmbd_vfs_create(struct ksmbd_work *work, const char *name, umode_t mode)
- 		return err;
+diff --git a/arch/arm/mach-omap2/id.c b/arch/arm/mach-omap2/id.c
+index 59755b5a1ad7a..75091aa7269ae 100644
+--- a/arch/arm/mach-omap2/id.c
++++ b/arch/arm/mach-omap2/id.c
+@@ -793,11 +793,16 @@ void __init omap_soc_device_init(void)
+ 
+ 	soc_dev_attr->machine  = soc_name;
+ 	soc_dev_attr->family   = omap_get_family();
++	if (!soc_dev_attr->family) {
++		kfree(soc_dev_attr);
++		return;
++	}
+ 	soc_dev_attr->revision = soc_rev;
+ 	soc_dev_attr->custom_attr_group = omap_soc_groups[0];
+ 
+ 	soc_dev = soc_device_register(soc_dev_attr);
+ 	if (IS_ERR(soc_dev)) {
++		kfree(soc_dev_attr->family);
+ 		kfree(soc_dev_attr);
+ 		return;
  	}
- 
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err;
--
- 	mode |= S_IFREG;
- 	err = vfs_create(mnt_user_ns(path.mnt), d_inode(path.dentry),
- 			 dentry, mode, true);
-@@ -187,9 +183,7 @@ int ksmbd_vfs_create(struct ksmbd_work *work, const char *name, umode_t mode)
- 	} else {
- 		pr_err("File(%s): creation failed (err:%d)\n", name, err);
- 	}
--	mnt_drop_write(path.mnt);
- 
--out_err:
- 	done_path_create(&path, dentry);
- 	return err;
- }
-@@ -220,10 +214,6 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *work, const char *name, umode_t mode)
- 		return err;
- 	}
- 
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err2;
--
- 	user_ns = mnt_user_ns(path.mnt);
- 	mode |= S_IFDIR;
- 	err = vfs_mkdir(user_ns, d_inode(path.dentry), dentry, mode);
-@@ -234,21 +224,19 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *work, const char *name, umode_t mode)
- 			       dentry->d_name.len);
- 		if (IS_ERR(d)) {
- 			err = PTR_ERR(d);
--			goto out_err1;
-+			goto out_err;
- 		}
- 		if (unlikely(d_is_negative(d))) {
- 			dput(d);
- 			err = -ENOENT;
--			goto out_err1;
-+			goto out_err;
- 		}
- 
- 		ksmbd_vfs_inherit_owner(work, d_inode(path.dentry), d_inode(d));
- 		dput(d);
- 	}
- 
--out_err1:
--	mnt_drop_write(path.mnt);
--out_err2:
-+out_err:
- 	done_path_create(&path, dentry);
- 	if (err)
- 		pr_err("mkdir(%s): creation failed (err:%d)\n", name, err);
-@@ -666,16 +654,11 @@ int ksmbd_vfs_link(struct ksmbd_work *work, const char *oldname,
- 		goto out3;
- 	}
- 
--	err = mnt_want_write(newpath.mnt);
--	if (err)
--		goto out3;
--
- 	err = vfs_link(oldpath.dentry, mnt_user_ns(newpath.mnt),
- 		       d_inode(newpath.dentry),
- 		       dentry, NULL);
- 	if (err)
- 		ksmbd_debug(VFS, "vfs_link failed err %d\n", err);
--	mnt_drop_write(newpath.mnt);
- 
- out3:
- 	done_path_create(&newpath, dentry);
 -- 
 2.43.0
 
