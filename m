@@ -1,181 +1,248 @@
-Return-Path: <stable+bounces-9667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AE39823F9C
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:43:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C8E823FD9
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EA581F220E8
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:43:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6CA281B1D
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772C520DD8;
-	Thu,  4 Jan 2024 10:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E777420B33;
+	Thu,  4 Jan 2024 10:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DI1PVJHu";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="/cZz4SeW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UMw2yCNh";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TyvK9ITx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qf0ksclY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2720DCE;
-	Thu,  4 Jan 2024 10:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F09BB1F7FD;
-	Thu,  4 Jan 2024 10:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704364976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
-	b=DI1PVJHuKUzB4Yfoy98R8d7lJKbIA7BIUCcE4jwDF+xoEnnT1v+2Iehpuq8cGL6wo16hNQ
-	xYi8PwoZAQ8m7L9i88aZ02MTODLhPwAPLesJV3cx185vv+SsomVbQZJj0TkJcOFNzSc4Vu
-	NeNkXS+856fmVMuTTcvOZiCgj6Pzz4g=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704364976;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
-	b=/cZz4SeWOEHVEgWCFdqdhDBYwEvTQ9C5eOHdh1SesXnqdlIFSYJKYjupHVMtxX4C2HWMzG
-	Fb64lpXv4lL1e2AA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704364975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
-	b=UMw2yCNhYEmY63v0mCH5v65YsaYTBnB4meaNpSvfRmJRgrcqhq+OwVJsPN1CjSTFpNj2VL
-	isdMzNo9j/90t+mZrKOFjHhSDOH8Sjeh/OuwJ6ubWSxUFI4t3w9lJFQYzL5sGivMZVGaja
-	3G8IRxY8pZW5xTsR/ZSPo2xHO3tmAe4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704364975;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
-	b=TyvK9ITxl0UWu3pySHVEr83Xh/AvcIJnchq42FHVMCCVNnqEiPy0S0Nmh9+23hA0qYu1GU
-	6Bdk4QiZduY+xsCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E167013722;
-	Thu,  4 Jan 2024 10:42:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7Pz/Nq+LlmWZdgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 04 Jan 2024 10:42:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 89D12A07EF; Thu,  4 Jan 2024 11:42:55 +0100 (CET)
-Date: Thu, 4 Jan 2024 11:42:55 +0100
-From: Jan Kara <jack@suse.cz>
-To: Baokun Li <libaokun1@huawei.com>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	jack@suse.cz, ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
-	yi.zhang@huawei.com, yangerkun@huawei.com, yukuai3@huawei.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 4/8] ext4: avoid bb_free and bb_fragments
- inconsistency in mb_free_blocks()
-Message-ID: <20240104104255.eewvmywxyqtfwzug@quack3>
-References: <20231221150558.2740823-1-libaokun1@huawei.com>
- <20231221150558.2740823-5-libaokun1@huawei.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456BE20DD4
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 10:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-7cdb67ec4caso136473241.2
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 02:49:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704365382; x=1704970182; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7lSLAgF3yzZ+WL+iGneL5odyxIGJYYIwjdlJ0e++vws=;
+        b=qf0ksclYaLxc53mRqhelWpW4cibgbU4Sbhz6fqaG5kGF2h+HPY9sc2EnMUiHTFDPTz
+         +E++gJ4U9afDmzF6YtRyTURgKfcl82vE/RWHcQVR28BxXBxX9DCVuiz4ScIbPn+aEpuF
+         2NhlULkAQ2ZYSRjKLqZRLVxoyZ04nPMMMgsBCqszzL4VBDhtI1Qfb0JFALAl8lslLlrG
+         uejrIRT5JS8vvW+M32qVaafjPNo1FTdhJO5QQLb99oZq9rYDhWjYvqSZmqs9/A10p48q
+         bEUmVSeXZbW7LrNF1rXqN8NRzcTQWJdxYFSThj+XIGJGgoG/9+OpNsZaxTN+3d7bjxE9
+         xH3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704365382; x=1704970182;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7lSLAgF3yzZ+WL+iGneL5odyxIGJYYIwjdlJ0e++vws=;
+        b=hrIdCFqubIH+1yHJjvqBdgb3Y3kLx33MAcPGZ7rxaYspALXTKt0D0Hfjbie05f3htd
+         /LLfPn/fmxw+y+NBdNuyCBs9HXpomWVRCBq5imPXAnlFUD2UrwWu/fLM8xY32+qHUpKm
+         6g3nix2gKlt7zHPK8gtpbrAT0N3CSeS0+HSnHgz43JsOq9xF87R162nBp8rYjFT06wss
+         6cdygWoA491+Pc+fskWVdJIyyfHUrWpuTuRl8DvIDLXnWSeHUQBugMrU5ca7oKB5/Bwq
+         VKuUhSEJ7c/eIyTekOheGuVuN6F6SV/5UI2CqyFMdBmYir4QxmhBj53tOGGwpxc1PUyn
+         Uuqg==
+X-Gm-Message-State: AOJu0YxfxzJeKdAYmQMCNXk2RMvCe0qPnx8PT0RugFMxfvXuEEaxw6kx
+	xtaYDu3KH6152rtQPyxDGhSZ1Xbxd93Nz1sVYM7MSNZxqOR3UA==
+X-Google-Smtp-Source: AGHT+IElE9BQNCHr+NMpaysmcqMv4FPD0he8YGgzI2o6aRtB456DjHJJIAPJLVTyLJl4DWpI9fVmsbCU2bBmO+Lb3Z4=
+X-Received: by 2002:a05:6102:15a8:b0:467:a64f:aa27 with SMTP id
+ g40-20020a05610215a800b00467a64faa27mr217036vsv.15.1704365382054; Thu, 04 Jan
+ 2024 02:49:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231221150558.2740823-5-libaokun1@huawei.com>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: *
-X-Spam-Score: 1.87
-X-Spamd-Result: default: False [1.87 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-0.00)[25.51%];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 NEURAL_SPAM_LONG(0.17)[0.048];
-	 RCPT_COUNT_SEVEN(0.00)[11];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,mit.edu,dilger.ca,suse.cz,gmail.com,huawei.com];
-	 RCVD_TLS_ALL(0.00)[];
-	 SUSPICIOUS_RECIPS(1.50)[]
-X-Spam-Flag: NO
+References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Jan 2024 16:19:30 +0530
+Message-ID: <CA+G9fYsf1SDHMk+Aq=QZZAOOih1F2LoSb+abEXP0WQ6u8maxog@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/100] 6.1.71-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu 21-12-23 23:05:54, Baokun Li wrote:
-> After updating bb_free in mb_free_blocks, it is possible to return without
-> updating bb_fragments because the block being freed is found to have
-> already been freed, which leads to inconsistency between bb_free and
-> bb_fragments.
-> 
-> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-> to problems such as dividing by zero when calculating the average fragment
-> length. Hence move the update of bb_free to after the block double-free
-> check guarantees that the corresponding statistics are updated only after
-> the core block bitmap is modified.
-> 
-> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-> CC: stable@vger.kernel.org # 3.10
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+On Wed, 3 Jan 2024 at 22:27, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.71 release.
+> There are 100 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.71-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Just one nit below but regardless of that feel free to add:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-> @@ -1941,10 +1936,16 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
->  				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
->  		} else {
->  			mb_regenerate_buddy(e4b);
-> +			goto check;
->  		}
-> -		goto done;
-> +		return;
->  	}
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-I think this might be more readable when we revert the condition like:
+## Build
+* kernel: 6.1.71-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 55d8c3a7d7448a75a541c078fd8e7b6abcbbac95
+* git describe: v6.1.70-101-g55d8c3a7d744
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.7=
+0-101-g55d8c3a7d744
 
-		/*
-		 * Fastcommit replay can free already freed blocks which
-		 * corrupts allocation info. Regenerate it.
-		 */
-		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-	               	mb_regenerate_buddy(e4b);
-			goto check;
-		}
-                ext4_grp_locked_error(sb, e4b->bd_group,
-                                      inode ? inode->i_ino : 0, blocknr,
-                                      "freeing already freed block (bit %u); block bitmap corrupt.",
-                                      block);
-                ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
-                                EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-		return;
-	}
+## Test Regressions (compared to v6.1.70)
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+## Metric Regressions (compared to v6.1.70)
+
+## Test Fixes (compared to v6.1.70)
+
+## Metric Fixes (compared to v6.1.70)
+
+## Test result summary
+total: 135389, pass: 114436, fail: 2678, skip: 18148, xfail: 127
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 145 passed, 0 failed
+* arm64: 49 total, 49 passed, 0 failed
+* i386: 37 total, 37 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 12 total, 12 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 42 total, 42 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
