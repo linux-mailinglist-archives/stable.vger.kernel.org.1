@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D02C82450D
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:34:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3590A82450E
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B91F26434
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8C4A287386
 	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3425124207;
-	Thu,  4 Jan 2024 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893FA24206;
+	Thu,  4 Jan 2024 15:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pL7+1kyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8O6a9y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAAF241F7
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:34:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1507DC433C8;
-	Thu,  4 Jan 2024 15:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52318241F4
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:34:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C19C433CA;
+	Thu,  4 Jan 2024 15:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704382450;
-	bh=S2qUELYF4zXrQZTpqQzQho9IPWOCpNQFpnJIRlw0V10=;
+	s=korg; t=1704382453;
+	bh=f6+WNWTumhd5i9DLLY8PNBD87lxmibtsnVQC6lz2kZg=;
 	h=Subject:To:From:Date:From;
-	b=pL7+1kynNqNeoxw7E5DZGxjKcjqVeZ0pBDsxH6AzK8rPVCRkMUYNDzrbHADiYYv1R
-	 73UwXWXHZCjCEVYQ3xZEle3PxUw//mFBaztiNtf88bKSaYYcXqGh6m6l09z+AgkhDy
-	 flvwWwNhgPzk4Fy5lKUphbZbZnmnhDFkJTIUAaPI=
-Subject: patch "serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of" added to tty-testing
-To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org,yury.norov@gmail.com
+	b=U8O6a9y7Vn7xM6Mp3r4d1IcNjhP564NW24ZinHjexKOuBAqSVlHcQbTwQkHK0xedh
+	 JOktW/okyqn9GKRTJ2VafZqYYX5j+mfQjI03NwSxRKJaV1clhcE3lVVvgva9UK9m/E
+	 dcdorq8Siclm5QlA/qybJg+EkfXAQEuhtqTaHMj0=
+Subject: patch "serial: sc16is7xx: add check for unsupported SPI modes during probe" added to tty-testing
+To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:33:54 +0100
-Message-ID: <2024010454-ramble-scrubbed-41fb@gregkh>
+Date: Thu, 04 Jan 2024 16:33:55 +0100
+Message-ID: <2024010455-roving-collision-56fe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of
+    serial: sc16is7xx: add check for unsupported SPI modes during probe
 
 to my tty git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
@@ -61,133 +61,53 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 8a1060ce974919f2a79807527ad82ac39336eda2 Mon Sep 17 00:00:00 2001
+From 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 Mon Sep 17 00:00:00 2001
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Thu, 21 Dec 2023 18:18:08 -0500
-Subject: serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of
- probe error
+Date: Thu, 21 Dec 2023 18:18:09 -0500
+Subject: serial: sc16is7xx: add check for unsupported SPI modes during probe
 
-If an error occurs during probing, the sc16is7xx_lines bitfield may be left
-in a state that doesn't represent the correct state of lines allocation.
+The original comment is confusing because it implies that variants other
+than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
 
-For example, in a system with two SC16 devices, if an error occurs only
-during probing of channel (port) B of the second device, sc16is7xx_lines
-final state will be 00001011b instead of the expected 00000011b.
+Extract from datasheet:
+    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
+    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
+    SC16IS752... In all other aspects, the SC16IS762 is functionally and
+    electrically the same as the SC16IS752.
 
-This is caused in part because of the "i--" in the for/loop located in
-the out_ports: error path.
+The same is also true of the SC16IS760 variant versus the SC16IS740 and
+SC16IS750 variants.
 
-Fix this by checking the return value of uart_add_one_port() and set line
-allocation bit only if this was successful. This allows the refactor of
-the obfuscated for(i--...) loop in the error path, and properly call
-uart_remove_one_port() only when needed, and properly unset line allocation
-bits.
+For all variants, only SPI mode 0 is supported.
 
-Also use same mechanism in remove() when calling uart_remove_one_port().
+Change comment and abort probing if the specified SPI mode is not
+SPI_MODE_0.
 
-Fixes: c64349722d14 ("sc16is7xx: support multiple devices")
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
 Cc:  <stable@vger.kernel.org>
-Cc: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-2-hugo@hugovil.com
+Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 44 ++++++++++++++--------------------
- 1 file changed, 18 insertions(+), 26 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index e40e4a99277e..17b90f971f96 100644
+index 17b90f971f96..798fa115b28a 100644
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -407,19 +407,6 @@ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
- 	regmap_update_bits(one->regmap, reg, mask, val);
- }
+@@ -1733,7 +1733,10 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
  
--static int sc16is7xx_alloc_line(void)
--{
--	int i;
--
--	BUILD_BUG_ON(SC16IS7XX_MAX_DEVS > BITS_PER_LONG);
--
--	for (i = 0; i < SC16IS7XX_MAX_DEVS; i++)
--		if (!test_and_set_bit(i, &sc16is7xx_lines))
--			break;
--
--	return i;
--}
--
- static void sc16is7xx_power(struct uart_port *port, int on)
- {
- 	sc16is7xx_port_update(port, SC16IS7XX_IER_REG,
-@@ -1550,6 +1537,13 @@ static int sc16is7xx_probe(struct device *dev,
- 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
- 
- 	for (i = 0; i < devtype->nr_uart; ++i) {
-+		s->p[i].port.line = find_first_zero_bit(&sc16is7xx_lines,
-+							SC16IS7XX_MAX_DEVS);
-+		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
-+			ret = -ERANGE;
-+			goto out_ports;
-+		}
+ 	/* Setup SPI bus */
+ 	spi->bits_per_word	= 8;
+-	/* only supports mode 0 on SC16IS762 */
++	/* For all variants, only mode 0 is supported */
++	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
++		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
 +
- 		/* Initialize port data */
- 		s->p[i].port.dev	= dev;
- 		s->p[i].port.irq	= irq;
-@@ -1569,14 +1563,8 @@ static int sc16is7xx_probe(struct device *dev,
- 		s->p[i].port.rs485_supported = sc16is7xx_rs485_supported;
- 		s->p[i].port.ops	= &sc16is7xx_ops;
- 		s->p[i].old_mctrl	= 0;
--		s->p[i].port.line	= sc16is7xx_alloc_line();
- 		s->p[i].regmap		= regmaps[i];
- 
--		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
--			ret = -ENOMEM;
--			goto out_ports;
--		}
--
- 		mutex_init(&s->p[i].efr_lock);
- 
- 		ret = uart_get_rs485_mode(&s->p[i].port);
-@@ -1594,8 +1582,13 @@ static int sc16is7xx_probe(struct device *dev,
- 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
- 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
- 		kthread_init_delayed_work(&s->p[i].ms_work, sc16is7xx_ms_proc);
-+
- 		/* Register port */
--		uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
-+		ret = uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
-+		if (ret)
-+			goto out_ports;
-+
-+		set_bit(s->p[i].port.line, &sc16is7xx_lines);
- 
- 		/* Enable EFR */
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
-@@ -1653,10 +1646,9 @@ static int sc16is7xx_probe(struct device *dev,
- #endif
- 
- out_ports:
--	for (i--; i >= 0; i--) {
--		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
--		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
--	}
-+	for (i = 0; i < devtype->nr_uart; i++)
-+		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
-+			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
- 
- 	kthread_stop(s->kworker_task);
- 
-@@ -1678,8 +1670,8 @@ static void sc16is7xx_remove(struct device *dev)
- 
- 	for (i = 0; i < s->devtype->nr_uart; i++) {
- 		kthread_cancel_delayed_work_sync(&s->p[i].ms_work);
--		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
--		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
-+		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
-+			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
- 		sc16is7xx_power(&s->p[i].port, 0);
- 	}
- 
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+ 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
+ 	ret = spi_setup(spi);
 -- 
 2.43.0
 
