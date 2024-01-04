@@ -1,149 +1,145 @@
-Return-Path: <stable+bounces-9628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FB0823B58
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 05:10:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0DD7823BA7
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 06:06:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C63E828749A
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 04:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAEA81C23972
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 05:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E6DC152;
-	Thu,  4 Jan 2024 04:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF8818AF1;
+	Thu,  4 Jan 2024 05:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lgzlT3pr"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fM6Iz2rW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C668618647
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 04:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6dc049c7b58so85494a34.3
-        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 20:10:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D9E12E65
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 05:06:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d3e05abcaeso735185ad.1
+        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 21:06:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704341412; x=1704946212; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3lO3AY8LywVDisOSp6nacwDg6jBR22j29N6tFVkS+6I=;
-        b=lgzlT3prnkdbpQIo8P+I84zV6tnllz3WBXKJD4wAhqnVzR65qDu16s+CTkXe7pAJym
-         ym8e0nDtgUDtVc+RpW+p4BV3xk4DUzKDaflhqUEBiL/S/7qwXkE5QALpXv4H5amP9daX
-         DE0lv/YySf0RTkSKP4rWz//uLViBNK/0PphM6i1M5xR477kReSHNeEJYQOdoKufxPFh0
-         uxbqsKLsqWnuPpE90bQGMzgnUfiXQzhA4KGwIH4HWJlhhW08q72FKimFy24kSgrrvyyO
-         3pCla/gzD0DOGlczpk/WZnSyHlHigbrS+H0WSTaCQr7cVSITUTRv3hCCX5gR41laHVBX
-         8jNg==
+        d=broadcom.com; s=google; t=1704344780; x=1704949580; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H33gCbmiCN5gguVTQt+3mux0fwghJWfcdcsWeLLveeo=;
+        b=fM6Iz2rWnlkCnJ2AAGjTgFN77xMNaEFKhTPkisoahrqnVBg6205GZP2A2i8Nv8B27b
+         8RL3MPCDZGBwHzXdpGABKQp+EdZa59l9/b8y/YnElU+xRc9MLjCnuz0iMx+gxYog9zGP
+         gvwKPvyOdxW4OjdBta2bknVLIv+MtQVVu7iVY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704341412; x=1704946212;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3lO3AY8LywVDisOSp6nacwDg6jBR22j29N6tFVkS+6I=;
-        b=LBsRKS+gg7Ly2JEAh4iUAVzRcpCyXgc3gUnG1zpRBCV5ZV7LdgkX1U/qAWh5kxyakd
-         fVsqxvMBVrNiNiJCqDmiXMJg6X8KdAAAr01KSEIeRRIdTa5Y6gqrXRDD68f6GfMUkJvi
-         kUXYQH5u95xcDAgYwE4pq+Xr3GUDyJxpPx1q2JXPOt3XXSfbnpx2XCz/CsXrpFRBLXKM
-         /+2quVP3yGLRw5GtYugLoPnTTLo7zTJw5LIBGtlX+JdfnSjEnvTqo9Q9NTQHobg4GTQJ
-         8RDZk22LrWwET13bU+jS8zH8+sA7FLSza61Vg0KyBPjQ00wV6WIFs4OUYbHrDL3x6Ede
-         NwMA==
-X-Gm-Message-State: AOJu0Yz/N3DofJcOPLbsAkxu2mFXNi6nGwOHEOu6sbv5oJ1xi6GxRWZD
-	vFLsH1M0mvTl2iwjzhk+ofh9QkjQQKjtoeqHzjtPCkq9KvMFfQ==
-X-Google-Smtp-Source: AGHT+IG1B1a66RlkeVRyvh7QrPt6k861MhW6+ltNjkShl9fILSeCzwN9SwqlT8GFLH05EEvBMiMgyw==
-X-Received: by 2002:a9d:6d0c:0:b0:6db:fee1:f4a8 with SMTP id o12-20020a9d6d0c000000b006dbfee1f4a8mr101682otp.2.1704341411780;
-        Wed, 03 Jan 2024 20:10:11 -0800 (PST)
-Received: from [192.168.17.16] ([138.84.62.99])
-        by smtp.gmail.com with ESMTPSA id x45-20020a056830246d00b006dba1ec37ffsm4533050otr.11.2024.01.03.20.10.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 20:10:11 -0800 (PST)
-Message-ID: <99fe3993-51b5-4284-8a22-869764f393d8@linaro.org>
-Date: Wed, 3 Jan 2024 22:10:08 -0600
+        d=1e100.net; s=20230601; t=1704344780; x=1704949580;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H33gCbmiCN5gguVTQt+3mux0fwghJWfcdcsWeLLveeo=;
+        b=c5QYlyjKJmxF1qFpBHxEBP+v6b919+yH6q60IP9NMJgEadHYIDO2+oj1a7XO6FO9WK
+         YLj2GkvIJHYHmqgKs0Lu023DfyZzbjU9nYvrIW0S/VorqLXyqgKVyRdvu1DXE+9Qj5mX
+         W9QbsZPmrPDkMC7GkKUn/A4lBD7VMevlfE/XeZ5RbRKCozDxggHh+fJwCUoLE+qTHjv9
+         bnuKFv2NEI6XS/ax2cYrSULU98LmR4EVEpV+dfdCavvYrmipat9PkDvdXQzczsUwMNno
+         z5uHjoJyP9hDDnRaygBr5KnCOk8V8c9d771JKUgSq2ly6jYI+Tu8NNrdqdgE8fVju1UB
+         mRxg==
+X-Gm-Message-State: AOJu0Yyw0POABcy2x3KztiIe/u66bQ9Qhem3tmmiJC/uosxDuLy1Flv5
+	INES7Fiv0S50XSXoEIn6BXT9Fn+MU98z
+X-Google-Smtp-Source: AGHT+IHdQ3rBdCb3bg8w5TC+VxhXor7lM+9/LrhJpYUxzr9md3RdUBzLpNMys63LFfx/6KH3Cw146Q==
+X-Received: by 2002:a17:903:1210:b0:1d4:4ae9:a23d with SMTP id l16-20020a170903121000b001d44ae9a23dmr55700plh.57.1704344779784;
+        Wed, 03 Jan 2024 21:06:19 -0800 (PST)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id z3-20020a170902ee0300b001d3561680aasm24505803plb.82.2024.01.03.21.06.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jan 2024 21:06:19 -0800 (PST)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: linux-kernel@vger.kernel.org
+Cc: Zack Rusin <zack.rusin@broadcom.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>,
+	linux-input@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] input/vmmouse: Fix device name copies
+Date: Thu,  4 Jan 2024 00:06:05 -0500
+Message-Id: <20240104050605.1773158-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231127204206.3593559-1-zack@kde.org>
+References: <20231127204206.3593559-1-zack@kde.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240103164834.970234661@linuxfoundation.org>
-Content-Language: en-US
-From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello!
+Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
+plus an extra string, extend it to 64.
 
-On 03/01/24 10:55 a. m., Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.10 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Fixes gcc13 warnings:
+drivers/input/mouse/vmmouse.c: In function ‘vmmouse_init’:
+drivers/input/mouse/vmmouse.c:455:53: warning: ‘/input1’ directive output may be truncated writing 7 bytes into a region of size between 1 and 32 [-Wformat-truncation=]
+  455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+      |                                                     ^~~~~~~
+drivers/input/mouse/vmmouse.c:455:9: note: ‘snprintf’ output between 8 and 39 bytes into a destination of size 32
+  455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  456 |                  psmouse->ps2dev.serio->phys);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We're seeing a build regression with x86/GCC-8 and allmodconfig:
+v2: Use the exact size for the vmmouse_data::phys
 
------8<-----
-   In file included from /builds/linux/include/linux/string.h:294,
-                    from /builds/linux/include/linux/bitmap.h:11,
-                    from /builds/linux/include/linux/cpumask.h:12,
-                    from /builds/linux/arch/x86/include/asm/paravirt.h:17,
-                    from /builds/linux/arch/x86/include/asm/cpuid.h:62,
-                    from /builds/linux/arch/x86/include/asm/processor.h:19,
-                    from /builds/linux/arch/x86/include/asm/cpufeature.h:5,
-                    from /builds/linux/arch/x86/include/asm/thread_info.h:53,
-                    from /builds/linux/include/linux/thread_info.h:60,
-                    from /builds/linux/include/linux/uio.h:9,
-                    from /builds/linux/include/linux/socket.h:8,
-                    from /builds/linux/include/uapi/linux/if.h:25,
-                    from /builds/linux/net/wireless/nl80211.c:11:
-   In function 'nl80211_set_cqm_rssi.isra.44',
-       inlined from 'nl80211_set_cqm' at /builds/linux/net/wireless/nl80211.c:13000:10:
-   /builds/linux/include/linux/fortify-string.h:57:29: error: '__builtin_memcpy' pointer overflow between offset 36 and size [-1, 9223372036854775807] [-Werror=array-bounds]
-    #define __underlying_memcpy __builtin_memcpy
-                                ^
-   /builds/linux/include/linux/fortify-string.h:648:2: note: in expansion of macro '__underlying_memcpy'
-     __underlying_##op(p, q, __fortify_size);   \
-     ^~~~~~~~~~~~~
-   /builds/linux/include/linux/fortify-string.h:693:26: note: in expansion of macro '__fortify_memcpy_chk'
-    #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,   \
-                             ^~~~~~~~~~~~~~~~~~~~
-   /builds/linux/net/wireless/nl80211.c:12939:3: note: in expansion of macro 'memcpy'
-      memcpy(cqm_config->rssi_thresholds, thresholds,
-      ^~~~~~
-   cc1: all warnings being treated as errors
-   make[5]: *** [/builds/linux/scripts/Makefile.build:243: net/wireless/nl80211.o] Error 1
------>8-----
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 8b8be51b4fd3 ("Input: add vmmouse driver")
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Raul Rangel <rrangel@chromium.org>
+Cc: linux-input@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v4.1+
+---
+ drivers/input/mouse/vmmouse.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-This is currently being bisected, so there is more to follow.
-
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
+diff --git a/drivers/input/mouse/vmmouse.c b/drivers/input/mouse/vmmouse.c
+index ea9eff7c8099..74131673e2f3 100644
+--- a/drivers/input/mouse/vmmouse.c
++++ b/drivers/input/mouse/vmmouse.c
+@@ -63,6 +63,8 @@
+ #define VMMOUSE_VENDOR "VMware"
+ #define VMMOUSE_NAME   "VMMouse"
+ 
++#define VMMOUSE_PHYS_NAME_POSTFIX_STR "/input1"
++
+ /**
+  * struct vmmouse_data - private data structure for the vmmouse driver
+  *
+@@ -72,7 +74,8 @@
+  */
+ struct vmmouse_data {
+ 	struct input_dev *abs_dev;
+-	char phys[32];
++	char phys[sizeof_field(struct serio, phys) +
++		  strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
+ 	char dev_name[128];
+ };
+ 
+@@ -452,7 +455,8 @@ int vmmouse_init(struct psmouse *psmouse)
+ 	psmouse->private = priv;
+ 
+ 	/* Set up and register absolute device */
+-	snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
++	snprintf(priv->phys, sizeof(priv->phys),
++		 "%s" VMMOUSE_PHYS_NAME_POSTFIX_STR,
+ 		 psmouse->ps2dev.serio->phys);
+ 
+ 	/* Mimic name setup for relative device in psmouse-base.c */
+-- 
+2.40.1
 
 
