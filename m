@@ -1,151 +1,212 @@
-Return-Path: <stable+bounces-9678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64648241B9
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 13:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6328241F2
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 13:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17AA41C21D71
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 12:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C083A1C21853
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 12:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36940219E5;
-	Thu,  4 Jan 2024 12:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65355200A4;
+	Thu,  4 Jan 2024 12:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="qtMJfZA1";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="6snWFrcr"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z03cvwJf"
 X-Original-To: stable@vger.kernel.org
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377092136C;
-	Thu,  4 Jan 2024 12:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id 0FAAC5C0167;
-	Thu,  4 Jan 2024 07:26:40 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 04 Jan 2024 07:26:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1704371200; x=
-	1704457600; bh=Meyf+8HOowsCgjAcne3s8KH81Tf6xBYj/bEm7WmbPCo=; b=q
-	tMJfZA1rfcIiQ8X6RgZu4gA+Q9w/l9+txbHbNWsYvav/l6Bh0NVeHijwEOF+34G0
-	G0BBIJdjbFUzfeErJzWhiN0X+qvLvsE6onlfP+Abf0Gzq+PYjnejQu9JwuC7ibAU
-	Xf2HtLK+1k4ROq/ewFLEcevgWRafSM1Eus8+m/0XmKwx4bcDBSytJzllJj9M9BjN
-	y9oghHZEWWjCRkD46+9J3s0H6zSvDi/v8UMsqXFuOmdXgrrCJJuAyg41gAQWuiJL
-	R8MpdIxzpfFqo3YV8Uxi7amKBTa35tNwot5nVLvjzJpaQj+lDwj5ECAI2SF8GxMN
-	QgIw7p3qdN4mzkWAdKGJg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1704371200; x=1704457600; bh=Meyf+8HOowsCgjAcne3s8KH81Tf6
-	xBYj/bEm7WmbPCo=; b=6snWFrcruHpwi2UbO+b5q/FK3U1BwtvipECnHLW4ys/V
-	TPqv2VkYODqqdAM9B4lb1VibdnO/UzRcb91s3yxlYhd1tK13vumo5Y+gQmqvBzRW
-	BrQK8gxy9QSQILzGI7xecrcgV11Ql97ubAAgIngZW7NdIZ1q32YFSWAyIyPqKbG2
-	ysDSoBxRQP4ddE84z6I+LZRfmjEJm8N7EdPylo2tEHRhkqWnfJqpSo4m3LquM4EN
-	5j3fkt9RA9c2SuFZSiX6Fbc4stHJekCCZfi6yB4Kq0LXvsSX0tbXb7SDIiOeZnai
-	RMEBSwXSCFZfBRaB1b5DmKMIGEwGrjdeyoXlxAWDsQ==
-X-ME-Sender: <xms:_6OWZfldj0zZ68b48xDEI4qo5mJ09BipIeFhYQq3GfzEFW2dNIuuPA>
-    <xme:_6OWZS3V-j4dBi4w5EfWcBWJkmU1brChjg8Rdw8Zn4wSu_Gvr63v3T0_lxo8j0_pK
-    kAZFh9uyJQvWX1OOhE>
-X-ME-Received: <xmr:_6OWZVqKL69TRxksJ2trlxF6TBAhRc0J7XvUI2lDv0dKe1uPP1NtySMYAyzSTWuzzcUxLuzrCRYh2w2zLV3aTOXEGeljPABOX2iU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegjedgfeelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    goufhushhpvggtthffohhmrghinhculdegledmnecujfgurhepfffhvfevuffkfhggtggu
-    jgesthdtredttddtvdenucfhrhhomhepvfgrkhgrshhhihcuufgrkhgrmhhothhouceooh
-    dqthgrkhgrshhhihesshgrkhgrmhhotggthhhirdhjpheqnecuggftrfgrthhtvghrnhep
-    leevffeuteelhfeftddvvdevudelteegkeeghefgtddtieettdevkedtudefjeeinecuff
-    homhgrihhnpehsuhhsvgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhsohhurhgtvghfohhr
-    ghgvrdhnvghtpdhrvgguhhgrthdrtghomhdplhgruhhntghhphgrugdrnhgvthenucevlh
-    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghs
-    hhhisehsrghkrghmohgttghhihdrjhhp
-X-ME-Proxy: <xmx:_6OWZXkwZinPso-f-nI7LyubDs-_LjXK9x-ekuGNt6s7J4_36ZInnw>
-    <xmx:_6OWZd0d30ki__Wc8u6NOZ7kGMW467HFGJOLwNcr5NhbUw5Ivy39ig>
-    <xmx:_6OWZWvhdpelLQNftBsjf5vkeKYHPFLT1fienqMXBwiUEShKGvy3YQ>
-    <xmx:AKSWZWzpc0uvOn6pzH7qSsoZZEMPf7PD2LlOHtBlbTNsIbeWcVru_A>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jan 2024 07:26:38 -0500 (EST)
-Date: Thu, 4 Jan 2024 21:26:35 +0900
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: linux1394-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] firewire: ohci: suppress unexpected system reboot in
- AMD Ryzen machines and ASM108x/VT630x PCIe cards
-Message-ID: <20240104122635.GA350070@workstation.local>
-Mail-Followup-To: linux1394-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	stable@vger.kernel.org
-References: <20240102110150.244475-1-o-takashi@sakamocchi.jp>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D640219FC
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 12:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-466eb8576e0so111696137.2
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 04:40:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704372005; x=1704976805; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VJVxiZQHIN91U6hoH3sFs+qS8wBRAeVdMoW+bqKjLsI=;
+        b=z03cvwJfmlDcq/XlxlyG1xGfmKfXcF61ztOCzckc9cwlvsbPABIMwZ3G6q2+PUMDHr
+         pSGdKHjOx/PYdPsTFBTMXtak5GUlUTLFfbOW+vNWVfC3RudwIpDJMXEFYH8OPuJgCa5C
+         zAaIgxWmHqwnzPk66MNzvHyjbohq5eD6p7u8Zp1rTcZgu54BCSxq4ORrcVZVu6WJRXyH
+         OfwUOWckJ1wUbI9GlXxmmgLZvWbAS9dm0uiu50nl441qMpzwu4I5VyVBfPURNO7OKn6G
+         1AlOb4zaocRuZnBzsZui1p/9aCaEkQSWJ5SJbgvsmPuBbpnfuat6ZmWWabu020GeZ8FO
+         jMuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704372005; x=1704976805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VJVxiZQHIN91U6hoH3sFs+qS8wBRAeVdMoW+bqKjLsI=;
+        b=h2ikajCkJad3EZCLP67UtogkJMHrJxUOA3Mue/VFhnthoB3X08HMwvosNPCo3JIw3P
+         YwzhXJpm95QvXTFR18u+xKyBY0s1mBNHI9OfML98gvnFD1E+jnsPWXRAimRUrMsLTrDP
+         XMmOU3UaJabcFq6WYLvVQbvR3OFhFTlBrcBiSnM19PXRpRvYBPCZhD7O5lCW/Th/TJcf
+         3Rn2/uPXcbPNOSP3tqLr+rf5L/UJPDDZYIpeHN5Nq0TcJYKw4m5DgaNZqJH6kL0yuf4o
+         wRo62fiazjwQWaqeSL3FRRZwKdCH/JS6SW0+6HGeyWwCs3Y5/ipPMGi/h8EE3SHE5nlS
+         5YQQ==
+X-Gm-Message-State: AOJu0Yy143vhcVZzsVBDg3XXn71IT0emEVBDOP87Ces90Zm+s4/eLiqJ
+	NdLJ/jRw3GQOZ322atJfnXuKlscmS27GvJla3pcQyU+CX28VhA==
+X-Google-Smtp-Source: AGHT+IFXZQnw4BjI/Ojqt4U9SS96DChsIyTcnDo26dSAdPNqc2H5P2Rn4C5dOz+iO2Tpq0LVLHcbkoI/wbivsFDI6HM=
+X-Received: by 2002:a05:6102:358c:b0:467:ae65:b4e with SMTP id
+ h12-20020a056102358c00b00467ae650b4emr73008vsu.4.1704372005415; Thu, 04 Jan
+ 2024 04:40:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102110150.244475-1-o-takashi@sakamocchi.jp>
+References: <20240103164834.970234661@linuxfoundation.org> <99fe3993-51b5-4284-8a22-869764f393d8@linaro.org>
+ <32ebe3f1-49b7-4ad3-9ea5-ed2adbbd78da@linaro.org> <2024010427-kisser-canopy-763c@gregkh>
+In-Reply-To: <2024010427-kisser-canopy-763c@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 4 Jan 2024 18:09:53 +0530
+Message-ID: <CA+G9fYvMRQ5QTkbGETUHDzVAyOXKEMvMdL0Ghr8cVzXOaUHifg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>, 
+	stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, allen.lkml@gmail.com, leo@leolam.fr, 
+	johannes.berg@intel.com, Arnd Bergmann <arnd@arndb.de>, Kees Cook <keescook@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Thu, 4 Jan 2024 at 13:29, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Thu, Jan 04, 2024 at 01:15:45AM -0600, Daniel D=C3=ADaz wrote:
+> > Hello!
+> >
+> > On 03/01/24 10:10 p. m., Daniel D=C3=ADaz wrote:
+> > > Hello!
+> > >
+> > > On 03/01/24 10:55 a. m., Greg Kroah-Hartman wrote:
+> > > > This is the start of the stable review cycle for the 6.6.10 release=
+.
+> > > > There are 49 patches in this series, all will be posted as a respon=
+se
+> > > > to this one.  If anyone has any issues with these being applied, pl=
+ease
+> > > > let me know.
+> > > >
+> > > > Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> > > > Anything received after that time might be too late.
+> > > >
+> > > > The whole patch series can be found in one patch at:
+> > > >     https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
+h-6.6.10-rc1.gz
+> > > > or in the git tree and branch at:
+> > > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-6.6.y
+> > > > and the diffstat can be found below.
+> > > >
+> > > > thanks,
+> > > >
+> > > > greg k-h
+> > >
+> > > We're seeing a build regression with x86/GCC-8 and allmodconfig:
+> > >
+> > > -----8<-----
+> > >    In file included from /builds/linux/include/linux/string.h:294,
+> > >                     from /builds/linux/include/linux/bitmap.h:11,
+> > >                     from /builds/linux/include/linux/cpumask.h:12,
+> > >                     from /builds/linux/arch/x86/include/asm/paravirt.=
+h:17,
+> > >                     from /builds/linux/arch/x86/include/asm/cpuid.h:6=
+2,
+> > >                     from /builds/linux/arch/x86/include/asm/processor=
+.h:19,
+> > >                     from /builds/linux/arch/x86/include/asm/cpufeatur=
+e.h:5,
+> > >                     from /builds/linux/arch/x86/include/asm/thread_in=
+fo.h:53,
+> > >                     from /builds/linux/include/linux/thread_info.h:60=
+,
+> > >                     from /builds/linux/include/linux/uio.h:9,
+> > >                     from /builds/linux/include/linux/socket.h:8,
+> > >                     from /builds/linux/include/uapi/linux/if.h:25,
+> > >                     from /builds/linux/net/wireless/nl80211.c:11:
+> > >    In function 'nl80211_set_cqm_rssi.isra.44',
+> > >        inlined from 'nl80211_set_cqm' at /builds/linux/net/wireless/n=
+l80211.c:13000:10:
+> > >    /builds/linux/include/linux/fortify-string.h:57:29: error: '__buil=
+tin_memcpy' pointer overflow between offset 36 and size [-1, 92233720368547=
+75807] [-Werror=3Darray-bounds]
+> > >     #define __underlying_memcpy __builtin_memcpy
+> > >                                 ^
+> > >    /builds/linux/include/linux/fortify-string.h:648:2: note: in expan=
+sion of macro '__underlying_memcpy'
+> > >      __underlying_##op(p, q, __fortify_size);   \
+> > >      ^~~~~~~~~~~~~
+> > >    /builds/linux/include/linux/fortify-string.h:693:26: note: in expa=
+nsion of macro '__fortify_memcpy_chk'
+> > >     #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,   \
+> > >                              ^~~~~~~~~~~~~~~~~~~~
+> > >    /builds/linux/net/wireless/nl80211.c:12939:3: note: in expansion o=
+f macro 'memcpy'
+> > >       memcpy(cqm_config->rssi_thresholds, thresholds,
+> > >       ^~~~~~
+> > >    cc1: all warnings being treated as errors
+> > >    make[5]: *** [/builds/linux/scripts/Makefile.build:243: net/wirele=
+ss/nl80211.o] Error 1
+> > > ----->8-----
+> > >
+> > > This is currently being bisected, so there is more to follow.
+> >
+> > Bisection pointed to:
+> >
+> >   commit 92045aab1bd9bfd73d816e907ea07739c4550b41
+> >   Author: Johannes Berg <johannes.berg@intel.com>
+> >   Date:   Sat Dec 16 05:47:15 2023 +0000
+> >
+> >       wifi: cfg80211: fix CQM for non-range use
+> >       commit 7e7efdda6adb385fbdfd6f819d76bc68c923c394 upstream.
+> >
+> > Reverting that was not possible, so I reverted 47f3694a4259 first ("wif=
+i: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)"), but that was no=
+t enough. After reverting both 47f3694a4259 and 92045aab1bd9, the build pas=
+sed again.
+> >
+> > Reproducer:
+> >
+> >   tuxmake --runtime podman --target-arch x86_64 --toolchain gcc-8 --kco=
+nfig allmodconfig
+>
+> Very odd, 6.1 works fine with this same compiler?
 
-On Tue, Jan 02, 2024 at 08:01:50PM +0900, Takashi Sakamoto wrote:
-> VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-> the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-> it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-> 0xf0 on PCI I/O space) often causes unexpected system reboot in any type
-> of AMD Ryzen machine (both 0x17 and 0x19 families). It does not appears in
-> the other type of machine (AMD pre-Ryzen machine, Intel machine, at least),
-> or in the other OHCI 1394 hardware (e.g. Texas Instruments).
-> 
-> The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-> use union for callback of transaction completion") added to v6.5 kernel.
-> It changed 1394 OHCI driver to access to the register every time to
-> dispatch local asynchronous transaction. However, the issue exists in
-> older version of kernel as long as it runs in AMD Ryzen machine, since
-> the access to the register is required to maintain bus time. It is not
-> hard to imagine that users experience the unexpected system reboot when
-> generating bus reset by plugging any devices in, or reading the register
-> by time-aware application programs; e.g. audio sample processing.
-> 
-> This commit suppresses the unexpected system reboot in the combination of
-> hardware. It avoids the access itself. As a result, the software stack can
-> not provide the hardware time anymore to unit drivers, userspace
-> applications, and nodes in the same IEEE 1394 bus. It brings apparent
-> disadvantage since time-aware application programs require it, while
-> time-unaware applications are available again; e.g. sbp2.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Jiri Slaby <jirislaby@kernel.org>
-> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-> Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-> Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-> Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-> Closes: https://bugs.launchpad.net/linux/+bug/2043905
-> Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-> ---
->  drivers/firewire/ohci.c | 51 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 51 insertions(+)
+It works on 6.1 with the same compiler.
 
-Applied to for-linus branch[1]. I'll send it tomorrow and expect it applied
-to the mainline kernel, the latest stable kernel, and the longterm kernels.
+> These changes were in
+> the 6.1.70 release (and the 6.1.66 release) before.
+>
+> It was also in 6.6.5, before being reverted in 6.6.6, so why is this
+> causing a problem now?
 
+It was also noticed on 6.6.5-rc1
+git_describe: v6.6.4-135-gb0b05ccdd77d
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/ieee1394/linux1394.git/log/?h=for-linus
+I have already reported this on a stable mailing list [1] on 6.6.5-rc1.
 
-Regards
+Please find more details and comments from Arnd [2] and Kees [3].
 
-Takashi Sakamoto
+[1] https://lore.kernel.org/stable/CA+G9fYuL_-Q67t+Y7ST5taYv1XkkoJegH2zBvw_=
+ZUOhF9QRiOg@mail.gmail.com/
+[2] https://lore.kernel.org/stable/ce99918f-eb6a-4ad7-aa44-9d27c27b6b00@app=
+.fastmail.com/
+[3] https://lore.kernel.org/all/202311301016.84D0010@keescook/
+
+Test results comparison,
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.9=
+-50-g5fd1c89851c4/testrun/21921607/suite/build/test/gcc-8-allmodconfig/hist=
+ory/
+
+- Naresh
 
