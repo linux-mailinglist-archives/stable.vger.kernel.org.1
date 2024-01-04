@@ -1,123 +1,211 @@
-Return-Path: <stable+bounces-9729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726B3824A76
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:47:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6AB824AA8
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:03:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C518287066
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 21:47:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5861C229D9
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781C62C872;
-	Thu,  4 Jan 2024 21:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1772C861;
+	Thu,  4 Jan 2024 22:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ko98/PP6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oy1rGAQ9"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75B82C855
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 21:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id LB05r4rbs8uLRLVWrrvjy0; Thu, 04 Jan 2024 21:45:29 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id LVWqrWZcK55BJLVWqrFeDk; Thu, 04 Jan 2024 21:45:29 +0000
-X-Authority-Analysis: v=2.4 cv=QcR1A+Xv c=1 sm=1 tr=0 ts=659726f9
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tdfoI9PX4746k4ujIk8HyNvg9qc8ieidSwbK0BVB3Vo=; b=ko98/PP6Rxy6jRu06D3Ukebsuz
-	grDhvYu1B0BJrl8zJxcDFxV+YkNH0hZc8U19OMUldXNeSTix1puJ7nS4dch4eRLsx7LWSi3Mm/W6K
-	2N4Weuey7uci1FUilEK7CAtvRzPV4eTn17W5T6WtITsMavipyAjhX2M8HVhrHBi+f5Ofrk+2EZCP8
-	ctNdjWeMoP3S6Ukh09+ur1qsq9uj+SQKAN9J/ZirbmnyTtHyaz4l8ubnCHW17gEzpgF8avCybnZrv
-	IOSr/gsKST/6nDrMv70D57Lusy4C6ln9VYDXe38VFTpm5VsOInRn4PVO6Rh4ghwr46rf184qWQIxk
-	9uLlJNZw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:34200 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rLVWo-003gb1-0G;
-	Thu, 04 Jan 2024 14:45:26 -0700
-Subject: Re: [PATCH 6.1 000/100] 6.1.71-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240103164856.169912722@linuxfoundation.org>
-In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <971a65d3-7d86-d332-d5c1-06b57e055c2c@w6rz.net>
-Date: Thu, 4 Jan 2024 13:45:21 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CF32C84F;
+	Thu,  4 Jan 2024 22:03:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3368b9bbeb4so850654f8f.2;
+        Thu, 04 Jan 2024 14:03:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704405826; x=1705010626; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gXXy4XaMx73PQXHAjdjEv87MNa8ZHKFz0AC7Uv3YPaw=;
+        b=Oy1rGAQ9x5vGN+PTD56sTjjKl5Qtaphvt2i6xQ+KZybN59gs+P8g+ph9qClImdqTWU
+         N9mljp8oeXG2I9DN9lsmgJ8oRx7AnP7dl0OAfqRupOcEFRjp2Vsc5Bb///fz4Uu5ePsY
+         pLZKhrS/fcKFPIO8XOK85m+EB6u8DT3Z/x4uHSFxEPh8MA4V81Xgs7YITxwbyjL4ah1i
+         qYf8XFyKwKibTfVurlGuJiAiddz10HRz6IaXiz5C5uRGQUE0EgUaWoFDT8dBnyzdWNAp
+         Yk2CtEtcy0EIbjlg2bt6OvNZmXn9gNB+XwU8XT3TTq/IGKtJdIpS58XN/8MxP+s9UxLM
+         XpUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704405826; x=1705010626;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gXXy4XaMx73PQXHAjdjEv87MNa8ZHKFz0AC7Uv3YPaw=;
+        b=JXKadd+tDWaBCHs+9foIhIQ7y227Xu2yz5GZw+vg35g11pZMOBPZvx6tiNyGLDUSMk
+         QQf+AiVwtLEk9QeXzg4bLvV8uqaerVisk2Xl6CGPhDFfl1Z4jwfrF4oLp30wh2PpZcUX
+         RNG8poBehpe3VF2rMwfXTS2IyuXg6pHIygvZvKDu5L9EH/mMOoTzEQn6ZX8wB/SY5sFG
+         qS6f98olB61peZ/QlbSYJUYFJah3x6mk6xWEFC3yeDb0vjYDFwGtPA7Wy0q2IL1Hkwc7
+         997g3QMiLzzDDZ22M6vV2gfAXdGkwH+mGdA+7GKcf6yKeyVa5MHqRvMoLs6NYJoJ7bhJ
+         SGeg==
+X-Gm-Message-State: AOJu0Yzo4pfKh70OIuyaUqykyH3NlfXVBNCu+1+/hcFxeVa6P+7qeDcm
+	XLYHoiHetJVtJLYDS6crCak=
+X-Google-Smtp-Source: AGHT+IHMnzEpSv8bC0DE1jfrn88WRg6WsYB4GValqBRgP/QIHGUfEF/vjn8EDZt4b1kOhthNJNcZ9g==
+X-Received: by 2002:a5d:6b12:0:b0:336:62f7:720f with SMTP id v18-20020a5d6b12000000b0033662f7720fmr299156wrw.160.1704405825822;
+        Thu, 04 Jan 2024 14:03:45 -0800 (PST)
+Received: from localhost.localdomain (host-80-116-159-187.pool80116.interbusiness.it. [80.116.159.187])
+        by smtp.googlemail.com with ESMTPSA id e18-20020adfe7d2000000b003367a5b6b69sm164286wrn.106.2024.01.04.14.03.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 14:03:45 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Jonghwa Lee <jonghwa3.lee@samsung.com>,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [RESEND PATCH 1/2] PM / devfreq: Fix buffer overflow in trans_stat_show
+Date: Thu,  4 Jan 2024 22:55:14 +0100
+Message-ID: <20240104215521.10772-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rLVWo-003gb1-0G
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:34200
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfH1cUG2KMObj7CEGIdnkFOC9QzYnb6PmDPplbw21JJRriE0nJA8W+qIyYaeSV5Ol+XqVvXTmaK2DWzIeKeDkk4pk33xAoGp5dbOgCsM+fPJWvzcxlkzs
- T55bgjD4NEC94nvisdHctjyMcZoEawVosF3XeTrPfDtnFZdU/Z2+XxWtmu48hEpzfwZsmrckPfxwCA==
+Content-Transfer-Encoding: 8bit
 
-On 1/3/24 8:53 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.71 release.
-> There are 100 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.71-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Fix buffer overflow in trans_stat_show().
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Convert simple snprintf to the more secure scnprintf with size of
+PAGE_SIZE.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Add condition checking if we are exceeding PAGE_SIZE and exit early from
+loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
+stats is disabled.
+
+Return -EFBIG in the case where we don't have enough space to write the
+full transition table.
+
+Also document in the ABI that this function can return -EFBIG error.
+
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
+Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ Documentation/ABI/testing/sysfs-class-devfreq |  3 +
+ drivers/devfreq/devfreq.c                     | 57 +++++++++++++------
+ 2 files changed, 42 insertions(+), 18 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-class-devfreq b/Documentation/ABI/testing/sysfs-class-devfreq
+index 5e6b74f30406..1e7e0bb4c14e 100644
+--- a/Documentation/ABI/testing/sysfs-class-devfreq
++++ b/Documentation/ABI/testing/sysfs-class-devfreq
+@@ -52,6 +52,9 @@ Description:
+ 
+ 			echo 0 > /sys/class/devfreq/.../trans_stat
+ 
++		If the transition table is bigger than PAGE_SIZE, reading
++		this will return an -EFBIG error.
++
+ What:		/sys/class/devfreq/.../available_frequencies
+ Date:		October 2012
+ Contact:	Nishanth Menon <nm@ti.com>
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 63347a5ae599..8459512d9b07 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1688,7 +1688,7 @@ static ssize_t trans_stat_show(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+ 	struct devfreq *df = to_devfreq(dev);
+-	ssize_t len;
++	ssize_t len = 0;
+ 	int i, j;
+ 	unsigned int max_state;
+ 
+@@ -1697,7 +1697,7 @@ static ssize_t trans_stat_show(struct device *dev,
+ 	max_state = df->max_state;
+ 
+ 	if (max_state == 0)
+-		return sprintf(buf, "Not Supported.\n");
++		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
+ 
+ 	mutex_lock(&df->lock);
+ 	if (!df->stop_polling &&
+@@ -1707,31 +1707,52 @@ static ssize_t trans_stat_show(struct device *dev,
+ 	}
+ 	mutex_unlock(&df->lock);
+ 
+-	len = sprintf(buf, "     From  :   To\n");
+-	len += sprintf(buf + len, "           :");
+-	for (i = 0; i < max_state; i++)
+-		len += sprintf(buf + len, "%10lu",
+-				df->freq_table[i]);
++	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
++	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
++	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
++				 df->freq_table[i]);
++	}
++	if (len >= PAGE_SIZE - 1)
++		return PAGE_SIZE - 1;
+ 
+-	len += sprintf(buf + len, "   time(ms)\n");
++	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
+ 
+ 	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
+ 		if (df->freq_table[i] == df->previous_freq)
+-			len += sprintf(buf + len, "*");
++			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
+ 		else
+-			len += sprintf(buf + len, " ");
++			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
++		if (len >= PAGE_SIZE - 1)
++			break;
++
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
++				 df->freq_table[i]);
++		for (j = 0; j < max_state; j++) {
++			if (len >= PAGE_SIZE - 1)
++				break;
++			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
++					 df->stats.trans_table[(i * max_state) + j]);
++		}
++		if (len >= PAGE_SIZE - 1)
++			break;
++		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
++				 jiffies64_to_msecs(df->stats.time_in_state[i]));
++	}
+ 
+-		len += sprintf(buf + len, "%10lu:", df->freq_table[i]);
+-		for (j = 0; j < max_state; j++)
+-			len += sprintf(buf + len, "%10u",
+-				df->stats.trans_table[(i * max_state) + j]);
++	if (len < PAGE_SIZE - 1)
++		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
++				 df->stats.total_trans);
+ 
+-		len += sprintf(buf + len, "%10llu\n", (u64)
+-			jiffies64_to_msecs(df->stats.time_in_state[i]));
++	if (len >= PAGE_SIZE - 1) {
++		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
++		return -EFBIG;
+ 	}
+ 
+-	len += sprintf(buf + len, "Total transition : %u\n",
+-					df->stats.total_trans);
+ 	return len;
+ }
+ 
+-- 
+2.43.0
 
 
