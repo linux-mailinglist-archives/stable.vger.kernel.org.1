@@ -1,200 +1,135 @@
-Return-Path: <stable+bounces-9650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33134823E15
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:02:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF398823E26
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AC4B1F223BA
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:02:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D01021C214D2
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8D41EA84;
-	Thu,  4 Jan 2024 09:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268881F5E7;
+	Thu,  4 Jan 2024 09:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wdc.com header.i=@wdc.com header.b="byEKAc4X";
-	dkim=pass (1024-bit key) header.d=sharedspace.onmicrosoft.com header.i=@sharedspace.onmicrosoft.com header.b="GFkpN5Xy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GqdmN48G"
 X-Original-To: stable@vger.kernel.org
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF06020307
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 09:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wdc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1704358955; x=1735894955;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=Dc1FU8Jm5NI6JuLTg9NXxN7lvBQRwrPSlR2WOs7SK1c=;
-  b=byEKAc4XeHJ0gmRaE1NAbosq1/Bs4WuQvVhbqlgY0+xaxO+ImpUDLFb/
-   zwEZzeLUObR3RTTlG7EI53cc1UBxZEZ2Z/caf+bIRhKAfM6ptLFUSbQCy
-   uZpvuV7oKLfG80Be/ZJujyTdMwGPE6dUxnYSnJs43LtHkeoxeWFnSWQ6v
-   er4IuzJXF+YZzyjqKqKzGp0QSHh/lU9Mla03f1smNNLlyIHAdZXqV5NzF
-   E2mUlP7a8taE8V+SDy7Y6CVNdpBuQrD8YxtW4R147VBr6GwdUrVvm3YV/
-   HN2kDXD3WGJ8fhFDZ7TBZ0wCXdgRrzfYCh+TzbqUDJfH0KlQst7iKRLME
-   Q==;
-X-CSE-ConnectionGUID: orLbMiOJRYS90l/ziwhCIw==
-X-CSE-MsgGUID: 6mZU3BGXSbe2ItY0LT7olQ==
-X-IronPort-AV: E=Sophos;i="6.04,330,1695657600"; 
-   d="scan'208";a="6360885"
-Received: from mail-dm6nam11lp2168.outbound.protection.outlook.com (HELO NAM11-DM6-obe.outbound.protection.outlook.com) ([104.47.57.168])
-  by ob1.hgst.iphmx.com with ESMTP; 04 Jan 2024 17:01:27 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D8dFBogSC96Mc2pZ4ZeeXvCdQo7n27SQl9glO7XSXOZCVmEiFN5uPE6/cK6IGi9wDQWuX4Ps4LgsrC7Sp7bQaTxFDtiZkE7dEjO2yS4W9xZa2A60vyVRrk8O3M7DW5wzyrIa3MHk1xTrw/cduKUVM+qLDUAe+WXrzWhF7coJGo8e5ZWIWyKo6Vy555Z1cQeS1ok42uAmwYEzhVDtd7WvfzpL9fHzGz+p2NCp222L/41/geqWXajeZKR9npNqYi+YYpSMQvL38W8qEWXBJVXzV3Y8w18Hzd969NgBmmQFGOrNqeVHXTuzE1uc0mN40C/GZ6AGaqfYtiSJy8m/WvSpDg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ub+XRtoL++xI2hH3rk/xmASTfwmg3h3Am8BBPk/gjEc=;
- b=Fch3i2MVJOd2BbyksvdKhqHwjoLDvu3Qrn/WryNJgGce8tJm/zx22GVcpuhGYNNJBguZZbfekL3xjkZxapdU5bPnvMJ4W4Ld3ASZel6wBBUsVQlwALSNpOXNZI1pBGvTt7H7PyksvN94mcNPp8tYwbpVMY94/TAq1DAKgsZgAQThAr2zkt4So7WLrWRcmf0t2tVBfsBaI6vsqO84x1VwkpyhoTeKP2JOWMftYb5MXxwYWkFTqXcMfiolJGSpszJXXKTWyJ/byO/YJVw7AM8/YCi7htX6VnPFrZMWcUia0IEV+YyjW9iYRePH54X74KGwmbx0DCYyJwhQ7SS65SXkxQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ub+XRtoL++xI2hH3rk/xmASTfwmg3h3Am8BBPk/gjEc=;
- b=GFkpN5XykCIC4/1eDWxIi6tAnSVun5E2KM4o4mS0cQYR66z/Sle9Y8YlNzCxfH+VPSf/YCqVr4Q6yQKlEMvVuaRNHkFSCbBn1c16kgWy0mvCOFOis1z0EsjsJmCRAmmV+KCgiTOJwvNA0X7TAIYTsDH46TkJ3G3RhVck510ce08=
-Received: from DM8PR04MB8037.namprd04.prod.outlook.com (2603:10b6:8:f::6) by
- IA0PR04MB9036.namprd04.prod.outlook.com (2603:10b6:208:492::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7135.25; Thu, 4 Jan
- 2024 09:01:25 +0000
-Received: from DM8PR04MB8037.namprd04.prod.outlook.com
- ([fe80::81a9:5f87:e955:16b4]) by DM8PR04MB8037.namprd04.prod.outlook.com
- ([fe80::81a9:5f87:e955:16b4%3]) with mapi id 15.20.7159.015; Thu, 4 Jan 2024
- 09:01:25 +0000
-From: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, =?iso-8859-1?Q?Ilpo_J=E4rvinen?=
-	<ilpo.jarvinen@linux.intel.com>
-Subject: Re: [PATCH 6.6 36/49] platform/x86: p2sb: Allow p2sb_bar() calls
- during PCI device probe
-Thread-Topic: [PATCH 6.6 36/49] platform/x86: p2sb: Allow p2sb_bar() calls
- during PCI device probe
-Thread-Index: AQHaPmhRcPxyh6k/jkm5O3TgPvqec7DJXF4A
-Date: Thu, 4 Jan 2024 09:01:25 +0000
-Message-ID: <qszotcvi2tl4aldn6nsifqqelfgtm6sip6zp2r3subd3wgdi2k@c6tuabotwxkc>
-References: <20240103164834.970234661@linuxfoundation.org>
- <20240103164840.618631289@linuxfoundation.org>
-In-Reply-To: <20240103164840.618631289@linuxfoundation.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wdc.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR04MB8037:EE_|IA0PR04MB9036:EE_
-x-ms-office365-filtering-correlation-id: fb731ac3-2484-4a52-57cf-08dc0d03bb50
-wdcipoutbound: EOP-TRUE
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- UCb+yxg0NIuAs14pTYblBim4Db5ZjtX+RTuMaUvqRi4daCQUDvkOlBsmRlmEVt1hgQmiqg+WgJEhUiy9dl7rPBfPFUvctbUOUkI27JZ3WRF2+LVlgaKRoLeFYsUns3NrIO5o14IokmUJhZdM84bj3JvOxQaW2KhctqlHnxAusKTR0k4VWwDO8Wu9b2TciFjhNjs4zwf1dSJfCUku4pbLXx4tRLOV3n2RrXNcK3BQA9vXsFwXJx0i+z+8M7BeDLseqdcm2TLobHbqmCnm8tfPxr7dz43BZ2O+sZKPnEfzSbCQ+bozTK19fhB7m633wzqX6RNCmjjQACl1e27YckR5hgELZPt9nLpY5omG+FmkLzYFv9L/6IMqifbke3vyShtacKgCFzmAIShzlibazh9tOqRG3jghhR9cqJTaZBpsrW0sLJ1gb9FY5k+Wa+Lw0AR/LLOThz+Ethq0RNky7mWSf+JCY1sn3Xv2mPBockaKUZLBk3fZ3+Ovwgb6FiR8k3XBlixJ14/mqj38Xogv7szdKKT50eHb6FBQmTRXg270lhrmRFPmr6TpGxMs6JefZxB4yuUpCaopoDvrfcYmoAHteUHdnXrZ6qu3aMALkDupx3g=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM8PR04MB8037.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(396003)(39860400002)(136003)(366004)(376002)(230922051799003)(64100799003)(1800799012)(186009)(451199024)(6486002)(2906002)(83380400001)(44832011)(4326008)(38100700002)(66574015)(122000001)(41300700001)(82960400001)(33716001)(26005)(8676002)(8936002)(316002)(966005)(71200400001)(478600001)(5660300002)(54906003)(6512007)(66946007)(76116006)(66446008)(6506007)(66476007)(91956017)(9686003)(6916009)(66556008)(86362001)(38070700009)(64756008);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?nMBK/kppATp0bbQ32vHn/gUz5+9XfMJP1ng+0JrrGklms52AjmO2aYodeR?=
- =?iso-8859-1?Q?W5jMUB5T21XuCbvEiMimepHgkgJm8dX7b+dNOa0U0JsfDgKtQSxBZQRTJu?=
- =?iso-8859-1?Q?GZZiTci7y4uFBsO9zGEiqaPc/atxlS8c6k+q4TmqTQ0w6RkR8RsVZRzX7l?=
- =?iso-8859-1?Q?fdcNwBOWRTcs8IRzz+Ch8yZOhw/9Jm1uAMKSCVdA9Y4NcNWfKAUBimsLPa?=
- =?iso-8859-1?Q?JM+mjyjXzcO8qt2GXRm4Z3tqiE/lanGGLqgyLYn3zKmy+dQ211NxkoTRLm?=
- =?iso-8859-1?Q?N53381A6i2CcQDV0IcyjMhmGVpdJbRNIU4dT+eiNTSevZCPrEZfWGOb95F?=
- =?iso-8859-1?Q?434AsFOcyJNxRSiAdEm0ugjo3qsWr2sys7Uxi8soQkW+FyDd4UPU/U+md3?=
- =?iso-8859-1?Q?fZMJwct6vDEhaAEX8WRBDldhQMN80EOb1MB9bLGCBAiRvNDe5v7MuCNDRc?=
- =?iso-8859-1?Q?eXfgDvw0Q272qQ07dpLy59nO1oUblE+9oeEBS38r+eKcsM4fOEXpi64I68?=
- =?iso-8859-1?Q?xBX6ZyL/Gz2HsneQgvLA5NaRA3r40aR9mDr9vewBtkKlHy/UDCsFRoTZuo?=
- =?iso-8859-1?Q?V4it/bMzvMnSY04tDB+V58vExHprl0LiWplBb+lWwRhOsw03g1zEfeh/QO?=
- =?iso-8859-1?Q?L4b1Tt7gM7tQD7TA321bmNuQ3M7pgM71WC5GZxz9fEUby3DOWmYbtCvSiR?=
- =?iso-8859-1?Q?pjot+RvWPDPRv1tSguZD8OhlHMXTJJrL9Fh52Imx5j5FKtEVZFrkxYL4GS?=
- =?iso-8859-1?Q?2+C3oVAefanyeSYOnYEW5vObr0B5QWm8AiyZ5SJoNDifflOQjfgBkhHPQn?=
- =?iso-8859-1?Q?dzwRLrtmHqzHxsgn8/+u9lrmIJMsBDwyoSFxNIdxRncSqWPv2KUMsciuVr?=
- =?iso-8859-1?Q?mTUxITy9w5yidIfWQeDW9D4qwRa7hlQwjjkP5IMNqHKA7DZ+u/apqzSVpJ?=
- =?iso-8859-1?Q?kHOGssxdWIVyE5LlMWvuyEiPv7PilD4+ARmVg1NFCCAY+UMBYA6yI1+Ha1?=
- =?iso-8859-1?Q?z4OfHP5JWf96JboaX/L9XYjeAuJPJP73KZtOJuD9yRMuJhXpGp+7u0+Wfx?=
- =?iso-8859-1?Q?HPdoRLRN72QObrBUrAGyavqDHXrMAxOKUjBOPt2plnHbVB3/1BoY9APppv?=
- =?iso-8859-1?Q?mcNX/Xd32jedPc+F8wZtHZJPaGTi8CMlREj2TeTJP3MCB9s2QTIeRJyrAr?=
- =?iso-8859-1?Q?aP8aLq/ydQSCrbfDqm3Om+SmZW+Dt4gy2xHLo0n0+V75WsunYVamZMBwru?=
- =?iso-8859-1?Q?hcsC96yCo6aRK7XqZgN3S3RGDZRZ2wI5eXgXf4Ds72V9QN/VNe43Ydxja7?=
- =?iso-8859-1?Q?doPJPMpnKC2PPKWuwUTxwV7bVw9Qi6LXdNCQSVGm2OCUx2B9oHVs5SVy4H?=
- =?iso-8859-1?Q?nl6TQBwnGBlbOflEi+m50DDUFZw9mn3k9jzLmO5jNvMgzq56/pgpKQyNun?=
- =?iso-8859-1?Q?KewCovLHwMhvnmeI8QP3WdL/yua/mdbotHXj7ikSXUkkBH8Fc8IjzXOvEp?=
- =?iso-8859-1?Q?yo1wXMvcdq2I3G4DnGkjiaWAQ+um9zYuYi7DXunyjynzt283wCnV3j2SA8?=
- =?iso-8859-1?Q?ZH6vEa87ojIWIj+asmdWMwJlchh/RPgMAcyvSm1EHsTWoN8MHGFUkyOTbN?=
- =?iso-8859-1?Q?yFXdlaC565x3Msuiim0e8UdSsYRbjoUlZwpvIE22FLpZ9j/0ndi/0iEarR?=
- =?iso-8859-1?Q?84VtPwpfNnWtIIwSGEU=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <53D4548170D6DF4590E47BD93307066A@namprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D0A208A8
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 09:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704359169;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NoDK23LlK5p4IgH6ZTqMMZELxs6CauTLQ4NGvi9HnM4=;
+	b=GqdmN48GbQsKvAsibSdO9FcS+k2OR3rSI3qZk0TgstQA7HpSedVJ51l4KIpLTgwlEL1FFs
+	Ek8Je3oRxZLemMqtD8SCEhGfq8r3GCQjnW34ytWn9FQsBf8YFFLdRDAoqyDaEph2AOY9iI
+	IGTQrr87OE57WCXxcPYpf6oDXMLKz+k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-4O4Yu5mJO2SX-Gl-M8ydAw-1; Thu, 04 Jan 2024 04:06:07 -0500
+X-MC-Unique: 4O4Yu5mJO2SX-Gl-M8ydAw-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40d87d87654so726325e9.0
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 01:06:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704359166; x=1704963966;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NoDK23LlK5p4IgH6ZTqMMZELxs6CauTLQ4NGvi9HnM4=;
+        b=R/GluhMu4p+PezABlPUrqrZZ15fM7YiI1rBonVYWIEiv7eZES5labzfxHdC2/Dt5M/
+         Cgf8uUGCbZ+QAsCZ7dHqcOAIfv1EoO8+jzADOmBd/PTpVCWIOc0lftKuh8QgNn2EtACY
+         uWYac4zhqvgmNnKaU49xspVkBH54CEEpqnV0dKAw1Iz8BnXgWASZrkq5QK5Y0k9wwRiD
+         tKyw/OluDiArX47jhWSxV2LANVBIUgTWHPLVsR06LRFvNtUPD36N+nAzTG7PWWs2vSK/
+         vR9qwoP5kK54RNPEYP5ar7lrupPmQf/tyOU3gsKGEvjZjTxziii9g7u6raoXwl/L4GVR
+         YtnA==
+X-Gm-Message-State: AOJu0YyjxEdfkprEabYv1OIwTi1iwKhjI1scgok8BS3TcsJTfdeFXojh
+	5TGbN20RDDp7JuaSwcQzYslofmHfsFjvoP3E2Bh0zK4zxNLfuIQxTQkly3vv7oNldWHomrsRoyW
+	pqJFfGMPxNF5v6pt6s+tCC+2W
+X-Received: by 2002:a7b:cbc9:0:b0:40e:34d3:8f19 with SMTP id n9-20020a7bcbc9000000b0040e34d38f19mr330841wmi.1.1704359166751;
+        Thu, 04 Jan 2024 01:06:06 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFwL8Buv1shzGGOWOGgnChO26smQj4LvrqxVkJiXCoS1SzxYqEnA7OUwGXm4mJelRR0UVK9CA==
+X-Received: by 2002:a7b:cbc9:0:b0:40e:34d3:8f19 with SMTP id n9-20020a7bcbc9000000b0040e34d38f19mr330829wmi.1.1704359166445;
+        Thu, 04 Jan 2024 01:06:06 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id u7-20020a05600c19c700b0040d8cd116e4sm5012644wmq.37.2024.01.04.01.06.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 01:06:06 -0800 (PST)
+From: Philipp Stanner <pstanner@redhat.com>
+To: stanner@redhat.com
+Cc: Philipp Stanner <pstanner@redhat.com>,
+	stable@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>,
+	Arnd Bergmann <arnd@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v5 1/5] lib/pci_iomap.c: fix cleanup bugs in pci_iounmap()
+Date: Thu,  4 Jan 2024 10:05:36 +0100
+Message-ID: <20240104090539.10299-3-pstanner@redhat.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240104090539.10299-2-pstanner@redhat.com>
+References: <20240104090539.10299-2-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	gPInMhq+yQyO1SsiD45MK18sVLOjbLqX1laTG/PgPXeKeYNbVDIllGmG0oKMC2Ld+0Mdj60S/zW8hF3kY2DxPS2jw5tyg0nQDTnn5oFPs/VvGj9g+E6CipfrhVHSFPy99ZDYvaD2iwXY+S8mptoNuJXyzKuEYXby4qAg1yJWAjOIJV68FmOn8f3m6zFjO/SqHAThtNkJv6uX5xYDpo1LSdOxSVQlDc7Yr353ho0SrxQ2OiLQ5rBC3zp6bmCAVGaMD9zLt7gEf+qnPhJjZxcFLTM69RJf+7fmgZ0gJIJSVr2Yn07mYDU4edy0XKMYa7yWIKyeDfdCf9M+XN88OvV8s6ShRN2QaD5spSbSj4BZUjCstxWwAD3BlVt8niiH2v6CaUdnkZk0RF1ria+dN3axizgpFMkxyFLI81Su9y0Z8JXfFXI9pSSH3b0AT5CR1Ip+gaMNUeeDyn7ws197pBPjby6+qJquAvxVdCX4AEWzq/puGvtFzZ21hZUkXiLnWZJfiBp+EBntJE3Sq7wG1o4CFhtRzq6Ho7jiR5puQb3O5iCwPXELS0YEqaJXzO3rpKlddzuINUDj0tooJzubKmjbYtFXen/m0OCPJCudahhoNLC0+JfWr9IbhBtNBqg21Uqi
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR04MB8037.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb731ac3-2484-4a52-57cf-08dc0d03bb50
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jan 2024 09:01:25.7927
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: EVdUNWJkHyARynqI0XHzyh6Z4GecBKyfcjwLJ59PERsTEIaOWoB2hVaYhxbTjEqgFFyfZdIuC2tzZJHWRoD+KxJxSB3iJXnVuidmmU66JVM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR04MB9036
+Content-Transfer-Encoding: 8bit
 
-On Jan 03, 2024 / 17:55, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me kno=
-w.
->=20
-> ------------------
->=20
-> From: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
->=20
-> commit b28ff7a7c3245d7f62acc20f15b4361292fe4117 upstream.
->=20
-> p2sb_bar() unhides P2SB device to get resources from the device. It
-> guards the operation by locking pci_rescan_remove_lock so that parallel
-> rescans do not find the P2SB device. However, this lock causes deadlock
-> when PCI bus rescan is triggered by /sys/bus/pci/rescan. The rescan
-> locks pci_rescan_remove_lock and probes PCI devices. When PCI devices
-> call p2sb_bar() during probe, it locks pci_rescan_remove_lock again.
-> Hence the deadlock.
->=20
-> To avoid the deadlock, do not lock pci_rescan_remove_lock in p2sb_bar().
-> Instead, do the lock at fs_initcall. Introduce p2sb_cache_resources()
-> for fs_initcall which gets and caches the P2SB resources. At p2sb_bar(),
-> refer the cache and return to the caller.
->=20
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Fixes: 9745fb07474f ("platform/x86/intel: Add Primary to Sideband (P2SB) =
-bridge support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Reviewed-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> Link: https://lore.kernel.org/linux-pci/6xb24fjmptxxn5js2fjrrddjae6twex5b=
-jaftwqsuawuqqqydx@7cl3uik5ef6j/
-> Link: https://lore.kernel.org/r/20231229063912.2517922-2-shinichiro.kawas=
-aki@wdc.com
-> Signed-off-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+pci_iounmap() in lib/pci_iomap.c is supposed to check whether an address
+is within ioport-range IF the config specifies that ioports exist. If
+so, the port should be unmapped with ioport_unmap(). If not, it's a
+generic MMIO address that has to be passed to iounmap().
 
-In same manner as I requested for 6.1-stable, please drop this patch from
-6.6-stable due to the new bug report [*].
+The bugs are:
+  1. ioport_unmap() is missing entirely, so this function will never
+     actually unmap a port.
+  2. the #ifdef for the ioport-ranges accidentally also guards
+     iounmap(), potentially compiling an empty function. This would
+     cause the mapping to be leaked.
 
-[*] https://lore.kernel.org/platform-driver-x86/CABq1_vjfyp_B-f4LAL6pg394bP=
-6nDFyvg110TOLHHb0x4aCPeg@mail.gmail.com/T/#u
+Implement the missing call to ioport_unmap().
+
+Move the guard so that iounmap() will always be part of the function.
+
+CC: <stable@vger.kernel.org> # v5.15+
+Fixes: 316e8d79a095 ("pci_iounmap'2: Electric Boogaloo: try to make sense of it all")
+Reported-by: Danilo Krummrich <dakr@redhat.com>
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+---
+ lib/pci_iomap.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/lib/pci_iomap.c b/lib/pci_iomap.c
+index ce39ce9f3526..6e144b017c48 100644
+--- a/lib/pci_iomap.c
++++ b/lib/pci_iomap.c
+@@ -168,10 +168,12 @@ void pci_iounmap(struct pci_dev *dev, void __iomem *p)
+ 	uintptr_t start = (uintptr_t) PCI_IOBASE;
+ 	uintptr_t addr = (uintptr_t) p;
+ 
+-	if (addr >= start && addr < start + IO_SPACE_LIMIT)
++	if (addr >= start && addr < start + IO_SPACE_LIMIT) {
++		ioport_unmap(p);
+ 		return;
+-	iounmap(p);
++	}
+ #endif
++	iounmap(p);
+ }
+ EXPORT_SYMBOL(pci_iounmap);
+ 
+-- 
+2.43.0
+
 
