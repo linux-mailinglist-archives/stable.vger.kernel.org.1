@@ -1,137 +1,160 @@
-Return-Path: <stable+bounces-9708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A7F824513
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:35:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A2824523
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:39:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEEB1C2226C
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:35:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 172991F2678F
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27385241E6;
-	Thu,  4 Jan 2024 15:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561FE2420F;
+	Thu,  4 Jan 2024 15:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoQwbE6v"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KqIe4ayG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5637219E8
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9ABC433C8;
-	Thu,  4 Jan 2024 15:35:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704382520;
-	bh=DWsQ7qUdXFnhhM86J2fo0qpzMnOMF1YZzDMrwhSlfak=;
-	h=Subject:To:From:Date:From;
-	b=OoQwbE6vQLBXN5lP5futVCj+2FOfykh8uNziuRfR7zp9Ay1lRjXuWwZ42qHV+8NIg
-	 XIqoCA+JYlI/t38J4hPkSdw1HUbe2+RAZqSjdfICOM42CB84mAY6HVppB7CEuRP69A
-	 QSpZiUhLMYJSIyyz9bDO43La2dCw7AJKQvswH4VY=
-Subject: patch "usb: typec: class: fix typec_altmode_put_partner to put plugs" added to usb-testing
-To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,lk@c--e.de,stable@vger.kernel.org
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:35:18 +0100
-Message-ID: <2024010418-sanitizer-disband-4e71@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1D824201
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704382785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lR9Lg6efDMWUQ39ZY0+d6GK0COxADHJuB4vzRo0+m64=;
+	b=KqIe4ayGncbWLuNQtY1VHNCxWbB6xR98yhONYoOelJhurWhP9ZPaUk7gMDuAg9d/0WS4rI
+	MGl9Cl9pwD49A7e8iLeqj8rlu9U3uv9wAmLhnyWFWBli3BN4/ln0T/A06a1JiCRKa2RhY/
+	iRW4OEHHjfy46VJz+zcz3dD6rUH4gwI=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-316-8xIUd3WaMVKgdD2tE6D3YA-1; Thu, 04 Jan 2024 10:39:44 -0500
+X-MC-Unique: 8xIUd3WaMVKgdD2tE6D3YA-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-50e81d186e2so573983e87.0
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 07:39:43 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704382782; x=1704987582;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lR9Lg6efDMWUQ39ZY0+d6GK0COxADHJuB4vzRo0+m64=;
+        b=rZVQT6sSuszYcsuABKrx1CCTo5zaDTz22iVmMgwh9xUxwfHxrwQ9rsGtw+XKYzV5CG
+         +rh2dRGk92EySv78h8LIKTJ6SdJtvTLMN/SUl/Y6MmFLxyhgLl7r346TDxFjZabEq1tu
+         MdkED4hUWS3LSuKukrPnWmo1JaCZ/oh2elvURR97cCWy3aOSilXvTMmJ2yBA0ByrX5dg
+         7mob6H6+jXQlxVvggiX2KLrel4nJHUSeUdqP5tMd2PxeMtyxCq3UNVne5W/+Z0VHkUoS
+         gny1VN5XvyhJYZBmiJpi5L65IZI9xsepjMZbf5RmRsV6JLLLWS4Q9EdwX0MGtbZXJ655
+         Fm9A==
+X-Gm-Message-State: AOJu0Yze8ZfBRcsO5+AgtN9HlkVnhBGIpTp0a27vIDymt+X8SxT5jDG7
+	70DCHqvSFOzYvSzPkPs9Sw3ppQdG8J83bDkVXmcDqJJVC1GZ37vVvJ2N/hUMnk00LQ6N2cITLad
+	SRdVLyASWZ6LmwgyBVRqzXizK
+X-Received: by 2002:a19:f01a:0:b0:50e:554a:5254 with SMTP id p26-20020a19f01a000000b0050e554a5254mr474325lfc.13.1704382782608;
+        Thu, 04 Jan 2024 07:39:42 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGu9javDIy7DAvlh5SvpsOLrDB2cSXh02eiu2QZnwzU3RtCF7X/KQBdvren0KIGZjgmGmI6YQ==
+X-Received: by 2002:a19:f01a:0:b0:50e:554a:5254 with SMTP id p26-20020a19f01a000000b0050e554a5254mr474316lfc.13.1704382782236;
+        Thu, 04 Jan 2024 07:39:42 -0800 (PST)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
+        by smtp.gmail.com with ESMTPSA id fw34-20020a170907502200b00a27aabff0dcsm5751748ejc.179.2024.01.04.07.39.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 07:39:41 -0800 (PST)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: kan.liang@linux.intel.com,
+	peterz@infradead.org,
+	luwei.kang@linux.intel.com,
+	linux-perf-users@vger.kernel.org,
+	leitao@debian.org,
+	acme@kernel.org,
+	mingo@redhat.com,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: x86/pmu: fix masking logic for MSR_CORE_PERF_GLOBAL_CTRL
+Date: Thu,  4 Jan 2024 16:39:39 +0100
+Message-ID: <20240104153939.129179-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+When commit c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE
+MSR emulation for extended PEBS") switched the initialization of
+cpuc->guest_switch_msrs to use compound literals, it screwed up
+the boolean logic:
 
-This is a note to let you know that I've just added the patch titled
++	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
+...
+-	arr[0].guest = intel_ctrl & ~cpuc->intel_ctrl_host_mask;
+-	arr[0].guest &= ~(cpuc->pebs_enabled & x86_pmu.pebs_capable);
++               .guest = intel_ctrl & (~cpuc->intel_ctrl_host_mask | ~pebs_mask),
 
-    usb: typec: class: fix typec_altmode_put_partner to put plugs
+Before the patch, the value of arr[0].guest would have been intel_ctrl &
+~cpuc->intel_ctrl_host_mask & ~pebs_mask.  The intent is to always treat
+PEBS events as host-only because, while the guest runs, there is no way
+to tell the processor about the virtual address where to put PEBS records
+intended for the host.
 
-to my usb git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-testing branch.
+Unfortunately, the new expression can be expanded to
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+	(intel_ctrl & ~cpuc->intel_ctrl_host_mask) | (intel_ctrl & ~pebs_mask)
 
-The patch will be merged to the usb-next branch sometime soon,
-after it passes testing, and the merge window is open.
+which makes no sense; it includes any bit that isn't *both* marked as
+exclude_guest and using PEBS.  So, reinstate the old logic.  Another
+way to write it could be "intel_ctrl & ~(cpuc->intel_ctrl_host_mask |
+pebs_mask)", presumably the intention of the author of the faulty.
+However, I personally find the repeated application of A AND NOT B to
+be a bit more readable.
 
-If you have any questions about this process, please let me know.
+This shows up as guest failures when running concurrent long-running
+perf workloads on the host, and was reported to happen with rcutorture.
+All guests on a given host would die simultaneously with something like an
+instruction fault or a segmentation violation.
 
-
-From 5962ded777d689cd8bf04454273e32228d7fb71f Mon Sep 17 00:00:00 2001
-From: RD Babiera <rdbabiera@google.com>
-Date: Wed, 3 Jan 2024 18:17:55 +0000
-Subject: usb: typec: class: fix typec_altmode_put_partner to put plugs
-
-When typec_altmode_put_partner is called by a plug altmode upon release,
-the port altmode the plug belongs to will not remove its reference to the
-plug. The check to see if the altmode being released is a plug evaluates
-against the released altmode's partner instead of the calling altmode, so
-change adev in typec_altmode_put_partner to properly refer to the altmode
-being released.
-
-Because typec_altmode_set_partner calls get_device() on the port altmode,
-add partner_adev that points to the port altmode in typec_put_partner to
-call put_device() on. typec_altmode_set_partner is not called for port
-altmodes, so add a check in typec_altmode_release to prevent
-typec_altmode_put_partner() calls on port altmode release.
-
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc:  <stable@vger.kernel.org>
-Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Tested-by: Christian A. Ehrhardt <lk@c--e.de>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
+Analyzed-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- drivers/usb/typec/class.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
-index 4d11f2b536fa..015aa9253353 100644
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -263,11 +263,13 @@ static void typec_altmode_put_partner(struct altmode *altmode)
- {
- 	struct altmode *partner = altmode->partner;
- 	struct typec_altmode *adev;
-+	struct typec_altmode *partner_adev;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index ce1c777227b4..0f2786d4e405 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4051,12 +4051,17 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
+ 	int global_ctrl, pebs_enable;
  
- 	if (!partner)
- 		return;
++	/*
++	 * In addition to obeying exclude_guest/exclude_host, remove bits being
++	 * used for PEBS when running a guest, because PEBS writes to virtual
++	 * addresses (not physical addresses).
++	 */
+ 	*nr = 0;
+ 	global_ctrl = (*nr)++;
+ 	arr[global_ctrl] = (struct perf_guest_switch_msr){
+ 		.msr = MSR_CORE_PERF_GLOBAL_CTRL,
+ 		.host = intel_ctrl & ~cpuc->intel_ctrl_guest_mask,
+-		.guest = intel_ctrl & (~cpuc->intel_ctrl_host_mask | ~pebs_mask),
++		.guest = intel_ctrl & ~cpuc->intel_ctrl_host_mask & ~pebs_mask,
+ 	};
  
--	adev = &partner->adev;
-+	adev = &altmode->adev;
-+	partner_adev = &partner->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -276,7 +278,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
- 	} else {
- 		partner->partner = NULL;
- 	}
--	put_device(&adev->dev);
-+	put_device(&partner_adev->dev);
- }
- 
- /**
-@@ -497,7 +499,8 @@ static void typec_altmode_release(struct device *dev)
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	typec_altmode_put_partner(alt);
-+	if (!is_typec_port(dev->parent))
-+		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+ 	if (!x86_pmu.pebs)
 -- 
 2.43.0
-
 
 
