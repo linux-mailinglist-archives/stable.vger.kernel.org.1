@@ -1,87 +1,81 @@
-Return-Path: <stable+bounces-9624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8497823985
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 01:18:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CD98239BA
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 01:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC6081C24AD7
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 00:18:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60E871C24A74
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 00:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5D8641;
-	Thu,  4 Jan 2024 00:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F6336C;
+	Thu,  4 Jan 2024 00:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJeT7fYw"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ypR1iSDn";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="Xii5xfrp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDFA36C
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 00:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7b74bc536dbso87380139f.0
-        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 16:18:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1704327499; x=1704932299; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SuD1D14mJpZxgunpN2GoPeJomdi3lVYstSMBtTROq7o=;
-        b=YJeT7fYwnu574GGgKEGgLj8Zl/8/6BuaFkhltV7ig4GIxKjHUwqWicLBa5djmDi4tZ
-         pP1WiZop1MhiyBtXRaO0EPAlxupWqRATl1uyWrncaetp/9dA/5vlnxXM0Bt31Z3JInoH
-         rOB8Z8/4zVtk2tuV81mG69ZlzWq7FGoJ1zcD4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704327499; x=1704932299;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SuD1D14mJpZxgunpN2GoPeJomdi3lVYstSMBtTROq7o=;
-        b=t5iGTtzY1jKBR752YOOwIfughciMO+rH8eqmCgCwvMwk0wrA98YTCsrcX/PU83Hnon
-         p2yIGjW+uK8n995Hmfs6LiuIHeJsP5/Ls7+a6pDCLERqlI0BQzrAxIVy3aIYziZ0ural
-         NbFaA+u7AF7vGSu3pCvDhsalAHRmaCggLX9zEXGMM3wsYOJixQbHFcpadvObwJyx4y/a
-         iUcRxe7zJBXMBDrIGKIS/Hg9A9uyqIDevRUgpj12/rbiBVcuNVIGE9zbhGqla/k/fPCz
-         q53o4gZV0EXY0RebH8hE5Cnf24S/5Yd1SWyRleWwtZ40oD9kmNow57lD9GVXEKKl48md
-         0Ylw==
-X-Gm-Message-State: AOJu0Yz+Mqv+pb0klLcRgHanJvt99Jx0s+gQSCTlMWDzMni5MvowToEo
-	HfOzVUG+AN8+ad2CpJLSbHrOPXHKcgu89A==
-X-Google-Smtp-Source: AGHT+IFBl+paPAGn0wPchVPzxKzuWnrgImKUlT+cEf0osTlbByFRoRzHPU245Q7vGRg2ejxjDhiaRg==
-X-Received: by 2002:a92:cdac:0:b0:35f:f683:f76e with SMTP id g12-20020a92cdac000000b0035ff683f76emr27999742ild.3.1704327499572;
-        Wed, 03 Jan 2024 16:18:19 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id bg11-20020a056e02310b00b0035faf00c555sm8776442ilb.31.2024.01.03.16.18.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jan 2024 16:18:19 -0800 (PST)
-Message-ID: <72d36089-147c-42aa-afe4-5b3fa681dc65@linuxfoundation.org>
-Date: Wed, 3 Jan 2024 17:18:18 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542E618EC3;
+	Thu,  4 Jan 2024 00:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id F2511C01C; Thu,  4 Jan 2024 01:40:49 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1704328849; bh=EvHaKmz8eam6ki0dCTTWgEw9z5+VdjhYEvVWokrATN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ypR1iSDnCUYKtMVNL4FtjTR7zvQXtHkHT41oGHnjD1I1ODaNVLdJWHK5hQHXGAb+o
+	 UO/aaIkDNjuJ6D4sdH01GlJocNjKoLxqzdDVpY4O4EqhREECqREMyqd1Zuf7/jtbcs
+	 Xf9RZ0noNpCtwplwJ8rocy8ykh+9Q2dqMhc56R4N0uWCiSCD2Amh1urmDd27+nG91s
+	 kx5Wa7qOsjRW1EyAOrZwNL6zF5R0PQDNejR2wLLbi68C28kKJlGQqexQ93gSIBp1is
+	 6tmHR4MaJXmt9GocdYaMu+PPqx1UzqKNaPwFFTezXl4tu6m6Y143FAq7/3KfUUe6lI
+	 HTTzvoD7RE9lQ==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id BB493C009;
+	Thu,  4 Jan 2024 01:40:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1704328848; bh=EvHaKmz8eam6ki0dCTTWgEw9z5+VdjhYEvVWokrATN0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xii5xfrpRa3v7n+jTer6FeFz6xNJxfBuJDcGa8R3Bj1hVzmLYnPdVrOT9x2TgWgfA
+	 e3/bnUeT28n80FqCU+atrxltsannNE6pijkE1g2bOx19SDHqcQEuD4CFfWRYD/SBjN
+	 HT/8QapeUTO74TQObye2bRSDsX5JcJBZ7t6sS+wap4KMVwWWnPN5+u1ijOSsuh2E7p
+	 HgoEV7xMA7LOLQptr/cH6yABXQCbPI9wk5MYzAvPLWKd+46+tl+RTTiltt6pMP3ZAx
+	 crDJTmq4OJM7m5rydzDOWO6ArPvy78/8d5x5Li7V5PS2akkZl9khDQzZYNhoGiU2Wa
+	 N4zhPQlNcGj0A==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id b55ae3ed;
+	Thu, 4 Jan 2024 00:40:40 +0000 (UTC)
+Date: Thu, 4 Jan 2024 09:40:25 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 00/75] 5.10.206-rc1 review
+Message-ID: <ZZX-eRRSZbv1qmcP@codewreck.org>
+References: <20240103164842.953224409@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
 
-On 1/3/24 09:55, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.10 release.
-> There are 49 patches in this series, all will be posted as a response
+Greg Kroah-Hartman wrote on Wed, Jan 03, 2024 at 05:54:41PM +0100:
+> This is the start of the stable review cycle for the 5.10.206 release.
+> There are 75 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -89,20 +83,19 @@ On 1/3/24 09:55, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.206-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
 > and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
-Compiled and booted on my test system. No dmesg regressions.
+Tested 6ed2e58a1d40 ("Linux 5.10.206-rc1") on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-thanks,
--- Shuah
+
+-- 
+Dominique Martinet | Asmadeus
 
