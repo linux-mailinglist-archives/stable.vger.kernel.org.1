@@ -1,122 +1,123 @@
-Return-Path: <stable+bounces-9728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10760824A4E
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:29:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726B3824A76
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1764F1C2261F
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 21:29:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C518287066
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 21:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9C92C6B9;
-	Thu,  4 Jan 2024 21:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781C62C872;
+	Thu,  4 Jan 2024 21:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="c4exMFG/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="ko98/PP6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4272C6AD
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 21:29:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-dbdacafe012so899166276.1
-        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 13:29:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704403784; x=1705008584; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bDcJlzRwgOjmf9s3ju/kHyej59d33XX1hqLumYLyfkE=;
-        b=c4exMFG/xhSFs7fVDmdOrQcBL7gKQYzdhiAsSDUhU9joP3gHFbweujXx9/YCv6GusU
-         LipRAo6UCn1QJ8FE23VS9o+LjPKcEvoPpBUBXsiLSusU6lWwvIyti5NPNKpluZ/bKa/P
-         02ZYh6D29ukCcKQ+pGLHBb5dokanGVaE3CARo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704403784; x=1705008584;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bDcJlzRwgOjmf9s3ju/kHyej59d33XX1hqLumYLyfkE=;
-        b=gUqtzCG0GuN4QcRIFgq3iNG2BQmvmxe3T1FOWAN8IIP/5tLq4HrgoNZUcTwLc0IQOg
-         47vJ/xYgzvNCTQqiEyyTraZ95Mw1FiqZhnyiS+SphzQv3UqOowuLrSL0gKm8/dw4vKx2
-         yTfd/SOQZ17FyQH4cE4e5Fi25//3ehDlnC69GLTte3z2VrNBGfUbYTaYQKf3mlJ2dUsL
-         wYg/LDqrU6W7OPUNn515WWcn3qbKquTzCptQ/eCk6dPDJ7IVVeKIPq58Ezy4YZDhneZd
-         AE+lLLZyr+XGEx0qg3Q4lRhC3/xOEaXrIHrDh8ln7vjepVP/bViAwInb6bBf19GUcIE+
-         6/zQ==
-X-Gm-Message-State: AOJu0Yx8Bb8RwcJJIQfMezsAHSfKjJwVGuUuPUZVkUBoC8ZxZIv7FNfk
-	bm/i238V1UI2W2gUfFOOm11G8tB6YQw/GvO8Z3WI7MQYno8A
-X-Google-Smtp-Source: AGHT+IFbQEHsVmVAV68hl37UcSvgcgKs002/+LTdYHsauicQGHlQdZcr1LUYTxY2eGVe/gEWwTFmkDgrb6AyHhyhCgE=
-X-Received: by 2002:a5b:884:0:b0:dbd:b4c2:728d with SMTP id
- e4-20020a5b0884000000b00dbdb4c2728dmr1116662ybq.112.1704403784286; Thu, 04
- Jan 2024 13:29:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75B82C855
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 21:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
+	by cmsmtp with ESMTPS
+	id LB05r4rbs8uLRLVWrrvjy0; Thu, 04 Jan 2024 21:45:29 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id LVWqrWZcK55BJLVWqrFeDk; Thu, 04 Jan 2024 21:45:29 +0000
+X-Authority-Analysis: v=2.4 cv=QcR1A+Xv c=1 sm=1 tr=0 ts=659726f9
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=tdfoI9PX4746k4ujIk8HyNvg9qc8ieidSwbK0BVB3Vo=; b=ko98/PP6Rxy6jRu06D3Ukebsuz
+	grDhvYu1B0BJrl8zJxcDFxV+YkNH0hZc8U19OMUldXNeSTix1puJ7nS4dch4eRLsx7LWSi3Mm/W6K
+	2N4Weuey7uci1FUilEK7CAtvRzPV4eTn17W5T6WtITsMavipyAjhX2M8HVhrHBi+f5Ofrk+2EZCP8
+	ctNdjWeMoP3S6Ukh09+ur1qsq9uj+SQKAN9J/ZirbmnyTtHyaz4l8ubnCHW17gEzpgF8avCybnZrv
+	IOSr/gsKST/6nDrMv70D57Lusy4C6ln9VYDXe38VFTpm5VsOInRn4PVO6Rh4ghwr46rf184qWQIxk
+	9uLlJNZw==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:34200 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rLVWo-003gb1-0G;
+	Thu, 04 Jan 2024 14:45:26 -0700
+Subject: Re: [PATCH 6.1 000/100] 6.1.71-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240103164856.169912722@linuxfoundation.org>
+In-Reply-To: <20240103164856.169912722@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <971a65d3-7d86-d332-d5c1-06b57e055c2c@w6rz.net>
+Date: Thu, 4 Jan 2024 13:45:21 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240104050605.1773158-1-zack.rusin@broadcom.com> <202401042305.WdnDeo57-lkp@intel.com>
-In-Reply-To: <202401042305.WdnDeo57-lkp@intel.com>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Thu, 4 Jan 2024 16:29:33 -0500
-Message-ID: <CABQX2QMFJ4arXwVNE5YF4pRHqkzVb-rjyqWwSOtrQ_+QLPLV9w@mail.gmail.com>
-Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
-To: kernel test robot <lkp@intel.com>
-Cc: linux-kernel@vger.kernel.org, oe-kbuild-all@lists.linux.dev, 
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Raul Rangel <rrangel@chromium.org>, 
-	linux-input@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rLVWo-003gb1-0G
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:34200
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfH1cUG2KMObj7CEGIdnkFOC9QzYnb6PmDPplbw21JJRriE0nJA8W+qIyYaeSV5Ol+XqVvXTmaK2DWzIeKeDkk4pk33xAoGp5dbOgCsM+fPJWvzcxlkzs
+ T55bgjD4NEC94nvisdHctjyMcZoEawVosF3XeTrPfDtnFZdU/Z2+XxWtmu48hEpzfwZsmrckPfxwCA==
 
-On Thu, Jan 4, 2024 at 11:04=E2=80=AFAM kernel test robot <lkp@intel.com> w=
-rote:
+On 1/3/24 8:53 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.71 release.
+> There are 100 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Hi Zack,
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
 >
-> kernel test robot noticed the following build errors:
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.71-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> [auto build test ERROR on dtor-input/next]
-> [also build test ERROR on dtor-input/for-linus linus/master v6.7-rc8 next=
--20240104]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> thanks,
 >
-> url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/input-v=
-mmouse-Fix-device-name-copies/20240104-130724
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git ne=
-xt
-> patch link:    https://lore.kernel.org/r/20240104050605.1773158-1-zack.ru=
-sin%40broadcom.com
-> patch subject: [PATCH v2] input/vmmouse: Fix device name copies
-> config: i386-buildonly-randconfig-001-20240104 (https://download.01.org/0=
-day-ci/archive/20240104/202401042305.WdnDeo57-lkp@intel.com/config)
-> compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20240104/202401042305.WdnDeo57-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202401042305.WdnDeo57-lkp=
-@intel.com/
->
-> All errors (new ones prefixed by >>):
->
-> >> drivers/input/mouse/vmmouse.c:77:7: error: variably modified 'phys' at=
- file scope
->      char phys[sizeof_field(struct serio, phys) +
->           ^~~~
+> greg k-h
 
-This can be trivially fixed by using __builtin_strlen which with
-fortify-strings.h is used anyway but before respining this I'll wait
-to hear if this approach is ok. The sparse warning we can't do much
-about because it doesn't recognize the fact that the array size is a
-compile time expression.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-z
+Tested-by: Ron Economos <re@w6rz.net>
+
 
