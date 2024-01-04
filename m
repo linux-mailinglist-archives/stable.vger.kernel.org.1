@@ -1,140 +1,123 @@
-Return-Path: <stable+bounces-9724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C68B8248DA
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 20:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0168248F8
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 20:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C71DB24D60
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:16:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 030E0B240C8
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F772C686;
-	Thu,  4 Jan 2024 19:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBA72C1B8;
+	Thu,  4 Jan 2024 19:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="luapagr2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8c+SgAk"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E752C18C;
-	Thu,  4 Jan 2024 19:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913432C84F;
+	Thu,  4 Jan 2024 19:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704395773; x=1735931773;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Ku8FLhwOfPcaG2mT+8xsOiO9kv0YTJBmD9TowHalxgM=;
-  b=luapagr24kVIb+Y0Mg3bX4xQ0i7G76cwpGmUheVtefSAJDLwZ2pyIrw6
-   BlA5KLN+4OJ7idoNv2Lfoh82g37nD6bCofMRzyk+hItPe5f4ASgtO7YMn
-   auNgFQQikNkjk44ans5tuHmuX5JzPcnmI9BVeGjE/MKzt7aSfsVDTnxPz
-   TNw8y8sC2nQIIU/EpRS8yISA+wKZiTw3aNL9R+Ak+hIoe3h6Y+6Fhivv2
-   +nueC1+hVcJjeVWXcqRpLVh0XIPz9HsZeeOXZbYALXSla/30Fv5Ojjq22
-   6Vn5LMsexzqqBPu8mep52mvZGZ6ASwpLYKKeqGKIs77rco2LAlG7T1ljf
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="396223699"
+  t=1704396257; x=1735932257;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qkwcWTRnPuLK3bQ1zp6BZNHfneeNLWWLi4JM7xkbcJE=;
+  b=H8c+SgAkbMwqG4dKL8t2NY1okX1mw4vNjpuarJIGNs2WDcvvlpF7KS4G
+   VsppEgCOsMfQ7G7xrNdFVtv67kOkVSwWgFrMXLXeNW41QTEpyxrvwC5dL
+   rwwtLHWa/MORsLgLp0vMyPvTbtgYckrx403gojtM5HjmW72Pd3XBb6Lgu
+   IQ7PmQgCSexLOorfZaZPOjermLMCpSpmiRxsy9UTXHPhONvgwVSzjCLvm
+   llAnlA2u5jzdv+jJ/LW0qNfeYQYzsXU1OCHRNqg5zY1k6pAA/3/ZldvLC
+   /+nJEIksPw4ys8y+jT8Cc1kCvSJkNqzOP9jYRO1G+rqhqO/YNjHv0F2QZ
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="396225338"
 X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="396223699"
+   d="scan'208";a="396225338"
 Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 11:16:12 -0800
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 11:24:16 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="814740125"
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="814742448"
 X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="814740125"
-Received: from linux.intel.com ([10.54.29.200])
-  by orsmga001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 11:16:12 -0800
-Received: from [10.209.154.172] (kliang2-mobl1.ccr.corp.intel.com [10.209.154.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by linux.intel.com (Postfix) with ESMTPS id CD158580DC7;
-	Thu,  4 Jan 2024 11:16:10 -0800 (PST)
-Message-ID: <0f9e80de-040d-4803-954f-311b846730c6@linux.intel.com>
-Date: Thu, 4 Jan 2024 14:16:09 -0500
+   d="scan'208";a="814742448"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga001.jf.intel.com with ESMTP; 04 Jan 2024 11:24:14 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rLTK7-0000Ml-1E;
+	Thu, 04 Jan 2024 19:24:11 +0000
+Date: Fri, 5 Jan 2024 03:23:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zack Rusin <zack.rusin@broadcom.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Zack Rusin <zack.rusin@broadcom.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>, linux-input@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
+Message-ID: <202401050307.tWbIHuS1-lkp@intel.com>
+References: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: x86/pmu: fix masking logic for
- MSR_CORE_PERF_GLOBAL_CTRL
-Content-Language: en-US
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, peterz@infradead.org, linux-perf-users@vger.kernel.org,
- leitao@debian.org, acme@kernel.org, mingo@redhat.com,
- "Paul E . McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
- Like Xu <like.xu.linux@gmail.com>
-References: <20240104153939.129179-1-pbonzini@redhat.com>
- <a327286a-36a6-4cdc-92bd-777fb763d88a@linux.intel.com>
- <ZZbuwU8ShrcXWdMY@google.com>
-From: "Liang, Kan" <kan.liang@linux.intel.com>
-In-Reply-To: <ZZbuwU8ShrcXWdMY@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 
+Hi Zack,
 
+kernel test robot noticed the following build warnings:
 
-On 2024-01-04 1:22 p.m., Sean Christopherson wrote:
-> On Thu, Jan 04, 2024, Liang, Kan wrote:
->>
->>
->> On 2024-01-04 10:39 a.m., Paolo Bonzini wrote:
->>> When commit c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE
->>> MSR emulation for extended PEBS") switched the initialization of
->>> cpuc->guest_switch_msrs to use compound literals, it screwed up
->>> the boolean logic:
->>>
->>> +	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
->>> ...
->>> -	arr[0].guest = intel_ctrl & ~cpuc->intel_ctrl_host_mask;
->>> -	arr[0].guest &= ~(cpuc->pebs_enabled & x86_pmu.pebs_capable);
->>> +               .guest = intel_ctrl & (~cpuc->intel_ctrl_host_mask | ~pebs_mask),
->>>
->>> Before the patch, the value of arr[0].guest would have been intel_ctrl &
->>> ~cpuc->intel_ctrl_host_mask & ~pebs_mask.  The intent is to always treat
->>> PEBS events as host-only because, while the guest runs, there is no way
->>> to tell the processor about the virtual address where to put PEBS records
->>> intended for the host.
->>>
->>> Unfortunately, the new expression can be expanded to
->>>
->>> 	(intel_ctrl & ~cpuc->intel_ctrl_host_mask) | (intel_ctrl & ~pebs_mask)
->>>
->>> which makes no sense; it includes any bit that isn't *both* marked as
->>> exclude_guest and using PEBS.  So, reinstate the old logic.  
->>
->> I think the old logic will completely disable the PEBS in guest
->> capability. Because the counter which is assigned to a guest PEBS event
->> will also be set in the pebs_mask. The old logic disable the counter in
->> GLOBAL_CTRL in guest. Nothing will be counted.
->>
->> Like once proposed a fix in the intel_guest_get_msrs().
->> https://lore.kernel.org/lkml/20231129095055.88060-1-likexu@tencent.com/
->> It should work for the issue.
-> 
-> No, that patch only affects the path where hardware supports enabling PEBS in the
-> the guest, i.e. intel_guest_get_msrs() will bail before getting to that code due
-> to the lack of x86_pmu.pebs_ept support, which IIUC is all pre-Icelake Intel CPUs.
-> 
-> 	if (!kvm_pmu || !x86_pmu.pebs_ept)
-> 		return arr;
->
+[auto build test WARNING on dtor-input/next]
+[also build test WARNING on dtor-input/for-linus linus/master v6.7-rc8 next-20240104]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-True, we have to disable all PEBS counters for pre-ICL as well.
+url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/input-vmmouse-Fix-device-name-copies/20240104-130724
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+patch link:    https://lore.kernel.org/r/20240104050605.1773158-1-zack.rusin%40broadcom.com
+patch subject: [PATCH v2] input/vmmouse: Fix device name copies
+config: i386-randconfig-061-20240104 (https://download.01.org/0day-ci/archive/20240105/202401050307.tWbIHuS1-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240105/202401050307.tWbIHuS1-lkp@intel.com/reproduce)
 
-I think what I missed is that the disable here is temporary. The
-arr[global_ctrl].guest will be updated later for the x86_pmu.pebs_ept
-platform, so the guest PEBS event should still work.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401050307.tWbIHuS1-lkp@intel.com/
 
-The patch looks good to me.
+sparse warnings: (new ones prefixed by >>)
+>> drivers/input/mouse/vmmouse.c:77:52: sparse: sparse: Variable length array is used.
+>> drivers/input/mouse/vmmouse.c:77:14: sparse: sparse: flexible array member 'phys' is not last
 
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+vim +77 drivers/input/mouse/vmmouse.c
 
-Thanks,
-Kan
+    67	
+    68	/**
+    69	 * struct vmmouse_data - private data structure for the vmmouse driver
+    70	 *
+    71	 * @abs_dev: "Absolute" device used to report absolute mouse movement.
+    72	 * @phys: Physical path for the absolute device.
+    73	 * @dev_name: Name attribute name for the absolute device.
+    74	 */
+    75	struct vmmouse_data {
+    76		struct input_dev *abs_dev;
+  > 77		char phys[sizeof_field(struct serio, phys) +
+    78			  strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
+    79		char dev_name[128];
+    80	};
+    81	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
