@@ -1,103 +1,91 @@
-Return-Path: <stable+bounces-9632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCAB823C09
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 07:07:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CA2823C53
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 07:45:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEF4AB25051
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 06:07:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9288F287A1A
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 06:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7171CFAF;
-	Thu,  4 Jan 2024 06:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BED01CFA4;
+	Thu,  4 Jan 2024 06:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mwb4AltP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aetCW2OI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0C41BDDB;
-	Thu,  4 Jan 2024 06:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5e78d948551so490247b3.0;
-        Wed, 03 Jan 2024 22:07:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704348442; x=1704953242; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XzkM14bUvWBneJ4PcTPU9fRSFWTidhoVTGpxL68Hv+E=;
-        b=Mwb4AltPbtDJv8IAl2VdmDvZRPXZAab3Qw7hMErmOOADJqVbce0x4GUlrqYxnKcOrh
-         gGlt/zRRJ+I3JC/1h1Pyn0TqkCXAGNOxi1FtsC41S4rQZ6ZbYOnY6+48r6q8uKF6LRmP
-         UxlSN334EjYxgZRUvlQqU3elWx9uvfHWEenRvE61/uKOyV4hdy1HPj0ZnAvLDR4LPBkN
-         fICE6b3Y8IOV5gGKzs2G/gJllxqIZ3XNZQW821Gd8bAQLO8oyDDAFaI9fcR9P2UN3D34
-         l2t/sPre8ErcKT11AyUdBsZCgUW2ttmemAtfYw4Rpw0xMgkfkB6kRlv0OMAdXBcsOfGU
-         v2Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704348442; x=1704953242;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XzkM14bUvWBneJ4PcTPU9fRSFWTidhoVTGpxL68Hv+E=;
-        b=jfd8kWtWC58c5GF+ZvkSAWxSUqPci/mW4cMGjjr4ufsathYEnA1rKHwPAkX6hmE73G
-         JsmHDx+QOHUf6zcEPIjvb1bYpx5IDpfiI1wggWflWmYCTaeTHf9iynQzmt1E3WFXXWP+
-         CWPHFM5jPEe5juHLN496owIsLFojepMyAgYtLj4g+BEaqZCR8VS0cYJykstY1J3hy15R
-         haSbv1D9zi7Z+IPwaq0/INPQhJNTimu7GLI3UuISIIHjd2yaloOmixnbv3KRkJ9zMPiL
-         Fszd9lnd/FnZUlaEQ07npEfkYgLU361NXuNhKKrDXPghvgiVxl+SoAoaIudt7kj/Soax
-         cxoQ==
-X-Gm-Message-State: AOJu0YzhOjf5SkhrEgX3EZHPLLSIEAOmtuKacWwtGVis42fDNFw1Mb8R
-	eMQq4l5OZ9hbCKoVjDIDm+EFB1+OF4vmrxJO8H8ZNhGJdYrPFQ==
-X-Google-Smtp-Source: AGHT+IEuRWd8bUJ4hDCMKpB8/YiLxGplcsaMCBC8s/kTRyQm1TRMRvM52FuwmsUjfcOuaZs5BJ7Zoi+9mSvFTaN8Sww=
-X-Received: by 2002:a25:d24d:0:b0:dbd:522c:32aa with SMTP id
- j74-20020a25d24d000000b00dbd522c32aamr140651ybg.5.1704348441758; Wed, 03 Jan
- 2024 22:07:21 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F42121DDEE;
+	Thu,  4 Jan 2024 06:45:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FB2C433C8;
+	Thu,  4 Jan 2024 06:45:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704350731;
+	bh=HGvQAbj7vdZsR7FPaga75+bgAWN6OGdRW5CxcWOmWaI=;
+	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
+	b=aetCW2OInm1yCVrlyftLLmPJ+zyE1snIsoXSCLiZ7OGBhFzj/3QejAe9B6sL2a+MS
+	 hiC8oDKDmKpzIPCih7uCe43zqqN+eycO5mELp+1WwrUAjjF7mOUm8qOdZ79EIs5uRq
+	 pnmOzOFOqVtviIfKnEoKWoIYTSNjuorxvVPnaTAt/k6obMNKxqFlPLgRN6i4HsNACL
+	 e3jSn7mnBITQVhXi6clJS+D8Y3sx1ez56IQnIY9MgHeLjgxAQSdOn7sJ6WvNcz8Jod
+	 uhTQaNDkAh4nhm6yXmhe4jyTK79Is2R28/QzQCQohgFVsgweXdojE/Wrgph07a6SlN
+	 On2euhK+Bj6gg==
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-593f7a1afd7so96602eaf.0;
+        Wed, 03 Jan 2024 22:45:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YwCHd80IB0mLC/cUSzvRqOnnTtuN4NWfKPh0UcZetvrKM1/iuxD
+	sDeiXC2/E3xfo7BvS6sQQ00OQ5J0AF8VrjnGYRg=
+X-Google-Smtp-Source: AGHT+IELiwVkzsZGvW6sqO6fdix6qtpPSxBC8xNCpB5TVDwLeW2HM2iEpDuv1LIbnfKDOIAfoksCAYpQkz8Omdyc9mA=
+X-Received: by 2002:a4a:1407:0:b0:595:87a7:26a5 with SMTP id
+ 7-20020a4a1407000000b0059587a726a5mr175376ood.18.1704350730783; Wed, 03 Jan
+ 2024 22:45:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
- <d4b227de-d609-aef2-888b-203dbcf06707@landley.net> <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
- <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com> <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
- <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com> <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
-In-Reply-To: <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Thu, 4 Jan 2024 09:06:45 +0300
-Message-ID: <CAPnZJGAr8BfTHmn3QZnJ6dnVCQsUnUASmdH4tzz0-QMwHmZZLQ@mail.gmail.com>
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
-To: Rob Landley <rob@landley.net>
-Cc: Stefan Berger <stefanb@linux.ibm.com>, gregkh@linuxfoundation.org, 
-	initramfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, zohar@linux.ibm.com
+Received: by 2002:a8a:c13:0:b0:511:f2c1:11ee with HTTP; Wed, 3 Jan 2024
+ 22:45:29 -0800 (PST)
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Thu, 4 Jan 2024 15:45:29 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd8qswi39L+FLRjXdhv_0ziS+xKg_pKbUB_D0srNj7Bc8w@mail.gmail.com>
+Message-ID: <CAKYAXd8qswi39L+FLRjXdhv_0ziS+xKg_pKbUB_D0srNj7Bc8w@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/95] 5.15.146-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Dec 30, 2023 at 8:01=E2=80=AFPM Rob Landley <rob@landley.net> wrote=
-:
-> I've been following the initramfs xattr support threads forever:
+2024-01-04 1:54 GMT+09:00, Greg Kroah-Hartman <gregkh@linuxfoundation.org>:
+> This is the start of the stable review cycle for the 5.15.146 release.
+> There are 95 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.146-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+I have tested smbtorture and tests through windows client against ksmbd.
 
-Here is my proposal: add to the kernel support for catar (
-https://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images=
-.html
-) in addition to cpio. catar has the following advantages:
+Tested-by: Namjae Jeon <linkinjeon@kernel.org>
 
-- catar is simple and reproducible. For the same directory tree the
-same bit-precise catar file is generated, which is good for
-cryptographic signatures. As opposed to tar's monstrosity (
-https://www.cyphar.com/blog/post/20190121-ociv2-images-i-tar )
-- catar has support for xattr. It has support for nearly all types of
-metainformation Linux offers (32 bit UIDs, nanosecond timestamps,
-"disable CoW" flag and various other flags, selinux file labels, file
-capabilities, etc). All this metainformation can be disabled if
-needed. So, next time we will want to add some new type of
-metainformation, there will be no need for lengthy discussions about
-how it should be stored. All needed metainformation is already
-supported
-
---
-Askar Safin
+Thanks!
 
