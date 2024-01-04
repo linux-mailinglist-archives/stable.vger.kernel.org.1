@@ -1,49 +1,67 @@
-Return-Path: <stable+bounces-9710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EBB824526
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:40:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BA68245BA
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:04:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A761C20C0D
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:40:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219B6285D27
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B0724A03;
-	Thu,  4 Jan 2024 15:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEE224A19;
+	Thu,  4 Jan 2024 16:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQsQYXLp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z+QZd+Gf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995C0249FE;
-	Thu,  4 Jan 2024 15:39:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B25C433C8;
-	Thu,  4 Jan 2024 15:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704382792;
-	bh=OXcH/CGMv+jOMglY0LpslAtDGAHu9ahBpG1qwfguGOY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UQsQYXLpOaYLJDF6Yy76da6yqsD3KRs5IU5j5a74G0TH5B1c8RGhT/NGlzep2hFFU
-	 qNmH+Lkv0WfVflUnHk6Nc58cK0zOz1ugcMJD504r4cX/SOUl5CIHtm81FhBoCx9dpC
-	 7sHoTd+poqnBBOK7vlHQMg/0Ug7NhjJbnH+ELNPo=
-Date: Thu, 4 Jan 2024 16:39:49 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	linux-kernel@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12C24B29;
+	Thu,  4 Jan 2024 16:04:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704384249; x=1735920249;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0AFkTq8W4WlL14fDd9NkfIdML6QaTZbBm5y83F+lCQg=;
+  b=Z+QZd+Gf6y0eanUSjprkdQxhRMlCO+bWG6d/xVgaAEywzKGAyXJ2MvO2
+   bm6qm/Zz2SUqTXcp/w9TXFlq3MY97mbb+/T1OyiYQXSTpznVajH1cBKEU
+   Sqq5Pyc1HLpEM4EeuMqagpJNVpe/uPG0iZPv/wAJeg0NmGCubowNggD2z
+   HvnptupsWsodiyfsx64kgLWtfo5Cq5K9vXB4D9cLTvn6pdzDfoi1dOsdJ
+   DmkrH3epVco9u76OTOok35yiaBeEsGgw7b8Rtr43dmiYLOxKJexkInuPA
+   kSNk2gwMaveO34mhwseNQVr4GHfw8EkmY1a6YRCvBhzigTqdrEKks4r0O
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4650255"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="4650255"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 08:04:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="756655432"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="756655432"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by orsmga006.jf.intel.com with ESMTP; 04 Jan 2024 08:04:05 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rLQCQ-00008e-1Q;
+	Thu, 04 Jan 2024 16:04:02 +0000
+Date: Fri, 5 Jan 2024 00:03:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zack Rusin <zack.rusin@broadcom.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Zack Rusin <zack.rusin@broadcom.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>, linux-input@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] driver core: Keep the supplier fwnode consistent
- with the device
-Message-ID: <2024010436-bulb-direness-5582@gregkh>
-References: <20231114074632.192858-1-herve.codina@bootlin.com>
+Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
+Message-ID: <202401042305.WdnDeo57-lkp@intel.com>
+References: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,52 +70,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231114074632.192858-1-herve.codina@bootlin.com>
+In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 
-On Tue, Nov 14, 2023 at 08:46:32AM +0100, Herve Codina wrote:
-> The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-> fwnode's consumer links") introduces the possibility to use the
-> supplier's parent device instead of the supplier itself.
-> In that case the supplier fwnode used is not updated and is no more
-> consistent with the supplier device used.
-> 
-> Use the fwnode consistent with the supplier device when checking flags.
-> 
-> Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
-> Changes v2 -> v3:
->   Do not update the supplier handle in order to keep the original handle
->   for debug traces.
-> 
-> Changes v1 -> v2:
->   Remove sup_handle check and related pr_debug() call as sup_handle cannot be
->   invalid if sup_dev is valid.
-> 
->  drivers/base/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 4d8b315c48a1..440b52ec027f 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2082,7 +2082,7 @@ static int fw_devlink_create_devlink(struct device *con,
->  		 * supplier device indefinitely.
->  		 */
->  		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
-> -		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-> +		    sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
->  			dev_dbg(con,
->  				"Not linking %pfwf - dev might never probe\n",
->  				sup_handle);
-> -- 
-> 2.41.0
-> 
+Hi Zack,
 
-Is this still needed?  If so, how come no one is noticing it?
+kernel test robot noticed the following build errors:
 
-thanks,
+[auto build test ERROR on dtor-input/next]
+[also build test ERROR on dtor-input/for-linus linus/master v6.7-rc8 next-20240104]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-greg k-h
+url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/input-vmmouse-Fix-device-name-copies/20240104-130724
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+patch link:    https://lore.kernel.org/r/20240104050605.1773158-1-zack.rusin%40broadcom.com
+patch subject: [PATCH v2] input/vmmouse: Fix device name copies
+config: i386-buildonly-randconfig-001-20240104 (https://download.01.org/0day-ci/archive/20240104/202401042305.WdnDeo57-lkp@intel.com/config)
+compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240104/202401042305.WdnDeo57-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401042305.WdnDeo57-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/input/mouse/vmmouse.c:77:7: error: variably modified 'phys' at file scope
+     char phys[sizeof_field(struct serio, phys) +
+          ^~~~
+
+
+vim +/phys +77 drivers/input/mouse/vmmouse.c
+
+    67	
+    68	/**
+    69	 * struct vmmouse_data - private data structure for the vmmouse driver
+    70	 *
+    71	 * @abs_dev: "Absolute" device used to report absolute mouse movement.
+    72	 * @phys: Physical path for the absolute device.
+    73	 * @dev_name: Name attribute name for the absolute device.
+    74	 */
+    75	struct vmmouse_data {
+    76		struct input_dev *abs_dev;
+  > 77		char phys[sizeof_field(struct serio, phys) +
+    78			  strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
+    79		char dev_name[128];
+    80	};
+    81	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
