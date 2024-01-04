@@ -1,211 +1,133 @@
-Return-Path: <stable+bounces-9731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6AB824AA8
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:03:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CC0824AA5
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5861C229D9
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:03:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3EFB22749
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1772C861;
-	Thu,  4 Jan 2024 22:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EAE2C85A;
+	Thu,  4 Jan 2024 22:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oy1rGAQ9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f8oLuABc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CF32C84F;
-	Thu,  4 Jan 2024 22:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3368b9bbeb4so850654f8f.2;
-        Thu, 04 Jan 2024 14:03:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704405826; x=1705010626; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gXXy4XaMx73PQXHAjdjEv87MNa8ZHKFz0AC7Uv3YPaw=;
-        b=Oy1rGAQ9x5vGN+PTD56sTjjKl5Qtaphvt2i6xQ+KZybN59gs+P8g+ph9qClImdqTWU
-         N9mljp8oeXG2I9DN9lsmgJ8oRx7AnP7dl0OAfqRupOcEFRjp2Vsc5Bb///fz4Uu5ePsY
-         pLZKhrS/fcKFPIO8XOK85m+EB6u8DT3Z/x4uHSFxEPh8MA4V81Xgs7YITxwbyjL4ah1i
-         qYf8XFyKwKibTfVurlGuJiAiddz10HRz6IaXiz5C5uRGQUE0EgUaWoFDT8dBnyzdWNAp
-         Yk2CtEtcy0EIbjlg2bt6OvNZmXn9gNB+XwU8XT3TTq/IGKtJdIpS58XN/8MxP+s9UxLM
-         XpUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704405826; x=1705010626;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gXXy4XaMx73PQXHAjdjEv87MNa8ZHKFz0AC7Uv3YPaw=;
-        b=JXKadd+tDWaBCHs+9foIhIQ7y227Xu2yz5GZw+vg35g11pZMOBPZvx6tiNyGLDUSMk
-         QQf+AiVwtLEk9QeXzg4bLvV8uqaerVisk2Xl6CGPhDFfl1Z4jwfrF4oLp30wh2PpZcUX
-         RNG8poBehpe3VF2rMwfXTS2IyuXg6pHIygvZvKDu5L9EH/mMOoTzEQn6ZX8wB/SY5sFG
-         qS6f98olB61peZ/QlbSYJUYFJah3x6mk6xWEFC3yeDb0vjYDFwGtPA7Wy0q2IL1Hkwc7
-         997g3QMiLzzDDZ22M6vV2gfAXdGkwH+mGdA+7GKcf6yKeyVa5MHqRvMoLs6NYJoJ7bhJ
-         SGeg==
-X-Gm-Message-State: AOJu0Yzo4pfKh70OIuyaUqykyH3NlfXVBNCu+1+/hcFxeVa6P+7qeDcm
-	XLYHoiHetJVtJLYDS6crCak=
-X-Google-Smtp-Source: AGHT+IHMnzEpSv8bC0DE1jfrn88WRg6WsYB4GValqBRgP/QIHGUfEF/vjn8EDZt4b1kOhthNJNcZ9g==
-X-Received: by 2002:a5d:6b12:0:b0:336:62f7:720f with SMTP id v18-20020a5d6b12000000b0033662f7720fmr299156wrw.160.1704405825822;
-        Thu, 04 Jan 2024 14:03:45 -0800 (PST)
-Received: from localhost.localdomain (host-80-116-159-187.pool80116.interbusiness.it. [80.116.159.187])
-        by smtp.googlemail.com with ESMTPSA id e18-20020adfe7d2000000b003367a5b6b69sm164286wrn.106.2024.01.04.14.03.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 14:03:45 -0800 (PST)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Kyungmin Park <kyungmin.park@samsung.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Jonghwa Lee <jonghwa3.lee@samsung.com>,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [RESEND PATCH 1/2] PM / devfreq: Fix buffer overflow in trans_stat_show
-Date: Thu,  4 Jan 2024 22:55:14 +0100
-Message-ID: <20240104215521.10772-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0AB2C84F;
+	Thu,  4 Jan 2024 22:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704405688; x=1735941688;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=otgbQ7H1iBSZqJ3vnujFkHluxQ0XxaU4/8325jzHr+8=;
+  b=f8oLuABcGnWQNiIUZ1iv8qGbfDQyKucdHznj9Pfy7YnBT6UpgObxSKCu
+   NhMG+UrEkI04onGt1tsdKRq5Moc++HERqogZkUK/rN2Y2ozlNaqvNpR4j
+   Uq8v1gV8nT0mpmQSiCdrDAxC8O5pLlFLaJsq8yFP+x8+tTnNhBnb2jpJ0
+   4SmNGvLzAQE3Xv+SarvNXu2Ei4jAHsylTB1QV8/sTjLANkf6JkfmnFUqC
+   8q/LDIZ7CFF+WZjoTjEZFlquMR81vBAkytfQ85gayVVXTI9XQNNqHf4kH
+   ivchovDw72QSR14w+ojKp/+khMukDcsva2otXeSVWB4xYyM5hBugFozNM
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="394553013"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="394553013"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 14:01:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="846378376"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="846378376"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga008.fm.intel.com with ESMTP; 04 Jan 2024 14:01:21 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rLVmB-0000Sy-08;
+	Thu, 04 Jan 2024 22:01:19 +0000
+Date: Fri, 5 Jan 2024 06:01:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zack Rusin <zack.rusin@broadcom.com>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>, linux-input@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
+Message-ID: <202401050506.N1aMF9sD-lkp@intel.com>
+References: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
 
-Fix buffer overflow in trans_stat_show().
+Hi Zack,
 
-Convert simple snprintf to the more secure scnprintf with size of
-PAGE_SIZE.
+kernel test robot noticed the following build errors:
 
-Add condition checking if we are exceeding PAGE_SIZE and exit early from
-loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
-stats is disabled.
+[auto build test ERROR on dtor-input/next]
+[also build test ERROR on dtor-input/for-linus linus/master v6.7-rc8 next-20240104]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Return -EFBIG in the case where we don't have enough space to write the
-full transition table.
+url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/input-vmmouse-Fix-device-name-copies/20240104-130724
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
+patch link:    https://lore.kernel.org/r/20240104050605.1773158-1-zack.rusin%40broadcom.com
+patch subject: [PATCH v2] input/vmmouse: Fix device name copies
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20240105/202401050506.N1aMF9sD-lkp@intel.com/config)
+compiler: ClangBuiltLinux clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240105/202401050506.N1aMF9sD-lkp@intel.com/reproduce)
 
-Also document in the ABI that this function can return -EFBIG error.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202401050506.N1aMF9sD-lkp@intel.com/
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
-Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- Documentation/ABI/testing/sysfs-class-devfreq |  3 +
- drivers/devfreq/devfreq.c                     | 57 +++++++++++++------
- 2 files changed, 42 insertions(+), 18 deletions(-)
+All error/warnings (new ones prefixed by >>):
 
-diff --git a/Documentation/ABI/testing/sysfs-class-devfreq b/Documentation/ABI/testing/sysfs-class-devfreq
-index 5e6b74f30406..1e7e0bb4c14e 100644
---- a/Documentation/ABI/testing/sysfs-class-devfreq
-+++ b/Documentation/ABI/testing/sysfs-class-devfreq
-@@ -52,6 +52,9 @@ Description:
- 
- 			echo 0 > /sys/class/devfreq/.../trans_stat
- 
-+		If the transition table is bigger than PAGE_SIZE, reading
-+		this will return an -EFBIG error.
-+
- What:		/sys/class/devfreq/.../available_frequencies
- Date:		October 2012
- Contact:	Nishanth Menon <nm@ti.com>
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 63347a5ae599..8459512d9b07 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1688,7 +1688,7 @@ static ssize_t trans_stat_show(struct device *dev,
- 			       struct device_attribute *attr, char *buf)
- {
- 	struct devfreq *df = to_devfreq(dev);
--	ssize_t len;
-+	ssize_t len = 0;
- 	int i, j;
- 	unsigned int max_state;
- 
-@@ -1697,7 +1697,7 @@ static ssize_t trans_stat_show(struct device *dev,
- 	max_state = df->max_state;
- 
- 	if (max_state == 0)
--		return sprintf(buf, "Not Supported.\n");
-+		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
- 
- 	mutex_lock(&df->lock);
- 	if (!df->stop_polling &&
-@@ -1707,31 +1707,52 @@ static ssize_t trans_stat_show(struct device *dev,
- 	}
- 	mutex_unlock(&df->lock);
- 
--	len = sprintf(buf, "     From  :   To\n");
--	len += sprintf(buf + len, "           :");
--	for (i = 0; i < max_state; i++)
--		len += sprintf(buf + len, "%10lu",
--				df->freq_table[i]);
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
-+	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
-+				 df->freq_table[i]);
-+	}
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
- 
--	len += sprintf(buf + len, "   time(ms)\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
- 
- 	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
- 		if (df->freq_table[i] == df->previous_freq)
--			len += sprintf(buf + len, "*");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
- 		else
--			len += sprintf(buf + len, " ");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
-+				 df->freq_table[i]);
-+		for (j = 0; j < max_state; j++) {
-+			if (len >= PAGE_SIZE - 1)
-+				break;
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
-+					 df->stats.trans_table[(i * max_state) + j]);
-+		}
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
-+				 jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	}
- 
--		len += sprintf(buf + len, "%10lu:", df->freq_table[i]);
--		for (j = 0; j < max_state; j++)
--			len += sprintf(buf + len, "%10u",
--				df->stats.trans_table[(i * max_state) + j]);
-+	if (len < PAGE_SIZE - 1)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
-+				 df->stats.total_trans);
- 
--		len += sprintf(buf + len, "%10llu\n", (u64)
--			jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	if (len >= PAGE_SIZE - 1) {
-+		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
-+		return -EFBIG;
- 	}
- 
--	len += sprintf(buf + len, "Total transition : %u\n",
--					df->stats.total_trans);
- 	return len;
- }
- 
+>> drivers/input/mouse/vmmouse.c:78:5: warning: variable length array used [-Wvla]
+      77 |         char phys[sizeof_field(struct serio, phys) +
+         |                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      78 |                   strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
+         |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/input/mouse/vmmouse.c:77:7: error: fields must have a constant size: 'variable length array in structure' extension will never be supported
+      77 |         char phys[sizeof_field(struct serio, phys) +
+         |              ^
+   1 warning and 1 error generated.
+
+
+vim +77 drivers/input/mouse/vmmouse.c
+
+    67	
+    68	/**
+    69	 * struct vmmouse_data - private data structure for the vmmouse driver
+    70	 *
+    71	 * @abs_dev: "Absolute" device used to report absolute mouse movement.
+    72	 * @phys: Physical path for the absolute device.
+    73	 * @dev_name: Name attribute name for the absolute device.
+    74	 */
+    75	struct vmmouse_data {
+    76		struct input_dev *abs_dev;
+  > 77		char phys[sizeof_field(struct serio, phys) +
+  > 78			  strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
+    79		char dev_name[128];
+    80	};
+    81	
+
 -- 
-2.43.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
