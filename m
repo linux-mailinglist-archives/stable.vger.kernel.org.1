@@ -1,102 +1,146 @@
-Return-Path: <stable+bounces-9722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F40282483D
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:33:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C869824841
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:34:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4185B1C24390
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:33:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE46E280FAF
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0408B28E06;
-	Thu,  4 Jan 2024 18:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0621B28DDE;
+	Thu,  4 Jan 2024 18:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="m313ILFG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AjLCn5Ao"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DE02C68F
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 18:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1704393163;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wF+/ZNoe9kIdBZy1UZERjlDvp3hqlDkzbkeVD7gYeD8=;
-	b=m313ILFGfNYxEFN3P1U/59pz1b7XsdzcI+JEfbwRTb2x3w4aX/vuJlGfqrnbcNR0ROTlEA
-	GgeDM3Jmy29a9hvCwlESq+CLD6zQZu2efTlrTA/LCQVJUK/QZJPyuyxT92SHOn9YNfJdAn
-	s1TZBTkdK1w2REOX7g9o+ur9u7ZX1hc=
-From: Oliver Upton <oliver.upton@linux.dev>
-To: kvmarm@lists.linux.dev
-Cc: kvm@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Jing Zhang <jingzhangos@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH] KVM: arm64: vgic-its: Avoid potential UAF in LPI translation cache
-Date: Thu,  4 Jan 2024 18:32:32 +0000
-Message-ID: <20240104183233.3560639-1-oliver.upton@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA5D28E1A
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 18:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704393286; x=1735929286;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=/IOoJi/kpwpMvqRVAMsLZCyelmocIcqSjkHU5GiDvDQ=;
+  b=AjLCn5AoZs1MGRMesw07Nq9AKb5yrgQrD5S6Ll8A6Repclk1gUUkagQc
+   G2HcXN+v+10SWfbGdn2dpfmAwpHtKakzHgPML6tHuyei/dPbs62WqB094
+   YMqEV9ZxO5UxE8Iruvw0GqUXCYEcCcCXOOpS5/5o2S6nEOkruyTrwkDxS
+   ntg8RW0bYprLqn2GM2xzTweucINKw5Tb3Z3EwQV3VJJzEXX8F4YOJ2EZJ
+   5t6IvWNU2/roP76xp9mlBxHj0CDr99H5mtiIJduwkO3JD26rL4YEhgfnY
+   HKX2DWGLm7EavCw6F96JKuY22X/ajKPi/eLreS51BAaWZJ1PFqGoT8FCs
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="461634493"
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="461634493"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 10:34:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
+   d="scan'208";a="14998521"
+Received: from asebenix-mobl1.ger.corp.intel.com ([10.251.210.215])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 10:34:43 -0800
+Date: Thu, 4 Jan 2024 20:34:39 +0200 (EET)
+From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cc: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, 
+    "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+    "patches@lists.linux.dev" <patches@lists.linux.dev>, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH 6.1 086/100] platform/x86: p2sb: Allow p2sb_bar() calls
+ during PCI device probe
+In-Reply-To: <2024010422-wanted-diabetes-8e0c@gregkh>
+Message-ID: <8cddadb4-fb1d-2fb0-115-69c3d2c0841@linux.intel.com>
+References: <20240103164856.169912722@linuxfoundation.org> <20240103164909.026702193@linuxfoundation.org> <ikeipirtlgca6durdso7md6khlyd5wwh4wl2jzlxkqr2utu4p4@ou2wcovon7jt> <2024010401-shell-easiness-47c9@gregkh> <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
+ <5f97aaa-2d8e-498b-18d1-88e048443dcc@linux.intel.com> <2024010422-wanted-diabetes-8e0c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/mixed; boundary="8323329-1664549602-1704393284=:10531"
 
-There is a potential UAF scenario in the case of an LPI translation
-cache hit racing with an operation that invalidates the cache, such
-as a DISCARD ITS command. The root of the problem is that
-vgic_its_check_cache() does not elevate the refcount on the vgic_irq
-before dropping the lock that serializes refcount changes.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Have vgic_its_check_cache() raise the refcount on the returned vgic_irq
-and add the corresponding decrement after queueing the interrupt.
+--8323329-1664549602-1704393284=:10531
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8BIT
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
----
- arch/arm64/kvm/vgic/vgic-its.c | 5 +++++
- 1 file changed, 5 insertions(+)
+On Thu, 4 Jan 2024, Greg Kroah-Hartman wrote:
 
-diff --git a/arch/arm64/kvm/vgic/vgic-its.c b/arch/arm64/kvm/vgic/vgic-its.c
-index 2dad2d095160..e2764d0ffa9f 100644
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -590,7 +590,11 @@ static struct vgic_irq *vgic_its_check_cache(struct kvm *kvm, phys_addr_t db,
- 	unsigned long flags;
- 
- 	raw_spin_lock_irqsave(&dist->lpi_list_lock, flags);
-+
- 	irq = __vgic_its_check_cache(dist, db, devid, eventid);
-+	if (irq)
-+		vgic_get_irq_kref(irq);
-+
- 	raw_spin_unlock_irqrestore(&dist->lpi_list_lock, flags);
- 
- 	return irq;
-@@ -769,6 +773,7 @@ int vgic_its_inject_cached_translation(struct kvm *kvm, struct kvm_msi *msi)
- 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 	irq->pending_latch = true;
- 	vgic_queue_irq_unlock(kvm, irq, flags);
-+	vgic_put_irq(kvm, irq);
- 
- 	return 0;
- }
+> On Thu, Jan 04, 2024 at 07:02:52PM +0200, Ilpo Järvinen wrote:
+> > On Thu, 4 Jan 2024, Shinichiro Kawasaki wrote:
+> > 
+> > > On Jan 04, 2024 / 09:58, Greg Kroah-Hartman wrote:
+> > > > On Thu, Jan 04, 2024 at 08:54:48AM +0000, Shinichiro Kawasaki wrote:
+> > > 
+> > > ...
+> > > 
+> > > > > Greg, please drop this patch from 6.1-stable for now. Unfortunately, one issue
+> > > > > has got reported [*].
+> > > > > 
+> > > > > [*] https://lore.kernel.org/platform-driver-x86/CABq1_vjfyp_B-f4LAL6pg394bP6nDFyvg110TOLHHb0x4aCPeg@mail.gmail.com/T/#u
+> > > > 
+> > > > What about 6.6.y, this is also queued up there too.
+> > > 
+> > > Please drop it from 6.6.y too.
+> > > 
+> > > > And when is this going to be reverted in Linus's tree?  6.7-rc8 has this
+> > > > issue right now, right?
+> > > 
+> > > Yes. I agree that revert action is needed.
+> > > 
+> > > Ilpo,
+> > > 
+> > > As I commented to the response to the bug report, fix does not look straight
+> > > forward to me. I guess fix discussion with x86 experts' will take some time
+> > > (Andy is now away...). I will post a revert patch later. May I ask you to handle
+> > > it?
+> > 
+> > I've applied the revert and made a PR out of it:
+> > 
+> > https://lore.kernel.org/platform-driver-x86/1a6657ef8475862e4fc282efe832fa86.=%3FUTF-8%3Fq%3FIlpo=20J=C3=A4rvinen%3F=%20%3Cilpo.jarvinen@linux.intel.com/T/#u
+> > 
+> > 
+> > I found it a bit disappointing to hear from Greg that patches can no 
+> > longer be dropped from stable-queue (it certainly used to be possible 
+> > earlier) but things are to be handled indirectly through commits in Linus' 
+> > tree.
+> 
+> They can be dropped, yes, but it's easier to add the follow-on revert so
+> that all of the scripts out there don't keep resending the original
+> change as part of the "hey, you missed this patch!" sweeps that people
+> run.
+> 
+> So taking both of them is better, right?
 
-base-commit: 33cc938e65a98f1d29d0a18403dbbee050dcad9a
+If you want my honest answer, I don't think fix + revert "cycles" really 
+belong there but I'm not going to complain that much either, I understand 
+managing / keeping track of all that is not so easy (and that scripts 
+tend to be stupid).
+
+> That also ensures that Linus's tree is fixed up, which is key for 
+> everyone involved.
+
+Yes, it's important but my main worry here is it introduces latency and 
+I've no knowledge if this kind of notes are enough to halt the stable 
+release until the revert also makes into the stable-queue?
+
+> For stuff that is "this should not be in the stable tree at all", we
+> always drop those easily, that's never a problem.
+
+Okay, thanks for the clarification.
+
+
 -- 
-2.43.0.472.g3155946c3a-goog
+ i.
 
+--8323329-1664549602-1704393284=:10531--
 
