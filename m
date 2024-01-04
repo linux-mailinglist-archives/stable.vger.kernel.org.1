@@ -1,173 +1,329 @@
-Return-Path: <stable+bounces-9636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740D6823CFA
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11237823D09
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E829E1F26308
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 07:50:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 705181F2635C
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 07:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37931200A0;
-	Thu,  4 Jan 2024 07:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AE2200AB;
+	Thu,  4 Jan 2024 07:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svenpeter.dev header.i=@svenpeter.dev header.b="WCyYGHfR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gxunz77h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrF+pQE0"
 X-Original-To: stable@vger.kernel.org
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2865E1F927;
-	Thu,  4 Jan 2024 07:50:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svenpeter.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svenpeter.dev
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id B62973200AFD;
-	Thu,  4 Jan 2024 02:50:33 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Thu, 04 Jan 2024 02:50:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1704354633; x=1704441033; bh=oVCT/6mmwfMbt8/ULc2eXbjs5hsv2iyz
-	g0YtDX0R8EY=; b=WCyYGHfRMlab7s0utl02nhZh6r6dBsdWHwlVg8kZ0pAIwwxm
-	T359V9XICBCpAetn58aV9xqGiIY4cmQG+4d2WRjNFEru0Lo6Uu7j6WyNeZhbvvC9
-	e9EJN6XRGTHVo+gaCeEnvXzu2t7Ww8VImNV2WxeLUebuui8UBE3/83WGUgZNLb0R
-	U7ZkcMVN/7QY/4cjUusIosasJfHRyiaSJ58X5+S/SLSN3fcqkXqjQYaSFeeABY/F
-	E88ng0sGDMyNVZKW2vEmaOqB8l/JFMxT+Dc7IpZKOxY6NqvHd0t3wU1KpSEymmj8
-	GLtYzY4uuh89P3P6c9TmyRRj6+mXOPd7W78RYg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1704354633; x=
-	1704441033; bh=oVCT/6mmwfMbt8/ULc2eXbjs5hsv2iyzg0YtDX0R8EY=; b=g
-	xunz77hEf37PtaiC8VVWkxuW7X+7bHAlgaKElJQSszWvkVo/XxRGxqINTU7kV6Z8
-	/k9n5IpP5cfC/ftDYrNPX3W2XgonJNQVWW0JOELW+E3mYkfx+S6UAus1cejes/lB
-	OvBLzSZy3qWDOdpDWmd6MTuKpjUPf3y9KUXmdDT7LyVbpc9Xx65KXyfj9furtGVz
-	fUF/cvTNJjJzvbrCAo8BPaJTF2UytIzf0L6AH+DmnLch2U9co3VrGRpGMYtM/xnB
-	dOyWjyA0WzZXm4Jlkzavbj+o6rFyigw2+fRsq2UruJod1291tovdfDT8WCXQHJKe
-	X27xM1QW7DQLp6eGX2m3Q==
-X-ME-Sender: <xms:SGOWZWjQubEjL_KCPAWU2jYQtoww4mScEX5EhsdauSJd25nx1d39Wg>
-    <xme:SGOWZXBIMTW9jIOUtmxFSDeDTHb0SYZg0rql6lB6-17NTSLMbN08wx-jaa4DOsoGg
-    zjByoVa7jcom-trJVc>
-X-ME-Received: <xmr:SGOWZeHPsMuvsSqH1xMLYVZvBwlEBLXaAJBsUmok7UN_rMw8b0Xeb1BO74p50AJIGBQPb2ircXHeJ2G-kN-z4yGJJMYo90ogl5kE5ZzXI7Xig-faoYU8lh-E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegiedguddutdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpegtgffhggfufffkfhevjgfvofesthhqmhdthhdtjeenucfhrhhomhepufhv
-    vghnucfrvghtvghruceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtffrrg
-    htthgvrhhnpeffvdeugeegffeileegiedtkeetjeekheehhfehudelvdeuuddvleffieev
-    leetkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepshhvvghnsehsvhgvnhhpvghtvghrrdgu
-    vghv
-X-ME-Proxy: <xmx:SGOWZfQUXJtXe3brtCw-VZ1XNlc8kE8647VWd9eUcsMqBYUWE6W4Ug>
-    <xmx:SGOWZTzoOwaej-L_CEbl88mkaI4joCemkQQlZhOeyYlS4Lwf96ak0A>
-    <xmx:SGOWZd5lXhq8wjB_zeklwGn8AWhoZo3YFiv-lbR8O5GAgFztSOBYew>
-    <xmx:SWOWZTm2GPa2nx6JoAbIV7mddo7UPU_KNB3WMoG5_QLcLEt4Clt2vg>
-Feedback-ID: i51094778:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jan 2024 02:50:32 -0500 (EST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Sven Peter <sven@svenpeter.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE522030A;
+	Thu,  4 Jan 2024 07:55:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5cddc5455aeso135062a12.1;
+        Wed, 03 Jan 2024 23:55:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704354914; x=1704959714; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=thELQt+jJStLaTs0SK0jv3blwIe6CCuApqMHQi68vpE=;
+        b=WrF+pQE0ROWIMDKoaT+eXbvZuqatSuNkWEh5my41UFccMyD4t0Ix2A+H6wxn2cVITq
+         HGX4SAnYpwgngdrdU1b/PbAzEj30OTpcExWr2Qbz4JsO/FlNQifwPViIS5Y/sRLLdgns
+         Y/mR2rngCpDC9POrYNqkYKTX+vpS29VWSeZBsIyKewrjd1jcHECASeza99l5cMlpY/4m
+         R5tb2iT4l3KeNwFNzjZ9NXe4/iyU6trUvkWIU36knSzs5x7Xpkx9Qw5ZYhwuSCjSW4eb
+         JSxZ5Wpc/0Ucgi/cmEyW1QQK+BWSVs5Mtfv4FkO2lqhZar0lqQglQEY7CUiaVzmCpq6O
+         o4qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704354914; x=1704959714;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=thELQt+jJStLaTs0SK0jv3blwIe6CCuApqMHQi68vpE=;
+        b=w3+lcISySE4r22Tn1u1Zb6KWQnUFftD1kgdrjS1rXwCcY3elnX1jW+unDGcFixiXL7
+         VzzHEbRDKKJnq3oNXd/DBL9QrdhtKEygrsiu3WKu7H+fSHGmOKCHnHtvMOmwqW7XCjO9
+         tauSLZYlwGfa34R95o/UBUEGRzw9TN5MP2k27SvCdM5bFzkPxJWXBCqwBIhL0/VsDm4C
+         orvpt3uJ5oeNdm2glKaApFyOVHdD1N9Oshem2pg84HvPTkzpwkhwclTXy5MZI1aLTob0
+         6SC4bvQWwEKVAeAS72H1QLzSws7ekfZ7Omx4VadCBxNsMLCebKUyFHC0z34uULz1nYdI
+         QxNA==
+X-Gm-Message-State: AOJu0YwN4vs5mJ5VkpRjdonfrbQ44M2jCyRurScV5dDmis3Bk6moaSVX
+	05yzsz7Emn8dQ63LbZ2lR/llFVcBc23Z7NKLSbg=
+X-Google-Smtp-Source: AGHT+IFI73v/6TfZ1EDje8MFqjY1bVatog9mEBZ85DA+lpHsm7Ax9qkxcUELS3xNPe7ldb2qxSp24wzYpP9w75dC8po=
+X-Received: by 2002:a05:6a20:12c2:b0:196:4c53:52db with SMTP id
+ v2-20020a056a2012c200b001964c5352dbmr157073pzg.47.1704354914365; Wed, 03 Jan
+ 2024 23:55:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel MacBooks
-Date: Thu, 4 Jan 2024 08:50:19 +0100
-Message-Id: <86B7DC5B-B25A-4D55-BBC7-A1C3EE8AC703@svenpeter.dev>
-References: <MA0P287MB021769BC136ED0B947683709B867A@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
-Cc: Johan Hovold <johan@kernel.org>, Paul Menzel <pmenzel@molgen.mpg.de>,
- Felix Zhang <mrman@mrman314.tech>, linux-bluetooth@vger.kernel.org,
- stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
- Hector Martin <marcan@marcan.st>, Bagas Sanjaya <bagasdotme@gmail.com>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Orlando Chamberlain <orlandoch.dev@gmail.com>, kekrby@gmail.com,
- admin@kodeit.net, Janne Grunau <j@jannau.net>, asahi@lists.linux.dev,
- linux-kernel@vger.kernel.org
-In-Reply-To: <MA0P287MB021769BC136ED0B947683709B867A@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
-To: Aditya Garg <gargaditya08@live.com>
-X-Mailer: iPhone Mail (21C66)
+MIME-Version: 1.0
+References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Thu, 4 Jan 2024 07:55:02 +0000
+Message-ID: <CADo9pHiP8rXxLrGdsH5o+0KbR0f8XO+G1a=OgNW6UfD0s_hwAQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Luna Jernberg <droidbittin@gmail.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Tried to follow this guide:
+https://wiki.archlinux.org/title/Kernel/Traditional_compilation to
+compile it on Crystal Linux based on Arch Linux on a Dell Latitude
+7390 laptop with a Intel i5-8350U and did not get it to boot
+but the same process worked for the stable 6.6.9 kernel, so guess i
+will just wait for the stable 6.6.10 and try when thats out
 
->=20
-> On 4. Jan 2024, at 08:47, Aditya Garg <gargaditya08@live.com> wrote:
->=20
-> =EF=BB=BF
->=20
->> On 28-Dec-2023, at 5:41=E2=80=AFPM, Johan Hovold <johan@kernel.org> wrote=
-:
->>=20
->> =EF=BB=BFOn Thu, Dec 28, 2023 at 10:46:57AM +0100, Sven Peter wrote:
->>=20
->>>>>> On Dec 27, 2023, at 11:30, Johan Hovold <johan@kernel.org> wrote:
->>>=20
->>>>> The commit you tracked this down to restored the original semantics fo=
-r
->>>> HCI_QUIRK_USE_BDADDR_PROPERTY, which means that it should only be set
->>>> for devices with an invalid address.
->>>>=20
->>>> The Broadcom BCM4377 driver has so far been setting this flag
->>>> unconditionally which now potentially results in also valid addresses
->>>> being marked as invalid.
->>>>=20
->>>> I've just sent a patch that makes sure to only mark invalid addresses a=
-s
->>>> invalid:
->>>>=20
->>>> https://lore.kernel.org/lkml/20231227101003.10534-1-johan+linaro@kernel=
-.org/
->>>>=20
->>>> Note however that the flag still needs to be set in case your device
->>>> lacks storage for a unique device address so you cannot simply drop it
->>>> for some device classes as you do below (unless you are certain that
->>>> these devices will always have a valid address).
->>=20
->>> We do know that though.
->>>=20
->>> BCM4377 is present on Apple=E2=80=99s x86 Macs and always has internal s=
-torage
->>> for the address. If the board comes up without an address there=E2=80=99=
-s nothing
->>> much we can do because the address isn=E2=80=99t provided by ACPI or any=
-thing
->>> else and setting the invalid address quirk for that situation seems appr=
-opriate.
->>>=20
->>> BCM4378/4387 is present on Apple=E2=80=99s ARM Macs and never has intern=
-al storage.
->>> The address is always provided by our bootloader in the device tree.
->>> These should always unconditionally set HCI_QUIRK_USE_BDADDR_PROPERTY
->>> just like this patch does.
->>=20
->> Ok, good, then this patch and the one I posted are mostly equivalent
->> assuming that the BCM4378/4387 return an invalid address during setup.
->>=20
->> This patch may be preferred as it does not need to rely on such
->> assumptions, though.
->>=20
->> Johan
->=20
-> So what's the final take on this? Which one is gonna be merged upstream?
-
-I would=E2=80=99ve preferred this one (possibly with a better commit message=
-) since it=E2=80=99s more explicit and doesn=E2=80=99t rely on additional as=
-sumptions but it looks like Johan=E2=80=99s version was already merged.
-
-
-Sven
-
-
-
+Den ons 3 jan. 2024 kl 17:13 skrev Greg Kroah-Hartman
+<gregkh@linuxfoundation.org>:
+>
+> This is the start of the stable review cycle for the 6.6.10 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.6.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------
+> Pseudo-Shortlog of commits:
+>
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Linux 6.6.10-rc1
+>
+> Pablo Neira Ayuso <pablo@netfilter.org>
+>     netfilter: nf_tables: skip set commit for deleted/destroyed sets
+>
+> L=C3=A9o Lam <leo@leolam.fr>
+>     wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
+>
+> Johannes Berg <johannes.berg@intel.com>
+>     wifi: cfg80211: fix CQM for non-range use
+>
+> Steven Rostedt (Google) <rostedt@goodmis.org>
+>     tracing: Fix blocked reader of snapshot buffer
+>
+> Steven Rostedt (Google) <rostedt@goodmis.org>
+>     ftrace: Fix modification of direct_function hash while in use
+>
+> Steven Rostedt (Google) <rostedt@goodmis.org>
+>     ring-buffer: Fix wake ups when buffer_percent is set to 100
+>
+> Keith Busch <kbusch@kernel.org>
+>     Revert "nvme-fc: fix race between error recovery and creating associa=
+tion"
+>
+> Matthew Wilcox (Oracle) <willy@infradead.org>
+>     mm/memory-failure: check the mapcount of the precise page
+>
+> Matthew Wilcox (Oracle) <willy@infradead.org>
+>     mm/memory-failure: cast index to loff_t before shifting it
+>
+> Charan Teja Kalla <quic_charante@quicinc.com>
+>     mm: migrate high-order folios in swap cache correctly
+>
+> Baokun Li <libaokun1@huawei.com>
+>     mm/filemap: avoid buffered read/write race to read inconsistent data
+>
+> Muhammad Usama Anjum <usama.anjum@collabora.com>
+>     selftests: secretmem: floor the memory size to the multiple of page_s=
+ize
+>
+> Sidhartha Kumar <sidhartha.kumar@oracle.com>
+>     maple_tree: do not preallocate nodes for slot stores
+>
+> Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+>     platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()
+>
+> David E. Box <david.e.box@linux.intel.com>
+>     platform/x86/intel/pmc: Move GBE LTR ignore to suspend callback
+>
+> David E. Box <david.e.box@linux.intel.com>
+>     platform/x86/intel/pmc: Allow reenabling LTRs
+>
+> David E. Box <david.e.box@linux.intel.com>
+>     platform/x86/intel/pmc: Add suspend callback
+>
+> Christoph Hellwig <hch@lst.de>
+>     block: renumber QUEUE_FLAG_HW_WC
+>
+> Paolo Abeni <pabeni@redhat.com>
+>     mptcp: fix inconsistent state on fastopen race
+>
+> Paolo Abeni <pabeni@redhat.com>
+>     mptcp: fix possible NULL pointer dereference on close
+>
+> Paolo Abeni <pabeni@redhat.com>
+>     mptcp: refactor sndbuf auto-tuning
+>
+> Helge Deller <deller@gmx.de>
+>     linux/export: Ensure natural alignment of kcrctab array
+>
+> Helge Deller <deller@gmx.de>
+>     linux/export: Fix alignment for 64-bit ksymtab entries
+>
+> Arnd Bergmann <arnd@arndb.de>
+>     kexec: select CRYPTO from KEXEC_FILE instead of depending on it
+>
+> Arnd Bergmann <arnd@arndb.de>
+>     kexec: fix KEXEC_FILE dependencies
+>
+> Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>     virtio_ring: fix syncs DMA memory with different direction
+>
+> Zizhi Wo <wozizhi@huawei.com>
+>     fs: cifs: Fix atime update check
+>
+> Jeff Layton <jlayton@kernel.org>
+>     client: convert to new timestamp accessors
+>
+> Jeff Layton <jlayton@kernel.org>
+>     fs: new accessor methods for atime and mtime
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: avoid duplicate opinfo_put() call on error of smb21_lease_brea=
+k_ack()
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: lazy v2 lease break on smb2_write()
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: send v2 lease break notification for directory
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: downgrade RWH lease caching state to RH for directory
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: set v2 lease capability
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: set epoch in create context v2 lease
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: don't update ->op_state as OPLOCK_STATE_NONE on error
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: move setting SMB2_FLAGS_ASYNC_COMMAND and AsyncId
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: release interim response after sending status pending response
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: move oplock handling after unlock parent dir
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: separately allocate ci per dentry
+>
+> Zongmin Zhou <zhouzongmin@kylinos.cn>
+>     ksmbd: prevent memory leak on error return
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: fix kernel-doc comment of ksmbd_vfs_kern_path_locked()
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: no need to wait for binded connection termination at logoff
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: add support for surrogate pair conversion
+>
+> Kangjing Huang <huangkangjing@gmail.com>
+>     ksmbd: fix missing RDMA-capable flag for IPoIB device in ksmbd_rdma_c=
+apable_netdev()
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: fix kernel-doc comment of ksmbd_vfs_setxattr()
+>
+> Namjae Jeon <linkinjeon@kernel.org>
+>     ksmbd: reorganize ksmbd_iov_pin_rsp()
+>
+> Cheng-Han Wu <hank20010209@gmail.com>
+>     ksmbd: Remove unused field in ksmbd_user struct
+>
+>
+> -------------
+>
+> Diffstat:
+>
+>  Makefile                                  |   4 +-
+>  arch/powerpc/Kconfig                      |   4 +-
+>  arch/riscv/Kconfig                        |   4 +-
+>  arch/s390/Kconfig                         |   4 +-
+>  arch/x86/Kconfig                          |   4 +-
+>  drivers/nvme/host/fc.c                    |  21 +--
+>  drivers/platform/x86/intel/pmc/adl.c      |   9 +-
+>  drivers/platform/x86/intel/pmc/cnp.c      |  26 ++-
+>  drivers/platform/x86/intel/pmc/core.c     |  12 +-
+>  drivers/platform/x86/intel/pmc/core.h     |   7 +-
+>  drivers/platform/x86/intel/pmc/mtl.c      |   9 +-
+>  drivers/platform/x86/intel/pmc/tgl.c      |   9 +-
+>  drivers/platform/x86/p2sb.c               | 178 ++++++++++++++++-----
+>  drivers/virtio/virtio_ring.c              |   6 +-
+>  fs/libfs.c                                |  41 +++--
+>  fs/smb/client/file.c                      |  18 ++-
+>  fs/smb/client/fscache.h                   |   6 +-
+>  fs/smb/client/inode.c                     |  17 +-
+>  fs/smb/client/smb2ops.c                   |   6 +-
+>  fs/smb/common/smb2pdu.h                   |   1 +
+>  fs/smb/server/connection.c                |  16 --
+>  fs/smb/server/ksmbd_work.c                |  51 +++---
+>  fs/smb/server/mgmt/user_config.h          |   1 -
+>  fs/smb/server/oplock.c                    | 118 ++++++++++++--
+>  fs/smb/server/oplock.h                    |   8 +-
+>  fs/smb/server/smb2misc.c                  |  15 +-
+>  fs/smb/server/smb2ops.c                   |   9 +-
+>  fs/smb/server/smb2pdu.c                   | 258 ++++++++++++++++--------=
+------
+>  fs/smb/server/transport_rdma.c            |  40 +++--
+>  fs/smb/server/unicode.c                   | 187 ++++++++++++++++------
+>  fs/smb/server/vfs.c                       |  14 +-
+>  fs/smb/server/vfs_cache.c                 |  30 ++--
+>  fs/smb/server/vfs_cache.h                 |   9 +-
+>  include/linux/blkdev.h                    |   2 +-
+>  include/linux/export-internal.h           |   6 +-
+>  include/linux/fs.h                        |  85 ++++++++--
+>  kernel/Kconfig.kexec                      |   2 +
+>  kernel/trace/ftrace.c                     | 100 ++++++------
+>  kernel/trace/ring_buffer.c                |  12 +-
+>  kernel/trace/trace.c                      |  20 ++-
+>  lib/maple_tree.c                          |  11 ++
+>  mm/filemap.c                              |   9 ++
+>  mm/memory-failure.c                       |   8 +-
+>  mm/migrate.c                              |   9 +-
+>  net/mptcp/protocol.c                      |  27 +++-
+>  net/mptcp/protocol.h                      |  63 +++++++-
+>  net/mptcp/sockopt.c                       |   5 +-
+>  net/mptcp/subflow.c                       |  29 ++--
+>  net/netfilter/nf_tables_api.c             |   2 +-
+>  net/wireless/core.h                       |   1 +
+>  net/wireless/nl80211.c                    |  56 ++++---
+>  tools/testing/radix-tree/maple.c          |   2 +-
+>  tools/testing/selftests/mm/memfd_secret.c |   3 +
+>  53 files changed, 1070 insertions(+), 524 deletions(-)
+>
+>
+>
 
