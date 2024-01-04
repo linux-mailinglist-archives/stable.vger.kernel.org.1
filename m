@@ -1,126 +1,152 @@
-Return-Path: <stable+bounces-9711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BA68245BA
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:04:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE13824649
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219B6285D27
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:04:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDACF1C20EBD
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEE224A19;
-	Thu,  4 Jan 2024 16:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2DE250E9;
+	Thu,  4 Jan 2024 16:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z+QZd+Gf"
+	dkim=pass (2048-bit key) header.d=landley-net.20230601.gappssmtp.com header.i=@landley-net.20230601.gappssmtp.com header.b="FGndA+ao"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA12C24B29;
-	Thu,  4 Jan 2024 16:04:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704384249; x=1735920249;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0AFkTq8W4WlL14fDd9NkfIdML6QaTZbBm5y83F+lCQg=;
-  b=Z+QZd+Gf6y0eanUSjprkdQxhRMlCO+bWG6d/xVgaAEywzKGAyXJ2MvO2
-   bm6qm/Zz2SUqTXcp/w9TXFlq3MY97mbb+/T1OyiYQXSTpznVajH1cBKEU
-   Sqq5Pyc1HLpEM4EeuMqagpJNVpe/uPG0iZPv/wAJeg0NmGCubowNggD2z
-   HvnptupsWsodiyfsx64kgLWtfo5Cq5K9vXB4D9cLTvn6pdzDfoi1dOsdJ
-   DmkrH3epVco9u76OTOok35yiaBeEsGgw7b8Rtr43dmiYLOxKJexkInuPA
-   kSNk2gwMaveO34mhwseNQVr4GHfw8EkmY1a6YRCvBhzigTqdrEKks4r0O
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="4650255"
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="4650255"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 08:04:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="756655432"
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="756655432"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga006.jf.intel.com with ESMTP; 04 Jan 2024 08:04:05 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rLQCQ-00008e-1Q;
-	Thu, 04 Jan 2024 16:04:02 +0000
-Date: Fri, 5 Jan 2024 00:03:45 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zack Rusin <zack.rusin@broadcom.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Zack Rusin <zack.rusin@broadcom.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Raul Rangel <rrangel@chromium.org>, linux-input@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
-Message-ID: <202401042305.WdnDeo57-lkp@intel.com>
-References: <20240104050605.1773158-1-zack.rusin@broadcom.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CAA624B27
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 16:32:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=landley.net
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=landley.net
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-7ba9c26e14aso20360439f.0
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 08:32:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=landley-net.20230601.gappssmtp.com; s=20230601; t=1704385946; x=1704990746; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GZozTrRnGVXzy31zBAY9Io4KyrsVmk5XpdKMFCKbp5Q=;
+        b=FGndA+aoe6WDkgaivOKRHwydkzkusJ8CuvZXYuM5KMprCew/0HZKAHsTxfP7JXLYRM
+         FfCvbWbi3xXR5BqM3gdc6WZGBISwuoAip158x+ftCkm64Z9NCbKT6MqCPMSwCzYej+EG
+         2RzZ0bHZOqOmBudyeTCWgnD/RkDHyGNdZP0Rpwm+TEfDvCs9p+El9xGlUiitquXlNtvy
+         HQ/yTlNnFdo5pRpvoIG1sRBqSFnQRYwc2HwzIwO7KaChSCqaKtxkaoWcaFd0D+LHhccx
+         dWpLZ+W5pLuVlaUShb9dcUYge5KF1U7bxcJhG0lETalKMntPslu3WRryXCRdi5A21oG7
+         rncQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704385946; x=1704990746;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GZozTrRnGVXzy31zBAY9Io4KyrsVmk5XpdKMFCKbp5Q=;
+        b=uZbOHIITx8u//IA6VEItp65EpCfFPXXx4YFW4lHjMdGWR/oBzNJ6Bq3GFK8Rd4Q5/g
+         t+j5HeRRIc1bC+KmlSwDVDp6z7tvLmtKk2GMSZkb12P4aVEp4npa/C6zii4JZ6CqICOA
+         nuA7ftyk3IqbpgsIV5WODQu2S+C2Askrx7GXTd1S+pwBJIX6r0yV32MOiEnkMFaXMLCG
+         f5B2JbAX/SoT2+2Dl54osCkCF9smCScGIKDfC9lio1ExVj9S+FYOzFMx5z8qtlIlwhwk
+         WWaEDmiZufYjkqaqDGIZ6yIrLedtEBka/LHIxJtQhDkLL4o2Ljpo+X6QVzPvlN5r46B4
+         n0ag==
+X-Gm-Message-State: AOJu0Yx8xUyxUckZ/1Yfh2DbyGfktgiSPc7ylCnbq7rufIJHn2+TAjMD
+	fYBFmDP8GYbaQy6OMtMSBEaH/c7nUlNMRA==
+X-Google-Smtp-Source: AGHT+IGfv7ALW3+Jd+SE55tGh732azgppxaH8IixXrfYqjh5vvjsIK9HlVCx+k8e0bLSIH6hQ0rZAQ==
+X-Received: by 2002:a6b:e511:0:b0:7ba:7d6a:652c with SMTP id y17-20020a6be511000000b007ba7d6a652cmr543650ioc.3.1704385946492;
+        Thu, 04 Jan 2024 08:32:26 -0800 (PST)
+Received: from [172.16.32.83] ([198.232.126.202])
+        by smtp.gmail.com with ESMTPSA id n21-20020a02a915000000b0046df6a4574dsm212304jam.161.2024.01.04.08.32.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jan 2024 08:32:26 -0800 (PST)
+Message-ID: <c7b8d248-fb59-0476-dea8-89d40207460f@landley.net>
+Date: Thu, 4 Jan 2024 10:38:53 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+Content-Language: en-US
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Stefan Berger <stefanb@linux.ibm.com>, gregkh@linuxfoundation.org,
+ initramfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, zohar@linux.ibm.com
+References: <CAPnZJGDcNwPLbzC99qNQ+bRMwxPU-Z0xe=TD6DWQU=0MNyeftA@mail.gmail.com>
+ <d4b227de-d609-aef2-888b-203dbcf06707@landley.net>
+ <CAPnZJGBeV-E_AN8GnTfkaJvRtBmCeMYYCt+O0XMsc3kDULRuKg@mail.gmail.com>
+ <fb776d99-1956-4e1b-9afc-84f27ca40f46@linux.ibm.com>
+ <0879141d-462c-7e94-7c87-7a5b5422b8ed@landley.net>
+ <e32077de-b159-4a7b-89a3-e1925239142f@linux.ibm.com>
+ <fcb45898-0699-878f-0656-f570607fbed4@landley.net>
+ <CAPnZJGAr8BfTHmn3QZnJ6dnVCQsUnUASmdH4tzz0-QMwHmZZLQ@mail.gmail.com>
+From: Rob Landley <rob@landley.net>
+In-Reply-To: <CAPnZJGAr8BfTHmn3QZnJ6dnVCQsUnUASmdH4tzz0-QMwHmZZLQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Zack,
+On 1/4/24 00:06, Askar Safin wrote:
+> On Sat, Dec 30, 2023 at 8:01 PM Rob Landley <rob@landley.net> wrote:
+>> I've been following the initramfs xattr support threads forever:
+> 
+> Here is my proposal: add to the kernel support for catar (
+> https://0pointer.net/blog/casync-a-tool-for-distributing-file-system-images.html
+> ) in addition to cpio. catar has the following advantages:
 
-kernel test robot noticed the following build errors:
+Didn't we just have a thread about the inadvisability of adding more ways to do
+the same thing, with each existing codepath still having to be supported forever?
 
-[auto build test ERROR on dtor-input/next]
-[also build test ERROR on dtor-input/for-linus linus/master v6.7-rc8 next-20240104]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+And your solution is a link to the website of Lenart Pottering, author and
+maintainer of systemd. You want to put systemd code into the kernel.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/input-vmmouse-Fix-device-name-copies/20240104-130724
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/dtor/input.git next
-patch link:    https://lore.kernel.org/r/20240104050605.1773158-1-zack.rusin%40broadcom.com
-patch subject: [PATCH v2] input/vmmouse: Fix device name copies
-config: i386-buildonly-randconfig-001-20240104 (https://download.01.org/0day-ci/archive/20240104/202401042305.WdnDeo57-lkp@intel.com/config)
-compiler: gcc-7 (Ubuntu 7.5.0-6ubuntu2) 7.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240104/202401042305.WdnDeo57-lkp@intel.com/reproduce)
+> - catar is simple and reproducible. For the same directory tree the
+> same bit-precise catar file is generated, which is good for
+> cryptographic signatures.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202401042305.WdnDeo57-lkp@intel.com/
+I can trivially reproduce the same cpio each time from the same tree, the trick
+is just fetching the whole directory and sorting it before processing (to
+squelch hash-impacted readdir() return order from the filesystem).
 
-All errors (new ones prefixed by >>):
+> As opposed to tar's monstrosity (
+> https://www.cyphar.com/blog/post/20190121-ociv2-images-i-tar )
+> - catar has support for xattr.
 
->> drivers/input/mouse/vmmouse.c:77:7: error: variably modified 'phys' at file scope
-     char phys[sizeof_field(struct serio, phys) +
-          ^~~~
+Adding xattr support to my toybox cpio implementation is maybe 10 lines of C, I
+assume the other implementations aren't that much more tangled. The question was
+always a largely aesthetic issue of file format.
 
+Tar is NOT well-defined. I say this as someone who has IMPLEMENTED tar and has a
+pending TODO item to patch up YET ANOTHER funky corner case du jour somebody hit:
 
-vim +/phys +77 drivers/input/mouse/vmmouse.c
+https://github.com/landley/toybox/issues/469
 
-    67	
-    68	/**
-    69	 * struct vmmouse_data - private data structure for the vmmouse driver
-    70	 *
-    71	 * @abs_dev: "Absolute" device used to report absolute mouse movement.
-    72	 * @phys: Physical path for the absolute device.
-    73	 * @dev_name: Name attribute name for the absolute device.
-    74	 */
-    75	struct vmmouse_data {
-    76		struct input_dev *abs_dev;
-  > 77		char phys[sizeof_field(struct serio, phys) +
-    78			  strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
-    79		char dev_name[128];
-    80	};
-    81	
+Inventing a NEW file format... there are multiple dozens already: zip, arj,
+lharc, zoo... You could theoretically extract squashfs into initramfs because
+technically it's an archive format.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Good grief, there's an xkcd on that:
+
+https://xkcd.com/927/
+
+> It has support for nearly all types of
+
+"nearly"
+
+Please no.
+
+> metainformation Linux offers (32 bit UIDs, nanosecond timestamps,
+> "disable CoW" flag and various other flags, selinux file labels, file
+> capabilities, etc). All this metainformation can be disabled if
+> needed. So, next time we will want to add some new type of
+> metainformation, there will be no need for lengthy discussions about
+> how it should be stored.
+
+There's no real need NOW. "We did not come to an agreement in email" does not
+mean "let's add a new unrelated format". It means let's carve out an hour to
+actually speak to each other, by voice and maybe video, using this thing called
+the internet. (Without covid we'd have had a BOF at some conference by now.)
+
+Rob
 
