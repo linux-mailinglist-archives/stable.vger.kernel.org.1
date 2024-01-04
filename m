@@ -1,140 +1,101 @@
-Return-Path: <stable+bounces-9717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84288246CF
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:04:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7939824706
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6960BB21F47
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A3C41C24058
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD5A2555E;
-	Thu,  4 Jan 2024 17:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7654E2D05D;
+	Thu,  4 Jan 2024 17:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+U4cZM/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZWYsc1eK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C63425550;
-	Thu,  4 Jan 2024 17:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE5BC433C8;
-	Thu,  4 Jan 2024 17:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704387852;
-	bh=NRJexN6VwGPs36D7qqe8cb4lnZNM38wLpxTLgdfCEZ4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+U4cZM/7Tj1bP8WBpsaQuB2IdIoWzs7doufaTmOqZrv6DuiIOwbSqxUcGboKslJl
-	 zHRzYlNVXNSUG3u65IZcu6Coc99NzxdHOVCr7VNfoq/vbemU7vrqQeSMlCyVdMdN4G
-	 pKNo4qhmN1AeMpGug+ka7hDOAJKmr22RARGNOuJXUX9EDnrw7KQQGHX4I9peiPG6xK
-	 6a6zr5yzgHuJOlX0QEqwI82r/z/cLiEg7wxiWM2CMWsfXxnmI9KGL3+SXLwd2qWADg
-	 WQG9gDv+Ekn1qsREjCES8NoZ7Ezx2mr2XgCmEd1BnBXTIAmHvYeUJ0RI2qUlnxT1s0
-	 lB7J4jbfnGheg==
-Date: Thu, 4 Jan 2024 18:04:08 +0100
-From: Wolfram Sang <wsa@kernel.org>
-To: Benjamin Bara <bbara93@gmail.com>
-Cc: Lee Jones <lee@kernel.org>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	peterz@infradead.org, mwalle@kernel.org,
-	Tor Vic <torvic9@mailbox.org>,
-	Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: core: Fix atomic xfer check for non-preempt config
-Message-ID: <ZZblCO9li-TMSOKV@shikoro>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-	Benjamin Bara <bbara93@gmail.com>, Lee Jones <lee@kernel.org>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	peterz@infradead.org, mwalle@kernel.org,
-	Tor Vic <torvic9@mailbox.org>,
-	Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org
-References: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA142C864;
+	Thu,  4 Jan 2024 17:12:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-7cdef012c0eso87946241.2;
+        Thu, 04 Jan 2024 09:12:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704388368; x=1704993168; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=TG4BujtMj3cbNtXYHg1i+tLfTW6XvV1xjqQK0OaXaOs=;
+        b=ZWYsc1eKiyerw5XmAioDixx9K20Msg3VKrX4zvMk6R+5dEpApezGFXtAscgEtoekm9
+         63EDbf3EWH3VUhFani79FpLM58vQ4lutHYcYGzBnVcUQP3bCJdgS1CElOhpyqbx2uxDU
+         oblhu4V2PBUwlSYP1qqi8klPAUnHnQ5AanSlSFcDU0hdHboljJDZ1wjZtzesrcmhjqXS
+         n4SjoIihWQ78cJ441P3IWbzCCeLUJtzr1OOXcIJCPhnDSigZvkePK4YRgVXs920X5+Z4
+         99UEass0TTjb3JM55RcLaCHxKr1OOi0/HFVLeWcOSZkhSsfqnZngKWe+zY9RdDkpfsHN
+         6szQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704388368; x=1704993168;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TG4BujtMj3cbNtXYHg1i+tLfTW6XvV1xjqQK0OaXaOs=;
+        b=Kg2Eh/tpGGyViYhFhLe/IsDomr3wtH4phRNv+1kIMkvAGuVfYWaiyfwIEZX5oAqut8
+         u6cUtOFO/UDUUJdLNVGpntofU4TTLjA7Lo5F5m0iM2v+KdpvEriZMyDSh5wkJ5gW5CqD
+         NNjC0Xl4XA413P7AQ3Y1q+pgy02K1nnY/nryz8TY9h0cfX/y+ebZEqs1kbc9AhgQ/bpc
+         VkBaeFtrBbbnCDcE8bPFKA8OajBvfHyQNdUQVOp+gLuzyQ5Z09gbdS9H73Oqe3mJ5mq/
+         k4dHAaNOAwKFpMtc1krwEy1OrNta+frskIUM9j6VAE6I5RrVEb/QaT/XR5zyA6ZdtF+e
+         HKKg==
+X-Gm-Message-State: AOJu0YxHrdKUsMl3lvCWiAHwSjgv2C3xilwRa4TMnIO1VZJzJdnKJ1F6
+	riv17bmvAkR5Mtkm3mng9sbwadnhnZvlXUOM3sk=
+X-Google-Smtp-Source: AGHT+IFrmcj+Puw2qnuUPoLyUWaS7Db9upBCzJJBRIu5AU6fiRZU4h7S9uS8EWYb7YplDmhM/1tXnnCA4xoP2f3NBt4=
+X-Received: by 2002:a05:6122:90e:b0:4b6:be94:acc6 with SMTP id
+ j14-20020a056122090e00b004b6be94acc6mr785170vka.10.1704388368500; Thu, 04 Jan
+ 2024 09:12:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="XMiTFXgN4YJXP0Up"
-Content-Disposition: inline
-In-Reply-To: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
+References: <20240103164834.970234661@linuxfoundation.org>
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Thu, 4 Jan 2024 09:12:37 -0800
+Message-ID: <CAOMdWSJov=9kVY7DFdS1=p6BCxi8E90xedU44TS90NPq18iZbA@mail.gmail.com>
+Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+> This is the start of the stable review cycle for the 6.6.10 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
---XMiTFXgN4YJXP0Up
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-On Thu, Jan 04, 2024 at 09:17:08AM +0100, Benjamin Bara wrote:
-> From: Benjamin Bara <benjamin.bara@skidata.com>
->=20
-> Since commit aa49c90894d0 ("i2c: core: Run atomic i2c xfer when
-> !preemptible"), the whole reboot/power off sequence on non-preempt kernels
-> is using atomic i2c xfer, as !preemptible() always results to 1.
->=20
-> During device_shutdown(), the i2c might be used a lot and not all busses
-> have implemented an atomic xfer handler. This results in a lot of
-> avoidable noise, like:
->=20
-> [   12.687169] No atomic I2C transfer handler for 'i2c-0'
-> [   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 i2c_=
-smbus_xfer+0x100/0x118
-> ...
->=20
-> Fix this by allowing non-atomic xfer when the interrupts are enabled, as
-> it was before.
->=20
-> Fixes: aa49c90894d0 ("i2c: core: Run atomic i2c xfer when !preemptible")
-> Cc: stable@vger.kernel.org # v5.2+
-> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-
-Thanks! The code looks what I also would have suggested reading the bug
-reports. So:
-
-Applied to for-current, thanks!
-
-> +	/*
-> +	 * non-atomic xfers often use wait_for_completion*() calls to wait
-> +	 * efficiently (schedule out voluntarily) on the completion of the xfer,
-> +	 * which are then "completed" by an IRQ. If the constraints are not
-> +	 * satisfied, fall back to an atomic xfer.
-> +	 */
-> +	return system_state > SYSTEM_RUNNING &&
-> +	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabl=
-ed());
-
-I removed the comment, though. I don't think it explains the following
-code well enough, i.e. why we have a decision based on a Kconfig
-symbol. We can (and should) fix this incrementally, though. I hope this
-is OK with everyone.
-
-Thanks to everyone putting work into this. Much appreciated!
-
-
---XMiTFXgN4YJXP0Up
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmWW5QIACgkQFA3kzBSg
-KbYQKg//eYli7Hwwc1K5si3RHLD2tT4bGbnWMiBo4YpaSANRwunI7CnwLyTw+8Yr
-VDVstpqCucFlNqTf+khRscO6WHS9TSrwG4CK3FC1r9LuxEOuu7F/SBWiBkpAYIDZ
-2xhNEdmkBGodqjkSgwFwrBhexVxQO8Fa4nEyULAoTzjCNSbVe5IsZ8MSVQjthMyQ
-06hJTnEFKi9hAYSVQhaGhaieACZVLlBk4oR0AwM7SF/i48MnC9ZbGJo8VjBGVJs4
-9m+gilxW+Io93ln1tZVoNFczhj1DMdAO+vJbj8kybE48I8r7uaEbUoJeNUoLvU2o
-D1eHhEBzsvWKix0TQRYcOCd0BkLwfK7YJ4RwMSjmFt4uj1hM1WsroYxIrJrmbjNl
-mGI3pstU54APNxeO2BwimsUXtlSsXMTbUPy77KC6og01kp6ndeBMGZNdZbRErqvM
-RE2knvP93U8Ne6lcTAwvoavy0YZZopSuB3RB75UVn318Ojx/wzTbGjEwBlSuK12y
-Tz+b+VpVM9IDV2Y8YsLmc3cXoaYgvYenGshqNQU8Ky5AlAkvRUdkGqe3EER9TGNG
-LeJ0yoHUn5ZPEQ+O2NVu0OFX9NZ4pHy2G2AQW+2deFRznkVC/4UFxSi1WTXLurOe
-60C3j4fpOWc2sYlqb3iClM3Qfi7I04nqu225kgMCRuvav1PQwTw=
-=Y/2l
------END PGP SIGNATURE-----
-
---XMiTFXgN4YJXP0Up--
+Thanks.
 
