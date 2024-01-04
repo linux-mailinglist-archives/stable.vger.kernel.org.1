@@ -1,90 +1,83 @@
-Return-Path: <stable+bounces-9661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544DE823E74
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:19:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CD2D823E77
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B1DC28708C
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:19:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7450EB21644
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D022031C;
-	Thu,  4 Jan 2024 09:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785EC20303;
+	Thu,  4 Jan 2024 09:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sJU1/A+d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJAu4taS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6DE20303;
-	Thu,  4 Jan 2024 09:19:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B682BC433C7;
-	Thu,  4 Jan 2024 09:19:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704359944;
-	bh=TRHwajs8+C7HLWNDMoS9D2FjvoKe9s7pha9pe1gRf1k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sJU1/A+dXUT7eRNZ5GbqqTcstHEhhb7hiKxyTVRc7PesI4jdkvrA9X+E06yJWA/gq
-	 HxC+cTLwX/L08azbq6crYpfxJ7M6Qr/9FTMRffNrdkjoYWuT3XhmWXmTmXA9ZY0eCB
-	 LByHyNdKfbx3a8IG8K9yY6xaMiM21j1OKQSii/omQ6rT/2gdlU93rQhR9nSHM054r5
-	 EIHgQo2nCORnzvYV95+XIjdKlMMHqavkMwStSEm8lNNGk5srxoWvg5U6KI1z4f0sHP
-	 em2lkuhGNgBhJs7Ts2jBRgud22ElLLT8ivGL+DX91FU6KjrQ3YeTWRoOhFmOrwYoix
-	 Qc1fyx8swmOiw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367D120314;
+	Thu,  4 Jan 2024 09:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63901C433C8;
+	Thu,  4 Jan 2024 09:20:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704360045;
+	bh=yKuUpg1t9MISejbXe8mqkxSGHizsI/99jdcaRjNEj2o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qJAu4taSEytuM05qCHhKyrDpM0ynaU0wJHRHpP0Ha/0RNMF3q4kf/l6zLJfPwiGtw
+	 7E/Mu8t1LE9dHD6i2IuWeEfuLOKiyTb+1AUaXg2qCAZcnEC7LAb/r8fYpHby3pdM9R
+	 rtjmbF/ztG2Cn7Hd2DA/c6wjeZhvIaebhDA0BHHI=
+Date: Thu, 4 Jan 2024 10:20:43 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: Re: [PATCH 6.1 086/100] platform/x86: p2sb: Allow p2sb_bar() calls
+ during PCI device probe
+Message-ID: <2024010438-myth-resupply-7a83@gregkh>
+References: <20240103164856.169912722@linuxfoundation.org>
+ <20240103164909.026702193@linuxfoundation.org>
+ <ikeipirtlgca6durdso7md6khlyd5wwh4wl2jzlxkqr2utu4p4@ou2wcovon7jt>
+ <2024010401-shell-easiness-47c9@gregkh>
+ <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 04 Jan 2024 10:18:59 +0100
-From: Michael Walle <mwalle@kernel.org>
-To: Benjamin Bara <bbara93@gmail.com>
-Cc: Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>, Dmitry
- Osipenko <dmitry.osipenko@collabora.com>, peterz@infradead.org, Tor Vic
- <torvic9@mailbox.org>, Erhard Furtner <erhard_f@mailbox.org>,
- linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, Benjamin Bara
- <benjamin.bara@skidata.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] i2c: core: Fix atomic xfer check for non-preempt config
-In-Reply-To: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
-References: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
-Message-ID: <1650596292790607a5739fa295fd259e@kernel.org>
-X-Sender: mwalle@kernel.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
 
-> From: Benjamin Bara <benjamin.bara@skidata.com>
+On Thu, Jan 04, 2024 at 09:11:41AM +0000, Shinichiro Kawasaki wrote:
+> On Jan 04, 2024 / 09:58, Greg Kroah-Hartman wrote:
+> > On Thu, Jan 04, 2024 at 08:54:48AM +0000, Shinichiro Kawasaki wrote:
 > 
-> Since commit aa49c90894d0 ("i2c: core: Run atomic i2c xfer when
-> !preemptible"), the whole reboot/power off sequence on non-preempt 
-> kernels
-> is using atomic i2c xfer, as !preemptible() always results to 1.
-> 
-> During device_shutdown(), the i2c might be used a lot and not all 
-> busses
-> have implemented an atomic xfer handler. This results in a lot of
-> avoidable noise, like:
-> 
-> [   12.687169] No atomic I2C transfer handler for 'i2c-0'
-> [   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 
-> i2c_smbus_xfer+0x100/0x118
 > ...
 > 
-> Fix this by allowing non-atomic xfer when the interrupts are enabled, 
-> as
-> it was before.
+> > > Greg, please drop this patch from 6.1-stable for now. Unfortunately, one issue
+> > > has got reported [*].
+> > > 
+> > > [*] https://lore.kernel.org/platform-driver-x86/CABq1_vjfyp_B-f4LAL6pg394bP6nDFyvg110TOLHHb0x4aCPeg@mail.gmail.com/T/#u
+> > 
+> > What about 6.6.y, this is also queued up there too.
 > 
-> Fixes: aa49c90894d0 ("i2c: core: Run atomic i2c xfer when 
-> !preemptible")
-> Cc: stable@vger.kernel.org # v5.2+
-> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+> Please drop it from 6.6.y too.
+> 
+> > And when is this going to be reverted in Linus's tree?  6.7-rc8 has this
+> > issue right now, right?
+> 
+> Yes. I agree that revert action is needed.
 
-Tested-by: Michael Walle <mwalle@kernel.org>
+Please submit the revert and then we can apply that here as well, that's
+easier to track properly.
 
-Thanks for the fix, if there will be a -rc9 this should definitely go 
-in.
+thanks,
 
--michael
+greg k-h
 
