@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4C482447B
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:05:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE480824491
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0E4C1F27991
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:05:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F22EF1C22142
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D823777;
-	Thu,  4 Jan 2024 15:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78FF2376B;
+	Thu,  4 Jan 2024 15:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/q3I4VR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2V2TX0xc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554F328DBE
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:02:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99460C433D9;
-	Thu,  4 Jan 2024 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908122376D
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA02C433CB;
+	Thu,  4 Jan 2024 15:02:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704380569;
-	bh=ubaZuIXkPI0f4xLoz+4acTJ7lOlIi0+JdInbkZqqG/I=;
+	s=korg; t=1704380574;
+	bh=gP6gdzNu8Sa7lAcqrmzKtsiNSvUwD1z5bttovLvfICY=;
 	h=Subject:To:From:Date:From;
-	b=w/q3I4VR+JOkD6clfMGA9a2oJSDlR1UbwCUnxcw+XA8A/MZPA+CRtukRdDfE/s1y1
-	 qn+dnnJL0/Uk9Zwah2nf1lMeU+NZS4U09hZllXVC1JyulC3/511nlBj1vXN9vfftMu
-	 fdBGmw0HxatFUYZkMOs7fHXxaP/yxkVEvR9P41+A=
-Subject: patch "Revert "usb: gadget: f_uvc: change endpoint allocation in" added to usb-testing
-To: Frank.Li@nxp.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
+	b=2V2TX0xcAz3+PaCLKtdOAUG34uFfWh2rJKi/591p0pwPW2ly87EKDDmaxZak10GRz
+	 ZYI28s96wUh2cJM7dMYkAwbMctIM6mFEfeZiVdvIQH8aJKDGmG+hz+E9RcYOLxU7A/
+	 i9P0kZLUXH2Fxp3VaP4plORihqedUb4jNVZ5Ayxw=
+Subject: patch "usb: chipidea: wait controller resume finished for wakeup irq" added to usb-testing
+To: xu.yang_2@nxp.com,gregkh@linuxfoundation.org,jun.li@nxp.com,peter.chen@kernel.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:02:21 +0100
-Message-ID: <2024010421-greeting-dreary-fa56@gregkh>
+Date: Thu, 04 Jan 2024 16:02:23 +0100
+Message-ID: <2024010423-senorita-barn-a7df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    Revert "usb: gadget: f_uvc: change endpoint allocation in
+    usb: chipidea: wait controller resume finished for wakeup irq
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -61,64 +61,50 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From 895ee5aefb7e24203de5dffae7ce9a02d78fa3d1 Mon Sep 17 00:00:00 2001
-From: Frank Li <Frank.Li@nxp.com>
-Date: Sun, 24 Dec 2023 10:38:16 -0500
-Subject: Revert "usb: gadget: f_uvc: change endpoint allocation in
- uvc_function_bind()"
+From 128d849074d05545becf86e713715ce7676fc074 Mon Sep 17 00:00:00 2001
+From: Xu Yang <xu.yang_2@nxp.com>
+Date: Thu, 28 Dec 2023 19:07:52 +0800
+Subject: usb: chipidea: wait controller resume finished for wakeup irq
 
-This reverts commit 3c5b006f3ee800b4bd9ed37b3a8f271b8560126e.
+After the chipidea driver introduce extcon for id and vbus, it's able
+to wakeup from another irq source, in case the system with extcon ID
+cable, wakeup from usb ID cable and device removal, the usb device
+disconnect irq may come firstly before the extcon notifier while system
+resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
+and one for extcon ID cable change(real wakeup event), current driver
+treat them as 2 successive wakeup irq so can't handle it correctly, then
+finally the usb irq can't be enabled. This patch adds a check to bypass
+further usb events before controller resume finished to fix it.
 
-gadget_is_{super|dual}speed() API check UDC controller capitblity. It
-should pass down highest speed endpoint descriptor to UDC controller. So
-UDC controller driver can reserve enough resource at check_config(),
-especially mult and maxburst. So UDC driver (such as cdns3) can know need
-at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal memory for
-this uvc functions.
-
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231224153816.1664687-5-Frank.Li@nxp.com
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+cc:  <stable@vger.kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_uvc.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/usb/chipidea/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-index da5f28e471b0..929666805bd2 100644
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -721,13 +721,29 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
- 	}
- 	uvc->enable_interrupt_ep = opts->enable_interrupt_ep;
+diff --git a/drivers/usb/chipidea/core.c b/drivers/usb/chipidea/core.c
+index 0af9e68035fb..41014f93cfdf 100644
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -523,6 +523,13 @@ static irqreturn_t ci_irq_handler(int irq, void *data)
+ 	u32 otgsc = 0;
  
--	ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
-+	/*
-+	 * gadget_is_{super|dual}speed() API check UDC controller capitblity. It should pass down
-+	 * highest speed endpoint descriptor to UDC controller. So UDC controller driver can reserve
-+	 * enough resource at check_config(), especially mult and maxburst. So UDC driver (such as
-+	 * cdns3) can know need at least (mult + 1) * (maxburst + 1) * wMaxPacketSize internal
-+	 * memory for this uvc functions. This is the only straightforward method to resolve the UDC
-+	 * resource allocation issue in the current gadget framework.
-+	 */
-+	if (gadget_is_superspeed(c->cdev->gadget))
-+		ep = usb_ep_autoconfig_ss(cdev->gadget, &uvc_ss_streaming_ep,
-+					  &uvc_ss_streaming_comp);
-+	else if (gadget_is_dualspeed(cdev->gadget))
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_hs_streaming_ep);
-+	else
-+		ep = usb_ep_autoconfig(cdev->gadget, &uvc_fs_streaming_ep);
+ 	if (ci->in_lpm) {
++		/*
++		 * If we already have a wakeup irq pending there,
++		 * let's just return to wait resume finished firstly.
++		 */
++		if (ci->wakeup_int)
++			return IRQ_HANDLED;
 +
- 	if (!ep) {
- 		uvcg_info(f, "Unable to allocate streaming EP\n");
- 		goto error;
- 	}
- 	uvc->video.ep = ep;
- 
-+	uvc_fs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_hs_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 	uvc_ss_streaming_ep.bEndpointAddress = uvc->video.ep->address;
- 
+ 		disable_irq_nosync(irq);
+ 		ci->wakeup_int = true;
+ 		pm_runtime_get(ci->dev);
 -- 
 2.43.0
 
