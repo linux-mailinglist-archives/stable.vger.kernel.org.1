@@ -1,154 +1,92 @@
-Return-Path: <stable+bounces-9640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F8B823D44
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:17:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15889823D4E
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DADD282A8E
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:17:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86461F24748
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90916200C1;
-	Thu,  4 Jan 2024 08:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BA720307;
+	Thu,  4 Jan 2024 08:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5cW7jIh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W63L+Qw5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EB320300;
-	Thu,  4 Jan 2024 08:17:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40d5b89e2bfso2326505e9.0;
-        Thu, 04 Jan 2024 00:17:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704356236; x=1704961036; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5yo/kfwaC+0cghHBJkwXJQ+6GFXjHeH5fKOmyjA1y+g=;
-        b=h5cW7jIhBvXQdYwTTZvMAaeKxpSZ2admIYH4ysAdSwiYfwjiXBeIsrTjZ6PWm7Rev7
-         XhyaUoIgOw5uzOlaASnzd10jh+u0oVt8AWVlstHYh2tmrlc3YWY9TzAkwk9Xh0VytruH
-         j7eOQuO7wY3GYrolESeow6K9TZgo4/WDxSOryDm7sDhqKZyzogqewvk0ATbC5fnZfKXy
-         E2hvalEUviRmMwGp7fKXDvSV9rN1cBuxC1Il36UvBv2weWUNlmvMqdqvkzmvRL6PnCwl
-         xP2SmMYFn+CznBGuUG00MC84PZyLHkllg82HrhMDQ7qUnghOP3Syw+eXS+xFMaO8Mwwd
-         rz0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704356236; x=1704961036;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5yo/kfwaC+0cghHBJkwXJQ+6GFXjHeH5fKOmyjA1y+g=;
-        b=fE6XXNRaLBWRkZ1PvuVUTZtrg28Mr4magC+e9WH76t8ozIEa7CDjoMGp/Zt326gC1f
-         GWMt3UbU1kYhnWHGDGwO+tzKDEuRFIJ+O0FmabOsqrBQib0za1KnLtX3PHNuMo9MJ7pe
-         J/QWYSmFQwEDKCoYcM+0+FNR6E47xuX1wQrztx9fiBYeFJvA4/wKDv/oe3UtXNeisBHl
-         L3V6LKPky81Ls6CQl3lvJq6WekaIR02y0IoX/KHfYKwONAiiD9qDx/iPjGAIvlPl4QdL
-         MEyTBfusb7Zt2jB0HP2Wjf1bgHYu+lQ07xAZqAWtyDt/RMKdK1x2zmzS5z73vqZRGb3Z
-         1qMg==
-X-Gm-Message-State: AOJu0Yx7VWRgoUkvycHQqiJk+JCuOQxWf5OcXYvcY7LU2as5u2GOTRvW
-	57rQYDE31WyDbgf69XWi1yLyBFEilS+3eQ==
-X-Google-Smtp-Source: AGHT+IFGaSyxG24OcdSoHXozNsCDm76Z+2nM0b/f6GyEABzDvL3qGjNXJ3M+mM+2Zn2H/bT5qhq2dg==
-X-Received: by 2002:a05:600c:3507:b0:40c:4be1:be09 with SMTP id h7-20020a05600c350700b0040c4be1be09mr126121wmq.186.1704356236164;
-        Thu, 04 Jan 2024 00:17:16 -0800 (PST)
-Received: from [127.0.1.1] ([91.230.2.244])
-        by smtp.gmail.com with ESMTPSA id g5-20020a7bc4c5000000b0040d62f89381sm4794049wmk.35.2024.01.04.00.17.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jan 2024 00:17:15 -0800 (PST)
-From: Benjamin Bara <bbara93@gmail.com>
-Date: Thu, 04 Jan 2024 09:17:08 +0100
-Subject: [PATCH] i2c: core: Fix atomic xfer check for non-preempt config
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C948200C6;
+	Thu,  4 Jan 2024 08:21:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8088FC433C8;
+	Thu,  4 Jan 2024 08:21:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704356486;
+	bh=zS2xNl0qvwto+EsZXnidzfKrWR+w3hw0vpx+ygIbVFk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W63L+Qw5C8WyRqetzCAJ9q/xzcqkQQglWV6S9e4dan1w8kfgrzm8P541++DLV2fAi
+	 CiDg0sxrfr5cdKYOlw6hufTlFewl6rJL8Vf+TElcqJ/M9cfAPdnfv7bWVouPwIwjdL
+	 vPjzj194KXg24JaqOg1QAb5iF4uIwuvSq/OE8KEfDSDVFcTDltqBjV2m1K5GE8ArQI
+	 BHs3QiA0cC8cdnX7tTumyVvoYyToOi1svB4pk8VIPtnf6Pb850250CVZC5NE32IRBA
+	 h/nfxnCL70ukO+TszNYxpfan0NQLaWsbtE4irMz7fodVl2YuEQyjeLfEseDOYlLM7M
+	 mYeq/Ap77g5rQ==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rLIyg-0007SD-2x;
+	Thu, 04 Jan 2024 09:21:22 +0100
+Date: Thu, 4 Jan 2024 09:21:22 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Sven Peter <sven@svenpeter.dev>
+Cc: Aditya Garg <gargaditya08@live.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Felix Zhang <mrman@mrman314.tech>, linux-bluetooth@vger.kernel.org,
+	stable@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Orlando Chamberlain <orlandoch.dev@gmail.com>, kekrby@gmail.com,
+	admin@kodeit.net, Janne Grunau <j@jannau.net>,
+	asahi@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel
+ MacBooks
+Message-ID: <ZZZqgsjeY3R4YlVG@hovoldconsulting.com>
+References: <MA0P287MB021769BC136ED0B947683709B867A@MA0P287MB0217.INDP287.PROD.OUTLOOK.COM>
+ <86B7DC5B-B25A-4D55-BBC7-A1C3EE8AC703@svenpeter.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
-X-B4-Tracking: v=1; b=H4sIAINplmUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDQwMT3UyjZN3EkvzczGRdIxNj0zQLY9MkU0sLJaCGgqLUtMwKsGHRsbW
- 1AFguDeZcAAAA
-To: Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>, 
- Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: peterz@infradead.org, mwalle@kernel.org, Tor Vic <torvic9@mailbox.org>, 
- Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Benjamin Bara <benjamin.bara@skidata.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <86B7DC5B-B25A-4D55-BBC7-A1C3EE8AC703@svenpeter.dev>
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+On Thu, Jan 04, 2024 at 08:50:19AM +0100, Sven Peter wrote:
+> > On 4. Jan 2024, at 08:47, Aditya Garg <gargaditya08@live.com> wrote:
+> >> On 28-Dec-2023, at 5:41 PM, Johan Hovold <johan@kernel.org> wrote:
 
-Since commit aa49c90894d0 ("i2c: core: Run atomic i2c xfer when
-!preemptible"), the whole reboot/power off sequence on non-preempt kernels
-is using atomic i2c xfer, as !preemptible() always results to 1.
+> >> Ok, good, then this patch and the one I posted are mostly equivalent
+> >> assuming that the BCM4378/4387 return an invalid address during setup.
+> >> 
+> >> This patch may be preferred as it does not need to rely on such
+> >> assumptions, though.
 
-During device_shutdown(), the i2c might be used a lot and not all busses
-have implemented an atomic xfer handler. This results in a lot of
-avoidable noise, like:
+> > So what's the final take on this? Which one is gonna be merged upstream?
+> 
+> I would’ve preferred this one (possibly with a better commit message)
+> since it’s more explicit and doesn’t rely on additional assumptions
+> but it looks like Johan’s version was already merged.
 
-[   12.687169] No atomic I2C transfer handler for 'i2c-0'
-[   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x100/0x118
-...
+Which addresses do BCM4378/4387 return before they are configured?
+Should be easy enough to verify that the current check for invalid
+addresses catches those or otherwise add them to the list.
 
-Fix this by allowing non-atomic xfer when the interrupts are enabled, as
-it was before.
-
-Fixes: aa49c90894d0 ("i2c: core: Run atomic i2c xfer when !preemptible")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
----
-Hi!
-
-As there are a couple of bug reports already about missing atomic i2c
-xfer handler warnings on non-preemptive configs around [1], this is an
-attempt to reduce the avoidable noise.
-
-thanks & regards
-Benjamin
-
-[1] https://lore.kernel.org/all/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com/
----
- drivers/i2c/i2c-core.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
-index 05b8b8dfa9bd..e48c0cd21438 100644
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -3,6 +3,7 @@
-  * i2c-core.h - interfaces internal to the I2C framework
-  */
- 
-+#include <linux/kconfig.h>
- #include <linux/rwsem.h>
- 
- struct i2c_devinfo {
-@@ -29,7 +30,14 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
-  */
- static inline bool i2c_in_atomic_xfer_mode(void)
- {
--	return system_state > SYSTEM_RUNNING && !preemptible();
-+	/*
-+	 * non-atomic xfers often use wait_for_completion*() calls to wait
-+	 * efficiently (schedule out voluntarily) on the completion of the xfer,
-+	 * which are then "completed" by an IRQ. If the constraints are not
-+	 * satisfied, fall back to an atomic xfer.
-+	 */
-+	return system_state > SYSTEM_RUNNING &&
-+	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled());
- }
- 
- static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
-
----
-base-commit: 610a9b8f49fbcf1100716370d3b5f6f884a2835a
-change-id: 20240104-i2c-atomic-2435f835b598
-
-Best regards,
--- 
-Benjamin Bara <benjamin.bara@skidata.com>
-
+Johan
 
