@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE88824494
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:07:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A954882449F
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB0BB2561D
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8181F22195
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77A241E2;
-	Thu,  4 Jan 2024 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E724923764;
+	Thu,  4 Jan 2024 15:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byJdWK6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbAonscH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893412C6A3
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E5AC433C9;
-	Thu,  4 Jan 2024 15:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04B824B52
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA708C433C9;
+	Thu,  4 Jan 2024 15:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704380577;
-	bh=o61bvpvPbZ6oXupalweOfjX85PLubCw2RLxAX4K1Yos=;
+	s=korg; t=1704380765;
+	bh=DfKNQhAxF6hAoN9m7+GKx1zylrXKLMvMTZxm0VjELbM=;
 	h=Subject:To:From:Date:From;
-	b=byJdWK6U/+MczkWywuFkzmkhPhz9WYgw5wMF3yk6UMimm6wWOdRgiErt+2ImTBDV2
-	 a0G//nCeL9yuGBlcggNtzeeAi+MPIzR6a1CGOp0yAp2daxyXZOjrqyRUVp7/KV/ViT
-	 U2O5F2CmU16ZhOL0uc6npsztQ/51xKSiqh6Fux7E=
-Subject: patch "usb: phy: mxs: remove CONFIG_USB_OTG condition for" added to usb-testing
-To: xu.yang_2@nxp.com,gregkh@linuxfoundation.org,peter.chen@kernel.org,stable@vger.kernel.org
+	b=DbAonscHrh+Xv00nYfQGqr9MlhpztjkwnCVpf3smoSvV1UwKIcOzxW0DVSXkCDoXZ
+	 rBtkgAAeQneU143C3ZZvTVcLbZQ5cZvU/hkjHCwSu8RykiWf2cAFI2Dk5jI4WlVZbH
+	 gZD/qu2vyd15WX4LSAAWK/fbQV1VVTtszKwBMKkQ=
+Subject: patch "usb: dwc3: gadget: Queue PM runtime idle on disconnect event" added to usb-testing
+To: quic_wcheng@quicinc.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:02:24 +0100
-Message-ID: <2024010424-regular-dealmaker-34c3@gregkh>
+Date: Thu, 04 Jan 2024 16:06:02 +0100
+Message-ID: <2024010402-womankind-eats-8cc7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    usb: phy: mxs: remove CONFIG_USB_OTG condition for
+    usb: dwc3: gadget: Queue PM runtime idle on disconnect event
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -61,41 +61,60 @@ after it passes testing, and the merge window is open.
 If you have any questions about this process, please let me know.
 
 
-From ff2b89de471da942a4d853443688113a44fd35ed Mon Sep 17 00:00:00 2001
-From: Xu Yang <xu.yang_2@nxp.com>
-Date: Thu, 28 Dec 2023 19:07:53 +0800
-Subject: usb: phy: mxs: remove CONFIG_USB_OTG condition for
- mxs_phy_is_otg_host()
+From 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 Mon Sep 17 00:00:00 2001
+From: Wesley Cheng <quic_wcheng@quicinc.com>
+Date: Wed, 3 Jan 2024 13:49:46 -0800
+Subject: usb: dwc3: gadget: Queue PM runtime idle on disconnect event
 
-When CONFIG_USB_OTG is not set, mxs_phy_is_otg_host() will always return
-false. This behaviour is wrong. Since phy.last_event will always be set
-for either host or device mode. Therefore, CONFIG_USB_OTG condition
-can be removed.
+There is a scenario where DWC3 runtime suspend is blocked due to the
+dwc->connected flag still being true while PM usage_count is zero after
+DWC3 giveback is completed and the USB gadget session is being terminated.
+This leads to a case where nothing schedules a PM runtime idle for the
+device.
 
-Fixes: 5eda42aebb76 ("usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-3-xu.yang_2@nxp.com
+The exact condition is seen with the following sequence:
+  1.  USB bus reset is issued by the host
+  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
+      (sink->source)
+  3.  USB bus reset event handler runs and issues
+      dwc3_stop_active_transfers(), and pending transfer are stopped
+  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
+      dwc->connected == true, returns -EBUSY
+  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
+      swap handling
+  6.  No runtime idle after this point
+
+Address this by issuing an asynchronous PM runtime idle call after the
+disconnect event is completed, as it modifies the dwc->connected flag,
+which is what blocks the initial runtime idle.
+
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/dwc3/gadget.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index acd46b72899e..920a32cd094d 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,8 +388,7 @@ static void __mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool disconnect)
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index c15e965ea95a..019368f8e9c4 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3989,6 +3989,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	return IS_ENABLED(CONFIG_USB_OTG) &&
--		mxs_phy->phy.last_event == USB_EVENT_ID;
-+	return mxs_phy->phy.last_event == USB_EVENT_ID;
+ 	dwc3_ep0_reset_state(dwc);
++
++	/*
++	 * Request PM idle to address condition where usage count is
++	 * already decremented to zero, but waiting for the disconnect
++	 * interrupt to set dwc->connected to FALSE.
++	 */
++	pm_request_idle(dwc->dev);
  }
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
 -- 
 2.43.0
 
