@@ -1,93 +1,92 @@
-Return-Path: <stable+bounces-9666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA59823F67
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:27:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE39823F9C
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:43:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD3201F24D0E
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:27:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EA581F220E8
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 10:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891A720B26;
-	Thu,  4 Jan 2024 10:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772C520DD8;
+	Thu,  4 Jan 2024 10:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="uQJP+z05";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ocKIaO+L";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="uQJP+z05";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="ocKIaO+L"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DI1PVJHu";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="/cZz4SeW";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="UMw2yCNh";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="TyvK9ITx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519A520B11;
-	Thu,  4 Jan 2024 10:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A2720DCE;
+	Thu,  4 Jan 2024 10:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 688B021E06;
-	Thu,  4 Jan 2024 10:27:01 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id F09BB1F7FD;
+	Thu,  4 Jan 2024 10:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704364021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1704364976; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IpPQBTmyvOP/OKFAG4qDUnS9KMdhc1z7R/7qs76GfkQ=;
-	b=uQJP+z05cUrj8PC51PfcNuJqx9Vjpi9JcPgzr+Z7RC3FepVFea/Kd59mSbSIx3+PSFy0u4
-	8a/8LGOWKAbUQmzG34OEkfQl8DB05XJPl41K+OLIw+sjVMLLgVa8jITRPTb87lgK0+1HE8
-	cJ8KnD0NNphRA+Xjj0KcHHZ9LlYsTXU=
+	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
+	b=DI1PVJHuKUzB4Yfoy98R8d7lJKbIA7BIUCcE4jwDF+xoEnnT1v+2Iehpuq8cGL6wo16hNQ
+	xYi8PwoZAQ8m7L9i88aZ02MTODLhPwAPLesJV3cx185vv+SsomVbQZJj0TkJcOFNzSc4Vu
+	NeNkXS+856fmVMuTTcvOZiCgj6Pzz4g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704364021;
+	s=susede2_ed25519; t=1704364976;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IpPQBTmyvOP/OKFAG4qDUnS9KMdhc1z7R/7qs76GfkQ=;
-	b=ocKIaO+Lvr2HMGBjdsRAFQpfdZyWibgWKlYF7bjz//rlr400lrl5zpbB4/Pkl8UjfwKvjD
-	+JqF+6LmiynGAsDQ==
+	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
+	b=/cZz4SeWOEHVEgWCFdqdhDBYwEvTQ9C5eOHdh1SesXnqdlIFSYJKYjupHVMtxX4C2HWMzG
+	Fb64lpXv4lL1e2AA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1704364021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1704364975; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IpPQBTmyvOP/OKFAG4qDUnS9KMdhc1z7R/7qs76GfkQ=;
-	b=uQJP+z05cUrj8PC51PfcNuJqx9Vjpi9JcPgzr+Z7RC3FepVFea/Kd59mSbSIx3+PSFy0u4
-	8a/8LGOWKAbUQmzG34OEkfQl8DB05XJPl41K+OLIw+sjVMLLgVa8jITRPTb87lgK0+1HE8
-	cJ8KnD0NNphRA+Xjj0KcHHZ9LlYsTXU=
+	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
+	b=UMw2yCNhYEmY63v0mCH5v65YsaYTBnB4meaNpSvfRmJRgrcqhq+OwVJsPN1CjSTFpNj2VL
+	isdMzNo9j/90t+mZrKOFjHhSDOH8Sjeh/OuwJ6ubWSxUFI4t3w9lJFQYzL5sGivMZVGaja
+	3G8IRxY8pZW5xTsR/ZSPo2xHO3tmAe4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1704364021;
+	s=susede2_ed25519; t=1704364975;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IpPQBTmyvOP/OKFAG4qDUnS9KMdhc1z7R/7qs76GfkQ=;
-	b=ocKIaO+Lvr2HMGBjdsRAFQpfdZyWibgWKlYF7bjz//rlr400lrl5zpbB4/Pkl8UjfwKvjD
-	+JqF+6LmiynGAsDQ==
+	bh=o2UxpR1JUyM6YvdVbBVgZQDEYYFlH6gLezEKahzOLyw=;
+	b=TyvK9ITxl0UWu3pySHVEr83Xh/AvcIJnchq42FHVMCCVNnqEiPy0S0Nmh9+23hA0qYu1GU
+	6Bdk4QiZduY+xsCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59246137E8;
-	Thu,  4 Jan 2024 10:27:01 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E167013722;
+	Thu,  4 Jan 2024 10:42:55 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 7ai9FfWHlmXEcQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 04 Jan 2024 10:27:01 +0000
+	id 7Pz/Nq+LlmWZdgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 04 Jan 2024 10:42:55 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DF668A07EF; Thu,  4 Jan 2024 11:27:00 +0100 (CET)
-Date: Thu, 4 Jan 2024 11:27:00 +0100
+	id 89D12A07EF; Thu,  4 Jan 2024 11:42:55 +0100 (CET)
+Date: Thu, 4 Jan 2024 11:42:55 +0100
 From: Jan Kara <jack@suse.cz>
 To: Baokun Li <libaokun1@huawei.com>
 Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
 	jack@suse.cz, ritesh.list@gmail.com, linux-kernel@vger.kernel.org,
 	yi.zhang@huawei.com, yangerkun@huawei.com, yukuai3@huawei.com,
-	Wei Chen <harperchen1110@gmail.com>,
-	xingwei lee <xrivendell7@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/8] ext4: fix double-free of blocks due to wrong
- extents moved_len
-Message-ID: <20240104102700.kqfc6xg3mc7ur5kl@quack3>
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 4/8] ext4: avoid bb_free and bb_fragments
+ inconsistency in mb_free_blocks()
+Message-ID: <20240104104255.eewvmywxyqtfwzug@quack3>
 References: <20231221150558.2740823-1-libaokun1@huawei.com>
- <20231221150558.2740823-2-libaokun1@huawei.com>
+ <20231221150558.2740823-5-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,15 +95,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231221150558.2740823-2-libaokun1@huawei.com>
-Authentication-Results: smtp-out1.suse.de;
+In-Reply-To: <20231221150558.2740823-5-libaokun1@huawei.com>
+Authentication-Results: smtp-out2.suse.de;
 	none
-X-Spam-Level: *****
-X-Spam-Score: 5.20
-X-Spamd-Result: default: False [5.20 / 50.00];
+X-Spam-Level: *
+X-Spam-Score: 1.87
+X-Spamd-Result: default: False [1.87 / 50.00];
 	 ARC_NA(0.00)[];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 BAYES_HAM(-0.00)[38.34%];
+	 BAYES_HAM(-0.00)[25.51%];
 	 FROM_HAS_DN(0.00)[];
 	 TO_DN_SOME(0.00)[];
 	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
@@ -114,8 +113,9 @@ X-Spamd-Result: default: False [5.20 / 50.00];
 	 RCVD_COUNT_THREE(0.00)[3];
 	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 NEURAL_SPAM_LONG(3.50)[1.000];
-	 RCPT_COUNT_TWELVE(0.00)[13];
+	 NEURAL_SPAM_LONG(0.17)[0.048];
+	 RCPT_COUNT_SEVEN(0.00)[11];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email];
 	 FUZZY_BLOCKED(0.00)[rspamd.com];
 	 FROM_EQ_ENVFROM(0.00)[];
 	 MIME_TRACE(0.00)[0:+];
@@ -125,74 +125,56 @@ X-Spamd-Result: default: False [5.20 / 50.00];
 	 SUSPICIOUS_RECIPS(1.50)[]
 X-Spam-Flag: NO
 
-On Thu 21-12-23 23:05:51, Baokun Li wrote:
-> In ext4_move_extents(), moved_len is only updated when all moves are
-> successfully executed, and only discards orig_inode and donor_inode
-> preallocations when moved_len is not zero. When the loop fails to exit
-> after successfully moving some extents, moved_len is not updated and
-> remains at 0, so it does not discard the preallocations.
+On Thu 21-12-23 23:05:54, Baokun Li wrote:
+> After updating bb_free in mb_free_blocks, it is possible to return without
+> updating bb_fragments because the block being freed is found to have
+> already been freed, which leads to inconsistency between bb_free and
+> bb_fragments.
 > 
-> If the moved extents overlap with the preallocated extents, the
-> overlapped extents are freed twice in ext4_mb_release_inode_pa() and
-> ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
-> Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
-> incremented twice. Hence when trim is executed, a zero-division bug is
-> triggered in mb_update_avg_fragment_size() because bb_free is not zero
-> and bb_fragments is zero.
+> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+> to problems such as dividing by zero when calculating the average fragment
+> length. Hence move the update of bb_free to after the block double-free
+> check guarantees that the corresponding statistics are updated only after
+> the core block bitmap is modified.
 > 
-> Therefore, update move_len after each extent move to avoid the issue.
-> 
-> Reported-by: Wei Chen <harperchen1110@gmail.com>
-> Reported-by: xingwei lee <xrivendell7@gmail.com>
-> Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
-> Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
-> CC: stable@vger.kernel.org # 3.18
+> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+> CC: stable@vger.kernel.org # 3.10
 > Signed-off-by: Baokun Li <libaokun1@huawei.com>
 
-Looks good! Feel free to add:
+Just one nit below but regardless of that feel free to add:
 
 Reviewed-by: Jan Kara <jack@suse.cz>
 
-								Honza
-
-> ---
->  fs/ext4/move_extent.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-> index 3aa57376d9c2..391efa6d4c56 100644
-> --- a/fs/ext4/move_extent.c
-> +++ b/fs/ext4/move_extent.c
-> @@ -618,6 +618,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
->  		goto out;
->  	o_end = o_start + len;
->  
-> +	*moved_len = 0;
->  	while (o_start < o_end) {
->  		struct ext4_extent *ex;
->  		ext4_lblk_t cur_blk, next_blk;
-> @@ -672,7 +673,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
->  		 */
->  		ext4_double_up_write_data_sem(orig_inode, donor_inode);
->  		/* Swap original branches with new branches */
-> -		move_extent_per_page(o_filp, donor_inode,
-> +		*moved_len += move_extent_per_page(o_filp, donor_inode,
->  				     orig_page_index, donor_page_index,
->  				     offset_in_page, cur_len,
->  				     unwritten, &ret);
-> @@ -682,9 +683,6 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
->  		o_start += cur_len;
->  		d_start += cur_len;
+> @@ -1941,10 +1936,16 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+>  				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+>  		} else {
+>  			mb_regenerate_buddy(e4b);
+> +			goto check;
+>  		}
+> -		goto done;
+> +		return;
 >  	}
-> -	*moved_len = o_start - orig_blk;
-> -	if (*moved_len > len)
-> -		*moved_len = len;
->  
->  out:
->  	if (*moved_len) {
-> -- 
-> 2.31.1
-> 
+
+I think this might be more readable when we revert the condition like:
+
+		/*
+		 * Fastcommit replay can free already freed blocks which
+		 * corrupts allocation info. Regenerate it.
+		 */
+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
+	               	mb_regenerate_buddy(e4b);
+			goto check;
+		}
+                ext4_grp_locked_error(sb, e4b->bd_group,
+                                      inode ? inode->i_ino : 0, blocknr,
+                                      "freeing already freed block (bit %u); block bitmap corrupt.",
+                                      block);
+                ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
+                                EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+		return;
+	}
+
+								Honza
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
