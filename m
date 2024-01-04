@@ -1,115 +1,140 @@
-Return-Path: <stable+bounces-9716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5BB8246CC
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:03:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84288246CF
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88F6A1F22987
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:03:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6960BB21F47
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 17:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99EC52555E;
-	Thu,  4 Jan 2024 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD5A2555E;
+	Thu,  4 Jan 2024 17:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V/te0wKh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X+U4cZM/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9322555B
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 17:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704387788; x=1735923788;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=MFQ6qJE8e0dUgh7NSSzr8MmZzIEvL6EpBU67MVSdZxA=;
-  b=V/te0wKhTUj9ypD4r7uLDE1V2UJRbkZ+MXRPD6eLpxbLcP6vqunrby9C
-   16bkSJi24QFFEQ3fbBGwG2UOirumEHvQlflbzy0fHbnNPTaljJr/mV7fE
-   BwUeqP7uSRpb8g5vSkB1gGklyQVPh74k0jRa/9Od+HyTUGNzmfmbxGJkv
-   1aExdgtTFqSim6i3F/6Sh6J8dg48BOSa/yrEdC/fRPRpEhm/B7LC2seNJ
-   dB9My0/Znqe6jsCoJ+RZu0bWgoHczKRwSA3kofUlJ5kPtDeecItK+K7tA
-   piD59tuLerP7ScM+bFTh8ccCNlQoewl5ZfoI6RhrvgAN8F5WKyKo5N6k/
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="461602721"
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="461602721"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 09:02:59 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10943"; a="783943975"
-X-IronPort-AV: E=Sophos;i="6.04,331,1695711600"; 
-   d="scan'208";a="783943975"
-Received: from asebenix-mobl1.ger.corp.intel.com ([10.251.210.215])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2024 09:02:57 -0800
-Date: Thu, 4 Jan 2024 19:02:52 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-    "patches@lists.linux.dev" <patches@lists.linux.dev>, 
-    Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 6.1 086/100] platform/x86: p2sb: Allow p2sb_bar() calls
- during PCI device probe
-In-Reply-To: <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
-Message-ID: <5f97aaa-2d8e-498b-18d1-88e048443dcc@linux.intel.com>
-References: <20240103164856.169912722@linuxfoundation.org> <20240103164909.026702193@linuxfoundation.org> <ikeipirtlgca6durdso7md6khlyd5wwh4wl2jzlxkqr2utu4p4@ou2wcovon7jt> <2024010401-shell-easiness-47c9@gregkh>
- <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C63425550;
+	Thu,  4 Jan 2024 17:04:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE5BC433C8;
+	Thu,  4 Jan 2024 17:04:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704387852;
+	bh=NRJexN6VwGPs36D7qqe8cb4lnZNM38wLpxTLgdfCEZ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=X+U4cZM/7Tj1bP8WBpsaQuB2IdIoWzs7doufaTmOqZrv6DuiIOwbSqxUcGboKslJl
+	 zHRzYlNVXNSUG3u65IZcu6Coc99NzxdHOVCr7VNfoq/vbemU7vrqQeSMlCyVdMdN4G
+	 pKNo4qhmN1AeMpGug+ka7hDOAJKmr22RARGNOuJXUX9EDnrw7KQQGHX4I9peiPG6xK
+	 6a6zr5yzgHuJOlX0QEqwI82r/z/cLiEg7wxiWM2CMWsfXxnmI9KGL3+SXLwd2qWADg
+	 WQG9gDv+Ekn1qsREjCES8NoZ7Ezx2mr2XgCmEd1BnBXTIAmHvYeUJ0RI2qUlnxT1s0
+	 lB7J4jbfnGheg==
+Date: Thu, 4 Jan 2024 18:04:08 +0100
+From: Wolfram Sang <wsa@kernel.org>
+To: Benjamin Bara <bbara93@gmail.com>
+Cc: Lee Jones <lee@kernel.org>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	peterz@infradead.org, mwalle@kernel.org,
+	Tor Vic <torvic9@mailbox.org>,
+	Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] i2c: core: Fix atomic xfer check for non-preempt config
+Message-ID: <ZZblCO9li-TMSOKV@shikoro>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+	Benjamin Bara <bbara93@gmail.com>, Lee Jones <lee@kernel.org>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	peterz@infradead.org, mwalle@kernel.org,
+	Tor Vic <torvic9@mailbox.org>,
+	Erhard Furtner <erhard_f@mailbox.org>, linux-i2c@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Benjamin Bara <benjamin.bara@skidata.com>, stable@vger.kernel.org
+References: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XMiTFXgN4YJXP0Up"
+Content-Disposition: inline
+In-Reply-To: <20240104-i2c-atomic-v1-1-a3a186f21c36@skidata.com>
 
-On Thu, 4 Jan 2024, Shinichiro Kawasaki wrote:
 
-> On Jan 04, 2024 / 09:58, Greg Kroah-Hartman wrote:
-> > On Thu, Jan 04, 2024 at 08:54:48AM +0000, Shinichiro Kawasaki wrote:
-> 
+--XMiTFXgN4YJXP0Up
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Jan 04, 2024 at 09:17:08AM +0100, Benjamin Bara wrote:
+> From: Benjamin Bara <benjamin.bara@skidata.com>
+>=20
+> Since commit aa49c90894d0 ("i2c: core: Run atomic i2c xfer when
+> !preemptible"), the whole reboot/power off sequence on non-preempt kernels
+> is using atomic i2c xfer, as !preemptible() always results to 1.
+>=20
+> During device_shutdown(), the i2c might be used a lot and not all busses
+> have implemented an atomic xfer handler. This results in a lot of
+> avoidable noise, like:
+>=20
+> [   12.687169] No atomic I2C transfer handler for 'i2c-0'
+> [   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 i2c_=
+smbus_xfer+0x100/0x118
 > ...
-> 
-> > > Greg, please drop this patch from 6.1-stable for now. Unfortunately, one issue
-> > > has got reported [*].
-> > > 
-> > > [*] https://lore.kernel.org/platform-driver-x86/CABq1_vjfyp_B-f4LAL6pg394bP6nDFyvg110TOLHHb0x4aCPeg@mail.gmail.com/T/#u
-> > 
-> > What about 6.6.y, this is also queued up there too.
-> 
-> Please drop it from 6.6.y too.
-> 
-> > And when is this going to be reverted in Linus's tree?  6.7-rc8 has this
-> > issue right now, right?
-> 
-> Yes. I agree that revert action is needed.
-> 
-> Ilpo,
-> 
-> As I commented to the response to the bug report, fix does not look straight
-> forward to me. I guess fix discussion with x86 experts' will take some time
-> (Andy is now away...). I will post a revert patch later. May I ask you to handle
-> it?
+>=20
+> Fix this by allowing non-atomic xfer when the interrupts are enabled, as
+> it was before.
+>=20
+> Fixes: aa49c90894d0 ("i2c: core: Run atomic i2c xfer when !preemptible")
+> Cc: stable@vger.kernel.org # v5.2+
+> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
 
-I've applied the revert and made a PR out of it:
+Thanks! The code looks what I also would have suggested reading the bug
+reports. So:
 
-https://lore.kernel.org/platform-driver-x86/1a6657ef8475862e4fc282efe832fa86.=%3FUTF-8%3Fq%3FIlpo=20J=C3=A4rvinen%3F=%20%3Cilpo.jarvinen@linux.intel.com/T/#u
+Applied to for-current, thanks!
+
+> +	/*
+> +	 * non-atomic xfers often use wait_for_completion*() calls to wait
+> +	 * efficiently (schedule out voluntarily) on the completion of the xfer,
+> +	 * which are then "completed" by an IRQ. If the constraints are not
+> +	 * satisfied, fall back to an atomic xfer.
+> +	 */
+> +	return system_state > SYSTEM_RUNNING &&
+> +	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabl=
+ed());
+
+I removed the comment, though. I don't think it explains the following
+code well enough, i.e. why we have a decision based on a Kconfig
+symbol. We can (and should) fix this incrementally, though. I hope this
+is OK with everyone.
+
+Thanks to everyone putting work into this. Much appreciated!
 
 
-I found it a bit disappointing to hear from Greg that patches can no 
-longer be dropped from stable-queue (it certainly used to be possible 
-earlier) but things are to be handled indirectly through commits in Linus' 
-tree.
+--XMiTFXgN4YJXP0Up
+Content-Type: application/pgp-signature; name="signature.asc"
 
-I'll probably just /dev/null those stable queue notification emails then 
-if they no longer serve any other purpose than spamming my inbox (which is 
-largely thanks to me bothering to review other people patches :-/)...
+-----BEGIN PGP SIGNATURE-----
 
--- 
- i.
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmWW5QIACgkQFA3kzBSg
+KbYQKg//eYli7Hwwc1K5si3RHLD2tT4bGbnWMiBo4YpaSANRwunI7CnwLyTw+8Yr
+VDVstpqCucFlNqTf+khRscO6WHS9TSrwG4CK3FC1r9LuxEOuu7F/SBWiBkpAYIDZ
+2xhNEdmkBGodqjkSgwFwrBhexVxQO8Fa4nEyULAoTzjCNSbVe5IsZ8MSVQjthMyQ
+06hJTnEFKi9hAYSVQhaGhaieACZVLlBk4oR0AwM7SF/i48MnC9ZbGJo8VjBGVJs4
+9m+gilxW+Io93ln1tZVoNFczhj1DMdAO+vJbj8kybE48I8r7uaEbUoJeNUoLvU2o
+D1eHhEBzsvWKix0TQRYcOCd0BkLwfK7YJ4RwMSjmFt4uj1hM1WsroYxIrJrmbjNl
+mGI3pstU54APNxeO2BwimsUXtlSsXMTbUPy77KC6og01kp6ndeBMGZNdZbRErqvM
+RE2knvP93U8Ne6lcTAwvoavy0YZZopSuB3RB75UVn318Ojx/wzTbGjEwBlSuK12y
+Tz+b+VpVM9IDV2Y8YsLmc3cXoaYgvYenGshqNQU8Ky5AlAkvRUdkGqe3EER9TGNG
+LeJ0yoHUn5ZPEQ+O2NVu0OFX9NZ4pHy2G2AQW+2deFRznkVC/4UFxSi1WTXLurOe
+60C3j4fpOWc2sYlqb3iClM3Qfi7I04nqu225kgMCRuvav1PQwTw=
+=Y/2l
+-----END PGP SIGNATURE-----
 
+--XMiTFXgN4YJXP0Up--
 
