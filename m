@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994E9824512
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A7F824513
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 16:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 991101C22407
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEEB1C2226C
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 15:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D650024207;
-	Thu,  4 Jan 2024 15:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27385241E6;
+	Thu,  4 Jan 2024 15:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6kayq5W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OoQwbE6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7D7241F7
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:34:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247C4C433C7;
-	Thu,  4 Jan 2024 15:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5637219E8
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 15:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9ABC433C8;
+	Thu,  4 Jan 2024 15:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704382461;
-	bh=+RW6GnsFhj4CjWQVDCep1whyPPDwRpnP30UMSWUjWF8=;
+	s=korg; t=1704382520;
+	bh=DWsQ7qUdXFnhhM86J2fo0qpzMnOMF1YZzDMrwhSlfak=;
 	h=Subject:To:From:Date:From;
-	b=O6kayq5WRI/2O5qS7wfyO8v9weU7QdRpqjGcnkls+inXAagquhDHHdwYGLwy2F6iG
-	 Q74Wv7tasuVJtuzh28y+P+18NQxy9ywq2XQWXYdG5PxBO9qewroXMwowX5qaqeAFEv
-	 2j/Omqpd5tV1NeHTzZG3JqRdoVzdmxSNdNeN3KFI=
-Subject: patch "serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()" added to tty-testing
-To: hvilleneuve@dimonoff.com,andy.shevchenko@gmail.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
+	b=OoQwbE6vQLBXN5lP5futVCj+2FOfykh8uNziuRfR7zp9Ay1lRjXuWwZ42qHV+8NIg
+	 XIqoCA+JYlI/t38J4hPkSdw1HUbe2+RAZqSjdfICOM42CB84mAY6HVppB7CEuRP69A
+	 QSpZiUhLMYJSIyyz9bDO43La2dCw7AJKQvswH4VY=
+Subject: patch "usb: typec: class: fix typec_altmode_put_partner to put plugs" added to usb-testing
+To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,lk@c--e.de,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 04 Jan 2024 16:33:57 +0100
-Message-ID: <2024010456-undergrad-conjuror-c8e8@gregkh>
+Date: Thu, 04 Jan 2024 16:35:18 +0100
+Message-ID: <2024010418-sanitizer-disband-4e71@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,145 +46,90 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()
+    usb: typec: class: fix typec_altmode_put_partner to put plugs
 
-to my tty git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
-in the tty-testing branch.
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-testing branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the tty-next branch sometime soon,
+The patch will be merged to the usb-next branch sometime soon,
 after it passes testing, and the merge window is open.
 
 If you have any questions about this process, please let me know.
 
 
-From ed647256e8f226241ecff7baaecdb8632ffc7ec1 Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Thu, 21 Dec 2023 18:18:11 -0500
-Subject: serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()
+From 5962ded777d689cd8bf04454273e32228d7fb71f Mon Sep 17 00:00:00 2001
+From: RD Babiera <rdbabiera@google.com>
+Date: Wed, 3 Jan 2024 18:17:55 +0000
+Subject: usb: typec: class: fix typec_altmode_put_partner to put plugs
 
-Commit 834449872105 ("sc16is7xx: Fix for multi-channel stall") changed
-sc16is7xx_port_irq() from looping multiple times when there was still
-interrupts to serve. It simply changed the do {} while(1) loop to a
-do {} while(0) loop, which makes the loop itself now obsolete.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released is a plug evaluates
+against the released altmode's partner instead of the calling altmode, so
+change adev in typec_altmode_put_partner to properly refer to the altmode
+being released.
 
-Clean the code by removing this obsolete do {} while(0) loop.
+Because typec_altmode_set_partner calls get_device() on the port altmode,
+add partner_adev that points to the port altmode in typec_put_partner to
+call put_device() on. typec_altmode_set_partner is not called for port
+altmodes, so add a check in typec_altmode_release to prevent
+typec_altmode_put_partner() calls on port altmode release.
 
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
 Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-5-hugo@hugovil.com
+Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 81 ++++++++++++++++------------------
- 1 file changed, 39 insertions(+), 42 deletions(-)
+ drivers/usb/typec/class.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index ced2446909a2..44a11c89c949 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -725,58 +725,55 @@ static void sc16is7xx_update_mlines(struct sc16is7xx_one *one)
- static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 4d11f2b536fa..015aa9253353 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -263,11 +263,13 @@ static void typec_altmode_put_partner(struct altmode *altmode)
  {
- 	bool rc = true;
-+	unsigned int iir, rxlen;
- 	struct uart_port *port = &s->p[portno].port;
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	struct altmode *partner = altmode->partner;
+ 	struct typec_altmode *adev;
++	struct typec_altmode *partner_adev;
  
- 	mutex_lock(&one->efr_lock);
+ 	if (!partner)
+ 		return;
  
--	do {
--		unsigned int iir, rxlen;
-+	iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
-+	if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
-+		rc = false;
-+		goto out_port_irq;
-+	}
+-	adev = &partner->adev;
++	adev = &altmode->adev;
++	partner_adev = &partner->adev;
  
--		iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
--		if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
--			rc = false;
--			goto out_port_irq;
--		}
-+	iir &= SC16IS7XX_IIR_ID_MASK;
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -276,7 +278,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+ 	} else {
+ 		partner->partner = NULL;
+ 	}
+-	put_device(&adev->dev);
++	put_device(&partner_adev->dev);
+ }
  
--		iir &= SC16IS7XX_IIR_ID_MASK;
-+	switch (iir) {
-+	case SC16IS7XX_IIR_RDI_SRC:
-+	case SC16IS7XX_IIR_RLSE_SRC:
-+	case SC16IS7XX_IIR_RTOI_SRC:
-+	case SC16IS7XX_IIR_XOFFI_SRC:
-+		rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
+ /**
+@@ -497,7 +499,8 @@ static void typec_altmode_release(struct device *dev)
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
--		switch (iir) {
--		case SC16IS7XX_IIR_RDI_SRC:
--		case SC16IS7XX_IIR_RLSE_SRC:
--		case SC16IS7XX_IIR_RTOI_SRC:
--		case SC16IS7XX_IIR_XOFFI_SRC:
--			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+		/*
-+		 * There is a silicon bug that makes the chip report a
-+		 * time-out interrupt but no data in the FIFO. This is
-+		 * described in errata section 18.1.4.
-+		 *
-+		 * When this happens, read one byte from the FIFO to
-+		 * clear the interrupt.
-+		 */
-+		if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+			rxlen = 1;
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
  
--			/*
--			 * There is a silicon bug that makes the chip report a
--			 * time-out interrupt but no data in the FIFO. This is
--			 * described in errata section 18.1.4.
--			 *
--			 * When this happens, read one byte from the FIFO to
--			 * clear the interrupt.
--			 */
--			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
--				rxlen = 1;
--
--			if (rxlen)
--				sc16is7xx_handle_rx(port, rxlen, iir);
--			break;
-+		if (rxlen)
-+			sc16is7xx_handle_rx(port, rxlen, iir);
-+		break;
- 		/* CTSRTS interrupt comes only when CTS goes inactive */
--		case SC16IS7XX_IIR_CTSRTS_SRC:
--		case SC16IS7XX_IIR_MSI_SRC:
--			sc16is7xx_update_mlines(one);
--			break;
--		case SC16IS7XX_IIR_THRI_SRC:
--			sc16is7xx_handle_tx(port);
--			break;
--		default:
--			dev_err_ratelimited(port->dev,
--					    "ttySC%i: Unexpected interrupt: %x",
--					    port->line, iir);
--			break;
--		}
--	} while (0);
-+	case SC16IS7XX_IIR_CTSRTS_SRC:
-+	case SC16IS7XX_IIR_MSI_SRC:
-+		sc16is7xx_update_mlines(one);
-+		break;
-+	case SC16IS7XX_IIR_THRI_SRC:
-+		sc16is7xx_handle_tx(port);
-+		break;
-+	default:
-+		dev_err_ratelimited(port->dev,
-+				    "ttySC%i: Unexpected interrupt: %x",
-+				    port->line, iir);
-+		break;
-+	}
- 
- out_port_irq:
- 	mutex_unlock(&one->efr_lock);
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 -- 
 2.43.0
 
