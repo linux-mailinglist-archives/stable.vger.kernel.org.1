@@ -1,141 +1,148 @@
-Return-Path: <stable+bounces-9643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFC8823D58
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:23:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F8A823DCE
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 09:46:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204B3283D8B
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:23:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7D1D282604
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 08:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D6120309;
-	Thu,  4 Jan 2024 08:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765B91E51E;
+	Thu,  4 Jan 2024 08:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=svenpeter.dev header.i=@svenpeter.dev header.b="CuxMj0Yh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="cQByYA58"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dFtw7PN6"
 X-Original-To: stable@vger.kernel.org
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF0B2030A;
-	Thu,  4 Jan 2024 08:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=svenpeter.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=svenpeter.dev
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailout.west.internal (Postfix) with ESMTP id 7E7363200B6C;
-	Thu,  4 Jan 2024 03:23:21 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Thu, 04 Jan 2024 03:23:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
-	 t=1704356601; x=1704443001; bh=rz7t4L7SKYLUwAKIGyc8115AY3LogDAT
-	d1ChHOD/0oc=; b=CuxMj0YhgZgVN9nQlbqv3g8O25QP8c+q1hw0w+1UCP7cRpON
-	tAgmiiyEt9adMomTbE6qKlpNGA4nzSLuSj755y6s/OFFL85a70r/wCB/4Sm9PQcl
-	HZSLArZJq077/V4pagBmFPhw0EmD+3aGmgp6W6xh/5pFTk04ZV1wKCNzK3VahFm0
-	ZbolZjpMQdkGPWNtctCeDQaodfzTme20DCxO+93RnfAN+3QgC3p9JXh8vC1fHBwY
-	M6/bks/2MOJMhNdmoZkX+02J0zTHILTQPBdcGRu8aTK7gPjMClNEuLCCBXY9Okk8
-	Y6ir2gZCE8XTVemZZ5jhh/94V6z16MHFwrogLA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1704356601; x=
-	1704443001; bh=rz7t4L7SKYLUwAKIGyc8115AY3LogDATd1ChHOD/0oc=; b=c
-	QByYA58xbiVKL++txKhgK+9GfySSwu7RVubvk6l00OXBzK6Sb7a4SwhHnq23vbee
-	8d/JYJ5Y/Mh8wkHdRsNv8/NY3Fi/58OS+g7Qoc9JV2O8Miz3eRSPVyOZQuLhekFM
-	xj7/D41hgOBi7k0JS1sCAM9zn0Krg1XpSg51EBkuhEYZVti1Uhy0nV6c40yL7O4N
-	gX2jkJVFPFqpS43BKHOKX30zb1+f+OKWNJ6HbEWiT3jXZE1I8A/6dCNnj3mZ0Dgz
-	Glp8dOwHFFiD7AIx7nR7qqkLEN6N/xJzxIpo+a3LkvZof37ddtpvCUMy6yjpkwil
-	vmYvllIHwpKpqhitnzG9A==
-X-ME-Sender: <xms:-GqWZZJNDhyFrMjBDOd86NgueDtUTeYByGjd6jv-jlhAUuZMuJklwA>
-    <xme:-GqWZVJPVjJJpBog9Azkzewkeea5MFuBByWv7oOmgFRtZmb-3_X1lAOP8DuBe1vyp
-    J1CLicfc1eHuWIn1cE>
-X-ME-Received: <xmr:-GqWZRvK-yx9eQF_Lbtl7fGe4RaG7yrBpvFWk-spIkEtzOYqmpe1Mxn6gH2i_BrUj7MdXdQdryJCWYHuW66yzFjYqoyYt9DJAMGgOxPkS2vy6RIyAs9J44z_>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdegiedgudduiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpegtgffhggfufffkfhevjgfvofesthhqmhdthhdtjeenucfhrhhomhepufhv
-    vghnucfrvghtvghruceoshhvvghnsehsvhgvnhhpvghtvghrrdguvghvqeenucggtffrrg
-    htthgvrhhnpedvhfdtudduvdeujeeufffgudekvdefvefgueeiiedvledtheegieevffdt
-    teekudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    hsvhgvnhesshhvvghnphgvthgvrhdruggvvh
-X-ME-Proxy: <xmx:-GqWZaa7kF7AmepnONSOQJp4Sj4bpHiQbV1Nv7qBQriNTEJOxg0LJA>
-    <xmx:-GqWZQbOgnkVDRMyDiaF4VIFK0jjKZ7NCA5L6h8yBKZ4CjXtOCEYsA>
-    <xmx:-GqWZeC4OeQsNCJDyYb5YzxH0KEv3RjV3FmVv58-8d_mZMR4A_VxCw>
-    <xmx:-WqWZath5Qm2XCq50Kn2MYIhOhKECOUNQa2_bGp7cFf8jkvgM9srCA>
-Feedback-ID: i51094778:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 4 Jan 2024 03:23:20 -0500 (EST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Sven Peter <sven@svenpeter.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F921E500;
+	Thu,  4 Jan 2024 08:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4045WVvh021000;
+	Thu, 4 Jan 2024 08:45:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=WAfyDOUyqKr3QCBDBhjMPVpOixaOa1ujfCT95vQVn/w=; b=dF
+	tw7PN6fHdTdZzIGsrsel/v1zTpdhrCTDbgqHKYRrg14b0UIKzpCUPRZnTxfkTPIW
+	Bcgk1b9BdnP5tvDXWwle11w5M0iHPgJu6oQOeh2emwvhdjy1GBDKE5vqr1kgX5XB
+	vKdUl5e4B0f4z4MWziGoiQ7bjlVLJRZZz5Sg9Q39sl2eT9gOmgoAb0I01MeZ+Z1y
+	qmltL4xu1asFAfE8m4UTJ8BYXKp4FxRp+7OX9KnXryenBoaO9zGCbeB8r8MmiCp5
+	zWZCc/Ldh6wKR3f9vWey8P54cnsmhvX5ScVQT9axvN71C5miDF3k9oChfkYk01TF
+	00RJ4uCpOrpz/iZWTQiQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vdm07guw1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Jan 2024 08:45:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4048j8vT014311
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 4 Jan 2024 08:45:08 GMT
+Received: from [10.216.4.201] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 4 Jan
+ 2024 00:45:02 -0800
+Message-ID: <07b35821-3b95-ce9b-8a62-7eb8cb7a8ddf@quicinc.com>
+Date: Thu, 4 Jan 2024 14:14:59 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v3] Bluetooth: Fix Bluetooth for BCM4377 on T2 Intel MacBooks
-Date: Thu, 4 Jan 2024 09:23:08 +0100
-Message-Id: <4D53181A-F6AC-4571-9E84-3B19AB37ADFE@svenpeter.dev>
-References: <ZZZqgsjeY3R4YlVG@hovoldconsulting.com>
-Cc: Aditya Garg <gargaditya08@live.com>,
- Paul Menzel <pmenzel@molgen.mpg.de>, Felix Zhang <mrman@mrman314.tech>,
- linux-bluetooth@vger.kernel.org, stable@vger.kernel.org,
- Johan Hovold <johan+linaro@kernel.org>, Hector Martin <marcan@marcan.st>,
- Bagas Sanjaya <bagasdotme@gmail.com>,
- Alyssa Rosenzweig <alyssa@rosenzweig.io>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- Orlando Chamberlain <orlandoch.dev@gmail.com>, kekrby@gmail.com,
- admin@kodeit.net, Janne Grunau <j@jannau.net>, asahi@lists.linux.dev,
- linux-kernel@vger.kernel.org
-In-Reply-To: <ZZZqgsjeY3R4YlVG@hovoldconsulting.com>
-To: Johan Hovold <johan@kernel.org>
-X-Mailer: iPhone Mail (21C66)
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.1
+Subject: Re: [PATCH] arm64: dts: qcom: sc7280: Add additional MSI interrupts
+Content-Language: en-US
+To: <cros-qcom-dts-watchers@chromium.org>, Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Stephen Boyd <swboyd@chromium.org>
+CC: <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <quic_vbadigan@quicinc.com>,
+        <quic_ramkri@quicinc.com>, <quic_nitegupt@quicinc.com>,
+        <quic_skananth@quicinc.com>, <quic_parass@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20231218-additional_msi-v1-1-c872ce861a97@quicinc.com>
+From: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>
+In-Reply-To: <20231218-additional_msi-v1-1-c872ce861a97@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: rRPZPJ2l6nCZm8IuAyGMM1cyY2WwboCP
+X-Proofpoint-ORIG-GUID: rRPZPJ2l6nCZm8IuAyGMM1cyY2WwboCP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ mlxscore=0 malwarescore=0 suspectscore=0 clxscore=1011 priorityscore=1501
+ lowpriorityscore=0 impostorscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2401040064
 
+Hi All,
 
->=20
-> On 4. Jan 2024, at 09:21, Johan Hovold <johan@kernel.org> wrote:
->=20
-> =EF=BB=BFOn Thu, Jan 04, 2024 at 08:50:19AM +0100, Sven Peter wrote:
->>> On 4. Jan 2024, at 08:47, Aditya Garg <gargaditya08@live.com> wrote:
->>>> On 28-Dec-2023, at 5:41=E2=80=AFPM, Johan Hovold <johan@kernel.org> wro=
-te:
->=20
->>>> Ok, good, then this patch and the one I posted are mostly equivalent
->>>> assuming that the BCM4378/4387 return an invalid address during setup.
->>>>=20
->>>> This patch may be preferred as it does not need to rely on such
->>>> assumptions, though.
->=20
->>> So what's the final take on this? Which one is gonna be merged upstream?=
+Can you please review this.
 
->>=20
->> I would=E2=80=99ve preferred this one (possibly with a better commit mess=
-age)
->> since it=E2=80=99s more explicit and doesn=E2=80=99t rely on additional a=
-ssumptions
->> but it looks like Johan=E2=80=99s version was already merged.
->=20
-> Which addresses do BCM4378/4387 return before they are configured?
-> Should be easy enough to verify that the current check for invalid
-> addresses catches those or otherwise add them to the list.
->=20
-> Johan
+Thanks & Regards,
 
-I think the check used to work for BRCM4378 when I originally wrote the driv=
-er but I don=E2=80=99t have any BRCM4387 hardware so can=E2=80=99t test that=
- myself.
+Krishna Chaitanya.
 
-
-Sven
-
-
+On 12/18/2023 12:01 PM, Krishna chaitanya chundru wrote:
+> Current MSI's mapping was incorrect. This platform supports
+> 8 vectors each vector supports 32 MSI's, so total MSI's
+> supported is 256.
+>
+> Add all the MSI groups supported for this PCIe instance in this platform.
+>
+> Fixes: 92e0ee9f83b3 ("arm64: dts: qcom: sc7280: Add PCIe and PHY related nodes")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+> ---
+>   arch/arm64/boot/dts/qcom/sc7280.dtsi | 12 ++++++++++--
+>   1 file changed, 10 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> index 66f1eb83cca7..e1dc41705f61 100644
+> --- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+> @@ -2146,8 +2146,16 @@ pcie1: pci@1c08000 {
+>   			ranges = <0x01000000 0x0 0x00000000 0x0 0x40200000 0x0 0x100000>,
+>   				 <0x02000000 0x0 0x40300000 0x0 0x40300000 0x0 0x1fd00000>;
+>   
+> -			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>;
+> -			interrupt-names = "msi";
+> +			interrupts = <GIC_SPI 307 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 308 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 309 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 312 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 313 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 314 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 374 IRQ_TYPE_LEVEL_HIGH>,
+> +				     <GIC_SPI 375 IRQ_TYPE_LEVEL_HIGH>;
+> +			interrupt-names = "msi0", "msi1", "msi2", "msi3",
+> +					  "msi4", "msi5", "msi6", "msi7";
+>   			#interrupt-cells = <1>;
+>   			interrupt-map-mask = <0 0 0 0x7>;
+>   			interrupt-map = <0 0 0 1 &intc 0 0 0 434 IRQ_TYPE_LEVEL_HIGH>,
+>
+> ---
+> base-commit: 5bd7ef53ffe5ca580e93e74eb8c81ed191ddc4bd
+> change-id: 20231218-additional_msi-6062dc812c29
+>
+> Best regards,
 
